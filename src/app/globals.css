@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-bg: 0 0 0;
+  --brand-surface: 12 12 12;
+  --brand-line: 31 31 31;
+  --brand-accent: 255 179 0;
+  --brand-accent-soft: 255 217 113;
+  --brand-text: 245 245 245;
+  --brand-muted: 163 163 163;
+  --brand-success: 16 185 129;
+  --brand-social-whatsapp: 37 211 102;
+  --brand-social-facebook: 24 119 242;
+  --brand-social-x: 245 245 245;
+}
+
+html, body {
+  background: rgb(var(--brand-bg));
+  color: rgb(var(--brand-text));
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  /* Safety net: never allow horizontal scroll, however a child element is sized.
+     This is what prevents the whole page from shifting right when any nested
+     section uses w-screen or has a wider-than-viewport child. */
+  overflow-x: hidden;
+}
+
+/* Hide native scrollbars on horizontal carousels but keep scrolling */
+.scrollbar-none::-webkit-scrollbar { display: none; }
+.scrollbar-none { scrollbar-width: none; }
+
+/* Right-to-left marquee that fades into the left edge of its container */
+@keyframes hammerex-marquee {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(-100%); }
+}
+/* Variant of the marquee with a hold at the off-screen-left position so
+   the text visually pauses for a beat before the next cycle starts.
+   Used by ProductTicker; HomePageNotice keeps the plain seamless loop. */
+@keyframes hammerex-marquee-gap {
+  0%   { transform: translateX(100%); }
+  96%  { transform: translateX(-100%); }
+  100% { transform: translateX(-100%); }
+}
+.hammerex-marquee-track {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: hammerex-marquee 28s linear infinite;
+}
+/* Seamless variant. The track must contain the message duplicated end to
+   end; animating from 0 to -50% scrolls exactly one copy off-screen left
+   while the second copy slides in from the right, then loops back to 0
+   visually-identically — no blank gap between cycles. */
+@keyframes hammerex-marquee-seamless {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.hammerex-marquee-seamless-track {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: hammerex-marquee-seamless 60s linear infinite;
+}
+.hammerex-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, rgb(var(--brand-bg)) 12%, rgb(var(--brand-bg)) 100%);
+          mask-image: linear-gradient(to right, transparent 0, rgb(var(--brand-bg)) 12%, rgb(var(--brand-bg)) 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hammerex-marquee-track,
+  .hammerex-marquee-seamless-track { animation: none; }
+  .hx-pulse,
+  .hx-fade-in-up,
+  .hx-shimmer,
+  .hx-pop,
+  .hx-flash-red,
+  .hx-rim-flash { animation: none !important; }
+}
+
+/* Pulsing yellow rim — used on the selected lanyard swatch so the active
+   choice grabs the eye even when the buyer has scrolled past. Loops
+   indefinitely; disabled for prefers-reduced-motion users above. */
+@keyframes hx-rim-flash-kf {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgb(var(--brand-accent) / 0.65), 0 0 0 2px rgb(var(--brand-accent));
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgb(var(--brand-accent) / 0), 0 0 0 2px rgb(var(--brand-accent));
+  }
+}
+.hx-rim-flash { animation: hx-rim-flash-kf 1.4s ease-out infinite; }
+
+/* Red flash on the first size pill when the buyer forgot to pick a size */
+@keyframes hx-flash-red-kf {
+  0%, 100% {
+    border-color: rgb(248 113 113);
+    background-color: rgb(248 113 113 / 0.25);
+    color: rgb(254 202 202);
+  }
+  50% {
+    border-color: rgb(248 113 113 / 0.4);
+    background-color: rgb(248 113 113 / 0.05);
+    color: rgb(248 113 113);
+  }
+}
+.hx-flash-red { animation: hx-flash-red-kf 700ms ease-in-out infinite; }
+
+/* Required-section attention flash — toggles the CollapsibleSection
+   header between brand yellow and red, drawing the eye instantly when
+   the buyer hasn't picked something the order can't complete without
+   (e.g. belt waist size on a belt set). The outer container keeps the
+   subtler ring-pulse from Tailwind's animate-pulse; this is for the
+   header itself. */
+@keyframes hx-attention-flash-kf {
+  0%, 100% { background-color: #ffb300; color: #000; }
+  50%      { background-color: #ef4444; color: #fff; }
+}
+.hx-attention-flash {
+  animation: hx-attention-flash-kf 0.9s ease-in-out infinite;
+}
+
+/* Pulsing "online" satellite ping on Leaflet markers in /admin/world. */
+.hx-presence-ping {
+  animation: hx-presence-pulse 1.8s ease-out infinite;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+@keyframes hx-presence-pulse {
+  0%   { stroke-opacity: 1;   stroke-width: 2; }
+  60%  { stroke-opacity: 0.1; stroke-width: 16; }
+  100% { stroke-opacity: 0;   stroke-width: 16; }
+}
+
+/* Leaflet tooltip + attribution — restore readability on the dark theme. */
+.leaflet-tooltip {
+  background: #0f0f0f !important;
+  border: 1px solid #2a2a2a !important;
+  color: #f5f5f5 !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+}
+.leaflet-tooltip-top:before { border-top-color: #2a2a2a !important; }
+.leaflet-control-attribution {
+  background: rgba(15,15,15,0.85) !important;
+  color: #a3a3a3 !important;
+}
+.leaflet-control-attribution a { color: #ffb300 !important; }
+
+/* Yellow ring pulse on primary tap (use on Add to cart / WhatsApp CTAs) */
+@keyframes hx-pulse-kf {
+  0%   { box-shadow: 0 0 0 0   rgb(var(--brand-accent) / 0.55); }
+  100% { box-shadow: 0 0 0 14px rgb(var(--brand-accent) / 0);    }
+}
+.hx-pulse { animation: hx-pulse-kf 600ms ease-out; }
+
+/* Fade-up reveal on scroll-in or mount */
+@keyframes hx-fade-in-up-kf {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+.hx-fade-in-up { animation: hx-fade-in-up-kf 350ms ease-out both; }
+
+/* Pop on add-to-cart */
+@keyframes hx-pop-kf {
+  0%   { transform: scale(1);    }
+  35%  { transform: scale(1.08); }
+  100% { transform: scale(1);    }
+}
+.hx-pop { animation: hx-pop-kf 280ms ease-out; }
+
+/* Skeleton shimmer */
+@keyframes hx-shimmer-kf {
+  from { background-position: -200% 0; }
+  to   { background-position: 200% 0;  }
+}
+.hx-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--brand-surface)) 0%,
+    rgb(var(--brand-line)) 50%,
+    rgb(var(--brand-surface)) 100%
+  );
+  background-size: 200% 100%;
+  animation: hx-shimmer-kf 1.4s linear infinite;
+}
+
+/* Cart-count badge attention ping */
+@keyframes hx-ping-kf {
+  75%, 100% { transform: scale(2);   opacity: 0; }
+}
+.hx-ping::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: rgb(var(--brand-accent) / 0.55);
+  animation: hx-ping-kf 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Ken-Burns slow zoom for the active hero slide.
+   transform-origin: center is set explicitly so the scale overshoot grows
+   equally both sides — the image can never drift left or right. */
+@keyframes hx-kenburns-kf {
+  from { transform: scale(1);     transform-origin: center; }
+  to   { transform: scale(1.06);  transform-origin: center; }
+}
+.hx-kenburns { animation: hx-kenburns-kf 7s ease-out forwards; transform-origin: center; }
+
+/* Product card tilt lift — applied via group-hover */
+.hx-card-tilt {
+  transform: perspective(900px) rotateX(0) rotateY(0) translateZ(0);
+  transition: transform 280ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 280ms ease;
+  will-change: transform;
+}
+.group:hover .hx-card-tilt {
+  transform: perspective(900px) rotateX(2deg) rotateY(-3deg) translateZ(6px);
+}
+
+/* Spark burst for Add-to-cart — placed as absolutely-positioned children */
+@keyframes hx-spark-kf {
+  0%   { transform: translate(0,0) scale(1);    opacity: 1; }
+  100% { transform: var(--hx-spark-end) scale(0.2); opacity: 0; }
+}
+.hx-spark {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: rgb(var(--brand-accent));
+  pointer-events: none;
+  animation: hx-spark-kf 700ms ease-out forwards;
+}
+
+/* Cutoff countdown pulse when under 60 minutes remain */
+@keyframes hx-cutoff-pulse-kf {
+  0%, 100% { box-shadow: 0 0 0 0   rgb(var(--brand-accent) / 0.55); }
+  50%      { box-shadow: 0 0 0 6px rgb(var(--brand-accent) / 0);    }
+}
+.hx-cutoff-urgent { animation: hx-cutoff-pulse-kf 1.4s ease-in-out infinite; }
+
+/* Multi-purchase / deal-switcher chase. Each button gets the same 6s
+   keyframe; staggered animation-delay (set inline per index) makes the
+   yellow square travel slowly across the row of buttons. Used only when
+   no deal is currently selected — the active button overrides the
+   animation with its solid yellow class. */
+@keyframes hx-deal-chase-kf {
+  0%, 33%, 100% {
+    background-color: rgb(var(--brand-surface));
+    color: rgb(var(--brand-text));
+    border-color: rgb(var(--brand-line));
+    box-shadow: none;
+  }
+  12%, 22% {
+    background-color: rgb(var(--brand-accent));
+    color: rgb(0 0 0);
+    border-color: rgb(var(--brand-accent));
+    box-shadow: 0 2px 14px rgb(var(--brand-accent) / 0.55);
+  }
+}
+.hx-deal-chase { animation: hx-deal-chase-kf 6s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .hx-deal-chase { animation: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hx-kenburns,
+  .hx-card-tilt,
+  .hx-spark,
+  .hx-cutoff-urgent { animation: none !important; transition: none !important; }
+  .group:hover .hx-card-tilt { transform: none; }
+}
