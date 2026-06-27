@@ -40,7 +40,13 @@ export const TRADE_OFF_TRADES: Array<{
   { slug: "gas-engineer", label: "Gas Engineer", category_slug: null },
   // Concrete finisher — troweling, polishing, sealing (distinct from
   // the existing concrete-specialist which does formwork + placing).
-  { slug: "concrete-finisher", label: "Concrete Finisher", category_slug: "concrete" }
+  { slug: "concrete-finisher", label: "Concrete Finisher", category_slug: "concrete" },
+  // Stair fitter — bespoke staircases, balustrades, handrails.
+  { slug: "stair-fitter", label: "Stair Fitter", category_slug: "carpentry" },
+  // Kitchen fitter — full kitchen installs, units, worktops.
+  { slug: "kitchen-fitter", label: "Kitchen Fitter", category_slug: "carpentry" },
+  // Window fitter — windows + doors install / replacement.
+  { slug: "window-fitter", label: "Window Fitter", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {

@@ -46,7 +46,13 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
   "gas-engineer":
     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_59_11%20AM.png",
   "concrete-finisher":
-    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2011_00_12%20AM.png"
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2011_00_12%20AM.png",
+  "stair-fitter":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2011_05_18%20AM.png",
+  "kitchen-fitter":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2011_03_54%20AM.png",
+  "window-fitter":
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2011_03_23%20AM.png"
 };
 
 export function tradeHeroFor(slug: string): string | null {
