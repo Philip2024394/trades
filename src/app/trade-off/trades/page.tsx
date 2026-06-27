@@ -1,10 +1,10 @@
 // Xrated Trades — "Trade Examples" gallery.
 // HIGH-INTENT page: a visitor arrives wanting to see what a real
 // Xrated Trades profile looks like for THEIR trade. Eight trade cards
-// (Bricklayer, Electrician, Plumber, Scaffolder, Roofer, Landscaper,
-// Joiner, Decorator) each render a yellow trade-icon badge, three
-// realistic priced services and a review snippet, so visitors can
-// pattern-match in seconds: "yes, this is for me".
+// (Carpenter, Bricklayer, Plumber, Scaffolder, Electrician, Drywaller,
+// Stone Mason, Tiler) each render a landscape banner image — the same
+// art a tradesperson of that trade gets as a default hero on their own
+// profile if they don't upload a custom_app_hero_url.
 //
 // Every card "View profile" link points at the live demo profile
 // (mike-watson-drywall-manchester) for now — when more demo profiles
@@ -15,11 +15,11 @@
 // 13px text floor, XratedFooter bottom.
 
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
+import { tradeHeroFor } from "@/lib/tradeOffHeroes";
 
 export const revalidate = 3600;
 
@@ -39,92 +39,18 @@ export const metadata: Metadata = {
   }
 };
 
-// Inline SVGs — kept local so this page has no off-page side effects.
-// We do not extend the shared tradeIcons map because some of the trades
-// shown here (landscaper, decorator) are presentation-only labels and
-// must not affect routing / chip rendering elsewhere.
-type IconProps = { className?: string; color?: string };
-
-function IconBricklayer({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="3" y="4" width="18" height="5" rx="1" />
-      <rect x="3" y="10" width="8" height="5" rx="1" />
-      <rect x="13" y="10" width="8" height="5" rx="1" />
-      <rect x="3" y="16" width="18" height="5" rx="1" />
-    </svg>
-  );
-}
-function IconElectrician({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="m13 2-9 13h7l-1 7 9-13h-7l1-7Z" />
-    </svg>
-  );
-}
-function IconPlumber({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z" />
-    </svg>
-  );
-}
-function IconScaffolder({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M3 3v18" />
-      <path d="M21 3v18" />
-      <path d="M3 9h18" />
-      <path d="M3 15h18" />
-    </svg>
-  );
-}
-function IconRoofer({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M3 12 12 4l9 8" />
-      <path d="M5 11v9h14v-9" />
-    </svg>
-  );
-}
-function IconLandscaper({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M12 22V12" />
-      <path d="M12 12c0-3 2-6 6-6-1 4-3 6-6 6Z" />
-      <path d="M12 12c0-3-2-6-6-6 1 4 3 6 6 6Z" />
-      <path d="M4 22h16" />
-    </svg>
-  );
-}
-function IconJoiner({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M15 12 6 21l-3-3 9-9" />
-      <path d="m15 12 5 5-2 2-5-5" />
-      <path d="m12 9 6-6 3 3-6 6" />
-    </svg>
-  );
-}
-function IconDecorator({ color = "#0A0A0A" }: IconProps) {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M18 11V7a2 2 0 0 0-2-2H7L3 9v6l4 4h9a2 2 0 0 0 2-2v-4" />
-      <path d="M18 11h3v6h-3" />
-    </svg>
-  );
-}
-
 type Service = { title: string; price: string };
 type TradeExample = {
   trade: string;
+  // Slug used by tradeHeroFor() to look up the landscape banner image.
+  // Slugs match the keys in src/lib/tradeOffHeroes.ts.
+  slug: string;
   blurb: string;
   services: Service[];
   reviewStars: string;
   reviewCount: number;
   ratingLabel: string;
   href: string;
-  icon: (p: IconProps) => ReactNode;
 };
 
 // Single live demo profile for every "View profile" link until more
@@ -134,7 +60,22 @@ const DEMO_HREF = "/demo-mike-watson-drywall-manchester";
 
 const TRADES: TradeExample[] = [
   {
+    trade: "Carpenter",
+    slug: "carpenter",
+    blurb: "Bespoke kitchens, first fix, decking, doors. Workshop photos in the gallery.",
+    services: [
+      { title: "Bespoke kitchen (10 units)", price: "£8,500" },
+      { title: "First fix carpentry (3-bed)", price: "£2,400" },
+      { title: "Hardwood decking (20m2)", price: "£1,800" }
+    ],
+    reviewStars: "4.9",
+    reviewCount: 28,
+    ratingLabel: "Excellent",
+    href: DEMO_HREF
+  },
+  {
     trade: "Bricklayer",
+    slug: "bricklayer",
     blurb: "Garden walls, extensions, patios, repointing — fixed-price work shown up front.",
     services: [
       { title: "Garden wall (10m run)", price: "£450" },
@@ -144,25 +85,11 @@ const TRADES: TradeExample[] = [
     reviewStars: "4.9",
     reviewCount: 23,
     ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconBricklayer
-  },
-  {
-    trade: "Electrician",
-    blurb: "Rewires, EV chargers, consumer units — every job priced and time-boxed.",
-    services: [
-      { title: "Full house rewire (3-bed)", price: "£3,500" },
-      { title: "EV charger install (7kW)", price: "£750" },
-      { title: "Consumer unit upgrade", price: "£450" }
-    ],
-    reviewStars: "5.0",
-    reviewCount: 41,
-    ratingLabel: "Outstanding",
-    href: DEMO_HREF,
-    icon: IconElectrician
+    href: DEMO_HREF
   },
   {
     trade: "Plumber",
+    slug: "plumber",
     blurb: "Boilers, bathrooms, leaks — emergency or planned, customer sees the price first.",
     services: [
       { title: "Combi boiler install", price: "£2,200" },
@@ -172,11 +99,11 @@ const TRADES: TradeExample[] = [
     reviewStars: "4.8",
     reviewCount: 34,
     ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconPlumber
+    href: DEMO_HREF
   },
   {
     trade: "Scaffolder",
+    slug: "scaffolder",
     blurb: "Access for every other trade — chimney, loft, elevation. Hire by the week.",
     services: [
       { title: "2-storey scaffold (rear elevation)", price: "£850" },
@@ -186,64 +113,63 @@ const TRADES: TradeExample[] = [
     reviewStars: "4.9",
     reviewCount: 18,
     ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconScaffolder
+    href: DEMO_HREF
   },
   {
-    trade: "Roofer",
-    blurb: "Re-roofs, tile repairs, gutters. Honest pricing — no scaffolding surprises.",
+    trade: "Electrician",
+    slug: "electrician",
+    blurb: "Rewires, EV chargers, consumer units — every job priced and time-boxed.",
     services: [
-      { title: "Full roof replacement (semi)", price: "£6,500" },
-      { title: "Slipped tile / leak repair", price: "£350" },
-      { title: "Gutter clean + check", price: "£120" }
-    ],
-    reviewStars: "4.9",
-    reviewCount: 27,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconRoofer
-  },
-  {
-    trade: "Landscaper",
-    blurb: "Garden design, turfing, patios. Before-and-after photos do the selling.",
-    services: [
-      { title: "Garden design + plan", price: "£1,800" },
-      { title: "Lawn turfing (50m2)", price: "£900" },
-      { title: "Patio install (porcelain)", price: "£2,400" }
-    ],
-    reviewStars: "4.8",
-    reviewCount: 19,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconLandscaper
-  },
-  {
-    trade: "Joiner",
-    blurb: "Bespoke kitchens, wardrobes, doors. Workshop photos in the gallery.",
-    services: [
-      { title: "Bespoke kitchen (10 units)", price: "£8,500" },
-      { title: "Built-in wardrobes (3m run)", price: "£2,200" },
-      { title: "Door hanging (per door)", price: "£180" }
+      { title: "Full house rewire (3-bed)", price: "£3,500" },
+      { title: "EV charger install (7kW)", price: "£750" },
+      { title: "Consumer unit upgrade", price: "£450" }
     ],
     reviewStars: "5.0",
-    reviewCount: 31,
+    reviewCount: 41,
     ratingLabel: "Outstanding",
-    href: DEMO_HREF,
-    icon: IconJoiner
+    href: DEMO_HREF
   },
   {
-    trade: "Decorator",
-    blurb: "House repaints, feature walls, wallpaper. Colour cards in the gallery.",
+    trade: "Drywaller",
+    slug: "drywaller",
+    blurb: "Plasterboard partitions, skim coats, ceilings. Level 5 finish or your money back.",
     services: [
-      { title: "3-bed house repaint", price: "£2,800" },
-      { title: "Feature wall (paint + prep)", price: "£350" },
-      { title: "Wallpaper hang (per roll)", price: "£450" }
+      { title: "Skim coat re-finish (per sqm)", price: "£45" },
+      { title: "Drywall partition (3m, full)", price: "£320" },
+      { title: "Ceiling repair (per sqm)", price: "£65" }
+    ],
+    reviewStars: "4.8",
+    reviewCount: 32,
+    ratingLabel: "Excellent",
+    href: DEMO_HREF
+  },
+  {
+    trade: "Stone Mason",
+    slug: "stonemason",
+    blurb: "Natural stone walls, heritage repointing, restoration. Conservation-trained.",
+    services: [
+      { title: "Natural stone wall (per sqm)", price: "£180" },
+      { title: "Heritage repointing (per sqm)", price: "£95" },
+      { title: "Stone cleaning + restoration (per sqm)", price: "£40" }
+    ],
+    reviewStars: "5.0",
+    reviewCount: 22,
+    ratingLabel: "Outstanding",
+    href: DEMO_HREF
+  },
+  {
+    trade: "Tiler",
+    slug: "tiler",
+    blurb: "Bathrooms, kitchens, floors. Porcelain, ceramic, natural stone — fixed pricing.",
+    services: [
+      { title: "Bathroom retile (full)", price: "£1,800" },
+      { title: "Kitchen splashback", price: "£450" },
+      { title: "Floor tile install (per sqm)", price: "£45" }
     ],
     reviewStars: "4.9",
-    reviewCount: 25,
+    reviewCount: 36,
     ratingLabel: "Excellent",
-    href: DEMO_HREF,
-    icon: IconDecorator
+    href: DEMO_HREF
   }
 ];
 
@@ -324,89 +250,104 @@ export default function TradeExamplesPage() {
 
         <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {TRADES.map((t) => {
-            const Icon = t.icon;
+            const banner = tradeHeroFor(t.slug);
             return (
               <li key={t.trade}>
                 <a
                   href={t.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white p-4 transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg sm:p-5"
+                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
                 >
-                  {/* Yellow trade-icon badge — top-left. */}
-                  <div className="flex items-start justify-between">
-                    <span
-                      className="inline-flex h-12 w-12 items-center justify-center rounded-xl"
-                      style={{ background: XRATED_BRAND.accent }}
+                  {/* Landscape banner image — same art a tradesperson of
+                      this trade gets as their default hero on /<slug>. */}
+                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                    {banner ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={banner}
+                        alt={`Default Xrated profile hero banner for a ${t.trade.toLowerCase()}`}
+                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div
+                        aria-hidden="true"
+                        className="absolute inset-0"
+                        style={{ background: XRATED_BRAND.accent }}
+                      />
+                    )}
+                    {/* Bottom-up gradient so the trade-name overlay reads
+                        cleanly without darkening the whole image. */}
+                    <div
                       aria-hidden="true"
-                    >
-                      <Icon />
-                    </span>
-                    <span
-                      className="rounded-full bg-neutral-100 px-2 py-1 text-[11px] font-bold uppercase tracking-wider text-neutral-600"
-                    >
+                      className="absolute inset-x-0 bottom-0 h-1/2"
+                      style={{
+                        background:
+                          "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0) 100%)"
+                      }}
+                    />
+                    {/* Example chip top-right */}
+                    <span className="absolute right-3 top-3 rounded-full bg-black/80 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
                       Example
                     </span>
-                  </div>
-
-                  <h3 className="mt-3 text-lg font-extrabold text-neutral-900 sm:text-xl">
-                    {t.trade}
-                  </h3>
-                  <p className="mt-1 text-xs leading-relaxed text-neutral-600">
-                    {t.blurb}
-                  </p>
-
-                  {/* Three priced services */}
-                  <ul className="mt-4 flex flex-col gap-1.5">
-                    {t.services.map((s) => (
-                      <li
-                        key={s.title}
-                        className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
-                      >
-                        <span className="text-neutral-700">{s.title}</span>
+                    {/* Trade name overlay bottom-left */}
+                    <div className="absolute inset-x-0 bottom-0 px-4 pb-3 sm:px-5 sm:pb-4">
+                      <h3 className="text-xl font-extrabold leading-tight text-white drop-shadow sm:text-2xl">
+                        {t.trade}
+                      </h3>
+                      <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                        View profile
                         <span
-                          className="shrink-0 font-extrabold text-neutral-900"
+                          aria-hidden="true"
+                          className="transition group-hover:translate-x-0.5"
+                          style={{ color: XRATED_BRAND.accent }}
                         >
-                          {s.price}
+                          &rarr;
                         </span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Review snippet */}
-                  <div className="mt-4 flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
-                    <span
-                      className="inline-flex items-center gap-1 font-extrabold text-neutral-900"
-                    >
-                      <span style={{ color: XRATED_BRAND.accent }}>★</span>
-                      {t.reviewStars}
-                    </span>
-                    <span className="text-neutral-500">
-                      — {t.reviewCount} reviews
-                    </span>
-                    <span
-                      className="ml-auto rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider"
-                      style={{
-                        background: `${XRATED_BRAND.accent}1A`,
-                        color: "#7A5300"
-                      }}
-                    >
-                      {t.ratingLabel}
-                    </span>
+                      </p>
+                    </div>
                   </div>
 
-                  {/* View profile link — bottom CTA */}
-                  <span
-                    className="mt-4 inline-flex items-center gap-1 text-xs font-extrabold uppercase tracking-wider transition group-hover:gap-2"
-                    style={{ color: "#0A0A0A" }}
-                  >
-                    View profile{" "}
-                    <span
-                      aria-hidden="true"
-                      className="transition group-hover:translate-x-0.5"
-                      style={{ color: XRATED_BRAND.accent }}
-                    >
-                      &rarr;
-                    </span>
-                  </span>
+                  {/* Below-image content — compact services + review row. */}
+                  <div className="flex flex-1 flex-col p-4 sm:p-5">
+                    <p className="text-xs leading-relaxed text-neutral-600">
+                      {t.blurb}
+                    </p>
+
+                    {/* Three priced services */}
+                    <ul className="mt-3 flex flex-col gap-1.5">
+                      {t.services.map((s) => (
+                        <li
+                          key={s.title}
+                          className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
+                        >
+                          <span className="text-neutral-700">{s.title}</span>
+                          <span className="shrink-0 font-extrabold text-neutral-900">
+                            {s.price}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Review snippet */}
+                    <div className="mt-3 flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
+                      <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
+                        <span style={{ color: XRATED_BRAND.accent }}>★</span>
+                        {t.reviewStars}
+                      </span>
+                      <span className="text-neutral-500">
+                        — {t.reviewCount} reviews
+                      </span>
+                      <span
+                        className="ml-auto rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider"
+                        style={{
+                          background: `${XRATED_BRAND.accent}1A`,
+                          color: "#7A5300"
+                        }}
+                      >
+                        {t.ratingLabel}
+                      </span>
+                    </div>
+                  </div>
                 </a>
               </li>
             );
