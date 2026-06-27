@@ -145,18 +145,7 @@ export function FindResultCard({ listing }: { listing: FindCardListing }) {
               <span style={{ color: BRAND_YELLOW }}>★</span>
               {rating.toFixed(1)}
             </span>
-            <span className="text-neutral-500">— {reviews} reviews</span>
-            {ratingLabel && (
-              <span
-                className="ml-auto rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                style={{
-                  background: `${BRAND_YELLOW}1A`,
-                  color: "#7A5300"
-                }}
-              >
-                {ratingLabel}
-              </span>
-            )}
+            <span className="text-neutral-500">&mdash; {reviews} reviews</span>
           </div>
         )}
 
