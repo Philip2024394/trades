@@ -68,7 +68,22 @@ export const TRADE_OFF_TRADES: Array<{
   // Block layer — concrete block / breeze block masonry, distinct from
   // bricklayer (clay/brick masonry). Common on commercial walls,
   // foundations, retaining walls.
-  { slug: "block-layer", label: "Block Layer", category_slug: "bricklaying" }
+  { slug: "block-layer", label: "Block Layer", category_slug: "bricklaying" },
+  // Site safety — CDM / SMSTS / safety supervisor — temporary works,
+  // toolbox talks, edge protection, scaffolding inspections.
+  { slug: "site-safety", label: "Site Safety", category_slug: null },
+  // Water drilling — borehole, well, ground-source water extraction +
+  // diamond core drilling for service penetrations.
+  { slug: "water-drilling", label: "Water Drilling", category_slug: null },
+  // Fascia & soffit — uPVC + timber roofline replacement, fascias,
+  // soffits, guttering. Usually paired with roofers.
+  { slug: "fascia-and-soffit", label: "Fascia & Soffit", category_slug: "roofing" },
+  // Demolition — controlled strip-outs, soft-strip, structural
+  // demolition with plant. Includes asbestos-aware contractors.
+  { slug: "demolition", label: "Demolition", category_slug: null },
+  // Site canteen — mobile catering vans + on-site kitchen services
+  // for construction crews. Breakfast rolls, bacon butties, hot meals.
+  { slug: "site-canteen", label: "Site Canteen", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
