@@ -57,7 +57,7 @@ async function loadFeed(opts: { kind: string; trade: string; region: string }) {
   let q = supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select(
-      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, created_at, expires_at"
+      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, contact_count, created_at, expires_at"
     )
     .eq("status", "live")
     .eq("country", "UK")

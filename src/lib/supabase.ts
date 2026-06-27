@@ -738,6 +738,11 @@ export type HammerexTradeOffYardPost = {
   attachment_kind: "pdf" | "file" | null;
   link_url: string | null;
   link_title: string | null;
+  // Click-through tally — every tap on the post's WhatsApp / Reply
+  // button hits the contact redirect endpoint and bumps this counter.
+  // Rendered on the card as the social-proof signal that replaced
+  // the legacy like/dislike emoji bar.
+  contact_count: number;
   // Product-kind extras — merchants selling tools / materials to the
   // trade. product_price_pence is the post's listing price (members can
   // override their shop price for a Yard post). source_product_id links
