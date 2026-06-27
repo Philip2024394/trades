@@ -33,7 +33,14 @@ export const TRADE_OFF_TRADES: Array<{
   // operators, site equipment rental.
   { slug: "heavy-machinery", label: "Heavy Site Machinery", category_slug: null },
   // Tool hire — hand tools, power tools, access kit rental.
-  { slug: "tool-hire", label: "Tool Hire", category_slug: null }
+  { slug: "tool-hire", label: "Tool Hire", category_slug: null },
+  // Landscaper — garden design, turfing, patios, planting.
+  { slug: "landscaper", label: "Landscaper", category_slug: null },
+  // Gas engineer — Gas Safe regulated work, boilers, gas installation.
+  { slug: "gas-engineer", label: "Gas Engineer", category_slug: null },
+  // Concrete finisher — troweling, polishing, sealing (distinct from
+  // the existing concrete-specialist which does formwork + placing).
+  { slug: "concrete-finisher", label: "Concrete Finisher", category_slug: "concrete" }
 ];
 
 export function tradeLabel(slug: string): string {
