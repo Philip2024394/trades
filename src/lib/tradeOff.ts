@@ -50,7 +50,10 @@ export const TRADE_OFF_TRADES: Array<{
   // Crane operator — site crane hire + qualified operator (CPCS / NPORS).
   { slug: "crane-operator", label: "Crane Operator", category_slug: null },
   // Security installer — CCTV, alarms, access control, intercoms.
-  { slug: "security-installer", label: "Security Installer", category_slug: null }
+  { slug: "security-installer", label: "Security Installer", category_slug: null },
+  // Builders supplies — small specialist supply shop (distinct from the
+  // larger building-merchant slug which targets multi-yard merchants).
+  { slug: "builders-supplies", label: "Builders Supplies", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
