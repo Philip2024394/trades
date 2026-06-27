@@ -17,6 +17,7 @@ import {
   timeAgoShort
 } from "@/lib/yardPosts";
 import type { ReactionCounts } from "@/lib/yardReactions";
+import { YardReactionBar } from "./YardReactionBar";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
@@ -211,7 +212,13 @@ export function YardPostCard({
           </div>
         )}
 
-        {/* Contact-tally + Poster + CTA */}
+        {/* Reaction bar — sits above the poster row so the conversion
+            CTA stays the visual anchor. */}
+        <div className="border-t border-neutral-100 pt-3">
+          <YardReactionBar postId={post.id} initialCounts={reactions} />
+        </div>
+
+        {/* Poster + CTA */}
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-neutral-100 pt-3">
           {poster ? (
             <a

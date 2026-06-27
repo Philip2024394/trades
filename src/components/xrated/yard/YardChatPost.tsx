@@ -11,6 +11,7 @@ import {
 } from "@/lib/yardPosts";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import type { YardPoster } from "./YardPostCard";
+import { YardReactionBar } from "./YardReactionBar";
 import { YardImageThumbs } from "./YardImageThumbs";
 
 const BRAND_YELLOW = "#FFB300";
@@ -152,9 +153,11 @@ export function YardChatPost({
           </div>
         )}
 
-        {/* Contact tally — replaces the like/dislike bar. */}
-        {post.contact_count > 0 && (
-          <div className="flex items-center border-t border-neutral-100 pt-3">
+        {/* Reaction bar + contact tally — both, on the same row so the
+            visual weight stays even. */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-100 pt-3">
+          <YardReactionBar postId={post.id} initialCounts={reactions} />
+          {post.contact_count > 0 && (
             <span
               className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-wider text-white"
               title={`${post.contact_count} member${post.contact_count === 1 ? "" : "s"} have replied`}
@@ -162,8 +165,8 @@ export function YardChatPost({
               <ContactedGlyph />
               {post.contact_count} contacted
             </span>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Action row — Reply / Open thread on the left, image
             thumbnails on the right. Thumbnails enlarge in a lightbox
