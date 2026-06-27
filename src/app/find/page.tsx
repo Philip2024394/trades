@@ -224,10 +224,20 @@ export default async function FindPortalPage({
             ) : (
               <>
                 Find a{" "}
-                <span style={{ color: XRATED_BRAND.accent }}>trade</span> near you.
+                <span style={{ color: XRATED_BRAND.accent }}>trade</span>{" "}
+                near you{" "}
+                <span style={{ color: XRATED_BRAND.accent }}>now</span>.
               </>
             )}
           </h1>
+          {!hasFilter && (
+            <p
+              className="mt-2 text-sm font-extrabold uppercase tracking-[0.18em] text-white sm:text-base"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+            >
+              Search across the UK.
+            </p>
+          )}
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> {totalMembers.toLocaleString("en-GB")} live members
@@ -427,30 +437,21 @@ function buildSearchHeadline({
 
 function NoResults({ trade, city }: { trade: string; city: string }) {
   return (
-    <div className="mt-8 rounded-2xl border border-dashed border-neutral-300 bg-white p-8 text-center">
+    <div className="mt-8 overflow-hidden rounded-2xl border-2 bg-white p-8 text-center sm:p-12" style={{ borderColor: `${XRATED_BRAND.accent}40` }}>
       <p
-        className="text-[13px] font-bold uppercase tracking-widest"
-        style={{ color: "#7A5300" }}
+        className="text-[13px] font-extrabold uppercase tracking-[0.22em]"
+        style={{ color: XRATED_BRAND.accent }}
       >
-        Nobody yet
+        Updating soon
       </p>
-      <h3 className="mt-2 text-lg font-extrabold text-neutral-900">
-        No {trade || "Xrated"} members in {city || "this area"} yet.
+      <h3 className="mt-3 text-2xl font-extrabold text-neutral-900 sm:text-3xl">
+        Come back soon &mdash; data is being updated.
       </h3>
-      <p className="mt-2 text-[13px] text-neutral-600">
-        Our membership is growing &mdash; try a nearby city, or another
-        trade. Or recommend Xrated to a tradie you know.
+      <p className="mt-3 text-[13px] text-neutral-600 sm:text-sm">
+        {trade || city
+          ? `We&rsquo;re adding more ${trade ? trade.toLowerCase() + "s" : "members"}${city ? ` in ${city}` : ""} this week. Check back shortly.`
+          : "New tradespeople are joining every day. Check back shortly."}
       </p>
-      <a
-        href="/trade-off/signup"
-        className="mt-4 inline-flex h-11 items-center gap-2 rounded-xl px-5 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 transition active:scale-[0.97]"
-        style={{
-          background: XRATED_BRAND.accent,
-          boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
-        }}
-      >
-        Get listed &rarr;
-      </a>
     </div>
   );
 }
