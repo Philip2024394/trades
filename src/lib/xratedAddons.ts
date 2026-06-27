@@ -242,24 +242,24 @@ export const XRATED_ADDONS: XratedAddon[] = [
     ]
   },
   {
-    slug: "lead_sms",
-    name: "Lead-alert SMS",
-    tagline: "Text you the moment a customer taps WhatsApp",
+    slug: "lead_alerts",
+    name: "Lead Alerts",
+    tagline: "Phone notification + sound the second a customer taps WhatsApp",
     summary:
-      "Every WhatsApp click on your profile fires an instant SMS to your phone with the customer's profile link — so you know to check WhatsApp even when you're on a ladder.",
-    glyph: "📲",
+      "Real-time push notification with custom sound the moment a customer taps WhatsApp on your profile. Runs through the Xrated app installed on your home screen — no SMS, no Twilio costs eating your margin. Install Xrated to your phone, allow notifications, and your phone wakes up the second a lead lands. Works on iPhone (iOS 16.4+) and Android.",
+    glyph: "🔔",
     image_url: null,
-    personas: ["Field trades", "Emergency callouts"],
+    personas: ["Field trades", "Emergency callouts", "Always-on-job"],
     editorial_badge: "any_trade",
-    callouts: ["Instant SMS", "Tap source", "Never miss"],
+    callouts: ["Instant push", "Custom sound", "PWA install"],
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "coming_soon",
     hasEditor: false,
     includedWithPaid: false,
     benefits: [
-      "Never miss a customer who's ready to message",
-      "Includes the WhatsApp tap-source so you know who's hot",
-      "Cancel any month — no contract"
+      "Instant push the moment WhatsApp is tapped — no SMS delay",
+      "Custom sound + vibration so you hear it on the ladder",
+      "Requires installing Xrated to your home screen — guided setup in-app"
     ]
   }
 ];
