@@ -89,16 +89,7 @@ export function YardPostCard({
           <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-bold text-neutral-700">
             {tradeText}
           </span>
-          {post.contact_count > 0 && (
-            <span
-              className="ml-auto inline-flex items-center gap-1 rounded-full bg-neutral-900 px-2 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white"
-              title={`${post.contact_count} member${post.contact_count === 1 ? "" : "s"} have replied to this post`}
-            >
-              <ContactedGlyph />
-              {post.contact_count} contacted
-            </span>
-          )}
-          {!post.is_sample && post.contact_count === 0 && (
+          {!post.is_sample && (
             <span className="ml-auto text-[11px] font-bold text-neutral-400">
               {timeAgoShort(post.created_at)}
             </span>
@@ -302,6 +293,14 @@ export function YardPostCard({
             </a>
           ) : null}
         </div>
+
+        {/* X contacted — plain text, centered, at the very end of the
+            card. Replaces the black contact pill. */}
+        {post.contact_count > 0 && (
+          <p className="mt-3 text-center text-[12px] font-bold text-neutral-500">
+            {post.contact_count} contacted
+          </p>
+        )}
       </div>
     </article>
   );
