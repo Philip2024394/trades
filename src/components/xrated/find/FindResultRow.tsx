@@ -31,19 +31,46 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
       href={`/${listing.slug}`}
       className="group grid grid-cols-1 gap-4 py-5 transition hover:bg-neutral-50/60 sm:grid-cols-[200px,1fr,auto] sm:items-center sm:gap-5 sm:py-6"
     >
-      {/* Banner */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden rounded-xl bg-neutral-100 sm:h-[130px] sm:w-[200px]">
-        {banner ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={banner}
-            alt={`${tradeText} hero banner`}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-          />
-        ) : (
-          <div className="absolute inset-0" style={{ background: BRAND_YELLOW }} />
-        )}
+      {/* Banner — trade artwork with the member's avatar pinned to the
+          bottom-left, ringed in brand yellow so it reads like an Insta
+          DM thumbnail. Compact and recognisable at a glance. */}
+      <div className="relative aspect-[16/10] w-full overflow-visible rounded-xl bg-neutral-100 sm:h-[130px] sm:w-[200px]">
+        <div className="absolute inset-0 overflow-hidden rounded-xl">
+          {banner ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={banner}
+              alt={`${tradeText} hero banner`}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+            />
+          ) : (
+            <div className="absolute inset-0" style={{ background: BRAND_YELLOW }} />
+          )}
+        </div>
+        {/* Avatar pinned bottom-left, half-overlapping the banner edge */}
+        <span
+          className="absolute -bottom-2 -left-2 inline-flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border-[3px] bg-white shadow-md sm:h-14 sm:w-14"
+          style={{ borderColor: BRAND_YELLOW }}
+          aria-hidden="true"
+        >
+          {listing.avatar_url ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={listing.avatar_url}
+              alt=""
+              loading="lazy"
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <span
+              className="flex h-full w-full items-center justify-center text-sm font-extrabold text-neutral-900"
+              style={{ background: BRAND_YELLOW }}
+            >
+              {(listing.display_name.match(/\b[A-Z]/g) ?? []).slice(0, 2).join("") || "X"}
+            </span>
+          )}
+        </span>
       </div>
 
       {/* Info column */}
