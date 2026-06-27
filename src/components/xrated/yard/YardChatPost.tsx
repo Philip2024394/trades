@@ -12,6 +12,7 @@ import {
 import type { ReactionCounts } from "@/lib/yardReactions";
 import type { YardPoster } from "./YardPostCard";
 import { YardReactionBar } from "./YardReactionBar";
+import { YardImageThumbs } from "./YardImageThumbs";
 
 const BRAND_YELLOW = "#FFB300";
 
@@ -123,29 +124,8 @@ export function YardChatPost({
           </p>
         </div>
 
-        {/* Attachments */}
-        {post.image_urls && post.image_urls.length > 0 && (
-          <div className="grid grid-cols-3 gap-1.5">
-            {post.image_urls.slice(0, 3).map((url, i) => (
-              <a
-                key={`${post.id}-img-${i}`}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100"
-                aria-label={`Attached image ${i + 1}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={url}
-                  alt=""
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </a>
-            ))}
-          </div>
-        )}
+        {/* Attachment chips — file + link only; images move to the
+            action row as thumbnails. */}
         {(post.attachment_url || post.link_url) && (
           <div className="flex flex-wrap gap-1.5">
             {post.attachment_url && (
@@ -178,30 +158,41 @@ export function YardChatPost({
           <YardReactionBar postId={post.id} initialCounts={reactions} />
         </div>
 
-        {/* Reply + share row */}
-        <div className="flex flex-wrap items-center gap-2 border-t border-neutral-100 pt-3">
-          {replyUrl ? (
+        {/* Action row — Reply / Open thread on the left, image
+            thumbnails on the right. Thumbnails enlarge in a lightbox
+            on tap so members can see the project / drawing at full
+            size without leaving the feed. */}
+        <div className="flex items-center justify-between gap-3 border-t border-neutral-100 pt-3">
+          <div className="flex flex-wrap items-center gap-2">
+            {replyUrl ? (
+              <a
+                href={replyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-10 items-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold text-neutral-900 transition active:scale-[0.97]"
+                style={{
+                  background: BRAND_YELLOW,
+                  boxShadow: `0 4px 14px ${BRAND_YELLOW}55`
+                }}
+                aria-label={`Reply to ${posterName} on WhatsApp`}
+              >
+                <ReplyGlyph />
+                Reply
+              </a>
+            ) : null}
             <a
-              href={replyUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-10 items-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold text-neutral-900 transition active:scale-[0.97]"
-              style={{
-                background: BRAND_YELLOW,
-                boxShadow: `0 4px 14px ${BRAND_YELLOW}55`
-              }}
-              aria-label={`Reply to ${posterName} on WhatsApp`}
+              href={`/trade-off/yard/${post.id}`}
+              className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold text-neutral-700 transition hover:border-neutral-300"
             >
-              <ReplyGlyph />
-              Reply
+              Open thread
             </a>
-          ) : null}
-          <a
-            href={`/trade-off/yard/${post.id}`}
-            className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold text-neutral-700 transition hover:border-neutral-300"
-          >
-            Open thread
-          </a>
+          </div>
+          {post.image_urls && post.image_urls.length > 0 && (
+            <YardImageThumbs
+              urls={post.image_urls}
+              alt={`Attached to: ${post.title}`}
+            />
+          )}
         </div>
       </div>
     </article>
