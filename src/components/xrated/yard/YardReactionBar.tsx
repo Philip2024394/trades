@@ -43,8 +43,16 @@ export function YardReactionBar({
     setAuthed(Boolean(slug && token));
   }, []);
 
+  // Only sum reactions whose kind is still rendered in the bar
+  // (currently just like + dislike). Legacy fire / strong / lol / wow
+  // counts in the DB stay valid but aren't tallied in the visible
+  // "X reactions" total, so the maths matches what the user can see.
   const total = useMemo(
-    () => Object.values(counts).reduce((a, b) => a + (b ?? 0), 0),
+    () =>
+      YARD_REACTION_KINDS.reduce(
+        (sum, kind) => sum + (counts[kind] ?? 0),
+        0
+      ),
     [counts]
   );
 
