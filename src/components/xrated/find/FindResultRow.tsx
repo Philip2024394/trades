@@ -19,16 +19,6 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
   const name = listing.trading_name?.trim() || listing.display_name;
   const rating = listing.rating_avg ?? 0;
   const reviews = listing.rating_count ?? 0;
-  const ratingLabel =
-    rating >= 4.9
-      ? "Outstanding"
-      : rating >= 4.5
-        ? "Excellent"
-        : rating >= 4.0
-          ? "Great"
-          : reviews > 0
-            ? "Good"
-            : null;
 
   const bio = listing.bio?.trim() ?? "";
   const verified = isListingVerified(listing);
@@ -111,25 +101,14 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
             : ""}
         </p>
 
-        {/* Rating row */}
+        {/* Rating row — no rating label badge; the score speaks for itself */}
         {reviews > 0 ? (
           <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-[13px] text-neutral-600">
             <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
               <span style={{ color: BRAND_YELLOW }}>★</span>
               {rating.toFixed(1)}
             </span>
-            <span>— {reviews} reviews</span>
-            {ratingLabel && (
-              <span
-                className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider"
-                style={{
-                  background: `${BRAND_YELLOW}1A`,
-                  color: "#7A5300"
-                }}
-              >
-                {ratingLabel}
-              </span>
-            )}
+            <span>&mdash; {reviews} reviews</span>
           </div>
         ) : (
           <p className="mt-2 text-[12px] text-neutral-500">No reviews yet</p>

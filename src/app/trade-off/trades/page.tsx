@@ -272,44 +272,35 @@ export default function TradeExamplesPage() {
                       })}
                     </ul>
 
-                    {/* Review snippet */}
-                    <div className="mt-3 flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
-                      <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
-                        <span style={{ color: XRATED_BRAND.accent }}>★</span>
-                        {t.reviewStars}
-                      </span>
-                      <span className="text-neutral-500">
-                        — {t.reviewCount} reviews
-                      </span>
+                    {/* Review + CTA pair — wrapped so they always sit
+                        TOGETHER at the bottom of the card. mt-auto on
+                        the wrapper pushes the pair down regardless of
+                        how much content sits above. Review sits
+                        directly above the CTA, no gap, no rating
+                        label badge. */}
+                    <div className="mt-auto flex flex-col gap-3 pt-4">
+                      <div className="flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
+                        <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
+                          <span style={{ color: XRATED_BRAND.accent }}>★</span>
+                          {t.reviewStars}
+                        </span>
+                        <span className="text-neutral-500">
+                          &mdash; {t.reviewCount} reviews
+                        </span>
+                      </div>
                       <span
-                        className="ml-auto rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider"
+                        className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
                         style={{
-                          background: `${XRATED_BRAND.accent}1A`,
-                          color: "#7A5300"
+                          background: XRATED_BRAND.accent,
+                          boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
                         }}
                       >
-                        {t.ratingLabel}
+                        View example
+                        <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+                          &rarr;
+                        </span>
                       </span>
                     </div>
-
-                    {/* Prominent yellow CTA — pushed to the bottom with
-                        mt-auto so every card's View example button sits
-                        at the same vertical position regardless of blurb
-                        length. */}
-                    <span
-                      className="mt-auto inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl pt-0 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
-                      style={{
-                        background: XRATED_BRAND.accent,
-                        boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`,
-                        marginTop: "auto",
-                        translate: "0 0"
-                      }}
-                    >
-                      View example
-                      <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
-                        &rarr;
-                      </span>
-                    </span>
                   </div>
                 </a>
               </li>

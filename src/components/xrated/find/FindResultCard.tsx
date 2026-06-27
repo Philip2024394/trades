@@ -48,16 +48,6 @@ export function FindResultCard({ listing }: { listing: FindCardListing }) {
   const initials = (listing.display_name.match(/\b[A-Z]/g) ?? []).slice(0, 2).join("");
   const rating = listing.rating_avg ?? 0;
   const reviews = listing.rating_count ?? 0;
-  const ratingLabel =
-    rating >= 4.9
-      ? "Outstanding"
-      : rating >= 4.5
-        ? "Excellent"
-        : rating >= 4.0
-          ? "Great"
-          : reviews > 0
-            ? "Good"
-            : null;
 
   return (
     <a
