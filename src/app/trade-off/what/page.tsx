@@ -232,7 +232,8 @@ export default function WhatPage() {
             Xrated Trades was built for people who work with their hands —
             bricklayers, electricians, plumbers, scaffolders, roofers,
             carpenters, plasterers, tilers, painters, decorators, groundworkers,
-            joiners, gas engineers and every other construction trade. Not
+            joiners, gas engineers, trade counter staff and every other
+            construction trade. Not
             estate agents, not consultants — the people who turn up at 7am with
             a van and finish the job.
           </p>
