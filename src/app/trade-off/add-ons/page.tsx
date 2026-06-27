@@ -78,7 +78,7 @@ const FAQ = [
 
 export default function AddOnsPage() {
   return (
-    <main className="pb-24 md:pb-0" style={{ background: "#0A0A0A" }}>
+    <main className="pb-24 md:pb-0" style={{ background: "#ffffff" }}>
       <XratedHeader />
 
       {/* Hero — black surface, eyebrow + headline with yellow accent on
@@ -122,10 +122,10 @@ export default function AddOnsPage() {
         >
           The add-ons
         </p>
-        <h2 className="mt-2 text-xl font-extrabold text-white sm:text-2xl">
+        <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
           Switch on what fits your trade.
         </h2>
-        <p className="mt-1 max-w-2xl text-xs text-white/60 sm:text-sm">
+        <p className="mt-1 max-w-2xl text-xs text-neutral-600 sm:text-sm">
           Every add-on is independent. Turn on what you need, leave the
           rest off.
         </p>
@@ -146,7 +146,7 @@ export default function AddOnsPage() {
         >
           How add-ons work
         </p>
-        <h2 className="mt-2 text-xl font-extrabold text-white sm:text-2xl">
+        <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
           Three steps from signup to a tuned profile.
         </h2>
 
@@ -183,7 +183,7 @@ export default function AddOnsPage() {
         >
           Common questions
         </p>
-        <h2 className="mt-2 text-xl font-extrabold text-white sm:text-2xl">
+        <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
           Add-ons — the short answers.
         </h2>
 
