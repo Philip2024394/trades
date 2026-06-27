@@ -42,12 +42,15 @@ export function YardChatPost({
   return (
     <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
       {post.is_sample && (
-        <span
-          className="absolute right-3 top-3 z-10 inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-900 shadow-sm"
-          style={{ background: BRAND_YELLOW }}
-        >
-          Sample
-        </span>
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2004_32_05%20PM.png"
+          alt="Sample post"
+          title="Sample — seeded for the demo feed"
+          loading="lazy"
+          className="pointer-events-none absolute right-2 top-2 z-10 h-14 w-14 sm:h-16 sm:w-16"
+          style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.18))" }}
+        />
       )}
 
       <div className="flex flex-col gap-3 p-4 sm:p-5">
