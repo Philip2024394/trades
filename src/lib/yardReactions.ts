@@ -3,12 +3,15 @@
 
 import type { YardReactionKind } from "@/lib/supabase";
 
+// Public reaction set shown on cards. Kept to like / dislike only —
+// the simpler model maps cleanly to the trade audience's intent
+// ("yes, useful" vs "no, not for me") and stops the bar reading as a
+// social-media reaction strip. Old fire / strong / lol / wow reactions
+// already in the DB still count toward totals but no new ones can be
+// added — the maps below keep their labels so historical counts
+// render correctly if any surface them.
 export const YARD_REACTION_KINDS: readonly YardReactionKind[] = [
   "like",
-  "fire",
-  "strong",
-  "lol",
-  "wow",
   "dislike"
 ] as const;
 
