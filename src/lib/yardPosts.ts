@@ -7,20 +7,51 @@ import { whatsappDigits } from "@/lib/tradeOff";
 export const YARD_KIND_LABELS: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "Available",
   needed: "Hiring",
-  chat: "Trade Chat"
+  chat: "Trade Chat",
+  product: "For Sale"
 };
 
 export const YARD_KIND_BG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#0F7A3F",
   needed: "#0A0A0A",
-  chat: "#FFB300"
+  chat: "#FFB300",
+  product: "#0A0A0A"
 };
 
 export const YARD_KIND_FG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#ffffff",
   needed: "#FFB300",
-  chat: "#0A0A0A"
+  chat: "#0A0A0A",
+  product: "#FFB300"
 };
+
+// Kinds whose creation should fire push / email alerts to subscribers
+// in the same trade or area. By design we only ping members for the
+// load-bearing "looking for work / offering work" posts — chat and
+// product posts are scroll-and-discover, not alert-worthy.
+export const YARD_ALERT_KINDS: ReadonlySet<HammerexTradeOffYardPost["kind"]> =
+  new Set(["available", "needed"]);
+
+export function formatPostPrice(pence: number | null): string {
+  if (pence === null || pence === undefined) return "";
+  const gbp = pence / 100;
+  return `£${gbp.toLocaleString("en-GB", {
+    minimumFractionDigits: gbp % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  })}`;
+}
+
+export function buildYardPurchaseUrl(args: {
+  whatsapp: string;
+  posterName: string;
+  postTitle: string;
+  price: number | null;
+}): string {
+  const digits = whatsappDigits(args.whatsapp);
+  const priceText = args.price ? ` at ${formatPostPrice(args.price)}` : "";
+  const text = `Hi ${args.posterName}, interested in your Yard listing: "${args.postTitle}"${priceText}. Still available?`;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(text)}`;
+}
 
 export function isYardPostLive(p: Pick<HammerexTradeOffYardPost, "status" | "expires_at">): boolean {
   if (p.status !== "live") return false;

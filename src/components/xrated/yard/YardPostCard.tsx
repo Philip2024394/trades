@@ -10,8 +10,10 @@ import {
   YARD_KIND_BG,
   YARD_KIND_FG,
   buildYardWhatsappUrl,
+  buildYardPurchaseUrl,
   formatDayRate,
   formatPostDateRange,
+  formatPostPrice,
   timeAgoShort
 } from "@/lib/yardPosts";
 import type { ReactionCounts } from "@/lib/yardReactions";
@@ -48,12 +50,20 @@ export function YardPostCard({
   const region = post.region ?? "";
   const posterName = poster?.trading_name?.trim() || poster?.display_name || "Member";
 
+  const isProduct = post.kind === "product";
   const waUrl = poster
-    ? buildYardWhatsappUrl({
-        whatsapp: poster.whatsapp,
-        posterName: poster.display_name.split(/\s+/)[0] || posterName,
-        postTitle: post.title
-      })
+    ? isProduct
+      ? buildYardPurchaseUrl({
+          whatsapp: poster.whatsapp,
+          posterName: poster.display_name.split(/\s+/)[0] || posterName,
+          postTitle: post.title,
+          price: post.product_price_pence
+        })
+      : buildYardWhatsappUrl({
+          whatsapp: poster.whatsapp,
+          posterName: poster.display_name.split(/\s+/)[0] || posterName,
+          postTitle: post.title
+        })
     : null;
 
   return (
@@ -91,7 +101,7 @@ export function YardPostCard({
           {post.title}
         </h3>
 
-        {/* Meta — region · dates · crew · rate */}
+        {/* Meta — region · dates · crew · rate · price */}
         <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-neutral-600">
           {region && (
             <li className="inline-flex items-center gap-1.5">
@@ -117,6 +127,16 @@ export function YardPostCard({
             </li>
           )}
         </ul>
+
+        {/* Big price block for product posts — the conversion anchor. */}
+        {isProduct && post.product_price_pence !== null && (
+          <p
+            className="text-2xl font-extrabold leading-none text-neutral-900 sm:text-3xl"
+            aria-label="Price"
+          >
+            {formatPostPrice(post.product_price_pence)}
+          </p>
+        )}
 
         {/* Body excerpt — clamp to 3 lines so cards stay even-height. */}
         <p
@@ -248,16 +268,28 @@ export function YardPostCard({
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-              style={{
-                background: "#0F7A3F",
-                boxShadow: "0 6px 18px rgba(15,122,63,0.4)"
-              }}
-              aria-label={`Message ${posterName} on WhatsApp about: ${post.title}`}
+              style={
+                isProduct
+                  ? {
+                      background: BRAND_YELLOW,
+                      color: BRAND_BLACK,
+                      boxShadow: `0 6px 18px ${BRAND_YELLOW}55`
+                    }
+                  : {
+                      background: "#0F7A3F",
+                      boxShadow: "0 6px 18px rgba(15,122,63,0.4)"
+                    }
+              }
+              aria-label={
+                isProduct
+                  ? `Buy ${post.title} on WhatsApp`
+                  : `Message ${posterName} on WhatsApp about: ${post.title}`
+              }
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Z" />
               </svg>
-              Message
+              {isProduct ? "Buy" : "Message"}
             </a>
           ) : null}
         </div>

@@ -668,7 +668,7 @@ export type HammerexTradeOffYardReaction = {
 export type HammerexTradeOffYardPost = {
   id: string;
   listing_id: string;
-  kind: "available" | "needed" | "chat";
+  kind: "available" | "needed" | "chat" | "product";
   trade_slug: string;
   title: string;
   body: string;
@@ -689,6 +689,13 @@ export type HammerexTradeOffYardPost = {
   attachment_kind: "pdf" | "file" | null;
   link_url: string | null;
   link_title: string | null;
+  // Product-kind extras — merchants selling tools / materials to the
+  // trade. product_price_pence is the post's listing price (members can
+  // override their shop price for a Yard post). source_product_id links
+  // back to their Shop Mode catalogue when the post was pre-filled from
+  // an existing product (so the composer drawer can round-trip).
+  product_price_pence: number | null;
+  source_product_id: string | null;
   created_at: string;
   expires_at: string;
 };

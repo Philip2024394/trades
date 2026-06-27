@@ -186,9 +186,17 @@ export async function POST(req: NextRequest) {
   }
 
   const kind = s(payload.kind);
-  if (kind !== "available" && kind !== "needed") {
+  if (
+    kind !== "available" &&
+    kind !== "needed" &&
+    kind !== "chat" &&
+    kind !== "product"
+  ) {
     return NextResponse.json(
-      { ok: false, error: "kind must be 'available' or 'needed'" },
+      {
+        ok: false,
+        error: "kind must be 'available', 'needed', 'chat' or 'product'"
+      },
       { status: 400 }
     );
   }
@@ -230,6 +238,39 @@ export async function POST(req: NextRequest) {
   const crew_size_needed =
     kind === "needed" ? intOrNull(payload.crew_size_needed) : null;
   const day_rate_pence = intOrNull(payload.day_rate_pence);
+  const product_price_pence =
+    kind === "product" ? intOrNull(payload.product_price_pence) : null;
+  const source_product_id =
+    kind === "product" && typeof payload.source_product_id === "string"
+      ? payload.source_product_id.trim() || null
+      : null;
+
+  // Image URLs — up to 3, sanitised to https:// only (DB enforces the
+  // cap with a CHECK constraint).
+  const rawImages = Array.isArray(payload.image_urls)
+    ? payload.image_urls
+    : [];
+  const image_urls = rawImages
+    .map((u) => (typeof u === "string" ? u.trim() : ""))
+    .filter((u) => /^https?:\/\//.test(u))
+    .slice(0, 3);
+
+  const link_url =
+    typeof payload.link_url === "string" && /^https?:\/\//.test(payload.link_url.trim())
+      ? payload.link_url.trim()
+      : null;
+  const link_title = link_url ? s(payload.link_title) || null : null;
+  const attachment_url =
+    typeof payload.attachment_url === "string" &&
+    /^https?:\/\//.test(payload.attachment_url.trim())
+      ? payload.attachment_url.trim()
+      : null;
+  const attachment_name = attachment_url ? s(payload.attachment_name) || null : null;
+  const attachment_kind = attachment_url
+    ? attachment_url.toLowerCase().endsWith(".pdf")
+      ? "pdf"
+      : "file"
+    : null;
 
   // 14-day auto-expire.
   const expires_at = new Date(
@@ -250,6 +291,14 @@ export async function POST(req: NextRequest) {
       end_date,
       crew_size_needed,
       day_rate_pence,
+      product_price_pence,
+      source_product_id,
+      image_urls,
+      attachment_url,
+      attachment_name,
+      attachment_kind,
+      link_url,
+      link_title,
       expires_at,
       is_sample: false,
       status: "live"

@@ -57,7 +57,7 @@ async function loadFeed(opts: { kind: string; trade: string; region: string }) {
   let q = supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select(
-      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, created_at, expires_at"
+      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, created_at, expires_at"
     )
     .eq("status", "live")
     .eq("country", "UK")
@@ -66,7 +66,12 @@ async function loadFeed(opts: { kind: string; trade: string; region: string }) {
     .order("created_at", { ascending: false })
     .limit(100);
 
-  if (opts.kind === "available" || opts.kind === "needed" || opts.kind === "chat")
+  if (
+    opts.kind === "available" ||
+    opts.kind === "needed" ||
+    opts.kind === "chat" ||
+    opts.kind === "product"
+  )
     q = q.eq("kind", opts.kind);
   if (opts.trade && VALID_TRADE_SLUGS.has(opts.trade)) q = q.eq("trade_slug", opts.trade);
   if (opts.region) q = q.ilike("region", `%${opts.region}%`);
@@ -128,11 +133,14 @@ async function loadCountsForKind() {
     .eq("country", "UK")
     .is("parent_id", null)
     .gt("expires_at", new Date().toISOString());
-  const rows = (res.data ?? []) as { kind: "available" | "needed" | "chat" }[];
+  const rows = (res.data ?? []) as {
+    kind: "available" | "needed" | "chat" | "product";
+  }[];
   const available = rows.filter((r) => r.kind === "available").length;
   const needed = rows.filter((r) => r.kind === "needed").length;
   const chat = rows.filter((r) => r.kind === "chat").length;
-  return { total: rows.length, available, needed, chat };
+  const product = rows.filter((r) => r.kind === "product").length;
+  return { total: rows.length, available, needed, chat, product };
 }
 
 export default async function YardFeedPage({
@@ -211,7 +219,7 @@ export default async function YardFeedPage({
               <Dot accent /> {counts.total} live posts
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> {counts.needed} hiring &middot; {counts.available} available &middot; {counts.chat} chat
+              <Dot accent /> {counts.needed} hiring &middot; {counts.available} available &middot; {counts.product} for sale &middot; {counts.chat} chat
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> 14-day auto-vanish

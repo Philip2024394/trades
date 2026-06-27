@@ -215,30 +215,33 @@ export default async function TradeOffEditPage({
           (the page itself enforces it), but the nav card surfaces at
           every tier so free profiles see what they unlock by upgrading. */}
       <section className="mx-auto max-w-3xl px-4 pb-6">
-        <a
-          href="/trade-off/yard"
-          className="group flex items-center justify-between gap-4 rounded-2xl border-2 border-brand-line bg-brand-surface p-5 transition hover:border-brand-accent"
-        >
-          <div className="min-w-0">
-            <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
-              The Yard &middot; Private board
-            </p>
-            <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
-              Hire, offer slots, talk shop.
-            </h2>
-            <p className="mt-1 text-[13px] leading-snug text-brand-muted">
-              UK trades-only feed. Post when you&rsquo;re free, hiring or
-              just want to discuss rates &mdash; 14-day auto-vanish, no
-              public footprint.
-            </p>
+        <div className="rounded-2xl border-2 border-brand-line bg-brand-surface p-5">
+          <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
+            The Yard &middot; Private board
+          </p>
+          <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
+            Hire, offer slots, talk shop.
+          </h2>
+          <p className="mt-1 text-[13px] leading-snug text-brand-muted">
+            UK trades-only feed. Post when you&rsquo;re free, hiring,
+            selling a tool or discussing rates &mdash; 14-day
+            auto-vanish, no public footprint.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a
+              href={`/trade-off/edit/${encodeURIComponent(slug)}/yard?token=${encodeURIComponent(token)}`}
+              className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-accent px-4 text-[13px] font-extrabold text-black transition active:scale-[0.97]"
+            >
+              Post to The Yard &rarr;
+            </a>
+            <a
+              href="/trade-off/yard"
+              className="inline-flex h-11 items-center gap-1.5 rounded-xl border-2 border-brand-line bg-transparent px-4 text-[13px] font-extrabold text-brand-text transition hover:border-brand-accent"
+            >
+              Read the feed
+            </a>
           </div>
-          <span
-            aria-hidden="true"
-            className="shrink-0 text-2xl text-brand-accent transition group-hover:translate-x-0.5"
-          >
-            &rarr;
-          </span>
-        </a>
+        </div>
       </section>
 
       {/* Operating Hours nav card — links to the dedicated sub-route.

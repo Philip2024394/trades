@@ -12,13 +12,20 @@ const KINDS: { value: string; label: string }[] = [
   { value: "", label: "All posts" },
   { value: "available", label: "Available" },
   { value: "needed", label: "Hiring" },
+  { value: "product", label: "For Sale" },
   { value: "chat", label: "Trade Chat" }
 ];
 
 export function YardFilters({
   counts
 }: {
-  counts: { total: number; available: number; needed: number; chat: number };
+  counts: {
+    total: number;
+    available: number;
+    needed: number;
+    chat: number;
+    product: number;
+  };
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -41,6 +48,7 @@ export function YardFilters({
     if (k === "available") return counts.available;
     if (k === "needed") return counts.needed;
     if (k === "chat") return counts.chat;
+    if (k === "product") return counts.product;
     return counts.total;
   };
 
