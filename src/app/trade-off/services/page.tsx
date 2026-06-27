@@ -34,13 +34,46 @@ type ExampleService = {
   title: string;
   price: string;
   hint: string;
+  /** High-quality real photo of the finished work — uses the curated
+   *  Xrated trade banners (verified CDN, CC0 / our own). Customers see
+   *  this kind of grid on a real bricklayer's profile. */
+  image: string;
+  alt: string;
 };
 
 const EXAMPLE_SERVICES: ExampleService[] = [
-  { title: "Garden Wall", price: "£450", hint: "2-day job · materials inc." },
-  { title: "Extension Wall", price: "£2,400", hint: "5-7 days · single skin" },
-  { title: "Patio Build", price: "£1,200", hint: "block-paving · 20m2" },
-  { title: "Roof Repair", price: "£900", hint: "ridge tile re-bed" }
+  {
+    title: "Garden Wall",
+    price: "£450",
+    hint: "2-day job · materials inc.",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/Untitledasdasdasdsdsdsdasss.png?updatedAt=1782365032826",
+    alt: "Bricklayer laying a garden wall in cream brick"
+  },
+  {
+    title: "Extension Wall",
+    price: "£2,400",
+    hint: "5-7 days · single skin",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_46_08%20AM.png",
+    alt: "Extension build in progress — single skin brickwork up to first floor"
+  },
+  {
+    title: "Patio Build",
+    price: "£1,200",
+    hint: "block-paving · 20m2",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_57_48%20AM.png",
+    alt: "Finished block-paving patio with edging stones"
+  },
+  {
+    title: "Roof Repair",
+    price: "£900",
+    hint: "ridge tile re-bed",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_41_47%20AM.png",
+    alt: "Roofer re-bedding ridge tiles on a tile roof"
+  }
 ];
 
 type WhyRow = {
@@ -153,15 +186,17 @@ export default function ServiceCardsPage() {
               key={s.title}
               className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm"
             >
-              {/* Image placeholder — gray box stands in for the photo
-                  upload tradies drop in from their phone. */}
-              <div
-                className="relative flex aspect-[4/3] items-center justify-center"
-                style={{ background: "#E5E5E5" }}
-              >
-                <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
-                  Photo
-                </span>
+              {/* Real photo — the kind of upload tradies drop in from
+                  their phone. Drives the conversion of the whole page,
+                  so we never ship gray placeholders here. */}
+              <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={s.image}
+                  alt={s.alt}
+                  loading="lazy"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="p-3 sm:p-4">
                 <h3 className="text-sm font-extrabold text-neutral-900 sm:text-base">
