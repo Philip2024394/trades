@@ -10,9 +10,10 @@ import { notFound, redirect } from "next/navigation";
 import {
   supabase,
   type HammerexTradeOffListing,
-  type HammerexXratedShippingZone
+  type HammerexXratedShippingZone,
+  type HammerexXratedWholesaleZone
 } from "@/lib/supabase";
-import { isShopModeOn } from "@/lib/xratedAddons";
+import { isShopModeOn, isWholesaleModeOn } from "@/lib/xratedAddons";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { CartPageBody } from "@/components/xrated/profile/CartPageBody";
@@ -38,6 +39,19 @@ async function loadShippingZones(
     .eq("listing_id", listingId)
     .order("country_name", { ascending: true });
   return (res.data ?? []) as HammerexXratedShippingZone[];
+}
+
+async function loadWholesaleZone(
+  listingId: string
+): Promise<HammerexXratedWholesaleZone | null> {
+  const res = await supabase
+    .from("hammerex_xrated_wholesale_zones")
+    .select("*")
+    .eq("listing_id", listingId)
+    .order("sort_order", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  return (res.data ?? null) as HammerexXratedWholesaleZone | null;
 }
 
 export async function generateMetadata({
@@ -68,18 +82,25 @@ export default async function CartPage({
 
   const tier = effectiveTier(listing);
   const isPaid = tier === "app_trial" || tier === "app_paid";
-  // Cart is only meaningful when shop mode is live AND the tradesperson
-  // is on a paid tier. Send anyone else back to the main profile rather
-  // than render an orphan page.
-  if (!isShopModeOn(listing) || !isPaid) {
+  // Cart is only meaningful when shop_mode or wholesale_mode is live AND
+  // the tradesperson is on a paid tier. Send anyone else back to the
+  // main profile rather than render an orphan page.
+  const shopOn = isShopModeOn(listing);
+  const wholesaleOn = isWholesaleModeOn(listing);
+  if ((!shopOn && !wholesaleOn) || !isPaid) {
     redirect(`/${slug}`);
   }
 
   const zones = await loadShippingZones(listing.id);
+  const wholesaleZone = wholesaleOn ? await loadWholesaleZone(listing.id) : null;
 
   return (
     <main className="flex flex-1 flex-col bg-white pb-20 md:pb-0">
-      <CartPageBody listing={listing} zones={zones} />
+      <CartPageBody
+        listing={listing}
+        zones={zones}
+        wholesaleZone={wholesaleZone}
+      />
       <div className="mt-auto">
         <XratedFooter />
       </div>

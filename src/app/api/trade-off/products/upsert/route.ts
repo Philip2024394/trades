@@ -114,6 +114,65 @@ function sanitiseVariants(v: unknown): { variants: VariantOut[]; error: string |
 
 const SIZE_CHART_UNITS = new Set(["size", "kg", "litre", "cm", "other"]);
 
+// Wholesale Mode bulk-pricing tiers. Ascending min_qty, non-overlapping,
+// integer pence ≥ 1, max 5 tiers per product. Top tier may omit max_qty
+// to mean "and above". The cart layer picks the tier matching
+// `qty BETWEEN min_qty AND COALESCE(max_qty, infinity)`.
+type BulkTierOut = {
+  min_qty: number;
+  max_qty: number | null;
+  price_pence: number;
+};
+
+function sanitiseBulkTiers(v: unknown): { tiers: BulkTierOut[]; error: string | null } {
+  if (v === null || v === undefined) return { tiers: [], error: null };
+  if (!Array.isArray(v)) {
+    return { tiers: [], error: "bulk_tiers must be an array." };
+  }
+  if (v.length === 0) return { tiers: [], error: null };
+  if (v.length > 5) {
+    return { tiers: [], error: "Up to 5 bulk tiers per product." };
+  }
+  const out: BulkTierOut[] = [];
+  let prevMaxOrMin = 0;
+  for (let i = 0; i < v.length; i++) {
+    const raw = v[i];
+    if (!raw || typeof raw !== "object") {
+      return { tiers: [], error: "Each bulk tier must be an object." };
+    }
+    const rec = raw as Record<string, unknown>;
+    const minQty = Number(rec.min_qty);
+    const priceP = Number(rec.price_pence);
+    if (!Number.isFinite(minQty) || minQty < 1 || minQty > 1_000_000) {
+      return { tiers: [], error: "Tier min_qty must be a positive integer." };
+    }
+    if (!Number.isFinite(priceP) || priceP < 1 || priceP > 100_000_000) {
+      return { tiers: [], error: "Tier price_pence must be an integer ≥ 1." };
+    }
+    let maxQty: number | null = null;
+    if (rec.max_qty !== null && rec.max_qty !== undefined && rec.max_qty !== "") {
+      const mq = Number(rec.max_qty);
+      if (!Number.isFinite(mq) || mq < 1 || mq > 1_000_000 || mq < minQty) {
+        return { tiers: [], error: "Tier max_qty must be ≥ min_qty." };
+      }
+      maxQty = Math.round(mq);
+    } else if (i !== v.length - 1) {
+      return { tiers: [], error: "Only the top tier may omit max_qty." };
+    }
+    const minR = Math.round(minQty);
+    if (i > 0 && minR <= prevMaxOrMin) {
+      return { tiers: [], error: "Tiers must ascend without overlap." };
+    }
+    prevMaxOrMin = maxQty ?? minR;
+    out.push({
+      min_qty: minR,
+      max_qty: maxQty,
+      price_pence: Math.round(priceP)
+    });
+  }
+  return { tiers: out, error: null };
+}
+
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
   try {
@@ -196,6 +255,17 @@ export async function POST(req: NextRequest) {
   }
   const variants = variantsParsed.variants;
 
+  // Wholesale Mode — bulk tiers (jsonb array). Reject the payload on
+  // any tier shape error so the editor surfaces the precise reason.
+  const tiersParsed = sanitiseBulkTiers(productIn.bulk_tiers);
+  if (tiersParsed.error) {
+    return NextResponse.json(
+      { ok: false, error: tiersParsed.error },
+      { status: 400 }
+    );
+  }
+  const bulk_tiers = tiersParsed.tiers;
+
   const sizeChartRaw = s(productIn.size_chart_url);
   const size_chart_url = sizeChartRaw.length > 0 ? sizeChartRaw.slice(0, 400) : null;
   const sizeChartUnitRaw = s(productIn.size_chart_unit).toLowerCase();
@@ -226,7 +296,8 @@ export async function POST(req: NextRequest) {
     category,
     variants,
     size_chart_url,
-    size_chart_unit
+    size_chart_unit,
+    bulk_tiers
   };
 
   const idRaw = s(productIn.id);

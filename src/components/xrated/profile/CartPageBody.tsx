@@ -10,7 +10,8 @@
 import { useEffect, useMemo, useState } from "react";
 import type {
   HammerexTradeOffListing,
-  HammerexXratedShippingZone
+  HammerexXratedShippingZone,
+  HammerexXratedWholesaleZone
 } from "@/lib/supabase";
 import {
   cartItemCount,
@@ -23,15 +24,35 @@ import {
   type CartState
 } from "@/lib/xratedCart";
 import { whatsappDigits } from "@/lib/tradeOff";
+import { isWholesaleModeOn } from "@/lib/xratedAddons";
+import { WholesaleDeliveryWidget } from "./WholesaleDeliveryWidget";
 
 type ShippingMode = "air" | "sea";
 
+type WholesaleQuote =
+  | {
+      kind: "quoted";
+      delivery_pence: number;
+      eta_label: string | null;
+      applied_band_km: number | null;
+      distance_km: number;
+      qualifies_for_min_order: boolean;
+      min_order_pence?: number;
+      qualifies_for_free: boolean;
+    }
+  | { kind: "outside_zone"; distance_km: number }
+  | { kind: "error"; message: string };
+
+const UK_VAT_RATE = 0.2;
+
 export function CartPageBody({
   listing,
-  zones
+  zones,
+  wholesaleZone
 }: {
   listing: HammerexTradeOffListing;
   zones: HammerexXratedShippingZone[];
+  wholesaleZone?: HammerexXratedWholesaleZone | null;
 }) {
   const slug = listing.slug;
   const firstName = listing.display_name.split(/\s+/)[0] ?? listing.display_name;
@@ -40,6 +61,16 @@ export function CartPageBody({
   const [selectedCountry, setSelectedCountry] = useState<string>("");
   const [mode, setMode] = useState<ShippingMode>("air");
   const [hydrated, setHydrated] = useState(false);
+  const [wholesaleQuote, setWholesaleQuote] = useState<WholesaleQuote | null>(null);
+
+  const wholesaleOn =
+    isWholesaleModeOn(listing) &&
+    wholesaleZone !== null &&
+    wholesaleZone !== undefined &&
+    typeof listing.wholesale_origin_lat === "number" &&
+    typeof listing.wholesale_origin_lng === "number";
+  const pricesExVat = listing.wholesale_prices_ex_vat !== false;
+  const showVatLines = wholesaleOn && pricesExVat;
 
   useEffect(() => {
     setState(readCart(slug));
@@ -84,7 +115,18 @@ export function CartPageBody({
   const subtotal = state ? cartTotalPence(state) : 0;
   const itemCount = state ? cartItemCount(state) : 0;
   const shippingPence = zone ? pickShippingPence(zone, mode) : null;
-  const total = subtotal + (shippingPence ?? 0);
+  const wholesaleDeliveryPence =
+    wholesaleQuote && wholesaleQuote.kind === "quoted"
+      ? wholesaleQuote.delivery_pence
+      : null;
+  const wholesaleOutside =
+    wholesaleQuote !== null && wholesaleQuote.kind === "outside_zone";
+  const totalDelivery = wholesaleOn
+    ? wholesaleDeliveryPence ?? 0
+    : shippingPence ?? 0;
+  const total = subtotal + totalDelivery;
+  const vatPence = showVatLines ? Math.round(total * UK_VAT_RATE) : 0;
+  const totalIncVat = showVatLines ? total + vatPence : total;
   const etaLine = zone
     ? etaSentence(zone.eta_min_days, zone.eta_max_days)
     : null;
@@ -92,17 +134,42 @@ export function CartPageBody({
   const whatsappHref = useMemo(
     () =>
       state
-        ? buildWhatsappHref({
-            listing,
-            state,
-            zone,
-            mode,
-            shippingPence,
-            subtotal,
-            total
-          })
+        ? wholesaleOn
+          ? buildWholesaleWhatsappHref({
+              listing,
+              state,
+              quote: wholesaleQuote,
+              subtotal,
+              vatPence,
+              totalIncVat,
+              showVatLines,
+              firstName
+            })
+          : buildWhatsappHref({
+              listing,
+              state,
+              zone,
+              mode,
+              shippingPence,
+              subtotal,
+              total
+            })
         : "#",
-    [listing, state, zone, mode, shippingPence, subtotal, total]
+    [
+      listing,
+      state,
+      zone,
+      mode,
+      shippingPence,
+      subtotal,
+      total,
+      wholesaleOn,
+      wholesaleQuote,
+      vatPence,
+      totalIncVat,
+      showVatLines,
+      firstName
+    ]
   );
 
   if (!hydrated || !state) {
@@ -270,6 +337,15 @@ export function CartPageBody({
 
           {state.items.length > 0 && (
             <aside className="flex flex-col gap-4 lg:sticky lg:top-6 lg:self-start">
+              {wholesaleOn && wholesaleZone && (
+                <WholesaleDeliveryWidget
+                  listing={listing}
+                  wholesaleZone={wholesaleZone}
+                  cartTotalPence={subtotal}
+                  firstName={firstName}
+                  onQuoteChange={setWholesaleQuote}
+                />
+              )}
               <div className="rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5">
                 <p
                   className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -278,45 +354,81 @@ export function CartPageBody({
                   Summary
                 </p>
                 <dl className="mt-3 flex flex-col gap-2 text-[13px] sm:text-sm">
-                  <Row label="Subtotal" value={formatGbp(subtotal)} />
-                  <CountryPicker
-                    zones={zones}
-                    value={selectedCountry}
-                    onChange={setSelectedCountry}
+                  <Row
+                    label={showVatLines ? "Subtotal (ex VAT)" : "Subtotal"}
+                    value={formatGbp(subtotal)}
                   />
-                  {zone && (
+                  {!wholesaleOn && (
+                    <CountryPicker
+                      zones={zones}
+                      value={selectedCountry}
+                      onChange={setSelectedCountry}
+                    />
+                  )}
+                  {!wholesaleOn && zone && (
                     <ShippingPickerRow
                       zone={zone}
                       mode={mode}
                       onChange={setMode}
                     />
                   )}
-                  {zone && shippingPence !== null && (
+                  {!wholesaleOn && zone && shippingPence !== null && (
                     <Row
                       label={`${mode === "air" ? "Air" : "Sea"} shipping`}
                       value={formatGbp(shippingPence)}
                     />
                   )}
-                  {zone && shippingPence === null && (
+                  {!wholesaleOn && zone && shippingPence === null && (
                     <p className="text-[13px] text-neutral-500">
                       Shipping quoted by {firstName} after enquiry.
                     </p>
                   )}
-                  {zones.length === 0 && (
+                  {!wholesaleOn && zones.length === 0 && (
                     <p className="text-[13px] text-neutral-500">
                       Shipping quoted by {firstName} after enquiry — no
                       preset zones for this shop.
                     </p>
                   )}
-                  {etaLine && (
+                  {!wholesaleOn && etaLine && (
                     <p className="text-[13px] text-neutral-500">{etaLine}</p>
+                  )}
+                  {wholesaleOn && wholesaleDeliveryPence !== null && (
+                    <Row
+                      label="Delivery"
+                      value={
+                        wholesaleDeliveryPence === 0
+                          ? "Free"
+                          : formatGbp(wholesaleDeliveryPence)
+                      }
+                    />
+                  )}
+                  {wholesaleOn && wholesaleOutside && (
+                    <p className="text-[13px] font-bold text-orange-600">
+                      Outside delivery area — WhatsApp for custom quote.
+                    </p>
+                  )}
+                  {wholesaleOn && wholesaleDeliveryPence === null && !wholesaleOutside && (
+                    <p className="text-[13px] text-neutral-500">
+                      Set your location below to see the delivery cost.
+                    </p>
+                  )}
+                  {showVatLines && (
+                    <>
+                      <Row
+                        label="VAT (20% UK std)"
+                        value={formatGbp(vatPence)}
+                      />
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">
+                        VAT confirmed by {firstName}
+                      </p>
+                    </>
                   )}
                   <div className="mt-1 flex items-baseline justify-between border-t border-neutral-200 pt-3">
                     <dt className="text-sm font-extrabold text-neutral-900">
-                      Total
+                      {showVatLines ? "Total (inc VAT)" : "Total"}
                     </dt>
                     <dd className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-                      {formatGbp(total)}
+                      {formatGbp(totalIncVat)}
                     </dd>
                   </div>
                 </dl>
@@ -525,6 +637,68 @@ function etaSentence(min: number | null, max: number | null): string | null {
   }
   const only = (min ?? max) as number;
   return `Delivered in ~${only} days`;
+}
+
+function buildWholesaleWhatsappHref({
+  listing,
+  state,
+  quote,
+  subtotal,
+  vatPence,
+  totalIncVat,
+  showVatLines,
+  firstName
+}: {
+  listing: HammerexTradeOffListing;
+  state: CartState;
+  quote: WholesaleQuote | null;
+  subtotal: number;
+  vatPence: number;
+  totalIncVat: number;
+  showVatLines: boolean;
+  firstName: string;
+}): string {
+  const digits = whatsappDigits(listing.whatsapp);
+  const lines: string[] = [];
+  lines.push(
+    `Hi ${listing.display_name} — wholesale quote from a customer (Xrated).`
+  );
+  lines.push("");
+  lines.push("Cart:");
+  for (const item of state.items) {
+    const unitSuffix = item.unit ? ` ${item.unit}` : "";
+    const variantSuffix = item.variant_label ? ` (${item.variant_label})` : "";
+    lines.push(
+      `• ${item.qty} × ${item.name}${variantSuffix} — ${formatGbp(item.price_pence)}${unitSuffix} each — ${formatGbp(item.price_pence * item.qty)}${showVatLines ? " ex VAT" : ""}`
+    );
+  }
+  lines.push("");
+  lines.push(`Subtotal: ${formatGbp(subtotal)}${showVatLines ? " ex VAT" : ""}`);
+  if (quote && quote.kind === "quoted") {
+    if (quote.delivery_pence === 0) {
+      lines.push(`Delivery: Free (within ${quote.distance_km.toFixed(1)} km of ${firstName}'s yard)`);
+    } else {
+      const bandPart =
+        quote.applied_band_km !== null ? ` (${quote.applied_band_km} km band)` : "";
+      lines.push(
+        `Delivery: ${formatGbp(quote.delivery_pence)}${bandPart} — ${quote.distance_km.toFixed(1)} km from yard`
+      );
+    }
+  } else if (quote && quote.kind === "outside_zone") {
+    lines.push(
+      `Delivery: outside zone (~${quote.distance_km.toFixed(1)} km) — please quote.`
+    );
+  } else {
+    lines.push("Delivery: to be quoted");
+  }
+  if (showVatLines) {
+    lines.push(`VAT (20% UK std): ${formatGbp(vatPence)}`);
+  }
+  lines.push(`Total: ${formatGbp(totalIncVat)}${showVatLines ? " inc VAT" : ""}`);
+  lines.push("");
+  lines.push("My postcode:  (let me reply)");
+  lines.push("My WhatsApp:  (let me reply)");
+  return `https://wa.me/${digits}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 function buildWhatsappHref({

@@ -9,7 +9,7 @@ import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { effectiveTier } from "@/lib/xratedTrades";
-import { isShopModeOn } from "@/lib/xratedAddons";
+import { isShopModeOn, isWholesaleModeOn } from "@/lib/xratedAddons";
 import { ShopModeEditor } from "@/components/trade-off/ShopModeEditor";
 import { ShippingZonesEditor } from "@/components/trade-off/ShippingZonesEditor";
 import type {
@@ -57,12 +57,12 @@ export default async function TradeOffShopModeEditPage({
     trial_expires_at: row.data.trial_expires_at ?? null
   });
   const isPaid = tier === "app_trial" || tier === "app_paid";
-  const shopOn = isShopModeOn({
-    addons_enabled:
-      row.data.addons_enabled && typeof row.data.addons_enabled === "object"
-        ? (row.data.addons_enabled as Record<string, boolean>)
-        : {}
-  });
+  const addonsMap =
+    row.data.addons_enabled && typeof row.data.addons_enabled === "object"
+      ? (row.data.addons_enabled as Record<string, boolean>)
+      : {};
+  const shopOn = isShopModeOn({ addons_enabled: addonsMap });
+  const wholesaleOn = isWholesaleModeOn({ addons_enabled: addonsMap });
 
   const upgradeHref = `/trade-off/upgrade?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}`;
   const backHref = `/trade-off/edit/${encodeURIComponent(slug)}?token=${encodeURIComponent(token)}`;
@@ -127,6 +127,46 @@ export default async function TradeOffShopModeEditPage({
             >
               See upgrade options →
             </Link>
+          </div>
+        </section>
+      )}
+
+      {wholesaleOn && (
+        <section className="mx-auto max-w-3xl px-4 pb-4">
+          <div className="rounded-xl border border-brand-accent/40 bg-brand-accent/10 p-4">
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
+              Shipping mode
+            </p>
+            <p className="mt-2 text-sm font-bold text-brand-text">
+              You have Wholesale Mode on — choose how customers see shipping.
+            </p>
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <div className="inline-flex h-11 flex-1 items-center rounded-lg border border-brand-accent bg-brand-accent/20 px-3 text-[13px] font-bold text-brand-text">
+                <input
+                  type="radio"
+                  name="shipping_mode_view"
+                  checked
+                  readOnly
+                  className="mr-2 h-4 w-4 accent-brand-accent"
+                />
+                National shipping (countries / air &amp; sea)
+              </div>
+              <Link
+                href={`/trade-off/edit/${encodeURIComponent(slug)}/wholesale-mode?token=${encodeURIComponent(token)}`}
+                className="inline-flex h-11 flex-1 items-center rounded-lg border border-brand-line bg-brand-bg px-3 text-[13px] font-bold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+              >
+                <input
+                  type="radio"
+                  name="shipping_mode_view"
+                  readOnly
+                  className="mr-2 h-4 w-4 accent-brand-accent"
+                />
+                Local vans (banded distance) &rarr;
+              </Link>
+            </div>
+            <p className="mt-2 text-[10px] uppercase tracking-widest text-brand-muted">
+              Both configs persist — UI switches which one customers see at checkout.
+            </p>
           </div>
         </section>
       )}

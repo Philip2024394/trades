@@ -108,6 +108,18 @@ export type HammerexTradeOffListing = {
     skills: string[];
   }[];
   addons_enabled: Record<string, boolean>;
+  // Wholesale Mode — yard origin + delivery config. Lat/lng nullable
+  // so a listing can enable wholesale_mode and complete the yard
+  // setup later. distance_fudge maps straight-line km to road km
+  // (1.0 = pure crow-fly, default 1.40, max 3.0).
+  wholesale_origin_address: string | null;
+  wholesale_origin_postcode: string | null;
+  wholesale_origin_lat: number | null;
+  wholesale_origin_lng: number | null;
+  wholesale_distance_fudge: number;
+  wholesale_allow_pickup: boolean;
+  wholesale_currency: string;
+  wholesale_prices_ex_vat: boolean;
   joined_at: string;
   created_at: string;
   updated_at: string;
@@ -135,6 +147,15 @@ export type HammerexXratedProduct = {
   }[];
   size_chart_url: string | null;
   size_chart_unit: "size" | "kg" | "litre" | "cm" | "other" | null;
+  // Wholesale Mode bulk-pricing tiers. Empty array = no tier pricing.
+  // Shape per row: { min_qty, max_qty?, price_pence }. Top tier omits
+  // max_qty ("50+ each"). API enforces ascending min_qty + non-
+  // overlapping + ≤5 tiers per product.
+  bulk_tiers: {
+    min_qty: number;
+    max_qty?: number | null;
+    price_pence: number;
+  }[];
   compare_with: string[];
   status: "live" | "archived";
   sort_order: number;
@@ -152,6 +173,27 @@ export type HammerexXratedShippingZone = {
   sea_price_pence: number | null;
   eta_min_days: number | null;
   eta_max_days: number | null;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+// Wholesale Mode delivery zone — one row per listing (we keep it as
+// a table for future "named regions" headroom). banded_pricing is an
+// ordered array of distance bands; the first band whose max_km the
+// customer's distance falls under is applied.
+export type HammerexXratedWholesaleZone = {
+  id: string;
+  listing_id: string;
+  free_radius_km: number | null;
+  free_postcodes: string[];
+  banded_pricing: {
+    max_km: number;
+    price_pence: number;
+    min_order_pence?: number;
+  }[];
+  min_order_pence: number;
+  max_delivery_km: number | null;
   sort_order: number;
   created_at: string;
   updated_at: string;
