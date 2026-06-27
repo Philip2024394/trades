@@ -48,7 +48,9 @@ export const TRADE_OFF_TRADES: Array<{
   // Window fitter — windows + doors install / replacement.
   { slug: "window-fitter", label: "Window Fitter", category_slug: null },
   // Crane operator — site crane hire + qualified operator (CPCS / NPORS).
-  { slug: "crane-operator", label: "Crane Operator", category_slug: null }
+  { slug: "crane-operator", label: "Crane Operator", category_slug: null },
+  // Security installer — CCTV, alarms, access control, intercoms.
+  { slug: "security-installer", label: "Security Installer", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
