@@ -242,7 +242,7 @@ export default async function FindPortalPage({
           }}
         />
 
-        <div className="relative mx-auto max-w-5xl px-4 pb-28 pt-12 sm:px-6 sm:pb-32 sm:pt-16">
+        <div className="relative mx-auto max-w-5xl px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16">
           <p
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
@@ -274,11 +274,10 @@ export default async function FindPortalPage({
         </div>
       </section>
 
-      {/* Search bar — floats over the hero/results boundary, same way
-          a premium app's profile-info card sits half-overlapping the
-          hero banner. Negative top margin pulls it up; results section
-          takes a smaller top-padding to compensate. */}
-      <section className="relative z-10 -mt-20 mb-2 px-4 sm:-mt-24 sm:px-6">
+      {/* Search bar — floats over the hero/results boundary, matched
+          to the premium-app PremiumHero overlap (-mt-10 / -14) so the
+          two heroes feel like part of the same design system. */}
+      <section className="relative z-10 -mt-10 mb-2 px-4 sm:-mt-14 sm:px-6">
         <div className="mx-auto max-w-5xl">
           <Suspense fallback={null}>
             <FindSearchBar detectedCountry={detectedCountry} />
