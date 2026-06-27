@@ -336,8 +336,8 @@ export function PremiumHero({
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold text-neutral-900 shadow-lg transition active:scale-[0.97] sm:text-sm"
-                  style={{ background: "#25D366" }}
+                  className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold text-white shadow-lg transition active:scale-[0.97] sm:text-sm"
+                  style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />
@@ -369,7 +369,7 @@ export function PremiumHero({
               </svg>
             }
             value={String(reviewCount || 0)}
-            label="Jobs Completed"
+            label="Jobs"
           />
           <StatTile
             icon={
@@ -397,7 +397,7 @@ export function PremiumHero({
                 ? `${listing.years_in_trade}+`
                 : "—"
             }
-            label="Years Experience"
+            label="Years"
           />
           <StatTile
             icon={

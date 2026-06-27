@@ -100,7 +100,7 @@ export function FeaturedTradiesRail({ tradies }: Props) {
                           href={waHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#22c55e] px-4 text-xs font-bold text-white transition hover:bg-[#16a34a] active:scale-[0.98]"
+                          className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#0F7A3F] px-4 text-xs font-bold text-white transition hover:bg-[#0a5a2d] active:scale-[0.98]"
                         >
                           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                             <path d="M20.52 3.48A11.94 11.94 0 0 0 12.04.05C5.46.05.13 5.38.13 11.96c0 2.1.55 4.15 1.6 5.96L0 24l6.27-1.64a11.93 11.93 0 0 0 5.77 1.47h.01c6.58 0 11.91-5.33 11.91-11.91 0-3.18-1.24-6.17-3.44-8.44ZM12.04 21.8h-.01a9.86 9.86 0 0 1-5.03-1.38l-.36-.21-3.72.97 1-3.63-.24-.37a9.84 9.84 0 0 1-1.51-5.21c0-5.47 4.46-9.92 9.93-9.92 2.65 0 5.14 1.03 7.01 2.91a9.84 9.84 0 0 1 2.9 7.02c0 5.47-4.45 9.92-9.97 9.92Z" />

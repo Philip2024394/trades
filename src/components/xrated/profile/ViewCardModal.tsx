@@ -16,15 +16,21 @@
 
 import { useEffect, useState } from "react";
 import type { PricedService } from "./ServicesTabbedGallery";
+import { AvailabilityPill } from "./AvailabilityPill";
+import type { OperatingHours } from "@/lib/availabilityStatus";
 
 const ENQUIRY_KEY = "xrated_enquiry_service";
 
 export function ViewCardModal({
   svc,
-  slug
+  slug,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   svc: PricedService;
   slug: string;
+  acceptingJobs?: boolean;
+  operatingHours?: OperatingHours | null;
 }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"after" | "before">("after");
@@ -158,12 +164,19 @@ export function ViewCardModal({
                 </span>
               </div>
 
-              <div className="mt-2 flex flex-col gap-2 border-t border-neutral-100 pt-4 sm:flex-row">
+              <div className="mt-2 border-t border-neutral-100 pt-4">
+                <AvailabilityPill
+                  acceptingJobs={acceptingJobs}
+                  operatingHours={operatingHours}
+                />
+              </div>
+
+              <div className="flex flex-col gap-2 sm:flex-row">
                 <button
                   type="button"
                   onClick={enquire}
                   className="inline-flex h-12 flex-1 items-center justify-center gap-1.5 rounded-xl text-sm font-extrabold uppercase tracking-wider text-white shadow-lg transition active:scale-[0.98]"
-                  style={{ background: "#25D366", boxShadow: "0 8px 22px rgba(37,211,102,0.45)" }}
+                  style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Z" />
@@ -173,7 +186,8 @@ export function ViewCardModal({
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="inline-flex h-12 items-center justify-center rounded-xl border-2 border-neutral-300 bg-white px-5 text-sm font-extrabold uppercase tracking-wider text-neutral-700 transition active:scale-[0.98]"
+                  className="inline-flex h-12 items-center justify-center rounded-xl px-5 text-sm font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98]"
+                  style={{ background: "#FFB300", boxShadow: "0 8px 22px rgba(255,179,0,0.45)" }}
                 >
                   Close
                 </button>

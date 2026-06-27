@@ -42,6 +42,7 @@ import {
   type ProductStats
 } from "./ProductReviewsChart";
 import { BulkTierTable, tierForQty } from "./BulkTierTable";
+import { AvailabilityPill } from "./AvailabilityPill";
 
 // Mirror of ServicesTabbedGallery's RATING_BADGE_MIN — we only show the
 // star row above the price when the product has at least 3 live reviews
@@ -82,13 +83,17 @@ export function ProductModal({
   slug,
   siblings,
   themeColor,
-  onClose
+  onClose,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   product: HammerexXratedProduct;
   slug: string;
   siblings: HammerexXratedProduct[];
   themeColor: string;
   onClose: () => void;
+  acceptingJobs?: boolean;
+  operatingHours?: import("@/lib/availabilityStatus").OperatingHours | null;
 }) {
   const images = useMemo(() => {
     const all = [product.cover_url, ...(product.gallery_urls ?? [])].filter(
@@ -311,9 +316,16 @@ export function ProductModal({
           </div>
 
           <div
-            className="sticky bottom-0 z-10 flex flex-col gap-2 border-t border-neutral-200 bg-white p-4 sm:flex-row sm:p-5"
+            className="sticky bottom-0 z-10 flex flex-col gap-3 border-t border-neutral-200 bg-white p-4 sm:p-5"
             style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
           >
+            {!flipped && (
+              <AvailabilityPill
+                acceptingJobs={acceptingJobs}
+                operatingHours={operatingHours}
+              />
+            )}
+            <div className="flex flex-col gap-2 sm:flex-row">
             {flipped ? (
               <button
                 type="button"
@@ -384,6 +396,7 @@ export function ProductModal({
                 )}
               </>
             )}
+            </div>
           </div>
 
           {toast && (

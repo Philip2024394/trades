@@ -65,6 +65,8 @@ export async function ProductCardGrid({
                   slug={listing.slug}
                   siblings={siblings}
                   themeColor={listing.theme_color || "#FFB300"}
+                  acceptingJobs={Boolean(listing.accepting_jobs)}
+                  operatingHours={listing.operating_hours ?? null}
                 />
               </li>
             );

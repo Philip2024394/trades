@@ -84,7 +84,9 @@ export function ServicesTabbedGallery({
   pricedServices,
   servicesOffered,
   reviews,
-  stripped = false
+  stripped = false,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   slug: string;
   pricedServices: PricedService[];
@@ -98,6 +100,11 @@ export function ServicesTabbedGallery({
    *  hidden. The lightbox stays unavailable so customers can't tap
    *  through to a paid-only contact flow. */
   stripped?: boolean;
+  /** Drives the AvailabilityPill in the per-service modal — customer
+   *  sees whether the tradesperson is reachable now or at a later
+   *  time before tapping WhatsApp. */
+  acceptingJobs?: boolean;
+  operatingHours?: import("@/lib/availabilityStatus").OperatingHours | null;
 }) {
   // Build the tab list — priced rows first (richer), then any text-only
   // services_offered that aren't already represented by a priced row.
@@ -493,7 +500,12 @@ function ServiceCard({
                 service), and the WhatsApp enquire CTA inside. Replaces
                 the inline Enquire button so customers always read the
                 detail card before they message. */}
-            <ViewCardModal svc={svc} slug={slug} />
+            <ViewCardModal
+              svc={svc}
+              slug={slug}
+              acceptingJobs={acceptingJobs}
+              operatingHours={operatingHours}
+            />
           </div>
         )}
       </div>

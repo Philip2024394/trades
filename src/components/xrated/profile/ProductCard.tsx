@@ -12,12 +12,16 @@ export function ProductCard({
   product,
   slug,
   siblings,
-  themeColor
+  themeColor,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   product: HammerexXratedProduct;
   slug: string;
   siblings: HammerexXratedProduct[];
   themeColor: string;
+  acceptingJobs?: boolean;
+  operatingHours?: import("@/lib/availabilityStatus").OperatingHours | null;
 }) {
   const [open, setOpen] = useState(false);
   const stockBadge = stockBadgeFor(product.stock_count);
@@ -96,6 +100,8 @@ export function ProductCard({
           siblings={siblings}
           themeColor={themeColor}
           onClose={() => setOpen(false)}
+          acceptingJobs={acceptingJobs}
+          operatingHours={operatingHours}
         />
       )}
     </>

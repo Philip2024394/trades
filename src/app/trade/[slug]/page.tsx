@@ -532,6 +532,8 @@ function PremiumLayout({
           servicesOffered={listing.services_offered ?? []}
           reviews={reviews}
           stripped={!isPaid}
+          acceptingJobs={Boolean(listing.accepting_jobs)}
+          operatingHours={listing.operating_hours ?? null}
         />
       )}
       <ClientsCarousel

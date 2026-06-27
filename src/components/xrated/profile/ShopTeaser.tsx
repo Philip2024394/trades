@@ -113,6 +113,8 @@ export async function ShopTeaser({
                 slug={listing.slug}
                 siblings={siblings}
                 themeColor={themeColor}
+                acceptingJobs={Boolean(listing.accepting_jobs)}
+                operatingHours={listing.operating_hours ?? null}
               />
             </li>
           );

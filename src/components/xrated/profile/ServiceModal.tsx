@@ -22,6 +22,7 @@ import { useEffect, useMemo, useState } from "react";
 import type { HammerexXratedProduct, HammerexTradeOffListing } from "@/lib/supabase";
 import { addItem, cartItemCount, readCart, formatGbp } from "@/lib/xratedCart";
 import { whatsappDigits } from "@/lib/tradeOff";
+import { AvailabilityPill } from "./AvailabilityPill";
 
 type Variant = HammerexXratedProduct["variants"][number];
 
@@ -329,9 +330,14 @@ export function ServiceModal({
         </div>
 
         <div
-          className="sticky bottom-0 flex flex-col gap-2 border-t border-neutral-200 bg-white p-4 sm:flex-row sm:p-5"
+          className="sticky bottom-0 flex flex-col gap-3 border-t border-neutral-200 bg-white p-4 sm:p-5"
           style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom))" }}
         >
+          <AvailabilityPill
+            acceptingJobs={Boolean(listing.accepting_jobs)}
+            operatingHours={listing.operating_hours ?? null}
+          />
+          <div className="flex flex-col gap-2 sm:flex-row">
           <a
             href={waHref}
             target="_blank"
@@ -387,6 +393,7 @@ export function ServiceModal({
                 Choose a {variantAxis} above
               </p>
             )}
+          </div>
           </div>
         </div>
 
