@@ -10,7 +10,7 @@ import { XRATED_BRAND } from "@/lib/xratedTrades";
 export function FindHeader() {
   return (
     <header className="sticky top-0 z-30 bg-black/95 backdrop-blur">
-      <div className="mx-auto flex h-[64px] max-w-6xl items-center justify-end gap-3 px-4 sm:h-[72px]">
+      <div className="mx-auto flex h-[64px] max-w-6xl items-center justify-start gap-3 px-4 sm:h-[72px]">
         <a
           href="/find"
           aria-label="xratedtrades home"
