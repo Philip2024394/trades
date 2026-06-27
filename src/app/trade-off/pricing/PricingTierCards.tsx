@@ -169,6 +169,16 @@ export function PricingTierCards() {
           >
             14-day free trial — no card
           </span>
+          {/* Decorative right-side image — sits in the top-right corner
+              of the Paid card. Pointer-events-none so it never blocks
+              the Start-trial CTA tap target. */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://ik.imagekit.io/9mrgsv2rp/Untitledzxczxczxzzzz.png"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-3 -top-3 h-20 w-20 select-none object-contain drop-shadow-md sm:h-24 sm:w-24"
+          />
 
           <header>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">
@@ -202,8 +212,8 @@ export function PricingTierCards() {
             </div>
             <a
               href={`/trade-off/signup?tier=paid&billing=${billing}`}
-              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg border-2 px-4 text-xs font-extrabold text-neutral-900 transition active:scale-[0.98] sm:text-sm"
-              style={{ borderColor: XRATED_BRAND.accent, background: "#fff" }}
+              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
+              style={{ background: XRATED_BRAND.accent }}
             >
               Start 14-day trial
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
