@@ -68,17 +68,6 @@ export function YardPostCard({
 
   return (
     <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      {post.is_sample && (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2004_32_05%20PM.png"
-          alt="Sample post"
-          title="Sample — seeded for the demo feed"
-          loading="lazy"
-          className="pointer-events-none absolute right-2 top-2 z-10 h-14 w-14 sm:h-16 sm:w-16"
-          style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.18))" }}
-        />
-      )}
 
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
         {/* Top row — kind chip + time ago */}
