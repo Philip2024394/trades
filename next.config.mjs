@@ -41,7 +41,8 @@ const nextConfig = {
         { source: "/:slug/materials", destination: "/trade/:slug/materials" },
         { source: "/:slug/materials/:merchantSlug", destination: "/trade/:slug/materials/:merchantSlug" },
         { source: "/:slug/shop", destination: "/trade/:slug/shop" },
-        { source: "/:slug/shop/:productSlug", destination: "/trade/:slug/shop/:productSlug" }
+        { source: "/:slug/shop/:productSlug", destination: "/trade/:slug/shop/:productSlug" },
+        { source: "/:slug/faq", destination: "/trade/:slug/faq" }
       ],
       fallback: []
     };
@@ -67,7 +68,8 @@ const nextConfig = {
       { source: "/trade/:slug/materials", destination: "/:slug/materials", permanent: true },
       { source: "/trade/:slug/materials/:merchantSlug", destination: "/:slug/materials/:merchantSlug", permanent: true },
       { source: "/trade/:slug/shop", destination: "/:slug/shop", permanent: true },
-      { source: "/trade/:slug/shop/:productSlug", destination: "/:slug/shop/:productSlug", permanent: true }
+      { source: "/trade/:slug/shop/:productSlug", destination: "/:slug/shop/:productSlug", permanent: true },
+      { source: "/trade/:slug/faq", destination: "/:slug/faq", permanent: true }
     ];
   }
 };

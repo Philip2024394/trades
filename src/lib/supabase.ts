@@ -585,6 +585,47 @@ export type HammerexCustomDomainEvent = {
   created_at: string;
 };
 
+// FAQ Page add-on — single Q&A row keyed by ref_code (FAQ-001 / FAQ-002 / …).
+// The ref_code is unique per listing and is the human-shareable handle a
+// customer types into the URL (#faq-001) or quotes in WhatsApp. Category
+// drives the filter chips on the dedicated /<slug>/faq page. Soft-archive
+// via status='archived' so old answers never break inbound links.
+export type HammerexXratedFaqItem = {
+  id: string;
+  listing_id: string;
+  ref_code: string;
+  question: string;
+  answer: string;
+  category:
+    | "general"
+    | "pricing"
+    | "process"
+    | "materials"
+    | "trust"
+    | "warranty"
+    | "aftercare";
+  status: "live" | "archived";
+  sort_order: number;
+  view_count: number;
+  created_at: string;
+  updated_at: string;
+};
+
+// Reference image attached to a FAQ row. Up to 3 per FAQ (DB trigger
+// enforced). image_url is a public Supabase Storage URL under the
+// shared product-images bucket. title is the headline customers see on
+// the lightbox; alt_text is the accessibility caption that doubles as
+// the search-engine signal for image SEO.
+export type HammerexXratedFaqImage = {
+  id: string;
+  faq_id: string;
+  image_url: string;
+  title: string;
+  alt_text: string | null;
+  sort_order: number;
+  created_at: string;
+};
+
 export type HammerexShippingZone = {
   id: string;
   country_code: string;

@@ -293,20 +293,21 @@ export const XRATED_ADDONS: XratedAddon[] = [
     name: "FAQ Page",
     tagline: "Visual knowledge base — questions, answers and ref-numbered images",
     summary:
-      "Upgrade your inline FAQ accordion into a full visual knowledge base. Each question carries an answer plus uploaded reference images, each image with its own ref number and title (FAQ-001 'Level 5 skim finish', FAQ-002 'Damp proof course detail'). Customers tap through to a dedicated /<slug>/faq page they can bookmark and share back. Perfect for trades where the customer's question is best answered with a photo.",
+      "Upgrade your inline FAQ accordion into a full visual knowledge base. Each question carries an answer plus uploaded reference images, each with its own ref number and title (FAQ-001 'Level 5 skim finish', FAQ-002 'Damp proof course detail'). Customers tap through to a dedicated /<slug>/faq page they can bookmark and share back. Perfect for trades where the customer's question is best answered with a photo.",
     glyph: "?",
     image_url: null,
-    personas: ["Plasterers", "Builders", "Tool suppliers", "Architects"],
+    personas: ["Plasterers", "Builders", "Tile suppliers", "Landscapers"],
     editorial_badge: "premium_credibility",
     callouts: ["Ref-numbered images", "Dedicated page", "Visual proof"],
     pricing: { kind: "paid", monthly_pence: 200 },
-    availability: "coming_soon",
-    hasEditor: false,
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "faq-page",
     includedWithPaid: false,
     benefits: [
       "Each Q&A carries reference images with ref numbers + titles",
       "Dedicated /<slug>/faq page customers can bookmark and share",
-      "Renames the Recommended Trades container to Frequently Asked Questions"
+      "Adds a Frequently Asked Questions container alongside Trusted Trades"
     ]
   }
 ];
@@ -432,6 +433,19 @@ export function isCustomDomainOn(
   return (
     !!listing.custom_domain && listing.custom_domain_status === "live"
   );
+}
+
+/** FAQ Page add-on — when on, the public profile renders a yellow CTA
+ *  card linking to the dedicated /<slug>/faq sub-page where customers
+ *  read ref-numbered Q&As with reference images. Sits ALONGSIDE Trusted
+ *  Trades (does not replace it). Paid-only (£2/mo). The free-tier
+ *  faq_items JSONB column + FaqAccordion on the contact page remain
+ *  untouched so a profile that toggles the add-on off falls back to the
+ *  inline accordion without losing data. */
+export function isFaqPageOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).faq_page === true;
 }
 
 /** Format a paid add-on's monthly price for UI rendering. */

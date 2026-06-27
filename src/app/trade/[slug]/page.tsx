@@ -47,7 +47,8 @@ import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
 import { JobDiarySection } from "@/components/xrated/profile/JobDiarySection";
 import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
 import { MaterialsNetworkSection } from "@/components/xrated/profile/MaterialsNetworkSection";
-import { isDownloadsOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn } from "@/lib/xratedAddons";
+import { FaqPageCta } from "@/components/xrated/profile/FaqPageCta";
+import { isDownloadsOn, isFaqPageOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -496,6 +497,11 @@ function PremiumLayout({
   // the inline merchant teaser renders just above TrustedTradesCta and
   // the CTA copy is rebranded (see TrustedTradesCta below).
   const materialsOn = isPaid && isMaterialsNetworkOn(listing);
+  // FAQ Page gate — paid tier AND add-on flag on. The CTA card renders
+  // BELOW TrustedTradesCta (additive — does not replace any existing
+  // container). FaqPageCta server-component self-hides when there are
+  // zero live FAQ rows.
+  const faqPageOn = isPaid && isFaqPageOn(listing);
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
@@ -570,6 +576,12 @@ function PremiumLayout({
           materialsOn={materialsOn}
         />
       )}
+      {/* FAQ Page CTA card — paid tier + add-on on. Server component
+          self-hides when zero live FAQs so a freshly-toggled add-on
+          doesn't leave a dead container on the profile. Renders BELOW
+          TrustedTradesCta so the customer reads "people I recommend"
+          → "questions I answer". */}
+      {faqPageOn && <FaqPageCta listing={listing} />}
       <ShareAndContactCta
         listing={listing}
         waUrl={waUrl}
