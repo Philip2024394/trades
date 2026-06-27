@@ -113,7 +113,7 @@ export default async function TrustedTradesPage({
           heading above set the context; this just renders the grid. */}
       <RecommendedTrades listing={listing} />
 
-      {recs.length === 0 ? (
+      {recs.length === 0 && (
         <section className="mx-auto w-full max-w-6xl px-4 pb-12 pt-4 sm:px-6">
           <div className="rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 p-8 text-center">
             <p className="text-sm text-neutral-600 sm:text-base">
@@ -130,48 +130,6 @@ export default async function TrustedTradesPage({
                 <path d="m9 18 6-6-6-6" />
               </svg>
             </a>
-          </div>
-        </section>
-      ) : (
-        <section className="mx-auto w-full max-w-6xl px-4 pb-12 pt-6 sm:px-6">
-          <div
-            className="overflow-hidden rounded-3xl px-6 py-8 text-center sm:px-12"
-            style={{ background: "#0A0A0A" }}
-          >
-            <p
-              className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-              style={{ color: "#FFB300" }}
-            >
-              Are you a tradesperson too?
-            </p>
-            <h2 className="mt-2 text-xl font-extrabold leading-tight text-white sm:text-2xl">
-              Get your own Xrated profile and{" "}
-              <span style={{ color: "#FFB300" }}>
-                join {firstName}&rsquo;s network.
-              </span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-xs leading-relaxed text-white/70 sm:text-sm">
-              14-day free trial — no card. Build your own Trusted Trades
-              network. The link in your social bio that wins the job.
-            </p>
-            <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-              <a
-                href={`/trade-off/signup?ref=${encodeURIComponent(slug)}`}
-                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-lg px-5 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98] sm:text-sm"
-                style={{ background: "#FFB300" }}
-              >
-                Start free trial
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
-              </a>
-              <a
-                href="/trade-off/pricing"
-                className="inline-flex h-11 items-center justify-center gap-1.5 rounded-lg border border-white/30 bg-white/5 px-5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-white/10 sm:text-sm"
-              >
-                See pricing
-              </a>
-            </div>
           </div>
         </section>
       )}
