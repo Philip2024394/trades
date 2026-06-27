@@ -61,6 +61,23 @@ export function isYardPostLive(p: Pick<HammerexTradeOffYardPost, "status" | "exp
 }
 
 // Friendly relative time: "2h ago", "yesterday", "3d ago".
+// True if the post was created within the last 24h — drives the
+// yellow NEW chip on Yard cards so fresh content surfaces at a glance.
+export function isNewPost(createdAtIso: string, now: Date = new Date()): boolean {
+  const ms = Date.parse(createdAtIso);
+  if (Number.isNaN(ms)) return false;
+  return now.getTime() - ms < 24 * 60 * 60 * 1000;
+}
+
+// Integer days remaining until expires_at. Negative = expired. Used by
+// the 'Xd left' chip on Yard cards so members know how fresh the
+// signal is + when it'll vanish.
+export function daysRemaining(expiresAtIso: string, now: Date = new Date()): number {
+  const ms = Date.parse(expiresAtIso);
+  if (Number.isNaN(ms)) return 0;
+  return Math.max(0, Math.ceil((ms - now.getTime()) / (24 * 60 * 60 * 1000)));
+}
+
 export function timeAgoShort(iso: string, now: Date = new Date()): string {
   const ms = Date.parse(iso);
   if (Number.isNaN(ms)) return "";

@@ -14,7 +14,9 @@ import {
   formatDayRate,
   formatPostDateRange,
   formatPostPrice,
-  timeAgoShort
+  timeAgoShort,
+  isNewPost,
+  daysRemaining
 } from "@/lib/yardPosts";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { YardReactionBar } from "./YardReactionBar";
@@ -81,11 +83,25 @@ export function YardPostCard({
           <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-bold text-neutral-700">
             {tradeText}
           </span>
-          {!post.is_sample && (
-            <span className="ml-auto text-[11px] font-bold text-neutral-400">
-              {timeAgoShort(post.created_at)}
-            </span>
-          )}
+          {/* Right-aligned meta cluster: NEW chip (24h) + time-ago +
+              'Xd left' so tradies see freshness + urgency at a glance. */}
+          <div className="ml-auto flex items-center gap-1.5">
+            {isNewPost(post.created_at) && (
+              <span
+                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
+                style={{ background: BRAND_YELLOW }}
+                title="Posted in the last 24 hours"
+              >
+                New
+              </span>
+            )}
+            {!post.is_sample && (
+              <span className="text-[11px] font-bold text-neutral-400">
+                {timeAgoShort(post.created_at)}
+              </span>
+            )}
+            <DaysLeftChip days={daysRemaining(post.expires_at)} />
+          </div>
         </div>
 
         {/* Title */}
@@ -325,6 +341,25 @@ function CrewGlyph() {
       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
+  );
+}
+
+function DaysLeftChip({ days }: { days: number }) {
+  // ≤ 3 days = amber, otherwise neutral. Communicates "post is about to
+  // vanish" without screaming red.
+  const low = days <= 3;
+  return (
+    <span
+      className="inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider"
+      style={
+        low
+          ? { borderColor: "#F59E0B", color: "#92400E", background: "#FEF3C7" }
+          : { borderColor: "#e5e5e5", color: "#525252", background: "#fafafa" }
+      }
+      title={`Auto-vanishes in ${days} day${days === 1 ? "" : "s"}`}
+    >
+      {days}d left
+    </span>
   );
 }
 
