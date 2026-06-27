@@ -105,12 +105,30 @@ export default function HowItWorksPage() {
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface mirroring /trade-off/pricing. Yellow eyebrow,
-          white headline with a yellow accent phrase, white/80 subhead. */}
+      {/* Hero — banner-image background with dark gradient overlay for
+          text legibility. Mirrors the pricing-page pattern. Image is the
+          bespoke How-it-works banner art from ImageKit. */}
       <section
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2009_33_21%20AM.png"
+          alt="Xrated Trades — set up in 5 minutes, go live the moment you save."
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Left-to-right dark gradient — keeps the left half heavy enough
+            for the white headline + subhead to read cleanly while the right
+            half of the artwork shows through. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15) 75%, rgba(0,0,0,0) 100%)"
+          }}
+        />
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
           <p
             className="text-xs font-bold uppercase tracking-[0.22em]"
@@ -118,12 +136,12 @@ export default function HowItWorksPage() {
           >
             How it works
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow sm:text-4xl md:text-5xl">
             Set up in{" "}
             <span style={{ color: XRATED_BRAND.accent }}>5 minutes</span>. Go
             live the moment you save.
           </h1>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/85 drop-shadow sm:text-sm">
             No code. No designer. No appointment with a marketing agency. Six
             small steps from sign-up to a short, shareable URL that does the
             selling for you while you are on the tools.
