@@ -169,15 +169,16 @@ export function PricingTierCards() {
           >
             14-day free trial — no card
           </span>
-          {/* Decorative right-side image — sits in the top-right corner
-              of the Paid card. Pointer-events-none so it never blocks
-              the Start-trial CTA tap target. */}
+          {/* Decorative right-side image — sits INSIDE the card's
+              top-right padding zone so the yellow card border stays
+              fully visible around the perimeter. Pointer-events-none so
+              the image never blocks the Start-trial tap target. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://ik.imagekit.io/9mrgsv2rp/Untitledzxczxczxzzzz.png"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute -right-3 -top-3 h-20 w-20 select-none object-contain drop-shadow-md sm:h-24 sm:w-24"
+            className="pointer-events-none absolute right-3 top-6 h-16 w-16 select-none object-contain drop-shadow-md sm:h-20 sm:w-20"
           />
 
           <header>
