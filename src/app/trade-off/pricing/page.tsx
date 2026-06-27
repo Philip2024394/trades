@@ -20,16 +20,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Pricing — Xrated Trades. Free · Paid £14.99/mo · Verified £19.99/mo. 14-day trial. For tradies anywhere.",
+    "Pricing — Xrated Trades. Free · Paid £14.99/mo · Verified £19.99/mo. The Yard + xratedtrades.com listing included.",
   description:
-    "Three tiers. Free forever on hammerexdirect.com — basic profile. Paid £14.99/mo on your brandable xratedtrade.com URL — full features, white-label. Verified £19.99/mo — everything in Paid plus a verified badge backed by company-registration check, with optional Insurance + On-site add-on badges. 14-day free trial, no card on signup.",
+    "Three tiers — Free forever, Paid £14.99/mo on your brandable xratedtrade.com URL, or Verified £19.99/mo with a real badge customers see. Every paid tier includes The Yard (private trades-only forum), auto-listing on xratedtrades.com (UK search portal), 10 add-ons (Shop, Services, Job Diary, Quote Pipeline, Lead Alerts, Custom Domain + 4 more), full SEO + free future updates. Verified Plus £29.99/mo by application. 14-day free trial, no card on signup.",
   alternates: { canonical: "/trade-off/pricing" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades — Pricing. Free · Paid £14.99/mo · Verified £19.99/mo. 14-day trial.",
+    title: "Xrated Trades — Pricing. Free · Paid £14.99/mo · Verified £19.99/mo · Verified Plus £29.99/mo.",
     description:
-      "Three tiers. Free forever, Paid £14.99/mo on your brandable xratedtrade.com URL, or Verified £19.99/mo with a real verified badge. 14-day free trial, no card on signup.",
+      "Every paid tier now includes The Yard private forum + auto-listing on xratedtrades.com + 10 add-ons + all future features free. 14-day free trial, no card.",
     url: absolute("/trade-off/pricing")
   }
 };
@@ -40,40 +40,106 @@ type FeatureRow = {
   paid: string | boolean;
   verified: string | boolean;
   highlight?: boolean;
+  /** Section divider — when set, this row renders as a sub-heading row
+   *  with the section name in the label column, no values. Lets us
+   *  group ~40 rows into scannable sections (Yard / Search / Profile
+   *  / Add-ons / SEO / Support). */
+  section?: string;
 };
 
 const COMPARE_ROWS: FeatureRow[] = [
+  // ─────────────────── URL + identity ───────────────────
+  { section: "URL & identity", label: "", free: "", paid: "", verified: "" },
   { label: "URL domain", free: "hammerexdirect.com", paid: "xratedtrade.com", verified: "xratedtrade.com", highlight: true },
-  { label: "Branded URL slug", free: true, paid: true, verified: true },
-  { label: "Forever free", free: true, paid: false, verified: false },
+  { label: "Branded URL slug (yours forever)", free: true, paid: true, verified: true },
   { label: "Xrated header on profile", free: "Visible", paid: "Hidden (white-label)", verified: "Hidden (white-label)", highlight: true },
-  { label: "Verified badge on profile", free: false, paid: false, verified: "Visible — required check passed", highlight: true },
-  { label: "Optional add-on badges", free: false, paid: false, verified: "Insured / On-site checked", highlight: true },
-  { label: "Priority lead-routing in search", free: false, paid: false, verified: true },
-  { label: "Dispute mediation", free: false, paid: false, verified: true },
-  { label: "Verified-only customer filter", free: false, paid: false, verified: true },
+  { label: "Custom domain (yourtrade.co.uk)", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
+  { label: "Forever free", free: true, paid: false, verified: false },
+
+  // ─────────────────── The Yard (private forum) ───────────────────
+  { section: "The Yard — private trades-only board", label: "", free: "", paid: "", verified: "" },
+  { label: "Read The Yard feed", free: false, paid: true, verified: true, highlight: true },
+  { label: "Post Available (offer slots)", free: false, paid: true, verified: true },
+  { label: "Post Hiring (sub-contract crew)", free: false, paid: true, verified: true },
+  { label: "Post Trade Chat (rates, suppliers, anything)", free: false, paid: true, verified: true },
+  { label: "Post For Sale (tools / materials)", free: false, paid: true, verified: true },
+  { label: "Reactions + replies + image attachments", free: false, paid: true, verified: true },
+  { label: "14-day auto-vanish (no public footprint)", free: false, paid: true, verified: true, highlight: true },
+  { label: "Builder trades get free Yard access", free: false, paid: "If builder-grade trade", verified: "If builder-grade trade" },
+
+  // ─────────────────── xratedtrades.com search portal ───────────────────
+  { section: "xratedtrades.com — customer search portal", label: "", free: "", paid: "", verified: "" },
+  { label: "Auto-listed on xratedtrades.com", free: false, paid: true, verified: true, highlight: true },
+  { label: "Verified badge on every search result", free: false, paid: false, verified: true, highlight: true },
+  { label: "Priority sort on search results", free: false, paid: false, verified: true },
+  { label: "Visible across UK + international searches", free: false, paid: true, verified: true },
+
+  // ─────────────────── Profile / app features ───────────────────
+  { section: "Your premium app — surface", label: "", free: "", paid: "", verified: "" },
+  { label: "AvailabilityPill (live 'back online at 7am')", free: true, paid: true, verified: true, highlight: true },
+  { label: "Operating-hours editor (Mon-Sun)", free: true, paid: true, verified: true },
   { label: "Profile banner", free: "Default", paid: "Custom upload", verified: "Custom upload" },
   { label: "Theme colour", free: "Yellow only", paid: "7-colour picker", verified: "7-colour picker" },
   { label: "Photo gallery", free: "Up to 8 images", paid: "Unlimited", verified: "Unlimited" },
+  { label: "Intro video tile (self-hosted)", free: false, paid: "Up to 60s", verified: "Up to 60s" },
+  { label: "Meet-the-team grid", free: false, paid: true, verified: true },
+
+  // ─────────────────── Customer interaction ───────────────────
+  { section: "How customers contact you", label: "", free: "", paid: "", verified: "" },
   { label: "WhatsApp message button", free: true, paid: true, verified: true },
   { label: "Call Now button", free: false, paid: true, verified: true },
-  { label: "Contact buttons", free: false, paid: true, verified: true },
+  { label: "Get Directions deep-link to Google/Apple Maps", free: true, paid: true, verified: true },
   { label: "Lead-capture contact form", free: false, paid: true, verified: true },
-  { label: "Intro video tile (self-hosted)", free: false, paid: "Up to 60s", verified: "Up to 60s" },
-  { label: "Service cards", free: "Image + name", paid: "Full price + description", verified: "Full price + description" },
-  { label: "Enquire-prefill flow", free: false, paid: true, verified: true },
+  { label: "Enquire-prefill flow on every card", free: false, paid: true, verified: true },
+  { label: "Business Card — one-tap share to WhatsApp", free: true, paid: true, verified: true, highlight: true },
+  { label: "QR code on van + business cards", free: true, paid: true, verified: true },
+
+  // ─────────────────── Reviews + trust ───────────────────
+  { section: "Reviews + trust", label: "", free: "", paid: "", verified: "" },
   { label: "Customer reviews (read)", free: true, paid: true, verified: true },
   { label: "Customers can submit reviews", free: false, paid: true, verified: true },
-  { label: "Meet-the-team grid", free: false, paid: true, verified: true },
-  { label: "Opening hours + office hours widget", free: true, paid: true, verified: true },
-  { label: "QR code for van + business cards", free: true, paid: true, verified: true },
-  { label: "FAQ slider", free: true, paid: true, verified: true },
-  { label: "Services subpage with catchment map", free: false, paid: true, verified: true },
+  { label: "Per-service star badges", free: false, paid: true, verified: true },
+  { label: "Trust Score live gauge", free: true, paid: true, verified: true, highlight: true },
+  { label: "Trusted Trades — recommend other trades", free: true, paid: true, verified: true },
+  { label: "Verified badge backed by Companies House check", free: false, paid: false, verified: true, highlight: true },
+  { label: "Dispute mediation", free: false, paid: false, verified: true },
+
+  // ─────────────────── Add-ons (all paid-tier compatible) ───────────────────
+  { section: "Add-ons — bolt on the ones you need", label: "", free: "", paid: "", verified: "" },
+  { label: "Services Prices — priced service grid", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
+  { label: "Shop Mode — products + cart + WhatsApp checkout", free: false, paid: "Add-on £5/mo *", verified: "Add-on £5/mo *" },
+  { label: "Wholesale Mode — B2B pricing tiers", free: false, paid: "Add-on £7/mo", verified: "Add-on £7/mo" },
+  { label: "Job Diary — project portfolio + updates", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
+  { label: "Downloads — gated PDFs with email capture", free: false, paid: "Add-on £2/mo", verified: "Add-on £2/mo" },
+  { label: "FAQ Page — visual ref-numbered knowledge base", free: false, paid: "Add-on £2/mo", verified: "Add-on £2/mo" },
+  { label: "Materials Network — earn from merchants", free: false, paid: "Add-on £3/mo", verified: "Add-on £3/mo" },
+  { label: "Lead Alerts — PWA push the moment WhatsApp lands", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
+  { label: "Custom Domain — bring your own .co.uk", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
+  { label: "Quote Pipeline — kanban CRM for crews", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
+
+  // ─────────────────── SEO + technical ───────────────────
+  { section: "SEO + technical", label: "", free: "", paid: "", verified: "" },
+  { label: "Server-rendered profile (Google-ranked)", free: true, paid: true, verified: true, highlight: true },
+  { label: "PWA — Add to Home Screen", free: true, paid: true, verified: true },
+  { label: "OG tags + structured data (Schema.org)", free: true, paid: true, verified: true },
+  { label: "Sitemap auto-submitted to Google", free: true, paid: true, verified: true },
+
+  // ─────────────────── Support + updates ───────────────────
+  { section: "Support + the always-shipping promise", label: "", free: "", paid: "", verified: "" },
   { label: "Email + WhatsApp support", free: "Community only", paid: "Priority", verified: "Priority + verification queue" },
-  { label: "All future updates + new features", free: false, paid: "Free, automatic", verified: "Free, automatic", highlight: true }
+  { label: "All future updates + new features", free: false, paid: "Free, automatic", verified: "Free, automatic", highlight: true },
+  { label: "Cancel any time", free: true, paid: true, verified: true }
 ];
 
 const PRICING_FAQ = [
+  {
+    q: "What is The Yard and do I get it on the £14.99 tier?",
+    a: "Yes — The Yard is a paid-tier feature, included with every Paid and Verified plan. It's the private trades-only board nobody outside the membership can read. Post 'Available next week' or 'Need 3 sparks Monday', drop a Trade Chat about rates or suppliers, or list a tool for sale. Every post auto-vanishes after 14 days so there's no public footprint your customers can google. Builder-grade trades (general-builder, building-merchant, builders-supplies) get free Yard access as a marketplace-density boost."
+  },
+  {
+    q: "Will customers find me on xratedtrades.com?",
+    a: "Yes. Every paid profile is auto-listed on xratedtrades.com — our customer-facing UK search portal. Customers search by trade + city + postcode, see a list of real Xrated apps in their area, and tap straight through to YOUR app. We don't sit in the middle — no quote forms, no message routing, no commission. The customer lands on your profile and uses YOUR WhatsApp button. Verified members get the visible badge on every search result + priority sort."
+  },
   {
     q: "What is the Verified tier and why does it cost £19.99/mo?",
     a: "Verified is the £19.99/mo / £199.99/yr tier with a real badge backed by checks customers can rely on. The required check is active company registration (Companies House or your local registry) — we confirm the company exists, is in good standing, and you are a director or named owner. Two optional add-on badges layer on top: 'Insured for private work' (if you upload a public-liability + employer's insurance certificate, useful for direct-to-customer work) and 'On-site checked' (for high-risk trades like gas, electrical, structural, scaffolding — we confirm credentials at the work address). The £5 over Paid pays for the verification queue, the dispute mediation service, and priority lead-routing in search."
@@ -163,18 +229,20 @@ export default function PricingPage() {
             Pricing — Free forever, or premium
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            Start free.{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>Try every feature for 14 days.</span>
+            More than an app.{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>The whole platform — £14.99/mo.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            Sign up free. Your first 14 days unlock every premium feature so
-            you can build your full profile. After 14 days you either keep
-            premium for £14.99/mo (or £139.99/yr) — or your profile stays{" "}
-            <span className="font-bold text-white">free for life</span>, on a
-            slightly limited tier. Either way the change is automatic. No
-            card on signup.{" "}
+            Your branded xratedtrade.com app{" "}
+            <span className="font-bold text-white">PLUS</span> The Yard
+            (private trades-only forum){" "}
+            <span className="font-bold text-white">PLUS</span> auto-listing
+            on xratedtrades.com so customers find you{" "}
+            <span className="font-bold text-white">PLUS</span> 10 add-ons
+            you bolt on as you need them. Every future feature lands free,
+            automatic. 14-day trial, no card.{" "}
             <span className="font-bold text-white">
-              Claim your name now — one name, one account, forever.
+              Claim your name now — yours forever.
             </span>
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70">
@@ -205,11 +273,11 @@ export default function PricingPage() {
               style={{ background: XRATED_BRAND.accent }}
             />
             <span>
-              Every plan supports{" "}
+              Every paid plan supports{" "}
               <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
-                8 add-ons
+                10 add-ons
               </span>{" "}
-              — Shop, Services Prices, Job Diary &amp; more
+              — Shop, Services Prices, Job Diary, Quote Pipeline &amp; more
             </span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="m9 18 6-6-6-6" />
@@ -381,44 +449,71 @@ export default function PricingPage() {
               </tr>
             </thead>
             <tbody className="bg-white">
-              {COMPARE_ROWS.map((row) => (
-                <tr
-                  key={row.label}
-                  className="border-t border-neutral-100"
-                  style={row.highlight ? { background: `${XRATED_BRAND.accent}0A` } : undefined}
-                >
-                  <th className="px-4 py-3 text-left font-semibold text-neutral-800">
-                    {row.label}
-                    {row.highlight && (
-                      <span
-                        className="ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider"
-                        style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
+              {COMPARE_ROWS.map((row, idx) => {
+                if (row.section) {
+                  return (
+                    <tr key={`section-${idx}`} style={{ background: "#0A0A0A" }}>
+                      <th
+                        colSpan={4}
+                        className="px-4 py-2.5 text-left text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                        style={{ color: XRATED_BRAND.accent }}
                       >
-                        Key
-                      </span>
-                    )}
-                  </th>
-                  <td className="px-3 py-3 text-center text-neutral-600">
-                    <Cell value={row.free} />
-                  </td>
-                  <td className="px-3 py-3 text-center text-neutral-900">
-                    <Cell value={row.paid} accent />
-                  </td>
-                  <td
-                    className="px-3 py-3 text-center font-bold text-neutral-900"
-                    style={{ background: `${XRATED_BRAND.accent}10` }}
+                        {row.section}
+                      </th>
+                    </tr>
+                  );
+                }
+                return (
+                  <tr
+                    key={row.label}
+                    className="border-t border-neutral-100"
+                    style={row.highlight ? { background: `${XRATED_BRAND.accent}0A` } : undefined}
                   >
-                    <Cell value={row.verified} accent />
-                  </td>
-                </tr>
-              ))}
+                    <th className="px-4 py-3 text-left font-semibold text-neutral-800">
+                      {row.label}
+                      {row.highlight && (
+                        <span
+                          className="ml-2 inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider"
+                          style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
+                        >
+                          Key
+                        </span>
+                      )}
+                    </th>
+                    <td className="px-3 py-3 text-center text-neutral-600">
+                      <Cell value={row.free} />
+                    </td>
+                    <td className="px-3 py-3 text-center text-neutral-900">
+                      <Cell value={row.paid} accent />
+                    </td>
+                    <td
+                      className="px-3 py-3 text-center font-bold text-neutral-900"
+                      style={{ background: `${XRATED_BRAND.accent}10` }}
+                    >
+                      <Cell value={row.verified} accent />
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
 
         {/* Mobile — stacked card per row, 3-cell mini-table */}
         <ul className="mt-6 flex flex-col gap-2.5 sm:hidden">
-          {COMPARE_ROWS.map((row) => (
+          {COMPARE_ROWS.map((row, idx) => {
+            if (row.section) {
+              return (
+                <li
+                  key={`m-section-${idx}`}
+                  className="rounded-xl px-3 py-2 text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                  style={{ background: "#0A0A0A", color: XRATED_BRAND.accent }}
+                >
+                  {row.section}
+                </li>
+              );
+            }
+            return (
             <li
               key={row.label}
               className="rounded-xl border border-neutral-200 bg-white p-3"
@@ -473,8 +568,59 @@ export default function PricingPage() {
                 </div>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
+
+        <p className="mt-3 text-[11px] text-neutral-500 sm:text-xs">
+          * Shop Mode is included <span className="font-bold">standard</span>{" "}
+          on the £14.99/mo tier for merchant trades (kitchen-fitter,
+          stair-fitter, building-merchant, builders-supplies, tool-hire,
+          heavy-machinery, window-fitter, security-installer) — no
+          add-on required.
+        </p>
+      </section>
+
+      {/* Verified Plus — coming-soon teaser. Positioned between the
+          feature table and the FAQ so visitors who scrolled the matrix
+          see the £29.99 ceiling exists but it's by application. Keeps
+          the visual emphasis on £14.99 vs £19.99 as the real decision. */}
+      <section className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 sm:pt-16">
+        <div
+          className="overflow-hidden rounded-3xl border-2 border-dashed bg-white p-6 sm:p-8"
+          style={{ borderColor: `${XRATED_BRAND.accent}55` }}
+        >
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="min-w-0 flex-1">
+              <p
+                className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                style={{ color: XRATED_BRAND.accent }}
+              >
+                Coming soon · By application
+              </p>
+              <h2 className="mt-2 text-xl font-extrabold leading-tight text-neutral-900 sm:text-2xl">
+                Verified Plus &mdash;{" "}
+                <span style={{ color: XRATED_BRAND.accent }}>£29.99/mo</span>.
+              </h2>
+              <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-neutral-700 sm:text-sm">
+                Everything in Verified, plus independent verification of
+                your <span className="font-bold">DBS check</span>, your{" "}
+                <span className="font-bold">insurance certificate</span>{" "}
+                and your <span className="font-bold">trade body membership</span>{" "}
+                (Gas Safe, NICEIC, FENSA, FMB, CISRS&hellip;). A different
+                badge on every search result, so customers can tell
+                Verified from genuinely-vetted. By application — we do
+                the checks; you upload the docs once.
+              </p>
+            </div>
+            <span
+              className="inline-flex h-12 shrink-0 items-center rounded-full px-4 text-[11px] font-extrabold uppercase tracking-wider text-neutral-900"
+              style={{ background: `${XRATED_BRAND.accent}26`, color: "#7A5300" }}
+            >
+              Waitlist open
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* FAQ */}
