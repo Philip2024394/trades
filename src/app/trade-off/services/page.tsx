@@ -15,17 +15,17 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Service Cards — Your services. Your prices. In a card customers tap. | Xrated Trades",
+    "Service Cards — Photo, price, one tap to WhatsApp | Xrated Trades",
   description:
-    "Show your services with prices, photos and a one-tap Enquire button that opens WhatsApp pre-filled. The conversion unit of every Xrated Trades profile.",
+    "Every service becomes a card customers can tap. A photo, the job name, a real price, and one button that lands the lead in your WhatsApp with the service pre-filled. Set up in 5 minutes.",
   alternates: { canonical: "/trade-off/services" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title:
-      "Service Cards — Your services. Your prices. In a card customers tap.",
+      "Service Cards — Photo, price, one tap to WhatsApp.",
     description:
-      "Show services with prices and photos. Customers tap Enquire and land in your WhatsApp with the job name pre-filled. Set up in 5 minutes.",
+      "Every service becomes a card customers tap. Photo, price, one button — and the lead is in your WhatsApp with the job name pre-filled. Five-minute setup.",
     url: absolute("/trade-off/services")
   }
 };
@@ -47,32 +47,32 @@ const EXAMPLE_SERVICES: ExampleService[] = [
     price: "£450",
     hint: "2-day job · materials inc.",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/Untitledasdasdasdsdsdsdasss.png?updatedAt=1782365032826",
-    alt: "Bricklayer laying a garden wall in cream brick"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_04_20%20PM.png",
+    alt: "Finished brick garden wall"
   },
   {
     title: "Extension Wall",
     price: "£2,400",
     hint: "5-7 days · single skin",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_46_08%20AM.png",
-    alt: "Extension build in progress — single skin brickwork up to first floor"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_02_49%20PM.png",
+    alt: "Extension build with single-skin brickwork"
   },
   {
     title: "Patio Build",
     price: "£1,200",
     hint: "block-paving · 20m2",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_57_48%20AM.png",
-    alt: "Finished block-paving patio with edging stones"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_01_26%20PM.png",
+    alt: "Block-paving patio build"
   },
   {
     title: "Roof Repair",
     price: "£900",
     hint: "ridge tile re-bed",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_41_47%20AM.png",
-    alt: "Roofer re-bedding ridge tiles on a tile roof"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_11_24%20PM.png",
+    alt: "Roof repair — ridge tile re-bed"
   }
 ];
 
@@ -147,14 +147,14 @@ export default function ServiceCardsPage() {
             Feature
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            Your services. Your prices. In a card customers{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>tap.</span>
+            Every service is a card.{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>One tap = WhatsApp.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            Every Xrated Trades profile is built around one conversion unit:
-            the service card. A photo, the job name, a real price, and a
-            single Enquire button that lands the lead in your WhatsApp with
-            the service name pre-filled. No quote forms, no waiting.
+            A photo of the work. The job name. A real price. One yellow
+            Enquire button. The customer taps it and lands in your WhatsApp
+            with the service name pre-filled — no quote forms, no waiting,
+            no &ldquo;we&rsquo;ll call you back&rdquo;.
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70">
             <span className="inline-flex items-center gap-1.5">

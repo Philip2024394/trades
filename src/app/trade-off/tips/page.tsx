@@ -33,11 +33,13 @@ type TipCard = {
   category: string;
   title: string;
   excerpt: string;
-  // Two-stop gradient used for the card's hero placeholder block —
-  // gives each card a distinct visual signature without needing real
-  // imagery yet. Picked from a warm-to-cool brand-adjacent palette.
+  // Two-stop gradient used for the card's hero placeholder block when
+  // no `image` is set — gives each card a distinct visual signature.
   gradientFrom: string;
   gradientTo: string;
+  // Optional real photo — when present, replaces the gradient block.
+  image?: string;
+  alt?: string;
 };
 
 const TIPS: TipCard[] = [
@@ -87,7 +89,10 @@ const TIPS: TipCard[] = [
     excerpt:
       "The exact moment to ask, the exact words to use, and the one-tap link that takes review-collection rate from 12% to 70%.",
     gradientFrom: "#C026D3",
-    gradientTo: "#3B0764"
+    gradientTo: "#3B0764",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2005_57_40%20AM.png?updatedAt=1782514693735",
+    alt: "How to collect reviews — five-star feedback on a customer's phone"
   },
   {
     category: "Customer service",
@@ -95,7 +100,10 @@ const TIPS: TipCard[] = [
     excerpt:
       "Voicemail that loses jobs, quotes that don't get accepted, the no-show problem and how to fix all of it in under a week.",
     gradientFrom: "#DC2626",
-    gradientTo: "#0A0A0A"
+    gradientTo: "#0A0A0A",
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2007_04_17%20AM.png?updatedAt=1782518691172",
+    alt: "5 customer-facing mistakes most tradies make"
   },
   {
     category: "Bigger jobs",
@@ -117,24 +125,43 @@ export default function TipsPage() {
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
-        <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
-          <p
-            className="text-xs font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Tips for Trades
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            Win{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>more</span> jobs.
-            Get paid{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>more</span>.
-          </h1>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            Practical advice from real tradespeople — pricing, photography,
-            social media, WhatsApp, QR codes, reviews and the customer-
-            facing mistakes that quietly kill enquiries.
-          </p>
+        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-12 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-16 sm:pt-16">
+          <div>
+            <p
+              className="text-xs font-bold uppercase tracking-[0.22em]"
+              style={{ color: XRATED_BRAND.accent }}
+            >
+              Tips for Trades
+            </p>
+            <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+              Win{" "}
+              <span style={{ color: XRATED_BRAND.accent }}>more</span> jobs.
+              Get paid{" "}
+              <span style={{ color: XRATED_BRAND.accent }}>more</span>.
+            </h1>
+            <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
+              Practical advice from real tradespeople — pricing, photography,
+              social media, WhatsApp, QR codes, reviews and the customer-
+              facing mistakes that quietly kill enquiries.
+            </p>
+          </div>
+          {/* Hero artwork — sits to the right on desktop, stacks below on
+              mobile. Yellow border + offset shadow gives it the brand
+              chip without overpowering the headline. */}
+          <div className="relative w-full max-w-[280px] justify-self-start overflow-hidden rounded-2xl sm:justify-self-end">
+            <div
+              className="absolute -inset-2 rounded-3xl"
+              style={{ background: `${XRATED_BRAND.accent}33`, filter: "blur(12px)" }}
+              aria-hidden="true"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2005_53_00%20AM.png?updatedAt=1782514405219"
+              alt="Win more jobs, get paid more — tradesperson on site"
+              className="relative w-full rounded-2xl border-2 object-cover shadow-xl"
+              style={{ borderColor: XRATED_BRAND.accent }}
+            />
+          </div>
         </div>
       </section>
 
@@ -154,16 +181,28 @@ export default function TipsPage() {
                 href="#"
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:shadow-md"
               >
-                {/* Hero placeholder — coloured gradient block per card */}
-                <div
-                  className="relative h-32 w-full sm:h-36"
-                  style={{
-                    background: `linear-gradient(135deg, ${tip.gradientFrom} 0%, ${tip.gradientTo} 100%)`
-                  }}
-                  aria-hidden="true"
-                >
-                  <div className="absolute inset-0 opacity-25 mix-blend-overlay" style={{ background: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 50%)" }} />
-                </div>
+                {/* Hero — real photo if present, else gradient placeholder */}
+                {tip.image ? (
+                  <div className="relative h-32 w-full overflow-hidden sm:h-36">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={tip.image}
+                      alt={tip.alt ?? tip.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="relative h-32 w-full sm:h-36"
+                    style={{
+                      background: `linear-gradient(135deg, ${tip.gradientFrom} 0%, ${tip.gradientTo} 100%)`
+                    }}
+                    aria-hidden="true"
+                  >
+                    <div className="absolute inset-0 opacity-25 mix-blend-overlay" style={{ background: "radial-gradient(circle at 30% 20%, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 50%)" }} />
+                  </div>
+                )}
 
                 <div className="flex flex-1 flex-col p-4 sm:p-5">
                   <p

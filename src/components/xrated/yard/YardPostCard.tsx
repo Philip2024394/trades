@@ -1,0 +1,224 @@
+// Single post card for The Yard feed. Landscape layout designed to read
+// at a glance: kind chip + trade pill, big title, who/where/when, body
+// excerpt, and a yellow WhatsApp CTA. Sample posts wear a small
+// yellow "Sample" badge so members know the feed is seeded.
+
+import { tradeLabel } from "@/lib/tradeOff";
+import type { HammerexTradeOffYardPost } from "@/lib/supabase";
+import {
+  YARD_KIND_LABELS,
+  YARD_KIND_BG,
+  YARD_KIND_FG,
+  buildYardWhatsappUrl,
+  formatDayRate,
+  formatPostDateRange,
+  timeAgoShort
+} from "@/lib/yardPosts";
+
+const BRAND_YELLOW = "#FFB300";
+const BRAND_BLACK = "#0A0A0A";
+
+export type YardPoster = {
+  slug: string;
+  display_name: string;
+  trading_name: string | null;
+  city: string | null;
+  country: string | null;
+  primary_trade: string;
+  whatsapp: string;
+  avatar_url: string | null;
+};
+
+export function YardPostCard({
+  post,
+  poster
+}: {
+  post: HammerexTradeOffYardPost;
+  poster: YardPoster | null;
+}) {
+  const kindBg = YARD_KIND_BG[post.kind];
+  const kindFg = YARD_KIND_FG[post.kind];
+  const tradeText = tradeLabel(post.trade_slug);
+  const dateRange = formatPostDateRange(post.start_date, post.end_date);
+  const dayRate = formatDayRate(post.day_rate_pence);
+  const region = post.region ?? "";
+  const posterName = poster?.trading_name?.trim() || poster?.display_name || "Member";
+
+  const waUrl = poster
+    ? buildYardWhatsappUrl({
+        whatsapp: poster.whatsapp,
+        posterName: poster.display_name.split(/\s+/)[0] || posterName,
+        postTitle: post.title
+      })
+    : null;
+
+  return (
+    <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      {post.is_sample && (
+        <span
+          className="absolute right-3 top-3 z-10 inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-900 shadow-sm"
+          style={{ background: BRAND_YELLOW }}
+        >
+          Sample
+        </span>
+      )}
+
+      <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
+        {/* Top row — kind chip + time ago */}
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em]"
+            style={{ background: kindBg, color: kindFg }}
+          >
+            {YARD_KIND_LABELS[post.kind]}
+          </span>
+          <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-bold text-neutral-700">
+            {tradeText}
+          </span>
+          {!post.is_sample && (
+            <span className="ml-auto text-[11px] font-bold text-neutral-400">
+              {timeAgoShort(post.created_at)}
+            </span>
+          )}
+        </div>
+
+        {/* Title */}
+        <h3 className="text-base font-extrabold leading-snug text-neutral-900 sm:text-lg">
+          {post.title}
+        </h3>
+
+        {/* Meta — region · dates · crew · rate */}
+        <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-neutral-600">
+          {region && (
+            <li className="inline-flex items-center gap-1.5">
+              <PinGlyph />
+              {region}
+            </li>
+          )}
+          {dateRange && (
+            <li className="inline-flex items-center gap-1.5">
+              <CalendarGlyph />
+              {dateRange}
+            </li>
+          )}
+          {post.kind === "needed" && post.crew_size_needed !== null && (
+            <li className="inline-flex items-center gap-1.5">
+              <CrewGlyph />
+              {post.crew_size_needed} crew
+            </li>
+          )}
+          {dayRate && (
+            <li className="inline-flex items-center gap-1.5 font-extrabold text-neutral-900">
+              {dayRate}
+            </li>
+          )}
+        </ul>
+
+        {/* Body excerpt — clamp to 3 lines so cards stay even-height. */}
+        <p
+          className="text-[13px] leading-relaxed text-neutral-700"
+          style={{
+            display: "-webkit-box",
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden"
+          }}
+        >
+          {post.body}
+        </p>
+
+        {/* Poster + CTA */}
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-neutral-100 pt-4">
+          {poster ? (
+            <a
+              href={`/${poster.slug}`}
+              className="flex min-w-0 items-center gap-2.5"
+            >
+              {poster.avatar_url ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={poster.avatar_url}
+                  alt=""
+                  className="h-9 w-9 shrink-0 rounded-full object-cover ring-1 ring-neutral-200"
+                />
+              ) : (
+                <span
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold text-neutral-900"
+                  style={{ background: BRAND_YELLOW }}
+                  aria-hidden="true"
+                >
+                  {posterName.charAt(0)}
+                </span>
+              )}
+              <span className="min-w-0">
+                <span className="block truncate text-[13px] font-extrabold text-neutral-900">
+                  {posterName}
+                </span>
+                <span className="block truncate text-[11px] text-neutral-500">
+                  {poster.city ?? ""}
+                  {poster.country && poster.country !== "UK"
+                    ? `, ${poster.country}`
+                    : ""}
+                </span>
+              </span>
+            </a>
+          ) : (
+            <span className="text-[13px] text-neutral-500">Poster removed</span>
+          )}
+
+          {waUrl ? (
+            <a
+              href={waUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex h-11 shrink-0 items-center justify-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+              style={{
+                background: "#0F7A3F",
+                boxShadow: "0 6px 18px rgba(15,122,63,0.4)"
+              }}
+              aria-label={`Message ${posterName} on WhatsApp about: ${post.title}`}
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Z" />
+              </svg>
+              Message
+            </a>
+          ) : null}
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function PinGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
+function CalendarGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  );
+}
+
+function CrewGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
+export default YardPostCard;

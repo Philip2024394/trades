@@ -638,3 +638,30 @@ export type HammerexShippingZone = {
   is_default: boolean;
   free_shipping_threshold_idr: number;
 };
+
+// The Yard — paid-tier-only trades-to-trades board. Two kinds of post:
+//   'available' — sub-contractor advertising availability ("free next
+//                 week in Wexford, can do plastering")
+//   'needed'    — main-contractor sourcing crew ("need 3 scaffolders
+//                 immediate start Monday")
+// Free auto-expiry at 14 days keeps the feed fresh. `is_sample=true`
+// posts are seeded so the feed never reads empty in pre-liquidity v1 —
+// they render with a yellow "Sample" badge so members know.
+export type HammerexTradeOffYardPost = {
+  id: string;
+  listing_id: string;
+  kind: "available" | "needed";
+  trade_slug: string;
+  title: string;
+  body: string;
+  country: string;
+  region: string | null;
+  start_date: string | null;
+  end_date: string | null;
+  crew_size_needed: number | null;
+  day_rate_pence: number | null;
+  is_sample: boolean;
+  status: "live" | "archived";
+  created_at: string;
+  expires_at: string;
+};
