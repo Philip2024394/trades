@@ -134,6 +134,54 @@ export type HammerexTradeOffListing = {
   merchant_commission_terms: string | null;
   materials_network_opted_in_at: string | null;
   materials_network_paused: boolean;
+  // Custom Domain add-on — point your own domain at this profile.
+  //   custom_domain: lowercase host the customer typed (with or without
+  //     "www." — middleware does the dual-match). UNIQUE — one listing
+  //     per domain.
+  //   custom_domain_apex: apex form (no leading "www."). We always
+  //     attach both apex + www at Vercel and redirect www → apex.
+  //   custom_domain_status: lifecycle enum. 'pending' = freshly created
+  //     row, no Vercel call yet. 'dns_pending' = Vercel returned
+  //     verification records, awaiting customer DNS. 'verifying' = DNS
+  //     looks right, Vercel issuing SSL. 'live' = traffic is routing +
+  //     SSL valid. 'ssl_failed' / 'dns_lost' / 'expired' / 'blocked' =
+  //     error states. 'disconnected' = customer pressed Disconnect.
+  //   custom_domain_verification: Vercel's verification challenge
+  //     records (TXT / CNAME the customer must add at their registrar).
+  //   custom_domain_vercel_id: opaque Vercel domain ID, used for detach.
+  //   *_added_at / *_verified_at / *_ssl_verified_at: audit timestamps.
+  //   custom_domain_last_check_at: most recent health-check ping.
+  //   custom_domain_last_error: human-readable error string from Vercel.
+  //   custom_domain_failure_count: cron-incremented; ≥3 = dns_lost.
+  //   custom_domain_addon_active: free first 30 days, then auto-charge.
+  //     Drives the billing reconciliation job — not the route gate.
+  custom_domain: string | null;
+  custom_domain_apex: string | null;
+  custom_domain_status:
+    | "pending"
+    | "dns_pending"
+    | "verifying"
+    | "live"
+    | "ssl_failed"
+    | "dns_lost"
+    | "expired"
+    | "disconnected"
+    | "blocked"
+    | null;
+  custom_domain_verification: {
+    type: string;
+    domain: string;
+    value: string;
+    reason?: string;
+  }[] | null;
+  custom_domain_vercel_id: string | null;
+  custom_domain_added_at: string | null;
+  custom_domain_verified_at: string | null;
+  custom_domain_ssl_verified_at: string | null;
+  custom_domain_last_check_at: string | null;
+  custom_domain_last_error: string | null;
+  custom_domain_failure_count: number;
+  custom_domain_addon_active: boolean;
   joined_at: string;
   created_at: string;
   updated_at: string;
@@ -508,6 +556,32 @@ export type HammerexXratedPushLog = {
   subscription_id: string | null;
   delivery_status: "queued" | "sent" | "failed" | "throttled" | "muted" | "quiet_hours";
   delivery_error: string | null;
+  created_at: string;
+};
+
+// Custom Domain add-on — append-only audit log. Every state transition
+// (attach attempt, verify success / failure, SSL issued, health-check
+// failure, disconnect) writes a row here so admin can debug stuck
+// domains. Payload is the raw Vercel API response (or our own
+// {reason, message} structure for non-Vercel transitions).
+export type HammerexCustomDomainEvent = {
+  id: number;
+  listing_id: string | null;
+  domain: string;
+  event_type:
+    | "attach_attempt"
+    | "attach_success"
+    | "attach_failed"
+    | "verify_attempt"
+    | "verify_success"
+    | "verify_failed"
+    | "ssl_issued"
+    | "health_check_ok"
+    | "health_check_failed"
+    | "dns_lost"
+    | "disconnect"
+    | "blocked";
+  payload: Record<string, unknown> | null;
   created_at: string;
 };
 

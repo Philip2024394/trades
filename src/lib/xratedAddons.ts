@@ -234,8 +234,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     editorial_badge: "premium_credibility",
     callouts: ["Your URL", "Free SSL", "Same profile"],
     pricing: { kind: "paid", monthly_pence: 500 },
-    availability: "coming_soon",
-    hasEditor: false,
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "custom-domain",
     includedWithPaid: false,
     benefits: [
       "Pro-grade URL on every quote and van vinyl",
@@ -412,6 +413,25 @@ export function isMaterialsNetworkOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).materials_network === true;
+}
+
+/** Custom Domain add-on — true when the tradesperson has switched the
+ *  add-on on AND the domain is currently routing traffic (`status='live'`).
+ *  The middleware host-router cares about the status field, not this
+ *  flag; this helper is for dashboard UI (show the "your domain is live"
+ *  green badge) and any future profile-level chrome (e.g. "Powered by
+ *  Xrated" footer). Paid-only (£5/mo, first 30 days free). */
+export function isCustomDomainOn(
+  listing: Pick<
+    HammerexTradeOffListing,
+    "addons_enabled" | "custom_domain" | "custom_domain_status"
+  >
+): boolean {
+  const enabled = (listing.addons_enabled ?? {}).custom_domain === true;
+  if (!enabled) return false;
+  return (
+    !!listing.custom_domain && listing.custom_domain_status === "live"
+  );
 }
 
 /** Format a paid add-on's monthly price for UI rendering. */
