@@ -192,6 +192,8 @@ export function ServicesTabbedGallery({
               onOpenLightbox={openLightbox}
               stripped={stripped}
               rating={getServiceRating(t.name, reviews)}
+              acceptingJobs={acceptingJobs}
+              operatingHours={operatingHours}
             />
           ))}
         </div>
@@ -204,6 +206,8 @@ export function ServicesTabbedGallery({
           onOpenLightbox={openLightbox}
           stripped={stripped}
           reviews={reviews}
+          acceptingJobs={acceptingJobs}
+          operatingHours={operatingHours}
         />
       )}
 
@@ -230,7 +234,9 @@ function ServiceCarousel({
   slug,
   onOpenLightbox,
   stripped = false,
-  reviews
+  reviews,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   tabs: Tab[];
   activeIndex: number;
@@ -239,6 +245,8 @@ function ServiceCarousel({
   onOpenLightbox: (svc: PricedService, startIndex: number) => void;
   stripped?: boolean;
   reviews?: ServiceRatingReview[];
+  acceptingJobs?: boolean;
+  operatingHours?: import("@/lib/availabilityStatus").OperatingHours | null;
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -372,6 +380,8 @@ function ServiceCarousel({
                 large={tabIndex === activeIndex}
                 stripped={stripped}
                 rating={getServiceRating(t.name, reviews)}
+                acceptingJobs={acceptingJobs}
+                operatingHours={operatingHours}
               />
             </div>
           );
@@ -389,7 +399,9 @@ function ServiceCard({
   onOpenLightbox,
   large,
   stripped = false,
-  rating
+  rating,
+  acceptingJobs = false,
+  operatingHours = null
 }: {
   tab: Tab;
   slug: string;
@@ -402,6 +414,10 @@ function ServiceCard({
   /** Per-service rating badge — only rendered when ≥3 live reviews
    *  are tied to this service. null means the badge stays hidden. */
   rating?: { avg: number; count: number } | null;
+  /** Threaded through to ViewCardModal so the AvailabilityPill knows
+   *  whether the tradesperson is reachable right now. */
+  acceptingJobs?: boolean;
+  operatingHours?: import("@/lib/availabilityStatus").OperatingHours | null;
 }) {
   const { name, service: svc } = tab;
 
