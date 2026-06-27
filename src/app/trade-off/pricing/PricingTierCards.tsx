@@ -275,15 +275,15 @@ export function PricingTierCards() {
             </svg>
             Recommended
           </span>
-          {/* Decorative right-side image — sits to the right of the
-              Xrated Verified price block. Pointer-events-none so it
-              never blocks the CTA tap target. */}
+          {/* Decorative right-side image — moved 90px left of the card
+              right edge and enlarged 2x per user direction. Still
+              pointer-events-none so it never blocks the CTA tap target. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://ik.imagekit.io/9mrgsv2rp/Untitledasdasd.png"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute right-3 top-14 h-16 w-16 select-none object-contain drop-shadow-lg sm:h-20 sm:w-20"
+            className="pointer-events-none absolute right-[102px] top-14 h-32 w-32 select-none object-contain drop-shadow-lg sm:h-40 sm:w-40"
           />
 
           <header>
