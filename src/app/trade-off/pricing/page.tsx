@@ -72,6 +72,8 @@ const COMPARE_ROWS: FeatureRow[] = [
   { label: "Auto-listed on xratedtrades.com", free: false, paid: true, verified: true, highlight: true },
   { label: "Verified badge on every search result", free: false, paid: false, verified: true, highlight: true },
   { label: "Priority sort on search results", free: false, paid: false, verified: true },
+  { label: "Receives Project Beacons (3-nearest customer pings)", free: false, paid: true, verified: true, highlight: true },
+  { label: "Push notification + sound when a beacon fires", free: false, paid: "With Lead Alerts add-on", verified: "With Lead Alerts add-on" },
   { label: "Visible across UK + international searches", free: false, paid: true, verified: true },
 
   // ─────────────────── Profile / app features ───────────────────

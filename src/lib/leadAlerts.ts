@@ -46,6 +46,16 @@ export type LeadAlertEvent =
       };
     }
   | {
+      type: "project_beacon";
+      data: {
+        customer_name: string;
+        customer_whatsapp: string;
+        customer_city: string;
+        trade_label: string;
+        project_excerpt: string;
+      };
+    }
+  | {
       type: "test";
       data: Record<string, unknown>;
     };
@@ -153,6 +163,21 @@ function buildPayload(
         tag: `review-${listing.id}`,
         vibrate,
         requireInteraction: false
+      };
+    }
+    case "project_beacon": {
+      const wa = whatsappDigits(event.data.customer_whatsapp);
+      const firstName = event.data.customer_name.split(/\s+/)[0] ?? event.data.customer_name;
+      const text = encodeURIComponent(
+        `Hi ${firstName}, I saw your Xrated project beacon for ${event.data.trade_label.toLowerCase()} in ${event.data.customer_city}. Happy to help — when would you like the work done?`
+      );
+      return {
+        title: `📣 New project nearby — ${event.data.trade_label}`,
+        body: `${firstName} in ${event.data.customer_city}: "${event.data.project_excerpt}". Tap to WhatsApp them direct.`,
+        data: { url: `https://wa.me/${wa}?text=${text}` },
+        tag: `beacon-${listing.id}`,
+        vibrate,
+        requireInteraction: true
       };
     }
     case "test":

@@ -271,6 +271,20 @@ export default async function FindPortalPage({
               <Dot accent /> No middleman
             </span>
           </div>
+          {/* Project Beacon link — for customers who'd rather push their
+              project to the 3 nearest trades than browse the list. */}
+          <a
+            href="/find/beacon"
+            className="mt-5 inline-flex h-11 items-center gap-2 rounded-xl border-2 px-4 text-[12px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97] sm:text-[13px]"
+            style={{
+              background: XRATED_BRAND.accent,
+              borderColor: XRATED_BRAND.accent,
+              boxShadow: `0 6px 18px ${XRATED_BRAND.accent}55`
+            }}
+          >
+            Or push your project to the 3 nearest
+            <span aria-hidden="true">&rarr;</span>
+          </a>
         </div>
       </section>
 
