@@ -11,13 +11,14 @@ import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 const KINDS: { value: string; label: string }[] = [
   { value: "", label: "All posts" },
   { value: "available", label: "Available" },
-  { value: "needed", label: "Crew needed" }
+  { value: "needed", label: "Hiring" },
+  { value: "chat", label: "Trade Chat" }
 ];
 
 export function YardFilters({
   counts
 }: {
-  counts: { total: number; available: number; needed: number };
+  counts: { total: number; available: number; needed: number; chat: number };
 }) {
   const router = useRouter();
   const params = useSearchParams();
@@ -36,8 +37,12 @@ export function YardFilters({
     });
   }
 
-  const countFor = (k: string) =>
-    k === "available" ? counts.available : k === "needed" ? counts.needed : counts.total;
+  const countFor = (k: string) => {
+    if (k === "available") return counts.available;
+    if (k === "needed") return counts.needed;
+    if (k === "chat") return counts.chat;
+    return counts.total;
+  };
 
   return (
     <div className="mt-6 flex flex-col gap-3 sm:gap-4">

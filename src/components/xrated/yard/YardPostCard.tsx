@@ -127,6 +127,58 @@ export function YardPostCard({
           {post.body}
         </p>
 
+        {/* Attachments — image strip (up to 3), file chip, link chip.
+            Members tap an image to open it full-screen via the native
+            browser image viewer (no lightbox js needed for v1). */}
+        {post.image_urls && post.image_urls.length > 0 && (
+          <div className="grid grid-cols-3 gap-1.5">
+            {post.image_urls.slice(0, 3).map((url, i) => (
+              <a
+                key={`${post.id}-img-${i}`}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative aspect-[4/3] overflow-hidden rounded-lg border border-neutral-200 bg-neutral-100"
+                aria-label={`Attached image ${i + 1}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={url}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition group-hover:scale-105"
+                />
+              </a>
+            ))}
+          </div>
+        )}
+        {(post.attachment_url || post.link_url) && (
+          <div className="flex flex-wrap gap-1.5">
+            {post.attachment_url && (
+              <a
+                href={post.attachment_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 text-[11px] font-extrabold text-neutral-800 transition hover:border-neutral-300"
+              >
+                <FileGlyph />
+                {post.attachment_name ?? (post.attachment_kind === "pdf" ? "PDF" : "File")}
+              </a>
+            )}
+            {post.link_url && (
+              <a
+                href={post.link_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-200 bg-neutral-50 px-3 text-[11px] font-extrabold text-neutral-800 transition hover:border-neutral-300"
+              >
+                <LinkGlyph />
+                {post.link_title ?? new URL(post.link_url).hostname.replace(/^www\./, "")}
+              </a>
+            )}
+          </div>
+        )}
+
         {/* Poster + CTA */}
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-neutral-100 pt-4">
           {poster ? (
@@ -217,6 +269,24 @@ function CrewGlyph() {
       <circle cx="9" cy="7" r="4" />
       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+
+function FileGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+    </svg>
+  );
+}
+
+function LinkGlyph() {
+  return (
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72" />
+      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72" />
     </svg>
   );
 }

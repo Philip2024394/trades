@@ -6,17 +6,20 @@ import { whatsappDigits } from "@/lib/tradeOff";
 
 export const YARD_KIND_LABELS: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "Available",
-  needed: "Crew Needed"
+  needed: "Hiring",
+  chat: "Trade Chat"
 };
 
 export const YARD_KIND_BG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#0F7A3F",
-  needed: "#0A0A0A"
+  needed: "#0A0A0A",
+  chat: "#FFB300"
 };
 
 export const YARD_KIND_FG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#ffffff",
-  needed: "#FFB300"
+  needed: "#FFB300",
+  chat: "#0A0A0A"
 };
 
 export function isYardPostLive(p: Pick<HammerexTradeOffYardPost, "status" | "expires_at">): boolean {

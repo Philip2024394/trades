@@ -13,6 +13,7 @@ const MENU_ITEMS = [
   { href: "/trade-off/how", label: "How it works", sub: "5 minutes from claim to live" },
   { href: "/trade-off/pricing", label: "Pricing", sub: "Free · £14.99/mo · £19.99/mo Verified" },
   { href: "/trade-off/add-ons", label: "Add-ons", sub: "Shop · Services · Job Diary · 5 more" },
+  { href: "/trade-off/yard", label: "The Yard", sub: "Private trades-only board — hire, available, chat" },
   { href: "/trade-off/verified", label: "Verified Business", sub: "Backed by company-registration check" },
   { href: "/trade-off/trust", label: "Trust Score", sub: "Build customer confidence" },
   { href: "/trade-off/trades", label: "Trade examples", sub: "See profiles for your trade" }

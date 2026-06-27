@@ -211,6 +211,36 @@ export default async function TradeOffEditPage({
         />
       </section>
 
+      {/* The Yard nav card — private trades-only board. Paid-tier only
+          (the page itself enforces it), but the nav card surfaces at
+          every tier so free profiles see what they unlock by upgrading. */}
+      <section className="mx-auto max-w-3xl px-4 pb-6">
+        <a
+          href="/trade-off/yard"
+          className="group flex items-center justify-between gap-4 rounded-2xl border-2 border-brand-line bg-brand-surface p-5 transition hover:border-brand-accent"
+        >
+          <div className="min-w-0">
+            <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
+              The Yard &middot; Private board
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
+              Hire, offer slots, talk shop.
+            </h2>
+            <p className="mt-1 text-[13px] leading-snug text-brand-muted">
+              UK trades-only feed. Post when you&rsquo;re free, hiring or
+              just want to discuss rates &mdash; 14-day auto-vanish, no
+              public footprint.
+            </p>
+          </div>
+          <span
+            aria-hidden="true"
+            className="shrink-0 text-2xl text-brand-accent transition group-hover:translate-x-0.5"
+          >
+            &rarr;
+          </span>
+        </a>
+      </section>
+
       {/* Operating Hours nav card — links to the dedicated sub-route.
           Free for every tier because the AvailabilityPill on the public
           profile reads these hours regardless of paid status. */}

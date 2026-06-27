@@ -63,6 +63,7 @@ export function XratedFooter() {
             links={[
               { href: "/trade-off/services", label: "Service cards" },
               { href: "/trade-off/reviews", label: "Customer reviews" },
+              { href: "/trade-off/yard", label: "The Yard — trades-only" },
               { href: "/trade-off/share", label: "Share anywhere" },
               { href: "/trade-off/trust", label: "Trust Score" },
               { href: "/trade-off/verified", label: "Verified Business" }

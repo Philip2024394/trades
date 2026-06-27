@@ -650,7 +650,7 @@ export type HammerexShippingZone = {
 export type HammerexTradeOffYardPost = {
   id: string;
   listing_id: string;
-  kind: "available" | "needed";
+  kind: "available" | "needed" | "chat";
   trade_slug: string;
   title: string;
   body: string;
@@ -662,6 +662,15 @@ export type HammerexTradeOffYardPost = {
   day_rate_pence: number | null;
   is_sample: boolean;
   status: "live" | "archived";
+  parent_id: string | null;
+  // Attachments — up to 3 images plus one file (PDF / drawing) plus one
+  // external link per post. DB enforces the 3-image cap.
+  image_urls: string[];
+  attachment_url: string | null;
+  attachment_name: string | null;
+  attachment_kind: "pdf" | "file" | null;
+  link_url: string | null;
+  link_title: string | null;
   created_at: string;
   expires_at: string;
 };
