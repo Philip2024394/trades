@@ -198,12 +198,11 @@ export function YardChatPost({
           )}
         </div>
 
-        {/* X contacted — plain text, centered, end of card */}
-        {post.contact_count > 0 && (
-          <p className="text-center text-[12px] font-bold text-neutral-500">
-            {post.contact_count} contacted
-          </p>
-        )}
+        {/* X contacted — plain text, centered, end of card. Always
+            rendered so every thread shows the signal honestly. */}
+        <p className="text-center text-[12px] font-bold text-neutral-500">
+          {post.contact_count} contacted
+        </p>
       </div>
     </article>
   );

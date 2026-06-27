@@ -298,12 +298,11 @@ export function YardPostCard({
         </div>
 
         {/* X contacted — plain text, centered, at the very end of the
-            card. Replaces the black contact pill. */}
-        {post.contact_count > 0 && (
-          <p className="mt-3 text-center text-[12px] font-bold text-neutral-500">
-            {post.contact_count} contacted
-          </p>
-        )}
+            card. Always rendered so the social-proof signal is
+            consistent across every card; '0 contacted' is honest. */}
+        <p className="mt-3 text-center text-[12px] font-bold text-neutral-500">
+          {post.contact_count} contacted
+        </p>
       </div>
     </article>
   );
