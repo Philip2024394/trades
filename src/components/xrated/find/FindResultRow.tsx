@@ -8,7 +8,6 @@ import { tradeHeroFor } from "@/lib/tradeOffHeroes";
 import type { FindCardListing } from "./FindResultCard";
 
 const BRAND_YELLOW = "#FFB300";
-const BRAND_BLACK = "#0A0A0A";
 
 export function FindResultRow({ listing }: { listing: FindCardListing }) {
   const banner = tradeHeroFor(listing.primary_trade);
@@ -45,18 +44,6 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
         ) : (
           <div className="absolute inset-0" style={{ background: BRAND_YELLOW }} />
         )}
-        {/* Verified tick top-right corner */}
-        <span
-          className="absolute right-2 top-2 inline-flex h-6 items-center gap-1 rounded-full px-1.5 text-[9px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-md"
-          style={{ background: BRAND_YELLOW }}
-          aria-label="Verified Xrated member"
-          title="Verified Xrated member"
-        >
-          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke={BRAND_BLACK} strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M20 6 9 17l-5-5" />
-          </svg>
-          Verified
-        </span>
       </div>
 
       {/* Info column */}
