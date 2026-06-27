@@ -31,7 +31,9 @@ export const TRADE_OFF_TRADES: Array<{
   { slug: "metal-engineer", label: "Metal Engineer", category_slug: null },
   // Heavy site machinery — plant hire, excavator / crane / digger
   // operators, site equipment rental.
-  { slug: "heavy-machinery", label: "Heavy Site Machinery", category_slug: null }
+  { slug: "heavy-machinery", label: "Heavy Site Machinery", category_slug: null },
+  // Tool hire — hand tools, power tools, access kit rental.
+  { slug: "tool-hire", label: "Tool Hire", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
