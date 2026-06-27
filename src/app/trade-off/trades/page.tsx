@@ -1,14 +1,14 @@
 // Xrated Trades — "Trade Examples" gallery.
 // HIGH-INTENT page: a visitor arrives wanting to see what a real
-// Xrated Trades profile looks like for THEIR trade. Eight trade cards
-// (Carpenter, Bricklayer, Plumber, Scaffolder, Electrician, Drywaller,
-// Stone Mason, Tiler) each render a landscape banner image — the same
-// art a tradesperson of that trade gets as a default hero on their own
-// profile if they don't upload a custom_app_hero_url.
+// Xrated Trades profile looks like for THEIR trade. One card per
+// registered demo profile (currently 27 — one per trade in
+// demoTradeSeeds.ts). Each card renders a landscape banner image —
+// the same art a tradesperson of that trade gets as a default hero
+// on their own profile if they don't upload a custom_app_hero_url.
 //
-// Every card "View profile" link points at the live demo profile
-// (mike-watson-drywall-manchester) for now — when more demo profiles
-// ship we swap each card's href independently.
+// Each card's "View profile" link points at THAT trade's own demo
+// profile (Carpenter card -> /demo-tom-bridges-carpenter-newcastle,
+// Bricklayer card -> /demo-craig-walters-bricklayer-nottingham, etc).
 //
 // Server component. Matches the /trade-off/pricing design language:
 // XratedHeader top, black hero with yellow accent, max-w-5xl body,
@@ -20,6 +20,8 @@ import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
 import { tradeHeroFor } from "@/lib/tradeOffHeroes";
+import { tradeLabel } from "@/lib/tradeOff";
+import { DEMO_TRADE_SEEDS } from "@/lib/demoTradeSeeds";
 
 export const revalidate = 3600;
 
@@ -27,14 +29,14 @@ export const metadata: Metadata = {
   title:
     "Trade Examples — Xrated Trades. See what a profile looks like for your trade.",
   description:
-    "Eight live trade profile examples — Bricklayer, Electrician, Plumber, Scaffolder, Roofer, Landscaper, Joiner, Decorator. Real priced services, real reviews. See what your Xrated Trades profile will look like.",
+    "27 live trade profile examples — Bricklayer, Electrician, Plumber, Scaffolder, Roofer, Landscaper, Joiner, Decorator and more. Real priced services, real reviews. See what your Xrated Trades profile will look like.",
   alternates: { canonical: "/trade-off/trades" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title: "Xrated Trades — Trade Examples. See your trade.",
     description:
-      "Eight live trade profile examples with real prices and reviews. See what your Xrated Trades profile looks like.",
+      "27 live trade profile examples with real prices and reviews. See what your Xrated Trades profile looks like.",
     url: absolute("/trade-off/trades")
   }
 };
@@ -53,125 +55,53 @@ type TradeExample = {
   href: string;
 };
 
-// Single live demo profile for every "View profile" link until more
-// demo profiles ship. Each card's href is independent so we can swap
-// individually later.
-const DEMO_HREF = "/demo-mike-watson-drywall-manchester";
+// First sentence of the seed bio, capped so cards stay compact.
+function firstSentence(bio: string, cap = 140): string {
+  const trimmed = bio.replace(/\s+/g, " ").trim();
+  const dot = trimmed.indexOf(". ");
+  const sentence = dot > 0 ? trimmed.slice(0, dot + 1) : trimmed;
+  return sentence.length > cap ? sentence.slice(0, cap - 1).trimEnd() + "…" : sentence;
+}
 
-const TRADES: TradeExample[] = [
-  {
-    trade: "Carpenter",
-    slug: "carpenter",
-    blurb: "Bespoke kitchens, first fix, decking, doors. Workshop photos in the gallery.",
-    services: [
-      { title: "Bespoke kitchen (10 units)", price: "£8,500" },
-      { title: "First fix carpentry (3-bed)", price: "£2,400" },
-      { title: "Hardwood decking (20m2)", price: "£1,800" }
-    ],
-    reviewStars: "4.9",
-    reviewCount: 28,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Bricklayer",
-    slug: "bricklayer",
-    blurb: "Garden walls, extensions, patios, repointing — fixed-price work shown up front.",
-    services: [
-      { title: "Garden wall (10m run)", price: "£450" },
-      { title: "Extension wall — single storey", price: "£2,400" },
-      { title: "Patio build (20m2)", price: "£1,200" }
-    ],
-    reviewStars: "4.9",
-    reviewCount: 23,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Plumber",
-    slug: "plumber",
-    blurb: "Boilers, bathrooms, leaks — emergency or planned, customer sees the price first.",
-    services: [
-      { title: "Combi boiler install", price: "£2,200" },
-      { title: "Full bathroom fit-out", price: "£4,800" },
-      { title: "Emergency leak (1hr call-out)", price: "£150" }
-    ],
-    reviewStars: "4.8",
-    reviewCount: 34,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Scaffolder",
-    slug: "scaffolder",
-    blurb: "Access for every other trade — chimney, loft, elevation. Hire by the week.",
-    services: [
-      { title: "2-storey scaffold (rear elevation)", price: "£850" },
-      { title: "Loft conversion access (4 weeks)", price: "£1,200" },
-      { title: "Chimney repair tower", price: "£450" }
-    ],
-    reviewStars: "4.9",
-    reviewCount: 18,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Electrician",
-    slug: "electrician",
-    blurb: "Rewires, EV chargers, consumer units — every job priced and time-boxed.",
-    services: [
-      { title: "Full house rewire (3-bed)", price: "£3,500" },
-      { title: "EV charger install (7kW)", price: "£750" },
-      { title: "Consumer unit upgrade", price: "£450" }
-    ],
-    reviewStars: "5.0",
-    reviewCount: 41,
-    ratingLabel: "Outstanding",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Drywaller",
-    slug: "drywaller",
-    blurb: "Plasterboard partitions, skim coats, ceilings. Level 5 finish or your money back.",
-    services: [
-      { title: "Skim coat re-finish (per sqm)", price: "£45" },
-      { title: "Drywall partition (3m, full)", price: "£320" },
-      { title: "Ceiling repair (per sqm)", price: "£65" }
-    ],
-    reviewStars: "4.8",
-    reviewCount: 32,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Stone Mason",
-    slug: "stonemason",
-    blurb: "Natural stone walls, heritage repointing, restoration. Conservation-trained.",
-    services: [
-      { title: "Natural stone wall (per sqm)", price: "£180" },
-      { title: "Heritage repointing (per sqm)", price: "£95" },
-      { title: "Stone cleaning + restoration (per sqm)", price: "£40" }
-    ],
-    reviewStars: "5.0",
-    reviewCount: 22,
-    ratingLabel: "Outstanding",
-    href: DEMO_HREF
-  },
-  {
-    trade: "Tiler",
-    slug: "tiler",
-    blurb: "Bathrooms, kitchens, floors. Porcelain, ceramic, natural stone — fixed pricing.",
-    services: [
-      { title: "Bathroom retile (full)", price: "£1,800" },
-      { title: "Kitchen splashback", price: "£450" },
-      { title: "Floor tile install (per sqm)", price: "£45" }
-    ],
-    reviewStars: "4.9",
-    reviewCount: 36,
-    ratingLabel: "Excellent",
-    href: DEMO_HREF
-  }
-];
+// Format a numeric £ price for a priced service line. Per-unit services
+// keep the unit suffix; fixed/from prices show as a single £ figure.
+function formatPrice(s: { price: number; unit: string }): string {
+  const gbp = `£${s.price.toLocaleString("en-GB")}`;
+  const unit = (s.unit ?? "").trim().toLowerCase();
+  if (!unit || unit === "fixed") return gbp;
+  if (unit === "from") return `from ${gbp}`;
+  return `${gbp} ${s.unit}`;
+}
+
+function ratingLabelFor(avg: number): string {
+  if (avg >= 4.9) return "Outstanding";
+  if (avg >= 4.5) return "Excellent";
+  if (avg >= 4.0) return "Great";
+  return "Good";
+}
+
+// Build one card per demo seed. Trade name = tradeLabel(seed.trade_slug).
+// Services = first three priced services. Reviews aggregated from seed.reviews.
+const TRADES: TradeExample[] = DEMO_TRADE_SEEDS.map((seed) => {
+  const ratings = seed.reviews.map((r) => r.rating);
+  const avg =
+    ratings.length > 0
+      ? ratings.reduce((a, b) => a + b, 0) / ratings.length
+      : 5;
+  return {
+    trade: tradeLabel(seed.trade_slug),
+    slug: seed.trade_slug,
+    blurb: firstSentence(seed.bio),
+    services: seed.priced_services.slice(0, 3).map((s) => ({
+      title: s.name,
+      price: formatPrice(s)
+    })),
+    reviewStars: avg.toFixed(1),
+    reviewCount: seed.reviews.length,
+    ratingLabel: ratingLabelFor(avg),
+    href: `/${seed.profile_slug}`
+  };
+});
 
 const EVERY_TRADE_GETS: Array<{ title: string; body: string }> = [
   {
@@ -214,9 +144,9 @@ export default function TradeExamplesPage() {
             <span style={{ color: XRATED_BRAND.accent }}>your trade.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            Eight live trade examples — from bricklayers to decorators. Each
-            shows the exact services, prices and reviews your customers
-            see when they land on your xratedtrade.com URL.{" "}
+            {TRADES.length} live trade examples — from bricklayers to
+            decorators. Each shows the exact services, prices and reviews
+            your customers see when they land on your xratedtrade.com URL.{" "}
             <span className="font-bold text-white">
               Pick the one that matches your trade.
             </span>
@@ -240,7 +170,7 @@ export default function TradeExamplesPage() {
           services, review snippet, View profile link. */}
       <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
         <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Eight trade examples
+          {TRADES.length} trade examples
         </h2>
         <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
           Every card is a real example of how your profile renders for that
@@ -248,11 +178,11 @@ export default function TradeExamplesPage() {
           click through every section.
         </p>
 
-        <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {TRADES.map((t) => {
             const banner = tradeHeroFor(t.slug);
             return (
-              <li key={t.trade}>
+              <li key={t.href}>
                 <a
                   href={t.href}
                   className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
