@@ -339,10 +339,25 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
           </p>
         </div>
 
-        {/* Tagline — one-line hook */}
-        <p className="mt-1.5 text-xs leading-relaxed text-white/75 sm:text-sm">
+        {/* Tagline — one-line hook, bumped to strong white for legibility */}
+        <p className="mt-1.5 text-xs font-semibold leading-relaxed text-white sm:text-sm">
           {addon.tagline}
         </p>
+
+        {/* "What it does" — full summary in a bordered card so the
+            customer reads the real scope of the add-on, not just the
+            one-line hook. Yellow eyebrow + readable body copy. */}
+        <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+          <p
+            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+            style={{ color: XRATED_BRAND.accent }}
+          >
+            What it does
+          </p>
+          <p className="mt-1.5 text-xs leading-relaxed text-white/90">
+            {addon.summary}
+          </p>
+        </div>
 
         {/* Benefit bullets — 3 yellow ticks, tighter spacing than the
             old card so the landscape rhythm reads cleanly. */}
@@ -382,32 +397,19 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
 }
 
 function StatusChip({ ready }: { ready: boolean }) {
-  if (ready) {
-    return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">
-        <span
-          aria-hidden="true"
-          className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400"
-        />
-        Available now
-      </span>
-    );
-  }
+  // Solid dark backdrop so the chip reads cleanly when it sits on the
+  // yellow gradient image area (the previous yellow-on-yellow rendering
+  // for "Coming soon" was effectively invisible).
+  const dotColor = ready ? "#10B981" : XRATED_BRAND.accent;
+  const label = ready ? "Available now" : "Coming soon";
   return (
-    <span
-      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider"
-      style={{
-        borderColor: `${XRATED_BRAND.accent}55`,
-        background: `${XRATED_BRAND.accent}1A`,
-        color: XRATED_BRAND.accent
-      }}
-    >
+    <span className="inline-flex items-center gap-1.5 rounded-full bg-black/85 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
       <span
         aria-hidden="true"
         className="inline-block h-1.5 w-1.5 rounded-full"
-        style={{ background: XRATED_BRAND.accent }}
+        style={{ background: dotColor }}
       />
-      Coming soon
+      {label}
     </span>
   );
 }
