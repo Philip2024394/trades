@@ -283,7 +283,7 @@ export function PricingTierCards() {
             src="https://ik.imagekit.io/9mrgsv2rp/Untitledasdasd.png"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none absolute right-[102px] top-14 h-32 w-32 select-none object-contain drop-shadow-lg sm:h-40 sm:w-40"
+            className="pointer-events-none absolute right-[102px] top-1/2 h-32 w-32 -translate-y-1/2 select-none object-contain drop-shadow-lg sm:h-40 sm:w-40"
           />
 
           <header>
