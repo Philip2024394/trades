@@ -190,8 +190,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     editorial_badge: "viral_growth",
     callouts: ["Status chip", "Photo grid", "Social share"],
     pricing: { kind: "paid", monthly_pence: 400 },
-    availability: "coming_soon",
-    hasEditor: false,
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "job-diary",
     includedWithPaid: false,
     benefits: [
       "Post-by-post job updates with status chips and photos",
@@ -309,6 +310,16 @@ export function isDownloadsOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).downloads === true;
+}
+
+/** Job Diary add-on — when on, the profile surfaces an inline
+ *  "currently working on…" teaser plus the swipeable past-projects
+ *  strip under the hero, and the dedicated /<slug>/job-diary page
+ *  becomes reachable. Paid-only. */
+export function isJobDiaryOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).job_diary === true;
 }
 
 /** Format a paid add-on's monthly price for UI rendering. */

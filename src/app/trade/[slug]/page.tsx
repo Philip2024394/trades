@@ -43,7 +43,9 @@ import { ProductCardGrid } from "@/components/xrated/profile/ProductCardGrid";
 import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
 import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPricedSection";
 import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
-import { isDownloadsOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
+import { JobDiarySection } from "@/components/xrated/profile/JobDiarySection";
+import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
+import { isDownloadsOn, isJobDiaryOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -483,9 +485,17 @@ function PremiumLayout({
   // priced by the hour). Double-checks the gate here so a leaked toggle
   // on a free profile can't bypass it.
   const servicesGrid = isPaid && isServicesGridOn(listing);
+  // Job Diary gate — paid tier AND add-on flag on.
+  const jobDiaryOn = isPaid && isJobDiaryOn(listing);
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
+
+      {/* Past projects swipeable strip — sits just below the hero so
+          "what we've delivered" lands before "what we're working on
+          now". Self-hides when there are zero completed projects
+          (per the no-empty-graveyard default). */}
+      {jobDiaryOn && <PastProjectsStrip listing={listing} />}
 
       {/* Free-tier upgrade banner — pinned high under the hero so it's
           one of the first things visitors see, BUT below the hero so
@@ -524,6 +534,12 @@ function PremiumLayout({
           up to 6 live downloads; self-hides when zero. View-all link
           points at /<slug>/downloads where the full grid lives. */}
       {isPaid && isDownloadsOn(listing) && <DownloadsSection listing={listing} />}
+      {/* Job Diary inline teaser — paid tier + add-on on. Surfaces the
+          single most-recent live project; self-hides when there are
+          none or when the latest update is >30 days stale (cadence
+          guard). Sits BEFORE TrustedTradesCta so the customer reads
+          "live work" → "people I recommend". */}
+      {jobDiaryOn && <JobDiarySection listing={listing} />}
       <TeamGrid listing={listing} />
       {/* My Trusted Trades — link to the dedicated sub-page. Available
           on every tier (free + trial + paid) as the viral acquisition

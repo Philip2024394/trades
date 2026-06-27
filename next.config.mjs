@@ -33,6 +33,9 @@ const nextConfig = {
         { source: "/:slug/trusted-trades", destination: "/trade/:slug/trusted-trades" },
         { source: "/:slug/services-prices", destination: "/trade/:slug/services-prices" },
         { source: "/:slug/downloads", destination: "/trade/:slug/downloads" },
+        { source: "/:slug/job-diary", destination: "/trade/:slug/job-diary" },
+        { source: "/:slug/job-diary/:projectId", destination: "/trade/:slug/job-diary/:projectId" },
+        { source: "/:slug/job-diary/:projectId/request-removal", destination: "/trade/:slug/job-diary/:projectId/request-removal" },
         { source: "/:slug/cart", destination: "/trade/:slug/cart" }
       ],
       fallback: []
@@ -51,6 +54,9 @@ const nextConfig = {
       { source: "/trade/:slug/trusted-trades", destination: "/:slug/trusted-trades", permanent: true },
       { source: "/trade/:slug/services-prices", destination: "/:slug/services-prices", permanent: true },
       { source: "/trade/:slug/downloads", destination: "/:slug/downloads", permanent: true },
+      { source: "/trade/:slug/job-diary", destination: "/:slug/job-diary", permanent: true },
+      { source: "/trade/:slug/job-diary/:projectId", destination: "/:slug/job-diary/:projectId", permanent: true },
+      { source: "/trade/:slug/job-diary/:projectId/request-removal", destination: "/:slug/job-diary/:projectId/request-removal", permanent: true },
       { source: "/trade/:slug/cart", destination: "/:slug/cart", permanent: true }
     ];
   }

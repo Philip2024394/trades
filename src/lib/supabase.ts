@@ -192,6 +192,54 @@ export type HammerexXratedDownloadLead = {
   downloaded_at: string;
 };
 
+// Job Diary add-on — public project a tradesperson advertises. Each
+// project carries a live update stream (HammerexXratedProjectUpdate)
+// and is hard-gated behind a privacy disclaimer (no faces / no
+// addresses / customer agreed) before it can be saved. `status='live'`
+// shows on the profile; `completed` archives into the past-projects
+// strip; `archived` is soft-hidden (right-to-removal or tradesperson
+// choice).
+export type HammerexXratedProject = {
+  id: string;
+  listing_id: string;
+  title: string;
+  location_label: string;
+  started_at: string;
+  estimated_complete_at: string | null;
+  completed_at: string | null;
+  cover_image_url: string;
+  final_summary: string | null;
+  status: "live" | "completed" | "archived";
+  privacy_disclaimer_confirmed_at: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+// One "post" within a Job Diary project. status_chip is a controlled
+// enum of 8 neutral-framed values (see lib/xratedAddons.ts /
+// JobDiaryStatusPicker for the labels and colours). image_urls capped
+// at 4 to keep update cards scannable.
+export type HammerexXratedProjectUpdate = {
+  id: string;
+  project_id: string;
+  status_chip:
+    | "on_track"
+    | "stage_complete"
+    | "inspection_passed"
+    | "weather_delay"
+    | "materials_delay"
+    | "scope_change"
+    | "snagging"
+    | "completed";
+  image_urls: string[];
+  note: string | null;
+  shared_platforms: string[];
+  ip_hash: string | null;
+  posted_at: string;
+  created_at: string;
+};
+
 export type HammerexTradeOffMessage = {
   id: string;
   listing_id: string;
