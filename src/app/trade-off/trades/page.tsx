@@ -151,6 +151,12 @@ export default function TradeExamplesPage() {
               Pick the one that matches your trade.
             </span>
           </p>
+          <p className="mt-3 max-w-2xl text-xs leading-relaxed text-white/70 sm:text-sm">
+            You&rsquo;ll have{" "}
+            <span className="font-bold text-white">full edit control</span>{" "}
+            over every word, photo, price and colour later — but
+            let&rsquo;s get you live first while you find your way around.
+          </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70">
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> Real prices, not placeholders
