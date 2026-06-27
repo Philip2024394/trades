@@ -78,7 +78,7 @@ const FAQ = [
 
 export default function AddOnsPage() {
   return (
-    <main className="bg-brand-bg pb-24 md:pb-0">
+    <main className="pb-24 md:pb-0" style={{ background: "#0A0A0A" }}>
       <XratedHeader />
 
       {/* Hero — black surface, eyebrow + headline with yellow accent on
@@ -154,7 +154,7 @@ export default function AddOnsPage() {
           {HOW_STEPS.map((step) => (
             <li
               key={step.n}
-              className="rounded-2xl border border-white/10 bg-white/[0.04] p-5"
+              className="rounded-2xl border border-white/10 bg-[#141414] p-5"
             >
               <span
                 className="inline-flex h-11 w-11 items-center justify-center rounded-full text-base font-extrabold"
@@ -190,7 +190,7 @@ export default function AddOnsPage() {
         <ul className="mt-6 flex flex-col gap-3">
           {FAQ.map((qa) => (
             <li key={qa.q}>
-              <details className="group rounded-2xl border border-white/10 bg-white/[0.04] p-4 transition open:border-white/25">
+              <details className="group rounded-2xl border border-white/10 bg-[#141414] p-4 transition open:border-white/25">
                 <summary className="flex min-h-[44px] cursor-pointer list-none items-start justify-between gap-3 text-sm font-bold text-white marker:content-['']">
                   <span>{qa.q}</span>
                   <span
@@ -261,7 +261,7 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
   const badgeLabel = ADDON_BADGE_LABEL[addon.editorial_badge];
 
   return (
-    <li className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06] sm:flex-row">
+    <li className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#141414] transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-[#1c1c1c] sm:flex-row">
       {/* Image side — square on desktop, 16:9 on mobile (image stacks
           above the content). Falls back to a phone-frame illustration
           + glyph + pointer-callout pills when image_url is null. Real
@@ -386,7 +386,7 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
         {/* "What it does" — full summary in a bordered card so the
             customer reads the real scope of the add-on, not just the
             one-line hook. Yellow eyebrow + readable body copy. */}
-        <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-3">
+        <div className="mt-3 rounded-xl border border-white/10 bg-[#1c1c1c] p-3">
           <p
             className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
