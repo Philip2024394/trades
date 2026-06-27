@@ -283,9 +283,11 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
               background: `linear-gradient(135deg, ${XRATED_BRAND.accent} 0%, ${XRATED_BRAND.accent}cc 50%, ${XRATED_BRAND.accent}99 100%)`
             }}
           >
-            {/* Phone frame — rounded rect with notch, glyph centered. */}
+            {/* Phone frame — width-based with aspect-ratio so the frame
+                always has dimensions even inside a flex parent that
+                doesn't stretch its children. */}
             <div
-              className="relative h-full max-h-[180px] w-auto"
+              className="relative w-24 sm:w-28 md:w-32"
               style={{ aspectRatio: "10 / 16" }}
             >
               {/* Black phone bezel */}
