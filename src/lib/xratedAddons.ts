@@ -290,6 +290,28 @@ export const XRATED_ADDONS: XratedAddon[] = [
     ]
   },
   {
+    slug: "quote_pipeline",
+    name: "Quote Pipeline",
+    tagline: "Track every quote — sent / chasing / accepted / lost — in one kanban board",
+    summary:
+      "A minimal CRM built for tradespeople running crews. Drop in each quote, watch it move through Sent → Chasing → Accepted, and never lose track of a job again. Each quote ties to the customer's name + phone with a one-tap WhatsApp follow-up button. Set a follow-up date and the dashboard nudges you when it's time to chase. Pure pipeline view — no email blasts, no automation, no clutter. The opposite of a full CRM: just the four columns that matter on a Monday morning.",
+    glyph: "📋",
+    image_url: null,
+    personas: ["Builders", "Multi-truck operators", "Crew leads"],
+    editorial_badge: "any_trade",
+    callouts: ["4-column kanban", "Follow-up reminders", "WhatsApp handoffs"],
+    pricing: { kind: "paid", monthly_pence: 500 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "quote-pipeline",
+    includedWithPaid: false,
+    benefits: [
+      "4-column board: Sent · Chasing · Accepted · Lost — drag to move",
+      "One-tap WhatsApp follow-up using the customer's number you saved",
+      "Follow-up dates with dashboard nudges so jobs never go cold"
+    ]
+  },
+  {
     slug: "faq_page",
     name: "FAQ Page",
     tagline: "Visual knowledge base — questions, answers and ref-numbered images",

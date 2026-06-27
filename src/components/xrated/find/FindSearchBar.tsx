@@ -1,10 +1,11 @@
 "use client";
 
 // Search bar for the customer-facing /find portal. Pure URL-param
-// driver — no client state survives the navigation. Three fields:
-// trade (dropdown), city/area (free text), postcode (free text).
-// Submits to /find?trade=&city=&postcode= and the server page
-// re-queries the listings table.
+// driver — no client state survives the navigation. Four fields:
+// country (auto-detected from IP, overrideable), trade (dropdown),
+// city/area (free text), postcode (free text).
+// Submits to /find?country=&trade=&city=&postcode= and the server
+// page re-queries the listings table.
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition, type FormEvent } from "react";
@@ -12,11 +13,34 @@ import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 
 const BRAND_YELLOW = "#FFB300";
 
-export function FindSearchBar() {
+// Country pick-list. UK leads because that's where our membership
+// density is today; other countries listed so the IP-detect can match
+// even if there are no live members yet — empty-result page handles
+// the rest with a "be the first" CTA.
+const COUNTRIES: { code: string; label: string }[] = [
+  { code: "GB", label: "United Kingdom" },
+  { code: "IE", label: "Ireland" },
+  { code: "US", label: "United States" },
+  { code: "AU", label: "Australia" },
+  { code: "NZ", label: "New Zealand" },
+  { code: "CA", label: "Canada" },
+  { code: "ZA", label: "South Africa" },
+  { code: "AE", label: "United Arab Emirates" },
+  { code: "SG", label: "Singapore" }
+];
+
+export function FindSearchBar({
+  detectedCountry
+}: {
+  detectedCountry?: string;
+}) {
   const router = useRouter();
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
 
+  const [country, setCountry] = useState(
+    params.get("country") ?? detectedCountry ?? "GB"
+  );
   const [trade, setTrade] = useState(params.get("trade") ?? "");
   const [city, setCity] = useState(params.get("city") ?? "");
   const [postcode, setPostcode] = useState(params.get("postcode") ?? "");
@@ -24,6 +48,7 @@ export function FindSearchBar() {
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const next = new URLSearchParams();
+    if (country && country !== "GB") next.set("country", country);
     if (trade) next.set("trade", trade);
     if (city) next.set("city", city.trim());
     if (postcode) next.set("postcode", postcode.trim().toUpperCase());
@@ -33,6 +58,7 @@ export function FindSearchBar() {
   }
 
   function clear() {
+    setCountry(detectedCountry ?? "GB");
     setTrade("");
     setCity("");
     setPostcode("");
@@ -41,7 +67,7 @@ export function FindSearchBar() {
     });
   }
 
-  const hasFilter = trade || city || postcode;
+  const hasFilter = trade || city || postcode || (country && country !== "GB");
 
   return (
     <form
@@ -50,8 +76,32 @@ export function FindSearchBar() {
       style={{ borderColor: BRAND_YELLOW, boxShadow: `0 20px 50px ${BRAND_YELLOW}33` }}
     >
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-12 sm:gap-2.5">
+        {/* Country — defaults to IP-detected. */}
+        <label className="flex flex-col gap-1 sm:col-span-3">
+          <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500">
+            Country
+            {detectedCountry && country === detectedCountry && (
+              <span className="ml-1 font-bold normal-case tracking-normal text-neutral-400">
+                · auto
+              </span>
+            )}
+          </span>
+          <select
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            disabled={pending}
+            className="h-12 w-full rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold text-neutral-900 focus:border-neutral-400 focus:outline-none sm:text-sm"
+          >
+            {COUNTRIES.map((c) => (
+              <option key={c.code} value={c.code}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        </label>
+
         {/* Trade */}
-        <label className="flex flex-col gap-1 sm:col-span-4">
+        <label className="flex flex-col gap-1 sm:col-span-3">
           <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500">
             Trade
           </span>
@@ -71,7 +121,7 @@ export function FindSearchBar() {
         </label>
 
         {/* City / area */}
-        <label className="flex flex-col gap-1 sm:col-span-4">
+        <label className="flex flex-col gap-1 sm:col-span-2">
           <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500">
             City or area
           </span>

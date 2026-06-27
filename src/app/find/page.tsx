@@ -13,6 +13,7 @@
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { headers } from "next/headers";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
@@ -46,7 +47,40 @@ type SearchParams = Promise<{
   trade?: string | string[];
   city?: string | string[];
   postcode?: string | string[];
+  country?: string | string[];
 }>;
+
+// Map ISO 3166-1 alpha-2 codes to the human country label we store on
+// the listings table. UK gets two codes because "GB" is the official
+// ISO code but "UK" is what we put on demo seeds.
+const COUNTRY_CODE_TO_LABEL: Record<string, string> = {
+  GB: "UK",
+  UK: "UK",
+  IE: "Ireland",
+  US: "United States",
+  AU: "Australia",
+  NZ: "New Zealand",
+  CA: "Canada",
+  ZA: "South Africa",
+  AE: "United Arab Emirates",
+  SG: "Singapore"
+};
+
+// Read the visitor's country from common edge-CDN headers. Cloudflare
+// adds `cf-ipcountry`, Vercel adds `x-vercel-ip-country`. Local dev
+// has neither, so we fall back to GB (UK).
+async function detectCountry(): Promise<string> {
+  try {
+    const h = await headers();
+    const fromCf = h.get("cf-ipcountry");
+    if (fromCf && fromCf.length === 2) return fromCf.toUpperCase();
+    const fromVercel = h.get("x-vercel-ip-country");
+    if (fromVercel && fromVercel.length === 2) return fromVercel.toUpperCase();
+  } catch {
+    // headers() throws outside a request context — just default.
+  }
+  return "GB";
+}
 
 function readParam(v: string | string[] | undefined): string {
   if (Array.isArray(v)) return v[0] ?? "";
@@ -69,7 +103,14 @@ const FEATURED_SLUGS: string[] = [
 const SELECT_COLS =
   "slug, display_name, trading_name, primary_trade, city, country, avatar_url, rating_avg, rating_count, years_in_trade";
 
-async function loadResults(opts: { trade: string; city: string; postcode: string }) {
+async function loadResults(opts: {
+  trade: string;
+  city: string;
+  postcode: string;
+  country: string;
+}) {
+  const countryLabel = COUNTRY_CODE_TO_LABEL[opts.country] ?? "UK";
+
   if (!opts.trade && !opts.city && !opts.postcode) {
     // No filters — return the featured slate in the order above.
     const res = await supabaseAdmin
@@ -89,6 +130,7 @@ async function loadResults(opts: { trade: string; city: string; postcode: string
     .from("hammerex_trade_off_listings")
     .select(SELECT_COLS)
     .eq("status", "live")
+    .eq("country", countryLabel)
     .order("rating_avg", { ascending: false, nullsFirst: false })
     .order("rating_count", { ascending: false, nullsFirst: false })
     .limit(24);
@@ -122,10 +164,14 @@ export default async function FindPortalPage({
   const trade = readParam(sp.trade);
   const city = readParam(sp.city);
   const postcode = readParam(sp.postcode);
-  const hasFilter = Boolean(trade || city || postcode);
+  const detectedCountry = await detectCountry();
+  const country = readParam(sp.country) || detectedCountry;
+  const hasFilter = Boolean(
+    trade || city || postcode || (country && country !== "GB" && country !== "UK")
+  );
 
   const [results, totalMembers] = await Promise.all([
-    loadResults({ trade, city, postcode }),
+    loadResults({ trade, city, postcode, country }),
     loadTotalMemberCount()
   ]);
 
@@ -138,63 +184,93 @@ export default async function FindPortalPage({
     <main className="bg-neutral-50 pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface, yellow eyebrow + accent. */}
+      {/* Hero — black surface, yellow eyebrow + accent. Search bar sits
+          OUTSIDE the hero so it overlaps the bottom edge like the
+          premium-app profile-info card pattern. */}
       <section
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
-        <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-12 sm:px-6 sm:pb-14 sm:pt-16">
-          <p
-            className="text-[13px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            xratedtrades.com &middot; The customer portal
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            {hasFilter ? (
-              headline
-            ) : (
-              <>
-                See who has an{" "}
-                <span style={{ color: XRATED_BRAND.accent }}>Xrated app</span>{" "}
-                near you.
-              </>
-            )}
-          </h1>
-          {!hasFilter && (
-            <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-sm">
-              Every result is a{" "}
-              <span className="font-bold text-white">real tradesperson</span>{" "}
-              with their own premium app &mdash; not a directory listing.
-              Tap a card, land on their app, message them{" "}
-              <span className="font-bold text-white">direct on WhatsApp</span>.
-              We never sit between you and the trade. No quote forms, no
-              lead routing, no middleman.
+        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-28 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-32 sm:pt-16">
+          <div>
+            <p
+              className="text-[13px] font-bold uppercase tracking-[0.22em]"
+              style={{ color: XRATED_BRAND.accent }}
+            >
+              xratedtrades.com &middot; The customer portal
             </p>
-          )}
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70 sm:text-sm">
-            <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live UK members
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> Tap = the tradesperson&rsquo;s actual app
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> No middleman, no commission
-            </span>
+            <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+              {hasFilter ? (
+                headline
+              ) : (
+                <>
+                  See who has an{" "}
+                  <span style={{ color: XRATED_BRAND.accent }}>Xrated app</span>{" "}
+                  near you.
+                </>
+              )}
+            </h1>
+            {!hasFilter && (
+              <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-sm">
+                Every result is a{" "}
+                <span className="font-bold text-white">real tradesperson</span>{" "}
+                with their own premium app &mdash; not a directory listing.
+                Tap a card, land on their app, message them{" "}
+                <span className="font-bold text-white">direct on WhatsApp</span>.
+                We never sit between you and the trade. No quote forms, no
+                lead routing, no middleman.
+              </p>
+            )}
+            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70 sm:text-sm">
+              <span className="inline-flex items-center gap-1.5">
+                <Dot accent /> {totalMembers.toLocaleString("en-GB")} live UK members
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Dot accent /> Tap = the tradesperson&rsquo;s actual app
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <Dot accent /> No middleman, no commission
+              </span>
+            </div>
           </div>
 
-          {/* Search bar — pulled up so it visually anchors the hero. */}
-          <div className="mt-7">
-            <Suspense fallback={null}>
-              <FindSearchBar />
-            </Suspense>
+          {/* Hero artwork — stacks below on mobile, sits right on
+              desktop. Same yellow-bordered chip style we use on the
+              Yard and Tips heroes for brand consistency. */}
+          <div className="relative w-full max-w-[300px] justify-self-start sm:justify-self-end">
+            <div
+              className="absolute -inset-3 rounded-3xl"
+              style={{
+                background: `${XRATED_BRAND.accent}33`,
+                filter: "blur(18px)"
+              }}
+              aria-hidden="true"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2011_02_32%20AM.png?updatedAt=1782360173013"
+              alt="Find a UK tradie with an Xrated app"
+              className="relative w-full rounded-2xl border-2 object-cover shadow-2xl"
+              style={{ borderColor: XRATED_BRAND.accent }}
+            />
           </div>
         </div>
       </section>
 
+      {/* Search bar — floats over the hero/results boundary, same way
+          a premium app's profile-info card sits half-overlapping the
+          hero banner. Negative top margin pulls it up; results section
+          takes a smaller top-padding to compensate. */}
+      <section className="relative z-10 -mt-20 mb-2 px-4 sm:-mt-24 sm:px-6">
+        <div className="mx-auto max-w-5xl">
+          <Suspense fallback={null}>
+            <FindSearchBar detectedCountry={detectedCountry} />
+          </Suspense>
+        </div>
+      </section>
+
       {/* Results */}
-      <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
+      <section className="mx-auto max-w-5xl px-4 pt-8 sm:px-6 sm:pt-10">
         {!hasFilter ? (
           <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-neutral-500">
             Featured Xrated members

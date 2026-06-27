@@ -639,6 +639,55 @@ export type HammerexShippingZone = {
   free_shipping_threshold_idr: number;
 };
 
+// Quote Pipeline add-on (£5/mo) — minimal CRM for tradies who run
+// crews. Tracks quotes per stage (sent / chasing / accepted / lost),
+// WhatsApp deep-links, follow-up reminders. No customer login — all
+// handoffs go via the tradie's WhatsApp.
+export type QuoteStatus = "sent" | "chasing" | "accepted" | "lost";
+
+export type HammerexXratedQuote = {
+  id: string;
+  listing_id: string;
+  customer_name: string;
+  customer_phone: string | null;
+  customer_email: string | null;
+  service_name: string | null;
+  quote_amount_pence: number | null;
+  status: QuoteStatus;
+  follow_up_at: string | null;
+  notes: string | null;
+  lost_reason: string | null;
+  won_at: string | null;
+  lost_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+// Verified Plus (£29.99/mo) — independently verified DBS + insurance +
+// trade body memberships. Tier above paid/Verified.
+export type VerifiedPlusStatus =
+  | "applied"
+  | "in_review"
+  | "approved"
+  | "rejected";
+
+export type HammerexTradeOffVerifiedPlusApplication = {
+  id: string;
+  listing_id: string;
+  applicant_name: string;
+  contact_phone: string;
+  dbs_doc_url: string | null;
+  insurance_doc_url: string | null;
+  insurance_amount_pence: number | null;
+  trade_body_names: string[] | null;
+  trade_body_cert_urls: string[] | null;
+  notes: string | null;
+  status: VerifiedPlusStatus;
+  reviewer_notes: string | null;
+  created_at: string;
+  decided_at: string | null;
+};
+
 // The Yard reactions — Facebook-style emoji per post. One row per
 // (post, reactor) — toggling changes the kind, removing deletes the row.
 export type YardReactionKind =
