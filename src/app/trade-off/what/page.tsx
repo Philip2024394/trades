@@ -110,13 +110,27 @@ export default function WhatPage() {
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface with yellow accent eyebrow, matching the
-          pricing page pattern. No banner image here — keep the focus
-          on the headline so first-time visitors read the explanation. */}
+      {/* Hero — banner-image background with dark gradient overlay for
+          legibility. Same pattern as /trade-off/pricing, /trade-off/how,
+          /trade-off/share. */}
       <section
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2026,%202026,%2007_59_10%20AM.png?updatedAt=1782435570414"
+          alt="Xrated Trades — your trade, online, in one link."
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15) 75%, rgba(0,0,0,0) 100%)"
+          }}
+        />
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
           <p
             className="text-xs font-bold uppercase tracking-[0.22em]"
@@ -124,11 +138,11 @@ export default function WhatPage() {
           >
             Start here
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow sm:text-4xl md:text-5xl">
             Your trade. Online. In{" "}
             <span style={{ color: XRATED_BRAND.accent }}>one link.</span>
           </h1>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/85 drop-shadow sm:text-sm">
             Xrated Trades gives every tradesperson their own professional
             online profile on one shareable URL. Photos of real jobs, customer
             reviews, services with prices, a WhatsApp button, an intro video
