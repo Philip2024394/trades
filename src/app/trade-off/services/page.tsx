@@ -201,6 +201,12 @@ export default function ServiceCardsPage() {
                   loading="lazy"
                   className="h-full w-full object-cover"
                 />
+                {/* Example chip — matches the same badge style used on
+                    /trade-off/trades so customers + tradies always know
+                    these aren't a real tradesperson's uploaded photos. */}
+                <span className="absolute right-2 top-2 rounded-full bg-black/80 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
+                  Example
+                </span>
               </div>
               <div className="p-3 sm:p-4">
                 <h3 className="text-sm font-extrabold text-neutral-900 sm:text-base">
