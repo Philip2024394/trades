@@ -205,14 +205,6 @@ export default async function YardFeedPage({
             className="mt-3 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg"
             style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
           >
-            Customers want{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>&ldquo;I&rsquo;m busy&rdquo;</span>{" "}
-            &mdash; not &ldquo;looking for work&rdquo;.
-          </p>
-          <p
-            className="mt-2 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg"
-            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
-          >
             <span style={{ color: XRATED_BRAND.accent }}>Hire</span>,{" "}
             <span style={{ color: XRATED_BRAND.accent }}>fire</span>,{" "}
             and{" "}
