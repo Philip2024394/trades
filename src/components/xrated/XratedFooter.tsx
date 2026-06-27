@@ -36,7 +36,7 @@ export function XratedFooter() {
               className="inline-flex h-11 items-center gap-1.5 rounded-lg px-4 text-xs font-extrabold uppercase tracking-wider text-neutral-900 transition active:scale-[0.98]"
               style={{ background: XRATED_BRAND.accent }}
             >
-              Start 14-day free trial
+              Join XratedTrade
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

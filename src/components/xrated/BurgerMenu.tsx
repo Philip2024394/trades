@@ -2,7 +2,7 @@
 
 // Xrated Trades — burger menu overlay. Opens from the header button
 // (XratedHeader). Renders a full-screen slide-down with the 6 priority
-// destinations + a quick "Sign in" + "Start free trial" CTA. The
+// destinations + a quick "Sign in" + "Join XratedTrade" CTA. The
 // underlying header button stays an aria-controls anchor for a11y.
 
 import { useEffect, useState } from "react";
@@ -141,7 +141,7 @@ export function BurgerMenu() {
               className="inline-flex h-12 items-center justify-center gap-1.5 rounded-xl px-4 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98] sm:text-sm"
               style={{ background: XRATED_BRAND.accent, boxShadow: `0 8px 24px ${XRATED_BRAND.accent}55` }}
             >
-              Start free trial
+              Join XratedTrade
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

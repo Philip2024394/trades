@@ -360,7 +360,7 @@ export default function HowItWorksPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Start free trial
+              Join XratedTrade
             </a>
             <a
               href="/trade-off/pricing"

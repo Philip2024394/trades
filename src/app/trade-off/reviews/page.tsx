@@ -312,7 +312,7 @@ export default function ReviewsPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Start 14-day trial
+              Join XratedTrade
             </a>
             <a
               href="/trade-off/pricing"

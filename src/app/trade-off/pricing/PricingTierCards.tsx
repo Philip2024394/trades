@@ -216,7 +216,7 @@ export function PricingTierCards() {
               className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
               style={{ background: XRATED_BRAND.accent }}
             >
-              Start 14-day trial
+              Join XratedTrade
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

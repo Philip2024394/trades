@@ -449,7 +449,7 @@ export default function TrustScorePage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Start free trial
+              Join XratedTrade
             </a>
             <a
               href="/demo-mike-watson-drywall-manchester"

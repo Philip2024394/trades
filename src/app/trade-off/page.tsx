@@ -457,7 +457,7 @@ export default async function TradeOffLandingPage() {
               step: 1,
               title: "Claim your URL",
               body:
-                "Type your name on the home page and tap Start free trial. You're in your dashboard in 5 seconds — no signup form, no card."
+                "Type your name on the home page and tap Join XratedTrade. You're in your dashboard in 5 seconds — no signup form, no card."
             },
             {
               step: 2,
@@ -526,7 +526,7 @@ export default async function TradeOffLandingPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Start free trial
+              Join XratedTrade
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

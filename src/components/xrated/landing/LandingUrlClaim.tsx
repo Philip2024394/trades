@@ -1,7 +1,7 @@
 "use client";
 
 // Hero URL-claim widget — the visitor types the slug they want for
-// their xratedtrade.com/<slug> URL, then clicks Start free trial.
+// their xratedtrade.com/<slug> URL, then clicks Join XratedTrade.
 // We slugify live (lowercase, hyphen-separated, no funky characters)
 // so the user always sees a valid preview, and we navigate to the
 // signup page with the slug pre-populated.
@@ -56,7 +56,7 @@ export function LandingUrlClaim() {
           className="inline-flex h-14 shrink-0 items-center gap-1 px-4 text-xs font-extrabold uppercase tracking-wider text-neutral-900 transition active:scale-[0.97] sm:h-12 sm:px-5 sm:text-sm"
           style={{ background: "#FFB300" }}
         >
-          <span className="hidden sm:inline">Start free trial</span>
+          <span className="hidden sm:inline">Join XratedTrade</span>
           <span className="sm:hidden">Claim</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="m9 18 6-6-6-6" />

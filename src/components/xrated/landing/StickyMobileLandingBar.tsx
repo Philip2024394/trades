@@ -51,7 +51,7 @@ export function StickyMobileLandingBar() {
           href="/trade-off/signup"
           className="inline-flex h-14 flex-1 items-center justify-center rounded-xl bg-[#FFB300] px-3 text-xs font-extrabold text-neutral-900 shadow-lg transition active:scale-[0.98]"
         >
-          Start free trial
+          Join XratedTrade
         </a>
       </div>
     </div>
