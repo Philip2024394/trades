@@ -231,7 +231,7 @@ export default function TradeExamplesPage() {
                         {t.trade}
                       </h3>
                       <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                        View profile
+                        Live demo profile
                         <span
                           aria-hidden="true"
                           className="transition group-hover:translate-x-0.5"
@@ -283,6 +283,22 @@ export default function TradeExamplesPage() {
                         {t.ratingLabel}
                       </span>
                     </div>
+
+                    {/* Prominent yellow CTA — the whole card is clickable
+                        but the button makes the click target explicit so
+                        first-time visitors don't miss it. */}
+                    <span
+                      className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
+                      style={{
+                        background: XRATED_BRAND.accent,
+                        boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
+                      }}
+                    >
+                      View example
+                      <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+                        &rarr;
+                      </span>
+                    </span>
                   </div>
                 </a>
               </li>

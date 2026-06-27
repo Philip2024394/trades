@@ -59,30 +59,30 @@ const STORIES: Story[] = [
     href: "/demo-mike-watson-drywall-manchester"
   },
   {
-    slug: "tom-bridges",
-    name: "Tom Bridges",
-    initials: "TB",
+    slug: "billy-ahmed",
+    name: "Billy Ahmed",
+    initials: "BA",
     trade: "Scaffolder",
-    city: "Leeds",
+    city: "Birmingham",
     quote:
       "Booked 8 jobs from one Instagram post with my Xrated link in the bio.",
     body:
-      "Tom runs a two-truck scaffolding crew. He used to lose enquiries because customers wanted to compare three quotes before calling. Now his Instagram bio links straight to his xratedtrade.com URL — every prospect lands on his prices, his sites, his five-star reviews. The decision is made before he picks up the phone.",
+      "Billy runs a two-truck scaffolding crew across the West Midlands. He used to lose enquiries because customers wanted to compare three quotes before calling. Now his Instagram bio links straight to his xratedtrade.com URL — every prospect lands on his prices, his sites, his five-star reviews. The decision is made before he picks up the phone.",
     stats: { reviews: 31, viewsPerMonth: "940", enquiriesPerMonth: 19 },
-    href: "/demo-mike-watson-drywall-manchester"
+    href: "/demo-billy-ahmed-scaffolder-birmingham"
   },
   {
-    slug: "sarah-k",
-    name: "Sarah K.",
+    slug: "sara-khan",
+    name: "Sara Khan",
     initials: "SK",
     trade: "Plasterer",
     city: "Birmingham",
     quote:
       "First Verified plasterer in my postcode. Customers find me first.",
     body:
-      "Sarah signed up in the founding-Verified cohort. Her profile is the only plastering result with a verified badge in her search radius. Customers searching for plasterers in B-postcodes see her at the top of the listing, click straight through, and message her on WhatsApp. She has stopped paying for any other directory.",
+      "Sara signed up in the founding-Verified cohort. Her profile is the only plastering result with a verified badge in her search radius. Customers searching for plasterers in B-postcodes see her at the top of the listing, click straight through, and message her on WhatsApp. She has stopped paying for any other directory.",
     stats: { reviews: 22, viewsPerMonth: "760", enquiriesPerMonth: 14 },
-    href: "/demo-mike-watson-drywall-manchester"
+    href: "/demo-sara-khan-plastering-birmingham"
   },
   {
     slug: "james-oconnor",
@@ -95,7 +95,7 @@ const STORIES: Story[] = [
     body:
       "James used to dread asking for reviews. Now the moment a job ends he sends his customer a one-tap review link tied to the exact service they paid for. The reviews stack up, the URL ranks for his name, and past customers send the link to friends. Three in five new enquiries arrive through his URL — for free.",
     stats: { reviews: 38, viewsPerMonth: "1,400", enquiriesPerMonth: 32 },
-    href: "/demo-mike-watson-drywall-manchester"
+    href: "/demo-james-oconnor-electrical-london"
   }
 ];
 
