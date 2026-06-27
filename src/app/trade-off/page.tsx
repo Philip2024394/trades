@@ -145,6 +145,25 @@ export default async function TradeOffLandingPage() {
               <span style={{ color: XRATED_BRAND.accent }}>One link.</span>
             </h1>
 
+            {/* Add-ons teaser — small yellow pill linking to the
+                add-ons marketing page. Above the URL-claim widget so it
+                shows up in the first eye-frame without competing with
+                the headline. */}
+            <a
+              href="/trade-off/add-ons"
+              className="mt-4 inline-flex h-9 items-center gap-1.5 rounded-full bg-white/95 px-3 text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition hover:bg-white sm:text-xs"
+            >
+              <span
+                aria-hidden="true"
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ background: XRATED_BRAND.accent }}
+              />
+              Now with 8 add-ons
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+
             {/* URL-claim widget — the hero's only real CTA. Visitor types
                 the slug they want and lands in signup with it pre-filled. */}
             <div className="mt-6">

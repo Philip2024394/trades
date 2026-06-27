@@ -54,6 +54,7 @@ export function XratedFooter() {
               { href: "/trade-off/why", label: "Why do I need one?" },
               { href: "/trade-off/how", label: "How it works" },
               { href: "/trade-off/pricing", label: "Pricing" },
+              { href: "/trade-off/add-ons", label: "Add-ons" },
               { href: "/trade-off/compare", label: "Why choose us" }
             ]}
           />

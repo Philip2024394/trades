@@ -191,6 +191,30 @@ export default function PricingPage() {
               <Dot accent /> Cancel any time
             </span>
           </div>
+          {/* Add-ons cross-link — both paid tiers stack the same add-on
+              library. Surfaced here so a tradesperson comparing prices
+              also discovers they can bolt on Shop Mode, Services Prices,
+              Job Diary, Downloads, etc. */}
+          <a
+            href="/trade-off/add-ons"
+            className="mt-5 inline-flex h-10 items-center gap-2 rounded-full border border-white/30 bg-white/5 px-4 text-xs font-bold text-white/90 transition hover:border-white/60 hover:bg-white/10 sm:text-sm"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: XRATED_BRAND.accent }}
+            />
+            <span>
+              Every plan supports{" "}
+              <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
+                8 add-ons
+              </span>{" "}
+              — Shop, Services Prices, Job Diary &amp; more
+            </span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </a>
         </div>
       </section>
 
