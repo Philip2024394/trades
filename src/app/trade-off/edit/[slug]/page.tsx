@@ -22,6 +22,7 @@ import { VideoUploadInput } from "@/components/trade-off/VideoUploadInput";
 import { WhatsappLeadsNudge } from "@/components/trade-off/WhatsappLeadsNudge";
 import { LossAversionPreview } from "@/components/trade-off/LossAversionPreview";
 import { TrustScorePanel } from "@/components/trade-off/TrustScorePanel";
+import { BusinessCardPanel } from "@/components/trade-off/BusinessCardPanel";
 import type { HammerexXratedVoucher } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -191,6 +192,20 @@ export default async function TradeOffEditPage({
         >
           Manage your verified work →
         </a>
+      </section>
+
+      {/* My Business Card — free for every tier. One-tap WhatsApp share
+          of a server-generated card PNG. Placed high in the dashboard
+          because it's the viral lever (every shared card carries the
+          slug URL + QR). */}
+      <section className="mx-auto max-w-3xl px-4 pb-6">
+        <BusinessCardPanel
+          slug={slug}
+          displayName={row.data.display_name ?? ""}
+          primaryTrade={row.data.primary_trade ?? ""}
+          city={row.data.city ?? ""}
+          whatsapp={row.data.whatsapp ?? ""}
+        />
       </section>
 
       {/* Trust Score panel — shows the live 0-100 gauge + the 8-item

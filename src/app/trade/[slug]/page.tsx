@@ -34,6 +34,7 @@ import { OperatingHoursPanel } from "@/components/xrated/profile/OperatingHoursP
 import { StarRatingRow } from "@/components/xrated/profile/StarRatingRow";
 import { ProfileActionTriple } from "@/components/xrated/profile/ProfileActionTriple";
 import { ShareIconButton } from "@/components/xrated/profile/ShareIconButton";
+import { ShareCardButton } from "@/components/xrated/profile/ShareCardButton";
 import { PricedServicesCarousel } from "@/components/xrated/profile/PricedServicesCarousel";
 import { QrFooterDock } from "@/components/xrated/profile/QrFooterDock";
 import { PremiumStickyTrust } from "@/components/xrated/profile/PremiumStickyTrust";
@@ -1041,6 +1042,21 @@ function ShareAndContactCta({
               </svg>
               Call Now
             </a>
+          </div>
+          {/* Share business card — secondary CTA. Does NOT compete with
+              WhatsApp / phone as the primary contact actions; one tap
+              hands the customer a polished PNG to forward on. Every
+              shared card carries the slug URL + QR (xratedtrade.com
+              advertising). */}
+          <div className="mt-2">
+            <ShareCardButton
+              slug={listing.slug}
+              displayName={listing.display_name}
+              primaryTrade={tradeLabel(listing.primary_trade)}
+              city={listing.city}
+              whatsapp={listing.whatsapp}
+              variant="profile"
+            />
           </div>
         </div>
       </div>
