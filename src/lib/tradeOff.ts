@@ -46,7 +46,9 @@ export const TRADE_OFF_TRADES: Array<{
   // Kitchen fitter — full kitchen installs, units, worktops.
   { slug: "kitchen-fitter", label: "Kitchen Fitter", category_slug: "carpentry" },
   // Window fitter — windows + doors install / replacement.
-  { slug: "window-fitter", label: "Window Fitter", category_slug: null }
+  { slug: "window-fitter", label: "Window Fitter", category_slug: null },
+  // Crane operator — site crane hire + qualified operator (CPCS / NPORS).
+  { slug: "crane-operator", label: "Crane Operator", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
