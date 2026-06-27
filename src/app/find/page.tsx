@@ -67,6 +67,22 @@ const COUNTRY_CODE_TO_LABEL: Record<string, string> = {
   SG: "Singapore"
 };
 
+// Display name used in copy: "Search across {label}." — keeps the
+// article ("the UK", "the US", "the UAE") natural without forcing the
+// reader to mentally insert it.
+const COUNTRY_STRAP_LABEL: Record<string, string> = {
+  GB: "the UK",
+  UK: "the UK",
+  IE: "Ireland",
+  US: "the US",
+  AU: "Australia",
+  NZ: "New Zealand",
+  CA: "Canada",
+  ZA: "South Africa",
+  AE: "the UAE",
+  SG: "Singapore"
+};
+
 // Read the visitor's country from common edge-CDN headers. Cloudflare
 // adds `cf-ipcountry`, Vercel adds `x-vercel-ip-country`. Local dev
 // has neither, so we fall back to GB (UK).
@@ -113,18 +129,34 @@ async function loadResults(opts: {
   const countryLabel = COUNTRY_CODE_TO_LABEL[opts.country] ?? "UK";
 
   if (!opts.trade && !opts.city && !opts.postcode) {
-    // No filters — return the featured slate in the order above.
+    // No explicit filters — featured slate scoped to the country.
+    //
+    // UK: use the curated FEATURED_SLUGS ordering (Mike Watson leads,
+    // hand-picked for trade/city diversity).
+    // Other countries: live members in that country sorted by rating.
+    // If the country has no live members yet, the empty state takes
+    // over with the "Updating soon" message.
+    if (countryLabel === "UK") {
+      const res = await supabaseAdmin
+        .from("hammerex_trade_off_listings")
+        .select(SELECT_COLS)
+        .in("slug", FEATURED_SLUGS)
+        .eq("status", "live");
+      const rows = (res.data ?? []) as FindCardListing[];
+      const byMap = new Map(rows.map((r) => [r.slug, r]));
+      return FEATURED_SLUGS.map((s) => byMap.get(s)).filter(
+        (r): r is FindCardListing => Boolean(r)
+      );
+    }
     const res = await supabaseAdmin
       .from("hammerex_trade_off_listings")
       .select(SELECT_COLS)
-      .in("slug", FEATURED_SLUGS)
-      .eq("status", "live");
-    const rows = (res.data ?? []) as FindCardListing[];
-    // Preserve FEATURED_SLUGS ordering.
-    const byMap = new Map(rows.map((r) => [r.slug, r]));
-    return FEATURED_SLUGS.map((s) => byMap.get(s)).filter(
-      (r): r is FindCardListing => Boolean(r)
-    );
+      .eq("status", "live")
+      .eq("country", countryLabel)
+      .order("rating_avg", { ascending: false, nullsFirst: false })
+      .order("rating_count", { ascending: false, nullsFirst: false })
+      .limit(6);
+    return (res.data ?? []) as FindCardListing[];
   }
 
   let q = supabaseAdmin
@@ -148,11 +180,12 @@ async function loadResults(opts: {
   return (res.data ?? []) as FindCardListing[];
 }
 
-async function loadTotalMemberCount() {
+async function loadMemberCountForCountry(countryLabel: string): Promise<number> {
   const res = await supabaseAdmin
     .from("hammerex_trade_off_listings")
     .select("id", { count: "exact", head: true })
-    .eq("status", "live");
+    .eq("status", "live")
+    .eq("country", countryLabel);
   return res.count ?? 0;
 }
 
@@ -167,13 +200,17 @@ export default async function FindPortalPage({
   const postcode = readParam(sp.postcode);
   const detectedCountry = await detectCountry();
   const country = readParam(sp.country) || detectedCountry;
-  const hasFilter = Boolean(
-    trade || city || postcode || (country && country !== "GB" && country !== "UK")
-  );
+  // Filter chrome only flips on for explicit user-applied filters —
+  // country defaulting from IP stays invisible so visitors feel "this
+  // page knows where I am" rather than "search active".
+  const hasFilter = Boolean(trade || city || postcode);
+
+  const countryLabel = COUNTRY_CODE_TO_LABEL[country] ?? "UK";
+  const countryStrap = COUNTRY_STRAP_LABEL[country] ?? COUNTRY_STRAP_LABEL.GB;
 
   const [results, totalMembers] = await Promise.all([
     loadResults({ trade, city, postcode, country }),
-    loadTotalMemberCount()
+    loadMemberCountForCountry(countryLabel)
   ]);
 
   const tradeText = trade ? tradeLabel(trade) : "";
@@ -225,11 +262,11 @@ export default async function FindPortalPage({
             className="mt-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white sm:text-base"
             style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
           >
-            Search across the UK.
+            Search across {countryStrap}.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live members
+              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live members in {countryLabel}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> No middleman
