@@ -53,7 +53,18 @@ export const TRADE_OFF_TRADES: Array<{
   { slug: "security-installer", label: "Security Installer", category_slug: null },
   // Builders supplies — small specialist supply shop (distinct from the
   // larger building-merchant slug which targets multi-yard merchants).
-  { slug: "builders-supplies", label: "Builders Supplies", category_slug: null }
+  { slug: "builders-supplies", label: "Builders Supplies", category_slug: null },
+  // Formworker — builds the timber / steel molds that hold concrete
+  // pours. Distinct from concrete-specialist (placing) and
+  // concrete-finisher (troweling + sealing).
+  { slug: "formworker", label: "Formworker", category_slug: "concrete" },
+  // Insulation installer — spray foam, cellulose, mineral wool, batt
+  // insulation install for residential + commercial.
+  { slug: "insulation-installer", label: "Insulation Installer", category_slug: null },
+  // Trim carpenter — finish carpentry specialist: crown molding,
+  // baseboards, doors, casing, built-ins. Distinct from general
+  // carpenter (structural / framing).
+  { slug: "trim-carpenter", label: "Trim Carpenter", category_slug: "carpentry" }
 ];
 
 export function tradeLabel(slug: string): string {
