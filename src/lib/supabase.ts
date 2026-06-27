@@ -639,6 +639,24 @@ export type HammerexShippingZone = {
   free_shipping_threshold_idr: number;
 };
 
+// The Yard reactions — Facebook-style emoji per post. One row per
+// (post, reactor) — toggling changes the kind, removing deletes the row.
+export type YardReactionKind =
+  | "like"
+  | "dislike"
+  | "fire"
+  | "lol"
+  | "strong"
+  | "wow";
+
+export type HammerexTradeOffYardReaction = {
+  id: string;
+  post_id: string;
+  listing_id: string;
+  kind: YardReactionKind;
+  created_at: string;
+};
+
 // The Yard — paid-tier-only trades-to-trades board. Two kinds of post:
 //   'available' — sub-contractor advertising availability ("free next
 //                 week in Wexford, can do plastering")

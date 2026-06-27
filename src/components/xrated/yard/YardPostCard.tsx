@@ -14,6 +14,8 @@ import {
   formatPostDateRange,
   timeAgoShort
 } from "@/lib/yardPosts";
+import type { ReactionCounts } from "@/lib/yardReactions";
+import { YardReactionBar } from "./YardReactionBar";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
@@ -31,10 +33,12 @@ export type YardPoster = {
 
 export function YardPostCard({
   post,
-  poster
+  poster,
+  reactions = {}
 }: {
   post: HammerexTradeOffYardPost;
   poster: YardPoster | null;
+  reactions?: ReactionCounts;
 }) {
   const kindBg = YARD_KIND_BG[post.kind];
   const kindFg = YARD_KIND_FG[post.kind];
@@ -179,8 +183,14 @@ export function YardPostCard({
           </div>
         )}
 
+        {/* Reaction bar — sits above the poster row so the conversion
+            CTA stays the visual anchor. */}
+        <div className="border-t border-neutral-100 pt-3">
+          <YardReactionBar postId={post.id} initialCounts={reactions} />
+        </div>
+
         {/* Poster + CTA */}
-        <div className="mt-auto flex items-center justify-between gap-3 border-t border-neutral-100 pt-4">
+        <div className="mt-auto flex items-center justify-between gap-3 border-t border-neutral-100 pt-3">
           {poster ? (
             <a
               href={`/${poster.slug}`}
@@ -203,8 +213,22 @@ export function YardPostCard({
                 </span>
               )}
               <span className="min-w-0">
-                <span className="block truncate text-[13px] font-extrabold text-neutral-900">
-                  {posterName}
+                <span className="flex items-center gap-1.5 text-[13px] font-extrabold text-neutral-900">
+                  <span className="truncate">{posterName}</span>
+                  {/* Verified tick — every Yard poster is a paying
+                      member or builder-grade trade, so they've passed
+                      Xrated's onboarding gate. Same yellow tick used
+                      across the brand. */}
+                  <span
+                    className="inline-flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full"
+                    style={{ background: BRAND_YELLOW }}
+                    aria-label="Verified — this tradesperson is real"
+                    title="Verified — this tradesperson is real"
+                  >
+                    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
                 </span>
                 <span className="block truncate text-[11px] text-neutral-500">
                   {poster.city ?? ""}

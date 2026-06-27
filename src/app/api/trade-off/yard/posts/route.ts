@@ -11,6 +11,7 @@ import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 import { effectiveTier } from "@/lib/xratedTrades";
+import { isBuilderGradeTrade } from "@/lib/yardAccess";
 import {
   YARD_TITLE_MAX,
   YARD_TITLE_MIN,
@@ -158,7 +159,7 @@ export async function POST(req: NextRequest) {
 
   const row = await supabaseAdmin
     .from("hammerex_trade_off_listings")
-    .select("id, edit_token, tier, trial_expires_at")
+    .select("id, edit_token, tier, trial_expires_at, primary_trade")
     .eq("slug", slug)
     .maybeSingle();
   if (!row.data) {
@@ -172,7 +173,12 @@ export async function POST(req: NextRequest) {
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
-  if (tier !== "app_paid" && tier !== "app_trial") {
+  // Builder-grade trades (general-builder, building-merchant,
+  // builders-supplies) get free Yard access — they're the BUYER side
+  // of the marketplace so density on their side makes the membership
+  // more valuable for trades who pay. See lib/yardAccess.ts.
+  const builderFree = isBuilderGradeTrade(row.data.primary_trade);
+  if (tier !== "app_paid" && tier !== "app_trial" && !builderFree) {
     return NextResponse.json(
       { ok: false, error: "The Yard is for paid members. Upgrade to post." },
       { status: 402 }

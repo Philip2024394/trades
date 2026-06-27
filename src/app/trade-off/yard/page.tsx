@@ -17,8 +17,10 @@ import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { YardPostCard, type YardPoster } from "@/components/xrated/yard/YardPostCard";
+import { YardChatPost } from "@/components/xrated/yard/YardChatPost";
 import { YardFilters } from "@/components/xrated/yard/YardFilters";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
+import type { ReactionCounts } from "@/lib/yardReactions";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 
 export const revalidate = 60;
@@ -94,7 +96,24 @@ async function loadFeed(opts: { kind: string; trade: string; region: string }) {
       };
     }
   }
-  return { posts, posters };
+
+  // Reaction counts for the visible posts. One query, server-aggregated
+  // into a map keyed by post_id so each card paints initial counts
+  // without an extra round-trip on hydration.
+  const reactions: Record<string, ReactionCounts> = {};
+  if (posts.length > 0) {
+    const rres = await supabaseAdmin
+      .from("hammerex_trade_off_yard_post_reactions")
+      .select("post_id, kind")
+      .in("post_id", posts.map((p) => p.id));
+    for (const r of rres.data ?? []) {
+      const map = (reactions[r.post_id] ??= {});
+      const k = r.kind as keyof ReactionCounts;
+      map[k] = (map[k] ?? 0) + 1;
+    }
+  }
+
+  return { posts, posters, reactions };
 }
 
 async function loadCountsForKind() {
@@ -126,10 +145,15 @@ export default async function YardFeedPage({
   const trade = readParam(sp.trade);
   const region = readParam(sp.region);
 
-  const [{ posts, posters }, counts] = await Promise.all([
+  const [{ posts, posters, reactions }, counts] = await Promise.all([
     loadFeed({ kind, trade, region }),
     loadCountsForKind()
   ]);
+
+  // Split the feed by kind so we can render chat as a Facebook-style
+  // vertical feed and hire/available as a marketplace card grid.
+  const chatPosts = posts.filter((p) => p.kind === "chat");
+  const boardPosts = posts.filter((p) => p.kind !== "chat");
 
   return (
     <main className="bg-white pb-24 md:pb-0">
@@ -228,16 +252,58 @@ export default async function YardFeedPage({
         {posts.length === 0 ? (
           <EmptyState />
         ) : (
-          <ul className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((p) => (
-              <li key={p.id} className="h-full">
-                <YardPostCard
-                  post={p}
-                  poster={posters[p.listing_id] ?? null}
-                />
-              </li>
-            ))}
-          </ul>
+          <>
+            {/* Marketplace grid — Hire + Available cards. Hidden when
+                the Chat tab is active (kind === 'chat'). */}
+            {boardPosts.length > 0 && (
+              <ul className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {boardPosts.map((p) => (
+                  <li key={p.id} className="h-full">
+                    <YardPostCard
+                      post={p}
+                      poster={posters[p.listing_id] ?? null}
+                      reactions={reactions[p.id] ?? {}}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {/* Trade Chat feed — Facebook-style vertical stream. Narrow
+                column for readability (max-w-2xl), full-bleed on mobile.
+                Stacks below the marketplace grid when the All filter is
+                active; takes over when the Chat filter is active. */}
+            {chatPosts.length > 0 && (
+              <div
+                className={
+                  boardPosts.length > 0
+                    ? "mt-10 border-t border-neutral-200 pt-8"
+                    : "mt-7"
+                }
+              >
+                {boardPosts.length > 0 && (
+                  <p
+                    className="mb-4 text-[13px] font-extrabold uppercase tracking-[0.22em]"
+                    style={{ color: "#7A5300" }}
+                  >
+                    Trade Chat &middot; {chatPosts.length} live thread
+                    {chatPosts.length === 1 ? "" : "s"}
+                  </p>
+                )}
+                <ul className="mx-auto flex max-w-2xl flex-col gap-4">
+                  {chatPosts.map((p) => (
+                    <li key={p.id}>
+                      <YardChatPost
+                        post={p}
+                        poster={posters[p.listing_id] ?? null}
+                        reactions={reactions[p.id] ?? {}}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </>
         )}
       </section>
 
