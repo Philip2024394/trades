@@ -101,11 +101,26 @@ export default function ShareAnywherePage() {
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero */}
+      {/* Hero — banner-image background with dark gradient overlay for
+          legibility. Same pattern as /trade-off/how and /trade-off/pricing. */}
       <section
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2009_47_30%20AM.png"
+          alt="Xrated Trades — one URL across every channel customers find tradies on."
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.15) 75%, rgba(0,0,0,0) 100%)"
+          }}
+        />
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
           <p
             className="text-xs font-bold uppercase tracking-[0.22em]"
@@ -113,11 +128,11 @@ export default function ShareAnywherePage() {
           >
             Share your link
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow sm:text-4xl md:text-5xl">
             One URL.{" "}
             <span style={{ color: XRATED_BRAND.accent }}>Every channel</span>.
           </h1>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/85 drop-shadow sm:text-sm">
             Your xratedtrade.com link is built to be shared. Paste it
             everywhere customers actually look for tradies — social profiles,
             stickers on the van, the back of a business card, your email
