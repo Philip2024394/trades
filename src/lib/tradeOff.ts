@@ -28,7 +28,10 @@ export const TRADE_OFF_TRADES: Array<{
   // Materials Network audiences can sign up with their own profile.
   { slug: "building-merchant", label: "Building Merchant", category_slug: null },
   // Metal engineer — welders, fabricators, structural-steel work.
-  { slug: "metal-engineer", label: "Metal Engineer", category_slug: null }
+  { slug: "metal-engineer", label: "Metal Engineer", category_slug: null },
+  // Heavy site machinery — plant hire, excavator / crane / digger
+  // operators, site equipment rental.
+  { slug: "heavy-machinery", label: "Heavy Site Machinery", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
