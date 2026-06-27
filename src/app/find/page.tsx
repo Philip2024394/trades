@@ -327,60 +327,6 @@ export default async function FindPortalPage({
         )}
       </section>
 
-      {/* "Why this isn't a directory" — the wedge explained. */}
-      <section className="mx-auto max-w-5xl px-4 pt-14 sm:px-6 sm:pt-20">
-        <div
-          className="overflow-hidden rounded-2xl border-2 p-5 sm:p-8"
-          style={{
-            background: "#0A0A0A",
-            borderColor: XRATED_BRAND.accent
-          }}
-        >
-          <p
-            className="text-[13px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Why this is different
-          </p>
-          <h2 className="mt-2 text-xl font-extrabold leading-tight text-white sm:text-2xl">
-            Every result is a real app &mdash; not a listing.
-          </h2>
-          <ul className="mt-5 grid grid-cols-1 gap-3 text-[13px] text-white/85 sm:grid-cols-2 sm:text-sm">
-            <li className="flex items-start gap-2.5">
-              <Tick />
-              <span>
-                Tap a card and you land on the tradesperson&rsquo;s actual
-                premium app &mdash; reviews, prices, photos, services.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <Tick />
-              <span>
-                You message them{" "}
-                <span className="font-bold text-white">direct on WhatsApp</span>{" "}
-                using their button. We don&rsquo;t sit in the middle.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <Tick />
-              <span>
-                No quote forms, no lead routing, no &ldquo;Three quotes
-                will reach you in 24 hours.&rdquo; You pick one trade, you
-                talk to that one trade.
-              </span>
-            </li>
-            <li className="flex items-start gap-2.5">
-              <Tick />
-              <span>
-                No commission, no &ldquo;featured&rdquo; ad slots.
-                Results sort by completeness, distance and review
-                quality &mdash; never by ad spend.
-              </span>
-            </li>
-          </ul>
-        </div>
-      </section>
-
       {/* Closing CTA — for tradies. */}
       <section className="mx-auto mt-12 max-w-5xl px-4 pb-2 sm:px-6">
         <div
@@ -445,25 +391,6 @@ function NoResults({ trade, city }: { trade: string; city: string }) {
           : "New tradespeople are joining every day. Check back shortly."}
       </p>
     </div>
-  );
-}
-
-function Tick() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={XRATED_BRAND.accent}
-      strokeWidth="3"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      className="mt-0.5 shrink-0"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
   );
 }
 
