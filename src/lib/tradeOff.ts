@@ -22,7 +22,13 @@ export const TRADE_OFF_TRADES: Array<{
   { slug: "general-builder", label: "General Builder", category_slug: null },
   { slug: "concrete-specialist", label: "Concrete Specialist", category_slug: "concrete" },
   { slug: "renderer", label: "Renderer", category_slug: "plastering" },
-  { slug: "taper-and-finisher", label: "Taper & Finisher", category_slug: "drywall" }
+  { slug: "taper-and-finisher", label: "Taper & Finisher", category_slug: "drywall" },
+  // Building merchant — supply side of construction, not a trade in the
+  // boots-on-site sense, but registers as a slug so Wholesale Mode +
+  // Materials Network audiences can sign up with their own profile.
+  { slug: "building-merchant", label: "Building Merchant", category_slug: null },
+  // Metal engineer — welders, fabricators, structural-steel work.
+  { slug: "metal-engineer", label: "Metal Engineer", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
