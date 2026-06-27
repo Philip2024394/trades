@@ -167,7 +167,8 @@ export default async function YardFeedPage({
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
-        <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
+        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-12 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-16 sm:pt-16">
+          <div>
           <p
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
@@ -236,6 +237,28 @@ export default async function YardFeedPage({
             >
               Peek inside
             </a>
+          </div>
+          </div>
+
+          {/* Hero artwork — stacks below copy on mobile, sits right on
+              desktop. Yellow ring + glow gives it the brand chip
+              without overpowering the headline. */}
+          <div className="relative w-full max-w-[320px] justify-self-start sm:justify-self-end">
+            <div
+              className="absolute -inset-3 rounded-3xl"
+              style={{
+                background: `${XRATED_BRAND.accent}33`,
+                filter: "blur(18px)"
+              }}
+              aria-hidden="true"
+            />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2002_13_13%20PM.png"
+              alt="Tradies hanging out at The Yard — the private trades-only forum"
+              className="relative w-full rounded-2xl border-2 object-cover shadow-2xl"
+              style={{ borderColor: XRATED_BRAND.accent }}
+            />
           </div>
         </div>
       </section>
