@@ -14,14 +14,14 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { headers } from "next/headers";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { FindHeader } from "@/components/xrated/find/FindHeader";
+import { FindFooter } from "@/components/xrated/find/FindFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { TRADE_OFF_TRADES, tradeLabel } from "@/lib/tradeOff";
 import { FindSearchBar } from "@/components/xrated/find/FindSearchBar";
-import { FindResultCard, type FindCardListing } from "@/components/xrated/find/FindResultCard";
+import { type FindCardListing } from "@/components/xrated/find/FindResultCard";
 import { FindResultRow } from "@/components/xrated/find/FindResultRow";
 
 export const revalidate = 300;
@@ -217,7 +217,7 @@ export default async function FindPortalPage({
 
   return (
     <main className="bg-neutral-50 pb-24 md:pb-0">
-      <XratedHeader />
+      <FindHeader />
 
       {/* Hero — full-bleed background image with dark overlay for text
           legibility. Text + search bar overlay on top. Search bar still
@@ -253,10 +253,9 @@ export default async function FindPortalPage({
             className="mt-3 max-w-3xl text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ textShadow: "0 4px 18px rgba(0,0,0,0.6)" }}
           >
-            Find a{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>trade</span>{" "}
-            near you{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>now</span>.
+            Find{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>Trades</span>{" "}
+            Near You
           </h1>
           <p
             className="mt-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white sm:text-base"
@@ -314,23 +313,14 @@ export default async function FindPortalPage({
 
         {results.length === 0 ? (
           <NoResults trade={tradeText} city={city || postcode} />
-        ) : hasFilter ? (
-          // Search results — landscape rows separated by dotted dividers.
-          // Reads like an Airbnb / Indeed list, optimised for "decide
-          // mode" browsing.
+        ) : (
+          // Landscape rows for every view — featured slate and search
+          // results both read like the same continuous list. Reinforces
+          // the "this is a search site, not a catalogue" feel.
           <ul className="mt-4 divide-y divide-dashed divide-neutral-300">
             {results.map((r) => (
               <li key={r.slug}>
                 <FindResultRow listing={r} />
-              </li>
-            ))}
-          </ul>
-        ) : (
-          // Featured slate (no filter) — 3-col grid for "showcase mode".
-          <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {results.map((r) => (
-              <li key={r.slug} className="h-full">
-                <FindResultCard listing={r} />
               </li>
             ))}
           </ul>
@@ -432,7 +422,7 @@ export default async function FindPortalPage({
         </div>
       </section>
 
-      <XratedFooter />
+      <FindFooter />
     </main>
   );
 }
