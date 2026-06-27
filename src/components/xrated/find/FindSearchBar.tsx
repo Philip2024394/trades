@@ -29,6 +29,13 @@ const COUNTRIES: { code: string; label: string }[] = [
   { code: "SG", label: "Singapore" }
 ];
 
+// "Where" → postcode vs city detection. Starts with a letter followed
+// (eventually) by a digit = looks like a UK postcode ("M14", "SW1A 1AA",
+// "B1"). Anything else (e.g. "Manchester", "West Midlands") = city.
+function looksLikePostcode(v: string): boolean {
+  return /^[A-Z]{1,2}\d/i.test(v.trim());
+}
+
 export function FindSearchBar({
   detectedCountry
 }: {
@@ -42,16 +49,23 @@ export function FindSearchBar({
     params.get("country") ?? detectedCountry ?? "GB"
   );
   const [trade, setTrade] = useState(params.get("trade") ?? "");
-  const [city, setCity] = useState(params.get("city") ?? "");
-  const [postcode, setPostcode] = useState(params.get("postcode") ?? "");
+  // Single "where" field replacing the old separate City + Postcode.
+  // We seed from whichever URL param was set last navigation so the
+  // bar still reflects state after a refresh.
+  const [where, setWhere] = useState(
+    params.get("postcode") ?? params.get("city") ?? ""
+  );
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     const next = new URLSearchParams();
     if (country && country !== "GB") next.set("country", country);
     if (trade) next.set("trade", trade);
-    if (city) next.set("city", city.trim());
-    if (postcode) next.set("postcode", postcode.trim().toUpperCase());
+    const w = where.trim();
+    if (w) {
+      if (looksLikePostcode(w)) next.set("postcode", w.toUpperCase());
+      else next.set("city", w);
+    }
     startTransition(() => {
       router.replace(`/find?${next.toString()}`, { scroll: false });
     });
@@ -60,14 +74,13 @@ export function FindSearchBar({
   function clear() {
     setCountry(detectedCountry ?? "GB");
     setTrade("");
-    setCity("");
-    setPostcode("");
+    setWhere("");
     startTransition(() => {
       router.replace("/find", { scroll: false });
     });
   }
 
-  const hasFilter = trade || city || postcode || (country && country !== "GB");
+  const hasFilter = trade || where || (country && country !== "GB");
 
   return (
     <form
@@ -120,34 +133,18 @@ export function FindSearchBar({
           </select>
         </label>
 
-        {/* City / area */}
-        <label className="flex flex-col gap-1 sm:col-span-2">
+        {/* Where — city / area OR postcode. We auto-detect on submit. */}
+        <label className="flex flex-col gap-1 sm:col-span-4">
           <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500">
-            City or area
+            Where
           </span>
           <input
             type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            value={where}
+            onChange={(e) => setWhere(e.target.value)}
             disabled={pending}
-            placeholder="e.g. Manchester"
+            placeholder="e.g. Manchester or M14"
             className="h-12 w-full rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold text-neutral-900 placeholder:font-bold placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none sm:text-sm"
-          />
-        </label>
-
-        {/* Postcode */}
-        <label className="flex flex-col gap-1 sm:col-span-2">
-          <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-500">
-            Postcode
-          </span>
-          <input
-            type="text"
-            value={postcode}
-            onChange={(e) => setPostcode(e.target.value.toUpperCase())}
-            disabled={pending}
-            placeholder="M14"
-            maxLength={8}
-            className="h-12 w-full rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold uppercase text-neutral-900 placeholder:font-bold placeholder:text-neutral-400 focus:border-neutral-400 focus:outline-none sm:text-sm"
           />
         </label>
 
