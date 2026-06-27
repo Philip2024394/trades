@@ -126,8 +126,8 @@ export function PricingTierCards() {
             </div>
             <a
               href="/trade-off/signup?tier=free"
-              className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg border-2 px-4 text-xs font-extrabold text-neutral-900 transition active:scale-[0.98] sm:text-sm"
-              style={{ borderColor: "#0A0A0A" }}
+              className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
+              style={{ background: XRATED_BRAND.accent }}
             >
               Start free — no card
             </a>
