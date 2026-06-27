@@ -22,6 +22,7 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { TRADE_OFF_TRADES, tradeLabel } from "@/lib/tradeOff";
 import { FindSearchBar } from "@/components/xrated/find/FindSearchBar";
 import { FindResultCard, type FindCardListing } from "@/components/xrated/find/FindResultCard";
+import { FindResultRow } from "@/components/xrated/find/FindResultRow";
 
 export const revalidate = 300;
 
@@ -212,7 +213,7 @@ export default async function FindPortalPage({
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
           >
-            xratedtrades.com &middot; The customer portal
+            Find a trade
           </p>
           <h1
             className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl"
@@ -222,35 +223,26 @@ export default async function FindPortalPage({
               headline
             ) : (
               <>
-                See who has an{" "}
-                <span style={{ color: XRATED_BRAND.accent }}>Xrated app</span>{" "}
-                near you.
+                Find a{" "}
+                <span style={{ color: XRATED_BRAND.accent }}>trade</span> near you.
               </>
             )}
           </h1>
           {!hasFilter && (
             <p
-              className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white sm:text-sm"
+              className="mt-3 max-w-2xl text-sm font-bold text-white sm:text-base"
               style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
             >
-              Every result is a{" "}
-              <span className="font-bold" style={{ color: XRATED_BRAND.accent }}>real tradesperson</span>{" "}
-              with their own premium app &mdash; not a directory listing.
-              Tap a card, land on their app, message them{" "}
-              <span className="font-bold" style={{ color: XRATED_BRAND.accent }}>direct on WhatsApp</span>.
-              We never sit between you and the trade. No quote forms, no
-              lead routing, no middleman.
+              Every result is a real tradesperson&rsquo;s app. Tap, land
+              on it, message them direct.
             </p>
           )}
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
+          <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live UK members
+              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live members
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> Tap = the tradesperson&rsquo;s actual app
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> No middleman, no commission
+              <Dot accent /> No middleman
             </span>
           </div>
         </div>
@@ -295,7 +287,19 @@ export default async function FindPortalPage({
 
         {results.length === 0 ? (
           <NoResults trade={tradeText} city={city || postcode} />
+        ) : hasFilter ? (
+          // Search results — landscape rows separated by dotted dividers.
+          // Reads like an Airbnb / Indeed list, optimised for "decide
+          // mode" browsing.
+          <ul className="mt-4 divide-y divide-dashed divide-neutral-300">
+            {results.map((r) => (
+              <li key={r.slug}>
+                <FindResultRow listing={r} />
+              </li>
+            ))}
+          </ul>
         ) : (
+          // Featured slate (no filter) — 3-col grid for "showcase mode".
           <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {results.map((r) => (
               <li key={r.slug} className="h-full">
