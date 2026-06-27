@@ -1478,5 +1478,605 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
       { customer_name: "Sarah O.", rating: 5, title: "Bay window perfect", body: "Old timber bay was rotten. Noah replaced with uPVC bay including the structural pole. Better insulated and looks great.", service_name: "uPVC bay window install", project_type: "renovation" },
       { customer_name: "Trevor B.", rating: 4, title: "Front door fine, ran 2 hours over", body: "Composite front door install. Threshold adjustment took longer than quoted — 2 hours of extra fettling. No extra charge but worth flagging.", service_name: "Composite front door install", project_type: "renovation" }
     ]
+  },
+
+  // 28. CRANE OPERATOR
+  {
+    trade_slug: "crane-operator",
+    profile_slug: "demo-callum-reed-crane-operator-leeds",
+    display_name: "Callum Reed",
+    trading_name: "Reed Crane Hire",
+    city: "Leeds",
+    postcode_prefix: "LS11",
+    whatsapp: "+44 7700 900512",
+    email: "callum@reedcranehire.co.uk",
+    bio: "I came up through the steel-erecting side of the industry, sat my CPCS Blue mobile crane ticket in 2009 and have been on cranes full-time ever since. These days I run two machines out of a yard in Hunslet: a 30-tonne city-spec Liebherr and a 55-tonne 5-axle Grove for the heavier reaches. About half my work is steelwork lifts for commercial builds across Yorkshire, the rest is HVAC plant lifts onto roofs, modular cabin drops, hot-tubs over houses and emergency tree-out lifts after storms. I do my own lift plans, run my own appointed-person paperwork and I'll attend a free site survey before the day so we know exactly where the outriggers are going and which spec mat we need. Strict no-lift policy if the ground prep isn't right — I'd rather lose a day than tip a crane.",
+    years_in_trade: 17,
+    start_year: 2009,
+    priced_services: [
+      { name: "30T mobile crane half-day hire", price: 750, unit: "fixed", description: "30-tonne 3-axle city crane, operator, basic rigging, up to 4 hours on site. Includes travel within 25 miles of LS11." },
+      { name: "30T mobile crane full-day hire", price: 1250, unit: "fixed", description: "Full 8-hour shift, operator, slings and shackles. Suits steelwork, plant lifts, hot tub deliveries." },
+      { name: "55T mobile crane full-day hire", price: 1950, unit: "fixed", description: "55-tonne 5-axle crane for longer reach or heavier lifts. Includes operator and 5m luffing jib if needed." },
+      { name: "Appointed Person + lift plan", price: 350, unit: "fixed", description: "Full BS 7121 compliant lift plan, risk assessment and method statement. Required for any commercial lift." },
+      { name: "Modular cabin / container lift (per unit)", price: 220, unit: "per item", description: "Onto prepared base, max 5T per unit, lift radius up to 18m. Add traffic management if road closure required." },
+      { name: "Out-of-hours / weekend surcharge", price: 35, unit: "per hour", description: "Premium on standard rates for after 17:00 weekdays, Saturdays and Sundays. Includes operator." }
+    ],
+    faq_items: [
+      { q: "Do I need an Appointed Person if it's just one lift?", a: "Yes — any commercial lift legally needs a written lift plan under LOLER and BS 7121. For a homeowner one-off (hot tub, garden boulder) I can act as AP for you under my own paperwork at no extra charge if it's straightforward." },
+      { q: "What ground do you need under the outriggers?", a: "Concrete or compacted hardcore is fine. Block-paved drives, lawns and recently laid slabs need timber mats which I supply at cost. Sloped sites need levelling first — I'll flag this on the survey." },
+      { q: "How far in advance do I need to book?", a: "City lifts: 5-7 days for survey + plan + booking. Emergency tree-outs after storms I'll try to slot same week if I can." },
+      { q: "Do you need road closures?", a: "If the crane footprint or boom swings over the public highway, yes — that's a TTRO and takes 6-8 weeks to apply for. Private driveway or yard lifts don't need one." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 10000000,
+    qualifications: ["CPCS A60 Mobile Crane", "CPCS A62 Appointed Person", "CITB SMSTS", "First Aid at Work"],
+    trade_memberships: ["Construction Plant-hire Association (CPA)", "Lifting Equipment Engineers Association (LEEA)"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 750,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 24 hours",
+    quote_turnaround_hours: 24,
+    current_status_note: "Booking 1-2 weeks ahead. Emergency lifts considered same week.",
+    availability: "this_week",
+    reviews: [
+      { customer_name: "Liam K.", rating: 5, title: "Steel frame up in a day", body: "Callum lifted 14 steels onto our two-storey commercial extension. AP paperwork was in our hands a week before, lift went exactly to plan, off site by 3pm. Faultless.", service_name: "30T mobile crane full-day hire", project_type: "new_build" },
+      { customer_name: "Megan B.", rating: 5, title: "Hot tub over the house", body: "Needed our hot tub lifting over a 2-storey house into the back garden. Survey was thorough, mats supplied, neighbours unbothered. Worth every penny.", service_name: "30T mobile crane half-day hire", project_type: "renovation" },
+      { customer_name: "Yusuf A.", rating: 5, title: "Modular classroom drops", body: "Lifted six classroom cabins onto a school site over a weekend. Zero disruption Monday morning. Professional all round.", service_name: "Modular cabin / container lift (per unit)", project_type: "new_build" },
+      { customer_name: "Helen S.", rating: 4, title: "Tree lift after storm", body: "Big sycamore down on our boundary wall. Callum got it lifted off and chunked within a morning. Slight premium for short notice but completely fair.", service_name: "30T mobile crane half-day hire", project_type: "repair" }
+    ]
+  },
+
+  // 29. SECURITY INSTALLER
+  {
+    trade_slug: "security-installer",
+    profile_slug: "demo-priya-sharma-security-installer-london",
+    display_name: "Priya Sharma",
+    trading_name: "Sharma Security Systems",
+    city: "London",
+    postcode_prefix: "SW16",
+    whatsapp: "+44 7700 900618",
+    email: "priya@sharmasecurity.co.uk",
+    bio: "I've been installing intruder alarms, CCTV and access control for fifteen years, starting at a national chain in 2011 and going independent in 2019. I cover South and West London for domestic and small-commercial systems — mostly Hikvision and Texecom for CCTV and alarms, Paxton for access control, Yale Smart Living for the residential smart-home end. NSI Gold approved which matters for insurance discounts and police-response monitored alarms. Every install gets a written commissioning certificate and I'll walk you through the app on your phone before I leave. I don't do hard-sell upgrades — if your existing alarm panel just needs a new battery I'll change it for £85 rather than quote a £900 replacement system. I won't fit kit I can't service: stick with brands that have a UK spares pipeline.",
+    years_in_trade: 15,
+    start_year: 2011,
+    priced_services: [
+      { name: "4-camera CCTV system install", price: 1250, unit: "fixed", description: "4x 4MP turret cameras, 8-channel NVR, 2TB storage, mobile app setup, 2-year warranty. Cat6 cabled." },
+      { name: "8-camera CCTV system install", price: 2150, unit: "fixed", description: "8x 4MP cameras with colour night vision, NVR with 4TB storage, switch, app config and walkthrough." },
+      { name: "Wireless intruder alarm (3-bed)", price: 780, unit: "fixed", description: "Texecom or Pyronix wireless system, 4 PIRs, 2 door contacts, keypad, external sounder, app control." },
+      { name: "Monitored alarm upgrade (police response)", price: 295, unit: "per year", description: "Add ARC monitoring to existing alarm. NSI Gold compliant, dual-path comms, police URN included after vetting." },
+      { name: "Smart video doorbell install", price: 245, unit: "fixed", description: "Hardwired Hikvision or Doorbird doorbell, chime, app setup, including transformer if missing." },
+      { name: "Access control system (single door)", price: 850, unit: "from", description: "Paxton Net2 reader, mag-lock or strike, PSU, request-to-exit, programmed with up to 25 fobs." },
+      { name: "Annual maintenance visit", price: 95, unit: "fixed", description: "NSI-compliant annual service: battery test, sensor check, firmware update, written report for insurer." }
+    ],
+    faq_items: [
+      { q: "Does an alarm actually reduce my insurance?", a: "Yes if it's NSI Gold (or SSAIB equivalent) certified and monitored. Typically 5-15% off contents. DIY systems from Amazon don't qualify — your insurer will ask for the cert." },
+      { q: "What's the difference between local and monitored alarms?", a: "Local just sounds the bell — neighbours might or might not call. Monitored sends the signal to an Alarm Receiving Centre which verifies and calls police. A police URN means a faster response." },
+      { q: "Will the CCTV recording be admissible in court?", a: "Yes if it's 4MP+ on a sealed NVR with time-sync and a clear chain of custody. I provide written commissioning paperwork that's worked for several insurance and police cases." },
+      { q: "Do I need a Cat6 cable or can I go wireless?", a: "For CCTV always Cat6 — wireless cameras drop frames and fill your wifi. For alarms wireless is fine and easier to retrofit. I'll always recommend wired where possible." },
+      { q: "GDPR — can I record on my driveway?", a: "Yes if it captures only your property. If your camera sees a public pavement or a neighbour's garden you need a sign and a privacy mask. I configure these on install." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: ["NSI Gold Installer", "BS 8418 CCTV", "City & Guilds 1851 Security Systems", "DBS Enhanced"],
+    trade_memberships: ["National Security Inspectorate (NSI)", "British Security Industry Association (BSIA)"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 150,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 24 hours",
+    quote_turnaround_hours: 24,
+    current_status_note: "Booking 1-2 weeks ahead. Alarm faults squeezed in same week.",
+    availability: "next_week",
+    reviews: [
+      { customer_name: "David L.", rating: 5, title: "Tidy CCTV install", body: "8 cameras around the property, every cable hidden, app worked first time. Priya talked us through the playback and motion zones. Top job.", service_name: "8-camera CCTV system install", project_type: "renovation" },
+      { customer_name: "Aisha M.", rating: 5, title: "Police-response alarm", body: "Upgraded our old bellbox to a monitored Texecom system. Insurance came down £180 immediately. Worth it.", service_name: "Monitored alarm upgrade (police response)", project_type: "renovation" },
+      { customer_name: "Robert J.", rating: 5, title: "Honest about the existing kit", body: "Two competitors quoted a full new system. Priya said the panel was fine, replaced a battery and a faulty PIR for £140. Refreshing.", service_name: "Annual maintenance visit", project_type: "repair" },
+      { customer_name: "Lucy P.", rating: 4, title: "Doorbell tricky to set up", body: "Doorbird install took longer than expected because the existing chime transformer was tiny. Priya supplied a new one at cost. Good outcome.", service_name: "Smart video doorbell install", project_type: "renovation" }
+    ]
+  },
+
+  // 30. BUILDERS SUPPLIES
+  {
+    trade_slug: "builders-supplies",
+    profile_slug: "demo-richard-holt-builders-supplies-leeds",
+    display_name: "Richard Holt",
+    trading_name: "Holt Builders Supplies",
+    city: "Leeds",
+    postcode_prefix: "LS9",
+    whatsapp: "+44 7700 900724",
+    email: "richard@holtsupplies.co.uk",
+    bio: "I run a small independent builders merchant from a yard off East Park Parade — opened in 2014 after twenty years as a buyer for a national chain. We stock the bread-and-butter: aggregates, sand, cement, blocks, bricks, drainage, timber, sheet materials and PPE. Same-day delivery within Leeds and next-day across West Yorkshire on most loads, and we'll do an 8am dropoff before you start the day if you tell us the day before. We're not the cheapest on a list price comparison but our trade card holders pay sharper than the sheds for anything ordered in volume. Account customers get 30-day credit on approval. I'll always have a straight conversation about lead times — concrete blocks and aircrete have been on 7-10 day lead for the last six months and that's not changing soon.",
+    years_in_trade: 32,
+    start_year: 1994,
+    priced_services: [
+      { name: "20kg bag general purpose cement", price: 6.20, unit: "per item", description: "Hanson or Tarmac OPC, in date, on collection or delivered with order over £100." },
+      { name: "Bulk bag sharp sand (850kg)", price: 58, unit: "per item", description: "Washed sharp sand, BS EN 12620 compliant. Delivered on grab or hiab. Price ex-VAT, trade card." },
+      { name: "Solid 7N concrete block (440x215x100) pallet of 72", price: 165, unit: "fixed", description: "Lignacite or H+H mediums, 72 per pallet. Pallet deposit refundable on return." },
+      { name: "Treated 4x2 C24 timber (4.8m)", price: 14.50, unit: "per item", description: "Kiln-dried, treated to UC2. Per length, 4.8m. Bulk discount 50+." },
+      { name: "Same-day delivery within Leeds", price: 35, unit: "fixed", description: "Order placed before 11am, delivered same afternoon. Within 8-mile radius of LS9." },
+      { name: "Account application (30-day credit)", price: 0, unit: "fixed", description: "Trade account with credit terms subject to references and credit check. Free to apply." }
+    ],
+    faq_items: [
+      { q: "Do I need a trade card to get trade prices?", a: "Yes — bring proof you're in the trade (UTR, CIS card, company letterhead) and we'll set up a card same day. Trade prices apply on collection or any delivery from the yard." },
+      { q: "What's your minimum delivery?", a: "£100 ex VAT for free local delivery within 5 miles. Below that or further afield is £35 flat. Same-day if booked before 11am." },
+      { q: "Can I return unused materials?", a: "Yes — full bags and unopened sheets within 30 days, no restocking fee. Cut-to-size timber and special-order items can't be returned." },
+      { q: "Do you do hire as well?", a: "No — we don't run a hire desk. We're materials only. I work alongside two local hire firms I'll happily recommend." } ,
+      { q: "Lead times on blocks at the moment?", a: "Aircrete 7-10 working days, mediums usually in stock, dense concrete 3-5 days. I'll always confirm at point of order — don't book a bricklayer before we confirm the block date." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: ["BMF Buyer Diploma", "Forklift Counterbalance ITSSAR", "Slinger / Signaller A40"],
+    trade_memberships: ["Builders Merchants Federation (BMF)"],
+    dbs_checked: false,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 25,
+    free_site_visits: false,
+    quote_availability: "Usually quotes same day",
+    quote_turnaround_hours: 4,
+    current_status_note: "Yard open Mon-Fri 7-5, Sat 7-12. Same-day delivery within Leeds.",
+    availability: "now",
+    reviews: [
+      { customer_name: "Adam W.", rating: 5, title: "Sharper than the sheds on a big order", body: "Priced 8000 bricks against three nationals — Holt came in £600 cheaper and delivered on the day promised. Will use again.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build" },
+      { customer_name: "Carly D.", rating: 5, title: "Same-day delivery saved the job", body: "Forgot to order cement for a screed pour, called at 10:30, in the yard at 1pm. Driver was lovely.", service_name: "Same-day delivery within Leeds", project_type: "renovation" },
+      { customer_name: "Mo R.", rating: 5, title: "Honest about lead times", body: "Richard told me upfront aircrete blocks were 10 days. Other merchants promised 3 then it slipped to 14. I'd rather be told the truth.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build" },
+      { customer_name: "Jess T.", rating: 4, title: "Account took a few days", body: "Credit application took 5 working days to come through which slowed our first order. Once set up the service has been excellent.", service_name: "Account application (30-day credit)", project_type: "new_build" }
+    ]
+  },
+
+  // 31. FORMWORKER
+  {
+    trade_slug: "formworker",
+    profile_slug: "demo-stefan-kowalski-formworker-london",
+    display_name: "Stefan Kowalski",
+    trading_name: "Kowalski Formwork",
+    city: "London",
+    postcode_prefix: "E16",
+    whatsapp: "+44 7700 900833",
+    email: "stefan@kowalskiformwork.co.uk",
+    bio: "I trained as a shutterer in Warsaw, came to the UK in 2010 and have worked on concrete frames across London ever since — high-rise residential in Stratford, basement boxes in Mayfair, big infrastructure jobs on Crossrail and HS2. In 2019 I started taking my own packages with a four-man crew. We do traditional timber shutters, system formwork (Peri, Doka, Mivan), columns, walls, slab tables and the trickier stuff like double-curved walls and architectural concrete with exposed finishes. I do my own falsework drawings and I'll work alongside your TWC if you have one. I'm strict on the strike times — concrete cures on chemistry not the clock and I'd rather wait an extra day than drop a slab. Quotes priced per sqm of contact area not per shift, so you can compare apples-to-apples with other formworkers.",
+    years_in_trade: 16,
+    start_year: 2010,
+    priced_services: [
+      { name: "Timber shutter walls (per sqm contact)", price: 75, unit: "per sqm", description: "Traditional plywood shutters on soldiers, supply, fix, strike. For walls up to 3m height. Reinforcement by others." },
+      { name: "Peri / Doka system wall formwork (per sqm)", price: 95, unit: "per sqm", description: "System panel formwork hire and labour, for walls up to 5m. Includes setting out, fixing, striking, cleaning panels." },
+      { name: "Column formwork (per linear m)", price: 145, unit: "per linear m", description: "Square or circular column shutters, supply, fix, strike. Includes plumbing and bracing. Up to 4m tall." },
+      { name: "Suspended slab table formwork (per sqm)", price: 65, unit: "per sqm", description: "Aluminium tableform hire and labour, prop down, set out, strike and cycle. Min 200sqm pour." },
+      { name: "Architectural exposed concrete (per sqm)", price: 165, unit: "per sqm", description: "Phenolic ply or board-marked finish, tighter tolerances, sealed joints. Includes mock-up panel." },
+      { name: "Falsework design review", price: 650, unit: "fixed", description: "Independent design check by qualified TW co-ordinator. Includes load calcs, prop spacing and method statement." }
+    ],
+    faq_items: [
+      { q: "When can the props come down?", a: "Slabs: not before 7 days at 20°C, and only after a cube test confirms 75% characteristic strength. Walls and columns we typically strike at 24-48 hours but only with verbal sign-off from the engineer." },
+      { q: "Do I need a TWC (temporary works co-ordinator)?", a: "Yes if the job is over a certain scale — anyone doing falsework on a commercial site needs a TWC under BS 5975. I can act as TWC for smaller jobs at cost." },
+      { q: "What's the difference between traditional and system formwork?", a: "Traditional timber is cheaper for one-offs and bespoke shapes; system formwork (Peri, Doka) is faster, cleaner and reusable so it wins on repetitive work. I do both." },
+      { q: "Can you do board-marked architectural concrete?", a: "Yes — we mock-up a panel first so you can sign off the finish. Board-marked needs perfect alignment of joints and tight bolt-spacing or it shows in the cure." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: ["CSCS Black Manager", "CITB SMSTS", "CISRS Advanced Scaffolder (advisory)", "Temporary Works Co-ordinator (CITB TWCTC)"],
+    trade_memberships: ["The Concrete Society", "Construction Industry Council"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 2500,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 48 hours",
+    quote_turnaround_hours: 48,
+    current_status_note: "Booking 4-6 weeks ahead on bigger packages. Smaller column / slab packages possible at 2 weeks.",
+    availability: "later",
+    reviews: [
+      { customer_name: "Marcus T.", rating: 5, title: "RC frame on programme", body: "Stefan's crew shuttered our 4-storey RC frame in central London over 11 weeks. Hit every pour date. Finish was crisp.", service_name: "Peri / Doka system wall formwork (per sqm)", project_type: "new_build" },
+      { customer_name: "Imran B.", rating: 5, title: "Board-marked finish was exhibition quality", body: "Architect specified a tight board-marked spec for our exposed cores. Stefan did a sample panel, we tweaked the joint pattern, final pour was photoshoot-grade.", service_name: "Architectural exposed concrete (per sqm)", project_type: "new_build" },
+      { customer_name: "Hannah V.", rating: 5, title: "Basement box on a difficult site", body: "Tight London plot, 1m to neighbour walls. Stefan planned the props and pours so we never overstressed the retaining walls.", service_name: "Timber shutter walls (per sqm contact)", project_type: "new_build" },
+      { customer_name: "Lewis A.", rating: 4, title: "Quote took a week", body: "Detailed quote took 7 days to come back — slowed our procurement slightly. The detail was excellent though, every sqm itemised.", service_name: "Falsework design review", project_type: "new_build" }
+    ]
+  },
+
+  // 32. INSULATION INSTALLER
+  {
+    trade_slug: "insulation-installer",
+    profile_slug: "demo-charlotte-evans-insulation-installer-bristol",
+    display_name: "Charlotte Evans",
+    trading_name: "Evans Thermal Solutions",
+    city: "Bristol",
+    postcode_prefix: "BS5",
+    whatsapp: "+44 7700 900947",
+    email: "charlotte@evansthermal.co.uk",
+    bio: "I switched from facilities management into insulation in 2015 because I could see how badly under-insulated most of the UK housing stock was. PAS 2030 certified for cavity wall, external wall (EWI) and loft insulation, and registered with TrustMark for ECO4 and Great British Insulation Scheme works. About half my work comes through ECO4 funding for eligible households — I'll always check your eligibility before quoting because if you qualify it can be free or heavily subsidised. The other half is private — homeowners who've just had a U-value survey done and want their EPC rating up before selling or remortgaging. I do EWI, IWI, cavity fill, loft top-up and floor insulation. Every install gets a PAS 2030 compliance cert and the cavity injections come with a 25-year CIGA guarantee.",
+    years_in_trade: 11,
+    start_year: 2015,
+    priced_services: [
+      { name: "Loft insulation top-up (270mm)", price: 480, unit: "from", description: "Top up existing loft to current 270mm spec, mineral wool. Standard 3-bed house. Cert provided for EPC." },
+      { name: "Cavity wall insulation (3-bed semi)", price: 685, unit: "fixed", description: "Bonded bead injection through 22mm drilled holes, made-good externally. 25-year CIGA guarantee." },
+      { name: "External wall insulation (EWI) per sqm", price: 145, unit: "per sqm", description: "100mm EPS or mineral wool board, basecoat, mesh, render finish. Includes scaffold and Building Control notification." },
+      { name: "Internal wall insulation (IWI) per sqm", price: 95, unit: "per sqm", description: "PIR-backed plasterboard or stud-frame mineral wool, vapour control layer, ready for skim. Per sqm of wall." },
+      { name: "Underfloor insulation (suspended timber)", price: 38, unit: "per sqm", description: "Sheep-wool or mineral wool batts between joists, breathable membrane below. Accessed from below where possible." },
+      { name: "ECO4 / GBIS eligibility check", price: 0, unit: "fixed", description: "Free 20-minute review of your benefits, EPC and tenure to see if you qualify for funded measures. No obligation." }
+    ],
+    faq_items: [
+      { q: "How do I know if I qualify for ECO4?", a: "You usually need to be on a means-tested benefit (Universal Credit, Pension Credit, etc.) and live in a property with EPC D or worse. I'll do the eligibility check for free — takes 20 minutes." },
+      { q: "Will cavity wall insulation cause damp?", a: "Modern bonded bead is hydrophobic and shouldn't. The damp scare stories from 10-15 years ago were mainly from blown fibre in exposed coastal walls. I do a borescope inspection first and won't fill a cavity that's already wet." },
+      { q: "EWI or IWI — which is better?", a: "EWI is better thermally (no cold bridges, no internal disruption) but it changes the look of the house and needs planning if you're in a conservation area. IWI is cheaper and doesn't touch the outside, but it eats internal space and you must get the vapour control layer right." },
+      { q: "How much will my bills come down?", a: "Loft top-up: £35-45/year saved. Cavity fill: £180-220. EWI on a solid-walled house: £450-600 a year and a full EPC band jump. Numbers are 2026 Ofgem cap based." },
+      { q: "What guarantee comes with the work?", a: "Cavity: 25-year CIGA. EWI: 25-year SWIGA. Loft and floor: 10-year workmanship from me directly. PAS 2030 cert for all." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: [
+      "PAS 2030 / 2035 Retrofit Installer",
+      "City & Guilds Level 2 EWI Installation",
+      "CSCS Skilled Worker Card",
+      "Asbestos Awareness (UKATA)"
+    ],
+    trade_memberships: ["TrustMark Registered", "Cavity Insulation Guarantee Agency (CIGA)", "Insulated Render & Cladding Association (INCA)"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 350,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 48 hours",
+    quote_turnaround_hours: 48,
+    current_status_note: "Booking 2-3 weeks ahead. ECO4 jobs slot in around the funding window.",
+    availability: "two_weeks",
+    reviews: [
+      { customer_name: "Janet H.", rating: 5, title: "EPC went from E to C", body: "Charlotte did loft and cavity through ECO4 funding — cost me nothing and the house is noticeably warmer. EPC rebanded to C which helps for selling.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation" },
+      { customer_name: "Owen R.", rating: 5, title: "EWI transformed the house", body: "Solid-walled 1930s semi — EWI plus silicone render. Bills dropped almost 40% in the first winter and the place looks brand new from outside.", service_name: "External wall insulation (EWI) per sqm", project_type: "renovation" },
+      { customer_name: "Faye L.", rating: 5, title: "Honest about damp risk", body: "Charlotte borescoped our cavity, found a damp patch and refused to fill until it was fixed. Saved us a long-term problem. Other firms would have just sprayed it.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation" },
+      { customer_name: "Tom S.", rating: 4, title: "Scaffold delay", body: "EWI scaffold was a day late which pushed the start back. Once started the work was excellent and finished on time.", service_name: "External wall insulation (EWI) per sqm", project_type: "renovation" }
+    ]
+  },
+
+  // 33. TRIM CARPENTER
+  {
+    trade_slug: "trim-carpenter",
+    profile_slug: "demo-harry-osbourne-trim-carpenter-bath",
+    display_name: "Harry Osbourne",
+    trading_name: "Osbourne Fine Trim",
+    city: "Bath",
+    postcode_prefix: "BA2",
+    whatsapp: "+44 7700 900352",
+    email: "harry@osbournetrim.co.uk",
+    bio: "I serve a very specific corner of the trade: second-fix joinery, mouldings, architrave, skirting, picture rails and bespoke panelling for the high-end Georgian and Regency stock around Bath and Bristol. Time-served City & Guilds joiner, ten years on site, then five with a heritage joinery shop before going on my own. I work mainly to architect drawings and interior designer specs — restoring missing mouldings to match originals, fitting full-height shaker panelling, mitred deep skirting on hardwood floors, and the kind of cornice repair that needs lath-and-plaster knowledge as much as a fine saw. I'm fussy about timber selection (KD tulipwood for paint-grade, oak or walnut for stain), fussy about scribes (no caulk-and-pray) and fussy about mitres. If you want a £4 skirting glued on with no-more-nails I'm probably not your fitter.",
+    years_in_trade: 15,
+    start_year: 2011,
+    priced_services: [
+      { name: "Tulipwood skirting + architrave (per room)", price: 685, unit: "from", description: "Standard 4x3m bedroom: 145mm Torus or Ogee skirting and 75mm arch, scribed and mitred. Paint grade." },
+      { name: "Full-height shaker wall panelling (per sqm)", price: 195, unit: "per sqm", description: "MR-MDF rails and stiles, mitred caps, applied to wall and ready for caulk and paint. Excludes paint." },
+      { name: "Wainscot dado panelling (per linear m)", price: 145, unit: "per linear m", description: "Tongue-and-groove or shaker dado, dado rail, cap, fitted around a room. Includes skirting if specified." },
+      { name: "Custom moulding match (heritage)", price: 95, unit: "per linear m", description: "Match and reproduce a missing Victorian or Georgian moulding profile in solid timber. Includes profile drawing." },
+      { name: "Mitred deep skirting on hardwood floor (per linear m)", price: 38, unit: "per linear m", description: "Heavy 220mm+ skirting, mitred corners, no caulk, expansion gap respected for hardwood floors." },
+      { name: "Picture / rail box-boxing", price: 480, unit: "from", description: "Standard 3x4m room, picture rail and box-boxing to ceiling, restoring proportions to original Regency spec." }
+    ],
+    faq_items: [
+      { q: "Do you supply the timber or do I?", a: "I supply unless you have a specific timber you want used. I run accounts with two timber merchants for KD tulipwood and a small specialist for European oak and walnut. Marked up at trade plus 10%." },
+      { q: "Can you match a missing cornice or rail?", a: "Yes — I take a profile gauge tracing, draw it up, and either have a router cutter ground specially or hand-carve solid where needed. Heritage Lottery jobs are part of my workflow." },
+      { q: "Why is your skirting more than the merchant rate?", a: "I use 25mm engineered tulipwood (not 18mm MDF) for stability, scribe to undulating walls instead of caulking, and mitre external corners by hand. It costs more and lasts decades." },
+      { q: "Will you work with our painter?", a: "Yes — I leave clean lines for them, no proud nails and a single caulk-bead allowance on internal corners. I'll prime the back of skirting before fitting which most fitters skip." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 2000000,
+    qualifications: ["City & Guilds NVQ Level 3 Bench Joinery", "CSCS Gold Card", "Heritage Skills (Lime + Plaster)"],
+    trade_memberships: ["Institute of Carpenters", "The Building Crafts Federation"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 350,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 48 hours",
+    quote_turnaround_hours: 48,
+    current_status_note: "Booking 4-5 weeks ahead. Small heritage repairs sometimes slotted in earlier.",
+    availability: "later",
+    reviews: [
+      { customer_name: "Henrietta P.", rating: 5, title: "Georgian skirting matched perfectly", body: "Harry matched a missing skirting profile from a Bath townhouse drawing room. Could not tell the new from the original. Worth every penny.", service_name: "Custom moulding match (heritage)", project_type: "renovation" },
+      { customer_name: "James L.", rating: 5, title: "Panelling beyond expectations", body: "Full-height shaker panelling in our hallway. Lines are dead level, every mitre tight. The painters thanked us.", service_name: "Full-height shaker wall panelling (per sqm)", project_type: "renovation" },
+      { customer_name: "Olivia M.", rating: 5, title: "Skirting on oak floor faultless", body: "220mm mitred skirting on a wide-board oak floor. Tiny expansion gaps respected, no caulk anywhere. Photographer noticed.", service_name: "Mitred deep skirting on hardwood floor (per linear m)", project_type: "renovation" },
+      { customer_name: "Edward R.", rating: 4, title: "Booked weeks ahead but worth it", body: "Six week wait to book, then a smooth two-week run. Quality is exceptional but plan ahead — Harry is in demand for a reason.", service_name: "Wainscot dado panelling (per linear m)", project_type: "renovation" }
+    ]
+  },
+
+  // 34. BLOCK LAYER
+  {
+    trade_slug: "block-layer",
+    profile_slug: "demo-michael-doherty-block-layer-belfast",
+    display_name: "Michael Doherty",
+    trading_name: "Doherty Blockwork",
+    city: "Belfast",
+    postcode_prefix: "BT9",
+    whatsapp: "+44 7700 900465",
+    email: "michael@dohertyblockwork.co.uk",
+    bio: "Time-served bricklayer who specialises in blockwork — internal blockwork inner skins, structural concrete blockwork, retaining walls and basement walls. I started on housing sites in 2008, ran my own gang from 2015, now do mainly the inner skin and partition blockwork for housebuilders and the heavier engineering-grade blockwork for civil and commercial jobs across Northern Ireland and into the north-west. I'm priced per metre of wall not by the day so the customer knows what they're paying. I work to the engineer's spec on bed-joint reinforcement and movement joints — I'll never just bond on regardless. I deliver clean, plumb, gauge-correct blockwork that lets the next trades crack on without making good. If your previous bricklayer 'guesstimated' the dpc level, I'll be straight with you about what needs cutting out before I start.",
+    years_in_trade: 18,
+    start_year: 2008,
+    priced_services: [
+      { name: "Internal blockwork inner skin (per sqm)", price: 48, unit: "per sqm", description: "100mm concrete block inner skin laid to standard housing detail. Includes wall ties, DPC, cavity trays as spec'd. Per sqm." },
+      { name: "Engineering block retaining wall (per sqm)", price: 95, unit: "per sqm", description: "Solid 7N or 10N retaining block, reinforced cavity filled with concrete to engineer's spec. Per sqm of face." },
+      { name: "Partition blockwork (100mm)", price: 42, unit: "per sqm", description: "Light 3.5N internal partition blockwork, ready for plaster. Includes lintels and bed-joint reinforcement." },
+      { name: "Basement wall blockwork (per sqm)", price: 110, unit: "per sqm", description: "Heavy reinforced blockwork basement wall, cavity filled, waterproofed externally by others. Per sqm." },
+      { name: "Garden wall (1.2m boundary)", price: 165, unit: "per linear m", description: "Fair-faced 100mm block + brick cap garden wall, 1.2m high, mortar mix to suit. Per linear m." },
+      { name: "Day-rate for snags / small extras", price: 280, unit: "per day", description: "Half-day or full-day rate for small infills, cutting back, lintel bedding etc. Per man day." }
+    ],
+    faq_items: [
+      { q: "Per metre or per day — what's better?", a: "Per metre always — you know the price up front, I'm motivated to be efficient and you don't pay for my tea breaks. Day rate is only for small odd jobs where measuring would be silly." },
+      { q: "Do you cut and bed lintels?", a: "Yes — concrete or steel cat-lintels bedded to gauge with bed-joint reinforcement either side. I won't fit a lintel that's too short for the bearing spec." },
+      { q: "What mortar do you use?", a: "Standard housing inner skin: 1:1:6 cement-lime-sand. Engineering blockwork: 1:4 designation iii. I mix on site, no plastic-tub muck." },
+      { q: "Can you work with the brickie following you?", a: "Yes — I gauge to your bricklayer's brick course or vice versa. If there's no brickie yet I'll work to standard 75mm gauge unless told otherwise." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 2000000,
+    qualifications: ["CITB Bricklaying NVQ Level 2", "CSCS Skilled Worker Card", "Working at Height", "Manual Handling"],
+    trade_memberships: ["Guild of Bricklayers"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 450,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 24 hours",
+    quote_turnaround_hours: 24,
+    current_status_note: "Booking 2-3 weeks out. Single-day extras sometimes slotted same week.",
+    availability: "two_weeks",
+    reviews: [
+      { customer_name: "Conor M.", rating: 5, title: "Inner skin perfect", body: "Michael did the inner skin on our four-house terrace. Plumb, gauge perfect, brickie following him said he'd never seen tidier work.", service_name: "Internal blockwork inner skin (per sqm)", project_type: "new_build" },
+      { customer_name: "Aoife S.", rating: 5, title: "Retaining wall to engineer's spec", body: "Reinforced concrete-filled blockwork retaining wall behind our extension. All cavity rebar tied as drawn, every course inspected. Building Control passed first time.", service_name: "Engineering block retaining wall (per sqm)", project_type: "new_build" },
+      { customer_name: "Padraig D.", rating: 5, title: "Basement walls solid", body: "Cellar conversion blockwork. Heavy reinforced walls, waterproofing membrane went onto a true face with no make-good needed.", service_name: "Basement wall blockwork (per sqm)", project_type: "renovation" },
+      { customer_name: "Niamh F.", rating: 4, title: "Slight rain delay", body: "Lost two days to heavy rain which pushed delivery back. Michael was upfront about it and made the days up over the weekend. Quality top notch.", service_name: "Internal blockwork inner skin (per sqm)", project_type: "new_build" }
+    ]
+  },
+
+  // 35. SITE SAFETY
+  {
+    trade_slug: "site-safety",
+    profile_slug: "demo-andrew-mackenzie-site-safety-glasgow",
+    display_name: "Andrew MacKenzie",
+    trading_name: "MacKenzie Site Safety",
+    city: "Glasgow",
+    postcode_prefix: "G31",
+    whatsapp: "+44 7700 900576",
+    email: "andrew@mackenzie-safety.co.uk",
+    bio: "I'm an independent construction health and safety consultant — NEBOSH Diploma, IOSH Tech IOSH grade, twenty years on site before going consultant in 2017. I work mainly with small-to-mid contractors who can't justify a full-time SHEQ manager but need a competent person on call for CDM compliance, site audits, RAMS writing and accident investigation. I cover Glasgow, the central belt and run remote audits for smaller jobs. I'm not the tickbox box-shifter — I write RAMS in plain English that your operatives will actually read, and I push back on you if the method is wrong. If you've had a HSE notice, I'll help you draft the response and walk it through with the inspector. Day-rate or retainer, depending on what suits.",
+    years_in_trade: 20,
+    start_year: 2006,
+    priced_services: [
+      { name: "Site safety audit (one-off)", price: 450, unit: "fixed", description: "Half-day on-site audit, written report with photographs, prioritised action plan. Per site visit." },
+      { name: "RAMS writing (per task)", price: 185, unit: "per item", description: "Risk Assessment and Method Statement for one specific task, plain English, sign-off ready. Per RAMS." },
+      { name: "CDM Principal Designer service", price: 1850, unit: "from", description: "Per project. Pre-construction info, designer co-ordination, F10 notification, hazard log to handover." },
+      { name: "Monthly retainer (small contractor)", price: 750, unit: "per month", description: "Up to 2 site visits, on-call phone support, RAMS as needed, quarterly review meeting. Min 6-month term." },
+      { name: "Accident investigation", price: 850, unit: "from", description: "RIDDOR reporting support, witness statements, root-cause analysis, written report. Per incident." },
+      { name: "Toolbox talk delivery (per session)", price: 95, unit: "per item", description: "On-site or remote 20-minute toolbox talk to your crew on a chosen topic. Includes attendance register." }
+    ],
+    faq_items: [
+      { q: "Do I really need a Principal Designer on a small extension?", a: "If two or more trades will be on the project, technically yes under CDM 2015. Domestic clients are exempt from the duties but the appointment still needs making. I act as PD for £450-900 on typical residential extensions." },
+      { q: "What's the difference between a generic RAMS and a real one?", a: "A real RAMS is task-specific, references the actual location and the actual operatives doing it. A generic one is a download that just lists everything that could ever go wrong. HSE inspectors spot the difference instantly." },
+      { q: "How do you charge — day rate or per RAMS?", a: "Either. Day rate £520 for site work. RAMS at £185 fixed per task. Monthly retainer £750 for ongoing support. I'll recommend what suits your work pattern." },
+      { q: "Can you help with an existing HSE notice?", a: "Yes — I'll review the notice, draft your compliance response, attend the follow-up inspection. Don't ignore notices, they escalate fast." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: ["NEBOSH Diploma", "NEBOSH General Cert", "IOSH Tech IOSH", "CITB SMSTS", "CITB SSSTS"],
+    trade_memberships: ["Institution of Occupational Safety and Health (IOSH)", "Association for Project Safety (APS)"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: false,
+    minimum_job_gbp: 185,
+    free_site_visits: false,
+    quote_availability: "Usually quotes same day",
+    quote_turnaround_hours: 8,
+    current_status_note: "Available for audits within 1 week. Retainer slots open from next month.",
+    availability: "this_week",
+    reviews: [
+      { customer_name: "Bryan T.", rating: 5, title: "Saved us from an HSE notice", body: "Andrew audited our small construction site, flagged a fall risk we'd missed, and the fix took an afternoon. HSE turned up the following week and we passed clean.", service_name: "Site safety audit (one-off)", project_type: "new_build" },
+      { customer_name: "Lorraine W.", rating: 5, title: "RAMS people will actually read", body: "Plain English, properly task-specific. My operatives read it in two minutes instead of binning a 12-page generic doc. Refreshing.", service_name: "RAMS writing (per task)", project_type: "renovation" },
+      { customer_name: "Stuart H.", rating: 5, title: "Retainer pays for itself", body: "£750/month gets us proactive support, audits and RAMS. Easily worth it for the peace of mind on a 25-man firm.", service_name: "Monthly retainer (small contractor)", project_type: "new_build" },
+      { customer_name: "Karen F.", rating: 5, title: "Walked us through CDM PD role", body: "Andrew acted as Principal Designer on our small commercial fit-out and explained every step. No jargon, no scare tactics.", service_name: "CDM Principal Designer service", project_type: "renovation" }
+    ]
+  },
+
+  // 36. WATER DRILLING
+  {
+    trade_slug: "water-drilling",
+    profile_slug: "demo-ian-fletcher-water-drilling-exeter",
+    display_name: "Ian Fletcher",
+    trading_name: "Fletcher Borehole Drilling",
+    city: "Exeter",
+    postcode_prefix: "EX2",
+    whatsapp: "+44 7700 900687",
+    email: "ian@fletcherborehole.co.uk",
+    bio: "I drill private water boreholes across Devon, Cornwall and Somerset for farms, equestrian centres, off-grid homes and small village schemes. Started as a driller's mate in 2002, qualified as a BDA-accredited drilling supervisor in 2010 and bought my own rig (a Hutte HBR205) in 2017. Most jobs are 50-100m deep into the chalk, sandstone or limestone aquifers — South West geology is tricky and I work closely with a hydrogeologist on borehole siting if you don't want to gamble. I do the drilling, the casing, the headworks, the pump install and the chlorination, and I'll guide you through the Environment Agency abstraction licence if you need over 20 cubic m a day. Honest about yields — I won't promise water until the test pump confirms it.",
+    years_in_trade: 24,
+    start_year: 2002,
+    priced_services: [
+      { name: "Borehole drilling (per metre)", price: 175, unit: "per linear m", description: "Rotary drilling, 150-200mm bore, casing as required. Includes mobilisation within 50 miles of Exeter." },
+      { name: "Headworks + submersible pump install", price: 4200, unit: "from", description: "Stainless headworks, 1.5kW submersible pump, level controls, pressure vessel and pipework to the house. Per install." },
+      { name: "Hydrogeological siting survey", price: 950, unit: "fixed", description: "Independent geophysics-based siting recommendation to maximise yield probability. Reduces risk of dry holes." },
+      { name: "Water quality + chlorination", price: 380, unit: "fixed", description: "Sterilisation, Drinking Water Inspectorate sample analysis, UV/filtration recommendation. Per borehole." },
+      { name: "Test pumping + yield certificate", price: 650, unit: "fixed", description: "24-hour constant rate test pump, drawdown calc, sustainable yield report. Required for EA licence applications." },
+      { name: "EA abstraction licence support", price: 950, unit: "from", description: "Help compile the EA application pack, hydrogeological report, water resources statement. Per application." }
+    ],
+    faq_items: [
+      { q: "Will I definitely find water?", a: "If I do a proper siting survey first, yield-failure rate is below 5% in this region. Without a survey it's more like 20%. I always recommend the survey — £950 is cheap insurance against a dry £15,000 hole." },
+      { q: "Do I need a licence to abstract from a borehole?", a: "Under 20 cubic metres a day for domestic / agricultural use: no licence needed but you must register. Above that you need a full EA abstraction licence which I'll help you compile." },
+      { q: "How long does the whole process take?", a: "Siting survey: 1 week. Drilling: 2-5 days depending on depth. Headworks and pump: 2 days. Testing and chlorination: a week including lab turnaround. Total: 3-5 weeks." },
+      { q: "Is borehole water safe to drink?", a: "Yes if treated properly. Most boreholes in the South West need UV sterilisation and a sediment filter, sometimes a softener if it's hard. I include a water quality report and treatment recommendation as standard." },
+      { q: "What's the running cost?", a: "Pump electricity is typically £80-200 a year for a domestic supply. Filters change every 12 months at £40. UV lamp every 12 months at £90. Compared to mains, payback on a borehole is usually 7-12 years." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: ["BDA Audited Drilling Supervisor", "CITB SMSTS", "Confined Space Awareness", "First Aid at Work"],
+    trade_memberships: ["British Drilling Association (BDA)", "Well Drillers Association"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 2500,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 48 hours",
+    quote_turnaround_hours: 48,
+    current_status_note: "Booking 3-4 weeks out. Siting surveys can be slotted within 1 week.",
+    availability: "later",
+    reviews: [
+      { customer_name: "Peter R.", rating: 5, title: "Off-grid farmhouse now has water", body: "Ian drilled 87m and hit a solid yield. Pump install, chlorination and EA paperwork all sorted by his team. Three years on it runs flawlessly.", service_name: "Borehole drilling (per metre)", project_type: "new_build" },
+      { customer_name: "Sarah W.", rating: 5, title: "Equestrian yard saved a fortune", body: "Used to pay £400/month on mains for 20 stables. Borehole paid for itself in 5 years. Ian's hydrogeologist nailed the siting first time.", service_name: "Hydrogeological siting survey", project_type: "renovation" },
+      { customer_name: "John K.", rating: 5, title: "Honest about yield", body: "Ian was straight that first test pump showed lower yield than hoped. Did a second tier deeper at cost only — got us to the spec we needed.", service_name: "Test pumping + yield certificate", project_type: "new_build" },
+      { customer_name: "Helen P.", rating: 4, title: "EA paperwork took ages", body: "Drilling was textbook, but the EA licence took 14 weeks not the 8 Ian estimated. That's the EA not Ian — he chased weekly.", service_name: "EA abstraction licence support", project_type: "new_build" }
+    ]
+  },
+
+  // 37. FASCIA AND SOFFIT
+  {
+    trade_slug: "fascia-and-soffit",
+    profile_slug: "demo-mark-coleman-fascia-and-soffit-cardiff",
+    display_name: "Mark Coleman",
+    trading_name: "Coleman Roofline",
+    city: "Cardiff",
+    postcode_prefix: "CF24",
+    whatsapp: "+44 7700 900798",
+    email: "mark@colemanroofline.co.uk",
+    bio: "I've been replacing roofline — fascias, soffits, bargeboards, guttering and cladding — across South Wales for twenty-one years. Mostly uPVC because that's what 90% of homeowners want, but I'm trained and happy to work in cedar and aluminium where the architecture calls for it. I work from a tower scaffold for everything above one storey — never ladder-only on a fascia. Standard 3-bed semi I can do in two days; a full house in 3-4. I never overskin (i.e. cap over rotten timber) — the old fascia comes off, anything spongy gets cut back, and you get a clean fix that won't have you calling someone back in five years. Every roof gets new black plastic vented soffit strips to comply with current Building Regs on roof void ventilation. Written 10-year workmanship guarantee.",
+    years_in_trade: 21,
+    start_year: 2005,
+    priced_services: [
+      { name: "Full house roofline replacement (3-bed semi)", price: 2850, unit: "from", description: "Strip and replace fascia, soffit, bargeboard, guttering and downpipes. uPVC, white or woodgrain. 10-yr warranty." },
+      { name: "Fascia + soffit replacement (per linear m)", price: 48, unit: "per linear m", description: "Strip old timber, replace with capped fascia and vented soffit. Per linear m of eaves." },
+      { name: "uPVC gutter replacement (per linear m)", price: 28, unit: "per linear m", description: "Half-round or square uPVC gutter, brackets, stop ends, outlets. Per linear m." },
+      { name: "Soffit only ventilation upgrade (per house)", price: 685, unit: "from", description: "Replace existing soffit with vented strips to meet current Part F regs. Standard 3-bed house." },
+      { name: "uPVC cladding (per sqm)", price: 95, unit: "per sqm", description: "Shiplap or open-v uPVC cladding to gable or dormer. Per sqm of face." },
+      { name: "Bargeboard replacement (per linear m)", price: 52, unit: "per linear m", description: "Strip and replace bargeboard on gable, including soaker felt and trim. Per linear m." }
+    ],
+    faq_items: [
+      { q: "Do you over-board or strip out?", a: "Strip out, always. Capping over rotten timber traps moisture and ruins the new fascia within 5-7 years. The job takes a day longer and looks better." },
+      { q: "Do I need vented soffits?", a: "Yes if your roof void doesn't already have continuous ventilation — current Building Regs require it to prevent condensation and timber rot. Most pre-2000 houses don't have it." },
+      { q: "uPVC, aluminium or timber?", a: "uPVC for cost and low maintenance, 25-year typical lifespan. Aluminium for modern look, similar lifespan, 30% more. Cedar timber for heritage / planning-driven jobs, repainting every 8 years." },
+      { q: "Will my gutters drain properly?", a: "Yes — I set fall to 1:600 minimum, route to existing or new downpipes. If your downpipes discharge to a soakaway I'll check the soakaway works before tying in." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 2000000,
+    qualifications: ["NVQ Level 2 Roof Sheeting & Cladding", "CSCS Skilled Worker Card", "PASMA Tower Erector", "Working at Height"],
+    trade_memberships: ["Federation of Master Builders (FMB)", "TrustMark Registered"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 280,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 24 hours",
+    quote_turnaround_hours: 24,
+    current_status_note: "Booking 2-3 weeks ahead. Storm damage repair slotted in same week.",
+    availability: "next_week",
+    reviews: [
+      { customer_name: "Megan L.", rating: 5, title: "Whole house roofline in 3 days", body: "Mark and his lad stripped out the old timber and rotting fascia, found one rafter end gone which they spliced and treated, then fitted clean white uPVC. House looks 10 years younger.", service_name: "Full house roofline replacement (3-bed semi)", project_type: "renovation" },
+      { customer_name: "Dewi T.", rating: 5, title: "Storm gutter sorted same week", body: "Gable bargeboard ripped off in February storms. Mark got us booked in within 5 days, replaced board and gutter run. No leaks since.", service_name: "Bargeboard replacement (per linear m)", project_type: "repair" },
+      { customer_name: "Aleksandra C.", rating: 5, title: "Vented soffit fixed condensation", body: "Had a condensation problem in the loft for years. Mark fitted vented soffit strips and three months later the timbers were bone dry.", service_name: "Soffit only ventilation upgrade (per house)", project_type: "renovation" },
+      { customer_name: "Owain J.", rating: 4, title: "Tower took up the drive", body: "Tower scaffold blocked the drive for two days — should have warned us. Once up the work was tidy and finished on time. Minor gripe.", service_name: "Fascia + soffit replacement (per linear m)", project_type: "renovation" }
+    ]
+  },
+
+  // 38. DEMOLITION
+  {
+    trade_slug: "demolition",
+    profile_slug: "demo-craig-buchanan-demolition-glasgow",
+    display_name: "Craig Buchanan",
+    trading_name: "Buchanan Demolition",
+    city: "Glasgow",
+    postcode_prefix: "G51",
+    whatsapp: "+44 7700 900812",
+    email: "craig@buchanandemo.co.uk",
+    bio: "Time-served demolition operative since 2007, ran my own crew from 2015, NFDC-registered contractor since 2020. I do everything from a single-room soft-strip to full house knock-downs and small commercial deconstruction. Crew of four, three machines (a 5-tonne, an 8-tonne and a 14-tonne breaker), licensed waste carrier, registered for hazardous waste. Every job starts with an R&D asbestos survey if the property is pre-2000 — non-negotiable. I price competitively because we recycle 95%+ of arisings: brick, block, timber, metal and aggregate all separated on site and sent to the right reprocessor. No fly-tipping, ever. I'll show you the waste transfer notes after every job.",
+    years_in_trade: 19,
+    start_year: 2007,
+    priced_services: [
+      { name: "Soft-strip single room", price: 480, unit: "from", description: "Strip walls, ceilings, floors, fittings back to brick / joists. Includes skip and waste transfer notes. Per room." },
+      { name: "Full house soft-strip (3-bed)", price: 3850, unit: "from", description: "Strip whole house to shell ready for refurb. Includes kitchen, bathrooms, all fixings, partitions. 3-4 day job." },
+      { name: "Brick / block wall demolition (per sqm)", price: 38, unit: "per sqm", description: "Hand or machine demo of single-skin wall, sorted and stacked or skipped. Per sqm of wall face." },
+      { name: "Garage / outbuilding demolition", price: 950, unit: "from", description: "Standard single brick / block garage with concrete slab. Including slab break-out and skip." },
+      { name: "Full house demolition", price: 8500, unit: "from", description: "Standard semi or end-terrace, mechanical demolition, foundations grubbed out, recycled aggregate offered for backfill. Excludes asbestos." },
+      { name: "R&D asbestos survey (pre-2000 property)", price: 380, unit: "fixed", description: "Refurbishment & demolition asbestos survey by UKAS-accredited surveyor (subbed in). Required before strip. Per house." }
+    ],
+    faq_items: [
+      { q: "Why do I need an asbestos survey?", a: "Anything built before 2000 may contain asbestos in artex, vinyl tiles, AIB panels, pipe insulation. Demolishing it without a survey is a criminal offence and you'll get a HSE prohibition notice. £380 survey is required, full stop." },
+      { q: "How much waste actually gets recycled?", a: "On a typical soft-strip 92-95% by weight. Bricks and blocks go to a reprocessor for crushed aggregate. Timber to a biomass plant. Metal to scrap. Plasterboard separated for gypsum recovery." },
+      { q: "Will my neighbours' walls be safe?", a: "Yes — we use a structural engineer's method statement for any party-wall affecting work, and we install temporary supports where needed. Party Wall Award is your responsibility to organise unless I'm asked to subcontract it." },
+      { q: "Do you need scaffolding for a house demo?", a: "For taller houses or terraced rows, yes — for dust netting and structural stability. Detached single-storey houses I usually nip without. Included on quote where needed." },
+      { q: "How long does a full house demo take?", a: "Standard semi: 3-5 days including grubbing foundations. Larger Victorian villa: 7-10 days. We work Mon-Fri 8-5 to keep noise reasonable." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 10000000,
+    qualifications: [
+      "CCDO Demolition Operative",
+      "CPCS A58 Demolition Plant",
+      "CITB SMSTS",
+      "Asbestos Awareness (UKATA)",
+      "Confined Space Entry"
+    ],
+    trade_memberships: ["National Federation of Demolition Contractors (NFDC)", "Institute of Demolition Engineers (IDE)"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 480,
+    free_site_visits: true,
+    quote_availability: "Usually quotes within 48 hours",
+    quote_turnaround_hours: 48,
+    current_status_note: "Booking 2-3 weeks out. Soft-strips often slotted same week.",
+    availability: "two_weeks",
+    reviews: [
+      { customer_name: "Fraser H.", rating: 5, title: "Soft-strip in 3 days flat", body: "Full house strip back to brick, every skip filled, waste transfer notes in our hand. Builder said it was the cleanest hand-over he'd had.", service_name: "Full house soft-strip (3-bed)", project_type: "renovation" },
+      { customer_name: "Linda M.", rating: 5, title: "Garage gone, slab broken out", body: "Old asbestos-roofed garage. Craig brought in a licensed asbestos contractor first, then his crew flattened the rest and broke up the slab. All done in two days.", service_name: "Garage / outbuilding demolition", project_type: "renovation" },
+      { customer_name: "Greig P.", rating: 5, title: "Full demo went smoothly", body: "Detached bungalow knocked down for a self-build. Craig had a clear method statement, kept neighbours informed, foundations cleanly grubbed.", service_name: "Full house demolition", project_type: "new_build" },
+      { customer_name: "Rhona S.", rating: 4, title: "Dust worse than expected", body: "Internal wall demo in a Victorian flat. Plenty of dust got past the sheeting and through to the rest of the flat. Craig's crew vacuumed up but it was a job for us afterward.", service_name: "Brick / block wall demolition (per sqm)", project_type: "renovation" }
+    ]
+  },
+
+  // 39. SITE CANTEEN
+  {
+    trade_slug: "site-canteen",
+    profile_slug: "demo-debbie-rowland-site-canteen-manchester",
+    display_name: "Debbie Rowland",
+    trading_name: "Rowland Site Catering",
+    city: "Manchester",
+    postcode_prefix: "M11",
+    whatsapp: "+44 7700 900924",
+    email: "debbie@rowlandcatering.co.uk",
+    bio: "I run a mobile site catering operation across Greater Manchester — three vans and a small kitchen unit in Beswick. Started in 2013 after fifteen years catering school dinners and a stint running a butty van outside the Trafford industrial estates. I cater for construction sites, civil works and event compounds. Two formats: a static unit (we install a fully kitted kitchen container with a server for sites over 30 operatives) and a mobile van rota (we drop in twice daily at smaller sites). All staff Food Hygiene Level 2, kitchens 5-star rated, allergens fully labelled. We do proper food: bacon butties, full breakfasts, hot lunches with veg, daily curry, soup and sandwiches. We also do dietary alternatives (halal, veggie, gluten-free) without making a fuss about it. Strict on cleanliness — your site won't fail an HSE inspection because of my kitchen.",
+    years_in_trade: 13,
+    start_year: 2013,
+    priced_services: [
+      { name: "Static kitchen container (per week)", price: 1450, unit: "per week", description: "Fully kitted 20ft kitchen container, two staff, breakfast + lunch service. Site over 30 operatives. Per week." },
+      { name: "Mobile van twice-daily visits (per week)", price: 580, unit: "per week", description: "Breakfast and lunch run, 2 visits per day, 5 days per week. Suits sites of 10-30 operatives. Per week." },
+      { name: "One-off site lunch (single drop)", price: 280, unit: "fixed", description: "Single van drop for up to 20 operatives — hot lunch, dessert, drinks. Per visit. Min 24hr notice." },
+      { name: "Event compound catering (per day)", price: 850, unit: "per day", description: "Festival or commissioning event catering, hot food and drinks, server kitted with hand-wash and PRP. Per day." },
+      { name: "Bacon butty + brew runs (per day)", price: 95, unit: "per day", description: "Morning butty run only, single visit, up to 25 operatives. Per visit." },
+      { name: "Allergen / dietary menu adjustments", price: 0, unit: "fixed", description: "Halal, veggie, vegan, gluten-free, dairy-free alternatives included at no extra charge. Notify on booking." }
+    ],
+    faq_items: [
+      { q: "How quickly can you start a new site?", a: "Mobile van visits within 3 days notice. Static kitchen container takes 7-10 days to mobilise — needs site survey, utilities tie-in and HSE drop-off." },
+      { q: "Do you do allergen labelling?", a: "Yes — every item server-labelled with the 14 statutory allergens. Natasha's Law compliant. Daily menu posted at the start of the day." },
+      { q: "What if a site goes on weekend overtime?", a: "We charge per session — Saturday breakfast run £85 / lunch £140. Sunday usually closed unless we have multiple sites that day. 48hr notice helps." },
+      { q: "Do you cater for halal / vegan?", a: "Yes, every day. Halal mains 2 options, vegan main 1 option. Both clearly labelled. No extra charge." },
+      { q: "Can you deliver to a remote site?", a: "Within 25 miles of M11 yes. Beyond that we'd need to discuss mileage charges or partner with a local caterer." }
+    ],
+    is_insured: true,
+    insurance_cover_gbp: 5000000,
+    qualifications: [
+      "Food Hygiene Level 3",
+      "Allergen Awareness",
+      "Manual Handling",
+      "Food Standards Agency 5-star Rating",
+      "CSCS Visitor Card"
+    ],
+    trade_memberships: ["Craft Guild of Chefs", "UK Hospitality"],
+    dbs_checked: true,
+    has_own_transport: true,
+    has_own_tools: true,
+    minimum_job_gbp: 95,
+    free_site_visits: true,
+    quote_availability: "Usually quotes same day",
+    quote_turnaround_hours: 8,
+    current_status_note: "Mobile van slots open this week. Static kitchen units mobilising 1-2 weeks ahead.",
+    availability: "now",
+    reviews: [
+      { customer_name: "Phil T.", rating: 5, title: "Site morale doubled", body: "Used to have lads driving off-site for lunch. Now they queue at Debbie's van. Productivity actually went up.", service_name: "Mobile van twice-daily visits (per week)", project_type: "new_build" },
+      { customer_name: "Aisha K.", rating: 5, title: "Static kitchen container saved the project", body: "120-man civil site, no canteen anywhere nearby. Debbie's container was up in 8 days, hot food served from day 1. Real difference.", service_name: "Static kitchen container (per week)", project_type: "new_build" },
+      { customer_name: "Gary M.", rating: 5, title: "Halal options properly done", body: "Half our crew is Muslim. Other caterers were either rubbish or pricey. Debbie's halal mains are proper, allergen-labelled, no fuss.", service_name: "Allergen / dietary menu adjustments", project_type: "renovation" },
+      { customer_name: "Joanne F.", rating: 4, title: "Brew run is gold", body: "Morning butty round, 7am sharp, no one moans about cold tea. Once or twice the menu repeated itself, but that's minor.", service_name: "Bacon butty + brew runs (per day)", project_type: "new_build" }
+    ]
   }
 ];

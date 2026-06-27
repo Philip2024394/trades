@@ -211,6 +211,38 @@ export default async function TradeOffEditPage({
         />
       </section>
 
+      {/* Operating Hours nav card — links to the dedicated sub-route.
+          Free for every tier because the AvailabilityPill on the public
+          profile reads these hours regardless of paid status. */}
+      <section className="mx-auto max-w-3xl px-4 pb-6">
+        <a
+          href={`/trade-off/edit/${encodeURIComponent(slug)}/operating-hours?token=${encodeURIComponent(token)}`}
+          className="group flex items-center justify-between gap-4 rounded-2xl border-2 border-brand-line bg-brand-surface p-5 transition hover:border-brand-accent"
+        >
+          <div className="min-w-0">
+            <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
+              Profile basics &middot; Operating hours
+            </p>
+            <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
+              When are you open?
+            </h2>
+            <p className="mt-1 text-[13px] leading-snug text-brand-muted">
+              Mon–Sun open/close so customers see a live{" "}
+              <span className="font-bold text-brand-text">Available now</span>{" "}
+              or{" "}
+              <span className="font-bold text-brand-text">Back online at 7:00 AM</span>{" "}
+              badge before they tap Enquire.
+            </p>
+          </div>
+          <span
+            aria-hidden="true"
+            className="shrink-0 text-2xl text-brand-accent transition group-hover:translate-x-0.5"
+          >
+            &rarr;
+          </span>
+        </a>
+      </section>
+
       {/* Trust Score panel — shows the live 0-100 gauge + the 8-item
           checklist + tip per unearned item. Sits at the top of the
           dashboard so it's the first thing the tradesperson sees and
