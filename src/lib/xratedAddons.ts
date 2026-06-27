@@ -44,8 +44,9 @@ export type XratedAddon = {
    *  Keep to a single character — Tailwind sizes treat it as text. */
   glyph: string;
   /** Optional hero image URL. When null, the marketing card falls back
-   *  to a yellow gradient + glyph composition. User supplies real images
-   *  over time; null is fine for v1. */
+   *  to a phone-frame illustration with the glyph inside + callout
+   *  pills along the bottom. User supplies real screenshots over time;
+   *  null is fine for v1. */
   image_url?: string | null;
   /** Persona chips — small list of trades / business types this add-on
    *  best serves. Rendered as outline pills on the landscape card. 2-4
@@ -54,6 +55,12 @@ export type XratedAddon = {
   /** Editorial badge — honest categorisation, not a fake popularity
    *  signal. See XratedAddonBadge for the controlled vocabulary. */
   editorial_badge: XratedAddonBadge;
+  /** Pointer callouts — 2-3 short labels (2-3 words each) shown as a
+   *  row of white pills along the bottom of the phone-frame
+   *  illustration. Each calls out one concrete UI element the
+   *  customer would see if the add-on were on. Skipped on mobile to
+   *  preserve the visual rhythm. */
+  callouts: string[];
   pricing: XratedAddonPricing;
   availability: XratedAddonAvailability;
   /** When true, the dashboard renders a "Manage →" link to a dedicated
@@ -93,6 +100,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Any trade"],
     editorial_badge: "viral_growth",
+    callouts: ["Yellow trade pill", "12 entries", "Tap to view"],
     pricing: { kind: "free" },
     availability: "ready",
     hasEditor: true,
@@ -114,6 +122,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Drywallers", "Plumbers", "Locksmiths", "Plasterers"],
     editorial_badge: "best_for_solos",
+    callouts: ["4 photos", "Stock badge", "Cart enquiry"],
     pricing: { kind: "paid", monthly_pence: 500 },
     availability: "ready",
     hasEditor: true,
@@ -135,6 +144,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Landscapers", "Tool hire", "Machinery hire"],
     editorial_badge: "most_flexible",
+    callouts: ["Per-tree price", "Yellow unit", "Service cart"],
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "ready",
     hasEditor: true,
@@ -156,6 +166,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Architects", "Project managers", "Merchants"],
     editorial_badge: "any_trade",
+    callouts: ["PDF / DOC", "Email gate", "One tap"],
     pricing: { kind: "paid", monthly_pence: 200 },
     availability: "ready",
     hasEditor: true,
@@ -177,6 +188,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Builders", "Roofers", "Plasterers", "Carpenters"],
     editorial_badge: "viral_growth",
+    callouts: ["Status chip", "Photo grid", "Social share"],
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "coming_soon",
     hasEditor: false,
@@ -197,6 +209,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Merchants", "Tool suppliers", "Materials yards"],
     editorial_badge: "built_for_merchants",
+    callouts: ["Bulk tiers", "Set location", "Live quote"],
     pricing: { kind: "paid", monthly_pence: 700 },
     availability: "coming_soon",
     hasEditor: false,
@@ -217,6 +230,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Any trade"],
     editorial_badge: "premium_credibility",
+    callouts: ["Your URL", "Free SSL", "Same profile"],
     pricing: { kind: "paid", monthly_pence: 500 },
     availability: "coming_soon",
     hasEditor: false,
@@ -237,6 +251,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     image_url: null,
     personas: ["Field trades", "Emergency callouts"],
     editorial_badge: "any_trade",
+    callouts: ["Instant SMS", "Tap source", "Never miss"],
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "coming_soon",
     hasEditor: false,

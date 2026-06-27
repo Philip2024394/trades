@@ -263,9 +263,9 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
   return (
     <li className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06] sm:flex-row">
       {/* Image side — square on desktop, 16:9 on mobile (image stacks
-          above the content). Falls back to yellow gradient + glyph when
-          image_url is null (Phase 1 — real images get added per add-on
-          over time). */}
+          above the content). Falls back to a phone-frame illustration
+          + glyph + pointer-callout pills when image_url is null. Real
+          screenshots replace the phone frame whenever image_url is set. */}
       <div className="relative aspect-[16/9] w-full overflow-hidden sm:aspect-square sm:w-2/5 sm:shrink-0 sm:self-stretch">
         {addon.image_url ? (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -278,17 +278,54 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
         ) : (
           <div
             aria-hidden="true"
-            className="absolute inset-0 flex items-center justify-center"
+            className="absolute inset-0 flex items-center justify-center px-6 py-10 sm:py-8"
             style={{
               background: `linear-gradient(135deg, ${XRATED_BRAND.accent} 0%, ${XRATED_BRAND.accent}cc 50%, ${XRATED_BRAND.accent}99 100%)`
             }}
           >
-            <span
-              className="block text-7xl font-black sm:text-8xl"
-              style={{ color: "#0A0A0A" }}
+            {/* Phone frame — rounded rect with notch, glyph centered. */}
+            <div
+              className="relative h-full max-h-[180px] w-auto"
+              style={{ aspectRatio: "10 / 16" }}
             >
-              {addon.glyph}
-            </span>
+              {/* Black phone bezel */}
+              <div className="absolute inset-0 rounded-[18px] bg-black shadow-2xl" />
+              {/* Notch */}
+              <div className="absolute left-1/2 top-1.5 z-10 h-1 w-7 -translate-x-1/2 rounded-full bg-white/30" />
+              {/* Screen */}
+              <div
+                className="absolute inset-[3px] flex items-center justify-center rounded-[15px]"
+                style={{ background: "#0A0A0A" }}
+              >
+                <span
+                  className="block text-5xl font-black sm:text-6xl"
+                  style={{ color: XRATED_BRAND.accent }}
+                >
+                  {addon.glyph}
+                </span>
+              </div>
+            </div>
+            {/* Pointer callouts — desktop only (mobile keeps the image
+                clean). Row of small white pills along the bottom of the
+                image area, each calling out one concrete feature the
+                customer sees when the add-on is on. */}
+            {addon.callouts.length > 0 && (
+              <div className="absolute inset-x-3 bottom-3 hidden flex-wrap items-end justify-center gap-1.5 sm:flex">
+                {addon.callouts.map((label) => (
+                  <span
+                    key={label}
+                    className="inline-flex items-center gap-1 rounded-full bg-white/95 px-2 py-0.5 text-[9px] font-extrabold uppercase tracking-wide text-neutral-900 shadow-md"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-1 w-1 rounded-full"
+                      style={{ background: XRATED_BRAND.accent }}
+                    />
+                    {label}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
         )}
         {/* Status pill — top-right overlay on the image area so the
