@@ -120,6 +120,20 @@ export type HammerexTradeOffListing = {
   wholesale_allow_pickup: boolean;
   wholesale_currency: string;
   wholesale_prices_ex_vat: boolean;
+  // Materials Network add-on. Three role-specific columns:
+  //   merchant_*: only used when this listing IS a merchant accepting
+  //   referrals from other tradespeople (configured per-merchant in the
+  //   commission editor). Rate is % of fulfilled order value, min_pence
+  //   is the floor commission per referral.
+  //   materials_network_opted_in_at: timestamp of first opt-in for the
+  //   merchant side (audit trail).
+  //   materials_network_paused: merchant can pause new referrals without
+  //   archiving picks (existing pending referrals continue).
+  merchant_commission_rate: number | null;
+  merchant_commission_min_pence: number;
+  merchant_commission_terms: string | null;
+  materials_network_opted_in_at: string | null;
+  materials_network_paused: boolean;
   joined_at: string;
   created_at: string;
   updated_at: string;
@@ -381,6 +395,81 @@ export type HammerexProduct = {
   slug: string | null;
   name: string;
   image_url: string | null;
+};
+
+// Materials Network add-on — tradesperson's curated merchant picks.
+// Each row binds one tradie listing to one merchant listing with an
+// optional intro_note (≤200 chars) and a sort_order for drag-reorder.
+// status='archived' soft-hides without breaking historical referrals.
+export type HammerexXratedMerchantPick = {
+  id: string;
+  tradie_listing_id: string;
+  merchant_listing_id: string;
+  intro_note: string | null;
+  sort_order: number;
+  status: "live" | "archived";
+  created_at: string;
+  updated_at: string;
+};
+
+// Materials Network — single referral. Created when a customer composes
+// a WhatsApp quote from /<slug>/materials/<merchantSlug>. ref_code is
+// the human-visible attribution token ("MN-A4F2K7"). Last-click 24h
+// sticky: a repeat send by the same customer_wa_hash + merchant within
+// 24h reuses the existing ref_code instead of opening a new row.
+//
+// Privacy boundary: the tradesperson's earnings ledger NEVER reads
+// customer_name / customer_wa_e164 / customer_wa_hash fields — only
+// the merchant fulfilment panel sees those.
+export type HammerexXratedMerchantReferral = {
+  id: string;
+  ref_code: string;
+  tradie_listing_id: string;
+  merchant_listing_id: string;
+  customer_session_id: string | null;
+  customer_wa_hash: string | null;
+  customer_name: string | null;
+  customer_wa_e164: string | null;
+  cart_items_snapshot: {
+    name: string;
+    qty: number;
+    price_pence: number;
+    unit?: string | null;
+    variant_label?: string | null;
+  }[];
+  estimated_cart_total_pence: number | null;
+  status: "pending" | "fulfilled" | "declined" | "expired" | "disputed";
+  fulfilled_at: string | null;
+  fulfilled_order_value_pence: number | null;
+  commission_rate_at_fulfilment: number | null;
+  commission_pence: number | null;
+  fulfilled_note: string | null;
+  declined_reason: string | null;
+  declined_note: string | null;
+  expires_at: string;
+  created_at: string;
+};
+
+// Materials Network — earnings view per tradesperson. Aggregates the
+// referral ledger into counts + monetary totals. Read-only.
+export type HammerexXratedTradieEarnings = {
+  tradie_listing_id: string;
+  pending_count: number;
+  pending_estimate_pence: number;
+  fulfilled_count: number;
+  commission_total_pence: number;
+  declined_count: number;
+};
+
+// Stub push notification log. Lead Alerts add-on will replace the
+// in-app stub publisher with real web-push delivery; this table just
+// captures the queued event so we don't lose the signal in the interim.
+export type HammerexXratedPushLog = {
+  id: string;
+  listing_id: string;
+  event_type: "commission" | "lead" | "referral_pending" | "referral_fulfilled";
+  payload: Record<string, unknown>;
+  created_at: string;
 };
 
 export type HammerexShippingZone = {

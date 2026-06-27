@@ -265,6 +265,28 @@ export const XRATED_ADDONS: XratedAddon[] = [
     ]
   },
   {
+    slug: "materials_network",
+    name: "Materials Network",
+    tagline: "Earn from the merchants you buy from every day",
+    summary:
+      "Pick up to 12 builder's merchants you trust — plasterboard yard, adhesive supplier, tool shop. Customers tap straight through to send a WhatsApp quote, and you earn a referral fee when the merchant fulfils it. Trust-based commission — the merchant marks each lead 'fulfilled' from their dashboard, no payment plumbing in the app. Soft disclosure to the customer keeps it honest: 'this tradesperson may earn a referral fee from these merchants — it costs you nothing extra'.",
+    glyph: "🔗",
+    image_url: null,
+    personas: ["Builders", "Plasterers", "Carpenters", "Roofers"],
+    editorial_badge: "viral_growth",
+    callouts: ["Up to 12 picks", "Earnings ledger", "Soft disclosure"],
+    pricing: { kind: "paid", monthly_pence: 300 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "materials-network",
+    includedWithPaid: false,
+    benefits: [
+      "Pick up to 12 builder's merchants you actually buy from",
+      "Trust-based commission — merchant marks fulfilled, you see the ledger",
+      "Soft disclosure to the customer — honest by design, no hidden fees"
+    ]
+  },
+  {
     slug: "faq_page",
     name: "FAQ Page",
     tagline: "Visual knowledge base — questions, answers and ref-numbered images",
@@ -354,6 +376,17 @@ export function isWholesaleModeOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).wholesale_mode === true;
+}
+
+/** Materials Network add-on — when on, the public profile surfaces an
+ *  inline merchant teaser and a dedicated /<slug>/materials page where
+ *  customers can browse the tradesperson's curated merchants. The cart
+ *  attribution layer + merchant fulfilment ledger live behind this flag.
+ *  Paid-only (£3/mo). */
+export function isMaterialsNetworkOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).materials_network === true;
 }
 
 /** Format a paid add-on's monthly price for UI rendering. */

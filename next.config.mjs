@@ -36,7 +36,9 @@ const nextConfig = {
         { source: "/:slug/job-diary", destination: "/trade/:slug/job-diary" },
         { source: "/:slug/job-diary/:projectId", destination: "/trade/:slug/job-diary/:projectId" },
         { source: "/:slug/job-diary/:projectId/request-removal", destination: "/trade/:slug/job-diary/:projectId/request-removal" },
-        { source: "/:slug/cart", destination: "/trade/:slug/cart" }
+        { source: "/:slug/cart", destination: "/trade/:slug/cart" },
+        { source: "/:slug/materials", destination: "/trade/:slug/materials" },
+        { source: "/:slug/materials/:merchantSlug", destination: "/trade/:slug/materials/:merchantSlug" }
       ],
       fallback: []
     };
@@ -57,7 +59,9 @@ const nextConfig = {
       { source: "/trade/:slug/job-diary", destination: "/:slug/job-diary", permanent: true },
       { source: "/trade/:slug/job-diary/:projectId", destination: "/:slug/job-diary/:projectId", permanent: true },
       { source: "/trade/:slug/job-diary/:projectId/request-removal", destination: "/:slug/job-diary/:projectId/request-removal", permanent: true },
-      { source: "/trade/:slug/cart", destination: "/:slug/cart", permanent: true }
+      { source: "/trade/:slug/cart", destination: "/:slug/cart", permanent: true },
+      { source: "/trade/:slug/materials", destination: "/:slug/materials", permanent: true },
+      { source: "/trade/:slug/materials/:merchantSlug", destination: "/:slug/materials/:merchantSlug", permanent: true }
     ];
   }
 };

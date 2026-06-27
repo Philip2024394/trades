@@ -45,7 +45,8 @@ import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPrice
 import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
 import { JobDiarySection } from "@/components/xrated/profile/JobDiarySection";
 import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
-import { isDownloadsOn, isJobDiaryOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
+import { MaterialsNetworkSection } from "@/components/xrated/profile/MaterialsNetworkSection";
+import { isDownloadsOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -487,6 +488,10 @@ function PremiumLayout({
   const servicesGrid = isPaid && isServicesGridOn(listing);
   // Job Diary gate — paid tier AND add-on flag on.
   const jobDiaryOn = isPaid && isJobDiaryOn(listing);
+  // Materials Network gate — paid tier AND add-on flag on. When true,
+  // the inline merchant teaser renders just above TrustedTradesCta and
+  // the CTA copy is rebranded (see TrustedTradesCta below).
+  const materialsOn = isPaid && isMaterialsNetworkOn(listing);
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
@@ -540,16 +545,25 @@ function PremiumLayout({
           guard). Sits BEFORE TrustedTradesCta so the customer reads
           "live work" → "people I recommend". */}
       {jobDiaryOn && <JobDiarySection listing={listing} />}
+      {/* Materials Network inline teaser — paid tier + add-on on.
+          Self-renders nothing when the tradesperson has zero live
+          merchant picks. View-all link points to /<slug>/materials. */}
+      {materialsOn && <MaterialsNetworkSection listing={listing} />}
       <TeamGrid listing={listing} />
       {/* My Trusted Trades — link to the dedicated sub-page. Available
           on every tier (free + trial + paid) as the viral acquisition
           lever: free profiles can recommend other tradies, generating
-          backlinks that bring fresh sign-ups onto the platform. */}
+          backlinks that bring fresh sign-ups onto the platform.
+          When Materials Network is also on we rebrand the CTA copy to
+          "Trade Materials & Companies I Work With" so the customer sees
+          one cohesive supply-chain story rather than two competing
+          recommendations sections. */}
       {Array.isArray(listing.recommendations) && listing.recommendations.length > 0 && (
         <TrustedTradesCta
           slug={listing.slug}
           firstName={listing.display_name.split(/\s+/)[0] ?? listing.display_name}
           count={listing.recommendations.length}
+          materialsOn={materialsOn}
         />
       )}
       <ShareAndContactCta
@@ -636,12 +650,24 @@ function FreeTierUpgradeBanner({
 function TrustedTradesCta({
   slug,
   firstName,
-  count
+  count,
+  materialsOn = false
 }: {
   slug: string;
   firstName: string;
   count: number;
+  /** Materials Network add-on flag. When true, the container is
+   *  rebranded from "My Trusted Trades" to "Trade Materials &
+   *  Companies I Work With" so the supply-chain story stays
+   *  consistent with the merchant-picks teaser above. */
+  materialsOn?: boolean;
 }) {
+  const eyebrow = materialsOn
+    ? "Trade Materials & Companies I Work With"
+    : "My Trusted Trades";
+  const headline = materialsOn
+    ? `${count} ${count === 1 ? "trade & supplier I work with" : "trades & suppliers I work with"}`
+    : `${count} ${count === 1 ? "tradesperson I personally vouch for" : "tradespeople I personally vouch for"}`;
   return (
     <section className="mx-auto w-full max-w-6xl px-4 pt-10 sm:px-6 sm:pt-12">
       <a
@@ -653,10 +679,10 @@ function TrustedTradesCta({
             className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
             style={{ color: "#FFB300" }}
           >
-            My Trusted Trades
+            {eyebrow}
           </p>
           <p className="mt-1.5 text-lg font-extrabold leading-tight text-neutral-900 sm:text-xl">
-            {count} {count === 1 ? "tradesperson I personally vouch for" : "tradespeople I personally vouch for"}
+            {headline}
           </p>
           <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
             Need an electrician, a sparky or a roofer too? See who {firstName} works with.
