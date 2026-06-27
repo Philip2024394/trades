@@ -72,7 +72,10 @@ export function YardPostCard({
     <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
 
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
-        {/* Top row — kind chip + time ago */}
+        {/* Top row — just the kind chip + a small grey time-ago. Trade,
+            new-flag and days-left moved to the meta line under the
+            title so the header reads as one decisive label rather than
+            a chip-soup. */}
         <div className="flex items-center gap-2">
           <span
             className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em]"
@@ -80,28 +83,11 @@ export function YardPostCard({
           >
             {YARD_KIND_LABELS[post.kind]}
           </span>
-          <span className="inline-flex items-center rounded-full bg-neutral-100 px-2.5 py-1 text-[11px] font-bold text-neutral-700">
-            {tradeText}
-          </span>
-          {/* Right-aligned meta cluster: NEW chip (24h) + time-ago +
-              'Xd left' so tradies see freshness + urgency at a glance. */}
-          <div className="ml-auto flex items-center gap-1.5">
-            {isNewPost(post.created_at) && (
-              <span
-                className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
-                style={{ background: BRAND_YELLOW }}
-                title="Posted in the last 24 hours"
-              >
-                New
-              </span>
-            )}
-            {!post.is_sample && (
-              <span className="text-[11px] font-bold text-neutral-400">
-                {timeAgoShort(post.created_at)}
-              </span>
-            )}
-            <DaysLeftChip days={daysRemaining(post.expires_at)} />
-          </div>
+          {!post.is_sample && (
+            <span className="ml-auto text-[11px] font-bold text-neutral-400">
+              {timeAgoShort(post.created_at)}
+            </span>
+          )}
         </div>
 
         {/* Title */}
@@ -109,32 +95,18 @@ export function YardPostCard({
           {post.title}
         </h3>
 
-        {/* Meta — region · dates · crew · rate · price */}
-        <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[13px] text-neutral-600">
-          {region && (
-            <li className="inline-flex items-center gap-1.5">
-              <PinGlyph />
-              {region}
-            </li>
-          )}
-          {dateRange && (
-            <li className="inline-flex items-center gap-1.5">
-              <CalendarGlyph />
-              {dateRange}
-            </li>
-          )}
-          {post.kind === "needed" && post.crew_size_needed !== null && (
-            <li className="inline-flex items-center gap-1.5">
-              <CrewGlyph />
-              {post.crew_size_needed} crew
-            </li>
-          )}
-          {dayRate && (
-            <li className="inline-flex items-center gap-1.5 font-extrabold text-neutral-900">
-              {dayRate}
-            </li>
-          )}
-        </ul>
+        {/* Single meta line under the title — trade · region · dates ·
+            crew · rate. Plain grey type, bullet separators. Forum-style,
+            not chip-soup. */}
+        <p className="text-[12px] leading-snug text-neutral-500 sm:text-[13px]">
+          <span className="font-bold text-neutral-700">{tradeText}</span>
+          {region ? <> &middot; {region}</> : null}
+          {dateRange ? <> &middot; {dateRange}</> : null}
+          {post.kind === "needed" && post.crew_size_needed !== null
+            ? <> &middot; {post.crew_size_needed} crew</>
+            : null}
+          {dayRate ? <> &middot; <span className="font-bold text-neutral-900">{dayRate}</span></> : null}
+        </p>
 
         {/* Big price block for product posts — the conversion anchor. */}
         {isProduct && post.product_price_pence !== null && (
@@ -302,11 +274,18 @@ export function YardPostCard({
           ) : null}
         </div>
 
-        {/* X contacted — plain text, centered, at the very end of the
-            card. Always rendered so the social-proof signal is
-            consistent across every card; '0 contacted' is honest. */}
+        {/* Footer meta — 'X contacted' + 'NEW' marker + days-left, all
+            as plain grey text. One line, centered, end of card. */}
         <p className="mt-3 text-center text-[12px] font-bold text-neutral-500">
           {post.contact_count} contacted
+          <span className="mx-1.5 text-neutral-300">&middot;</span>
+          {daysRemaining(post.expires_at)}d left
+          {isNewPost(post.created_at) && (
+            <>
+              <span className="mx-1.5 text-neutral-300">&middot;</span>
+              <span style={{ color: "#92400E" }}>NEW</span>
+            </>
+          )}
         </p>
       </div>
     </article>
@@ -341,25 +320,6 @@ function CrewGlyph() {
       <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
       <path d="M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
-  );
-}
-
-function DaysLeftChip({ days }: { days: number }) {
-  // ≤ 3 days = amber, otherwise neutral. Communicates "post is about to
-  // vanish" without screaming red.
-  const low = days <= 3;
-  return (
-    <span
-      className="inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider"
-      style={
-        low
-          ? { borderColor: "#F59E0B", color: "#92400E", background: "#FEF3C7" }
-          : { borderColor: "#e5e5e5", color: "#525252", background: "#fafafa" }
-      }
-      title={`Auto-vanishes in ${days} day${days === 1 ? "" : "s"}`}
-    >
-      {days}d left
-    </span>
   );
 }
 

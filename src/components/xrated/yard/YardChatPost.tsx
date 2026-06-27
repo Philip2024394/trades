@@ -99,18 +99,6 @@ export function YardChatPost({
               {" · "}
               {timeAgoShort(post.created_at)}
             </p>
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              {isNewPost(post.created_at) && (
-                <span
-                  className="inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
-                  style={{ background: BRAND_YELLOW }}
-                  title="Posted in the last 24 hours"
-                >
-                  New
-                </span>
-              )}
-              <ChatDaysLeftChip days={daysRemaining(post.expires_at)} />
-            </div>
           </div>
           <span
             className="inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-neutral-900"
@@ -201,30 +189,21 @@ export function YardChatPost({
           )}
         </div>
 
-        {/* X contacted — plain text, centered, end of card. Always
-            rendered so every thread shows the signal honestly. */}
+        {/* Footer meta — contacted + days-left + new flag, one centred
+            grey line. */}
         <p className="text-center text-[12px] font-bold text-neutral-500">
           {post.contact_count} contacted
+          <span className="mx-1.5 text-neutral-300">&middot;</span>
+          {daysRemaining(post.expires_at)}d left
+          {isNewPost(post.created_at) && (
+            <>
+              <span className="mx-1.5 text-neutral-300">&middot;</span>
+              <span style={{ color: "#92400E" }}>NEW</span>
+            </>
+          )}
         </p>
       </div>
     </article>
-  );
-}
-
-function ChatDaysLeftChip({ days }: { days: number }) {
-  const low = days <= 3;
-  return (
-    <span
-      className="inline-flex items-center rounded-full border px-1.5 py-0.5 text-[10px] font-extrabold uppercase tracking-wider"
-      style={
-        low
-          ? { borderColor: "#F59E0B", color: "#92400E", background: "#FEF3C7" }
-          : { borderColor: "#e5e5e5", color: "#525252", background: "#fafafa" }
-      }
-      title={`Auto-vanishes in ${days} day${days === 1 ? "" : "s"}`}
-    >
-      {days}d left
-    </span>
   );
 }
 
