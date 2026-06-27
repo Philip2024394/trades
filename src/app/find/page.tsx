@@ -184,75 +184,74 @@ export default async function FindPortalPage({
     <main className="bg-neutral-50 pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface, yellow eyebrow + accent. Search bar sits
-          OUTSIDE the hero so it overlaps the bottom edge like the
-          premium-app profile-info card pattern. */}
-      <section
-        className="relative overflow-hidden border-b border-neutral-200"
-        style={{ background: "#0A0A0A" }}
-      >
-        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-28 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-32 sm:pt-16">
-          <div>
-            <p
-              className="text-[13px] font-bold uppercase tracking-[0.22em]"
-              style={{ color: XRATED_BRAND.accent }}
-            >
-              xratedtrades.com &middot; The customer portal
-            </p>
-            <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-              {hasFilter ? (
-                headline
-              ) : (
-                <>
-                  See who has an{" "}
-                  <span style={{ color: XRATED_BRAND.accent }}>Xrated app</span>{" "}
-                  near you.
-                </>
-              )}
-            </h1>
-            {!hasFilter && (
-              <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-sm">
-                Every result is a{" "}
-                <span className="font-bold text-white">real tradesperson</span>{" "}
-                with their own premium app &mdash; not a directory listing.
-                Tap a card, land on their app, message them{" "}
-                <span className="font-bold text-white">direct on WhatsApp</span>.
-                We never sit between you and the trade. No quote forms, no
-                lead routing, no middleman.
-              </p>
-            )}
-            <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70 sm:text-sm">
-              <span className="inline-flex items-center gap-1.5">
-                <Dot accent /> {totalMembers.toLocaleString("en-GB")} live UK members
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Dot accent /> Tap = the tradesperson&rsquo;s actual app
-              </span>
-              <span className="inline-flex items-center gap-1.5">
-                <Dot accent /> No middleman, no commission
-              </span>
-            </div>
-          </div>
+      {/* Hero — full-bleed background image with dark overlay for text
+          legibility. Text + search bar overlay on top. Search bar still
+          floats over the hero/results boundary at the bottom. */}
+      <section className="relative overflow-hidden border-b border-neutral-200">
+        {/* Background image — covers the entire hero */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2011_02_32%20AM.png?updatedAt=1782360173013"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Dark gradient overlay — left side darker for text contrast,
+            fading to allow image detail to show through on the right. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.75) 45%, rgba(10,10,10,0.3) 100%)"
+          }}
+        />
 
-          {/* Hero artwork — stacks below on mobile, sits right on
-              desktop. Same yellow-bordered chip style we use on the
-              Yard and Tips heroes for brand consistency. */}
-          <div className="relative w-full max-w-[300px] justify-self-start sm:justify-self-end">
-            <div
-              className="absolute -inset-3 rounded-3xl"
-              style={{
-                background: `${XRATED_BRAND.accent}33`,
-                filter: "blur(18px)"
-              }}
-              aria-hidden="true"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2011_02_32%20AM.png?updatedAt=1782360173013"
-              alt="Find a UK tradie with an Xrated app"
-              className="relative w-full rounded-2xl border-2 object-cover shadow-2xl"
-              style={{ borderColor: XRATED_BRAND.accent }}
-            />
+        <div className="relative mx-auto max-w-5xl px-4 pb-28 pt-12 sm:px-6 sm:pb-32 sm:pt-16">
+          <p
+            className="text-[13px] font-bold uppercase tracking-[0.22em]"
+            style={{ color: XRATED_BRAND.accent }}
+          >
+            xratedtrades.com &middot; The customer portal
+          </p>
+          <h1
+            className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl"
+            style={{ textShadow: "0 4px 18px rgba(0,0,0,0.6)" }}
+          >
+            {hasFilter ? (
+              headline
+            ) : (
+              <>
+                See who has an{" "}
+                <span style={{ color: XRATED_BRAND.accent }}>Xrated app</span>{" "}
+                near you.
+              </>
+            )}
+          </h1>
+          {!hasFilter && (
+            <p
+              className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white sm:text-sm"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+            >
+              Every result is a{" "}
+              <span className="font-bold" style={{ color: XRATED_BRAND.accent }}>real tradesperson</span>{" "}
+              with their own premium app &mdash; not a directory listing.
+              Tap a card, land on their app, message them{" "}
+              <span className="font-bold" style={{ color: XRATED_BRAND.accent }}>direct on WhatsApp</span>.
+              We never sit between you and the trade. No quote forms, no
+              lead routing, no middleman.
+            </p>
+          )}
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
+            <span className="inline-flex items-center gap-1.5">
+              <Dot accent /> {totalMembers.toLocaleString("en-GB")} live UK members
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Dot accent /> Tap = the tradesperson&rsquo;s actual app
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Dot accent /> No middleman, no commission
+            </span>
           </div>
         </div>
       </section>
