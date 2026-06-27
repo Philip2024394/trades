@@ -195,48 +195,66 @@ export default async function YardFeedPage({
             The Yard &middot; Trades-only &middot; Worldwide &middot; Private
           </p>
           <h1
-            className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl"
+            className="mt-3 max-w-3xl text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ textShadow: "0 4px 18px rgba(0,0,0,0.6)" }}
           >
-            The ultimate hangout for tradies,{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>anywhere on the planet</span>.
+            The hangout for{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>tradies</span>.
           </h1>
           <p
-            className="mt-4 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg"
+            className="mt-3 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg"
             style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
           >
             Customers want{" "}
             <span style={{ color: XRATED_BRAND.accent }}>&ldquo;I&rsquo;m busy&rdquo;</span>{" "}
             &mdash; not &ldquo;looking for work&rdquo;.
           </p>
-          <p
-            className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/85 sm:text-sm"
-            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
-          >
-            Asking for work in a Facebook group is a footprint your
-            customers can see. Years of it pushes the wrong image &mdash;
-            you look quiet, not busy. We built{" "}
-            <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
-              The Yard
-            </span>{" "}
-            so trades have their own private hangout to{" "}
-            <span className="font-bold text-white">hire</span>,{" "}
-            <span className="font-bold text-white">offer fill-in weeks</span>{" "}
-            and{" "}
-            <span className="font-bold text-white">talk shop</span>{" "}
-            &mdash; no public footprint, no customer eyes, no algorithm.
-          </p>
-          <p
-            className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/75 sm:text-sm"
-            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
-          >
-            Every post auto-expires after{" "}
-            <span className="font-bold text-white">14 days</span>{" "}
-            and disappears like it never existed. Every post is from a
-            paying Xrated member &mdash; nobody else can read it. Every
-            yellow button on every post lands you straight in the
-            poster&rsquo;s WhatsApp.
-          </p>
+
+          {/* Read-more accordion — keeps the heavy explainer text out
+              of the hero, but visible in one tap for anyone who wants
+              the full pitch. Uses native <details> so no JS, accessible
+              by default, works on every browser. */}
+          <details className="group mt-3 max-w-2xl">
+            <summary
+              className="inline-flex cursor-pointer items-center gap-1.5 text-[13px] font-extrabold uppercase tracking-wider text-white/90 transition hover:text-white sm:text-sm"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+            >
+              Read more
+              <span
+                aria-hidden="true"
+                className="inline-block transition group-open:rotate-90"
+              >
+                &rarr;
+              </span>
+            </summary>
+            <div
+              className="mt-3 rounded-2xl border border-white/15 bg-black/40 p-4 backdrop-blur-sm sm:p-5"
+              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+            >
+              <p className="text-[13px] leading-relaxed text-white/90 sm:text-sm">
+                Asking for work in a Facebook group is a footprint your
+                customers can see. Years of it pushes the wrong image &mdash;
+                you look quiet, not busy. We built{" "}
+                <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
+                  The Yard
+                </span>{" "}
+                so trades have their own private hangout to{" "}
+                <span className="font-bold text-white">hire</span>,{" "}
+                <span className="font-bold text-white">offer fill-in weeks</span>{" "}
+                and{" "}
+                <span className="font-bold text-white">talk shop</span>{" "}
+                &mdash; no public footprint, no customer eyes, no algorithm.
+              </p>
+              <p className="mt-3 text-[13px] leading-relaxed text-white/85 sm:text-sm">
+                Every post auto-expires after{" "}
+                <span className="font-bold text-white">14 days</span>{" "}
+                and disappears like it never existed. Every post is from
+                a paying Xrated member &mdash; nobody else can read it.
+                Every yellow button on every post lands you straight in
+                the poster&rsquo;s WhatsApp.
+              </p>
+            </div>
+          </details>
           <div
             className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] font-bold text-white sm:text-sm"
             style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
