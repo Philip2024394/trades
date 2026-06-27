@@ -7,6 +7,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import {
+  isValidProductSlug,
+  slugCandidate,
+  slugifyProductName
+} from "@/lib/xratedProductSlug";
 
 export const runtime = "nodejs";
 
@@ -280,6 +285,33 @@ export async function POST(req: NextRequest) {
     size_chart_unit = sizeChartUnitRaw as "size" | "kg" | "litre" | "cm" | "other";
   }
 
+  // Phase 3 — per-product URL handle. Clients can pass an explicit slug
+  // (validated against the same DB CHECK), or omit it and we derive one
+  // from the name. The save loop retries with `-2`, `-3`… on a UNIQUE
+  // collision so two products called "Drywall sheet" never crash the
+  // tradesperson's save flow.
+  const slugIn = s(productIn.slug).toLowerCase();
+  let desiredSlug: string | null = null;
+  if (slugIn.length > 0) {
+    if (!isValidProductSlug(slugIn)) {
+      return NextResponse.json(
+        { ok: false, error: "Slug must be lowercase a-z0-9 with hyphens, 1-80 chars." },
+        { status: 400 }
+      );
+    }
+    desiredSlug = slugIn;
+  }
+
+  // Phase 3 — featured_at toggle. Pass `featured: true` to stamp NOW()
+  // (used by the editor's drag-picker save). `featured: false` clears
+  // the timestamp. Omit the field to leave whatever's already there.
+  let featuredPatch: { featured_at?: string | null } = {};
+  if (typeof productIn.featured === "boolean") {
+    featuredPatch = {
+      featured_at: productIn.featured ? new Date().toISOString() : null
+    };
+  }
+
   const patch = {
     name,
     description,
@@ -297,7 +329,8 @@ export async function POST(req: NextRequest) {
     variants,
     size_chart_url,
     size_chart_unit,
-    bulk_tiers
+    bulk_tiers,
+    ...featuredPatch
   };
 
   const idRaw = s(productIn.id);
@@ -308,40 +341,123 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    const upd = await supabaseAdmin
+    // Resolve the slug we want to write. Priority:
+    //   1. Caller passed an explicit slug → use that.
+    //   2. The existing row already has a slug AND name didn't change →
+    //      keep the old slug (preserves shared URLs).
+    //   3. Otherwise generate a fresh slug from the new name.
+    const existing = await supabaseAdmin
       .from("hammerex_xrated_products")
-      .update(patch)
+      .select("slug, name")
       .eq("id", idRaw)
       .eq("listing_id", listing.data.id)
-      .select("*")
       .maybeSingle();
-    if (upd.error) {
-      console.error("[trade-off/products/upsert] update failed:", upd.error);
-      return NextResponse.json(
-        { ok: false, error: upd.error.message },
-        { status: 500 }
-      );
-    }
-    if (!upd.data) {
+    if (!existing.data) {
       return NextResponse.json(
         { ok: false, error: "Product not found." },
         { status: 404 }
       );
     }
-    return NextResponse.json({ ok: true, product: upd.data });
+    let targetSlug = desiredSlug;
+    if (targetSlug === null) {
+      const nameChanged = (existing.data.name ?? "") !== name;
+      if (existing.data.slug && !nameChanged) {
+        targetSlug = existing.data.slug as string;
+      } else {
+        const base = slugifyProductName(name);
+        targetSlug = base.length > 0 ? base : null;
+      }
+    }
+    const updated = await tryUpsertSlug(
+      "update",
+      idRaw,
+      listing.data.id,
+      patch,
+      targetSlug
+    );
+    if (!updated.ok) {
+      return NextResponse.json({ ok: false, error: updated.error }, { status: updated.status });
+    }
+    return NextResponse.json({ ok: true, product: updated.row });
   }
 
-  const ins = await supabaseAdmin
-    .from("hammerex_xrated_products")
-    .insert({ ...patch, listing_id: listing.data.id })
-    .select("*")
-    .maybeSingle();
-  if (ins.error || !ins.data) {
-    console.error("[trade-off/products/upsert] insert failed:", ins.error);
-    return NextResponse.json(
-      { ok: false, error: ins.error?.message ?? "Insert failed" },
-      { status: 500 }
-    );
+  // INSERT path. Always derive a slug — fall back to NULL when the name
+  // has no alphanumerics, the DB CHECK accepts NULL so the row still
+  // saves; the editor surfaces a "needs a real name" prompt elsewhere.
+  let insertSlug = desiredSlug;
+  if (insertSlug === null) {
+    const base = slugifyProductName(name);
+    insertSlug = base.length > 0 ? base : null;
   }
-  return NextResponse.json({ ok: true, product: ins.data });
+  const inserted = await tryUpsertSlug(
+    "insert",
+    null,
+    listing.data.id,
+    patch,
+    insertSlug
+  );
+  if (!inserted.ok) {
+    return NextResponse.json({ ok: false, error: inserted.error }, { status: inserted.status });
+  }
+  return NextResponse.json({ ok: true, product: inserted.row });
+}
+
+// Save loop with collision retry. Tries the bare slug first; on a unique-
+// index violation (Postgres SQLSTATE 23505) appends -2, -3 … up to attempt
+// 49 then gives up. The whole thing degrades gracefully when the caller
+// passes slug=null (no collision risk — DB CHECK accepts NULL).
+async function tryUpsertSlug(
+  op: "insert" | "update",
+  id: string | null,
+  listingId: string,
+  patch: Record<string, unknown>,
+  baseSlug: string | null
+): Promise<
+  | { ok: true; row: Record<string, unknown> }
+  | { ok: false; error: string; status: number }
+> {
+  const MAX_ATTEMPTS = 50;
+  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+    const slug =
+      baseSlug === null ? null : slugCandidate(baseSlug, attempt);
+    const payload = { ...patch, slug };
+    let res;
+    if (op === "update" && id) {
+      res = await supabaseAdmin
+        .from("hammerex_xrated_products")
+        .update(payload)
+        .eq("id", id)
+        .eq("listing_id", listingId)
+        .select("*")
+        .maybeSingle();
+    } else {
+      res = await supabaseAdmin
+        .from("hammerex_xrated_products")
+        .insert({ ...payload, listing_id: listingId })
+        .select("*")
+        .maybeSingle();
+    }
+    if (!res.error && res.data) {
+      return { ok: true, row: res.data };
+    }
+    if (res.error) {
+      // Postgres unique violation — try the next slug candidate.
+      const code = (res.error as { code?: string }).code;
+      const msg = (res.error as { message?: string }).message ?? "";
+      if (
+        baseSlug !== null &&
+        (code === "23505" || /duplicate key|unique constraint/i.test(msg))
+      ) {
+        continue;
+      }
+      console.error(`[trade-off/products/upsert] ${op} failed:`, res.error);
+      return { ok: false, error: msg || "Save failed.", status: 500 };
+    }
+    return { ok: false, error: "Product not found.", status: 404 };
+  }
+  return {
+    ok: false,
+    error: "Could not pick a unique slug after many attempts — try renaming the product.",
+    status: 409
+  };
 }

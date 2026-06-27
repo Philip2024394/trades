@@ -338,6 +338,19 @@ export function isShopModeOn(
   return (listing.addons_enabled ?? {}).shop_mode === true;
 }
 
+/** Storefront gate — true when the dedicated /<slug>/shop page and the
+ *  ShopTeaser block on the profile should render. The Phase 3 storefront
+ *  is a FREE upgrade for existing Shop Mode users AND is auto-included
+ *  with Wholesale Mode (£7/mo) so merchants get the full experience
+ *  inside that tier without a second toggle. Centralised so the page,
+ *  teaser, editor and API agree on the same predicate. */
+export function isStorefrontOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  const map = listing.addons_enabled ?? {};
+  return map.shop_mode === true || map.wholesale_mode === true;
+}
+
 /** Services Prices add-on — when on, the public profile renders the
  *  services-priced grid section (and the dedicated /services-prices
  *  sub-page becomes reachable). Independent of Shop Mode — a trade can

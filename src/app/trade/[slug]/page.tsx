@@ -40,14 +40,14 @@ import { QrFooterDock } from "@/components/xrated/profile/QrFooterDock";
 import { PremiumStickyTrust } from "@/components/xrated/profile/PremiumStickyTrust";
 import { ProfileExpandPanels } from "@/components/xrated/profile/ProfileExpandPanels";
 import { AboutBio } from "@/components/xrated/profile/AboutBio";
-import { ProductCardGrid } from "@/components/xrated/profile/ProductCardGrid";
+import { ShopTeaser } from "@/components/xrated/profile/ShopTeaser";
 import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
 import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPricedSection";
 import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
 import { JobDiarySection } from "@/components/xrated/profile/JobDiarySection";
 import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
 import { MaterialsNetworkSection } from "@/components/xrated/profile/MaterialsNetworkSection";
-import { isDownloadsOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
+import { isDownloadsOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -476,11 +476,14 @@ function PremiumLayout({
   tier: "free" | "paid";
 }) {
   const isPaid = tier === "paid";
-  // Shop Mode swap — only honour when the add-on is on AND the
-  // tradesperson is on a paid tier (the add-on is gated on the
+  // Shop Mode swap — only honour when the storefront add-on is on AND
+  // the tradesperson is on a paid tier (the add-on is gated on the
   // dashboard but we double-check here so a leaked toggle on a free
-  // profile can't bypass the gate).
-  const shopMode = isPaid && isShopModeOn(listing);
+  // profile can't bypass the gate). Phase 3: ShopTeaser drives the
+  // profile-side render; the full grid lives at /<slug>/shop. We keep
+  // the `shopMode` boolean so downstream chrome (ShopCartIsland,
+  // sticky-trust swap) wire up the same way they did in Phase 2.
+  const shopMode = isPaid && isStorefrontOn(listing);
   // Services Prices add-on swap — only honour when the add-on is on AND
   // the tradesperson is on a paid tier. Independent of Shop Mode — a
   // tradesperson can run both at the same time (kit they sell + labour
@@ -515,7 +518,7 @@ function PremiumLayout({
 
       <AboutAndVideo listing={listing} showVideo={isPaid} />
       {shopMode ? (
-        <ProductCardGrid listing={listing} />
+        <ShopTeaser listing={listing} />
       ) : (
         <ServicesTabbedGallery
           slug={listing.slug}

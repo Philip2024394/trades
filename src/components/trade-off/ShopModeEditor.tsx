@@ -452,6 +452,26 @@ export function ShopModeEditor({
 
   return (
     <div className="space-y-4 rounded-xl border border-brand-line bg-brand-surface p-5">
+      {/* Phase 3 — Featured products drag-picker. The 6 "front window"
+          slots double as the public profile's ShopTeaser rail and the
+          default sort on the /<slug>/shop storefront. Only renders in
+          product-mode (services aren't surfaced on the storefront). */}
+      {!isService && (
+        <FeaturedProductsEditor
+          products={products}
+          slug={slug}
+          editToken={editToken}
+          onSaved={(savedRows) => {
+            setProducts((prev) =>
+              prev.map((p) => {
+                const saved = savedRows.find((s) => s.id === p.id);
+                return saved ? { ...p, featured_at: saved.featured_at } : p;
+              })
+            );
+          }}
+        />
+      )}
+
       <div className="flex flex-wrap items-baseline justify-between gap-3">
         <div>
           <h2 className="text-lg font-extrabold">
@@ -1555,5 +1575,426 @@ function CompareWithPicker({
         );
       })}
     </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────────────
+// Phase 3 — Featured products drag-picker.
+//
+// 6 "front window" slots at the top of the editor. The tradesperson
+// drags products from the catalogue pool on the left into the slots on
+// the right. Saving stamps featured_at=NOW() on the picked products and
+// NULL on the de-picked ones. The teaser + storefront default sort both
+// read featured_at DESC NULLS LAST, so what they pick here goes
+// straight to the public profile.
+// ──────────────────────────────────────────────────────────────────────
+
+const FEATURED_SLOTS = 6;
+
+function FeaturedProductsEditor({
+  products,
+  slug,
+  editToken,
+  onSaved
+}: {
+  products: HammerexXratedProduct[];
+  slug: string;
+  editToken: string;
+  onSaved: (saved: { id: string; featured_at: string | null }[]) => void;
+}) {
+  // Filter to live products only — archived rows can't be featured.
+  const live = useMemo(
+    () => products.filter((p) => p.status === "live" && (p.kind ?? "product") === "product"),
+    [products]
+  );
+  // Derive the initial featured order from featured_at DESC (newest
+  // pick first) so re-opening the editor matches what the public page
+  // shows. Pad with empty slots up to FEATURED_SLOTS.
+  const initialFeaturedIds = useMemo(() => {
+    return live
+      .filter((p) => p.featured_at)
+      .sort((a, b) => {
+        const ta = a.featured_at ? Date.parse(a.featured_at) : 0;
+        const tb = b.featured_at ? Date.parse(b.featured_at) : 0;
+        return tb - ta;
+      })
+      .slice(0, FEATURED_SLOTS)
+      .map((p) => p.id);
+  }, [live]);
+
+  const [featuredIds, setFeaturedIds] = useState<string[]>(initialFeaturedIds);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  // Re-sync when the underlying products list refreshes (after a save
+  // elsewhere in the editor) — keeps the slots in sync without forcing
+  // a page reload.
+  useEffect(() => {
+    setFeaturedIds(initialFeaturedIds);
+  }, [initialFeaturedIds]);
+
+  const featuredSet = new Set(featuredIds);
+  const pool = live.filter((p) => !featuredSet.has(p.id));
+
+  const productById = useMemo(() => {
+    const m: Record<string, HammerexXratedProduct> = {};
+    for (const p of live) m[p.id] = p;
+    return m;
+  }, [live]);
+
+  function pick(id: string) {
+    if (featuredIds.length >= FEATURED_SLOTS) {
+      setErr(`Only ${FEATURED_SLOTS} featured slots — drop one first.`);
+      return;
+    }
+    if (featuredSet.has(id)) return;
+    setErr(null);
+    setFeaturedIds((prev) => [...prev, id]);
+  }
+  function drop(id: string) {
+    setErr(null);
+    setFeaturedIds((prev) => prev.filter((x) => x !== id));
+  }
+  function clearAll() {
+    setErr(null);
+    setFeaturedIds([]);
+  }
+
+  async function save() {
+    setBusy(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      // Diff: rows that are now featured but weren't, plus rows that
+      // were featured but aren't. We POST each one separately to the
+      // existing /upsert route since that already handles auth + slug
+      // backfill + collision retry.
+      const wantFeatured = new Set(featuredIds);
+      const wereFeatured = new Set(
+        live.filter((p) => p.featured_at).map((p) => p.id)
+      );
+      const toFeature: string[] = [];
+      const toUnfeature: string[] = [];
+      for (const id of wantFeatured) {
+        if (!wereFeatured.has(id)) toFeature.push(id);
+      }
+      for (const id of wereFeatured) {
+        if (!wantFeatured.has(id)) toUnfeature.push(id);
+      }
+      const ops = [
+        ...toFeature.map((id) => ({ id, featured: true })),
+        ...toUnfeature.map((id) => ({ id, featured: false }))
+      ];
+      if (ops.length === 0) {
+        setMsg("No changes to save.");
+        return;
+      }
+      const saved: { id: string; featured_at: string | null }[] = [];
+      for (const op of ops) {
+        const product = productById[op.id];
+        if (!product) continue;
+        const res = await fetch("/api/trade-off/products/upsert", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            slug,
+            edit_token: editToken,
+            product: {
+              id: product.id,
+              name: product.name,
+              description: product.description ?? "",
+              price_pence: product.price_pence,
+              stock_count: product.stock_count,
+              dispatch_days: product.dispatch_days,
+              cover_url: product.cover_url ?? "",
+              gallery_urls: product.gallery_urls ?? [],
+              compare_with: product.compare_with ?? [],
+              status: product.status,
+              sort_order: product.sort_order,
+              kind: product.kind ?? "product",
+              unit: product.unit ?? "",
+              category: product.category ?? "",
+              variants: product.variants ?? [],
+              size_chart_url: product.size_chart_url ?? "",
+              size_chart_unit: product.size_chart_unit ?? "",
+              bulk_tiers: product.bulk_tiers ?? [],
+              featured: op.featured
+            }
+          })
+        });
+        const json = await res.json();
+        if (!json.ok) {
+          setErr(json.error ?? "Save failed mid-batch.");
+          if (saved.length > 0) onSaved(saved);
+          return;
+        }
+        saved.push({
+          id: json.product.id,
+          featured_at: json.product.featured_at ?? null
+        });
+      }
+      onSaved(saved);
+      setMsg(`Saved — ${saved.length} update${saved.length === 1 ? "" : "s"}.`);
+    } catch {
+      setErr("Network error — try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const sensors = useDragSensors();
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event;
+    if (!over) return;
+    const overId = String(over.id);
+    // Pool → slot drop. Pool items have ids like "pool-<uuid>"; slots
+    // have ids "slot-<index>" or "slot-empty-<index>". Featured rail
+    // re-order: dragging a featured item onto another featured item
+    // swaps positions.
+    if (String(active.id).startsWith("pool-")) {
+      const productId = String(active.id).replace(/^pool-/, "");
+      if (overId.startsWith("slot-")) {
+        pick(productId);
+      }
+      return;
+    }
+    if (String(active.id).startsWith("slot-")) {
+      // Reorder within the featured rail.
+      const fromIdx = featuredIds.findIndex((id) => `slot-${id}` === String(active.id));
+      const toIdx = featuredIds.findIndex((id) => `slot-${id}` === overId);
+      if (fromIdx < 0 || toIdx < 0 || fromIdx === toIdx) return;
+      setFeaturedIds((prev) => arrayMove(prev, fromIdx, toIdx));
+    }
+  }
+
+  return (
+    <div className="space-y-3 rounded-lg border border-brand-accent/40 bg-brand-accent/5 p-4">
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <div>
+          <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-accent">
+            Featured products
+          </p>
+          <h3 className="mt-1 text-base font-extrabold text-brand-text">
+            Front window — pick up to {FEATURED_SLOTS}
+          </h3>
+          <p className="mt-1 text-[13px] text-brand-muted">
+            Tap a product to feature it. These show first on your profile and
+            at the top of your storefront.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={save}
+          disabled={busy}
+          className="inline-flex h-11 items-center rounded-lg bg-brand-accent px-4 text-xs font-bold text-black transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {busy ? "Saving…" : "Save featured"}
+        </button>
+      </div>
+
+      {err && (
+        <p className="rounded-md border border-red-500/40 bg-red-500/10 px-3 py-2 text-xs font-semibold text-red-300">
+          {err}
+        </p>
+      )}
+      {msg && (
+        <p className="rounded-md border border-brand-accent/40 bg-brand-accent/10 px-3 py-2 text-xs font-semibold text-brand-accent">
+          {msg}
+        </p>
+      )}
+
+      <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+        <div className="space-y-3">
+          <SortableContext
+            items={featuredIds.map((id) => `slot-${id}`)}
+            strategy={horizontalListSortingStrategy}
+          >
+            <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-6">
+              {Array.from({ length: FEATURED_SLOTS }).map((_, i) => {
+                const id = featuredIds[i];
+                if (!id) {
+                  return (
+                    <EmptyFeaturedSlot
+                      key={`empty-${i}`}
+                      idx={i}
+                    />
+                  );
+                }
+                const product = productById[id];
+                if (!product) return null;
+                return (
+                  <SortableFeaturedSlot
+                    key={id}
+                    product={product}
+                    onRemove={() => drop(id)}
+                  />
+                );
+              })}
+            </ul>
+          </SortableContext>
+
+          {featuredIds.length > 0 && (
+            <button
+              type="button"
+              onClick={clearAll}
+              className="inline-flex h-9 items-center text-[11px] font-bold text-brand-muted transition hover:text-brand-text"
+            >
+              Clear all featured
+            </button>
+          )}
+
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">
+              Pool — drag (or tap) into a slot above
+            </p>
+            {pool.length === 0 ? (
+              <p className="mt-2 rounded-md border border-dashed border-brand-line bg-brand-bg px-3 py-3 text-[13px] text-brand-muted">
+                Every live product is featured. Drop a slot above to free one
+                up.
+              </p>
+            ) : (
+              <SortableContext
+                items={pool.map((p) => `pool-${p.id}`)}
+                strategy={horizontalListSortingStrategy}
+              >
+                <ul className="mt-2 flex flex-wrap gap-2">
+                  {pool.map((p) => (
+                    <SortablePoolItem
+                      key={p.id}
+                      product={p}
+                      onPick={() => pick(p.id)}
+                    />
+                  ))}
+                </ul>
+              </SortableContext>
+            )}
+          </div>
+        </div>
+      </DndContext>
+    </div>
+  );
+}
+
+function EmptyFeaturedSlot({ idx }: { idx: number }) {
+  const { setNodeRef, isOver } = useSortable({ id: `slot-empty-${idx}` });
+  return (
+    <li
+      ref={setNodeRef}
+      className={`flex h-24 items-center justify-center rounded-lg border-2 border-dashed text-[11px] font-bold transition ${
+        isOver
+          ? "border-brand-accent bg-brand-accent/15 text-brand-accent"
+          : "border-brand-line bg-brand-bg text-brand-muted"
+      }`}
+      aria-label={`Featured slot ${idx + 1} (empty)`}
+    >
+      Slot {idx + 1}
+    </li>
+  );
+}
+
+function SortableFeaturedSlot({
+  product,
+  onRemove
+}: {
+  product: HammerexXratedProduct;
+  onRemove: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: `slot-${product.id}`
+  });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.6 : 1
+  };
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      className="relative flex h-24 items-center gap-2 rounded-lg border border-brand-accent bg-brand-bg p-2"
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag to reorder ${product.name}`}
+        className="flex h-full w-12 shrink-0 cursor-grab touch-none items-center justify-center rounded-md border border-brand-line bg-brand-surface text-brand-muted transition hover:border-brand-accent hover:text-brand-accent active:cursor-grabbing"
+      >
+        <DragHandleIcon />
+      </button>
+      <div className="h-16 w-16 shrink-0 overflow-hidden rounded-md border border-brand-line bg-brand-surface">
+        {product.cover_url ? (
+          <img src={product.cover_url} alt="" className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-[10px] uppercase tracking-widest text-brand-muted">
+            None
+          </div>
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="line-clamp-2 text-[13px] font-bold text-brand-text">
+          {product.name}
+        </p>
+        <button
+          type="button"
+          onClick={onRemove}
+          aria-label={`Remove ${product.name} from featured`}
+          className="mt-1 inline-flex h-7 items-center rounded-md border border-red-500/40 bg-red-500/5 px-2 text-[11px] font-bold text-red-300 transition hover:bg-red-500/15"
+        >
+          Remove
+        </button>
+      </div>
+    </li>
+  );
+}
+
+function SortablePoolItem({
+  product,
+  onPick
+}: {
+  product: HammerexXratedProduct;
+  onPick: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: `pool-${product.id}`
+  });
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.6 : 1
+  };
+  return (
+    <li
+      ref={setNodeRef}
+      style={style}
+      className="inline-flex items-center gap-2 rounded-lg border border-brand-line bg-brand-bg p-1.5 pr-3"
+    >
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label={`Drag ${product.name} into a featured slot`}
+        className="inline-flex h-11 w-8 shrink-0 cursor-grab touch-none items-center justify-center rounded-md border border-brand-line bg-brand-surface text-brand-muted transition hover:border-brand-accent hover:text-brand-accent active:cursor-grabbing"
+      >
+        <DragHandleIcon />
+      </button>
+      <button
+        type="button"
+        onClick={onPick}
+        className="flex items-center gap-2 text-left"
+        aria-label={`Feature ${product.name}`}
+      >
+        <span className="h-9 w-9 shrink-0 overflow-hidden rounded-md border border-brand-line bg-brand-surface">
+          {product.cover_url ? (
+            <img src={product.cover_url} alt="" className="h-full w-full object-cover" />
+          ) : (
+            <span className="block h-full w-full bg-brand-bg" />
+          )}
+        </span>
+        <span className="line-clamp-1 max-w-[180px] text-[13px] font-bold text-brand-text">
+          {product.name}
+        </span>
+      </button>
+    </li>
   );
 }

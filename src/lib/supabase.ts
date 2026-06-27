@@ -173,6 +173,13 @@ export type HammerexXratedProduct = {
   compare_with: string[];
   status: "live" | "archived";
   sort_order: number;
+  // Phase 3 storefront — slug is the per-product URL handle (unique per
+  // listing among live rows). featured_at is the "front window"
+  // timestamp set when the tradesperson drags a product into one of the
+  // 6 Featured slots on the editor. NULL = not featured. The teaser +
+  // /<slug>/shop default sort both rank featured_at DESC NULLS LAST.
+  slug: string | null;
+  featured_at: string | null;
   created_at: string;
   updated_at: string;
 };
