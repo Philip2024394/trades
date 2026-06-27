@@ -188,7 +188,7 @@ export default function TradeExamplesPage() {
           {TRADES.map((t) => {
             const banner = tradeHeroFor(t.slug);
             return (
-              <li key={t.href}>
+              <li key={t.href} className="h-full">
                 <a
                   href={t.href}
                   className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
@@ -249,19 +249,27 @@ export default function TradeExamplesPage() {
                       {t.blurb}
                     </p>
 
-                    {/* Three priced services */}
+                    {/* Three priced services — always render 3 rows (placeholder
+                        on demos with fewer services) so cards stay even-height
+                        and the View example CTA sits at the same level across
+                        every card. */}
                     <ul className="mt-3 flex flex-col gap-1.5">
-                      {t.services.map((s) => (
-                        <li
-                          key={s.title}
-                          className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
-                        >
-                          <span className="text-neutral-700">{s.title}</span>
-                          <span className="shrink-0 font-extrabold text-neutral-900">
-                            {s.price}
-                          </span>
-                        </li>
-                      ))}
+                      {Array.from({ length: 3 }).map((_, i) => {
+                        const s = t.services[i];
+                        return (
+                          <li
+                            key={s?.title ?? `placeholder-${i}`}
+                            className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
+                          >
+                            <span className="text-neutral-700">
+                              {s?.title ?? <span className="text-neutral-300">&mdash;</span>}
+                            </span>
+                            <span className="shrink-0 font-extrabold text-neutral-900">
+                              {s?.price ?? <span className="text-neutral-300">&mdash;</span>}
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
 
                     {/* Review snippet */}
@@ -284,14 +292,17 @@ export default function TradeExamplesPage() {
                       </span>
                     </div>
 
-                    {/* Prominent yellow CTA — the whole card is clickable
-                        but the button makes the click target explicit so
-                        first-time visitors don't miss it. */}
+                    {/* Prominent yellow CTA — pushed to the bottom with
+                        mt-auto so every card's View example button sits
+                        at the same vertical position regardless of blurb
+                        length. */}
                     <span
-                      className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
+                      className="mt-auto inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl pt-0 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
                       style={{
                         background: XRATED_BRAND.accent,
-                        boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
+                        boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`,
+                        marginTop: "auto",
+                        translate: "0 0"
                       }}
                     >
                       View example
