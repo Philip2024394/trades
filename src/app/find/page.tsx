@@ -177,9 +177,6 @@ export default async function FindPortalPage({
   ]);
 
   const tradeText = trade ? tradeLabel(trade) : "";
-  const headline = hasFilter
-    ? buildSearchHeadline({ trade: tradeText, city, postcode, count: results.length })
-    : "See who has an Xrated app near you.";
 
   return (
     <main className="bg-neutral-50 pb-24 md:pb-0">
@@ -216,28 +213,20 @@ export default async function FindPortalPage({
             Find a trade
           </p>
           <h1
-            className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl"
+            className="mt-3 max-w-3xl text-4xl font-extrabold leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl"
             style={{ textShadow: "0 4px 18px rgba(0,0,0,0.6)" }}
           >
-            {hasFilter ? (
-              headline
-            ) : (
-              <>
-                Find a{" "}
-                <span style={{ color: XRATED_BRAND.accent }}>trade</span>{" "}
-                near you{" "}
-                <span style={{ color: XRATED_BRAND.accent }}>now</span>.
-              </>
-            )}
+            Find a{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>trade</span>{" "}
+            near you{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>now</span>.
           </h1>
-          {!hasFilter && (
-            <p
-              className="mt-2 text-sm font-extrabold uppercase tracking-[0.18em] text-white sm:text-base"
-              style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
-            >
-              Search across the UK.
-            </p>
-          )}
+          <p
+            className="mt-3 text-sm font-extrabold uppercase tracking-[0.18em] text-white sm:text-base"
+            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+          >
+            Search across the UK.
+          </p>
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs font-bold text-white sm:text-sm" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}>
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> {totalMembers.toLocaleString("en-GB")} live members
@@ -409,30 +398,6 @@ export default async function FindPortalPage({
       <XratedFooter />
     </main>
   );
-}
-
-function buildSearchHeadline({
-  trade,
-  city,
-  postcode,
-  count
-}: {
-  trade: string;
-  city: string;
-  postcode: string;
-  count: number;
-}) {
-  const where = city || postcode;
-  const tradeText = trade.toLowerCase();
-  if (count === 0) {
-    return where
-      ? `No ${tradeText || "members"} on Xrated in ${where} yet.`
-      : `No matches yet.`;
-  }
-  if (trade && where) return `${count} ${tradeText}${count === 1 ? "" : "s"} on Xrated in ${where}.`;
-  if (trade) return `${count} ${tradeText}${count === 1 ? "" : "s"} on Xrated.`;
-  if (where) return `${count} member${count === 1 ? "" : "s"} on Xrated in ${where}.`;
-  return `${count} member${count === 1 ? "" : "s"} on Xrated.`;
 }
 
 function NoResults({ trade, city }: { trade: string; city: string }) {
