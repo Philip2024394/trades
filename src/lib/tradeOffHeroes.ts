@@ -29,12 +29,10 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_41_47%20AM.png",
   joiner:
     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_42_41%20AM.png",
-  // Trades without a bespoke banner yet — keep Supabase fallbacks
-  // until new ImageKit art lands.
   plasterer:
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/trade-hero-plasterer.png",
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_45_04%20AM.png",
   "general-builder":
-    "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/trade-hero-general-builder.png"
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2010_46_08%20AM.png"
 };
 
 export function tradeHeroFor(slug: string): string | null {
