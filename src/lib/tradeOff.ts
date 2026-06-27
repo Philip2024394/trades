@@ -64,7 +64,11 @@ export const TRADE_OFF_TRADES: Array<{
   // Trim carpenter — finish carpentry specialist: crown molding,
   // baseboards, doors, casing, built-ins. Distinct from general
   // carpenter (structural / framing).
-  { slug: "trim-carpenter", label: "Trim Carpenter", category_slug: "carpentry" }
+  { slug: "trim-carpenter", label: "Trim Carpenter", category_slug: "carpentry" },
+  // Block layer — concrete block / breeze block masonry, distinct from
+  // bricklayer (clay/brick masonry). Common on commercial walls,
+  // foundations, retaining walls.
+  { slug: "block-layer", label: "Block Layer", category_slug: "bricklaying" }
 ];
 
 export function tradeLabel(slug: string): string {
