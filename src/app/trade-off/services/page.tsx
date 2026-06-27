@@ -164,12 +164,13 @@ export default function ServiceCardsPage() {
               <Dot accent /> One-tap WhatsApp
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> 5-minute setup
-            </span>
-            <span className="inline-flex items-center gap-1.5">
               <Dot accent /> Live &lsquo;when can you start?&rsquo;
             </span>
           </div>
+          <p className="mt-3 text-xs font-bold text-white/90 sm:text-sm">
+            It&rsquo;s that easy &mdash; and only takes a{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>5-minute setup</span>.
+          </p>
         </div>
       </section>
 
