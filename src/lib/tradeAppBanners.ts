@@ -6,6 +6,8 @@
 // Fill the map as new trade banners are migrated to Supabase Storage at
 // branding/trade-app-banner-<slug>.png.
 
+import { tradeHeroFor } from "./tradeOffHeroes";
+
 export const TRADE_APP_BANNERS: Record<string, string> = {
   drywaller:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/trade-app-banner-drywaller.png"
@@ -18,8 +20,9 @@ export function appBannerFor(tradeSlug: string | null | undefined): string | nul
 
 // Resolve the banner the page should actually render:
 //   1. Annual paid member's custom upload (when set), else
-//   2. Per-trade default (when defined for the primary trade), else
-//   3. null — page renders no banner.
+//   2. Curated Supabase-hosted app banner (when defined), else
+//   3. Per-trade landing hero from the ImageKit registry, else
+//   4. null — page renders no banner.
 export function resolveAppHero(input: {
   custom_app_hero_url: string | null;
   primary_trade: string | null;
@@ -31,5 +34,7 @@ export function resolveAppHero(input: {
   if (isAnnualPaid && input.custom_app_hero_url) {
     return input.custom_app_hero_url;
   }
-  return appBannerFor(input.primary_trade);
+  const app = appBannerFor(input.primary_trade);
+  if (app) return app;
+  return input.primary_trade ? tradeHeroFor(input.primary_trade) : null;
 }

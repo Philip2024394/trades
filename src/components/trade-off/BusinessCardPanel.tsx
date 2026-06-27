@@ -16,13 +16,15 @@ export function BusinessCardPanel({
   displayName,
   primaryTrade,
   city,
-  whatsapp
+  whatsapp,
+  tradingName
 }: {
   slug: string;
   displayName: string;
   primaryTrade: string;
   city: string;
   whatsapp: string;
+  tradingName?: string | null;
 }) {
   const cardSrc = `/api/trade-off/card-image?slug=${encodeURIComponent(slug)}`;
   const downloadHref = `${cardSrc}&download=1`;
@@ -63,6 +65,7 @@ export function BusinessCardPanel({
               displayName={displayName}
               primaryTrade={tradeLabelText}
               city={city}
+              tradingName={tradingName}
               whatsapp={whatsapp}
               variant="dashboard"
             />

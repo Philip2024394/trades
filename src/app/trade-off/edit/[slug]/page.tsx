@@ -207,6 +207,7 @@ export default async function TradeOffEditPage({
           primaryTrade={row.data.primary_trade ?? ""}
           city={row.data.city ?? ""}
           whatsapp={row.data.whatsapp ?? ""}
+          tradingName={row.data.trading_name ?? null}
         />
       </section>
 

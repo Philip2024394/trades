@@ -1,16 +1,20 @@
 "use client";
 
 // Xrated Trades — one-tap share button for a tradesperson's business
-// card. Fetches /api/trade-off/card-image?slug=<slug>, attaches the PNG
-// to the Web Share API, and falls back to WhatsApp Web prefilled text
-// when the browser can't share files.
+// card. Two-step flow:
+//   1. Tap the button → preview modal opens showing the actual card PNG
+//      the customer would receive, plus Close + Share buttons.
+//   2. Tap Share inside the modal → fetches the card PNG, attaches it
+//      to Web Share API; falls back to WhatsApp Web prefilled text.
+//
+// The preview step matters because the share sheet (iOS / Android) opens
+// AFTER the card fetch completes — without the preview, the user has no
+// idea what they're about to send. Especially important for the profile
+// variant (customer is sharing a stranger's card to a friend).
 //
 // Variants:
-//   'profile'   — small yellow-outline button sitting next to the WhatsApp
-//                 CTA on the public profile. Customer-share = viral
-//                 acquisition: every share carries the slug URL + QR.
+//   'profile'   — small yellow-outline button on the public profile.
 //   'dashboard' — primary yellow-filled CTA on the tradesperson dashboard.
-//                 Tradesperson-share to their own customers.
 
 import { useState } from "react";
 
@@ -22,6 +26,10 @@ export interface ShareCardButtonProps {
   displayName: string;
   primaryTrade: string;
   city: string;
+  /** Business / trading name (e.g. "Ahmed Scaffolding Solutions").
+   *  Preferred over the personal first name in the share label + text
+   *  because that's the brand the card actually shows. */
+  tradingName?: string | null;
   /** Display string only — used in fallback wa.me text. */
   whatsapp?: string;
   variant?: "profile" | "dashboard";
@@ -35,23 +43,27 @@ export function ShareCardButton({
   displayName,
   primaryTrade,
   city,
+  tradingName,
   variant = "profile",
   label
 }: ShareCardButtonProps) {
   const [busy, setBusy] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const firstName = displayName.split(/\s+/)[0] || displayName;
+  const trimmedTrading = tradingName?.trim() || "";
+  const subject = trimmedTrading || displayName;
   const defaultLabel =
     variant === "dashboard"
       ? "Share to WhatsApp"
-      : `Share ${firstName}'s card`;
+      : `Share ${subject}'s card`;
   const buttonLabel = label ?? defaultLabel;
 
-  async function share() {
+  const cardSrc = `/api/trade-off/card-image?slug=${encodeURIComponent(slug)}`;
+
+  async function doShare() {
     if (busy) return;
     setBusy(true);
     try {
-      const cardUrl = `/api/trade-off/card-image?slug=${encodeURIComponent(slug)}`;
       const profileUrl =
         typeof window !== "undefined"
           ? `${window.location.origin}/${slug}`
@@ -60,7 +72,7 @@ export function ShareCardButton({
       let canShareFile = false;
       let file: File | null = null;
       try {
-        const resp = await fetch(cardUrl);
+        const resp = await fetch(cardSrc);
         if (resp.ok) {
           const blob = await resp.blob();
           file = new File([blob], `${slug}-business-card.png`, {
@@ -76,25 +88,23 @@ export function ShareCardButton({
           }
         }
       } catch (err) {
-        // image fetch failed — fall through to text-only share path
         console.warn("[share-card] card fetch failed", err);
       }
 
-      const shareTitle = `${displayName} — ${primaryTrade}`;
-      const shareText = `${displayName} — ${primaryTrade} in ${city}.`;
+      const shareTitle = `${subject} — ${primaryTrade}`;
+      const shareText = `${subject} — ${primaryTrade} in ${city}.`;
 
       if (canShareFile && file) {
-        const shareData: ShareData = {
-          files: [file],
-          title: shareTitle,
-          text: shareText,
-          url: profileUrl
-        };
         try {
-          await navigator.share(shareData);
+          await navigator.share({
+            files: [file],
+            title: shareTitle,
+            text: shareText,
+            url: profileUrl
+          });
+          setOpen(false);
           return;
         } catch (err) {
-          // User cancelled or share failed — fall through to WA fallback.
           const isAbort =
             err instanceof Error &&
             (err.name === "AbortError" || /abort/i.test(err.message));
@@ -103,50 +113,138 @@ export function ShareCardButton({
         }
       }
 
-      // Fallback — open WhatsApp Web prefilled. The slug URL previews
-      // as an image in WhatsApp chats once the rewrite below ships
-      // (/<slug>/card.png).
       const text = encodeURIComponent(`${shareText}\n${profileUrl}`);
       if (typeof window !== "undefined") {
-        window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
+        window.open(
+          `https://wa.me/?text=${text}`,
+          "_blank",
+          "noopener,noreferrer"
+        );
       }
+      setOpen(false);
     } finally {
       setBusy(false);
     }
   }
 
-  if (variant === "dashboard") {
-    return (
+  const trigger =
+    variant === "dashboard" ? (
       <button
         type="button"
-        onClick={share}
-        disabled={busy}
-        className="inline-flex h-12 min-h-[44px] items-center justify-center gap-2 rounded-xl px-5 text-[13px] font-extrabold transition active:scale-[0.97] disabled:opacity-60 sm:text-sm"
+        onClick={() => setOpen(true)}
+        className="inline-flex h-12 min-h-[44px] items-center justify-center gap-2 rounded-xl px-5 text-[13px] font-extrabold transition active:scale-[0.97] sm:text-sm"
         style={{ background: BRAND_YELLOW, color: BRAND_BLACK }}
-        aria-label="Share business card to WhatsApp"
+        aria-label="Preview business card before sharing"
         data-share-card-trigger="dashboard"
       >
         <ShareGlyph />
-        {busy ? "Preparing card…" : buttonLabel}
+        {buttonLabel}
+      </button>
+    ) : (
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        className="inline-flex h-11 min-h-[44px] items-center justify-center gap-1.5 rounded-xl border-2 bg-transparent px-4 text-[13px] font-extrabold transition active:scale-[0.97]"
+        style={{ borderColor: BRAND_YELLOW, color: BRAND_YELLOW }}
+        aria-label="Preview business card before sharing"
+        data-share-card-trigger="profile"
+      >
+        <ShareGlyph />
+        {buttonLabel}
       </button>
     );
-  }
 
-  // 'profile' variant — yellow-outline secondary CTA, designed to sit
-  // next to (and not compete with) the green/yellow WhatsApp primary.
   return (
-    <button
-      type="button"
-      onClick={share}
-      disabled={busy}
-      className="inline-flex h-11 min-h-[44px] items-center justify-center gap-1.5 rounded-xl border-2 bg-transparent px-4 text-[13px] font-extrabold transition active:scale-[0.97] disabled:opacity-60"
-      style={{ borderColor: BRAND_YELLOW, color: BRAND_YELLOW }}
-      aria-label="Share business card"
-      data-share-card-trigger="profile"
+    <>
+      {trigger}
+      {open && (
+        <PreviewModal
+          cardSrc={cardSrc}
+          subject={subject}
+          primaryTrade={primaryTrade}
+          city={city}
+          busy={busy}
+          onClose={() => {
+            if (!busy) setOpen(false);
+          }}
+          onShare={doShare}
+        />
+      )}
+    </>
+  );
+}
+
+function PreviewModal({
+  cardSrc,
+  subject,
+  primaryTrade,
+  city,
+  busy,
+  onClose,
+  onShare
+}: {
+  cardSrc: string;
+  subject: string;
+  primaryTrade: string;
+  city: string;
+  busy: boolean;
+  onClose: () => void;
+  onShare: () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-[90] flex items-center justify-center bg-black/70 p-4"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Preview business card before sharing"
+      onClick={onClose}
     >
-      <ShareGlyph />
-      {busy ? "Preparing…" : buttonLabel}
-    </button>
+      <div
+        className="w-full max-w-md rounded-2xl bg-white p-5 shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <p
+          className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+          style={{ color: BRAND_YELLOW }}
+        >
+          Preview
+        </p>
+        <h2 className="mt-1 text-lg font-extrabold leading-tight text-neutral-900">
+          You&rsquo;re sharing this card
+        </h2>
+        <p className="mt-1 text-[13px] text-neutral-500">
+          {subject} — {primaryTrade} in {city}.
+        </p>
+        <div className="mt-4 overflow-hidden rounded-xl border border-neutral-200 bg-black">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={cardSrc}
+            alt={`${subject} business card`}
+            className="block aspect-[1075/720] w-full"
+          />
+        </div>
+        <div className="mt-5 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            disabled={busy}
+            className="h-11 min-h-[44px] rounded-xl border border-neutral-300 bg-white text-[13px] font-extrabold text-neutral-800 transition active:scale-[0.97] disabled:opacity-60"
+          >
+            Close
+          </button>
+          <button
+            type="button"
+            onClick={onShare}
+            disabled={busy}
+            className="h-11 min-h-[44px] rounded-xl text-[13px] font-extrabold transition active:scale-[0.97] disabled:opacity-60"
+            style={{ background: BRAND_YELLOW, color: BRAND_BLACK }}
+            data-share-card-confirm="true"
+          >
+            {busy ? "Preparing…" : "Share"}
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 

@@ -1069,6 +1069,7 @@ function ShareAndContactCta({
               displayName={listing.display_name}
               primaryTrade={tradeLabel(listing.primary_trade)}
               city={listing.city}
+              tradingName={listing.trading_name}
               whatsapp={listing.whatsapp}
               variant="profile"
             />
