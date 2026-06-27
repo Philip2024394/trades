@@ -378,7 +378,7 @@ export default async function FindPortalPage({
             Tradesperson? Get listed here.
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Build your own Xrated app.
+            Join xratedtrades today.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
             £14.99/mo. 14-day free trial, no card. Your premium profile
