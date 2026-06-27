@@ -7,12 +7,13 @@
 // a later rate change doesn't retroactively shift historic earnings.
 // Stub-notifies the tradesperson via push_log (event_type='commission').
 
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   calculateCommissionPence,
   constantTimeEq
 } from "@/lib/xratedMaterialsNetwork";
+import { sendLeadAlert } from "@/lib/leadAlerts";
 
 export const runtime = "nodejs";
 
@@ -127,16 +128,40 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Stub-notify tradesperson. Lead Alerts replaces this with a real
-  // web-push delivery; for now we just persist the event so the signal
-  // isn't lost.
-  await supabaseAdmin.from("hammerex_xrated_push_log").insert({
-    listing_id: referral.data.tradie_listing_id,
-    event_type: "commission",
-    payload: {
-      ref_code: referral.data.ref_code,
-      commission_pence: commissionPence,
-      merchant_id: merchant.data.id
+  // Notify the tradesperson via Lead Alerts. Each per-device push
+  // attempt also writes to hammerex_xrated_push_log with a
+  // delivery_status — so the log table now reflects REAL deliveries,
+  // not just queued events. The previous stub INSERT is gone.
+  const merchantNameRow = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .select("display_name")
+    .eq("id", merchant.data.id)
+    .maybeSingle();
+  const merchantName =
+    (merchantNameRow.data?.display_name as string | null) ?? "A merchant";
+
+  // Capture the referral fields into a local before scheduling — TS
+  // can't narrow `referral.data` through the closure boundary.
+  const tradieListingId = referral.data.tradie_listing_id;
+  const refCode = referral.data.ref_code;
+
+  after(async () => {
+    try {
+      await sendLeadAlert(
+        tradieListingId,
+        {
+          type: "commission",
+          data: {
+            ref_code: refCode,
+            merchant_name: merchantName,
+            commission_pence: commissionPence,
+            order_value_pence: orderValuePence
+          }
+        },
+        { throttle: false }
+      );
+    } catch (err) {
+      console.error("[materials-network/fulfil] sendLeadAlert failed:", err);
     }
   });
 

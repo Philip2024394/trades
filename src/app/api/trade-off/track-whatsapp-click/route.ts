@@ -11,8 +11,9 @@
 // counter. Survives only the lambda lifetime, which is acceptable for a
 // soft-counter feeding an upgrade nudge (NOT a billing metric).
 
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse, type NextRequest, after } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { sendLeadAlert } from "@/lib/leadAlerts";
 
 export const runtime = "nodejs";
 
@@ -82,6 +83,29 @@ export async function POST(req: NextRequest) {
         last_whatsapp_click_at: new Date(now).toISOString()
       })
       .eq("id", listing_id);
+
+    // Fire the Lead Alerts push AFTER the response returns — the
+    // customer's redirect to WhatsApp must not wait on FCM/APNs. The
+    // sendLeadAlert helper itself is gated by addons_enabled at the
+    // subscription layer (no subscriptions → no work to do).
+    const country = req.headers.get("x-vercel-ip-country") ?? null;
+    after(async () => {
+      try {
+        await sendLeadAlert(
+          listing_id,
+          {
+            type: "whatsapp_click",
+            data: {
+              customer_country: country,
+              clicked_at: new Date(now).toISOString()
+            }
+          },
+          { throttle: true }
+        );
+      } catch (err) {
+        console.error("[track-whatsapp-click] sendLeadAlert failed:", err);
+      }
+    });
 
     return NextResponse.json({ ok: true });
   } catch {

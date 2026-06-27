@@ -461,14 +461,46 @@ export type HammerexXratedTradieEarnings = {
   declined_count: number;
 };
 
-// Stub push notification log. Lead Alerts add-on will replace the
-// in-app stub publisher with real web-push delivery; this table just
-// captures the queued event so we don't lose the signal in the interim.
+// Lead Alerts add-on — one row per (listing, device endpoint). A
+// tradesperson can subscribe unlimited devices to one listing; each
+// device carries its own vibration_pattern, muted_events filter and
+// optional quiet-hours window. endpoint_hash is the SHA-256 of the
+// raw push endpoint URL — used for the public-facing UNIQUE key so we
+// never echo the endpoint URL back to the client.
+export type HammerexXratedPushSubscription = {
+  id: string;
+  listing_id: string;
+  endpoint: string;
+  endpoint_hash: string;
+  p256dh_key: string;
+  auth_key: string;
+  user_agent: string | null;
+  platform: "ios" | "android" | "desktop" | "unknown";
+  device_label: string | null;
+  vibration_pattern: number[];
+  muted_events: string[];
+  quiet_hours_start: number | null;
+  quiet_hours_end: number | null;
+  enabled: boolean;
+  last_used_at: string | null;
+  last_success_at: string | null;
+  failure_count: number;
+  created_at: string;
+};
+
+// Push notification delivery log. Initially a stub for Materials
+// Network commission pings; Lead Alerts upgrades it to a real
+// per-attempt delivery log keyed by subscription_id with a
+// delivery_status enum ('queued'|'sent'|'failed'|'throttled'|'muted'|
+// 'quiet_hours'). subscription_id can be NULL for legacy stub rows.
 export type HammerexXratedPushLog = {
   id: string;
   listing_id: string;
-  event_type: "commission" | "lead" | "referral_pending" | "referral_fulfilled";
+  event_type: "whatsapp_click" | "commission" | "review" | "test" | "lead" | "referral_pending" | "referral_fulfilled";
   payload: Record<string, unknown>;
+  subscription_id: string | null;
+  delivery_status: "queued" | "sent" | "failed" | "throttled" | "muted" | "quiet_hours";
+  delivery_error: string | null;
   created_at: string;
 };
 

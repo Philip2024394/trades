@@ -23,6 +23,8 @@ import { WhatsappLeadsNudge } from "@/components/trade-off/WhatsappLeadsNudge";
 import { LossAversionPreview } from "@/components/trade-off/LossAversionPreview";
 import { TrustScorePanel } from "@/components/trade-off/TrustScorePanel";
 import { BusinessCardPanel } from "@/components/trade-off/BusinessCardPanel";
+import { LeadAlertsSetupCard } from "@/components/trade-off/LeadAlertsSetupCard";
+import { isLeadAlertsOn } from "@/lib/xratedAddons";
 import type { HammerexXratedVoucher } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -215,6 +217,19 @@ export default async function TradeOffEditPage({
       <TrustScorePanel
         listing={row.data}
         tier={tier === "app_trial" || tier === "app_paid" ? "paid" : "free"}
+      />
+
+      {/* Lead Alerts setup card — high in the dashboard because
+          subscribing the tradesperson's phone is a critical setup
+          task, not an add-on toggle. The card itself surfaces the
+          upgrade CTA if they're not on a paid tier. */}
+      <LeadAlertsSetupCard
+        slug={slug}
+        editToken={token}
+        vapidPublicKey={process.env.NEXT_PUBLIC_XRATED_VAPID_PUBLIC_KEY ?? ""}
+        isPaidTier={tier === "app_trial" || tier === "app_paid"}
+        addonEnabled={isLeadAlertsOn(row.data)}
+        upgradeHref={upgradeHref}
       />
 
       {showLeadsNudge && (

@@ -255,8 +255,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     editorial_badge: "any_trade",
     callouts: ["Instant push", "Custom sound", "PWA install"],
     pricing: { kind: "paid", monthly_pence: 400 },
-    availability: "coming_soon",
-    hasEditor: false,
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "lead-alerts",
     includedWithPaid: false,
     benefits: [
       "Instant push the moment WhatsApp is tapped — no SMS delay",
@@ -376,6 +377,17 @@ export function isWholesaleModeOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).wholesale_mode === true;
+}
+
+/** Lead Alerts add-on — when on, the tradesperson gets real-time PWA
+ *  web-push notifications the second a customer taps WhatsApp on their
+ *  profile. Per-device subscriptions live in
+ *  hammerex_xrated_push_subscriptions; the add-on toggle only governs
+ *  whether the subscribe UI is unlocked. Paid-only (£4/mo). */
+export function isLeadAlertsOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).lead_alerts === true;
 }
 
 /** Materials Network add-on — when on, the public profile surfaces an
