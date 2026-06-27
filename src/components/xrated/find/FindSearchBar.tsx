@@ -151,22 +151,19 @@ export function FindSearchBar({
           />
         </label>
 
-        {/* Search button */}
-        <div className="flex flex-col gap-1 sm:col-span-2">
-          <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-transparent sm:block">
-            .
-          </span>
+        {/* Search button — round, icon-only */}
+        <div className="flex items-end justify-center sm:col-span-2 sm:justify-end">
           <button
             type="submit"
             disabled={pending}
-            className="inline-flex h-12 w-full items-center justify-center gap-1.5 rounded-xl text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
+            aria-label={pending ? "Searching" : "Search"}
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full text-neutral-900 shadow-md transition active:scale-[0.94] disabled:cursor-not-allowed disabled:opacity-60 sm:h-14 sm:w-14"
             style={{
               background: BRAND_YELLOW,
               boxShadow: `0 6px 20px ${BRAND_YELLOW}55`
             }}
           >
-            <SearchGlyph />
-            {pending ? "Searching…" : "Search"}
+            {pending ? <Spinner /> : <SearchGlyph />}
           </button>
         </div>
       </div>
@@ -189,9 +186,18 @@ export function FindSearchBar({
 
 function SearchGlyph() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="11" cy="11" r="7" />
       <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    </svg>
+  );
+}
+
+function Spinner() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="animate-spin">
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" strokeOpacity="0.25" />
+      <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
