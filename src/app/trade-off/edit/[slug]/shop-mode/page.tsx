@@ -44,7 +44,7 @@ export default async function TradeOffShopModeEditPage({
   const row = await supabaseAdmin
     .from("hammerex_trade_off_listings")
     .select(
-      "id, slug, edit_token, display_name, tier, trial_expires_at, addons_enabled"
+      "id, slug, edit_token, display_name, primary_trade, tier, trial_expires_at, addons_enabled"
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -61,7 +61,14 @@ export default async function TradeOffShopModeEditPage({
     row.data.addons_enabled && typeof row.data.addons_enabled === "object"
       ? (row.data.addons_enabled as Record<string, boolean>)
       : {};
-  const shopOn = isShopModeOn({ addons_enabled: addonsMap });
+  // Include primary_trade + tier so merchant-grade trades (kitchen-fitter,
+  // building-merchant, tool-hire, etc.) read as Shop Mode on automatically
+  // — see isShopModeOn in src/lib/xratedAddons.ts.
+  const shopOn = isShopModeOn({
+    addons_enabled: addonsMap,
+    primary_trade: row.data.primary_trade ?? null,
+    tier: row.data.tier ?? "standard"
+  });
   const wholesaleOn = isWholesaleModeOn({ addons_enabled: addonsMap });
 
   const upgradeHref = `/trade-off/upgrade?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}`;

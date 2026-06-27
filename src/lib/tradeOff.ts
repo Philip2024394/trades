@@ -90,6 +90,31 @@ export function tradeLabel(slug: string): string {
   return TRADE_OFF_TRADES.find((t) => t.slug === slug)?.label ?? slug;
 }
 
+// Trades whose customers BUY from a catalogue rather than book labour by
+// the hour — merchants, hire firms, and product-configurable installers.
+// These auto-get Shop Mode on the £14.99/mo paid tier so the profile is
+// "complete" rather than nickel-and-diming a category whose whole job is
+// to sell tangible items. Verified £20/mo unlocks unlimited products;
+// paid £14.99/mo caps at 200 products.
+//
+// Rule of thumb: "trades whose customers buy products, not book hours."
+// Adding to this list dilutes the merchant framing — be selective.
+export const MERCHANT_GRADE_TRADES: ReadonlySet<string> = new Set([
+  "building-merchant",
+  "builders-supplies",
+  "kitchen-fitter",
+  "stair-fitter",
+  "window-fitter",
+  "security-installer",
+  "tool-hire",
+  "heavy-machinery"
+]);
+
+export function isMerchantGradeTrade(slug: string | null | undefined): boolean {
+  if (!slug) return false;
+  return MERCHANT_GRADE_TRADES.has(slug);
+}
+
 // Hammerex Standard product blurbs.
 // Keyed by product slug. When a tradesperson's listing email/phone matches a
 // past quote-request that included one of these products, the badge appears

@@ -10,6 +10,7 @@
 // component swap.
 
 import type { HammerexTradeOffListing } from "@/lib/supabase";
+import { isMerchantGradeTrade } from "@/lib/tradeOff";
 
 export type XratedAddonPricing =
   | { kind: "free" }
@@ -333,11 +334,27 @@ export function isAddonEnabled(
 
 /** Shop Mode is the canonical "swap the services carousel for products"
  *  flag. Centralised here so a future rename of the slug touches one
- *  file. */
+ *  file.
+ *
+ *  Auto-on for merchant-grade trades (kitchen-fitter, stair-fitter,
+ *  building-merchant, builders-supplies, tool-hire, heavy-machinery,
+ *  window-fitter, security-installer) on the paid tier — their whole
+ *  business is a catalogue, so the profile is "complete" rather than
+ *  nickel-and-diming a category whose whole job is selling tangible
+ *  items. See `isMerchantGradeTrade` in src/lib/tradeOff.ts. */
 export function isShopModeOn(
-  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+  listing: Pick<HammerexTradeOffListing, "addons_enabled"> &
+    Partial<Pick<HammerexTradeOffListing, "primary_trade" | "tier">>
 ): boolean {
-  return (listing.addons_enabled ?? {}).shop_mode === true;
+  if ((listing.addons_enabled ?? {}).shop_mode === true) return true;
+  if (
+    listing.primary_trade &&
+    isMerchantGradeTrade(listing.primary_trade) &&
+    (listing.tier === "app_paid" || listing.tier === "app_trial")
+  ) {
+    return true;
+  }
+  return false;
 }
 
 /** Storefront gate — true when the dedicated /<slug>/shop page and the
@@ -347,10 +364,12 @@ export function isShopModeOn(
  *  inside that tier without a second toggle. Centralised so the page,
  *  teaser, editor and API agree on the same predicate. */
 export function isStorefrontOn(
-  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+  listing: Pick<HammerexTradeOffListing, "addons_enabled"> &
+    Partial<Pick<HammerexTradeOffListing, "primary_trade" | "tier">>
 ): boolean {
   const map = listing.addons_enabled ?? {};
-  return map.shop_mode === true || map.wholesale_mode === true;
+  if (map.shop_mode === true || map.wholesale_mode === true) return true;
+  return isShopModeOn(listing);
 }
 
 /** Services Prices add-on — when on, the public profile renders the
