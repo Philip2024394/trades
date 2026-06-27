@@ -49,7 +49,8 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
           alt="Verified Xrated member"
           title="Verified Xrated member"
           loading="lazy"
-          className="pointer-events-none absolute right-1 top-1 h-12 w-12 sm:right-2 sm:top-2 sm:h-14 sm:w-14"
+          className="pointer-events-none absolute right-1 top-1 z-10 h-14 w-14 sm:right-2 sm:top-2 sm:h-16 sm:w-16"
+          style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.18))" }}
         />
       )}
       {/* Banner — trade artwork with the member's avatar pinned to the
