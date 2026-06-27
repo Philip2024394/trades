@@ -26,10 +26,12 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
             ? "Good"
             : null;
 
+  const bio = listing.bio?.trim() ?? "";
+
   return (
     <a
       href={`/${listing.slug}`}
-      className="group grid grid-cols-1 gap-4 py-5 transition hover:bg-neutral-50/60 sm:grid-cols-[200px,1fr,auto] sm:items-center sm:gap-5 sm:py-6"
+      className="group grid grid-cols-1 gap-4 py-5 transition hover:bg-neutral-50/60 sm:grid-cols-[200px,1fr] sm:gap-5 sm:py-6"
     >
       {/* Banner — trade artwork with the member's avatar pinned to the
           bottom-left, ringed in brand yellow so it reads like an Insta
@@ -73,8 +75,9 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
         </span>
       </div>
 
-      {/* Info column */}
-      <div className="min-w-0">
+      {/* Info column — name + meta + rating + 3-line bio + CTA pinned
+          to the bottom-right of the column */}
+      <div className="flex min-w-0 flex-col">
         <div className="flex items-center gap-1.5">
           <h3 className="truncate text-base font-extrabold text-neutral-900 sm:text-lg">
             {name}
@@ -111,22 +114,38 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
         ) : (
           <p className="mt-2 text-[12px] text-neutral-500">No reviews yet</p>
         )}
-      </div>
 
-      {/* CTA column — right-aligned on desktop, full width on mobile */}
-      <div className="flex sm:justify-end">
-        <span
-          className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:px-5 sm:text-sm"
-          style={{
-            background: BRAND_YELLOW,
-            boxShadow: `0 4px 14px ${BRAND_YELLOW}55`
-          }}
-        >
-          Open {listing.display_name.split(/\s+/)[0]}&rsquo;s app
-          <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
-            &rarr;
+        {/* 3-line bio excerpt — clamped via CSS line-clamp so listings
+            stay vertically even regardless of bio length */}
+        {bio && (
+          <p
+            className="mt-2 text-[13px] leading-relaxed text-neutral-700"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden"
+            }}
+          >
+            {bio}
+          </p>
+        )}
+
+        {/* CTA pinned to the bottom-right of the info column */}
+        <div className="mt-3 flex justify-end sm:mt-auto sm:pt-3">
+          <span
+            className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:px-5 sm:text-sm"
+            style={{
+              background: BRAND_YELLOW,
+              boxShadow: `0 4px 14px ${BRAND_YELLOW}55`
+            }}
+          >
+            View App
+            <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+              &rarr;
+            </span>
           </span>
-        </span>
+        </div>
       </div>
     </a>
   );

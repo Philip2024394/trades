@@ -18,6 +18,7 @@ export type FindCardListing = {
   rating_avg: number | null;
   rating_count: number | null;
   years_in_trade: number | null;
+  bio: string | null;
 };
 
 const BRAND_YELLOW = "#FFB300";
