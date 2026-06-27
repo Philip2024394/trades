@@ -171,6 +171,19 @@ export default function ServiceCardsPage() {
             It&rsquo;s that easy &mdash; and only takes a{" "}
             <span style={{ color: XRATED_BRAND.accent }}>5-minute setup</span>.
           </p>
+          {/* Brand punch line — works for both Services Prices and Shop
+              Mode so customers (and the tradies reading this page) see
+              the one-tap-to-WhatsApp promise covers both kinds of card. */}
+          <p
+            className="mt-4 inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-extrabold leading-tight text-neutral-900 shadow-lg sm:text-sm"
+            style={{
+              background: XRATED_BRAND.accent,
+              boxShadow: `0 6px 20px ${XRATED_BRAND.accent}55`
+            }}
+          >
+            Every service you list &mdash; or product &mdash; is one tap to a
+            WhatsApp order.
+          </p>
         </div>
       </section>
 
