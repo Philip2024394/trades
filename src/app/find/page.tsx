@@ -118,7 +118,7 @@ const FEATURED_SLUGS: string[] = [
 ];
 
 const SELECT_COLS =
-  "slug, display_name, trading_name, primary_trade, city, country, avatar_url, rating_avg, rating_count, years_in_trade, bio";
+  "slug, display_name, trading_name, primary_trade, city, country, avatar_url, rating_avg, rating_count, years_in_trade, bio, tier, verified_plus_status";
 
 async function loadResults(opts: {
   trade: string;

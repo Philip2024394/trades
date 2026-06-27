@@ -5,7 +5,11 @@
 
 import { tradeLabel } from "@/lib/tradeOff";
 import { tradeHeroFor } from "@/lib/tradeOffHeroes";
-import type { FindCardListing } from "./FindResultCard";
+import {
+  isListingVerified,
+  VERIFIED_BADGE_URL,
+  type FindCardListing
+} from "./FindResultCard";
 
 const BRAND_YELLOW = "#FFB300";
 
@@ -27,12 +31,27 @@ export function FindResultRow({ listing }: { listing: FindCardListing }) {
             : null;
 
   const bio = listing.bio?.trim() ?? "";
+  const verified = isListingVerified(listing);
 
   return (
     <a
       href={`/${listing.slug}`}
-      className="group grid grid-cols-1 gap-4 py-5 transition hover:bg-neutral-50/60 sm:grid-cols-[200px,1fr] sm:gap-5 sm:py-6"
+      className="group relative grid grid-cols-1 gap-4 py-5 transition hover:bg-neutral-50/60 sm:grid-cols-[200px,1fr] sm:gap-5 sm:py-6"
     >
+      {/* Verified badge — top-right of the whole row when the listing
+          qualifies for a verified tier or has been approved through
+          Verified Plus. Image is transparent PNG so it sits over the
+          row chrome without a containing box. */}
+      {verified && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={VERIFIED_BADGE_URL}
+          alt="Verified Xrated member"
+          title="Verified Xrated member"
+          loading="lazy"
+          className="pointer-events-none absolute right-1 top-1 h-12 w-12 sm:right-2 sm:top-2 sm:h-14 sm:w-14"
+        />
+      )}
       {/* Banner — trade artwork with the member's avatar pinned to the
           bottom-left, ringed in brand yellow so it reads like an Insta
           DM thumbnail. Compact and recognisable at a glance. */}

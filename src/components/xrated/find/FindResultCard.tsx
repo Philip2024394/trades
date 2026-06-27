@@ -19,7 +19,24 @@ export type FindCardListing = {
   rating_count: number | null;
   years_in_trade: number | null;
   bio: string | null;
+  tier: string | null;
+  verified_plus_status: string | null;
 };
+
+// Centralised: a listing is "verified" when their tier is one of the
+// paid-verified tiers OR they've been approved through Verified Plus.
+// The find row + grid card both render the badge from this single
+// predicate so the visual rule stays consistent.
+export function isListingVerified(
+  l: Pick<FindCardListing, "tier" | "verified_plus_status">
+): boolean {
+  if (l.verified_plus_status === "approved") return true;
+  const t = (l.tier ?? "").toLowerCase();
+  return t === "verified" || t === "verified_plus";
+}
+
+export const VERIFIED_BADGE_URL =
+  "https://ik.imagekit.io/9mrgsv2rp/Untitledsdfsdfsdfdfsdfsdfsdfsdfsdf-removebg-preview.png";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
