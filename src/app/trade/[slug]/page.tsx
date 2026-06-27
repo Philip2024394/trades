@@ -42,7 +42,8 @@ import { AboutBio } from "@/components/xrated/profile/AboutBio";
 import { ProductCardGrid } from "@/components/xrated/profile/ProductCardGrid";
 import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
 import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPricedSection";
-import { isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
+import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
+import { isDownloadsOn, isServicesGridOn, isShopModeOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -519,12 +520,16 @@ function PremiumLayout({
           section. View-all link to /<slug>/services-prices for the
           dedicated grid. */}
       {servicesGrid && <ServicesPricedSection listing={listing} />}
+      {/* Downloads inline teaser — paid tier + add-on on. Server-fetches
+          up to 6 live downloads; self-hides when zero. View-all link
+          points at /<slug>/downloads where the full grid lives. */}
+      {isPaid && isDownloadsOn(listing) && <DownloadsSection listing={listing} />}
       <TeamGrid listing={listing} />
-      {/* My Trusted Trades — link to the dedicated sub-page. Recommendation
-          cards now live exclusively on /<slug>/trusted-trades to give
-          them room to breathe. We surface the count + a yellow CTA here
-          so the customer knows to tap through. Paid tier only. */}
-      {isPaid && Array.isArray(listing.recommendations) && listing.recommendations.length > 0 && (
+      {/* My Trusted Trades — link to the dedicated sub-page. Available
+          on every tier (free + trial + paid) as the viral acquisition
+          lever: free profiles can recommend other tradies, generating
+          backlinks that bring fresh sign-ups onto the platform. */}
+      {Array.isArray(listing.recommendations) && listing.recommendations.length > 0 && (
         <TrustedTradesCta
           slug={listing.slug}
           firstName={listing.display_name.split(/\s+/)[0] ?? listing.display_name}

@@ -32,6 +32,7 @@ const nextConfig = {
         { source: "/:slug/qr.png", destination: "/trade/:slug/qr.png" },
         { source: "/:slug/trusted-trades", destination: "/trade/:slug/trusted-trades" },
         { source: "/:slug/services-prices", destination: "/trade/:slug/services-prices" },
+        { source: "/:slug/downloads", destination: "/trade/:slug/downloads" },
         { source: "/:slug/cart", destination: "/trade/:slug/cart" }
       ],
       fallback: []
@@ -49,6 +50,7 @@ const nextConfig = {
       { source: "/trade/:slug/qr.png", destination: "/:slug/qr.png", permanent: true },
       { source: "/trade/:slug/trusted-trades", destination: "/:slug/trusted-trades", permanent: true },
       { source: "/trade/:slug/services-prices", destination: "/:slug/services-prices", permanent: true },
+      { source: "/trade/:slug/downloads", destination: "/:slug/downloads", permanent: true },
       { source: "/trade/:slug/cart", destination: "/:slug/cart", permanent: true }
     ];
   }

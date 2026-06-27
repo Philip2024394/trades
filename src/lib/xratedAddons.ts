@@ -106,6 +106,24 @@ export const XRATED_ADDONS: XratedAddon[] = [
     ]
   },
   {
+    slug: "downloads",
+    name: "Downloads",
+    tagline: "Brochures, catalogues, forms and compliance docs — one tap to download",
+    summary:
+      "Upload PDF brochures, full product catalogues, trade-account applications, RAMS, method statements, insurance certs and qualifications. Customers tap to download. Per-file email-gate option turns marketing brochures into lead-capture forms. Auto-grouped by category.",
+    glyph: "↓",
+    pricing: { kind: "paid", monthly_pence: 200 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "downloads",
+    includedWithPaid: false,
+    benefits: [
+      "PDF / Word / Excel / images — 10 MB cap, up to 20 files",
+      "Per-file email-gate — turn brochures into lead capture",
+      "Auto-grouped by category — Brochures / Forms / Compliance / Catalogue"
+    ]
+  },
+  {
     slug: "custom_domain",
     name: "Custom domain",
     tagline: "Use your own domain — yourtrade.co.uk",
@@ -177,6 +195,15 @@ export function isServicesGridOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).services_grid === true;
+}
+
+/** Downloads add-on — when on, the profile surfaces an inline downloads
+ *  teaser and a dedicated /<slug>/downloads page where customers can
+ *  fetch PDFs / brochures / forms. Paid-only. */
+export function isDownloadsOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).downloads === true;
 }
 
 /** Format a paid add-on's monthly price for UI rendering. */

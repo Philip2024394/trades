@@ -11,7 +11,7 @@
 // redirect back to their main profile (no dead page).
 
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
@@ -62,12 +62,12 @@ export default async function TrustedTradesPage({
   const listing = await loadListing(slug);
   if (!listing) notFound();
 
-  // Paid-tier gate. Free profiles never get the recommendation feature,
-  // so this dedicated page redirects them back to their main profile
-  // instead of rendering an empty page.
+  // Trusted Trades is the viral acquisition lever — available to every
+  // tier (free + trial + paid). Free profiles can recommend other Xrated
+  // tradies, generating backlinks that bring fresh tradies onto the
+  // platform. See xratedAddons.ts for the strategic rationale.
   const tier = effectiveTier(listing);
   const isPaid = tier === "app_trial" || tier === "app_paid";
-  if (!isPaid) redirect(`/${slug}`);
 
   const primary = tradeLabel(listing.primary_trade);
   const waUrl = whatsappQuoteUrl(listing.whatsapp, listing.display_name, primary);

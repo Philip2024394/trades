@@ -157,6 +157,41 @@ export type HammerexXratedShippingZone = {
   updated_at: string;
 };
 
+// Downloads add-on — per-listing file library. PDFs, Word/Excel docs,
+// images that a tradesperson uploads for customers to fetch (brochures,
+// trade-account forms, RAMS, qualifications). `file_url` is a public
+// Supabase Storage URL under product-images/downloads/. When
+// `requires_email=true`, the public surface gates the download behind
+// an email capture (lead row in HammerexXratedDownloadLead).
+export type HammerexXratedDownload = {
+  id: string;
+  listing_id: string;
+  name: string;
+  description: string | null;
+  file_url: string;
+  file_type: "pdf" | "doc" | "docx" | "xls" | "xlsx" | "jpg" | "jpeg" | "png" | "other";
+  file_size_bytes: number | null;
+  category: "brochure" | "form" | "compliance" | "catalogue" | "qualification" | "other";
+  requires_email: boolean;
+  cover_image_url: string | null;
+  download_count: number;
+  status: "live" | "archived";
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+// Captured email lead for an email-gated download. One row per download
+// event (rate-limit / dedupe is handled at the API layer, not the table).
+export type HammerexXratedDownloadLead = {
+  id: string;
+  download_id: string;
+  customer_email: string;
+  customer_name: string | null;
+  ip_hash: string | null;
+  downloaded_at: string;
+};
+
 export type HammerexTradeOffMessage = {
   id: string;
   listing_id: string;
