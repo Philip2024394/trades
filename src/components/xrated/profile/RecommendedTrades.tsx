@@ -175,12 +175,18 @@ export async function RecommendedTrades({
                       &ldquo;{r.note}&rdquo;
                     </p>
                   )}
-                  <p className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-neutral-500 transition group-hover:text-[#FFB300] sm:text-xs">
+                  <span
+                    className="mt-3 inline-flex h-10 items-center justify-center gap-1.5 self-start rounded-xl px-4 text-[12px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-[13px]"
+                    style={{
+                      background: "#FFB300",
+                      boxShadow: "0 4px 14px rgba(255,179,0,0.35)"
+                    }}
+                  >
                     View profile
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="transition group-hover:translate-x-0.5">
-                      <path d="m9 18 6-6-6-6" />
-                    </svg>
-                  </p>
+                    <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+                      &rarr;
+                    </span>
+                  </span>
                 </div>
               </a>
             </li>
