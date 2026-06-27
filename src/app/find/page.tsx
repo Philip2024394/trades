@@ -327,47 +327,6 @@ export default async function FindPortalPage({
         )}
       </section>
 
-      {/* Closing CTA — for tradies. */}
-      <section className="mx-auto mt-12 max-w-5xl px-4 pb-2 sm:px-6">
-        <div
-          className="overflow-hidden rounded-2xl px-5 py-8 text-center sm:px-10 sm:py-12"
-          style={{ background: "#0A0A0A" }}
-        >
-          <p
-            className="text-[13px] font-bold uppercase tracking-widest"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Tradesperson? Get listed here.
-          </p>
-          <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join xratedtrades today.
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
-            £14.99/mo. 14-day free trial, no card. Your premium profile
-            goes live the moment you save &mdash; and you&rsquo;re
-            auto-listed on xratedtrades.com so customers find you.
-          </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="/trade-off/signup"
-              className="inline-flex h-12 items-center gap-2 rounded-lg px-6 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 transition active:scale-[0.97] sm:text-sm"
-              style={{
-                background: XRATED_BRAND.accent,
-                boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
-              }}
-            >
-              Start 14-day trial
-            </a>
-            <a
-              href="/trade-off/pricing"
-              className="inline-flex h-12 items-center gap-2 rounded-lg border border-white/30 bg-white/5 px-6 text-[13px] font-bold uppercase tracking-wider text-white transition hover:bg-white/10 sm:text-sm"
-            >
-              See pricing
-            </a>
-          </div>
-        </div>
-      </section>
-
       <FindFooter />
     </main>
   );
