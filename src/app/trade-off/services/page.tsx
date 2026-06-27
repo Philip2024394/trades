@@ -166,6 +166,9 @@ export default function ServiceCardsPage() {
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> 5-minute setup
             </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Dot accent /> Live &lsquo;when can you start?&rsquo;
+            </span>
           </div>
         </div>
       </section>
