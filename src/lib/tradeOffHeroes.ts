@@ -23,6 +23,8 @@ export const TRADE_OFF_HERO_IMAGES: Record<string, string> = {
     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2012_48_03%20PM.png?updatedAt=1782366504839",
   tiler:
     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2012_50_00%20PM.png?updatedAt=1782366620814",
+  painter:
+    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2002_06_44%20PM.png?updatedAt=1782371229670",
   // Trades without a bespoke banner yet — keep Supabase fallbacks
   // until new ImageKit art lands.
   plasterer:
