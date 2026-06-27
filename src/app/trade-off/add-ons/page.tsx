@@ -13,6 +13,7 @@ import { BRAND, absolute } from "@/lib/seo";
 import {
   XRATED_ADDONS,
   formatAddonPrice,
+  ADDON_BADGE_LABEL,
   type XratedAddon
 } from "@/lib/xratedAddons";
 
@@ -129,7 +130,7 @@ export default function AddOnsPage() {
           rest off.
         </p>
 
-        <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
           {XRATED_ADDONS.map((addon) => (
             <AddOnCard key={addon.slug} addon={addon} />
           ))}
@@ -257,61 +258,123 @@ function AddOnCard({ addon }: { addon: XratedAddon }) {
   const isReady = addon.availability === "ready";
   const isFree = addon.pricing.kind === "free";
   const priceLabel = formatAddonPrice(addon);
+  const badgeLabel = ADDON_BADGE_LABEL[addon.editorial_badge];
 
   return (
-    <li className="flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-6 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.06]">
-      <div className="flex items-start gap-3">
-        <span
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-base font-black"
-          style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
-          aria-hidden="true"
-        >
-          {addon.glyph}
-        </span>
-        <div className="min-w-0 flex-1">
-          <h3 className="text-base font-extrabold leading-tight text-white sm:text-lg">
+    <li className="flex h-full flex-col overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] transition hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/[0.06] sm:flex-row">
+      {/* Image side — square on desktop, 16:9 on mobile (image stacks
+          above the content). Falls back to yellow gradient + glyph when
+          image_url is null (Phase 1 — real images get added per add-on
+          over time). */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden sm:aspect-square sm:w-2/5 sm:shrink-0 sm:self-stretch">
+        {addon.image_url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={addon.image_url}
+            alt={addon.name}
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 flex items-center justify-center"
+            style={{
+              background: `linear-gradient(135deg, ${XRATED_BRAND.accent} 0%, ${XRATED_BRAND.accent}cc 50%, ${XRATED_BRAND.accent}99 100%)`
+            }}
+          >
+            <span
+              className="block text-7xl font-black sm:text-8xl"
+              style={{ color: "#0A0A0A" }}
+            >
+              {addon.glyph}
+            </span>
+          </div>
+        )}
+        {/* Status pill — top-right overlay on the image area so the
+            customer reads it before scanning the benefits. */}
+        <div className="absolute right-3 top-3">
+          <StatusChip ready={isReady} />
+        </div>
+        {/* Editorial badge — top-left overlay. Honest categorisation,
+            not a fabricated popularity claim. */}
+        <div className="absolute left-3 top-3">
+          <span
+            className="inline-flex items-center gap-1.5 rounded-full bg-black/80 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ background: XRATED_BRAND.accent }}
+            />
+            {badgeLabel}
+          </span>
+        </div>
+      </div>
+
+      {/* Content side */}
+      <div className="flex flex-1 flex-col px-5 py-5 sm:px-6 sm:py-6">
+        {/* Persona chips — small outline pills, who this add-on serves */}
+        <div className="flex flex-wrap gap-1.5">
+          {addon.personas.map((persona) => (
+            <span
+              key={persona}
+              className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-white/80"
+            >
+              {persona}
+            </span>
+          ))}
+        </div>
+
+        {/* Name + price — name dominates, price right-aligned baseline */}
+        <div className="mt-3 flex items-baseline justify-between gap-3">
+          <h3 className="text-lg font-extrabold leading-tight text-white sm:text-xl">
             {addon.name}
           </h3>
           <p
-            className="mt-0.5 text-xs font-bold"
+            className="shrink-0 text-sm font-extrabold"
             style={{ color: isFree ? XRATED_BRAND.accent : "#ffffff" }}
           >
             {priceLabel}
           </p>
         </div>
-      </div>
 
-      <p className="mt-3 text-xs leading-relaxed text-white/65">
-        {addon.tagline}
-      </p>
+        {/* Tagline — one-line hook */}
+        <p className="mt-1.5 text-xs leading-relaxed text-white/75 sm:text-sm">
+          {addon.tagline}
+        </p>
 
-      <ul className="mt-4 flex flex-col gap-2">
-        {addon.benefits.map((benefit) => (
-          <li
-            key={benefit}
-            className="flex items-start gap-2 text-xs leading-relaxed text-white/85"
-          >
+        {/* Benefit bullets — 3 yellow ticks, tighter spacing than the
+            old card so the landscape rhythm reads cleanly. */}
+        <ul className="mt-4 flex flex-col gap-1.5">
+          {addon.benefits.map((benefit) => (
+            <li
+              key={benefit}
+              className="flex items-start gap-2 text-xs leading-relaxed text-white/85"
+            >
+              <span
+                aria-hidden="true"
+                className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold"
+                style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
+              >
+                {"✓"}
+              </span>
+              <span>{benefit}</span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Footer chips — Included-with-paid when applicable. Status
+            already lives on the image overlay so we don't repeat it. */}
+        {addon.includedWithPaid && isReady && (
+          <div className="mt-4 flex flex-wrap items-center gap-2 pt-3">
             <span
-              aria-hidden="true"
-              className="mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full text-[10px] font-extrabold"
+              className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider"
               style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
             >
-              {"✓"}
+              Included with paid
             </span>
-            <span>{benefit}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div className="mt-5 flex flex-wrap items-center gap-2 pt-4">
-        <StatusChip ready={isReady} />
-        {addon.includedWithPaid && isReady && (
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider"
-            style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
-          >
-            Included with paid
-          </span>
+          </div>
         )}
       </div>
     </li>

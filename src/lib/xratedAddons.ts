@@ -17,6 +17,17 @@ export type XratedAddonPricing =
 
 export type XratedAddonAvailability = "ready" | "coming_soon";
 
+/** Editorial badge — honest categorisation we set ourselves, not a
+ *  fabricated popularity number. Real "X tradies use this" counter is
+ *  Phase 2 when we have 50+ paying users to source from. */
+export type XratedAddonBadge =
+  | "most_flexible"
+  | "best_for_solos"
+  | "built_for_merchants"
+  | "viral_growth"
+  | "premium_credibility"
+  | "any_trade";
+
 export type XratedAddon = {
   /** Stable identifier persisted in listings.addons_enabled. Never
    *  rename — that would orphan every tradesperson who already enabled
@@ -32,6 +43,17 @@ export type XratedAddon = {
   /** Brand emoji or short icon glyph rendered in the hub tile.
    *  Keep to a single character — Tailwind sizes treat it as text. */
   glyph: string;
+  /** Optional hero image URL. When null, the marketing card falls back
+   *  to a yellow gradient + glyph composition. User supplies real images
+   *  over time; null is fine for v1. */
+  image_url?: string | null;
+  /** Persona chips — small list of trades / business types this add-on
+   *  best serves. Rendered as outline pills on the landscape card. 2-4
+   *  entries reads cleanly; more starts to look like noise. */
+  personas: string[];
+  /** Editorial badge — honest categorisation, not a fake popularity
+   *  signal. See XratedAddonBadge for the controlled vocabulary. */
+  editorial_badge: XratedAddonBadge;
   pricing: XratedAddonPricing;
   availability: XratedAddonAvailability;
   /** When true, the dashboard renders a "Manage →" link to a dedicated
@@ -50,6 +72,16 @@ export type XratedAddon = {
   benefits: string[];
 };
 
+/** Display label for the editorial badge chips. */
+export const ADDON_BADGE_LABEL: Record<XratedAddonBadge, string> = {
+  most_flexible: "Most flexible",
+  best_for_solos: "Best for solos",
+  built_for_merchants: "Built for merchants",
+  viral_growth: "Viral growth",
+  premium_credibility: "Premium credibility",
+  any_trade: "Works for any trade"
+};
+
 export const XRATED_ADDONS: XratedAddon[] = [
   {
     slug: "trusted_trades",
@@ -58,6 +90,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     summary:
       "Build a personal directory of the sparkies, brickies and roofers you trust. Customers tap any card to see that tradesperson's full Xrated profile — and you start a recommendation network that compounds.",
     glyph: "★",
+    image_url: null,
+    personas: ["Any trade"],
+    editorial_badge: "viral_growth",
     pricing: { kind: "free" },
     availability: "ready",
     hasEditor: true,
@@ -76,6 +111,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     summary:
       "Turn your services carousel into a full product catalog. Add up to four photos per product, set a price, track stock, configure per-country shipping, and let customers send a structured WhatsApp enquiry with everything in their cart. You confirm the final price — no card payments in the app.",
     glyph: "🛒",
+    image_url: null,
+    personas: ["Drywallers", "Plumbers", "Locksmiths", "Plasterers"],
+    editorial_badge: "best_for_solos",
     pricing: { kind: "paid", monthly_pence: 500 },
     availability: "ready",
     hasEditor: true,
@@ -94,6 +132,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     summary:
       "Built for trades that price by something other than 'a job' — landscapers, machinery hire, tool rental, mobile car valets. Add each service with an image, a price, and a unit (per hour / per sqm / per tree / per day). Customers tap a tile, see the detail, and either send a quick WhatsApp enquiry or batch several services into one structured message.",
     glyph: "£",
+    image_url: null,
+    personas: ["Landscapers", "Tool hire", "Machinery hire"],
+    editorial_badge: "most_flexible",
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "ready",
     hasEditor: true,
@@ -112,6 +153,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     summary:
       "Upload PDF brochures, full product catalogues, trade-account applications, RAMS, method statements, insurance certs and qualifications. Customers tap to download. Per-file email-gate option turns marketing brochures into lead-capture forms. Auto-grouped by category.",
     glyph: "↓",
+    image_url: null,
+    personas: ["Architects", "Project managers", "Merchants"],
+    editorial_badge: "any_trade",
     pricing: { kind: "paid", monthly_pence: 200 },
     availability: "ready",
     hasEditor: true,
@@ -124,12 +168,55 @@ export const XRATED_ADDONS: XratedAddon[] = [
     ]
   },
   {
+    slug: "job_diary",
+    name: "Job Diary",
+    tagline: "Live updates from every job — built-in social proof",
+    summary:
+      "Turn every project you run into a public update stream. Post photos and a quick status (running to plan / weather delay / scope changed), share each post to your socials with a tap, and let new customers see you're genuinely busy. Completed projects scroll into a swipeable strip under your profile hero.",
+    glyph: "📔",
+    image_url: null,
+    personas: ["Builders", "Roofers", "Plasterers", "Carpenters"],
+    editorial_badge: "viral_growth",
+    pricing: { kind: "paid", monthly_pence: 400 },
+    availability: "coming_soon",
+    hasEditor: false,
+    includedWithPaid: false,
+    benefits: [
+      "Post-by-post job updates with status chips and photos",
+      "One-tap share to Instagram / Facebook / TikTok / X",
+      "Completed projects auto-archive into a swipeable hero strip"
+    ]
+  },
+  {
+    slug: "wholesale_mode",
+    name: "Wholesale Mode",
+    tagline: "Tiered pricing + distance-based delivery for merchants",
+    summary:
+      "Built for builder's merchants, materials yards, and tool suppliers. Set bulk pricing tiers per product, define a free-delivery radius from your yard, and charge a per-km or banded rate beyond it. Customers tap 'Set my location' to see real delivery costs added straight into their cart — no more 'phone for quote' friction.",
+    glyph: "🚚",
+    image_url: null,
+    personas: ["Merchants", "Tool suppliers", "Materials yards"],
+    editorial_badge: "built_for_merchants",
+    pricing: { kind: "paid", monthly_pence: 700 },
+    availability: "coming_soon",
+    hasEditor: false,
+    includedWithPaid: false,
+    benefits: [
+      "Bulk tiers — e.g. 10 sheets £8 each, 50 sheets £6 each",
+      "Free-delivery radius from your address — postcode whitelist optional",
+      "Customer 'Set my location' → live delivery quote into cart"
+    ]
+  },
+  {
     slug: "custom_domain",
     name: "Custom domain",
     tagline: "Use your own domain — yourtrade.co.uk",
     summary:
       "Point your own domain at your Xrated profile so the URL on your van and business cards reads yourtrade.co.uk — no path, no platform name. We handle SSL.",
     glyph: "🌐",
+    image_url: null,
+    personas: ["Any trade"],
+    editorial_badge: "premium_credibility",
     pricing: { kind: "paid", monthly_pence: 500 },
     availability: "coming_soon",
     hasEditor: false,
@@ -147,6 +234,9 @@ export const XRATED_ADDONS: XratedAddon[] = [
     summary:
       "Every WhatsApp click on your profile fires an instant SMS to your phone with the customer's profile link — so you know to check WhatsApp even when you're on a ladder.",
     glyph: "📲",
+    image_url: null,
+    personas: ["Field trades", "Emergency callouts"],
+    editorial_badge: "any_trade",
     pricing: { kind: "paid", monthly_pence: 400 },
     availability: "coming_soon",
     hasEditor: false,
