@@ -167,32 +167,52 @@ export default async function YardFeedPage({
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* HERO — strong pitch on the social-media footprint problem.
-          The wedge is privacy, not features: posting "I'm looking for
-          work" on Facebook leaves a trail customers can see; The Yard
-          is the private alternative inside Xrated's paid membership. */}
-      <section
-        className="relative overflow-hidden border-b border-neutral-200"
-        style={{ background: "#0A0A0A" }}
-      >
-        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-12 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-16 sm:pt-16">
-          <div>
+      {/* HERO — full-bleed background image with dark left-to-right
+          gradient overlay for text legibility. Matches the /find +
+          /tips full-bleed pattern. */}
+      <section className="relative overflow-hidden border-b border-neutral-200">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2002_13_13%20PM.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.75) 45%, rgba(10,10,10,0.3) 100%)"
+          }}
+        />
+
+        <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
           <p
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
           >
             The Yard &middot; Trades-only &middot; Worldwide &middot; Private
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
+          <h1
+            className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl"
+            style={{ textShadow: "0 4px 18px rgba(0,0,0,0.6)" }}
+          >
             The ultimate hangout for tradies,{" "}
             <span style={{ color: XRATED_BRAND.accent }}>anywhere on the planet</span>.
           </h1>
-          <p className="mt-4 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg">
+          <p
+            className="mt-4 max-w-2xl text-base font-extrabold leading-snug text-white sm:text-lg"
+            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+          >
             Customers want{" "}
             <span style={{ color: XRATED_BRAND.accent }}>&ldquo;I&rsquo;m busy&rdquo;</span>{" "}
             &mdash; not &ldquo;looking for work&rdquo;.
           </p>
-          <p className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-sm">
+          <p
+            className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/85 sm:text-sm"
+            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+          >
             Asking for work in a Facebook group is a footprint your
             customers can see. Years of it pushes the wrong image &mdash;
             you look quiet, not busy. We built{" "}
@@ -206,7 +226,10 @@ export default async function YardFeedPage({
             <span className="font-bold text-white">talk shop</span>{" "}
             &mdash; no public footprint, no customer eyes, no algorithm.
           </p>
-          <p className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/70 sm:text-sm">
+          <p
+            className="mt-3 max-w-2xl text-[13px] leading-relaxed text-white/75 sm:text-sm"
+            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+          >
             Every post auto-expires after{" "}
             <span className="font-bold text-white">14 days</span>{" "}
             and disappears like it never existed. Every post is from a
@@ -214,7 +237,10 @@ export default async function YardFeedPage({
             yellow button on every post lands you straight in the
             poster&rsquo;s WhatsApp.
           </p>
-          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] text-white/70">
+          <div
+            className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-[13px] font-bold text-white sm:text-sm"
+            style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
+          >
             <span className="inline-flex items-center gap-1.5">
               <Dot accent /> {counts.total} live posts
             </span>
@@ -245,28 +271,6 @@ export default async function YardFeedPage({
             >
               Peek inside
             </a>
-          </div>
-          </div>
-
-          {/* Hero artwork — stacks below copy on mobile, sits right on
-              desktop. Yellow ring + glow gives it the brand chip
-              without overpowering the headline. */}
-          <div className="relative w-full max-w-[320px] justify-self-start sm:justify-self-end">
-            <div
-              className="absolute -inset-3 rounded-3xl"
-              style={{
-                background: `${XRATED_BRAND.accent}33`,
-                filter: "blur(18px)"
-              }}
-              aria-hidden="true"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2002_13_13%20PM.png"
-              alt="Tradies hanging out at The Yard — the private trades-only forum"
-              className="relative w-full rounded-2xl border-2 object-cover shadow-2xl"
-              style={{ borderColor: XRATED_BRAND.accent }}
-            />
           </div>
         </div>
       </section>
