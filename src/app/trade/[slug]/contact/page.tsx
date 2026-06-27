@@ -8,9 +8,11 @@ import { FaqAccordion } from "@/components/xrated/profile/FaqAccordion";
 import { TrustAndLogisticsPanel } from "@/components/xrated/profile/TrustAndLogisticsPanel";
 import { OfficeHoursMarquee } from "@/components/xrated/profile/OfficeHoursMarquee";
 import { ContactFormPanel } from "@/components/xrated/profile/ContactFormPanel";
+import { VisitUsPanel } from "@/components/xrated/profile/VisitUsPanel";
 import { tradeLabel, whatsappQuoteUrl } from "@/lib/tradeOff";
 import { TradeSocialIcons } from "@/components/trade-off/TradeSocialIcons";
 import { websiteUrl } from "@/lib/tradeOffSocial";
+import { isWholesaleModeOn } from "@/lib/xratedAddons";
 
 export const revalidate = 300;
 
@@ -76,6 +78,34 @@ export default async function TradeContactPage({
           right before the form. Hero already shows the headline trust
           badges; this is the detailed breakdown. */}
       <TrustAndLogisticsPanel listing={listing} />
+
+      {/* Get Directions — opens the customer's native map app with
+          turn-by-turn navigation to the trade's location. Two cases:
+          1. visit_us_enabled tradies with lat/lng (showroom / shop / yard)
+          2. Wholesale Mode merchants with wholesale_origin coords
+          Both lead to the same universal Google Maps URL which native
+          apps intercept on iOS / Android. */}
+      {listing.visit_us_enabled && listing.lat !== null && listing.lng !== null && (
+        <VisitUsPanel
+          city={listing.city}
+          country={listing.country}
+          lat={listing.lat}
+          lng={listing.lng}
+          themeColor="#FFB300"
+        />
+      )}
+      {isWholesaleModeOn(listing) &&
+        listing.wholesale_origin_lat !== null &&
+        listing.wholesale_origin_lng !== null &&
+        !listing.visit_us_enabled && (
+          <VisitUsPanel
+            city={listing.city}
+            country={listing.country}
+            lat={listing.wholesale_origin_lat}
+            lng={listing.wholesale_origin_lng}
+            themeColor="#FFB300"
+          />
+        )}
 
       {/* CONTACT FORM — supports Email OR WhatsApp send. */}
       <ContactFormPanel
