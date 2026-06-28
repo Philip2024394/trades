@@ -53,6 +53,21 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Gate — this endpoint is only for free add-ons (or add-ons included
+  // with paid tier, e.g. Trusted Trades). Paid add-ons must go through
+  // /api/stripe/addon-attach so the subscription is mutated and the
+  // customer is billed. 402 Payment Required is the right status here.
+  if (addon.pricing.kind === "paid" && !addon.includedWithPaid) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error:
+          "Use /api/stripe/addon-attach (or /api/stripe/addon-detach) for paid add-ons."
+      },
+      { status: 402 }
+    );
+  }
+
   const listing = await supabaseAdmin
     .from("hammerex_trade_off_listings")
     .select("id, edit_token, tier, trial_expires_at, addons_enabled")
@@ -70,7 +85,7 @@ export async function POST(req: NextRequest) {
     tier: listing.data.tier ?? "standard",
     trial_expires_at: listing.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
 
   if (addon.pricing.kind === "paid" && enabled && !isPaid) {
     return NextResponse.json(

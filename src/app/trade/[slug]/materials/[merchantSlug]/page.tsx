@@ -13,7 +13,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { isMaterialsNetworkOn } from "@/lib/xratedAddons";
 import { tradeLabel } from "@/lib/tradeOff";
@@ -55,7 +56,7 @@ export default async function MerchantDeepLinkPage({
   if (!tradie) notFound();
 
   const tier = effectiveTier(tradie);
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   if (!isPaid || !isMaterialsNetworkOn(tradie)) redirect(`/${slug}`);
 
   const merchant = await loadListing(merchantSlug);
@@ -84,17 +85,12 @@ export default async function MerchantDeepLinkPage({
 
   return (
     <main className="flex flex-1 flex-col bg-white pb-20 md:pb-0">
+      <TradeProfileHeader
+        listing={tradie}
+        appName={`${tradeLabel(tradie.primary_trade)} Service`}
+        backHref={`/${slug}/materials`}
+      />
       <section className="mx-auto w-full max-w-3xl px-4 pt-8 sm:px-6 sm:pt-10">
-        <a
-          href={`/${slug}/materials`}
-          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 text-xs font-bold text-neutral-700 transition hover:border-[#FFB300] hover:text-[#FFB300] sm:text-sm"
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-          Back to {tradieFirstName}&rsquo;s merchants
-        </a>
-
         <div className="mt-5">
           <p
             className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -184,7 +180,7 @@ export default async function MerchantDeepLinkPage({
       </section>
 
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={tradie} appName={`${tradeLabel(tradie.primary_trade)} Service`} />
       </div>
     </main>
   );

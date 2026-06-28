@@ -226,7 +226,7 @@ export default async function FindPortalPage({
         {/* Background image — covers the entire hero */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2025,%202026,%2011_02_32%20AM.png?updatedAt=1782360173013"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/69ce6eca41c4-ChatGPT_Image_Jun_25__2026__11_02_32_AM.png"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"

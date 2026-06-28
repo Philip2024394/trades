@@ -142,7 +142,7 @@ export async function POST(req: NextRequest) {
     tier: listing.data.tier ?? "standard",
     trial_expires_at: listing.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   const addon = XRATED_ADDONS.find((a) => a.slug === "custom_domain");
   if (!addon) {
     return NextResponse.json(

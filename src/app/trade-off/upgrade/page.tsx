@@ -21,6 +21,7 @@ import {
 import { maybeExpireListingTier } from "@/lib/xratedTier";
 import { UpgradeActions } from "./UpgradeActions";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
+import { TrustBadges } from "@/components/xrated/TrustBadges";
 
 export const dynamic = "force-dynamic";
 
@@ -45,6 +46,7 @@ const TIER_LABEL: Record<string, string> = {
   standard: "Standard (free)",
   app_trial: "Xrated App — Trial",
   app_paid: "Xrated App — Paid",
+  app_verified: "Xrated App — Verified",
   app_expired: "Trial expired (Standard)"
 };
 
@@ -62,7 +64,7 @@ export default async function UpgradePage({
     slug: string;
     display_name: string;
     edit_token: string;
-    tier: "standard" | "app_trial" | "app_paid" | "app_expired";
+    tier: "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
     trial_expires_at: string | null;
   };
   let listing: ListingRow | null = null;
@@ -125,8 +127,9 @@ export default async function UpgradePage({
         </div>
         <p className="mt-4 text-sm text-brand-muted">
           Premium profile features — custom theme, animated hero text, avatar
-          frame, CTA effects and a running marquee. 30 days free, then £
-          {XRATED_PRICING.monthlyGbp}/month or £{XRATED_PRICING.annualGbp}/year.
+          frame, CTA effects and a running marquee. {XRATED_PRICING.trialDays}{" "}
+          days free, then £{XRATED_PRICING.monthlyGbp}/month or £
+          {XRATED_PRICING.annualGbp}/year.
         </p>
       </section>
 
@@ -181,7 +184,7 @@ export default async function UpgradePage({
               className="absolute -top-3 right-4 rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-widest text-black"
               style={{ backgroundColor: XRATED_BRAND.accent }}
             >
-              Save £{XRATED_PRICING.monthlyGbp * 12 - XRATED_PRICING.annualGbp}
+              Save £{XRATED_PRICING.annualSavingGbp}
             </span>
             <p
               className="text-xs font-bold uppercase tracking-widest"
@@ -260,6 +263,13 @@ export default async function UpgradePage({
                 canStartTrial={canStartTrial}
               />
             )}
+
+            {/* Trust strip — sits directly under the Stripe Checkout
+                buttons so the visitor's last touchpoint before paying
+                shows the payment-method line-up and Stripe handoff. */}
+            <div className="mt-5 rounded-xl border border-brand-line bg-black/40 px-4 py-4">
+              <TrustBadges />
+            </div>
 
             <p className="mt-4 text-[11px] text-brand-muted">
               Tradie: <span className="font-semibold text-brand-text">{listing.display_name}</span>

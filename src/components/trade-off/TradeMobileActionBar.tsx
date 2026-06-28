@@ -16,7 +16,7 @@ export function TradeMobileActionBar({
   displayName: string;
 }) {
   const mailto = email
-    ? `mailto:${email}?subject=${encodeURIComponent("Quotation request via Hammerex Trade Off")}&body=${encodeURIComponent(`Hi ${displayName}, I found your profile on Hammerex Trade Off.`)}`
+    ? `mailto:${email}?subject=${encodeURIComponent("Quotation request via xratedtrade.com Trade Off")}&body=${encodeURIComponent(`Hi ${displayName}, I found your profile on xratedtrade.com Trade Off.`)}`
     : null;
   const tel = phone ? `tel:${phone.replace(/\s+/g, "")}` : null;
 

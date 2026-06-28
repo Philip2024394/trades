@@ -194,7 +194,7 @@ export function CompareProductsModal({
                 No similar products to compare yet.
               </p>
               <p className="mt-1 text-[13px] text-neutral-500">
-                Once this shop adds more, they&rsquo;ll appear here automatically.
+                Once this trade center adds more, they&rsquo;ll appear here automatically.
               </p>
             </div>
           )}

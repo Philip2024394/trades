@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { FaqAccordion } from "@/components/xrated/profile/FaqAccordion";
-import { TrustAndLogisticsPanel } from "@/components/xrated/profile/TrustAndLogisticsPanel";
 import { OfficeHoursMarquee } from "@/components/xrated/profile/OfficeHoursMarquee";
 import { ContactFormPanel } from "@/components/xrated/profile/ContactFormPanel";
 import { VisitUsPanel } from "@/components/xrated/profile/VisitUsPanel";
@@ -56,7 +55,11 @@ export default async function TradeContactPage({
 
   return (
     <main className="flex flex-1 flex-col pb-20 md:pb-0">
-      <XratedHeader />
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${primary} Service`}
+        backHref={`/${listing.slug}`}
+      />
 
       {/* Always-on hero + stats — same identity strip the customer sees on
           the public profile, so they never lose context on sub-pages. */}
@@ -71,13 +74,6 @@ export default async function TradeContactPage({
           <FaqAccordion items={listing.faq_items} themeColor="#FFB300" />
         </section>
       )}
-
-      {/* Full "What to know before you message" trust panel — surfaces
-          insurance £ cover, qualifications, memberships, DBS / transport
-          / tools / free-quote flags, years-in-trade and minimum job
-          right before the form. Hero already shows the headline trust
-          badges; this is the detailed breakdown. */}
-      <TrustAndLogisticsPanel listing={listing} />
 
       {/* Get Directions — opens the customer's native map app with
           turn-by-turn navigation to the trade's location. Two cases:
@@ -125,7 +121,7 @@ export default async function TradeContactPage({
       <FindUsOnSection listing={listing} />
 
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
     </main>
   );

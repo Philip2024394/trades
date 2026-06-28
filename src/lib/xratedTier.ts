@@ -15,35 +15,68 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
  * If the listing is on `app_trial` and the trial has expired, flip it to
- * `app_expired`. No-op otherwise. Returns the (possibly-updated) tier.
+ * `app_expired`. Likewise, if the listing is on `app_paid` and the paid
+ * subscription window has elapsed (`paid_expires_at < now()`), silently
+ * downgrade to `app_expired`. No-op otherwise. Returns the (possibly-
+ * updated) tier.
+ *
+ * A nightly pg_cron sweep (`xrated-paid-expiry-daily`) handles the paid
+ * case in bulk; this inline path keeps the dashboard accurate between
+ * sweeps.
  */
 export async function maybeExpireListingTier(listingId: string): Promise<
-  "standard" | "app_trial" | "app_paid" | "app_expired" | null
+  | "standard"
+  | "app_trial"
+  | "app_paid"
+  | "app_expired"
+  | "app_verified"
+  | null
 > {
   const row = await supabaseAdmin
     .from("hammerex_trade_off_listings")
-    .select("tier, trial_expires_at")
+    .select("tier, trial_expires_at, paid_expires_at")
     .eq("id", listingId)
     .maybeSingle();
   if (!row.data) return null;
-  if (row.data.tier !== "app_trial") return row.data.tier;
-  if (!row.data.trial_expires_at) return row.data.tier;
-  const expired = new Date(row.data.trial_expires_at).getTime() <= Date.now();
-  if (!expired) return row.data.tier;
-  const upd = await supabaseAdmin
-    .from("hammerex_trade_off_listings")
-    .update({ tier: "app_expired" })
-    .eq("id", listingId)
-    .eq("tier", "app_trial");
-  if (upd.error) {
-    console.error("[xratedTier] expire failed:", upd.error);
-    return row.data.tier;
+
+  if (row.data.tier === "app_trial") {
+    if (!row.data.trial_expires_at) return row.data.tier;
+    const expired = new Date(row.data.trial_expires_at).getTime() <= Date.now();
+    if (!expired) return row.data.tier;
+    const upd = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .update({ tier: "app_expired" })
+      .eq("id", listingId)
+      .eq("tier", "app_trial");
+    if (upd.error) {
+      console.error("[xratedTier] expire (trial) failed:", upd.error);
+      return row.data.tier;
+    }
+    return "app_expired";
   }
-  return "app_expired";
+
+  if (row.data.tier === "app_paid") {
+    if (!row.data.paid_expires_at) return row.data.tier;
+    const expired = new Date(row.data.paid_expires_at).getTime() <= Date.now();
+    if (!expired) return row.data.tier;
+    const upd = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .update({ tier: "app_expired" })
+      .eq("id", listingId)
+      .eq("tier", "app_paid");
+    if (upd.error) {
+      console.error("[xratedTier] expire (paid) failed:", upd.error);
+      return row.data.tier;
+    }
+    return "app_expired";
+  }
+
+  return row.data.tier;
 }
 
 /**
- * Flip a listing onto a fresh 30-day App trial. Used by the create route
+ * Flip a listing onto a fresh App trial — length is `XRATED_PRICING.trialDays`
+ * (single source of truth in `xratedTrades.ts`). Used by the create route
  * (auto-start at signup) and the manual /api/trade-off/start-trial route.
  * Caller is responsible for any eligibility checks (cool-off etc.) — this
  * just writes the row.

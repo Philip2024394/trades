@@ -5,6 +5,16 @@
 // server — the customer composes a WhatsApp enquiry from it and the
 // tradesperson confirms the final price separately.
 
+// Bulk pricing band — used by Wholesale Mode products. Threaded into
+// the cart line so the cart page can compute the multi-buy hint
+// inline without re-fetching the product. Matches the shape used by
+// BulkTierTable / tierForQty.
+export type Tier = {
+  min_qty: number;
+  max_qty?: number | null;
+  price_pence: number;
+};
+
 export type CartItem = {
   product_id: string;
   name: string;
@@ -23,6 +33,10 @@ export type CartItem = {
   // product_id + variant_label so two sizes of the same product live
   // as separate cart lines instead of silently merging.
   variant_label?: string | null;
+  // Bulk-tier ladder (Wholesale Mode). Threaded onto the cart line so
+  // the cart page can render the multi-buy hint without re-fetching
+  // the product. null/undefined means no ladder — render no hint.
+  bulk_tiers?: Tier[] | null;
 };
 
 export type CartState = {
@@ -56,6 +70,34 @@ function normaliseVariantLabel(raw: unknown): string | null {
   const trimmed = raw.trim();
   if (trimmed.length === 0) return null;
   return trimmed;
+}
+
+// Validate a parsed bulk_tiers value. Keeps the array only when every
+// entry has numeric min_qty + price_pence (and max_qty is number|null).
+// Anything malformed normalises to null so a corrupted localStorage
+// entry never blows up the cart page.
+function normaliseBulkTiers(raw: unknown): Tier[] | null {
+  if (!Array.isArray(raw) || raw.length === 0) return null;
+  const out: Tier[] = [];
+  for (const t of raw) {
+    if (!t || typeof t !== "object") return null;
+    const tier = t as { min_qty?: unknown; max_qty?: unknown; price_pence?: unknown };
+    if (typeof tier.min_qty !== "number" || typeof tier.price_pence !== "number") {
+      return null;
+    }
+    const max =
+      tier.max_qty === null || tier.max_qty === undefined
+        ? null
+        : typeof tier.max_qty === "number"
+          ? tier.max_qty
+          : null;
+    out.push({
+      min_qty: tier.min_qty,
+      max_qty: max,
+      price_pence: tier.price_pence
+    });
+  }
+  return out;
 }
 
 function sameLine(a: CartItem, b: { product_id: string; variant_label?: string | null }): boolean {
@@ -93,7 +135,8 @@ export function readCart(slug: string): CartState {
           typeof it.unit === "string" && it.unit.trim().length > 0
             ? it.unit.trim()
             : null,
-        variant_label: normaliseVariantLabel(it.variant_label)
+        variant_label: normaliseVariantLabel(it.variant_label),
+        bulk_tiers: normaliseBulkTiers(it.bulk_tiers)
       }));
     return { listing_slug: slug, items };
   } catch {
@@ -143,7 +186,8 @@ export function addItem(
         typeof item.unit === "string" && item.unit.trim().length > 0
           ? item.unit.trim()
           : null,
-      variant_label: normalisedVariant
+      variant_label: normalisedVariant,
+      bulk_tiers: normaliseBulkTiers(item.bulk_tiers)
     });
   }
   writeCart(state);

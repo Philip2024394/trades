@@ -20,6 +20,11 @@ export type HammerexTradeOffListing = {
   lat: number | null;
   lng: number | null;
   service_postcodes: string[];
+  /** Distance the tradesperson is willing to travel from their base,
+   *  in kilometres. NULL = "all areas" or not yet set. Replaces the
+   *  legacy service_postcodes list as the primary service-area
+   *  signal — postcodes column stays in place for backwards compat. */
+  service_radius_km: number | null;
   whatsapp: string;
   phone: string | null;
   email: string;
@@ -44,6 +49,14 @@ export type HammerexTradeOffListing = {
   hammerex_standard_blurb: string | null;
   theme_color: string;
   button_text_color: string;
+  // App Studio Brand section — apply across both trade-service and
+  // product-template profiles via CSS variables on the page root.
+  //   font_family: 'system' | 'inter' | 'roboto' | 'lora' | 'playfair' | 'montserrat'
+  //   font_scale:  'compact' | 'normal' | 'roomy'
+  //   body_text_color: hex
+  font_family: string;
+  font_scale: string;
+  body_text_color: string;
   cta_button_effect: "none" | "pulse" | "glow" | "shake";
   hero_text_line1: string | null;
   hero_text_line2: string | null;
@@ -53,12 +66,25 @@ export type HammerexTradeOffListing = {
   avatar_frame_style: "none" | "ring" | "pulse" | "dance";
   profile_placement: "center" | "top-left" | "bottom-left";
   accepting_jobs: boolean;
-  tier: "standard" | "app_trial" | "app_paid" | "app_expired";
+  // Per-trade toggle for inbound phone calls. Drives:
+  //   - PremiumHero Card modal: hides tap-to-call when false
+  //   - Contact page Call Now panel: hidden entirely when false
+  //   - Trade-side vCard download: omits phone when false
+  // Defaults true so existing listings keep current behavior.
+  phone_calls_enabled: boolean;
+  tier: "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
   trial_started_at: string | null;
   trial_expires_at: string | null;
   running_marquee: string | null;
   paid_expires_at: string | null;
   last_payment_plan: "monthly" | "annual" | null;
+  // Stripe linkage — stamped on checkout.session.completed by the
+  // /api/stripe/webhook handler. Both nullable: pre-Stripe rows and
+  // standard-tier listings never get one. The /api/stripe/portal route
+  // reads stripe_customer_id to mint a Billing Portal session so the
+  // tradesperson can self-manage their subscription.
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
   operating_hours: Record<string, { open: string; close: string } | null>;
   faq_items: { q: string; a: string }[];
   services_offered: string[];
@@ -108,6 +134,11 @@ export type HammerexTradeOffListing = {
     skills: string[];
   }[];
   addons_enabled: Record<string, boolean>;
+  // PDP payment-method selection. null OR empty array = render the
+  // platform default set (visa, mastercard, amex, apple_pay, whatsapp).
+  // Non-empty = render ONLY those keys, in the order given. Supported
+  // keys mirror PAYMENT_METHOD_KEYS in PaymentIconsRow.
+  payment_methods: string[] | null;
   // Wholesale Mode — yard origin + delivery config. Lat/lng nullable
   // so a listing can enable wholesale_mode and complete the yard
   // setup later. distance_fudge maps straight-line km to road km
@@ -182,9 +213,53 @@ export type HammerexTradeOffListing = {
   custom_domain_last_error: string | null;
   custom_domain_failure_count: number;
   custom_domain_addon_active: boolean;
+  // Tradesperson-owned legal / company links surfaced on the lean tradie
+  // footer (TradeProfileFooter). All four optional — non-null + non-empty
+  // renders a link; blank → hidden. External URLs (target="_blank").
+  terms_url: string | null;
+  privacy_url: string | null;
+  returns_url: string | null;
+  about_url: string | null;
+  // Retail shipping config — sister to wholesale_zones but per-LISTING
+  // (not per-product) and aimed at end-customer retail orders rather than
+  // bulk/van delivery. NULL ⇒ "Shipping confirmed by WhatsApp" surfaces
+  // on the PDP. Drives the RetailShippingEditor + BuyColumnDetails
+  // Delivery body + the one-line shipping summary under the VAT row.
+  //   retail_shipping_mode: 'free' (free UK), 'uk_flat' (one UK price),
+  //     'uk_areas' (per-area prices). NULL = not configured.
+  //   retail_shipping_uk_pence: only used when mode='uk_flat'.
+  //   retail_shipping_uk_areas: only used when mode='uk_areas'.
+  //   retail_shipping_international: independent of UK mode — array of
+  //     country rows. Empty/NULL ⇒ "not shipping internationally".
+  retail_shipping_mode:
+    | "free"
+    | "uk_flat"
+    | "uk_areas"
+    | "pickup"
+    | "uk_over_threshold"
+    | null;
+  retail_shipping_uk_pence: number | null;
+  retail_shipping_uk_areas: RetailShippingArea[] | null;
+  retail_shipping_international: RetailShippingIntl[] | null;
   joined_at: string;
   created_at: string;
   updated_at: string;
+};
+
+// Retail shipping helper types — shared by the editor, API validator,
+// BuyColumnDetails Delivery body, and the under-VAT summary line on the
+// PDP. Pence here mirrors the rest of the schema (canonical integer).
+export type RetailShippingArea = {
+  area: string;
+  price_pence: number;
+};
+
+export type RetailShippingIntl = {
+  country_code: string;
+  country_name: string;
+  price_pence: number;
+  dispatch_days: number;
+  delivery_days: number;
 };
 
 // Shop Mode add-on — a tradesperson's product catalog.
@@ -196,13 +271,28 @@ export type HammerexXratedProduct = {
   category: string | null;
   name: string;
   description: string | null;
+  // PDP tabbed details panel. All three are optional. The PDP renders
+  // a tab only when the underlying field has data — Description + Ref
+  // are always present, Specs / Features / Video are conditional.
+  specs: { label: string; value: string }[] | null;
+  features: string[] | null;
+  /** Per-product FAQ — max 3 {q,a} pairs. Renders as a collapsible
+   *  Q&A accordion under the cover image on the live PDP. Empty
+   *  / null = section hidden entirely. */
+  faq: { q: string; a: string }[] | null;
+  video_url: string | null;
   price_pence: number;
+  vat_inclusive: boolean | null;
+  vat_rate_pct: number | null;
+  product_kind: "stock" | "install";
   stock_count: number | null;
   cover_url: string | null;
   gallery_urls: string[];
   dispatch_days: number | null;
   variants: {
-    axis: "size" | "colour";
+    axis: "size" | "colour" | "model" | "material" | "custom";
+    /** Free-text axis name when axis === 'custom'. NULL otherwise. */
+    axis_label?: string | null;
     label: string;
     stock_count?: number | null;
     price_delta_pence?: number | null;
@@ -228,6 +318,13 @@ export type HammerexXratedProduct = {
   // /<slug>/shop default sort both rank featured_at DESC NULLS LAST.
   slug: string | null;
   featured_at: string | null;
+  // PDP "Warranty & Returns" tab overrides. NULL ⇒ render the default
+  // copy ("1-year workmanship guarantee" / "14-day return window") shown
+  // in ProductDetailsTabs. Non-null strings replace the default for that
+  // half of the tab body. Capped at 500 chars by the upsert API.
+  warranty_header: string | null;
+  warranty_text: string | null;
+  returns_text: string | null;
   created_at: string;
   updated_at: string;
 };

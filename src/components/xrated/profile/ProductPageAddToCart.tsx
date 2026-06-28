@@ -3,33 +3,79 @@
 // Per-product PDP add-to-enquiry island.
 //
 // Mirrors the ProductModal's add-to-cart logic but lives on a full page
-// instead of a lightbox. Handles variant picking, quantity, bulk-tier
-// price computation, and the cart write — then bounces a toast so the
-// customer sees the cart island update.
+// instead of a lightbox. Handles variant picking, bulk-tier price
+// computation, and the cart write.
+//
+// Layout (PDP refinement 2026-06-28):
+//   - The qty +/- stepper has been LIFTED out of this component into the
+//     price row on the PDP (see QtyStepper.tsx). We still need qty here
+//     for the line-total math, so we mirror it via localStorage + a
+//     CustomEvent the QtyStepper dispatches.
+//   - Base price + Line total render on their own row ABOVE the CTAs.
+//   - Add-to-cart + (optional) Enquiry Now share a single full-width row
+//     via a 2-col grid when `enquireHref` is provided.
 
 import { useEffect, useMemo, useState } from "react";
 import type { HammerexXratedProduct } from "@/lib/supabase";
-import { addItem, cartItemCount, formatGbp, readCart } from "@/lib/xratedCart";
+import { addItem, formatGbp } from "@/lib/xratedCart";
 import { tierForQty } from "./BulkTierTable";
+import { QTY_CHANGE_EVENT, QTY_STORAGE_KEY } from "./QtyStepper";
 
 type Variant = HammerexXratedProduct["variants"][number];
+
+type QtyChangeDetail = { productId: string; qty: number };
+
+function clampQty(n: number): number {
+  if (!Number.isFinite(n)) return 1;
+  return Math.max(1, Math.min(99, Math.floor(n)));
+}
 
 export function ProductPageAddToCart({
   product,
   slug,
-  themeColor
+  themeColor: _themeColor,
+  enquireHref
 }: {
   product: HammerexXratedProduct;
   slug: string;
   themeColor: string;
+  /** When provided, renders the Enquiry Now anchor side-by-side with the
+   *  Add-to-cart button so they share a single row. Without it the
+   *  Add-to-cart button takes the full width on its own. */
+  enquireHref?: string;
 }) {
   const variants = product.variants ?? [];
   const hasVariants = variants.length > 0;
-  const variantAxis: "size" | "colour" = hasVariants ? variants[0].axis : "size";
+  const variantAxis: "size" | "colour" | "model" | "material" | "custom" =
+    hasVariants ? variants[0].axis : "size";
+  const variantAxisCustomLabel: string | null = hasVariants
+    ? variants[0].axis_label ?? null
+    : null;
 
   const [selectedVariantIdx, setSelectedVariantIdx] = useState<number | null>(null);
   const [qty, setQty] = useState<number>(1);
   const [toast, setToast] = useState<string | null>(null);
+
+  // Mirror the lifted QtyStepper's value. Initial hydration from
+  // localStorage + subscription to the CustomEvent fired by QtyStepper.
+  useEffect(() => {
+    const key = `${QTY_STORAGE_KEY}:${product.id}`;
+    try {
+      const raw = window.localStorage.getItem(key);
+      if (raw !== null) setQty(clampQty(Number(raw)));
+    } catch {
+      /* ignore */
+    }
+    function onChange(e: Event) {
+      const detail = (e as CustomEvent<QtyChangeDetail>).detail;
+      if (!detail || detail.productId !== product.id) return;
+      setQty(clampQty(detail.qty));
+    }
+    window.addEventListener(QTY_CHANGE_EVENT, onChange as EventListener);
+    return () => {
+      window.removeEventListener(QTY_CHANGE_EVENT, onChange as EventListener);
+    };
+  }, [product.id]);
 
   const selectedVariant: Variant | null =
     selectedVariantIdx !== null ? variants[selectedVariantIdx] ?? null : null;
@@ -48,6 +94,7 @@ export function ProductPageAddToCart({
   const bulkTiers = Array.isArray(product.bulk_tiers) ? product.bulk_tiers : [];
   const matchedTier = bulkTiers.length > 0 ? tierForQty(bulkTiers, qty) : null;
 
+  const basePricePence = product.price_pence + (selectedVariant?.price_delta_pence ?? 0);
   const computedPricePence = useMemo(() => {
     const delta = selectedVariant?.price_delta_pence ?? 0;
     const base = matchedTier ? matchedTier.price_pence : product.price_pence;
@@ -56,33 +103,28 @@ export function ProductPageAddToCart({
 
   const lineTotalPence = computedPricePence * Math.max(1, qty);
 
-  const currentQty = useMemo(() => {
-    const state = readCart(slug);
-    return state.items
-      .filter((it) => it.product_id === product.id)
-      .reduce((acc, it) => acc + it.qty, 0);
-  }, [slug, product.id]);
-
   function handleAdd() {
     if (addDisabled) return;
-    const next = addItem(slug, {
+    addItem(slug, {
       product_id: product.id,
       name: product.name,
       price_pence: computedPricePence,
       cover_url: product.cover_url,
       variant_label: selectedVariant?.label ?? null,
+      bulk_tiers: bulkTiers.length > 0 ? bulkTiers : null,
       qty: Math.max(1, Math.min(99, qty))
     });
-    setToast(`Added — ${cartItemCount(next)} in cart`);
+    setToast("Added to enquiry");
     window.setTimeout(() => setToast(null), 2400);
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex w-full flex-col gap-3">
       {hasVariants && (
         <VariantPicker
           variants={variants}
           axis={variantAxis}
+          axisCustomLabel={variantAxisCustomLabel}
           selectedIdx={selectedVariantIdx}
           onPick={setSelectedVariantIdx}
           selectedVariant={selectedVariant}
@@ -90,84 +132,65 @@ export function ProductPageAddToCart({
         />
       )}
 
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-neutral-200 bg-white p-3">
-        <div>
-          <p
-            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: "#FFB300" }}
-          >
-            Quantity
-          </p>
-          <p className="mt-1 text-[13px] text-neutral-500">
-            {matchedTier ? "Tier price applied" : "Base price"}
-          </p>
-        </div>
-        <div className="inline-flex items-center overflow-hidden rounded-lg border border-neutral-200">
-          <button
-            type="button"
-            onClick={() => setQty(Math.max(1, qty - 1))}
-            aria-label="Decrease quantity"
-            disabled={qty <= 1}
-            className="inline-flex h-11 w-11 items-center justify-center text-base font-extrabold text-neutral-700 transition hover:bg-neutral-50 disabled:opacity-40"
-          >
-            −
-          </button>
-          <span className="inline-flex h-11 min-w-[2.25rem] items-center justify-center bg-white px-2 text-sm font-extrabold text-neutral-900">
-            {qty}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQty(Math.min(99, qty + 1))}
-            aria-label="Increase quantity"
-            disabled={qty >= 99}
-            className="inline-flex h-11 w-11 items-center justify-center text-base font-extrabold text-neutral-700 transition hover:bg-neutral-50 disabled:opacity-40"
-          >
-            +
-          </button>
-        </div>
-        <div className="ml-auto text-right">
-          <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-neutral-500">
+      {/* Base price + Line total — own row, no qty stepper here anymore
+          (the stepper lives on the price row via QtyStepper). qty is
+          still mirrored via localStorage so the line-total stays
+          accurate. */}
+      <div className="flex flex-col gap-1 sm:items-end">
+        <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+          <span className="text-[13px] font-bold text-neutral-500">
             Line total
-          </p>
-          <p className="mt-1 text-base font-extrabold text-neutral-900">
+          </span>
+          <span className="text-base font-extrabold text-neutral-900">
             {formatGbp(lineTotalPence)}
-          </p>
+          </span>
         </div>
       </div>
 
-      {currentQty > 0 && (
-        <p
-          className="inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[13px] font-extrabold"
-          style={{ background: themeColor, color: "#0A0A0A" }}
+      {/* Bottom CTAs — Add to cart + (optional) Enquiry Now share a
+          single full-width row. When enquireHref is omitted the Add to
+          cart button takes the row alone. */}
+      <div className={enquireHref ? "grid grid-cols-2 gap-2" : "block"}>
+        <button
+          type="button"
+          onClick={handleAdd}
+          disabled={addDisabled}
+          aria-disabled={addDisabled}
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl text-[13px] font-extrabold uppercase tracking-wider shadow-lg transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+          style={{
+            background: outOfStock ? "#737373" : "#FFB300",
+            color: outOfStock ? "#FFFFFF" : "#0A0A0A",
+            boxShadow: outOfStock ? undefined : "0 8px 22px rgba(255,179,0,0.45)"
+          }}
         >
-          {currentQty} in your cart
-        </p>
-      )}
-
-      <button
-        type="button"
-        onClick={handleAdd}
-        disabled={addDisabled}
-        aria-disabled={addDisabled}
-        className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-wider text-white shadow-lg transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
-        style={{
-          background: outOfStock ? "#737373" : "#0F7A3F",
-          boxShadow: outOfStock ? undefined : "0 8px 22px rgba(15,122,63,0.45)"
-        }}
-      >
-        {outOfStock ? (
-          <>Out of stock — message on WhatsApp</>
-        ) : (
-          <>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="9" cy="21" r="1" />
-              <circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          {outOfStock ? (
+            <>Out of stock — message on WhatsApp</>
+          ) : (
+            <>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              Add to cart
+            </>
+          )}
+        </button>
+        {enquireHref && (
+          <a
+            href={enquireHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl text-[13px] font-extrabold uppercase tracking-wider text-white shadow-lg transition active:scale-[0.98]"
+            style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />
             </svg>
-            Add to enquiry
-          </>
+            Enquiry Now
+          </a>
         )}
-      </button>
+      </div>
       {needsVariantPick && !outOfStock && (
         <p className="text-center text-[13px] font-bold text-neutral-500">
           Choose a {variantAxis} above
@@ -195,26 +218,37 @@ export function ProductPageAddToCart({
 function VariantPicker({
   variants,
   axis,
+  axisCustomLabel,
   selectedIdx,
   onPick,
   selectedVariant,
   basePricePence
 }: {
   variants: Variant[];
-  axis: "size" | "colour";
+  axis: "size" | "colour" | "model" | "material" | "custom";
+  axisCustomLabel: string | null;
   selectedIdx: number | null;
   onPick: (i: number) => void;
   selectedVariant: Variant | null;
   basePricePence: number;
 }) {
-  const eyebrowLabel = axis === "colour" ? "CHOOSE COLOUR" : "CHOOSE SIZE";
+  const eyebrowLabel = (() => {
+    if (axis === "colour") return "CHOOSE COLOUR";
+    if (axis === "model") return "CHOOSE MODEL";
+    if (axis === "material") return "CHOOSE MATERIAL";
+    if (axis === "custom") {
+      const trimmed = (axisCustomLabel ?? "").trim();
+      return trimmed.length > 0 ? `CHOOSE ${trimmed.toUpperCase()}` : "CHOOSE OPTION";
+    }
+    return "CHOOSE SIZE";
+  })();
   const computedPence = selectedVariant
     ? basePricePence + (selectedVariant.price_delta_pence ?? 0)
     : null;
   return (
     <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-neutral-50 p-3">
       <p
-        className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+        className="text-[13px] font-extrabold uppercase tracking-[0.18em]"
         style={{ color: "#FFB300" }}
       >
         {eyebrowLabel}

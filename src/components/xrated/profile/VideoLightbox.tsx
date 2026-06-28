@@ -47,6 +47,18 @@ export function VideoLightbox({
   const [open, setOpen] = useState(false);
   const selfHosted = isSelfHosted(videoUrl);
   const id = selfHosted ? null : youtubeId(videoUrl);
+  // Adaptive aspect — the lightbox container shape-fits the actual
+  // video on `loadedmetadata`. Portrait phone clips render at 9:16,
+  // GoPro landscape at 16:9, square at 1:1 — no black bars regardless.
+  // YouTube embeds are stuck on 16/9 because cross-origin iframes
+  // don't expose dimensions.
+  const [videoAspect, setVideoAspect] = useState<number | null>(null);
+  function handleMetadata(e: React.SyntheticEvent<HTMLVideoElement>) {
+    const v = e.currentTarget;
+    if (v.videoWidth && v.videoHeight) {
+      setVideoAspect(v.videoWidth / v.videoHeight);
+    }
+  }
 
   // Lock body scroll while the lightbox is open + close on ESC.
   useEffect(() => {
@@ -131,7 +143,20 @@ export function VideoLightbox({
                 <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
             </button>
-            <div className="aspect-video w-full overflow-hidden rounded-2xl bg-black shadow-2xl">
+            <div
+              className="mx-auto overflow-hidden rounded-2xl bg-black shadow-2xl"
+              style={{
+                // Native aspect once metadata loads; default to 16/9
+                // pre-load and for cross-origin YouTube embeds. Cap at
+                // 85vh so portrait clips don't overflow the viewport
+                // and `w-auto` lets the width follow from the height.
+                aspectRatio: videoAspect ?? 16 / 9,
+                width: "auto",
+                height: "auto",
+                maxWidth: "100%",
+                maxHeight: "85vh"
+              }}
+            >
               {selfHosted ? (
                 /* eslint-disable-next-line jsx-a11y/media-has-caption */
                 <video
@@ -140,6 +165,7 @@ export function VideoLightbox({
                   controls
                   autoPlay
                   playsInline
+                  onLoadedMetadata={handleMetadata}
                   className="h-full w-full"
                 />
               ) : (

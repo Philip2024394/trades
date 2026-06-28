@@ -59,7 +59,7 @@ export default async function TradeOffFaqPageEditPage({
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   const faqOn = isFaqPageOn({
     addons_enabled:
       row.data.addons_enabled && typeof row.data.addons_enabled === "object"

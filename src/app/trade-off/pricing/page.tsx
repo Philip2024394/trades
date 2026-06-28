@@ -10,19 +10,26 @@
 // → side-by-side feature comparison table → FAQ → closing CTA.
 
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute, faqJsonLd } from "@/lib/seo";
+import { currencyForCountry, type Currency } from "@/lib/fx";
 import { PricingTierCards } from "./PricingTierCards";
+import { TrustBadges } from "@/components/xrated/TrustBadges";
 
-export const revalidate = 3600;
+// Disable static revalidate — we read per-request edge headers to pick
+// the visitor's display currency for the approximate-price row. Edge
+// header-driven personalisation can't share a single cached HTML body
+// across countries, so the page renders dynamically per request.
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title:
     "Pricing — Xrated Trades. Free · Paid £14.99/mo · Verified £19.99/mo. The Yard + xratedtrades.com listing included.",
   description:
-    "Three tiers — Free forever, Paid £14.99/mo on your brandable xratedtrade.com URL, or Verified £19.99/mo with a real badge customers see. Every paid tier includes The Yard (private trades-only forum), auto-listing on xratedtrades.com (UK search portal), 10 add-ons (Shop, Services, Job Diary, Quote Pipeline, Lead Alerts, Custom Domain + 4 more), full SEO + free future updates. Verified Plus £29.99/mo by application. 14-day free trial, no card on signup.",
+    "Three tiers — Free forever, Paid £14.99/mo on your brandable xratedtrade.com URL, or Verified £19.99/mo with a real badge customers see. Every paid tier includes The Yard (private trades-only forum), auto-listing on xratedtrades.com (UK search portal), 10 add-ons (Trade Center, Services, Job Diary, Quote Pipeline, Lead Alerts, Custom Domain + 4 more), full SEO + free future updates. Verified Plus £29.99/mo by application. 14-day free trial, no card on signup.",
   alternates: { canonical: "/trade-off/pricing" },
   openGraph: {
     type: "website",
@@ -109,7 +116,7 @@ const COMPARE_ROWS: FeatureRow[] = [
   // ─────────────────── Add-ons (all paid-tier compatible) ───────────────────
   { section: "Add-ons — bolt on the ones you need", label: "", free: "", paid: "", verified: "" },
   { label: "Services Prices — priced service grid", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
-  { label: "Shop Mode — products + cart + WhatsApp checkout", free: false, paid: "Add-on £5/mo *", verified: "Add-on £5/mo *" },
+  { label: "Trade Center — products + cart + WhatsApp checkout", free: false, paid: "Add-on £5/mo *", verified: "Add-on £5/mo *" },
   { label: "Wholesale Mode — B2B pricing tiers", free: false, paid: "Add-on £7/mo", verified: "Add-on £7/mo" },
   { label: "Job Diary — project portfolio + updates", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
   { label: "Downloads — gated PDFs with email capture", free: false, paid: "Add-on £2/mo", verified: "Add-on £2/mo" },
@@ -188,7 +195,26 @@ const PRICING_FAQ = [
   }
 ];
 
-export default function PricingPage() {
+// Read the visitor's country from the edge headers and resolve it to a
+// supported display currency. Falls back to null (= GBP-only, no
+// approximate row) when the headers are unknown or the country isn't
+// in our four-currency map.
+async function detectDisplayCurrency(): Promise<Currency | null> {
+  const h = await headers();
+  const raw =
+    h.get("x-vercel-ip-country") ||
+    h.get("cf-ipcountry") ||
+    h.get("x-country-code") ||
+    null;
+  if (!raw || raw === "XX" || !/^[A-Z]{2}$/.test(raw)) return null;
+  const currency = currencyForCountry(raw);
+  // GBP visitors don't need an approximate row — same as their canonical.
+  if (currency === "GBP") return null;
+  return currency;
+}
+
+export default async function PricingPage() {
+  const displayCurrency = await detectDisplayCurrency();
   return (
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
@@ -207,7 +233,7 @@ export default function PricingPage() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2026,%202026,%2007_59_10%20AM.png?updatedAt=1782435570414"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/9a45a595d0a8-ChatGPT_Image_Jun_26__2026__07_59_10_AM.png"
           alt="Xrated Trades pricing — free forever or premium."
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -279,7 +305,7 @@ export default function PricingPage() {
               <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
                 10 add-ons
               </span>{" "}
-              — Shop, Services Prices, Job Diary, Quote Pipeline &amp; more
+              — Trade Center, Services Prices, Job Diary, Quote Pipeline &amp; more
             </span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="m9 18 6-6-6-6" />
@@ -289,9 +315,25 @@ export default function PricingPage() {
       </section>
 
       {/* Two-tier card grid — client component handles the
-          monthly/annual toggle on the paid card. */}
+          monthly/annual toggle on the paid card. `displayCurrency` is
+          server-detected from the visitor's IP country so the cards can
+          render an "approximate in local currency" row beneath the
+          canonical GBP price (worldwide audience). */}
       <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
-        <PricingTierCards />
+        <PricingTierCards displayCurrency={displayCurrency} />
+      </section>
+
+      {/* Stripe + payment-method trust strip — sits directly under the
+          tier cards so the visitor's first instinct after reading the
+          price is "who handles the money". PCI-DSS Level 1 framing for
+          Stripe risk reviewers and skeptical buyers alike. */}
+      <section className="mx-auto mt-8 max-w-5xl px-4 sm:px-6">
+        <div
+          className="rounded-2xl border border-white/10 px-4 py-5 sm:px-6 sm:py-6"
+          style={{ background: "#0A0A0A" }}
+        >
+          <TrustBadges />
+        </div>
       </section>
 
       {/* Mental anchor — frames £14.99/mo against the consumables tradies
@@ -575,7 +617,7 @@ export default function PricingPage() {
         </ul>
 
         <p className="mt-3 text-[11px] text-neutral-500 sm:text-xs">
-          * Shop Mode is included <span className="font-bold">standard</span>{" "}
+          * Trade Center is included <span className="font-bold">standard</span>{" "}
           on the £14.99/mo tier for merchant trades (kitchen-fitter,
           stair-fitter, building-merchant, builders-supplies, tool-hire,
           heavy-machinery, window-fitter, security-installer) — no

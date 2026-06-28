@@ -29,8 +29,12 @@ export function resolveAppHero(input: {
   tier: string;
   last_payment_plan: string | null;
 }): string | null {
+  // Verified annual members get the same custom-hero override as paid
+  // annual members — they pay more, not less, so they deserve at least
+  // every paid annual perk.
   const isAnnualPaid =
-    input.tier === "app_paid" && input.last_payment_plan === "annual";
+    (input.tier === "app_paid" || input.tier === "app_verified") &&
+    input.last_payment_plan === "annual";
   if (isAnnualPaid && input.custom_app_hero_url) {
     return input.custom_app_hero_url;
   }

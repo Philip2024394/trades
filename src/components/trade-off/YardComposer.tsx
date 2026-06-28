@@ -613,7 +613,7 @@ function ShopDrawer({
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Pick a product from your shop"
+      aria-label="Pick a product from your trade center"
       className="fixed inset-0 z-[180]"
     >
       <div
@@ -631,7 +631,7 @@ function ShopDrawer({
               className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
               style={{ color: "#FFB300" }}
             >
-              My shop
+              My Trade Center
             </p>
             <button
               type="button"
@@ -673,7 +673,7 @@ function ShopDrawer({
           {!error && products !== null && filtered.length === 0 && (
             <p className="p-3 text-[13px] text-neutral-500">
               {products.length === 0
-                ? "No published shop products yet. Add one in Shop Mode first."
+                ? "No published trade center products yet. Add one in Trade Center first."
                 : "No matches for that search."}
             </p>
           )}

@@ -12,6 +12,7 @@
 // 5 times before giving up.
 
 import { NextResponse, type NextRequest } from "next/server";
+import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   TRADE_OFF_REQUIRED_FIELDS,
@@ -26,6 +27,7 @@ import {
   generateVoucherCode,
   WELCOME_KNIFE_PRODUCT_SLUG
 } from "@/lib/xratedVoucher";
+import { setTradeSessionCookie } from "@/lib/tradeSession";
 
 export const runtime = "nodejs";
 
@@ -57,6 +59,17 @@ export async function POST(req: NextRequest) {
     body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
+  }
+
+  // Raw password — NEVER persisted in plaintext, NEVER logged. We hash
+  // with bcryptjs (cost 10) below before the insert. Minimum 6 chars,
+  // no complexity rules (tradespeople aren't security engineers).
+  const rawPassword = typeof body.password === "string" ? body.password : "";
+  if (!rawPassword || rawPassword.length < 6) {
+    return NextResponse.json(
+      { ok: false, error: "Password is required (minimum 6 characters)." },
+      { status: 400 }
+    );
   }
 
   const payload = {
@@ -132,6 +145,11 @@ export async function POST(req: NextRequest) {
 
   const status = missing.length === 0 ? "live" : "draft";
 
+  // Hash the password BEFORE any insert attempt so a retry loop doesn't
+  // re-hash on every slug-collision retry. bcryptjs is synchronous-safe
+  // for cost 10 in Node.js (≈80ms).
+  const passwordHash = await bcrypt.hash(rawPassword, 10);
+
   // Best-effort geocode — never blocks the listing on failure.
   let lat: number | null = null;
   let lng: number | null = null;
@@ -155,7 +173,8 @@ export async function POST(req: NextRequest) {
     lng,
     bio: payload.bio || "(draft)", // bio is NOT NULL — placeholder for drafts
     primary_trade: payload.primary_trade || "general-builder",
-    status
+    status,
+    password_hash: passwordHash
   };
 
   let lastError: string | null = null;
@@ -179,9 +198,10 @@ export async function POST(req: NextRequest) {
       .maybeSingle();
 
     if (insert.data) {
-      // Auto-start the 30-day Xrated App trial. Per spec, every new tradie
-      // gets the premium tier free for 30 days — after that effectiveTier()
-      // demotes them to 'app_expired' on render.
+      // Auto-start the Xrated App trial — length comes from
+      // `XRATED_PRICING.trialDays` (currently 14 days). Every new tradie
+      // gets the premium tier free for the trial window — after that
+      // effectiveTier() demotes them to 'app_expired' on render.
       let trial: { trial_started_at: string; trial_expires_at: string } | null = null;
       try {
         trial = await startTrialFor(insert.data.id);
@@ -232,7 +252,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      return NextResponse.json({
+      const response = NextResponse.json({
         ok: true,
         slug: insert.data.slug,
         edit_token: insert.data.edit_token,
@@ -243,6 +263,10 @@ export async function POST(req: NextRequest) {
         voucher_code: voucherCode,
         missing
       });
+      // Auto-log the new tradesperson in so they don't have to type
+      // their password again right after signup.
+      setTradeSessionCookie(response, insert.data.id, insert.data.slug);
+      return response;
     }
     if (insert.error?.code === "23505") {
       lastError = "slug-collision";

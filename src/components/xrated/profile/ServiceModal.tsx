@@ -76,8 +76,11 @@ export function ServiceModal({
 
   const variants = service.variants ?? [];
   const hasVariants = variants.length > 0;
-  const variantAxis: "size" | "colour" =
+  const variantAxis: "size" | "colour" | "model" | "material" | "custom" =
     hasVariants ? variants[0].axis : "size";
+  const variantAxisCustomLabel: string | null = hasVariants
+    ? variants[0].axis_label ?? null
+    : null;
   const selectedVariant: Variant | null =
     selectedVariantIdx !== null ? variants[selectedVariantIdx] ?? null : null;
 
@@ -296,6 +299,7 @@ export function ServiceModal({
               <VariantPicker
                 variants={variants}
                 axis={variantAxis}
+                axisCustomLabel={variantAxisCustomLabel}
                 selectedIdx={selectedVariantIdx}
                 onPick={setSelectedVariantIdx}
                 selectedVariant={selectedVariant}
@@ -437,6 +441,7 @@ export function ServiceModal({
 function VariantPicker({
   variants,
   axis,
+  axisCustomLabel,
   selectedIdx,
   onPick,
   selectedVariant,
@@ -446,7 +451,8 @@ function VariantPicker({
   unitLabel
 }: {
   variants: Variant[];
-  axis: "size" | "colour";
+  axis: "size" | "colour" | "model" | "material" | "custom";
+  axisCustomLabel: string | null;
   selectedIdx: number | null;
   onPick: (i: number) => void;
   selectedVariant: Variant | null;
@@ -455,7 +461,16 @@ function VariantPicker({
   basePricePence: number;
   unitLabel: string | null;
 }) {
-  const eyebrowLabel = axis === "colour" ? "CHOOSE COLOUR" : "CHOOSE SIZE";
+  const eyebrowLabel = (() => {
+    if (axis === "colour") return "CHOOSE COLOUR";
+    if (axis === "model") return "CHOOSE MODEL";
+    if (axis === "material") return "CHOOSE MATERIAL";
+    if (axis === "custom") {
+      const trimmed = (axisCustomLabel ?? "").trim();
+      return trimmed.length > 0 ? `CHOOSE ${trimmed.toUpperCase()}` : "CHOOSE OPTION";
+    }
+    return "CHOOSE SIZE";
+  })();
   const computedPence = selectedVariant
     ? basePricePence + (selectedVariant.price_delta_pence ?? 0)
     : null;

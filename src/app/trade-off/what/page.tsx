@@ -119,7 +119,7 @@ export default function WhatPage() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2026,%202026,%2007_59_10%20AM.png?updatedAt=1782435570414"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/9a45a595d0a8-ChatGPT_Image_Jun_26__2026__07_59_10_AM.png"
           alt="Xrated Trades — your trade, online, in one link."
           className="absolute inset-0 h-full w-full object-cover"
         />

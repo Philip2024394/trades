@@ -2,7 +2,21 @@
 
 // AddOnsHub — dashboard panel listing every Xrated add-on. Iterates over
 // XRATED_ADDONS so a new entry in the registry shows up here automatically.
-// Toggles fire optimistically against /api/trade-off/addons/toggle.
+//
+// Wiring:
+//   - Free add-ons (pricing.kind === "free") + add-ons included with paid
+//     (includedWithPaid === true): fire against /api/trade-off/addons/toggle.
+//   - Paid add-ons on a free profile: tell the user to upgrade and link to
+//     /trade-off/upgrade.
+//   - Paid add-ons on a paying profile WITHOUT an active subscription
+//     (e.g. trial-only): redirect through Stripe Checkout so we create a
+//     fresh subscription bundled with the add-on.
+//   - Paid add-ons on a paying profile WITH an active subscription: call
+//     /api/stripe/addon-attach to mutate the existing subscription
+//     (proration handled by Stripe). Disabling fires /api/stripe/addon-detach.
+//
+// The webhook is the eventual source of truth — after attach/detach we
+// reload so the server-rendered tier card + addons_enabled refresh.
 
 import { useState } from "react";
 import Link from "next/link";
@@ -13,7 +27,7 @@ import {
 } from "@/lib/xratedAddons";
 import type { HammerexTradeOffListing } from "@/lib/supabase";
 
-type Tier = "standard" | "app_trial" | "app_paid" | "app_expired";
+type Tier = "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
 
 export function AddOnsHub({
   listing,
@@ -24,7 +38,9 @@ export function AddOnsHub({
   editToken: string;
   tier: Tier;
 }) {
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid =
+    tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
+  const hasActiveSub = Boolean(listing.stripe_subscription_id);
   const initialMap =
     listing.addons_enabled && typeof listing.addons_enabled === "object"
       ? (listing.addons_enabled as Record<string, boolean>)
@@ -33,9 +49,8 @@ export function AddOnsHub({
   const [busySlug, setBusySlug] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
 
-  async function toggle(addon: XratedAddon, next: boolean) {
-    if (addon.availability === "coming_soon") return;
-    if (addon.pricing.kind === "paid" && next && !isPaid) return;
+  /** Free add-on path — flip the bit server-side, no Stripe. */
+  async function toggleFree(addon: XratedAddon, next: boolean) {
     setErr(null);
     const prev = enabledMap[addon.slug] === true;
     setEnabledMap((m) => ({ ...m, [addon.slug]: next }));
@@ -63,6 +78,150 @@ export function AddOnsHub({
       setErr("Network error — try again.");
     } finally {
       setBusySlug(null);
+    }
+  }
+
+  /** Paid add-on attach path — three branches:
+   *  1. No paid tier → punt to /trade-off/upgrade (this UI shouldn't
+   *     even surface a clickable toggle, but defend anyway).
+   *  2. Paid tier + active subscription → attach line-item via
+   *     /api/stripe/addon-attach.
+   *  3. Paid tier but no subscription on file (e.g. trial-only) → run
+   *     a fresh Stripe Checkout that bundles the add-on. */
+  async function attachPaid(addon: XratedAddon) {
+    setErr(null);
+    setBusySlug(addon.slug);
+    try {
+      if (!isPaid) {
+        window.location.href = upgradeHref;
+        return;
+      }
+      if (hasActiveSub) {
+        const res = await fetch("/api/stripe/addon-attach", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            listing_slug: listing.slug,
+            edit_token: editToken,
+            addon_slug: addon.slug
+          })
+        });
+        const json: { ok?: boolean; error?: string; needs_checkout?: boolean } =
+          await res.json();
+        if (!json.ok) {
+          if (json.needs_checkout) {
+            // Fall through to the Checkout flow below.
+            await checkoutForAddon(addon);
+            return;
+          }
+          setErr(json.error ?? "Couldn't attach add-on.");
+          return;
+        }
+        // Optimistically flip the toggle; webhook will reconcile shortly.
+        setEnabledMap((m) => ({ ...m, [addon.slug]: true }));
+        // Reload so server-rendered surfaces (header tier card, paid
+        // summary) reflect the new add-on once the webhook lands.
+        setTimeout(() => window.location.reload(), 800);
+      } else {
+        await checkoutForAddon(addon);
+      }
+    } catch {
+      setErr("Network error — try again.");
+    } finally {
+      setBusySlug(null);
+    }
+  }
+
+  /** Paid add-on detach path — call /api/stripe/addon-detach. */
+  async function detachPaid(addon: XratedAddon) {
+    setErr(null);
+    setBusySlug(addon.slug);
+    try {
+      const res = await fetch("/api/stripe/addon-detach", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          listing_slug: listing.slug,
+          edit_token: editToken,
+          addon_slug: addon.slug
+        })
+      });
+      const json: { ok?: boolean; error?: string } = await res.json();
+      if (!json.ok) {
+        setErr(json.error ?? "Couldn't remove add-on.");
+        return;
+      }
+      setEnabledMap((m) => ({ ...m, [addon.slug]: false }));
+      setTimeout(() => window.location.reload(), 800);
+    } catch {
+      setErr("Network error — try again.");
+    } finally {
+      setBusySlug(null);
+    }
+  }
+
+  /** Fresh-Checkout fallback — used when the listing is on a paid tier
+   *  but doesn't yet have a Stripe subscription on file (e.g. they're
+   *  inside the free trial window). We create a new subscription with
+   *  the paid tier + this add-on bundled together. */
+  async function checkoutForAddon(addon: XratedAddon) {
+    const res = await fetch("/api/stripe/checkout", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        tier: tier === "app_verified" ? "verified" : "paid",
+        billing: listing.last_payment_plan === "annual" ? "annual" : "monthly",
+        listing_slug: listing.slug,
+        addon_slugs: [addon.slug]
+      })
+    });
+    const json: { url?: string; error?: string } = await res.json();
+    if (!res.ok || !json.url) {
+      setErr(json.error ?? "Checkout failed — try again.");
+      return;
+    }
+    window.location.href = json.url;
+  }
+
+  async function openPortal() {
+    setBusySlug("__portal__");
+    setErr(null);
+    try {
+      const res = await fetch("/api/stripe/portal", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          listing_slug: listing.slug,
+          edit_token: editToken
+        })
+      });
+      const json: { url?: string; error?: string } = await res.json();
+      if (!res.ok || !json.url) {
+        setErr(json.error ?? "Couldn't open billing portal.");
+        return;
+      }
+      window.location.href = json.url;
+    } catch {
+      setErr("Network error — try again.");
+    } finally {
+      setBusySlug(null);
+    }
+  }
+
+  async function toggle(addon: XratedAddon, next: boolean) {
+    if (addon.availability === "coming_soon") return;
+    // Free or included-with-paid → straight to the JSONB flip.
+    const isFreePath =
+      addon.pricing.kind === "free" || addon.includedWithPaid === true;
+    if (isFreePath) {
+      await toggleFree(addon, next);
+      return;
+    }
+    // Paid → Stripe path.
+    if (next) {
+      await attachPaid(addon);
+    } else {
+      await detachPaid(addon);
     }
   }
 
@@ -100,8 +259,11 @@ export function AddOnsHub({
             }
             busy={busySlug === addon.slug}
             isPaid={isPaid}
+            hasActiveSub={hasActiveSub}
             upgradeHref={upgradeHref}
             onToggle={(next) => toggle(addon, next)}
+            onOpenPortal={openPortal}
+            portalBusy={busySlug === "__portal__"}
           />
         ))}
       </div>
@@ -116,8 +278,11 @@ function AddonTile({
   enabled,
   busy,
   isPaid,
+  hasActiveSub,
   upgradeHref,
-  onToggle
+  onToggle,
+  onOpenPortal,
+  portalBusy
 }: {
   addon: XratedAddon;
   slug: string;
@@ -125,13 +290,23 @@ function AddonTile({
   enabled: boolean;
   busy: boolean;
   isPaid: boolean;
+  hasActiveSub: boolean;
   upgradeHref: string;
   onToggle: (next: boolean) => void;
+  onOpenPortal: () => void;
+  portalBusy: boolean;
 }) {
   const isComingSoon = addon.availability === "coming_soon";
   const includedChip = addon.includedWithPaid && isPaid;
   const requiresUpgrade =
     addon.pricing.kind === "paid" && !addon.includedWithPaid && !isPaid;
+  const isPaidAddon =
+    addon.pricing.kind === "paid" && !addon.includedWithPaid;
+  // "Active — manage in subscription" surface — only when this is a
+  // paid add-on the customer has actually attached to their Stripe sub.
+  // Free + included add-ons keep the simple toggle / chip UI.
+  const showSubscriptionManage =
+    isPaidAddon && enabled && isPaid && hasActiveSub;
   const ringCls = enabled
     ? "border-brand-accent/60 ring-1 ring-brand-accent/40"
     : "border-brand-line";
@@ -170,7 +345,7 @@ function AddonTile({
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-3">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
         {isComingSoon ? (
           <span className="inline-flex h-11 items-center rounded-full border border-brand-line bg-brand-surface px-3 text-xs font-bold text-brand-muted">
             Notify me soon
@@ -184,10 +359,63 @@ function AddonTile({
             href={upgradeHref}
             className="inline-flex h-11 items-center rounded-full bg-brand-accent px-3 text-xs font-bold text-black transition hover:opacity-90"
           >
-            Upgrade to unlock →
+            Subscribe to Paid first →
           </Link>
+        ) : showSubscriptionManage ? (
+          // Paid add-on already attached — show "Active" chip + open the
+          // Stripe billing portal (so the tradesperson can remove it or
+          // change billing details). The toggle still controls detach
+          // via the chevron-style red remove button.
+          <span className="inline-flex h-11 items-center rounded-full border border-emerald-500/50 bg-emerald-500/15 px-3 text-xs font-bold text-emerald-300">
+            Active
+          </span>
+        ) : isPaidAddon && isPaid && !hasActiveSub ? (
+          // Paid tier but no subscription on file (trial-only). Clicking
+          // the toggle will run a fresh Checkout to bundle the add-on
+          // into a new subscription.
+          <button
+            type="button"
+            onClick={() => onToggle(true)}
+            disabled={busy}
+            className="inline-flex h-11 items-center rounded-full bg-brand-accent px-3 text-xs font-bold text-black transition hover:opacity-90 disabled:opacity-50"
+          >
+            {busy ? "Opening Stripe…" : "Add to subscription →"}
+          </button>
+        ) : isPaidAddon && isPaid ? (
+          // Paid tier WITH subscription → attach via /api/stripe/addon-attach.
+          <button
+            type="button"
+            onClick={() => onToggle(true)}
+            disabled={busy}
+            className="inline-flex h-11 items-center rounded-full bg-brand-accent px-3 text-xs font-bold text-black transition hover:opacity-90 disabled:opacity-50"
+          >
+            {busy ? "Adding…" : "Add to subscription →"}
+          </button>
         ) : (
+          // Free add-on — straight toggle pill.
           <TogglePill enabled={enabled} busy={busy} onChange={onToggle} />
+        )}
+
+        {showSubscriptionManage && (
+          <button
+            type="button"
+            onClick={onOpenPortal}
+            disabled={portalBusy}
+            className="inline-flex h-11 items-center rounded-full border border-brand-line bg-brand-surface px-3 text-xs font-bold text-brand-text transition hover:border-brand-accent hover:text-brand-accent disabled:opacity-50"
+          >
+            {portalBusy ? "Opening…" : "Billing portal →"}
+          </button>
+        )}
+
+        {showSubscriptionManage && (
+          <button
+            type="button"
+            onClick={() => onToggle(false)}
+            disabled={busy}
+            className="inline-flex h-11 items-center rounded-full border border-red-500/50 bg-red-500/10 px-3 text-xs font-bold text-red-300 transition hover:bg-red-500/20 disabled:opacity-50"
+          >
+            {busy ? "Removing…" : "Remove"}
+          </button>
         )}
 
         {manageHref && (enabled || includedChip) && (

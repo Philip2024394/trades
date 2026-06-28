@@ -25,7 +25,7 @@ type FilterCounts = {
 
 type InitialState = {
   slug: string;
-  firstName: string;
+  appName: string;
   products: HammerexXratedProduct[];
   total: number;
   has_more: boolean;
@@ -197,7 +197,7 @@ export function StorefrontBody({ initialState }: { initialState: InitialState })
             type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder={`Search ${initialState.firstName}'s shop…`}
+            placeholder={`Search ${initialState.appName}…`}
             aria-label="Search products"
             className="block h-11 w-full rounded-lg border border-neutral-300 bg-white pl-9 pr-3 text-[13px] text-neutral-900 outline-none transition focus:border-[#FFB300] focus:ring-2 focus:ring-[#FFB300]/30 sm:text-sm"
           />

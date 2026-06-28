@@ -14,8 +14,8 @@ import {
   type HammerexTradeOffListing,
   type HammerexXratedProject
 } from "@/lib/supabase";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { JobDiaryStream } from "@/components/xrated/profile/JobDiaryStream";
 import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
@@ -110,7 +110,7 @@ export default async function JobDiaryProjectPage({
   if (!listing) notFound();
 
   const tier = effectiveTier(listing);
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   if (!isPaid || !isJobDiaryOn(listing)) redirect(`/${slug}`);
 
   const project = await loadProject(listing.id, projectId);
@@ -134,19 +134,14 @@ export default async function JobDiaryProjectPage({
 
   return (
     <main className="flex flex-1 flex-col pb-20 md:pb-0">
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${primary} Service`}
+        backHref={`/${listing.slug}/job-diary`}
+      />
       <PremiumHero listing={listing} waUrl={waUrl} currentPage="profile" />
 
       <section className="mx-auto w-full max-w-3xl px-4 pt-8 sm:px-6 sm:pt-10">
-        <a
-          href={`/${slug}/job-diary`}
-          className="inline-flex h-9 items-center gap-1.5 rounded-full border border-neutral-200 bg-white px-3 text-xs font-bold text-neutral-700 transition hover:border-[#FFB300] hover:text-[#FFB300] sm:text-sm"
-        >
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="m15 18-6-6 6-6" />
-          </svg>
-          Back to {firstName}&rsquo;s Job Diary
-        </a>
-
         <div className="mt-5">
           <p
             className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -206,8 +201,7 @@ export default async function JobDiaryProjectPage({
       </section>
 
       <div className="mt-auto">
-        {!isPaid && <XratedHeader />}
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
     </main>
   );

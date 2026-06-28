@@ -15,7 +15,9 @@ import {
 } from "@/lib/supabase";
 import { isShopModeOn, isWholesaleModeOn } from "@/lib/xratedAddons";
 import { effectiveTier } from "@/lib/xratedTrades";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { tradeLabel } from "@/lib/tradeOff";
 import { CartPageBody } from "@/components/xrated/profile/CartPageBody";
 
 export const revalidate = 60;
@@ -64,7 +66,7 @@ export async function generateMetadata({
   if (!listing) return { title: "Cart" };
   const firstName = listing.display_name.split(/\s+/)[0] ?? listing.display_name;
   return {
-    title: `${firstName}'s shop — Your cart | Xrated`,
+    title: `${firstName}'s trade center — Your cart | Xrated`,
     description: `Review your cart and send a WhatsApp enquiry to ${firstName}. No card payments — ${firstName} confirms the final price.`,
     alternates: { canonical: `/${slug}/cart` },
     robots: { index: false }
@@ -81,7 +83,7 @@ export default async function CartPage({
   if (!listing) notFound();
 
   const tier = effectiveTier(listing);
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   // Cart is only meaningful when shop_mode or wholesale_mode is live AND
   // the tradesperson is on a paid tier. Send anyone else back to the
   // main profile rather than render an orphan page.
@@ -96,13 +98,18 @@ export default async function CartPage({
 
   return (
     <main className="flex flex-1 flex-col bg-white pb-20 md:pb-0">
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${tradeLabel(listing.primary_trade)} Service`}
+        backHref={`/${slug}/shop`}
+      />
       <CartPageBody
         listing={listing}
         zones={zones}
         wholesaleZone={wholesaleZone}
       />
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${tradeLabel(listing.primary_trade)} Service`} />
       </div>
     </main>
   );

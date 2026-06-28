@@ -61,8 +61,23 @@ const UPDATABLE_STRING_FIELDS = [
   "facebook",
   "tiktok",
   "youtube",
+  // Extra socials surfaced in the signup/edit form (TradeOffForm).
+  // Columns exist on hammerex_trade_off_listings and are rendered by
+  // tradeOffSocial.ts — must round-trip through update or the editor
+  // silently loses them on every save.
+  "twitter",
+  "snapchat",
+  "reddit",
+  "google",
   "bio",
   "avatar_url",
+  "custom_app_hero_url",
+  // Listing video — there's a dedicated /api/trade-off/video-save route
+  // for the upload flow, but the main editor (TradeOffForm) submits
+  // video_url through the standard update payload too. Accept it here
+  // so a tradesperson clearing or pasting a YouTube link from the main
+  // form is not silently dropped.
+  "video_url",
   // Xrated App visual customisation — only meaningful when the listing's
   // effectiveTier is app_trial / app_paid. The render layer enforces gating;
   // we accept the writes regardless so an upgrade re-activates them.
@@ -78,6 +93,11 @@ const UPDATABLE_STRING_FIELDS = [
   "profile_placement",
   "running_marquee",
   "promo_text",
+  // App Studio Brand section — apply on both trade-service + product-
+  // template profiles via CSS variables.
+  "font_family",
+  "font_scale",
+  "body_text_color",
   // "Trades On Standby" advertised availability. Editor enforces the
   // allowed values; we accept any non-empty string and let the editor
   // own validation (so adding a new option doesn't need an API change).
@@ -104,7 +124,7 @@ const UPDATABLE_ARRAY_FIELDS = [
   "trade_memberships"
 ] as const;
 
-const UPDATABLE_INT_FIELDS = ["years_in_trade", "start_year"] as const;
+const UPDATABLE_INT_FIELDS = ["years_in_trade", "start_year", "service_radius_km"] as const;
 
 // Trust & logistics — positive-integer fields, capped at 100,000,000.
 const UPDATABLE_NUMBER_FIELDS = [
@@ -117,6 +137,7 @@ const NUMBER_FIELD_MAX = 100_000_000;
 // Booleans accepted through the customisation panel.
 const UPDATABLE_BOOL_FIELDS = [
   "accepting_jobs",
+  "phone_calls_enabled",
   "contact_form_enabled",
   "visit_us_enabled",
   // Trust & logistics flags.
@@ -273,6 +294,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Invalid edit token." }, { status: 403 });
   }
 
+  // Reject unknown fields explicitly rather than silently dropping them.
+  // Editors that POST a new column without an API update used to fail
+  // silently — the save returned ok:true and the field never persisted.
+  // Any key present in `fields` must be either:
+  //   (a) in one of the typed whitelists below, OR
+  //   (b) in FIELDS_PASSTHROUGH (currently just `slug` for vanity renames
+  //       — handled by its own branch further down).
+  // Anything else is a 422 with the offending keys named so the editor
+  // can be fixed at integration time.
+  const FIELDS_PASSTHROUGH = new Set<string>(["slug"]);
+  const KNOWN_FIELDS = new Set<string>([
+    ...UPDATABLE_STRING_FIELDS,
+    ...UPDATABLE_ARRAY_FIELDS,
+    ...UPDATABLE_INT_FIELDS,
+    ...UPDATABLE_NUMBER_FIELDS,
+    ...UPDATABLE_BOOL_FIELDS,
+    ...UPDATABLE_DATE_FIELDS,
+    ...UPDATABLE_JSON_FIELDS
+  ]);
+  const unknownFields = Object.keys(fieldsIn).filter(
+    (k) => !KNOWN_FIELDS.has(k) && !FIELDS_PASSTHROUGH.has(k)
+  );
+  if (unknownFields.length > 0) {
+    return NextResponse.json(
+      {
+        ok: false,
+        error: `Unknown field${unknownFields.length === 1 ? "" : "s"}: ${unknownFields.join(", ")}`,
+        unknown_fields: unknownFields
+      },
+      { status: 422 }
+    );
+  }
+
   const patch: Record<string, unknown> = {};
 
   for (const f of UPDATABLE_STRING_FIELDS) {
@@ -353,10 +407,13 @@ export async function POST(req: NextRequest) {
   }
 
   // Optional slug change. If the tradie picked a new vanity slug, validate
-  // and apply it. v1 deliberately skips redirect rows — the edit form warns
-  // the tradie that changing their URL breaks existing links.
+  // and apply it. The previous slug is captured so we can write a redirect
+  // row after the update lands (see "slug-change redirect bookkeeping"
+  // further down) — every printed business card / QR code / WhatsApp
+  // share using the OLD slug must 301 to the new one or it 404s.
   const requestedSlug = s(fieldsIn.slug).toLowerCase();
   let nextSlug: string | null = null;
+  let previousSlug: string | null = null;
   if (requestedSlug && requestedSlug !== existing.data.slug) {
     if (isReservedSlug(requestedSlug)) {
       return NextResponse.json(
@@ -377,6 +434,7 @@ export async function POST(req: NextRequest) {
     }
     patch.slug = requestedSlug;
     nextSlug = requestedSlug;
+    previousSlug = existing.data.slug;
   }
 
   // Best-effort geocode whenever the location fields are touched (or are
@@ -459,6 +517,74 @@ export async function POST(req: NextRequest) {
     await recomputeHammerexStandard(existing.data.id);
   } catch (err) {
     console.error("[trade-off/update] recomputeHammerexStandard failed:", err);
+  }
+
+  // ─── Slug-change redirect bookkeeping ──────────────────────────────
+  // When the tradesperson changes their vanity slug, every printed
+  // business card / QR code / WhatsApp share that bakes the OLD slug
+  // will start 404'ing on /trade/[slug]. We write a row into
+  // hammerex_trade_off_slug_redirects so the public profile page can
+  // catch the miss and 301 to the new slug.
+  //
+  // Three invariants:
+  //   1. UPSERT on old_slug — re-renaming the same old slug always
+  //      points at the freshest target.
+  //   2. Chain collapse — A → B then B → C must leave A → C (not
+  //      A → B, B → C with two hops). So when we rename B → C, we
+  //      walk the redirect table and rewrite every row whose
+  //      new_slug = B to new_slug = C.
+  //   3. The currently-active slug for THIS listing must never appear
+  //      as old_slug (otherwise the page → redirect → page loop is
+  //      infinite). We delete any pre-existing row where
+  //      old_slug = nextSlug for this listing before inserting.
+  if (previousSlug && nextSlug && previousSlug !== nextSlug) {
+    try {
+      // Defence against loop: if the new slug ever appeared as an
+      // old_slug pointing somewhere else, drop that row — the listing
+      // now uses that slug as its active address.
+      await supabaseAdmin
+        .from("hammerex_trade_off_slug_redirects")
+        .delete()
+        .eq("old_slug", nextSlug);
+
+      // (1) UPSERT old_slug → new_slug. A chain of renames must always
+      // resolve to the latest target.
+      const upsertErr = await supabaseAdmin
+        .from("hammerex_trade_off_slug_redirects")
+        .upsert(
+          {
+            old_slug: previousSlug,
+            new_slug: nextSlug,
+            listing_id: existing.data.id,
+            created_at: new Date().toISOString()
+          },
+          { onConflict: "old_slug" }
+        );
+      if (upsertErr.error) {
+        console.error(
+          "[trade-off/update] slug-redirect upsert failed:",
+          upsertErr.error
+        );
+      }
+
+      // (2) Collapse chains — any historical row whose new_slug points
+      // at the now-stale previousSlug must be rewritten to nextSlug.
+      const collapseErr = await supabaseAdmin
+        .from("hammerex_trade_off_slug_redirects")
+        .update({ new_slug: nextSlug })
+        .eq("new_slug", previousSlug);
+      if (collapseErr.error) {
+        console.error(
+          "[trade-off/update] slug-redirect chain collapse failed:",
+          collapseErr.error
+        );
+      }
+    } catch (err) {
+      // Failure to write the redirect is non-fatal — the slug change
+      // itself succeeded. We surface the error in logs so it can be
+      // re-driven manually if needed.
+      console.error("[trade-off/update] slug-redirect bookkeeping failed:", err);
+    }
   }
 
   return NextResponse.json({

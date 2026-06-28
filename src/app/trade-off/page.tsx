@@ -309,7 +309,7 @@ export default async function TradeOffLandingPage() {
               <div className="relative mx-auto max-w-xs sm:max-w-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://ik.imagekit.io/9mrgsv2rp/Untitledeqweqeqweqdsadasdasd.png"
+                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b9d8cb08c0c-Untitledeqweqeqweqdsadasdasd.png"
                   alt="iPhone showing an Instagram bio with xratedtrade.com/bricklondo as the link."
                   className="relative mx-auto block h-auto w-full object-contain"
                   loading="lazy"
@@ -387,7 +387,7 @@ export default async function TradeOffLandingPage() {
                     bricklondon (the tradesperson) and a customer. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2026,%202026,%2012_45_54%20PM.png"
+                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/077e4d693f62-ChatGPT_Image_Jun_26__2026__12_45_54_PM.png"
                   alt="iPhone showing a WhatsApp chat between bricklondon and a customer — quote sent within the hour."
                   className="relative mx-auto block h-auto w-full object-contain drop-shadow-2xl"
                   loading="lazy"
@@ -417,7 +417,7 @@ export default async function TradeOffLandingPage() {
                     where the imagery is real product context, not faux. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2026,%202026,%2011_31_25%20AM.png"
+                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/698e24d68bbe-ChatGPT_Image_Jun_26__2026__11_31_25_AM.png"
                   alt="Customer review on an Xrated profile — five stars from Sarah K, Manchester, garden-wall job."
                   className="relative mx-auto block h-auto w-full object-contain"
                   loading="lazy"

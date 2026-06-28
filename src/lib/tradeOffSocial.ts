@@ -19,16 +19,21 @@ export const TRADE_SOCIAL_FIELDS: Array<{
   label: string;
   placeholder: string;
   example: string;
+  /** Brand colour used as the chip background next to each input on
+   *  the signup / edit form. White text on these reads cleanest; for
+   *  Snapchat (yellow) we use near-black text via `chipText`. */
+  chipColor: string;
+  chipText?: string;
 }> = [
-  { key: "instagram", label: "Instagram", placeholder: "@yourname or instagram.com/yourname", example: "@mikeplastering" },
-  { key: "tiktok", label: "TikTok", placeholder: "@yourname or tiktok.com/@yourname", example: "@mikeplastering" },
-  { key: "facebook", label: "Facebook", placeholder: "facebook.com/yourpage", example: "facebook.com/mikeplastering" },
-  { key: "twitter", label: "X (Twitter)", placeholder: "@yourname or x.com/yourname", example: "@mikeplastering" },
-  { key: "snapchat", label: "Snapchat", placeholder: "@yourname or snapchat.com/add/yourname", example: "@mikeplastering" },
-  { key: "reddit", label: "Reddit", placeholder: "u/yourname or reddit.com/user/yourname", example: "u/mikeplastering" },
-  { key: "youtube", label: "YouTube", placeholder: "channel URL or @handle", example: "@mikeplastering" },
-  { key: "google", label: "Google Business", placeholder: "Google Business Profile URL", example: "g.co/kgs/yourname" },
-  { key: "website", label: "Website", placeholder: "yourwebsite.com", example: "mikeplastering.co.uk" }
+  { key: "instagram", label: "Instagram", placeholder: "@yourname or instagram.com/yourname", example: "@mikeplastering", chipColor: "#E1306C" },
+  { key: "tiktok", label: "TikTok", placeholder: "@yourname or tiktok.com/@yourname", example: "@mikeplastering", chipColor: "#000000" },
+  { key: "facebook", label: "Facebook", placeholder: "facebook.com/yourpage", example: "facebook.com/mikeplastering", chipColor: "#1877F2" },
+  { key: "twitter", label: "X (Twitter)", placeholder: "@yourname or x.com/yourname", example: "@mikeplastering", chipColor: "#000000" },
+  { key: "snapchat", label: "Snapchat", placeholder: "@yourname or snapchat.com/add/yourname", example: "@mikeplastering", chipColor: "#FFFC00", chipText: "#0A0A0A" },
+  { key: "reddit", label: "Reddit", placeholder: "u/yourname or reddit.com/user/yourname", example: "u/mikeplastering", chipColor: "#FF4500" },
+  { key: "youtube", label: "YouTube", placeholder: "channel URL or @handle", example: "@mikeplastering", chipColor: "#FF0000" },
+  { key: "google", label: "Google Business", placeholder: "Google Business Profile URL", example: "g.co/kgs/yourname", chipColor: "#4285F4" },
+  { key: "website", label: "Website", placeholder: "yourwebsite.com", example: "mikeplastering.co.uk", chipColor: "#525252" }
 ];
 
 function clean(input: string | null | undefined): string {

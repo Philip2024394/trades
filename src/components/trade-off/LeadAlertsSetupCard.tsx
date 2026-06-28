@@ -15,6 +15,7 @@
 // targets; no emojis.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { XRATED_PRICING } from "@/lib/xratedTrades";
 import {
   VIBRATION_PRESETS,
   canEnablePushHere,
@@ -191,8 +192,9 @@ export function LeadAlertsSetupCard(props: Props) {
               Upgrade to enable Lead Alerts
             </p>
             <p className="mt-1 text-xs text-brand-muted">
-              Lead Alerts is part of the Xrated App tier. Start a free 30-day
-              trial to switch it on for every device you own.
+              Lead Alerts is part of the Xrated App tier. Start a free{" "}
+              {XRATED_PRICING.trialDays}-day trial to switch it on for every
+              device you own.
             </p>
             <a
               href={upgradeHref}

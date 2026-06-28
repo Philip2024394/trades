@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { ServicesPageBody } from "@/components/xrated/profile/ServicesPageBody";
 import { tradeLabel, whatsappQuoteUrl } from "@/lib/tradeOff";
@@ -48,7 +48,11 @@ export default async function TradeServicesPage({
 
   return (
     <main className="flex flex-1 flex-col pb-20 md:pb-0">
-      <XratedHeader />
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${primary} Service`}
+        backHref={`/${listing.slug}`}
+      />
 
       <PremiumHero listing={listing} waUrl={waUrl} currentPage="contact" />
 
@@ -62,7 +66,7 @@ export default async function TradeServicesPage({
       />
 
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
     </main>
   );

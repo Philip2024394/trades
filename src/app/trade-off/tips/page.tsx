@@ -91,7 +91,7 @@ const TIPS: TipCard[] = [
     gradientFrom: "#C026D3",
     gradientTo: "#3B0764",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2005_57_40%20AM.png?updatedAt=1782514693735",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/a31c641dcfb0-ChatGPT_Image_Jun_27__2026__05_57_40_AM.png",
     alt: "How to collect reviews — five-star feedback on a customer's phone"
   },
   {
@@ -102,7 +102,7 @@ const TIPS: TipCard[] = [
     gradientFrom: "#DC2626",
     gradientTo: "#0A0A0A",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2007_04_17%20AM.png?updatedAt=1782518691172",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3b72a2f8e677-ChatGPT_Image_Jun_27__2026__07_04_17_AM.png",
     alt: "5 customer-facing mistakes most tradies make"
   },
   {
@@ -156,7 +156,7 @@ export default function TipsPage() {
             />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2005_53_00%20AM.png?updatedAt=1782514405219"
+              src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/1ae87f5ace55-ChatGPT_Image_Jun_27__2026__05_53_00_AM.png"
               alt="Win more jobs, get paid more — tradesperson on site"
               className="relative w-full rounded-2xl border-2 object-cover shadow-xl"
               style={{ borderColor: XRATED_BRAND.accent }}

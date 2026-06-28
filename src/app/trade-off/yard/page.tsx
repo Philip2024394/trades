@@ -173,7 +173,7 @@ export default async function YardFeedPage({
       <section className="relative overflow-hidden border-b border-neutral-200">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2002_13_13%20PM.png"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8725cd29fef6-ChatGPT_Image_Jun_27__2026__02_13_13_PM.png"
           alt=""
           aria-hidden="true"
           className="absolute inset-0 h-full w-full object-cover"

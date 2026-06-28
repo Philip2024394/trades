@@ -36,7 +36,7 @@ export function isListingVerified(
 }
 
 export const VERIFIED_BADGE_URL =
-  "https://ik.imagekit.io/9mrgsv2rp/Untitledsdfsdfsdfdfsdfsdfsdfsdfsdf-removebg-preview.png";
+  "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/56457da839ea-Untitledsdfsdfsdfdfsdfsdfsdfsdfsdf-removebg-preview.png";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";

@@ -254,6 +254,14 @@ export function ReviewFormPanel({
         within that window.
       </p>
 
+      <p className="mt-3 max-w-2xl text-[13px] italic leading-relaxed text-neutral-500">
+        Rating is calculated as the percentage average across every star
+        reviewers left — Overall plus the Quality, Delivery, Service and
+        Value dimensions of every review. Reviewers rarely score every
+        dimension at 1 star, so the percentage reflects the genuine
+        spread of feedback across the product experience.
+      </p>
+
       <form
         onSubmit={submit}
         className="mt-4 space-y-5 rounded-2xl border border-brand-line bg-brand-surface p-4 sm:p-5"

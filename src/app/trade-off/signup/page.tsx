@@ -1,4 +1,4 @@
-// Hammerex Trade Off — onboarding wizard
+// xratedtrade.com Trade Off — onboarding wizard
 // Single-screen vertical form. Form lives in TradeOffForm so the same UX
 // can be reused by the /trade-off/edit/[slug] page.
 
@@ -11,7 +11,7 @@ import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 export const metadata: Metadata = {
   title: "Join Trade Off — list yourself for free | Hammerex",
   description:
-    "Add your trade profile to Hammerex Trade Off. Free for life, WhatsApp-only, no commissions. Customers find you, you quote.",
+    "Add your trade profile to xratedtrade.com Trade Off. Free for life, WhatsApp-only, no commissions. Customers find you, you quote.",
   alternates: { canonical: "/trade-off/signup" }
 };
 

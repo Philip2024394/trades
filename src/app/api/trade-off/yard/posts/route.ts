@@ -178,7 +178,12 @@ export async function POST(req: NextRequest) {
   // of the marketplace so density on their side makes the membership
   // more valuable for trades who pay. See lib/yardAccess.ts.
   const builderFree = isBuilderGradeTrade(row.data.primary_trade);
-  if (tier !== "app_paid" && tier !== "app_trial" && !builderFree) {
+  if (
+    tier !== "app_paid" &&
+    tier !== "app_trial" &&
+    tier !== "app_verified" &&
+    !builderFree
+  ) {
     return NextResponse.json(
       { ok: false, error: "The Yard is for paid members. Upgrade to post." },
       { status: 402 }

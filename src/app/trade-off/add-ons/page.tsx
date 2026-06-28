@@ -68,10 +68,10 @@ const FAQ = [
   },
   {
     q: "Can customers see what add-ons I've turned on?",
-    a: "No. They only see the resulting features — a Shop tab, a Trusted Trades list, a custom URL. The SaaS plumbing behind it never shows up."
+    a: "No. They only see the resulting features — a Trade Center tab, a Trusted Trades list, a custom URL. The SaaS plumbing behind it never shows up."
   },
   {
-    q: "What happens to my products if I switch off Shop Mode?",
+    q: "What happens to my products if I switch off Trade Center?",
     a: "Archived, not deleted. Switch the add-on back on and every product reappears with its photos, prices and stock intact."
   }
 ];
@@ -101,7 +101,7 @@ export default function AddOnsPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-base">
             Every Xrated profile starts strong. Add-ons let you tune your
-            profile to your trade — pure service, full shop, or somewhere
+            profile to your trade — pure service, full trade center, or somewhere
             in between. Pay only for the ones you turn on.
           </p>
           <p className="mt-5 text-xs leading-relaxed text-white/65 sm:text-sm">

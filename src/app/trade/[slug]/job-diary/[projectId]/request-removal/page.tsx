@@ -14,8 +14,9 @@ import {
   type HammerexTradeOffListing,
   type HammerexXratedProject
 } from "@/lib/supabase";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
+import { tradeLabel } from "@/lib/tradeOff";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { RemovalRequestForm } from "./RemovalRequestForm";
 
 export const dynamic = "force-dynamic";
@@ -63,7 +64,11 @@ export default async function RequestRemovalPage({
 
   return (
     <main className="flex min-h-screen flex-1 flex-col">
-      <XratedHeader />
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${tradeLabel(listing.primary_trade)} Service`}
+        backHref={`/${slug}/job-diary/${projectId}`}
+      />
       <section className="mx-auto w-full max-w-2xl flex-1 px-4 py-12 sm:px-6">
         <p
           className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -86,7 +91,7 @@ export default async function RequestRemovalPage({
           <RemovalRequestForm slug={slug} projectId={projectId} projectTitle={project.title} />
         </div>
       </section>
-      <XratedFooter />
+      <TradeProfileFooter listing={listing} appName={`${tradeLabel(listing.primary_trade)} Service`} />
     </main>
   );
 }

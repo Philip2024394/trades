@@ -13,6 +13,7 @@ import { tradeLabel } from "@/lib/tradeOff";
 import { resolveAppHero } from "@/lib/tradeAppBanners";
 import { getTrustLevel, TRUST_LEVEL_META } from "@/lib/xratedTrustLevel";
 import { getTrustScore, getTrustScoreBand } from "@/lib/trustScore";
+import { BusinessCardButton } from "./BusinessCardButton";
 
 export function PremiumHero({
   listing,
@@ -53,7 +54,14 @@ export function PremiumHero({
         )
       };
   const primary = tradeLabel(listing.primary_trade);
-  const tradeServiceLabel = `${primary} Service`;
+  // Hero title = the trade label itself. The renamed labels already
+  // embed the work type ("Kitchen Installation", "Stair Manufacture",
+  // "Building Merchant", "Tool Hire") so tacking on " Service" reads
+  // as redundant or wrong. For pure labour-only trades ("Plumber",
+  // "Carpenter") the bare label is intentional — it matches how the
+  // gallery cards on /trade-off/trades render and what shows up in
+  // the BusinessCardButton share modal.
+  const tradeServiceLabel = primary;
   const subtitle =
     (listing.services_offered ?? []).slice(0, 2).join(" & ") ||
     (listing.trading_name ?? "");
@@ -62,9 +70,10 @@ export function PremiumHero({
       ? listing.rating_avg.toFixed(1)
       : null;
   const reviewCount = listing.rating_count ?? 0;
-  const phoneHref = listing.phone
-    ? `tel:${listing.phone.replace(/[^0-9+]/g, "")}`
-    : null;
+  // Phone CTA removed from the hero in favour of the Business Card
+  // modal — buyers tap Card to see phone + email + WhatsApp + save
+  // vCard. The trade's `phone_calls_enabled` flag inside the modal
+  // controls whether the tap-to-call row is rendered.
 
   const trustBadges = [
     listing.is_insured ? { label: "Fully insured", icon: "shield" } : null,
@@ -168,7 +177,7 @@ export function PremiumHero({
                       >
                         <span
                           className="text-2xl font-extrabold leading-none sm:text-3xl"
-                          style={{ color: "#FFB300", letterSpacing: "0.05em" }}
+                          style={{ color: "var(--trade-accent, #FFB300)", letterSpacing: "0.05em" }}
                         >
                           X{trustLevel}
                         </span>
@@ -183,7 +192,7 @@ export function PremiumHero({
                 <a
                   href="/trade-off/trust"
                   className="absolute -bottom-1.5 -right-1.5 inline-flex h-9 min-w-[2.25rem] items-center justify-center rounded-full px-2 text-sm font-extrabold ring-2 ring-black transition hover:scale-105 sm:h-11 sm:min-w-[2.75rem] sm:text-base"
-                  style={{ background: "#FFB300", color: "#0A0A0A" }}
+                  style={{ background: "var(--trade-accent, #FFB300)", color: "#0A0A0A" }}
                   aria-label={`Trust Score ${trustScore}/100 — ${trustBand.label}`}
                   title={`Trust Score ${trustScore}/100 — ${trustBand.label}. Tap to learn how the score works.`}
                 >
@@ -197,7 +206,7 @@ export function PremiumHero({
                 {listing.hammerex_standard_verified && (
                   <span
                     className="absolute -right-1 -top-1 inline-flex h-6 w-6 items-center justify-center rounded-full ring-2 ring-black sm:h-7 sm:w-7"
-                    style={{ background: "#FFB300" }}
+                    style={{ background: "var(--trade-accent, #FFB300)" }}
                     aria-label="Verified by Xrated"
                     title="Verified by Xrated"
                   >
@@ -219,23 +228,35 @@ export function PremiumHero({
                 )}
 
                 <h1
-                  className="mt-2 flex items-center gap-1.5 text-lg font-extrabold leading-tight text-white sm:text-2xl"
+                  className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-0.5 text-lg font-extrabold leading-tight text-white sm:text-2xl"
                   style={{ textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
                 >
-                  <span className="truncate">{tradeServiceLabel}</span>
-                  <span
-                    className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full sm:h-5 sm:w-5"
-                    style={{ background: "#FFB300" }}
-                    aria-label="Verified"
-                  >
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                  </span>
+                  {/* No truncate — long labels like "Building Merchant"
+                      or "Conservatory Manufacturer" must wrap to 2
+                      lines, never get clipped to "…". */}
+                  <span>{tradeServiceLabel}</span>
+                  {/* Verified badge — only renders when the listing is
+                      actually on the Verified tier (£19.99/mo). Free /
+                      Trial / Paid all hide this check, otherwise the
+                      badge would be meaningless social proof. The
+                      Hammerex Standard tick at line ~206 is a separate
+                      signal driven by `hammerex_standard_verified`. */}
+                  {listing.tier === "app_verified" && (
+                    <span
+                      className="inline-flex h-4 w-4 shrink-0 items-center justify-center rounded-full sm:h-5 sm:w-5"
+                      style={{ background: "var(--trade-accent, #FFB300)" }}
+                      aria-label="Verified"
+                      title="Verified — company registration + ID checked by Xrated"
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                    </span>
+                  )}
                 </h1>
                 {subtitle && (
                   <p
-                    className="mt-0.5 truncate text-xs text-neutral-200 sm:text-sm"
+                    className="mt-0.5 text-xs leading-snug text-neutral-200 sm:text-sm"
                     style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
                   >
                     {subtitle}
@@ -297,32 +318,34 @@ export function PremiumHero({
                 <a
                   href={primaryCta.href}
                   className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-xs font-bold text-neutral-900 shadow-lg transition active:scale-[0.97] sm:text-sm"
-                  style={{ background: "#FFB300" }}
+                  style={{ background: "var(--trade-accent, #FFB300)" }}
                 >
                   {primaryCta.icon}
                   {primaryCta.label}
                 </a>
-                <a
-                  href={phoneHref ?? "#"}
-                  aria-disabled={!phoneHref}
-                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border-2 text-xs font-bold shadow-lg backdrop-blur-sm transition active:scale-[0.97] sm:text-sm"
-                  style={
-                    phoneHref
-                      ? { borderColor: "#FFB300", color: "#FFB300", background: "rgba(0,0,0,0.35)" }
-                      : { borderColor: "rgba(255,179,0,0.4)", color: "rgba(255,179,0,0.4)", background: "rgba(0,0,0,0.35)", pointerEvents: "none" }
-                  }
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
-                  </svg>
-                  Call Now
-                </a>
+                {/* Business Card button — visible on every demo template
+                    (visitors browsing the gallery always see the feature)
+                    AND on every REAL listing where the tradesperson has
+                    added a phone number in their dashboard. Listings with
+                    no phone set hide the button entirely — matches the
+                    user rule "no phone → no card". */}
+                {(listing.slug?.startsWith("demo-") || !!listing.phone) && (
+                  <BusinessCardButton
+                    displayName={listing.display_name}
+                    tradeLabel={tradeServiceLabel}
+                    phone={listing.phone}
+                    email={listing.email}
+                    whatsapp={listing.whatsapp}
+                    phoneCallsEnabled={listing.phone_calls_enabled}
+                    bannerUrl={heroUrl}
+                  />
+                )}
                 <a
                   href={waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border-2 text-xs font-bold shadow-lg backdrop-blur-sm transition active:scale-[0.97] sm:text-sm"
-                  style={{ borderColor: "#FFB300", color: "#FFB300", background: "rgba(0,0,0,0.35)" }}
+                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold text-white shadow-lg transition active:scale-[0.97] sm:text-sm"
+                  style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />
@@ -364,24 +387,23 @@ export function PremiumHero({
           <StatTile
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="2" y="7" width="20" height="14" rx="2" />
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                <line x1="12" y1="22.08" x2="12" y2="12" />
               </svg>
             }
-            value={String(reviewCount || 0)}
-            label="Jobs"
+            value={String(listing.hammerex_standard_products?.length ?? 0)}
+            label="Products"
           />
           <StatTile
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
               </svg>
             }
             value="97%"
-            label="On-Time Rate"
+            label="Dispatch"
           />
           <StatTile
             icon={
@@ -402,11 +424,14 @@ export function PremiumHero({
           <StatTile
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <rect x="1" y="3" width="15" height="13" />
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                <circle cx="5.5" cy="18.5" r="2.5" />
+                <circle cx="18.5" cy="18.5" r="2.5" />
               </svg>
             }
-            value={listing.is_insured ? "Fully" : "—"}
-            label="Insured"
+            value="Available"
+            label="Delivery"
           />
         </div>
       </section>

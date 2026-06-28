@@ -1,4 +1,4 @@
-// Hammerex Trade Off — Shop Mode editor.
+// xratedtrade.com Trade Off — Shop Mode editor.
 // Server shell. Validates the magic-link edit_token, loads the listing's
 // products + shipping zones, and hands them to the client components.
 
@@ -14,13 +14,15 @@ import { ShopModeEditor } from "@/components/trade-off/ShopModeEditor";
 import { ShippingZonesEditor } from "@/components/trade-off/ShippingZonesEditor";
 import type {
   HammerexXratedProduct,
-  HammerexXratedShippingZone
+  HammerexXratedShippingZone,
+  RetailShippingArea,
+  RetailShippingIntl
 } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Shop Mode editor | Hammerex Trade Off",
+  title: "Trade Center editor | xratedtrade.com Trade Off",
   robots: { index: false, follow: false }
 };
 
@@ -44,7 +46,7 @@ export default async function TradeOffShopModeEditPage({
   const row = await supabaseAdmin
     .from("hammerex_trade_off_listings")
     .select(
-      "id, slug, edit_token, display_name, primary_trade, tier, trial_expires_at, addons_enabled"
+      "id, slug, edit_token, display_name, primary_trade, tier, trial_expires_at, addons_enabled, payment_methods, terms_url, privacy_url, returns_url, about_url, retail_shipping_mode, retail_shipping_uk_pence, retail_shipping_uk_areas, retail_shipping_international"
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -56,7 +58,7 @@ export default async function TradeOffShopModeEditPage({
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   const addonsMap =
     row.data.addons_enabled && typeof row.data.addons_enabled === "object"
       ? (row.data.addons_enabled as Record<string, boolean>)
@@ -103,18 +105,18 @@ export default async function TradeOffShopModeEditPage({
       </section>
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-4">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          Add-on · Shop Mode
+          Add-on · Trade Center
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-4xl">
-          Shop Mode — your products
+          Trade Center — your products
         </h1>
         <p className="mt-3 text-xs text-brand-muted">
           {liveCount} live product{liveCount === 1 ? "" : "s"} ·{" "}
           {isPaid && shopOn
             ? "Add-on £5/mo · active"
             : isPaid
-              ? "Toggle Shop Mode on from your dashboard to go live"
-              : "Upgrade to enable Shop Mode"}
+              ? "Toggle Trade Center on from your dashboard to go live"
+              : "Upgrade to enable Trade Center"}
         </p>
       </section>
 
@@ -122,11 +124,11 @@ export default async function TradeOffShopModeEditPage({
         <section className="mx-auto max-w-3xl px-4 pb-6">
           <div className="rounded-xl border border-brand-accent/40 bg-brand-accent/10 p-4">
             <p className="text-sm font-bold text-brand-accent">
-              Shop Mode is a paid add-on
+              Trade Center is a paid add-on
             </p>
             <p className="mt-1 text-xs text-brand-muted">
               You can set products up now — they go live once you upgrade and
-              switch Shop Mode on from your dashboard.
+              switch Trade Center on from your dashboard.
             </p>
             <Link
               href={upgradeHref}
@@ -183,6 +185,36 @@ export default async function TradeOffShopModeEditPage({
           slug={slug}
           editToken={token}
           initialProducts={products}
+          primaryTrade={row.data.primary_trade ?? undefined}
+          initialAddonsEnabled={
+            (row.data.addons_enabled as Record<string, boolean> | null) ?? {}
+          }
+          initialPaymentMethods={
+            (row.data.payment_methods as string[] | null) ?? null
+          }
+          initialLegalLinks={{
+            terms_url: (row.data.terms_url as string | null) ?? null,
+            privacy_url: (row.data.privacy_url as string | null) ?? null,
+            returns_url: (row.data.returns_url as string | null) ?? null,
+            about_url: (row.data.about_url as string | null) ?? null
+          }}
+          initialRetailShipping={{
+            mode:
+              (row.data.retail_shipping_mode as
+                | "free"
+                | "uk_flat"
+                | "uk_areas"
+                | null) ?? null,
+            uk_pence: (row.data.retail_shipping_uk_pence as number | null) ?? null,
+            uk_areas:
+              (row.data.retail_shipping_uk_areas as
+                | RetailShippingArea[]
+                | null) ?? null,
+            international:
+              (row.data.retail_shipping_international as
+                | RetailShippingIntl[]
+                | null) ?? null
+          }}
         />
       </section>
 
@@ -201,7 +233,7 @@ export default async function TradeOffShopModeEditPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi Hammerex — I'm trying to edit my Shop Mode but my link isn't working. Can you help?"
+    "Hi xratedtrade.com — I'm trying to edit my Trade Center but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
@@ -225,7 +257,7 @@ function InvalidLink({ reason }: { reason: string }) {
           rel="noopener noreferrer"
           className="mt-6 inline-flex h-11 items-center rounded-lg bg-brand-whatsapp px-6 text-xs font-bold text-white transition hover:opacity-90"
         >
-          Message Hammerex on WhatsApp
+          Message us on WhatsApp
         </a>
       </section>
       <XratedFooter />

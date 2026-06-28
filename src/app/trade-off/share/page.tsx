@@ -109,7 +109,7 @@ export default function ShareAnywherePage() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2009_47_30%20AM.png"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/dd1301817512-ChatGPT_Image_Jun_27__2026__09_47_30_AM.png"
           alt="Xrated Trades — one URL across every channel customers find tradies on."
           className="absolute inset-0 h-full w-full object-cover"
         />

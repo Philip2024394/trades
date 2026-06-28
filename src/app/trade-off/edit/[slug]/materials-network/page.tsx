@@ -1,4 +1,4 @@
-// Hammerex Trade Off — Materials Network editor.
+// xratedtrade.com Trade Off — Materials Network editor.
 //
 // Server shell. Validates the magic-link edit_token, loads the
 // listing's curated merchant picks + earnings aggregate + recent
@@ -25,7 +25,7 @@ import { MerchantFulfilmentPanel } from "@/components/trade-off/MerchantFulfilme
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Materials Network editor | Hammerex Trade Off",
+  title: "Materials Network editor | xratedtrade.com Trade Off",
   robots: { index: false, follow: false }
 };
 
@@ -61,7 +61,7 @@ export default async function TradeOffMaterialsNetworkEditPage({
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   const materialsOn = isMaterialsNetworkOn({
     addons_enabled:
       row.data.addons_enabled && typeof row.data.addons_enabled === "object"
@@ -156,7 +156,7 @@ export default async function TradeOffMaterialsNetworkEditPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi Hammerex — I'm trying to edit my Materials Network but my link isn't working. Can you help?"
+    "Hi xratedtrade.com — I'm trying to edit my Materials Network but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
@@ -180,7 +180,7 @@ function InvalidLink({ reason }: { reason: string }) {
           rel="noopener noreferrer"
           className="mt-6 inline-flex h-11 items-center rounded-lg bg-brand-whatsapp px-6 text-xs font-bold text-white transition hover:opacity-90"
         >
-          Message Hammerex on WhatsApp
+          Message us on WhatsApp
         </a>
       </section>
       <XratedFooter />

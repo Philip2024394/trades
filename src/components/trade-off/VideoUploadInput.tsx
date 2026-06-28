@@ -1,6 +1,8 @@
 "use client";
 
-// Tradesperson video uploader — self-hosted, no YouTube channel needed.
+// Tradesperson intro-video uploader. We host the file ourselves —
+// the tradesperson records on their phone or laptop and uploads
+// straight to Supabase Storage. Plays on the home page of their app.
 //
 // Flow:
 //   1. User picks a file → client-side guards (MIME, size, duration)
@@ -133,17 +135,19 @@ export function VideoUploadInput({
       return;
     }
 
-    // 2. Direct PUT to Supabase Storage with progress
+    // 2. Direct PUT to Supabase Storage with progress.
+    // Supabase signed URLs require the `x-upsert` header to be true so
+    // replays (same path with a fresh signed URL) succeed, and they
+    // reject custom `cache-control` headers — both were the cause of
+    // the previous 400 on PUT. The token is already encoded in
+    // signedUrl so no extra Authorization header is needed.
     setStatus({ kind: "uploading", pct: 0 });
     try {
       await new Promise<void>((resolve, reject) => {
         const xhr = new XMLHttpRequest();
         xhr.open("PUT", signed.upload_url, true);
         xhr.setRequestHeader("content-type", file.type);
-        // Supabase signed URLs accept the upload token via header too —
-        // but the signedUrl already encodes it, so no extra header
-        // needed. Cache-control hint lets Cloudflare edge-cache replays.
-        xhr.setRequestHeader("cache-control", "public, max-age=31536000");
+        xhr.setRequestHeader("x-upsert", "true");
         xhr.upload.onprogress = (e) => {
           if (!e.lengthComputable) return;
           const pct = Math.round((e.loaded / e.total) * 100);
@@ -151,7 +155,18 @@ export function VideoUploadInput({
         };
         xhr.onload = () => {
           if (xhr.status >= 200 && xhr.status < 300) resolve();
-          else reject(new Error(`Upload failed (${xhr.status}).`));
+          else {
+            // Surface the storage server's message so we know whether
+            // it's a token / path / permission / size problem.
+            let detail = "";
+            try {
+              const body = xhr.responseText ?? "";
+              detail = body.length > 0 ? ` — ${body.slice(0, 200)}` : "";
+            } catch {
+              /* responseText sometimes unavailable cross-origin */
+            }
+            reject(new Error(`Upload failed (${xhr.status})${detail}`));
+          }
         };
         xhr.onerror = () => reject(new Error("Network error during upload."));
         xhr.send(file);
@@ -212,30 +227,91 @@ export function VideoUploadInput({
     onSaved?.(currentUrl, caption);
   }
 
+  // Remove the saved intro video from the listing. Persists video_url
+  // as empty string so the public profile's video block hides itself.
+  // The Storage file is left in place — cheaper than DELETE during
+  // an edit session and we can sweep orphans server-side later.
+  async function onRemoveVideo() {
+    if (!currentUrl) return;
+    setStatus({ kind: "saving" });
+    try {
+      const res = await fetch("/api/trade-off/video-save", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          listing_id: listingId,
+          edit_token: editToken,
+          video_url: "",
+          video_caption: ""
+        })
+      });
+      const json = await res.json();
+      if (!json.ok) throw new Error(json.error ?? "Could not remove the video.");
+      setCurrentUrl("");
+      setCaption("");
+      setStatus({ kind: "idle" });
+      onSaved?.("", "");
+    } catch (err) {
+      setStatus({
+        kind: "error",
+        msg: err instanceof Error ? err.message : "Could not remove the video."
+      });
+    }
+  }
+
   return (
     <div className="rounded-2xl border border-brand-line bg-brand-surface p-4 sm:p-5">
       <p className="text-xs font-bold uppercase tracking-widest text-brand-muted">
         Intro video
       </p>
       <p className="mt-1 text-xs text-brand-muted">
-        60 seconds max. MP4, MOV or WebM, 30 MB cap. Self-hosted on Xrated —
-        no YouTube channel needed. Vertical or landscape, either works.
+        Record on your phone or laptop, then upload here — we host it
+        for you on the home page of your app. 60 seconds max. MP4,
+        MOV or WebM, 30 MB cap.
       </p>
+
+      {/* Best-shape guidance — the tile that visitors see on your
+          profile page is a fixed widescreen (16:9) frame. Portrait
+          videos play full-screen inside the lightbox at their native
+          shape (no cropping), but the preview tile crops them. */}
+      <div
+        className="mt-3 rounded-lg border-l-2 border-brand-accent bg-brand-accent/10 px-3 py-2 text-[11px] leading-relaxed text-brand-text"
+        role="note"
+      >
+        <p className="font-extrabold uppercase tracking-wider text-brand-muted">
+          What size works best
+        </p>
+        <ul className="mt-1.5 grid gap-0.5">
+          <li>
+            <span className="font-bold">Best (recommended):</span>{" "}
+            Landscape 16:9 — film with your phone held{" "}
+            <span className="font-bold">sideways</span>. Typical
+            resolutions: <span className="font-mono">1920×1080</span>{" "}
+            or <span className="font-mono">1280×720</span>.
+          </li>
+          <li>
+            <span className="font-bold">OK:</span> Square 1:1 — still
+            fills the profile tile, no cropping.
+          </li>
+          <li>
+            <span className="font-bold">Allowed but gets cropped on the tile:</span>{" "}
+            Portrait 9:16 (phone-style) — plays full-shape inside the
+            lightbox when tapped, but the preview tile on your profile
+            is widescreen, so the top + bottom of the video get
+            hidden until someone taps to play.
+          </li>
+        </ul>
+      </div>
 
       {currentUrl ? (
         <div className="mt-3 overflow-hidden rounded-xl bg-black">
-          {currentUrl.startsWith("https://www.youtube.com/") ||
-          currentUrl.startsWith("https://youtu.be/") ? (
-            <p className="p-4 text-xs text-white">YouTube link (replace by uploading a file).</p>
-          ) : (
-            /* eslint-disable-next-line jsx-a11y/media-has-caption */
-            <video
-              src={currentUrl}
-              controls
-              playsInline
-              className="block aspect-video w-full bg-black"
-            />
-          )}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <video
+            src={currentUrl}
+            controls
+            playsInline
+            className="block aspect-video w-full bg-black"
+          />
         </div>
       ) : (
         <div className="mt-3 flex aspect-video w-full items-center justify-center rounded-xl border-2 border-dashed border-brand-line bg-brand-bg text-xs text-brand-muted">
@@ -245,7 +321,7 @@ export function VideoUploadInput({
 
       <label className="mt-3 block">
         <span className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-          Caption (optional, ≤60 chars)
+          One-line caption (optional)
         </span>
         <input
           type="text"
@@ -279,6 +355,17 @@ export function VideoUploadInput({
           </svg>
           {currentUrl ? "Replace video" : "Upload video"}
         </button>
+        {currentUrl && (
+          <button
+            type="button"
+            onClick={onRemoveVideo}
+            disabled={status.kind === "uploading" || status.kind === "saving"}
+            className="inline-flex h-11 items-center justify-center rounded-xl px-4 text-xs font-extrabold text-white shadow-sm transition active:scale-[0.97] disabled:opacity-50"
+            style={{ background: "#8B0000" }}
+          >
+            Remove video
+          </button>
+        )}
         {currentUrl && status.kind === "idle" && caption !== (initialCaption ?? "") && (
           <button
             type="button"

@@ -18,10 +18,11 @@ import {
   type HammerexXratedProduct
 } from "@/lib/supabase";
 import { absolute } from "@/lib/seo";
+import { tradeLabel } from "@/lib/tradeOff";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { isStorefrontOn } from "@/lib/xratedAddons";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
 import { StorefrontBody } from "@/components/xrated/profile/StorefrontBody";
 
@@ -98,10 +99,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const listing = await loadListing(slug);
-  if (!listing) return { title: "Shop not found" };
-  const firstName = listing.display_name.split(/\s+/)[0] ?? listing.display_name;
-  const title = `${firstName}'s shop — products and prices | Xrated Trades`;
-  const description = `Browse the full range of products from ${listing.display_name}, ${listing.city}. Search, filter and send an enquiry on WhatsApp.`;
+  if (!listing) return { title: "Trade Center not found" };
+  const appName = `${tradeLabel(listing.primary_trade)} Service`;
+  const title = `${appName} — products and prices | Xrated Trades`;
+  const description = `Browse the full range of products from ${appName}, ${listing.city}. Search, filter and send an enquiry on WhatsApp.`;
   const url = absolute(`/${listing.slug}/shop`);
   return {
     title,
@@ -132,7 +133,7 @@ export default async function StorefrontPage({
   if (!listing) notFound();
 
   const tier = effectiveTier(listing);
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   if (!isPaid || !isStorefrontOn(listing)) {
     redirect(`/${listing.slug}`);
   }
@@ -142,13 +143,15 @@ export default async function StorefrontPage({
     loadFacets(listing.id)
   ]);
 
-  const firstName = listing.display_name.split(/\s+/)[0] ?? listing.display_name;
-  // Possessive form — "Mike's", "James's". Keep it simple, English only.
-  const possessive = `${firstName}'s`;
+  const appName = `${tradeLabel(listing.primary_trade)} Service`;
 
   return (
     <main className="flex flex-1 flex-col bg-white pb-20 md:pb-0">
-      <XratedHeader />
+      <TradeProfileHeader
+        listing={listing}
+        appName={appName}
+        backHref={`/${listing.slug}`}
+      />
       <section className="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 sm:pt-8">
         <a
           href={`/${listing.slug}`}
@@ -157,23 +160,25 @@ export default async function StorefrontPage({
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="m15 18-6-6 6-6" />
           </svg>
-          Back to {firstName}&rsquo;s profile
+          Back to {appName}
         </a>
       </section>
 
       <section className="mx-auto w-full max-w-6xl px-4 pt-2 sm:px-6">
         <p
-          className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-          style={{ color: "#FFB300" }}
+          className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-neutral-500"
         >
-          {possessive.toUpperCase()} SHOP
+          {appName}
         </p>
-        <h1 className="mt-1 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-          {listing.display_name}&rsquo;s Shop
+        <h1
+          className="mt-2 text-4xl font-extrabold leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl md:text-6xl"
+          style={{ color: "#0A0A0A" }}
+        >
+          Trade <span style={{ color: "#FFB300" }}>Center</span>
         </h1>
-        <p className="mt-2 max-w-2xl text-[13px] text-neutral-500 sm:text-sm">
-          {page.total} product{page.total === 1 ? "" : "s"}. Send {firstName} an
-          enquiry and they&rsquo;ll quote — no card payments in the app.
+        <p className="mt-3 max-w-2xl text-[13px] text-neutral-500 sm:text-sm">
+          Products {page.total}. Send an enquiry and we&rsquo;ll quote — no card
+          payments in the app.
         </p>
       </section>
 
@@ -181,7 +186,7 @@ export default async function StorefrontPage({
         <StorefrontBody
           initialState={{
             slug: listing.slug,
-            firstName,
+            appName,
             products: page.products,
             total: page.total,
             has_more: page.has_more,
@@ -191,7 +196,7 @@ export default async function StorefrontPage({
       </section>
 
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={appName} />
       </div>
 
       {/* Sticky cart island — same component the bare profile uses. */}

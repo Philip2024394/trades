@@ -41,12 +41,15 @@ export const TRADE_OFF_TRADES: Array<{
   // Concrete finisher — troweling, polishing, sealing (distinct from
   // the existing concrete-specialist which does formwork + placing).
   { slug: "concrete-finisher", label: "Concrete Finisher", category_slug: "concrete" },
-  // Stair fitter — bespoke staircases, balustrades, handrails.
-  { slug: "stair-fitter", label: "Stair Fitter", category_slug: "carpentry" },
-  // Kitchen fitter — full kitchen installs, units, worktops.
-  { slug: "kitchen-fitter", label: "Kitchen Fitter", category_slug: "carpentry" },
-  // Window fitter — windows + doors install / replacement.
-  { slug: "window-fitter", label: "Window Fitter", category_slug: null },
+  // Stair installation — fitting service for staircases (labour
+  // only; manufacture + sales are separate slugs). Slug kept as
+  // stair-fitter so existing URLs / listings keep working.
+  { slug: "stair-fitter", label: "Stair Installation", category_slug: "carpentry" },
+  // Kitchen installation — fitting service. Slug kept as kitchen-fitter
+  // for URL stability; label clarifies the work-type.
+  { slug: "kitchen-fitter", label: "Kitchen Installation", category_slug: "carpentry" },
+  // Window installation — fitting service. Slug kept as window-fitter.
+  { slug: "window-fitter", label: "Window Installation", category_slug: null },
   // Crane operator — site crane hire + qualified operator (CPCS / NPORS).
   { slug: "crane-operator", label: "Crane Operator", category_slug: null },
   // Security installer — CCTV, alarms, access control, intercoms.
@@ -83,7 +86,98 @@ export const TRADE_OFF_TRADES: Array<{
   { slug: "demolition", label: "Demolition", category_slug: null },
   // Site canteen — mobile catering vans + on-site kitchen services
   // for construction crews. Breakfast rolls, bacon butties, hot meals.
-  { slug: "site-canteen", label: "Site Canteen", category_slug: null }
+  { slug: "site-canteen", label: "Site Canteen", category_slug: null },
+
+  // ─── Phase 2 expansion — Trade Service additions ────────────────
+  { slug: "damp-proofer", label: "Damp Proofer", category_slug: null },
+  { slug: "drainage-engineer", label: "Drainage Engineer", category_slug: null },
+  { slug: "chimney-sweep", label: "Chimney Sweep", category_slug: null },
+  { slug: "tree-surgeon", label: "Tree Surgeon", category_slug: null },
+  { slug: "pest-control", label: "Pest Control", category_slug: null },
+  { slug: "asbestos-removal", label: "Asbestos Removal", category_slug: null },
+  { slug: "lead-worker", label: "Lead Worker", category_slug: "roofing" },
+  { slug: "sash-window-restorer", label: "Sash Window Restorer", category_slug: null },
+  { slug: "post-construction-cleaner", label: "Post-Construction Cleaner", category_slug: null },
+  { slug: "garden-designer", label: "Garden Designer", category_slug: null },
+  // Mobile mechanic — on-site fleet + plant servicing. Mobile vans
+  // visiting construction sites to fix excavators, telehandlers,
+  // tippers, etc. Distinct from a workshop-based car mechanic.
+  { slug: "mobile-mechanic", label: "Mobile Mechanic", category_slug: null },
+  // Water pump service — borehole, basement sump, sewage and
+  // booster pump installation + servicing. Common in groundworks
+  // and after-flood remediation.
+  { slug: "pump-service", label: "Water Pump Service", category_slug: "plumbing" },
+
+  // ─── Trade Installation additions ─────────────────────────────────
+  { slug: "door-fitter", label: "Door Fitter", category_slug: "carpentry" },
+  { slug: "flooring-installer", label: "Flooring Installer", category_slug: null },
+  { slug: "bathroom-fitter", label: "Bathroom Fitter", category_slug: "plumbing" },
+  { slug: "conservatory-installer", label: "Conservatory Installer", category_slug: null },
+  { slug: "solar-installer", label: "Solar Installer", category_slug: "electrical" },
+  { slug: "ev-charger-installer", label: "EV Charger Installer", category_slug: "electrical" },
+  { slug: "heat-pump-installer", label: "Heat Pump Installer", category_slug: "plumbing" },
+  { slug: "smart-home-installer", label: "Smart Home Installer", category_slug: "electrical" },
+  { slug: "garage-door-installer", label: "Garage Door Installer", category_slug: null },
+  { slug: "gutter-installer", label: "Gutter Installer", category_slug: "roofing" },
+  { slug: "driveway-installer", label: "Driveway & Patio Installer", category_slug: null },
+  { slug: "fencing-installer", label: "Fencing Installer", category_slug: null },
+  { slug: "shutter-installer", label: "Shutter Installer", category_slug: null },
+  { slug: "aerial-satellite-installer", label: "Aerial & Satellite Installer", category_slug: "electrical" },
+  { slug: "garden-room-installer", label: "Garden Room Installer", category_slug: null },
+  { slug: "awning-installer", label: "Awning & Canopy Installer", category_slug: null },
+
+  // ─── Manufacture additions ────────────────────────────────────────
+  // Manufacture-side cards — labels follow the Sales / Manufacture /
+  // Installation triplet so a topic (Kitchen, Stairs, Doors…) reads
+  // as a coherent 3-card row in the gallery.
+  { slug: "kitchen-manufacturer", label: "Kitchen Manufacture", category_slug: "carpentry" },
+  { slug: "staircase-manufacturer", label: "Staircase Manufacture", category_slug: "carpentry" },
+  { slug: "door-manufacturer", label: "Door Manufacture", category_slug: "carpentry" },
+  { slug: "window-manufacturer", label: "Window Manufacture", category_slug: null },
+  { slug: "flooring-manufacturer", label: "Flooring Manufacture", category_slug: null },
+  { slug: "conservatory-manufacturer", label: "Conservatory Manufacture", category_slug: null },
+  { slug: "wardrobe-maker", label: "Wardrobe & Fitted Furniture Maker", category_slug: "carpentry" },
+  { slug: "furniture-maker", label: "Bespoke Furniture Maker", category_slug: "carpentry" },
+  { slug: "joinery-workshop", label: "Joinery Workshop", category_slug: "carpentry" },
+  { slug: "worktop-manufacturer", label: "Worktop Manufacturer", category_slug: null },
+  { slug: "glass-manufacturer", label: "Glass & Glazing Manufacturer", category_slug: null },
+  { slug: "shed-manufacturer", label: "Shed & Summerhouse Manufacturer", category_slug: null },
+  { slug: "garden-room-manufacturer", label: "Garden Room Manufacturer", category_slug: null },
+  { slug: "steel-fabricator", label: "Steel Fabricator", category_slug: null },
+
+  // ─── Trade Product Sales additions ───────────────────────────────
+  { slug: "timber-merchant", label: "Timber Merchant", category_slug: null },
+  { slug: "plumbing-merchant", label: "Plumbing Merchant", category_slug: "plumbing" },
+  { slug: "electrical-wholesaler", label: "Electrical Wholesaler", category_slug: "electrical" },
+  // Sales-side cards — labels normalised to the same Sales pattern so
+  // each topic shows up as a coherent 3-card row in the gallery.
+  // Slugs kept as *-showroom / *-shop for URL stability.
+  { slug: "tile-shop", label: "Tile Sales", category_slug: "tiling" },
+  { slug: "flooring-shop", label: "Flooring Sales", category_slug: null },
+  { slug: "door-showroom", label: "Door Sales", category_slug: null },
+  { slug: "kitchen-showroom", label: "Kitchen Sales", category_slug: null },
+  { slug: "window-showroom", label: "Window Sales", category_slug: null },
+  { slug: "bathroom-showroom", label: "Bathroom Sales", category_slug: null },
+  { slug: "paint-merchant", label: "Paint & Decorators Merchant", category_slug: "painting" },
+  { slug: "ironmongery", label: "Ironmongery", category_slug: null },
+  { slug: "ppe-supplier", label: "PPE & Safety Equipment Supplier", category_slug: null },
+  { slug: "tool-shop", label: "Tool Shop / Hardware Store", category_slug: null },
+  { slug: "landscape-supplies", label: "Landscape Supplies", category_slug: null },
+  { slug: "aggregate-supplier", label: "Aggregate Supplier", category_slug: null },
+  { slug: "roofing-supplies", label: "Roofing Supplies", category_slug: "roofing" },
+  { slug: "insulation-supplies", label: "Insulation Supplies", category_slug: null },
+
+  // ─── Hire / Rental additions ─────────────────────────────────────
+  { slug: "plant-hire", label: "Plant Hire", category_slug: null },
+  { slug: "skip-hire", label: "Skip Hire", category_slug: null },
+  { slug: "portaloo-hire", label: "Portaloo & Welfare Hire", category_slug: null },
+  { slug: "scaffolding-hire", label: "Scaffolding Hire", category_slug: "scaffolding" },
+  { slug: "generator-hire", label: "Generator Hire", category_slug: null },
+  { slug: "van-hire", label: "Van & Truck Hire", category_slug: null },
+  { slug: "crane-hire", label: "Crane Hire", category_slug: null },
+  { slug: "waste-removal", label: "Waste Removal & Grab Hire", category_slug: null },
+  { slug: "minidigger-hire", label: "Mini-digger Hire", category_slug: null },
+  { slug: "storage-container-hire", label: "Storage & Container Hire", category_slug: null }
 ];
 
 export function tradeLabel(slug: string): string {
@@ -174,7 +268,7 @@ export function whatsappDigits(input: string): string {
 
 export function whatsappQuoteUrl(whatsapp: string, displayName: string, tradeLabelText: string): string {
   const digits = whatsappDigits(whatsapp);
-  const message = `Hi ${displayName}, I found your profile on Hammerex Trade Off. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
+  const message = `Hi ${displayName}, I found your profile on xratedtrade.com Trade Off. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 

@@ -85,8 +85,11 @@ export function SlugAvailabilityField({
 
   return (
     <div>
-      <div className="flex items-stretch overflow-hidden rounded-lg border border-brand-line bg-brand-bg focus-within:border-[#FFB300]">
-        <span className="inline-flex items-center bg-neutral-100 px-3 text-xs text-brand-muted">
+      <div className="flex items-stretch overflow-hidden rounded-xl border border-brand-line bg-brand-bg focus-within:border-[#FFB300]">
+        <span
+          className="inline-flex items-center px-3 text-[12px] font-extrabold text-neutral-900"
+          style={{ background: "#FFB300" }}
+        >
           xratedtrade.com/
         </span>
         <input
@@ -95,7 +98,7 @@ export function SlugAvailabilityField({
           onChange={(e) => onChange(sanitize(e.target.value))}
           placeholder={placeholder ?? "your-trade-name"}
           maxLength={SLUG_MAX_LENGTH}
-          className="h-11 min-w-0 flex-1 bg-transparent px-3 text-xs text-brand-text placeholder:text-brand-muted focus:outline-none"
+          className="h-11 min-w-0 flex-1 bg-transparent px-3 text-[13px] text-brand-text placeholder:text-brand-muted focus:outline-none"
           autoComplete="off"
           spellCheck={false}
         />

@@ -19,6 +19,12 @@ type SocialListing = Pick<
   "instagram" | "facebook" | "tiktok" | "youtube" | "twitter" | "snapchat" | "reddit" | "google" | "website"
 >;
 
+// Exported so the signup / edit form can render the same brand icon
+// inside the chip prefix next to each social input.
+export function socialIconFor(key: TradeSocialKey) {
+  return iconFor(key);
+}
+
 function iconFor(key: TradeSocialKey) {
   switch (key) {
     case "instagram":

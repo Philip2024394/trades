@@ -26,6 +26,7 @@ import {
 import { whatsappDigits } from "@/lib/tradeOff";
 import { isWholesaleModeOn } from "@/lib/xratedAddons";
 import { WholesaleDeliveryWidget } from "./WholesaleDeliveryWidget";
+import { tierForQty } from "./BulkTierTable";
 
 type ShippingMode = "air" | "sea";
 
@@ -285,6 +286,13 @@ export function CartPageBody({
                           {formatGbp(item.price_pence)}{" "}
                           {item.unit ? item.unit : "each"}
                         </p>
+                        <div className="mt-1.5">
+                          <MultiBuyHint
+                            tiers={item.bulk_tiers ?? []}
+                            qty={item.qty}
+                            basePencePerUnit={item.price_pence}
+                          />
+                        </div>
                         <div className="mt-auto flex items-center justify-between gap-2 pt-3">
                           <QtyStepper
                             value={item.qty}
@@ -303,11 +311,12 @@ export function CartPageBody({
                           handleRemove(item.product_id, item.variant_label ?? null)
                         }
                         aria-label={`Remove ${item.name}${item.variant_label ? ` (${item.variant_label})` : ""} from cart`}
-                        className="inline-flex h-11 w-11 shrink-0 items-center justify-center self-start rounded-full text-neutral-400 transition hover:bg-neutral-100 hover:text-neutral-700"
+                        className="inline-flex h-7 w-7 shrink-0 items-center justify-center self-start rounded-full text-white shadow-sm transition hover:opacity-90"
+                        style={{ background: "#991B1B" }}
                       >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <polyline points="3 6 5 6 21 6" />
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <line x1="18" y1="6" x2="6" y2="18" />
+                          <line x1="6" y1="6" x2="18" y2="18" />
                         </svg>
                       </button>
                     </li>
@@ -321,13 +330,15 @@ export function CartPageBody({
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-4 font-bold text-neutral-600 transition hover:border-red-300 hover:text-red-600"
+                  className="inline-flex h-11 items-center justify-center rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 transition hover:opacity-90"
+                  style={{ background: "#FFB300" }}
                 >
                   Clear cart
                 </button>
                 <a
                   href={`/${slug}`}
-                  className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-neutral-200 bg-white px-4 font-bold text-neutral-700 transition hover:border-[#FFB300] hover:text-[#FFB300]"
+                  className="inline-flex h-11 items-center justify-center rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-wider text-neutral-900 transition hover:opacity-90"
+                  style={{ background: "#FFB300" }}
                 >
                   Keep browsing
                 </a>
@@ -380,13 +391,12 @@ export function CartPageBody({
                   )}
                   {!wholesaleOn && zone && shippingPence === null && (
                     <p className="text-[13px] text-neutral-500">
-                      Shipping quoted by {firstName} after enquiry.
+                      Shipping quoted on WhatsApp — no shipping zones listed.
                     </p>
                   )}
                   {!wholesaleOn && zones.length === 0 && (
                     <p className="text-[13px] text-neutral-500">
-                      Shipping quoted by {firstName} after enquiry — no
-                      preset zones for this shop.
+                      Shipping quoted on WhatsApp — no shipping zones listed.
                     </p>
                   )}
                   {!wholesaleOn && etaLine && (
@@ -445,8 +455,8 @@ export function CartPageBody({
                   Send enquiry on WhatsApp
                 </a>
                 <p className="mt-3 text-[13px] leading-relaxed text-neutral-500">
-                  {firstName} will confirm the final price by message before
-                  any payment. No card details are stored on Xrated.
+                  Prices · Delivery · lead times will be confirmed during the
+                  WhatsApp conversation.
                 </p>
               </div>
             </aside>
@@ -593,6 +603,62 @@ function ModeButton({
   );
 }
 
+// MultiBuyHint — small pill under each cart line that nudges the
+// customer toward the bulk-tier ladder (Wholesale Mode).
+//   • If the current qty lands in a tier — green pill telling them how
+//     much they're saving vs. the unit price.
+//   • If they're below the first band — yellow pill teasing the first
+//     tier and how much it'd shave off.
+//   • If the product has no tiers (or the base price is zero) — render
+//     nothing, so unit-priced services and free items stay quiet.
+// Uses the same `tierForQty` helper as the PDP so the match logic
+// can't drift between PDP and cart.
+function MultiBuyHint({
+  tiers,
+  qty,
+  basePencePerUnit
+}: {
+  tiers: Array<{ min_qty: number; max_qty?: number | null; price_pence: number }>;
+  qty: number;
+  basePencePerUnit: number;
+}) {
+  if (!Array.isArray(tiers) || tiers.length === 0) return null;
+  if (basePencePerUnit <= 0) return null;
+  const sorted = [...tiers].sort((a, b) => a.min_qty - b.min_qty);
+  const active = tierForQty(sorted, qty);
+  if (active) {
+    const pct = Math.round(
+      ((basePencePerUnit - active.price_pence) / basePencePerUnit) * 100
+    );
+    if (pct <= 0) return null;
+    const label =
+      active.max_qty === null || active.max_qty === undefined
+        ? `${active.min_qty}+`
+        : `${active.min_qty}–${active.max_qty}`;
+    return (
+      <span
+        className="inline-flex items-center rounded-full px-2.5 py-1 text-[13px] font-extrabold"
+        style={{ background: "#0F7A3F22", color: "#0F7A3F" }}
+      >
+        Saved {pct}% — buy {label} discount applied
+      </span>
+    );
+  }
+  const next = sorted[0];
+  const pct = Math.round(
+    ((basePencePerUnit - next.price_pence) / basePencePerUnit) * 100
+  );
+  if (pct <= 0) return null;
+  return (
+    <span
+      className="inline-flex items-center rounded-full px-2.5 py-1 text-[13px] font-extrabold"
+      style={{ background: "#FFB30022", color: "#92400E" }}
+    >
+      Buy {next.min_qty} for {pct}% off — multi-buy available
+    </span>
+  );
+}
+
 function EmptyCart({ slug, firstName }: { slug: string; firstName: string }) {
   return (
     <div
@@ -603,14 +669,14 @@ function EmptyCart({ slug, firstName }: { slug: string; firstName: string }) {
         Your cart is empty.
       </p>
       <p className="mt-1 text-[13px] text-neutral-900/80 sm:text-sm">
-        Pick something from {firstName}&rsquo;s shop and we&rsquo;ll put it
+        Pick something from {firstName}&rsquo;s trade center and we&rsquo;ll put it
         together as an enquiry.
       </p>
       <a
         href={`/${slug}`}
         className="mt-4 inline-flex h-11 items-center gap-1.5 rounded-lg bg-neutral-900 px-5 text-[13px] font-extrabold uppercase tracking-wider text-white shadow-md transition active:scale-[0.98] sm:text-sm"
       >
-        Back to {firstName}&rsquo;s shop
+        Back to {firstName}&rsquo;s trade center
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
           <path d="m9 18 6-6-6-6" />
         </svg>

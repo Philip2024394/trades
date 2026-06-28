@@ -1,4 +1,4 @@
-// Hammerex Trade Off — edit flow
+// xratedtrade.com Trade Off — edit flow
 // Server shell that validates the magic-link token, loads the listing,
 // and hands it to the shared TradeOffForm in "edit" mode.
 //
@@ -8,29 +8,30 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardDrawer } from "@/components/trade-off/DashboardDrawer";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
-import { whatsappDigits } from "@/lib/tradeOff";
-import { effectiveTier, trialDaysRemaining } from "@/lib/xratedTrades";
+import { isMerchantGradeTrade, tradeLabel, whatsappDigits } from "@/lib/tradeOff";
+import { effectiveTier, trialDaysRemaining, XRATED_PRICING } from "@/lib/xratedTrades";
 import { maybeExpireListingTier } from "@/lib/xratedTier";
+import {
+  TRADE_SESSION_COOKIE_NAME,
+  verifyTradeSession
+} from "@/lib/tradeSession";
 import { TradeOffForm, type TradeOffFormInitial } from "../../signup/TradeOffForm";
 import { PremiumCustomisationPanel } from "./PremiumCustomisationPanel";
-import { AddOnsHub } from "@/components/trade-off/AddOnsHub";
-import { VideoUploadInput } from "@/components/trade-off/VideoUploadInput";
-import { WhatsappLeadsNudge } from "@/components/trade-off/WhatsappLeadsNudge";
-import { LossAversionPreview } from "@/components/trade-off/LossAversionPreview";
-import { TrustScorePanel } from "@/components/trade-off/TrustScorePanel";
-import { BusinessCardPanel } from "@/components/trade-off/BusinessCardPanel";
-import { LeadAlertsSetupCard } from "@/components/trade-off/LeadAlertsSetupCard";
-import { isLeadAlertsOn } from "@/lib/xratedAddons";
+import { ManageSubscriptionCard } from "./ManageSubscriptionCard";
+import { LogoutButton } from "./LogoutButton";
 import type { HammerexXratedVoucher } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Edit your Trade Off profile | Hammerex",
+  title: "Edit your Trade Off profile | xratedtrade.com Trade Off",
   robots: { index: false, follow: false }
 };
 
@@ -47,9 +48,22 @@ export default async function TradeOffEditPage({
   const { slug } = await params;
   const sp = await searchParams;
   const rawToken = Array.isArray(sp.token) ? sp.token[0] : sp.token;
-  const token = typeof rawToken === "string" ? rawToken.trim() : "";
+  const urlToken = typeof rawToken === "string" ? rawToken.trim() : "";
 
-  if (!slug || !token) return <InvalidLink reason="missing-token" />;
+  if (!slug) redirect("/trade-off/login");
+
+  // Auth precedence:
+  //   1. URL ?token=<edit_token>  → magic-link / recovery entry. We
+  //      verify it, mint a session, and continue (legacy fallback).
+  //   2. xrated_trade_session cookie → primary day-2+ auth.
+  //   3. neither → bounce to /trade-off/login.
+  //
+  // The token-in-URL path stays first so that share-with-yourself
+  // links from the old email keep working forever; we just upgrade
+  // the session in passing.
+  const jar = await cookies();
+  const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
+  const session = verifyTradeSession(sessionRaw);
 
   const row = await supabaseAdmin
     .from("hammerex_trade_off_listings")
@@ -57,8 +71,34 @@ export default async function TradeOffEditPage({
     .eq("slug", slug)
     .maybeSingle();
 
-  if (!row.data) return <InvalidLink reason="not-found" />;
-  if (row.data.edit_token !== token) return <InvalidLink reason="bad-token" />;
+  if (!row.data) {
+    if (urlToken) return <InvalidLink reason="not-found" />;
+    redirect("/trade-off/login");
+  }
+
+  // Token-in-URL path — verify and use as authority. We don't drop the
+  // token from the URL automatically (we'd need a client redirect or
+  // middleware); next time the user lands without ?token the session
+  // cookie alone will let them in.
+  let token: string;
+  if (urlToken) {
+    if (row.data.edit_token !== urlToken) {
+      return <InvalidLink reason="bad-token" />;
+    }
+    token = urlToken;
+  } else if (session && session.slug === slug) {
+    // Session-only path. We don't have the edit_token in the URL, so
+    // hand the dashboard the canonical one from the DB — every existing
+    // API consumer reads from props.editToken / search params, so we
+    // keep the contract identical.
+    token = row.data.edit_token;
+  } else {
+    // No URL token AND no matching session → bounce to login.
+    redirect("/trade-off/login");
+  }
+
+  // From here onwards `token` is the verified edit_token for the
+  // requested slug (whether obtained via session lookup or URL param).
 
   // Lazy tier expiry — keeps the dashboard accurate without a cron.
   await maybeExpireListingTier(row.data.id);
@@ -134,6 +174,10 @@ export default async function TradeOffEditPage({
     service_postcodes: Array.isArray(row.data.service_postcodes)
       ? row.data.service_postcodes.join(", ")
       : "",
+    service_radius_km:
+      typeof row.data.service_radius_km === "number"
+        ? String(row.data.service_radius_km)
+        : "",
     whatsapp: row.data.whatsapp ?? "",
     phone: row.data.phone ?? "",
     email: row.data.email ?? "",
@@ -156,214 +200,143 @@ export default async function TradeOffEditPage({
         ? ""
         : String(row.data.start_year),
     avatar_url: row.data.avatar_url ?? "",
-    photos: Array.isArray(row.data.photos) ? row.data.photos : []
+    custom_app_hero_url: row.data.custom_app_hero_url ?? "",
+    video_url: row.data.video_url ?? "",
+    starter_products: [
+      { name: "", image_url: "", gallery_urls: [], price_pounds: "", description: "", multi_buy: [], variants_axis: "", variants_axis_label: "", variants_rows: [], faq: [] },
+      { name: "", image_url: "", gallery_urls: [], price_pounds: "", description: "", multi_buy: [], variants_axis: "", variants_axis_label: "", variants_rows: [], faq: [] },
+      { name: "", image_url: "", gallery_urls: [], price_pounds: "", description: "", multi_buy: [], variants_axis: "", variants_axis_label: "", variants_rows: [], faq: [] },
+      { name: "", image_url: "", gallery_urls: [], price_pounds: "", description: "", multi_buy: [], variants_axis: "", variants_axis_label: "", variants_rows: [], faq: [] }
+    ],
+    retail_shipping_mode: (() => {
+      const m = row.data.retail_shipping_mode;
+      if (m === "pickup" || m === "free" || m === "uk_flat" || m === "uk_over_threshold") {
+        return m;
+      }
+      return "";
+    })(),
+    retail_shipping_uk_pounds:
+      typeof row.data.retail_shipping_uk_pence === "number" && row.data.retail_shipping_uk_pence > 0
+        ? (row.data.retail_shipping_uk_pence / 100).toString()
+        : "",
+    retail_shipping_international: Array.isArray(row.data.retail_shipping_international)
+      ? row.data.retail_shipping_international.map(
+          (r: { country_code?: string; country_name?: string; price_pence?: number; dispatch_days?: number; delivery_days?: number }) => ({
+            country_code: typeof r.country_code === "string" ? r.country_code : "",
+            country_name: typeof r.country_name === "string" ? r.country_name : "",
+            price_pounds:
+              typeof r.price_pence === "number" ? (r.price_pence / 100).toString() : "",
+            dispatch_days:
+              typeof r.dispatch_days === "number" ? String(r.dispatch_days) : "1",
+            delivery_days:
+              typeof r.delivery_days === "number" ? String(r.delivery_days) : "5"
+          })
+        )
+      : [],
+    photos: Array.isArray(row.data.photos) ? row.data.photos : [],
+    // Password is signup-only and the field is hidden on edit. We pass
+    // an empty string so the type matches; nothing reads this on the
+    // edit dashboard.
+    password: ""
   };
 
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <XratedHeader />
+      <DashboardDrawer slug={slug} token={token} current="profile" />
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-10">
-        <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          Trade Off · Edit profile
-        </p>
-        <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-4xl">
-          {row.data.display_name}
-        </h1>
-        <p className="mt-3 text-xs text-brand-muted">
-          Status:{" "}
-          <span
-            className={
-              row.data.status === "live"
-                ? "font-semibold text-brand-success"
-                : "font-semibold text-brand-text"
-            }
+        <div className="flex items-start justify-between gap-3">
+          <p
+            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+            style={{ color: "var(--trade-accent, #FFB300)" }}
           >
-            {row.data.status.toUpperCase()}
-          </span>
-          {row.data.status === "hidden" && (
-            <span className="ml-2 text-brand-muted">
-              (hidden — message Hammerex on WhatsApp to appeal)
-            </span>
-          )}
-        </p>
-      </section>
-      <section className="mx-auto max-w-3xl px-4 pb-4">
-        <a
-          href={`/trade-off/edit/${encodeURIComponent(slug)}/projects?token=${encodeURIComponent(token)}`}
-          className="inline-flex h-11 items-center rounded-lg border border-brand-accent bg-brand-accent/10 px-4 text-xs font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
-        >
-          Manage your verified work →
-        </a>
-      </section>
-
-      {/* My Business Card — free for every tier. One-tap WhatsApp share
-          of a server-generated card PNG. Placed high in the dashboard
-          because it's the viral lever (every shared card carries the
-          slug URL + QR). */}
-      <section className="mx-auto max-w-3xl px-4 pb-6">
-        <BusinessCardPanel
-          slug={slug}
-          displayName={row.data.display_name ?? ""}
-          primaryTrade={row.data.primary_trade ?? ""}
-          city={row.data.city ?? ""}
-          whatsapp={row.data.whatsapp ?? ""}
-          tradingName={row.data.trading_name ?? null}
-        />
-      </section>
-
-      {/* The Yard nav card — private trades-only board. Paid-tier only
-          (the page itself enforces it), but the nav card surfaces at
-          every tier so free profiles see what they unlock by upgrading. */}
-      <section className="mx-auto max-w-3xl px-4 pb-6">
-        <div className="rounded-2xl border-2 border-brand-line bg-brand-surface p-5">
-          <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
-            The Yard &middot; Private board
+            {row.data.primary_trade
+              ? `Step 1 · ${tradeLabel(row.data.primary_trade)}`
+              : "Step 1"}
           </p>
-          <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
-            Hire, offer slots, talk shop.
-          </h2>
-          <p className="mt-1 text-[13px] leading-snug text-brand-muted">
-            UK trades-only feed. Post when you&rsquo;re free, hiring,
-            selling a tool or discussing rates &mdash; 14-day
-            auto-vanish, no public footprint.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <a
-              href={`/trade-off/edit/${encodeURIComponent(slug)}/yard?token=${encodeURIComponent(token)}`}
-              className="inline-flex h-11 items-center gap-1.5 rounded-xl bg-brand-accent px-4 text-[13px] font-extrabold text-black transition active:scale-[0.97]"
-            >
-              Post to The Yard &rarr;
-            </a>
-            <a
-              href="/trade-off/yard"
-              className="inline-flex h-11 items-center gap-1.5 rounded-xl border-2 border-brand-line bg-transparent px-4 text-[13px] font-extrabold text-brand-text transition hover:border-brand-accent"
-            >
-              Read the feed
-            </a>
-          </div>
+          <LogoutButton />
         </div>
+        <h1 className="mt-1 text-3xl font-extrabold leading-tight sm:text-4xl">
+          App Details
+        </h1>
+        <p className="mt-2 text-[13px] leading-snug text-neutral-500 sm:text-sm">
+          Less than 5 minutes and your new app is live.
+        </p>
+        {row.data.status !== "live" && (
+          <p className="mt-3 text-[12px] text-neutral-500">
+            Status:{" "}
+            <span className="font-semibold text-neutral-900">
+              {row.data.status.toUpperCase()}
+            </span>
+            {row.data.status === "hidden" && (
+              <span className="ml-2 text-neutral-500">
+                (hidden — message us on WhatsApp to appeal)
+              </span>
+            )}
+          </p>
+        )}
       </section>
+      {/* "Manage your verified work" link removed from the top per
+          design — verified-projects management lives at its own
+          sub-route and shouldn't sit above the data-input form. */}
 
-      {/* Operating Hours nav card — links to the dedicated sub-route.
-          Free for every tier because the AvailabilityPill on the public
-          profile reads these hours regardless of paid status. */}
-      <section className="mx-auto max-w-3xl px-4 pb-6">
-        <a
-          href={`/trade-off/edit/${encodeURIComponent(slug)}/operating-hours?token=${encodeURIComponent(token)}`}
-          className="group flex items-center justify-between gap-4 rounded-2xl border-2 border-brand-line bg-brand-surface p-5 transition hover:border-brand-accent"
-        >
-          <div className="min-w-0">
-            <p className="text-[13px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
-              Profile basics &middot; Operating hours
-            </p>
-            <h2 className="mt-1 text-xl font-extrabold leading-tight text-brand-text sm:text-2xl">
-              When are you open?
-            </h2>
-            <p className="mt-1 text-[13px] leading-snug text-brand-muted">
-              Mon–Sun open/close so customers see a live{" "}
-              <span className="font-bold text-brand-text">Available now</span>{" "}
-              or{" "}
-              <span className="font-bold text-brand-text">Back online at 7:00 AM</span>{" "}
-              badge before they tap Enquire.
-            </p>
-          </div>
-          <span
-            aria-hidden="true"
-            className="shrink-0 text-2xl text-brand-accent transition group-hover:translate-x-0.5"
-          >
-            &rarr;
-          </span>
-        </a>
-      </section>
+      {/* First-run checklist + The Yard nav + standalone Operating
+          Hours nav card were all removed from this upload-profile
+          page per design — they don't belong on a focused data-input
+          page (the checklist also misleadingly claimed "your profile
+          is N% set up" when a user was just exploring a template).
+          Operating Hours editing still lives inside the Profile
+          dashboard panel below where it logically belongs. */}
 
-      {/* Trust Score panel — shows the live 0-100 gauge + the 8-item
-          checklist + tip per unearned item. Sits at the top of the
-          dashboard so it's the first thing the tradesperson sees and
-          updates the moment any related field is saved. */}
-      <TrustScorePanel
-        listing={row.data}
-        tier={tier === "app_trial" || tier === "app_paid" ? "paid" : "free"}
-      />
+      {/* Score widgets, upsell nudges, tier-status cards and the
+          notification-subscribe card were removed from this page in
+          favour of a focused "edit your app data" experience. They
+          live in dedicated drawer-accessible surfaces (Insights,
+          Add-ons, Billing) so a tradesperson editing their profile
+          isn't distracted by reports or promos while they type. */}
 
-      {/* Lead Alerts setup card — high in the dashboard because
-          subscribing the tradesperson's phone is a critical setup
-          task, not an add-on toggle. The card itself surfaces the
-          upgrade CTA if they're not on a paid tier. */}
-      <LeadAlertsSetupCard
-        slug={slug}
-        editToken={token}
-        vapidPublicKey={process.env.NEXT_PUBLIC_XRATED_VAPID_PUBLIC_KEY ?? ""}
-        isPaidTier={tier === "app_trial" || tier === "app_paid"}
-        addonEnabled={isLeadAlertsOn(row.data)}
-        upgradeHref={upgradeHref}
-      />
+      {/* Profile customisation panel renders FIRST (Operating Hours,
+          Trust signals, FAQ for service trades) so the TradeOffForm
+          below it owns the final "Save changes (go live) / Save as
+          draft" actions — those are the bottom-of-page CTA. */}
 
-      {showLeadsNudge && (
-        <WhatsappLeadsNudge
-          slug={slug}
-          editToken={token}
-          clickCount={whatsappClickCount}
-          upgradeHref={upgradeAnnualHref}
-        />
-      )}
-
-      {showLossPreview && (
+      {/* Essentials-complete heuristic — drives whether the Profile
+          panel's advanced sections default open or stay collapsed.
+          We're deliberately permissive: a listing only needs the
+          basics (bio, avatar, ≥1 service or product, ≥1 day of hours)
+          to count as "past day one". Power users see everything by
+          default; first-timers get a calm view. */}
+      {/* Manage subscription — only renders when Stripe has stamped a
+          customer ID on this listing (i.e. the tradesperson has paid via
+          Checkout at least once). For free / standby / WhatsApp-billed
+          rows this section is invisible. Placed up here near the top of
+          the editor so subscribers can find self-service quickly. */}
+      {row.data.stripe_customer_id && (
         <section className="mx-auto max-w-3xl px-4 pb-6">
-          <LossAversionPreview
-            slug={slug}
-            daysRemaining={trialDays as number}
-            trialExpiresAt={row.data.trial_expires_at ?? null}
-            upgradeAnnualHref={upgradeAnnualHref}
-            previewHref={previewHref}
-          />
+          <ManageSubscriptionCard slug={slug} token={token} />
         </section>
       )}
-
-      {voucher && (
-        <section className="mx-auto max-w-3xl px-4 pb-6">
-          <WelcomeKnifeCard voucher={voucher} />
-        </section>
-      )}
-
-      <section className="mx-auto max-w-3xl px-4 pb-6">
-        <TierStatusCard
-          tier={tier}
-          trialDays={trialDays}
-          upgradeHref={upgradeHref}
-          billingWaUrl={billingWaUrl}
-        />
-      </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-10">
-        <TradeOffForm
-          mode={{ kind: "edit", slug, editToken: token }}
-          initial={initial}
-        />
-      </section>
-
-      <section className="mx-auto max-w-3xl px-4 pb-10">
-        <AddOnsHub listing={row.data} editToken={token} tier={tier} />
-      </section>
-
-      {/* Self-hosted intro video uploader. Bypasses YouTube — file
-          uploads direct to Supabase Storage, no Vercel-body limits.
-          Available on every tier; ≤60s, ≤30 MB, MP4/MOV/WebM. */}
-      {(tier === "app_trial" || tier === "app_paid") && (
-        <section className="mx-auto max-w-3xl px-4 pb-10">
-          <VideoUploadInput
-            listingId={row.data.id}
-            editToken={token}
-            initialVideoUrl={row.data.video_url}
-            initialCaption={row.data.video_caption}
-          />
-        </section>
-      )}
-
-      <section className="mx-auto max-w-3xl px-4 pb-16">
-        {tier === "app_trial" || tier === "app_paid" ? (
+        {tier === "app_trial" || tier === "app_paid" || tier === "app_verified" ? (
           <PremiumCustomisationPanel
             slug={slug}
             editToken={token}
+            isMerchantTrade={
+              typeof row.data.primary_trade === "string" &&
+              isMerchantGradeTrade(row.data.primary_trade)
+            }
+            essentialsComplete={
+              (row.data.bio ?? "").trim().length >= 50 &&
+              !!row.data.avatar_url &&
+              ((Array.isArray(row.data.priced_services) &&
+                row.data.priced_services.length > 0) ||
+                (Array.isArray(row.data.hammerex_standard_products) &&
+                  row.data.hammerex_standard_products.length > 0)) &&
+              Object.values(row.data.operating_hours ?? {}).some(
+                (slot) => slot && typeof slot === "object"
+              )
+            }
             primaryTrade={
               typeof row.data.primary_trade === "string" ? row.data.primary_trade : null
             }
@@ -381,6 +354,7 @@ export default async function TradeOffEditPage({
               running_marquee: row.data.running_marquee ?? "",
               promo_text: row.data.promo_text ?? "",
               accepting_jobs: row.data.accepting_jobs ?? true,
+              phone_calls_enabled: row.data.phone_calls_enabled ?? true,
               services_offered: Array.isArray(row.data.services_offered)
                 ? row.data.services_offered
                 : [],
@@ -490,6 +464,22 @@ export default async function TradeOffEditPage({
           </div>
         )}
       </section>
+
+      {/* TradeOffForm lives last on the page so its trailing "Save
+          changes (go live) / Save as draft" CTA is the final action
+          the tradesperson sees — no scrolling past hidden options to
+          find the save. */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
+        <TradeOffForm
+          mode={{
+            kind: "edit",
+            slug,
+            editToken: token,
+            listingId: row.data.id
+          }}
+          initial={initial}
+        />
+      </section>
       <XratedFooter />
     </main>
   );
@@ -501,7 +491,7 @@ function TierStatusCard({
   upgradeHref,
   billingWaUrl
 }: {
-  tier: "standard" | "app_trial" | "app_paid" | "app_expired";
+  tier: "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
   trialDays: number | null;
   upgradeHref: string;
   billingWaUrl: string;
@@ -526,12 +516,17 @@ function TierStatusCard({
       </div>
     );
   }
-  if (tier === "app_paid") {
+  if (tier === "app_paid" || tier === "app_verified") {
+    const verified = tier === "app_verified";
     return (
       <div className="rounded-xl border border-brand-accent bg-brand-accent/10 p-4">
-        <p className="text-sm font-bold text-brand-accent">Xrated App — Paid</p>
+        <p className="text-sm font-bold text-brand-accent">
+          {verified ? "Xrated App — Verified" : "Xrated App — Paid"}
+        </p>
         <p className="mt-1 text-xs text-brand-muted">
-          Thanks for supporting Xrated Trades. All premium features are unlocked.
+          {verified
+            ? "Thanks for going Verified. Every paid feature is unlocked plus the verified badge on your public profile."
+            : "Thanks for supporting Xrated Trades. All premium features are unlocked."}
         </p>
         <a
           href={billingWaUrl}
@@ -567,14 +562,14 @@ function TierStatusCard({
     <div className="rounded-xl border border-brand-line bg-brand-surface p-4">
       <p className="text-sm font-bold text-brand-text">Free standard listing</p>
       <p className="mt-1 text-xs text-brand-muted">
-        Try the Xrated App tier free for 30 days — custom theme, hero text
-        effects, avatar frame and a running marquee.
+        Try the Xrated App tier free for {XRATED_PRICING.trialDays} days —
+        custom theme, hero text effects, avatar frame and a running marquee.
       </p>
       <Link
         href={upgradeHref}
         className="mt-3 inline-flex h-10 items-center rounded-lg border border-brand-accent bg-brand-accent/10 px-4 text-xs font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
       >
-        Start your 30-day free trial →
+        Start your {XRATED_PRICING.trialDays}-day free trial →
       </Link>
     </div>
   );
@@ -654,7 +649,7 @@ function WelcomeKnifeCard({ voucher }: { voucher: HammerexXratedVoucher }) {
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi Hammerex — I'm trying to edit my Trade Off profile but my link isn't working. Can you help?"
+    "Hi xratedtrade.com — I'm trying to edit my Trade Off profile but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
@@ -678,7 +673,7 @@ function InvalidLink({ reason }: { reason: string }) {
           rel="noopener noreferrer"
           className="mt-6 inline-flex h-11 items-center rounded-lg bg-brand-whatsapp px-6 text-xs font-bold text-white transition hover:opacity-90"
         >
-          Message Hammerex on WhatsApp
+          Message us on WhatsApp
         </a>
       </section>
       <XratedFooter />

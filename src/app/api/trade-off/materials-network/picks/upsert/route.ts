@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
     tier: listing.data.tier ?? "standard",
     trial_expires_at: listing.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   if (!isPaid) {
     return NextResponse.json(
       { ok: false, error: "Upgrade required to manage Materials Network picks." },

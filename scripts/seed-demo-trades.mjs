@@ -9,6 +9,7 @@
 
 import { readFileSync } from "node:fs";
 import { DEMO_TRADE_SEEDS } from "../src/lib/demoTradeSeeds.ts";
+import { DEMO_TEAM_SEEDS } from "../src/lib/demoTeamSeeds.ts";
 
 const envText = readFileSync("C:\\Users\\Victus\\hammer\\.env.tools.local", "utf-8");
 const tokenMatch = envText.match(/^SUPABASE_ACCESS_TOKEN=(.+)$/m);
@@ -116,6 +117,18 @@ for (const seed of DEMO_TRADE_SEEDS) {
     console.log(`= existing ${seed.profile_slug}`);
   }
 
+  // Push the "Meet the team" roster onto this listing (idempotent: we
+  // simply overwrite, since the team rosters are authored centrally in
+  // src/lib/demoTeamSeeds.ts and we want any tweaks there to roll out).
+  const teamRoster = DEMO_TEAM_SEEDS[seed.trade_slug];
+  if (teamRoster && teamRoster.length > 0) {
+    const teamJson = JSON.stringify(teamRoster);
+    await query(
+      `UPDATE hammerex_trade_off_listings SET team_members = ${esc(teamJson)}::jsonb WHERE id = ${esc(listingId)}::uuid;`
+    );
+    console.log(`  + team roster (${teamRoster.length}) applied`);
+  }
+
   // Check if reviews already exist for this listing — if so, skip to avoid duplicates.
   const existingReviews = await query(
     `SELECT count(*)::int AS c FROM hammerex_xrated_reviews WHERE listing_id = ${esc(listingId)}::uuid;`
@@ -132,13 +145,16 @@ for (const seed of DEMO_TRADE_SEEDS) {
     const reviewSql = `
       INSERT INTO hammerex_xrated_reviews (
         listing_id, customer_name, customer_email, customer_postcode,
+        customer_avatar_url,
         project_type, overall_rating, workmanship_rating, communication_rating,
         value_rating, timeliness_rating, body, photo_urls, service_name,
         status, goes_live_at, submitted_at, created_at
       )
       VALUES (
         ${esc(listingId)}::uuid, ${esc(review.customer_name)},
-        ${esc(customerEmail)}, NULL, ${esc(review.project_type)},
+        ${esc(customerEmail)}, NULL,
+        ${esc(review.avatar_url)},
+        ${esc(review.project_type)},
         ${review.rating}, ${review.rating}, ${review.rating}, ${review.rating}, ${review.rating},
         ${esc(review.body)}, ARRAY[]::text[], ${esc(review.service_name)},
         'live', now() - interval '10 days',

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { notFound, permanentRedirect } from "next/navigation";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { resolveAppHero } from "@/lib/tradeAppBanners";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { VideoLightbox } from "@/components/xrated/profile/VideoLightbox";
@@ -11,7 +11,7 @@ import { RecommendedTrades } from "@/components/xrated/profile/RecommendedTrades
 import { AboutFlipPanel } from "@/components/xrated/profile/AboutFlipPanel";
 import { TradeIcon } from "@/lib/tradeIcons";
 import { ReviewsCarousel } from "@/components/xrated/profile/ReviewsCarousel";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { GuideShareBar } from "@/components/guides/GuideShareBar";
 import { TradePhotoGallery } from "@/components/trade-off/TradePhotoGallery";
 import { TradeReportButton } from "@/components/trade-off/TradeReportButton";
@@ -34,13 +34,13 @@ import { OperatingHoursPanel } from "@/components/xrated/profile/OperatingHoursP
 import { StarRatingRow } from "@/components/xrated/profile/StarRatingRow";
 import { ProfileActionTriple } from "@/components/xrated/profile/ProfileActionTriple";
 import { ShareIconButton } from "@/components/xrated/profile/ShareIconButton";
-import { ShareCardButton } from "@/components/xrated/profile/ShareCardButton";
 import { PricedServicesCarousel } from "@/components/xrated/profile/PricedServicesCarousel";
 import { QrFooterDock } from "@/components/xrated/profile/QrFooterDock";
 import { PremiumStickyTrust } from "@/components/xrated/profile/PremiumStickyTrust";
 import { ProfileExpandPanels } from "@/components/xrated/profile/ProfileExpandPanels";
 import { AboutBio } from "@/components/xrated/profile/AboutBio";
 import { ShopTeaser } from "@/components/xrated/profile/ShopTeaser";
+import { brandCssVars } from "@/lib/tradeBrandTheme";
 import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
 import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPricedSection";
 import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
@@ -70,9 +70,26 @@ import {
   tradeLabel,
   whatsappQuoteUrl
 } from "@/lib/tradeOff";
-import { effectiveTier, inkForTheme } from "@/lib/xratedTrades";
+import { demoVideoFor } from "@/lib/demoTradeVideos";
+import { effectiveTier, inkForTheme, XRATED_PRICING } from "@/lib/xratedTrades";
 
 export const revalidate = 300;
+
+// Slug-redirect lookup — used by the page when a slug fails to resolve
+// to a live listing. Returns the target slug from
+// hammerex_trade_off_slug_redirects (printed business cards, QR codes,
+// WhatsApp shares using the OLD slug all funnel through here). Returns
+// null on a real miss so the caller can render the standard 404.
+async function lookupSlugRedirect(slug: string): Promise<string | null> {
+  const res = await supabase
+    .from("hammerex_trade_off_slug_redirects")
+    .select("new_slug")
+    .eq("old_slug", slug)
+    .maybeSingle();
+  const next = (res.data?.new_slug as string | undefined) ?? null;
+  if (!next || next === slug) return null;
+  return next;
+}
 
 async function loadListing(slug: string) {
   const res = await supabase
@@ -145,9 +162,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { listing } = await loadListing(slug);
   if (!listing) return { title: "Tradie not found" };
   const primary = tradeLabel(listing.primary_trade);
-  const title = `${listing.display_name} — ${primary} in ${listing.city} | Hammerex Trade Off`;
+  const title = `${listing.display_name} — ${primary} in ${listing.city} | xratedtrade.com Trade Off`;
   const description = clampDescription(stripMarkdown(listing.bio), 160) ||
-    `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on Hammerex Trade Off.`;
+    `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on xratedtrade.com Trade Off.`;
   const url = absolute(`/trade/${listing.slug}`);
   return {
     title,
@@ -330,7 +347,17 @@ export default async function TradiePublicProfilePage({
   // is the only person likely to care. A fixed top-bar makes it obvious.
   const previewStandard = previewRaw === "standard";
   const { listing, projects, reviews } = await loadListing(slug);
-  if (!listing) notFound();
+  if (!listing) {
+    // Before 404'ing, check the slug-redirect table — a tradesperson
+    // may have changed their vanity URL since the customer received
+    // the printed card / QR code / WhatsApp link. We use
+    // permanentRedirect (308) which is the App-Router-native
+    // semantically-permanent redirect; search engines treat 308 and
+    // 301 identically for index updates.
+    const target = await lookupSlugRedirect(slug);
+    if (target) permanentRedirect(`/trade/${target}`);
+    notFound();
+  }
 
   const primary = tradeLabel(listing.primary_trade);
   const cover = listing.photos[0] ?? listing.avatar_url ?? BRAND.logo;
@@ -367,8 +394,29 @@ export default async function TradiePublicProfilePage({
     (effectiveTier(listing) === "app_trial" || effectiveTier(listing) === "app_paid");
   const renderTier: "free" | "paid" = isPremium ? "paid" : "free";
 
+  // App Studio Brand vars — drive font-family, font scale multiplier,
+  // primary accent and body text colour from the listing record. The
+  // entire profile subtree reads these via `var(--trade-*)` so the
+  // tradesperson's choice in App Studio flows to every section
+  // without per-component plumbing.
+  const brandVars = brandCssVars({
+    theme_color: listing.theme_color,
+    body_text_color: listing.body_text_color,
+    font_family: listing.font_family,
+    font_scale: listing.font_scale
+  });
+
   return (
-    <main className="flex flex-1 flex-col pb-20 md:pb-0">
+    <main
+      className="flex flex-1 flex-col pb-20 md:pb-0"
+      style={
+        {
+          ...brandVars,
+          fontFamily: "var(--trade-font)",
+          color: "var(--trade-text)"
+        } as React.CSSProperties
+      }
+    >
       <XratedViewTracker page="profile" listingId={listing.id} />
       {previewStandard && <PreviewModeBar slug={listing.slug} />}
       <script
@@ -406,11 +454,14 @@ export default async function TradiePublicProfilePage({
           }}
         />
       )}
-      {/* Free profiles get the Xrated header; paid profiles render a
-          clean white-label page with no platform chrome above the
-          hero. A small "Powered by Xrated" footer credit goes on
-          every profile until the £3/mo white-label add-on ships. */}
-      {renderTier === "free" && <XratedHeader />}
+      {/* Lean tradie-profile header — visual bookend partner to
+          TradeProfileFooter. Renders on every tier (paid + free)
+          because it carries the WhatsApp Chat pill and tradie
+          identity, not platform branding. No backHref on home. */}
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${primary} Service`}
+      />
 
       {/* Single render path — both tiers go through PremiumLayout with
           feature gates driven by `tier`. Free profiles get the Xrated
@@ -430,7 +481,7 @@ export default async function TradiePublicProfilePage({
       />
 
       <div className="mt-auto">
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
 
       {/* Older mobile action bar — suppressed on premium tier because the
@@ -522,7 +573,13 @@ function PremiumLayout({
         />
       )}
 
-      <AboutAndVideo listing={listing} showVideo={isPaid} />
+      {/* About + intro-video section. The video sub-tile follows the
+          rule: demo profiles fall back to a theme clip from
+          DEMO_TRADE_VIDEOS when they have no own upload; real
+          tradespeople hide the video column entirely if they haven't
+          uploaded — no placeholder, no dead frame. Bio reflows to
+          full-width when video is absent. */}
+      <AboutAndVideo listing={listing} />
       {shopMode ? (
         <ShopTeaser listing={listing} />
       ) : (
@@ -584,11 +641,6 @@ function PremiumLayout({
           TrustedTradesCta so the customer reads "people I recommend"
           → "questions I answer". */}
       {faqPageOn && <FaqPageCta listing={listing} />}
-      <ShareAndContactCta
-        listing={listing}
-        waUrl={waUrl}
-        profileFullUrl={profileFullUrl}
-      />
       <BottomTrustStrip />
       {/* Coloured social-icon strip + website chip, sits just above the
           "Powered by Xrated" credit on paid profiles. Auto-hides if the
@@ -650,7 +702,7 @@ function FreeTierUpgradeBanner({
           href={`/trade-off/pricing?slug=${encodeURIComponent(slug)}`}
           className="inline-flex h-10 shrink-0 items-center gap-1.5 rounded-lg bg-neutral-900 px-4 text-xs font-extrabold text-white shadow-sm transition active:scale-[0.97]"
         >
-          Upgrade — 30 days free
+          Upgrade — {XRATED_PRICING.trialDays} days free
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="m9 18 6-6-6-6" />
           </svg>
@@ -799,13 +851,7 @@ function PoweredByXratedFooter({ slug }: { slug: string }) {
   );
 }
 // ─── Section: About Us (left) + Video (right) ─────────────────────────
-function AboutAndVideo({
-  listing,
-  showVideo = true
-}: {
-  listing: HammerexTradeOffListing;
-  showVideo?: boolean;
-}) {
+function AboutAndVideo({ listing }: { listing: HammerexTradeOffListing }) {
   // Only break on a BLANK line (two or more newlines, possibly with
   // whitespace between). Single newlines flatten to a space, so a
   // tradesperson's continuous prose stays one paragraph unless they
@@ -814,23 +860,45 @@ function AboutAndVideo({
     .split(/\n\s*\n+/)
     .map((s) => s.replace(/\s*\n\s*/g, " ").trim())
     .filter(Boolean);
-  // Service bullets removed here — the ServicesIconRow below the About
-  // section is the canonical list, no point repeating it.
-  // Cover fallback when the tradesperson hasn't uploaded a custom poster:
-  // try the second portfolio photo, then the first, then the avatar.
+
+  // Video rule:
+  //  • Demo profile (slug starts with "demo-") falls back to the
+  //    DEMO_TRADE_VIDEOS map keyed by the listing's primary_trade
+  //    when the listing has no own video_url. While the map is
+  //    populated with empty strings (current interim state), the
+  //    fallback resolves to null and the section is hidden — that's
+  //    cleaner than rendering an empty video element.
+  //  • Real profile renders the video sub-column only when the
+  //    tradesperson uploaded their own clip. If video_url is null,
+  //    we drop the right column entirely and the bio flows
+  //    full-width — no "coming soon" placeholder anywhere.
+  const isDemo = listing.slug.startsWith("demo-");
+  const effectiveVideoUrl =
+    listing.video_url ?? (isDemo ? demoVideoFor(listing.primary_trade) : null);
+  const hasVideo = !!effectiveVideoUrl;
+
+  // Cover fallback for the lightbox poster — only relevant when a
+  // video actually renders.
   const coverFallback =
     listing.video_cover_url ??
     listing.photos[1] ??
     listing.photos[0] ??
     listing.avatar_url ??
     null;
-  const hasVideo = showVideo && !!listing.video_url;
 
   return (
     <section className="w-full px-4 pt-6 sm:px-6 sm:pt-8">
-      {/* 5-col grid: text + ticks span 3 cols, compact video sits in 2. */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-5 md:gap-14">
-        <div className="md:col-span-3">
+      {/* 5-col grid when a video is present (3 bio + 2 video). When
+          no video renders, the bio takes the full width — no empty
+          right column. */}
+      <div
+        className={
+          hasVideo
+            ? "grid grid-cols-1 gap-8 md:grid-cols-5 md:gap-14"
+            : "w-full"
+        }
+      >
+        <div className={hasVideo ? "md:col-span-3" : "w-full"}>
           <AboutFlipPanel
             bioParas={bioParas}
             defaultBio={`${listing.display_name} is based in ${listing.city} with hands-on experience across all aspects of ${tradeLabel(listing.primary_trade).toLowerCase()}.`}
@@ -838,29 +906,23 @@ function AboutAndVideo({
           />
         </div>
 
-        {/* Right column — compact X-Rated trust-level notification on
-            top, video tile below. The notification renders even when
-            and a tradesperson without a clip leaves the right column
-            empty (the trust-level pill is now on the hero avatar). */}
-        <div className="mt-[30px] md:col-span-2 md:mt-0">
-          {hasVideo && listing.video_url && (
-            <div>
-              {listing.video_caption && (
-                <p className="mb-2 text-sm font-extrabold text-neutral-900">
-                  {listing.video_caption}
-                </p>
-              )}
-              <VideoLightbox
-                videoUrl={listing.video_url}
-                coverUrl={coverFallback}
-                altText={listing.video_caption || `${listing.display_name} — intro video`}
-              />
-              <p className="mt-2 text-xs text-neutral-500">
-                Tap to play · keep this under 60s for best engagement.
+        {hasVideo && effectiveVideoUrl && (
+          <div className="mt-[30px] md:col-span-2 md:mt-0">
+            {listing.video_caption && (
+              <p className="mb-2 text-sm font-extrabold text-neutral-900">
+                {listing.video_caption}
               </p>
-            </div>
-          )}
-        </div>
+            )}
+            <VideoLightbox
+              videoUrl={effectiveVideoUrl}
+              coverUrl={coverFallback}
+              altText={listing.video_caption || `${listing.display_name} — intro video`}
+            />
+            <p className="mt-2 text-xs text-neutral-500">
+              Tap to play · keep this under 60s for best engagement.
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
@@ -970,114 +1032,6 @@ function ClientsCarousel({
         slug={listing.slug}
         allowAddReview={allowAddReview}
       />
-    </section>
-  );
-}
-
-// ─── Section: Share + Get in touch dark CTA strip ─────────────────────
-function ShareAndContactCta({
-  listing,
-  waUrl,
-  profileFullUrl
-}: {
-  listing: HammerexTradeOffListing;
-  waUrl: string;
-  profileFullUrl: string;
-}) {
-  const phoneHref = listing.phone
-    ? `tel:${listing.phone.replace(/[^0-9+]/g, "")}`
-    : null;
-  // Display URL trims the scheme so the dark pill reads cleanly.
-  const displayUrl = profileFullUrl.replace(/^https?:\/\//, "");
-
-  return (
-    <section className="w-full px-4 pt-8 sm:px-6">
-      <div className="grid grid-cols-1 gap-4 rounded-2xl bg-black p-5 sm:grid-cols-2 sm:gap-6 sm:p-6">
-        {/* LEFT — Share this profile */}
-        <div className="flex items-start gap-3">
-          <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full" style={{ background: "#FFB300" }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="18" cy="5" r="3" />
-              <circle cx="6" cy="12" r="3" />
-              <circle cx="18" cy="19" r="3" />
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
-            </svg>
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-extrabold text-white">Share this profile</p>
-            <p className="mt-0.5 text-xs text-neutral-400">
-              Let others know about our services
-            </p>
-            <div className="mt-3 flex items-center gap-2 rounded-lg border border-white/15 bg-neutral-900 px-3 py-2 text-xs text-neutral-200">
-              <span className="truncate font-mono">{displayUrl}</span>
-              <button
-                type="button"
-                aria-label="Copy share URL"
-                className="ml-auto shrink-0 text-neutral-400 hover:text-white"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="9" y="9" width="13" height="13" rx="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* RIGHT — Get in touch today */}
-        <div>
-          <p className="text-sm font-extrabold text-white">Get in touch today</p>
-          <p className="mt-0.5 text-xs text-neutral-400">
-            We&apos;re ready to help with your next project.
-          </p>
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-xs font-bold text-neutral-900 transition active:scale-[0.97] sm:text-sm"
-              style={{ background: "#FFB300" }}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-              </svg>
-              Message Us
-            </a>
-            <a
-              href={phoneHref ?? "#"}
-              aria-disabled={!phoneHref}
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl border-2 bg-transparent text-xs font-bold transition active:scale-[0.97] sm:text-sm"
-              style={
-                phoneHref
-                  ? { borderColor: "#FFB300", color: "#FFB300" }
-                  : { borderColor: "rgba(255,179,0,0.4)", color: "rgba(255,179,0,0.4)", pointerEvents: "none" }
-              }
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92Z" />
-              </svg>
-              Call Now
-            </a>
-          </div>
-          {/* Share business card — secondary CTA. Does NOT compete with
-              WhatsApp / phone as the primary contact actions; one tap
-              hands the customer a polished PNG to forward on. Every
-              shared card carries the slug URL + QR (xratedtrade.com
-              advertising). */}
-          <div className="mt-2">
-            <ShareCardButton
-              slug={listing.slug}
-              displayName={listing.display_name}
-              primaryTrade={tradeLabel(listing.primary_trade)}
-              city={listing.city}
-              tradingName={listing.trading_name}
-              whatsapp={listing.whatsapp}
-              variant="profile"
-            />
-          </div>
-        </div>
-      </div>
     </section>
   );
 }
@@ -1207,7 +1161,7 @@ function StandardLayout({
   const gallery = listing.photos.slice(1);
   const cityLower = listing.city.toLowerCase();
   const initial = (listing.display_name.charAt(0) || "?").toUpperCase();
-  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via Hammerex Trade Off")}`;
+  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via xratedtrade.com Trade Off")}`;
 
   return (
     <>
@@ -1216,7 +1170,7 @@ function StandardLayout({
         <div className="rounded-full bg-neutral-100 px-3 py-1.5 text-center text-[13px] text-brand-muted">
           <span aria-hidden="true">⚡</span> Powered by{" "}
           <a href="/trade-off" className="font-semibold text-brand-text hover:text-[#FFB300]">
-            Hammerex Trade Off
+            xratedtrade.com Trade Off
           </a>{" "}
           · Shareable trade profile
         </div>
@@ -1235,7 +1189,7 @@ function StandardLayout({
             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z" />
             </svg>
-            Upgrade to Xrated App for free — try 30 days
+            Upgrade to Xrated App for free — try {XRATED_PRICING.trialDays} days
           </a>
         </div>
       </div>
@@ -1298,7 +1252,7 @@ function StandardLayout({
           <div className="flex flex-col pt-10 lg:pt-0">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-                Hammerex Trade Off
+                xratedtrade.com Trade Off
               </p>
             </div>
             <h1 className="mt-2 text-2xl font-bold leading-tight text-brand-text sm:text-4xl">

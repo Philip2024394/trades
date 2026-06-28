@@ -215,7 +215,7 @@ export function ProjectManager({
     <div className="space-y-6">
       <div className="flex items-start justify-between gap-3">
         <p className="text-xs text-brand-muted">
-          Each project is a Before / During / After photo set. Once you publish, Hammerex reviews
+          Each project is a Before / During / After photo set. Once you publish, Our team reviews
           and stamps verified projects with a green badge.
         </p>
         <Link

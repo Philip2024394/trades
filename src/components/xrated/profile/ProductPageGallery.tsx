@@ -4,11 +4,32 @@
 // thumbnail swaps the cover. No fancy zoom or lightbox — the existing
 // ProductModal handles that on the profile; on the PDP the customer
 // already has a dedicated full-bleed view.
+//
+// Layout: main image full-width, with the horizontal yellow/gray
+// progress bars (one segment per image) sitting directly under the
+// cover — those are the canonical active-image indicator. The
+// thumbnail row IMMEDIATELY beneath gets ZERO yellow highlight; the
+// only cue is a darker neutral-900 border on the active thumb so the
+// row reads as a chooser, not a marketing surface.
+//
+// Top-right share button is the yellow ProductShareButton popup.
 
 import { useMemo, useState } from "react";
 import type { HammerexXratedProduct } from "@/lib/supabase";
+import { ProductShareButton } from "./ProductShareButton";
+import { DistanceBadge } from "./DistanceBadge";
 
-export function ProductPageGallery({ product }: { product: HammerexXratedProduct }) {
+export function ProductPageGallery({
+  product,
+  listingLat = null,
+  listingLng = null,
+  listingCity
+}: {
+  product: HammerexXratedProduct;
+  listingLat?: number | null;
+  listingLng?: number | null;
+  listingCity?: string;
+}) {
   const images = useMemo(() => {
     const all = [product.cover_url, ...(product.gallery_urls ?? [])].filter(
       (u): u is string => typeof u === "string" && u.length > 0
@@ -20,7 +41,10 @@ export function ProductPageGallery({ product }: { product: HammerexXratedProduct
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100" style={{ aspectRatio: "1 / 1" }}>
+      <div
+        className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-100"
+        style={{ aspectRatio: "1 / 1" }}
+      >
         {cover ? (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
@@ -33,24 +57,59 @@ export function ProductPageGallery({ product }: { product: HammerexXratedProduct
             No image yet
           </div>
         )}
+        <ProductShareButton title={product.name} />
+        {listingCity && (
+          <DistanceBadge
+            listingLat={listingLat}
+            listingLng={listingLng}
+            city={listingCity}
+          />
+        )}
       </div>
       {images.length > 1 && (
-        <div className="flex items-center gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {images.map((src, i) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => setActive(i)}
-              aria-label={`Show photo ${i + 1}`}
-              aria-pressed={i === active}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 transition ${
-                i === active ? "border-[#FFB300]" : "border-transparent opacity-70 hover:opacity-100"
-              }`}
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full object-cover" />
-            </button>
-          ))}
+        <div className="mt-2 flex gap-1.5">
+          {images.map((src, i) => {
+            const isActive = i === active;
+            return (
+              <button
+                key={`bar-${src}`}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`Show photo ${i + 1}`}
+                aria-pressed={isActive}
+                className="h-1 flex-1 rounded-sm transition"
+                style={{ background: isActive ? "#FFB300" : "#E5E5E5" }}
+              />
+            );
+          })}
+        </div>
+      )}
+      {images.length > 1 && (
+        <div className="flex items-start gap-2 overflow-x-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {images.map((src, i) => {
+            const isActive = i === active;
+            return (
+              // Active thumb gets a darker neutral-900 border so the row
+              // reads as a chooser. The yellow active-bar AND yellow ring
+              // are intentionally gone — the progress bars above the
+              // cover image are the only active-image indicator now.
+              <button
+                key={src}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`Show photo ${i + 1}`}
+                aria-pressed={isActive}
+                className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition sm:h-20 sm:w-20 ${
+                  isActive
+                    ? "border-neutral-900"
+                    : "border-neutral-200 opacity-90 hover:opacity-100"
+                }`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={src} alt="" className="h-full w-full object-cover" />
+              </button>
+            );
+          })}
         </div>
       )}
     </div>

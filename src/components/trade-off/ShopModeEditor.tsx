@@ -15,7 +15,25 @@
 //     accidental taps don't trigger a drag on mobile.
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { HammerexXratedProduct } from "@/lib/supabase";
+import type {
+  HammerexXratedProduct,
+  RetailShippingArea,
+  RetailShippingIntl
+} from "@/lib/supabase";
+import { RetailShippingEditor } from "@/components/trade-off/RetailShippingEditor";
+import {
+  ItemSpecsForm,
+  specMapToSaved,
+  savedToSpecMap
+} from "@/components/trade-off/ItemSpecsForm";
+import {
+  PRODUCT_CATEGORIES,
+  categoryBySlug
+} from "@/lib/productCategories";
+import {
+  PaymentMethodMark,
+  type PaymentMethodKey
+} from "@/components/xrated/profile/PaymentIconsRow";
 import {
   DndContext,
   PointerSensor,
@@ -72,6 +90,41 @@ type FormState = {
   variants: VariantRow[];
   size_chart_url: string;
   size_chart_unit: "" | "size" | "kg" | "litre" | "cm" | "other";
+  // VAT — UK trades with turnover ≥ £90k must be VAT registered. Three
+  // controls map to two nullable DB columns: vat_registered=false ⇒ both
+  // DB cols NULL; true ⇒ both DB cols populated. vat_inclusive picks
+  // whether the displayed price already contains VAT; vat_rate_pct is
+  // the rate as a string for the input control.
+  vat_registered: boolean;
+  vat_inclusive: boolean;
+  vat_rate_pct: string;
+  // UK install-services flow. 'stock' = traditional add-to-cart product;
+  // 'install' = labour service that ends at "Request site visit" on the
+  // PDP. Hidden in service-kind mode (services have their own buying flow).
+  product_kind: "stock" | "install";
+  // Category-driven Item Specifics (Phase 1) — picked once at the top
+  // of the form. Drives which structured spec fields render in the
+  // "Specifications" block below. Empty = legacy free-text mode (the
+  // existing specs_text textarea takes over).
+  category_slug: string;
+  /** Stable per-field map keyed by spec.key (e.g. {weight: "25"}).
+   *  Built into the saved {label, value}[] shape at submit time. */
+  specs_map: Record<string, string | string[]>;
+  // PDP tabbed-details payload. specs_text + features_text are line-
+  // oriented textareas (one row per line; specs use "Label: Value"); the
+  // submit step parses them into the array shapes the API/DB expect.
+  // video_url is a YouTube link. All three optional — empty ⇒ NULL.
+  specs_text: string;
+  features_text: string;
+  video_url: string;
+  // Warranty + Returns overrides — null in DB ⇒ empty string here. Render
+  // a helper below each textarea ("Leave blank to use the default copy").
+  // warranty_header overrides the block heading (default "Warranty / Returns").
+  // returns_text is deprecated — kept in FormState to keep the diff minimal,
+  // but never rendered and always submitted as null.
+  warranty_header: string;
+  warranty_text: string;
+  returns_text: string;
 };
 
 const EMPTY_FORM: FormState = {
@@ -91,7 +144,19 @@ const EMPTY_FORM: FormState = {
   has_variants: false,
   variants: [],
   size_chart_url: "",
-  size_chart_unit: ""
+  size_chart_unit: "",
+  vat_registered: true,
+  vat_inclusive: true,
+  vat_rate_pct: "20",
+  product_kind: "stock",
+  category_slug: "",
+  specs_map: {},
+  specs_text: "",
+  features_text: "",
+  video_url: "",
+  warranty_header: "",
+  warranty_text: "",
+  returns_text: ""
 };
 
 const UNIT_CHIPS = [
@@ -188,9 +253,75 @@ function productToForm(p: HammerexXratedProduct): FormState {
     has_variants: variants.length > 0,
     variants,
     size_chart_url: p.size_chart_url ?? "",
-    size_chart_unit: p.size_chart_unit ?? ""
+    size_chart_unit: p.size_chart_unit ?? "",
+    vat_registered: p.vat_rate_pct !== null,
+    vat_inclusive: p.vat_inclusive ?? true,
+    vat_rate_pct: p.vat_rate_pct === null ? "20" : String(p.vat_rate_pct),
+    product_kind: p.product_kind ?? "stock",
+    // Pre-fill the structured category + specs_map from the existing
+    // product. category column stores the slug from PRODUCT_CATEGORIES
+    // when picked through the new dropdown; legacy free-text values
+    // (e.g. "Gardening") simply don't match a category and fall through
+    // as an empty slug (the merchant can pick one when they edit).
+    category_slug: (() => {
+      const raw = typeof p.category === "string" ? p.category.trim().toLowerCase() : "";
+      return categoryBySlug(raw) ? raw : "";
+    })(),
+    specs_map: (() => {
+      const slug = typeof p.category === "string" ? p.category.trim().toLowerCase() : "";
+      const cat = categoryBySlug(slug);
+      const saved = Array.isArray(p.specs) ? p.specs : [];
+      return cat ? savedToSpecMap(cat, saved) : {};
+    })(),
+    specs_text: Array.isArray(p.specs)
+      ? p.specs.map((s) => `${s.label}: ${s.value}`).join("\n")
+      : "",
+    features_text: Array.isArray(p.features) ? p.features.join("\n") : "",
+    video_url: p.video_url ?? "",
+    warranty_header: p.warranty_header ?? "",
+    warranty_text: p.warranty_text ?? "",
+    returns_text: p.returns_text ?? ""
   };
 }
+
+// Parse a multi-line spec textarea into the {label, value} rows the
+// DB stores. Lines without a colon are skipped (the editor's helper
+// copy tells the trade to use "Label: Value" formatting). Whitespace
+// is trimmed on both halves.
+function parseSpecsText(text: string): { label: string; value: string }[] {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && line.includes(":"))
+    .map((line) => {
+      const idx = line.indexOf(":");
+      const label = line.slice(0, idx).trim();
+      const value = line.slice(idx + 1).trim();
+      return { label, value };
+    })
+    .filter((row) => row.label.length > 0 && row.value.length > 0);
+}
+
+// Features are one bullet per non-empty line. Trim + drop blanks.
+function parseFeaturesText(text: string): string[] {
+  return text
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+// Loose YouTube URL check — the API does the strict validation but a
+// cheap early bounce keeps the editor responsive.
+function isYouTubeUrl(url: string): boolean {
+  const t = url.trim();
+  if (t.length === 0) return false;
+  return /(youtube\.com|youtu\.be)/i.test(t);
+}
+
+// UK installation trades — these primary_trade slugs default new products
+// to the install kind so a stair fitter doesn't have to manually pick
+// "Install service" every time they add a row.
+const INSTALL_TRADES = new Set(["stair-fitter", "kitchen-fitter"]);
 
 // Mobile-friendly dnd-kit sensor config. The 250 ms touch delay matches
 // the spec — long-press triggers a drag, a normal tap on the row passes
@@ -204,15 +335,53 @@ function useDragSensors() {
   );
 }
 
+export type LegalLinksInitial = {
+  terms_url: string | null;
+  privacy_url: string | null;
+  returns_url: string | null;
+  about_url: string | null;
+};
+
+export type RetailShippingInitial = {
+  mode: "free" | "uk_flat" | "uk_areas" | null;
+  uk_pence: number | null;
+  uk_areas: RetailShippingArea[] | null;
+  international: RetailShippingIntl[] | null;
+};
+
 export function ShopModeEditor({
   slug,
   editToken,
   initialProducts,
-  kind = "product"
+  kind = "product",
+  primaryTrade,
+  initialAddonsEnabled,
+  initialPaymentMethods,
+  initialLegalLinks,
+  initialRetailShipping
 }: {
   slug: string;
   editToken: string;
   initialProducts: HammerexXratedProduct[];
+  /** Optional — current `addons_enabled` JSON from the listing. Used to
+   *  seed the PDP-options toggles (compare section / Q&A). Omit when
+   *  rendering the editor from a context where the listing isn't loaded
+   *  yet; the toggles UI hides itself entirely in that case. */
+  initialAddonsEnabled?: Record<string, boolean> | null;
+  /** Optional — current listing.payment_methods array. Drives the
+   *  PaymentsAcceptedPanel checkboxes. Omit on call-sites that don't
+   *  load the listing row. */
+  initialPaymentMethods?: string[] | null;
+  /** Optional — current tradesperson-set legal URLs (Terms / Privacy /
+   *  Returns / About). Drives the LegalLinksPanel; surfaced on the lean
+   *  tradie footer. Omit when the editor is mounted without a listing
+   *  row in scope — the panel hides itself in that case. */
+  initialLegalLinks?: LegalLinksInitial | null;
+  /** Optional — current retail-shipping config from the listing row.
+   *  Drives the RetailShippingEditor; surfaced on the PDP. Omit when
+   *  the editor is mounted without a listing row in scope — the panel
+   *  hides itself in that case. */
+  initialRetailShipping?: RetailShippingInitial | null;
   /** Switches the editor between Shop Mode (kind='product') and the
    *  Services Prices add-on (kind='service'). When 'service':
    *   – Header + row labels read "Service" instead of "Product".
@@ -222,6 +391,11 @@ export function ShopModeEditor({
    *   – Defaults persisted as service-rows so the public Services Grid
    *     picks them up. */
   kind?: "product" | "service";
+  /** Optional — listing.primary_trade slug. Used only to set the default
+   *  product_kind on new products: install-style trades (stair / kitchen
+   *  fitters) default to 'install'; everyone else defaults to 'stock'.
+   *  Omit for old call-sites — defaults to undefined which means 'stock'. */
+  primaryTrade?: string;
 }) {
   const isService = kind === "service";
   const noun = isService ? "service" : "product";
@@ -251,7 +425,15 @@ export function ShopModeEditor({
   );
 
   function startCreate() {
-    setForm({ ...EMPTY_FORM, sort_order: String(products.length) });
+    const defaultKind: "stock" | "install" =
+      typeof primaryTrade === "string" && INSTALL_TRADES.has(primaryTrade)
+        ? "install"
+        : "stock";
+    setForm({
+      ...EMPTY_FORM,
+      sort_order: String(products.length),
+      product_kind: defaultKind
+    });
     setErr(null);
     setMsg(null);
     setMode("create");
@@ -322,6 +504,12 @@ export function ShopModeEditor({
       setErr("Pick a size-chart unit (or remove the chart).");
       return;
     }
+    // Video URL — only YouTube links are accepted; the PDP embed expects
+    // a parseable video id. Skip for service rows (no PDP tabs there).
+    if (!isService && form.video_url.trim().length > 0 && !isYouTubeUrl(form.video_url)) {
+      setErr("Video URL must be a YouTube link (youtube.com or youtu.be).");
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -348,13 +536,65 @@ export function ShopModeEditor({
         status: form.status,
         sort_order: Number.isFinite(sortN) && sortN >= 0 ? Math.round(sortN) : 0,
         unit: trimmedUnit.length > 0 ? trimmedUnit.slice(0, 32) : null,
-        category:
-          form.category.trim().length > 0
+        // Category — prefer the structured slug picked from the new
+        // PRODUCT_CATEGORIES taxonomy (used by buyer-side facets);
+        // fall back to the legacy free-text value if a service uses
+        // the chip picker without a structured slug.
+        category: (() => {
+          const slug = form.category_slug.trim();
+          if (slug.length > 0) return slug.slice(0, 40);
+          return form.category.trim().length > 0
             ? form.category.trim().slice(0, 40)
-            : null,
+            : null;
+        })(),
         variants: variantsOut,
         size_chart_url: sizeChartUrl,
-        size_chart_unit: sizeChartUrl.length > 0 ? form.size_chart_unit : null
+        size_chart_unit: sizeChartUrl.length > 0 ? form.size_chart_unit : null,
+        vat_inclusive: form.vat_registered ? form.vat_inclusive : null,
+        vat_rate_pct: form.vat_registered ? (parseFloat(form.vat_rate_pct) || 0) : null,
+        // Products only — services have their own buying flow and the API
+        // defaults to 'stock' if the field is missing.
+        product_kind: isService ? "stock" : form.product_kind,
+        // PDP tabbed-details payload. Empty array ⇒ null so the DB stores
+        // a clean NULL rather than `[]` (the public PDP checks `?.length`,
+        // both work, but NULL keeps the row tidy and surfaces in
+        // information_schema queries as "unset" rather than "empty").
+        ...(isService
+          ? {
+              specs: null,
+              features: null,
+              video_url: null,
+              warranty_header: null,
+              warranty_text: null,
+              // returns_text is deprecated — always send null.
+              returns_text: null
+            }
+          : (() => {
+              // Merge the structured Item Specifics (from the picked
+              // category dropdown) with any free-text rows the merchant
+              // typed into the legacy "Additional specs" textarea.
+              // Structured specs come first so they render on the PDP in
+              // the order defined by productCategories.ts.
+              const structuredCat = categoryBySlug(form.category_slug);
+              const structured = structuredCat
+                ? specMapToSaved(structuredCat, form.specs_map)
+                : [];
+              const freeText = parseSpecsText(form.specs_text);
+              const specs = [...structured, ...freeText];
+              const features = parseFeaturesText(form.features_text);
+              const videoTrim = form.video_url.trim();
+              const headerTrim = form.warranty_header.trim();
+              const warrantyTrim = form.warranty_text.trim();
+              return {
+                specs: specs.length > 0 ? specs : null,
+                features: features.length > 0 ? features : null,
+                video_url: videoTrim.length > 0 ? videoTrim : null,
+                warranty_header: headerTrim.length > 0 ? headerTrim.slice(0, 80) : null,
+                warranty_text: warrantyTrim.length > 0 ? warrantyTrim.slice(0, 500) : null,
+                // returns_text is deprecated — always send null going forward.
+                returns_text: null
+              };
+            })())
       };
       const res = await fetch("/api/trade-off/products/upsert", {
         method: "POST",
@@ -503,6 +743,41 @@ export function ShopModeEditor({
         </p>
       )}
 
+      {mode === "list" && !isService && initialAddonsEnabled !== undefined && (
+        <PdpOptionsPanel
+          slug={slug}
+          editToken={editToken}
+          initialAddonsEnabled={initialAddonsEnabled ?? {}}
+        />
+      )}
+
+      {mode === "list" && !isService && initialLegalLinks !== undefined && (
+        <LegalLinksPanel
+          slug={slug}
+          editToken={editToken}
+          initialLegalLinks={initialLegalLinks ?? null}
+        />
+      )}
+
+      {mode === "list" && !isService && initialRetailShipping !== undefined && (
+        <RetailShippingEditor
+          slug={slug}
+          editToken={editToken}
+          initialMode={initialRetailShipping?.mode ?? null}
+          initialUkPence={initialRetailShipping?.uk_pence ?? null}
+          initialUkAreas={initialRetailShipping?.uk_areas ?? null}
+          initialIntl={initialRetailShipping?.international ?? null}
+        />
+      )}
+
+      {mode === "list" && !isService && (
+        <PaymentsAcceptedPanel
+          slug={slug}
+          editToken={editToken}
+          initialSelected={initialPaymentMethods ?? null}
+        />
+      )}
+
       {mode === "list" ? (
         <ProductList
           products={products}
@@ -528,6 +803,446 @@ export function ShopModeEditor({
           isService={isService}
           NounCap={NounCap}
         />
+      )}
+    </div>
+  );
+}
+
+// Compact pair of toggles for PDP rendering preferences. Hits the
+// dedicated /api/trade-off/addons/pdp-toggle endpoint so the main
+// add-ons toggle route doesn't have to know about "settings" keys.
+// Optimistic update + revert-on-error matches the AddOnsHub pattern.
+function PdpOptionsPanel({
+  slug,
+  editToken,
+  initialAddonsEnabled
+}: {
+  slug: string;
+  editToken: string;
+  initialAddonsEnabled: Record<string, boolean>;
+}) {
+  const [map, setMap] = useState<Record<string, boolean>>(initialAddonsEnabled);
+  const [busyKey, setBusyKey] = useState<string | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+
+  // Compare section defaults to ON when the key is absent.
+  const compareOn = map.compare_section !== false;
+  // Q&A defaults to OFF.
+  const qaOn = map.qa === true;
+  // Warranty & Returns block defaults to ON when the key is absent.
+  const warrantyOn = map.warranty_returns !== false;
+  // Spec tab on the PDP defaults to ON when the key is absent.
+  const specTabOn = map.spec_tab !== false;
+  // Delivery Details tab on the PDP defaults to ON when the key is absent.
+  const deliveryTabOn = map.delivery_tab !== false;
+
+  async function toggle(
+    key:
+      | "compare_section"
+      | "qa"
+      | "warranty_returns"
+      | "spec_tab"
+      | "delivery_tab",
+    next: boolean
+  ) {
+    const prevVal =
+      key === "compare_section"
+        ? compareOn
+        : key === "qa"
+        ? qaOn
+        : key === "warranty_returns"
+        ? warrantyOn
+        : key === "spec_tab"
+        ? specTabOn
+        : deliveryTabOn;
+    setMap((m) => ({ ...m, [key]: next }));
+    setBusyKey(key);
+    setErr(null);
+    try {
+      const res = await fetch("/api/trade-off/addons/pdp-toggle", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ slug, edit_token: editToken, key, enabled: next })
+      });
+      const json = await res.json();
+      if (!json.ok) {
+        setMap((m) => ({ ...m, [key]: prevVal }));
+        setErr(json.error ?? "Couldn't update.");
+        return;
+      }
+      if (json.addons_enabled && typeof json.addons_enabled === "object") {
+        setMap(json.addons_enabled as Record<string, boolean>);
+      }
+    } catch {
+      setMap((m) => ({ ...m, [key]: prevVal }));
+      setErr("Network error — try again.");
+    } finally {
+      setBusyKey(null);
+    }
+  }
+
+  return (
+    <div className="rounded-lg border border-brand-line bg-brand-bg p-3">
+      <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-accent">
+        Product page options
+      </p>
+      <ul className="mt-2 space-y-2">
+        <li className="flex items-start gap-3 rounded-md border border-brand-line bg-brand-surface px-3 py-2">
+          <input
+            id="pdp-toggle-compare"
+            type="checkbox"
+            checked={compareOn}
+            disabled={busyKey === "compare_section"}
+            onChange={(e) => toggle("compare_section", e.target.checked)}
+            className="mt-1 h-5 w-5 accent-brand-accent"
+          />
+          <label htmlFor="pdp-toggle-compare" className="flex-1 cursor-pointer">
+            <span className="block text-[13px] font-extrabold text-brand-text">
+              Show compare section on product pages
+            </span>
+            <span className="block text-[13px] text-brand-muted">
+              Side-by-side panel comparing this product against two others
+              you sell. On by default.
+            </span>
+          </label>
+        </li>
+        <li className="flex items-start gap-3 rounded-md border border-brand-line bg-brand-surface px-3 py-2">
+          <input
+            id="pdp-toggle-qa"
+            type="checkbox"
+            checked={qaOn}
+            disabled={busyKey === "qa"}
+            onChange={(e) => toggle("qa", e.target.checked)}
+            className="mt-1 h-5 w-5 accent-brand-accent"
+          />
+          <label htmlFor="pdp-toggle-qa" className="flex-1 cursor-pointer">
+            <span className="block text-[13px] font-extrabold text-brand-text">
+              Show Q&amp;A on product pages
+            </span>
+            <span className="block text-[13px] text-brand-muted">
+              Recommend if you respond to WhatsApp quickly. Off by default.
+            </span>
+          </label>
+        </li>
+        <li className="flex items-start gap-3 rounded-md border border-brand-line bg-brand-surface px-3 py-2">
+          <input
+            id="pdp-toggle-warranty"
+            type="checkbox"
+            checked={warrantyOn}
+            disabled={busyKey === "warranty_returns"}
+            onChange={(e) => toggle("warranty_returns", e.target.checked)}
+            className="mt-1 h-5 w-5 accent-brand-accent"
+          />
+          <label htmlFor="pdp-toggle-warranty" className="flex-1 cursor-pointer">
+            <span className="block text-[13px] font-extrabold text-brand-text">
+              Show warranty &amp; returns block on product pages
+            </span>
+            <span className="block text-[13px] text-brand-muted">
+              Standalone trust block with 1-year guarantee, 14-day returns
+              and a faulty-items message. On by default.
+            </span>
+          </label>
+        </li>
+        <li className="flex items-start gap-3 rounded-md border border-brand-line bg-brand-surface px-3 py-2">
+          <input
+            id="pdp-toggle-spec"
+            type="checkbox"
+            checked={specTabOn}
+            disabled={busyKey === "spec_tab"}
+            onChange={(e) => toggle("spec_tab", e.target.checked)}
+            className="mt-1 h-5 w-5 accent-brand-accent"
+          />
+          <label htmlFor="pdp-toggle-spec" className="flex-1 cursor-pointer">
+            <span className="block text-[13px] font-extrabold text-brand-text">
+              Show Spec tab on product pages
+            </span>
+            <span className="block text-[13px] text-brand-muted">
+              Pulls from the Specifications you set per product. Hidden when
+              you have no specs to show. On by default.
+            </span>
+          </label>
+        </li>
+        <li className="flex items-start gap-3 rounded-md border border-brand-line bg-brand-surface px-3 py-2">
+          <input
+            id="pdp-toggle-delivery"
+            type="checkbox"
+            checked={deliveryTabOn}
+            disabled={busyKey === "delivery_tab"}
+            onChange={(e) => toggle("delivery_tab", e.target.checked)}
+            className="mt-1 h-5 w-5 accent-brand-accent"
+          />
+          <label htmlFor="pdp-toggle-delivery" className="flex-1 cursor-pointer">
+            <span className="block text-[13px] font-extrabold text-brand-text">
+              Show Delivery Details tab on product pages
+            </span>
+            <span className="block text-[13px] text-brand-muted">
+              Small fact grid — dispatch days, ships-from city, returns,
+              delivery cost &amp; tracking. Honest about WhatsApp coordination.
+              On by default.
+            </span>
+          </label>
+        </li>
+      </ul>
+      {err && (
+        <p className="mt-2 text-[13px] font-semibold text-red-300">{err}</p>
+      )}
+    </div>
+  );
+}
+
+// LegalLinksPanel — 4 URL inputs (Terms / Privacy / Returns / About)
+// surfaced on the lean tradie footer (TradeProfileFooter). Each field
+// saves on blur with an 800 ms debounce while typing; empty input clears
+// the field (saved as NULL). Optimistic UI: local state updates
+// instantly, the API confirms in the background. Hits
+// /api/trade-off/listings/legal-links.
+function LegalLinksPanel({
+  slug,
+  editToken,
+  initialLegalLinks
+}: {
+  slug: string;
+  editToken: string;
+  initialLegalLinks: LegalLinksInitial | null;
+}) {
+  const FIELDS = [
+    { key: "terms_url", label: "Terms & Conditions URL" },
+    { key: "privacy_url", label: "Privacy Policy URL" },
+    { key: "returns_url", label: "Returns & Refunds URL" },
+    { key: "about_url", label: "About page URL" }
+  ] as const;
+  type Key = (typeof FIELDS)[number]["key"];
+
+  const seed: Record<Key, string> = {
+    terms_url: initialLegalLinks?.terms_url ?? "",
+    privacy_url: initialLegalLinks?.privacy_url ?? "",
+    returns_url: initialLegalLinks?.returns_url ?? "",
+    about_url: initialLegalLinks?.about_url ?? ""
+  };
+  const [values, setValues] = useState<Record<Key, string>>(seed);
+  const [busyKey, setBusyKey] = useState<Key | null>(null);
+  const [savedKey, setSavedKey] = useState<Key | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const timersRef = useRef<Partial<Record<Key, ReturnType<typeof setTimeout>>>>({});
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    return () => {
+      for (const k of Object.keys(timers) as Key[]) {
+        const t = timers[k];
+        if (t) clearTimeout(t);
+      }
+    };
+  }, []);
+
+  async function persist(key: Key, value: string) {
+    setBusyKey(key);
+    setErr(null);
+    try {
+      const res = await fetch("/api/trade-off/listings/legal-links", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          edit_token: editToken,
+          [key]: value.trim()
+        })
+      });
+      const json = await res.json();
+      if (!json.ok) {
+        setErr(json.error ?? "Couldn't save.");
+        return;
+      }
+      setSavedKey(key);
+      setTimeout(() => {
+        setSavedKey((s) => (s === key ? null : s));
+      }, 1500);
+    } catch {
+      setErr("Network error — try again.");
+    } finally {
+      setBusyKey((b) => (b === key ? null : b));
+    }
+  }
+
+  function onChange(key: Key, value: string) {
+    setValues((v) => ({ ...v, [key]: value }));
+    const existing = timersRef.current[key];
+    if (existing) clearTimeout(existing);
+    timersRef.current[key] = setTimeout(() => {
+      persist(key, value);
+    }, 800);
+  }
+
+  function onBlur(key: Key) {
+    const existing = timersRef.current[key];
+    if (existing) {
+      clearTimeout(existing);
+      timersRef.current[key] = undefined;
+    }
+    persist(key, values[key]);
+  }
+
+  return (
+    <div className="rounded-lg border border-brand-line bg-brand-bg p-3">
+      <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-accent">
+        Legal &amp; company links
+      </p>
+      <p className="mt-1 text-[13px] text-brand-muted">
+        Surfaced on the footer of every customer-facing page on your profile.
+      </p>
+      <ul className="mt-3 space-y-3">
+        {FIELDS.map((f) => (
+          <li key={f.key}>
+            <label
+              htmlFor={`legal-${f.key}`}
+              className="block text-[13px] font-extrabold text-brand-text"
+            >
+              {f.label}
+            </label>
+            <input
+              id={`legal-${f.key}`}
+              type="url"
+              inputMode="url"
+              placeholder="https://..."
+              value={values[f.key]}
+              onChange={(e) => onChange(f.key, e.target.value)}
+              onBlur={() => onBlur(f.key)}
+              maxLength={500}
+              className="mt-1 block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-[13px] text-brand-text outline-none transition focus:border-brand-accent"
+            />
+            <p className="mt-1 text-[13px] text-brand-muted">
+              Optional — leave blank to hide from your footer.
+              {busyKey === f.key && " · Saving…"}
+              {savedKey === f.key && " · Saved"}
+            </p>
+          </li>
+        ))}
+      </ul>
+      {err && (
+        <p className="mt-2 text-[13px] font-semibold text-red-300">{err}</p>
+      )}
+    </div>
+  );
+}
+
+// PaymentsAcceptedPanel — listing-level checkbox grid for the
+// PaymentIconsRow on the PDP. Persists to listing.payment_methods via
+// /api/trade-off/payment-methods. Default = NULL (PDP renders the
+// platform default set of 5).
+function PaymentsAcceptedPanel({
+  slug,
+  editToken,
+  initialSelected
+}: {
+  slug: string;
+  editToken: string;
+  initialSelected: string[] | null;
+}) {
+  const ALL = [
+    { key: "visa", label: "Visa" },
+    { key: "mastercard", label: "Mastercard" },
+    { key: "amex", label: "American Express" },
+    { key: "apple_pay", label: "Apple Pay" },
+    { key: "google_pay", label: "Google Pay" },
+    { key: "whatsapp", label: "WhatsApp" },
+    { key: "cash", label: "Cash" },
+    { key: "bank_transfer", label: "Bank transfer" }
+  ] as const;
+
+  // NULL on the server = "use defaults"; we seed the editor with the
+  // explicit default set so the user can see what's on. The first save
+  // captures the explicit selection.
+  const DEFAULT_KEYS = ["visa", "mastercard", "amex", "apple_pay", "whatsapp"];
+  const seed =
+    Array.isArray(initialSelected) && initialSelected.length > 0
+      ? initialSelected
+      : DEFAULT_KEYS;
+
+  const [selected, setSelected] = useState<string[]>(seed);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  function isOn(k: string) {
+    return selected.includes(k);
+  }
+
+  async function toggle(k: string) {
+    const next = isOn(k) ? selected.filter((x) => x !== k) : [...selected, k];
+    setSelected(next);
+    setBusy(true);
+    setErr(null);
+    setMsg(null);
+    try {
+      const res = await fetch("/api/trade-off/payment-methods", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          slug,
+          edit_token: editToken,
+          payment_methods: next
+        })
+      });
+      const json = await res.json();
+      if (!json.ok) {
+        setSelected(selected);
+        setErr(json.error ?? "Couldn't update.");
+        return;
+      }
+      setMsg("Saved.");
+      window.setTimeout(() => setMsg(null), 1600);
+    } catch {
+      setSelected(selected);
+      setErr("Network error — try again.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="rounded-lg border border-brand-line bg-brand-bg p-3">
+      <p className="text-[10px] font-extrabold uppercase tracking-widest text-brand-accent">
+        Payments accepted
+      </p>
+      <p className="mt-1 text-[13px] text-brand-muted">
+        Tick the payment surfaces you accept. They render as brand pills
+        on every product page.
+      </p>
+      <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {ALL.map((m) => {
+          const on = isOn(m.key);
+          return (
+            <li key={m.key}>
+              <label
+                className={`flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2 transition ${
+                  on
+                    ? "border-brand-accent bg-brand-accent/10"
+                    : "border-brand-line bg-brand-surface"
+                }`}
+              >
+                <input
+                  type="checkbox"
+                  checked={on}
+                  disabled={busy}
+                  onChange={() => toggle(m.key)}
+                  className="h-5 w-5 accent-brand-accent"
+                />
+                <span className="grid h-9 w-14 shrink-0 place-items-center rounded-md border border-brand-line bg-white">
+                  <PaymentMethodMark k={m.key as PaymentMethodKey} />
+                </span>
+                <span className="text-[13px] font-extrabold text-brand-text">
+                  {m.label}
+                </span>
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+      {err && (
+        <p className="mt-2 text-[13px] font-semibold text-red-300">{err}</p>
+      )}
+      {msg && (
+        <p className="mt-2 text-[13px] font-semibold text-brand-accent">{msg}</p>
       )}
     </div>
   );
@@ -771,6 +1486,41 @@ function ProductForm({
         </p>
       </Field>
 
+      {!isService && (
+        <Field label="What is this?">
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => update("product_kind", "stock")}
+              className={`flex flex-col items-start gap-0.5 rounded-lg border px-3 py-3 text-left transition ${
+                form.product_kind === "stock"
+                  ? "border-brand-accent bg-brand-accent/15 text-brand-accent"
+                  : "border-brand-line bg-brand-bg text-brand-text hover:border-brand-accent"
+              }`}
+            >
+              <span className="text-[13px] font-extrabold">Stock item</span>
+              <span className="text-[13px] font-semibold text-brand-muted">
+                Customer adds to cart
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={() => update("product_kind", "install")}
+              className={`flex flex-col items-start gap-0.5 rounded-lg border px-3 py-3 text-left transition ${
+                form.product_kind === "install"
+                  ? "border-brand-accent bg-brand-accent/15 text-brand-accent"
+                  : "border-brand-line bg-brand-bg text-brand-text hover:border-brand-accent"
+              }`}
+            >
+              <span className="text-[13px] font-extrabold">Install service</span>
+              <span className="text-[13px] font-semibold text-brand-muted">
+                Customer books a site visit
+              </span>
+            </button>
+          </div>
+        </Field>
+      )}
+
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Price (GBP) *">
           <div className="flex items-center gap-1">
@@ -835,6 +1585,71 @@ function ProductForm({
         )}
       </div>
 
+      {!isService && (
+        <Field label="VAT">
+          <div className="space-y-2">
+            <label className="flex h-11 items-center gap-3 rounded-md border border-brand-line bg-brand-bg px-3">
+              <input
+                type="checkbox"
+                checked={form.vat_registered}
+                onChange={(e) => update("vat_registered", e.target.checked)}
+                className="h-5 w-5 accent-brand-accent"
+              />
+              <span className="text-[13px] font-bold text-brand-text">
+                VAT registered?
+              </span>
+            </label>
+            <p className="text-[13px] text-brand-muted">
+              Tick if you charge VAT on this product.
+            </p>
+            {form.vat_registered && (
+              <>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={() => update("vat_inclusive", true)}
+                    className={`inline-flex h-11 items-center rounded-full border px-4 text-[13px] font-bold transition ${
+                      form.vat_inclusive
+                        ? "border-brand-accent bg-brand-accent/15 text-brand-accent"
+                        : "border-brand-line bg-brand-bg text-brand-text hover:border-brand-accent"
+                    }`}
+                  >
+                    Price includes VAT
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => update("vat_inclusive", false)}
+                    className={`inline-flex h-11 items-center rounded-full border px-4 text-[13px] font-bold transition ${
+                      !form.vat_inclusive
+                        ? "border-brand-accent bg-brand-accent/15 text-brand-accent"
+                        : "border-brand-line bg-brand-bg text-brand-text hover:border-brand-accent"
+                    }`}
+                  >
+                    Price excludes VAT
+                  </button>
+                </div>
+                <label className="block pt-1">
+                  <span className="mb-1 block text-[10px] font-bold uppercase tracking-widest text-brand-muted">
+                    VAT rate (%)
+                  </span>
+                  <input
+                    type="number"
+                    inputMode="decimal"
+                    step="0.5"
+                    min="0"
+                    max="100"
+                    value={form.vat_rate_pct}
+                    onChange={(e) => update("vat_rate_pct", e.target.value)}
+                    placeholder="20"
+                    className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+                  />
+                </label>
+              </>
+            )}
+          </div>
+        </Field>
+      )}
+
       {isService && (
         <Field label="Category (optional)">
           <div className="space-y-2">
@@ -863,8 +1678,63 @@ function ProductForm({
               maxLength={40}
               onChange={(e) => update("category", e.target.value)}
               placeholder="e.g. Gardening, Machinery"
-              className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+              className="block h-11 w-full rounded-xl border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
             />
+          </div>
+        </Field>
+      )}
+
+      {!isService && (
+        <Field label="Category *">
+          <div className="space-y-3">
+            <p className="text-[12px] leading-snug text-brand-muted">
+              Pick the closest category — drives the structured detail
+              fields below and powers buyer-side search filters on your
+              trade center page.
+            </p>
+            <select
+              value={form.category_slug}
+              onChange={(e) => {
+                const next = e.target.value;
+                const cat = categoryBySlug(next);
+                update("category_slug", next);
+                // Reset specs_map when the category changes — old keys
+                // don't carry meaning under the new category's schema.
+                update("specs_map", cat ? {} : form.specs_map);
+              }}
+              className="block h-11 w-full rounded-xl border border-brand-line bg-brand-surface px-3 text-[13px] font-bold text-brand-text outline-none focus:border-brand-accent"
+            >
+              <option value="">— Pick a category —</option>
+              {PRODUCT_CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            {form.category_slug && (
+              <p className="text-[12px] leading-snug text-brand-muted">
+                {categoryBySlug(form.category_slug)?.blurb}
+              </p>
+            )}
+            {(() => {
+              const cat = categoryBySlug(form.category_slug);
+              if (!cat || cat.specs.length === 0) return null;
+              return (
+                <div className="rounded-xl border border-brand-line bg-brand-surface p-3 sm:p-4">
+                  <p
+                    className="mb-3 text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                    style={{ color: "var(--trade-accent, #FFB300)" }}
+                  >
+                    Specifications · {cat.label}
+                  </p>
+                  <ItemSpecsForm
+                    category={cat}
+                    values={form.specs_map}
+                    onChange={(next) => update("specs_map", next)}
+                  />
+                </div>
+              );
+            })()}
           </div>
         </Field>
       )}
@@ -898,6 +1768,11 @@ function ProductForm({
           />
         </Field>
       </div>
+      {!isService && (
+        <p className="-mt-2 text-[13px] text-brand-muted">
+          Set dispatch to 1 or 2 for the FAST badge.
+        </p>
+      )}
 
       <Field label="Cover image">
         <SingleImageUploader
@@ -932,6 +1807,101 @@ function ProductForm({
           subtitle={form.size_chart_url ? `Uploaded · ${form.size_chart_unit || "no unit"}` : "Off"}
         >
           <SizeChartEditor form={form} update={update} slug={slug} editToken={editToken} />
+        </CollapsibleSection>
+      )}
+
+      {/* Optional product details — powers the PDP tabbed panel. Specs +
+          features ship as line-oriented textareas (simpler than per-row
+          repeaters for v1). Video URL is any YouTube link. All three
+          empty ⇒ the PDP just shows Description + Ref tabs. */}
+      {!isService && (
+        <CollapsibleSection
+          title="Optional product details"
+          subtitle={(() => {
+            const bits: string[] = [];
+            const sCount = parseSpecsText(form.specs_text).length;
+            const fCount = parseFeaturesText(form.features_text).length;
+            if (sCount > 0) bits.push(`${sCount} spec${sCount === 1 ? "" : "s"}`);
+            if (fCount > 0) bits.push(`${fCount} feature${fCount === 1 ? "" : "s"}`);
+            if (form.video_url.trim().length > 0) bits.push("video");
+            return bits.length === 0 ? "Off" : bits.join(" · ");
+          })()}
+        >
+          <div className="space-y-4">
+            <Field label="Specs (optional)">
+              <textarea
+                value={form.specs_text}
+                onChange={(e) => update("specs_text", e.target.value)}
+                rows={4}
+                placeholder={"Material: Solid oak\nWeight: 1.4kg\nFinish: Beeswax"}
+                className="block w-full rounded-md border border-brand-line bg-brand-surface px-3 py-2 text-sm text-brand-text outline-none focus:border-brand-accent"
+              />
+              <p className="mt-1 text-[13px] text-brand-muted">
+                One spec per line, format: &ldquo;Material: Solid oak&rdquo;.
+                Lines without a colon are ignored.
+              </p>
+            </Field>
+
+            <Field label="Features (optional)">
+              <textarea
+                value={form.features_text}
+                onChange={(e) => update("features_text", e.target.value)}
+                rows={4}
+                placeholder={"Fully insured installation\nNo callout fee\n2-year guarantee"}
+                className="block w-full rounded-md border border-brand-line bg-brand-surface px-3 py-2 text-sm text-brand-text outline-none focus:border-brand-accent"
+              />
+              <p className="mt-1 text-[13px] text-brand-muted">
+                One feature per line. e.g. &ldquo;Fully insured installation&rdquo;.
+              </p>
+            </Field>
+
+            <Field label="Video URL (optional)">
+              <input
+                type="url"
+                value={form.video_url}
+                maxLength={300}
+                onChange={(e) => update("video_url", e.target.value)}
+                placeholder="https://youtu.be/…"
+                className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+              />
+              <p className="mt-1 text-[13px] text-brand-muted">
+                Optional YouTube link. Renders as a Video tab on the PDP.
+              </p>
+            </Field>
+
+            {/* Warranty / Returns block on the PDP — single-container layout.
+                warranty_header overrides the heading ("Warranty / Returns"),
+                warranty_text overrides the body. Both NULL ⇒ defaults render.
+                Header capped at 80 chars, body at 500 chars by the upsert API.
+                returns_text is deprecated — no longer rendered as a field. */}
+            <Field label="Warranty / Returns header (optional)">
+              <input
+                type="text"
+                value={form.warranty_header}
+                maxLength={80}
+                onChange={(e) => update("warranty_header", e.target.value)}
+                placeholder="Warranty / Returns"
+                className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+              />
+              <p className="mt-1 text-[13px] text-brand-muted">
+                Leave blank to use the default header.
+              </p>
+            </Field>
+
+            <Field label="Warranty / Returns body (optional)">
+              <textarea
+                value={form.warranty_text}
+                maxLength={500}
+                onChange={(e) => update("warranty_text", e.target.value)}
+                rows={4}
+                placeholder="1-year workmanship guarantee. 14-day return window from delivery for unused items in original packaging."
+                className="block w-full rounded-md border border-brand-line bg-brand-surface px-3 py-2 text-sm text-brand-text outline-none focus:border-brand-accent"
+              />
+              <p className="mt-1 text-[13px] text-brand-muted">
+                Leave blank to use the default text.
+              </p>
+            </Field>
+          </div>
         </CollapsibleSection>
       )}
 
@@ -1577,18 +2547,6 @@ function CompareWithPicker({
     </div>
   );
 }
-
-// ──────────────────────────────────────────────────────────────────────
-// Phase 3 — Featured products drag-picker.
-//
-// 6 "front window" slots at the top of the editor. The tradesperson
-// drags products from the catalogue pool on the left into the slots on
-// the right. Saving stamps featured_at=NOW() on the picked products and
-// NULL on the de-picked ones. The teaser + storefront default sort both
-// read featured_at DESC NULLS LAST, so what they pick here goes
-// straight to the public profile.
-// ──────────────────────────────────────────────────────────────────────
-
 const FEATURED_SLOTS = 6;
 
 function FeaturedProductsEditor({

@@ -47,7 +47,9 @@ export async function lookupAnnualMember(input: {
   if (!row) {
     return { is_annual_member: false, listing_id: null, display_name: null, slug: null };
   }
-  const isPaid = row.tier === "app_paid";
+  // app_verified is a strict superset of app_paid for billing — verified
+  // members on the annual plan get the same 5%-off Hammerex tools perk.
+  const isPaid = row.tier === "app_paid" || row.tier === "app_verified";
   const isAnnual = row.last_payment_plan === "annual";
   const notExpired =
     !row.paid_expires_at ||

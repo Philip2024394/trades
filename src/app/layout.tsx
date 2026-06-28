@@ -1,11 +1,20 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { BRAND } from "@/lib/seo";
+import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
 
 // Minimal root layout for Xrated Trades — Phase 1 of the split from
 // the Hammerex monorepo. Page chrome (header, footer, dock) lives on
 // the Xrated route segments themselves (`/trade-off/*` and
 // `/trade/<slug>/*`); the root layout only owns html/body, brand
-// tokens, and the shared metadata defaults.
+// tokens, the shared metadata defaults, and the site-wide
+// Organization + WebSite JSON-LD that every Stripe / search trust
+// scraper looks for.
+
+const SITE_URL = "https://xratedtrade.com";
+const DEFAULT_OG_IMAGE = BRAND.logo;
+const DEFAULT_DESCRIPTION =
+  "The shareable trade profile for UK tradespeople. Reviews, photos, prices, WhatsApp — one link. Trade Center catalogue + cart for merchant trades. Free profiles, paid premium tiers.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -15,14 +24,36 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://xratedtrade.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Xrated Trades — Your shareable trade profile",
     template: "%s | Xrated Trades"
   },
-  description:
-    "The shareable trade profile for tradies anywhere. Reviews, photos, prices, WhatsApp — one link.",
+  description: DEFAULT_DESCRIPTION,
   applicationName: "Xrated",
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    url: SITE_URL,
+    siteName: BRAND.name,
+    title: "Xrated Trades — Your shareable trade profile",
+    description: DEFAULT_DESCRIPTION,
+    locale: "en_GB",
+    images: [
+      {
+        url: DEFAULT_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Xrated Trades — shareable trade profiles for UK tradespeople"
+      }
+    ]
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Xrated Trades — Your shareable trade profile",
+    description: DEFAULT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE]
+  },
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png"
@@ -37,10 +68,81 @@ export const metadata: Metadata = {
   }
 };
 
+// Site-wide structured data. Organization gives Stripe's risk crawler
+// (and Google's knowledge panel) the canonical name / logo / contact
+// surface. WebSite + SearchAction tells Google our /find endpoint is
+// the in-site search box — earns the sitelinks search box treatment.
+const organizationLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: BRAND.name,
+  alternateName: ["Trade Off", "Xrated Trade Off"],
+  url: SITE_URL,
+  logo: BRAND.logo,
+  description:
+    "Construction trades directory and SaaS for UK tradespeople. Free profiles, paid premium tiers, Trade Center catalogue + cart for merchant trades.",
+  sameAs: [] as string[],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: "support@xratedtrade.com",
+      areaServed: "GB",
+      availableLanguage: ["en-GB", "en"]
+    }
+  ]
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: BRAND.name,
+  url: SITE_URL,
+  inLanguage: "en-GB",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/find?q={search_term_string}`
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="bg-brand-bg text-brand-text antialiased">{children}</body>
+      <head>
+        {/* App Studio fonts — preloaded once at the root so every
+            tradesperson's font_family pick (Inter / Roboto / Lora /
+            Playfair / Montserrat) renders without a flash of fallback.
+            See src/lib/tradeBrandTheme.ts for the picker list. */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Lora:wght@400;600;700&family=Montserrat:wght@400;600;800&family=Playfair+Display:wght@400;600;800&family=Roboto:wght@400;500;700&display=swap"
+        />
+        {/* Site-wide JSON-LD. Inlined in <head> via Next's standard
+            <script> insertion so every page (marketing, listing,
+            templated trade landing) carries the Organization +
+            WebSite schemas without per-route duplication. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+        />
+      </head>
+      <body className="bg-brand-bg text-brand-text antialiased">
+        {children}
+        {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
+            Renders nothing on the server and self-hides once the visitor
+            has chosen, so it never blocks page chrome on repeat visits. */}
+        <CookieConsentBanner />
+      </body>
     </html>
   );
 }

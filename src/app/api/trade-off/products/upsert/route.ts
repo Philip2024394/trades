@@ -7,11 +7,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import {
-  isValidProductSlug,
-  slugCandidate,
-  slugifyProductName
-} from "@/lib/xratedProductSlug";
 
 export const runtime = "nodejs";
 
@@ -54,8 +49,23 @@ function arrStr(v: unknown): string[] {
 // mixed-axis array shows up. Each row may carry an optional stock count
 // (positive integer, null = inherit parent) and a price delta in pence
 // (signed integer in ±£10k to stop runaway typos).
+//
+// Phase 1 axis types: size · colour · model · material · custom.
+// "custom" lets merchants type their own axis name (e.g. "Capacity",
+// "Length") — stored on `axis_label` so the PDP can render it as the
+// picker heading.
+type VariantAxis = "size" | "colour" | "model" | "material" | "custom";
+const ALLOWED_AXES: ReadonlySet<VariantAxis> = new Set([
+  "size",
+  "colour",
+  "model",
+  "material",
+  "custom"
+]);
 type VariantOut = {
-  axis: "size" | "colour";
+  axis: VariantAxis;
+  /** Free-text axis name when axis === 'custom'. NULL otherwise. */
+  axis_label: string | null;
   label: string;
   stock_count: number | null;
   price_delta_pence: number | null;
@@ -73,19 +83,36 @@ function sanitiseVariants(v: unknown): { variants: VariantOut[]; error: string |
     return { variants: [], error: "variants capped at 20 entries." };
   }
   const out: VariantOut[] = [];
-  let lockedAxis: "size" | "colour" | null = null;
+  let lockedAxis: VariantAxis | null = null;
+  let lockedAxisLabel: string | null = null;
   for (const raw of v) {
     if (!raw || typeof raw !== "object") {
       return { variants: [], error: "Each variant must be an object." };
     }
     const rec = raw as Record<string, unknown>;
     const axisRaw = typeof rec.axis === "string" ? rec.axis.trim().toLowerCase() : "";
-    if (axisRaw !== "size" && axisRaw !== "colour") {
-      return { variants: [], error: "variant axis must be 'size' or 'colour'." };
+    if (!ALLOWED_AXES.has(axisRaw as VariantAxis)) {
+      return {
+        variants: [],
+        error: "variant axis must be one of: size, colour, model, material, custom."
+      };
     }
-    const axis = axisRaw as "size" | "colour";
-    if (lockedAxis === null) lockedAxis = axis;
-    else if (axis !== lockedAxis) {
+    const axis = axisRaw as VariantAxis;
+    let axis_label: string | null = null;
+    if (axis === "custom") {
+      const raw = typeof rec.axis_label === "string" ? rec.axis_label.trim() : "";
+      if (raw.length === 0 || raw.length > 30) {
+        return {
+          variants: [],
+          error: "Custom variants need an axis_label (1-30 chars)."
+        };
+      }
+      axis_label = raw;
+    }
+    if (lockedAxis === null) {
+      lockedAxis = axis;
+      lockedAxisLabel = axis_label;
+    } else if (axis !== lockedAxis || axis_label !== lockedAxisLabel) {
       return { variants: [], error: "All variants must share the same axis." };
     }
     const label = typeof rec.label === "string" ? rec.label.trim() : "";
@@ -112,70 +139,111 @@ function sanitiseVariants(v: unknown): { variants: VariantOut[]; error: string |
       }
       price_delta_pence = Math.round(pd);
     }
-    out.push({ axis, label: label.slice(0, 32), stock_count, price_delta_pence });
+    out.push({
+      axis,
+      axis_label,
+      label: label.slice(0, 32),
+      stock_count,
+      price_delta_pence
+    });
   }
   return { variants: out, error: null };
 }
 
 const SIZE_CHART_UNITS = new Set(["size", "kg", "litre", "cm", "other"]);
 
-// Wholesale Mode bulk-pricing tiers. Ascending min_qty, non-overlapping,
-// integer pence ≥ 1, max 5 tiers per product. Top tier may omit max_qty
-// to mean "and above". The cart layer picks the tier matching
-// `qty BETWEEN min_qty AND COALESCE(max_qty, infinity)`.
-type BulkTierOut = {
-  min_qty: number;
-  max_qty: number | null;
-  price_pence: number;
-};
+// PDP tabbed-details parsers. Each one returns `[parsed, null]` on
+// success or `[null, errorMessage]` so the caller can fail-fast with a
+// 400 before hitting the DB CHECK constraint. NULL is the canonical
+// "unset" value for all three (matches the chk_xrated_*_array CHECKs).
 
-function sanitiseBulkTiers(v: unknown): { tiers: BulkTierOut[]; error: string | null } {
-  if (v === null || v === undefined) return { tiers: [], error: null };
+function sanitiseSpecs(v: unknown): { specs: { label: string; value: string }[] | null; error: string | null } {
+  if (v === null || v === undefined) return { specs: null, error: null };
   if (!Array.isArray(v)) {
-    return { tiers: [], error: "bulk_tiers must be an array." };
+    return { specs: null, error: "specs must be an array or null." };
   }
-  if (v.length === 0) return { tiers: [], error: null };
-  if (v.length > 5) {
-    return { tiers: [], error: "Up to 5 bulk tiers per product." };
+  if (v.length === 0) return { specs: null, error: null };
+  if (v.length > 40) {
+    return { specs: null, error: "specs capped at 40 rows." };
   }
-  const out: BulkTierOut[] = [];
-  let prevMaxOrMin = 0;
-  for (let i = 0; i < v.length; i++) {
-    const raw = v[i];
+  const out: { label: string; value: string }[] = [];
+  for (const raw of v) {
     if (!raw || typeof raw !== "object") {
-      return { tiers: [], error: "Each bulk tier must be an object." };
+      return { specs: null, error: "Each spec must be a {label, value} object." };
     }
     const rec = raw as Record<string, unknown>;
-    const minQty = Number(rec.min_qty);
-    const priceP = Number(rec.price_pence);
-    if (!Number.isFinite(minQty) || minQty < 1 || minQty > 1_000_000) {
-      return { tiers: [], error: "Tier min_qty must be a positive integer." };
+    const label = typeof rec.label === "string" ? rec.label.trim() : "";
+    const value = typeof rec.value === "string" ? rec.value.trim() : "";
+    if (label.length === 0 || value.length === 0) {
+      return { specs: null, error: "spec rows need both a label and a value." };
     }
-    if (!Number.isFinite(priceP) || priceP < 1 || priceP > 100_000_000) {
-      return { tiers: [], error: "Tier price_pence must be an integer ≥ 1." };
-    }
-    let maxQty: number | null = null;
-    if (rec.max_qty !== null && rec.max_qty !== undefined && rec.max_qty !== "") {
-      const mq = Number(rec.max_qty);
-      if (!Number.isFinite(mq) || mq < 1 || mq > 1_000_000 || mq < minQty) {
-        return { tiers: [], error: "Tier max_qty must be ≥ min_qty." };
-      }
-      maxQty = Math.round(mq);
-    } else if (i !== v.length - 1) {
-      return { tiers: [], error: "Only the top tier may omit max_qty." };
-    }
-    const minR = Math.round(minQty);
-    if (i > 0 && minR <= prevMaxOrMin) {
-      return { tiers: [], error: "Tiers must ascend without overlap." };
-    }
-    prevMaxOrMin = maxQty ?? minR;
-    out.push({
-      min_qty: minR,
-      max_qty: maxQty,
-      price_pence: Math.round(priceP)
-    });
+    out.push({ label: label.slice(0, 80), value: value.slice(0, 200) });
   }
-  return { tiers: out, error: null };
+  return { specs: out, error: null };
+}
+
+// Per-product FAQ. Max 3 { q, a } pairs — rendered as a collapsible
+// Q&A accordion under the cover image. Empty array / null = the live
+// PDP hides the section entirely.
+function sanitiseFaq(v: unknown): { faq: { q: string; a: string }[] | null; error: string | null } {
+  if (v === null || v === undefined) return { faq: null, error: null };
+  if (!Array.isArray(v)) {
+    return { faq: null, error: "faq must be an array or null." };
+  }
+  if (v.length === 0) return { faq: null, error: null };
+  if (v.length > 3) {
+    return { faq: null, error: "faq capped at 3 items per product." };
+  }
+  const out: { q: string; a: string }[] = [];
+  for (const raw of v) {
+    if (!raw || typeof raw !== "object") {
+      return { faq: null, error: "Each faq item must be a {q, a} object." };
+    }
+    const rec = raw as Record<string, unknown>;
+    const q = typeof rec.q === "string" ? rec.q.trim() : "";
+    const a = typeof rec.a === "string" ? rec.a.trim() : "";
+    if (q.length === 0 || a.length === 0) continue;
+    out.push({ q: q.slice(0, 140), a: a.slice(0, 500) });
+  }
+  return { faq: out.length > 0 ? out : null, error: null };
+}
+
+function sanitiseFeatures(v: unknown): { features: string[] | null; error: string | null } {
+  if (v === null || v === undefined) return { features: null, error: null };
+  if (!Array.isArray(v)) {
+    return { features: null, error: "features must be an array or null." };
+  }
+  if (v.length === 0) return { features: null, error: null };
+  if (v.length > 40) {
+    return { features: null, error: "features capped at 40 rows." };
+  }
+  const out: string[] = [];
+  for (const raw of v) {
+    if (typeof raw !== "string") {
+      return { features: null, error: "Each feature must be a string." };
+    }
+    const t = raw.trim();
+    if (t.length === 0) continue;
+    out.push(t.slice(0, 200));
+  }
+  return { features: out.length > 0 ? out : null, error: null };
+}
+
+const YOUTUBE_RE = /^https?:\/\/(?:www\.|m\.)?(?:youtube\.com|youtu\.be)\//i;
+
+function sanitiseVideoUrl(v: unknown): { video_url: string | null; error: string | null } {
+  if (v === null || v === undefined || v === "") {
+    return { video_url: null, error: null };
+  }
+  if (typeof v !== "string") {
+    return { video_url: null, error: "video_url must be a string or null." };
+  }
+  const t = v.trim();
+  if (t.length === 0) return { video_url: null, error: null };
+  if (t.length > 300 || !YOUTUBE_RE.test(t)) {
+    return { video_url: null, error: "video_url must be a YouTube link (youtube.com or youtu.be)." };
+  }
+  return { video_url: t, error: null };
 }
 
 export async function POST(req: NextRequest) {
@@ -260,17 +328,6 @@ export async function POST(req: NextRequest) {
   }
   const variants = variantsParsed.variants;
 
-  // Wholesale Mode — bulk tiers (jsonb array). Reject the payload on
-  // any tier shape error so the editor surfaces the precise reason.
-  const tiersParsed = sanitiseBulkTiers(productIn.bulk_tiers);
-  if (tiersParsed.error) {
-    return NextResponse.json(
-      { ok: false, error: tiersParsed.error },
-      { status: 400 }
-    );
-  }
-  const bulk_tiers = tiersParsed.tiers;
-
   const sizeChartRaw = s(productIn.size_chart_url);
   const size_chart_url = sizeChartRaw.length > 0 ? sizeChartRaw.slice(0, 400) : null;
   const sizeChartUnitRaw = s(productIn.size_chart_unit).toLowerCase();
@@ -285,31 +342,84 @@ export async function POST(req: NextRequest) {
     size_chart_unit = sizeChartUnitRaw as "size" | "kg" | "litre" | "cm" | "other";
   }
 
-  // Phase 3 — per-product URL handle. Clients can pass an explicit slug
-  // (validated against the same DB CHECK), or omit it and we derive one
-  // from the name. The save loop retries with `-2`, `-3`… on a UNIQUE
-  // collision so two products called "Drywall sheet" never crash the
-  // tradesperson's save flow.
-  const slugIn = s(productIn.slug).toLowerCase();
-  let desiredSlug: string | null = null;
-  if (slugIn.length > 0) {
-    if (!isValidProductSlug(slugIn)) {
+  // PDP tabbed-details. Each parser returns null on absent/empty input so
+  // the DB column is set to NULL rather than `[]`. Validation failures
+  // bounce as 400s so the editor surfaces the precise reason.
+  const specsParsed = sanitiseSpecs(productIn.specs);
+  if (specsParsed.error) {
+    return NextResponse.json({ ok: false, error: specsParsed.error }, { status: 400 });
+  }
+  const specs = specsParsed.specs;
+  const featuresParsed = sanitiseFeatures(productIn.features);
+  if (featuresParsed.error) {
+    return NextResponse.json({ ok: false, error: featuresParsed.error }, { status: 400 });
+  }
+  const features = featuresParsed.features;
+  const faqParsed = sanitiseFaq(productIn.faq);
+  if (faqParsed.error) {
+    return NextResponse.json({ ok: false, error: faqParsed.error }, { status: 400 });
+  }
+  const faq = faqParsed.faq;
+  const videoParsed = sanitiseVideoUrl(productIn.video_url);
+  if (videoParsed.error) {
+    return NextResponse.json({ ok: false, error: videoParsed.error }, { status: 400 });
+  }
+  const video_url = videoParsed.video_url;
+
+  // product_kind — 'stock' is the standard add-to-cart flow; 'install'
+  // routes the customer to a WhatsApp site-visit request on the PDP
+  // (used by UK stair / kitchen fitters who price after a measurement).
+  // Anything else (or missing) gets silently coerced to 'stock' so old
+  // callers don't break and the chk_product_kind constraint never trips.
+  const productKindRaw = s(productIn.product_kind).toLowerCase();
+  const product_kind: "stock" | "install" =
+    productKindRaw === "install" ? "install" : "stock";
+
+  // Warranty + Returns tab overrides — NULL means the PDP falls back to
+  // the platform default copy (1-year workmanship / 14-day window). Empty
+  // strings are treated as null so a trade who clears the textarea
+  // reverts cleanly. Capped at 500 chars to stop a trade pasting a wall
+  // of legalese into the tab body.
+  function bounded(v: unknown, cap: number): string | null {
+    if (typeof v !== "string") return null;
+    const t = v.trim();
+    if (t.length === 0) return null;
+    return t.slice(0, cap);
+  }
+  const warranty_header = bounded(productIn.warranty_header, 80);
+  const warranty_text = bounded(productIn.warranty_text, 500);
+  // returns_text is deprecated — the dashboard now sends null. We accept
+  // any incoming value but coerce to null to stop persisting it.
+  const returns_text: string | null = null;
+
+  // VAT — both columns must agree per the chk_vat_consistency CHECK.
+  // vat_inclusive=null + vat_rate_pct=null ⇒ tradesperson is not VAT
+  // registered. Otherwise vat_rate_pct must be 0-100 and vat_inclusive
+  // is a bool. Any malformed combo gets rejected here so the DB constraint
+  // never has to bounce a row.
+  let vat_inclusive: boolean | null = null;
+  let vat_rate_pct: number | null = null;
+  const vatIncRaw = productIn.vat_inclusive;
+  const vatRateRaw = productIn.vat_rate_pct;
+  const vatBothNull =
+    (vatIncRaw === null || vatIncRaw === undefined) &&
+    (vatRateRaw === null || vatRateRaw === undefined);
+  if (!vatBothNull) {
+    if (typeof vatIncRaw !== "boolean") {
       return NextResponse.json(
-        { ok: false, error: "Slug must be lowercase a-z0-9 with hyphens, 1-80 chars." },
+        { ok: false, error: "vat_inclusive must be a boolean or null." },
         { status: 400 }
       );
     }
-    desiredSlug = slugIn;
-  }
-
-  // Phase 3 — featured_at toggle. Pass `featured: true` to stamp NOW()
-  // (used by the editor's drag-picker save). `featured: false` clears
-  // the timestamp. Omit the field to leave whatever's already there.
-  let featuredPatch: { featured_at?: string | null } = {};
-  if (typeof productIn.featured === "boolean") {
-    featuredPatch = {
-      featured_at: productIn.featured ? new Date().toISOString() : null
-    };
+    const rate = Number(vatRateRaw);
+    if (!Number.isFinite(rate) || rate < 0 || rate > 100) {
+      return NextResponse.json(
+        { ok: false, error: "vat_rate_pct must be between 0 and 100." },
+        { status: 400 }
+      );
+    }
+    vat_inclusive = vatIncRaw;
+    vat_rate_pct = Math.round(rate * 100) / 100;
   }
 
   const patch = {
@@ -329,8 +439,16 @@ export async function POST(req: NextRequest) {
     variants,
     size_chart_url,
     size_chart_unit,
-    bulk_tiers,
-    ...featuredPatch
+    vat_inclusive,
+    vat_rate_pct,
+    product_kind,
+    specs,
+    features,
+    faq,
+    video_url,
+    warranty_header,
+    warranty_text,
+    returns_text
   };
 
   const idRaw = s(productIn.id);
@@ -341,123 +459,40 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    // Resolve the slug we want to write. Priority:
-    //   1. Caller passed an explicit slug → use that.
-    //   2. The existing row already has a slug AND name didn't change →
-    //      keep the old slug (preserves shared URLs).
-    //   3. Otherwise generate a fresh slug from the new name.
-    const existing = await supabaseAdmin
+    const upd = await supabaseAdmin
       .from("hammerex_xrated_products")
-      .select("slug, name")
+      .update(patch)
       .eq("id", idRaw)
       .eq("listing_id", listing.data.id)
+      .select("*")
       .maybeSingle();
-    if (!existing.data) {
+    if (upd.error) {
+      console.error("[trade-off/products/upsert] update failed:", upd.error);
+      return NextResponse.json(
+        { ok: false, error: upd.error.message },
+        { status: 500 }
+      );
+    }
+    if (!upd.data) {
       return NextResponse.json(
         { ok: false, error: "Product not found." },
         { status: 404 }
       );
     }
-    let targetSlug = desiredSlug;
-    if (targetSlug === null) {
-      const nameChanged = (existing.data.name ?? "") !== name;
-      if (existing.data.slug && !nameChanged) {
-        targetSlug = existing.data.slug as string;
-      } else {
-        const base = slugifyProductName(name);
-        targetSlug = base.length > 0 ? base : null;
-      }
-    }
-    const updated = await tryUpsertSlug(
-      "update",
-      idRaw,
-      listing.data.id,
-      patch,
-      targetSlug
+    return NextResponse.json({ ok: true, product: upd.data });
+  }
+
+  const ins = await supabaseAdmin
+    .from("hammerex_xrated_products")
+    .insert({ ...patch, listing_id: listing.data.id })
+    .select("*")
+    .maybeSingle();
+  if (ins.error || !ins.data) {
+    console.error("[trade-off/products/upsert] insert failed:", ins.error);
+    return NextResponse.json(
+      { ok: false, error: ins.error?.message ?? "Insert failed" },
+      { status: 500 }
     );
-    if (!updated.ok) {
-      return NextResponse.json({ ok: false, error: updated.error }, { status: updated.status });
-    }
-    return NextResponse.json({ ok: true, product: updated.row });
   }
-
-  // INSERT path. Always derive a slug — fall back to NULL when the name
-  // has no alphanumerics, the DB CHECK accepts NULL so the row still
-  // saves; the editor surfaces a "needs a real name" prompt elsewhere.
-  let insertSlug = desiredSlug;
-  if (insertSlug === null) {
-    const base = slugifyProductName(name);
-    insertSlug = base.length > 0 ? base : null;
-  }
-  const inserted = await tryUpsertSlug(
-    "insert",
-    null,
-    listing.data.id,
-    patch,
-    insertSlug
-  );
-  if (!inserted.ok) {
-    return NextResponse.json({ ok: false, error: inserted.error }, { status: inserted.status });
-  }
-  return NextResponse.json({ ok: true, product: inserted.row });
-}
-
-// Save loop with collision retry. Tries the bare slug first; on a unique-
-// index violation (Postgres SQLSTATE 23505) appends -2, -3 … up to attempt
-// 49 then gives up. The whole thing degrades gracefully when the caller
-// passes slug=null (no collision risk — DB CHECK accepts NULL).
-async function tryUpsertSlug(
-  op: "insert" | "update",
-  id: string | null,
-  listingId: string,
-  patch: Record<string, unknown>,
-  baseSlug: string | null
-): Promise<
-  | { ok: true; row: Record<string, unknown> }
-  | { ok: false; error: string; status: number }
-> {
-  const MAX_ATTEMPTS = 50;
-  for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
-    const slug =
-      baseSlug === null ? null : slugCandidate(baseSlug, attempt);
-    const payload = { ...patch, slug };
-    let res;
-    if (op === "update" && id) {
-      res = await supabaseAdmin
-        .from("hammerex_xrated_products")
-        .update(payload)
-        .eq("id", id)
-        .eq("listing_id", listingId)
-        .select("*")
-        .maybeSingle();
-    } else {
-      res = await supabaseAdmin
-        .from("hammerex_xrated_products")
-        .insert({ ...payload, listing_id: listingId })
-        .select("*")
-        .maybeSingle();
-    }
-    if (!res.error && res.data) {
-      return { ok: true, row: res.data };
-    }
-    if (res.error) {
-      // Postgres unique violation — try the next slug candidate.
-      const code = (res.error as { code?: string }).code;
-      const msg = (res.error as { message?: string }).message ?? "";
-      if (
-        baseSlug !== null &&
-        (code === "23505" || /duplicate key|unique constraint/i.test(msg))
-      ) {
-        continue;
-      }
-      console.error(`[trade-off/products/upsert] ${op} failed:`, res.error);
-      return { ok: false, error: msg || "Save failed.", status: 500 };
-    }
-    return { ok: false, error: "Product not found.", status: 404 };
-  }
-  return {
-    ok: false,
-    error: "Could not pick a unique slug after many attempts — try renaming the product.",
-    status: 409
-  };
+  return NextResponse.json({ ok: true, product: ins.data });
 }

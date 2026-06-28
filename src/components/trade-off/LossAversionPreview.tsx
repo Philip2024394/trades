@@ -6,6 +6,7 @@
 // two CTAs: preview the Standard-tier profile, OR lock in the annual plan.
 
 import Link from "next/link";
+import { XRATED_PRICING } from "@/lib/xratedTrades";
 
 type Props = {
   slug: string;
@@ -80,7 +81,7 @@ export function LossAversionPreview({
           href={upgradeAnnualHref}
           className="grid h-12 flex-1 place-items-center rounded-xl bg-brand-accent px-4 text-[13px] font-extrabold text-black transition hover:opacity-90"
         >
-          Lock in premium — annual £80/yr →
+          Lock in premium — annual £{XRATED_PRICING.annualGbp}/yr →
         </Link>
       </div>
     </div>

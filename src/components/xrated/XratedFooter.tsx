@@ -4,6 +4,7 @@
 // focus stays on Xrated. Uses Hammerex yellow accent (#FFB300) for headings.
 
 import { XRATED_BRAND } from "@/lib/xratedTrades";
+import { TrustBadges } from "./TrustBadges";
 
 export function XratedFooter() {
   return (
@@ -45,8 +46,11 @@ export function XratedFooter() {
           </section>
         </div>
 
-        {/* 4-column link directory — every content page reachable from here */}
-        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-8">
+        {/* 6-column link directory — every content page reachable from here.
+            Company + Legal columns required by Stripe's live-subscription
+            compliance checklist (about, contact, status, terms, privacy,
+            refunds, AUP). Renders 2-col on mobile, 3-col at sm, 6-col at lg. */}
+        <div className="mt-8 grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8 lg:grid-cols-6">
           <FooterColumn
             title="Product"
             links={[
@@ -85,6 +89,30 @@ export function XratedFooter() {
               { href: "/trade-off/tips", label: "Tips for trades" }
             ]}
           />
+          <FooterColumn
+            title="Company"
+            links={[
+              { href: "/about", label: "About" },
+              { href: "/contact", label: "Contact" },
+              { href: "/status", label: "Service status" }
+            ]}
+          />
+          <FooterColumn
+            title="Legal"
+            links={[
+              { href: "/legal/terms", label: "Terms & Conditions" },
+              { href: "/legal/privacy", label: "Privacy Policy" },
+              { href: "/legal/refunds", label: "Refund Policy" },
+              { href: "/legal/aup", label: "Acceptable Use" }
+            ]}
+          />
+        </div>
+
+        {/* Compact trust strip — Stripe + accepted payment methods.
+            Sits below the link directory so every footer surfaces the
+            "we use Stripe, we never store cards" reassurance. */}
+        <div className="mt-8 border-t border-white/10 pt-6">
+          <TrustBadges variant="compact" />
         </div>
 
         <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/60 sm:flex-row">

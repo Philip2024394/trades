@@ -11,6 +11,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { XRATED_PRICING } from "@/lib/xratedTrades";
 
 export function WhatsappLeadsNudge({
   slug,
@@ -93,7 +94,7 @@ export function WhatsappLeadsNudge({
           what made them tap.
         </p>
         <p className="mt-3 text-[13px] font-semibold leading-relaxed text-brand-text">
-          Lock them in: upgrade to annual <span className="text-brand-accent">£80/yr</span> and{" "}
+          Lock them in: upgrade to annual <span className="text-brand-accent">£{XRATED_PRICING.annualGbp}/yr</span> and{" "}
           <span className="text-brand-accent">keep 5% off Hammerex tools forever</span> as a thank-you.
         </p>
 
@@ -102,7 +103,7 @@ export function WhatsappLeadsNudge({
             href={upgradeHref}
             className="grid h-12 place-items-center rounded-xl bg-brand-accent px-4 text-sm font-extrabold text-black transition hover:opacity-90"
           >
-            Upgrade to annual — £80/yr
+            Upgrade to annual — £{XRATED_PRICING.annualGbp}/yr
           </Link>
           <button
             type="button"

@@ -57,7 +57,7 @@ async function authorise(slug: string, token: string) {
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
   if (!isPaid) {
     return {
       ok: false as const,

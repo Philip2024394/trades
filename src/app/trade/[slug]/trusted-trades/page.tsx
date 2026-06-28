@@ -13,8 +13,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
+import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { RecommendedTrades } from "@/components/xrated/profile/RecommendedTrades";
 import { tradeLabel, whatsappQuoteUrl } from "@/lib/tradeOff";
@@ -67,7 +67,7 @@ export default async function TrustedTradesPage({
   // tradies, generating backlinks that bring fresh tradies onto the
   // platform. See xratedAddons.ts for the strategic rationale.
   const tier = effectiveTier(listing);
-  const isPaid = tier === "app_trial" || tier === "app_paid";
+  const isPaid = tier === "app_trial" || tier === "app_paid" || tier === "app_verified";
 
   const primary = tradeLabel(listing.primary_trade);
   const waUrl = whatsappQuoteUrl(listing.whatsapp, listing.display_name, primary);
@@ -76,6 +76,11 @@ export default async function TrustedTradesPage({
 
   return (
     <main className="flex flex-1 flex-col pb-20 md:pb-0">
+      <TradeProfileHeader
+        listing={listing}
+        appName={`${primary} Service`}
+        backHref={`/${listing.slug}`}
+      />
       {/* Use currentPage="contact" so the hero's yellow CTA morphs into
           the 'Home page' link back to /<slug>. Saves the breadcrumb. */}
       <PremiumHero listing={listing} waUrl={waUrl} currentPage="contact" />
@@ -126,8 +131,7 @@ export default async function TrustedTradesPage({
       )}
 
       <div className="mt-auto">
-        {!isPaid && <XratedHeader />}
-        <XratedFooter />
+        <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
     </main>
   );

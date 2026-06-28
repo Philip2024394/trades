@@ -51,6 +51,23 @@ const RATING_BADGE_MIN = 3;
 
 type Variant = HammerexXratedProduct["variants"][number];
 
+/** Eyebrow label shown above the variant picker. Falls back to a sensible
+ *  default per axis, but for axis === 'custom' the trader's free-text
+ *  axis_label (e.g. "FINISH") is used when present. */
+function variantAxisLabel(
+  axis: "size" | "colour" | "model" | "material" | "custom",
+  customLabel: string | null
+): string {
+  if (axis === "colour") return "CHOOSE COLOUR";
+  if (axis === "model") return "CHOOSE MODEL";
+  if (axis === "material") return "CHOOSE MATERIAL";
+  if (axis === "custom") {
+    const trimmed = (customLabel ?? "").trim();
+    return trimmed.length > 0 ? `CHOOSE ${trimmed.toUpperCase()}` : "CHOOSE OPTION";
+  }
+  return "CHOOSE SIZE";
+}
+
 function variantStockLabel(stock: number | null | undefined): string {
   if (stock === null || stock === undefined) return "Available";
   if (stock <= 0) return "Out of stock";
@@ -113,7 +130,7 @@ export function ProductModal({
 
   const variants = product.variants ?? [];
   const hasVariants = variants.length > 0;
-  const variantAxis: "size" | "colour" =
+  const variantAxis: "size" | "colour" | "model" | "material" | "custom" =
     hasVariants ? variants[0].axis : "size";
   const selectedVariant: Variant | null =
     selectedVariantIdx !== null ? variants[selectedVariantIdx] ?? null : null;
@@ -252,7 +269,7 @@ export function ProductModal({
             issue. max-h on mobile uses dvh so the toolbar doesn't clip
             the action row. */}
         <div
-          className="relative flex w-full max-w-2xl flex-col overflow-y-auto bg-white shadow-2xl ring-4 ring-[#FFB300] sm:max-h-[92vh] sm:rounded-2xl"
+          className="relative flex w-full max-w-2xl flex-col overflow-y-auto bg-white shadow-2xl ring-4 ring-[#FFB300] sm:max-h-[92vh] sm:rounded-2xl [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           style={{ maxHeight: "100dvh" }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -475,7 +492,7 @@ function ProductDetailView({
   reviewCount: number;
   onTapStars: () => void;
   variants: Variant[];
-  variantAxis: "size" | "colour";
+  variantAxis: "size" | "colour" | "model" | "material" | "custom";
   selectedVariantIdx: number | null;
   onPickVariant: (i: number) => void;
   computedPricePence: number;
@@ -489,7 +506,10 @@ function ProductDetailView({
   matchedBulkTier: boolean;
 }) {
   const hasVariants = variants.length > 0;
-  const eyebrowLabel = variantAxis === "colour" ? "CHOOSE COLOUR" : "CHOOSE SIZE";
+  const eyebrowLabel = variantAxisLabel(
+    variantAxis,
+    hasVariants ? variants[0].axis_label ?? null : null
+  );
 
   return (
     <div>
@@ -703,7 +723,7 @@ function VariantPicker({
   basePricePence
 }: {
   variants: Variant[];
-  axis: "size" | "colour";
+  axis: "size" | "colour" | "model" | "material" | "custom";
   eyebrowLabel: string;
   selectedIdx: number | null;
   onPick: (i: number) => void;
@@ -841,7 +861,7 @@ function SizeChartOverlay({
           </svg>
         </button>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5">
+      <div className="flex-1 overflow-y-auto p-4 sm:p-5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <div className="flex w-full justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img

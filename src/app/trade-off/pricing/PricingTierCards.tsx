@@ -33,31 +33,58 @@
 // once the tier is live.
 
 import { useState } from "react";
-import { XRATED_BRAND } from "@/lib/xratedTrades";
+import { XRATED_BRAND, XRATED_PRICING } from "@/lib/xratedTrades";
+import { FX, convertGbpToCurrency, type Currency } from "@/lib/fx";
 
 const WAITLIST_MODE = true;
 
 type Billing = "monthly" | "annual";
 
-// Pricing — .99 endings for psychological-price impact. Paid £14.99/mo
-// vs £139.99/yr keeps the existing ~£40 saving. Verified at £19.99/mo or
-// £199.99/yr matches the same .99 cadence. Annual savings preserved.
+// Pricing — .99 endings for psychological-price impact. Values are
+// pulled from XRATED_PRICING (the single source of truth shared with
+// the dashboard upgrade page) and formatted to 2dp for the price chip.
+const ANNUAL_SUBTEXT = `Save £${XRATED_PRICING.annualSavingGbp} vs monthly · billed annually in GBP`;
 const PRICE = {
   paid: {
-    monthly: { gbp: "14.99", label: "/ month", subtext: "Billed monthly in GBP" },
-    annual: { gbp: "139.99", label: "/ year", subtext: "Save £40 vs monthly · billed annually in GBP" }
+    monthly: { gbp: XRATED_PRICING.monthlyGbp.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
+    annual: { gbp: XRATED_PRICING.annualGbp.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
   },
   verified: {
-    monthly: { gbp: "19.99", label: "/ month", subtext: "Billed monthly in GBP" },
-    annual: { gbp: "199.99", label: "/ year", subtext: "Save £40 vs monthly · billed annually in GBP" }
+    monthly: { gbp: XRATED_PRICING.verifiedMonthlyGbp.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
+    annual: { gbp: XRATED_PRICING.verifiedAnnualGbp.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
   }
 } as const;
 
-export function PricingTierCards() {
+// Format an approximate price in the visitor's display currency.
+// We deliberately round to whole units (no decimals) and prefix with
+// "≈" so customers cannot mistake this for the canonical charge.
+// Stripe Checkout still bills in GBP; the bank converts at its own
+// prevailing rate. Returns null when no approximation should render
+// (currency missing or = GBP).
+function formatApprox(gbp: number, currency: Currency | null): string | null {
+  if (!currency || currency === "GBP") return null;
+  const converted = convertGbpToCurrency(gbp, currency);
+  // Round to nearest whole unit for marketing display — no false
+  // precision on indicative rates.
+  const rounded = Math.round(converted);
+  const symbol = FX[currency].symbol;
+  return `${symbol}${rounded.toLocaleString("en-US")} ${currency}`;
+}
+
+export function PricingTierCards({
+  displayCurrency = null
+}: {
+  /** Server-detected display currency from the visitor's IP country.
+   *  When set (and not GBP) the cards render an "≈ $X USD" approximate
+   *  row beneath the canonical GBP price. */
+  displayCurrency?: Currency | null;
+}) {
   const [billing, setBilling] = useState<Billing>("annual");
   const paid = PRICE.paid[billing];
   const verified = PRICE.verified[billing];
   const isAnnual = billing === "annual";
+  const paidApprox = formatApprox(parseFloat(paid.gbp), displayCurrency);
+  const verifiedApprox = formatApprox(parseFloat(verified.gbp), displayCurrency);
 
   return (
     <div className="flex flex-col gap-6">
@@ -92,7 +119,7 @@ export function PricingTierCards() {
                       color: active ? XRATED_BRAND.accent : "#0A0A0A"
                     }}
                   >
-                    Save £40
+                    Save £{XRATED_PRICING.annualSavingGbp}
                   </span>
                 )}
               </button>
@@ -175,7 +202,7 @@ export function PricingTierCards() {
               the image never blocks the Start-trial tap target. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://ik.imagekit.io/9mrgsv2rp/Untitledzxczxczxzzzz.png"
+            src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b93a15d174d-Untitledzxczxczxzzzz.png"
             alt=""
             aria-hidden="true"
             className="pointer-events-none absolute right-3 top-6 h-16 w-16 select-none object-contain drop-shadow-md sm:h-20 sm:w-20"
@@ -195,6 +222,12 @@ export function PricingTierCards() {
             {isAnnual && (
               <p className="mt-0.5 text-[10px] font-semibold text-neutral-600 sm:text-[11px]">
                 ~£11.67/mo
+              </p>
+            )}
+            {paidApprox && (
+              <p className="mt-1 text-[10px] leading-tight text-neutral-500 sm:text-[11px]">
+                <span className="font-bold text-neutral-700">≈ {paidApprox}</span>
+                {" · "}billed in GBP, your bank converts
               </p>
             )}
             <div
@@ -280,7 +313,7 @@ export function PricingTierCards() {
               pointer-events-none so it never blocks the CTA tap target. */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="https://ik.imagekit.io/9mrgsv2rp/Untitledasdasd.png"
+            src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/4e5494b7bb75-Untitledasdasd.png"
             alt=""
             aria-hidden="true"
             className="pointer-events-none absolute right-[102px] top-20 h-32 w-32 -translate-y-1/2 select-none object-contain drop-shadow-lg sm:h-40 sm:w-40"
@@ -304,6 +337,12 @@ export function PricingTierCards() {
             {isAnnual && (
               <p className="mt-0.5 text-[10px] font-semibold text-white/60 sm:text-[11px]">
                 Works out at ~£16.67/mo
+              </p>
+            )}
+            {verifiedApprox && (
+              <p className="mt-1 text-[10px] leading-tight text-white/65 sm:text-[11px]">
+                <span className="font-bold text-white/90">≈ {verifiedApprox}</span>
+                {" · "}billed in GBP, your bank converts
               </p>
             )}
             <div
@@ -411,6 +450,17 @@ export function PricingTierCards() {
           </div>
         </article>
       </div>
+
+      {/* Worldwide-pricing footnote — sits between the tier grid and
+          the trial bar so every non-GBP visitor sees the FX explanation
+          immediately after reading the approximate row inside the cards.
+          Renders for all visitors (including GBP) because the no-FX-fee
+          line is reassuring even when the customer is already on GBP. */}
+      <p className="text-center text-[11px] leading-relaxed text-neutral-500 sm:text-xs">
+        Prices in GBP. Stripe charges your card in GBP — your bank
+        converts at its prevailing rate. No fee from us for international
+        cards.
+      </p>
 
       {/* Trial assurance bar */}
       <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-center text-xs text-neutral-600 sm:text-sm">

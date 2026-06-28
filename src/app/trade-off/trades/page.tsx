@@ -19,9 +19,16 @@ import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
-import { tradeHeroFor } from "@/lib/tradeOffHeroes";
-import { tradeLabel } from "@/lib/tradeOff";
+import { tradeHeroFor, BANNER_FALLBACK_BY_TRADE } from "@/lib/tradeOffHeroes";
+import { tradeLabel, TRADE_OFF_TRADES } from "@/lib/tradeOff";
 import { DEMO_TRADE_SEEDS } from "@/lib/demoTradeSeeds";
+import {
+  TemplatesGallery,
+  type GalleryTrade,
+  type GalleryDemoCard
+} from "@/components/trade-off/TemplatesGallery";
+import { TemplatesHeroCopy } from "@/components/trade-off/TemplatesHeroCopy";
+import { sectionsForTrade } from "@/lib/tradeTemplateSections";
 
 export const revalidate = 3600;
 
@@ -80,8 +87,125 @@ function ratingLabelFor(avg: number): string {
   return "Good";
 }
 
-// Build one card per demo seed. Trade name = tradeLabel(seed.trade_slug).
-// Services = first three priced services. Reviews aggregated from seed.reviews.
+// Slugs whose listings sell *products* (catalogue + cart + delivery)
+// rather than on-site services. These get a separate "Templates for
+// selling products" header on the gallery so a yard / merchant /
+// rental shop can land on the right layout without scrolling past 20
+// service-tradie examples.
+const PRODUCT_SELLING_SLUGS = new Set([
+  "building-merchant",
+  "builders-supplies",
+  "tool-hire",
+  "heavy-machinery"
+]);
+
+// Index demo seeds by trade slug so the gallery can attach a live-demo
+// link to any trade that has a seeded profile.
+const DEMO_BY_TRADE: Record<string, string> = Object.fromEntries(
+  DEMO_TRADE_SEEDS.map((seed) => [seed.trade_slug, `/${seed.profile_slug}`])
+);
+
+// For trades that don't have their own seeded demo (the 67 Phase 2
+// additions), walk the banner fallback chain to find the closest
+// existing trade that DOES have a demo. Same logic as banner
+// inheritance — Kitchen Manufacture → Kitchen Fitter demo, EV
+// Charger Installer → Electrician demo, etc. Guarantees every
+// "View this template" card lands on a live app, never the signup
+// form.
+function demoHrefForTrade(slug: string): string | null {
+  if (DEMO_BY_TRADE[slug]) return DEMO_BY_TRADE[slug];
+  const seen = new Set<string>();
+  let cur: string | undefined = BANNER_FALLBACK_BY_TRADE[slug];
+  while (cur && !seen.has(cur)) {
+    if (DEMO_BY_TRADE[cur]) return DEMO_BY_TRADE[cur];
+    seen.add(cur);
+    cur = BANNER_FALLBACK_BY_TRADE[cur];
+  }
+  return null;
+}
+
+// Strip the work-type suffix from a label so the description copy
+// references the topic ("kitchens") rather than the label ("Kitchen
+// Sales"). Then pluralise so the prose reads naturally: "fitting
+// stairs" not "fitting stair", "making kitchens" not "making kitchen".
+// Falls through gracefully for non-topic labels.
+function topicFromLabel(label: string): string {
+  const stripped = label
+    .replace(/\s*(Sales|Manufacture|Manufacturer|Installation|Installer|Fitter|Maker|Workshop|Showroom|Shop|Merchant|Wholesaler|Supplier|Supplies|Hire)\s*$/i, "")
+    .trim()
+    .toLowerCase();
+  return pluraliseTopic(stripped);
+}
+
+// Light pluraliser — only enough for the suffix-stripped topics that
+// flow into the description templates (stair, kitchen, door, window,
+// conservatory, garden room, etc.). Not a general English pluraliser.
+function pluraliseTopic(noun: string): string {
+  if (!noun) return noun;
+  // Already plural (ends in "s" not preceded by certain digraphs) — leave it.
+  if (/(?:[^s]s)$/.test(noun) && !/(?:ss|us)$/.test(noun)) return noun;
+  if (/(?:s|x|z|ch|sh)$/.test(noun)) return noun + "es";
+  if (/[^aeiou]y$/.test(noun)) return noun.slice(0, -1) + "ies";
+  return noun + "s";
+}
+
+// One-line description per trade — explains what the app is FOR in
+// plain English so a visitor browsing the gallery instantly knows
+// what kind of business each card targets. Derived from the trade's
+// primary section + topic so we get sensible copy for all 100+
+// trades without hand-writing each one.
+function descriptionForTrade(slug: string, label: string): string {
+  const sections = sectionsForTrade(slug);
+  const primary = sections[0];
+  const topic = topicFromLabel(label) || label.toLowerCase();
+  switch (primary) {
+    case "sales":
+      return `An app for selling ${topic} and related parts. Catalogue, cart, dispatch and delivery — all included.`;
+    case "manufacture":
+      return `An app for making and selling ${topic} direct to the public. Own-brand catalogue with cart and delivery.`;
+    case "installation":
+      return `An app for fitting ${topic} on-site. Buyers request a quote; you visit and price the job.`;
+    case "hire":
+      return `An app for renting ${topic} by the day, week, or month. Buyers book through WhatsApp.`;
+    case "service":
+    default:
+      return `An app for ${topic} as a labour service. Past-work gallery, priced services, WhatsApp quotes.`;
+  }
+}
+
+// Source of truth for the gallery — every trade in TRADE_OFF_TRADES
+// gets a card. Banner falls back via tradeHeroFor() chain; trades
+// without inherited art render the yellow brand-coloured placeholder.
+const ALL_GALLERY_TRADES: GalleryTrade[] = TRADE_OFF_TRADES.map((t) => ({
+  slug: t.slug,
+  label: t.label,
+  description: descriptionForTrade(t.slug, t.label),
+  bannerUrl: tradeHeroFor(t.slug),
+  liveDemoHref: demoHrefForTrade(t.slug)
+}));
+
+// Demo business-card lookup — keyed by trade_slug. Only trades that
+// have their OWN seeded demo get an entry; we deliberately skip the
+// banner-inheritance walk used for liveDemoHref because borrowing
+// another tradesperson's name + WhatsApp for a different trade's
+// share modal would be misleading. Cards whose slug is missing from
+// this map render WITHOUT the Card button (per the design spec).
+const DEMO_BY_SLUG: Record<string, GalleryDemoCard> = Object.fromEntries(
+  DEMO_TRADE_SEEDS.map((seed) => [
+    seed.trade_slug,
+    {
+      displayName: seed.display_name,
+      tradeLabel: tradeLabel(seed.trade_slug),
+      whatsapp: seed.whatsapp,
+      email: seed.email,
+      profileUrl: absolute(`/${seed.profile_slug}`)
+    } satisfies GalleryDemoCard
+  ])
+);
+
+// Legacy data shape — kept for reference but no longer rendered. The
+// new gallery uses ALL_GALLERY_TRADES (above) and runs everything
+// through the TemplatesGallery client component.
 const TRADES: TradeExample[] = DEMO_TRADE_SEEDS.map((seed) => {
   const ratings = seed.reviews.map((r) => r.rating);
   const avg =
@@ -127,30 +251,15 @@ export default function TradeExamplesPage() {
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface, yellow accent on the punch word. */}
+      {/* Hero — black surface, yellow accent. Positions the gallery
+          as THE construction app store: more templates than anywhere
+          else, every trade covered, build your app in five minutes. */}
       <section
         className="relative overflow-hidden border-b border-neutral-200"
         style={{ background: "#0A0A0A" }}
       >
         <div className="relative mx-auto max-w-5xl px-4 pb-12 pt-12 sm:px-6 sm:pb-16 sm:pt-16">
-          <p
-            className="text-xs font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Built for every trade
-          </p>
-          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            See what a profile looks like for{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>your trade.</span>
-          </h1>
-          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            {TRADES.length} live trade examples — from bricklayers to
-            decorators. Each shows the exact services, prices and reviews
-            your customers see when they land on your xratedtrade.com URL.{" "}
-            <span className="font-bold text-white">
-              Pick the one that matches your trade.
-            </span>
-          </p>
+          <TemplatesHeroCopy totalCount={TRADE_OFF_TRADES.length} />
           <p className="mt-3 max-w-2xl text-xs leading-relaxed text-white/70 sm:text-sm">
             You&rsquo;ll have{" "}
             <span className="font-bold text-white">full edit control</span>{" "}
@@ -159,155 +268,24 @@ export default function TradeExamplesPage() {
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-white/70">
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> Real prices, not placeholders
+              <Dot accent /> {TRADE_OFF_TRADES.length} trades · 5 categories
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> Tap any card to open the live demo
+              <Dot accent /> Search + filter for instant matches
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Dot accent /> 14-day free trial — no card
+              <Dot accent /> Five minutes to live — no card
             </span>
           </div>
         </div>
       </section>
 
-      {/* Section 1 — trade examples grid. Mobile 1-col, tablet 2-col,
-          desktop 3-col. Yellow trade-icon badge top-left, three priced
-          services, review snippet, View profile link. */}
-      <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
-        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          {TRADES.length} trade examples
-        </h2>
-        <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          Every card is a real example of how your profile renders for that
-          trade. The View profile link opens the live demo so you can
-          click through every section.
-        </p>
-
-        <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {TRADES.map((t) => {
-            const banner = tradeHeroFor(t.slug);
-            return (
-              <li key={t.href} className="h-full">
-                <a
-                  href={t.href}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
-                >
-                  {/* Landscape banner image — same art a tradesperson of
-                      this trade gets as their default hero on /<slug>. */}
-                  <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
-                    {banner ? (
-                      /* eslint-disable-next-line @next/next/no-img-element */
-                      <img
-                        src={banner}
-                        alt={`Default Xrated profile hero banner for a ${t.trade.toLowerCase()}`}
-                        className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div
-                        aria-hidden="true"
-                        className="absolute inset-0"
-                        style={{ background: XRATED_BRAND.accent }}
-                      />
-                    )}
-                    {/* Bottom-up gradient so the trade-name overlay reads
-                        cleanly without darkening the whole image. */}
-                    <div
-                      aria-hidden="true"
-                      className="absolute inset-x-0 bottom-0 h-1/2"
-                      style={{
-                        background:
-                          "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0) 100%)"
-                      }}
-                    />
-                    {/* Example chip top-right */}
-                    <span className="absolute right-3 top-3 rounded-full bg-black/80 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
-                      Example
-                    </span>
-                    {/* Trade name overlay bottom-left */}
-                    <div className="absolute inset-x-0 bottom-0 px-4 pb-3 sm:px-5 sm:pb-4">
-                      <h3 className="text-xl font-extrabold leading-tight text-white drop-shadow sm:text-2xl">
-                        {t.trade}
-                      </h3>
-                      <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
-                        Live demo profile
-                        <span
-                          aria-hidden="true"
-                          className="transition group-hover:translate-x-0.5"
-                          style={{ color: XRATED_BRAND.accent }}
-                        >
-                          &rarr;
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Below-image content — compact services + review row. */}
-                  <div className="flex flex-1 flex-col p-4 sm:p-5">
-                    <p className="text-xs leading-relaxed text-neutral-600">
-                      {t.blurb}
-                    </p>
-
-                    {/* Three priced services — always render 3 rows (placeholder
-                        on demos with fewer services) so cards stay even-height
-                        and the View example CTA sits at the same level across
-                        every card. */}
-                    <ul className="mt-3 flex flex-col gap-1.5">
-                      {Array.from({ length: 3 }).map((_, i) => {
-                        const s = t.services[i];
-                        return (
-                          <li
-                            key={s?.title ?? `placeholder-${i}`}
-                            className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
-                          >
-                            <span className="text-neutral-700">
-                              {s?.title ?? <span className="text-neutral-300">&mdash;</span>}
-                            </span>
-                            <span className="shrink-0 font-extrabold text-neutral-900">
-                              {s?.price ?? <span className="text-neutral-300">&mdash;</span>}
-                            </span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-
-                    {/* Review + CTA pair — wrapped so they always sit
-                        TOGETHER at the bottom of the card. mt-auto on
-                        the wrapper pushes the pair down regardless of
-                        how much content sits above. Review sits
-                        directly above the CTA, no gap, no rating
-                        label badge. */}
-                    <div className="mt-auto flex flex-col gap-3 pt-4">
-                      <div className="flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
-                        <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
-                          <span style={{ color: XRATED_BRAND.accent }}>★</span>
-                          {t.reviewStars}
-                        </span>
-                        <span className="text-neutral-500">
-                          &mdash; {t.reviewCount} reviews
-                        </span>
-                      </div>
-                      <span
-                        className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
-                        style={{
-                          background: XRATED_BRAND.accent,
-                          boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
-                        }}
-                      >
-                        View example
-                        <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
-                          &rarr;
-                        </span>
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      </section>
+      {/* Templates gallery — sticky search + section filter chips
+          (All · Service · Installation · Manufacture · Sales · Hire)
+          on top, then the cards group themselves into the right
+          sections. Trades like Stairs / Kitchens / Windows
+          intentionally show up in multiple sections. */}
+      <TemplatesGallery trades={ALL_GALLERY_TRADES} demoBySlug={DEMO_BY_SLUG} />
 
       {/* Section 2 — "What every trade gets" */}
       <section className="mx-auto max-w-5xl px-4 pt-14 sm:px-6 sm:pt-20">
@@ -392,6 +370,143 @@ export default function TradeExamplesPage() {
 
       <XratedFooter />
     </main>
+  );
+}
+
+function TradesGroup({
+  eyebrow,
+  title,
+  subtitle,
+  trades
+}: {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  trades: TradeExample[];
+}) {
+  if (trades.length === 0) return null;
+  return (
+    <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
+      <p
+        className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+        style={{ color: XRATED_BRAND.accent }}
+      >
+        {eyebrow}
+      </p>
+      <h2 className="mt-1 text-xl font-extrabold text-neutral-900 sm:text-2xl">
+        {title}
+      </h2>
+      <p className="mt-1 max-w-3xl text-xs text-neutral-500 sm:text-sm">
+        {subtitle}
+      </p>
+
+      <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {trades.map((t) => {
+          const banner = tradeHeroFor(t.slug);
+          return (
+            <li key={t.href} className="h-full">
+              <a
+                href={t.href}
+                className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
+              >
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-neutral-100">
+                  {banner ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={banner}
+                      alt={`Default Xrated profile hero banner for a ${t.trade.toLowerCase()}`}
+                      className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0"
+                      style={{ background: XRATED_BRAND.accent }}
+                    />
+                  )}
+                  <div
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 h-1/2"
+                    style={{
+                      background:
+                        "linear-gradient(to top, rgba(0,0,0,0.78) 0%, rgba(0,0,0,0.45) 50%, rgba(0,0,0,0) 100%)"
+                    }}
+                  />
+                  <span className="absolute right-3 top-3 rounded-full bg-black/80 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white backdrop-blur">
+                    Example
+                  </span>
+                  <div className="absolute inset-x-0 bottom-0 px-4 pb-3 sm:px-5 sm:pb-4">
+                    <h3 className="text-xl font-extrabold leading-tight text-white drop-shadow sm:text-2xl">
+                      {t.trade}
+                    </h3>
+                    <p className="mt-1 inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-wider text-white">
+                      Live demo profile
+                      <span
+                        aria-hidden="true"
+                        className="transition group-hover:translate-x-0.5"
+                        style={{ color: XRATED_BRAND.accent }}
+                      >
+                        &rarr;
+                      </span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-1 flex-col p-4 sm:p-5">
+                  <p className="text-xs leading-relaxed text-neutral-600">
+                    {t.blurb}
+                  </p>
+
+                  <ul className="mt-3 flex flex-col gap-1.5">
+                    {Array.from({ length: 3 }).map((_, i) => {
+                      const s = t.services[i];
+                      return (
+                        <li
+                          key={s?.title ?? `placeholder-${i}`}
+                          className="flex items-baseline justify-between gap-3 border-b border-dashed border-neutral-200 pb-1.5 text-xs sm:text-sm"
+                        >
+                          <span className="text-neutral-700">
+                            {s?.title ?? <span className="text-neutral-300">&mdash;</span>}
+                          </span>
+                          <span className="shrink-0 font-extrabold text-neutral-900">
+                            {s?.price ?? <span className="text-neutral-300">&mdash;</span>}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+
+                  <div className="mt-auto flex flex-col gap-3 pt-4">
+                    <div className="flex items-center gap-2 rounded-lg bg-neutral-50 px-3 py-2 text-xs">
+                      <span className="inline-flex items-center gap-1 font-extrabold text-neutral-900">
+                        <span style={{ color: XRATED_BRAND.accent }}>★</span>
+                        {t.reviewStars}
+                      </span>
+                      <span className="text-neutral-500">
+                        &mdash; {t.reviewCount} reviews
+                      </span>
+                    </div>
+                    <span
+                      className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:shadow-md sm:text-sm"
+                      style={{
+                        background: XRATED_BRAND.accent,
+                        boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
+                      }}
+                    >
+                      View example
+                      <span aria-hidden="true" className="transition group-hover:translate-x-0.5">
+                        &rarr;
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

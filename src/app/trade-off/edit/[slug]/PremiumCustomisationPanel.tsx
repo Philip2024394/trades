@@ -6,6 +6,8 @@
 // itself just collects + posts.
 
 import { useMemo, useState } from "react";
+import { InlinePhotoInput } from "@/components/trade-off/InlinePhotoInput";
+import { HelpInfoButton } from "@/components/trade-off/HelpInfoButton";
 import { AVAILABILITY_OPTIONS } from "@/lib/xratedAvailability";
 import {
   PRICING_UNIT_OTHER_VALUE,
@@ -53,6 +55,7 @@ type Patch = {
   running_marquee: string;
   promo_text: string;
   accepting_jobs: boolean;
+  phone_calls_enabled: boolean;
   services_offered: string[];
   priced_services: PricedService[];
   faq_items: FaqItem[];
@@ -96,7 +99,9 @@ export function PremiumCustomisationPanel({
   slug,
   editToken,
   primaryTrade,
-  initial
+  initial,
+  essentialsComplete = false,
+  isMerchantTrade = false
 }: {
   slug: string;
   editToken: string;
@@ -105,8 +110,27 @@ export function PremiumCustomisationPanel({
   // the generic unit set.
   primaryTrade: string | null;
   initial: Patch;
+  /** Computed server-side from the listing record. When false (Day-1
+   *  tradespeople who haven't filled the basics yet), advanced sections
+   *  (Trust, Standby, FAQ, Trusted Trades, Visibility) are collapsed
+   *  behind a single "Show advanced settings" toggle so the dashboard
+   *  doesn't overwhelm. Once they pass the threshold, the toggle opens
+   *  by default and the panel shows everything. */
+  essentialsComplete?: boolean;
+  /** Computed server-side from `isMerchantGradeTrade(primary_trade)`.
+   *  When true (Building Merchant, Builders Supplies, Tool Hire, Heavy
+   *  Machinery, Kitchen / Stair / Window / Security fitter), this is a
+   *  PRODUCT-SELLING listing — we hide service-only sections (Services
+   *  offered, Priced services, Trades On Standby) and surface a
+   *  "Manage products" CTA pointing at the Shop Mode editor instead. */
+  isMerchantTrade?: boolean;
 }) {
   const [state, setState] = useState<Patch>(initial);
+  // Progressive disclosure — start collapsed for incomplete listings so
+  // a first-time tradesperson sees a calm Essentials-first dashboard.
+  // Once they pass the bar (or click to expand), the advanced layer
+  // unlocks and they can polish freely.
+  const [showAdvanced, setShowAdvanced] = useState<boolean>(essentialsComplete);
   // Trade-aware pricing units. When the saved unit isn't in the curated list,
   // we render an "Other (custom)" sentinel and let the tradie type freely so
   // existing data is never silently dropped.
@@ -288,8 +312,41 @@ export function PremiumCustomisationPanel({
         const n = Number(state.quote_turnaround_hours);
         return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
       })();
+      // Strip visual customisation fields from the payload — those are
+      // now owned by the App Studio sub-page (/app-studio). Including
+      // them here would clobber whatever the tradesperson just edited
+      // there with the stale `initial` snapshot this panel was mounted
+      // with. Operational fields (accepting_jobs, phone_calls_enabled,
+      // hours, services, trust etc.) stay on this panel.
+      const {
+        theme_color: _theme_color,
+        button_text_color: _button_text_color,
+        cta_button_effect: _cta_button_effect,
+        hero_text_line1: _hero_text_line1,
+        hero_text_line2: _hero_text_line2,
+        hero_text_line2_color: _hero_text_line2_color,
+        hero_text_tagline: _hero_text_tagline,
+        hero_text_effect: _hero_text_effect,
+        avatar_frame_style: _avatar_frame_style,
+        profile_placement: _profile_placement,
+        running_marquee: _running_marquee,
+        promo_text: _promo_text,
+        ...operationalState
+      } = state;
+      void _theme_color;
+      void _button_text_color;
+      void _cta_button_effect;
+      void _hero_text_line1;
+      void _hero_text_line2;
+      void _hero_text_line2_color;
+      void _hero_text_tagline;
+      void _hero_text_effect;
+      void _avatar_frame_style;
+      void _profile_placement;
+      void _running_marquee;
+      void _promo_text;
       const payload = {
-        ...state,
+        ...operationalState,
         services_offered,
         faq_items,
         priced_services,
@@ -336,6 +393,9 @@ export function PremiumCustomisationPanel({
         setErr(json.error ?? "Save failed.");
       } else {
         setMsg("Saved.");
+        // Tell any LivePreviewIframe on the page to refresh — same
+        // contract as App Studio so we don't need a second event name.
+        window.dispatchEvent(new CustomEvent("appstudio:saved"));
       }
     } catch {
       setErr("Network error — try again.");
@@ -345,129 +405,103 @@ export function PremiumCustomisationPanel({
   }
 
   return (
-    <div className="space-y-4 rounded-xl border border-brand-line bg-brand-surface p-5">
-      <div>
-        <h2 className="text-lg font-extrabold">Premium customisation</h2>
-        <p className="mt-1 text-xs text-brand-muted">
-          Visual tweaks for your Xrated App profile. Saved changes go live on
-          your public page immediately.
-        </p>
-      </div>
+    <div className="space-y-5">
+      {/* Profile dashboard header + App Studio handoff card removed
+          per design — the App Details page header at the top of the
+          edit page already sets the context, and App Studio is reachable
+          from the side drawer. Keeping this surface free of nav clutter
+          so the user only sees fields to edit. */}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        {/* Theme colour picker removed — all tradies are locked to the
-            Hammerex brand yellow (#FFB300). The DB column stays so existing
-            data doesn't break, but the form no longer exposes it. */}
-        <Field label="Button text colour">
-          <input
-            type="color"
-            value={state.button_text_color || "#FFFFFF"}
-            onChange={(e) => set("button_text_color", e.target.value)}
-            className="h-11 w-full cursor-pointer rounded-md border border-brand-line bg-brand-bg p-1"
-          />
-        </Field>
+        {/* "Accepting new jobs" toggle removed per design — accepting
+            is the default, and the pause state isn't a setting most
+            tradespeople reach for from this page. accepting_jobs
+            column stays in the DB; surfaced from Insights / status
+            controls in a future pass if needed. */}
 
-        <Field label="CTA button effect">
-          <Select
-            value={state.cta_button_effect}
-            onChange={(v) => set("cta_button_effect", v as Patch["cta_button_effect"])}
-            options={["none", "pulse", "glow", "shake"]}
-          />
-        </Field>
-        <Field label="Hero text effect">
-          <Select
-            value={state.hero_text_effect}
-            onChange={(v) => set("hero_text_effect", v as Patch["hero_text_effect"])}
-            options={["none", "shimmer", "dance", "underline"]}
-          />
-        </Field>
-
-        <Field label="Hero line 1">
-          <Text
-            value={state.hero_text_line1}
-            onChange={(v) => set("hero_text_line1", v)}
-            placeholder="e.g. Drywall done right."
-          />
-        </Field>
-        <Field label="Hero line 2">
-          <Text
-            value={state.hero_text_line2}
-            onChange={(v) => set("hero_text_line2", v)}
-            placeholder="e.g. Manchester · since 2014"
-          />
-        </Field>
-
-        <Field label="Hero line 2 colour">
-          <input
-            type="color"
-            value={state.hero_text_line2_color || "#FFB300"}
-            onChange={(e) => set("hero_text_line2_color", e.target.value)}
-            className="h-11 w-full cursor-pointer rounded-md border border-brand-line bg-brand-bg p-1"
-          />
-        </Field>
-        <Field label="Hero tagline">
-          <Text
-            value={state.hero_text_tagline}
-            onChange={(v) => set("hero_text_tagline", v)}
-            placeholder="One short pitch line"
-          />
-        </Field>
-
-        <Field label="Avatar frame style">
-          <Select
-            value={state.avatar_frame_style}
-            onChange={(v) => set("avatar_frame_style", v as Patch["avatar_frame_style"])}
-            options={["none", "ring", "pulse", "dance"]}
-          />
-        </Field>
-        <Field label="Profile placement">
-          <Select
-            value={state.profile_placement}
-            onChange={(v) => set("profile_placement", v as Patch["profile_placement"])}
-            options={["center", "top-left", "bottom-left"]}
-          />
-        </Field>
-
-        <Field label="Running marquee text" full>
-          <Text
-            value={state.running_marquee}
-            onChange={(v) => set("running_marquee", v)}
-            placeholder="e.g. Booking July · Manchester · 07xxx xxx xxx"
-          />
-        </Field>
-
-        <Field label="Promo text (footer scroll)" full>
-          <Text
-            value={state.promo_text}
-            onChange={(v) => set("promo_text", v)}
-            placeholder="e.g. Free same-week site visits across Greater Manchester"
-          />
-        </Field>
-
-        <Field label="Accepting new jobs" full>
+        {/* "Receive phone calls" toggle hidden for merchant trades —
+            a shop's phone number lives on the storefront naturally and
+            the call/WhatsApp split doesn't apply the same way. Service
+            trades still see the toggle. */}
+        {!isMerchantTrade && (
+        <Field
+          label="Receive phone calls"
+          full
+          help="A visible phone number measurably lifts contact rates from over-50 buyers who prefer to call. Turn OFF only if you're WhatsApp-only by choice — your Business Card and Contact page will hide the number cleanly."
+        >
           <label className="inline-flex items-center gap-2 text-sm">
             <input
               type="checkbox"
-              checked={state.accepting_jobs}
-              onChange={(e) => set("accepting_jobs", e.target.checked)}
+              checked={state.phone_calls_enabled}
+              onChange={(e) => set("phone_calls_enabled", e.target.checked)}
               className="h-4 w-4 accent-brand-accent"
             />
-            <span>{state.accepting_jobs ? "Yes — show as accepting" : "No — show as paused"}</span>
+            <span>
+              {state.phone_calls_enabled
+                ? "Yes — show phone on Business Card + Call Now on contact page"
+                : "No — WhatsApp & email only (phone hidden)"}
+            </span>
           </label>
         </Field>
+        )}
       </div>
 
+      {/* "Your shop" handoff CTA removed — the new inline 4-product
+          editor in TradeOffForm + the "Add-ons" / Shop Mode drawer
+          link cover the same path without doubling up.
+
+          Advanced settings expander is hidden for merchant trades —
+          Trust & logistics flags (DBS, transport, tools, site visits,
+          qualifications, trade memberships) are tradesperson-specific
+          and don't apply to a shop. Service trades still see it. */}
+      {!isMerchantTrade && (
+      <button
+        type="button"
+        onClick={() => setShowAdvanced((s) => !s)}
+        aria-expanded={showAdvanced}
+        className="flex w-full items-center justify-between gap-4 rounded-2xl border border-neutral-200 bg-white p-5 text-left shadow-sm transition hover:border-neutral-400 sm:p-6"
+      >
+        <span className="min-w-0">
+          <p
+            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+            style={{ color: "var(--trade-accent, #FFB300)" }}
+          >
+            {showAdvanced ? "Polish settings (open)" : "Polish settings (5 hidden)"}
+          </p>
+          <p className="mt-1 text-base font-extrabold text-neutral-900 sm:text-lg">
+            {showAdvanced
+              ? "Hide advanced settings"
+              : "Show advanced settings"}
+          </p>
+          <p className="mt-0.5 text-[13px] leading-snug text-neutral-500">
+            {showAdvanced
+              ? "Trust signals, standby feed, FAQ, trusted trades and visibility toggles are open below."
+              : "Get the basics live first. Trust signals, FAQ, trusted trades, and visibility toggles all live here when you're ready."}
+          </p>
+        </span>
+        <span
+          aria-hidden="true"
+          className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-neutral-900 transition ${showAdvanced ? "rotate-180" : ""}`}
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
+      </button>
+      )}
+
+      {!isMerchantTrade && showAdvanced && (
+        <>
       {/* ─── Trust & logistics ─── */}
-      <div className="space-y-3 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <div>
-          <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
+      <div className="space-y-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-extrabold text-neutral-900">
             Trust & logistics
           </h3>
-          <p className="mt-1 text-[11px] text-brand-muted">
-            What UK customers want to know before they message — insurance,
-            transport, qualifications, minimum job size and your current
-            availability.
-          </p>
+          <HelpInfoButton
+            title="Trust & logistics"
+            body="Every badge here removes a reason for a buyer to hesitate. Insurance, qualifications and minimum job size answer the silent questions that stop hesitant buyers from messaging — each one ticked typically lifts contact-to-quote conversion."
+          />
         </div>
         {/* Yes/no flag grid */}
         <div className="grid gap-2 sm:grid-cols-2">
@@ -518,7 +552,7 @@ export function PremiumCustomisationPanel({
                   set("insurance_cover_gbp", Number(next));
                 }
               }}
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
             >
               <option value="">— Not specified —</option>
               {INSURANCE_AMOUNTS.map((opt) => (
@@ -544,7 +578,7 @@ export function PremiumCustomisationPanel({
                   );
                 }}
                 placeholder="e.g. 750000"
-                className="mt-2 h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                className="mt-2 h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
               />
             )}
           </Field>
@@ -552,7 +586,7 @@ export function PremiumCustomisationPanel({
 
         {/* Qualifications chips */}
         <Field label="Qualifications" full>
-          <p className="mb-1.5 text-[11px] text-brand-muted">
+          <p className="mb-1.5 text-[13px] leading-snug text-neutral-500">
             Tap to select. Custom certs can be typed in — press Enter to add.
           </p>
           <ChipMultiSelect
@@ -575,7 +609,7 @@ export function PremiumCustomisationPanel({
               }}
               placeholder="Add a custom cert (e.g. WaterSafe)"
               maxLength={80}
-              className="h-11 flex-1 rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+              className="h-11 flex-1 rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
             />
             <button
               type="button"
@@ -583,7 +617,7 @@ export function PremiumCustomisationPanel({
                 addCustomChip("qualifications", qualificationInput);
                 setQualificationInput("");
               }}
-              className="inline-flex h-11 items-center rounded-md border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
+              className="inline-flex h-11 items-center rounded-xl border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
             >
               Add
             </button>
@@ -612,7 +646,7 @@ export function PremiumCustomisationPanel({
               }}
               placeholder="Add a custom membership"
               maxLength={80}
-              className="h-11 flex-1 rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+              className="h-11 flex-1 rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
             />
             <button
               type="button"
@@ -620,7 +654,7 @@ export function PremiumCustomisationPanel({
                 addCustomChip("trade_memberships", membershipInput);
                 setMembershipInput("");
               }}
-              className="inline-flex h-11 items-center rounded-md border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
+              className="inline-flex h-11 items-center rounded-xl border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
             >
               Add
             </button>
@@ -641,25 +675,12 @@ export function PremiumCustomisationPanel({
                 )
               }
               placeholder="e.g. 150"
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
             />
           </Field>
-          <Field label="Quote turnaround (hours)">
-            <input
-              type="number"
-              min={0}
-              step={1}
-              value={state.quote_turnaround_hours ?? ""}
-              onChange={(e) =>
-                set(
-                  "quote_turnaround_hours",
-                  e.target.value === "" ? null : Number(e.target.value) || 0
-                )
-              }
-              placeholder="e.g. 24"
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
-            />
-          </Field>
+          {/* "Quote turnaround (hours)" removed per design — duplicated
+              the "Quote availability" text field and confused users
+              into thinking it was required. */}
         </div>
 
         <Field label="Quote availability" full>
@@ -679,7 +700,7 @@ export function PremiumCustomisationPanel({
             }
             placeholder="e.g. Finishing extension in Salford — ready 14 Nov"
             maxLength={500}
-            className="w-full rounded-md border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+            className="w-full rounded-xl border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
           />
           <p className="mt-1 text-right text-[10px] text-brand-muted">
             {state.current_status_note.length}/500
@@ -691,22 +712,24 @@ export function PremiumCustomisationPanel({
             type="date"
             value={state.ready_date || ""}
             onChange={(e) => set("ready_date", e.target.value)}
-            className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
+            className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
           />
         </Field>
       </div>
 
-      {/* ─── Trades On Standby ─── */}
-      <div className="space-y-3 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <div>
-          <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
+      {/* Trades On Standby — service-trade only; hidden for merchant
+          listings since they sell stocked products with dispatch days,
+          not on-demand labour. */}
+      {!isMerchantTrade && (
+      <div className="space-y-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-extrabold text-neutral-900">
             Trades On Standby
           </h3>
-          <p className="mt-1 text-[11px] text-brand-muted">
-            Show on the landing-page standby feed. Pick when you're free to
-            start and your headline starting rate. Leave availability blank
-            to stay out of the feed.
-          </p>
+          <HelpInfoButton
+            title="Trades On Standby"
+            body="The fastest way to win same-week work. Setting an availability window puts you on the landing-page standby feed where buyers with urgent jobs message standby trades first. Leave blank when you're booked solid to stay off the feed."
+          />
         </div>
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Availability">
@@ -715,7 +738,7 @@ export function PremiumCustomisationPanel({
               onChange={(e) =>
                 set("availability", e.target.value as Patch["availability"])
               }
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
             >
               <option value="">— Not on standby —</option>
               {AVAILABILITY_OPTIONS.map((opt) => (
@@ -738,11 +761,11 @@ export function PremiumCustomisationPanel({
                 })
               }
               placeholder="e.g. 280"
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
             />
           </Field>
           <Field label="Headline rate unit">
-            <p className="mb-1.5 text-[11px] text-brand-muted">
+            <p className="mb-1.5 text-[13px] leading-snug text-neutral-500">
               Pricing units common in your trade — pick the closest or use
               &lsquo;Other&rsquo;.
             </p>
@@ -763,7 +786,7 @@ export function PremiumCustomisationPanel({
                   });
                 }
               }}
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
             >
               {unitOptions.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -786,7 +809,7 @@ export function PremiumCustomisationPanel({
                 }}
                 placeholder="e.g. per fitting, per visit"
                 maxLength={30}
-                className="mt-2 h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                className="mt-2 h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
               />
             )}
           </Field>
@@ -797,51 +820,65 @@ export function PremiumCustomisationPanel({
             <select
               value={state.headline_rate.currency}
               disabled
-              className="h-11 w-full rounded-md border border-brand-line bg-brand-bg/60 px-3 text-sm text-brand-text opacity-70 focus:outline-none"
+              className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg/60 px-3 text-sm text-brand-text opacity-70 focus:outline-none"
             >
               <option value="GBP">GBP (£)</option>
             </select>
           </Field>
         </div>
       </div>
+      )}
+        </>
+      )}
 
+      {/* Services offered + Priced services — service-trade only. For
+          merchant trades (Building Supplies, Tool Hire etc.) the
+          catalogue lives in Shop Mode and these two text-list editors
+          would just confuse the picture. */}
+      {!isMerchantTrade && (
+        <>
       {/* ─── Services offered ─── */}
-      <div className="space-y-2 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-          Services offered
-        </h3>
-        <p className="text-[11px] text-brand-muted">
-          Comma-separated. e.g. <em>Skim coat, Knife taping, Mud-pan finish</em>.
-        </p>
+      <div className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-extrabold text-neutral-900">
+            Services offered
+          </h3>
+          <HelpInfoButton
+            title="Services offered"
+            body={`The labels search and filters use to surface you. The more specific the keywords, the more qualified the buyers who land on your profile — generic terms pull tyre-kickers; precise ones pull customers ready to message.\n\nExample: "Skim coat, Knife taping, Mud-pan finish".`}
+          />
+        </div>
         <textarea
           rows={2}
           value={servicesText}
           onChange={(e) => setServicesText(e.target.value)}
           placeholder="Service 1, Service 2, Service 3"
-          className="w-full rounded-md border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+          className="w-full rounded-xl border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
         />
       </div>
 
       {/* ─── Priced services (carousel) ─── */}
-      <div className="space-y-2 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-            Priced services
-          </h3>
+      <div className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-extrabold text-neutral-900">
+              Priced services
+            </h3>
+            <HelpInfoButton
+              title="Priced services"
+              body={`Visible prices anchor the conversation. Buyers who see a number message faster than buyers who have to ask — and they arrive pre-warmed, expecting the figure they read.\n\nShown as a swipeable carousel on your profile. Unit is free-text — e.g. "per project", "per m²", "per hour", "from".`}
+            />
+          </div>
           <button
             type="button"
             onClick={addPriced}
-            className="inline-flex h-9 items-center rounded-md border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
+            className="inline-flex h-9 items-center rounded-xl border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
           >
             + Add service
           </button>
         </div>
-        <p className="text-[11px] text-brand-muted">
-          Shown as a swipeable carousel on your profile. Unit is free-text — e.g.{" "}
-          <em>per project</em>, <em>per m²</em>, <em>per hour</em>, <em>from</em>.
-        </p>
         {state.priced_services.length === 0 ? (
-          <p className="text-[11px] text-brand-muted">
+          <p className="text-[13px] leading-snug text-neutral-500">
             No priced services yet — add one above.
           </p>
         ) : (
@@ -849,7 +886,7 @@ export function PremiumCustomisationPanel({
             {state.priced_services.map((p, i) => (
               <li
                 key={i}
-                className="space-y-2 rounded-md border border-brand-line bg-brand-surface/40 p-3"
+                className="space-y-2 rounded-xl border border-brand-line bg-brand-surface/40 p-3"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
@@ -863,86 +900,209 @@ export function PremiumCustomisationPanel({
                     Remove
                   </button>
                 </div>
-                <div className="grid gap-2 sm:grid-cols-2">
+                <Field
+                  label="Service name *"
+                  help="What buyers will see at the top of the card. Keep it short — &ldquo;Skim coat&rdquo;, &ldquo;Roof valley repair&rdquo;, &ldquo;Oak chopping board&rdquo;."
+                >
                   <Text
                     value={p.name}
                     onChange={(v) => updatePriced(i, { name: v })}
-                    placeholder="Service name (e.g. Skim coat)"
+                    placeholder="e.g. Skim coat"
                   />
-                  <Text
-                    value={p.image_url}
-                    onChange={(v) => updatePriced(i, { image_url: v })}
-                    placeholder="After-image URL (https://…)"
-                  />
-                </div>
-                {/* Optional "before" image — shown in the View-card
-                    lightbox tabs alongside the After. Skip if the trade
-                    is install-only (no meaningful before). */}
-                <div className="rounded-md border border-dashed border-brand-line bg-brand-bg/30 p-2.5">
-                  <div className="flex items-baseline justify-between gap-2">
-                    <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
-                      Before image
+                </Field>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <span className="block text-[11px] font-bold uppercase tracking-widest text-brand-muted">
+                      Card image *
                     </span>
-                    <span className="text-[10px] uppercase tracking-widest text-brand-accent">
-                      Optional · +2× engagement
+                    <span className="mt-1 block text-[13px] leading-snug text-brand-muted">
+                      The photo on this service&rsquo;s card. Upload your
+                      best finished shot — that&rsquo;s what sells.
                     </span>
+                    <div className="mt-1.5">
+                      <InlinePhotoInput
+                        value={p.image_url}
+                        onChange={(url) => updatePriced(i, { image_url: url })}
+                        label="Add card image"
+                      />
+                    </div>
                   </div>
-                  <Text
-                    value={p.before_image_url ?? ""}
-                    onChange={(v) => updatePriced(i, { before_image_url: v })}
-                    placeholder="Before-image URL (https://…)"
-                  />
-                  <p className="mt-1 text-[10px] leading-relaxed text-brand-muted">
-                    Adds a Before/After tab to the View-card popup. Skip for install-only trades or services without a clear "before".
-                  </p>
+                  <div>
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
+                        Before image
+                      </span>
+                      <span
+                        className="text-[10px] uppercase tracking-widest"
+                        style={{ color: "var(--trade-accent, #FFB300)" }}
+                      >
+                        Optional
+                      </span>
+                    </div>
+                    <span className="mt-1 block text-[13px] leading-snug text-brand-muted">
+                      Adds a Before/After tab to the card popup. Pair
+                      photos lift engagement on transformation work.
+                    </span>
+                    <div className="mt-1.5">
+                      <InlinePhotoInput
+                        value={p.before_image_url ?? ""}
+                        onChange={(url) => updatePriced(i, { before_image_url: url })}
+                        label="Add before photo"
+                      />
+                    </div>
+                  </div>
                 </div>
-                <div className="grid gap-2 sm:grid-cols-2">
-                  <input
-                    type="number"
-                    min={0}
-                    step={1}
-                    value={p.price || ""}
-                    onChange={(e) =>
-                      updatePriced(i, { price: Number(e.target.value) || 0 })
-                    }
-                    placeholder="Price (£)"
-                    className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
-                  />
-                  <Text
-                    value={p.unit}
-                    onChange={(v) => updatePriced(i, { unit: v })}
-                    placeholder="Unit (e.g. per m², per project, from)"
-                  />
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Field
+                    label="Price (£) *"
+                    help="Buyers who see a number message faster than buyers who have to ask. Round numbers (£180, £350) read cleaner than precise ones."
+                  >
+                    <input
+                      type="number"
+                      min={0}
+                      step={1}
+                      value={p.price || ""}
+                      onChange={(e) =>
+                        updatePriced(i, { price: Number(e.target.value) || 0 })
+                      }
+                      placeholder="180"
+                      className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                    />
+                  </Field>
+                  <Field
+                    label="Unit *"
+                    help="Anchors the price. e.g. per m², per project, per hour, from."
+                  >
+                    <Text
+                      value={p.unit}
+                      onChange={(v) => updatePriced(i, { unit: v })}
+                      placeholder="per project"
+                    />
+                  </Field>
                 </div>
-                <div>
+
+                <Field
+                  label="Description"
+                  help="One or two short sentences a buyer reads before tapping Contact — what's included, who it's for, the typical job."
+                >
                   <textarea
                     rows={3}
                     value={p.description ?? ""}
                     onChange={(e) =>
                       updatePriced(i, { description: e.target.value.slice(0, 500) })
                     }
-                    placeholder="Short description — what's included, who it's for"
+                    placeholder="Two coats of finishing plaster on clean walls. Includes mixing, application, and clean-up. Best for rooms up to 25 m²."
                     maxLength={500}
-                    className="w-full rounded-md border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                    className="w-full rounded-xl border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
                   />
                   <p className="mt-1 text-right text-[10px] text-brand-muted">
                     {(p.description ?? "").length}/500
                   </p>
-                </div>
+                </Field>
               </li>
             ))}
           </ul>
         )}
       </div>
+        </>
+      )}
 
       {/* ─── Operating hours ─── */}
-      <div className="space-y-2 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-          Operating hours
-        </h3>
-        <p className="text-[11px] text-brand-muted">
-          Leave blank or tick "Closed" for days you're off.
-        </p>
+      <div className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-extrabold text-neutral-900">
+            Operating hours
+          </h3>
+          <HelpInfoButton
+            title="Operating hours"
+            body="Knowing when you reply stops customers bouncing to a competitor who looks more active. Setting hours measurably cuts dead-air messages and sets the right expectation for response time. Pick a preset to start, then tweak any day."
+          />
+        </div>
+        {/* Quick presets — most tradies have predictable patterns, so a
+            one-tap fill saves them seven manual time pickers. They can
+            still override individual days afterwards. */}
+        <div className="flex flex-wrap gap-1.5 pt-1">
+          <button
+            type="button"
+            onClick={() =>
+              setState((s) => ({
+                ...s,
+                operating_hours: Object.fromEntries(
+                  DAY_ROW.map(({ key }) => [key, { open: "09:00", close: "17:00" }])
+                )
+              }))
+            }
+            className="inline-flex h-8 items-center rounded-xl border border-brand-line bg-brand-bg px-2.5 text-[11px] font-bold text-brand-text transition hover:border-brand-accent"
+          >
+            Every day 9–5
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setState((s) => ({
+                ...s,
+                operating_hours: Object.fromEntries(
+                  DAY_ROW.map(({ key }) => [
+                    key,
+                    key === "sat" || key === "sun" ? null : { open: "09:00", close: "17:00" }
+                  ])
+                )
+              }))
+            }
+            className="inline-flex h-8 items-center rounded-xl border border-brand-line bg-brand-bg px-2.5 text-[11px] font-bold text-brand-text transition hover:border-brand-accent"
+          >
+            Weekdays only
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setState((s) => ({
+                ...s,
+                operating_hours: Object.fromEntries(
+                  DAY_ROW.map(({ key }) => [
+                    key,
+                    key === "sun" ? null : { open: "09:00", close: "17:00" }
+                  ])
+                )
+              }))
+            }
+            className="inline-flex h-8 items-center rounded-xl border border-brand-line bg-brand-bg px-2.5 text-[11px] font-bold text-brand-text transition hover:border-brand-accent"
+          >
+            Mon–Sat 9–5
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setState((s) => ({
+                ...s,
+                operating_hours: Object.fromEntries(
+                  DAY_ROW.map(({ key }) => [
+                    key,
+                    key === "sat" || key === "sun" ? null : { open: "08:00", close: "18:00" }
+                  ])
+                )
+              }))
+            }
+            className="inline-flex h-8 items-center rounded-xl border border-brand-line bg-brand-bg px-2.5 text-[11px] font-bold text-brand-text transition hover:border-brand-accent"
+          >
+            Trade hours 8–6
+          </button>
+          <button
+            type="button"
+            onClick={() =>
+              setState((s) => ({
+                ...s,
+                operating_hours: Object.fromEntries(
+                  DAY_ROW.map(({ key }) => [key, null])
+                )
+              }))
+            }
+            className="inline-flex h-8 items-center rounded-xl border border-brand-line bg-brand-bg px-2.5 text-[11px] font-bold text-brand-muted transition hover:border-red-300 hover:text-red-600"
+          >
+            Clear all
+          </button>
+        </div>
         <ul className="space-y-2">
           {DAY_ROW.map(({ key, label }) => {
             const slot = state.operating_hours?.[key] ?? null;
@@ -950,7 +1110,7 @@ export function PremiumCustomisationPanel({
             return (
               <li key={key} className="grid grid-cols-12 items-center gap-2">
                 <span className="col-span-2 text-xs font-bold text-brand-text">{label}</span>
-                <label className="col-span-2 inline-flex items-center gap-1.5 text-[11px] text-brand-muted">
+                <label className="col-span-2 inline-flex items-center gap-1.5 text-[13px] leading-snug text-neutral-500">
                   <input
                     type="checkbox"
                     checked={closed}
@@ -968,7 +1128,7 @@ export function PremiumCustomisationPanel({
                   onChange={(e) =>
                     setHoursSlot(key, { open: e.target.value, close: slot?.close ?? "17:00" })
                   }
-                  className="col-span-4 h-10 rounded-md border border-brand-line bg-brand-bg px-2 text-xs text-brand-text disabled:opacity-40 focus:border-brand-accent focus:outline-none"
+                  className="col-span-4 h-10 rounded-xl border border-brand-line bg-brand-bg px-2 text-xs text-brand-text disabled:opacity-40 focus:border-brand-accent focus:outline-none"
                 />
                 <input
                   type="time"
@@ -977,7 +1137,7 @@ export function PremiumCustomisationPanel({
                   onChange={(e) =>
                     setHoursSlot(key, { open: slot?.open ?? "09:00", close: e.target.value })
                   }
-                  className="col-span-4 h-10 rounded-md border border-brand-line bg-brand-bg px-2 text-xs text-brand-text disabled:opacity-40 focus:border-brand-accent focus:outline-none"
+                  className="col-span-4 h-10 rounded-xl border border-brand-line bg-brand-bg px-2 text-xs text-brand-text disabled:opacity-40 focus:border-brand-accent focus:outline-none"
                 />
               </li>
             );
@@ -985,26 +1145,34 @@ export function PremiumCustomisationPanel({
         </ul>
       </div>
 
+      {!isMerchantTrade && showAdvanced && (
+        <>
       {/* ─── FAQ items ─── */}
-      <div className="space-y-2 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-            FAQ items
-          </h3>
+      <div className="space-y-2 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <h3 className="text-xl font-extrabold text-neutral-900">
+              FAQ items
+            </h3>
+            <HelpInfoButton
+              title="FAQ items"
+              body="Pre-answering a common question removes a tap-and-type barrier before a buyer messages — they self-serve, then commit to contact faster. Each FAQ also cuts repeat-DMs you'd otherwise have to answer manually. Start with your top 3."
+            />
+          </div>
           <button
             type="button"
             onClick={addFaq}
-            className="inline-flex h-9 items-center rounded-md border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
+            className="inline-flex h-9 items-center rounded-xl border border-brand-accent bg-brand-accent/10 px-3 text-[11px] font-bold text-brand-accent transition hover:bg-brand-accent hover:text-black"
           >
             + Add FAQ
           </button>
         </div>
         {state.faq_items.length === 0 ? (
-          <p className="text-[11px] text-brand-muted">No FAQ items yet — add one above.</p>
+          <p className="text-[13px] leading-snug text-neutral-500">No FAQ items yet — add one above.</p>
         ) : (
           <ul className="space-y-3">
             {state.faq_items.map((f, i) => (
-              <li key={i} className="space-y-1.5 rounded-md border border-brand-line bg-brand-surface/40 p-3">
+              <li key={i} className="space-y-1.5 rounded-xl border border-brand-line bg-brand-surface/40 p-3">
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
                     Q{i + 1}
@@ -1027,7 +1195,7 @@ export function PremiumCustomisationPanel({
                   value={f.a}
                   onChange={(e) => updateFaq(i, { a: e.target.value })}
                   placeholder="Answer"
-                  className="w-full rounded-md border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                  className="w-full rounded-xl border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
                 />
               </li>
             ))}
@@ -1036,14 +1204,15 @@ export function PremiumCustomisationPanel({
       </div>
 
       {/* ─── My Trusted Trades ─── */}
-      <div className="space-y-3 rounded-lg border border-brand-line bg-brand-bg/40 p-4">
-        <div>
-          <h3 className="text-xs font-bold uppercase tracking-widest text-brand-muted">
+      <div className="space-y-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-center gap-2">
+          <h3 className="text-xl font-extrabold text-neutral-900">
             My Trusted Trades
           </h3>
-          <p className="mt-1 text-[11px] leading-relaxed text-brand-muted">
-            Recommend other Xrated tradespeople your customers can trust. Each one becomes a card on your profile that links to their URL. Up to 12 — they should be on Xrated already.
-          </p>
+          <HelpInfoButton
+            title="My Trusted Trades"
+            body="Buyers trust trades who vouch for each other. Recommending other Xrated tradespeople signals you're part of a network — and the favour gets returned: cross-recommendations measurably lift onward contact volume for both profiles. Up to 12."
+          />
         </div>
         <button
           type="button"
@@ -1057,18 +1226,18 @@ export function PremiumCustomisationPanel({
             }))
           }
           disabled={(state.recommendations ?? []).length >= 12}
-          className="inline-flex h-9 items-center gap-1.5 rounded-md bg-brand-accent px-3 text-[11px] font-bold text-black transition active:scale-[0.97] disabled:opacity-50"
+          className="inline-flex h-9 items-center gap-1.5 rounded-xl bg-brand-accent px-3 text-[11px] font-bold text-black transition active:scale-[0.97] disabled:opacity-50"
         >
           + Add a recommendation
         </button>
         {(state.recommendations ?? []).length === 0 ? (
-          <p className="text-[11px] text-brand-muted">No trades recommended yet.</p>
+          <p className="text-[13px] leading-snug text-neutral-500">No trades recommended yet.</p>
         ) : (
           <ul className="space-y-3">
             {(state.recommendations ?? []).map((r, i) => (
               <li
                 key={i}
-                className="space-y-2 rounded-md border border-brand-line bg-brand-surface/40 p-3"
+                className="space-y-2 rounded-xl border border-brand-line bg-brand-surface/40 p-3"
               >
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-[11px] font-bold uppercase tracking-widest text-brand-muted">
@@ -1139,7 +1308,7 @@ export function PremiumCustomisationPanel({
                       })
                     }
                     placeholder="e.g. tom-carpenter-leeds"
-                    className="mt-1 h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                    className="mt-1 h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
                   />
                 </div>
                 <div>
@@ -1158,7 +1327,7 @@ export function PremiumCustomisationPanel({
                     }
                     placeholder="e.g. Worked with Tom on 12 extensions — never a complaint."
                     maxLength={200}
-                    className="mt-1 w-full rounded-md border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+                    className="mt-1 w-full rounded-xl border border-brand-line bg-brand-bg px-3 py-2 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
                   />
                   <p className="mt-1 text-right text-[10px] text-brand-muted">
                     {(r.note ?? "").length}/200
@@ -1171,7 +1340,7 @@ export function PremiumCustomisationPanel({
       </div>
 
       {/* ─── Visibility toggles ─── */}
-      <div className="grid gap-3 rounded-lg border border-brand-line bg-brand-bg/40 p-4 sm:grid-cols-2">
+      <div className="grid gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6 sm:grid-cols-2">
         <label className="inline-flex items-start gap-2 text-sm">
           <input
             type="checkbox"
@@ -1181,7 +1350,7 @@ export function PremiumCustomisationPanel({
           />
           <span>
             <span className="block font-semibold">Contact form</span>
-            <span className="block text-[11px] text-brand-muted">
+            <span className="block text-[13px] leading-snug text-neutral-500">
               Adds an email contact form to your profile.
             </span>
           </span>
@@ -1195,12 +1364,14 @@ export function PremiumCustomisationPanel({
           />
           <span>
             <span className="block font-semibold">Visit us</span>
-            <span className="block text-[11px] text-brand-muted">
+            <span className="block text-[13px] leading-snug text-neutral-500">
               Shows a "Get directions" button using your map pin.
             </span>
           </span>
         </label>
       </div>
+        </>
+      )}
 
       <div className="flex flex-wrap items-center gap-3">
         <button
@@ -1221,16 +1392,23 @@ export function PremiumCustomisationPanel({
 function Field({
   label,
   full,
+  help,
   children
 }: {
   label: string;
   full?: boolean;
+  /** Long-form explanation. When set, an (i) icon appears next to the
+   *  label that opens a popup with this body — keeps the form compact
+   *  while still teaching non-technical tradespeople what each option
+   *  does. */
+  help?: string;
   children: React.ReactNode;
 }) {
   return (
     <label className={`block ${full ? "sm:col-span-2" : ""}`}>
-      <span className="text-xs font-bold uppercase tracking-widest text-brand-muted">
+      <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-brand-muted">
         {label}
+        {help && <HelpInfoButton title={label} body={help} />}
       </span>
       <div className="mt-1.5">{children}</div>
     </label>
@@ -1252,7 +1430,7 @@ function Text({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
+      className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text placeholder:text-brand-muted focus:border-brand-accent focus:outline-none"
     />
   );
 }
@@ -1270,7 +1448,7 @@ function Select({
     <select
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className="h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
+      className="h-11 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-sm text-brand-text focus:border-brand-accent focus:outline-none"
     >
       {options.map((opt) => (
         <option key={opt} value={opt}>
@@ -1291,7 +1469,7 @@ function TrustFlag({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label className="inline-flex items-center gap-2 rounded-md border border-brand-line bg-brand-bg/40 px-3 py-2 text-sm">
+    <label className="inline-flex items-center gap-2 rounded-xl border border-brand-line bg-brand-bg/40 px-3 py-2 text-sm">
       <input
         type="checkbox"
         checked={checked}

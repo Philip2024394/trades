@@ -69,7 +69,7 @@ export function BulkTiersPanel({
 
       {products.length === 0 ? (
         <p className="rounded-lg border border-dashed border-brand-line bg-brand-bg px-4 py-6 text-center text-xs text-brand-muted">
-          Add products in Shop Mode first, then come back to set bulk
+          Add products in Trade Center first, then come back to set bulk
           tiers.
         </p>
       ) : (

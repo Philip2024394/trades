@@ -55,7 +55,11 @@ export default async function YardEditPage({
     trial_expires_at: row.data.trial_expires_at ?? null
   });
   const builderFree = isBuilderGradeTrade(row.data.primary_trade);
-  const allowed = tier === "app_paid" || tier === "app_trial" || builderFree;
+  const allowed =
+    tier === "app_paid" ||
+    tier === "app_trial" ||
+    tier === "app_verified" ||
+    builderFree;
 
   const backHref = `/trade-off/edit/${encodeURIComponent(slug)}?token=${encodeURIComponent(token)}`;
 

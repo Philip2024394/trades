@@ -98,8 +98,8 @@ export function OperatingHoursEditor({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           slug,
-          token: editToken,
-          operating_hours: hours
+          edit_token: editToken,
+          fields: { operating_hours: hours }
         })
       });
       if (!res.ok) {

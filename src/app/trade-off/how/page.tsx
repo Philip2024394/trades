@@ -114,7 +114,7 @@ export default function HowItWorksPage() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2009_33_21%20AM.png"
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/914b13791fb3-ChatGPT_Image_Jun_27__2026__09_33_21_AM.png"
           alt="Xrated Trades — set up in 5 minutes, go live the moment you save."
           className="absolute inset-0 h-full w-full object-cover"
         />

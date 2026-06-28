@@ -51,10 +51,26 @@ export type DemoTradeSeed = {
     body: string;
     service_name: string;
     project_type: "new_build" | "renovation" | "repair";
+    avatar_url: string;
   }>;
 };
 
-export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
+// Phase-2 trade demos live in section-specific files so the file
+// doesn't balloon past 5,000 lines. Each section exports its own
+// typed array which we splice into the main list below. To touch a
+// kitchen-manufacturer demo, edit `demoTradeSeeds-manufacture.ts`,
+// not this file.
+// Node ESM (used by the seed script) needs explicit .ts extensions
+// when running .ts files directly; Next.js + tsc both tolerate them
+// because tsconfig is set to "module: esnext" with bundler-style
+// resolution. Leave the suffix on, do not strip.
+import { DEMO_TRADE_SEEDS_SERVICE_ADDITIONS } from "./demoTradeSeeds-service-additions.ts";
+import { DEMO_TRADE_SEEDS_INSTALLATION } from "./demoTradeSeeds-installation.ts";
+import { DEMO_TRADE_SEEDS_MANUFACTURE } from "./demoTradeSeeds-manufacture.ts";
+import { DEMO_TRADE_SEEDS_SALES } from "./demoTradeSeeds-sales.ts";
+import { DEMO_TRADE_SEEDS_HIRE } from "./demoTradeSeeds-hire.ts";
+
+const DEMO_TRADE_SEEDS_CORE: DemoTradeSeed[] = [
   // 1. DRYWALLER
   {
     trade_slug: "drywaller",
@@ -96,10 +112,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Currently booking 2-3 weeks out. Same-week slots possible for repair work.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Sarah K.", rating: 5, title: "Loft came out perfect", body: "Marcus boarded out our whole loft conversion in three days and the walls are dead plumb. Plasterer who came after said it was the easiest skim he'd done all year. Tidy worker, swept up every night.", service_name: "Loft conversion drylining package", project_type: "renovation" },
-      { customer_name: "Daniel R.", rating: 5, title: "Soundproofed our home office", body: "We work from home with a baby in the next room. Marcus built us an isolated wall and you genuinely cannot hear conference calls through it now. Worth every penny.", service_name: "Acoustic separating wall (per linear m)", project_type: "renovation" },
-      { customer_name: "Priya M.", rating: 4, title: "Good job, ran a day over", body: "Quality of the partition is excellent and he was upfront about a delay due to a board delivery being short. Finished a day later than quoted but no extra cost. Would use again.", service_name: "Single stud partition wall (per linear m)", project_type: "renovation" },
-      { customer_name: "James O.", rating: 5, title: "Office fit-out on time", body: "Did our reception area suspended ceiling and partition walls over a weekend so we didn't lose trading days. Spot on.", service_name: "Suspended ceiling install (per sqm)", project_type: "renovation" }
+      { customer_name: "Sarah K.", rating: 5, title: "Loft came out perfect", body: "Marcus boarded out our whole loft conversion in three days and the walls are dead plumb. Plasterer who came after said it was the easiest skim he'd done all year. Tidy worker, swept up every night.", service_name: "Loft conversion drylining package", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/1.jpg" },
+      { customer_name: "Daniel R.", rating: 5, title: "Soundproofed our home office", body: "We work from home with a baby in the next room. Marcus built us an isolated wall and you genuinely cannot hear conference calls through it now. Worth every penny.", service_name: "Acoustic separating wall (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/2.jpg" },
+      { customer_name: "James O.", rating: 5, title: "Office fit-out on time", body: "Did our reception area suspended ceiling and partition walls over a weekend so we didn't lose trading days. Spot on.", service_name: "Suspended ceiling install (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/3.jpg" }
     ]
   },
 
@@ -145,10 +160,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 1-2 weeks ahead. Patch repairs often slotted in mid-week.",
     availability: "next_week",
     reviews: [
-      { customer_name: "Tom B.", rating: 5, title: "Best skim I've ever had", body: "Had three rooms done top to bottom. Emma got the walls dead flat — you can see down a wall and it's like glass. Painter loved it.", service_name: "Skim coat to existing walls (per sqm)", project_type: "renovation" },
-      { customer_name: "Helen C.", rating: 5, title: "Saved our old terrace", body: "Two other plasterers had used gypsum on our 1890s walls and it kept blowing. Emma took it all off, did proper lime, no damp issues 18 months on.", service_name: "Lime plaster repair (per sqm)", project_type: "renovation" },
-      { customer_name: "Raj P.", rating: 5, title: "Patch was invisible", body: "Had a new radiator and the patches around the pipes were perfect. You can't see the join.", service_name: "Patch repair (single area up to 1sqm)", project_type: "repair" },
-      { customer_name: "Megan T.", rating: 4, title: "Good work, a bit slow to quote", body: "Quality is excellent and the price was fair. Took five days to get the quote back though which slowed our planning. Worth waiting for in the end.", service_name: "Full room re-plaster (3x4m bedroom)", project_type: "renovation" }
+      { customer_name: "Tom B.", rating: 5, title: "Best skim I've ever had", body: "Had three rooms done top to bottom. Emma got the walls dead flat — you can see down a wall and it's like glass. Painter loved it.", service_name: "Skim coat to existing walls (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/4.jpg" },
+      { customer_name: "Helen C.", rating: 5, title: "Saved our old terrace", body: "Two other plasterers had used gypsum on our 1890s walls and it kept blowing. Emma took it all off, did proper lime, no damp issues 18 months on.", service_name: "Lime plaster repair (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/5.jpg" },
+      { customer_name: "Raj P.", rating: 5, title: "Patch was invisible", body: "Had a new radiator and the patches around the pipes were perfect. You can't see the join.", service_name: "Patch repair (single area up to 1sqm)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/6.jpg" }
     ]
   },
 
@@ -199,11 +213,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 3-4 weeks for rewires. EICRs and EV installs within 1 week.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Lorna F.", rating: 5, title: "Rewire was painless", body: "Jamie rewired our whole semi in 9 days, dust sheets every day, and finished a day early. Walked us through the certificate and registered it with Building Control. Couldn't ask for more.", service_name: "Full house rewire (3-bed semi)", project_type: "renovation" },
-      { customer_name: "Andrew S.", rating: 5, title: "EV charger sorted in half a day", body: "Booked, OZEV paperwork done, charger up and running in 4 hours. Tidy cable run too — no surface trunking on show.", service_name: "EV charger install (7kW, OZEV)", project_type: "new_build" },
-      { customer_name: "Chloe W.", rating: 4, title: "EICR was thorough", body: "Spotted a few things our previous spark missed. Detailed report with clear photos. Slightly more expensive than the cheapest quote but I'd rather have it done right.", service_name: "EICR inspection (3-bed property)", project_type: "repair" },
-      { customer_name: "Mark D.", rating: 5, title: "Consumer unit swap on time", body: "Old fuseboard was tripping constantly. Swapped for an RCBO board, no trips since, certificate emailed within 2 days.", service_name: "Consumer unit upgrade (RCBO board)", project_type: "repair" },
-      { customer_name: "Isla R.", rating: 5, title: "Added 4 sockets and 8 downlights", body: "Booked him for a small list of jobs and he knocked them all out in one day. Reasonable prices, no upsell, made good every chase neatly.", service_name: "Downlighter install (per fitting)", project_type: "renovation" }
+      { customer_name: "Lorna F.", rating: 5, title: "Rewire was painless", body: "Jamie rewired our whole semi in 9 days, dust sheets every day, and finished a day early. Walked us through the certificate and registered it with Building Control. Couldn't ask for more.", service_name: "Full house rewire (3-bed semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/7.jpg" },
+      { customer_name: "Andrew S.", rating: 5, title: "EV charger sorted in half a day", body: "Booked, OZEV paperwork done, charger up and running in 4 hours. Tidy cable run too — no surface trunking on show.", service_name: "EV charger install (7kW, OZEV)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/8.jpg" },
+      { customer_name: "Isla R.", rating: 5, title: "Added 4 sockets and 8 downlights", body: "Booked him for a small list of jobs and he knocked them all out in one day. Reasonable prices, no upsell, made good every chase neatly.", service_name: "Downlighter install (per fitting)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/9.jpg" }
     ]
   },
 
@@ -249,10 +261,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Erecting same week for standard 2-storey jobs. Larger structures 1-2 weeks out.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Geoff H.", rating: 5, title: "Up in 4 hours", body: "Booked for the roofer to do a re-tile, scaff was up by lunch. Solid platform, the roofer commented it was the tidiest he'd worked on this year.", service_name: "Two-storey rear elevation (standard semi)", project_type: "renovation" },
-      { customer_name: "Yasmin K.", rating: 5, title: "Honest with the council licence", body: "Other quotes hid the council fees. Billy laid it all out — his admin, the borough fee, the lot. No surprises.", service_name: "Pavement gantry / temporary roof", project_type: "renovation" },
-      { customer_name: "Paul M.", rating: 4, title: "Came back to extend it", body: "Render job ran a week over and Billy came back to extend the hire without fuss. £25 a week is fair.", service_name: "Extra week hire (any structure)", project_type: "renovation" },
-      { customer_name: "Sandra L.", rating: 5, title: "Chimney repointed safely", body: "Tower around the chimney was rock solid. Stonemason was up there for 3 days and not a wobble. Took it down quietly on a Saturday.", service_name: "Chimney scaffold (single stack)", project_type: "repair" }
+      { customer_name: "Geoff H.", rating: 5, title: "Up in 4 hours", body: "Booked for the roofer to do a re-tile, scaff was up by lunch. Solid platform, the roofer commented it was the tidiest he'd worked on this year.", service_name: "Two-storey rear elevation (standard semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/10.jpg" },
+      { customer_name: "Yasmin K.", rating: 5, title: "Honest with the council licence", body: "Other quotes hid the council fees. Billy laid it all out — his admin, the borough fee, the lot. No surprises.", service_name: "Pavement gantry / temporary roof", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/11.jpg" },
+      { customer_name: "Sandra L.", rating: 5, title: "Chimney repointed safely", body: "Tower around the chimney was rock solid. Stonemason was up there for 3 days and not a wobble. Took it down quietly on a Saturday.", service_name: "Chimney scaffold (single stack)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/women/12.jpg" }
     ]
   },
 
@@ -299,10 +310,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-5 weeks ahead. Small splashbacks slotted in faster.",
     availability: "later",
     reviews: [
-      { customer_name: "Rachel W.", rating: 5, title: "Wet room is beautiful", body: "Massive porcelain on the walls and a perfect linear drain. Anya did the falls so precisely the water drains in seconds. Two years on still no leaks.", service_name: "Wet room install (tray + tiling)", project_type: "renovation" },
-      { customer_name: "Dom T.", rating: 5, title: "Splashback in a day", body: "Came in the morning, gone by 4. Cut around two sockets perfectly and the grout lines are dead straight.", service_name: "Kitchen splashback (single wall)", project_type: "renovation" },
-      { customer_name: "Vicky J.", rating: 5, title: "Big tiles, no cracks", body: "We chose massive 120x60 porcelain and Anya was the only tiler I called who wasn't put off. Floor is dead flat, no lippage, looks incredible.", service_name: "Large-format porcelain (60x120 and over)", project_type: "renovation" },
-      { customer_name: "Pete A.", rating: 4, title: "Bathroom looks great, ran 2 days over", body: "Quality work and the bathroom looks great. Job ran two days over schedule because the floor needed more levelling than first quoted — fair enough but worth flagging.", service_name: "Bathroom retile (full room, walls + floor)", project_type: "renovation" }
+      { customer_name: "Rachel W.", rating: 5, title: "Wet room is beautiful", body: "Massive porcelain on the walls and a perfect linear drain. Anya did the falls so precisely the water drains in seconds. Two years on still no leaks.", service_name: "Wet room install (tray + tiling)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/13.jpg" },
+      { customer_name: "Dom T.", rating: 5, title: "Splashback in a day", body: "Came in the morning, gone by 4. Cut around two sockets perfectly and the grout lines are dead straight.", service_name: "Kitchen splashback (single wall)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/14.jpg" },
+      { customer_name: "Vicky J.", rating: 5, title: "Big tiles, no cracks", body: "We chose massive 120x60 porcelain and Anya was the only tiler I called who wasn't put off. Floor is dead flat, no lippage, looks incredible.", service_name: "Large-format porcelain (60x120 and over)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/15.jpg" }
     ]
   },
 
@@ -354,10 +364,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Boiler swaps 1-2 weeks. Emergency callouts same day.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Karen B.", rating: 5, title: "Boiler swap in a day", body: "Old combi finally died. Dave quoted Tuesday, fitted Thursday, hot water that evening. Tidy job, no mess. Registered the warranty before he left.", service_name: "Combi boiler install (Worcester or Vaillant)", project_type: "repair" },
-      { customer_name: "Steve M.", rating: 5, title: "Honest about the leak", body: "Two other plumbers said I needed a new tap. Dave fixed it for £45 with a new washer. Saved me £200.", service_name: "Hourly rate (small jobs)", project_type: "repair" },
-      { customer_name: "Lucy R.", rating: 5, title: "Bathroom turnaround", body: "Stripped the old bathroom Monday, new one in by Friday. Worked around the tiler perfectly. Would have him back in a heartbeat.", service_name: "Bathroom suite install (labour only)", project_type: "renovation" },
-      { customer_name: "Mohammed S.", rating: 4, title: "Powerflush helped a lot", body: "Heating was struggling all winter. Powerflush sorted most of it though one rad still needed bleeding regularly after. Came back to balance for free.", service_name: "Powerflush full system", project_type: "repair" }
+      { customer_name: "Karen B.", rating: 5, title: "Boiler swap in a day", body: "Old combi finally died. Dave quoted Tuesday, fitted Thursday, hot water that evening. Tidy job, no mess. Registered the warranty before he left.", service_name: "Combi boiler install (Worcester or Vaillant)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/women/16.jpg" },
+      { customer_name: "Steve M.", rating: 5, title: "Honest about the leak", body: "Two other plumbers said I needed a new tap. Dave fixed it for £45 with a new washer. Saved me £200.", service_name: "Hourly rate (small jobs)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/17.jpg" },
+      { customer_name: "Lucy R.", rating: 5, title: "Bathroom turnaround", body: "Stripped the old bathroom Monday, new one in by Friday. Worked around the tiler perfectly. Would have him back in a heartbeat.", service_name: "Bathroom suite install (labour only)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/18.jpg" }
     ]
   },
 
@@ -404,10 +413,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks ahead for bespoke. Small jobs slotted in earlier.",
     availability: "later",
     reviews: [
-      { customer_name: "Helen P.", rating: 5, title: "Best kitchen install I've seen", body: "Cabinet doors line up perfectly, worktop joint is invisible, skirtings scribed around the plinths. Tom worked solidly for two weeks and the finish is incredible.", service_name: "Bespoke kitchen install (10 units)", project_type: "renovation" },
-      { customer_name: "Ben T.", rating: 5, title: "Alcoves are a feature now", body: "Two matching alcove units either side of the chimney breast. Adjustable shelves, soft-close doors, all perfectly square. Cost more than IKEA but it's a different league.", service_name: "Alcove shelving + cupboards (per linear m)", project_type: "renovation" },
-      { customer_name: "Marie K.", rating: 5, title: "Window seat is gorgeous", body: "Tom designed and built a window seat with hidden storage. Lid is on hidden hinges, the whole thing is paint-ready. Joiner in a million.", service_name: "Window seat with storage", project_type: "renovation" },
-      { customer_name: "Dan O.", rating: 4, title: "Doors hung well, a bit pricey", body: "Six internal doors hung over a day and a half. Quality is great but a bit more expensive than the other quotes. Worth it for the precision.", service_name: "Internal door hang (per door)", project_type: "renovation" }
+      { customer_name: "Helen P.", rating: 5, title: "Best kitchen install I've seen", body: "Cabinet doors line up perfectly, worktop joint is invisible, skirtings scribed around the plinths. Tom worked solidly for two weeks and the finish is incredible.", service_name: "Bespoke kitchen install (10 units)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/19.jpg" },
+      { customer_name: "Ben T.", rating: 5, title: "Alcoves are a feature now", body: "Two matching alcove units either side of the chimney breast. Adjustable shelves, soft-close doors, all perfectly square. Cost more than IKEA but it's a different league.", service_name: "Alcove shelving + cupboards (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/20.jpg" },
+      { customer_name: "Marie K.", rating: 5, title: "Window seat is gorgeous", body: "Tom designed and built a window seat with hidden storage. Lid is on hidden hinges, the whole thing is paint-ready. Joiner in a million.", service_name: "Window seat with storage", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/21.jpg" }
     ]
   },
 
@@ -454,10 +462,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Workshop is booked 8 weeks ahead. Repairs slotted in faster.",
     availability: "later",
     reviews: [
-      { customer_name: "Andrew M.", rating: 5, title: "Saved our sash windows", body: "Quoted £18k by a window company to replace with uPVC. Rachel restored all six original sashes for £4.2k. Look stunning, draught-free, period-correct.", service_name: "Sash window restoration (per window)", project_type: "renovation" },
-      { customer_name: "Fiona B.", rating: 5, title: "Front door is a work of art", body: "Hand-made oak door with a stained glass panel. Joinery is unbelievable — you can't see a single joint. Worth every penny.", service_name: "Hardwood front door (bespoke)", project_type: "renovation" },
-      { customer_name: "Greg D.", rating: 5, title: "Wardrobe wall transformed the bedroom", body: "Full-length fitted wardrobes across one wall. Drawer fronts soft-close, dovetail drawer construction. Painter said it was the easiest topcoat job he's done — perfect prep.", service_name: "Fitted wardrobe (per linear m)", project_type: "renovation" },
-      { customer_name: "Lesley T.", rating: 4, title: "Lead time was long", body: "10 weeks from order to install for our pantry. Long wait but the piece is extraordinary. Worth the patience.", service_name: "Kitchen pantry (bespoke)", project_type: "renovation" }
+      { customer_name: "Andrew M.", rating: 5, title: "Saved our sash windows", body: "Quoted £18k by a window company to replace with uPVC. Rachel restored all six original sashes for £4.2k. Look stunning, draught-free, period-correct.", service_name: "Sash window restoration (per window)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/22.jpg" },
+      { customer_name: "Fiona B.", rating: 5, title: "Front door is a work of art", body: "Hand-made oak door with a stained glass panel. Joinery is unbelievable — you can't see a single joint. Worth every penny.", service_name: "Hardwood front door (bespoke)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/23.jpg" },
+      { customer_name: "Greg D.", rating: 5, title: "Wardrobe wall transformed the bedroom", body: "Full-length fitted wardrobes across one wall. Drawer fronts soft-close, dovetail drawer construction. Painter said it was the easiest topcoat job he's done — perfect prep.", service_name: "Fitted wardrobe (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/24.jpg" }
     ]
   },
 
@@ -504,10 +511,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks ahead. External work weather-dependent.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Linda H.", rating: 5, title: "Whole house, fantastic finish", body: "Mike and his lad did our 4-bed top to bottom in 8 days. Walls dead flat, no roller marks. They caulked and filled to a really high standard before painting.", service_name: "Full 3-bed house interior repaint", project_type: "renovation" },
-      { customer_name: "Ade O.", rating: 5, title: "Kitchen reborn", body: "Saved us £8k on a new kitchen. Sprayed our existing doors in a beautiful satin grey. Looks brand new. Did the splashback tiles too.", service_name: "Kitchen unit respray (per door)", project_type: "renovation" },
-      { customer_name: "Sarah W.", rating: 5, title: "Hallway + stairs done perfectly", body: "I was dreading this room — high ceilings, awkward stairwell. Mike rigged a safe platform and finished in 3 days. Spotless.", service_name: "Hallway, stairs + landing", project_type: "renovation" },
-      { customer_name: "Phil N.", rating: 4, title: "Good job, weather delayed start", body: "External fascia repaint. Pushed twice for rain which was unavoidable. Once they started the quality was top-notch.", service_name: "Exterior fascia + soffit (terraced house)", project_type: "repair" }
+      { customer_name: "Linda H.", rating: 5, title: "Whole house, fantastic finish", body: "Mike and his lad did our 4-bed top to bottom in 8 days. Walls dead flat, no roller marks. They caulked and filled to a really high standard before painting.", service_name: "Full 3-bed house interior repaint", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/25.jpg" },
+      { customer_name: "Ade O.", rating: 5, title: "Kitchen reborn", body: "Saved us £8k on a new kitchen. Sprayed our existing doors in a beautiful satin grey. Looks brand new. Did the splashback tiles too.", service_name: "Kitchen unit respray (per door)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/26.jpg" },
+      { customer_name: "Sarah W.", rating: 5, title: "Hallway + stairs done perfectly", body: "I was dreading this room — high ceilings, awkward stairwell. Mike rigged a safe platform and finished in 3 days. Spotless.", service_name: "Hallway, stairs + landing", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/27.jpg" }
     ]
   },
 
@@ -559,10 +565,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Repairs same week. Re-roofs 4-6 weeks weather-dependent.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Anne T.", rating: 5, title: "Re-roof done in 6 days", body: "Gary's crew stripped and re-tiled the whole house. Tarped every night, swept the garden clean. New ridge tiles look beautiful.", service_name: "Full re-roof (3-bed semi, concrete tiles)", project_type: "renovation" },
-      { customer_name: "Dev K.", rating: 5, title: "Leak fixed same day", body: "Phoned at 8am after a storm. Gary was on the roof by 11, slipped tiles back, leak gone. £290 well spent.", service_name: "Slipped tile / slate repair", project_type: "repair" },
-      { customer_name: "Joe B.", rating: 5, title: "Flat roof on the extension", body: "EPDM single sheet, no joins, the trims look really sharp. 20 year warranty registered with the supplier the next day.", service_name: "Flat roof EPDM rubber install (per sqm)", project_type: "new_build" },
-      { customer_name: "Carol R.", rating: 4, title: "Chimney sorted, ran a day over", body: "Chimney was leaking badly. Gary repointed and renewed all the lead flashings. Job ran a day over for weather but no extra cost.", service_name: "Chimney repoint + flashing renewal", project_type: "repair" }
+      { customer_name: "Anne T.", rating: 5, title: "Re-roof done in 6 days", body: "Gary's crew stripped and re-tiled the whole house. Tarped every night, swept the garden clean. New ridge tiles look beautiful.", service_name: "Full re-roof (3-bed semi, concrete tiles)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/28.jpg" },
+      { customer_name: "Dev K.", rating: 5, title: "Leak fixed same day", body: "Phoned at 8am after a storm. Gary was on the roof by 11, slipped tiles back, leak gone. £290 well spent.", service_name: "Slipped tile / slate repair", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/29.jpg" },
+      { customer_name: "Joe B.", rating: 5, title: "Flat roof on the extension", body: "EPDM single sheet, no joins, the trims look really sharp. 20 year warranty registered with the supplier the next day.", service_name: "Flat roof EPDM rubber install (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/30.jpg" }
     ]
   },
 
@@ -614,10 +619,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks for extensions. Smaller walls 2-3 weeks.",
     availability: "later",
     reviews: [
-      { customer_name: "Robert F.", rating: 5, title: "Extension brickwork is immaculate", body: "Craig's brickwork on our extension is the talk of the street. Perp joints dead vertical, flush pointing, beautiful colour match to the original 1930s house.", service_name: "Single-storey extension shell (4x5m)", project_type: "new_build" },
-      { customer_name: "Hannah G.", rating: 5, title: "Garden wall built to last", body: "30m of brick wall with saddleback coping. Properly footed, beautiful look. Two years on not a crack.", service_name: "Garden wall (per linear m, 1.2m high)", project_type: "new_build" },
-      { customer_name: "Wesley A.", rating: 5, title: "Lime repointing on Victorian house", body: "Other quotes were going to use cement. Craig was the only one who said it had to be lime. Job took longer but it looks period-correct and the brick faces are protected.", service_name: "Repointing (per sqm, lime mortar)", project_type: "repair" },
-      { customer_name: "Olivia M.", rating: 4, title: "Chimney rebuild, ran 2 days over", body: "Chimney came down in a storm. Craig rebuilt it spot on but weather delayed 2 days. Solid work though.", service_name: "Chimney stack rebuild (above roofline)", project_type: "repair" }
+      { customer_name: "Robert F.", rating: 5, title: "Extension brickwork is immaculate", body: "Craig's brickwork on our extension is the talk of the street. Perp joints dead vertical, flush pointing, beautiful colour match to the original 1930s house.", service_name: "Single-storey extension shell (4x5m)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/31.jpg" },
+      { customer_name: "Hannah G.", rating: 5, title: "Garden wall built to last", body: "30m of brick wall with saddleback coping. Properly footed, beautiful look. Two years on not a crack.", service_name: "Garden wall (per linear m, 1.2m high)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/32.jpg" },
+      { customer_name: "Wesley A.", rating: 5, title: "Lime repointing on Victorian house", body: "Other quotes were going to use cement. Craig was the only one who said it had to be lime. Job took longer but it looks period-correct and the brick faces are protected.", service_name: "Repointing (per sqm, lime mortar)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/33.jpg" }
     ]
   },
 
@@ -669,10 +673,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 6-8 weeks. Listed building work prioritised in date order.",
     availability: "later",
     reviews: [
-      { customer_name: "Charles W.", rating: 5, title: "Repointing on our Georgian townhouse", body: "Two previous masons used cement which was eating into the soft stone. George took it all back to lime, matched the original colour perfectly. House looks 100 years younger.", service_name: "Heritage repointing (lime mortar, per sqm)", project_type: "renovation" },
-      { customer_name: "Margaret L.", rating: 5, title: "Fireplace is a centrepiece", body: "Hand-carved limestone surround with traditional moulding details. Took 10 weeks but it's a work of art. Visitors think it's original to the house.", service_name: "Bespoke fireplace surround", project_type: "renovation" },
-      { customer_name: "Tim H.", rating: 5, title: "Cill replacement", body: "Crumbling sandstone cill on our 1850s house. George cut and fitted a matching replacement — invisible repair.", service_name: "Stone window cill replacement", project_type: "repair" },
-      { customer_name: "Lara P.", rating: 4, title: "Wall took longer than quoted", body: "Beautiful dry stone wall in the garden. Job ran a week over because of stone supply delays. Final result is stunning though.", service_name: "Dry stone walling (per sqm)", project_type: "new_build" }
+      { customer_name: "Charles W.", rating: 5, title: "Repointing on our Georgian townhouse", body: "Two previous masons used cement which was eating into the soft stone. George took it all back to lime, matched the original colour perfectly. House looks 100 years younger.", service_name: "Heritage repointing (lime mortar, per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/34.jpg" },
+      { customer_name: "Margaret L.", rating: 5, title: "Fireplace is a centrepiece", body: "Hand-carved limestone surround with traditional moulding details. Took 10 weeks but it's a work of art. Visitors think it's original to the house.", service_name: "Bespoke fireplace surround", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/35.jpg" },
+      { customer_name: "Tim H.", rating: 5, title: "Cill replacement", body: "Crumbling sandstone cill on our 1850s house. George cut and fitted a matching replacement — invisible repair.", service_name: "Stone window cill replacement", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/36.jpg" }
     ]
   },
 
@@ -724,10 +727,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 3-5 weeks ahead. Emergency drainage same week.",
     availability: "later",
     reviews: [
-      { customer_name: "Patrick K.", rating: 5, title: "Foundations bang on", body: "Darren's crew dug, laid steel and poured our extension footings in two days. Building Control inspector said the rebar layout was textbook. Spoil all removed.", service_name: "Extension foundations (4x5m strip footings)", project_type: "new_build" },
-      { customer_name: "Niamh O.", rating: 5, title: "Drive looks brilliant", body: "60sqm of block paving down in 4 days. Edges neat, drainage gully positioned perfectly, no puddles. Two winters on still perfect.", service_name: "Driveway (block paving, per sqm)", project_type: "renovation" },
-      { customer_name: "Stuart M.", rating: 5, title: "Drainage fixed the flooding", body: "Garden flooded every winter. Darren put in a French drain and surface water run to the main sewer. Dry as a bone since.", service_name: "Drainage run (per linear m)", project_type: "repair" },
-      { customer_name: "Aisling B.", rating: 4, title: "Retaining wall took longer", body: "Big retaining wall in the garden. Engineering calc and concrete pour all spot on but project ran a week over due to wet weather. Solid build.", service_name: "Retaining wall (concrete, per linear m at 1m high)", project_type: "new_build" }
+      { customer_name: "Patrick K.", rating: 5, title: "Foundations bang on", body: "Darren's crew dug, laid steel and poured our extension footings in two days. Building Control inspector said the rebar layout was textbook. Spoil all removed.", service_name: "Extension foundations (4x5m strip footings)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/37.jpg" },
+      { customer_name: "Niamh O.", rating: 5, title: "Drive looks brilliant", body: "60sqm of block paving down in 4 days. Edges neat, drainage gully positioned perfectly, no puddles. Two winters on still perfect.", service_name: "Driveway (block paving, per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/38.jpg" },
+      { customer_name: "Stuart M.", rating: 5, title: "Drainage fixed the flooding", body: "Garden flooded every winter. Darren put in a French drain and surface water run to the main sewer. Dry as a bone since.", service_name: "Drainage run (per linear m)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/39.jpg" }
     ]
   },
 
@@ -779,10 +781,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 3-4 months for major projects. Smaller works 6-8 weeks.",
     availability: "later",
     reviews: [
-      { customer_name: "Geraint M.", rating: 5, title: "Extension finished on schedule", body: "Paul ran a tight site for 14 weeks. Communicated weekly with photos and a running cost sheet. Came in £600 under quote at the end which I've never had before.", service_name: "Single-storey rear extension (4x5m)", project_type: "new_build" },
-      { customer_name: "Bethan H.", rating: 5, title: "Loft conversion transformed our house", body: "Master bedroom and ensuite up in the loft. Stairs landing tricky — Paul's joiner did a beautiful job. Whole job 12 weeks.", service_name: "Loft conversion (standard 3-bed semi)", project_type: "renovation" },
-      { customer_name: "Owen L.", rating: 5, title: "Full house renovation", body: "Bought a wreck. Paul stripped, rewired, replumbed, replastered and we moved in 15 weeks later. Honest with costs throughout, no nasty surprises.", service_name: "Full house renovation (3-bed)", project_type: "renovation" },
-      { customer_name: "Ffion D.", rating: 4, title: "Garage conversion ran 1 week over", body: "Lovely room. Weather pushed start by a week which meant a week-long delay at the end. Quality of finish is excellent.", service_name: "Garage conversion to living space", project_type: "renovation" }
+      { customer_name: "Geraint M.", rating: 5, title: "Extension finished on schedule", body: "Paul ran a tight site for 14 weeks. Communicated weekly with photos and a running cost sheet. Came in £600 under quote at the end which I've never had before.", service_name: "Single-storey rear extension (4x5m)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/40.jpg" },
+      { customer_name: "Bethan H.", rating: 5, title: "Loft conversion transformed our house", body: "Master bedroom and ensuite up in the loft. Stairs landing tricky — Paul's joiner did a beautiful job. Whole job 12 weeks.", service_name: "Loft conversion (standard 3-bed semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/41.jpg" },
+      { customer_name: "Owen L.", rating: 5, title: "Full house renovation", body: "Bought a wreck. Paul stripped, rewired, replumbed, replastered and we moved in 15 weeks later. Honest with costs throughout, no nasty surprises.", service_name: "Full house renovation (3-bed)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/42.jpg" }
     ]
   },
 
@@ -834,10 +835,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks. Small slab pours sometimes slotted in faster.",
     availability: "later",
     reviews: [
-      { customer_name: "Andy F.", rating: 5, title: "Basement pour was textbook", body: "5m x 6m basement under our extension. Paolo designed the shutters, set the rebar to the engineer's spec and poured in two stages. Inspection passed first time. Waterproofing has been bone dry for 2 winters.", service_name: "Basement structural pour (per sqm)", project_type: "new_build" },
-      { customer_name: "Suresh P.", rating: 5, title: "Garage slab solid as anything", body: "60sqm slab for a triple garage. Power-floated finish is dead level. Could lay tiles straight on it.", service_name: "Concrete slab base (per sqm)", project_type: "new_build" },
-      { customer_name: "Megan R.", rating: 5, title: "Foundations on time", body: "House foundations across 32m of perimeter. Two days of digging and steel, one day to pour. Inspector signed off no issues.", service_name: "House foundations / strip footings (per linear m)", project_type: "new_build" },
-      { customer_name: "Gareth W.", rating: 4, title: "Retaining wall ran a day over", body: "Big retaining wall (2.5m high). Concrete delivery from the plant was delayed by half a day which pushed strip-out into the following morning. Final result is rock solid." , service_name: "Retaining wall (cast in-situ, per sqm face)", project_type: "new_build" }
+      { customer_name: "Andy F.", rating: 5, title: "Basement pour was textbook", body: "5m x 6m basement under our extension. Paolo designed the shutters, set the rebar to the engineer's spec and poured in two stages. Inspection passed first time. Waterproofing has been bone dry for 2 winters.", service_name: "Basement structural pour (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/43.jpg" },
+      { customer_name: "Suresh P.", rating: 5, title: "Garage slab solid as anything", body: "60sqm slab for a triple garage. Power-floated finish is dead level. Could lay tiles straight on it.", service_name: "Concrete slab base (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/44.jpg" },
+      { customer_name: "Megan R.", rating: 5, title: "Foundations on time", body: "House foundations across 32m of perimeter. Two days of digging and steel, one day to pour. Inspector signed off no issues.", service_name: "House foundations / strip footings (per linear m)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/45.jpg" }
     ]
   },
 
@@ -889,10 +889,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks, weather permitting. Best season Apr-Oct.",
     availability: "later",
     reviews: [
-      { customer_name: "Daniel V.", rating: 5, title: "House looks brand new", body: "Full silicone render in a beautiful warm white. Crisp lines, perfect beads at the reveals. Two winters on no cracks or staining.", service_name: "Silicone render (full house, per sqm)", project_type: "renovation" },
-      { customer_name: "Annabel S.", rating: 5, title: "EWI dropped our heating bill", body: "Solid-wall Victorian house, no insulation. EWI system transformed how warm it feels and the silicone topcoat looks beautiful. Bills are about £600/year lower.", service_name: "Insulated render system (EWI, per sqm)", project_type: "renovation" },
-      { customer_name: "Marcus E.", rating: 4, title: "Monocouche, weather delay", body: "Job started 5 days late due to rain. Sophie kept us informed. Once it started, the work was excellent. Wall looks great." , service_name: "Monocouche render (per sqm)", project_type: "renovation" },
-      { customer_name: "Lou W.", rating: 5, title: "Patch repair invisible", body: "Big chunk of render fallen off after a frost. Sophie patched and repainted the whole elevation so you can't see the join.", service_name: "Repair patch + repaint", project_type: "repair" }
+      { customer_name: "Daniel V.", rating: 5, title: "House looks brand new", body: "Full silicone render in a beautiful warm white. Crisp lines, perfect beads at the reveals. Two winters on no cracks or staining.", service_name: "Silicone render (full house, per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/46.jpg" },
+      { customer_name: "Annabel S.", rating: 5, title: "EWI dropped our heating bill", body: "Solid-wall Victorian house, no insulation. EWI system transformed how warm it feels and the silicone topcoat looks beautiful. Bills are about £600/year lower.", service_name: "Insulated render system (EWI, per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/47.jpg" },
+      { customer_name: "Lou W.", rating: 5, title: "Patch repair invisible", body: "Big chunk of render fallen off after a frost. Sophie patched and repainted the whole elevation so you can't see the join.", service_name: "Repair patch + repaint", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/women/48.jpg" }
     ]
   },
 
@@ -943,10 +942,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks ahead. Commercial fit-outs prioritised in date order.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Emily H.", rating: 5, title: "Walls are like glass", body: "We wanted a US-style finish for our extension and Kevin nailed it. Level 5 finish under critical light — you cannot see a joint anywhere. Painter loved it.", service_name: "Tape + 4 coat skim to Level 5 (per sqm)", project_type: "new_build" },
-      { customer_name: "Ryan T.", rating: 5, title: "Office fit-out finished in 4 days", body: "200sqm of board taped and finished in 4 days. Quick, clean, ready for paint Monday morning. Top job.", service_name: "Tape + 3 coat finish to Level 4 (per sqm)", project_type: "renovation" },
-      { customer_name: "Hannah B.", rating: 5, title: "Ceiling looks unbelievable", body: "Big open-plan ceiling with skylights — every joint would have been visible under daylight. Kevin's Level 5 finish hides everything. Worth every penny.", service_name: "Ceiling tape + finish (per sqm)", project_type: "new_build" },
-      { customer_name: "Phil D.", rating: 4, title: "Good work, dust was heavy", body: "Quality of finish is excellent. He sheeted up but the dust was still pretty heavy for a few days. Cleared up well at the end.", service_name: "Patch repair (per patch up to 1sqm)", project_type: "renovation" }
+      { customer_name: "Emily H.", rating: 5, title: "Walls are like glass", body: "We wanted a US-style finish for our extension and Kevin nailed it. Level 5 finish under critical light — you cannot see a joint anywhere. Painter loved it.", service_name: "Tape + 4 coat skim to Level 5 (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/49.jpg" },
+      { customer_name: "Ryan T.", rating: 5, title: "Office fit-out finished in 4 days", body: "200sqm of board taped and finished in 4 days. Quick, clean, ready for paint Monday morning. Top job.", service_name: "Tape + 3 coat finish to Level 4 (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/50.jpg" },
+      { customer_name: "Hannah B.", rating: 5, title: "Ceiling looks unbelievable", body: "Big open-plan ceiling with skylights — every joint would have been visible under daylight. Kevin's Level 5 finish hides everything. Worth every penny.", service_name: "Ceiling tape + finish (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/51.jpg" }
     ]
   },
 
@@ -993,10 +991,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Stock available daily. Trade accounts open. Same-day delivery before 11am.",
     availability: "now",
     reviews: [
-      { customer_name: "Tom K.", rating: 5, title: "Saved my project", body: "Phoned at 7am needing 30 sheets of OSB3 same day. Stuart had them on a truck and at site by 10. Wouldn't get that from a chain.", service_name: "OSB3 sheet 18mm (per item)", project_type: "renovation" },
-      { customer_name: "Jay P.", rating: 5, title: "Best timber prices in Hull", body: "C24 4x2 is consistently the cheapest in East Yorks. Quality is good, no twisted lengths.", service_name: "Timber 4x2 C24 (per linear m)", project_type: "new_build" },
-      { customer_name: "Mia L.", rating: 5, title: "Trade account set up in 2 days", body: "Easy form, credit check came back next day, 30-day terms. Online ordering portal is straightforward.", service_name: "Trade account setup", project_type: "renovation" },
-      { customer_name: "Dan W.", rating: 4, title: "Engineering brick stock was low", body: "Wanted 4000 engineering bricks and only had 2500 in stock — special-order topped up in 3 days. Bit of a delay but Stuart was honest about it." , service_name: "Class B engineering brick (per 1000)", project_type: "new_build" }
+      { customer_name: "Tom K.", rating: 5, title: "Saved my project", body: "Phoned at 7am needing 30 sheets of OSB3 same day. Stuart had them on a truck and at site by 10. Wouldn't get that from a chain.", service_name: "OSB3 sheet 18mm (per item)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/52.jpg" },
+      { customer_name: "Jay P.", rating: 5, title: "Best timber prices in Hull", body: "C24 4x2 is consistently the cheapest in East Yorks. Quality is good, no twisted lengths.", service_name: "Timber 4x2 C24 (per linear m)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/53.jpg" },
+      { customer_name: "Mia L.", rating: 5, title: "Trade account set up in 2 days", body: "Easy form, credit check came back next day, 30-day terms. Online ordering portal is straightforward.", service_name: "Trade account setup", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/54.jpg" }
     ]
   },
 
@@ -1048,10 +1045,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Workshop booked 4-6 weeks. Site welding emergencies same week.",
     availability: "later",
     reviews: [
-      { customer_name: "Mike B.", rating: 5, title: "Steel staircase is the feature of the house", body: "Jakub designed and built our open-tread steel staircase. Welds are invisible, paint finish is flawless. Drew it in CAD with us until we were happy.", service_name: "Bespoke steel staircase (straight flight)", project_type: "new_build" },
-      { customer_name: "Olivia T.", rating: 5, title: "RSJ delivered and installed", body: "5m structural beam for a knock-through. Lifted into place with a beam-trolley. Engineer was happy with the install. No fuss.", service_name: "Structural steel beam (RSJ, supply + install)", project_type: "renovation" },
-      { customer_name: "Greg N.", rating: 5, title: "Glass balustrade looks high-end", body: "Stainless posts with low-iron toughened glass on our balcony. Looks like it should cost twice what we paid.", service_name: "Glass balustrade (per linear m)", project_type: "renovation" },
-      { customer_name: "Kate W.", rating: 4, title: "Gates great but took longer than quoted", body: "Garden gates beautifully made. Job ran 2 weeks over due to powder-coater delay. Final piece is lovely." , service_name: "Steel gates / railings (per linear m)", project_type: "renovation" }
+      { customer_name: "Mike B.", rating: 5, title: "Steel staircase is the feature of the house", body: "Jakub designed and built our open-tread steel staircase. Welds are invisible, paint finish is flawless. Drew it in CAD with us until we were happy.", service_name: "Bespoke steel staircase (straight flight)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/55.jpg" },
+      { customer_name: "Olivia T.", rating: 5, title: "RSJ delivered and installed", body: "5m structural beam for a knock-through. Lifted into place with a beam-trolley. Engineer was happy with the install. No fuss.", service_name: "Structural steel beam (RSJ, supply + install)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/56.jpg" },
+      { customer_name: "Greg N.", rating: 5, title: "Glass balustrade looks high-end", body: "Stainless posts with low-iron toughened glass on our balcony. Looks like it should cost twice what we paid.", service_name: "Glass balustrade (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/57.jpg" }
     ]
   },
 
@@ -1103,10 +1099,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Plant available most weeks. Book 1-2 weeks ahead for guaranteed slot.",
     availability: "next_week",
     reviews: [
-      { customer_name: "Ian K.", rating: 5, title: "Operator was a class above", body: "Booked 3-tonne for foundations. Charlie's lad dug perfectly to the engineer's spec, no over-dig, and the spoil pile was tidy. Worth every penny.", service_name: "3-tonne excavator + operator (per day)", project_type: "new_build" },
-      { customer_name: "Fraser M.", rating: 5, title: "8-tonner for demo", body: "Big demolition site clearance. 3 days with the 8-tonner and a dumper. Cleared 200 tonnes of rubble. Machines never stopped.", service_name: "8-tonne excavator + operator (per day)", project_type: "renovation" },
-      { customer_name: "Hannah S.", rating: 5, title: "Garden access — needed the mini", body: "Backyard with 90cm wide gate. Mini dumper and a 3-tonne shuffled in like it was nothing. Garden saved.", service_name: "Mini dumper (1-tonne) + operator (per day)", project_type: "renovation" },
-      { customer_name: "Doug R.", rating: 4, title: "Roller fine, transport delay", body: "Roller was great but the lorry got stuck in traffic and started 2 hours late. Charlie took 2 hours off the day rate which was fair.", service_name: "Single-drum roller + operator (per day)", project_type: "new_build" }
+      { customer_name: "Ian K.", rating: 5, title: "Operator was a class above", body: "Booked 3-tonne for foundations. Charlie's lad dug perfectly to the engineer's spec, no over-dig, and the spoil pile was tidy. Worth every penny.", service_name: "3-tonne excavator + operator (per day)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/58.jpg" },
+      { customer_name: "Fraser M.", rating: 5, title: "8-tonner for demo", body: "Big demolition site clearance. 3 days with the 8-tonner and a dumper. Cleared 200 tonnes of rubble. Machines never stopped.", service_name: "8-tonne excavator + operator (per day)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/59.jpg" },
+      { customer_name: "Hannah S.", rating: 5, title: "Garden access — needed the mini", body: "Backyard with 90cm wide gate. Mini dumper and a 3-tonne shuffled in like it was nothing. Garden saved.", service_name: "Mini dumper (1-tonne) + operator (per day)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/60.jpg" }
     ]
   },
 
@@ -1153,10 +1148,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Most items available daily. Towers and floor sanders book 2-3 days ahead in summer.",
     availability: "now",
     reviews: [
-      { customer_name: "Joe L.", rating: 5, title: "Saved me a trip", body: "Booked an SDS and breaker for a weekend. Rebecca's lad delivered them Friday afternoon and collected Monday. Saved me hours. Tools were spot on.", service_name: "Delivery / collection (each way)", project_type: "renovation" },
-      { customer_name: "Diane R.", rating: 5, title: "Floor sander made it easy", body: "Refinished our hall and dining room floors over a weekend. Sander was in great condition, decent sandpaper supplied. Rebecca walked me through how to use it.", service_name: "Floor sander (drum + edge, per day)", project_type: "renovation" },
-      { customer_name: "Sam T.", rating: 5, title: "Better than HSS", body: "Tower was clean, all bits there, no missing braces. Better service than I get from the big chains.", service_name: "Aluminium mobile tower (per week)", project_type: "renovation" },
-      { customer_name: "Ahmed B.", rating: 4, title: "Mixer fine, delivery was late", body: "Hired a mixer for a weekend. Delivery turned up an hour late which threw the schedule. Mixer worked great though." , service_name: "Cement mixer (electric, per day)", project_type: "renovation" }
+      { customer_name: "Joe L.", rating: 5, title: "Saved me a trip", body: "Booked an SDS and breaker for a weekend. Rebecca's lad delivered them Friday afternoon and collected Monday. Saved me hours. Tools were spot on.", service_name: "Delivery / collection (each way)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/61.jpg" },
+      { customer_name: "Diane R.", rating: 5, title: "Floor sander made it easy", body: "Refinished our hall and dining room floors over a weekend. Sander was in great condition, decent sandpaper supplied. Rebecca walked me through how to use it.", service_name: "Floor sander (drum + edge, per day)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/62.jpg" },
+      { customer_name: "Sam T.", rating: 5, title: "Better than HSS", body: "Tower was clean, all bits there, no missing braces. Better service than I get from the big chains.", service_name: "Aluminium mobile tower (per week)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/63.jpg" }
     ]
   },
 
@@ -1208,10 +1202,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Design booked 2-3 months ahead. Maintenance slots available.",
     availability: "later",
     reviews: [
-      { customer_name: "Helena S.", rating: 5, title: "Garden is a sanctuary now", body: "Grace designed a calming garden with year-round structure. Every plant is where it should be. The hard-landscaping crew were excellent too.", service_name: "Garden design fee (full plan)", project_type: "renovation" },
-      { customer_name: "Roger B.", rating: 5, title: "Patio is gorgeous", body: "Indian sandstone laid with such care — every slab dead flat, falls perfect, joints crisp. Two winters in not a single tile moved.", service_name: "Patio install (Indian sandstone, per sqm)", project_type: "renovation" },
-      { customer_name: "Imogen W.", rating: 5, title: "Planting plan was perfect", body: "We had the hard landscaping done by someone else but needed a planting scheme. Grace's plan was detailed, plants were sourced beautifully. Garden has come alive.", service_name: "Planting plan only (existing structure)", project_type: "renovation" },
-      { customer_name: "Patrick H.", rating: 4, title: "Lawn took a few months", body: "New turf laid in autumn. Took until spring to fully knit. Some patches needed top-up which Grace did at no extra cost." , service_name: "Lawn turfing (per sqm)", project_type: "renovation" }
+      { customer_name: "Helena S.", rating: 5, title: "Garden is a sanctuary now", body: "Grace designed a calming garden with year-round structure. Every plant is where it should be. The hard-landscaping crew were excellent too.", service_name: "Garden design fee (full plan)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/64.jpg" },
+      { customer_name: "Roger B.", rating: 5, title: "Patio is gorgeous", body: "Indian sandstone laid with such care — every slab dead flat, falls perfect, joints crisp. Two winters in not a single tile moved.", service_name: "Patio install (Indian sandstone, per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/65.jpg" },
+      { customer_name: "Imogen W.", rating: 5, title: "Planting plan was perfect", body: "We had the hard landscaping done by someone else but needed a planting scheme. Grace's plan was detailed, plants were sourced beautifully. Garden has come alive.", service_name: "Planting plan only (existing structure)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/66.jpg" }
     ]
   },
 
@@ -1264,10 +1257,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Boiler installs 1-2 weeks. Emergencies same day where possible.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Margaret C.", rating: 5, title: "Worcester install was textbook", body: "Old boiler died on a Friday. Steve quoted Saturday, fitted Tuesday. Hot water and heating back, 12-year warranty registered before he left.", service_name: "Combi boiler install (Worcester Greenstar)", project_type: "repair" },
-      { customer_name: "Rohan D.", rating: 5, title: "Annual service was thorough", body: "Steve services my boiler every November. Always on time, takes photos of the flue analysis and emails the cert. Reliable as anything.", service_name: "Annual boiler service", project_type: "repair" },
-      { customer_name: "Alistair F.", rating: 5, title: "CP12 done in 20 mins", body: "Landlord cert for my flat. In and out, certificate by email same day. Easy.", service_name: "Landlord Gas Safety Cert (CP12)", project_type: "repair" },
-      { customer_name: "Catherine M.", rating: 4, title: "System boiler great, scaffolding delay", body: "System boiler swap took 3 days instead of 2 due to scaffolding for the flue. Steve sorted it though no extra charge.", service_name: "System boiler install (Worcester, with cylinder)", project_type: "renovation" }
+      { customer_name: "Margaret C.", rating: 5, title: "Worcester install was textbook", body: "Old boiler died on a Friday. Steve quoted Saturday, fitted Tuesday. Hot water and heating back, 12-year warranty registered before he left.", service_name: "Combi boiler install (Worcester Greenstar)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/women/67.jpg" },
+      { customer_name: "Rohan D.", rating: 5, title: "Annual service was thorough", body: "Steve services my boiler every November. Always on time, takes photos of the flue analysis and emails the cert. Reliable as anything.", service_name: "Annual boiler service", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/68.jpg" },
+      { customer_name: "Alistair F.", rating: 5, title: "CP12 done in 20 mins", body: "Landlord cert for my flat. In and out, certificate by email same day. Easy.", service_name: "Landlord Gas Safety Cert (CP12)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/69.jpg" }
     ]
   },
 
@@ -1318,10 +1310,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks ahead. Smaller microcement jobs sometimes fit in earlier.",
     availability: "later",
     reviews: [
-      { customer_name: "Andrea D.", rating: 5, title: "Polished floor is unbelievable", body: "Open-plan kitchen-diner, 60sqm polished concrete. Looks like the floor of a high-end gallery. Three years in not a mark.", service_name: "Polished concrete floor (per sqm)", project_type: "new_build" },
-      { customer_name: "Pete S.", rating: 5, title: "Microcement bathroom transformed", body: "Tiled bathroom was tired but we didn't want the upheaval of a full retile. Marco microcemented over the lot. Looks brand new, seamless.", service_name: "Microcement floor (per sqm)", project_type: "renovation" },
-      { customer_name: "Sara W.", rating: 5, title: "Concrete countertops are amazing", body: "Hand-cast concrete worktops in our kitchen island. Marco made templates, cast off-site and installed in a day. They're a feature.", service_name: "Concrete countertop (bespoke, per linear m)", project_type: "renovation" },
-      { customer_name: "Tom G.", rating: 4, title: "Floor great, dust was heavy", body: "Polished overlay on our existing slab. Result is stunning but the grinding stage threw a lot of dust despite his vacuum. Cleaned up well in the end.", service_name: "Polished overlay (existing slab, per sqm)", project_type: "renovation" }
+      { customer_name: "Andrea D.", rating: 5, title: "Polished floor is unbelievable", body: "Open-plan kitchen-diner, 60sqm polished concrete. Looks like the floor of a high-end gallery. Three years in not a mark.", service_name: "Polished concrete floor (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/70.jpg" },
+      { customer_name: "Pete S.", rating: 5, title: "Microcement bathroom transformed", body: "Tiled bathroom was tired but we didn't want the upheaval of a full retile. Marco microcemented over the lot. Looks brand new, seamless.", service_name: "Microcement floor (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/71.jpg" },
+      { customer_name: "Sara W.", rating: 5, title: "Concrete countertops are amazing", body: "Hand-cast concrete worktops in our kitchen island. Marco made templates, cast off-site and installed in a day. They're a feature.", service_name: "Concrete countertop (bespoke, per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/72.jpg" }
     ]
   },
 
@@ -1368,10 +1359,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Workshop booked 6-8 weeks ahead. Refurb / handrail jobs slot in faster.",
     availability: "later",
     reviews: [
-      { customer_name: "Eleanor H.", rating: 5, title: "Oak staircase is a centrepiece", body: "Beautiful solid oak stairs with turned spindles to match our 1920s house. Ben drew it in CAD, made every joint by hand, no squeaks. Worth every penny.", service_name: "Oak staircase (cut-string, 13 treads)", project_type: "renovation" },
-      { customer_name: "James L.", rating: 5, title: "Loft stair fits perfectly", body: "Tight loft opening, Building Control happy with the design. Bespoke build, paint-ready, fits like a glove.", service_name: "Loft conversion staircase (custom rise)", project_type: "renovation" },
-      { customer_name: "Rachel V.", rating: 5, title: "Open-tread is stunning", body: "Cantilevered open-tread oak treads with glass balustrade. Walked into the house for the first time and gasped. Detail is incredible.", service_name: "Open-tread / cantilever staircase", project_type: "new_build" },
-      { customer_name: "Patrick W.", rating: 4, title: "Handrail replacement, slight delay", body: "New handrail and spindles. Workshop ran a week over due to timber supply but the install was perfect. Lovely piece." , service_name: "Replace handrail + spindles only", project_type: "renovation" }
+      { customer_name: "Eleanor H.", rating: 5, title: "Oak staircase is a centrepiece", body: "Beautiful solid oak stairs with turned spindles to match our 1920s house. Ben drew it in CAD, made every joint by hand, no squeaks. Worth every penny.", service_name: "Oak staircase (cut-string, 13 treads)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/73.jpg" },
+      { customer_name: "James L.", rating: 5, title: "Loft stair fits perfectly", body: "Tight loft opening, Building Control happy with the design. Bespoke build, paint-ready, fits like a glove.", service_name: "Loft conversion staircase (custom rise)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/74.jpg" },
+      { customer_name: "Rachel V.", rating: 5, title: "Open-tread is stunning", body: "Cantilevered open-tread oak treads with glass balustrade. Walked into the house for the first time and gasped. Detail is incredible.", service_name: "Open-tread / cantilever staircase", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/75.jpg" }
     ]
   },
 
@@ -1418,10 +1408,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 6-8 weeks. One kitchen per week, no exceptions.",
     availability: "later",
     reviews: [
-      { customer_name: "Charlotte M.", rating: 5, title: "Howdens kitchen fit perfectly", body: "Laura installed our Howdens kitchen in 5 days. Doors line up, plinths perfect, worktop joints invisible. Worked beautifully with our electrician + plumber.", service_name: "Full kitchen install (10-15 units, labour only)", project_type: "renovation" },
-      { customer_name: "Adam S.", rating: 5, title: "Big island kitchen", body: "20-unit DIY Kitchens install with a 3m island. Took 7 days. Laura caught two cabinet design issues at the start that saved us a week of grief later.", service_name: "Full kitchen install (16-25 units)", project_type: "renovation" },
-      { customer_name: "Priya R.", rating: 5, title: "Solid wood worktop perfect", body: "Beautiful oak worktop fitted, sanded and oiled. Cuts around the hob and sink are crisp. Looks amazing two years on.", service_name: "Solid wood / butcher block worktop fit (per linear m)", project_type: "renovation" },
-      { customer_name: "Mark J.", rating: 4, title: "Good fit, ran a day over", body: "Quality of install is excellent. Ran 1 day over because we'd ordered the wrong size end panel. Laura sorted it without fuss." , service_name: "Full kitchen install (10-15 units, labour only)", project_type: "renovation" }
+      { customer_name: "Charlotte M.", rating: 5, title: "Howdens kitchen fit perfectly", body: "Laura installed our Howdens kitchen in 5 days. Doors line up, plinths perfect, worktop joints invisible. Worked beautifully with our electrician + plumber.", service_name: "Full kitchen install (10-15 units, labour only)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/76.jpg" },
+      { customer_name: "Adam S.", rating: 5, title: "Big island kitchen", body: "20-unit DIY Kitchens install with a 3m island. Took 7 days. Laura caught two cabinet design issues at the start that saved us a week of grief later.", service_name: "Full kitchen install (16-25 units)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/77.jpg" },
+      { customer_name: "Priya R.", rating: 5, title: "Solid wood worktop perfect", body: "Beautiful oak worktop fitted, sanded and oiled. Cuts around the hob and sink are crisp. Looks amazing two years on.", service_name: "Solid wood / butcher block worktop fit (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/78.jpg" }
     ]
   },
 
@@ -1473,10 +1462,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 3-4 weeks ahead. Emergency board-ups same week.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Wendy R.", rating: 5, title: "Whole house of windows in 2 days", body: "9 uPVC windows replaced in two days. Reveal make-good neat, silicone lines crisp, FENSA cert in the post within a week. Nothing to complain about.", service_name: "uPVC window install (per window)", project_type: "renovation" },
-      { customer_name: "Liam H.", rating: 5, title: "Bifold install was textbook", body: "3-pane aluminium bifolds for our kitchen extension. Threshold sealed properly, doors run like silk. Two years in still perfect.", service_name: "Bifold door install (3-pane)", project_type: "new_build" },
-      { customer_name: "Sarah O.", rating: 5, title: "Bay window perfect", body: "Old timber bay was rotten. Noah replaced with uPVC bay including the structural pole. Better insulated and looks great.", service_name: "uPVC bay window install", project_type: "renovation" },
-      { customer_name: "Trevor B.", rating: 4, title: "Front door fine, ran 2 hours over", body: "Composite front door install. Threshold adjustment took longer than quoted — 2 hours of extra fettling. No extra charge but worth flagging.", service_name: "Composite front door install", project_type: "renovation" }
+      { customer_name: "Wendy R.", rating: 5, title: "Whole house of windows in 2 days", body: "9 uPVC windows replaced in two days. Reveal make-good neat, silicone lines crisp, FENSA cert in the post within a week. Nothing to complain about.", service_name: "uPVC window install (per window)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/79.jpg" },
+      { customer_name: "Liam H.", rating: 5, title: "Bifold install was textbook", body: "3-pane aluminium bifolds for our kitchen extension. Threshold sealed properly, doors run like silk. Two years in still perfect.", service_name: "Bifold door install (3-pane)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/80.jpg" },
+      { customer_name: "Sarah O.", rating: 5, title: "Bay window perfect", body: "Old timber bay was rotten. Noah replaced with uPVC bay including the structural pole. Better insulated and looks great.", service_name: "uPVC bay window install", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/81.jpg" }
     ]
   },
 
@@ -1521,10 +1509,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 1-2 weeks ahead. Emergency lifts considered same week.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Liam K.", rating: 5, title: "Steel frame up in a day", body: "Callum lifted 14 steels onto our two-storey commercial extension. AP paperwork was in our hands a week before, lift went exactly to plan, off site by 3pm. Faultless.", service_name: "30T mobile crane full-day hire", project_type: "new_build" },
-      { customer_name: "Megan B.", rating: 5, title: "Hot tub over the house", body: "Needed our hot tub lifting over a 2-storey house into the back garden. Survey was thorough, mats supplied, neighbours unbothered. Worth every penny.", service_name: "30T mobile crane half-day hire", project_type: "renovation" },
-      { customer_name: "Yusuf A.", rating: 5, title: "Modular classroom drops", body: "Lifted six classroom cabins onto a school site over a weekend. Zero disruption Monday morning. Professional all round.", service_name: "Modular cabin / container lift (per unit)", project_type: "new_build" },
-      { customer_name: "Helen S.", rating: 4, title: "Tree lift after storm", body: "Big sycamore down on our boundary wall. Callum got it lifted off and chunked within a morning. Slight premium for short notice but completely fair.", service_name: "30T mobile crane half-day hire", project_type: "repair" }
+      { customer_name: "Liam K.", rating: 5, title: "Steel frame up in a day", body: "Callum lifted 14 steels onto our two-storey commercial extension. AP paperwork was in our hands a week before, lift went exactly to plan, off site by 3pm. Faultless.", service_name: "30T mobile crane full-day hire", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/82.jpg" },
+      { customer_name: "Megan B.", rating: 5, title: "Hot tub over the house", body: "Needed our hot tub lifting over a 2-storey house into the back garden. Survey was thorough, mats supplied, neighbours unbothered. Worth every penny.", service_name: "30T mobile crane half-day hire", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/83.jpg" },
+      { customer_name: "Yusuf A.", rating: 5, title: "Modular classroom drops", body: "Lifted six classroom cabins onto a school site over a weekend. Zero disruption Monday morning. Professional all round.", service_name: "Modular cabin / container lift (per unit)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/84.jpg" }
     ]
   },
 
@@ -1571,10 +1558,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 1-2 weeks ahead. Alarm faults squeezed in same week.",
     availability: "next_week",
     reviews: [
-      { customer_name: "David L.", rating: 5, title: "Tidy CCTV install", body: "8 cameras around the property, every cable hidden, app worked first time. Priya talked us through the playback and motion zones. Top job.", service_name: "8-camera CCTV system install", project_type: "renovation" },
-      { customer_name: "Aisha M.", rating: 5, title: "Police-response alarm", body: "Upgraded our old bellbox to a monitored Texecom system. Insurance came down £180 immediately. Worth it.", service_name: "Monitored alarm upgrade (police response)", project_type: "renovation" },
-      { customer_name: "Robert J.", rating: 5, title: "Honest about the existing kit", body: "Two competitors quoted a full new system. Priya said the panel was fine, replaced a battery and a faulty PIR for £140. Refreshing.", service_name: "Annual maintenance visit", project_type: "repair" },
-      { customer_name: "Lucy P.", rating: 4, title: "Doorbell tricky to set up", body: "Doorbird install took longer than expected because the existing chime transformer was tiny. Priya supplied a new one at cost. Good outcome.", service_name: "Smart video doorbell install", project_type: "renovation" }
+      { customer_name: "David L.", rating: 5, title: "Tidy CCTV install", body: "8 cameras around the property, every cable hidden, app worked first time. Priya talked us through the playback and motion zones. Top job.", service_name: "8-camera CCTV system install", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/85.jpg" },
+      { customer_name: "Aisha M.", rating: 5, title: "Police-response alarm", body: "Upgraded our old bellbox to a monitored Texecom system. Insurance came down £180 immediately. Worth it.", service_name: "Monitored alarm upgrade (police response)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/86.jpg" },
+      { customer_name: "Robert J.", rating: 5, title: "Honest about the existing kit", body: "Two competitors quoted a full new system. Priya said the panel was fine, replaced a battery and a faulty PIR for £140. Refreshing.", service_name: "Annual maintenance visit", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/87.jpg" }
     ]
   },
 
@@ -1620,10 +1606,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Yard open Mon-Fri 7-5, Sat 7-12. Same-day delivery within Leeds.",
     availability: "now",
     reviews: [
-      { customer_name: "Adam W.", rating: 5, title: "Sharper than the sheds on a big order", body: "Priced 8000 bricks against three nationals — Holt came in £600 cheaper and delivered on the day promised. Will use again.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build" },
-      { customer_name: "Carly D.", rating: 5, title: "Same-day delivery saved the job", body: "Forgot to order cement for a screed pour, called at 10:30, in the yard at 1pm. Driver was lovely.", service_name: "Same-day delivery within Leeds", project_type: "renovation" },
-      { customer_name: "Mo R.", rating: 5, title: "Honest about lead times", body: "Richard told me upfront aircrete blocks were 10 days. Other merchants promised 3 then it slipped to 14. I'd rather be told the truth.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build" },
-      { customer_name: "Jess T.", rating: 4, title: "Account took a few days", body: "Credit application took 5 working days to come through which slowed our first order. Once set up the service has been excellent.", service_name: "Account application (30-day credit)", project_type: "new_build" }
+      { customer_name: "Adam W.", rating: 5, title: "Sharper than the sheds on a big order", body: "Priced 8000 bricks against three nationals — Holt came in £600 cheaper and delivered on the day promised. Will use again.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/88.jpg" },
+      { customer_name: "Carly D.", rating: 5, title: "Same-day delivery saved the job", body: "Forgot to order cement for a screed pour, called at 10:30, in the yard at 1pm. Driver was lovely.", service_name: "Same-day delivery within Leeds", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/89.jpg" },
+      { customer_name: "Mo R.", rating: 5, title: "Honest about lead times", body: "Richard told me upfront aircrete blocks were 10 days. Other merchants promised 3 then it slipped to 14. I'd rather be told the truth.", service_name: "Solid 7N concrete block (440x215x100) pallet of 72", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/90.jpg" }
     ]
   },
 
@@ -1668,10 +1653,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-6 weeks ahead on bigger packages. Smaller column / slab packages possible at 2 weeks.",
     availability: "later",
     reviews: [
-      { customer_name: "Marcus T.", rating: 5, title: "RC frame on programme", body: "Stefan's crew shuttered our 4-storey RC frame in central London over 11 weeks. Hit every pour date. Finish was crisp.", service_name: "Peri / Doka system wall formwork (per sqm)", project_type: "new_build" },
-      { customer_name: "Imran B.", rating: 5, title: "Board-marked finish was exhibition quality", body: "Architect specified a tight board-marked spec for our exposed cores. Stefan did a sample panel, we tweaked the joint pattern, final pour was photoshoot-grade.", service_name: "Architectural exposed concrete (per sqm)", project_type: "new_build" },
-      { customer_name: "Hannah V.", rating: 5, title: "Basement box on a difficult site", body: "Tight London plot, 1m to neighbour walls. Stefan planned the props and pours so we never overstressed the retaining walls.", service_name: "Timber shutter walls (per sqm contact)", project_type: "new_build" },
-      { customer_name: "Lewis A.", rating: 4, title: "Quote took a week", body: "Detailed quote took 7 days to come back — slowed our procurement slightly. The detail was excellent though, every sqm itemised.", service_name: "Falsework design review", project_type: "new_build" }
+      { customer_name: "Marcus T.", rating: 5, title: "RC frame on programme", body: "Stefan's crew shuttered our 4-storey RC frame in central London over 11 weeks. Hit every pour date. Finish was crisp.", service_name: "Peri / Doka system wall formwork (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/91.jpg" },
+      { customer_name: "Imran B.", rating: 5, title: "Board-marked finish was exhibition quality", body: "Architect specified a tight board-marked spec for our exposed cores. Stefan did a sample panel, we tweaked the joint pattern, final pour was photoshoot-grade.", service_name: "Architectural exposed concrete (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/92.jpg" },
+      { customer_name: "Hannah V.", rating: 5, title: "Basement box on a difficult site", body: "Tight London plot, 1m to neighbour walls. Stefan planned the props and pours so we never overstressed the retaining walls.", service_name: "Timber shutter walls (per sqm contact)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/93.jpg" }
     ]
   },
 
@@ -1722,10 +1706,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks ahead. ECO4 jobs slot in around the funding window.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Janet H.", rating: 5, title: "EPC went from E to C", body: "Charlotte did loft and cavity through ECO4 funding — cost me nothing and the house is noticeably warmer. EPC rebanded to C which helps for selling.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation" },
-      { customer_name: "Owen R.", rating: 5, title: "EWI transformed the house", body: "Solid-walled 1930s semi — EWI plus silicone render. Bills dropped almost 40% in the first winter and the place looks brand new from outside.", service_name: "External wall insulation (EWI) per sqm", project_type: "renovation" },
-      { customer_name: "Faye L.", rating: 5, title: "Honest about damp risk", body: "Charlotte borescoped our cavity, found a damp patch and refused to fill until it was fixed. Saved us a long-term problem. Other firms would have just sprayed it.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation" },
-      { customer_name: "Tom S.", rating: 4, title: "Scaffold delay", body: "EWI scaffold was a day late which pushed the start back. Once started the work was excellent and finished on time.", service_name: "External wall insulation (EWI) per sqm", project_type: "renovation" }
+      { customer_name: "Janet H.", rating: 5, title: "EPC went from E to C", body: "Charlotte did loft and cavity through ECO4 funding — cost me nothing and the house is noticeably warmer. EPC rebanded to C which helps for selling.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/94.jpg" },
+      { customer_name: "Owen R.", rating: 5, title: "EWI transformed the house", body: "Solid-walled 1930s semi — EWI plus silicone render. Bills dropped almost 40% in the first winter and the place looks brand new from outside.", service_name: "External wall insulation (EWI) per sqm", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/95.jpg" },
+      { customer_name: "Faye L.", rating: 5, title: "Honest about damp risk", body: "Charlotte borescoped our cavity, found a damp patch and refused to fill until it was fixed. Saved us a long-term problem. Other firms would have just sprayed it.", service_name: "Cavity wall insulation (3-bed semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/96.jpg" }
     ]
   },
 
@@ -1770,10 +1753,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 4-5 weeks ahead. Small heritage repairs sometimes slotted in earlier.",
     availability: "later",
     reviews: [
-      { customer_name: "Henrietta P.", rating: 5, title: "Georgian skirting matched perfectly", body: "Harry matched a missing skirting profile from a Bath townhouse drawing room. Could not tell the new from the original. Worth every penny.", service_name: "Custom moulding match (heritage)", project_type: "renovation" },
-      { customer_name: "James L.", rating: 5, title: "Panelling beyond expectations", body: "Full-height shaker panelling in our hallway. Lines are dead level, every mitre tight. The painters thanked us.", service_name: "Full-height shaker wall panelling (per sqm)", project_type: "renovation" },
-      { customer_name: "Olivia M.", rating: 5, title: "Skirting on oak floor faultless", body: "220mm mitred skirting on a wide-board oak floor. Tiny expansion gaps respected, no caulk anywhere. Photographer noticed.", service_name: "Mitred deep skirting on hardwood floor (per linear m)", project_type: "renovation" },
-      { customer_name: "Edward R.", rating: 4, title: "Booked weeks ahead but worth it", body: "Six week wait to book, then a smooth two-week run. Quality is exceptional but plan ahead — Harry is in demand for a reason.", service_name: "Wainscot dado panelling (per linear m)", project_type: "renovation" }
+      { customer_name: "Henrietta P.", rating: 5, title: "Georgian skirting matched perfectly", body: "Harry matched a missing skirting profile from a Bath townhouse drawing room. Could not tell the new from the original. Worth every penny.", service_name: "Custom moulding match (heritage)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/97.jpg" },
+      { customer_name: "James L.", rating: 5, title: "Panelling beyond expectations", body: "Full-height shaker panelling in our hallway. Lines are dead level, every mitre tight. The painters thanked us.", service_name: "Full-height shaker wall panelling (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/98.jpg" },
+      { customer_name: "Olivia M.", rating: 5, title: "Skirting on oak floor faultless", body: "220mm mitred skirting on a wide-board oak floor. Tiny expansion gaps respected, no caulk anywhere. Photographer noticed.", service_name: "Mitred deep skirting on hardwood floor (per linear m)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/99.jpg" }
     ]
   },
 
@@ -1818,10 +1800,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks out. Single-day extras sometimes slotted same week.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Conor M.", rating: 5, title: "Inner skin perfect", body: "Michael did the inner skin on our four-house terrace. Plumb, gauge perfect, brickie following him said he'd never seen tidier work.", service_name: "Internal blockwork inner skin (per sqm)", project_type: "new_build" },
-      { customer_name: "Aoife S.", rating: 5, title: "Retaining wall to engineer's spec", body: "Reinforced concrete-filled blockwork retaining wall behind our extension. All cavity rebar tied as drawn, every course inspected. Building Control passed first time.", service_name: "Engineering block retaining wall (per sqm)", project_type: "new_build" },
-      { customer_name: "Padraig D.", rating: 5, title: "Basement walls solid", body: "Cellar conversion blockwork. Heavy reinforced walls, waterproofing membrane went onto a true face with no make-good needed.", service_name: "Basement wall blockwork (per sqm)", project_type: "renovation" },
-      { customer_name: "Niamh F.", rating: 4, title: "Slight rain delay", body: "Lost two days to heavy rain which pushed delivery back. Michael was upfront about it and made the days up over the weekend. Quality top notch.", service_name: "Internal blockwork inner skin (per sqm)", project_type: "new_build" }
+      { customer_name: "Conor M.", rating: 5, title: "Inner skin perfect", body: "Michael did the inner skin on our four-house terrace. Plumb, gauge perfect, brickie following him said he'd never seen tidier work.", service_name: "Internal blockwork inner skin (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/1.jpg" },
+      { customer_name: "Aoife S.", rating: 5, title: "Retaining wall to engineer's spec", body: "Reinforced concrete-filled blockwork retaining wall behind our extension. All cavity rebar tied as drawn, every course inspected. Building Control passed first time.", service_name: "Engineering block retaining wall (per sqm)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/2.jpg" },
+      { customer_name: "Padraig D.", rating: 5, title: "Basement walls solid", body: "Cellar conversion blockwork. Heavy reinforced walls, waterproofing membrane went onto a true face with no make-good needed.", service_name: "Basement wall blockwork (per sqm)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/5.jpg" }
     ]
   },
 
@@ -1866,10 +1847,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Available for audits within 1 week. Retainer slots open from next month.",
     availability: "this_week",
     reviews: [
-      { customer_name: "Bryan T.", rating: 5, title: "Saved us from an HSE notice", body: "Andrew audited our small construction site, flagged a fall risk we'd missed, and the fix took an afternoon. HSE turned up the following week and we passed clean.", service_name: "Site safety audit (one-off)", project_type: "new_build" },
-      { customer_name: "Lorraine W.", rating: 5, title: "RAMS people will actually read", body: "Plain English, properly task-specific. My operatives read it in two minutes instead of binning a 12-page generic doc. Refreshing.", service_name: "RAMS writing (per task)", project_type: "renovation" },
-      { customer_name: "Stuart H.", rating: 5, title: "Retainer pays for itself", body: "£750/month gets us proactive support, audits and RAMS. Easily worth it for the peace of mind on a 25-man firm.", service_name: "Monthly retainer (small contractor)", project_type: "new_build" },
-      { customer_name: "Karen F.", rating: 5, title: "Walked us through CDM PD role", body: "Andrew acted as Principal Designer on our small commercial fit-out and explained every step. No jargon, no scare tactics.", service_name: "CDM Principal Designer service", project_type: "renovation" }
+      { customer_name: "Bryan T.", rating: 5, title: "Saved us from an HSE notice", body: "Andrew audited our small construction site, flagged a fall risk we'd missed, and the fix took an afternoon. HSE turned up the following week and we passed clean.", service_name: "Site safety audit (one-off)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/7.jpg" },
+      { customer_name: "Lorraine W.", rating: 5, title: "RAMS people will actually read", body: "Plain English, properly task-specific. My operatives read it in two minutes instead of binning a 12-page generic doc. Refreshing.", service_name: "RAMS writing (per task)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/3.jpg" },
+      { customer_name: "Karen F.", rating: 5, title: "Walked us through CDM PD role", body: "Andrew acted as Principal Designer on our small commercial fit-out and explained every step. No jargon, no scare tactics.", service_name: "CDM Principal Designer service", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/4.jpg" }
     ]
   },
 
@@ -1915,10 +1895,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 3-4 weeks out. Siting surveys can be slotted within 1 week.",
     availability: "later",
     reviews: [
-      { customer_name: "Peter R.", rating: 5, title: "Off-grid farmhouse now has water", body: "Ian drilled 87m and hit a solid yield. Pump install, chlorination and EA paperwork all sorted by his team. Three years on it runs flawlessly.", service_name: "Borehole drilling (per metre)", project_type: "new_build" },
-      { customer_name: "Sarah W.", rating: 5, title: "Equestrian yard saved a fortune", body: "Used to pay £400/month on mains for 20 stables. Borehole paid for itself in 5 years. Ian's hydrogeologist nailed the siting first time.", service_name: "Hydrogeological siting survey", project_type: "renovation" },
-      { customer_name: "John K.", rating: 5, title: "Honest about yield", body: "Ian was straight that first test pump showed lower yield than hoped. Did a second tier deeper at cost only — got us to the spec we needed.", service_name: "Test pumping + yield certificate", project_type: "new_build" },
-      { customer_name: "Helen P.", rating: 4, title: "EA paperwork took ages", body: "Drilling was textbook, but the EA licence took 14 weeks not the 8 Ian estimated. That's the EA not Ian — he chased weekly.", service_name: "EA abstraction licence support", project_type: "new_build" }
+      { customer_name: "Peter R.", rating: 5, title: "Off-grid farmhouse now has water", body: "Ian drilled 87m and hit a solid yield. Pump install, chlorination and EA paperwork all sorted by his team. Three years on it runs flawlessly.", service_name: "Borehole drilling (per metre)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/9.jpg" },
+      { customer_name: "Sarah W.", rating: 5, title: "Equestrian yard saved a fortune", body: "Used to pay £400/month on mains for 20 stables. Borehole paid for itself in 5 years. Ian's hydrogeologist nailed the siting first time.", service_name: "Hydrogeological siting survey", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/6.jpg" },
+      { customer_name: "John K.", rating: 5, title: "Honest about yield", body: "Ian was straight that first test pump showed lower yield than hoped. Did a second tier deeper at cost only — got us to the spec we needed.", service_name: "Test pumping + yield certificate", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/11.jpg" }
     ]
   },
 
@@ -1963,10 +1942,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks ahead. Storm damage repair slotted in same week.",
     availability: "next_week",
     reviews: [
-      { customer_name: "Megan L.", rating: 5, title: "Whole house roofline in 3 days", body: "Mark and his lad stripped out the old timber and rotting fascia, found one rafter end gone which they spliced and treated, then fitted clean white uPVC. House looks 10 years younger.", service_name: "Full house roofline replacement (3-bed semi)", project_type: "renovation" },
-      { customer_name: "Dewi T.", rating: 5, title: "Storm gutter sorted same week", body: "Gable bargeboard ripped off in February storms. Mark got us booked in within 5 days, replaced board and gutter run. No leaks since.", service_name: "Bargeboard replacement (per linear m)", project_type: "repair" },
-      { customer_name: "Aleksandra C.", rating: 5, title: "Vented soffit fixed condensation", body: "Had a condensation problem in the loft for years. Mark fitted vented soffit strips and three months later the timbers were bone dry.", service_name: "Soffit only ventilation upgrade (per house)", project_type: "renovation" },
-      { customer_name: "Owain J.", rating: 4, title: "Tower took up the drive", body: "Tower scaffold blocked the drive for two days — should have warned us. Once up the work was tidy and finished on time. Minor gripe.", service_name: "Fascia + soffit replacement (per linear m)", project_type: "renovation" }
+      { customer_name: "Megan L.", rating: 5, title: "Whole house roofline in 3 days", body: "Mark and his lad stripped out the old timber and rotting fascia, found one rafter end gone which they spliced and treated, then fitted clean white uPVC. House looks 10 years younger.", service_name: "Full house roofline replacement (3-bed semi)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/8.jpg" },
+      { customer_name: "Dewi T.", rating: 5, title: "Storm gutter sorted same week", body: "Gable bargeboard ripped off in February storms. Mark got us booked in within 5 days, replaced board and gutter run. No leaks since.", service_name: "Bargeboard replacement (per linear m)", project_type: "repair", avatar_url: "https://randomuser.me/api/portraits/men/12.jpg" },
+      { customer_name: "Aleksandra C.", rating: 5, title: "Vented soffit fixed condensation", body: "Had a condensation problem in the loft for years. Mark fitted vented soffit strips and three months later the timbers were bone dry.", service_name: "Soffit only ventilation upgrade (per house)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/10.jpg" }
     ]
   },
 
@@ -2018,10 +1996,9 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Booking 2-3 weeks out. Soft-strips often slotted same week.",
     availability: "two_weeks",
     reviews: [
-      { customer_name: "Fraser H.", rating: 5, title: "Soft-strip in 3 days flat", body: "Full house strip back to brick, every skip filled, waste transfer notes in our hand. Builder said it was the cleanest hand-over he'd had.", service_name: "Full house soft-strip (3-bed)", project_type: "renovation" },
-      { customer_name: "Linda M.", rating: 5, title: "Garage gone, slab broken out", body: "Old asbestos-roofed garage. Craig brought in a licensed asbestos contractor first, then his crew flattened the rest and broke up the slab. All done in two days.", service_name: "Garage / outbuilding demolition", project_type: "renovation" },
-      { customer_name: "Greig P.", rating: 5, title: "Full demo went smoothly", body: "Detached bungalow knocked down for a self-build. Craig had a clear method statement, kept neighbours informed, foundations cleanly grubbed.", service_name: "Full house demolition", project_type: "new_build" },
-      { customer_name: "Rhona S.", rating: 4, title: "Dust worse than expected", body: "Internal wall demo in a Victorian flat. Plenty of dust got past the sheeting and through to the rest of the flat. Craig's crew vacuumed up but it was a job for us afterward.", service_name: "Brick / block wall demolition (per sqm)", project_type: "renovation" }
+      { customer_name: "Fraser H.", rating: 5, title: "Soft-strip in 3 days flat", body: "Full house strip back to brick, every skip filled, waste transfer notes in our hand. Builder said it was the cleanest hand-over he'd had.", service_name: "Full house soft-strip (3-bed)", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/13.jpg" },
+      { customer_name: "Linda M.", rating: 5, title: "Garage gone, slab broken out", body: "Old asbestos-roofed garage. Craig brought in a licensed asbestos contractor first, then his crew flattened the rest and broke up the slab. All done in two days.", service_name: "Garage / outbuilding demolition", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/women/14.jpg" },
+      { customer_name: "Greig P.", rating: 5, title: "Full demo went smoothly", body: "Detached bungalow knocked down for a self-build. Craig had a clear method statement, kept neighbours informed, foundations cleanly grubbed.", service_name: "Full house demolition", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/15.jpg" }
     ]
   },
 
@@ -2073,10 +2050,21 @@ export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
     current_status_note: "Mobile van slots open this week. Static kitchen units mobilising 1-2 weeks ahead.",
     availability: "now",
     reviews: [
-      { customer_name: "Phil T.", rating: 5, title: "Site morale doubled", body: "Used to have lads driving off-site for lunch. Now they queue at Debbie's van. Productivity actually went up.", service_name: "Mobile van twice-daily visits (per week)", project_type: "new_build" },
-      { customer_name: "Aisha K.", rating: 5, title: "Static kitchen container saved the project", body: "120-man civil site, no canteen anywhere nearby. Debbie's container was up in 8 days, hot food served from day 1. Real difference.", service_name: "Static kitchen container (per week)", project_type: "new_build" },
-      { customer_name: "Gary M.", rating: 5, title: "Halal options properly done", body: "Half our crew is Muslim. Other caterers were either rubbish or pricey. Debbie's halal mains are proper, allergen-labelled, no fuss.", service_name: "Allergen / dietary menu adjustments", project_type: "renovation" },
-      { customer_name: "Joanne F.", rating: 4, title: "Brew run is gold", body: "Morning butty round, 7am sharp, no one moans about cold tea. Once or twice the menu repeated itself, but that's minor.", service_name: "Bacon butty + brew runs (per day)", project_type: "new_build" }
+      { customer_name: "Phil T.", rating: 5, title: "Site morale doubled", body: "Used to have lads driving off-site for lunch. Now they queue at Debbie's van. Productivity actually went up.", service_name: "Mobile van twice-daily visits (per week)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/men/16.jpg" },
+      { customer_name: "Aisha K.", rating: 5, title: "Static kitchen container saved the project", body: "120-man civil site, no canteen anywhere nearby. Debbie's container was up in 8 days, hot food served from day 1. Real difference.", service_name: "Static kitchen container (per week)", project_type: "new_build", avatar_url: "https://randomuser.me/api/portraits/women/17.jpg" },
+      { customer_name: "Gary M.", rating: 5, title: "Halal options properly done", body: "Half our crew is Muslim. Other caterers were either rubbish or pricey. Debbie's halal mains are proper, allergen-labelled, no fuss.", service_name: "Allergen / dietary menu adjustments", project_type: "renovation", avatar_url: "https://randomuser.me/api/portraits/men/18.jpg" }
     ]
   }
+];
+
+// Final export = the original 39 seeds + every phase-2 section. Order
+// matters only for the seed script's console output; idempotency keys
+// are the profile_slug so duplicates can never sneak in.
+export const DEMO_TRADE_SEEDS: DemoTradeSeed[] = [
+  ...DEMO_TRADE_SEEDS_CORE,
+  ...DEMO_TRADE_SEEDS_SERVICE_ADDITIONS,
+  ...DEMO_TRADE_SEEDS_INSTALLATION,
+  ...DEMO_TRADE_SEEDS_MANUFACTURE,
+  ...DEMO_TRADE_SEEDS_SALES,
+  ...DEMO_TRADE_SEEDS_HIRE
 ];

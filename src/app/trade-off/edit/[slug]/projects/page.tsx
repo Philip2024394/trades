@@ -1,4 +1,4 @@
-// Hammerex Trade Off — verified work gallery editor.
+// xratedtrade.com Trade Off — verified work gallery editor.
 // Server shell. Validates the magic-link edit_token, loads the listing's
 // projects, and hands them to <ProjectManager />.
 //
@@ -16,7 +16,7 @@ import type { HammerexTradeOffProject } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Manage your verified work | Hammerex Trade Off",
+  title: "Manage your verified work | xratedtrade.com Trade Off",
   robots: { index: false, follow: false }
 };
 
@@ -65,8 +65,8 @@ export default async function TradeOffProjectsEditPage({
           {row.data.display_name}
         </h1>
         <p className="mt-3 text-xs text-brand-muted">
-          Show off real projects. Hammerex reviews and verifies them — verified work earns a green
-          badge customers can trust.
+          Show off real projects. Our team reviews and verifies them —
+          verified work earns a green badge customers can trust.
         </p>
       </section>
       <section className="mx-auto max-w-3xl px-4 pb-16">
@@ -80,7 +80,7 @@ export default async function TradeOffProjectsEditPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi Hammerex — I'm trying to manage my verified work but my link isn't working. Can you help?"
+    "Hi xratedtrade.com — I'm trying to manage my verified work but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
@@ -103,7 +103,7 @@ function InvalidLink({ reason }: { reason: string }) {
           rel="noopener noreferrer"
           className="mt-6 inline-flex h-11 items-center rounded-lg bg-brand-whatsapp px-6 text-xs font-bold text-white transition hover:opacity-90"
         >
-          Message Hammerex on WhatsApp
+          Message us on WhatsApp
         </a>
       </section>
       <XratedFooter />

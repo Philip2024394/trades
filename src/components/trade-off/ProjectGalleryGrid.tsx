@@ -7,7 +7,7 @@
 // itself, but we keep "use client" because the toggle is local React
 // state for clean accessibility.
 //
-// `verified=true` gets the green "Verified by Hammerex Trade Off" pill.
+// `verified=true` gets the green "Verified by xratedtrade.com Trade Off" pill.
 // We never surface a "pending review" label publicly — that's editor
 // only. Defensive: returns null when projects is empty.
 
@@ -54,7 +54,7 @@ export function ProjectGalleryGrid({ projects }: { projects: HammerexTradeOffPro
           Verified work
         </h2>
         <p className="mt-1 text-xs text-brand-muted">
-          Real projects, real photos. Verified by Hammerex Trade Off.
+          Real projects, real photos. Verified by xratedtrade.com Trade Off.
         </p>
       </header>
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -108,7 +108,7 @@ function ProjectCard({ project }: { project: HammerexTradeOffProject }) {
             >
               <path d="M20 6 9 17l-5-5" />
             </svg>
-            Verified by Hammerex Trade Off
+            Verified by xratedtrade.com Trade Off
           </span>
         )}
         {showToggles && (

@@ -111,6 +111,7 @@ export type OverallStats = {
   total_signups: number;
   total_app_trial: number;
   total_app_paid: number;
+  total_app_verified: number;
   total_standard: number;
 };
 
@@ -122,6 +123,7 @@ export async function getOverallStats(sinceDays: number = 30): Promise<OverallSt
     total_signups: 0,
     total_app_trial: 0,
     total_app_paid: 0,
+    total_app_verified: 0,
     total_standard: 0
   };
 
@@ -165,6 +167,7 @@ export async function getOverallStats(sinceDays: number = 30): Promise<OverallSt
     let total_signups = 0;
     let total_app_trial = 0;
     let total_app_paid = 0;
+    let total_app_verified = 0;
     let total_standard = 0;
 
     if (!listingsRes.error && listingsRes.data) {
@@ -174,6 +177,7 @@ export async function getOverallStats(sinceDays: number = 30): Promise<OverallSt
         const tier = r.tier ?? "standard";
         if (tier === "app_trial") total_app_trial += 1;
         else if (tier === "app_paid") total_app_paid += 1;
+        else if (tier === "app_verified") total_app_verified += 1;
         else total_standard += 1; // standard + app_expired both fall here
       }
     }
@@ -185,6 +189,7 @@ export async function getOverallStats(sinceDays: number = 30): Promise<OverallSt
       total_signups,
       total_app_trial,
       total_app_paid,
+      total_app_verified,
       total_standard
     };
   } catch {

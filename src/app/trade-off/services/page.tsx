@@ -47,7 +47,7 @@ const EXAMPLE_SERVICES: ExampleService[] = [
     price: "£450",
     hint: "2-day job · materials inc.",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_04_20%20PM.png",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/fb02f5fcaf85-ChatGPT_Image_Jun_27__2026__01_04_20_PM.png",
     alt: "Finished brick garden wall"
   },
   {
@@ -55,7 +55,7 @@ const EXAMPLE_SERVICES: ExampleService[] = [
     price: "£2,400",
     hint: "5-7 days · single skin",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_02_49%20PM.png",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8df983ce60c5-ChatGPT_Image_Jun_27__2026__01_02_49_PM.png",
     alt: "Extension build with single-skin brickwork"
   },
   {
@@ -63,7 +63,7 @@ const EXAMPLE_SERVICES: ExampleService[] = [
     price: "£1,200",
     hint: "block-paving · 20m2",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_01_26%20PM.png",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/d1500eb3a9bf-ChatGPT_Image_Jun_27__2026__01_01_26_PM.png",
     alt: "Block-paving patio build"
   },
   {
@@ -71,7 +71,7 @@ const EXAMPLE_SERVICES: ExampleService[] = [
     price: "£900",
     hint: "ridge tile re-bed",
     image:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2027,%202026,%2001_11_24%20PM.png",
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/7d0d524b5f73-ChatGPT_Image_Jun_27__2026__01_11_24_PM.png",
     alt: "Roof repair — ridge tile re-bed"
   }
 ];

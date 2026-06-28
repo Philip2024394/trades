@@ -115,7 +115,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
   },
   {
     slug: "shop_mode",
-    name: "Shop Mode",
+    name: "Trade Center",
     tagline: "Sell products alongside your services",
     summary:
       "Turn your services carousel into a full product catalog. Add up to four photos per product, set a price, track stock, configure per-country shipping, and let customers send a structured WhatsApp enquiry with everything in their cart. You confirm the final price — no card payments in the app.",
@@ -360,10 +360,13 @@ export function isAddonEnabled(
  *
  *  Auto-on for merchant-grade trades (kitchen-fitter, stair-fitter,
  *  building-merchant, builders-supplies, tool-hire, heavy-machinery,
- *  window-fitter, security-installer) on the paid tier — their whole
+ *  window-fitter, security-installer) on EVERY tier — their whole
  *  business is a catalogue, so the profile is "complete" rather than
  *  nickel-and-diming a category whose whole job is selling tangible
- *  items. See `isMerchantGradeTrade` in src/lib/tradeOff.ts. */
+ *  items. Gating these merchants behind a paid tier broke the inline
+ *  starter-product editor (the form saved into a column whose
+ *  front-end gating was OFF). See `isMerchantGradeTrade` in
+ *  src/lib/tradeOff.ts. */
 export function isShopModeOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled"> &
     Partial<Pick<HammerexTradeOffListing, "primary_trade" | "tier">>
@@ -371,8 +374,7 @@ export function isShopModeOn(
   if ((listing.addons_enabled ?? {}).shop_mode === true) return true;
   if (
     listing.primary_trade &&
-    isMerchantGradeTrade(listing.primary_trade) &&
-    (listing.tier === "app_paid" || listing.tier === "app_trial")
+    isMerchantGradeTrade(listing.primary_trade)
   ) {
     return true;
   }
@@ -474,6 +476,64 @@ export function isCustomDomainOn(
   return (
     !!listing.custom_domain && listing.custom_domain_status === "live"
   );
+}
+
+/** Compare-section toggle for the PDP. Lives in `addons_enabled` as
+ *  the `compare_section` key. Default is ON — only an explicit `false`
+ *  hides the compare-3 strip. This is a per-listing preference, not a
+ *  paid add-on (no marketing surface), so it doesn't appear in
+ *  XRATED_ADDONS — just the helper + the dashboard toggle. */
+export function isCompareSectionOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  const map = listing.addons_enabled ?? {};
+  return map.compare_section !== false;
+}
+
+/** Q&A block on the PDP. OFF by default — the PDP gets cluttered fast,
+ *  and the value is only there when the tradesperson answers WhatsApp
+ *  questions quickly. Switching on surfaces the ProductQABlock CTA. */
+export function isQAOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).qa === true;
+}
+
+/** Warranty & Returns block on the PDP. Lives in `addons_enabled` as
+ *  the `warranty_returns` key. Default is ON — only an explicit `false`
+ *  hides the standalone WarrantyReturnsBlock. Per-listing preference,
+ *  not a paid add-on (no marketing surface), so it doesn't appear in
+ *  XRATED_ADDONS — just the helper + the dashboard toggle. */
+export function isWarrantyReturnsOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  const map = listing.addons_enabled ?? {};
+  return map.warranty_returns !== false;
+}
+
+/** Spec tab on the PDP details panel. Lives in `addons_enabled` as
+ *  the `spec_tab` key. Default is ON — only an explicit `false` hides
+ *  the Specifications tab pill (the body still has data, but the pill
+ *  + body disappear). Per-listing preference, not a paid add-on, so it
+ *  doesn't appear in XRATED_ADDONS — just the helper + the dashboard
+ *  toggle. */
+export function isSpecTabOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  const map = listing.addons_enabled ?? {};
+  return map.spec_tab !== false;
+}
+
+/** Delivery Details tab on the PDP details panel. Lives in
+ *  `addons_enabled` as the `delivery_tab` key. Default is ON — only an
+ *  explicit `false` hides the tab. Body is a small grid of dispatch +
+ *  origin + returns + delivery-cost + tracking facts pulled from the
+ *  product and listing. Per-listing preference. */
+export function isDeliveryTabOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  const map = listing.addons_enabled ?? {};
+  return map.delivery_tab !== false;
 }
 
 /** FAQ Page add-on — when on, the public profile renders a yellow CTA

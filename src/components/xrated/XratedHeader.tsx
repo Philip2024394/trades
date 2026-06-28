@@ -27,6 +27,23 @@ export function XratedHeader() {
         </a>
 
         <div className="flex items-center gap-1 sm:gap-2">
+          {/* Log in — routes to /trade-off/login for the phone+password
+              auth flow. Visible on every public page so a tradesperson
+              can find their way back into their dashboard without
+              hunting through the burger menu. */}
+          <a
+            href="/trade-off/login"
+            className="hidden h-9 items-center rounded-full border border-white/20 px-3 text-[12px] font-bold uppercase tracking-widest text-white/80 transition hover:border-white/40 hover:text-white sm:inline-flex"
+          >
+            Log in
+          </a>
+          <a
+            href="/trade-off/login"
+            className="inline-flex h-9 items-center px-2 text-[12px] font-bold text-white/80 underline-offset-2 transition hover:text-white hover:underline sm:hidden"
+          >
+            Log in
+          </a>
+
           {/* Alerts bell */}
           <button
             type="button"

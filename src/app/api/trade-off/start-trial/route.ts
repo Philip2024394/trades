@@ -1,5 +1,6 @@
 // POST /api/trade-off/start-trial
-// Manual restart of the 30-day Xrated App trial for an existing listing.
+// Manual restart of the Xrated App trial for an existing listing. Trial
+// length comes from `XRATED_PRICING.trialDays` (currently 14 days).
 // Body: { slug, edit_token }.
 //
 // Eligibility:
@@ -58,7 +59,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "Invalid edit token." }, { status: 403 });
   }
 
-  const tier = row.data.tier as "standard" | "app_trial" | "app_paid" | "app_expired";
+  const tier = row.data.tier as "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
 
   if (tier === "app_trial") {
     return NextResponse.json(
@@ -66,7 +67,7 @@ export async function POST(req: NextRequest) {
       { status: 409 }
     );
   }
-  if (tier === "app_paid") {
+  if (tier === "app_paid" || tier === "app_verified") {
     return NextResponse.json(
       { ok: false, error: "You're already on the paid plan." },
       { status: 409 }
