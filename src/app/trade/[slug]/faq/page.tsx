@@ -179,7 +179,7 @@ export default async function FaqPage({
         appName={`${primary} Service`}
         backHref={`/${listing.slug}`}
       />
-      <PremiumHero listing={listing} waUrl={waUrl} currentPage="profile" />
+      <PremiumHero listing={listing} waUrl={waUrl} currentPage="contact" />
 
       {faqLd && (
         <script

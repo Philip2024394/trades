@@ -16,8 +16,8 @@ import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
-import { ServicesPricedGrid } from "@/components/xrated/profile/ServicesPricedGrid";
-import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
+import { ServicesPricedGrid } from "@/components/xrated/profile/service/ServicesPricedGrid";
+import { ShopCartIsland } from "@/components/xrated/profile/merchant/ShopCartIsland";
 import { tradeLabel, whatsappQuoteUrl } from "@/lib/tradeOff";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { isServicesGridOn } from "@/lib/xratedAddons";
@@ -87,7 +87,7 @@ export default async function ServicesPricesPage({
         appName={`${primary} Service`}
         backHref={`/${listing.slug}`}
       />
-      <PremiumHero listing={listing} waUrl={waUrl} currentPage="profile" />
+      <PremiumHero listing={listing} waUrl={waUrl} currentPage="contact" />
 
       <section className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10">
         <div className="mt-5">

@@ -222,7 +222,7 @@ export function WelcomeKnifePopup({ voucherCode, product, expiryLabel }: Props) 
 
           <p className="mt-4 text-[11px] leading-relaxed text-neutral-400">
             The knife is added at £0. Voucher code travels with your order so admin can
-            confirm. Shipping applies to the rest of your order — no minimum spend.
+            confirm. Delivery applies to the rest of your order — no minimum spend.
           </p>
         </div>
       </div>

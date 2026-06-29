@@ -92,9 +92,10 @@ export function XratedFooter() {
           <FooterColumn
             title="Company"
             links={[
-              { href: "/about", label: "About" },
+              { href: "/about", label: "Introduction" },
               { href: "/contact", label: "Contact" },
-              { href: "/status", label: "Service status" }
+              { href: "/status", label: "Service status" },
+              { href: "/affiliates", label: "Affiliate Programme" }
             ]}
           />
           <FooterColumn

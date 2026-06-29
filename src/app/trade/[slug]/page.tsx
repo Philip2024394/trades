@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
-import { resolveAppHero } from "@/lib/tradeAppBanners";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
+import { HeroStatusStrip } from "@/components/xrated/HeroStatusStrip";
 import { VideoLightbox } from "@/components/xrated/profile/VideoLightbox";
 import { EnquireButton } from "@/components/xrated/profile/EnquireButton";
-import { ServicesTabbedGallery } from "@/components/xrated/profile/ServicesTabbedGallery";
+import { ServicesTabbedGallery } from "@/components/xrated/profile/service/ServicesTabbedGallery";
 import { TeamGrid } from "@/components/xrated/profile/TeamGrid";
 import { RecommendedTrades } from "@/components/xrated/profile/RecommendedTrades";
 import { AboutFlipPanel } from "@/components/xrated/profile/AboutFlipPanel";
@@ -34,21 +34,22 @@ import { OperatingHoursPanel } from "@/components/xrated/profile/OperatingHoursP
 import { StarRatingRow } from "@/components/xrated/profile/StarRatingRow";
 import { ProfileActionTriple } from "@/components/xrated/profile/ProfileActionTriple";
 import { ShareIconButton } from "@/components/xrated/profile/ShareIconButton";
-import { PricedServicesCarousel } from "@/components/xrated/profile/PricedServicesCarousel";
+import { PricedServicesCarousel } from "@/components/xrated/profile/service/PricedServicesCarousel";
 import { QrFooterDock } from "@/components/xrated/profile/QrFooterDock";
 import { PremiumStickyTrust } from "@/components/xrated/profile/PremiumStickyTrust";
 import { ProfileExpandPanels } from "@/components/xrated/profile/ProfileExpandPanels";
 import { AboutBio } from "@/components/xrated/profile/AboutBio";
-import { ShopTeaser } from "@/components/xrated/profile/ShopTeaser";
+import { ShopTeaser } from "@/components/xrated/profile/merchant/ShopTeaser";
 import { brandCssVars } from "@/lib/tradeBrandTheme";
-import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
-import { ServicesPricedSection } from "@/components/xrated/profile/ServicesPricedSection";
+import { ShopCartIsland } from "@/components/xrated/profile/merchant/ShopCartIsland";
+import { ServicesPricedSection } from "@/components/xrated/profile/service/ServicesPricedSection";
 import { DownloadsSection } from "@/components/xrated/profile/DownloadsSection";
 import { JobDiarySection } from "@/components/xrated/profile/JobDiarySection";
 import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip";
 import { MaterialsNetworkSection } from "@/components/xrated/profile/MaterialsNetworkSection";
 import { FaqPageCta } from "@/components/xrated/profile/FaqPageCta";
-import { isDownloadsOn, isFaqPageOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn } from "@/lib/xratedAddons";
+import { TradeCenterPicksSection } from "@/components/xrated/profile/merchant/TradeCenterPicksSection";
+import { isDownloadsOn, isFaqPageOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn, isTradeCenterPicksOn } from "@/lib/xratedAddons";
 import {
   supabase,
   type HammerexTradeOffListing,
@@ -61,10 +62,13 @@ import {
   breadcrumbJsonLd,
   clampDescription,
   localBusinessJsonLd,
-  stripMarkdown
+  stripMarkdown,
+  type LocalBusinessJsonLdReview
 } from "@/lib/seo";
+import { findLeadCaseStudy, isLeadCaseStudy } from "@/lib/leadCaseStudies";
 import {
   HAMMEREX_STANDARD_BLURBS,
+  isMerchantGradeTrade,
   STANDARD_TIER_LABELS,
   standardTierFor,
   tradeLabel,
@@ -114,6 +118,12 @@ async function loadListing(slug: string) {
     .order("sort_order", { ascending: true });
   const projects = (projectsRes.data ?? []) as HammerexTradeOffProject[];
 
+  // Public carousel filter — status must be live/disputed AND the 24h
+  // cool-down must have elapsed (goes_live_at <= now()). Admin Mark
+  // Safe clamps goes_live_at = now() so it surfaces on the next
+  // request. 'hidden' / 'flagged' / 'spam' are excluded by the status
+  // IN-filter, which protects against admin-toggled states leaking
+  // back to public profiles.
   const reviewsRes = await supabase
     .from("hammerex_xrated_reviews")
     .select(
@@ -121,6 +131,7 @@ async function loadListing(slug: string) {
     )
     .eq("listing_id", listing.id)
     .in("status", ["live", "disputed"])
+    .lte("goes_live_at", new Date().toISOString())
     .order("submitted_at", { ascending: false })
     .limit(20);
   const reviews = (reviewsRes.data ?? []) as XratedReviewPublic[];
@@ -162,10 +173,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { listing } = await loadListing(slug);
   if (!listing) return { title: "Tradie not found" };
   const primary = tradeLabel(listing.primary_trade);
-  const title = `${listing.display_name} — ${primary} in ${listing.city} | xratedtrade.com Trade Off`;
-  const description = clampDescription(stripMarkdown(listing.bio), 160) ||
-    `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on xratedtrade.com Trade Off.`;
+  const isLead = isLeadCaseStudy(listing.slug);
+  // Case studies get a tighter "<name> — <trade> in <city> | Trade Off"
+  // title (drops the marketing tail) and a description biased toward
+  // the listing's USP from the bio. Standard demo / live profiles keep
+  // the existing format so we don't churn established SERP titles.
+  const title = isLead
+    ? `${listing.display_name} — ${primary} in ${listing.city} | xratedtrade.com`
+    : `${listing.display_name} — ${primary} in ${listing.city} | xratedtrade.com`;
+  const bioDesc = clampDescription(stripMarkdown(listing.bio), 160);
+  const description = isLead
+    ? bioDesc ||
+      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Live xratedtrade.com case study — reviews, prices, photos, WhatsApp quote in one link.`
+    : bioDesc ||
+      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on xratedtrade.com.`;
   const url = absolute(`/trade/${listing.slug}`);
+  const heroImg = listing.custom_app_hero_url || listing.avatar_url || listing.photos[0] || BRAND.logo;
   return {
     title,
     description,
@@ -175,12 +198,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: `${listing.display_name} — ${primary} in ${listing.city}`,
       description,
       url,
-      siteName: BRAND.name
+      siteName: BRAND.name,
+      locale: "en_GB",
+      images: heroImg ? [{ url: heroImg, alt: `${listing.display_name} — ${primary} in ${listing.city}` }] : undefined
     },
     twitter: {
       card: "summary_large_image",
       title: `${listing.display_name} — ${primary} in ${listing.city}`,
-      description
+      description,
+      images: heroImg ? [heroImg] : undefined
     }
   };
 }
@@ -374,13 +400,23 @@ export default async function TradiePublicProfilePage({
   const cityLower = listing.city.toLowerCase();
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "Trade Off", url: "/trade-off" },
+    { name: "xratedtrade.com", url: "/trade-off" },
     { name: primary, url: `/trade-off/${listing.primary_trade}` },
     { name: listing.city, url: `/trade-off/${listing.primary_trade}/${encodeURIComponent(cityLower)}` },
     { name: listing.display_name, url: `/trade/${listing.slug}` }
   ]);
 
-  const localBusiness = localBusinessJsonLd(listing, primary);
+  // Pass the top reviews through so the JSON-LD can embed Review entities
+  // alongside aggregateRating — this is what unlocks the "stars + N
+  // reviews" rich-result panel in SERP. We map the public reviewer shape
+  // to the helper's lightweight input contract.
+  const jsonLdReviews: LocalBusinessJsonLdReview[] = reviews.map((r) => ({
+    customer_name: r.customer_name,
+    body: r.body,
+    overall_rating: r.overall_rating,
+    submitted_at: r.submitted_at
+  }));
+  const localBusiness = localBusinessJsonLd(listing, primary, jsonLdReviews);
   const waUrl = whatsappQuoteUrl(listing.whatsapp, listing.display_name, primary);
   const profileFullUrl = absolute(`/trade/${listing.slug}`);
   const toolProducts = await loadStandardProducts(listing.hammerex_standard_products);
@@ -542,8 +578,23 @@ function PremiumLayout({
   // priced by the hour). Double-checks the gate here so a leaked toggle
   // on a free profile can't bypass it.
   const servicesGrid = isPaid && isServicesGridOn(listing);
-  // Job Diary gate — paid tier AND add-on flag on.
-  const jobDiaryOn = isPaid && isJobDiaryOn(listing);
+  // Job Diary gate — paid tier AND add-on flag on AND NOT a
+  // merchant-grade trade. Merchants sell catalogues; the "running a
+  // project" mental model doesn't fit, so we hide the diary even when
+  // the addon flag is on (e.g. a trade that was a service then
+  // re-categorised). Trade Center Picks replaces it on merchant
+  // dashboards.
+  const jobDiaryOn =
+    isPaid &&
+    isJobDiaryOn(listing) &&
+    !isMerchantGradeTrade(listing.primary_trade);
+  // Trade Center Picks gate — paid tier AND add-on flag on AND IS a
+  // merchant-grade trade. Mirror of the Job Diary gate but inverted on
+  // the trade-type axis.
+  const tradeCenterPicksOn =
+    isPaid &&
+    isTradeCenterPicksOn(listing) &&
+    isMerchantGradeTrade(listing.primary_trade);
   // Materials Network gate — paid tier AND add-on flag on. When true,
   // the inline merchant teaser renders just above TrustedTradesCta and
   // the CTA copy is rebranded (see TrustedTradesCta below).
@@ -556,6 +607,11 @@ function PremiumLayout({
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
+      {/* Status strip directly under hero. Renders the tradesperson's
+          configured running marquee (from App Studio) OR a quiet
+          plain-text summary (trade · city · live status) when not set
+          — never an empty band. */}
+      <HeroStatusStrip listing={listing} />
 
       {/* Past projects swipeable strip — sits just below the hero so
           "what we've delivered" lands before "what we're working on
@@ -614,6 +670,12 @@ function PremiumLayout({
           guard). Sits BEFORE TrustedTradesCta so the customer reads
           "live work" → "people I recommend". */}
       {jobDiaryOn && <JobDiarySection listing={listing} />}
+      {/* Trade Center Picks inline teaser — paid tier + add-on on +
+          merchant-grade trade. Replaces the Job Diary mental model for
+          merchants: instead of "what we're working on", customers see
+          "what's on promo / arriving / in stock right now". Server
+          component self-hides when zero active picks. */}
+      {tradeCenterPicksOn && <TradeCenterPicksSection listing={listing} />}
       {/* Materials Network inline teaser — paid tier + add-on on.
           Self-renders nothing when the tradesperson has zero live
           merchant picks. View-all link points to /<slug>/materials. */}
@@ -1061,7 +1123,7 @@ function BottomTrustStrip() {
             </svg>
           }
           title="Fast Response"
-          subtitle="Usually replies within 1 hour"
+          subtitle="Estimated 1 Hour Reply"
         />
         <TrustCell
           icon={
@@ -1161,7 +1223,7 @@ function StandardLayout({
   const gallery = listing.photos.slice(1);
   const cityLower = listing.city.toLowerCase();
   const initial = (listing.display_name.charAt(0) || "?").toUpperCase();
-  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via xratedtrade.com Trade Off")}`;
+  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via xratedtrade.com")}`;
 
   return (
     <>
@@ -1170,7 +1232,7 @@ function StandardLayout({
         <div className="rounded-full bg-neutral-100 px-3 py-1.5 text-center text-[13px] text-brand-muted">
           <span aria-hidden="true">⚡</span> Powered by{" "}
           <a href="/trade-off" className="font-semibold text-brand-text hover:text-[#FFB300]">
-            xratedtrade.com Trade Off
+            xratedtrade.com
           </a>{" "}
           · Shareable trade profile
         </div>
@@ -1198,7 +1260,7 @@ function StandardLayout({
         <ol className="flex flex-wrap items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">Trade Off</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">xratedtrade.com</a></li>
           <li>/</li>
           <li>
             <a href={`/trade-off/${listing.primary_trade}`} className="hover:text-brand-text">
@@ -1252,7 +1314,7 @@ function StandardLayout({
           <div className="flex flex-col pt-10 lg:pt-0">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-                xratedtrade.com Trade Off
+                xratedtrade.com
               </p>
             </div>
             <h1 className="mt-2 text-2xl font-bold leading-tight text-brand-text sm:text-4xl">

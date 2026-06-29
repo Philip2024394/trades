@@ -34,7 +34,8 @@ export type StripeAddonSlug =
   | "lead_alerts"
   | "materials_network"
   | "quote_pipeline"
-  | "faq_page";
+  | "faq_page"
+  | "trade_center_picks";
 
 export const STRIPE_PRICE_IDS: {
   "paid:monthly": string;
@@ -57,7 +58,8 @@ export const STRIPE_PRICE_IDS: {
     lead_alerts: process.env.STRIPE_PRICE_ADDON_LEAD_ALERTS ?? "",
     materials_network: process.env.STRIPE_PRICE_ADDON_MATERIALS_NETWORK ?? "",
     quote_pipeline: process.env.STRIPE_PRICE_ADDON_QUOTE_PIPELINE ?? "",
-    faq_page: process.env.STRIPE_PRICE_ADDON_FAQ_PAGE ?? ""
+    faq_page: process.env.STRIPE_PRICE_ADDON_FAQ_PAGE ?? "",
+    trade_center_picks: process.env.STRIPE_PRICE_ADDON_TRADE_CENTER_PICKS ?? ""
   }
 };
 

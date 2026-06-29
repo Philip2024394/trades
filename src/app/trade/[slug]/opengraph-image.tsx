@@ -3,7 +3,7 @@ import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
 import { tradeLabel } from "@/lib/tradeOff";
 
 export const runtime = "nodejs";
-export const alt = "xratedtrade.com Trade Off";
+export const alt = "xratedtrade.com";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -22,8 +22,8 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   > | null;
 
   const photo = data?.photos?.[0] ?? data?.avatar_url ?? null;
-  const name = data?.display_name ?? "xratedtrade.com Trade Off";
-  const trade = data ? tradeLabel(data.primary_trade) : "Trade Off";
+  const name = data?.display_name ?? "xratedtrade.com";
+  const trade = data ? tradeLabel(data.primary_trade) : "xratedtrade.com";
   const city = data?.city ?? "United Kingdom";
   const verified = Boolean(data?.hammerex_standard_verified);
 
@@ -126,7 +126,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
               display: "flex"
             }}
           >
-            xratedtrade.com Trade Off
+            xratedtrade.com
           </div>
         </div>
       </div>

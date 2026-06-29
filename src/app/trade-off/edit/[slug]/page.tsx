@@ -31,7 +31,7 @@ import type { HammerexXratedVoucher } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Edit your Trade Off profile | xratedtrade.com Trade Off",
+  title: "Edit your xratedtrade.com profile | xratedtrade.com",
   robots: { index: false, follow: false }
 };
 
@@ -649,14 +649,14 @@ function WelcomeKnifeCard({ voucher }: { voucher: HammerexXratedVoucher }) {
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi xratedtrade.com — I'm trying to edit my Trade Off profile but my link isn't working. Can you help?"
+    "Hi xratedtrade.com — I'm trying to edit my xratedtrade.com profile but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <XratedHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          Trade Off
+          xratedtrade.com
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This link is invalid or has expired.

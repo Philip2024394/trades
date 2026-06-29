@@ -18,7 +18,7 @@ import { effectiveTier } from "@/lib/xratedTrades";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { tradeLabel } from "@/lib/tradeOff";
-import { CartPageBody } from "@/components/xrated/profile/CartPageBody";
+import { CartPageBody } from "@/components/xrated/profile/merchant/CartPageBody";
 
 export const revalidate = 60;
 

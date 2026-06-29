@@ -1,13 +1,18 @@
+"use client";
+
 // Xrated Trades — About column header + bio.
 //
 // Renders the About Us heading with a yellow "Services" button on the
-// right. The button is a link to /trade/<slug>/services — the dedicated
-// services subpage shows the radar-ping service-area map + the full
-// services list, with no video / pricing / gallery distractions.
+// right. The bio is line-clamped to 8 lines; if the content actually
+// overflows the clamp, a yellow "Read more" toggle appears. The toggle
+// is detected at runtime by comparing scrollHeight to clientHeight on
+// the clamped node — so short bios render with no toggle.
 //
 // Bio paragraphs split only on a BLANK line so a tradesperson's
 // continuous prose stays one paragraph unless they deliberately add a
 // blank-line break.
+
+import { useEffect, useRef, useState } from "react";
 
 export function AboutFlipPanel({
   bioParas,
@@ -18,6 +23,18 @@ export function AboutFlipPanel({
   defaultBio: string;
   slug: string;
 }) {
+  const [expanded, setExpanded] = useState(false);
+  const [overflows, setOverflows] = useState(false);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const node = bodyRef.current;
+    if (!node) return;
+    if (!expanded) {
+      setOverflows(node.scrollHeight - node.clientHeight > 1);
+    }
+  }, [expanded, bioParas]);
+
   return (
     <div>
       <div className="flex items-center justify-between gap-3">
@@ -38,7 +55,10 @@ export function AboutFlipPanel({
         </a>
       </div>
 
-      <div className="mt-3 line-clamp-8">
+      <div
+        ref={bodyRef}
+        className={`mt-3 ${expanded ? "" : "line-clamp-8"}`}
+      >
         {bioParas.length === 0 ? (
           <p className="text-justify text-[15px] leading-[1.55] text-neutral-700">
             {defaultBio}
@@ -54,6 +74,32 @@ export function AboutFlipPanel({
           ))
         )}
       </div>
+
+      {overflows && (
+        <button
+          type="button"
+          onClick={() => setExpanded((v) => !v)}
+          className="mt-3 inline-flex h-11 items-center gap-1 text-[13px] font-extrabold underline-offset-4 hover:underline"
+          style={{ color: "#FFB300" }}
+          aria-expanded={expanded}
+        >
+          {expanded ? "Read less" : "Read more"}
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+            className={`transition-transform ${expanded ? "rotate-180" : ""}`}
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </button>
+      )}
     </div>
   );
 }

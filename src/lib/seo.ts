@@ -21,8 +21,8 @@ export function absolute(path: string): string {
 // imports `import { BRAND } from "@/lib/seo"` keep their full type
 // surface intact. Values are Xrated-branded for the standalone repo.
 export const BRAND = {
-  name: "Xrated Trades",
-  legalName: "Xrated Trades",
+  name: "xratedtrade.com",
+  legalName: "xratedtrade.com",
   tagline: "Your shareable trade profile",
   description:
     "The shareable trade profile for tradies anywhere. Reviews, photos, prices, WhatsApp — one link. Built for tradespeople who want their work, their pricing and their reputation in one place customers can share.",
@@ -133,10 +133,76 @@ export function faqJsonLd(faq: { q: string; a: string }[]) {
   };
 }
 
+// Public review shape used by the LocalBusiness JSON-LD `review[]` block.
+// Optional — when the page passes a non-empty array we include the top
+// three as embedded Review entities, which lets Google's rich-result
+// "stars + N reviews" appear under the profile URL in SERP.
+export type LocalBusinessJsonLdReview = {
+  customer_name: string;
+  body: string;
+  overall_rating: number;
+  submitted_at: string;
+};
+
+// Map a `priced_services` JSONB blob into a "£10-£3,500" priceRange
+// string. Returns undefined when the listing has no priced services —
+// schema.org allows omission, and an empty string would trip Google's
+// rich-result validator.
+function priceRangeFor(listing: HammerexTradeOffListing): string | undefined {
+  const services = (listing.priced_services ?? []) as { price?: number | null }[];
+  const prices = services
+    .map((s) => Number(s?.price))
+    .filter((n) => Number.isFinite(n) && n > 0);
+  if (prices.length === 0) return undefined;
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const fmt = (n: number) => `£${n.toLocaleString("en-GB")}`;
+  return min === max ? fmt(min) : `${fmt(min)}-${fmt(max)}`;
+}
+
+// Translate the `operating_hours` JSONB into the schema.org
+// OpeningHoursSpecification[] shape. Each populated day becomes one
+// entry; null/missing days are dropped. Returns undefined when the
+// listing has no opening_hours so the JSON-LD validator doesn't see an
+// empty array.
+const DAY_MAP: Record<string, string> = {
+  mon: "Monday",
+  tue: "Tuesday",
+  wed: "Wednesday",
+  thu: "Thursday",
+  fri: "Friday",
+  sat: "Saturday",
+  sun: "Sunday"
+};
+function openingHoursFor(listing: HammerexTradeOffListing) {
+  const hours = listing.operating_hours as
+    | Record<string, { open?: string; close?: string } | null>
+    | null
+    | undefined;
+  if (!hours) return undefined;
+  const out = Object.entries(DAY_MAP)
+    .map(([key, name]) => {
+      const slot = hours[key];
+      if (!slot || !slot.open || !slot.close) return null;
+      return {
+        "@type": "OpeningHoursSpecification" as const,
+        dayOfWeek: name,
+        opens: slot.open,
+        closes: slot.close
+      };
+    })
+    .filter(Boolean);
+  return out.length ? out : undefined;
+}
+
 // LocalBusiness schema for a tradesperson profile.
 // Surfaces the listing to Google as a local trade so /<slug> can rank for
 // "<trade> in <city>" queries the way Checkatrade pages do.
-export function localBusinessJsonLd(listing: HammerexTradeOffListing, tradeLabelText: string) {
+export function localBusinessJsonLd(
+  listing: HammerexTradeOffListing,
+  tradeLabelText: string,
+  reviews: LocalBusinessJsonLdReview[] = []
+) {
   const url = absolute(`/trade/${listing.slug}`);
   const photo = listing.avatar_url ?? listing.photos[0] ?? BRAND.logo;
   const digits = listing.whatsapp.replace(/\D/g, "");
@@ -144,6 +210,57 @@ export function localBusinessJsonLd(listing: HammerexTradeOffListing, tradeLabel
     listing.lat != null && listing.lng != null
       ? { "@type": "GeoCoordinates", latitude: listing.lat, longitude: listing.lng }
       : undefined;
+
+  // aggregateRating — only emit when there is real review density. Google
+  // ignores aggregateRating with reviewCount < 1 and validators flag
+  // empty rating blocks.
+  const aggregate =
+    listing.rating_count && listing.rating_count > 0 && listing.rating_avg
+      ? {
+          "@type": "AggregateRating" as const,
+          ratingValue: Number(listing.rating_avg),
+          reviewCount: listing.rating_count,
+          bestRating: 5,
+          worstRating: 1
+        }
+      : undefined;
+
+  // Top 3 reviews as embedded Review entities. Helps the rich-result
+  // panel and is a documented schema.org shape.
+  const reviewObjects = reviews.slice(0, 3).map((r) => ({
+    "@type": "Review" as const,
+    author: { "@type": "Person", name: r.customer_name },
+    datePublished: r.submitted_at,
+    reviewBody: stripMarkdown(r.body).slice(0, 600),
+    reviewRating: {
+      "@type": "Rating" as const,
+      ratingValue: r.overall_rating,
+      bestRating: 5,
+      worstRating: 1
+    }
+  }));
+
+  const sameAs = [
+    listing.website,
+    listing.instagram
+      ? `https://instagram.com/${listing.instagram.replace(/^@/, "")}`
+      : null,
+    listing.facebook
+      ? `https://facebook.com/${listing.facebook.replace(/^@/, "")}`
+      : null,
+    listing.twitter
+      ? `https://twitter.com/${listing.twitter.replace(/^@/, "")}`
+      : null,
+    listing.tiktok
+      ? `https://tiktok.com/@${listing.tiktok.replace(/^@/, "")}`
+      : null,
+    listing.youtube
+      ? /^https?:\/\//i.test(listing.youtube)
+        ? listing.youtube
+        : `https://youtube.com/${listing.youtube.replace(/^@/, "@")}`
+      : null
+  ].filter(Boolean);
+
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -152,7 +269,9 @@ export function localBusinessJsonLd(listing: HammerexTradeOffListing, tradeLabel
     description: stripMarkdown(listing.bio).slice(0, 320),
     image: photo,
     url,
-    telephone: digits ? `+${digits}` : undefined,
+    telephone:
+      listing.phone_calls_enabled && digits ? `+${digits}` : undefined,
+    email: listing.email ?? undefined,
     address: {
       "@type": "PostalAddress",
       addressLocality: listing.city,
@@ -163,10 +282,11 @@ export function localBusinessJsonLd(listing: HammerexTradeOffListing, tradeLabel
     areaServed: listing.service_postcodes.length ? listing.service_postcodes : [listing.city],
     knowsAbout: [tradeLabelText, ...listing.secondary_trades],
     foundingDate: listing.start_year ? `${listing.start_year}-01-01` : undefined,
-    sameAs: [
-      listing.website,
-      listing.instagram ? `https://instagram.com/${listing.instagram.replace(/^@/, "")}` : null
-    ].filter(Boolean)
+    priceRange: priceRangeFor(listing),
+    openingHoursSpecification: openingHoursFor(listing),
+    aggregateRating: aggregate,
+    review: reviewObjects.length ? reviewObjects : undefined,
+    sameAs: sameAs.length ? sameAs : undefined
   };
 }
 

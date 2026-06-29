@@ -30,6 +30,9 @@ export const metadata: Metadata = {
 };
 
 type TipCard = {
+  // Slug under /trade-off/tips/<slug> — every card now links to a real
+  // long-form guide. See the eight page.tsx files in this folder.
+  slug: string;
   category: string;
   title: string;
   excerpt: string;
@@ -44,50 +47,71 @@ type TipCard = {
 
 const TIPS: TipCard[] = [
   {
+    slug: "social-media-customers",
     category: "Marketing",
     title: "How to win more customers from social media",
     excerpt:
       "Posting your finished work isn't enough. The exact post structure that turns scrollers into enquiries — captions, hashtags, posting cadence.",
     gradientFrom: "#FFB300",
-    gradientTo: "#FF6B00"
+    gradientTo: "#FF6B00",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-social-media-customers.png",
+    alt: "How to win more customers from social media"
   },
   {
+    slug: "pricing-trade-work",
     category: "Pricing",
     title: "The best way to price brickwork (and other trades)",
     excerpt:
       "Day-rate vs. per-square-metre vs. fixed-price quotes — which one wins more jobs at a healthier margin, broken down by trade.",
     gradientFrom: "#0A0A0A",
-    gradientTo: "#3B2200"
+    gradientTo: "#3B2200",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-pricing-trade-work.png",
+    alt: "The best way to price brickwork and other trades"
   },
   {
+    slug: "photograph-your-work",
     category: "Photography",
     title: "How to photograph your work like a pro",
     excerpt:
-      "Phone-camera angles, lighting tricks, and the before/after shot order that triples click-through on your Xrated profile.",
+      "Phone-camera angles, lighting tricks, and the before/after shot order that makes finished work read as professional on your Xrated profile.",
     gradientFrom: "#1F6FEB",
-    gradientTo: "#0A0A0A"
+    gradientTo: "#0A0A0A",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-photograph-your-work.png",
+    alt: "How to photograph your work like a pro"
   },
   {
+    slug: "whatsapp-business-tips",
     category: "WhatsApp",
     title: "WhatsApp Business tips for tradies",
     excerpt:
       "Quick-reply templates, auto-replies for out-of-hours, and the catalogue feature most tradies don't know exists.",
     gradientFrom: "#25D366",
-    gradientTo: "#0A0A0A"
+    gradientTo: "#0A0A0A",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-whatsapp-business-tips.png",
+    alt: "WhatsApp Business tips for tradies"
   },
   {
+    slug: "van-qr-codes",
     category: "Van + signage",
     title: "QR codes on vans: a practical guide",
     excerpt:
       "Where to put the QR, what size to print it, what page to point it at, and the one design mistake that makes it unscannable from 6ft away.",
     gradientFrom: "#FFB300",
-    gradientTo: "#0A0A0A"
+    gradientTo: "#0A0A0A",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-van-qr-codes.png",
+    alt: "QR codes on vans: a practical guide"
   },
   {
+    slug: "collect-reviews",
     category: "Reviews",
     title: "How to collect reviews customers actually leave",
     excerpt:
-      "The exact moment to ask, the exact words to use, and the one-tap link that takes review-collection rate from 12% to 70%.",
+      "The exact moment to ask, the exact words to use, and the one-tap link that turns 'I'll do it later' into a five-star review on the doorstep.",
     gradientFrom: "#C026D3",
     gradientTo: "#3B0764",
     image:
@@ -95,6 +119,7 @@ const TIPS: TipCard[] = [
     alt: "How to collect reviews — five-star feedback on a customer's phone"
   },
   {
+    slug: "customer-service-mistakes",
     category: "Customer service",
     title: "5 customer-facing mistakes most tradies make",
     excerpt:
@@ -106,12 +131,16 @@ const TIPS: TipCard[] = [
     alt: "5 customer-facing mistakes most tradies make"
   },
   {
+    slug: "win-bigger-jobs",
     category: "Bigger jobs",
     title: "How to use Xrated reviews to win bigger jobs",
     excerpt:
       "Commercial and trade buyers read reviews differently. How to curate, pin and present them so you win £10k+ jobs, not £200 jobs.",
     gradientFrom: "#0F766E",
-    gradientTo: "#0A0A0A"
+    gradientTo: "#0A0A0A",
+    image:
+      "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/guide-win-bigger-jobs.png",
+    alt: "How to use Xrated reviews to win bigger jobs"
   }
 ];
 
@@ -120,48 +149,46 @@ export default function TipsPage() {
     <main className="bg-white pb-24 md:pb-0">
       <XratedHeader />
 
-      {/* Hero — black surface, yellow accent on H1 */}
-      <section
-        className="relative overflow-hidden border-b border-neutral-200"
-        style={{ background: "#0A0A0A" }}
-      >
-        <div className="relative mx-auto grid max-w-5xl gap-8 px-4 pb-12 pt-12 sm:grid-cols-[1fr,auto] sm:items-center sm:gap-10 sm:px-6 sm:pb-16 sm:pt-16">
-          <div>
-            <p
-              className="text-xs font-bold uppercase tracking-[0.22em]"
-              style={{ color: XRATED_BRAND.accent }}
-            >
-              Tips for Trades
-            </p>
-            <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-              Win{" "}
-              <span style={{ color: XRATED_BRAND.accent }}>more</span> jobs.
-              Get paid{" "}
-              <span style={{ color: XRATED_BRAND.accent }}>more</span>.
-            </h1>
-            <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-              Practical advice from real tradespeople — pricing, photography,
-              social media, WhatsApp, QR codes, reviews and the customer-
-              facing mistakes that quietly kill enquiries.
-            </p>
-          </div>
-          {/* Hero artwork — sits to the right on desktop, stacks below on
-              mobile. Yellow border + offset shadow gives it the brand
-              chip without overpowering the headline. */}
-          <div className="relative w-full max-w-[280px] justify-self-start overflow-hidden rounded-2xl sm:justify-self-end">
-            <div
-              className="absolute -inset-2 rounded-3xl"
-              style={{ background: `${XRATED_BRAND.accent}33`, filter: "blur(12px)" }}
-              aria-hidden="true"
-            />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/1ae87f5ace55-ChatGPT_Image_Jun_27__2026__05_53_00_AM.png"
-              alt="Win more jobs, get paid more — tradesperson on site"
-              className="relative w-full rounded-2xl border-2 object-cover shadow-xl"
-              style={{ borderColor: XRATED_BRAND.accent }}
-            />
-          </div>
+      {/* Hero — full-bleed banner. Image fills the entire section
+          edge-to-edge, dark gradient overlay carries the headline
+          text. No container, no border, no card framing. */}
+      <section className="relative min-h-[420px] w-full overflow-hidden border-b border-neutral-200 sm:min-h-[520px] md:min-h-[600px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/tips-hero.png"
+          alt="Win more jobs, get paid more — tradesperson on site"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        {/* Gradient overlay — darkens the left side where the text
+            sits so the headline reads against any banner art. */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.15) 75%, rgba(10,10,10,0) 100%)"
+          }}
+        />
+        <div className="relative mx-auto flex min-h-[420px] max-w-5xl flex-col justify-end px-4 pb-12 pt-16 sm:min-h-[520px] sm:px-6 sm:pb-16 sm:pt-20 md:min-h-[600px]">
+          <p
+            className="text-xs font-bold uppercase tracking-[0.22em]"
+            style={{ color: XRATED_BRAND.accent }}
+          >
+            Tips for Trades
+          </p>
+          <h1
+            className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl"
+          >
+            Win{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>more</span> jobs.
+            Get paid{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>more</span>.
+          </h1>
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/90 drop-shadow sm:text-sm">
+            Practical advice from real tradespeople — pricing, photography,
+            social media, WhatsApp, QR codes, reviews and the customer-
+            facing mistakes that quietly kill enquiries.
+          </p>
         </div>
       </section>
 
@@ -178,7 +205,7 @@ export default function TipsPage() {
           {TIPS.map((tip) => (
             <li key={tip.title}>
               <a
-                href="#"
+                href={`/trade-off/tips/${tip.slug}`}
                 className="group flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:-translate-y-0.5 hover:shadow-md"
               >
                 {/* Hero — real photo if present, else gradient placeholder */}

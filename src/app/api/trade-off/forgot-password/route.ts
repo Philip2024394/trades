@@ -83,12 +83,20 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   let code: string | null = null;
   if (listing) {
     code = generateRecoveryCode();
+    const nowIso = new Date().toISOString();
     const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    // We also stamp password_recovery_requested_at (surfaces this row in
+    // /admin/password-recovery) and CLEAR password_recovery_sent_at so a
+    // re-request bumps the row back to the unsent queue. The admin page
+    // is the canonical delivery surface now — the wa.me URL we return
+    // below is kept only for backwards compatibility with old clients.
     const update = await supabaseAdmin
       .from("hammerex_trade_off_listings")
       .update({
         password_recovery_token: code,
-        password_recovery_expires_at: expiresAt
+        password_recovery_expires_at: expiresAt,
+        password_recovery_requested_at: nowIso,
+        password_recovery_sent_at: null
       })
       .eq("id", listing.id);
     if (update.error) {
@@ -103,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // admin doesn't have to fish. The recovery code (when minted) is
   // included so the admin can verify the request matches what's in DB.
   const messageLines = [
-    "Hi xratedtrade.com — I forgot my Trade Off password.",
+    "Hi xratedtrade.com — I forgot my xratedtrade.com password.",
     `My WhatsApp: ${whatsappDigitsIn}`,
     listing ? `My app: ${listing.slug}` : null,
     code ? `Recovery code: ${code}` : null,

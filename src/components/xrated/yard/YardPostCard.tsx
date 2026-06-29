@@ -20,6 +20,7 @@ import {
 } from "@/lib/yardPosts";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { YardReactionBar } from "./YardReactionBar";
+import { YardFlagButton } from "./YardFlagButton";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
@@ -68,8 +69,19 @@ export function YardPostCard({
         })
     : null;
 
+  // Admin announcements get a yellow rim + tinted background + an
+  // explicit "ANNOUNCEMENT" badge so members can read official vs
+  // member at a glance. Pinned non-announcements also get a subtle
+  // ring so the float-to-top isn't surprising.
+  const isAnnouncement = post.is_admin_announcement === true;
+  const articleClassName = isAnnouncement
+    ? "relative flex h-full flex-col overflow-hidden rounded-2xl border-2 bg-amber-50/40 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+    : "relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md";
+  const articleStyle = isAnnouncement
+    ? { borderColor: BRAND_YELLOW }
+    : undefined;
   return (
-    <article className="relative flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article className={articleClassName} style={articleStyle}>
 
       <div className="flex flex-1 flex-col gap-3 p-5 sm:p-6">
         {/* Top row — just the kind chip + a small grey time-ago. Trade,
@@ -77,12 +89,30 @@ export function YardPostCard({
             title so the header reads as one decisive label rather than
             a chip-soup. */}
         <div className="flex items-center gap-2">
-          <span
-            className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em]"
-            style={{ background: kindBg, color: kindFg }}
-          >
-            {YARD_KIND_LABELS[post.kind]}
-          </span>
+          {isAnnouncement ? (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em]"
+              style={{ background: BRAND_YELLOW, color: BRAND_BLACK }}
+              title="Posted by the xratedtrade.com team"
+            >
+              <PinGlyph /> Announcement
+            </span>
+          ) : (
+            <span
+              className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-extrabold uppercase tracking-[0.16em]"
+              style={{ background: kindBg, color: kindFg }}
+            >
+              {YARD_KIND_LABELS[post.kind]}
+            </span>
+          )}
+          {post.is_pinned && !isAnnouncement && (
+            <span
+              className="inline-flex items-center gap-1 rounded-full border border-neutral-200 bg-white px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-neutral-700"
+              title="Pinned by xratedtrade.com"
+            >
+              <PinGlyph /> Pinned
+            </span>
+          )}
           {!post.is_sample && (
             <span className="ml-auto text-[11px] font-bold text-neutral-400">
               {timeAgoShort(post.created_at)}
@@ -184,9 +214,16 @@ export function YardPostCard({
         )}
 
         {/* Reaction bar — sits above the poster row so the conversion
-            CTA stays the visual anchor. */}
-        <div className="border-t border-neutral-100 pt-3">
-          <YardReactionBar postId={post.id} initialCounts={reactions} />
+            CTA stays the visual anchor. Flag affordance hugs the right
+            edge in the same row; not rendered on admin announcements
+            (those are official) or on the viewer's own posts. */}
+        <div className="flex items-start justify-between gap-3 border-t border-neutral-100 pt-3">
+          <div className="min-w-0 flex-1">
+            <YardReactionBar postId={post.id} initialCounts={reactions} />
+          </div>
+          {!isAnnouncement && (
+            <YardFlagButton postId={post.id} posterSlug={poster?.slug ?? null} />
+          )}
         </div>
 
         {/* Poster + CTA */}

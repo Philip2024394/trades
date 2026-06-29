@@ -68,11 +68,11 @@ export default function TermsPage() {
         <article className="mt-8 flex flex-col gap-8 text-[13px] leading-relaxed text-neutral-800 sm:text-sm">
           <Section n="1" title="Who we are">
             <p>
-              Xrated Trades (also trading as &ldquo;Trade Off&rdquo;) operates the
+              xratedtrade.com (operated by Xrated Trades) runs the
               website at <strong>xratedtrade.com</strong> (the
-              &ldquo;Service&rdquo;). In these Terms, &ldquo;we&rdquo;,
-              &ldquo;us&rdquo; and &ldquo;our&rdquo; mean Xrated Trades.
-              &ldquo;You&rdquo; means the person who signs up for or uses the
+              “Service”). In these Terms, “we”,
+              “us” and “our” mean Xrated Trades.
+              “You” means the person who signs up for or uses the
               Service.
             </p>
             <p>
@@ -88,7 +88,7 @@ export default function TermsPage() {
             <p>
               The Service is provided from the{" "}
               <strong>Republic of Ireland</strong>. Customers worldwide
-              are welcome &mdash; UK, EU, US, Australia, and elsewhere.
+              are welcome — UK, EU, US, Australia, and elsewhere.
               Local consumer rights vary by jurisdiction; see also our{" "}
               <a href="/legal/refunds" className="font-bold underline">
                 Refunds page
@@ -157,7 +157,7 @@ export default function TermsPage() {
             </ul>
             <p>
               All prices are in pounds sterling (GBP) and include VAT
-              where applicable. We may change prices on 30 days&rsquo; notice
+              where applicable. We may change prices on 30 days’ notice
               by email. Your renewal price is the price displayed in your
               dashboard at the time of renewal; if you do not accept a
               price change you can cancel before it takes effect.
@@ -202,8 +202,8 @@ export default function TermsPage() {
                 by Stripe; we never see or store your full card number.
               </li>
               <li>
-                Renewal charges appear on your statement as &ldquo;Xrated
-                Trades&rdquo; or &ldquo;XRATEDTRADE&rdquo;.
+                Renewal charges appear on your statement as “Xrated
+                Trades” or “XRATEDTRADE”.
               </li>
               <li>
                 You can view all upcoming charges, update your payment
@@ -236,7 +236,7 @@ export default function TermsPage() {
               whatever statutory rights apply locally. As a matter of
               policy we extend the same 14-day cancellation window to
               every customer worldwide, regardless of whether their
-              local law requires it &mdash; see our{" "}
+              local law requires it — see our{" "}
               <a href="/legal/refunds" className="font-bold underline">
                 Refund Policy
               </a>{" "}
@@ -287,7 +287,7 @@ export default function TermsPage() {
                   {SUPPORT_EMAIL}
                 </a>{" "}
                 from the address on your account and ask us to cancel.
-                We&rsquo;ll confirm in writing within 1 working day.
+                We’ll confirm in writing within 1 working day.
               </li>
             </ul>
             <p>
@@ -316,11 +316,11 @@ export default function TermsPage() {
               </li>
               <li>
                 upload content that is illegal, defamatory, obscene,
-                harassing, or that infringes anyone else&rsquo;s intellectual
+                harassing, or that infringes anyone else’s intellectual
                 property or privacy;
               </li>
               <li>
-                scrape, mirror or resell the Service or any other user&rsquo;s
+                scrape, mirror or resell the Service or any other user’s
                 content;
               </li>
               <li>
@@ -412,7 +412,7 @@ export default function TermsPage() {
             <p>
               We are not liable for loss of profits, loss of business,
               loss of goodwill or any indirect or consequential loss.
-              The Service is a profile platform &mdash; we are not
+              The Service is a profile platform — we are not
               responsible for the jobs you win or lose through it, the
               quality of the work you do, the conduct of your customers,
               or any contract you enter into with a customer you meet
@@ -450,7 +450,7 @@ export default function TermsPage() {
               time without notice. For material changes that disadvantage
               you (a price rise, removal of a paid feature, a change to
               your refund rights) we will give you at least{" "}
-              <strong>30 days&rsquo; notice by email</strong> and you may
+              <strong>30 days’ notice by email</strong> and you may
               cancel before the change takes effect.
             </p>
           </Section>
@@ -525,7 +525,7 @@ function DisclaimerBanner() {
         Template notice
       </p>
       <p className="mt-1.5">
-        This is a starting template based on UK consumer law and Stripe&rsquo;s
+        This is a starting template based on UK consumer law and Stripe’s
         published merchant requirements. Have it reviewed by a UK-qualified
         solicitor before relying on it in production.
       </p>

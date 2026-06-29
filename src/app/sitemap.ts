@@ -1,6 +1,8 @@
 import type { MetadataRoute } from "next";
 import { DEMO_TRADE_SEEDS } from "@/lib/demoTradeSeeds";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
+import { isLeadCaseStudy } from "@/lib/leadCaseStudies";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 // Full sitemap for xratedtrade.com — surfaces the marketing pages, the
 // templated trade landings (108 entries), every demo profile (106
@@ -13,7 +15,7 @@ const SITE = "https://xratedtrade.com";
 
 type Entry = MetadataRoute.Sitemap[number];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const url = (path: string) => `${SITE}${path === "/" ? "" : path}`;
@@ -46,7 +48,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/trade-off/help",
     "/trade-off/jobs",
     "/trade-off/yard",
+    "/news",
     "/find",
+    "/showcase",
+    "/site-office",
     // Platform-level pages — required by Stripe's trust + compliance
     // checklist and used by the global footer's Company column.
     "/about",
@@ -71,11 +76,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Demo tradesperson profiles — `/trade/<profile_slug>` is the real
   // listing route in this codebase (the task spec said `/<profile_slug>`
   // but no top-level [slug] page exists). 106 seeds via DEMO_TRADE_SEEDS.
+  //
+  // The 6 lead case studies (Marcus, Emma, Jamie, Stuart, Rebecca,
+  // Charlotte) are bumped to priority 0.85 — they're the showcase
+  // surfaces that earn extra reviews, diary entries and richer JSON-LD
+  // each week, so the "weekly" cadence is genuinely true for them.
   const demoProfiles: Entry[] = DEMO_TRADE_SEEDS.map((seed) => ({
     url: url(`/trade/${seed.profile_slug}`),
     lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.7
+    changeFrequency: "weekly" as const,
+    priority: isLeadCaseStudy(seed.profile_slug) ? 0.85 : 0.7
   }));
 
   // Legal pages — created by sibling agent; included so search crawl
@@ -93,5 +103,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.5
   }));
 
-  return [root, ...main, ...tradeLandings, ...demoProfiles, ...legal];
+  // Newsroom posts — one URL per live row in
+  // hammerex_xrated_news_posts. Drafts + archived rows are intentionally
+  // omitted so Google never sees them.
+  let news: Entry[] = [];
+  try {
+    const { data } = await supabaseAdmin
+      .from("hammerex_xrated_news_posts")
+      .select("slug, published_at")
+      .eq("status", "live")
+      .order("published_at", { ascending: false })
+      .limit(500);
+    news = (data ?? []).map((row) => ({
+      url: url(`/news/${row.slug}`),
+      lastModified: row.published_at ? new Date(row.published_at) : now,
+      changeFrequency: "weekly" as const,
+      priority: 0.7
+    }));
+  } catch (err) {
+    console.error("[sitemap] news posts load failed:", err);
+  }
+
+  return [
+    root,
+    ...main,
+    ...tradeLandings,
+    ...demoProfiles,
+    ...legal,
+    ...news
+  ];
 }

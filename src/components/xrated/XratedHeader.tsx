@@ -1,7 +1,7 @@
 "use client";
 
 // Xrated Trades — standalone header for the public Trade Off surface.
-// Logo on the left. Right side: hamburger menu, profile, alerts bell.
+// Logo on the left. Right side: profile avatar + hamburger menu.
 // 'List your trade' CTA removed per user direction — it lives in the
 // landing hero CTAs and the footer 'List your trade (free)' button.
 
@@ -27,6 +27,28 @@ export function XratedHeader() {
         </a>
 
         <div className="flex items-center gap-1 sm:gap-2">
+          {/* Showcase — hub page surfacing the 6 lead case studies as
+              live, indexable Trade Off profiles. Sits next to News so
+              readers exploring the brand can browse real worked
+              examples in one click. */}
+          <a
+            href="/showcase"
+            className="hidden h-9 items-center px-2 text-[12px] font-bold uppercase tracking-widest text-white/80 transition hover:text-white md:inline-flex"
+          >
+            Showcase
+          </a>
+
+          {/* News — public-facing newsroom (/news). Visible site-wide
+              so readers can find it without opening the burger menu.
+              Hidden on the smallest viewports to keep header compact;
+              still available from the BurgerMenu on mobile. */}
+          <a
+            href="/news"
+            className="hidden h-9 items-center px-2 text-[12px] font-bold uppercase tracking-widest text-white/80 transition hover:text-white md:inline-flex"
+          >
+            News
+          </a>
+
           {/* Log in — routes to /trade-off/login for the phone+password
               auth flow. Visible on every public page so a tradesperson
               can find their way back into their dashboard without
@@ -43,23 +65,6 @@ export function XratedHeader() {
           >
             Log in
           </a>
-
-          {/* Alerts bell */}
-          <button
-            type="button"
-            aria-label="Alerts"
-            className="relative inline-flex h-11 w-11 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-              <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-            </svg>
-            <span
-              className="absolute right-2 top-2 inline-block h-2 w-2 rounded-full"
-              style={{ background: XRATED_BRAND.accent }}
-              aria-hidden="true"
-            />
-          </button>
 
           {/* Profile avatar — middle of the group */}
           <button

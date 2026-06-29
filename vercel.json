@@ -3,6 +3,18 @@
     {
       "path": "/api/cron/custom-domain-health",
       "schedule": "0 */6 * * *"
+    },
+    {
+      "path": "/api/cron/social-link-health",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/affiliate-monthly-payment-alerts",
+      "schedule": "0 9 28 * *"
+    },
+    {
+      "path": "/api/cron/affiliate-fraud-check",
+      "schedule": "0 4 * * *"
     }
   ]
 }

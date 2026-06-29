@@ -74,7 +74,7 @@ export default function StatusPage() {
             </span>
             <div>
               <p className="text-[13px] font-extrabold text-emerald-900">
-                Trade Off is operating normally.
+                xratedtrade.com is operating normally.
               </p>
               <p className="mt-0.5 text-[13px] text-emerald-800/80">
                 Public site, dashboards, APIs, and Stripe billing are all

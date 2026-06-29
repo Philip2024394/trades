@@ -54,15 +54,22 @@ function readParam(v: string | string[] | undefined): string {
 }
 
 async function loadFeed(opts: { kind: string; trade: string; region: string }) {
+  // Moderation: 'hidden' and 'spam' posts are HARD-REMOVED from the
+  // public feed. 'flagged' posts stay visible until admin acts (the
+  // queue surfaces them but the community keeps seeing them so we
+  // don't accidentally censor a contested post). Pinned posts sit at
+  // the top via the is_pinned DESC sort.
   let q = supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select(
-      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, contact_count, created_at, expires_at"
+      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, contact_count, is_admin_announcement, is_pinned, moderation_status, moderation_reason, moderated_at, flag_count, metadata, created_at, expires_at"
     )
     .eq("status", "live")
     .eq("country", "UK")
     .is("parent_id", null)
     .gt("expires_at", new Date().toISOString())
+    .not("moderation_status", "in", '("hidden","spam")')
+    .order("is_pinned", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(100);
 
@@ -132,7 +139,8 @@ async function loadCountsForKind() {
     .eq("status", "live")
     .eq("country", "UK")
     .is("parent_id", null)
-    .gt("expires_at", new Date().toISOString());
+    .gt("expires_at", new Date().toISOString())
+    .not("moderation_status", "in", '("hidden","spam")');
   const rows = (res.data ?? []) as {
     kind: "available" | "needed" | "chat" | "product";
   }[];

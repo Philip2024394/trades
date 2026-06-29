@@ -148,7 +148,7 @@ export function PricingTierCards({
                 Your URL
               </p>
               <p className="mt-0.5 break-all text-[11px] font-semibold text-neutral-700 sm:text-xs">
-                hammerexdirect.com/trade/your-name
+                hammerexdirect.com/your-name
               </p>
             </div>
             <a

@@ -186,7 +186,7 @@ export function RetailShippingEditor({
           setErr(json.error ?? "Save failed.");
           return;
         }
-        setMsg("Shipping saved.");
+        setMsg("Delivery saved.");
       } catch {
         setErr("Network error — try again.");
       } finally {
@@ -251,9 +251,9 @@ export function RetailShippingEditor({
   return (
     <div className="space-y-4 rounded-xl border border-brand-line bg-brand-surface p-5">
       <div>
-        <h2 className="text-lg font-extrabold">Retail shipping</h2>
+        <h2 className="text-lg font-extrabold">Retail delivery</h2>
         <p className="mt-1 text-xs text-brand-muted">
-          End-customer shipping — used on the product page. Wholesale Mode
+          End-customer delivery — used on the product page. Wholesale Mode
           uses its own banded-distance config below.
         </p>
       </div>
@@ -272,11 +272,11 @@ export function RetailShippingEditor({
       {/* UK section. */}
       <fieldset className="space-y-3">
         <legend className="text-xs font-bold uppercase tracking-widest text-brand-muted">
-          How do you charge for UK shipping?
+          How do you charge for UK delivery?
         </legend>
         <div className="grid gap-2 sm:grid-cols-3">
           <ModeRadio
-            label="Free shipping"
+            label="Free delivery"
             checked={mode === "free"}
             onChange={() => setMode("free")}
           />
@@ -292,7 +292,7 @@ export function RetailShippingEditor({
           />
         </div>
         <p className="text-[13px] text-brand-muted">
-          Not configured = customers see &ldquo;Shipping confirmed by WhatsApp&rdquo; on every product.
+          Not configured = customers see &ldquo;Delivery confirmed by WhatsApp&rdquo; on every product.
         </p>
 
         {mode === "uk_flat" && (

@@ -19,7 +19,7 @@ import { LeadAlertsSetupCard } from "@/components/trade-off/LeadAlertsSetupCard"
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Lead Alerts | xratedtrade.com Trade Off",
+  title: "Lead Alerts | xratedtrade.com",
   robots: { index: false, follow: false }
 };
 
@@ -114,7 +114,7 @@ function InvalidLink({ reason }: { reason: string }) {
       <XratedHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          Trade Off
+          xratedtrade.com
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This link is invalid or has expired.

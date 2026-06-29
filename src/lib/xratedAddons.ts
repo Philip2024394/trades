@@ -78,6 +78,11 @@ export type XratedAddon = {
   includedWithPaid: boolean;
   /** Three short benefit bullets shown on the marketing card. */
   benefits: string[];
+  /** Audience targeting for the dashboard add-ons hub. When set,
+   *  AddOnsHub filters the registry against the listing's
+   *  primary_trade so an add-on whose mental model doesn't match the
+   *  trade never appears. Undefined ⇒ shown to every trade. */
+  audience?: "all" | "merchant" | "service";
 };
 
 /** Display label for the editorial badge chips. */
@@ -199,7 +204,31 @@ export const XRATED_ADDONS: XratedAddon[] = [
       "Post-by-post job updates with status chips and photos",
       "One-tap share to Instagram / Facebook / TikTok / X",
       "Completed projects auto-archive into a swipeable hero strip"
-    ]
+    ],
+    audience: "service"
+  },
+  {
+    slug: "trade_center_picks",
+    name: "Trade Center Picks",
+    tagline: "Promo, arrival and stock-status banners on your products",
+    summary:
+      "Built for merchants. Pin up to 24 products with banners customers spot in a glance — On promo / New arrival / Just arrived / In stock / Pre-order. Optional arrival date lets customers reserve ahead. When a promo expires the banner falls off the profile automatically, so the page never reads stale.",
+    glyph: "🏷️",
+    image_url: null,
+    personas: ["Merchants", "Tool suppliers", "Materials yards"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Status chip", "Arrival date", "Product link"],
+    pricing: { kind: "paid", monthly_pence: 400 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "trade-center-picks",
+    includedWithPaid: false,
+    benefits: [
+      "Pin up to 24 products with promo / new-arrival / pre-order banners",
+      "Arrival dates so customers reserve ahead of the pallet landing",
+      "Falls off the profile when promo expires — no stale banners"
+    ],
+    audience: "merchant"
   },
   {
     slug: "wholesale_mode",
@@ -423,6 +452,19 @@ export function isJobDiaryOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).job_diary === true;
+}
+
+/** Trade Center Picks add-on — when on, merchant-grade trades can pin
+ *  promo / arrival / stock-status banners onto products on their
+ *  profile, and the dedicated /<slug>/trade-center-picks page becomes
+ *  reachable. Paid-only (£4/mo). The component layer is responsible
+ *  for the additional `isMerchantGradeTrade(listing.primary_trade)`
+ *  visibility gate — this helper only reflects the tradesperson's
+ *  stated preference. */
+export function isTradeCenterPicksOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return (listing.addons_enabled ?? {}).trade_center_picks === true;
 }
 
 /** Wholesale Mode add-on — when on, the public cart renders the

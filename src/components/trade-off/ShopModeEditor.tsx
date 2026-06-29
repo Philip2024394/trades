@@ -33,7 +33,7 @@ import {
 import {
   PaymentMethodMark,
   type PaymentMethodKey
-} from "@/components/xrated/profile/PaymentIconsRow";
+} from "@/components/xrated/profile/merchant/PaymentIconsRow";
 import {
   DndContext,
   PointerSensor,

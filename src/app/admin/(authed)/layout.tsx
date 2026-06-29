@@ -2,23 +2,86 @@
 //
 // Reads the xrated_admin_session cookie and redirects to /admin/login
 // when missing or tampered. Also renders the persistent admin nav strip
-// (Listings · Payments · Reviews · Yard · Reports) and a log-out button.
+// (Listings · Payments · Reviews · Yard · Reports · Password Reset)
+// and a log-out button.
 //
-// Only Payments is wired to a live route right now; the rest are kept
-// as disabled placeholders so the nav doesn't reshape when they ship.
+// The Password Reset link shows a small badge with the pending count
+// so the admin notices new requests without having to open the page.
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { isAdminAuthed } from "@/lib/adminAuth";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const dynamic = "force-dynamic";
 
 const NAV_ITEMS: { href: string; label: string; live: boolean }[] = [
   { href: "/admin/listings", label: "Listings", live: false },
   { href: "/admin/payments", label: "Payments", live: true },
-  { href: "/admin/reviews", label: "Reviews", live: false },
-  { href: "/admin/yard", label: "Yard", live: false },
-  { href: "/admin/reports", label: "Reports", live: false }
+  { href: "/admin/reviews", label: "Reviews", live: true },
+  { href: "/admin/yard", label: "Yard", live: true },
+  { href: "/admin/news", label: "News", live: true },
+  { href: "/admin/affiliates", label: "Affiliates", live: true },
+  { href: "/admin/reports", label: "Reports", live: false },
+  { href: "/admin/password-recovery", label: "Password Reset", live: true }
 ];
+
+async function loadPendingRecoveryCount(): Promise<number> {
+  const { count, error } = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .select("id", { count: "exact", head: true })
+    .not("password_recovery_requested_at", "is", null)
+    .is("password_recovery_sent_at", null);
+  if (error) {
+    console.error("[admin/layout] pending count failed:", error);
+    return 0;
+  }
+  return count ?? 0;
+}
+
+// Count yard posts that need admin attention — anything 'flagged' OR
+// already 'hidden'/'spam' (so the admin can quickly Restore mis-fires).
+// Surfaces as the small badge next to the Yard nav item.
+async function loadPendingYardCount(): Promise<number> {
+  const { count, error } = await supabaseAdmin
+    .from("hammerex_trade_off_yard_posts")
+    .select("id", { count: "exact", head: true })
+    .in("moderation_status", ["flagged", "hidden", "spam"]);
+  if (error) {
+    console.error("[admin/layout] yard pending count failed:", error);
+    return 0;
+  }
+  return count ?? 0;
+}
+
+// Reviews still inside their 24h cool-down (status='live' AND
+// goes_live_at > now()). Surfaces as the badge on the Reviews nav
+// item so the admin can spot a flood of pending publishes.
+async function loadPendingReviewsCount(): Promise<number> {
+  const { count, error } = await supabaseAdmin
+    .from("hammerex_xrated_reviews")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "live")
+    .gt("goes_live_at", new Date().toISOString());
+  if (error) {
+    console.error("[admin/layout] reviews pending count failed:", error);
+    return 0;
+  }
+  return count ?? 0;
+}
+
+// Approved commissions awaiting a payout — flagged on the Affiliates
+// nav so the admin notices when there's money to release.
+async function loadPendingAffiliatePayoutsCount(): Promise<number> {
+  const { count, error } = await supabaseAdmin
+    .from("hammerex_affiliate_commissions")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "approved");
+  if (error) {
+    console.error("[admin/layout] affiliate payouts count failed:", error);
+    return 0;
+  }
+  return count ?? 0;
+}
 
 export default async function AdminAuthedLayout({
   children
@@ -29,6 +92,18 @@ export default async function AdminAuthedLayout({
   if (!authed) {
     redirect("/admin/login");
   }
+
+  const [
+    pendingRecoveryCount,
+    pendingYardCount,
+    pendingReviewsCount,
+    pendingAffiliatePayouts
+  ] = await Promise.all([
+    loadPendingRecoveryCount(),
+    loadPendingYardCount(),
+    loadPendingReviewsCount(),
+    loadPendingAffiliatePayoutsCount()
+  ]);
 
   return (
     <>
@@ -42,16 +117,35 @@ export default async function AdminAuthedLayout({
               Xrated Admin
             </Link>
             <nav className="flex flex-wrap items-center gap-1 pl-3">
-              {NAV_ITEMS.map((item) =>
-                item.live ? (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="rounded px-2 py-1 text-xs text-brand-text hover:bg-brand-line"
-                  >
-                    {item.label}
-                  </Link>
-                ) : (
+              {NAV_ITEMS.map((item) => {
+                const badgeCount =
+                  item.href === "/admin/password-recovery"
+                    ? pendingRecoveryCount
+                    : item.href === "/admin/yard"
+                      ? pendingYardCount
+                      : item.href === "/admin/reviews"
+                        ? pendingReviewsCount
+                        : item.href === "/admin/affiliates"
+                          ? pendingAffiliatePayouts
+                          : 0;
+                const showBadge = badgeCount > 0;
+                if (item.live) {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-brand-text hover:bg-brand-line"
+                    >
+                      {item.label}
+                      {showBadge && (
+                        <span className="inline-flex min-w-[1.25rem] items-center justify-center rounded-full bg-brand-accent px-1.5 text-[10px] font-bold text-black">
+                          {badgeCount}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                }
+                return (
                   <span
                     key={item.href}
                     aria-disabled="true"
@@ -60,8 +154,8 @@ export default async function AdminAuthedLayout({
                   >
                     {item.label}
                   </span>
-                )
-              )}
+                );
+              })}
             </nav>
           </div>
           <form action="/api/admin/logout" method="POST">

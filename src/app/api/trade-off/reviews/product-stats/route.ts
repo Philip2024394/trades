@@ -67,7 +67,9 @@ export async function GET(req: NextRequest) {
       "overall_rating, workmanship_rating, communication_rating, value_rating, timeliness_rating"
     )
     .eq("product_id", product_id)
-    .eq("status", "live");
+    .eq("status", "live")
+    // 24h cool-down + admin-Hide gate.
+    .lte("goes_live_at", new Date().toISOString());
 
   if (reviews.error) {
     console.error("[product-stats] reviews query failed:", reviews.error);
@@ -114,6 +116,8 @@ export async function GET(req: NextRequest) {
     .select("body")
     .eq("product_id", product_id)
     .eq("status", "live")
+    // 24h cool-down + admin-Hide gate.
+    .lte("goes_live_at", new Date().toISOString())
     .order("goes_live_at", { ascending: false })
     .limit(1)
     .maybeSingle();

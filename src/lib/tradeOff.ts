@@ -268,7 +268,24 @@ export function whatsappDigits(input: string): string {
 
 export function whatsappQuoteUrl(whatsapp: string, displayName: string, tradeLabelText: string): string {
   const digits = whatsappDigits(whatsapp);
-  const message = `Hi ${displayName}, I found your profile on xratedtrade.com Trade Off. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
+  const message = `Hi ${displayName}, I found your profile on xratedtrade.com. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
+  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
+}
+
+// Trade Center Picks — dedicated pick-detail WhatsApp deeplink. Pre-fills
+// a short, friendly enquiry that references the EXACT promo banner the
+// customer landed on (status + product), so the merchant doesn't have to
+// guess which pick is being discussed. Used by the "Enquire on WhatsApp"
+// CTA on /<slug>/picks/<pickId>.
+export function whatsappPickEnquiryUrl(
+  whatsapp: string,
+  displayName: string,
+  productName: string,
+  statusLabel: string
+): string {
+  const digits = whatsappDigits(whatsapp);
+  const firstName = displayName.split(/\s+/)[0] ?? displayName;
+  const message = `Hi ${firstName}, I'm interested in your "${statusLabel}" offer on ${productName}. Can you confirm availability + delivery to my postcode? — [Xrated]`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
@@ -330,5 +347,9 @@ export function isReservedSlug(slug: string): boolean {
   if (!/^[a-z0-9-]+$/.test(s)) return true;
   if (s.startsWith("-") || s.endsWith("-")) return true;
   if (s.includes("--")) return true;
+  // Seed profiles use a `demo-` prefix (e.g. demo-stuart-kingsley-...).
+  // Block real signups from squatting that namespace so the seed set
+  // stays the canonical preview-only surface.
+  if (s.startsWith("demo-")) return true;
   return false;
 }

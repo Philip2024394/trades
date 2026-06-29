@@ -15,6 +15,7 @@ import type { ReactionCounts } from "@/lib/yardReactions";
 import type { YardPoster } from "./YardPostCard";
 import { YardReactionBar } from "./YardReactionBar";
 import { YardImageThumbs } from "./YardImageThumbs";
+import { YardFlagButton } from "./YardFlagButton";
 
 const BRAND_YELLOW = "#FFB300";
 
@@ -41,13 +42,32 @@ export function YardChatPost({
       })
     : null;
 
+  // Admin announcements wear the yellow rim + tinted background so the
+  // Trade Off team voice is immediately distinguishable from member
+  // posts. Also overrides the trailing "Trade Chat" chip with
+  // "ANNOUNCEMENT" further down.
+  const isAnnouncement = post.is_admin_announcement === true;
+  const articleClass = isAnnouncement
+    ? "relative w-full overflow-hidden rounded-2xl border-2 bg-amber-50/40 shadow-sm"
+    : "relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm";
+  const articleStyle = isAnnouncement ? { borderColor: BRAND_YELLOW } : undefined;
   return (
-    <article className="relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
+    <article className={articleClass} style={articleStyle}>
 
       <div className="flex flex-col gap-3 p-4 sm:p-5">
         {/* Poster header — avatar + name + verified tick + meta */}
         <header className="flex items-center gap-3">
-          {poster && (
+          {isAnnouncement && (
+            <span
+              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[14px] font-extrabold text-neutral-900"
+              style={{ background: BRAND_YELLOW }}
+              aria-hidden="true"
+              title="xratedtrade.com team"
+            >
+              TO
+            </span>
+          )}
+          {!isAnnouncement && poster && (
             <a
               href={`/${poster.slug}`}
               className="shrink-0"
@@ -74,10 +94,10 @@ export function YardChatPost({
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
               <a
-                href={poster ? `/${poster.slug}` : "#"}
+                href={isAnnouncement ? "#" : poster ? `/${poster.slug}` : "#"}
                 className="truncate text-[14px] font-extrabold text-neutral-900 sm:text-[15px]"
               >
-                {posterName}
+                {isAnnouncement ? "xratedtrade.com Team" : posterName}
               </a>
               {/* "Real tradesperson" badge — every Yard poster is a
                   paid member or builder-grade trade, so they've passed
@@ -104,7 +124,7 @@ export function YardChatPost({
             className="inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-neutral-900"
             style={{ background: BRAND_YELLOW }}
           >
-            Trade Chat
+            {isAnnouncement ? "Announcement" : "Trade Chat"}
           </span>
         </header>
 
@@ -147,9 +167,16 @@ export function YardChatPost({
           </div>
         )}
 
-        {/* Reaction bar — thumbs up / dislike only. */}
-        <div className="border-t border-neutral-100 pt-3">
-          <YardReactionBar postId={post.id} initialCounts={reactions} />
+        {/* Reaction bar — thumbs up / dislike only. Flag hugs the
+            right edge of the same row; not shown on announcements
+            (official) or on the viewer's own posts. */}
+        <div className="flex items-start justify-between gap-3 border-t border-neutral-100 pt-3">
+          <div className="min-w-0 flex-1">
+            <YardReactionBar postId={post.id} initialCounts={reactions} />
+          </div>
+          {!isAnnouncement && (
+            <YardFlagButton postId={post.id} posterSlug={poster?.slug ?? null} />
+          )}
         </div>
 
         {/* Action row — Reply / Open thread on the left, image

@@ -15,7 +15,7 @@
 // stripped to image + name only.
 
 import { useEffect, useState } from "react";
-import type { PricedService } from "./ServicesTabbedGallery";
+import type { PricedService } from "./service/ServicesTabbedGallery";
 import { AvailabilityPill } from "./AvailabilityPill";
 import type { OperatingHours } from "@/lib/availabilityStatus";
 

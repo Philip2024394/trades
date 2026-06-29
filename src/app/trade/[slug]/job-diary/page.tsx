@@ -152,7 +152,7 @@ export default async function JobDiaryPage({
         appName={`${primary} Service`}
         backHref={`/${listing.slug}`}
       />
-      <PremiumHero listing={listing} waUrl={waUrl} currentPage="profile" />
+      <PremiumHero listing={listing} waUrl={waUrl} currentPage="contact" />
 
       <section className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10">
         <div className="mt-5">

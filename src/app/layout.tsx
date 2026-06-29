@@ -76,7 +76,7 @@ const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: BRAND.name,
-  alternateName: ["Trade Off", "Xrated Trade Off"],
+  alternateName: ["xratedtrade.com", "Xrated Trades"],
   url: SITE_URL,
   logo: BRAND.logo,
   description:

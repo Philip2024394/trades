@@ -68,7 +68,7 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
 
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "Trade Off", url: "/trade-off" },
+    { name: "xratedtrade.com", url: "/trade-off" },
     { name: label, url: `/trade-off/${trade}` }
   ]);
 
@@ -106,7 +106,7 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
         <ol className="flex items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">Trade Off</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">xratedtrade.com</a></li>
           <li>/</li>
           <li className="text-brand-text">{label}</li>
         </ol>

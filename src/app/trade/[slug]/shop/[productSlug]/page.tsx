@@ -37,20 +37,20 @@ import {
 import { tradeLabel } from "@/lib/tradeOff";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
-import { ProductPageGallery } from "@/components/xrated/profile/ProductPageGallery";
-import { ProductPageAddToCart } from "@/components/xrated/profile/ProductPageAddToCart";
-import { SiblingsWithCompare } from "@/components/xrated/profile/SiblingsWithCompare";
-import { BulkTierTable } from "@/components/xrated/profile/BulkTierTable";
+import { ProductPageGallery } from "@/components/xrated/profile/merchant/ProductPageGallery";
+import { ProductPageAddToCart } from "@/components/xrated/profile/merchant/ProductPageAddToCart";
+import { SiblingsWithCompare } from "@/components/xrated/profile/merchant/SiblingsWithCompare";
+import { BulkTierTable } from "@/components/xrated/profile/merchant/BulkTierTable";
 import { StarsRating } from "@/components/xrated/profile/StarsRating";
-import { BuyColumnDetails } from "@/components/xrated/profile/BuyColumnDetails";
-import { PaymentIconsRow } from "@/components/xrated/profile/PaymentIconsRow";
-import { WarrantyReturnsBlock } from "@/components/xrated/profile/WarrantyReturnsBlock";
-import { CurrencyDropdown } from "@/components/xrated/profile/CurrencyDropdown";
-import { PriceDisplay } from "@/components/xrated/profile/PriceDisplay";
-import { ProductReviewsBlock } from "@/components/xrated/profile/ProductReviewsBlock";
-import { ProductQABlock } from "@/components/xrated/profile/ProductQABlock";
-import { StickyBuyBar } from "@/components/xrated/profile/StickyBuyBar";
-import { QtyStepper } from "@/components/xrated/profile/QtyStepper";
+import { BuyColumnDetails } from "@/components/xrated/profile/merchant/BuyColumnDetails";
+import { PaymentIconsRow } from "@/components/xrated/profile/merchant/PaymentIconsRow";
+import { WarrantyReturnsBlock } from "@/components/xrated/profile/merchant/WarrantyReturnsBlock";
+import { CurrencyDropdown } from "@/components/xrated/profile/merchant/CurrencyDropdown";
+import { PriceDisplay } from "@/components/xrated/profile/merchant/PriceDisplay";
+import { ProductReviewsBlock } from "@/components/xrated/profile/merchant/ProductReviewsBlock";
+import { ProductQABlock } from "@/components/xrated/profile/merchant/ProductQABlock";
+import { StickyBuyBar } from "@/components/xrated/profile/merchant/StickyBuyBar";
+import { QtyStepper } from "@/components/xrated/profile/merchant/QtyStepper";
 
 export const revalidate = 60;
 
@@ -124,7 +124,10 @@ async function loadProductsStats(
     .from("hammerex_xrated_reviews")
     .select("product_id, overall_rating")
     .in("product_id", productIds)
-    .eq("status", "live");
+    .eq("status", "live")
+    // 24h cool-down + admin-Hide gate. Goes_live_at <= now() is the
+    // canonical "publicly visible" filter post-migration.
+    .lte("goes_live_at", new Date().toISOString());
   if (res.error) return {};
   const rows = (res.data ?? []) as {
     product_id: string;
@@ -163,7 +166,9 @@ async function loadProductStats(
     .from("hammerex_xrated_reviews")
     .select("overall_rating", { count: "exact" })
     .eq("product_id", productId)
-    .eq("status", "live");
+    .eq("status", "live")
+    // 24h cool-down + admin-Hide gate.
+    .lte("goes_live_at", new Date().toISOString());
   if (res.error) return { rating: null, count: 0 };
   const rows = (res.data ?? []) as { overall_rating: number | null }[];
   if (rows.length === 0) {
@@ -193,7 +198,7 @@ function formatGbp(pence: number): string {
     : `£${pounds.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-// Retail shipping summary — one-line copy that sits DIRECTLY UNDER the
+// Retail delivery summary — one-line copy that sits DIRECTLY UNDER the
 // VAT row in the buy column. Mirrors the BuyColumnDetails Delivery body
 // labels but condensed to a single muted neutral line.
 function shippingSummaryLine(
@@ -204,10 +209,10 @@ function shippingSummaryLine(
     ? listing.retail_shipping_international
     : [];
   const intl = intlRows.length > 0;
-  if (mode === "free") return { primary: "Free UK shipping", intl };
+  if (mode === "free") return { primary: "Free UK delivery", intl };
   if (mode === "uk_flat") {
     const pence = listing.retail_shipping_uk_pence ?? 0;
-    return { primary: `UK shipping ${formatGbp(pence)}`, intl };
+    return { primary: `UK delivery ${formatGbp(pence)}`, intl };
   }
   if (mode === "uk_areas") {
     const rows = Array.isArray(listing.retail_shipping_uk_areas)
@@ -215,11 +220,11 @@ function shippingSummaryLine(
       : [];
     if (rows.length >= 1) {
       const min = Math.min(...rows.map((r) => r.price_pence ?? 0));
-      return { primary: `UK shipping from ${formatGbp(min)}`, intl };
+      return { primary: `UK delivery from ${formatGbp(min)}`, intl };
     }
-    return { primary: "Shipping confirmed by WhatsApp", intl };
+    return { primary: "Delivery confirmed by WhatsApp", intl };
   }
-  return { primary: "Shipping confirmed by WhatsApp", intl };
+  return { primary: "Delivery confirmed by WhatsApp", intl };
 }
 
 // VAT helper line — renders as small grey text under the price row (not
@@ -400,7 +405,7 @@ export default async function ProductDetailPage({
               <CurrencyDropdown />
               <PriceDisplay pricePence={product.price_pence} installPrefix={isInstall} />
               {!isInstall && <StockPill stock={stock} />}
-              {!isInstall && showBulkTiers && (
+              {!isInstall && bulkTiers.length > 0 && (
                 <span
                   className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[13px] font-extrabold"
                   style={{ background: "#FFB30022", color: "#0A0A0A", borderColor: "#FFB300" }}
@@ -424,7 +429,7 @@ export default async function ProductDetailPage({
                         {vat.sub}
                       </span>
                     )}
-                    {/* One-line retail-shipping summary — stacks under VAT
+                    {/* One-line retail-delivery summary — stacks under VAT
                         in the same column so QtyStepper on the right is
                         untouched. Reads from listing.retail_shipping_*. */}
                     <span className="text-[13px] text-neutral-500">
@@ -477,9 +482,14 @@ export default async function ProductDetailPage({
               )}
             </div>
 
-            {/* Bulk tiers (if Wholesale Mode is on AND tiers present). Skipped
-                entirely on install services — they're priced after survey. */}
-            {!isInstall && showBulkTiers && <BulkTierTable tiers={bulkTiers} currentQty={1} />}
+            {/* Bulk tiers — appears for ANY product with bulk_tiers
+                set on the row (data-driven, not Wholesale-Mode gated).
+                Previously hidden silently for merchants who hadn't
+                toggled the add-on. Skipped on install services — those
+                are priced after survey. */}
+            {!isInstall && bulkTiers.length > 0 && (
+              <BulkTierTable tiers={bulkTiers} productId={product.id} />
+            )}
 
             {isInstall ? (
               <div className="flex flex-col gap-1">

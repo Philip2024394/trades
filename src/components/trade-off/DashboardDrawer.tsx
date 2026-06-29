@@ -80,6 +80,16 @@ export function DashboardDrawer({
       icon: <ChartIcon />
     },
     {
+      // Authed link to the public Yard feed — passes slug+token so the
+      // flag button + reaction bar work without re-auth. Members who
+      // visit /trade-off/yard from a cold link will see the icons but
+      // get "Please log in to flag" until they sign in.
+      href: `/trade-off/yard?slug=${encodeURIComponent(slug)}&token=${encodeURIComponent(token)}`,
+      label: "The Yard",
+      blurb: "Trades-only chat board — react, post, flag, help out.",
+      icon: <YardIcon />
+    },
+    {
       href: `/${slug}`,
       label: "View live profile",
       blurb: "Open the page your customers see.",
@@ -258,6 +268,14 @@ function ExternalIcon() {
       <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
       <polyline points="15 3 21 3 21 9" />
       <line x1="10" y1="14" x2="21" y2="3" />
+    </svg>
+  );
+}
+function YardIcon() {
+  // Chat-bubble cluster — reads as "community board".
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
     </svg>
   );
 }

@@ -106,7 +106,7 @@ export type TradeOffFormInitial = {
   /** Shop-level retail delivery mode for merchant trades. Applies to
    *  every product by default; per-product overrides happen on the
    *  Shop Mode editor. Empty string = not configured (PDP falls back
-   *  to "Shipping confirmed by WhatsApp"). */
+   *  to "Delivery confirmed by WhatsApp"). */
   retail_shipping_mode:
     | ""
     | "pickup"

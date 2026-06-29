@@ -79,7 +79,7 @@ export default function RefundsPage() {
           </p>
           <p className="mt-1.5">
             Statutory refund rights vary by country. <strong>We honour
-            whichever is more generous</strong> &mdash; our standard
+            whichever is more generous</strong> — our standard
             14-day cooling-off OR your local statutory right. The
             sections below describe our policy baseline; nothing in
             this page overrides a mandatory consumer-protection right
@@ -94,14 +94,14 @@ export default function RefundsPage() {
               first paid subscription charge, in line with the UK
               Consumer Contracts (Information, Cancellation and
               Additional Charges) Regulations 2013. Cancel inside that
-              window and we&rsquo;ll refund you in full, unless you&rsquo;ve
+              window and we’ll refund you in full, unless you’ve
               actively used the paid features in a way that uses up the
               service (see clause 3).
             </p>
             <p>
               Outside the cooling-off window, monthly subscribers get no
               refund for the current month, and annual subscribers
-              normally get no pro-rata refund unless we&rsquo;ve failed to
+              normally get no pro-rata refund unless we’ve failed to
               deliver the Service for more than 7 consecutive days.
             </p>
           </Section>
@@ -124,7 +124,7 @@ export default function RefundsPage() {
               <strong>US customers</strong> do not have an EU-style
               statutory cooling-off period, but the same 14-day refund
               window applies under our policy.{" "}
-              <strong>Other jurisdictions</strong> &mdash; the same 14
+              <strong>Other jurisdictions</strong> — the same 14
               days apply as a matter of policy, on top of any local
               statutory right you have.
             </p>
@@ -133,11 +133,11 @@ export default function RefundsPage() {
           <Section n="3" title="Waiver during the cooling-off period">
             <p>
               By starting your subscription you may ask us to begin
-              providing the paid features straight away &mdash; for
+              providing the paid features straight away — for
               example by activating an add-on, switching your URL to{" "}
               <code>xratedtrade.com</code>, sending lead messages,
               displaying a Verified-tier badge or unlocking The Yard
-              posts. That&rsquo;s fine; we&rsquo;ll start delivering.
+              posts. That’s fine; we’ll start delivering.
             </p>
             <p>
               <strong>
@@ -147,13 +147,13 @@ export default function RefundsPage() {
               </strong>{" "}
               (regulation 36 of the Consumer Contracts Regulations 2013).
               If you have substantially used the paid features during
-              the cooling-off period &mdash; for example using Job Diary
+              the cooling-off period — for example using Job Diary
               extensively, broadcasting via Lead Alerts, or relying on
-              Verified status to win work &mdash; you may lose the right to
+              Verified status to win work — you may lose the right to
               a full refund.
             </p>
             <p>
-              We&rsquo;ll always tell you in writing what we&rsquo;re
+              We’ll always tell you in writing what we’re
               deducting and why before processing a partial refund.
             </p>
           </Section>
@@ -170,7 +170,7 @@ export default function RefundsPage() {
               </li>
               <li>
                 We do not refund the unused portion of the current
-                month, and you won&rsquo;t be billed again.
+                month, and you won’t be billed again.
               </li>
             </ul>
           </Section>
@@ -183,12 +183,12 @@ export default function RefundsPage() {
               </li>
               <li>
                 We do <strong>not</strong> pro-rata refund the unused
-                months outside the cooling-off window&hellip;
+                months outside the cooling-off window…
               </li>
               <li>
-                &hellip;<strong>except</strong> where the Service was
+                …<strong>except</strong> where the Service was
                 unavailable to you due to our fault for more than 7
-                consecutive days. In that case we&rsquo;ll refund either the
+                consecutive days. In that case we’ll refund either the
                 affected period or a sensible pro-rata share of the
                 remaining year, whichever is fairer.
               </li>
@@ -197,16 +197,16 @@ export default function RefundsPage() {
 
           <Section n="6" title="The 14-day free trial">
             <p>
-              The 14-day trial doesn&rsquo;t require a payment method, so
-              there&rsquo;s nothing to refund. If you don&rsquo;t subscribe at
+              The 14-day trial doesn’t require a payment method, so
+              there’s nothing to refund. If you don’t subscribe at
               the end of the trial, your profile soft-downgrades to the
-              Free tier automatically and we don&rsquo;t charge you.
+              Free tier automatically and we don’t charge you.
             </p>
           </Section>
 
           <Section n="7" title="The Free tier">
             <p>
-              The Free tier is &pound;0. There&rsquo;s nothing to refund.
+              The Free tier is &pound;0. There’s nothing to refund.
             </p>
           </Section>
 
@@ -234,15 +234,15 @@ export default function RefundsPage() {
 
           <Section n="9" title="How to request a refund">
             <p>
-              <strong>Step 1 &mdash; Customer Portal.</strong> Open your
+              <strong>Step 1 — Customer Portal.</strong> Open your
               Xrated Trades dashboard, click{" "}
               <strong>Billing &rarr; Manage subscription</strong>, and cancel.
               Stripe will email you a confirmation. If you cancel inside
-              the cooling-off window and haven&rsquo;t used the paid
+              the cooling-off window and haven’t used the paid
               features, Stripe will issue the refund automatically.
             </p>
             <p>
-              <strong>Step 2 &mdash; Email us if the Portal isn&rsquo;t
+              <strong>Step 2 — Email us if the Portal isn’t
               enough.</strong> If your case needs human review (partial
               refund, unavailability claim, billing dispute), email{" "}
               <a href={`mailto:${SUPPORT_EMAIL}`} className="font-bold underline">
@@ -252,11 +252,11 @@ export default function RefundsPage() {
             </p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>the slug or email on your account;</li>
-              <li>the date and amount of the charge you&rsquo;d like refunded;</li>
+              <li>the date and amount of the charge you’d like refunded;</li>
               <li>a one-line reason.</li>
             </ul>
             <p>
-              We&rsquo;ll acknowledge within 1 working day and resolve
+              We’ll acknowledge within 1 working day and resolve
               within 5 working days.
             </p>
           </Section>
@@ -265,8 +265,8 @@ export default function RefundsPage() {
             <p>
               Approved refunds go back to your original payment method
               through Stripe and normally show up in{" "}
-              <strong>5 &ndash; 10 business days</strong>, depending on
-              your card issuer. We can&rsquo;t speed this up &mdash; the
+              <strong>5 – 10 business days</strong>, depending on
+              your card issuer. We can’t speed this up — the
               clearing time is set by your bank.
             </p>
           </Section>
@@ -275,7 +275,7 @@ export default function RefundsPage() {
             <p>We will not refund (or will reverse a previous refund) where:</p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                you&rsquo;ve breached our Terms by posting fake reviews,
+                you’ve breached our Terms by posting fake reviews,
                 impersonating another person or business, or breaking the
                 acceptable-use policy;
               </li>
@@ -284,7 +284,7 @@ export default function RefundsPage() {
                 of customers, or illegal content;
               </li>
               <li>
-                you&rsquo;ve already used the paid features substantially
+                you’ve already used the paid features substantially
                 during a claimed cooling-off cancellation (see clause 3);
               </li>
               <li>
@@ -297,22 +297,22 @@ export default function RefundsPage() {
           <Section n="12" title="Chargebacks">
             <p>
               If you raise a chargeback with your bank instead of
-              contacting us, we&rsquo;ll suspend your account while the
+              contacting us, we’ll suspend your account while the
               dispute is open. We always prefer to resolve a billing
-              issue directly &mdash; please email us first.
+              issue directly — please email us first.
             </p>
           </Section>
 
           <Section n="13" title="Statutory rights">
             <p>
-              This policy doesn&rsquo;t affect your statutory rights as a
+              This policy doesn’t affect your statutory rights as a
               consumer under the law of your country of residence
-              &mdash; for example, in the UK, the Consumer Rights Act
+              — for example, in the UK, the Consumer Rights Act
               2015 and the Consumer Contracts (Information, Cancellation
               and Additional Charges) Regulations 2013; in the EU, the
               Consumer Rights Directive (2011/83/EU) as implemented in
               your member state; in the US, state-level consumer
-              protection laws (including California&rsquo;s automatic
+              protection laws (including California’s automatic
               renewal disclosure regime); in Australia, the Australian
               Consumer Law in Schedule 2 to the Competition and Consumer
               Act 2010. Where a statutory right would give you more
@@ -371,7 +371,7 @@ function DisclaimerBanner() {
         Template notice
       </p>
       <p className="mt-1.5">
-        This is a starting template based on UK consumer law and Stripe&rsquo;s
+        This is a starting template based on UK consumer law and Stripe’s
         published merchant requirements. Have it reviewed by a UK-qualified
         solicitor before relying on it in production.
       </p>

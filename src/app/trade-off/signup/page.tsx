@@ -9,9 +9,9 @@ import { TradeOffForm } from "./TradeOffForm";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 
 export const metadata: Metadata = {
-  title: "Join Trade Off — list yourself for free | Hammerex",
+  title: "Join xratedtrade.com — list yourself for free | Hammerex",
   description:
-    "Add your trade profile to xratedtrade.com Trade Off. Free for life, WhatsApp-only, no commissions. Customers find you, you quote.",
+    "Add your trade profile to xratedtrade.com. Free for life, WhatsApp-only, no commissions. Customers find you, you quote.",
   alternates: { canonical: "/trade-off/signup" }
 };
 

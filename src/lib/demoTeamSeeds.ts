@@ -155,10 +155,16 @@ export const DEMO_TEAM_SEEDS: Record<string, DemoTeamMember[]> = {
 
   // 18. BUILDING MERCHANT — Hull (Stuart Kingsley)
   "building-merchant": [
-    { name: "Stuart Kingsley", role: "Yard Manager / Owner", years_experience: 24, avatar_url: "https://randomuser.me/api/portraits/men/70.jpg", skills: ["Trade pricing", "Stock control", "Heavy goods"] },
+    { name: "Stuart Kingsley", role: "Yard Manager / Owner", years_experience: 24, avatar_url: "https://randomuser.me/api/portraits/men/85.jpg", skills: ["Trade pricing", "Stock control", "Heavy goods"] },
     { name: "Jade Easton", role: "Sales Assistant", years_experience: 5, avatar_url: "https://randomuser.me/api/portraits/women/71.jpg", skills: ["Counter sales", "Trade accounts"] },
     { name: "Wayne Hardisty", role: "Yard Foreman", years_experience: 12, avatar_url: "https://randomuser.me/api/portraits/men/72.jpg", skills: ["Forklift", "Loading & dispatch"] },
     { name: "Sophie Eccles", role: "Accounts & Credit", years_experience: 7, avatar_url: "https://randomuser.me/api/portraits/women/73.jpg", skills: ["Invoicing", "Trade credit"] },
+    { name: "Lewis Marsden", role: "HGV Driver", years_experience: 9, avatar_url: "https://randomuser.me/api/portraits/men/74.jpg", skills: ["Class 1 deliveries", "Route planning"] },
+    { name: "Aaliyah Sutton", role: "Counter Sales", years_experience: 3, avatar_url: "https://randomuser.me/api/portraits/women/74.jpg", skills: ["Trade quotes", "Customer comms"] },
+    { name: "Connor Beckwith", role: "Warehouse Picker", years_experience: 4, avatar_url: "https://randomuser.me/api/portraits/men/75.jpg", skills: ["Order picking", "Stock rotation"] },
+    { name: "Megan Ainsworth", role: "Marketing & Trade Comms", years_experience: 6, avatar_url: "https://randomuser.me/api/portraits/women/75.jpg", skills: ["Promo planning", "Social posts"] },
+    { name: "Darren Wilkinson", role: "Trade Account Manager", years_experience: 11, avatar_url: "https://randomuser.me/api/portraits/men/76.jpg", skills: ["Credit terms", "Site visits"] },
+    { name: "Heather Pickering", role: "Goods-In Inspector", years_experience: 8, avatar_url: "https://randomuser.me/api/portraits/women/76.jpg", skills: ["Quality checks", "Supplier liaison"] },
   ],
 
   // 19. METAL ENGINEER — Stoke-on-Trent (Jakub Novak)

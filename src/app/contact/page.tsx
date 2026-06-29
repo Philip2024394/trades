@@ -1,9 +1,9 @@
 // Xrated Trades — Contact page.
-// Platform contact surface. Stripe risk reviewers and customers alike
-// expect a single named email + response-time commitment. The static
-// form below uses a `mailto:` action so we don't introduce a new
-// backend route — keeps the surface zero-dependency until Resend is
-// wired in.
+// Platform contact surface. The form below posts to /api/contact which
+// routes the structured intake via Resend to the admin inbox — the
+// reason dropdown lands in the subject line so the team can triage
+// straight from the inbox. We deliberately do not show a public email
+// address on this page; the form is the only intake channel here.
 
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -11,22 +11,25 @@ import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
+import { FaqAccordion } from "./FaqAccordion";
+import { ContactForm } from "./ContactForm";
 
 export const revalidate = 3600;
 
-const SUPPORT_EMAIL = "support@xratedtrade.com";
+const CONTACT_HERO_IMAGE =
+  "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/contact-hero.png";
 
 export const metadata: Metadata = {
   title: "Contact — Xrated Trades",
   description:
-    "Email support@xratedtrade.com. Paid tier: within 1 business day. Free tier: within 3 business days. Plus acceptable use guidance.",
+    "Send a structured message to the Xrated Trades team. Replies within 24 hours, UK business hours. Plus acceptable use guidance.",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title: "Contact — Xrated Trades",
     description:
-      "Direct email contact, response-time commitments, and acceptable use links.",
+      "Send a structured message to the Xrated Trades team. Replies within 24 hours.",
     url: absolute("/contact")
   }
 };
@@ -36,23 +39,36 @@ export default function ContactPage() {
     <main className="bg-white pb-20">
       <XratedHeader />
 
-      <section
-        className="border-b border-neutral-200"
-        style={{ background: "#0A0A0A" }}
-      >
-        <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+      {/* Full-bleed hero — mirrors the /trade-off/tips hero pattern.
+          Edge-to-edge image, dark left-to-right gradient overlay, eyebrow
+          + headline + subtitle stacked over the dark side. */}
+      <section className="relative min-h-[420px] w-full overflow-hidden border-b border-neutral-200 sm:min-h-[520px] md:min-h-[600px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={CONTACT_HERO_IMAGE}
+          alt="Talk to our team — Xrated Trades support"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.55) 45%, rgba(10,10,10,0.15) 75%, rgba(10,10,10,0) 100%)"
+          }}
+        />
+        <div className="relative mx-auto flex min-h-[420px] max-w-5xl flex-col justify-end px-4 pb-12 pt-16 sm:min-h-[520px] sm:px-6 sm:pb-16 sm:pt-20 md:min-h-[600px]">
           <p
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
           >
             Contact
           </p>
-          <h1 className="mt-2 text-3xl font-extrabold leading-tight text-white sm:text-4xl">
-            Talk to a human.
+          <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl">
+            Talk to our team.
           </h1>
-          <p className="mt-3 text-[13px] leading-relaxed text-white/75 sm:text-sm">
-            One inbox, one team, replies during UK business hours. No
-            ticket-queue gymnastics.
+          <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-white/90 drop-shadow sm:text-sm">
+            Tell us what you need. We reply within 24 hours from our team.
           </p>
         </div>
       </section>
@@ -60,25 +76,29 @@ export default function ContactPage() {
       <article className="mx-auto mt-10 flex max-w-3xl flex-col gap-8 px-4 text-[13px] leading-relaxed text-neutral-800 sm:px-6 sm:text-sm">
         <section>
           <h2 className="text-lg font-extrabold text-neutral-900 sm:text-xl">
-            Email
+            Get in touch
           </h2>
           <p className="mt-3">
-            <a
-              href={`mailto:${SUPPORT_EMAIL}`}
-              className="font-extrabold underline"
-              style={{ color: "#0A0A0A" }}
-            >
-              {SUPPORT_EMAIL}
-            </a>
+            Use the form below to reach the team. One inbox, one team,
+            replies during UK business hours. No ticket-queue gymnastics.
           </p>
           <p className="mt-3">
-            <strong>Response time:</strong> within{" "}
-            <span className="font-bold">1 business day</span> for paid
-            tier accounts, within{" "}
-            <span className="font-bold">3 business days</span> for free
-            tier and general enquiries. Business days are Monday–Friday,
-            excluding Republic of Ireland public holidays.
+            <strong>Response time:</strong> we reply{" "}
+            <span className="font-bold">within 24 hours</span>. UK hours,
+            Monday–Friday, 9am–6pm. Weekend messages get picked up
+            Monday morning.
           </p>
+        </section>
+
+        <section>
+          <h2 className="text-lg font-extrabold text-neutral-900 sm:text-xl">
+            Common questions
+          </h2>
+          <p className="mt-3 text-[13px] text-neutral-700">
+            If you can't find your answer here, the form below reaches the
+            team directly.
+          </p>
+          <FaqAccordion />
         </section>
 
         <section>
@@ -86,76 +106,14 @@ export default function ContactPage() {
             Send a message
           </h2>
           <p className="mt-3 text-[13px] text-neutral-700">
-            Drafting here pre-fills your default mail app. We don't store
-            anything you type on this page.
+            Structured intake — pick a reason, give us your details,
+            we'll route it to the right team member and reply within 24
+            hours.
           </p>
-          <form
-            action={`mailto:${SUPPORT_EMAIL}`}
-            method="post"
-            encType="text/plain"
-            className="mt-5 flex flex-col gap-4"
-          >
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[13px] font-bold uppercase tracking-wider text-neutral-700">
-                Your name
-              </span>
-              <input
-                type="text"
-                name="name"
-                required
-                className="min-h-[44px] rounded-lg border border-neutral-300 px-3 py-2 text-[13px] text-neutral-900 focus:border-neutral-900 focus:outline-none"
-              />
-            </label>
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[13px] font-bold uppercase tracking-wider text-neutral-700">
-                Your email
-              </span>
-              <input
-                type="email"
-                name="email"
-                required
-                className="min-h-[44px] rounded-lg border border-neutral-300 px-3 py-2 text-[13px] text-neutral-900 focus:border-neutral-900 focus:outline-none"
-              />
-            </label>
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[13px] font-bold uppercase tracking-wider text-neutral-700">
-                Subject
-              </span>
-              <input
-                type="text"
-                name="subject"
-                required
-                className="min-h-[44px] rounded-lg border border-neutral-300 px-3 py-2 text-[13px] text-neutral-900 focus:border-neutral-900 focus:outline-none"
-              />
-            </label>
-            <label className="flex flex-col gap-1.5">
-              <span className="text-[13px] font-bold uppercase tracking-wider text-neutral-700">
-                Message
-              </span>
-              <textarea
-                name="message"
-                required
-                rows={6}
-                className="rounded-lg border border-neutral-300 px-3 py-2 text-[13px] text-neutral-900 focus:border-neutral-900 focus:outline-none"
-              />
-            </label>
-            <button
-              type="submit"
-              className="inline-flex h-12 min-h-[44px] items-center justify-center rounded-lg px-5 text-[13px] font-extrabold uppercase tracking-wider text-black transition active:scale-[0.98]"
-              style={{ background: XRATED_BRAND.accent }}
-            >
-              Open in mail app
-            </button>
-          </form>
-          <p className="mt-3 text-[13px] text-neutral-600">
-            Form not opening? Email{" "}
-            <a
-              href={`mailto:${SUPPORT_EMAIL}`}
-              className="font-bold underline"
-            >
-              {SUPPORT_EMAIL}
-            </a>{" "}
-            directly.
+          <ContactForm />
+          <p className="mt-4 text-[13px] text-neutral-600">
+            Drop us a message above — the form is the fastest way to reach
+            the right person on the team.
           </p>
         </section>
 

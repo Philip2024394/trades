@@ -42,7 +42,12 @@ const nextConfig = {
         { source: "/:slug/materials/:merchantSlug", destination: "/trade/:slug/materials/:merchantSlug" },
         { source: "/:slug/shop", destination: "/trade/:slug/shop" },
         { source: "/:slug/shop/:productSlug", destination: "/trade/:slug/shop/:productSlug" },
-        { source: "/:slug/faq", destination: "/trade/:slug/faq" }
+        { source: "/:slug/faq", destination: "/trade/:slug/faq" },
+        // Trade Center Picks — list page + dedicated per-pick detail page.
+        // Both serve out of /trade/<slug>/... handlers but the URL bar
+        // stays on the clean /<slug>/... vanity form.
+        { source: "/:slug/trade-center-picks", destination: "/trade/:slug/trade-center-picks" },
+        { source: "/:slug/picks/:pickId", destination: "/trade/:slug/picks/:pickId" }
       ],
       fallback: []
     };
@@ -69,7 +74,11 @@ const nextConfig = {
       { source: "/trade/:slug/materials/:merchantSlug", destination: "/:slug/materials/:merchantSlug", permanent: true },
       { source: "/trade/:slug/shop", destination: "/:slug/shop", permanent: true },
       { source: "/trade/:slug/shop/:productSlug", destination: "/:slug/shop/:productSlug", permanent: true },
-      { source: "/trade/:slug/faq", destination: "/:slug/faq", permanent: true }
+      { source: "/trade/:slug/faq", destination: "/:slug/faq", permanent: true },
+      // Bounce old /trade/* trade-center-picks + per-pick detail URLs to
+      // the clean form so Google consolidates SEO authority.
+      { source: "/trade/:slug/trade-center-picks", destination: "/:slug/trade-center-picks", permanent: true },
+      { source: "/trade/:slug/picks/:pickId", destination: "/:slug/picks/:pickId", permanent: true }
     ];
   }
 };

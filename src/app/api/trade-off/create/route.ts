@@ -191,13 +191,73 @@ export async function POST(req: NextRequest) {
         attempt === 0 ? undefined : shortSuffix()
       );
     }
+    // Affiliate-referrer stamp. Read the cookie set by middleware,
+    // verify the affiliate exists + is active, and stamp the
+    // sequential ID onto the new listing. Best-effort — bad cookies
+    // don't block signup.
+    let affiliateReferrerId: number | null = null;
+    try {
+      const ref = req.cookies.get("xrated_affiliate_ref")?.value;
+      const refNum = ref ? Number(ref) : NaN;
+      if (Number.isFinite(refNum) && refNum > 0) {
+        const aff = await supabaseAdmin
+          .from("hammerex_affiliates")
+          .select("affiliate_id, status, email")
+          .eq("affiliate_id", refNum)
+          .maybeSingle();
+        if (aff.data && aff.data.status === "active") {
+          affiliateReferrerId = aff.data.affiliate_id;
+        }
+      }
+    } catch (err) {
+      console.warn("[trade-off/create] affiliate cookie read failed:", err);
+    }
+
     const insert = await supabaseAdmin
       .from("hammerex_trade_off_listings")
-      .insert({ ...baseRow, slug })
-      .select("id, slug, edit_token, status")
+      .insert({
+        ...baseRow,
+        slug,
+        affiliate_referrer_id: affiliateReferrerId
+      })
+      .select("id, slug, edit_token, status, display_name")
       .maybeSingle();
 
     if (insert.data) {
+      // Audit + notification on the affiliate side.
+      if (affiliateReferrerId) {
+        try {
+          await supabaseAdmin
+            .from("hammerex_affiliate_audit_log")
+            .insert({
+              actor_type: "system",
+              actor_id: "trade-off.create",
+              action: "referral.stamp",
+              target_id: insert.data.id,
+              details: {
+                affiliate_id: affiliateReferrerId,
+                slug: insert.data.slug
+              }
+            });
+          const aff = await supabaseAdmin
+            .from("hammerex_affiliates")
+            .select("affiliate_id, email")
+            .eq("affiliate_id", affiliateReferrerId)
+            .maybeSingle();
+          if (aff.data?.email) {
+            const { sendNewReferralEmail } = await import("@/lib/affiliateEmails");
+            await sendNewReferralEmail(
+              { affiliate_id: aff.data.affiliate_id, email: aff.data.email },
+              {
+                slug: insert.data.slug,
+                display_name: insert.data.display_name ?? null
+              }
+            );
+          }
+        } catch (err) {
+          console.error("[trade-off/create] referral notify failed:", err);
+        }
+      }
       // Auto-start the Xrated App trial — length comes from
       // `XRATED_PRICING.trialDays` (currently 14 days). Every new tradie
       // gets the premium tier free for the trial window — after that

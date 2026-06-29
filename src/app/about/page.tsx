@@ -14,14 +14,14 @@ import { BRAND, absolute } from "@/lib/seo";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "About — Xrated Trades",
+  title: "Introduction — xratedtrade.com",
   description:
-    "Xrated Trades (Trade Off) is a construction trades directory and profile platform for UK tradespeople and customers worldwide. Independent, Ireland-based, no lead-gen middleman.",
+    "xratedtrade.com is a construction trades directory and profile platform for UK tradespeople and customers worldwide. Independent, Ireland-based, no lead-gen middleman.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "About — Xrated Trades",
+    title: "Introduction — xratedtrade.com",
     description:
       "Who we are, who runs us, where we operate from, and how to reach us.",
     url: absolute("/about")
@@ -42,14 +42,14 @@ export default function AboutPage() {
             className="text-[13px] font-bold uppercase tracking-[0.22em]"
             style={{ color: XRATED_BRAND.accent }}
           >
-            About
+            Introduction
           </p>
           <h1 className="mt-2 text-3xl font-extrabold leading-tight text-white sm:text-4xl">
             A trades directory built for tradies — not for lead-gen
             middlemen.
           </h1>
           <p className="mt-3 text-[13px] leading-relaxed text-white/75 sm:text-sm">
-            Xrated Trades (also known as Trade Off) gives tradespeople a
+            xratedtrade.com gives tradespeople a
             shareable profile customers can actually read, share and
             trust. No pay-per-lead. No bidding on your own name. Just one
             link that does the work of a website, quote form and business
@@ -59,9 +59,9 @@ export default function AboutPage() {
       </section>
 
       <article className="mx-auto mt-10 flex max-w-3xl flex-col gap-8 px-4 text-[13px] leading-relaxed text-neutral-800 sm:px-6 sm:text-sm">
-        <Section title="What Trade Off is">
+        <Section title="What xratedtrade.com is">
           <p>
-            Trade Off is a construction trades directory and SaaS
+            xratedtrade.com is a construction trades directory and SaaS
             platform. Tradespeople get a public profile under a clean
             URL (<code>xratedtrade.com/your-name</code>) with reviews,
             photos, prices, service cards, WhatsApp contact and the rest
@@ -112,7 +112,7 @@ export default function AboutPage() {
           <p>
             We're not a job platform, an agency, or a bidding site. We
             don't broker jobs and we don't take a cut of the work you
-            quote. Trade Off is a profile platform — what your customer
+            quote. xratedtrade.com is a profile platform — what your customer
             sees and what your reputation is built on.
           </p>
         </Section>

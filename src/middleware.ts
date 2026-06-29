@@ -40,11 +40,80 @@ const SYSTEM_HOSTS = new Set<string>([
 // here keeps the middleware bullet-proof against future matcher edits.
 const BYPASS_PATH_PREFIXES = ["/_next/", "/api/", "/favicon"];
 
+// Affiliate cookie carries the numeric affiliate_id for 30 days.
+const AFFILIATE_REF_COOKIE = "xrated_affiliate_ref";
+const AFFILIATE_REF_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+const ADMIN_PATH_PREFIXES = ["/admin", "/api/"];
+
 export const config = {
   // Skip Next.js internals, API routes, and favicons. Everything else
   // gets the host check.
   matcher: ["/((?!_next/|api/|favicon).*)"]
 };
+
+/**
+ * Set the affiliate cookie + fire a tracking request when ?ref=N is
+ * present and valid. The fetch is fire-and-forget — we never await it
+ * with the user blocked. Returns the response (with cookie set) when
+ * we want to update the response, or null when no ref was found.
+ */
+function applyAffiliateRef(
+  req: NextRequest,
+  response: NextResponse
+): NextResponse {
+  const ref = req.nextUrl.searchParams.get("ref");
+  const pathname = req.nextUrl.pathname;
+
+  // Skip admin and api paths.
+  for (const prefix of ADMIN_PATH_PREFIXES) {
+    if (pathname.startsWith(prefix)) return response;
+  }
+
+  if (!ref) return response;
+
+  const refId = Number(ref);
+  if (!Number.isFinite(refId) || refId <= 0) return response;
+
+  // Set the 30-day cookie. We don't validate the affiliate exists here
+  // (would require a DB round-trip on every request) — the track-click
+  // endpoint validates before insertion, and the listing-create stamp
+  // also re-validates before writing affiliate_referrer_id.
+  response.cookies.set(AFFILIATE_REF_COOKIE, String(refId), {
+    httpOnly: false,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    path: "/",
+    maxAge: AFFILIATE_REF_MAX_AGE
+  });
+
+  // Fire-and-forget click log. We use a same-origin fetch to our own
+  // tracking endpoint — no waitUntil needed, the request runs to
+  // completion in the background after the response is sent.
+  const trackUrl = new URL("/api/affiliates/track-click", req.nextUrl.origin);
+  fetch(trackUrl.toString(), {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "user-agent": req.headers.get("user-agent") ?? "",
+      "x-forwarded-for": req.headers.get("x-forwarded-for") ?? "",
+      "cf-ipcountry": req.headers.get("cf-ipcountry") ?? "",
+      "x-vercel-ip-country": req.headers.get("x-vercel-ip-country") ?? ""
+    },
+    body: JSON.stringify({
+      affiliate_id: refId,
+      landing_page: pathname,
+      referrer_url: req.headers.get("referer") ?? null,
+      country:
+        req.headers.get("cf-ipcountry") ??
+        req.headers.get("x-vercel-ip-country") ??
+        null
+    })
+  }).catch(() => {
+    // Swallow — never block the user request on a tracking failure.
+  });
+
+  return response;
+}
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
   // Bypass for static and API paths.
@@ -55,11 +124,16 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
 
   const rawHost = req.headers.get("host") ?? "";
   const host = rawHost.toLowerCase().replace(/:\d+$/, "");
-  if (!host || SYSTEM_HOSTS.has(host)) return NextResponse.next();
+  if (!host || SYSTEM_HOSTS.has(host)) {
+    // Even on system hosts we still want to capture the ?ref= cookie.
+    return applyAffiliateRef(req, NextResponse.next());
+  }
 
   // *.vercel.app preview hosts also bypass — they're system, just
   // dynamically named by Vercel.
-  if (host.endsWith(".vercel.app")) return NextResponse.next();
+  if (host.endsWith(".vercel.app")) {
+    return applyAffiliateRef(req, NextResponse.next());
+  }
 
   // Strip leading www. so the partial UNIQUE index matches either form.
   // We attach both at Vercel, but only store the apex in the DB row.
@@ -87,7 +161,9 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     .limit(1)
     .maybeSingle();
 
-  if (!data || !data.slug) return NextResponse.next();
+  if (!data || !data.slug) {
+    return applyAffiliateRef(req, NextResponse.next());
+  }
 
   // Rewrite the request to /<slug>/<rest>. The marketing site's
   // afterFiles rewrites in next.config.mjs further point /<slug> at
@@ -96,5 +172,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const url2 = req.nextUrl.clone();
   url2.pathname =
     pathname === "/" ? `/${data.slug}` : `/${data.slug}${pathname}`;
-  return NextResponse.rewrite(url2);
+  return applyAffiliateRef(req, NextResponse.rewrite(url2));
 }

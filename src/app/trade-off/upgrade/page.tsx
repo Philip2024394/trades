@@ -26,9 +26,9 @@ import { TrustBadges } from "@/components/xrated/TrustBadges";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Upgrade to Xrated App | Trade Off",
+  title: "Upgrade to Xrated App | xratedtrade.com",
   description:
-    "Unlock custom theme colours, animated hero text, avatar frames and CTA effects for your Trade Off profile.",
+    "Unlock custom theme colours, animated hero text, avatar frames and CTA effects for your xratedtrade.com profile.",
   robots: { index: false, follow: false }
 };
 

@@ -150,7 +150,7 @@ export async function POST(req: NextRequest) {
     if (raw.length > 0) {
       if (!MODES.has(raw)) {
         return NextResponse.json(
-          { ok: false, error: "Invalid shipping mode." },
+          { ok: false, error: "Invalid delivery mode." },
           { status: 400 }
         );
       }

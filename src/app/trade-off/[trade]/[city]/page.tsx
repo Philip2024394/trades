@@ -83,7 +83,7 @@ export default async function TradeOffCityPage({
 
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "Trade Off", url: "/trade-off" },
+    { name: "xratedtrade.com", url: "/trade-off" },
     { name: label, url: `/trade-off/${trade}` },
     { name: cityLabel, url: `/trade-off/${trade}/${city}` }
   ]);
@@ -110,7 +110,7 @@ export default async function TradeOffCityPage({
         <ol className="flex items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">Trade Off</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">xratedtrade.com</a></li>
           <li>/</li>
           <li><a href={`/trade-off/${trade}`} className="hover:text-brand-text">{label}</a></li>
           <li>/</li>
@@ -170,7 +170,7 @@ function EmptyState({
   return (
     <div className="rounded-2xl border border-dashed border-brand-line bg-brand-surface p-8 sm:p-10">
       <p className="text-sm font-semibold text-brand-text">
-        No {tLabel.toLowerCase()}s in {cityLabel} on Trade Off — yet.
+        No {tLabel.toLowerCase()}s in {cityLabel} on xratedtrade.com — yet.
       </p>
       <p className="mt-1 text-xs text-brand-muted">
         Are you a {tLabel.toLowerCase()} in {cityLabel}? List your trade — free, takes two minutes.

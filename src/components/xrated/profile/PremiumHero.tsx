@@ -8,14 +8,18 @@
 // Pure server component — derives everything (rating, trust badges, hero
 // image) from the listing record. No client state.
 
-import type { HammerexTradeOffListing } from "@/lib/supabase";
+import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
 import { tradeLabel } from "@/lib/tradeOff";
 import { resolveAppHero } from "@/lib/tradeAppBanners";
 import { getTrustLevel, TRUST_LEVEL_META } from "@/lib/xratedTrustLevel";
 import { getTrustScore, getTrustScoreBand } from "@/lib/trustScore";
 import { BusinessCardButton } from "./BusinessCardButton";
+import {
+  computeAvailability,
+  type OperatingHours
+} from "@/lib/availabilityStatus";
 
-export function PremiumHero({
+export async function PremiumHero({
   listing,
   waUrl,
   currentPage = "profile",
@@ -33,6 +37,17 @@ export function PremiumHero({
 }) {
   const isPaid = tier === "paid";
   const isContact = currentPage === "contact";
+  // Live product count — what's actually on the shelf right now.
+  // Filters out services (kind='service') and archived rows. Replaces
+  // the legacy "Hammerex badge product count" tile, which was almost
+  // always zero and didn't represent the merchant's catalogue.
+  const productCountRes = await supabase
+    .from("hammerex_xrated_products")
+    .select("id", { count: "exact", head: true })
+    .eq("listing_id", listing.id)
+    .eq("status", "live")
+    .eq("kind", "product");
+  const liveProductCount = productCountRes.count ?? 0;
   const primaryCta = isContact
     ? {
         href: `/${listing.slug}`,
@@ -235,6 +250,31 @@ export function PremiumHero({
                       or "Conservatory Manufacturer" must wrap to 2
                       lines, never get clipped to "…". */}
                   <span>{tradeServiceLabel}</span>
+                  {/* LIVE indicator — appears only when the trade is
+                      currently within their operating hours OR has
+                      accepting_jobs=true. The green dot pulses with
+                      animate-ping (CSS, no JS). Hidden completely when
+                      closed so it nudges visitors to contact while
+                      someone's actively monitoring. */}
+                  {(() => {
+                    const availability = computeAvailability(
+                      listing.accepting_jobs,
+                      (listing.operating_hours as OperatingHours | null) ?? null
+                    );
+                    if (availability.status !== "available") return null;
+                    return (
+                      <span
+                        className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/90 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.18em] text-white"
+                        title="Currently online"
+                      >
+                        <span className="relative inline-flex h-2 w-2">
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-75" />
+                          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-200" />
+                        </span>
+                        Live
+                      </span>
+                    );
+                  })()}
                   {/* Verified badge — only renders when the listing is
                       actually on the Verified tier (£19.99/mo). Free /
                       Trial / Paid all hide this check, otherwise the
@@ -392,7 +432,7 @@ export function PremiumHero({
                 <line x1="12" y1="22.08" x2="12" y2="12" />
               </svg>
             }
-            value={String(listing.hammerex_standard_products?.length ?? 0)}
+            value={String(liveProductCount)}
             label="Products"
           />
           <StatTile

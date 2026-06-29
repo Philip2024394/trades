@@ -15,7 +15,7 @@ import { TradeLoginForm } from "./TradeLoginForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Log in | xratedtrade.com Trade Off",
+  title: "Log in | xratedtrade.com",
   robots: { index: false, follow: false }
 };
 
@@ -25,7 +25,7 @@ export default function TradeOffLoginPage() {
       <XratedHeader />
       <section className="mx-auto max-w-md px-4 pb-16 pt-12">
         <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
-          Trade Off
+          xratedtrade.com
         </p>
         <h1 className="mt-1 text-3xl font-extrabold leading-tight sm:text-4xl">
           Log in to your app

@@ -1,17 +1,24 @@
 "use client";
 
 // Client form for /trade-off/set-password. Posts to
-// /api/trade-off/set-password which verifies the edit_token, ensures
-// no password is already set, then stores the bcrypt hash + mints a
-// session cookie.
+// /api/trade-off/set-password.
+//
+// Two modes:
+//   - recoveryCode present (forgot-password reset): the code is sent as
+//     a hidden body field; the visible edit_token input is suppressed.
+//   - recoveryCode empty (legacy claim): the visible edit_token input
+//     is shown and sent.
 
 import { useState } from "react";
 
 export function SetPasswordForm({
-  initialWhatsapp
+  initialWhatsapp,
+  recoveryCode
 }: {
   initialWhatsapp: string;
+  recoveryCode: string;
 }) {
+  const isRecovery = recoveryCode.length > 0;
   const [whatsapp, setWhatsapp] = useState(initialWhatsapp);
   const [editToken, setEditToken] = useState("");
   const [password, setPassword] = useState("");
@@ -32,14 +39,19 @@ export function SetPasswordForm({
     }
     setSubmitting(true);
     try {
+      const payload: Record<string, string> = {
+        whatsapp,
+        password
+      };
+      if (isRecovery) {
+        payload.recovery_code = recoveryCode;
+      } else {
+        payload.edit_token = editToken;
+      }
       const res = await fetch("/api/trade-off/set-password", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({
-          whatsapp,
-          edit_token: editToken,
-          password
-        })
+        body: JSON.stringify(payload)
       });
       const body = (await res.json().catch(() => ({}))) as {
         ok?: boolean;
@@ -74,21 +86,25 @@ export function SetPasswordForm({
           className="mt-1 block h-12 w-full rounded-xl border border-brand-line bg-brand-bg px-3 text-[13px] text-brand-text focus:border-brand-accent focus:outline-none"
         />
       </label>
-      <label className="block">
-        <span className="text-[13px] font-bold text-brand-text">Edit token</span>
-        <input
-          type="text"
-          value={editToken}
-          onChange={(e) => setEditToken(e.target.value)}
-          autoComplete="off"
-          required
-          className="mt-1 block h-12 w-full rounded-xl border border-brand-line bg-brand-bg px-3 font-mono text-[13px] text-brand-text focus:border-brand-accent focus:outline-none"
-        />
-        <span className="mt-1 block text-[12px] leading-snug text-brand-muted">
-          The token from your original signup email (the long string after
-          <code>?token=</code> in the edit URL).
-        </span>
-      </label>
+      {isRecovery ? (
+        <input type="hidden" name="recovery_code" value={recoveryCode} />
+      ) : (
+        <label className="block">
+          <span className="text-[13px] font-bold text-brand-text">Edit token</span>
+          <input
+            type="text"
+            value={editToken}
+            onChange={(e) => setEditToken(e.target.value)}
+            autoComplete="off"
+            required
+            className="mt-1 block h-12 w-full rounded-xl border border-brand-line bg-brand-bg px-3 font-mono text-[13px] text-brand-text focus:border-brand-accent focus:outline-none"
+          />
+          <span className="mt-1 block text-[12px] leading-snug text-brand-muted">
+            The token from your original signup email (the long string after
+            <code>?token=</code> in the edit URL).
+          </span>
+        </label>
+      )}
       <label className="block">
         <span className="text-[13px] font-bold text-brand-text">New password</span>
         <input
@@ -121,15 +137,17 @@ export function SetPasswordForm({
         disabled={submitting}
         className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-brand-accent px-4 text-[13px] font-bold text-black transition hover:opacity-90 disabled:opacity-60"
       >
-        {submitting ? "Saving…" : "Set password"}
+        {submitting ? "Saving…" : isRecovery ? "Reset password" : "Set password"}
       </button>
-      <p className="pt-2 text-[12px] text-brand-muted">
-        Lost your edit token?{" "}
-        <a href="/trade-off/login" className="font-semibold text-brand-accent hover:underline">
-          Use Forgot password
-        </a>{" "}
-        on the login screen — our admin team will reissue.
-      </p>
+      {!isRecovery && (
+        <p className="pt-2 text-[12px] text-brand-muted">
+          Lost your edit token?{" "}
+          <a href="/trade-off/login" className="font-semibold text-brand-accent hover:underline">
+            Use Forgot password
+          </a>{" "}
+          on the login screen — our admin team will reissue.
+        </p>
+      )}
     </form>
   );
 }

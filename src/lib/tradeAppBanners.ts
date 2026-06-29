@@ -28,7 +28,17 @@ export function resolveAppHero(input: {
   primary_trade: string | null;
   tier: string;
   last_payment_plan: string | null;
+  /** Optional slug — used to bypass the annual-tier gate for seeded
+   *  demo profiles (slug LIKE 'demo-%'). Demos are always shown with
+   *  their custom hero because they're the platform's showcase. */
+  slug?: string | null;
 }): string | null {
+  // Demo profiles always render their custom hero when set — they're
+  // the showcase, so the tier gate doesn't apply.
+  const isDemo = typeof input.slug === "string" && input.slug.startsWith("demo-");
+  if (isDemo && input.custom_app_hero_url) {
+    return input.custom_app_hero_url;
+  }
   // Verified annual members get the same custom-hero override as paid
   // annual members — they pay more, not less, so they deserve at least
   // every paid annual perk.

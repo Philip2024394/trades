@@ -45,11 +45,13 @@ export async function GET(req: NextRequest) {
   let q = supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select(
-      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, created_at, expires_at"
+      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, is_admin_announcement, is_pinned, moderation_status, created_at, expires_at"
     )
     .eq("status", "live")
     .eq("country", country)
     .gt("expires_at", new Date().toISOString())
+    .not("moderation_status", "in", '("hidden","spam")')
+    .order("is_pinned", { ascending: false })
     .order("created_at", { ascending: false })
     .limit(limit);
 

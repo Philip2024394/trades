@@ -23,8 +23,8 @@ import { effectiveTier } from "@/lib/xratedTrades";
 import { isStorefrontOn } from "@/lib/xratedAddons";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
-import { ShopCartIsland } from "@/components/xrated/profile/ShopCartIsland";
-import { StorefrontBody } from "@/components/xrated/profile/StorefrontBody";
+import { ShopCartIsland } from "@/components/xrated/profile/merchant/ShopCartIsland";
+import { StorefrontBody } from "@/components/xrated/profile/merchant/StorefrontBody";
 
 export const revalidate = 60;
 

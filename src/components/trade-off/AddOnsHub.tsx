@@ -25,6 +25,7 @@ import {
   formatAddonPrice,
   type XratedAddon
 } from "@/lib/xratedAddons";
+import { isMerchantGradeTrade } from "@/lib/tradeOff";
 import type { HammerexTradeOffListing } from "@/lib/supabase";
 
 type Tier = "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
@@ -227,6 +228,16 @@ export function AddOnsHub({
 
   const upgradeHref = `/trade-off/upgrade?slug=${encodeURIComponent(listing.slug)}&token=${encodeURIComponent(editToken)}`;
 
+  // Audience filter — hide merchant-only add-ons from service trades
+  // and service-only add-ons from merchant-grade trades. Undefined
+  // audience ⇒ shown to everyone.
+  const isMerchant = isMerchantGradeTrade(listing.primary_trade);
+  const visibleAddons = XRATED_ADDONS.filter((addon) => {
+    if (addon.audience === "merchant" && !isMerchant) return false;
+    if (addon.audience === "service" && isMerchant) return false;
+    return true;
+  });
+
   return (
     <div className="rounded-3xl border border-brand-line bg-brand-surface p-5 sm:p-6">
       <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
@@ -247,7 +258,7 @@ export function AddOnsHub({
       )}
 
       <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {XRATED_ADDONS.map((addon) => (
+        {visibleAddons.map((addon) => (
           <AddonTile
             key={addon.slug}
             addon={addon}

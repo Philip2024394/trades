@@ -55,7 +55,7 @@ export const XRATED_PRICING = {
   // signup. After expiry the listing auto-flips to `app_expired`.
   trialDays: 14,
   whatsappPaymentInstructions:
-    "Send 'XRATED' + your Trade Off URL to our WhatsApp to renew. We confirm payment manually and flip your tier within 24 hours."
+    "Send 'XRATED' + your xratedtrade.com URL to our WhatsApp to renew. We confirm payment manually and flip your tier within 24 hours."
 };
 
 export function isAppTier(tier: XratedTier): boolean {

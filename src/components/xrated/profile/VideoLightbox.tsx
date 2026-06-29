@@ -106,8 +106,11 @@ export function VideoLightbox({
           aria-hidden="true"
           className="absolute inset-0 flex items-center justify-center"
         >
-          <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/95 shadow-lg ring-1 ring-black/10 transition group-hover:scale-110 sm:h-14 sm:w-14">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#0A0A0A" aria-hidden="true">
+          <span
+            className="flex h-14 w-14 items-center justify-center rounded-full shadow-xl ring-4 ring-white/90 transition group-hover:scale-110 sm:h-16 sm:w-16"
+            style={{ background: "#FFB300" }}
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#0A0A0A" aria-hidden="true">
               <path d="M8 5v14l11-7z" />
             </svg>
           </span>

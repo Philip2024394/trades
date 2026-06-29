@@ -99,7 +99,7 @@ function Inner() {
             {isLive
               ? isEdit
                 ? "Changes saved · You're live"
-                : "You're live on Trade Off"
+                : "You're live on xratedtrade.com"
               : "Saved as draft"}
           </p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight sm:text-3xl">
@@ -186,7 +186,7 @@ function Inner() {
         </div>
 
         <p className="mt-8 text-center text-xs text-brand-muted">
-          Trade Off is free for life. We use it to introduce you to customers — that's it.
+          xratedtrade.com is free for life. We use it to introduce you to customers — that's it.
         </p>
       </section>
       <XratedFooter />

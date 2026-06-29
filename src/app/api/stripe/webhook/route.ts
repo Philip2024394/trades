@@ -29,6 +29,10 @@ import {
   allAddonSlugs,
   resolveAddonSlugFromPriceId
 } from "@/lib/stripePrices";
+import { createYardWelcomeMessage } from "@/lib/yardWelcome";
+import { recomputeAffiliateLevel } from "@/lib/affiliateLevel";
+import { resolveActiveCampaign, priceCommissionWithCampaign } from "@/lib/affiliateCampaigns";
+import { detectSelfReferral } from "@/lib/affiliateFraud";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -115,6 +119,83 @@ async function handleCheckoutCompleted(
       "[stripe/webhook] checkout.session.completed update failed:",
       upd.error
     );
+    return;
+  }
+
+  // New paid member → drop the Trade Off team welcome post into the
+  // Yard chat feed. Idempotent (skips if a welcome already exists for
+  // this listing_id) and demo-aware (slug LIKE 'demo-%' skipped).
+  // Errors are logged but never thrown — the webhook must still 200.
+  try {
+    const welcome = await createYardWelcomeMessage(listing_id);
+    if (welcome.ok && welcome.created) {
+      console.log(
+        `[stripe/webhook] yard welcome posted for listing_id=${listing_id} post_id=${welcome.id}`
+      );
+    } else if (welcome.ok && !welcome.created) {
+      console.log(
+        `[stripe/webhook] yard welcome skipped for listing_id=${listing_id} reason=${welcome.reason}`
+      );
+    }
+  } catch (e) {
+    console.error("[stripe/webhook] yard welcome threw:", e);
+  }
+
+  // Affiliate commission attribution. If the listing carries an
+  // affiliate_referrer_id, insert a £10 pending commission row. We
+  // de-dupe by stripe_subscription_id + listing_id so retries don't
+  // double-count.
+  try {
+    const { data: listingRow } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("affiliate_referrer_id")
+      .eq("id", listing_id)
+      .maybeSingle();
+    if (listingRow?.affiliate_referrer_id && subscriptionId) {
+      const existing = await supabaseAdmin
+        .from("hammerex_affiliate_commissions")
+        .select("id")
+        .eq("listing_id", listing_id)
+        .eq("stripe_subscription_id", subscriptionId)
+        .maybeSingle();
+      if (!existing.data) {
+        // Self-referral guard: cancel the commission if the listing
+        // belongs to the affiliate themselves (matching WhatsApp).
+        const selfReferral = await detectSelfReferral(
+          listingRow.affiliate_referrer_id,
+          listing_id
+        );
+        // Campaign-aware pricing. Falls back to flat £10 when no
+        // bonus/seasonal campaign is active.
+        const campaign = await resolveActiveCampaign();
+        const priced = priceCommissionWithCampaign(campaign);
+
+        await supabaseAdmin.from("hammerex_affiliate_commissions").insert({
+          affiliate_id: listingRow.affiliate_referrer_id,
+          listing_id,
+          stripe_subscription_id: subscriptionId,
+          amount_pence: priced.amount_pence,
+          currency: "gbp",
+          status: selfReferral ? "cancelled" : "pending",
+          cancelled_reason: selfReferral ? "self_referral" : null,
+          campaign_id: priced.campaign_id
+        });
+        await supabaseAdmin.from("hammerex_affiliate_audit_log").insert({
+          actor_type: "system",
+          actor_id: "stripe.webhook",
+          action: selfReferral ? "commission.cancel.self_referral" : "commission.create",
+          target_id: listing_id,
+          details: {
+            affiliate_id: listingRow.affiliate_referrer_id,
+            amount_pence: priced.amount_pence,
+            stripe_subscription_id: subscriptionId,
+            campaign_id: priced.campaign_id ?? null
+          }
+        });
+      }
+    }
+  } catch (e) {
+    console.error("[stripe/webhook] affiliate commission insert threw:", e);
   }
 }
 
@@ -189,6 +270,27 @@ async function handleSubscriptionDeleted(
   const meta = sub.metadata ?? {};
   const listing_id = meta.listing_id;
   if (!listing_id) return;
+
+  // Affiliate-commission rollback: any pending / approved commission
+  // tied to this subscription gets cancelled when the customer cancels
+  // their plan. Already-paid commissions are NOT clawed back — those
+  // are paid out.
+  try {
+    await supabaseAdmin
+      .from("hammerex_affiliate_commissions")
+      .update({ status: "cancelled", cancelled_reason: "subscription_cancelled" })
+      .eq("stripe_subscription_id", sub.id)
+      .in("status", ["pending", "approved"]);
+    await supabaseAdmin.from("hammerex_affiliate_audit_log").insert({
+      actor_type: "system",
+      actor_id: "stripe.webhook",
+      action: "commission.cancel",
+      target_id: sub.id,
+      details: { reason: "subscription_cancelled" }
+    });
+  } catch (e) {
+    console.error("[stripe/webhook] affiliate commission cancel threw:", e);
+  }
 
   // No subscription = no paid add-ons. Clear every Stripe-tracked slug
   // (false), but preserve free add-ons and UI prefs that don't carry a

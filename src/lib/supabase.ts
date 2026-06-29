@@ -448,6 +448,58 @@ export type HammerexXratedProjectUpdate = {
   created_at: string;
 };
 
+// Trade Center Picks add-on — merchant-grade trades pin promo /
+// arrival / stock-status banners onto products they sell. One row
+// per (listing, product). 24 picks max per listing (API-enforced).
+// The pick borrows the product's image, so there is no image-upload
+// surface; the public profile teaser hides expired picks (expires_at <
+// now) and dropped picks (status archive happens via row delete, not
+// a soft-archive flag).
+export type HammerexXratedTradeCenterPick = {
+  id: string;
+  listing_id: string;
+  product_id: string;
+  status:
+    | "on_promo"
+    | "new_arrival"
+    | "just_arrived"
+    | "pre_order";
+  effective_at: string;
+  expires_at: string | null;
+  arrival_at: string | null;
+  note: string | null;
+  /** Optional landscape banner override. When NULL the public banner
+   *  falls back to the joined product's cover_url. */
+  banner_image_url: string | null;
+  /** Long-form editorial copy rendered on the dedicated pick detail
+   *  page (/<slug>/picks/<pickId>). Up to 1200 chars. NULL ⇒ section
+   *  hidden entirely — no placeholder. */
+  long_description: string | null;
+  /** Display-only price in pence for the detail page CTA card.
+   *  Formats as £X.XX. Mutually-compatible with cta_price_label —
+   *  numeric takes precedence when both set. */
+  cta_price_pence: number | null;
+  /** Free-text price label for non-numeric pricing — e.g. "20% off
+   *  list", "POA", "From £450/pallet", "Trade pricing — message us".
+   *  Up to 60 chars. Rendered verbatim when cta_price_pence is NULL. */
+  cta_price_label: string | null;
+  /** Optional arrival / availability window — generalises across
+   *  merchant categories. "Arrives end July 2026", "Available
+   *  immediately". Up to 60 chars. */
+  arrival_window_label: string | null;
+  /** Three-state delivery flag. TRUE renders a yellow check-mark
+   *  "Delivery available" chip. FALSE / NULL renders nothing (silence
+   *  is the default — never "Not available"). */
+  delivery_available: boolean | null;
+  /** Three-state installation flag. TRUE renders a yellow check-mark
+   *  "Installation available" chip. FALSE / NULL renders nothing
+   *  (silence is the default — never "Not available"). */
+  installation_available: boolean | null;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
 export type HammerexTradeOffMessage = {
   id: string;
   listing_id: string;
@@ -847,6 +899,34 @@ export type HammerexTradeOffYardPost = {
   // an existing product (so the composer drawer can round-trip).
   product_price_pence: number | null;
   source_product_id: string | null;
+  // Admin moderation + pinning + announcements. Added by migration
+  // 20260628130000_xrated_yard_admin_moderation.sql so the /admin/yard
+  // surface can manage the feed. is_admin_announcement marks team-
+  // authored posts (rendered with a yellow rim + "ANNOUNCEMENT" badge);
+  // is_pinned floats posts to the top of the public feed. moderation_*
+  // tracks the admin queue — 'live' is the default, 'hidden'/'spam' are
+  // hard-removed from the public feed, 'flagged' is auto-set when the
+  // community flag_count crosses the route threshold (3) and stays
+  // visible until admin acts. metadata holds welcome-message routing
+  // (target_listing_id) for the Stripe-triggered welcome posts.
+  is_admin_announcement: boolean;
+  is_pinned: boolean;
+  moderation_status: "live" | "hidden" | "spam" | "flagged";
+  moderation_reason: string | null;
+  moderated_at: string | null;
+  flag_count: number;
+  metadata: Record<string, unknown>;
   created_at: string;
   expires_at: string;
+};
+
+// Yard flags — one row per (post, reactor-listing) lets the API safely
+// retry via ON CONFLICT DO NOTHING + tells the admin who flagged what.
+// 3 distinct flags trips moderation_status to 'flagged'.
+export type HammerexTradeOffYardFlag = {
+  id: string;
+  post_id: string;
+  listing_id: string;
+  reason: string | null;
+  created_at: string;
 };

@@ -67,14 +67,14 @@ export default function PrivacyPage() {
         <article className="mt-8 flex flex-col gap-8 text-[13px] leading-relaxed text-neutral-800 sm:text-sm">
           <Section n="1" title="Who is the data controller?">
             <p>
-              <strong>Xrated Trades</strong> (trading name &ldquo;Xrated
-              Trades&rdquo; / &ldquo;Trade Off&rdquo;) is the data
+              <strong>Xrated Trades</strong> (trading as
+              “xratedtrade.com”) is the data
               controller for personal data collected through
               xratedtrade.com.
             </p>
             <p>
               <strong>
-                Trade Off operates from the Republic of Ireland.
+                xratedtrade.com operates from the Republic of Ireland.
               </strong>{" "}
               EU GDPR applies as our baseline. UK GDPR applies to UK
               residents. US (CCPA / state privacy laws), Australian
@@ -96,47 +96,47 @@ export default function PrivacyPage() {
             <p>When you use the Service we collect:</p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>Account data</strong> &mdash; your email address (used
+                <strong>Account data</strong> — your email address (used
                 for magic-link sign-in) and the slug you choose.
               </li>
               <li>
-                <strong>Profile data</strong> &mdash; the name, trade, town,
+                <strong>Profile data</strong> — the name, trade, town,
                 postcode, bio, photos, services and prices you choose to
                 publish on your profile.
               </li>
               <li>
-                <strong>Contact data</strong> &mdash; your WhatsApp number and
+                <strong>Contact data</strong> — your WhatsApp number and
                 phone number where you choose to publish them so
                 customers can reach you.
               </li>
               <li>
-                <strong>Billing data</strong> &mdash; for paid tiers, your name
+                <strong>Billing data</strong> — for paid tiers, your name
                 and billing address, plus payment-method metadata. Full
-                card details are entered directly into Stripe&rsquo;s
+                card details are entered directly into Stripe’s
                 hosted checkout and never reach our servers; we only
                 receive the last four digits, the card brand and the
                 Stripe customer ID.
               </li>
               <li>
-                <strong>Review data</strong> &mdash; when your customers leave
+                <strong>Review data</strong> — when your customers leave
                 reviews, we collect their name (or display alias), their
                 review text and an optional contact email so we can
                 verify the review is real.
               </li>
               <li>
-                <strong>Technical data</strong> &mdash; IP address, browser
+                <strong>Technical data</strong> — IP address, browser
                 user-agent, device type, timezone and the pages you view,
                 collected in standard server access logs.
               </li>
               <li>
-                <strong>Communications</strong> &mdash; the content of emails
+                <strong>Communications</strong> — the content of emails
                 and WhatsApp messages you send us, kept for support
                 history.
               </li>
             </ul>
             <p>
               We do not knowingly collect special-category data (health,
-              ethnicity, biometric, etc.). Please don&rsquo;t put it on your
+              ethnicity, biometric, etc.). Please don’t put it on your
               profile.
             </p>
           </Section>
@@ -148,25 +148,25 @@ export default function PrivacyPage() {
             </p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>Performance of a contract</strong> &mdash; to set up
+                <strong>Performance of a contract</strong> — to set up
                 your account, host your profile, process your
                 subscription payment and deliver the features you signed
                 up for.
               </li>
               <li>
-                <strong>Legitimate interests</strong> &mdash; to keep the
+                <strong>Legitimate interests</strong> — to keep the
                 Service secure, prevent fraud and abuse, measure usage
                 with privacy-respecting analytics, and improve our
                 product. We balance these interests against your privacy
                 rights and you can object at any time.
               </li>
               <li>
-                <strong>Consent</strong> &mdash; for optional marketing email
+                <strong>Consent</strong> — for optional marketing email
                 and for any non-essential cookies. You can withdraw
                 consent at any time without affecting use of the Service.
               </li>
               <li>
-                <strong>Legal obligation</strong> &mdash; to keep accounting
+                <strong>Legal obligation</strong> — to keep accounting
                 records, respond to lawful requests from authorities, and
                 meet our tax obligations.
               </li>
@@ -176,24 +176,24 @@ export default function PrivacyPage() {
           <Section n="4" title="How long we keep your data">
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>Active accounts</strong> &mdash; for as long as the
+                <strong>Active accounts</strong> — for as long as the
                 account is open.
               </li>
               <li>
-                <strong>Closed accounts</strong> &mdash; profile content is
+                <strong>Closed accounts</strong> — profile content is
                 deleted within 30 days of account closure.
               </li>
               <li>
-                <strong>Billing and tax records</strong> &mdash; kept for at
+                <strong>Billing and tax records</strong> — kept for at
                 least 6 years from the end of the relevant tax year, in
                 line with HMRC requirements.
               </li>
               <li>
-                <strong>Support emails</strong> &mdash; up to 3 years from the
+                <strong>Support emails</strong> — up to 3 years from the
                 last message, then deleted.
               </li>
               <li>
-                <strong>Server logs</strong> &mdash; up to 90 days.
+                <strong>Server logs</strong> — up to 90 days.
               </li>
             </ul>
           </Section>
@@ -206,9 +206,9 @@ export default function PrivacyPage() {
             </p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>Stripe Payments UK, Ltd.</strong> &mdash; takes
+                <strong>Stripe Payments UK, Ltd.</strong> — takes
                 subscription payments and stores card data. Stripe is
-                PCI-DSS Level 1 certified. Stripe&rsquo;s policy:{" "}
+                PCI-DSS Level 1 certified. Stripe’s policy:{" "}
                 <a
                   href="https://stripe.com/privacy"
                   target="_blank"
@@ -220,23 +220,23 @@ export default function PrivacyPage() {
                 .
               </li>
               <li>
-                <strong>Supabase Inc.</strong> &mdash; hosts our database and
+                <strong>Supabase Inc.</strong> — hosts our database and
                 authentication (magic-link email sign-in). EU/US regions.
               </li>
               <li>
-                <strong>Vercel Inc.</strong> &mdash; hosts the website and
+                <strong>Vercel Inc.</strong> — hosts the website and
                 serverless functions. EU/US edge regions.
               </li>
               <li>
-                <strong>Resend Inc.</strong> &mdash; sends our transactional
+                <strong>Resend Inc.</strong> — sends our transactional
                 emails (magic-links, billing receipts, support replies).
               </li>
               <li>
-                <strong>ImageKit Pvt. Ltd.</strong> &mdash; CDN for the
+                <strong>ImageKit Pvt. Ltd.</strong> — CDN for the
                 profile images and photos you upload.
               </li>
               <li>
-                <strong>Cloudflare, Inc.</strong> &mdash; DNS and edge
+                <strong>Cloudflare, Inc.</strong> — DNS and edge
                 protection for our domains.
               </li>
             </ul>
@@ -267,14 +267,14 @@ export default function PrivacyPage() {
                 SCCs</strong>, for UK-origin data;
               </li>
               <li>
-                UK adequacy regulations &mdash; including the{" "}
-                <strong>UK&ndash;US Data Bridge</strong> for transfers
+                UK adequacy regulations — including the{" "}
+                <strong>UK–US Data Bridge</strong> for transfers
                 to vendors self-certified under the UK extension to the
-                EU&ndash;US Data Privacy Framework;
+                EU–US Data Privacy Framework;
               </li>
               <li>
                 EU adequacy decisions where they exist (e.g. the{" "}
-                <strong>EU&ndash;US Data Privacy Framework</strong>).
+                <strong>EU–US Data Privacy Framework</strong>).
               </li>
             </ul>
             <p>
@@ -289,16 +289,16 @@ export default function PrivacyPage() {
             </p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>Strictly necessary</strong> &mdash; a session cookie
+                <strong>Strictly necessary</strong> — a session cookie
                 that keeps you signed in after you click a magic-link,
-                and a CSRF token. These don&rsquo;t need consent.
+                and a CSRF token. These don’t need consent.
               </li>
               <li>
-                <strong>Preferences</strong> &mdash; remember your dashboard
+                <strong>Preferences</strong> — remember your dashboard
                 view choices and dismiss-state for in-app banners.
               </li>
               <li>
-                <strong>Analytics</strong> &mdash; we may use first-party,
+                <strong>Analytics</strong> — we may use first-party,
                 privacy-respecting analytics (no third-party
                 advertising cookies) to count page-views and measure
                 conversion. Where local law requires it, we ask for
@@ -324,12 +324,12 @@ export default function PrivacyPage() {
                 incomplete;
               </li>
               <li>
-                <strong>Erase</strong> your data (&ldquo;right to be
-                forgotten&rdquo;), subject to our legal record-keeping
+                <strong>Erase</strong> your data (“right to be
+                forgotten”), subject to our legal record-keeping
                 duties;
               </li>
               <li>
-                <strong>Portability</strong> &mdash; receive a copy of the data
+                <strong>Portability</strong> — receive a copy of the data
                 you gave us in a structured, machine-readable format;
               </li>
               <li>
@@ -342,7 +342,7 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>Withdraw consent</strong> where consent is the legal
-                basis we&rsquo;re relying on.
+                basis we’re relying on.
               </li>
             </ul>
             <p>
@@ -350,14 +350,14 @@ export default function PrivacyPage() {
               <a href={`mailto:${SUPPORT_EMAIL}`} className="font-bold underline">
                 {SUPPORT_EMAIL}
               </a>{" "}
-              from the address on your account. We&rsquo;ll respond within
+              from the address on your account. We’ll respond within
               one calendar month, normally faster.
             </p>
           </Section>
 
           <Section n="9" title="Supervisory authority complaints">
             <p>
-              If you think we&rsquo;ve mishandled your personal data, please
+              If you think we’ve mishandled your personal data, please
               email us first at{" "}
               <a href={`mailto:${SUPPORT_EMAIL}`} className="font-bold underline">
                 {SUPPORT_EMAIL}
@@ -370,7 +370,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="ml-4 flex list-disc flex-col gap-2">
               <li>
-                <strong>EU / Ireland</strong> &mdash; Data Protection
+                <strong>EU / Ireland</strong> — Data Protection
                 Commission (DPC):{" "}
                 <a
                   href="https://www.dataprotection.ie"
@@ -384,7 +384,7 @@ export default function PrivacyPage() {
                 is our lead supervisory authority under EU GDPR.
               </li>
               <li>
-                <strong>UK</strong> &mdash; Information Commissioner&rsquo;s
+                <strong>UK</strong> — Information Commissioner’s
                 Office (ICO):{" "}
                 <a
                   href="https://ico.org.uk/make-a-complaint/"
@@ -398,7 +398,7 @@ export default function PrivacyPage() {
                 Water Lane, Wilmslow, Cheshire SK9 5AF.
               </li>
               <li>
-                <strong>US (California)</strong> &mdash; CCPA / CPRA
+                <strong>US (California)</strong> — CCPA / CPRA
                 rights (right to know, delete, correct, opt-out of sale
                 or sharing). Exercise these by emailing{" "}
                 <a href={`mailto:${SUPPORT_EMAIL}`} className="font-bold underline">
@@ -417,7 +417,7 @@ export default function PrivacyPage() {
                 .
               </li>
               <li>
-                <strong>Other jurisdictions</strong> &mdash; please
+                <strong>Other jurisdictions</strong> — please
                 contact your local supervisory or data-protection
                 authority (for example the OAIC in Australia, the OPC
                 in Canada, the LGPD authority ANPD in Brazil).
@@ -453,9 +453,9 @@ export default function PrivacyPage() {
           <Section n="12" title="Changes to this policy">
             <p>
               We may update this policy as the Service changes. The
-              &ldquo;Last updated&rdquo; date at the top tells you when. If
+              “Last updated” date at the top tells you when. If
               we make a material change that affects how we use your
-              data, we&rsquo;ll email you and ask for fresh consent if
+              data, we’ll email you and ask for fresh consent if
               consent is the basis.
             </p>
           </Section>
@@ -511,7 +511,7 @@ function DisclaimerBanner() {
         Template notice
       </p>
       <p className="mt-1.5">
-        This is a starting template based on UK consumer law and Stripe&rsquo;s
+        This is a starting template based on UK consumer law and Stripe’s
         published merchant requirements. Have it reviewed by a UK-qualified
         solicitor before relying on it in production.
       </p>
