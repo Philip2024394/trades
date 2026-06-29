@@ -30,6 +30,10 @@ export interface SharePickButtonProps {
   productName: string;
   statusLabel: string;
   merchantName: string;
+  /** "default" = full-width outlined yellow CTA in the commercial card.
+   *  "overlay" = compact 44px filled-yellow circular icon button for
+   *  use as an absolute-positioned overlay on the hero image. */
+  variant?: "default" | "overlay";
 }
 
 export function SharePickButton({
@@ -38,7 +42,8 @@ export function SharePickButton({
   bannerUrl,
   productName,
   statusLabel,
-  merchantName
+  merchantName,
+  variant = "default"
 }: SharePickButtonProps) {
   // Resolve the share URL on mount — origin only exists client-side.
   const [pickUrl, setPickUrl] = useState(`/${slug}/picks/${pickId}`);
@@ -50,16 +55,28 @@ export function SharePickButton({
   const [open, setOpen] = useState(false);
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="inline-flex h-11 min-h-[44px] w-full items-center justify-center gap-1.5 rounded-lg border-2 bg-transparent px-4 text-[13px] font-extrabold transition active:scale-[0.97]"
-        style={{ borderColor: BRAND_YELLOW, color: BRAND_YELLOW }}
-        aria-label="Share this offer"
-      >
-        <ShareGlyph />
-        Share this offer
-      </button>
+      {variant === "overlay" ? (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex h-11 w-11 min-h-[44px] min-w-[44px] items-center justify-center rounded-full text-neutral-900 shadow-lg transition active:scale-[0.95]"
+          style={{ background: BRAND_YELLOW }}
+          aria-label="Share this offer"
+        >
+          <ShareGlyph />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="inline-flex h-12 min-h-[44px] flex-1 items-center justify-center gap-1.5 rounded-lg px-4 text-[13px] font-extrabold text-neutral-900 shadow-sm transition hover:opacity-90 active:scale-[0.97] sm:text-sm"
+          style={{ background: BRAND_YELLOW }}
+          aria-label="Share this offer"
+        >
+          <ShareGlyph />
+          Share this offer
+        </button>
+      )}
       {open && (
         <ShareModal
           pickUrl={pickUrl}

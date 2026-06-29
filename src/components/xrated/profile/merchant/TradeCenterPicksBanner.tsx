@@ -40,6 +40,18 @@ function formatArrival(iso: string | null): string | null {
   return d.toLocaleDateString(undefined, { day: "numeric", month: "short" });
 }
 
+// Trade products often follow a "Brand/Type - Spec" pattern (e.g.
+// "Timber Garden Shed - Treated 8' x 6'"). Split on the first " - "
+// so the headline reads tight and the spec sits as a subtitle.
+function splitName(name: string): { main: string; subtitle: string | null } {
+  const idx = name.indexOf(" - ");
+  if (idx === -1) return { main: name, subtitle: null };
+  return {
+    main: name.slice(0, idx).trim(),
+    subtitle: name.slice(idx + 3).trim() || null
+  };
+}
+
 function useReducedMotion(): boolean {
   const [reduced, setReduced] = useState(false);
   useEffect(() => {
@@ -65,6 +77,7 @@ export function TradeCenterPicksBanner({
   const [index, setIndex] = useState(0);
   const [fading, setFading] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [overlayVisible, setOverlayVisible] = useState(true);
   const reducedMotion = useReducedMotion();
 
   useEffect(() => {
@@ -125,111 +138,162 @@ export function TradeCenterPicksBanner({
               </div>
             )}
             <div
-              className="pointer-events-none absolute inset-0"
+              className="pointer-events-none absolute inset-0 transition-opacity"
               style={{
                 background:
-                  "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0) 75%)"
+                  "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0) 75%)",
+                opacity: overlayVisible ? 1 : 0,
+                transitionDuration: `${FADE_MS}ms`
               }}
             />
           </div>
 
+          {/* Overlay group — status chip + product info block + position
+              dots. Toggled together via the eye button bottom-right. */}
           <div
-            className="absolute left-4 top-4 transition-opacity sm:left-6 sm:top-6"
+            className="pointer-events-none absolute inset-0 transition-opacity"
             style={{
-              opacity: fading ? 0 : 1,
+              opacity: overlayVisible ? 1 : 0,
               transitionDuration: `${FADE_MS}ms`
             }}
+            aria-hidden={!overlayVisible}
           >
-            <TradeCenterPickStatusChip status={item.status} />
+            <div
+              className="absolute right-4 top-4 transition-opacity sm:right-6 sm:top-6"
+              style={{
+                opacity: fading ? 0 : 1,
+                transitionDuration: `${FADE_MS}ms`
+              }}
+            >
+              <TradeCenterPickStatusChip status={item.status} />
+            </div>
+
+            <div
+              className="absolute inset-x-4 bottom-4 transition-opacity sm:inset-x-6 sm:bottom-6"
+              style={{
+                opacity: fading ? 0 : 1,
+                transitionDuration: `${FADE_MS}ms`
+              }}
+            >
+              {(() => {
+                const { main, subtitle } = splitName(item.productName);
+                return (
+                  <>
+                    <p className="truncate text-base font-extrabold leading-tight text-white sm:text-xl">
+                      {main}
+                    </p>
+                    {subtitle && (
+                      <p className="truncate text-[13px] font-semibold text-white/80 sm:text-sm">
+                        {subtitle}
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+              {(item.note || showArrival) && (
+                <p className="mt-1 truncate text-[13px] text-white/85 sm:text-sm">
+                  {showArrival && (
+                    <span className="font-bold text-white">
+                      Arrives {arrival}
+                    </span>
+                  )}
+                  {showArrival && item.note && (
+                    <span className="mx-1.5 text-white/60">·</span>
+                  )}
+                  {item.note}
+                </p>
+              )}
+              <span
+                className="mt-3 inline-flex h-11 items-center gap-1.5 rounded-lg px-4 text-[13px] font-extrabold text-neutral-900 shadow-md transition group-hover:opacity-90 sm:text-sm"
+                style={{ background: "#FFB300" }}
+              >
+                See offer
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                  className="transition group-hover:translate-x-0.5"
+                >
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </span>
+            </div>
+
+            {items.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 items-center gap-1.5">
+                {items.map((_, i) => (
+                  <span
+                    key={i}
+                    className="h-1.5 rounded-full transition-all"
+                    style={{
+                      background:
+                        i === index ? "#FFB300" : "rgba(255,255,255,0.45)",
+                      width: i === index ? "18px" : "6px",
+                      transitionDuration: `${FADE_MS}ms`
+                    }}
+                    aria-hidden="true"
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
-          <div
-            className="absolute inset-x-4 bottom-4 transition-opacity sm:inset-x-6 sm:bottom-6"
-            style={{
-              opacity: fading ? 0 : 1,
-              transitionDuration: `${FADE_MS}ms`
+          {/* Overlay toggle — always visible, bottom-right corner. Stops
+              propagation so tapping the eye doesn't navigate to the pick. */}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOverlayVisible((v) => !v);
             }}
+            className="absolute bottom-3 right-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full text-neutral-900 shadow-md transition hover:opacity-90 sm:right-4"
+            style={{ background: "#FFB300" }}
+            aria-label={overlayVisible ? "Hide overlay text" : "Show overlay text"}
+            aria-pressed={!overlayVisible}
           >
-            <p className="truncate text-base font-extrabold leading-tight text-white sm:text-xl">
-              {item.productName}
-            </p>
-            {(item.note || showArrival) && (
-              <p className="mt-1 truncate text-[13px] text-white/85 sm:text-sm">
-                {showArrival && (
-                  <span className="font-bold text-white">
-                    Arrives {arrival}
-                  </span>
-                )}
-                {showArrival && item.note && (
-                  <span className="mx-1.5 text-white/60">·</span>
-                )}
-                {item.note}
-              </p>
-            )}
-            <span
-              className="mt-3 inline-flex h-11 items-center gap-1.5 rounded-lg px-4 text-[13px] font-extrabold text-neutral-900 shadow-md transition group-hover:opacity-90 sm:text-sm"
-              style={{ background: "#FFB300" }}
-            >
-              See offer
+            {overlayVisible ? (
               <svg
-                width="14"
-                height="14"
+                width="18"
+                height="18"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.5"
+                strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 aria-hidden="true"
-                className="transition group-hover:translate-x-0.5"
               >
-                <path d="m9 18 6-6-6-6" />
+                <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a18.6 18.6 0 0 1 5.06-5.94" />
+                <path d="M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19" />
+                <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
+                <line x1="1" y1="1" x2="23" y2="23" />
               </svg>
-            </span>
-          </div>
-
-          {items.length > 1 && (
-            <div className="absolute bottom-3 right-4 flex items-center gap-1.5 sm:right-6">
-              {items.map((_, i) => (
-                <span
-                  key={i}
-                  className="h-1.5 rounded-full transition-all"
-                  style={{
-                    background:
-                      i === index ? "#FFB300" : "rgba(255,255,255,0.45)",
-                    width: i === index ? "18px" : "6px",
-                    transitionDuration: `${FADE_MS}ms`
-                  }}
-                  aria-hidden="true"
-                />
-              ))}
-            </div>
-          )}
+            ) : (
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                <circle cx="12" cy="12" r="3" />
+              </svg>
+            )}
+          </button>
         </div>
       </a>
-
-      {items.length > 4 && (
-        <a
-          href={seeAllHref}
-          className="mt-3 inline-flex h-11 items-center text-[13px] font-bold text-neutral-500 transition hover:text-[#FFB300]"
-        >
-          See all {items.length} picks
-          <svg
-            width="13"
-            height="13"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            className="ml-1"
-          >
-            <path d="m9 18 6-6-6-6" />
-          </svg>
-        </a>
-      )}
     </div>
   );
 }

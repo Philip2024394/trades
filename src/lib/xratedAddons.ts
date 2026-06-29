@@ -231,6 +231,29 @@ export const XRATED_ADDONS: XratedAddon[] = [
     audience: "merchant"
   },
   {
+    slug: "newsletter",
+    name: "Newsletter",
+    tagline: "Capture customer emails — straight into your own list",
+    summary:
+      "Built for merchants. A footer signup form on your profile lets customers opt in to your stock, promo and arrival updates. Xrated stores the list with full UK GDPR + PECR consent records — you export the CSV and send through your own tool (Mailchimp, Brevo, anything). Every subscriber gets a one-click unsubscribe link you include in your emails.",
+    glyph: "✉",
+    image_url: null,
+    personas: ["Merchants", "Tool suppliers", "Materials yards"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Consent box", "CSV export", "Unsubscribe link"],
+    pricing: { kind: "free" },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "newsletter",
+    includedWithPaid: true,
+    benefits: [
+      "Footer signup form on your public profile — GDPR-compliant by default",
+      "Dashboard table of subscribers + one-click CSV export",
+      "Per-subscriber unsubscribe link you paste into every email"
+    ],
+    audience: "merchant"
+  },
+  {
     slug: "wholesale_mode",
     name: "Wholesale Mode",
     tagline: "Tiered pricing + distance-based delivery for merchants",
@@ -465,6 +488,23 @@ export function isTradeCenterPicksOn(
   listing: Pick<HammerexTradeOffListing, "addons_enabled">
 ): boolean {
   return (listing.addons_enabled ?? {}).trade_center_picks === true;
+}
+
+/** Newsletter add-on — when on, the public profile footer renders the
+ *  NewsletterSignup form (email capture only, Model A — Xrated never
+ *  sends emails). Free add-on, auto-included on every paid tier; gated
+ *  to merchant-grade trades via the `audience: "merchant"` filter in
+ *  XRATED_ADDONS so service trades never see it in AddOnsHub.
+ *
+ *  The component layer is still responsible for the additional
+ *  `isMerchantGradeTrade(listing.primary_trade)` visibility gate on the
+ *  footer + editor — this helper only reflects the tradesperson's
+ *  stated preference (defaulting to on for paid tiers via
+ *  isAddonEnabled). */
+export function isNewsletterOn(
+  listing: Pick<HammerexTradeOffListing, "addons_enabled">
+): boolean {
+  return isAddonEnabled(listing, "newsletter");
 }
 
 /** Wholesale Mode add-on — when on, the public cart renders the

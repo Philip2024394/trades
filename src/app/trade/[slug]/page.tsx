@@ -649,11 +649,10 @@ function PremiumLayout({
           operatingHours={listing.operating_hours ?? null}
         />
       )}
-      <ClientsCarousel
-        listing={listing}
-        reviews={reviews}
-        allowAddReview={isPaid}
-      />
+      {/* ClientsCarousel intentionally removed from the home profile.
+          Reviews still load + remain accessible on /<slug>/contact +
+          /<slug>/review surfaces; the home page just no longer
+          surfaces them inline. */}
       {/* Services & Prices inline teaser — paid tier + add-on on. Server
           component, self-renders nothing when the trade has no live
           services so a profile without entries never shows a dead
@@ -693,6 +692,7 @@ function PremiumLayout({
         <TrustedTradesCta
           slug={listing.slug}
           firstName={listing.display_name.split(/\s+/)[0] ?? listing.display_name}
+          displayName={listing.display_name}
           count={listing.recommendations.length}
           materialsOn={materialsOn}
         />
@@ -782,24 +782,20 @@ function FreeTierUpgradeBanner({
 function TrustedTradesCta({
   slug,
   firstName,
+  displayName,
   count,
   materialsOn = false
 }: {
   slug: string;
   firstName: string;
+  displayName: string;
   count: number;
   /** Materials Network add-on flag. When true, the container is
-   *  rebranded from "My Trusted Trades" to "Trade Materials &
-   *  Companies I Work With" so the supply-chain story stays
-   *  consistent with the merchant-picks teaser above. */
+   *  rebranded to "{displayName} Trade Circle" — confident,
+   *  merchant-flavoured. When false, falls back to the personal
+   *  "My Trusted Trades" line for service trades. */
   materialsOn?: boolean;
 }) {
-  const eyebrow = materialsOn
-    ? "Trade Materials & Companies I Work With"
-    : "My Trusted Trades";
-  const headline = materialsOn
-    ? `${count} ${count === 1 ? "trade & supplier I work with" : "trades & suppliers I work with"}`
-    : `${count} ${count === 1 ? "tradesperson I personally vouch for" : "tradespeople I personally vouch for"}`;
   return (
     <section className="mx-auto w-full max-w-6xl px-4 pt-10 sm:px-6 sm:pt-12">
       <a
@@ -807,18 +803,36 @@ function TrustedTradesCta({
         className="group relative flex items-center justify-between gap-4 overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 transition hover:border-[#FFB300] hover:shadow-lg sm:p-6"
       >
         <div className="min-w-0 flex-1">
-          <p
-            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: "#FFB300" }}
-          >
-            {eyebrow}
-          </p>
-          <p className="mt-1.5 text-lg font-extrabold leading-tight text-neutral-900 sm:text-xl">
-            {headline}
-          </p>
-          <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-            Need an electrician, a sparky or a roofer too? See who {firstName} works with.
-          </p>
+          {materialsOn ? (
+            <>
+              <p className="text-lg font-extrabold leading-tight text-neutral-900 sm:text-2xl">
+                {displayName} Trade Circle
+              </p>
+              <p className="mt-1.5 text-xs text-neutral-500 sm:text-sm">
+                Trades we value as our customers &mdash; accounts we trust,
+                crews we know.
+              </p>
+            </>
+          ) : (
+            <>
+              <p
+                className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                style={{ color: "#FFB300" }}
+              >
+                My Trusted Trades
+              </p>
+              <p className="mt-1.5 text-lg font-extrabold leading-tight text-neutral-900 sm:text-xl">
+                {count}{" "}
+                {count === 1
+                  ? "tradesperson I personally vouch for"
+                  : "tradespeople I personally vouch for"}
+              </p>
+              <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
+                Need an electrician, a sparky or a roofer too? See who{" "}
+                {firstName} works with.
+              </p>
+            </>
+          )}
         </div>
         <span
           className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-lg px-4 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-sm transition group-hover:scale-105 sm:h-12 sm:text-sm"
@@ -890,7 +904,7 @@ function PremiumSocialFooter({ listing }: { listing: HammerexTradeOffListing }) 
 // visitor sees a soft "get yours" link.
 function PoweredByXratedFooter({ slug }: { slug: string }) {
   return (
-    <section className="w-full px-4 pb-6 pt-10 sm:px-6">
+    <section className="w-full px-4 pb-1 pt-10 sm:px-6">
       <div className="flex flex-col items-center justify-center gap-1 text-center text-xs text-neutral-500">
         <p>
           Built on{" "}
@@ -980,9 +994,6 @@ function AboutAndVideo({ listing }: { listing: HammerexTradeOffListing }) {
               coverUrl={coverFallback}
               altText={listing.video_caption || `${listing.display_name} — intro video`}
             />
-            <p className="mt-2 text-xs text-neutral-500">
-              Tap to play · keep this under 60s for best engagement.
-            </p>
           </div>
         )}
       </div>
@@ -1050,10 +1061,7 @@ function ClientsCarousel({
   if (reviews.length === 0) {
     return (
       <section className="w-full px-4 pt-8 sm:px-6">
-        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Customers say it best…
-        </h2>
-        <div className="mt-4 rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-center">
+        <div className="rounded-2xl border border-dashed border-neutral-300 bg-white p-6 text-center">
           <p className="text-sm font-bold text-neutral-900">
             No customer reviews yet.
           </p>
@@ -1084,9 +1092,6 @@ function ClientsCarousel({
 
   return (
     <section className="w-full px-4 pt-8 sm:px-6">
-      <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-        Customers say it best…
-      </h2>
       <ReviewsCarousel
         reviews={reviews}
         displayName={listing.display_name}
@@ -1162,33 +1167,109 @@ function TrustCell({
   );
 }
 function ServiceAreaAndHours({ listing }: { listing: HammerexTradeOffListing }) {
-  // Service-area map moved to the dedicated /services subpage — this
-  // section now only renders Opening Hours so the home page stays
-  // focused on the buying decision.
   const hasHours =
     listing.operating_hours && Object.keys(listing.operating_hours).length > 0;
-  if (!hasHours) return null;
+  const hasMap = typeof listing.lat === "number" && typeof listing.lng === "number";
+  const isMerchant = isMerchantGradeTrade(listing.primary_trade);
+  const services = listing.services_offered ?? [];
 
+  // Merchant-grade trades get the full "Services & Area" treatment:
+  // map (with marker + service-zone circle) on the left, opening hours
+  // on the right, then the services chip list + the merchant-voice copy
+  // block underneath. Service trades stay on the lean opening-hours-only
+  // layout because their service area lives on /services.
+  if (isMerchant && hasMap) {
+    return (
+      <section className="w-full px-4 pt-10 sm:px-6">
+        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
+          Services & Area
+        </h2>
+        <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
+          The zone we serve daily from the yard — and what we cover inside it.
+        </p>
+
+        <div className="mt-4 grid gap-4 md:grid-cols-2">
+          <div className="overflow-hidden rounded-2xl border border-neutral-200">
+            <TradeAreaMap
+              lat={listing.lat}
+              lng={listing.lng}
+              city={listing.city}
+              servicePostcodes={listing.service_postcodes ?? []}
+            />
+          </div>
+          {hasHours && (
+            <div>
+              <h3 className="text-base font-extrabold text-neutral-900 sm:text-lg">
+                Opening hours
+              </h3>
+              <p className="mt-1 text-xs text-neutral-500">
+                Today is highlighted — outside these hours, leave a message.
+              </p>
+              <div className="mt-3">
+                <OperatingHoursPanel
+                  hours={listing.operating_hours}
+                  themeColor="#FFB300"
+                  bare
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {services.length > 0 && (
+          <div className="mt-6">
+            <h3 className="text-base font-extrabold text-neutral-900 sm:text-lg">
+              What we cover
+            </h3>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {services.map((s) => (
+                <li key={s}>
+                  <span className="inline-flex items-center rounded-full border border-neutral-200 bg-neutral-50 px-3 py-1 text-[13px] font-semibold text-neutral-800">
+                    {s}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-6 space-y-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-5 text-[13px] leading-relaxed text-neutral-700 sm:p-6 sm:text-sm">
+          <p>
+            Daily delivery service across every postcode within the zone
+            above. For areas outside this zone, message us &mdash; most
+            jobs can still be quoted with a small delivery uplift.
+          </p>
+          <p>
+            Quotations available for site builds, garden renovation
+            projects, and one-off bulk orders. We welcome all new trade
+            accounts &mdash; get in touch to discuss your building and
+            renovation needs, on time and within budget.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // Service-trade fallback — opening hours only (map lives on /services).
+  if (!hasHours) return null;
   return (
     <section className="w-full px-4 pt-8 sm:px-6">
       <div className="grid gap-4 md:grid-cols-2">
-        {hasHours && (
-          <div>
-            <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-              Opening hours
-            </h2>
-            <p className="mt-1 text-xs text-neutral-500">
-              Today is highlighted — outside these hours, leave a message.
-            </p>
-            <div className="mt-3">
-              <OperatingHoursPanel
-                hours={listing.operating_hours}
-                themeColor="#FFB300"
-                bare
-              />
-            </div>
+        <div>
+          <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
+            Opening hours
+          </h2>
+          <p className="mt-1 text-xs text-neutral-500">
+            Today is highlighted — outside these hours, leave a message.
+          </p>
+          <div className="mt-3">
+            <OperatingHoursPanel
+              hours={listing.operating_hours}
+              themeColor="#FFB300"
+              bare
+            />
           </div>
-        )}
+        </div>
       </div>
     </section>
   );

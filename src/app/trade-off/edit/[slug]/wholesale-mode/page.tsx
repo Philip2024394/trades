@@ -103,11 +103,11 @@ export default async function TradeOffWholesaleEditPage({
           Add-on &middot; Wholesale Mode
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-4xl">
-          Wholesale Mode &mdash; yard, zones, tiers
+          Delivery Zones &mdash; yard, zones, tiers
         </h1>
         <p className="mt-3 text-[13px] text-brand-muted">
           {isPaid && wholesaleOn
-            ? "Add-on £7/mo · active"
+            ? "Add-on £7/mo · active · set up to 3 delivery zones from your yard"
             : isPaid
               ? "Toggle Wholesale Mode on from your dashboard to go live"
               : "Upgrade to enable Wholesale Mode"}

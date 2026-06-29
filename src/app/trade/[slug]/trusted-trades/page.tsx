@@ -94,8 +94,7 @@ export default async function TrustedTradesPage({
             My Trusted Trades · curated by {firstName}
           </p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl md:text-4xl">
-            Trade Circle{" "}
-            <span style={{ color: "#FFB300" }}>Team Verified</span>
+            <span style={{ color: "#FFB300" }}>Trade Circle</span>
           </h1>
           <p className="mt-3 max-w-2xl text-xs leading-relaxed text-neutral-600 sm:text-sm">
             {recs.length === 0

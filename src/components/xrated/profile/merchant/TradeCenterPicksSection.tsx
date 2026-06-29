@@ -82,19 +82,20 @@ export async function TradeCenterPicksSection({
     productCover: p.banner_image_url ?? p.product?.cover_url ?? null
   }));
 
+  const firstName =
+    (listing.display_name ?? "").trim().split(/\s+/)[0] || listing.display_name;
+
   return (
     <section className="w-full pt-10 sm:pt-12">
-      {/* Heading + subtitle stay in the standard content gutter; the
-          banner itself breaks out to full viewport width below. */}
       <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
         <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Trade Center Picks
+          {firstName}&rsquo;s Yard Deals
         </h2>
         <p className="mt-1 text-[13px] text-neutral-500 sm:text-sm">
           Peek at new products arrived for season.
         </p>
       </div>
-      <div className="px-4 sm:px-6">
+      <div className="mt-4 px-4 sm:px-6">
         <TradeCenterPicksBanner
           items={items}
           listingSlug={listing.slug}

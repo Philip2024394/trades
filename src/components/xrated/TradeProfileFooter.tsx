@@ -15,7 +15,9 @@
 // bottom meta lines, yellow #FFB300, black surface #0A0A0A.
 
 import type { HammerexTradeOffListing } from "@/lib/supabase";
-import { isFaqPageOn } from "@/lib/xratedAddons";
+import { isFaqPageOn, isNewsletterOn } from "@/lib/xratedAddons";
+import { isMerchantGradeTrade } from "@/lib/tradeOff";
+import { NewsletterSignup } from "@/components/xrated/profile/merchant/NewsletterSignup";
 
 type Link = { href: string; label: string; external: boolean };
 
@@ -55,15 +57,25 @@ export function TradeProfileFooter({
 }) {
   const year = new Date().getFullYear();
   const links = buildLinks(listing);
+  // Merchant-only newsletter signup. Mounted INSIDE the dark footer
+  // and styled for dark surface (white text, dark input, yellow accent).
+  const showNewsletter =
+    isMerchantGradeTrade(listing.primary_trade) && isNewsletterOn(listing);
 
   return (
     <footer
-      className="mt-12 border-t border-white/10"
+      className="mt-2 border-t border-white/10"
       style={{ background: "#0A0A0A" }}
     >
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        {/* Top — brand block + link list */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-10">
+        {/* Compact 3-col on desktop: brand + newsletter + links.
+            Stacks to single column on mobile. Newsletter column hides
+            entirely when the merchant-grade gate is off. */}
+        <div
+          className={`grid grid-cols-1 gap-8 md:gap-10 ${
+            showNewsletter ? "md:grid-cols-3" : "md:grid-cols-2"
+          }`}
+        >
           <section>
             <p
               className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
@@ -78,6 +90,8 @@ export function TradeProfileFooter({
               {listing.display_name} · {listing.city}
             </p>
           </section>
+
+          {showNewsletter && <NewsletterSignup listing={listing} />}
 
           {links.length > 0 && (
             <section>

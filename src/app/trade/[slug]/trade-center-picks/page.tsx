@@ -240,11 +240,14 @@ export default async function TradeCenterPicksPage({
                           Arrives {arrival}
                         </p>
                       )}
-                      <p className="mt-auto inline-flex items-center gap-1 pt-1 text-[13px] font-bold text-neutral-500 transition group-hover:text-[#FFB300]">
+                      <span
+                        className="mt-auto inline-flex h-11 items-center gap-1.5 self-start rounded-lg px-4 text-[13px] font-extrabold text-neutral-900 shadow-sm transition group-hover:opacity-90"
+                        style={{ background: "#FFB300" }}
+                      >
                         See offer
                         <svg
-                          width="13"
-                          height="13"
+                          width="14"
+                          height="14"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -256,7 +259,7 @@ export default async function TradeCenterPicksPage({
                         >
                           <path d="m9 18 6-6-6-6" />
                         </svg>
-                      </p>
+                      </span>
                     </div>
                   </a>
                 </li>
@@ -264,59 +267,6 @@ export default async function TradeCenterPicksPage({
             })}
           </ul>
         )}
-      </section>
-
-      <section className="mx-auto w-full max-w-6xl px-4 pb-12 pt-8 sm:px-6">
-        <div
-          className="overflow-hidden rounded-3xl px-6 py-8 text-center sm:px-12"
-          style={{ background: "#0A0A0A" }}
-        >
-          <p
-            className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: "#FFB300" }}
-          >
-            Are you a merchant too?
-          </p>
-          <h2 className="mt-2 text-xl font-extrabold leading-tight text-white sm:text-2xl">
-            Want to pin promo banners on your own products?{" "}
-            <span style={{ color: "#FFB300" }}>
-              Start your 14-day free trial.
-            </span>
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-[13px] leading-relaxed text-white/70 sm:text-sm">
-            Trade Center Picks lets you tag products with promo,
-            arrival, in-stock and pre-order banners &mdash; they auto-fall-off
-            when the offer expires. £4/mo. Cancel any time.
-          </p>
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
-            <a
-              href={`/trade-off/signup?ref=${encodeURIComponent(slug)}`}
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-lg px-5 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98] sm:text-sm"
-              style={{ background: "#FFB300" }}
-            >
-              Join XratedTrade
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-            <a
-              href="/trade-off/add-ons"
-              className="inline-flex h-11 items-center justify-center gap-1.5 rounded-lg border border-white/30 bg-white/5 px-5 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-white/10 sm:text-sm"
-            >
-              See all add-ons
-            </a>
-          </div>
-        </div>
       </section>
 
       <div className="mt-auto">

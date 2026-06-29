@@ -19,30 +19,30 @@ export const STATUS_LABELS: Record<
 > = {
   on_promo: {
     label: "On promo",
-    dot: "#FFB300",
-    bg: "#0A0A0A",
-    text: "#FFB300",
+    dot: "#0A0A0A",
+    bg: "#FFB300",
+    text: "#0A0A0A",
     description: "Limited-time price"
   },
   new_arrival: {
     label: "New arrival",
-    dot: "#FFB300",
-    bg: "#0A0A0A",
-    text: "#FFB300",
+    dot: "#0A0A0A",
+    bg: "#FFB300",
+    text: "#0A0A0A",
     description: "Just added to the yard"
   },
   just_arrived: {
     label: "Just arrived",
-    dot: "#FFB300",
-    bg: "#0A0A0A",
-    text: "#FFB300",
+    dot: "#0A0A0A",
+    bg: "#FFB300",
+    text: "#0A0A0A",
     description: "Pallet landed this week"
   },
   pre_order: {
     label: "Pre-order",
-    dot: "#FFB300",
-    bg: "#0A0A0A",
-    text: "#FFB300",
+    dot: "#0A0A0A",
+    bg: "#FFB300",
+    text: "#0A0A0A",
     description: "Reserve ahead — arrives [date]"
   }
 };

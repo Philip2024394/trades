@@ -471,6 +471,11 @@ export type HammerexXratedTradeCenterPick = {
   /** Optional landscape banner override. When NULL the public banner
    *  falls back to the joined product's cover_url. */
   banner_image_url: string | null;
+  /** When set, replaces the boolean `delivery_available` chip on the
+   *  pick detail page with a truck icon + specific label
+   *  (Next day / Same day / Collection only). NULL falls back to the
+   *  legacy boolean. */
+  delivery_option: "next_day" | "same_day" | "collection_only" | null;
   /** Long-form editorial copy rendered on the dedicated pick detail
    *  page (/<slug>/picks/<pickId>). Up to 1200 chars. NULL ⇒ section
    *  hidden entirely — no placeholder. */
@@ -498,6 +503,24 @@ export type HammerexXratedTradeCenterPick = {
   sort_order: number;
   created_at: string;
   updated_at: string;
+};
+
+// Newsletter subscribers — Model A (email capture only). One row per
+// (listing, email). Xrated never sends emails; the merchant exports
+// CSV from the dashboard and uses their own tool. Re-subscribe after
+// unsubscribe flips the existing row back to 'active' via the API's
+// ON CONFLICT path (we never insert duplicate rows for the same email).
+export type HammerexXratedNewsletterSubscriber = {
+  id: string;
+  listing_id: string;
+  email: string;
+  consent_at: string;
+  consent_text: string;
+  ip_hash: string | null;
+  unsubscribe_token: string;
+  status: "active" | "unsubscribed" | "bounced" | "complained";
+  unsubscribed_at: string | null;
+  created_at: string;
 };
 
 export type HammerexTradeOffMessage = {

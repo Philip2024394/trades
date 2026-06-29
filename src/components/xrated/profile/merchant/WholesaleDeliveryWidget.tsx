@@ -201,6 +201,43 @@ export function WholesaleDeliveryWidget({
       }))
     : [];
 
+  // Build the 3-zone view from the same data the editor reads. Zone 1 =
+  // free radius if set, else the first band. Then bands fill the
+  // remaining slots in order. Cap at 3.
+  type ZoneView = { idx: number; km: number; pricePence: number };
+  const freeKm =
+    typeof wholesaleZone.free_radius_km === "number" && wholesaleZone.free_radius_km > 0
+      ? wholesaleZone.free_radius_km
+      : null;
+  const zoneViews: ZoneView[] = [];
+  if (freeKm !== null) {
+    zoneViews.push({ idx: 1, km: freeKm, pricePence: 0 });
+  }
+  for (const b of bands) {
+    if (zoneViews.length >= 3) break;
+    if (typeof b.max_km === "number" && b.max_km > 0) {
+      zoneViews.push({
+        idx: zoneViews.length + 1,
+        km: b.max_km,
+        pricePence: b.price_pence
+      });
+    }
+  }
+  const furthestKm =
+    zoneViews.length > 0 ? zoneViews[zoneViews.length - 1].km : null;
+
+  // Which zone is the customer in? Match the applied band km from the
+  // quote against zone.km; for the free-radius case the quote returns
+  // the freeRadius itself as applied_band_km.
+  const customerZoneIdx: number | null =
+    quote && quote.kind === "quoted" && typeof quote.applied_band_km === "number"
+      ? zoneViews.find(
+          (z) => Math.abs(z.km - (quote.applied_band_km as number)) < 0.01
+        )?.idx ?? null
+      : null;
+
+  const zoneSubLabels = ["Inner", "Mid", "Outer"];
+
   return (
     <div className="space-y-3 rounded-2xl border border-neutral-200 bg-white p-4 sm:p-5">
       <div>
@@ -280,6 +317,65 @@ export function WholesaleDeliveryWidget({
         />
       </div>
 
+      {zoneViews.length > 0 && (
+        <ul className="grid gap-2 sm:grid-cols-3">
+          {zoneViews.map((z) => {
+            const isYour = customerZoneIdx === z.idx;
+            // Colour-match the map rings: green = inner, yellow = mid,
+            // red = outer. Same palette top-to-bottom so a customer can
+            // glance at the map, see they're in the green ring, then
+            // glance at the cards and see "Zone 1 · green = FREE".
+            const zoneColor =
+              z.idx === 1 ? "#10B981" : z.idx === 2 ? "#FFB300" : "#EF4444";
+            return (
+              <li
+                key={`zone-card-${z.idx}`}
+                className={`rounded-xl border-2 bg-white p-3 transition ${
+                  isYour ? "shadow-sm" : ""
+                }`}
+                style={{
+                  borderColor: isYour ? zoneColor : "rgb(229 229 229)"
+                }}
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="flex items-center gap-1.5 text-[13px] font-extrabold text-neutral-900">
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-2.5 w-2.5 rounded-full"
+                      style={{ background: zoneColor }}
+                    />
+                    Zone {z.idx}
+                    <span className="ml-0.5 text-[13px] font-bold text-neutral-500">
+                      &middot; {zoneSubLabels[z.idx - 1]}
+                    </span>
+                  </p>
+                  {isYour && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
+                      style={{ background: zoneColor }}
+                    >
+                      Your zone
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-[13px] text-neutral-500">
+                  Up to {z.km} km
+                </p>
+                <p className="mt-1 text-[13px] font-extrabold text-neutral-900">
+                  {z.pricePence === 0 ? "FREE delivery" : `${formatGbp(z.pricePence)} delivery`}
+                </p>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+
+      {furthestKm !== null && (
+        <p className="rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2 text-[13px] text-neutral-500">
+          Beyond {furthestKm} km &rarr; message {firstName} for a custom quote.
+        </p>
+      )}
+
       {quote && quote.kind === "quoted" && (
         <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
           <p className="text-[13px] font-extrabold text-neutral-900">
@@ -289,16 +385,11 @@ export function WholesaleDeliveryWidget({
           </p>
           <p className="mt-1 text-[13px] text-neutral-500">
             {quote.distance_km.toFixed(1)} km from yard
-            {quote.applied_band_km !== null
-              ? ` (within ${quote.applied_band_km} km band)`
-              : ""}
+            {customerZoneIdx !== null ? ` (Zone ${customerZoneIdx})` : ""}
           </p>
-          {quote.eta_label && (
-            <p className="text-[13px] text-neutral-500">{quote.eta_label}</p>
-          )}
           {!quote.qualifies_for_min_order && quote.min_order_pence ? (
             <p className="mt-1 text-[13px] font-bold text-orange-600">
-              Minimum order for this band: {formatGbp(quote.min_order_pence)}.
+              Minimum order for this zone: {formatGbp(quote.min_order_pence)}.
             </p>
           ) : null}
         </div>
@@ -307,11 +398,11 @@ export function WholesaleDeliveryWidget({
       {quote && quote.kind === "outside_zone" && (
         <div className="rounded-xl border border-orange-200 bg-orange-50 p-3">
           <p className="text-[13px] font-extrabold text-orange-900">
-            Outside delivery area &mdash; WhatsApp for custom quote
+            Outside our delivery zones &mdash; message us for a custom quote
           </p>
           <p className="mt-1 text-[13px] text-orange-800">
             {quote.distance_km.toFixed(1)} km from {firstName}&rsquo;s yard
-            &mdash; beyond the standard delivery cap.
+            &mdash; beyond Zone {zoneViews.length || 3}.
           </p>
         </div>
       )}

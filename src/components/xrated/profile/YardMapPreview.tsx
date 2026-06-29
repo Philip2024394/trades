@@ -94,7 +94,7 @@ export function YardMapPreview({
   return (
     <svg
       role="img"
-      aria-label="Yard delivery map preview"
+      aria-label="Yard delivery zones map preview"
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       width="100%"
       style={{ display: "block", height }}
@@ -128,38 +128,77 @@ export function YardMapPreview({
         ))}
       </g>
 
-      {/* Free radius — solid yellow fill with transparency */}
-      {typeof freeRadiusKm === "number" && freeRadiusKm > 0 && (
-        <circle
-          cx={cx}
-          cy={cy}
-          r={freeRadiusKm * pxPerKm}
-          fill="#FFB300"
-          fillOpacity="0.18"
-          stroke="#FFB300"
-          strokeWidth="1.5"
-        />
-      )}
-
-      {/* Banded rings — stroked */}
-      {Array.isArray(bands) &&
-        bands.map((b, idx) => {
+      {/* Three-zone visual model — Stage-1 palette:
+          Zone 1 (inner) = GREEN  (#10B981) — reads as "local / free"
+          Zone 2 (mid)   = YELLOW (#FFB300) — brand standard
+          Zone 3 (outer) = RED    (#EF4444) — reads as "the far edge"
+          Universally legible without needing a key. */}
+      {(() => {
+        const ZONE_COLORS = ["#10B981", "#FFB300", "#EF4444"] as const;
+        const rings: Array<{ km: number; isZone1Free: boolean }> = [];
+        if (typeof freeRadiusKm === "number" && freeRadiusKm > 0) {
+          rings.push({ km: freeRadiusKm, isZone1Free: true });
+        }
+        if (Array.isArray(bands)) {
+          for (const b of bands) {
+            if (typeof b.max_km === "number" && b.max_km > 0) {
+              rings.push({ km: b.max_km, isZone1Free: false });
+            }
+          }
+        }
+        const zones = rings.slice(0, 3);
+        return zones.map((z, idx) => {
+          const color = ZONE_COLORS[idx] ?? "#FFB300";
           const isApplied =
-            typeof appliedBandKm === "number" && Math.abs(appliedBandKm - b.max_km) < 0.01;
+            typeof appliedBandKm === "number" && Math.abs(appliedBandKm - z.km) < 0.01;
+          const isZone1 = idx === 0;
           return (
             <circle
-              key={`band-${idx}-${b.max_km}`}
+              key={`zone-${idx}-${z.km}`}
               cx={cx}
               cy={cy}
-              r={b.max_km * pxPerKm}
-              fill="none"
-              stroke={isApplied ? "#0A0A0A" : "#737373"}
-              strokeWidth={isApplied ? 2 : 1}
-              strokeDasharray={isApplied ? "none" : "3 3"}
-              opacity={isApplied ? 1 : 0.6}
+              r={z.km * pxPerKm}
+              fill={isZone1 ? color : "none"}
+              fillOpacity={isZone1 ? 0.22 : 0}
+              stroke={color}
+              strokeWidth={isApplied ? 2.5 : 2}
+              strokeOpacity={isApplied ? 1 : 0.9}
+              strokeDasharray={isApplied || isZone1 ? "none" : "5 4"}
             />
           );
-        })}
+        });
+      })()}
+
+      {/* Zone labels — small "Zone 1/2/3" tag at the top of each ring */}
+      {(() => {
+        const rings: Array<{ km: number }> = [];
+        if (typeof freeRadiusKm === "number" && freeRadiusKm > 0) {
+          rings.push({ km: freeRadiusKm });
+        }
+        if (Array.isArray(bands)) {
+          for (const b of bands) {
+            if (typeof b.max_km === "number" && b.max_km > 0) {
+              rings.push({ km: b.max_km });
+            }
+          }
+        }
+        return rings.slice(0, 3).map((z, idx) => (
+          <text
+            key={`zone-label-${idx}`}
+            x={cx}
+            y={cy - z.km * pxPerKm + 4}
+            textAnchor="middle"
+            fontSize="9"
+            fontWeight="700"
+            fill="#0A0A0A"
+            paintOrder="stroke"
+            stroke="#FFFFFF"
+            strokeWidth="3"
+          >
+            Zone {idx + 1}
+          </text>
+        ));
+      })()}
 
       {/* Compass rose top-left */}
       <g transform="translate(20, 20)" aria-hidden="true">

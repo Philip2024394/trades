@@ -414,7 +414,7 @@ export async function PremiumHero({
       </section>
 
       <section className="relative z-10 -mt-10 px-4 pb-4 sm:-mt-14 sm:px-6">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-1 overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl sm:grid-cols-5">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-1 overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl sm:grid-cols-4">
           <StatTile
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFB300" aria-hidden="true">
@@ -423,17 +423,6 @@ export async function PremiumHero({
             }
             value={rating ?? "—"}
             label="Rating"
-          />
-          <StatTile
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-                <line x1="12" y1="22.08" x2="12" y2="12" />
-              </svg>
-            }
-            value={String(liveProductCount)}
-            label="Products"
           />
           <StatTile
             icon={

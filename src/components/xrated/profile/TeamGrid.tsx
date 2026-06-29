@@ -61,7 +61,7 @@ export function TeamGrid({ listing }: { listing: HammerexTradeOffListing }) {
         Meet the team
       </h2>
       <p className="mt-1 text-xs text-neutral-500">
-        The people who&apos;ll actually be on your site.
+        The foundation of our daily operations.
       </p>
 
       <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">

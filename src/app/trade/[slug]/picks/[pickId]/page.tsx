@@ -32,6 +32,7 @@ import {
   TradeCenterPickStatusChip
 } from "@/components/xrated/profile/merchant/TradeCenterPickStatusChip";
 import { SharePickButton } from "@/components/xrated/profile/merchant/SharePickButton";
+import { HeroOverlayToggle } from "@/components/xrated/profile/merchant/HeroOverlayToggle";
 import {
   isMerchantGradeTrade,
   tradeLabel,
@@ -216,8 +217,19 @@ export default async function TradeCenterPickDetailPage({
       />
       <PremiumHero listing={listing} waUrl={waHeaderUrl} currentPage="contact" />
 
-      {/* ── Hero block — full-bleed landscape banner ────────────────── */}
+      {/* ── Page header + slogan — sits above the hero banner so the
+            customer lands knowing what surface they're on. ──────────── */}
       <section className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10">
+        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
+          {firstName}&rsquo;s Yard Deals
+        </h2>
+        <p className="mt-1 text-[13px] text-neutral-500 sm:text-sm">
+          Peek at new products arrived for season.
+        </p>
+      </section>
+
+      {/* ── Hero block — full-bleed landscape banner ────────────────── */}
+      <section className="mx-auto w-full max-w-6xl px-4 pt-4 sm:px-6 sm:pt-6">
         <div className="relative aspect-[2/1] w-full overflow-hidden rounded-2xl border border-neutral-200 bg-neutral-900 shadow-sm">
           {heroImage ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -231,42 +243,75 @@ export default async function TradeCenterPickDetailPage({
               No image
             </div>
           )}
-          <div
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0) 75%)"
-            }}
-          />
-          <div className="absolute left-4 top-4 sm:left-6 sm:top-6">
-            <TradeCenterPickStatusChip status={pick.status} />
+          {/* Share button — moved to top-LEFT so it doesn't collide
+              with the status chip now at top-right. Always visible
+              (above the overlay toggle, z-10) so customers can share
+              even when text is hidden. */}
+          <div className="absolute left-4 top-4 z-10 sm:left-6 sm:top-6">
+            <SharePickButton
+              slug={listing.slug}
+              pickId={pick.id}
+              bannerUrl={heroImage}
+              productName={productName}
+              statusLabel={statusEntry.label}
+              merchantName={listing.display_name}
+              variant="overlay"
+            />
           </div>
-          <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
-            <h1 className="text-xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
-              {productName}
-            </h1>
-            {pick.note && (
-              <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-white/90 sm:text-sm">
-                {pick.note}
-              </p>
-            )}
-          </div>
+          <HeroOverlayToggle>
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0) 75%)"
+              }}
+            />
+            <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+              <TradeCenterPickStatusChip status={pick.status} />
+            </div>
+            <div className="absolute inset-x-4 bottom-4 sm:inset-x-6 sm:bottom-6">
+              {(() => {
+                const dashIdx = productName.indexOf(" - ");
+                const main = dashIdx === -1 ? productName : productName.slice(0, dashIdx).trim();
+                const subtitle = dashIdx === -1 ? null : productName.slice(dashIdx + 3).trim();
+                return (
+                  <>
+                    <h1 className="text-xl font-extrabold leading-tight text-white sm:text-3xl md:text-4xl">
+                      {main}
+                    </h1>
+                    {subtitle && (
+                      <p className="mt-1 text-[13px] font-semibold text-white/85 sm:text-base">
+                        {subtitle}
+                      </p>
+                    )}
+                  </>
+                );
+              })()}
+              {pick.note && (
+                <p className="mt-2 max-w-3xl text-[13px] leading-relaxed text-white/90 sm:text-sm">
+                  {pick.note}
+                </p>
+              )}
+            </div>
+          </HeroOverlayToggle>
         </div>
       </section>
 
       {/* ── Body — story (left) + commercial card (right) ───────────── */}
       <section className="mx-auto w-full max-w-6xl px-4 pt-8 sm:px-6 sm:pt-10">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-5 md:gap-8">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-5 sm:gap-8">
           {/* ── Left: editorial ─────────────────────────────────────── */}
-          <div className="md:col-span-3">
+          <div className="sm:col-span-3">
             {pick.long_description && (
               <div>
-                <p
-                  className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
+                <h2
+                  className="text-lg font-extrabold leading-tight sm:text-xl"
                   style={{ color: "#FFB300" }}
                 >
-                  Why this {statusEntry.label.toLowerCase()}
-                </p>
+                  {pick.status === "on_promo"
+                    ? "We get the discount — you get the discount"
+                    : `Why this ${statusEntry.label.toLowerCase()}`}
+                </h2>
                 <div className="mt-3 space-y-3 text-[13px] leading-relaxed text-neutral-700 sm:text-sm">
                   {pick.long_description
                     .split(/\n{2,}/)
@@ -310,8 +355,8 @@ export default async function TradeCenterPickDetailPage({
           </div>
 
           {/* ── Right: commercial card (sticky on desktop) ───────────── */}
-          <aside className="md:col-span-2">
-            <div className="md:sticky md:top-24">
+          <aside className="sm:col-span-2">
+            <div className="sm:sticky sm:top-24">
               <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm sm:p-6">
                 <p
                   className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -335,34 +380,40 @@ export default async function TradeCenterPickDetailPage({
                   </p>
                 )}
 
-                {(pick.delivery_available === true ||
+                {(pick.delivery_option ||
+                  pick.delivery_available === true ||
                   pick.installation_available === true) && (
                   <div className="mt-4 flex flex-wrap gap-2">
-                    {pick.delivery_available === true && (
-                      <span
-                        className="inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold"
-                        style={{
-                          borderColor: "rgba(255,179,0,0.5)",
-                          background: "rgba(255,179,0,0.08)",
-                          color: "#8a5a00"
-                        }}
-                      >
-                        <svg
-                          width="13"
-                          height="13"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          aria-hidden="true"
+                    {(() => {
+                      const opt = pick.delivery_option;
+                      const fallbackBool = pick.delivery_available === true && !opt;
+                      if (!opt && !fallbackBool) return null;
+                      const labelMap: Record<string, string> = {
+                        next_day: "Next day delivery",
+                        same_day: "Same day delivery",
+                        collection_only: "Collection only"
+                      };
+                      const label = opt ? labelMap[opt] : "Delivery available";
+                      return (
+                        <span
+                          className="inline-flex h-8 items-center gap-2 rounded-full border px-2.5 text-[13px] font-bold"
+                          style={{
+                            borderColor: "rgba(255,179,0,0.5)",
+                            background: "rgba(255,179,0,0.08)",
+                            color: "#8a5a00"
+                          }}
                         >
-                          <polyline points="20 6 9 17 4 12" />
-                        </svg>
-                        Delivery available
-                      </span>
-                    )}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2029,%202026,%2006_06_58%20PM.png?tr=w-96,c-at_max,f-png,q-90"
+                            alt=""
+                            aria-hidden="true"
+                            className="h-5 w-auto"
+                          />
+                          {label}
+                        </span>
+                      );
+                    })()}
                     {pick.installation_available === true && (
                       <span
                         className="inline-flex h-7 items-center gap-1.5 rounded-full border px-2.5 text-[13px] font-bold"
@@ -395,8 +446,8 @@ export default async function TradeCenterPickDetailPage({
                   href={waPickUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-sm font-extrabold text-white shadow-sm transition hover:opacity-90 active:scale-[0.98]"
-                  style={{ background: "#25D366" }}
+                  className="mt-5 inline-flex h-12 w-full items-center justify-center gap-2 rounded-lg px-4 text-[13px] font-extrabold text-white shadow-sm transition hover:opacity-90 active:scale-[0.98] sm:text-sm"
+                  style={{ background: "#0F7A3F" }}
                 >
                   <svg
                     width="18"
@@ -407,19 +458,8 @@ export default async function TradeCenterPickDetailPage({
                   >
                     <path d="M20.52 3.48A11.78 11.78 0 0 0 12.06 0C5.5 0 .15 5.34.13 11.9a11.84 11.84 0 0 0 1.6 5.95L0 24l6.34-1.66a11.86 11.86 0 0 0 5.72 1.46h.01c6.55 0 11.9-5.34 11.92-11.9a11.79 11.79 0 0 0-3.47-8.42ZM12.07 21.78h-.01a9.85 9.85 0 0 1-5.02-1.38l-.36-.21-3.76.98 1-3.66-.23-.38a9.83 9.83 0 0 1-1.51-5.24c0-5.44 4.43-9.87 9.89-9.87a9.82 9.82 0 0 1 6.98 2.89 9.78 9.78 0 0 1 2.89 6.98c0 5.45-4.43 9.89-9.87 9.89Zm5.41-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48a9.05 9.05 0 0 1-1.67-2.07c-.17-.3 0-.46.13-.61.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01a1.1 1.1 0 0 0-.8.37 3.36 3.36 0 0 0-1.04 2.5c0 1.47 1.06 2.9 1.21 3.1.15.2 2.1 3.2 5.07 4.49.71.3 1.26.49 1.69.62.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Z" />
                   </svg>
-                  Enquire on WhatsApp
+                  WhatsApp
                 </a>
-
-                <div className="mt-3">
-                  <SharePickButton
-                    slug={listing.slug}
-                    pickId={pick.id}
-                    bannerUrl={heroImage}
-                    productName={productName}
-                    statusLabel={STATUS_LABELS[pick.status].label}
-                    merchantName={listing.display_name}
-                  />
-                </div>
 
                 {productHref && (
                   <a
