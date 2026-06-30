@@ -18,9 +18,13 @@ import type {
   HammerexXratedProduct,
   HammerexXratedWholesaleZone
 } from "@/lib/supabase";
-import { YardOriginEditor } from "./YardOriginEditor";
+// YardOriginEditor import removed — location controls now live inline
+// inside WholesaleZonesEditor's live-preview block.
+// BulkTiersPanel removed from the delivery page per request — bulk
+// pricing is product pricing, not delivery. Lives on its own sub-page
+// at /trade-off/edit/<slug>/bulk-tiers from here on.
 import { WholesaleZonesEditor } from "./WholesaleZonesEditor";
-import { BulkTiersPanel } from "./BulkTiersPanel";
+import { WholesaleFreeDeliveryPicker } from "./WholesaleFreeDeliveryPicker";
 
 export function WholesaleModeEditor({
   slug,
@@ -46,33 +50,34 @@ export function WholesaleModeEditor({
     [initialProducts]
   );
 
+  // YardOriginEditor render removed per request — location setting is
+  // now inline in the WholesaleZonesEditor live-preview block. Distance
+  // fudge factor, currency picker, listing-level prices_ex_vat toggle
+  // are deferred until per-zone VAT lands. We still pass the saved yard
+  // coordinates + address to the zones editor so its inline location
+  // form can preserve other fields when it saves.
   return (
     <div className="space-y-6">
-      <YardOriginEditor
-        slug={slug}
-        editToken={editToken}
-        initial={{
-          address: listing.wholesale_origin_address ?? "",
-          postcode: listing.wholesale_origin_postcode ?? "",
-          lat: listing.wholesale_origin_lat ?? null,
-          lng: listing.wholesale_origin_lng ?? null,
-          distance_fudge: String(listing.wholesale_distance_fudge ?? 1.4),
-          allow_pickup: listing.wholesale_allow_pickup ?? false,
-          currency: listing.wholesale_currency ?? "GBP",
-          prices_ex_vat: listing.wholesale_prices_ex_vat ?? true
-        }}
-        onAllowPickupChange={setAllowPickup}
-      />
-
       <WholesaleZonesEditor
         slug={slug}
         editToken={editToken}
         initialZone={initialZone}
+        yardLat={listing.wholesale_origin_lat ?? null}
+        yardLng={listing.wholesale_origin_lng ?? null}
+        yardPostcode={listing.wholesale_origin_postcode ?? ""}
+        yardAddress={listing.wholesale_origin_address ?? ""}
+        yardDistanceFudge={listing.wholesale_distance_fudge ?? 1.4}
+        yardCurrency={listing.wholesale_currency ?? "GBP"}
+        yardPricesExVat={listing.wholesale_prices_ex_vat ?? true}
+        yardPickupFrom={listing.wholesale_pickup_from ?? null}
+        yardPickupTo={listing.wholesale_pickup_to ?? null}
+        yardCity={listing.city ?? ""}
+        merchantName={listing.display_name ?? ""}
         allowPickup={allowPickup}
         onAllowPickupChange={setAllowPickup}
       />
 
-      <BulkTiersPanel
+      <WholesaleFreeDeliveryPicker
         slug={slug}
         editToken={editToken}
         initialProducts={products}

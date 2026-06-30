@@ -23,13 +23,16 @@
 // Maps in this widget reuse the same YardMapPreview SVG that the
 // dashboard yard editor uses — yard pin, customer pin, banded rings.
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type {
   HammerexTradeOffListing,
   HammerexXratedWholesaleZone
 } from "@/lib/supabase";
 import { formatGbp } from "@/lib/xratedCart";
+import { distanceToPostcodeKm } from "@/lib/ukPostcodeCentroids";
 import { YardMapPreview } from "../YardMapPreview";
+
+type ZoneVatMode = "inc" | "ex" | "pay_driver";
 
 type QuoteResult =
   | {
@@ -41,6 +44,17 @@ type QuoteResult =
       qualifies_for_min_order: boolean;
       min_order_pence?: number;
       qualifies_for_free: boolean;
+      free_delivery_unlocked_by: {
+        product_id: string;
+        name: string;
+        min_qty: number;
+      } | null;
+      /** How the merchant has chosen to bill VAT on THIS band's delivery
+       *  price. "inc" = price already includes VAT (show as-is, "VAT
+       *  included"); "ex" = price is ex-VAT (cart adds +20% VAT line);
+       *  "pay_driver" = customer settles delivery cash on the door
+       *  (cart skips the line entirely). */
+      vat_mode: ZoneVatMode;
     }
   | { kind: "outside_zone"; distance_km: number }
   | { kind: "error"; message: string };
@@ -49,12 +63,17 @@ export function WholesaleDeliveryWidget({
   listing,
   wholesaleZone,
   cartTotalPence,
+  cartLines,
   firstName,
   onQuoteChange
 }: {
   listing: HammerexTradeOffListing;
   wholesaleZone: HammerexXratedWholesaleZone;
   cartTotalPence: number;
+  /** Cart line items — sent to the wholesale-quote endpoint so the
+   *  server can apply per-product free-delivery overrides. Optional for
+   *  back-compat; without it the API behaves as before. */
+  cartLines?: Array<{ product_id: string; qty: number }>;
   firstName: string;
   onQuoteChange: (quote: QuoteResult | null) => void;
 }) {
@@ -80,7 +99,8 @@ export function WholesaleDeliveryWidget({
           slug: listing.slug,
           customer_lat: lat,
           customer_lng: lng,
-          cart_total_pence: cartTotalPence
+          cart_total_pence: cartTotalPence,
+          cart_lines: cartLines ?? []
         })
       });
       const json = await res.json();
@@ -100,6 +120,12 @@ export function WholesaleDeliveryWidget({
         if (label) setCustomerLabel(label);
         return;
       }
+      const unlock = json.free_delivery_unlocked_by;
+      const vatModeRaw = json.vat_mode;
+      const vatMode: ZoneVatMode =
+        vatModeRaw === "inc" || vatModeRaw === "ex" || vatModeRaw === "pay_driver"
+          ? vatModeRaw
+          : "ex";
       const q: QuoteResult = {
         kind: "quoted",
         delivery_pence: Number(json.delivery_pence) || 0,
@@ -109,7 +135,20 @@ export function WholesaleDeliveryWidget({
         distance_km: Number(json.distance_km) || 0,
         qualifies_for_free: Boolean(json.qualifies_for_free),
         qualifies_for_min_order: Boolean(json.qualifies_for_min_order),
-        min_order_pence: typeof json.min_order_pence === "number" ? json.min_order_pence : undefined
+        min_order_pence: typeof json.min_order_pence === "number" ? json.min_order_pence : undefined,
+        free_delivery_unlocked_by:
+          unlock &&
+          typeof unlock === "object" &&
+          typeof unlock.product_id === "string" &&
+          typeof unlock.name === "string" &&
+          typeof unlock.min_qty === "number"
+            ? {
+                product_id: unlock.product_id,
+                name: unlock.name,
+                min_qty: unlock.min_qty
+              }
+            : null,
+        vat_mode: vatMode
       };
       setQuote(q);
       onQuoteChange(q);
@@ -318,56 +357,14 @@ export function WholesaleDeliveryWidget({
       </div>
 
       {zoneViews.length > 0 && (
-        <ul className="grid gap-2 sm:grid-cols-3">
-          {zoneViews.map((z) => {
-            const isYour = customerZoneIdx === z.idx;
-            // Colour-match the map rings: green = inner, yellow = mid,
-            // red = outer. Same palette top-to-bottom so a customer can
-            // glance at the map, see they're in the green ring, then
-            // glance at the cards and see "Zone 1 · green = FREE".
-            const zoneColor =
-              z.idx === 1 ? "#10B981" : z.idx === 2 ? "#FFB300" : "#EF4444";
-            return (
-              <li
-                key={`zone-card-${z.idx}`}
-                className={`rounded-xl border-2 bg-white p-3 transition ${
-                  isYour ? "shadow-sm" : ""
-                }`}
-                style={{
-                  borderColor: isYour ? zoneColor : "rgb(229 229 229)"
-                }}
-              >
-                <div className="flex items-baseline justify-between gap-2">
-                  <p className="flex items-center gap-1.5 text-[13px] font-extrabold text-neutral-900">
-                    <span
-                      aria-hidden="true"
-                      className="inline-block h-2.5 w-2.5 rounded-full"
-                      style={{ background: zoneColor }}
-                    />
-                    Zone {z.idx}
-                    <span className="ml-0.5 text-[13px] font-bold text-neutral-500">
-                      &middot; {zoneSubLabels[z.idx - 1]}
-                    </span>
-                  </p>
-                  {isYour && (
-                    <span
-                      className="rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
-                      style={{ background: zoneColor }}
-                    >
-                      Your zone
-                    </span>
-                  )}
-                </div>
-                <p className="mt-1 text-[13px] text-neutral-500">
-                  Up to {z.km} km
-                </p>
-                <p className="mt-1 text-[13px] font-extrabold text-neutral-900">
-                  {z.pricePence === 0 ? "FREE delivery" : `${formatGbp(z.pricePence)} delivery`}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
+        <ZoneSelectorWithPostcodes
+          zoneViews={zoneViews}
+          customerZoneIdx={customerZoneIdx}
+          subLabels={zoneSubLabels}
+          servicePostcodes={listing.service_postcodes ?? []}
+          yardLat={yardLat ?? null}
+          yardLng={yardLng ?? null}
+        />
       )}
 
       {furthestKm !== null && (
@@ -379,14 +376,36 @@ export function WholesaleDeliveryWidget({
       {quote && quote.kind === "quoted" && (
         <div className="rounded-xl border border-neutral-200 bg-neutral-50 p-3">
           <p className="text-[13px] font-extrabold text-neutral-900">
-            {quote.delivery_pence === 0
-              ? "Free delivery"
-              : `Delivery: ${formatGbp(quote.delivery_pence)}`}
+            {(() => {
+              if (quote.delivery_pence === 0) return "Free delivery";
+              if (quote.vat_mode === "pay_driver") {
+                return `Pay driver on delivery: ${formatGbp(quote.delivery_pence)}`;
+              }
+              if (quote.vat_mode === "inc") {
+                return `Delivery: ${formatGbp(quote.delivery_pence)} (VAT inc)`;
+              }
+              const withVat = Math.round(quote.delivery_pence * 1.2);
+              return `Delivery: ${formatGbp(quote.delivery_pence)} ex VAT (${formatGbp(withVat)} inc)`;
+            })()}
           </p>
           <p className="mt-1 text-[13px] text-neutral-500">
             {quote.distance_km.toFixed(1)} km from yard
             {customerZoneIdx !== null ? ` (Zone ${customerZoneIdx})` : ""}
           </p>
+          {quote.free_delivery_unlocked_by && (
+            <p
+              className="mt-2 inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[12px] font-extrabold"
+              style={{
+                background: "#0F513215",
+                color: "#0F5132",
+                borderColor: "#0F5132"
+              }}
+            >
+              Free delivery unlocked by{" "}
+              {quote.free_delivery_unlocked_by.name} (
+              {quote.free_delivery_unlocked_by.min_qty}+)
+            </p>
+          )}
           {!quote.qualifies_for_min_order && quote.min_order_pence ? (
             <p className="mt-1 text-[13px] font-bold text-orange-600">
               Minimum order for this zone: {formatGbp(quote.min_order_pence)}.
@@ -417,8 +436,170 @@ export function WholesaleDeliveryWidget({
         <p className="text-[13px] text-neutral-500">
           Or collect at the yard&mdash;mention &ldquo;Click &amp; Collect&rdquo;
           in your WhatsApp message.
+          {listing.wholesale_pickup_from && listing.wholesale_pickup_to && (
+            <>
+              {" "}
+              <span className="font-bold text-neutral-700">
+                Open for pick-up {listing.wholesale_pickup_from.slice(0, 5)}
+                {" "}to{" "}
+                {listing.wholesale_pickup_to.slice(0, 5)}.
+              </span>
+            </>
+          )}
         </p>
       )}
+    </div>
+  );
+}
+
+// Interactive zone selector — three colour-matched buttons that reveal
+// the postcode chips for each zone underneath. Postcodes are assigned
+// by distance from the yard using the UK postcode-district centroid
+// lookup. Service postcodes the merchant hasn't included are silently
+// dropped from the assignment.
+function ZoneSelectorWithPostcodes({
+  zoneViews,
+  customerZoneIdx,
+  subLabels,
+  servicePostcodes,
+  yardLat,
+  yardLng
+}: {
+  zoneViews: { idx: number; km: number; pricePence: number }[];
+  customerZoneIdx: number | null;
+  subLabels: string[];
+  servicePostcodes: string[];
+  yardLat: number | null;
+  yardLng: number | null;
+}) {
+  const [selectedIdx, setSelectedIdx] = useState<number | null>(
+    customerZoneIdx
+  );
+
+  // Assign each service postcode to a zone by distance from yard.
+  // Compute once per props change — avoids recalcs on every click.
+  const postcodesByZone = useMemo(() => {
+    const map: Record<number, string[]> = { 1: [], 2: [], 3: [] };
+    if (yardLat === null || yardLng === null) return map;
+    for (const raw of servicePostcodes) {
+      const dist = distanceToPostcodeKm({ lat: yardLat, lng: yardLng }, raw);
+      if (dist === null) continue;
+      for (const z of zoneViews) {
+        if (dist <= z.km) {
+          map[z.idx]?.push(raw.trim().toUpperCase().replace(/\s+/g, ""));
+          break;
+        }
+      }
+    }
+    return map;
+  }, [servicePostcodes, yardLat, yardLng, zoneViews]);
+
+  // Default to whichever zone has the highest count when no zone is
+  // explicitly picked AND the customer hasn't been auto-matched yet.
+  const effectiveSelected =
+    selectedIdx ??
+    customerZoneIdx ??
+    (zoneViews[0]?.idx ?? 1);
+
+  const colorFor = (idx: number) =>
+    idx === 1 ? "#10B981" : idx === 2 ? "#FFB300" : "#EF4444";
+
+  const chips = postcodesByZone[effectiveSelected] ?? [];
+
+  return (
+    <div className="space-y-3">
+      <ul className="grid gap-2 sm:grid-cols-3">
+        {zoneViews.map((z) => {
+          const isYour = customerZoneIdx === z.idx;
+          const isSelected = effectiveSelected === z.idx;
+          const zoneColor = colorFor(z.idx);
+          return (
+            <li key={`zone-card-${z.idx}`}>
+              <button
+                type="button"
+                onClick={() => setSelectedIdx(z.idx)}
+                className={`w-full rounded-xl border-2 bg-white p-3 text-left transition hover:shadow-sm ${
+                  isSelected ? "shadow-md" : ""
+                }`}
+                style={{
+                  borderColor: isSelected
+                    ? zoneColor
+                    : isYour
+                      ? zoneColor
+                      : "rgb(229 229 229)",
+                  borderWidth: isSelected ? 3 : 2
+                }}
+                aria-pressed={isSelected}
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <p className="flex items-center gap-1.5 text-[13px] font-extrabold text-neutral-900">
+                    <span
+                      aria-hidden="true"
+                      className="inline-block h-2.5 w-2.5 rounded-full"
+                      style={{ background: zoneColor }}
+                    />
+                    Zone {z.idx}
+                    <span className="ml-0.5 text-[13px] font-bold text-neutral-500">
+                      &middot; {subLabels[z.idx - 1]}
+                    </span>
+                  </p>
+                  {isYour && (
+                    <span
+                      className="rounded-full px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wider text-white"
+                      style={{ background: zoneColor }}
+                    >
+                      You
+                    </span>
+                  )}
+                </div>
+                <p className="mt-1 text-[13px] text-neutral-500">
+                  Up to {z.km} km
+                </p>
+                <p className="mt-1 text-[13px] font-extrabold text-neutral-900">
+                  {z.pricePence === 0
+                    ? "FREE delivery"
+                    : `${formatGbp(z.pricePence)} delivery`}
+                </p>
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+
+      {/* Postcode chips for the currently-selected zone */}
+      <div
+        className="rounded-xl border border-neutral-200 bg-neutral-50 p-3"
+        style={{ borderColor: colorFor(effectiveSelected) }}
+      >
+        <p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-neutral-500">
+          Postcodes in Zone {effectiveSelected}
+          {chips.length > 0 && (
+            <span className="ml-1.5 text-neutral-400">({chips.length})</span>
+          )}
+        </p>
+        {chips.length > 0 ? (
+          <ul className="mt-2 flex flex-wrap gap-1.5">
+            {chips.map((p) => (
+              <li key={`pc-${effectiveSelected}-${p}`}>
+                <span
+                  className="inline-flex items-center rounded-md border bg-white px-2 py-0.5 text-[13px] font-bold text-neutral-800"
+                  style={{ borderColor: colorFor(effectiveSelected) }}
+                >
+                  {p}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="mt-1 text-[13px] text-neutral-500">
+            No postcodes set for this zone yet.
+          </p>
+        )}
+        <p className="mt-2 text-[11px] text-neutral-500">
+          Final delivery price confirmed by your full postcode &mdash; enter
+          yours above.
+        </p>
+      </div>
     </div>
   );
 }

@@ -4,12 +4,16 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardHeader } from "@/components/trade-off/DashboardHeader";
+import { DashboardFooter } from "@/components/trade-off/DashboardFooter";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { effectiveTier } from "@/lib/xratedTrades";
-import { isShopModeOn, isWholesaleModeOn } from "@/lib/xratedAddons";
+import {
+  isShopModeOn,
+  isWholesaleModeOn,
+  productCapForListing
+} from "@/lib/xratedAddons";
 import { ShopModeEditor } from "@/components/trade-off/ShopModeEditor";
 import { ShippingZonesEditor } from "@/components/trade-off/ShippingZonesEditor";
 import type {
@@ -94,7 +98,7 @@ export default async function TradeOffShopModeEditPage({
 
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-3xl px-4 pb-2 pt-10">
         <Link
           href={backHref}
@@ -111,13 +115,39 @@ export default async function TradeOffShopModeEditPage({
           Trade Center — your products
         </h1>
         <p className="mt-3 text-xs text-brand-muted">
-          {liveCount} live product{liveCount === 1 ? "" : "s"} ·{" "}
-          {isPaid && shopOn
-            ? "Add-on £5/mo · active"
-            : isPaid
-              ? "Toggle Trade Center on from your dashboard to go live"
-              : "Upgrade to enable Trade Center"}
+          {(() => {
+            const cap = productCapForListing({
+              primary_trade: row.data.primary_trade ?? null,
+              tier: row.data.tier ?? null
+            });
+            const countLabel =
+              cap === null
+                ? `${liveCount} live product${liveCount === 1 ? "" : "s"}`
+                : `${liveCount} / ${cap} live products`;
+            const status = isPaid && shopOn
+              ? cap !== null && liveCount >= cap
+                ? "Cap reached — archive a product or upgrade to add more"
+                : "Included with your Merchant Pro plan"
+              : isPaid
+                ? "Toggle Trade Center on from your dashboard to go live"
+                : "Upgrade to enable Trade Center";
+            return `${countLabel} · ${status}`;
+          })()}
         </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link
+            href={`/trade-off/edit/${encodeURIComponent(slug)}/bulk-tiers?token=${encodeURIComponent(token)}`}
+            className="inline-flex h-11 items-center rounded-lg border border-brand-line bg-brand-surface px-4 text-[13px] font-bold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+          >
+            Bulk pricing tiers →
+          </Link>
+          <Link
+            href={`/trade-off/edit/${encodeURIComponent(slug)}/product-categories?token=${encodeURIComponent(token)}`}
+            className="inline-flex h-11 items-center rounded-lg border border-brand-line bg-brand-surface px-4 text-[13px] font-bold text-brand-text transition hover:border-brand-accent hover:text-brand-accent"
+          >
+            Categories &amp; Calculators →
+          </Link>
+        </div>
       </section>
 
       {!isPaid && (
@@ -225,7 +255,7 @@ export default async function TradeOffShopModeEditPage({
           initialZones={zones}
         />
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
@@ -237,7 +267,7 @@ function InvalidLink({ reason }: { reason: string }) {
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
           xratedtrade.com
@@ -260,7 +290,7 @@ function InvalidLink({ reason }: { reason: string }) {
           Message us on WhatsApp
         </a>
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }

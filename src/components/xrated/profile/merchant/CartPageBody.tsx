@@ -49,6 +49,7 @@ type WholesaleQuote =
       qualifies_for_min_order: boolean;
       min_order_pence?: number;
       qualifies_for_free: boolean;
+      vat_mode?: "inc" | "ex" | "pay_driver";
     }
   | { kind: "outside_zone"; distance_km: number }
   | { kind: "error"; message: string };
@@ -135,10 +136,19 @@ export function CartPageBody({
     wholesaleQuote && wholesaleQuote.kind === "quoted"
       ? wholesaleQuote.delivery_pence
       : null;
+  // "Pay driver" mode means delivery is settled cash on the door — it
+  // shouldn't sit in the order total. Show it as a separate "paid to
+  // driver" line on the summary (rendered by the quote widget).
+  const payDriver =
+    wholesaleQuote &&
+    wholesaleQuote.kind === "quoted" &&
+    wholesaleQuote.vat_mode === "pay_driver";
   const wholesaleOutside =
     wholesaleQuote !== null && wholesaleQuote.kind === "outside_zone";
   const totalDelivery = wholesaleOn
-    ? wholesaleDeliveryPence ?? 0
+    ? payDriver
+      ? 0
+      : wholesaleDeliveryPence ?? 0
     : shippingPence ?? 0;
   const total = subtotal + totalDelivery;
   const vatPence = showVatLines ? Math.round(total * UK_VAT_RATE) : 0;
@@ -368,6 +378,10 @@ export function CartPageBody({
                   listing={listing}
                   wholesaleZone={wholesaleZone}
                   cartTotalPence={subtotal}
+                  cartLines={state.items.map((it) => ({
+                    product_id: it.product_id,
+                    qty: it.qty
+                  }))}
                   firstName={firstName}
                   onQuoteChange={setWholesaleQuote}
                 />

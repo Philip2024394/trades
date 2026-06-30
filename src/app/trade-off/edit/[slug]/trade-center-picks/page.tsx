@@ -12,8 +12,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardHeader } from "@/components/trade-off/DashboardHeader";
+import { DashboardFooter } from "@/components/trade-off/DashboardFooter";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { effectiveTier } from "@/lib/xratedTrades";
@@ -108,7 +108,7 @@ export default async function TradeOffTradeCenterPicksEditPage({
 
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-3xl px-4 pb-2 pt-10">
         <Link
           href={backHref}
@@ -164,7 +164,7 @@ export default async function TradeOffTradeCenterPicksEditPage({
         />
       </section>
 
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
@@ -176,7 +176,7 @@ function InvalidLink({ reason }: { reason: string }) {
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
           xratedtrade.com
@@ -199,7 +199,7 @@ function InvalidLink({ reason }: { reason: string }) {
           Message us on WhatsApp
         </a>
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }

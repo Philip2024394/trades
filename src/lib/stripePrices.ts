@@ -35,7 +35,8 @@ export type StripeAddonSlug =
   | "materials_network"
   | "quote_pipeline"
   | "faq_page"
-  | "trade_center_picks";
+  | "trade_center_picks"
+  | "material_calculators";
 
 export const STRIPE_PRICE_IDS: {
   "paid:monthly": string;
@@ -59,7 +60,8 @@ export const STRIPE_PRICE_IDS: {
     materials_network: process.env.STRIPE_PRICE_ADDON_MATERIALS_NETWORK ?? "",
     quote_pipeline: process.env.STRIPE_PRICE_ADDON_QUOTE_PIPELINE ?? "",
     faq_page: process.env.STRIPE_PRICE_ADDON_FAQ_PAGE ?? "",
-    trade_center_picks: process.env.STRIPE_PRICE_ADDON_TRADE_CENTER_PICKS ?? ""
+    trade_center_picks: process.env.STRIPE_PRICE_ADDON_TRADE_CENTER_PICKS ?? "",
+    material_calculators: process.env.STRIPE_PRICE_ADDON_MATERIAL_CALCULATORS ?? ""
   }
 };
 

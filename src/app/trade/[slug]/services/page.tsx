@@ -60,7 +60,6 @@ export default async function TradeServicesPage({
         displayName={listing.display_name}
         city={listing.city}
         servicePostcodes={listing.service_postcodes ?? []}
-        services={listing.services_offered ?? []}
         lat={listing.lat}
         lng={listing.lng}
       />

@@ -39,6 +39,8 @@ import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { ProductPageGallery } from "@/components/xrated/profile/merchant/ProductPageGallery";
 import { ProductPageAddToCart } from "@/components/xrated/profile/merchant/ProductPageAddToCart";
+import { MaterialCalculator } from "@/components/calculators/MaterialCalculator";
+import { resolveCalculator } from "@/lib/merchantCategories";
 import { SiblingsWithCompare } from "@/components/xrated/profile/merchant/SiblingsWithCompare";
 import { BulkTierTable } from "@/components/xrated/profile/merchant/BulkTierTable";
 import { StarsRating } from "@/components/xrated/profile/StarsRating";
@@ -92,6 +94,40 @@ async function loadSiblings(
     .order("created_at", { ascending: false })
     .limit(4);
   return (res.data ?? []) as HammerexXratedProduct[];
+}
+
+/** Load every live product on the merchant that has merchant_subcategory
+ *  set — feeds the calculator's cross-sell engine. Capped at 50 so a
+ *  huge catalogue doesn't bloat the PDP server payload. */
+async function loadCrossSellCandidates(
+  listingId: string,
+  excludeId: string
+): Promise<
+  Array<{
+    id: string;
+    slug: string | null;
+    name: string;
+    price_pence: number;
+    cover_url: string | null;
+    merchant_subcategory: string | null;
+  }>
+> {
+  const res = await supabase
+    .from("hammerex_xrated_products")
+    .select("id, slug, name, price_pence, cover_url, merchant_subcategory")
+    .eq("listing_id", listingId)
+    .eq("status", "live")
+    .neq("id", excludeId)
+    .not("merchant_subcategory", "is", null)
+    .limit(50);
+  return (res.data ?? []) as Array<{
+    id: string;
+    slug: string | null;
+    name: string;
+    price_pence: number;
+    cover_url: string | null;
+    merchant_subcategory: string | null;
+  }>;
 }
 
 // Up to 2 hand-picked compare targets — paired with the current product
@@ -228,7 +264,11 @@ function shippingSummaryLine(
 }
 
 // VAT helper line — renders as small grey text under the price row (not
-// a badge). NULL VAT columns ⇒ tradesperson isn't VAT registered.
+// a badge). NULL VAT columns ⇒ tradesperson isn't VAT registered. The
+// dominant <PriceDisplay> figure on the PDP is now the gross (inc-VAT)
+// price for any VAT-registered seller, per UK Price Marking Order 2004,
+// so the sub-line here is the smaller ex-VAT figure aimed at trade
+// buyers — flipped from the legacy "ex headline + inc sub" order.
 function vatLine(product: HammerexXratedProduct): { label: string; sub?: string } {
   if (product.vat_rate_pct === null || product.vat_inclusive === null) {
     return { label: "Price does not include VAT — seller is not VAT registered" };
@@ -238,8 +278,10 @@ function vatLine(product: HammerexXratedProduct): { label: string; sub?: string 
   if (product.vat_inclusive) {
     return { label: `Price includes VAT ${rateStr}%` };
   }
-  const incPence = Math.round(product.price_pence * (1 + ratePct / 100));
-  return { label: `Price does not include VAT`, sub: `${formatGbp(incPence)} inc ${rateStr}% VAT` };
+  return {
+    label: `Price includes VAT ${rateStr}%`,
+    sub: `${formatGbp(product.price_pence)} ex VAT (trade)`
+  };
 }
 
 export async function generateMetadata({
@@ -298,10 +340,11 @@ export default async function ProductDetailPage({
   const product = await loadProduct(listing.id, productSlug);
   if (!product) notFound();
   const compareIds = Array.isArray(product.compare_with) ? product.compare_with : [];
-  const [siblings, compareTargets, stats] = await Promise.all([
+  const [siblings, compareTargets, stats, crossSellSiblings] = await Promise.all([
     loadSiblings(listing.id, product.id),
     loadCompareTargets(compareIds),
-    loadProductStats(product.id)
+    loadProductStats(product.id),
+    loadCrossSellCandidates(listing.id, product.id)
   ]);
   // Batch the sibling + compare-target review aggregates in one
   // round-trip after the products are known. Keeps the rail from
@@ -403,7 +446,22 @@ export default async function ProductDetailPage({
             />
             <div className="flex flex-wrap items-center gap-3">
               <CurrencyDropdown />
-              <PriceDisplay pricePence={product.price_pence} installPrefix={isInstall} />
+              <PriceDisplay
+                pricePence={
+                  // PMO 2004 — dominant figure is VAT-inclusive when
+                  // the seller is VAT-registered and stored the price
+                  // ex-VAT. Inline rather than importing the cart
+                  // helper to keep this server component free of the
+                  // "use client" boundary in xratedCart.
+                  product.vat_inclusive === false &&
+                  typeof product.vat_rate_pct === "number"
+                    ? Math.round(
+                        product.price_pence * (1 + product.vat_rate_pct / 100)
+                      )
+                    : product.price_pence
+                }
+                installPrefix={isInstall}
+              />
               {!isInstall && <StockPill stock={stock} />}
               {!isInstall && bulkTiers.length > 0 && (
                 <span
@@ -490,6 +548,45 @@ export default async function ProductDetailPage({
             {!isInstall && bulkTiers.length > 0 && (
               <BulkTierTable tiers={bulkTiers} productId={product.id} />
             )}
+
+            {/* Material Calculator — renders when the product's
+             *  merchant_category resolves to a CalculatorType (or the
+             *  per-product override forces one). Picks the right calc
+             *  component server-side and hydrates it client-side with
+             *  the product's pricing snapshot. */}
+            {(() => {
+              const calcType = resolveCalculator({
+                merchant_category: product.merchant_category,
+                calculator_override: product.calculator_override
+              });
+              if (!calcType) return null;
+              return (
+                <MaterialCalculator
+                  type={calcType}
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    price_pence: product.price_pence,
+                    cover_url: product.cover_url,
+                    calculator_config: null,
+                    service_trade_type: product.service_trade_type,
+                    service_rate_pence: product.service_rate_pence,
+                    service_rate_unit: product.service_rate_unit
+                  }}
+                  listingSlug={listing.slug}
+                  productSlug={product.slug ?? product.id}
+                  siblings={crossSellSiblings.map((s) => ({
+                    id: s.id,
+                    slug: s.slug,
+                    name: s.name,
+                    price_pence: s.price_pence,
+                    cover_url: s.cover_url,
+                    status: "live" as const,
+                    merchant_subcategory: s.merchant_subcategory
+                  }))}
+                />
+              );
+            })()}
 
             {isInstall ? (
               <div className="flex flex-col gap-1">

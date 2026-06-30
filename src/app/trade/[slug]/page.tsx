@@ -1182,7 +1182,7 @@ function ServiceAreaAndHours({ listing }: { listing: HammerexTradeOffListing }) 
     return (
       <section className="w-full px-4 pt-10 sm:px-6">
         <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Services & Area
+          Delivery & zones
         </h2>
         <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
           The zone we serve daily from the yard — and what we cover inside it.
@@ -1195,6 +1195,13 @@ function ServiceAreaAndHours({ listing }: { listing: HammerexTradeOffListing }) 
               lng={listing.lng}
               city={listing.city}
               servicePostcodes={listing.service_postcodes ?? []}
+              merchantName={listing.display_name}
+              height={320}
+              zones={[
+                { idx: 1, km: 5, priceLabel: "FREE" },
+                { idx: 2, km: 15, priceLabel: "£15" },
+                { idx: 3, km: 30, priceLabel: "£40" }
+              ]}
             />
           </div>
           {hasHours && (

@@ -1,10 +1,13 @@
 // POST /api/trade-off/wholesale-origin/upsert
 // Magic-link authenticated. Body:
 //   { slug, edit_token, address, postcode, lat, lng, distance_fudge,
-//     allow_pickup, currency, prices_ex_vat }
+//     allow_pickup, currency, prices_ex_vat,
+//     pickup_from?, pickup_to? }
 // Updates wholesale_origin_* + wholesale_* columns on the listing.
 // All inputs sanitised; lat/lng range-checked. Currency forced to a
 // 3-letter ISO-ish code (GBP only in v1; schema supports more).
+// pickup_from / pickup_to are HH:MM strings (24h) or null/empty when
+// the merchant confirms collection per order over WhatsApp.
 
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
@@ -39,6 +42,17 @@ function clampNum(v: unknown, min: number, max: number, fallback: number): numbe
 }
 
 const CURRENCY_RE = /^[A-Z]{3}$/;
+const TIME_RE = /^([01]\d|2[0-3]):([0-5]\d)$/;
+
+/** Parse a "HH:MM" string into "HH:MM:00" for Postgres TIME; null for
+ *  any empty / malformed value (the merchant prefers "confirm per order"). */
+function timeOrNull(v: unknown): string | null {
+  if (typeof v !== "string") return null;
+  const t = v.trim();
+  if (t.length === 0) return null;
+  if (!TIME_RE.test(t)) return null;
+  return `${t}:00`;
+}
 
 export async function POST(req: NextRequest) {
   let body: Record<string, unknown>;
@@ -82,6 +96,8 @@ export async function POST(req: NextRequest) {
   const prices_ex_vat = body.prices_ex_vat === false ? false : true;
   const currencyRaw = s(body.currency).toUpperCase();
   const currency = CURRENCY_RE.test(currencyRaw) ? currencyRaw : "GBP";
+  const pickup_from = timeOrNull(body.pickup_from);
+  const pickup_to = timeOrNull(body.pickup_to);
 
   const patch = {
     wholesale_origin_address: addressRaw.length > 0 ? addressRaw.slice(0, 240) : null,
@@ -91,7 +107,9 @@ export async function POST(req: NextRequest) {
     wholesale_distance_fudge: Math.round(distance_fudge * 100) / 100,
     wholesale_allow_pickup: allow_pickup,
     wholesale_currency: currency,
-    wholesale_prices_ex_vat: prices_ex_vat
+    wholesale_prices_ex_vat: prices_ex_vat,
+    wholesale_pickup_from: pickup_from,
+    wholesale_pickup_to: pickup_to
   };
 
   const upd = await supabaseAdmin
@@ -99,7 +117,7 @@ export async function POST(req: NextRequest) {
     .update(patch)
     .eq("id", listing.data.id)
     .select(
-      "id, wholesale_origin_address, wholesale_origin_postcode, wholesale_origin_lat, wholesale_origin_lng, wholesale_distance_fudge, wholesale_allow_pickup, wholesale_currency, wholesale_prices_ex_vat"
+      "id, wholesale_origin_address, wholesale_origin_postcode, wholesale_origin_lat, wholesale_origin_lng, wholesale_distance_fudge, wholesale_allow_pickup, wholesale_currency, wholesale_prices_ex_vat, wholesale_pickup_from, wholesale_pickup_to"
     )
     .maybeSingle();
 

@@ -82,6 +82,58 @@ export function YardOriginEditor({
     }
   }
 
+  // Parse lat/lng out of a Google Maps share URL. Handles the most common
+  // long-form patterns:
+  //   .../@53.7457,-0.4042,15z
+  //   .../?q=53.7457,-0.4042
+  //   .../?ll=53.7457,-0.4042
+  //   .../!3d53.7457!4d-0.4042  (place page)
+  //
+  // Short links (goo.gl/maps/..., maps.app.goo.gl/...) and Apple/Bing
+  // URLs are not handled — they require a server-side redirect-follow
+  // we haven't built yet. Returns null when no coords were found.
+  function parseMapsUrl(url: string): { lat: number; lng: number } | null {
+    const trimmed = url.trim();
+    if (trimmed.length === 0) return null;
+    const patterns: RegExp[] = [
+      /@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
+      /[?&](?:q|ll|destination)=(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?)/,
+      /!3d(-?\d+(?:\.\d+)?)!4d(-?\d+(?:\.\d+)?)/
+    ];
+    for (const re of patterns) {
+      const m = trimmed.match(re);
+      if (m) {
+        const lat = Number(m[1]);
+        const lng = Number(m[2]);
+        if (
+          Number.isFinite(lat) &&
+          Number.isFinite(lng) &&
+          lat >= -90 &&
+          lat <= 90 &&
+          lng >= -180 &&
+          lng <= 180
+        ) {
+          return { lat, lng };
+        }
+      }
+    }
+    return null;
+  }
+
+  function applyMapsUrl(url: string) {
+    setErr(null);
+    setMsg(null);
+    const parsed = parseMapsUrl(url);
+    if (!parsed) {
+      setErr(
+        "Couldn't read coordinates from that URL. Open Google Maps, drop a pin, tap Share, choose 'Copy link', then paste the full link here."
+      );
+      return;
+    }
+    setState((s) => ({ ...s, lat: parsed.lat, lng: parsed.lng }));
+    setMsg(`Pinned: ${parsed.lat.toFixed(5)}, ${parsed.lng.toFixed(5)}`);
+  }
+
   async function save() {
     setErr(null);
     setMsg(null);
@@ -127,10 +179,11 @@ export function YardOriginEditor({
   return (
     <div className="space-y-4 rounded-xl border border-brand-line bg-brand-surface p-5">
       <div>
-        <h2 className="text-lg font-extrabold">Yard origin</h2>
+        <h2 className="text-lg font-extrabold">Merchant location</h2>
         <p className="mt-1 text-xs text-brand-muted">
-          Address + postcode + lat/lng. We measure delivery distance from
-          this pin out to the customer&rsquo;s postcode.
+          Paste your Google Maps location URL in the field below, or enter
+          your postcode and tap &ldquo;Set my location&rdquo; to confirm
+          your business location.
         </p>
       </div>
 
@@ -144,6 +197,20 @@ export function YardOriginEditor({
           {msg}
         </p>
       )}
+
+      <Field label="Google Maps location URL">
+        <input
+          type="url"
+          inputMode="url"
+          maxLength={600}
+          onChange={(e) => {
+            const v = e.target.value;
+            if (v.trim().length > 0) applyMapsUrl(v);
+          }}
+          placeholder="https://www.google.com/maps/@53.7457,-0.4042,15z"
+          className="block h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+        />
+      </Field>
 
       <Field label="Yard address (street + town)">
         <input
@@ -172,37 +239,40 @@ export function YardOriginEditor({
             type="button"
             onClick={locate}
             disabled={busy !== null}
-            className="inline-flex h-11 items-center rounded-lg border border-brand-accent bg-brand-accent/10 px-4 text-xs font-bold text-brand-accent transition hover:opacity-90 disabled:opacity-60"
+            className="inline-flex h-11 items-center gap-2 rounded-lg px-4 text-xs font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+            style={{
+              // Red until a yard pin exists, green once set. Tapping again
+              // re-runs Locate (merchant can fix the postcode and reset).
+              background: hasCoords ? "#0F5132" : "#991B1B"
+            }}
           >
-            {busy === "locate" ? "Locating…" : "Locate"}
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            {busy === "locate"
+              ? "Locating…"
+              : hasCoords
+                ? "Location set — reset"
+                : "Set my location"}
           </button>
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Latitude">
-          <input
-            type="number"
-            inputMode="decimal"
-            step="0.000001"
-            value={state.lat ?? ""}
-            onChange={(e) => patch("lat", e.target.value === "" ? null : Number(e.target.value))}
-            placeholder="53.4585"
-            className="block h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
-          />
-        </Field>
-        <Field label="Longitude">
-          <input
-            type="number"
-            inputMode="decimal"
-            step="0.000001"
-            value={state.lng ?? ""}
-            onChange={(e) => patch("lng", e.target.value === "" ? null : Number(e.target.value))}
-            placeholder="-2.3043"
-            className="block h-11 w-full rounded-md border border-brand-line bg-brand-bg px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
-          />
-        </Field>
-      </div>
+      {/* Lat/lng inputs hidden — merchants don't need to see coordinates.
+       *  Postcode + "Locate" fills the state automatically and the map
+       *  preview below confirms the pin. State is still maintained so
+       *  upsert sends valid coords. */}
 
       <Field label="Distance fudge factor (1.0 = pure straight-line, 1.4 = default road, 3.0 = mountainous detour)">
         <input
@@ -218,8 +288,8 @@ export function YardOriginEditor({
       </Field>
 
       <div className="rounded-lg border border-brand-line bg-brand-bg p-3">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-brand-muted">
-          Yard preview
+        <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
+          Building Merchant Delivery Zone Preview
         </p>
         <div className="mt-3 overflow-hidden rounded-md border border-brand-line bg-brand-surface">
           {hasCoords ? (

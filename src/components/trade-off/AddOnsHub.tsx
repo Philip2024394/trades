@@ -23,9 +23,10 @@ import Link from "next/link";
 import {
   XRATED_ADDONS,
   formatAddonPrice,
+  isAddonIncludedForListing,
   type XratedAddon
 } from "@/lib/xratedAddons";
-import { isMerchantGradeTrade } from "@/lib/tradeOff";
+import { isMerchantGradeTrade, isMerchantProTrade } from "@/lib/tradeOff";
 import type { HammerexTradeOffListing } from "@/lib/supabase";
 
 type Tier = "standard" | "app_trial" | "app_paid" | "app_expired" | "app_verified";
@@ -232,6 +233,7 @@ export function AddOnsHub({
   // and service-only add-ons from merchant-grade trades. Undefined
   // audience ⇒ shown to everyone.
   const isMerchant = isMerchantGradeTrade(listing.primary_trade);
+  const isMerchantPro = isMerchantProTrade(listing.primary_trade);
   const visibleAddons = XRATED_ADDONS.filter((addon) => {
     if (addon.audience === "merchant" && !isMerchant) return false;
     if (addon.audience === "service" && isMerchant) return false;
@@ -241,14 +243,17 @@ export function AddOnsHub({
   return (
     <div className="rounded-3xl border border-brand-line bg-brand-surface p-5 sm:p-6">
       <p className="text-[10px] font-bold uppercase tracking-widest text-brand-accent">
-        Add-ons
+        {isMerchantPro ? "Your features" : "Add-ons"}
       </p>
       <h2 className="mt-2 text-xl font-extrabold leading-tight sm:text-2xl">
-        Make your profile do more
+        {isMerchantPro
+          ? "Everything's included — fill what you'll use"
+          : "Make your profile do more"}
       </h2>
       <p className="mt-2 text-xs text-brand-muted">
-        Switch on the features that match how you work. Each add-on layers on
-        top of your existing profile — no separate setup.
+        {isMerchantPro
+          ? "Your £14.99/mo Merchant Pro plan bundles every feature below. Each one only shows on your public profile once you've added content — empty sections stay hidden."
+          : "Switch on the features that match how you work. Each add-on layers on top of your existing profile — no separate setup."}
       </p>
 
       {err && (
@@ -266,12 +271,16 @@ export function AddOnsHub({
             editToken={editToken}
             enabled={
               enabledMap[addon.slug] === true ||
-              (addon.includedWithPaid && isPaid)
+              (addon.includedWithPaid && isPaid) ||
+              (isMerchantPro && isPaid && isAddonIncludedForListing(addon, listing))
             }
             busy={busySlug === addon.slug}
             isPaid={isPaid}
             hasActiveSub={hasActiveSub}
             upgradeHref={upgradeHref}
+            bundledIncluded={
+              isMerchantPro && isAddonIncludedForListing(addon, listing)
+            }
             onToggle={(next) => toggle(addon, next)}
             onOpenPortal={openPortal}
             portalBusy={busySlug === "__portal__"}
@@ -291,6 +300,7 @@ function AddonTile({
   isPaid,
   hasActiveSub,
   upgradeHref,
+  bundledIncluded,
   onToggle,
   onOpenPortal,
   portalBusy
@@ -303,16 +313,26 @@ function AddonTile({
   isPaid: boolean;
   hasActiveSub: boolean;
   upgradeHref: string;
+  /** Merchant Pro override — when true this paid add-on is bundled into
+   *  the listing's tier (no separate Stripe line, no upgrade gate). UI
+   *  collapses to an "Included" chip + Manage link. */
+  bundledIncluded?: boolean;
   onToggle: (next: boolean) => void;
   onOpenPortal: () => void;
   portalBusy: boolean;
 }) {
   const isComingSoon = addon.availability === "coming_soon";
-  const includedChip = addon.includedWithPaid && isPaid;
+  const includedChip =
+    (addon.includedWithPaid && isPaid) || (bundledIncluded === true && isPaid);
   const requiresUpgrade =
-    addon.pricing.kind === "paid" && !addon.includedWithPaid && !isPaid;
+    addon.pricing.kind === "paid" &&
+    !addon.includedWithPaid &&
+    !bundledIncluded &&
+    !isPaid;
   const isPaidAddon =
-    addon.pricing.kind === "paid" && !addon.includedWithPaid;
+    addon.pricing.kind === "paid" &&
+    !addon.includedWithPaid &&
+    !bundledIncluded;
   // "Active — manage in subscription" surface — only when this is a
   // paid add-on the customer has actually attached to their Stripe sub.
   // Free + included add-ons keep the simple toggle / chip UI.
@@ -346,9 +366,14 @@ function AddonTile({
       </div>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <span className="inline-flex items-center rounded-full border border-brand-line bg-brand-surface px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-text">
-          {isComingSoon ? "Coming soon" : formatAddonPrice(addon)}
-        </span>
+        {/* Price chip suppressed for bundled-included add-ons — Merchant
+         *  Pro tradies shouldn't see "£7/mo" on a feature their tier
+         *  already covers. Free add-ons still show "Free". */}
+        {!(bundledIncluded && isPaid) && (
+          <span className="inline-flex items-center rounded-full border border-brand-line bg-brand-surface px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-text">
+            {isComingSoon ? "Coming soon" : formatAddonPrice(addon)}
+          </span>
+        )}
         {includedChip && (
           <span className="inline-flex items-center rounded-full border border-brand-accent/60 bg-brand-accent/10 px-2 py-1 text-[10px] font-bold uppercase tracking-widest text-brand-accent">
             Included

@@ -10,7 +10,11 @@
 // component swap.
 
 import type { HammerexTradeOffListing } from "@/lib/supabase";
-import { isMerchantGradeTrade } from "@/lib/tradeOff";
+import {
+  isMerchantGradeTrade,
+  isMerchantProTrade,
+  MERCHANT_PRO_PRODUCT_CAP
+} from "@/lib/tradeOff";
 
 export type XratedAddonPricing =
   | { kind: "free" }
@@ -384,6 +388,28 @@ export const XRATED_ADDONS: XratedAddon[] = [
       "Dedicated /<slug>/faq page customers can bookmark and share",
       "Adds a Frequently Asked Questions container alongside Trusted Trades"
     ]
+  },
+  {
+    slug: "material_calculators",
+    name: "Material Calculator Suite",
+    tagline: "Paint, flooring, tiles, gravel, concrete — customers buy exactly what they need",
+    summary:
+      "17 UK-specific calculators that turn 'how much do I need?' into one tap. Customer enters room dimensions, picks options, gets the exact quantity with 10% waste built in — then taps 'Add all to cart'. Paint uses real-world 12 m²/L coverage (not the optimistic tin label). Tile calc accounts for diagonal cuts. Concrete picks the right mix. Trades can attach their installation rate so the calculator quotes materials + labour in one estimate. Every estimate shares as a link the customer can text their contractor.",
+    glyph: "🧮",
+    image_url: null,
+    personas: ["Merchants", "Carpenters", "Tilers", "Plasterers", "Concrete finishers", "Landscapers"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Auto by category", "Add all to cart", "Share estimate link"],
+    pricing: { kind: "paid", monthly_pence: 600 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "calculators",
+    includedWithPaid: false,
+    benefits: [
+      "17 UK calculators — paint, flooring, tiles, gravel, concrete, mortar, bricks, plasterboard, insulation, decking, fencing, paving, skirting, roof tiles, wallpaper, render, turf",
+      "Auto-attaches to products by category — no per-product tickboxes",
+      "Trades attach a £/m² rate to quote installation labour alongside materials"
+    ]
   }
 ];
 
@@ -396,14 +422,66 @@ export function getAddonBySlug(slug: string): XratedAddon | null {
  *  honouring the actual paid-tier gate — this just reflects the
  *  tradesperson's stated preference. */
 export function isAddonEnabled(
-  listing: Pick<HammerexTradeOffListing, "addons_enabled">,
+  listing: Pick<HammerexTradeOffListing, "addons_enabled"> &
+    Partial<Pick<HammerexTradeOffListing, "primary_trade">>,
   slug: string
 ): boolean {
   const map = listing.addons_enabled ?? {};
   if (map[slug] === true) return true;
   const addon = getAddonBySlug(slug);
-  if (addon?.includedWithPaid) return true;
+  if (!addon) return false;
+  if (addon.includedWithPaid) return true;
+  // Merchant Pro trades (building-merchant + builders-supplies) get every
+  // paid add-on bundled with their £14.99/mo tier — the per-add-on toggle
+  // is bypassed. See isAddonIncludedForListing.
+  if (isAddonIncludedForListing(addon, listing)) return true;
   return false;
+}
+
+/** True when the listing's trade qualifies for the add-on as a bundled
+ *  inclusion — i.e. the customer doesn't have to pay extra to switch it
+ *  on. Two paths:
+ *
+ *  1. The add-on is marked `includedWithPaid` in the registry (free or
+ *     "free with any paid tier" — e.g. trusted_trades, newsletter).
+ *  2. The listing's primary trade is a Merchant Pro trade
+ *     (building-merchant or builders-supplies) AND the add-on is paid —
+ *     the £14.99/mo Merchant Pro tier bundles every paid add-on.
+ *
+ *  This does NOT check the listing's tier (paid vs free) — the AddOnsHub
+ *  layer is still responsible for showing a "subscribe first" gate to
+ *  users who haven't paid. This helper only answers "if this user paid,
+ *  would this add-on be included for free?". */
+export function isAddonIncludedForListing(
+  addon: XratedAddon,
+  listing: Partial<Pick<HammerexTradeOffListing, "primary_trade">>
+): boolean {
+  if (addon.includedWithPaid) return true;
+  if (
+    addon.pricing.kind === "paid" &&
+    isMerchantProTrade(listing.primary_trade ?? null)
+  ) {
+    return true;
+  }
+  return false;
+}
+
+/** Active-product cap for a listing. Returns null = unlimited (Verified
+ *  tier, non-Merchant-Pro trades, or free tier where the cap is enforced
+ *  elsewhere). Returns a positive integer for hard cap.
+ *
+ *  Current rule: Merchant Pro trades on paid tier are capped at 200
+ *  active products. Verified bypasses (returns null). Non-Merchant-Pro
+ *  trades are unlimited by product count — they're metered by add-on
+ *  pricing instead. */
+export function productCapForListing(
+  listing: Partial<Pick<HammerexTradeOffListing, "primary_trade" | "tier">>
+): number | null {
+  if (listing.tier === "app_verified") return null;
+  if (isMerchantProTrade(listing.primary_trade ?? null)) {
+    return MERCHANT_PRO_PRODUCT_CAP;
+  }
+  return null;
 }
 
 /** Shop Mode is the canonical "swap the services carousel for products"

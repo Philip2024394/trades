@@ -5,8 +5,8 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardHeader } from "@/components/trade-off/DashboardHeader";
+import { DashboardFooter } from "@/components/trade-off/DashboardFooter";
 import { DashboardDrawer } from "@/components/trade-off/DashboardDrawer";
 import { BusinessCardPanel } from "@/components/trade-off/BusinessCardPanel";
 import { LeadAlertsSetupCard } from "@/components/trade-off/LeadAlertsSetupCard";
@@ -67,7 +67,7 @@ export default async function SharingPage({
 
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      <XratedHeader />
+      <DashboardHeader />
       <DashboardDrawer slug={slug} token={token} current="sharing" />
 
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-10 sm:px-6">
@@ -114,7 +114,7 @@ export default async function SharingPage({
         />
       </section>
 
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
@@ -134,7 +134,7 @@ function InvalidLink({ reason }: { reason: "missing-token" | "not-found" | "bad-
   };
   return (
     <main className="min-h-screen bg-white text-neutral-900">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 py-16 text-center sm:px-6">
         <p
           className="text-[10px] font-extrabold uppercase tracking-[0.22em]"
@@ -156,7 +156,7 @@ function InvalidLink({ reason }: { reason: "missing-token" | "not-found" | "bad-
           Message us on WhatsApp
         </a>
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }

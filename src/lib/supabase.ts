@@ -149,6 +149,11 @@ export type HammerexTradeOffListing = {
   wholesale_origin_lng: number | null;
   wholesale_distance_fudge: number;
   wholesale_allow_pickup: boolean;
+  /** Click & Collect pickup window — TIME (HH:MM:SS) or null when the
+   *  merchant confirms per order over WhatsApp. Surfaced on the public
+   *  cart so customers know when to turn up. */
+  wholesale_pickup_from: string | null;
+  wholesale_pickup_to: string | null;
   wholesale_currency: string;
   wholesale_prices_ex_vat: boolean;
   // Materials Network add-on. Three role-specific columns:
@@ -308,6 +313,29 @@ export type HammerexXratedProduct = {
     max_qty?: number | null;
     price_pence: number;
   }[];
+  /** Min quantity that unlocks free delivery for this product within
+   *  the merchant's wholesale zones. NULL = no free-delivery offer.
+   *  Drives the "Free Delivery on X+ orders" badge on the product card +
+   *  PDP and zeroes the order delivery cost on the cart. */
+  free_delivery_min_qty: number | null;
+  /** Structured product category — drives the category map on the
+   *  storefront AND the default Material Calculator on the PDP. NULL
+   *  = uncategorised. See src/lib/merchantCategories.ts. */
+  merchant_category: string | null;
+  /** Optional subcategory for cross-sell matching. e.g. paint_brush,
+   *  paint_roller, tile_adhesive. Drives the "Complete your project"
+   *  panel on calculator PDPs. */
+  merchant_subcategory: string | null;
+  /** Per-product calculator override. NULL or "auto" = use the
+   *  category map's default. "none" = hide. Or an explicit type. */
+  calculator_override: string | null;
+  /** For kind=service rows — which trade is offering installation.
+   *  Maps to the matching calculator + adds a labour line. */
+  service_trade_type: string | null;
+  /** Installer labour rate per unit (£ in pence). */
+  service_rate_pence: number | null;
+  /** Unit for service_rate_pence: m2 | linear_m | item | tonne | hour | day. */
+  service_rate_unit: string | null;
   compare_with: string[];
   status: "live" | "archived";
   sort_order: number;

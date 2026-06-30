@@ -20,7 +20,7 @@
 // the row.
 
 import type { HammerexXratedProduct } from "@/lib/supabase";
-import { formatGbp } from "@/lib/xratedCart";
+import { consumerDisplayPrice } from "@/lib/xratedCart";
 
 export function ProductCardLink({
   product,
@@ -79,18 +79,31 @@ export function ProductCardLink({
         >
           {product.name}
         </p>
-        <div className="mt-1 flex items-baseline gap-1.5">
-          <span className="text-[15px] font-extrabold text-neutral-900 sm:text-base">
-            {product.product_kind === "install" ? "From " : ""}
-            {formatGbp(product.price_pence)}
-          </span>
-        </div>
-        {/* VAT meta line — 11px is a deliberate exception to the 13px floor
-            because this is non-primary meta on a grid card; the customer's
-            decision driver is the price + name above. */}
-        <p className="text-[11px] text-neutral-500">
-          {vatShortLabel(product)}
-        </p>
+        {(() => {
+          // UK Price Marking Order 2004 — dominant figure on consumer
+          // cards must be VAT-inclusive. consumerDisplayPrice converts
+          // ex-VAT-stored products to gross for the headline and keeps
+          // the ex-VAT figure on the meta line for trade buyers.
+          const px = consumerDisplayPrice(product);
+          return (
+            <>
+              <div className="mt-1 flex items-baseline gap-1.5">
+                <span className="text-[15px] font-extrabold text-neutral-900 sm:text-base">
+                  {product.product_kind === "install" ? "From " : ""}
+                  £{(px.displayPence / 100).toLocaleString("en-GB", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}
+                </span>
+              </div>
+              {/* VAT meta line — 11px is a deliberate exception to the
+                  13px floor because this is non-primary meta on a grid
+                  card; the customer's decision driver is the price +
+                  name above. */}
+              <p className="text-[11px] text-neutral-500">{px.vatLabel}</p>
+            </>
+          );
+        })()}
         {typeof product.dispatch_days === "number" && product.dispatch_days > 0 && (
           <p className="text-[13px] text-neutral-500">
             Ships in {product.dispatch_days}{" "}

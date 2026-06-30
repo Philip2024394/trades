@@ -126,8 +126,47 @@ export function ProductPageAddToCart({
     window.setTimeout(() => setToast(null), 2400);
   }
 
+  const freeDeliveryMinQty =
+    typeof product.free_delivery_min_qty === "number" &&
+    product.free_delivery_min_qty > 0
+      ? product.free_delivery_min_qty
+      : null;
+  const freeDeliveryUnlocked =
+    freeDeliveryMinQty !== null && qty >= freeDeliveryMinQty;
+
   return (
     <div className="flex w-full flex-col gap-3">
+      {freeDeliveryMinQty !== null && (
+        <div
+          className="flex items-center gap-2 rounded-lg border px-3 py-2 text-[13px] font-extrabold"
+          style={{
+            background: freeDeliveryUnlocked ? "#0F513215" : "#FFF8E5",
+            color: freeDeliveryUnlocked ? "#0F5132" : "#7A4F00",
+            borderColor: freeDeliveryUnlocked ? "#0F5132" : "#FFB300"
+          }}
+        >
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M1 3h15v13H1z" />
+            <path d="M16 8h4l3 3v5h-7" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg>
+          {freeDeliveryUnlocked
+            ? "Free delivery unlocked on this order"
+            : `Free delivery on ${freeDeliveryMinQty}+ — within our delivery zones`}
+        </div>
+      )}
+
       {hasVariants && (
         <VariantPicker
           variants={variants}

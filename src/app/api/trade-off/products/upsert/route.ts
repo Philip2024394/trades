@@ -7,6 +7,28 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { productCapForListing } from "@/lib/xratedAddons";
+
+const MERCHANT_CATEGORY_VALUES = new Set([
+  "paint", "flooring", "tiles", "aggregates", "concrete", "mortar",
+  "bricks_blocks", "plasterboard", "insulation", "decking", "fencing",
+  "paving", "skirting", "roof_tiles", "wallpaper", "render", "turf",
+  "hand_tools", "fixings", "other"
+]);
+const CALCULATOR_OVERRIDE_VALUES = new Set([
+  "auto", "none",
+  "paint", "flooring", "tiles", "gravel", "concrete", "mortar",
+  "bricks", "plasterboard", "insulation", "decking", "fencing",
+  "paving", "skirting", "roof_tiles", "wallpaper", "render", "turf"
+]);
+const SERVICE_TRADE_VALUES = new Set([
+  "carpenter", "joiner", "tiler", "plasterer", "bricklayer",
+  "concrete_finisher", "roofer", "painter_decorator", "landscaper",
+  "carpet_fitter", "fencer", "insulation_installer"
+]);
+const SERVICE_RATE_UNIT_VALUES = new Set([
+  "m2", "linear_m", "item", "tonne", "hour", "day"
+]);
 
 export const runtime = "nodejs";
 
@@ -267,7 +289,7 @@ export async function POST(req: NextRequest) {
 
   const listing = await supabaseAdmin
     .from("hammerex_trade_off_listings")
-    .select("id, edit_token")
+    .select("id, edit_token, primary_trade, tier")
     .eq("slug", slug)
     .maybeSingle();
 
@@ -422,6 +444,76 @@ export async function POST(req: NextRequest) {
     vat_rate_pct = Math.round(rate * 100) / 100;
   }
 
+  // Free-delivery qualifier — NULL means no offer; integer ≥ 1 means
+  // "free delivery within zones when qty ≥ this". Coerced through the
+  // same nonNegIntOrNull helper as stock, then bounced to NULL when 0
+  // (the CHECK constraint enforces > 0 or NULL).
+  let free_delivery_min_qty: number | null = null;
+  if (
+    productIn.free_delivery_min_qty !== undefined &&
+    productIn.free_delivery_min_qty !== null &&
+    productIn.free_delivery_min_qty !== ""
+  ) {
+    const n = Number(productIn.free_delivery_min_qty);
+    if (!Number.isFinite(n) || n < 1) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "free_delivery_min_qty must be a positive integer or null."
+        },
+        { status: 400 }
+      );
+    }
+    free_delivery_min_qty = Math.round(n);
+  }
+
+  // Merchant category + calculator override + service (trade installer)
+  // fields. All optional; bad values bounce as 400 so the editor surfaces
+  // the precise reason. Empty string → null (clears the field).
+  function enumOrNull(v: unknown, allowed: Set<string>): string | null | false {
+    if (v === null || v === undefined || v === "") return null;
+    if (typeof v !== "string") return false;
+    return allowed.has(v) ? v : false;
+  }
+  const merchant_category_in = enumOrNull(productIn.merchant_category, MERCHANT_CATEGORY_VALUES);
+  if (merchant_category_in === false) {
+    return NextResponse.json(
+      { ok: false, error: "merchant_category is not a recognised value." },
+      { status: 400 }
+    );
+  }
+  // merchant_subcategory is intentionally free-text + indexed, NOT
+  // enum-constrained server-side, so a new calc scenario can register
+  // new subcategory slugs by code without an API change. Editor UI
+  // surfaces the controlled vocabulary; raw API trusts the merchant.
+  const merchant_subcategory_in: string | null =
+    typeof productIn.merchant_subcategory === "string" &&
+    productIn.merchant_subcategory.trim().length > 0
+      ? productIn.merchant_subcategory.trim().slice(0, 40)
+      : null;
+  const calculator_override_in = enumOrNull(productIn.calculator_override, CALCULATOR_OVERRIDE_VALUES);
+  if (calculator_override_in === false) {
+    return NextResponse.json(
+      { ok: false, error: "calculator_override is not a recognised value." },
+      { status: 400 }
+    );
+  }
+  const service_trade_type_in = enumOrNull(productIn.service_trade_type, SERVICE_TRADE_VALUES);
+  if (service_trade_type_in === false) {
+    return NextResponse.json(
+      { ok: false, error: "service_trade_type is not a recognised value." },
+      { status: 400 }
+    );
+  }
+  const service_rate_unit_in = enumOrNull(productIn.service_rate_unit, SERVICE_RATE_UNIT_VALUES);
+  if (service_rate_unit_in === false) {
+    return NextResponse.json(
+      { ok: false, error: "service_rate_unit is not a recognised value." },
+      { status: 400 }
+    );
+  }
+  const service_rate_pence = nonNegIntOrNull(productIn.service_rate_pence);
+
   const patch = {
     name,
     description,
@@ -448,7 +540,14 @@ export async function POST(req: NextRequest) {
     video_url,
     warranty_header,
     warranty_text,
-    returns_text
+    returns_text,
+    free_delivery_min_qty,
+    merchant_category: merchant_category_in,
+    merchant_subcategory: merchant_subcategory_in,
+    calculator_override: calculator_override_in,
+    service_trade_type: service_trade_type_in,
+    service_rate_pence,
+    service_rate_unit: service_rate_unit_in
   };
 
   const idRaw = s(productIn.id);
@@ -480,6 +579,35 @@ export async function POST(req: NextRequest) {
       );
     }
     return NextResponse.json({ ok: true, product: upd.data });
+  }
+
+  // Merchant Pro product cap — only enforced on INSERT (an UPDATE to an
+  // existing row can't grow the catalogue). Counts 'live' rows only so an
+  // archived backlog doesn't lock a merchant out. productCapForListing
+  // returns null = unlimited (Verified tier or non-Merchant-Pro trade).
+  const cap = productCapForListing({
+    primary_trade: listing.data.primary_trade ?? null,
+    tier: listing.data.tier ?? null
+  });
+  if (cap !== null) {
+    const countRes = await supabaseAdmin
+      .from("hammerex_xrated_products")
+      .select("id", { count: "exact", head: true })
+      .eq("listing_id", listing.data.id)
+      .eq("status", "live");
+    const liveCount = countRes.count ?? 0;
+    if (liveCount >= cap) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: `You've hit your ${cap}-product cap. Archive an old product, or upgrade your plan to add more.`,
+          code: "PRODUCT_CAP_REACHED",
+          cap,
+          live_count: liveCount
+        },
+        { status: 403 }
+      );
+    }
   }
 
   const ins = await supabaseAdmin

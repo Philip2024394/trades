@@ -26,7 +26,8 @@ export function LogoutButton() {
       type="button"
       onClick={onClick}
       disabled={busy}
-      className="inline-flex h-9 items-center rounded-lg border border-brand-line bg-brand-surface px-3 text-[13px] font-bold text-brand-text transition hover:border-brand-accent hover:text-brand-accent disabled:opacity-60"
+      className="inline-flex h-9 items-center rounded-lg px-3 text-[13px] font-bold text-white transition hover:opacity-90 disabled:opacity-60"
+      style={{ background: "#991B1B" }}
     >
       {busy ? "Logging out…" : "Log out"}
     </button>

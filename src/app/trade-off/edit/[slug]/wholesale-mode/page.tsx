@@ -5,12 +5,13 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardHeader } from "@/components/trade-off/DashboardHeader";
+import { DashboardFooter } from "@/components/trade-off/DashboardFooter";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { isWholesaleModeOn } from "@/lib/xratedAddons";
+import { isMerchantProTrade } from "@/lib/tradeOff";
 import { WholesaleModeEditor } from "@/components/trade-off/WholesaleModeEditor";
 import type {
   HammerexTradeOffListing,
@@ -89,7 +90,7 @@ export default async function TradeOffWholesaleEditPage({
 
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-3xl px-4 pb-2 pt-10">
         <Link
           href={backHref}
@@ -100,17 +101,18 @@ export default async function TradeOffWholesaleEditPage({
       </section>
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-4">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          Add-on &middot; Wholesale Mode
+          {isMerchantProTrade(listing.primary_trade)
+            ? "Merchant Pro · included"
+            : "Add-on · Wholesale Mode"}
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight sm:text-4xl">
-          Delivery Zones &mdash; yard, zones, tiers
+          Delivery area you service
         </h1>
         <p className="mt-3 text-[13px] text-brand-muted">
-          {isPaid && wholesaleOn
-            ? "Add-on £7/mo · active · set up to 3 delivery zones from your yard"
-            : isPaid
-              ? "Toggle Wholesale Mode on from your dashboard to go live"
-              : "Upgrade to enable Wholesale Mode"}
+          This is a powerful feature on your app — having set zones cuts
+          the constant &ldquo;how much for delivery?&rdquo; enquiries and
+          gives you a link to send customers so they can check their own
+          zone price.
         </p>
       </section>
 
@@ -145,7 +147,7 @@ export default async function TradeOffWholesaleEditPage({
         />
       </section>
 
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
@@ -157,7 +159,7 @@ function InvalidLink({ reason }: { reason: string }) {
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
           xratedtrade.com
@@ -180,7 +182,7 @@ function InvalidLink({ reason }: { reason: string }) {
           Message us on WhatsApp
         </a>
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }

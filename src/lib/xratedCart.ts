@@ -255,3 +255,50 @@ export function formatGbp(pence: number): string {
     maximumFractionDigits: 2
   })}`;
 }
+
+/** Resolve a consumer-facing display price for a product. UK Price
+ *  Marking Order 2004 requires the dominant figure shown to consumers
+ *  to be VAT-inclusive on retail sales. When a product is stored
+ *  ex-VAT with a vat_rate_pct, we surface the gross figure as the
+ *  primary price and keep the net for a smaller meta line aimed at
+ *  trade buyers.
+ *
+ *  Returns:
+ *    - displayPence: the price to render as the dominant figure
+ *      (gross when ex-VAT is converted, otherwise the stored value)
+ *    - vatLabel: short meta string ("inc VAT" / "from £X ex VAT" /
+ *      "no VAT" — for non-VAT-registered traders)
+ *    - subtitlePence: optional second price (the ex-VAT figure) the
+ *      caller can render at smaller size beneath the dominant price.
+ *      null when no secondary line is appropriate.
+ */
+export function consumerDisplayPrice(product: {
+  price_pence: number;
+  vat_inclusive: boolean | null;
+  vat_rate_pct: number | null;
+}): {
+  displayPence: number;
+  vatLabel: string;
+  subtitlePence: number | null;
+} {
+  const { price_pence, vat_inclusive, vat_rate_pct } = product;
+  if (vat_inclusive === null || vat_rate_pct === null) {
+    // Merchant not VAT-registered (or hasn't filled the field). PMO
+    // doesn't force a label here — render the stored price as-is.
+    return { displayPence: price_pence, vatLabel: "no VAT", subtitlePence: null };
+  }
+  if (vat_inclusive) {
+    return {
+      displayPence: price_pence,
+      vatLabel: "inc VAT",
+      subtitlePence: null
+    };
+  }
+  // Ex VAT path — gross becomes the dominant figure for PMO compliance.
+  const gross = Math.round(price_pence * (1 + vat_rate_pct / 100));
+  return {
+    displayPence: gross,
+    vatLabel: `inc VAT · ${formatGbp(price_pence)} ex VAT`,
+    subtitlePence: price_pence
+  };
+}

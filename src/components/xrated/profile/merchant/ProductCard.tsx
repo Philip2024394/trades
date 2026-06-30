@@ -14,7 +14,7 @@
 import { useState } from "react";
 import type { HammerexXratedProduct } from "@/lib/supabase";
 import { ProductModal } from "./ProductModal";
-import { formatGbp } from "@/lib/xratedCart";
+import { consumerDisplayPrice } from "@/lib/xratedCart";
 
 export function ProductCard({
   product,
@@ -35,6 +35,11 @@ export function ProductCard({
   const stockBadge = stockBadgeFor(product.stock_count);
   const hasBulkTiers =
     Array.isArray(product.bulk_tiers) && product.bulk_tiers.length > 0;
+  const freeDeliveryMinQty =
+    typeof product.free_delivery_min_qty === "number" &&
+    product.free_delivery_min_qty > 0
+      ? product.free_delivery_min_qty
+      : null;
 
   return (
     <>
@@ -75,11 +80,24 @@ export function ProductCard({
           >
             {product.name}
           </p>
-          <div className="mt-1 flex items-baseline gap-1.5">
-            <span className="text-[15px] font-extrabold text-neutral-900 sm:text-base">
-              {formatGbp(product.price_pence)}
-            </span>
-          </div>
+          {(() => {
+            const px = consumerDisplayPrice(product);
+            return (
+              <>
+                <div className="mt-1 flex items-baseline gap-1.5">
+                  <span className="text-[15px] font-extrabold text-neutral-900 sm:text-base">
+                    {/* Always show the VAT-inclusive (or no-VAT) figure
+                     *  as the dominant price — UK Price Marking Order 2004. */}
+                    £{(px.displayPence / 100).toLocaleString("en-GB", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2
+                    })}
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-500">{px.vatLabel}</p>
+              </>
+            );
+          })()}
           {typeof product.dispatch_days === "number" && product.dispatch_days > 0 && (
             <p className="text-[13px] text-neutral-500">
               Ships in {product.dispatch_days}{" "}
@@ -96,6 +114,18 @@ export function ProductCard({
               }}
             >
               Bulk tiers available
+            </span>
+          )}
+          {freeDeliveryMinQty !== null && (
+            <span
+              className="mt-1 inline-flex w-fit items-center gap-1 rounded-full border px-2 py-0.5 text-[13px] font-extrabold"
+              style={{
+                background: "#0F513215",
+                color: "#0F5132",
+                borderColor: "#0F5132"
+              }}
+            >
+              Free delivery on {freeDeliveryMinQty}+
             </span>
           )}
         </div>

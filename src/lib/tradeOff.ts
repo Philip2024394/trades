@@ -186,10 +186,8 @@ export function tradeLabel(slug: string): string {
 
 // Trades whose customers BUY from a catalogue rather than book labour by
 // the hour — merchants, hire firms, and product-configurable installers.
-// These auto-get Shop Mode on the £14.99/mo paid tier so the profile is
-// "complete" rather than nickel-and-diming a category whose whole job is
-// to sell tangible items. Verified £20/mo unlocks unlimited products;
-// paid £14.99/mo caps at 200 products.
+// These auto-get Shop Mode so the profile is "complete" rather than
+// nickel-and-diming a category whose whole job is to sell tangible items.
 //
 // Rule of thumb: "trades whose customers buy products, not book hours."
 // Adding to this list dilutes the merchant framing — be selective.
@@ -208,6 +206,31 @@ export function isMerchantGradeTrade(slug: string | null | undefined): boolean {
   if (!slug) return false;
   return MERCHANT_GRADE_TRADES.has(slug);
 }
+
+// Merchant Pro — the canonical "one model template" for building merchants
+// and builders supplies. On the £14.99/mo paid tier, these trades get
+// EVERY paid add-on bundled (Wholesale Mode, Trade Center Picks, Custom
+// Domain, Lead Alerts, Materials Network, Downloads, FAQ Page — the lot)
+// rather than à-la-carte pricing. Product catalogue caps at 200 active
+// products on £14.99; over 200 requires an overage upgrade (or Verified
+// £19.99 once that tier ships).
+//
+// Strict subset of MERCHANT_GRADE_TRADES — the other merchant-grade trades
+// (kitchen-fitter, tool-hire, etc.) stay on the per-add-on pricing model.
+export const MERCHANT_PRO_TRADES: ReadonlySet<string> = new Set([
+  "building-merchant",
+  "builders-supplies"
+]);
+
+export function isMerchantProTrade(slug: string | null | undefined): boolean {
+  if (!slug) return false;
+  return MERCHANT_PRO_TRADES.has(slug);
+}
+
+/** Product catalogue cap for the paid £14.99 tier on Merchant Pro trades.
+ *  Returns null = unlimited (Verified tier, or non-merchant-pro trades
+ *  where no cap applies). Returns a positive integer for hard cap. */
+export const MERCHANT_PRO_PRODUCT_CAP = 200;
 
 // Hammerex Standard product blurbs.
 // Keyed by product slug. When a tradesperson's listing email/phone matches a

@@ -6,8 +6,8 @@
 // WhatsApp escape hatch — same pattern as /trade-off/edit/[slug].
 
 import type { Metadata } from "next";
-import { XratedHeader } from "@/components/xrated/XratedHeader";
-import { XratedFooter } from "@/components/xrated/XratedFooter";
+import { DashboardHeader } from "@/components/trade-off/DashboardHeader";
+import { DashboardFooter } from "@/components/trade-off/DashboardFooter";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { ProjectManager } from "@/components/trade-off/ProjectManager";
@@ -56,7 +56,7 @@ export default async function TradeOffProjectsEditPage({
 
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-10">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
           xratedtrade.com · Verified work
@@ -72,7 +72,7 @@ export default async function TradeOffProjectsEditPage({
       <section className="mx-auto max-w-3xl px-4 pb-16">
         <ProjectManager slug={slug} editToken={token} initialProjects={projects} />
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
@@ -84,7 +84,7 @@ function InvalidLink({ reason }: { reason: string }) {
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
-      <XratedHeader />
+      <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
           xratedtrade.com
@@ -106,7 +106,7 @@ function InvalidLink({ reason }: { reason: string }) {
           Message us on WhatsApp
         </a>
       </section>
-      <XratedFooter />
+      <DashboardFooter />
     </main>
   );
 }
