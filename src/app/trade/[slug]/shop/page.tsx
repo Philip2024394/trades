@@ -40,16 +40,22 @@ async function loadListing(slug: string): Promise<HammerexTradeOffListing | null
   return (res.data ?? null) as HammerexTradeOffListing | null;
 }
 
-async function loadFirstPage(listingId: string): Promise<{
+async function loadFirstPage(listingId: string, categorySlug: string | null): Promise<{
   products: HammerexXratedProduct[];
   total: number;
   has_more: boolean;
 }> {
-  const res = await supabase
+  let q = supabase
     .from("hammerex_xrated_products")
     .select("*", { count: "exact" })
     .eq("listing_id", listingId)
-    .eq("status", "live")
+    .eq("status", "live");
+  if (categorySlug) {
+    // GIN-indexed contains — pulls only products tagged with this
+    // hero-strip category slug.
+    q = q.contains("shop_category_slugs", [categorySlug]);
+  }
+  const res = await q
     .order("featured_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
     .range(0, PAGE_SIZE - 1);
@@ -124,11 +130,17 @@ export async function generateMetadata({
 }
 
 export default async function StorefrontPage({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ category?: string | string[] }>;
 }) {
   const { slug } = await params;
+  const sp = await searchParams;
+  const rawCat = Array.isArray(sp.category) ? sp.category[0] : sp.category;
+  const categorySlug = typeof rawCat === "string" && rawCat.length > 0 ? rawCat : null;
+
   const listing = await loadListing(slug);
   if (!listing) notFound();
 
@@ -139,9 +151,15 @@ export default async function StorefrontPage({
   }
 
   const [page, facets] = await Promise.all([
-    loadFirstPage(listing.id),
+    loadFirstPage(listing.id, categorySlug),
     loadFacets(listing.id)
   ]);
+
+  // Resolve pretty label for the active category so the shop hero can
+  // read "Timber (23 products)" instead of "timber (23 products)".
+  const activeCategoryLabel = categorySlug
+    ? (listing.shop_categories ?? []).find((c) => c.slug === categorySlug)?.label ?? categorySlug.replace(/_/g, " ")
+    : null;
 
   const appName = `${tradeLabel(listing.primary_trade)} Service`;
 
@@ -174,12 +192,35 @@ export default async function StorefrontPage({
           className="mt-2 text-4xl font-extrabold leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl md:text-6xl"
           style={{ color: "#0A0A0A" }}
         >
-          Trade <span style={{ color: "#FFB300" }}>Center</span>
+          {activeCategoryLabel ? (
+            <>
+              <span style={{ color: "#FFB300" }}>{activeCategoryLabel}</span>
+            </>
+          ) : (
+            <>
+              Trade <span style={{ color: "#FFB300" }}>Center</span>
+            </>
+          )}
         </h1>
-        <p className="mt-3 max-w-2xl text-[13px] text-neutral-500 sm:text-sm">
-          Products {page.total}. Send an enquiry and we&rsquo;ll quote — no card
-          payments in the app.
-        </p>
+        {activeCategoryLabel && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <span className="inline-flex items-center gap-1 rounded-full bg-[#FFB300] px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-black">
+              {page.total} product{page.total === 1 ? "" : "s"}
+            </span>
+            <a
+              href={`/${listing.slug}/shop`}
+              className="inline-flex items-center rounded-full border border-neutral-300 bg-white px-3 py-1 text-[11px] font-extrabold uppercase tracking-widest text-neutral-800 transition hover:border-neutral-900"
+            >
+              Clear filter ×
+            </a>
+          </div>
+        )}
+        {!activeCategoryLabel && (
+          <p className="mt-3 max-w-2xl text-[13px] text-neutral-500 sm:text-sm">
+            Products {page.total}. Send an enquiry and we&rsquo;ll quote — no card
+            payments in the app.
+          </p>
+        )}
       </section>
 
       <section className="mt-6 w-full">

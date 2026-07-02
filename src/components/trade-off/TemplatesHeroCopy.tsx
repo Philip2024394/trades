@@ -60,18 +60,18 @@ export function TemplatesHeroCopy({ totalCount }: { totalCount: number }) {
         className="text-xs font-bold uppercase tracking-[0.22em]"
         style={{ color: ACCENT }}
       >
-        The construction app store
+        Industry Packs & templates
       </p>
       <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
         {shortName ? `${shortName}'s` : "The"} largest collection of{" "}
         <span style={{ color: ACCENT }}>
-          construction-trade app templates.
+          trade business templates.
         </span>
       </h1>
       <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-        {totalCount} ready-built templates across five categories — Service,
+        {totalCount} ready-built business apps across five categories — Service,
         Installation, Manufacture, Sales and Hire. Pick the one that fits
-        how you work and your app is live in under five minutes.{" "}
+        how you work and your business is live in under five minutes.{" "}
         <span className="font-bold text-white">
           Free for life{fullName ? ` in ${fullName}` : ""}. No commissions,
           no fees, no card needed.

@@ -766,7 +766,7 @@ export default async function SiteOfficePage() {
           Built recently
         </h2>
         <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-neutral-600 sm:text-[15px]">
-          Six profiles we've built across the main trade types. Tap
+          Seven profiles we've built across the main trade types. Tap
           any to see what yours could look like.
         </p>
 

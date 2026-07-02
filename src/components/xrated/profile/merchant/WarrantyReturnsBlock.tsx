@@ -16,7 +16,7 @@ import type { HammerexXratedProduct } from "@/lib/supabase";
 
 const DEFAULT_HEADER = "Warranty / Returns";
 const DEFAULT_BODY =
-  "Every product comes with a 1-year workmanship guarantee. Returns accepted within 14 days of delivery — buyer arranges return delivery. If something arrives damaged or faulty, message us on WhatsApp and we'll arrange a replacement or refund — no forms, no waiting.";
+  "Each product carries its manufacturer's own warranty and return window — the exact terms are printed on the packaging or product documentation. Not fully satisfied? Return any unused item in its original packaging within that window for a full refund. If a product is faulty, message us on WhatsApp and we'll handle the manufacturer claim directly on your behalf — no forms, no third-party back-and-forth.";
 
 export function WarrantyReturnsBlock({
   product

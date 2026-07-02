@@ -1,9 +1,11 @@
-// Xrated Trades — /trade-off/add-ons — public marketing page for the
-// add-on registry. Iterates XRATED_ADDONS so any new add-on appended
-// to the registry shows up here automatically. Server component, no
-// client state, matches the design system used across
-// /trade-off/pricing, /trade-off/why and /trade-off/how (black hero
-// surface, yellow accent, max-w-5xl body, 13px text floor).
+// Xrated Trades — /trade-off/add-ons — public App Store marketing page.
+// URL kept as /add-ons for backward-compatibility of inbound links;
+// all customer-facing copy on the page uses "App Store" / "Apps". The
+// page iterates XRATED_ADDONS so any new App appended to the registry
+// shows up here automatically. Server component, no client state,
+// matches the design system used across /trade-off/pricing,
+// /trade-off/why and /trade-off/how (black hero, yellow accent,
+// max-w-5xl body, 13px text floor).
 
 import type { Metadata } from "next";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
@@ -21,17 +23,17 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Xrated Trades · Add-ons — make your profile do more",
+    "Xrated Trades · App Store — install Apps for your trade business",
   description:
-    "Every Xrated profile starts strong. Add-ons let you tune yours to your trade — recommend other tradies, sell products, point a custom domain, get SMS alerts. Stack any combination. 14-day free trial.",
+    "The App Store for trade businesses. Install Apps as you grow — Product Catalogue, Trade Circle, Meet the Team, Delivery Zones, Newsletter, and more. One platform, one Studio, one App Store. 14-day free trial.",
   alternates: { canonical: "/trade-off/add-ons" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title:
-      "Xrated Trades — Add-ons. Tune your profile to your trade.",
+      "Xrated Trades — App Store. Install Apps for your trade business.",
     description:
-      "Recommend other tradies, sell products, point your own domain, get SMS lead alerts. Toggle on, pay only for what's on. 14-day free trial.",
+      "Install Apps for products, teams, quotes, downloads, deliveries and more. Everything you need to run and grow your trade business online. 14-day free trial.",
     url: absolute("/trade-off/add-ons")
   }
 };
@@ -41,38 +43,38 @@ const HOW_STEPS = [
     n: "1",
     title: "Start free for 14 days.",
     body:
-      "Sign up and every add-on we ship is unlocked for your trial — no card needed. Try the ones that fit your trade before you commit."
+      "Sign up and every App in the store is unlocked for your trial — no card needed. Install the ones that fit your trade, keep the ones that work."
   },
   {
     n: "2",
-    title: "Add what you need.",
+    title: "Install what you need.",
     body:
-      "From your dashboard, toggle any add-on on or off. Stack as many as you want — they layer on top of your base profile."
+      "From Studio, open the App Store and install any App with one click. Stack as many as you need — they layer on top of your business app."
   },
   {
     n: "3",
-    title: "Pay only for what's on.",
+    title: "Pay only for what's installed.",
     body:
-      "Each paid add-on bills monthly on top of your base subscription. Cancel a single add-on any time without losing your profile."
+      "Each paid App bills monthly on top of your subscription. Uninstall any App any time — your data is preserved for when you bring it back."
   }
 ];
 
 const FAQ = [
   {
-    q: "Can I run two add-ons at once?",
-    a: "Yes. Stack as many as you need — they all live on the same profile and bill independently."
+    q: "Can I install multiple Apps at once?",
+    a: "Yes. Install as many as you need — they all run inside your business app and bill independently."
   },
   {
-    q: "Do I lose my profile if I cancel an add-on?",
-    a: "No. Your base profile stays exactly as it is. The add-on feature simply hides, and you stop being billed for it from the next cycle."
+    q: "Do I lose my business app if I uninstall an App?",
+    a: "No. Your business app stays exactly as it is. Uninstalling only hides the App's feature, and you stop being billed for it from the next cycle. Your content is preserved for reinstall."
   },
   {
-    q: "Can customers see what add-ons I've turned on?",
-    a: "No. They only see the resulting features — a Trade Center tab, a Trusted Trades list, a custom URL. The SaaS plumbing behind it never shows up."
+    q: "Can customers see which Apps I've installed?",
+    a: "No. They only see the resulting features — a Product Catalogue, a Trade Circle list, a custom URL. The platform plumbing behind it never shows up."
   },
   {
-    q: "What happens to my products if I switch off Trade Center?",
-    a: "Archived, not deleted. Switch the add-on back on and every product reappears with its photos, prices and stock intact."
+    q: "What happens to my products if I uninstall Product Catalogue?",
+    a: "Archived, not deleted. Reinstall the App and every product reappears with its photos, prices and stock intact."
   }
 ];
 
@@ -93,26 +95,25 @@ export default function AddOnsPage() {
             className="text-[10px] font-extrabold uppercase tracking-[0.28em] sm:text-xs"
             style={{ color: XRATED_BRAND.accent }}
           >
-            Add-ons
+            App Store
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-4xl md:text-5xl">
-            Make your profile{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>do more.</span>
+            Install Apps as your business{" "}
+            <span style={{ color: XRATED_BRAND.accent }}>grows.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-base">
-            Every Xrated profile starts strong. Add-ons let you tune your
-            profile to your trade — pure service, full trade center, or somewhere
-            in between. Pay only for the ones you turn on.
+            Every business starts with a starter app. Install Apps to fit
+            your trade — Product Catalogue, Trade Circle, Meet the Team,
+            Delivery Zones, Newsletter, and more. Uninstall any time.
           </p>
           <p className="mt-5 text-xs leading-relaxed text-white/65 sm:text-sm">
-            From <span className="font-bold text-white">£0/mo</span> · stack
-            as many as you need · cancel a single add-on without losing
-            your profile.
+            From <span className="font-bold text-white">£0/mo</span> · install
+            as many as you need · uninstall without losing your content.
           </p>
         </div>
       </section>
 
-      {/* Add-on grid — iterates XRATED_ADDONS so the page picks up any
+      {/* App grid — iterates XRATED_ADDONS so the page picks up any
           new entry automatically. Single column on mobile, 2-up on
           sm:, 3-up on lg:. */}
       <section className="mx-auto max-w-5xl px-4 pt-10 sm:px-6 sm:pt-14">
@@ -120,14 +121,14 @@ export default function AddOnsPage() {
           className="text-[10px] font-extrabold uppercase tracking-[0.28em] sm:text-xs"
           style={{ color: XRATED_BRAND.accent }}
         >
-          The add-ons
+          The Apps
         </p>
         <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Switch on what fits your trade.
+          Install what fits your trade.
         </h2>
         <p className="mt-1 max-w-2xl text-xs text-neutral-600 sm:text-sm">
-          Every add-on is independent. Turn on what you need, leave the
-          rest off.
+          Every App is independent. Install what you need, leave the
+          rest for later.
         </p>
 
         <ul className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -137,17 +138,17 @@ export default function AddOnsPage() {
         </ul>
       </section>
 
-      {/* How add-ons work — three-step explainer. Yellow numerals in
-          circles, white headings, muted body copy. */}
+      {/* How the App Store works — three-step explainer. Yellow numerals
+          in circles, white headings, muted body copy. */}
       <section className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 sm:pt-16">
         <p
           className="text-[10px] font-extrabold uppercase tracking-[0.28em] sm:text-xs"
           style={{ color: XRATED_BRAND.accent }}
         >
-          How add-ons work
+          How the App Store works
         </p>
         <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Three steps from signup to a tuned profile.
+          Three steps from signup to a business app tuned to your trade.
         </h2>
 
         <ol className="mt-6 grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3">
@@ -184,7 +185,7 @@ export default function AddOnsPage() {
           Common questions
         </p>
         <h2 className="mt-2 text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Add-ons — the short answers.
+          App Store — the short answers.
         </h2>
 
         <ul className="mt-6 flex flex-col gap-3">
@@ -220,10 +221,10 @@ export default function AddOnsPage() {
           <div className="flex flex-col items-start gap-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
             <div className="max-w-xl">
               <p className="text-[10px] font-extrabold uppercase tracking-[0.28em] text-neutral-900/70 sm:text-xs">
-                One profile · every add-on
+                One business · every App
               </p>
               <h2 className="mt-2 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                All add-ons. One profile. Start your 14-day free trial.
+                Every App. One business app. Start your 14-day free trial.
               </h2>
             </div>
             <a

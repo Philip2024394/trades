@@ -27,7 +27,7 @@ import {
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Add-ons | Xrated Trades",
+  title: "Apps | Xrated Trades",
   robots: { index: false, follow: false }
 };
 

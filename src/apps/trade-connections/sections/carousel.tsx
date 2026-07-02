@@ -1,0 +1,163 @@
+"use client";
+
+// App section: trade-connections / carousel.
+// Registers `app.trade-connections.carousel`.
+
+import { TradeConnectionsCarousel } from "@/components/trade-off/TradeConnectionsCarousel";
+import { defineAppSection } from "@/platform/apps/_shared/defineAppSection";
+import { tradeConnectionsManifest } from "../manifest";
+
+type TradeCard = React.ComponentProps<
+  typeof TradeConnectionsCarousel
+>["cards"][number];
+
+type TradeConnectionsConfig = {
+  heading: string;
+  helperCopy: string;
+  disclaimerCopy: string;
+  headingColor: string;
+  helperColor: string;
+  background: string;
+  cardRadius: number;
+  gridColumns: "one" | "two" | "three" | "four";
+};
+
+type TradeConnectionsData = {
+  cards: TradeCard[];
+  productSlug: string;
+};
+
+function TradeConnectionsInner({
+  data,
+  appData
+}: {
+  config: TradeConnectionsConfig;
+  data: { slug: string; merchantName: string };
+  appData: TradeConnectionsData;
+  tokens: Record<string, unknown>;
+  mode: string;
+  instanceId: string;
+}) {
+  const { cards, productSlug } = appData;
+  if (!cards || cards.length === 0) return null;
+  return (
+    <div data-app-section="trade-connections.carousel">
+      <TradeConnectionsCarousel
+        cards={cards}
+        merchantSlug={data.slug}
+        merchantName={data.merchantName}
+        productSlug={productSlug}
+      />
+    </div>
+  );
+}
+
+defineAppSection<TradeConnectionsConfig, TradeConnectionsData>({
+  manifest: tradeConnectionsManifest,
+  localId: "carousel",
+  name: "Trade Connections Carousel",
+  library: "categories",
+  description:
+    "Auto-scroll carousel of local trades who install products in this category.",
+  thumbnail: "/studio/thumbnails/trade-connections-carousel.png",
+  bestForVerticals: [
+    "building-merchant",
+    "builders-supplies",
+    "tool-hire",
+    "materials-yard"
+  ],
+  animations: ["none", "fade", "auto-scroll"],
+  editableFields: [
+    {
+      key: "heading",
+      label: "Heading",
+      type: { kind: "text", maxLength: 80 },
+      default: "Local trades who install this kind of product",
+      priority: "text",
+      aiPromptable: true,
+      group: "Copy"
+    },
+    {
+      key: "helperCopy",
+      label: "Helper copy",
+      type: { kind: "text", maxLength: 160 },
+      default:
+        "These are independent local trades — tap any card to see their profile.",
+      priority: "text",
+      aiPromptable: true,
+      group: "Copy"
+    },
+    {
+      key: "disclaimerCopy",
+      label: "Disclaimer copy",
+      type: { kind: "text", maxLength: 240, multiline: true },
+      default:
+        "These are independent businesses — not employed, vetted or verified by the merchant. Research each trade yourself, read their reviews, and request a written quote before any work begins.",
+      priority: "text",
+      aiPromptable: false,
+      group: "Copy",
+      description:
+        "Legal disclaimer. Please only edit if your legal team has approved the wording."
+    },
+    {
+      key: "headingColor",
+      label: "Heading colour",
+      type: { kind: "color", brandBindable: true },
+      default: "#0A0A0A",
+      bindsTo: "color.ink",
+      group: "Colour"
+    },
+    {
+      key: "helperColor",
+      label: "Helper text colour",
+      type: { kind: "color", brandBindable: true },
+      default: "#525252",
+      bindsTo: "color.muted",
+      group: "Colour"
+    },
+    {
+      key: "background",
+      label: "Background",
+      type: { kind: "color", brandBindable: true },
+      default: "#FAFAFA",
+      bindsTo: "color.subtle",
+      group: "Colour"
+    },
+    {
+      key: "cardRadius",
+      label: "Card corner radius",
+      type: { kind: "number", min: 0, max: 32, step: 2, unit: "px" },
+      default: 16,
+      bindsTo: "radius.md",
+      group: "Shape"
+    },
+    {
+      key: "gridColumns",
+      label: "Grid columns on desktop",
+      type: {
+        kind: "select",
+        options: [
+          { value: "one", label: "1" },
+          { value: "two", label: "2" },
+          { value: "three", label: "3" },
+          { value: "four", label: "4" }
+        ]
+      },
+      default: "three",
+      group: "Layout"
+    }
+  ],
+  defaultConfig: () => ({
+    heading: "Local trades who install this kind of product",
+    helperCopy:
+      "These are independent local trades — tap any card to see their profile.",
+    disclaimerCopy:
+      "These are independent businesses — not employed, vetted or verified by the merchant. Research each trade yourself, read their reviews, and request a written quote before any work begins.",
+    headingColor: "#0A0A0A",
+    helperColor: "#525252",
+    background: "#FAFAFA",
+    cardRadius: 16,
+    gridColumns: "three"
+  }),
+  inner: TradeConnectionsInner
+});

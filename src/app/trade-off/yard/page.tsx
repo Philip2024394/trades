@@ -22,6 +22,7 @@ import { YardFilters } from "@/components/xrated/yard/YardFilters";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
+import { tradeCircleContext } from "@/lib/tradeCircleContexts";
 
 export const revalidate = 60;
 
@@ -46,6 +47,7 @@ type SearchParams = Promise<{
   kind?: string | string[];
   trade?: string | string[];
   region?: string | string[];
+  context?: string | string[];
 }>;
 
 function readParam(v: string | string[] | undefined): string {
@@ -53,7 +55,12 @@ function readParam(v: string | string[] | undefined): string {
   return v ?? "";
 }
 
-async function loadFeed(opts: { kind: string; trade: string; region: string }) {
+async function loadFeed(opts: {
+  kind: string;
+  trade: string;
+  region: string;
+  contextTrades: string[] | null;
+}) {
   // Moderation: 'hidden' and 'spam' posts are HARD-REMOVED from the
   // public feed. 'flagged' posts stay visible until admin acts (the
   // queue surfaces them but the community keeps seeing them so we
@@ -81,6 +88,7 @@ async function loadFeed(opts: { kind: string; trade: string; region: string }) {
   )
     q = q.eq("kind", opts.kind);
   if (opts.trade && VALID_TRADE_SLUGS.has(opts.trade)) q = q.eq("trade_slug", opts.trade);
+  else if (opts.contextTrades && opts.contextTrades.length > 0) q = q.in("trade_slug", opts.contextTrades);
   if (opts.region) q = q.ilike("region", `%${opts.region}%`);
 
   const res = await q;
@@ -160,9 +168,16 @@ export default async function YardFeedPage({
   const kind = readParam(sp.kind);
   const trade = readParam(sp.trade);
   const region = readParam(sp.region);
+  const context = readParam(sp.context);
+  const ctx = tradeCircleContext(context);
 
   const [{ posts, posters, reactions }, counts] = await Promise.all([
-    loadFeed({ kind, trade, region }),
+    loadFeed({
+      kind,
+      trade,
+      region,
+      contextTrades: ctx ? ctx.allowed_trades : null
+    }),
     loadCountsForKind()
   ]);
 

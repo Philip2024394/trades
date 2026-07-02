@@ -21,25 +21,25 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
-    "Xrated Trades — The Shareable Trade Profile for Tradies Anywhere. Replace Your Website, Quote Form & Business Card.",
+    "Xrated Trades — The Business Operating System for Trade Businesses. Studio · App Store · Industry Packs.",
   description:
-    "The shareable trade profile tradies anywhere put on their van, in their Instagram bio, and on every business card. Reviews, photos, prices, quote form, contact, QR code — one link. 14-day free trial, then £14.99/mo (billed in GBP). Powered by Hammerex.",
+    "The Business Operating System for trade businesses. Design your business app in Studio, install Apps as you grow, drop in an Industry Pack for your trade, let AI help you run it — all in one platform. 14-day free trial, then £14.99/mo (billed in GBP). Powered by Hammerex.",
   alternates: { canonical: "/trade-off" },
   openGraph: {
     type: "website",
     title:
-      "Xrated Trades — The Shareable Trade Profile for Tradies Anywhere. One link replaces your website.",
+      "Xrated Trades — The Business Operating System for Trade Businesses. One platform. Every App you need.",
     description:
-      "One link replaces your website, your quote form, and your business card. Reviews, photos, prices, contact, QR code — every customer you ever quote sees the same professional profile. 14-day free trial, then £14.99/mo.",
+      "Studio, App Store, Industry Packs and AI in one platform. Design, install, publish — your business app is live in minutes. 14-day free trial, then £14.99/mo.",
     url: absolute("/trade-off"),
     siteName: BRAND.name
   },
   twitter: {
     card: "summary_large_image",
     title:
-      "Xrated Trades — The Shareable Trade Profile for Tradies Anywhere",
+      "Xrated Trades — The Business Operating System for Trade Businesses",
     description:
-      "One link replaces your website, your quote form, and your business card. 14-day free trial."
+      "Studio, App Store, Industry Packs and AI in one platform. 14-day free trial."
   }
 };
 
@@ -140,13 +140,13 @@ export default async function TradeOffLandingPage() {
               {XRATED_BRAND.name}
             </p>
             <h1 className="mt-2 text-4xl font-extrabold leading-[0.95] text-white drop-shadow-lg sm:text-6xl md:text-7xl">
-              Your trade.
+              Your business.
               <br />
-              <span style={{ color: XRATED_BRAND.accent }}>One link.</span>
+              <span style={{ color: XRATED_BRAND.accent }}>One platform.</span>
             </h1>
 
-            {/* Add-ons teaser — small yellow pill linking to the
-                add-ons marketing page. Above the URL-claim widget so it
+            {/* App Store teaser — small yellow pill linking to the
+                App Store marketing page. Above the URL-claim widget so it
                 shows up in the first eye-frame without competing with
                 the headline. */}
             <a
@@ -158,7 +158,7 @@ export default async function TradeOffLandingPage() {
                 className="inline-block h-1.5 w-1.5 rounded-full"
                 style={{ background: XRATED_BRAND.accent }}
               />
-              Now with 8 add-ons
+              App Store now live
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

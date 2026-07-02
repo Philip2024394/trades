@@ -253,6 +253,48 @@ function TeamCard({
           ))}
         </ul>
       )}
+
+      {member.direct_phone && (() => {
+        // Build the tel: URI. When an extension is set, we join with a
+        // comma so the phone dialler pauses ~2s between the main
+        // number and the extension digits (the dialler standard).
+        const cleanPhone = member.direct_phone.replace(/[^\d+]/g, "");
+        const cleanExt = (member.direct_extension ?? "").replace(/\D/g, "");
+        const telHref = cleanExt ? `tel:${cleanPhone},${cleanExt}` : `tel:${cleanPhone}`;
+        const display = cleanExt
+          ? `${member.direct_phone} · ext ${member.direct_extension}`
+          : member.direct_phone;
+        return (
+          <a
+            href={telHref}
+            className="mt-auto inline-flex items-center gap-2 rounded-xl border-2 px-3 py-2 text-xs font-extrabold text-neutral-900 transition hover:opacity-90 active:scale-[0.98]"
+            style={{ borderColor: "#FFB300", background: "#FFF8E1" }}
+            aria-label={`Call ${firstName} direct on ${display}`}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.68 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.32 1.85.55 2.81.68A2 2 0 0 1 22 16.92z" />
+            </svg>
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
+                Call {firstName} direct
+              </span>
+              <span className="font-mono text-[12px] text-neutral-900">
+                {display}
+              </span>
+            </span>
+          </a>
+        );
+      })()}
     </div>
   );
 }

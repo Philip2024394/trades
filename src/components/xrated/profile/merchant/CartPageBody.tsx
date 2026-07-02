@@ -31,6 +31,7 @@ import {
   setQty,
   type CartState
 } from "@/lib/xratedCart";
+import { PayNowButton } from "./PayNowButton";
 import { whatsappDigits } from "@/lib/tradeOff";
 import { isStorefrontOn, isWholesaleModeOn } from "@/lib/xratedAddons";
 import { assertMerchantContext } from "@/lib/devAssert";
@@ -59,11 +60,15 @@ const UK_VAT_RATE = 0.2;
 export function CartPageBody({
   listing,
   zones,
-  wholesaleZone
+  wholesaleZone,
+  paymentsOn = false
 }: {
   listing: HammerexTradeOffListing;
   zones: HammerexXratedShippingZone[];
   wholesaleZone?: HammerexXratedWholesaleZone | null;
+  /** Online Payments add-on — when true AND a provider is configured,
+   *  the cart shows a green "Pay Now" button above WhatsApp Enquire. */
+  paymentsOn?: boolean;
 }) {
   // Defence-in-depth: a cart is a merchant-only surface. If a future
   // refactor wires this body onto a service-profile cart route, silently
@@ -471,17 +476,29 @@ export function CartPageBody({
                     </dd>
                   </div>
                 </dl>
+                {paymentsOn && state && state.items.length > 0 && (
+                  <PayNowButton
+                    listingSlug={listing.slug}
+                    totalPence={totalIncVat}
+                    cartItems={state.items.map((it) => ({
+                      product_id: it.product_id,
+                      name: it.name,
+                      price_pence: it.price_pence,
+                      qty: it.qty
+                    }))}
+                  />
+                )}
                 <a
                   href={whatsappHref}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-4 inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-wider text-white shadow-lg transition active:scale-[0.98]"
-                  style={{ background: "#0F7A3F", boxShadow: "0 10px 26px rgba(15,122,63,0.5)" }}
+                  className="mt-3 inline-flex h-14 w-full items-center justify-center gap-2 rounded-xl text-sm font-extrabold uppercase tracking-wider text-white shadow-lg transition active:scale-[0.98]"
+                  style={{ background: paymentsOn ? "#0A0A0A" : "#0F7A3F", boxShadow: paymentsOn ? "none" : "0 10px 26px rgba(15,122,63,0.5)" }}
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Z" />
                   </svg>
-                  Send enquiry on WhatsApp
+                  {paymentsOn ? "Or enquire on WhatsApp" : "Send enquiry on WhatsApp"}
                 </a>
                 <p className="mt-3 text-[13px] leading-relaxed text-neutral-500">
                   Prices · Delivery · lead times will be confirmed during the

@@ -26,7 +26,7 @@ export const revalidate = 300;
 
 const TITLE = "See it in action — xratedtrade.com showcase";
 const DESCRIPTION =
-  "Six real-world xratedtrade.com profiles built across the main trade types. Each is a live, indexable app — explore what yours could look like.";
+  "Seven real-world xratedtrade.com profiles built across the main trade types. Each is a live, indexable app — explore what yours could look like.";
 const HERO =
   TRADE_OFF_HERO_IMAGES["building-merchant"] ?? BRAND.logo;
 
@@ -157,7 +157,7 @@ export default async function ShowcasePage() {
             See it in action
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-base">
-            Six real-world xratedtrade.com profiles built across the main trade types.
+            Seven real-world xratedtrade.com profiles built across the main trade types.
             Each is a live, indexable app — explore what yours could
             look like.
           </p>

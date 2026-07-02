@@ -155,6 +155,61 @@ export function getServiceTrade(slug: string | null | undefined): ServiceTradeDe
   return TRADE_BY_SLUG[slug] ?? null;
 }
 
+/** Reverse map — given a product's merchant_category, return the
+ *  `primary_trade` slugs that typically install/work with that
+ *  category. Drives the Trade Connections carousel: a product tagged
+ *  `paint` surfaces local listings whose primary_trade is "painter" /
+ *  "painter-decorator" / etc.
+ *
+ *  These slugs match the real `primary_trade` values in the
+ *  hammerex_trade_off_listings table (see TRADE_OFF_TRADES in
+ *  src/lib/tradeOff.ts). We list multiple slugs per category because
+ *  the same job is done by several trade titles in UK practice
+ *  (e.g. carpenter ≈ joiner ≈ trim-carpenter for skirting). */
+export function tradesForCategory(
+  category: MerchantCategory | string | null | undefined
+): string[] {
+  if (!category) return [];
+  switch (category) {
+    case "paint":
+      return ["painter"];
+    case "wallpaper":
+      return ["painter"];
+    case "flooring":
+      return ["flooring-installer", "carpenter", "joiner", "trim-carpenter"];
+    case "tiles":
+      return ["tiler", "bathroom-fitter"];
+    case "aggregates":
+      return ["landscaper", "groundworker", "driveway-installer"];
+    case "concrete":
+      return ["concrete-finisher", "concrete-specialist", "formworker", "groundworker"];
+    case "mortar":
+      return ["bricklayer", "plasterer", "block-layer", "stonemason"];
+    case "bricks_blocks":
+      return ["bricklayer", "block-layer", "stonemason"];
+    case "plasterboard":
+      return ["plasterer", "drywaller", "taper-and-finisher"];
+    case "insulation":
+      return ["insulation-installer", "roofer", "drywaller"];
+    case "decking":
+      return ["carpenter", "joiner", "landscaper", "garden-room-installer"];
+    case "fencing":
+      return ["fencing-installer", "landscaper"];
+    case "paving":
+      return ["driveway-installer", "landscaper", "concrete-finisher", "groundworker"];
+    case "skirting":
+      return ["carpenter", "joiner", "trim-carpenter"];
+    case "roof_tiles":
+      return ["roofer", "lead-worker"];
+    case "render":
+      return ["renderer", "plasterer"];
+    case "turf":
+      return ["landscaper", "garden-designer"];
+    default:
+      return [];
+  }
+}
+
 /** Resolve which calculator should render on a product's PDP. Honours
  *  the per-product override; falls back to the category map; returns
  *  null when no calculator applies (override=none, category has none,

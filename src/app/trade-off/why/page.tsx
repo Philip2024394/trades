@@ -304,7 +304,7 @@ export default function WhyPage() {
           </h2>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
             A customer is scrolling Instagram on the bus. They tap your
-            bio link. Your Xrated profile loads — photos of last week's
+            profile link. Your Xrated business app loads — photos of last week's
             extension, four 5-star reviews, the price for a callout, the
             services you actually offer, a 60-second video of you on
             site. They tap the green WhatsApp button. The message is
@@ -315,7 +315,7 @@ export default function WhyPage() {
           <ol className="mt-6 grid grid-cols-2 gap-2 text-[11px] sm:grid-cols-5 sm:text-xs">
             {[
               "Scrolls Instagram",
-              "Taps your bio link",
+              "Taps your profile link",
               "Sees work + prices",
               "Reads reviews",
               "Taps WhatsApp"

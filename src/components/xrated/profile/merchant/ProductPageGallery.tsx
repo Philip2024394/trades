@@ -31,12 +31,17 @@ export function ProductPageGallery({
   product,
   listingLat = null,
   listingLng = null,
-  listingCity
+  listingCity,
+  refCode
 }: {
   product: HammerexXratedProduct;
   listingLat?: number | null;
   listingLng?: number | null;
   listingCity?: string;
+  /** Customer-facing Ref code — overlays the cover image at the
+   *  lower-right. Moved here from the BuyColumnDetails tab row so the
+   *  Ref space could host the calculator-open button. */
+  refCode?: string;
 }) {
   const images = useMemo(() => {
     const all = [product.cover_url, ...(product.gallery_urls ?? [])].filter(
@@ -72,6 +77,17 @@ export function ProductPageGallery({
             listingLng={listingLng}
             city={listingCity}
           />
+        )}
+        {refCode && (
+          <span
+            className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-full bg-neutral-900/85 px-2.5 py-1 text-[11px] font-extrabold uppercase tracking-widest text-white backdrop-blur-sm"
+            aria-label={`Reference ${refCode}`}
+          >
+            <span className="text-[#FFB300]">Ref</span>
+            <span className="font-mono normal-case tracking-normal text-white">
+              {refCode}
+            </span>
+          </span>
         )}
       </div>
       {images.length > 1 && (

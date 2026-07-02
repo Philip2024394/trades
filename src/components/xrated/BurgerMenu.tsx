@@ -13,7 +13,7 @@ const MENU_ITEMS = [
   { href: "/trade-off/how", label: "How it works", sub: "5 minutes from claim to live" },
   { href: "/trade-off/pricing", label: "Pricing", sub: "Free · £14.99/mo · £19.99/mo Verified" },
   { href: "/trade-off/add-ons", label: "Add-ons", sub: "Trade Center · Services · Job Diary · 5 more" },
-  { href: "/showcase", label: "Showcase", sub: "6 real-world xratedtrade.com profiles — see it in action" },
+  { href: "/showcase", label: "Showcase", sub: "7 real-world xratedtrade.com profiles — see it in action" },
   { href: "/site-office", label: "The Site Office", sub: "We build your profile for you — £297 setup, live in 5 days" },
   { href: "/news", label: "News", sub: "Construction news from xratedtrade.com — platform, opinion, industry" },
   { href: "/trade-off/yard", label: "The Yard", sub: "Private trades-only board — hire, available, chat" },

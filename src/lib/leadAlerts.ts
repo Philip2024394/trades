@@ -56,6 +56,16 @@ export type LeadAlertEvent =
       };
     }
   | {
+      type: "order_paid";
+      data: {
+        order_ref: string;
+        amount_pence: number;
+        provider: string;
+        customer_name?: string | null;
+        customer_email?: string | null;
+      };
+    }
+  | {
       type: "test";
       data: Record<string, unknown>;
     };
@@ -176,6 +186,23 @@ function buildPayload(
         body: `${firstName} in ${event.data.customer_city}: "${event.data.project_excerpt}". Tap to WhatsApp them direct.`,
         data: { url: `https://wa.me/${wa}?text=${text}` },
         tag: `beacon-${listing.id}`,
+        vibrate,
+        requireInteraction: true
+      };
+    }
+    case "order_paid": {
+      const amount = pencesToGbp(event.data.amount_pence);
+      const providerLabel =
+        event.data.provider === "stripe" ? "Stripe"
+        : event.data.provider === "paypal" ? "PayPal"
+        : event.data.provider === "square" ? "Square"
+        : "Payment Link";
+      const customer = event.data.customer_name?.trim() || "A customer";
+      return {
+        title: `💰 ${amount} paid`,
+        body: `${customer} paid via ${providerLabel} — order ${event.data.order_ref}. Tap to view.`,
+        data: { url: `/trade-off/edit/${encodeURIComponent(listing.slug)}/orders?ref=${encodeURIComponent(event.data.order_ref)}` },
+        tag: `order-${event.data.order_ref}`,
         vibrate,
         requireInteraction: true
       };

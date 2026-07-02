@@ -1,71 +1,76 @@
 "use client";
 
-// Xrated Trades — three-tier pricing cards.
+// Xrated Trades — four-tier pricing cards for the Business Operating
+// System positioning.
 //
 // Tiers:
-//   1. Free    — hammerexdirect.com URL, basic widgets, forever free.
-//   2. Paid    — £14.99/mo or £139.99/yr, brandable xratedtrade.com URL, full
-//                features, white-label option.
-//   3. Verified (NEW) — £19.99/mo or £199.99/yr, everything in Paid + a real
-//                verified badge. The PRIMARY check is active company
-//                registration (Companies House or local registry). Two
-//                optional add-on badges layer on top: (a) "Insured for
-//                private work" — verified insurance certificate, only
-//                relevant for tradies doing direct-to-customer work
-//                (commercial site tradies are covered by the site
-//                owner's master policy and don't need this), (b)
-//                "On-site checked" — for high-risk trades (gas,
-//                electrical, structural, scaffolding). The customer-
-//                facing badge stacks: ✓ Verified, ✓✓ Verified + Insured,
-//                ✓✓✓ Verified + Insured + On-site checked. Goldilocks /
-//                centre-stage effect pulls eyes from Paid → Verified
-//                because the £5 delta buys real trust differentiation.
+//   1. FREE          — £0, forever. Starter Business App + Studio +
+//                       basic pages + publish. Xrated header stays.
+//   2. STARTER       — £9.99/mo (Coming soon). Complete business app,
+//                       Studio Editor, core App Store access, product
+//                       catalogue, contact forms, basic AI, standard
+//                       themes. Target: small businesses and sole traders.
+//   3. PROFESSIONAL  — £14.99/mo. Recommended. Everything in Starter +
+//                       premium Apps, Trade Circle, industry-specific
+//                       Apps, AI content tools, advanced promotions,
+//                       analytics, advanced Studio features. Target:
+//                       growing businesses.
+//   4. BUSINESS      — £24.99/mo (Coming soon). Everything in
+//                       Professional + multi-user, multiple locations,
+//                       advanced AI, premium Industry Packs, advanced
+//                       automation, priority support. Target: larger
+//                       merchants and growing companies.
 //
-// The £20 Verified tier ships in WAITLIST_MODE: the CTA goes to a
-// waitlist page, copy reads "Verification launching Q3 2026 — locked at
-// £19.99/mo for early subscribers". Flip WAITLIST_MODE to false once the
-// verification ops queue is staffed.
+// PROFESSIONAL is the only actionable paid tier today; it maps to the
+// existing `app_paid` DB tier at £14.99/mo. STARTER and BUSINESS are
+// clearly marked "Coming soon" per the platform rebrand brief — the
+// plans stay visible so the pricing ladder is honest, but the CTAs
+// route to a waitlist instead of a signup.
 //
-// Every new signup starts FREE with all premium features unlocked for
-// 14 days. After 14 days they either subscribe (£14.99/mo or £139.99/yr to
-// keep premium) or auto-revert to the free-for-life tier — no card
-// required at any point. Verified is an upgrade path from the dashboard
-// once the tier is live.
+// The 14-day free trial applies to Professional and (when live) to
+// Starter + Business. Free tier requires no card at any point.
 
 import { useState } from "react";
 import { XRATED_BRAND, XRATED_PRICING } from "@/lib/xratedTrades";
 import { FX, convertGbpToCurrency, type Currency } from "@/lib/fx";
 
-const WAITLIST_MODE = true;
+// When true, Starter and Business route to /trade-off/waitlist rather
+// than /trade-off/signup. Flip to false once each tier's billing is
+// wired (Starter needs a new DB tier value; Business needs multi-user
+// + premium industry packs).
+const STARTER_WAITLIST_MODE = true;
+const BUSINESS_WAITLIST_MODE = true;
 
 type Billing = "monthly" | "annual";
 
-// Pricing — .99 endings for psychological-price impact. Values are
-// pulled from XRATED_PRICING (the single source of truth shared with
-// the dashboard upgrade page) and formatted to 2dp for the price chip.
-const ANNUAL_SUBTEXT = `Save £${XRATED_PRICING.annualSavingGbp} vs monthly · billed annually in GBP`;
+const STARTER_MONTHLY_GBP = 9.99;
+const STARTER_ANNUAL_GBP = 99.99;
+const BUSINESS_MONTHLY_GBP = 24.99;
+const BUSINESS_ANNUAL_GBP = 249.99;
+
+const ANNUAL_SUBTEXT = `Save vs monthly · billed annually in GBP`;
+
 const PRICE = {
-  paid: {
-    monthly: { gbp: XRATED_PRICING.monthlyGbp.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
-    annual: { gbp: XRATED_PRICING.annualGbp.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
+  starter: {
+    monthly: { gbp: STARTER_MONTHLY_GBP.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
+    annual: { gbp: STARTER_ANNUAL_GBP.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
   },
-  verified: {
-    monthly: { gbp: XRATED_PRICING.verifiedMonthlyGbp.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
-    annual: { gbp: XRATED_PRICING.verifiedAnnualGbp.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
+  professional: {
+    monthly: { gbp: XRATED_PRICING.monthlyGbp.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
+    annual: { gbp: XRATED_PRICING.annualGbp.toFixed(2), label: "/ year", subtext: `Save £${XRATED_PRICING.annualSavingGbp} vs monthly · billed annually in GBP` }
+  },
+  business: {
+    monthly: { gbp: BUSINESS_MONTHLY_GBP.toFixed(2), label: "/ month", subtext: "Billed monthly in GBP" },
+    annual: { gbp: BUSINESS_ANNUAL_GBP.toFixed(2), label: "/ year", subtext: ANNUAL_SUBTEXT }
   }
 } as const;
 
 // Format an approximate price in the visitor's display currency.
-// We deliberately round to whole units (no decimals) and prefix with
-// "≈" so customers cannot mistake this for the canonical charge.
-// Stripe Checkout still bills in GBP; the bank converts at its own
-// prevailing rate. Returns null when no approximation should render
-// (currency missing or = GBP).
+// Round to whole units and prefix with "≈" so customers cannot mistake
+// this for the canonical charge.
 function formatApprox(gbp: number, currency: Currency | null): string | null {
   if (!currency || currency === "GBP") return null;
   const converted = convertGbpToCurrency(gbp, currency);
-  // Round to nearest whole unit for marketing display — no false
-  // precision on indicative rates.
   const rounded = Math.round(converted);
   const symbol = FX[currency].symbol;
   return `${symbol}${rounded.toLocaleString("en-US")} ${currency}`;
@@ -80,15 +85,17 @@ export function PricingTierCards({
   displayCurrency?: Currency | null;
 }) {
   const [billing, setBilling] = useState<Billing>("annual");
-  const paid = PRICE.paid[billing];
-  const verified = PRICE.verified[billing];
+  const starter = PRICE.starter[billing];
+  const professional = PRICE.professional[billing];
+  const business = PRICE.business[billing];
   const isAnnual = billing === "annual";
-  const paidApprox = formatApprox(parseFloat(paid.gbp), displayCurrency);
-  const verifiedApprox = formatApprox(parseFloat(verified.gbp), displayCurrency);
+  const starterApprox = formatApprox(parseFloat(starter.gbp), displayCurrency);
+  const professionalApprox = formatApprox(parseFloat(professional.gbp), displayCurrency);
+  const businessApprox = formatApprox(parseFloat(business.gbp), displayCurrency);
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Billing toggle — applies to Paid + Verified. Free is £0 fixed. */}
+      {/* Billing toggle — applies to paid tiers. Free is £0 fixed. */}
       <div className="flex justify-center">
         <div
           role="tablist"
@@ -119,7 +126,7 @@ export function PricingTierCards({
                       color: active ? XRATED_BRAND.accent : "#0A0A0A"
                     }}
                   >
-                    Save £{XRATED_PRICING.annualSavingGbp}
+                    Save vs monthly
                   </span>
                 )}
               </button>
@@ -128,9 +135,9 @@ export function PricingTierCards({
         </div>
       </div>
 
-      {/* Three-up tier grid — Free | Paid £15 | Verified £20 (recommended) */}
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-5 lg:gap-6">
-        {/* FREE tier */}
+      {/* Four-up tier grid — Free | Starter | Professional (recommended) | Business */}
+      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-5 lg:grid-cols-4 lg:gap-4">
+        {/* ─── FREE ───────────────────────────────────────────────── */}
         <article className="relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-6">
           <header>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">
@@ -141,16 +148,8 @@ export function PricingTierCards({
               <span className="text-xs text-neutral-500 sm:text-sm">/ forever</span>
             </p>
             <p className="mt-1.5 text-[11px] text-neutral-500 sm:text-xs">
-              No card. No expiry. Get a basic profile online today.
+              Launch your business app today. No card. No expiry.
             </p>
-            <div className="mt-3.5 rounded-lg bg-neutral-50 p-2.5">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-500">
-                Your URL
-              </p>
-              <p className="mt-0.5 break-all text-[11px] font-semibold text-neutral-700 sm:text-xs">
-                hammerexdirect.com/your-name
-              </p>
-            </div>
             <a
               href="/trade-off/signup?tier=free"
               className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
@@ -158,139 +157,93 @@ export function PricingTierCards({
             >
               Start free — no card
             </a>
+            <p className="mt-1.5 text-center text-[10px] text-neutral-500">
+              Small businesses just getting started
+            </p>
           </header>
 
           <ul className="mt-5 flex flex-col gap-2 text-[11px] text-neutral-700 sm:text-xs">
-            <Row included>WhatsApp message button</Row>
-            <Row included>Photo gallery (up to 8 images)</Row>
-            <Row included>Read-only customer reviews</Row>
-            <Row included>QR code for van + cards</Row>
-            <Row included>Service cards (image + name)</Row>
-            <Row>Intro video tile</Row>
-            <Row>Lead-capture contact form</Row>
-            <Row>Call Now + Contact buttons</Row>
-            <Row>Meet-the-team grid</Row>
-            <Row>Service prices + descriptions</Row>
-            <Row>Custom theme + banner</Row>
-            <Row>Brandable xratedtrade.com URL</Row>
+            <Row included>Starter Business App</Row>
+            <Row included>Studio (visual editor)</Row>
+            <Row included>Basic theme</Row>
+            <Row included>Link in Bio App</Row>
+            <Row included>Contact details</Row>
+            <Row included>Basic pages</Row>
+            <Row included>Publish</Row>
           </ul>
 
           <footer className="mt-5 border-t border-neutral-100 pt-3">
             <p className="text-[10px] leading-relaxed text-neutral-500">
-              Xrated header stays visible on free profiles. Upgrade any time
-              for white-label + full features.
+              Xrated header stays visible on free apps. Upgrade any
+              time for the full Business Operating System.
             </p>
           </footer>
         </article>
 
-        {/* PAID tier — middle (still featured but understated vs Verified) */}
-        <article
-          className="relative flex flex-col rounded-2xl border-2 bg-white p-6"
-          style={{
-            borderColor: `${XRATED_BRAND.accent}80`,
-            boxShadow: `0 6px 18px ${XRATED_BRAND.accent}1F`
-          }}
-        >
+        {/* ─── STARTER (Coming soon) ─────────────────────────────── */}
+        <article className="relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-6">
           <span
             className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-neutral-700 ring-1 ring-neutral-200"
           >
-            14-day free trial — no card
+            Coming soon
           </span>
-          {/* Decorative right-side image — sits INSIDE the card's
-              top-right padding zone so the yellow card border stays
-              fully visible around the perimeter. Pointer-events-none so
-              the image never blocks the Start-trial tap target. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b93a15d174d-Untitledzxczxczxzzzz.png"
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute right-3 top-6 h-16 w-16 select-none object-contain drop-shadow-md sm:h-20 sm:w-20"
-          />
-
           <header>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">
-              Paid
+              Starter
             </p>
             <p className="mt-3 flex items-baseline gap-1.5">
               <span className="text-3xl font-extrabold text-neutral-900 sm:text-4xl">
-                £{paid.gbp}
+                £{starter.gbp}
               </span>
-              <span className="text-xs text-neutral-500 sm:text-sm">{paid.label}</span>
+              <span className="text-xs text-neutral-500 sm:text-sm">{starter.label}</span>
             </p>
-            <p className="mt-1.5 text-[11px] text-neutral-500 sm:text-xs">{paid.subtext}</p>
-            {isAnnual && (
-              <p className="mt-0.5 text-[10px] font-semibold text-neutral-600 sm:text-[11px]">
-                ~£11.67/mo
-              </p>
-            )}
-            {paidApprox && (
+            <p className="mt-1.5 text-[11px] text-neutral-500 sm:text-xs">{starter.subtext}</p>
+            {starterApprox && (
               <p className="mt-1 text-[10px] leading-tight text-neutral-500 sm:text-[11px]">
-                <span className="font-bold text-neutral-700">≈ {paidApprox}</span>
+                <span className="font-bold text-neutral-700">≈ {starterApprox}</span>
                 {" · "}billed in GBP, your bank converts
               </p>
             )}
-            <div
-              className="mt-3.5 rounded-lg p-2.5"
-              style={{ background: `${XRATED_BRAND.accent}1A` }}
-            >
-              <p
-                className="text-[10px] font-extrabold uppercase tracking-widest"
-                style={{ color: "#7A5300" }}
-              >
-                Your brandable URL
-              </p>
-              <p className="mt-0.5 break-all text-[11px] font-extrabold text-neutral-900 sm:text-xs">
-                xratedtrade.com/your-name
-              </p>
-            </div>
-            <a
-              href={`/trade-off/signup?tier=paid&billing=${billing}`}
-              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
-              style={{ background: XRATED_BRAND.accent }}
-            >
-              Join XratedTrade
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-            <p className="mt-1.5 text-center text-[10px] text-neutral-500">
-              No card on signup · cancel any time
-            </p>
+            {STARTER_WAITLIST_MODE ? (
+              <>
+                <a
+                  href="/trade-off/waitlist?tier=starter"
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg border border-neutral-300 px-4 text-xs font-extrabold text-neutral-800 transition active:scale-[0.98] sm:text-sm hover:bg-neutral-50"
+                >
+                  Join the waitlist
+                </a>
+                <p className="mt-1.5 text-center text-[10px] text-neutral-500">
+                  Small businesses and sole traders
+                </p>
+              </>
+            ) : (
+              <>
+                <a
+                  href={`/trade-off/signup?tier=starter&billing=${billing}`}
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
+                  style={{ background: XRATED_BRAND.accent }}
+                >
+                  Start 14-day trial
+                </a>
+                <p className="mt-1.5 text-center text-[10px] text-neutral-500">
+                  Small businesses and sole traders
+                </p>
+              </>
+            )}
           </header>
 
-          <ul className="mt-5 flex flex-col gap-2 text-[11px] text-neutral-800 sm:text-xs">
-            <Row included strong>Brandable xratedtrade.com/your-name URL</Row>
-            <Row included strong>White-label — no Xrated header</Row>
-            <Row included>Intro video tile (up to 60s)</Row>
-            <Row included>Lead-capture contact form</Row>
-            <Row included>Call Now + Contact buttons + WhatsApp</Row>
-            <Row included>Service cards with prices + descriptions</Row>
-            <Row included>Customer-submitted reviews</Row>
-            <Row included>Meet-the-team grid</Row>
-            <Row included>7-colour custom theme</Row>
-            <Row included>Custom hero banner (annual)</Row>
-            <Row included>Priority email + WhatsApp support</Row>
-            <Row included strong>
-              <span className="font-bold">All future updates + new features free, automatically</span>
-            </Row>
+          <ul className="mt-5 flex flex-col gap-2 text-[11px] text-neutral-700 sm:text-xs">
+            <Row included strong>Complete Business App</Row>
+            <Row included>Studio Editor</Row>
+            <Row included>Core App Store</Row>
+            <Row included>Product Catalogue</Row>
+            <Row included>Contact Forms</Row>
+            <Row included>Basic AI Assistance</Row>
+            <Row included>Standard Themes</Row>
           </ul>
-
-          <footer
-            className="mt-5 rounded-xl border p-2.5"
-            style={{ borderColor: `${XRATED_BRAND.accent}55`, background: `${XRATED_BRAND.accent}0F` }}
-          >
-            <p className="text-[10px] font-bold uppercase tracking-widest text-neutral-700">
-              On expiry
-            </p>
-            <p className="mt-0.5 text-[10px] leading-relaxed text-neutral-600">
-              Silently downgrades to Free on hammerexdirect.com. Old links
-              301-redirect. Re-upgrade any time.
-            </p>
-          </footer>
         </article>
 
-        {/* VERIFIED tier — Goldilocks anchor with max emphasis */}
+        {/* ─── PROFESSIONAL (Recommended, actionable) ─────────────── */}
         <article
           className="relative flex flex-col rounded-2xl border-2 p-6"
           style={{
@@ -308,171 +261,151 @@ export function PricingTierCards({
             </svg>
             Recommended
           </span>
-          {/* Decorative right-side image — moved 90px left of the card
-              right edge and enlarged 2x per user direction. Still
-              pointer-events-none so it never blocks the CTA tap target. */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/4e5494b7bb75-Untitledasdasd.png"
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute right-[102px] top-20 h-32 w-32 -translate-y-1/2 select-none object-contain drop-shadow-lg sm:h-40 sm:w-40"
-          />
 
           <header>
             <p
-              className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.18em]"
+              className="text-xs font-bold uppercase tracking-[0.18em]"
               style={{ color: XRATED_BRAND.accent }}
             >
-              <VerifiedShield />
-              Xrated Verified
+              Professional
             </p>
             <p className="mt-3 flex items-baseline gap-1.5">
               <span className="text-3xl font-extrabold text-white sm:text-4xl">
-                £{verified.gbp}
+                £{professional.gbp}
               </span>
-              <span className="text-xs text-white/60 sm:text-sm">{verified.label}</span>
+              <span className="text-xs text-white/60 sm:text-sm">{professional.label}</span>
             </p>
-            <p className="mt-1.5 text-[11px] text-white/70 sm:text-xs">{verified.subtext}</p>
+            <p className="mt-1.5 text-[11px] text-white/70 sm:text-xs">{professional.subtext}</p>
             {isAnnual && (
               <p className="mt-0.5 text-[10px] font-semibold text-white/60 sm:text-[11px]">
-                Works out at ~£16.67/mo
+                ~£11.67/mo
               </p>
             )}
-            {verifiedApprox && (
+            {professionalApprox && (
               <p className="mt-1 text-[10px] leading-tight text-white/65 sm:text-[11px]">
-                <span className="font-bold text-white/90">≈ {verifiedApprox}</span>
+                <span className="font-bold text-white/90">≈ {professionalApprox}</span>
                 {" · "}billed in GBP, your bank converts
               </p>
             )}
-            <div
-              className="mt-3.5 rounded-lg p-2.5 ring-1"
-              style={{ background: `${XRATED_BRAND.accent}1A`, borderColor: XRATED_BRAND.accent, ['--tw-ring-color' as never]: `${XRATED_BRAND.accent}66` }}
+            <a
+              href={`/trade-off/signup?tier=paid&billing=${billing}`}
+              className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
+              style={{
+                background: XRATED_BRAND.accent,
+                boxShadow: `0 6px 18px ${XRATED_BRAND.accent}66`
+              }}
             >
-              <p
-                className="text-[10px] font-extrabold uppercase tracking-widest"
-                style={{ color: XRATED_BRAND.accent }}
-              >
-                Verified badge on your profile
-              </p>
-              <p className="mt-0.5 break-all text-[11px] font-extrabold text-white sm:text-xs">
-                xratedtrade.com/your-name
-              </p>
-            </div>
+              Start 14-day trial
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </a>
+            <p className="mt-1.5 text-center text-[10px] text-white/70">
+              No card on trial · growing businesses
+            </p>
+          </header>
 
-            {WAITLIST_MODE ? (
+          <p
+            className="mt-5 text-[10px] font-extrabold uppercase tracking-widest"
+            style={{ color: XRATED_BRAND.accent }}
+          >
+            Everything in Starter plus
+          </p>
+          <ul className="mt-2 flex flex-col gap-2 text-[11px] text-white/90 sm:text-xs">
+            <Row dark included strong>Premium Apps</Row>
+            <Row dark included>Trade Circle</Row>
+            <Row dark included>Industry-specific Apps</Row>
+            <Row dark included>AI Content Tools</Row>
+            <Row dark included>Advanced Promotions</Row>
+            <Row dark included>Analytics</Row>
+            <Row dark included>Advanced Studio Features</Row>
+          </ul>
+        </article>
+
+        {/* ─── BUSINESS (Coming soon) ─────────────────────────────── */}
+        <article className="relative flex flex-col rounded-2xl border border-neutral-200 bg-white p-6">
+          <span
+            className="absolute -top-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full bg-white px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-neutral-700 ring-1 ring-neutral-200"
+          >
+            Coming soon
+          </span>
+          <header>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">
+              Business
+            </p>
+            <p className="mt-3 flex items-baseline gap-1.5">
+              <span className="text-3xl font-extrabold text-neutral-900 sm:text-4xl">
+                £{business.gbp}
+              </span>
+              <span className="text-xs text-neutral-500 sm:text-sm">{business.label}</span>
+            </p>
+            <p className="mt-1.5 text-[11px] text-neutral-500 sm:text-xs">{business.subtext}</p>
+            {businessApprox && (
+              <p className="mt-1 text-[10px] leading-tight text-neutral-500 sm:text-[11px]">
+                <span className="font-bold text-neutral-700">≈ {businessApprox}</span>
+                {" · "}billed in GBP, your bank converts
+              </p>
+            )}
+            {BUSINESS_WAITLIST_MODE ? (
               <>
                 <a
-                  href="/trade-off/verified-waitlist"
-                  className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
-                  style={{
-                    background: XRATED_BRAND.accent,
-                    boxShadow: `0 6px 18px ${XRATED_BRAND.accent}66`
-                  }}
+                  href="/trade-off/waitlist?tier=business"
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg border border-neutral-300 px-4 text-xs font-extrabold text-neutral-800 transition active:scale-[0.98] sm:text-sm hover:bg-neutral-50"
                 >
-                  Join the Verified waitlist
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
+                  Join the waitlist
                 </a>
-                <p className="mt-1.5 text-center text-[10px] text-white/70">
-                  Verification launches Q3 2026 · waitlist price locked at £{verified.gbp}{verified.label} for life
+                <p className="mt-1.5 text-center text-[10px] text-neutral-500">
+                  Larger merchants and growing companies
                 </p>
               </>
             ) : (
               <>
                 <a
-                  href={`/trade-off/signup?tier=verified&billing=${billing}`}
-                  className="mt-4 inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
-                  style={{
-                    background: XRATED_BRAND.accent,
-                    boxShadow: `0 6px 18px ${XRATED_BRAND.accent}66`
-                  }}
+                  href={`/trade-off/signup?tier=business&billing=${billing}`}
+                  className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-xs font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.98] sm:text-sm"
+                  style={{ background: XRATED_BRAND.accent }}
                 >
-                  Apply for Verified
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="m9 18 6-6-6-6" />
-                  </svg>
+                  Start 14-day trial
                 </a>
-                <p className="mt-1.5 text-center text-[10px] text-white/70">
-                  Verification typically takes 3–5 working days
+                <p className="mt-1.5 text-center text-[10px] text-neutral-500">
+                  Larger merchants and growing companies
                 </p>
               </>
             )}
           </header>
 
-          <div className="mt-5">
-            <p
-              className="text-[10px] font-extrabold uppercase tracking-widest"
-              style={{ color: XRATED_BRAND.accent }}
-            >
-              Required check
-            </p>
-            <ul className="mt-2 flex flex-col gap-2 text-[11px] text-white/90 sm:text-xs">
-              <Row dark included strong>
-                <span className="font-bold">Active company registration</span> — Companies House or your local registry. We verify the company exists, is in good standing, and you&rsquo;re a director or named owner.
-              </Row>
-            </ul>
-
-            <p
-              className="mt-3 text-[10px] font-extrabold uppercase tracking-widest"
-              style={{ color: XRATED_BRAND.accent }}
-            >
-              Optional add-on badges
-            </p>
-            <p className="mt-1 text-[10px] leading-relaxed text-white/65">
-              Layer on top of your Verified badge — free with your Verified subscription.
-            </p>
-            <ul className="mt-2 flex flex-col gap-2 text-[11px] text-white/85 sm:text-xs">
-              <Row dark included>
-                <span className="font-bold text-white">&ldquo;Insured for private work&rdquo;</span> — upload your PL / EL certificate. Skip if you only work on sites where the principal contractor&rsquo;s policy covers you.
-              </Row>
-              <Row dark included>
-                <span className="font-bold text-white">&ldquo;On-site checked&rdquo;</span> — relevant for gas, electrical, structural, scaffolding. We confirm credentials at the work address.
-              </Row>
-            </ul>
-          </div>
-
-          <div className="mt-4 border-t border-white/10 pt-4">
-            <p
-              className="text-[10px] font-extrabold uppercase tracking-widest"
-              style={{ color: XRATED_BRAND.accent }}
-            >
-              Plus everything in Paid +
-            </p>
-            <ul className="mt-2 flex flex-col gap-2 text-[11px] text-white/85 sm:text-xs">
-              <Row dark included>Visible &ldquo;Xrated Verified&rdquo; badge on profile</Row>
-              <Row dark included>Priority lead-routing in search</Row>
-              <Row dark included>Dispute mediation — we step in when reviews are contested</Row>
-              <Row dark included>Verified-only filter on customer searches</Row>
-              <Row dark included>Annual report on lead conversion</Row>
-            </ul>
-          </div>
+          <p className="mt-5 text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
+            Everything in Professional plus
+          </p>
+          <ul className="mt-2 flex flex-col gap-2 text-[11px] text-neutral-700 sm:text-xs">
+            <Row included strong>Multi-user accounts</Row>
+            <Row included>Multiple locations</Row>
+            <Row included>Advanced AI</Row>
+            <Row included>Premium Industry Packs</Row>
+            <Row included>Advanced automation</Row>
+            <Row included>Priority support</Row>
+            <Row included>Future enterprise features</Row>
+          </ul>
         </article>
       </div>
 
-      {/* Worldwide-pricing footnote — sits between the tier grid and
-          the trial bar so every non-GBP visitor sees the FX explanation
-          immediately after reading the approximate row inside the cards.
-          Renders for all visitors (including GBP) because the no-FX-fee
-          line is reassuring even when the customer is already on GBP. */}
+      {/* Worldwide-pricing footnote */}
       <p className="text-center text-[11px] leading-relaxed text-neutral-500 sm:text-xs">
-        Prices in GBP. Stripe charges your card in GBP — your bank
-        converts at its prevailing rate. No fee from us for international
-        cards.
+        Prices in GBP. Card charges in GBP — your bank converts at its
+        prevailing rate. No fee from us for international cards.
       </p>
 
       {/* Trial assurance bar */}
       <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 text-center text-xs text-neutral-600 sm:text-sm">
         <span className="font-extrabold text-neutral-900">
-          Everyone starts free. Premium unlocked for 14 days.
+          Every paid plan starts with a 14-day free trial.
         </span>{" "}
-        Build your full profile, decide later. After day 14 you either
-        subscribe to keep premium or auto-revert to{" "}
-        <span className="font-bold text-neutral-900">free for life</span>{" "}
+        Build your full business app, decide later. After day 14 you either
+        subscribe or auto-revert to{" "}
+        <span className="font-bold text-neutral-900">Free — forever</span>{" "}
         — no card required either way.{" "}
         <span className="font-bold text-neutral-900">
-          One name = one account. Grab yours before someone else does.
+          One business = one account. Grab your URL before someone else does.
         </span>
       </div>
     </div>
@@ -519,13 +452,5 @@ function Row({
         {children}
       </span>
     </li>
-  );
-}
-
-function VerifiedShield() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2 4 5v6c0 5 3.5 9.5 8 11 4.5-1.5 8-6 8-11V5l-8-3zm-1.2 14L7 12.2l1.4-1.4 2.4 2.4 5.4-5.4L17.6 9l-6.8 7z" />
-    </svg>
   );
 }

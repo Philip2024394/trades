@@ -365,6 +365,50 @@ function AddonTile({
         </div>
       </div>
 
+      {/* Preview image + fuller pitch — pulled straight from the add-on
+       *  registry (summary + benefits[]). Collapsed behind a "Learn more"
+       *  toggle so the tile stays scannable when the tradie is browsing. */}
+      {(addon.summary || (addon.benefits && addon.benefits.length > 0) || addon.image_url) && (
+        <details className="mt-3 group/details">
+          <summary className="cursor-pointer text-[10px] font-extrabold uppercase tracking-widest text-brand-accent hover:brightness-95">
+            <span className="group-open/details:hidden">What does this do? →</span>
+            <span className="hidden group-open/details:inline">Hide details ×</span>
+          </summary>
+          <div className="mt-2 space-y-3">
+            {addon.image_url && (
+              <div className="overflow-hidden rounded-lg border border-brand-line">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={addon.image_url}
+                  alt={`${addon.name} preview`}
+                  loading="lazy"
+                  className="h-32 w-full object-cover"
+                />
+              </div>
+            )}
+            {addon.summary && (
+              <p className="text-[12px] leading-relaxed text-brand-text">{addon.summary}</p>
+            )}
+            {addon.benefits && addon.benefits.length > 0 && (
+              <ul className="space-y-1">
+                {addon.benefits.map((b) => (
+                  <li key={b} className="flex items-start gap-2 text-[11px] text-brand-text">
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] font-extrabold text-black"
+                      style={{ background: "#FFB300" }}
+                    >
+                      ✓
+                    </span>
+                    {b}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </details>
+      )}
+
       <div className="mt-3 flex flex-wrap items-center gap-2">
         {/* Price chip suppressed for bundled-included add-ons — Merchant
          *  Pro tradies shouldn't see "£7/mo" on a feature their tier

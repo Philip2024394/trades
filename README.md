@@ -1,6 +1,6 @@
 # Xrated Trades
 
-Linktree-for-tradies SaaS. Public profile + dashboard + add-ons marketing for tradespeople. Standalone Next.js 16 app split off from the Hammerex monorepo at commit 04b308f.
+The Business Operating System for trade businesses. Studio (visual editor), an App Store, Industry Packs, and AI — one platform trade businesses use to design, run and grow their business online. Standalone Next.js 16 app split off from the Hammerex monorepo at commit 04b308f.
 
 Tech stack: Next.js 16, React 19, Tailwind 3.4, TypeScript 5.6, Supabase. Local dev server runs on port 3008.
 

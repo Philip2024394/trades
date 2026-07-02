@@ -21,7 +21,7 @@
 // at least one row in product.specs. Delivery tab only renders when the
 // per-listing toggle is on. Description always shows.
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import type {
   HammerexXratedProduct,
   RetailShippingArea,
@@ -39,7 +39,7 @@ export function BuyColumnDetails({
   shipsFromCity,
   dispatchDays,
   returnsText,
-  refCode,
+  rightSlot,
   shippingMode,
   shippingUkPence,
   shippingUkAreas,
@@ -51,7 +51,10 @@ export function BuyColumnDetails({
   shipsFromCity: string;
   dispatchDays: number | null;
   returnsText: string | null;
-  refCode: string;
+  /** Right-aligned slot on the tab row. Previously held the Ref code;
+   *  now hosts the calculator-open button (when the product has a
+   *  calculator) since the Ref code moved onto the gallery image. */
+  rightSlot?: ReactNode;
   /** Listing-level retail delivery config — surfaced in the Delivery
    *  tab body. NULL ⇒ "confirmed by WhatsApp" copy. */
   shippingMode?: "free" | "uk_flat" | "uk_areas" | "pickup" | "uk_over_threshold" | null;
@@ -106,9 +109,7 @@ export function BuyColumnDetails({
             );
           })}
         </div>
-        <p className="text-[13px] font-bold text-neutral-500">
-          Ref: <span className="font-mono text-neutral-700">{refCode}</span>
-        </p>
+        {rightSlot && <div className="shrink-0">{rightSlot}</div>}
       </div>
 
       <div
@@ -305,7 +306,7 @@ function DeliveryBody({
   const returns =
     (returnsText ?? "").trim().length > 0
       ? (returnsText as string).trim()
-      : "14 days — buyer arranges return delivery";
+      : "Unused items returnable within the manufacturer's stated window for a full refund";
 
   const ukLabel = ukShippingLabel(shippingMode, shippingUkPence, shippingUkAreas);
   const showAreasList =

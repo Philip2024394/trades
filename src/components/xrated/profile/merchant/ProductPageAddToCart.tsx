@@ -184,11 +184,13 @@ export function ProductPageAddToCart({
           still mirrored via localStorage so the line-total stays
           accurate. */}
       <div className="flex flex-col gap-1 sm:items-end">
-        <div className="flex w-full items-center justify-between gap-3 sm:w-auto sm:justify-end">
+        <div className="flex w-full items-baseline justify-between gap-3 sm:w-auto sm:justify-end">
           <span className="text-[13px] font-bold text-neutral-500">
             Line total
           </span>
-          <span className="text-base font-extrabold text-neutral-900">
+          {/* Same size as PriceDisplay (text-3xl sm:text-4xl) so the
+           *  line-total reads as the headline price the buyer commits to. */}
+          <span className="text-3xl font-extrabold text-neutral-900 sm:text-4xl">
             {formatGbp(lineTotalPence)}
           </span>
         </div>

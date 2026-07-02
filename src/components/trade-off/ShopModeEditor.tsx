@@ -1894,7 +1894,7 @@ function ProductForm({
                 maxLength={500}
                 onChange={(e) => update("warranty_text", e.target.value)}
                 rows={4}
-                placeholder="1-year workmanship guarantee. 14-day return window from delivery for unused items in original packaging."
+                placeholder="Each product carries its manufacturer's own warranty and return window. Unused items in original packaging can be returned within that window for a full refund. Faulty products — we handle the manufacturer claim direct."
                 className="block w-full rounded-md border border-brand-line bg-brand-surface px-3 py-2 text-sm text-brand-text outline-none focus:border-brand-accent"
               />
               <p className="mt-1 text-[13px] text-brand-muted">

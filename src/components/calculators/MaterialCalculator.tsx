@@ -171,15 +171,23 @@ import type { CrossSellProductRef } from "@/lib/calculators/crossSell";
 import { addItem, type CartItem } from "@/lib/xratedCart";
 
 export function MaterialCalculator({
-  type, product, listingSlug, productSlug, siblings = []
+  type, product, listingSlug, productSlug, siblings = [],
+  merchantName, merchantWhatsappDigits, productRef
 }: {
   type: CalculatorType;
   product: CalculatorProductRef;
   listingSlug: string;
   productSlug: string;
   siblings?: CrossSellProductRef[];
+  /** Merchant display name — surfaced in the prefilled WhatsApp enquiry
+   *  message ("Hi {merchantName}, ..."). */
+  merchantName: string;
+  /** Digits-only WhatsApp number. Empty string ⇒ Enquire button hidden. */
+  merchantWhatsappDigits: string;
+  /** Customer-facing product Ref code (matches the gallery overlay). */
+  productRef: string;
 }) {
-  const p = { product, listingSlug, productSlug, siblings };
+  const p = { product, listingSlug, productSlug, siblings, merchantName, merchantWhatsappDigits, productRef };
   if (type === "paint") return <PaintCalc {...p} />;
   if (type === "flooring") return <FlooringCalc {...p} />;
   if (type === "tiles") return <TilesCalc {...p} />;
@@ -200,7 +208,7 @@ export function MaterialCalculator({
   return null;
 }
 
-type CalcProps = { product: CalculatorProductRef; listingSlug: string; productSlug: string; siblings: CrossSellProductRef[] };
+type CalcProps = { product: CalculatorProductRef; listingSlug: string; productSlug: string; siblings: CrossSellProductRef[]; merchantName: string; merchantWhatsappDigits: string; productRef: string };
 
 function CalcHeader({ title, sub }: { title: string; sub: string }) {
   return (<div className="mb-3"><p className="text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#FFB300]">Calculator</p><h2 className="mt-1 text-[18px] font-extrabold text-neutral-900">{title}</h2><p className="mt-1 text-[13px] text-neutral-500">{sub}</p></div>);
@@ -228,7 +236,7 @@ function CheckRow({ label, checked, onChange }: { label: string; checked: boolea
   return (<label className="inline-flex h-11 items-center gap-2 rounded-md border border-neutral-300 bg-white px-3"><input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="h-5 w-5 accent-[#FFB300]" /><span className="text-[13px] font-bold text-neutral-900">{label}</span></label>);
 }
 
-function useCalcActions<T extends CalculatorType>({ type, output, inputs, listingSlug, productSlug, product }: { type: T; output: CalculatorOutput; inputs: CalculatorInputs; listingSlug: string; productSlug: string; product: CalculatorProductRef }) {
+function useCalcActions({ output, listingSlug, product }: { output: CalculatorOutput; listingSlug: string; product: CalculatorProductRef }) {
   async function onAddToCart() {
     for (const line of output.lines) {
       if (!line.cart) continue;
@@ -237,20 +245,12 @@ function useCalcActions<T extends CalculatorType>({ type, output, inputs, listin
     }
     return true;
   }
-  async function onShare(): Promise<{ url: string } | null> {
-    try {
-      const res = await fetch("/api/trade-off/calc-estimate/create", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ listing_slug: listingSlug, product_slug: productSlug, calculator_type: type, inputs, output }) });
-      const json: { ok?: boolean; url?: string } = await res.json();
-      if (json.ok && json.url) return { url: json.url };
-    } catch { /* ignore */ }
-    return null;
-  }
-  return { onAddToCart, onShare };
+  return { onAddToCart };
 }
 
 function Shell({ type, scenarioLabels, scenario, setScenario, output, inputs, props, complementary, children }: { type: CalculatorType; scenarioLabels: Record<string, string>; scenario: string; setScenario: (s: string) => void; output: CalculatorOutput; inputs: CalculatorInputs; props: CalcProps; complementary: string[]; children: React.ReactNode }) {
-  const { onAddToCart, onShare } = useCalcActions({ type, output, inputs, listingSlug: props.listingSlug, productSlug: props.productSlug, product: props.product });
-  return (<div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5"><ScenarioTabs labels={scenarioLabels} value={scenario} onChange={setScenario} />{children}<div className="mt-4"><CalculatorOutputPanel type={type} inputs={inputs} output={output} productSlug={props.productSlug} listingSlug={props.listingSlug} onAddToCart={onAddToCart} onShare={onShare} /></div><CrossSellPanel listingSlug={props.listingSlug} currentProductId={props.product.id} siblings={props.siblings} requiredSubcategories={complementary} /></div>);
+  const { onAddToCart } = useCalcActions({ output, listingSlug: props.listingSlug, product: props.product });
+  return (<div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-4 sm:p-5"><ScenarioTabs labels={scenarioLabels} value={scenario} onChange={setScenario} />{children}<div className="mt-4"><CalculatorOutputPanel type={type} inputs={inputs} output={output} productSlug={props.productSlug} listingSlug={props.listingSlug} productName={props.product.name} productRef={props.productRef} merchantName={props.merchantName} merchantWhatsappDigits={props.merchantWhatsappDigits} onAddToCart={onAddToCart} /></div><CrossSellPanel listingSlug={props.listingSlug} currentProductId={props.product.id} siblings={props.siblings} requiredSubcategories={complementary} /></div>);
 }
 
 function PaintCalc(props: CalcProps) {

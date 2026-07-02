@@ -7,6 +7,16 @@ export const supabase = createClient(url, anonKey, {
   auth: { persistSession: false }
 });
 
+// One entry in the merchant's hero-strip category rail. Slug is stable
+// (used in URLs + product tags); label is what shows under the image.
+export type ShopCategory = {
+  slug: string;
+  label: string;
+  image_url: string | null;
+  enabled: boolean;
+  sort_order: number;
+};
+
 export type HammerexTradeOffListing = {
   id: string;
   slug: string;
@@ -132,6 +142,16 @@ export type HammerexTradeOffListing = {
     years_experience: number | null;
     avatar_url: string | null;
     skills: string[];
+    // Optional direct line — click-to-call from the card. null hides
+    // the phone bar; the customer falls back to the main WhatsApp on
+    // the hero. Format free-text so it works with UK landline,
+    // extension, or international.
+    direct_phone: string | null;
+    // Optional extension appended to direct_phone. When both are set
+    // the tel: link uses "phone,ext" (commas insert pauses in the
+    // dialler so the extension is dialled after connection). Display:
+    // "+44 1482 555 0100 ext 2103".
+    direct_extension: string | null;
   }[];
   addons_enabled: Record<string, boolean>;
   // PDP payment-method selection. null OR empty array = render the
@@ -154,6 +174,36 @@ export type HammerexTradeOffListing = {
    *  cart so customers know when to turn up. */
   wholesale_pickup_from: string | null;
   wholesale_pickup_to: string | null;
+  /** Trade Connections add-on — how far (km) from the merchant's yard
+   *  to search for trades for the product-PDP carousel. Default 25. */
+  trade_connections_radius_km: number;
+  // Online Payments add-on — merchant-connected accounts model. We
+  // NEVER touch the money. NULL ⇒ add-on inactive. Allowed values:
+  // 'stripe' | 'paypal' | 'square' | 'payment_link'.
+  payment_provider: string | null;
+  // Provider-specific config blob. Stripe: { stripe_account_id,
+  // status }. PayPal: { paypal_merchant_id, partner_id }. Square:
+  // { square_merchant_id, location_id, expires_at }.
+  payment_provider_data: Record<string, unknown>;
+  // Hosted payment-link URL template (Payment Link mode). Supports
+  // {{amount}} and {{ref}} placeholders. Works for any UK provider
+  // that exposes a hosted payment URL (Worldpay, SumUp, Klarna, etc.).
+  payment_link_template: string | null;
+  payment_link_provider_name: string | null;
+  // Shop Categories add-on — horizontal strip under the hero on the
+  // merchant profile. Array of {slug,label,image_url,enabled,sort_order}
+  // controlled from /edit/<slug>/shop-categories.
+  shop_categories: ShopCategory[];
+  // Key Cutting add-on — JSONB blob with the merchant's enabled service
+  // categories, fulfilment modes, prices, banner and postal details.
+  // See src/lib/keyCutting.ts for the KeyCuttingConfig shape.
+  key_cutting: Record<string, unknown>;
+  // Plant Hire add-on — JSONB blob with the merchant's enabled plant
+  // categories (excavators, dumpers, telehandlers, MEWPs …), fulfilment
+  // modes (collect / delivery / operator / long-term), rate table,
+  // damage-waiver options and delivery zones. See src/lib/plantHire.ts
+  // for the PlantHireConfig shape.
+  plant_hire: Record<string, unknown>;
   wholesale_currency: string;
   wholesale_prices_ex_vat: boolean;
   // Materials Network add-on. Three role-specific columns:
@@ -322,6 +372,10 @@ export type HammerexXratedProduct = {
    *  storefront AND the default Material Calculator on the PDP. NULL
    *  = uncategorised. See src/lib/merchantCategories.ts. */
   merchant_category: string | null;
+  /** Which hero-strip Shop Categories this product belongs to. Product
+   *  can belong to multiple (e.g. cement under bricks_and_blocks AND
+   *  sand_gravel). Filter via GIN: shop_category_slugs @> ARRAY[slug]. */
+  shop_category_slugs: string[];
   /** Optional subcategory for cross-sell matching. e.g. paint_brush,
    *  paint_roller, tile_adhesive. Drives the "Complete your project"
    *  panel on calculator PDPs. */
@@ -347,7 +401,7 @@ export type HammerexXratedProduct = {
   slug: string | null;
   featured_at: string | null;
   // PDP "Warranty & Returns" tab overrides. NULL ⇒ render the default
-  // copy ("1-year workmanship guarantee" / "14-day return window") shown
+  // copy ("manufacturer's warranty" / "return unused for refund") shown
   // in ProductDetailsTabs. Non-null strings replace the default for that
   // half of the tab body. Capped at 500 chars by the upsert API.
   warranty_header: string | null;

@@ -1,8 +1,21 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
+import { loadLivePublishedLayout } from "@/lib/studio/liveLayoutLoader";
+import { hydrateAddonDomain } from "@/lib/studio/addonDataLoader";
+import { hydrateAppDomain } from "@/platform/apps/_shared/appDataLoader";
+// Side-effect: registers every manifest-driven App with the App
+// Registry + populates the app data loader map. Must import before
+// the storefront hydrator runs.
+import "@/platform/apps";
+import { StudioLiveShell } from "@/components/studio/StudioLiveShell";
+import { adminWhatsapp } from "@/lib/whatsapp";
+import { whatsappDigits } from "@/lib/tradeOff";
+import type { MerchantData } from "@/lib/studio/sectionTypes";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { FloatingBackToMerchant } from "@/components/trade-off/FloatingBackToMerchant";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { HeroStatusStrip } from "@/components/xrated/HeroStatusStrip";
+import { ShopCategoriesStrip } from "@/components/xrated/profile/ShopCategoriesStrip";
 import { VideoLightbox } from "@/components/xrated/profile/VideoLightbox";
 import { EnquireButton } from "@/components/xrated/profile/EnquireButton";
 import { ServicesTabbedGallery } from "@/components/xrated/profile/service/ServicesTabbedGallery";
@@ -49,13 +62,19 @@ import { PastProjectsStrip } from "@/components/xrated/profile/PastProjectsStrip
 import { MaterialsNetworkSection } from "@/components/xrated/profile/MaterialsNetworkSection";
 import { FaqPageCta } from "@/components/xrated/profile/FaqPageCta";
 import { TradeCenterPicksSection } from "@/components/xrated/profile/merchant/TradeCenterPicksSection";
-import { isDownloadsOn, isFaqPageOn, isJobDiaryOn, isMaterialsNetworkOn, isServicesGridOn, isStorefrontOn, isTradeCenterPicksOn } from "@/lib/xratedAddons";
+import { isDownloadsOn, isFaqPageOn, isJobDiaryOn, isKeyCuttingOn, isMaterialsNetworkOn, isMeetTheTeamOn, isPlantHireOn, isServicesGridOn, isStorefrontOn, isTradeCenterPicksOn } from "@/lib/xratedAddons";
+import { KeyCuttingCard } from "@/components/xrated/profile/KeyCuttingCard";
+import { PlantHireCard } from "@/components/xrated/profile/PlantHireCard";
+import { PlantHireHomeShowcase } from "@/components/xrated/profile/PlantHireHomeShowcase";
+import { PlantHireCategoryScroller } from "@/components/xrated/profile/PlantHireCategoryScroller";
+import { PLANT_CATEGORIES, normalisePlantHireConfig } from "@/lib/plantHire";
 import {
   supabase,
   type HammerexTradeOffListing,
   type HammerexTradeOffProject,
   type HammerexProduct
 } from "@/lib/supabase";
+import { getCachedProfile, getCachedReviews } from "@/lib/localCache";
 import {
   absolute,
   BRAND,
@@ -102,8 +121,21 @@ async function loadListing(slug: string) {
     .eq("slug", slug)
     .eq("status", "live")
     .maybeSingle();
-  const listing = (res.data ?? null) as HammerexTradeOffListing | null;
+  let listing = (res.data ?? null) as HammerexTradeOffListing | null;
+
+  // Fallback: if Supabase REST is unreachable (project egress-capped or
+  // in-incident), the anon query returns nothing. Serve from the local
+  // snapshot when we have one so the app stays browseable in dev.
   if (!listing) {
+    const cached = getCachedProfile(slug);
+    if (cached) {
+      const cachedReviews = getCachedReviews(slug) as XratedReviewPublic[];
+      return {
+        listing: cached.listing,
+        projects: cached.projects,
+        reviews: cachedReviews
+      };
+    }
     return {
       listing: null,
       projects: [] as HammerexTradeOffProject[],
@@ -385,6 +417,51 @@ export default async function TradiePublicProfilePage({
     notFound();
   }
 
+  // ─── Module 21: Studio-rendered storefront ─────────────────────────
+  // If the merchant has published a Studio layout for the home page,
+  // customers see exactly what Studio rendered. Publishing IS the
+  // opt-in — merchants who have never touched Studio hit the fallback
+  // hand-composed profile below unchanged.
+  //
+  // Any thrown error in the Studio path is caught so a broken section
+  // can never take down a live profile.
+  try {
+    const live = await loadLivePublishedLayout(listing.id, "home");
+    if (live && live.layout.sections.length > 0) {
+      const waDigits = whatsappDigits(listing.whatsapp ?? "");
+      const [addonDomain, appDomain] = await Promise.all([
+        hydrateAddonDomain(listing, live.layout),
+        hydrateAppDomain(listing, live.layout)
+      ]);
+      const merchantData: MerchantData = {
+        merchantId: listing.id,
+        slug: listing.slug,
+        merchantName: listing.display_name,
+        city: listing.city,
+        whatsappHref: waDigits
+          ? `https://wa.me/${waDigits}`
+          : adminWhatsapp()
+            ? `https://wa.me/${adminWhatsapp()}`
+            : null,
+        brandName: live.brandName,
+        domain: {
+          addonsEnabled: addonDomain.addonsEnabled,
+          addons: addonDomain.addons,
+          apps: appDomain.apps
+        }
+      };
+      return (
+        <StudioLiveShell
+          layout={live.layout}
+          tokens={live.tokens}
+          data={merchantData}
+        />
+      );
+    }
+  } catch {
+    // Fall through to hand-composed profile on any Studio-side error.
+  }
+
   const primary = tradeLabel(listing.primary_trade);
   const cover = listing.photos[0] ?? listing.avatar_url ?? BRAND.logo;
   const tier = standardTierFor(listing.hammerex_standard_products.length);
@@ -490,6 +567,12 @@ export default async function TradiePublicProfilePage({
           }}
         />
       )}
+      {/* Floating "Back to [Merchant]" chip — only shows when the
+       *  visitor arrived from a merchant's Trade Connections carousel
+       *  (?from=<merchantSlug> param). Persists for 60 min via
+       *  sessionStorage. */}
+      <FloatingBackToMerchant />
+
       {/* Lean tradie-profile header — visual bookend partner to
           TradeProfileFooter. Renders on every tier (paid + free)
           because it carries the WhatsApp Chat pill and tradie
@@ -604,14 +687,49 @@ function PremiumLayout({
   // container). FaqPageCta server-component self-hides when there are
   // zero live FAQ rows.
   const faqPageOn = isPaid && isFaqPageOn(listing);
+  // Meet the team gate — opt-in add-on. TeamGrid self-hides when there
+  // are fewer than 2 configured members even with the add-on on.
+  const meetTheTeamOn = isPaid && isMeetTheTeamOn(listing);
+  const keyCuttingOn = isPaid && isKeyCuttingOn(listing);
+  const plantHireOn = isPaid && isPlantHireOn(listing);
+  const plantHireFlagship =
+    plantHireOn && listing.primary_trade === "plant-hire";
+  const plantHireCfg = plantHireFlagship
+    ? normalisePlantHireConfig(listing.plant_hire)
+    : null;
+  const plantHireCategoriesForStrip = plantHireCfg
+    ? PLANT_CATEGORIES.map((meta) => ({ meta, c: plantHireCfg.categories[meta.slug] }))
+        .filter((row) => row.c?.enabled)
+        .map((row) => ({
+          slug: row.meta.slug,
+          label: row.meta.label,
+          emoji: row.meta.emoji,
+          image_url: row.c?.image_url ?? "",
+          price_day_pence: row.c?.price_day_pence ?? null
+        }))
+    : [];
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
-      {/* Status strip directly under hero. Renders the tradesperson's
-          configured running marquee (from App Studio) OR a quiet
-          plain-text summary (trade · city · live status) when not set
-          — never an empty band. */}
-      <HeroStatusStrip listing={listing} />
+      {/* Under-hero rail.
+       *  – Plant-hire flagship yards (primary_trade='plant-hire') get the
+       *    machine scroller directly under the hero and skip the status
+       *    strip entirely.
+       *  – Merchants with Shop Categories configured get their category
+       *    strip.
+       *  – Everyone else gets the classic HeroStatusStrip. */}
+      {plantHireFlagship && plantHireCategoriesForStrip.length > 0 ? (
+        <div className="mx-auto w-full max-w-6xl px-4 pt-3 sm:px-6 sm:pt-4">
+          <PlantHireCategoryScroller
+            merchantSlug={listing.slug}
+            categories={plantHireCategoriesForStrip}
+          />
+        </div>
+      ) : (listing.shop_categories ?? []).some((c) => c.enabled !== false) ? (
+        <ShopCategoriesStrip slug={listing.slug} categories={listing.shop_categories} />
+      ) : (
+        <HeroStatusStrip listing={listing} />
+      )}
 
       {/* Past projects swipeable strip — sits just below the hero so
           "what we've delivered" lands before "what we're working on
@@ -638,6 +756,11 @@ function PremiumLayout({
       <AboutAndVideo listing={listing} />
       {shopMode ? (
         <ShopTeaser listing={listing} />
+      ) : plantHireFlagship ? (
+        // Plant-hire flagship yards move Our Services to the bottom of
+        // the page (see block near BottomTrustStrip below) so the
+        // machine fleet is the primary above-the-fold story.
+        null
       ) : (
         <ServicesTabbedGallery
           slug={listing.slug}
@@ -679,7 +802,13 @@ function PremiumLayout({
           Self-renders nothing when the tradesperson has zero live
           merchant picks. View-all link points to /<slug>/materials. */}
       {materialsOn && <MaterialsNetworkSection listing={listing} />}
-      <TeamGrid listing={listing} />
+      {meetTheTeamOn && <TeamGrid listing={listing} />}
+      {keyCuttingOn && <KeyCuttingCard listing={listing} />}
+      {plantHireOn && listing.primary_trade === "plant-hire" ? (
+        <PlantHireHomeShowcase listing={listing} />
+      ) : (
+        plantHireOn && <PlantHireCard listing={listing} />
+      )}
       {/* My Trusted Trades — link to the dedicated sub-page. Available
           on every tier (free + trial + paid) as the viral acquisition
           lever: free profiles can recommend other tradies, generating
@@ -703,6 +832,20 @@ function PremiumLayout({
           TrustedTradesCta so the customer reads "people I recommend"
           → "questions I answer". */}
       {faqPageOn && <FaqPageCta listing={listing} />}
+      {/* Plant-hire yards render Our Services down here so the machine
+       *  fleet dominates above the fold. Non-plant-hire trades still
+       *  render this component up near the hero (see block above). */}
+      {plantHireFlagship && (
+        <ServicesTabbedGallery
+          slug={listing.slug}
+          pricedServices={listing.priced_services ?? []}
+          servicesOffered={listing.services_offered ?? []}
+          reviews={reviews}
+          stripped={!isPaid}
+          acceptingJobs={Boolean(listing.accepting_jobs)}
+          operatingHours={listing.operating_hours ?? null}
+        />
+      )}
       <BottomTrustStrip />
       {/* Coloured social-icon strip + website chip, sits just above the
           "Powered by Xrated" credit on paid profiles. Auto-hides if the

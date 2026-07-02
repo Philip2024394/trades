@@ -158,7 +158,7 @@ export function ServicesTabbedGallery({
             Our Services
           </h2>
           <p className="mt-1 text-xs text-neutral-500">
-            Example of projects and finishes we offer.
+            Services and rental.
           </p>
         </div>
         <button
@@ -379,7 +379,7 @@ function ServiceCarousel({
               ref={(node) => {
                 if (isFirstCopy) cardRefs.current[firstCopyIndex] = node;
               }}
-              className="w-[78%] shrink-0 sm:w-[60%] lg:w-[44%]"
+              className="w-[62%] shrink-0 sm:w-[44%] lg:w-[30%]"
             >
               <ServiceCard
                 tab={t}
@@ -462,7 +462,7 @@ function ServiceCard({
           <img
             src={cover}
             alt={svc.name}
-            className="h-full w-full object-cover object-top transition group-hover:scale-[1.03]"
+            className="h-full w-full object-contain transition group-hover:scale-[1.03]"
             style={svc.image_position ? { objectPosition: svc.image_position } : undefined}
           />
           {/* Per-service star badge — top-right of the cover image.

@@ -13,7 +13,7 @@ import {
   type HammerexXratedShippingZone,
   type HammerexXratedWholesaleZone
 } from "@/lib/supabase";
-import { isShopModeOn, isWholesaleModeOn } from "@/lib/xratedAddons";
+import { isShopModeOn, isWholesaleModeOn, isOnlinePaymentsOn } from "@/lib/xratedAddons";
 import { effectiveTier } from "@/lib/xratedTrades";
 import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
@@ -107,6 +107,7 @@ export default async function CartPage({
         listing={listing}
         zones={zones}
         wholesaleZone={wholesaleZone}
+        paymentsOn={isOnlinePaymentsOn(listing)}
       />
       <div className="mt-auto">
         <TradeProfileFooter listing={listing} appName={`${tradeLabel(listing.primary_trade)} Service`} />

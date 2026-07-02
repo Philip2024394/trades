@@ -23,25 +23,26 @@ export function absolute(path: string): string {
 export const BRAND = {
   name: "xratedtrade.com",
   legalName: "xratedtrade.com",
-  tagline: "Your shareable trade profile",
+  tagline: "The Business Operating System for Trade Businesses",
   description:
-    "The shareable trade profile for tradies anywhere. Reviews, photos, prices, WhatsApp — one link. Built for tradespeople who want their work, their pricing and their reputation in one place customers can share.",
+    "The Business Operating System for trade businesses. Studio to design your app, an App Store to install features as you grow, Industry Packs built for your trade, and AI that helps you run the business — all in one platform.",
   descriptionShort:
-    "Linktree for tradies. One shareable profile with reviews, photos, prices and WhatsApp.",
+    "The Business Operating System for trade businesses. Studio, App Store, Industry Packs — one platform.",
   logo: "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/migrated/85e5e067cf0cb299.png",
   whatsapp: process.env.ADMIN_WHATSAPP ?? process.env.NEXT_PUBLIC_HAMMEREX_WHATSAPP ?? "+6281392000050",
   locale: "en_GB"
 };
 
 export const SEO_KEYWORDS = [
-  "tradesperson profile",
-  "tradie profile",
-  "trade directory",
-  "find a tradesperson",
-  "tradie linktree",
-  "WhatsApp tradesperson",
-  "construction profile",
-  "verified trades"
+  "business operating system for trades",
+  "trade business platform",
+  "trade app store",
+  "trade business apps",
+  "tradesperson software",
+  "construction business platform",
+  "WhatsApp for trades",
+  "trade studio editor",
+  "industry packs for trades"
 ];
 
 // Strip markdown so the bio field doesn't bleed `**bold**`, `### heading`,
@@ -115,6 +116,59 @@ export function breadcrumbJsonLd(trail: { name: string; url: string }[]) {
       name: t.name,
       item: absolute(t.url)
     }))
+  };
+}
+
+// Product JSON-LD — emits Google's canonical Product schema with
+// offers + (optional) aggregateRating. Drives the price + ★ rich
+// snippet on SERPs. Skip aggregateRating when reviewCount === 0 to
+// avoid Search Console warnings.
+export function productJsonLd(p: {
+  name: string;
+  description: string;
+  url: string;
+  image: string[];
+  sku: string;
+  brandName: string;
+  pricePence: number;
+  currency?: string;
+  availability:
+    | "InStock"
+    | "OutOfStock"
+    | "PreOrder"
+    | "LimitedAvailability";
+  ratingAvg?: number | null;
+  reviewCount?: number;
+}) {
+  const aggregate =
+    typeof p.ratingAvg === "number" &&
+    Number.isFinite(p.ratingAvg) &&
+    (p.reviewCount ?? 0) > 0
+      ? {
+          "@type": "AggregateRating",
+          ratingValue: Number(p.ratingAvg.toFixed(1)),
+          reviewCount: p.reviewCount,
+          bestRating: 5,
+          worstRating: 1
+        }
+      : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: p.name,
+    description: p.description,
+    image: p.image,
+    sku: p.sku,
+    brand: { "@type": "Brand", name: p.brandName },
+    offers: {
+      "@type": "Offer",
+      url: absolute(p.url),
+      price: (p.pricePence / 100).toFixed(2),
+      priceCurrency: p.currency ?? "GBP",
+      availability: `https://schema.org/${p.availability}`,
+      itemCondition: "https://schema.org/NewCondition"
+    },
+    aggregateRating: aggregate
   };
 }
 

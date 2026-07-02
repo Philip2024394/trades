@@ -40,13 +40,21 @@ import { TradeProfileFooter } from "@/components/xrated/TradeProfileFooter";
 import { ProductPageGallery } from "@/components/xrated/profile/merchant/ProductPageGallery";
 import { ProductPageAddToCart } from "@/components/xrated/profile/merchant/ProductPageAddToCart";
 import { MaterialCalculator } from "@/components/calculators/MaterialCalculator";
-import { resolveCalculator } from "@/lib/merchantCategories";
+import { resolveCalculator, getCategory } from "@/lib/merchantCategories";
+import {
+  BuyColumnFlip,
+  CalcOpenButton
+} from "@/components/xrated/profile/merchant/BuyColumnFlip";
+import { Breadcrumbs } from "@/components/xrated/profile/merchant/Breadcrumbs";
+import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
+import { TradeConnectionsCarousel } from "@/components/trade-off/TradeConnectionsCarousel";
+import { loadTradeConnections } from "@/lib/tradeConnections";
+import { isTradeConnectionsOn } from "@/lib/xratedAddons";
 import { SiblingsWithCompare } from "@/components/xrated/profile/merchant/SiblingsWithCompare";
 import { BulkTierTable } from "@/components/xrated/profile/merchant/BulkTierTable";
 import { StarsRating } from "@/components/xrated/profile/StarsRating";
 import { BuyColumnDetails } from "@/components/xrated/profile/merchant/BuyColumnDetails";
 import { PaymentIconsRow } from "@/components/xrated/profile/merchant/PaymentIconsRow";
-import { WarrantyReturnsBlock } from "@/components/xrated/profile/merchant/WarrantyReturnsBlock";
 import { CurrencyDropdown } from "@/components/xrated/profile/merchant/CurrencyDropdown";
 import { PriceDisplay } from "@/components/xrated/profile/merchant/PriceDisplay";
 import { ProductReviewsBlock } from "@/components/xrated/profile/merchant/ProductReviewsBlock";
@@ -340,11 +348,26 @@ export default async function ProductDetailPage({
   const product = await loadProduct(listing.id, productSlug);
   if (!product) notFound();
   const compareIds = Array.isArray(product.compare_with) ? product.compare_with : [];
-  const [siblings, compareTargets, stats, crossSellSiblings] = await Promise.all([
+  const tradeConnectionsOn = isTradeConnectionsOn({ addons_enabled: listing.addons_enabled });
+  const [siblings, compareTargets, stats, crossSellSiblings, tradeConnections] = await Promise.all([
     loadSiblings(listing.id, product.id),
     loadCompareTargets(compareIds),
     loadProductStats(product.id),
-    loadCrossSellCandidates(listing.id, product.id)
+    loadCrossSellCandidates(listing.id, product.id),
+    tradeConnectionsOn
+      ? loadTradeConnections({
+          merchantListing: {
+            id: listing.id,
+            wholesale_origin_lat: listing.wholesale_origin_lat,
+            wholesale_origin_lng: listing.wholesale_origin_lng,
+            postcode_prefix: listing.postcode_prefix,
+            city: listing.city,
+            trade_connections_radius_km: listing.trade_connections_radius_km
+          },
+          category: product.merchant_category,
+          excludeSlugs: [listing.slug]
+        })
+      : Promise.resolve([])
   ]);
   // Batch the sibling + compare-target review aggregates in one
   // round-trip after the products are known. Keeps the rail from
@@ -364,6 +387,13 @@ export default async function ProductDetailPage({
   const bulkTiers = Array.isArray(product.bulk_tiers) ? product.bulk_tiers : [];
   const showBulkTiers = isWholesaleModeOn(listing) && bulkTiers.length > 0;
   const ref = refNumber(product);
+  // Resolve the calculator type once at the top so the BuyColumnFlip
+  // wrapper (front face / back face) and the in-content render share
+  // the same decision.
+  const calcType = resolveCalculator({
+    merchant_category: product.merchant_category,
+    calculator_override: product.calculator_override
+  });
 
   // UK install-services flow: stair / kitchen fitters etc. sell labour by
   // measurement, so the buying journey ends at "Request site visit" on
@@ -378,12 +408,74 @@ export default async function ProductDetailPage({
     `Hi ${listing.display_name}, I'd like to chat about "${product.name}" (Ref: ${ref}).`
   )}`;
 
+  // Breadcrumb trail — Home › {Trade} Service › {Category} › {Product}.
+  // Visible nav strip above the gallery PLUS BreadcrumbList JSON-LD so
+  // Google can render rich-snippet breadcrumbs in SERPs.
+  const categoryDef = getCategory(product.merchant_category ?? null);
+  const productUrl = `/${listing.slug}/shop/${product.slug ?? product.id}`;
+  const shopUrl = `/${listing.slug}/shop`;
+  const breadcrumbTrail: { name: string; url?: string }[] = [
+    { name: "Home", url: "/" },
+    { name: appName, url: shopUrl }
+  ];
+  if (categoryDef) {
+    breadcrumbTrail.push({ name: categoryDef.label, url: shopUrl });
+  }
+  breadcrumbTrail.push({ name: product.name });
+
+  // Product JSON-LD — drives the price + ★ rich snippet on SERPs. Pulls
+  // stock state from product.stock_count (null = treat as in-stock) and
+  // aggregateRating from the live stats we already loaded for the page.
+  const availability =
+    typeof stock === "number" && stock <= 0 ? "OutOfStock" : "InStock";
+  const productImages = [
+    product.cover_url,
+    ...(product.gallery_urls ?? [])
+  ].filter((u): u is string => typeof u === "string" && u.length > 0);
+
   return (
     <main className="flex flex-1 flex-col bg-white pb-32 md:pb-0">
       <TradeProfileHeader
         listing={listing}
         appName={appName}
         backHref={`/${listing.slug}/shop`}
+      />
+
+      <Breadcrumbs trail={breadcrumbTrail} />
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbJsonLd(
+              breadcrumbTrail.map((t) => ({ name: t.name, url: t.url ?? productUrl }))
+            )
+          )
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            productJsonLd({
+              name: product.name,
+              description: product.description ?? "",
+              url: productUrl,
+              image: productImages.length > 0 ? productImages.map((u) => absolute(u)) : [absolute("/")],
+              sku: ref,
+              brandName: listing.display_name ?? listing.slug,
+              pricePence:
+                product.vat_inclusive === false &&
+                typeof product.vat_rate_pct === "number"
+                  ? Math.round(product.price_pence * (1 + product.vat_rate_pct / 100))
+                  : product.price_pence,
+              currency: "GBP",
+              availability,
+              ratingAvg: stats.rating,
+              reviewCount: stats.count
+            })
+          )
+        }}
       />
 
       <section className="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6 sm:pt-8">
@@ -395,19 +487,61 @@ export default async function ProductDetailPage({
               listingLat={listing.lat}
               listingLng={listing.lng}
               listingCity={listing.city}
+              refCode={ref}
             />
           </div>
 
-          {/* RIGHT — buy column. No description / Ref here; both move to
-              the full-width ProductDetailsTabs panel below. */}
-          <div id="buy-column" className="flex flex-col gap-3">
-            <div>
+          {/* RIGHT — buy column. The flip wrapper lets the calculator
+           *  icon next to the product name flip this column 3D-style to
+           *  reveal the Material Calculator; close in the calc header
+           *  flips it back. Ref code now overlays the gallery image. */}
+          <div id="buy-column">
+            <BuyColumnFlip
+              hasCalculator={!!calcType}
+              back={
+                calcType ? (
+                  <MaterialCalculator
+                    type={calcType}
+                    product={{
+                      id: product.id,
+                      name: product.name,
+                      price_pence: product.price_pence,
+                      cover_url: product.cover_url,
+                      calculator_config: null,
+                      service_trade_type: product.service_trade_type,
+                      service_rate_pence: product.service_rate_pence,
+                      service_rate_unit: product.service_rate_unit
+                    }}
+                    listingSlug={listing.slug}
+                    productSlug={product.slug ?? product.id}
+                    productRef={ref}
+                    merchantName={listing.display_name ?? listing.slug}
+                    merchantWhatsappDigits={(listing.whatsapp ?? "").replace(/[^0-9]/g, "")}
+                    siblings={crossSellSiblings.map((s) => ({
+                      id: s.id,
+                      slug: s.slug,
+                      name: s.name,
+                      price_pence: s.price_pence,
+                      cover_url: s.cover_url,
+                      status: "live" as const,
+                      merchant_subcategory: s.merchant_subcategory
+                    }))}
+                  />
+                ) : null
+              }
+            >
+            <div className="flex items-center justify-between gap-3">
               <span
                 className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.22em] text-neutral-900"
                 style={{ background: "#FFB300" }}
               >
                 {category}
               </span>
+              {/* Calculator open button — sits across from the trade
+               *  badge on the same line. Hidden via context when the
+               *  product has no calculator. Flips the buy column 3D-
+               *  style to reveal the Material Calculator. */}
+              <CalcOpenButton />
             </div>
             {(() => {
               // Split off a trailing parenthetical so qualifiers like
@@ -438,7 +572,6 @@ export default async function ProductDetailPage({
               shipsFromCity={listing.city}
               dispatchDays={product.dispatch_days}
               returnsText={product.returns_text}
-              refCode={ref}
               shippingMode={listing.retail_shipping_mode}
               shippingUkPence={listing.retail_shipping_uk_pence}
               shippingUkAreas={listing.retail_shipping_uk_areas}
@@ -549,44 +682,9 @@ export default async function ProductDetailPage({
               <BulkTierTable tiers={bulkTiers} productId={product.id} />
             )}
 
-            {/* Material Calculator — renders when the product's
-             *  merchant_category resolves to a CalculatorType (or the
-             *  per-product override forces one). Picks the right calc
-             *  component server-side and hydrates it client-side with
-             *  the product's pricing snapshot. */}
-            {(() => {
-              const calcType = resolveCalculator({
-                merchant_category: product.merchant_category,
-                calculator_override: product.calculator_override
-              });
-              if (!calcType) return null;
-              return (
-                <MaterialCalculator
-                  type={calcType}
-                  product={{
-                    id: product.id,
-                    name: product.name,
-                    price_pence: product.price_pence,
-                    cover_url: product.cover_url,
-                    calculator_config: null,
-                    service_trade_type: product.service_trade_type,
-                    service_rate_pence: product.service_rate_pence,
-                    service_rate_unit: product.service_rate_unit
-                  }}
-                  listingSlug={listing.slug}
-                  productSlug={product.slug ?? product.id}
-                  siblings={crossSellSiblings.map((s) => ({
-                    id: s.id,
-                    slug: s.slug,
-                    name: s.name,
-                    price_pence: s.price_pence,
-                    cover_url: s.cover_url,
-                    status: "live" as const,
-                    merchant_subcategory: s.merchant_subcategory
-                  }))}
-                />
-              );
-            })()}
+            {/* MaterialCalculator moved to the BuyColumnFlip back face —
+             *  the calc icon in BuyColumnDetails (rightSlot) flips this
+             *  whole column to reveal it. No inline render here. */}
 
             {isInstall ? (
               <div className="flex flex-col gap-1">
@@ -626,46 +724,75 @@ export default async function ProductDetailPage({
                     return `https://wa.me/${digits}?text=${encodeURIComponent(msg)}`;
                   })()}
                 />
-                {/* Payments-accepted container — bordered card showing
-                    the card-network brand pills the tradesperson honours.
-                    Lives UNDER the CTAs (visible trust signal after the
-                    buyer has read the CTA copy). */}
-                <PaymentIconsRow selected={listing.payment_methods} />
+                {/* Payments-accepted card — now ALSO hosts the compact
+                    reviews block in its bottomSlot, merging payments
+                    trust + social proof into one bordered surface. */}
+                <PaymentIconsRow
+                  selected={listing.payment_methods}
+                  bottomSlot={
+                    <ProductReviewsBlock
+                      productId={product.id}
+                      listingSlug={listing.slug}
+                    />
+                  }
+                />
               </>
             )}
 
+            </BuyColumnFlip>
           </div>
         </div>
       </section>
 
-      {/* "More from {appName}" — siblings rail with an in-place Compare
-          toggle. The Compare button only renders when the per-listing
-          Compare addon is on AND at least one compareTargets row was
-          loaded; otherwise it auto-hides and the section behaves as a
-          plain siblings rail. */}
-      <SiblingsWithCompare
-        current={product}
-        siblings={siblings}
-        compareTargets={isCompareSectionOn(listing) ? compareTargets : []}
-        appName={appName}
-        listingSlug={listing.slug}
-        siblingStats={siblingStats}
-      />
+      {/* Reviews have moved INTO the buy column (under Add-to-cart) so
+       *  social proof sits next to the conversion CTA — the Amazon
+       *  pattern. The full-width slot here is now reserved for the
+       *  Trade Connections rail. */}
 
-      {/* Reviews — server-fetched, up to 10 latest 'live' rows. Renders
-          an empty-state CTA to /<slug>/review when there are no reviews
-          yet. Sits BELOW the You-might-also-like rail per spec. */}
-      <ProductReviewsBlock productId={product.id} listingSlug={listing.slug} />
+      {/* Trade Connections — top 3 (max 4) local trades who install
+       *  this product category, ranked verified→rating→nearest.
+       *  Default-on for every Merchant Pro listing; merchant can opt
+       *  out via the add-ons toggle. Disclaimer above the grid makes
+       *  it clear these trades are independent, not vetted by the
+       *  merchant. */}
+      {tradeConnections.length > 0 && (
+        <TradeConnectionsCarousel
+          cards={tradeConnections}
+          merchantSlug={listing.slug}
+          merchantName={listing.display_name ?? listing.slug}
+          productSlug={product.slug ?? product.id}
+        />
+      )}
+
+      {/* "More from {appName}" / "You might also like" siblings rail
+       *  removed from the PDP per spec — Trade Connections now sits in
+       *  that visual slot, and the wider catalogue is one tap away via
+       *  the shop link in the header. */}
+
+      {/* Reviews block moved up — now renders above Trade Connections.
+       *  Section intentionally empty here so the page-order spec stays
+       *  greppable. */}
 
       {/* Q&A — off by default (per-listing toggle in addons_enabled.qa).
           When on, surfaces an "Ask on WhatsApp" CTA tied to this
           product's ref. No backing table yet. */}
       {isQAOn(listing) && <ProductQABlock product={product} listing={listing} />}
 
-      {/* Warranty & Returns — standalone full-width block, end of page.
-          Per-listing override columns drive the gate; copy lives inside
-          the single-container WarrantyReturnsBlock. */}
-      {isWarrantyReturnsOn(listing) && <WarrantyReturnsBlock product={product} />}
+      {/* Warranty / Returns — collapsed to a single-line strip above the
+          footer. The full-width WarrantyReturnsBlock was eating real
+          estate for what is essentially three short clauses; the
+          long-form copy now lives only in the Delivery tab's Returns
+          row inside BuyColumnDetails. Per-listing override gate
+          retained. */}
+      {isWarrantyReturnsOn(listing) && (
+        <div className="mx-auto mt-10 w-full max-w-6xl px-4 sm:px-6">
+          <p className="rounded-xl border border-neutral-200 bg-neutral-50 px-4 py-3 text-center text-[12px] font-bold text-neutral-600">
+            Manufacturer&rsquo;s warranty applies · Unused items returnable
+            within the stated window for a full refund · Faulty product?
+            We&rsquo;ll handle the manufacturer claim directly.
+          </p>
+        </div>
+      )}
 
       <div className="mt-auto">
         <TradeProfileFooter listing={listing} appName={appName} />

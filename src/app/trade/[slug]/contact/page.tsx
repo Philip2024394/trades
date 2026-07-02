@@ -11,7 +11,10 @@ import { VisitUsPanel } from "@/components/xrated/profile/VisitUsPanel";
 import { tradeLabel, whatsappQuoteUrl } from "@/lib/tradeOff";
 import { TradeSocialIcons } from "@/components/trade-off/TradeSocialIcons";
 import { websiteUrl } from "@/lib/tradeOffSocial";
-import { isWholesaleModeOn } from "@/lib/xratedAddons";
+import { isPlantHireOn, isWholesaleModeOn } from "@/lib/xratedAddons";
+import { normalisePlantHireConfig } from "@/lib/plantHire";
+import { PlantTeamSectionView } from "@/components/xrated/profile/PlantHireExtraSections";
+import { PlantClosureCheckerCard } from "@/components/xrated/profile/PlantHireTier2Sections";
 
 export const revalidate = 300;
 
@@ -110,6 +113,21 @@ export default async function TradeContactPage({
         themeColor="#FFB300"
         whatsapp={listing.whatsapp}
       />
+
+      {/* Plant Hire · Meet the team + Check our dates. Only renders for
+          plant-hire merchants who've enabled these blocks. Moved off
+          the home showcase so direct contact + opening-dates sit
+          together next to the contact form. */}
+      {isPlantHireOn(listing) &&
+        (() => {
+          const cfg = normalisePlantHireConfig(listing.plant_hire);
+          return (
+            <div className="mx-auto w-full max-w-3xl space-y-6 px-4 sm:px-6">
+              <PlantTeamSectionView cfg={cfg.team} />
+              <PlantClosureCheckerCard cfg={cfg.closure_calendar} />
+            </div>
+          );
+        })()}
 
       {/* "Find us on" — the full coloured social-icon grid lives here
           rather than the home page so the main profile stays calm and

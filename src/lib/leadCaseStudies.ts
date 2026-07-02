@@ -81,6 +81,16 @@ export const LEAD_CASE_STUDIES: LeadCaseStudy[] = [
     searchTarget: "tool hire Derby"
   },
   {
+    slug: "demo-russell-haines-plant-hire-leeds",
+    name: "Russell Haines",
+    tradeLabel: "Plant Hire",
+    bucket: "Hire",
+    city: "Leeds",
+    pullQuote:
+      "Thirty-one machines from mini diggers to 25-tonne dumpers. Self-drive or CPCS operator. Live delivery zone map, availability calendar and buy-now on ex-fleet stock.",
+    searchTarget: "plant hire Leeds"
+  },
+  {
     slug: "demo-charlotte-pemberton-kitchen-manufacturer-bath",
     name: "Charlotte Pemberton",
     tradeLabel: "Kitchen Manufacturer",

@@ -27,16 +27,16 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title:
-    "Pricing — Xrated Trades. Free · Paid £14.99/mo · Verified £19.99/mo. The Yard + xratedtrades.com listing included.",
+    "Pricing — Xrated Trades. Free · Starter £9.99/mo · Professional £14.99/mo · Business £24.99/mo.",
   description:
-    "Three tiers — Free forever, Paid £14.99/mo on your brandable xratedtrade.com URL, or Verified £19.99/mo with a real badge customers see. Every paid tier includes The Yard (private trades-only forum), auto-listing on xratedtrades.com (UK search portal), 10 add-ons (Trade Center, Services, Job Diary, Quote Pipeline, Lead Alerts, Custom Domain + 4 more), full SEO + free future updates. Verified Plus £29.99/mo by application. 14-day free trial, no card on signup.",
+    "Four plans on the Business Operating System for trade businesses. Free forever · Starter £9.99/mo · Professional £14.99/mo (recommended) · Business £24.99/mo. Every paid plan includes Studio, the App Store, and a 14-day free trial with no card on signup.",
   alternates: { canonical: "/trade-off/pricing" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades — Pricing. Free · Paid £14.99/mo · Verified £19.99/mo · Verified Plus £29.99/mo.",
+    title: "Xrated Trades — Pricing. Free · Starter · Professional · Business.",
     description:
-      "Every paid tier now includes The Yard private forum + auto-listing on xratedtrades.com + 10 add-ons + all future features free. 14-day free trial, no card.",
+      "One platform, four plans. Studio, App Store and Industry Packs on every paid tier. 14-day free trial, no card.",
     url: absolute("/trade-off/pricing")
   }
 };
@@ -50,7 +50,7 @@ type FeatureRow = {
   /** Section divider — when set, this row renders as a sub-heading row
    *  with the section name in the label column, no values. Lets us
    *  group ~40 rows into scannable sections (Yard / Search / Profile
-   *  / Add-ons / SEO / Support). */
+   *  / Apps / SEO / Support). */
   section?: string;
 };
 
@@ -60,7 +60,7 @@ const COMPARE_ROWS: FeatureRow[] = [
   { label: "URL domain", free: "hammerexdirect.com", paid: "xratedtrade.com", verified: "xratedtrade.com", highlight: true },
   { label: "Branded URL slug (yours forever)", free: true, paid: true, verified: true },
   { label: "Xrated header on profile", free: "Visible", paid: "Hidden (white-label)", verified: "Hidden (white-label)", highlight: true },
-  { label: "Custom domain (yourtrade.co.uk)", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
+  { label: "Custom domain (yourtrade.co.uk)", free: false, paid: "App £5/mo", verified: "App £5/mo" },
   { label: "Forever free", free: true, paid: false, verified: false },
 
   // ─────────────────── The Yard (private forum) ───────────────────
@@ -80,7 +80,7 @@ const COMPARE_ROWS: FeatureRow[] = [
   { label: "Verified badge on every search result", free: false, paid: false, verified: true, highlight: true },
   { label: "Priority sort on search results", free: false, paid: false, verified: true },
   { label: "Receives Project Beacons (3-nearest customer pings)", free: false, paid: true, verified: true, highlight: true },
-  { label: "Push notification + sound when a beacon fires", free: false, paid: "With Lead Alerts add-on", verified: "With Lead Alerts add-on" },
+  { label: "Push notification + sound when a beacon fires", free: false, paid: "With Lead Alerts App", verified: "With Lead Alerts App" },
   { label: "Visible across UK + international searches", free: false, paid: true, verified: true },
 
   // ─────────────────── Profile / app features ───────────────────
@@ -113,18 +113,18 @@ const COMPARE_ROWS: FeatureRow[] = [
   { label: "Verified badge backed by Companies House check", free: false, paid: false, verified: true, highlight: true },
   { label: "Dispute mediation", free: false, paid: false, verified: true },
 
-  // ─────────────────── Add-ons (all paid-tier compatible) ───────────────────
-  { section: "Add-ons — bolt on the ones you need", label: "", free: "", paid: "", verified: "" },
-  { label: "Services Prices — priced service grid", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
-  { label: "Trade Center — products + cart + WhatsApp checkout", free: false, paid: "Add-on £5/mo *", verified: "Add-on £5/mo *" },
-  { label: "Wholesale Mode — B2B pricing tiers", free: false, paid: "Add-on £7/mo", verified: "Add-on £7/mo" },
-  { label: "Job Diary — project portfolio + updates", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
-  { label: "Downloads — gated PDFs with email capture", free: false, paid: "Add-on £2/mo", verified: "Add-on £2/mo" },
-  { label: "FAQ Page — visual ref-numbered knowledge base", free: false, paid: "Add-on £2/mo", verified: "Add-on £2/mo" },
-  { label: "Materials Network — earn from merchants", free: false, paid: "Add-on £3/mo", verified: "Add-on £3/mo" },
-  { label: "Lead Alerts — PWA push the moment WhatsApp lands", free: false, paid: "Add-on £4/mo", verified: "Add-on £4/mo" },
-  { label: "Custom Domain — bring your own .co.uk", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
-  { label: "Quote Pipeline — kanban CRM for crews", free: false, paid: "Add-on £5/mo", verified: "Add-on £5/mo" },
+  // ─────────────────── Apps (all paid-tier compatible) ───────────────────
+  { section: "Apps — install the ones you need", label: "", free: "", paid: "", verified: "" },
+  { label: "Services Prices — priced service grid", free: false, paid: "App £4/mo", verified: "App £4/mo" },
+  { label: "Trade Center — products + cart + WhatsApp checkout", free: false, paid: "App £5/mo *", verified: "App £5/mo *" },
+  { label: "Wholesale Mode — B2B pricing tiers", free: false, paid: "App £7/mo", verified: "App £7/mo" },
+  { label: "Job Diary — project portfolio + updates", free: false, paid: "App £4/mo", verified: "App £4/mo" },
+  { label: "Downloads — gated PDFs with email capture", free: false, paid: "App £2/mo", verified: "App £2/mo" },
+  { label: "FAQ Page — visual ref-numbered knowledge base", free: false, paid: "App £2/mo", verified: "App £2/mo" },
+  { label: "Materials Network — earn from merchants", free: false, paid: "App £3/mo", verified: "App £3/mo" },
+  { label: "Lead Alerts — PWA push the moment WhatsApp lands", free: false, paid: "App £4/mo", verified: "App £4/mo" },
+  { label: "Custom Domain — bring your own .co.uk", free: false, paid: "App £5/mo", verified: "App £5/mo" },
+  { label: "Quote Pipeline — kanban CRM for crews", free: false, paid: "App £5/mo", verified: "App £5/mo" },
 
   // ─────────────────── SEO + technical ───────────────────
   { section: "SEO + technical", label: "", free: "", paid: "", verified: "" },
@@ -266,8 +266,8 @@ export default async function PricingPage() {
             (private trades-only forum){" "}
             <span className="font-bold text-white">PLUS</span> auto-listing
             on xratedtrades.com so customers find you{" "}
-            <span className="font-bold text-white">PLUS</span> 10 add-ons
-            you bolt on as you need them. Every future feature lands free,
+            <span className="font-bold text-white">PLUS</span> the App Store
+            so you install Apps as you grow. Every future feature lands free,
             automatic. 14-day trial, no card.{" "}
             <span className="font-bold text-white">
               Claim your name now — yours forever.
@@ -287,9 +287,9 @@ export default async function PricingPage() {
               <Dot accent /> Cancel any time
             </span>
           </div>
-          {/* Add-ons cross-link — both paid tiers stack the same add-on
-              library. Surfaced here so a tradesperson comparing prices
-              also discovers they can bolt on Shop Mode, Services Prices,
+          {/* App Store cross-link — every paid tier gets access to the App
+              Store. Surfaced here so a merchant comparing prices also
+              discovers they can install Product Catalogue, Services Prices,
               Job Diary, Downloads, etc. */}
           <a
             href="/trade-off/add-ons"
@@ -301,11 +301,11 @@ export default async function PricingPage() {
               style={{ background: XRATED_BRAND.accent }}
             />
             <span>
-              Every paid plan supports{" "}
+              Every paid plan includes the{" "}
               <span className="font-extrabold" style={{ color: XRATED_BRAND.accent }}>
-                10 add-ons
+                App Store
               </span>{" "}
-              — Trade Center, Services Prices, Job Diary, Quote Pipeline &amp; more
+              — Product Catalogue, Services Prices, Job Diary, Quote Pipeline &amp; more
             </span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="m9 18 6-6-6-6" />
@@ -427,8 +427,7 @@ export default async function PricingPage() {
           <p className="mx-auto mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
             Xrated isn&rsquo;t a one-and-done product. Our team is in the
             code every day, building the systems that bring you customers
-            with less effort on your end. No upgrade emails. No premium
-            add-ons. No tier creep.
+            with less effort on your end. No upgrade emails. No tier creep.
           </p>
           <p className="mx-auto mt-3 max-w-xl text-sm font-extrabold text-white sm:text-base">
             You concentrate on the project at hand. We make sure
@@ -460,11 +459,13 @@ export default async function PricingPage() {
       {/* Feature comparison table */}
       <section className="mx-auto max-w-5xl px-4 pt-12 sm:px-6 sm:pt-16">
         <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Feature comparison
+          Free vs Professional — feature comparison
         </h2>
         <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          Every widget we ship, side-by-side. Highlighted rows show the
-          biggest gap between Free and Paid.
+          Every feature we ship on the Free and Professional plans,
+          side-by-side. Starter (£9.99/mo) and Business (£24.99/mo)
+          launch soon — see the four-plan cards above for their feature
+          summaries.
         </p>
 
         {/* Desktop / tablet — full 4-column table */}
@@ -482,7 +483,7 @@ export default async function PricingPage() {
                   className="w-36 px-3 py-3 text-center font-bold uppercase tracking-widest"
                   style={{ color: XRATED_BRAND.accent }}
                 >
-                  Paid
+                  Professional
                 </th>
                 <th
                   className="w-44 px-3 py-3 text-center font-extrabold uppercase tracking-widest"
@@ -591,7 +592,7 @@ export default async function PricingPage() {
                     className="text-[9px] font-extrabold uppercase tracking-wider"
                     style={{ color: "#7A5300" }}
                   >
-                    Paid
+                    Professional
                   </p>
                   <p className="mt-0.5 font-bold text-neutral-900">
                     <Cell value={row.paid} accent />
@@ -621,7 +622,7 @@ export default async function PricingPage() {
           on the £14.99/mo tier for merchant trades (kitchen-fitter,
           stair-fitter, building-merchant, builders-supplies, tool-hire,
           heavy-machinery, window-fitter, security-installer) — no
-          add-on required.
+          separate App required.
         </p>
       </section>
 
