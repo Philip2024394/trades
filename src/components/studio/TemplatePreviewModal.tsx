@@ -11,10 +11,12 @@
 // ESC / click-backdrop / X button all close.
 
 import { useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { DEFAULT_TOKENS } from "@/lib/studio/tokens";
 import type { AnySectionRegistration } from "@/lib/studio/sectionTypes";
 import { TemplatePagePicker } from "./TemplatePagePicker";
 import { StudioErrorBoundary } from "./StudioErrorBoundary";
+import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -24,15 +26,27 @@ export function TemplatePreviewModal({
   activeIndex,
   onChangeIndex,
   onClose,
-  merchantSlug
+  merchantSlug,
+  pinnedPageId
 }: {
   templates: AnySectionRegistration[];
   activeIndex: number;
   onChangeIndex: (nextIndex: number) => void;
   onClose: () => void;
   merchantSlug: string;
+  /** When set, "Use this template" skips the page picker and posts
+   *  directly against this pageId, then redirects to the editor. Used
+   *  by the "Pick your hero" empty-state flow so the merchant lands on
+   *  the freshly-populated page in one click. */
+  pinnedPageId?: string | null;
 }) {
+  const router = useRouter();
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [directStatus, setDirectStatus] = useState<
+    | { kind: "idle" }
+    | { kind: "adding" }
+    | { kind: "error"; message: string }
+  >({ kind: "idle" });
   const active = templates[activeIndex];
 
   const goPrev = useCallback(() => {
@@ -179,20 +193,52 @@ export function TemplatePreviewModal({
 
         <button
           type="button"
-          onClick={() => setPickerOpen(true)}
-          className="inline-flex h-11 items-center gap-2 rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest transition active:scale-[0.98] sm:h-11 sm:px-6"
+          onClick={() => {
+            if (pinnedPageId) {
+              void useDirectlyOnPinnedPage(active.id, pinnedPageId);
+            } else {
+              setPickerOpen(true);
+            }
+          }}
+          disabled={directStatus.kind === "adding"}
+          className="inline-flex h-11 items-center gap-2 rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest transition active:scale-[0.98] disabled:opacity-70 sm:h-11 sm:px-6"
           style={{
             background: YELLOW,
             color: BLACK,
             boxShadow: `0 4px 16px ${YELLOW}66`
           }}
         >
-          <span>Use this template</span>
+          <span>
+            {directStatus.kind === "adding"
+              ? "Adding…"
+              : pinnedPageId
+                ? "Use for this page"
+                : "Use this template"}
+          </span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
             <path d="m9 18 6-6-6-6" />
           </svg>
         </button>
       </footer>
+
+      {/* Direct-add error toast (pinned-page shortcut only) */}
+      {directStatus.kind === "error" && (
+        <div
+          role="alert"
+          className="pointer-events-none absolute inset-x-0 bottom-24 flex justify-center px-4"
+        >
+          <div
+            className="pointer-events-auto rounded-xl border px-4 py-2 text-[12px] font-bold"
+            style={{
+              borderColor: "#FCA5A5",
+              background: "#FEF2F2",
+              color: "#7F1D1D"
+            }}
+          >
+            Couldn&rsquo;t add — {directStatus.message}
+          </div>
+        </div>
+      )}
 
       {/* Page picker overlay */}
       {pickerOpen && (
@@ -205,4 +251,31 @@ export function TemplatePreviewModal({
       )}
     </div>
   );
+
+  async function useDirectlyOnPinnedPage(sectionId: string, pageId: string) {
+    setDirectStatus({ kind: "adding" });
+    try {
+      const res = await fetchWithRetry("/api/studio/templates/use", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sectionId, pageId })
+      });
+      const json = (await res.json()) as
+        | { ok: true; instanceId: string; layoutId: string; version: number }
+        | { ok: false; error: string };
+      if (!res.ok || !json.ok) {
+        setDirectStatus({
+          kind: "error",
+          message: "error" in json ? json.error : `HTTP ${res.status}`
+        });
+        return;
+      }
+      router.push(`/studio/pages/${pageId}`);
+    } catch (err) {
+      setDirectStatus({
+        kind: "error",
+        message: (err as Error).message ?? "network"
+      });
+    }
+  }
 }

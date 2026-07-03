@@ -211,7 +211,7 @@ export function StudioPageClient({
   return (
     <div {...pageRootAttrs()}>
       {layout.rows.length === 0 ? (
-        <EmptyPage />
+        <EmptyPage pageId={pageId} />
       ) : (
         layout.rows.map((row) => (
           <RowRenderer
@@ -422,19 +422,48 @@ function isDefined<T>(v: T | undefined): v is T {
   return Boolean(v);
 }
 
-function EmptyPage() {
+function EmptyPage({ pageId }: { pageId: string | null }) {
+  // Deep-link into the templates library filtered to `hero` with this
+  // page's id already selected — so "Use this template" skips the page
+  // picker and drops the hero straight onto this page.
+  //
+  // target="_top" breaks out of the preview iframe into the parent
+  // Studio editor tab. Without it the link would try to render the
+  // library inside the tiny iframe.
+  const heroHref = pageId
+    ? `/studio/templates?library=hero&pageId=${encodeURIComponent(pageId)}`
+    : "/studio/templates?library=hero";
   return (
-    <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-      <p className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
-        Empty page
-      </p>
-      <h1 className="mt-2 text-3xl font-extrabold text-neutral-900">
-        Start with a section
+    <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 px-6 py-24 text-center">
+      <span
+        className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest"
+        style={{ background: "#FFF3D6", color: "#0A0A0A" }}
+      >
+        <span aria-hidden="true">✦</span> First step
+      </span>
+      <h1 className="text-[32px] font-extrabold leading-tight text-neutral-900 sm:text-[40px]">
+        Pick your hero
       </h1>
-      <p className="mt-3 text-[14px] leading-relaxed text-neutral-600">
-        Open the Templates library to add a hero, product grid or CTA.
-        Everything on this page starts from a template.
+      <p className="max-w-lg text-[14px] leading-relaxed text-neutral-600">
+        Every page starts with a hero — the big top section that greets
+        visitors. Choose one from the library to bring this page to life.
+        You can swap it any time.
       </p>
+      <a
+        href={heroHref}
+        target="_top"
+        className="mt-2 inline-flex h-14 items-center rounded-2xl px-6 text-[13px] font-extrabold uppercase tracking-widest text-neutral-900 shadow-lg transition hover:brightness-95"
+        style={{ background: "#FFB300", boxShadow: "0 8px 24px rgba(255,179,0,0.35)" }}
+      >
+        Browse hero templates →
+      </a>
+      <a
+        href="/studio/templates"
+        target="_top"
+        className="text-[11px] font-bold uppercase tracking-widest text-neutral-500 underline decoration-neutral-300 underline-offset-4 hover:text-neutral-800"
+      >
+        Or start with a different section
+      </a>
     </div>
   );
 }

@@ -32,7 +32,14 @@ export default async function StudioHomePage() {
         place.
       </p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      {/* Hero action — installing an App is the "start here" moment
+          for any new brand, so it deserves its own row above the
+          maintenance-oriented quick actions. */}
+      <div className="mt-8">
+        <AddAppCard />
+      </div>
+
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <QuickAction
           href="/studio/pages"
           title="Edit your website"
@@ -59,6 +66,47 @@ export default async function StudioHomePage() {
         />
       </div>
     </div>
+  );
+}
+
+function AddAppCard() {
+  return (
+    <Link
+      href="/studio/apps"
+      className="group relative flex overflow-hidden rounded-2xl border-2 border-neutral-900 bg-neutral-900 text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-2xl"
+    >
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 w-2/3 opacity-30 transition group-hover:opacity-50"
+        style={{
+          background:
+            "radial-gradient(circle at 80% 40%, #FFB300 0%, transparent 60%)"
+        }}
+      />
+      <div className="relative flex w-full flex-col justify-between gap-4 p-6 sm:flex-row sm:items-center sm:p-8">
+        <div className="min-w-0">
+          <p
+            className="text-[10px] font-extrabold uppercase tracking-widest"
+            style={{ color: YELLOW }}
+          >
+            Add an App
+          </p>
+          <h2 className="mt-1 text-[22px] font-extrabold leading-tight sm:text-[26px]">
+            Start with a new App
+          </h2>
+          <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/70">
+            Meet the Team, Newsletter, Delivery Zones — install any App and
+            we&rsquo;ll create its pages. Pick a hero on the new page and
+            you&rsquo;re live.
+          </p>
+        </div>
+        <span
+          className="inline-flex h-12 shrink-0 items-center rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest text-neutral-900 transition group-hover:brightness-95"
+          style={{ background: YELLOW }}
+        >
+          Browse App Store →
+        </span>
+      </div>
+    </Link>
   );
 }
 

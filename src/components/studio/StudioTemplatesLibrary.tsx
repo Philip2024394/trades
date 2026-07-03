@@ -54,6 +54,10 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
   // to "hero" so the grid always shows something.
   const urlLibrary = (searchParams.get("library") as SectionLibrary | "all" | null) ?? "hero";
   const urlPreview = searchParams.get("preview");
+  // `?pageId=` carries the empty-page context — set by the EmptyPage
+  // deep link on new pages. When present, template selection skips
+  // the page-picker modal and drops straight onto this page.
+  const pinnedPageId = searchParams.get("pageId");
 
   const [library, setLibraryLocal] = useState<SectionLibrary | "all">(urlLibrary);
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
@@ -250,6 +254,7 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
           }}
           onClose={() => setPreviewingId(null)}
           merchantSlug={merchantSlug}
+          pinnedPageId={pinnedPageId}
         />
       )}
     </div>
