@@ -61,6 +61,40 @@ export function StudioAppStore({
     }
   }
 
+  // Optimistic reflection: flip the local item's installState the
+  // instant the modal confirms a mutation. Removes the "did that
+  // work?" gap between mutation success and refresh() completing.
+  // Server refresh still runs to reconcile version + installed_at.
+  function applyOptimistic(slug: string, kind: "installed" | "uninstalled") {
+    setItems((prev) => {
+      if (!prev) return prev;
+      return prev.map((item) => {
+        if (item.manifest.slug !== slug) return item;
+        if (kind === "installed") {
+          return {
+            ...item,
+            installState: {
+              kind: "installed",
+              version: item.manifest.version,
+              installedAt: new Date().toISOString()
+            }
+          };
+        }
+        return {
+          ...item,
+          installState: {
+            kind: "previously-installed",
+            version:
+              item.installState.kind === "installed"
+                ? item.installState.version
+                : item.manifest.version,
+            uninstalledAt: new Date().toISOString()
+          }
+        };
+      });
+    });
+  }
+
   useEffect(() => {
     void refresh();
   }, []);
@@ -171,6 +205,7 @@ export function StudioAppStore({
                 eligibility={item.eligibility}
                 merchantSlug={merchantSlug}
                 onChanged={() => void refresh()}
+                onOptimistic={applyOptimistic}
               />
             </li>
           ))}

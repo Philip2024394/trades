@@ -17,6 +17,7 @@ import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 // Side-effect: register every section so the id lookup resolves.
 import "@/lib/studio/sections";
 import { DEFAULT_TOKENS } from "@/lib/studio/tokens";
+import { StudioErrorBoundary } from "@/components/studio/StudioErrorBoundary";
 
 export const dynamic = "force-static";
 export const revalidate = 3600;
@@ -89,13 +90,15 @@ export default async function SectionPreviewPage({
         body { margin: 0; padding: 0; background: #0A0A0A; }
         html, body { overflow-x: hidden; }
       `}</style>
-      <Renderer
-        instanceId="preview"
-        config={reg.defaultConfig()}
-        tokens={DEFAULT_TOKENS}
-        data={data}
-        mode="preview"
-      />
+      <StudioErrorBoundary label={`Preview iframe: ${reg.id}`}>
+        <Renderer
+          instanceId="preview"
+          config={reg.defaultConfig()}
+          tokens={DEFAULT_TOKENS}
+          data={data}
+          mode="preview"
+        />
+      </StudioErrorBoundary>
     </>
   );
 }

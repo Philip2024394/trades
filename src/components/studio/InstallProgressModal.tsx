@@ -33,10 +33,16 @@ type StepState =
 
 export function InstallProgressModal({
   manifest,
-  onClose
+  onClose,
+  onOptimistic
 }: {
   manifest: FrozenAppManifest;
   onClose: (mutated: boolean) => void;
+  /** Fires the instant the server confirms a mutation. Parents use
+   *  this to flip UI state immediately, before the modal closes and
+   *  before a fresh /apps/list fetch resolves. Optional — legacy call
+   *  sites still work without it. */
+  onOptimistic?: (kind: "installed" | "uninstalled") => void;
 }) {
   const [state, setState] = useState<StepState>({ kind: "idle" });
   const [currentInstall, setCurrentInstall] = useState<InstalledAppRow | null>(
@@ -95,6 +101,7 @@ export function InstallProgressModal({
         row: json.installedApp,
         createdPages: json.createdPages
       });
+      onOptimistic?.("installed");
     } catch (err) {
       setState({
         kind: "install-error",
@@ -123,6 +130,7 @@ export function InstallProgressModal({
         return;
       }
       setState({ kind: "uninstalled" });
+      onOptimistic?.("uninstalled");
     } catch (err) {
       setState({
         kind: "uninstall-error",

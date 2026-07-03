@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { DEFAULT_TOKENS } from "@/lib/studio/tokens";
 import type { AnySectionRegistration } from "@/lib/studio/sectionTypes";
 import { TemplatePagePicker } from "./TemplatePagePicker";
+import { StudioErrorBoundary } from "./StudioErrorBoundary";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -130,13 +131,15 @@ export function TemplatePreviewModal({
           e.stopPropagation();
         }}
       >
-        <Renderer
-          instanceId="preview"
-          config={active.defaultConfig()}
-          tokens={DEFAULT_TOKENS}
-          data={data}
-          mode="preview"
-        />
+        <StudioErrorBoundary label={`Preview: ${active.id}`}>
+          <Renderer
+            instanceId="preview"
+            config={active.defaultConfig()}
+            tokens={DEFAULT_TOKENS}
+            data={data}
+            mode="preview"
+          />
+        </StudioErrorBoundary>
       </div>
 
       {/* Bottom bar */}

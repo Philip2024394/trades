@@ -6,7 +6,7 @@
 // disabled state. When gated by tier, renders the eligibility's
 // upgradeLabel + a link to pricing.
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import type { FrozenAppManifest } from "@/platform/manifest/types";
 import type { EligibilityDecision } from "@/platform/appEligibility";
@@ -27,22 +27,56 @@ export function AppStoreCard({
   installState,
   eligibility,
   merchantSlug: _merchantSlug,
-  onChanged
+  onChanged,
+  onOptimistic
 }: {
   manifest: FrozenAppManifest;
   installState: InstallState;
   eligibility: EligibilityDecision;
   merchantSlug: string;
   onChanged: () => void;
+  /** Fires the instant the modal confirms a mutation, before the
+   *  parent's refresh() resolves. Parents flip badge / CTA state
+   *  optimistically so the merchant never sees a stale "Install"
+   *  button after a successful install. */
+  onOptimistic?: (slug: string, kind: "installed" | "uninstalled") => void;
 }) {
   const [installOpen, setInstallOpen] = useState(false);
+  // Warm the /api/platform/apps/<slug> route on hover intent so the
+  // modal's "current install state" query is already in cache when
+  // the merchant clicks. Same 150ms threshold as the templates
+  // library — filters out mouse fly-overs.
+  const detailPrefetched = useRef(false);
+  const hoverTimer = useRef<number | null>(null);
+  const onHoverStart = () => {
+    if (detailPrefetched.current) return;
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => {
+      detailPrefetched.current = true;
+      void fetch(`/api/platform/apps/${manifest.slug}`, {
+        credentials: "same-origin"
+      }).catch(() => {});
+    }, 150);
+  };
+  const onHoverEnd = () => {
+    if (hoverTimer.current) {
+      window.clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+  };
 
   const isInstalled = installState.kind === "installed";
   const wasInstalled = installState.kind === "previously-installed";
   const eligible = eligibility.eligible;
 
   return (
-    <article className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md">
+    <article
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+      onFocus={onHoverStart}
+      onBlur={onHoverEnd}
+      className="flex h-full flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md"
+    >
       <div
         className="relative flex h-32 w-full items-center justify-center"
         style={{ background: "linear-gradient(135deg, #FFB300 0%, #FF9500 100%)" }}
@@ -112,6 +146,7 @@ export function AppStoreCard({
       {installOpen && (
         <InstallProgressModal
           manifest={manifest}
+          onOptimistic={(kind) => onOptimistic?.(manifest.slug, kind)}
           onClose={(installed) => {
             setInstallOpen(false);
             if (installed) onChanged();

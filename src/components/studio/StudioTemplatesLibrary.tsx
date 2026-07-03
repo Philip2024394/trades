@@ -2,18 +2,28 @@
 
 // StudioTemplatesLibrary — browse-catalog for every registered section.
 //
-// One card per SectionRegistration. Each card renders the section's
-// own renderer at scaled-down size for a true pixel-fidelity preview
-// (no maintained thumbnail art required — the renderer IS the truth).
-// Fetches usage counts from /api/studio/library/usage once on mount
-// and overlays a "Used by N merchants" badge.
+// One card per SectionRegistration. Each card renders the section via
+// an iframe embed of /preview/section/[id] at 25% scale — total layout,
+// animation, and event isolation from siblings. Fetches usage counts
+// from /api/studio/library/usage once on mount and overlays a
+// "Used by N merchants" badge.
 //
 // Filter by library kind + free-text search on name / tags / verticals.
-// Click a card to expand the preview to full-size. "Use this" is a
-// future refinement — for Module 5 the catalog is browse-only; the
-// page editor's Replace toolbar action handles in-place swap.
+// Click a card to open the full-viewport preview modal. Modal + filter
+// state round-trip through the URL (?library=hero&preview=<id>) so
+// merchants can deep-link into any template — and share links to their
+// team.
+//
+// Perf & polish (Shopify/Wix-tier):
+//   · Skeleton shimmer per card until its iframe fires `onLoad`.
+//   · `content-visibility: auto` skips paint below the fold entirely.
+//   · Hover-prefetch (150ms intent debounce) warms the preview route
+//     cache so the modal opens instantly.
+//   · Every renderer call is wrapped in a StudioErrorBoundary so a
+//     single broken section renderer can never white-out the grid.
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 // Side-effect import so the registry is populated (server-rendered
 // pages import this too, and section registrations are top-level).
 import "@/lib/studio/sections";
@@ -23,6 +33,7 @@ import type {
   SectionLibrary
 } from "@/lib/studio/sectionTypes";
 import { TemplatePreviewModal } from "./TemplatePreviewModal";
+import { StudioErrorBoundary } from "./StudioErrorBoundary";
 
 const YELLOW = "#FFB300";
 
@@ -36,10 +47,48 @@ type Props = {
 };
 
 export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
-  const [library, setLibrary] = useState<SectionLibrary | "all">("hero");
-  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // Read URL state on mount + on every URL change. `library` defaults
+  // to "hero" so the grid always shows something.
+  const urlLibrary = (searchParams.get("library") as SectionLibrary | "all" | null) ?? "hero";
+  const urlPreview = searchParams.get("preview");
+
+  const [library, setLibraryLocal] = useState<SectionLibrary | "all">(urlLibrary);
+  const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [usage, setUsage] = useState<UsagePayload>({});
-  const [previewingId, setPreviewingId] = useState<string | null>(null);
+  const [previewingId, setPreviewingIdLocal] = useState<string | null>(urlPreview);
+
+  // Persist filter/preview changes back to the URL. Using replaceState
+  // (not push) avoids polluting the back stack — merchants use the
+  // browser Back button to leave the library, not to undo a filter.
+  const setLibrary = (next: SectionLibrary | "all") => {
+    setLibraryLocal(next);
+    const sp = new URLSearchParams(searchParams.toString());
+    if (next === "hero") sp.delete("library");
+    else sp.set("library", next);
+    router.replace(`?${sp.toString()}`, { scroll: false });
+  };
+  const setPreviewingId = (next: string | null) => {
+    setPreviewingIdLocal(next);
+    const sp = new URLSearchParams(searchParams.toString());
+    if (next) sp.set("preview", next);
+    else sp.delete("preview");
+    router.replace(`?${sp.toString()}`, { scroll: false });
+  };
+  // Debounce search into the URL — writing on every keystroke would
+  // spam replaceState.
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      const sp = new URLSearchParams(searchParams.toString());
+      if (query.trim()) sp.set("q", query.trim());
+      else sp.delete("q");
+      router.replace(`?${sp.toString()}`, { scroll: false });
+    }, 250);
+    return () => window.clearTimeout(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   useEffect(() => {
     let cancelled = false;
@@ -93,6 +142,30 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
           content-visibility: auto;
           contain-intrinsic-size: 380px;
         }
+        @keyframes tmpl-skeleton-shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        [data-tmpl-skeleton] {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          background: #171717;
+        }
+        [data-tmpl-skeleton]::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            110deg,
+            transparent 20%,
+            rgba(255,255,255,0.06) 40%,
+            rgba(255,179,0,0.10) 50%,
+            rgba(255,255,255,0.06) 60%,
+            transparent 80%
+          );
+          animation: tmpl-skeleton-shimmer 1.4s ease-in-out infinite;
+        }
       `}</style>
       <p
         className="text-[10px] font-extrabold uppercase tracking-widest"
@@ -136,20 +209,27 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <p className="mt-12 text-center text-[13px] text-neutral-500">
-          No sections match — try clearing the search or picking a different
-          library.
-        </p>
+        <EmptyState
+          onClearFilters={() => {
+            setQuery("");
+            setLibrary("all");
+          }}
+        />
       ) : (
         <ul className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((reg) => (
             <li key={reg.id}>
-              <SectionCard
-                reg={reg}
-                usage={usage[reg.id]}
-                merchantSlug={merchantSlug}
-                onOpen={() => setPreviewingId(reg.id)}
-              />
+              <StudioErrorBoundary
+                label={`Template card: ${reg.id}`}
+                compact
+              >
+                <SectionCard
+                  reg={reg}
+                  usage={usage[reg.id]}
+                  merchantSlug={merchantSlug}
+                  onOpen={() => setPreviewingId(reg.id)}
+                />
+              </StudioErrorBoundary>
             </li>
           ))}
         </ul>
@@ -189,28 +269,64 @@ function SectionCard({
   merchantSlug: string;
   onOpen: () => void;
 }) {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+  const previewUrl = `/preview/section/${encodeURIComponent(reg.id)}`;
+
+  // Hover-prefetch: on 150ms of sustained hover intent we ask the
+  // browser to warm the preview route. When the merchant clicks, the
+  // modal renderer already has code + data hot. 150ms filters out
+  // "mouse just passing through" so we don't hammer the origin.
+  const hoverTimer = useRef<number | null>(null);
+  const prefetched = useRef(false);
+  const onHoverStart = () => {
+    if (prefetched.current) return;
+    if (hoverTimer.current) window.clearTimeout(hoverTimer.current);
+    hoverTimer.current = window.setTimeout(() => {
+      prefetched.current = true;
+      // Two warms:
+      //   · router.prefetch would only warm the RSC payload for
+      //     app-router pages — we want the browser cache for the
+      //     iframe body too, so a plain GET is enough.
+      void fetch(previewUrl, { credentials: "same-origin" }).catch(() => {});
+    }, 150);
+  };
+  const onHoverEnd = () => {
+    if (hoverTimer.current) {
+      window.clearTimeout(hoverTimer.current);
+      hoverTimer.current = null;
+    }
+  };
+
   return (
     <article
       data-tmpl-card
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+      onFocus={onHoverStart}
+      onBlur={onHoverEnd}
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md"
     >
       {/* Preview — an iframe pointing at the standalone preview route.
           The iframe gives us total isolation from neighbouring cards:
           each hero has its own layout tree, animation frame budget,
           and event loop. `loading="lazy"` defers off-screen iframes.
-          Clicking opens the full-viewport preview modal for real-size
-          + full-quality animation. */}
+          Skeleton overlays the iframe until it fires onLoad — zero
+          CLS, smooth reveal. */}
       <button
         type="button"
         onClick={onOpen}
-        className="group relative block h-40 w-full overflow-hidden bg-neutral-100 text-left"
+        className="group relative block h-40 w-full overflow-hidden bg-neutral-900 text-left"
         aria-label={`Preview ${reg.name} full size`}
       >
+        {!iframeLoaded && (
+          <span data-tmpl-skeleton aria-hidden="true" />
+        )}
         <iframe
-          src={`/preview/section/${encodeURIComponent(reg.id)}`}
+          src={previewUrl}
           loading="lazy"
           title={`Preview: ${reg.name}`}
           sandbox="allow-same-origin allow-scripts"
+          onLoad={() => setIframeLoaded(true)}
           style={{
             position: "absolute",
             top: 0,
@@ -221,7 +337,9 @@ function SectionCard({
             transformOrigin: "top left",
             border: 0,
             pointerEvents: "none",
-            background: "#0A0A0A"
+            background: "#0A0A0A",
+            opacity: iframeLoaded ? 1 : 0,
+            transition: "opacity 200ms ease-out"
           }}
         />
         {/* Hover overlay — makes the "click to view full size" affordance explicit */}
@@ -335,6 +453,35 @@ function FilterPill({
     >
       {label}
     </button>
+  );
+}
+
+// ─── Empty state ──────────────────────────────────────────────
+
+function EmptyState({ onClearFilters }: { onClearFilters: () => void }) {
+  return (
+    <div className="mt-12 rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 px-6 py-14 text-center">
+      <p
+        className="text-[10px] font-extrabold uppercase tracking-widest"
+        style={{ color: YELLOW }}
+      >
+        Nothing matches
+      </p>
+      <p className="mt-2 text-[16px] font-extrabold text-neutral-900">
+        No templates for that combination
+      </p>
+      <p className="mx-auto mt-2 max-w-md text-[13px] text-neutral-600">
+        Try a different library, remove the search, or view all templates
+        together.
+      </p>
+      <button
+        type="button"
+        onClick={onClearFilters}
+        className="mt-5 inline-flex h-10 items-center rounded-lg bg-neutral-900 px-4 text-[11px] font-extrabold uppercase tracking-widest text-white transition hover:bg-neutral-700"
+      >
+        Clear filters
+      </button>
+    </div>
   );
 }
 
