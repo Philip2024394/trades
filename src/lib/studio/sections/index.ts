@@ -22,6 +22,17 @@ import "./hero/statHero";
 import "./hero/postcodeLocal";
 import "./hero/productShowroom";
 import "./hero/reviewWave";
+// Second wave — unique UI patterns, one hero per pattern to keep the
+// library discoverable rather than a wall of near-duplicates.
+import "./hero/chatBubbleHero";
+import "./hero/beforeAfterSlider";
+import "./hero/animatedGradient";
+import "./hero/badgeWall";
+import "./hero/mapHero";
+import "./hero/videoBackground";
+import "./hero/magazineEditorial";
+import "./hero/compareHero";
+import "./hero/qrPosterHero";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
