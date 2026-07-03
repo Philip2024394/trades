@@ -22,7 +22,6 @@ import type {
   AnySectionRegistration,
   SectionLibrary
 } from "@/lib/studio/sectionTypes";
-import { DEFAULT_TOKENS } from "@/lib/studio/tokens";
 import { TemplatePreviewModal } from "./TemplatePreviewModal";
 
 const YELLOW = "#FFB300";
@@ -85,16 +84,11 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
-      {/* Perf: freeze animations inside preview cards + defer off-screen
-          cards. Rendering 24 heroes with infinite CSS animations at
-          400% scale otherwise crushes the browser. Full-scale
-          animation still plays inside the preview modal. */}
+      {/* Perf: defer off-screen cards. Each hero preview is an
+          iframe (see SectionCard) which the browser lazy-loads +
+          isolates automatically. content-visibility skips paint
+          entirely for cards below the fold. */}
       <style>{`
-        [data-tmpl-preview-frozen],
-        [data-tmpl-preview-frozen] * {
-          animation-play-state: paused !important;
-          animation-delay: 0s !important;
-        }
         [data-tmpl-card] {
           content-visibility: auto;
           contain-intrinsic-size: 380px;
@@ -187,7 +181,7 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
 function SectionCard({
   reg,
   usage,
-  merchantSlug,
+  merchantSlug: _merchantSlug,
   onOpen
 }: {
   reg: AnySectionRegistration;
@@ -195,34 +189,28 @@ function SectionCard({
   merchantSlug: string;
   onOpen: () => void;
 }) {
-  const Renderer = reg.renderer;
-  const defaults = reg.defaultConfig();
-  const data = {
-    merchantId: "preview",
-    slug: merchantSlug,
-    merchantName: "Your business",
-    city: "Your city",
-    whatsappHref: null,
-    brandName: "Main brand",
-    domain: {}
-  };
-
   return (
     <article
       data-tmpl-card
       className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md"
     >
-      {/* Preview — the real renderer, scaled down + animation-frozen.
-          Clicking opens the full-viewport preview modal where the
-          animations play at full quality. */}
+      {/* Preview — an iframe pointing at the standalone preview route.
+          The iframe gives us total isolation from neighbouring cards:
+          each hero has its own layout tree, animation frame budget,
+          and event loop. `loading="lazy"` defers off-screen iframes.
+          Clicking opens the full-viewport preview modal for real-size
+          + full-quality animation. */}
       <button
         type="button"
         onClick={onOpen}
         className="group relative block h-40 w-full overflow-hidden bg-neutral-100 text-left"
         aria-label={`Preview ${reg.name} full size`}
       >
-        <div
-          data-tmpl-preview-frozen
+        <iframe
+          src={`/preview/section/${encodeURIComponent(reg.id)}`}
+          loading="lazy"
+          title={`Preview: ${reg.name}`}
+          sandbox="allow-same-origin allow-scripts"
           style={{
             position: "absolute",
             top: 0,
@@ -231,17 +219,11 @@ function SectionCard({
             height: "400%",
             transform: "scale(0.25)",
             transformOrigin: "top left",
-            pointerEvents: "none"
+            border: 0,
+            pointerEvents: "none",
+            background: "#0A0A0A"
           }}
-        >
-          <Renderer
-            instanceId="preview"
-            config={defaults}
-            tokens={DEFAULT_TOKENS}
-            data={data}
-            mode="preview"
-          />
-        </div>
+        />
         {/* Hover overlay — makes the "click to view full size" affordance explicit */}
         <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/40">
           <span
