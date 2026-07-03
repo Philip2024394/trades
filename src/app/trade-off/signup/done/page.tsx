@@ -98,13 +98,13 @@ function Inner() {
           >
             {isLive
               ? isEdit
-                ? "Changes saved · You're live"
-                : "You're live on xratedtrade.com"
+                ? "Changes saved · Your app is live"
+                : "Your business app is live"
               : "Saved as draft"}
           </p>
           <h1 className="mt-2 text-2xl font-extrabold leading-tight sm:text-3xl">
             {isLive
-              ? "Customers can now find you."
+              ? "Customers can find you at your URL."
               : "Your draft is safe — finish when you're ready."}
           </h1>
           {!isLive && (
@@ -117,17 +117,18 @@ function Inner() {
           )}
         </div>
 
-        {/* Public link — the share URL is the star of this page */}
+        {/* Public link — the business app URL is the star of this page */}
         {isLive && (
           <div className="mt-6 rounded-2xl border-2 border-[#FFB300]/60 bg-[#FFB300]/5 p-5">
             <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-              Your share URL
+              Your business app URL
             </p>
             <p className="mt-2 break-all font-mono text-lg font-bold text-brand-text sm:text-xl">
               {profileDisplay}
             </p>
             <p className="mt-2 text-xs text-brand-muted">
-              Screenshot this. Put it on your van. Send it to customers on WhatsApp.
+              Screenshot it. Put it on your van. Send it to customers on WhatsApp.
+              This URL is where every customer meets your business.
             </p>
             <div className="mt-3 flex flex-wrap gap-3">
               <button
@@ -158,12 +159,12 @@ function Inner() {
         {/* Edit link */}
         <div className="mt-6 rounded-2xl border border-brand-line bg-brand-surface/40 p-5">
           <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-            Save this link — it's your edit pass
+            Save this link — it opens Studio for your app
           </p>
           <p className="mt-2 text-xs text-brand-muted">
-            We don't email you a password. This link is the only way back into
-            your profile. Bookmark it. Send it to yourself on WhatsApp. Keep it
-            somewhere safe.
+            This link is your keycard back into Studio, where you design your
+            app, install Apps, and publish changes. Bookmark it. Send it to
+            yourself on WhatsApp. Keep it somewhere safe.
           </p>
           <div className="mt-3 break-all rounded-lg border border-brand-line bg-brand-bg p-3 text-xs text-brand-text">
             {editAbsolute}
@@ -186,7 +187,8 @@ function Inner() {
         </div>
 
         <p className="mt-8 text-center text-xs text-brand-muted">
-          xratedtrade.com is free for life. We use it to introduce you to customers — that's it.
+          Xrated Trades is free for life on the starter plan. Upgrade any time
+          to install more Apps and unlock premium features.
         </p>
       </section>
       <XratedFooter />

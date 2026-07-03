@@ -19,9 +19,9 @@ import { SignupWizard } from "@/components/trade-off/SignupWizard";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 
 export const metadata: Metadata = {
-  title: "Join xratedtrade.com — quick signup | Xrated Trades",
+  title: "Launch your business app — quick signup | Xrated Trades",
   description:
-    "List your trade on xratedtrade.com in under 6 minutes. One question per screen, no commission, free for life.",
+    "Launch your Xrated Trades business app in under 6 minutes. One question per screen, no commission, free for life. Studio, App Store and Industry Packs included on every paid plan.",
   alternates: { canonical: "/trade-off/signup/wizard" }
 };
 

@@ -9,9 +9,9 @@ import { TradeOffForm } from "./TradeOffForm";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 
 export const metadata: Metadata = {
-  title: "Join xratedtrade.com — list yourself for free | Hammerex",
+  title: "Join Xrated Trades — launch your business app for free",
   description:
-    "Add your trade profile to xratedtrade.com. Free for life, WhatsApp-only, no commissions. Customers find you, you quote.",
+    "Launch your business app on Xrated Trades. Studio, App Store, Industry Packs — the Business Operating System for trade businesses. Free for life, no card, no commission.",
   alternates: { canonical: "/trade-off/signup" }
 };
 
@@ -37,7 +37,7 @@ export default function TradeOffSignupPage() {
               Xrated Trades · Sign up
             </p>
             <h1 className="mt-1.5 text-2xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl">
-              List yourself on Xrated Trades
+              Launch your business app in minutes
             </h1>
           </div>
         </div>
@@ -45,9 +45,9 @@ export default function TradeOffSignupPage() {
 
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-6">
         <p className="max-w-xl text-xs text-brand-muted sm:text-sm">
-          Free for life. Photos of your work, where you operate, a WhatsApp number.
-          That's it — no reviews, no ratings, no commission. We send customers
-          your way; the job stays between you and them.
+          Free for life. You get a starter business app, Studio to design it,
+          and the App Store to install more features as you grow. No card, no
+          commission — the jobs stay between you and the customer.
         </p>
       </section>
       <section className="mx-auto max-w-3xl px-4 pb-16">
