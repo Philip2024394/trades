@@ -39,6 +39,10 @@ import "./hero/animationHero";
 // Kinetic typography — 6 selectable text-animation styles (roll-up,
 // fall-down, wipe-reveal, blur-focus, word-rotate, typewriter).
 import "./hero/textKineticHero";
+// Interactive + immersive animation heroes.
+import "./hero/cursorSpotlight";
+import "./hero/marqueeScroll";
+import "./hero/tilt3d";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
