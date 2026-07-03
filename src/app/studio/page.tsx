@@ -67,10 +67,56 @@ export default async function StudioEntryPage({
             your email.
           </p>
         )}
+
+        {/* Dev-only bypass. Rendered only when NODE_ENV !== "production".
+            The API route enforces the same guard on the server so a
+            stray link on a prod deployment does nothing. */}
+        {process.env.NODE_ENV !== "production" && <DevBypassCard />}
+
         <p className="mt-8 text-[11px] font-bold uppercase tracking-widest text-white/40">
           Xrated Trades
         </p>
       </div>
     </main>
+  );
+}
+
+function DevBypassCard() {
+  return (
+    <div
+      className="mt-8 rounded-2xl border p-4 text-left"
+      style={{
+        borderColor: "rgba(255, 179, 0, 0.35)",
+        background: "rgba(255, 179, 0, 0.08)"
+      }}
+    >
+      <p
+        className="text-[10px] font-extrabold uppercase tracking-widest"
+        style={{ color: YELLOW }}
+      >
+        Development mode
+      </p>
+      <p className="mt-1 text-[12px] text-white/80">
+        Skip the magic-link and sign in as the first available demo merchant.
+        Disabled in production.
+      </p>
+      <a
+        href="/api/studio/dev-bypass"
+        className="mt-3 inline-flex h-10 items-center justify-center rounded-lg px-4 text-[11px] font-extrabold uppercase tracking-widest transition"
+        style={{ background: YELLOW, color: BLACK }}
+      >
+        Sign in as demo merchant →
+      </a>
+      <p className="mt-2 text-[10px] text-white/50">
+        Or pass{" "}
+        <code
+          className="rounded px-1 py-0.5 font-mono text-[10px]"
+          style={{ background: "rgba(255,255,255,0.08)" }}
+        >
+          ?slug=your-merchant-slug
+        </code>{" "}
+        to sign in as a specific merchant.
+      </p>
+    </div>
   );
 }
