@@ -12,6 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import type { StudioBrand, StudioMerchant } from "@/lib/studio/session";
+import { OfflineBanner } from "./OfflineBanner";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -129,6 +130,9 @@ export function StudioShell({
 
   return (
     <div className="flex min-h-screen bg-neutral-50 text-neutral-900">
+      {/* Sticky top banner surfaces offline / reconnect state above
+          every Studio route. */}
+      <OfflineBanner />
       {/* ─── Sidebar (desktop) ─────────────────────────────────── */}
       <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-neutral-200 bg-white sm:flex">
         <div className="flex items-center gap-2 px-5 py-5">
