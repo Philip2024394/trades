@@ -36,6 +36,9 @@ import "./hero/qrPosterHero";
 // Signature trade hero — animated tools (hammer swings, saw slides,
 // wrench turns, drill bit spins, paintbrush sweeps). Pure SVG + CSS.
 import "./hero/animationHero";
+// Kinetic typography — 6 selectable text-animation styles (roll-up,
+// fall-down, wipe-reveal, blur-focus, word-rotate, typewriter).
+import "./hero/textKineticHero";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
