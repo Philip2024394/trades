@@ -12,6 +12,16 @@
 import "./hero/plantHireBold";
 import "./hero/splitPhotoLeft";
 import "./hero/minimalCentred";
+// State-of-the-art heroes — trade-focused, theme-aware, mobile-first.
+// Each is designed for a specific merchant intent (trust / emergency /
+// portfolio / stats / postcode / storefront / social-proof).
+import "./hero/trustAnchor";
+import "./hero/emergency247";
+import "./hero/portfolioMosaic";
+import "./hero/statHero";
+import "./hero/postcodeLocal";
+import "./hero/productShowroom";
+import "./hero/reviewWave";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
