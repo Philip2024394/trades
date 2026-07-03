@@ -23,6 +23,7 @@ import type {
   SectionLibrary
 } from "@/lib/studio/sectionTypes";
 import { DEFAULT_TOKENS } from "@/lib/studio/tokens";
+import { TemplatePreviewModal } from "./TemplatePreviewModal";
 
 const YELLOW = "#FFB300";
 
@@ -39,7 +40,7 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
   const [library, setLibrary] = useState<SectionLibrary | "all">("hero");
   const [query, setQuery] = useState("");
   const [usage, setUsage] = useState<UsagePayload>({});
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [previewingId, setPreviewingId] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -138,14 +139,29 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
                 reg={reg}
                 usage={usage[reg.id]}
                 merchantSlug={merchantSlug}
-                expanded={expanded === reg.id}
-                onExpand={() =>
-                  setExpanded((cur) => (cur === reg.id ? null : reg.id))
-                }
+                onOpen={() => setPreviewingId(reg.id)}
               />
             </li>
           ))}
         </ul>
+      )}
+
+      {/* Full-viewport preview modal — the "expand" action opens
+          here rather than trying to zoom inside the small card. */}
+      {previewingId && (
+        <TemplatePreviewModal
+          templates={filtered}
+          activeIndex={Math.max(
+            0,
+            filtered.findIndex((r) => r.id === previewingId)
+          )}
+          onChangeIndex={(nextIndex) => {
+            const next = filtered[nextIndex];
+            if (next) setPreviewingId(next.id);
+          }}
+          onClose={() => setPreviewingId(null)}
+          merchantSlug={merchantSlug}
+        />
       )}
     </div>
   );
@@ -157,14 +173,12 @@ function SectionCard({
   reg,
   usage,
   merchantSlug,
-  expanded,
-  onExpand
+  onOpen
 }: {
   reg: AnySectionRegistration;
   usage: { count: number; uniqueMerchants: number } | undefined;
   merchantSlug: string;
-  expanded: boolean;
-  onExpand: () => void;
+  onOpen: () => void;
 }) {
   const Renderer = reg.renderer;
   const defaults = reg.defaultConfig();
@@ -180,21 +194,22 @@ function SectionCard({
 
   return (
     <article className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md">
-      {/* Preview — the real renderer, scaled down. Truth-by-construction. */}
+      {/* Preview — the real renderer, scaled down. Clicking opens the
+          full-viewport preview modal. Truth-by-construction. */}
       <button
         type="button"
-        onClick={onExpand}
+        onClick={onOpen}
         className="group relative block h-40 w-full overflow-hidden bg-neutral-100 text-left"
-        aria-label={`Expand ${reg.name} preview`}
+        aria-label={`Preview ${reg.name} full size`}
       >
         <div
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            width: expanded ? "100%" : "400%",
-            height: expanded ? "100%" : "400%",
-            transform: expanded ? "none" : "scale(0.25)",
+            width: "400%",
+            height: "400%",
+            transform: "scale(0.25)",
             transformOrigin: "top left",
             pointerEvents: "none"
           }}
@@ -207,8 +222,14 @@ function SectionCard({
             mode="preview"
           />
         </div>
-        <span className="absolute right-2 top-2 rounded-full bg-black/70 px-2 py-1 text-[9px] font-extrabold uppercase tracking-widest text-white opacity-0 transition group-hover:opacity-100">
-          {expanded ? "Collapse" : "Expand ↗"}
+        {/* Hover overlay — makes the "click to view full size" affordance explicit */}
+        <span className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/0 transition group-hover:bg-black/40">
+          <span
+            className="rounded-full px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest opacity-0 transition group-hover:opacity-100"
+            style={{ background: YELLOW, color: "#0A0A0A" }}
+          >
+            Preview full size ↗
+          </span>
         </span>
       </button>
 

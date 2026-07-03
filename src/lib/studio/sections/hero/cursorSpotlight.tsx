@@ -93,7 +93,7 @@ function CursorSpotlightHero({
 
   const radius = Math.max(15, Math.min(80, config.beamRadius));
   const intensity = Math.max(0.3, Math.min(1, config.beamIntensity));
-  const darkness = Math.max(0.4, Math.min(0.95, config.darknessLevel));
+  const darkness = Math.max(0, Math.min(0.95, config.darknessLevel));
   const uid = instanceId.replace(/[^a-zA-Z0-9]/g, "");
 
   const chips = [config.chip1, config.chip2, config.chip3].filter(
@@ -347,7 +347,7 @@ const registration: SectionRegistration<Config> = {
     { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
     { key: "beamRadius", label: "Spotlight size (%)", type: { kind: "number", min: 15, max: 80, step: 5 }, default: 40, group: "Spotlight" },
     { key: "beamIntensity", label: "Beam glow intensity", type: { kind: "number", min: 0.3, max: 1, step: 0.1 }, default: 0.7, group: "Spotlight" },
-    { key: "darknessLevel", label: "Overlay darkness", type: { kind: "number", min: 0.4, max: 0.95, step: 0.05 }, default: 0.85, group: "Spotlight" },
+    { key: "darknessLevel", label: "Overlay darkness", type: { kind: "number", min: 0, max: 0.95, step: 0.05 }, default: 0, group: "Spotlight", description: "0 = image fully visible (recommended when using a background image). Turn up for the classic torch-in-the-dark effect." },
     { key: "backgroundImageUrl", label: "Background image URL", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_14_47%20AM.png", group: "Background image", description: "Revealed by the cursor spotlight. Recommended 1920x1080, under 500KB. Leave empty for pure black background." },
     { key: "imageOpacity", label: "Image base brightness", type: { kind: "number", min: 0.3, max: 1, step: 0.05 }, default: 1, group: "Background image", description: "1 = full brightness (dramatic reveal). Lower = image feels more embedded in the darkness." },
     { key: "showGuidance", label: "Show 'move your cursor' hint", type: { kind: "boolean" }, default: true, group: "Guidance" },
@@ -377,7 +377,7 @@ const registration: SectionRegistration<Config> = {
     secondaryCtaHref: "#projects",
     beamRadius: 40,
     beamIntensity: 0.7,
-    darknessLevel: 0.85,
+    darknessLevel: 0,
     backgroundImageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_14_47%20AM.png",
     imageOpacity: 1,
     showGuidance: true,
