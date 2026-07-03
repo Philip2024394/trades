@@ -15,6 +15,7 @@ import type {
   InstalledAppRow,
   UninstallError
 } from "@/platform/runtime";
+import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -80,7 +81,10 @@ export function InstallProgressModal({
   async function install() {
     setState({ kind: "installing" });
     try {
-      const res = await fetch("/api/platform/apps/install", {
+      // fetchWithRetry gives us exponential backoff on transient
+      // 5xx / network errors + waits for reconnect if offline. Install
+      // is a headline action — must not silently fail on a flake.
+      const res = await fetchWithRetry("/api/platform/apps/install", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slug: manifest.slug })
@@ -117,7 +121,7 @@ export function InstallProgressModal({
   async function uninstall(purge: boolean) {
     setState({ kind: "uninstalling" });
     try {
-      const res = await fetch("/api/platform/apps/uninstall", {
+      const res = await fetchWithRetry("/api/platform/apps/uninstall", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ slug: manifest.slug, purgeData: purge })

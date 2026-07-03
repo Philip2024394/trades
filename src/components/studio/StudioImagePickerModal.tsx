@@ -185,13 +185,24 @@ export function StudioImagePickerModal({
                 e.preventDefault();
                 void handleFiles(e.dataTransfer.files);
               }}
-              className="flex flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-neutral-300 bg-neutral-50 p-12 text-center"
+              className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-neutral-300 bg-neutral-50 p-12 text-center"
             >
-              <p className="text-[13px] font-bold text-neutral-500">
-                No media yet — upload one to get started.
+              <p className="text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
+                No images yet
               </p>
+              <p className="max-w-sm text-[13px] font-bold text-neutral-700">
+                Add your first image to unlock the picker.
+              </p>
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="inline-flex h-11 items-center rounded-xl px-4 text-[12px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
+                style={{ background: "#0A0A0A" }}
+              >
+                ↑ Upload an image
+              </button>
               <p className="text-[10px] text-neutral-400">
-                Drop files here · max {formatBytes(STUDIO_MEDIA_MAX_BYTES)} each
+                Or drop files here · max {formatBytes(STUDIO_MEDIA_MAX_BYTES)} each
               </p>
             </div>
           ) : (

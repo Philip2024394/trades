@@ -15,6 +15,7 @@ import type { TreeSnapshot } from "@/lib/studio/treeTypes";
 import { encodeDraftParam } from "@/lib/studio/draftEncoding";
 import { editorEmit, useBusFromIframe } from "@/lib/studio/bus";
 import { sendTelemetry, trackEvent } from "@/lib/studio/telemetry";
+import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
 import { StudioTreeNavigator } from "./StudioTreeNavigator";
 import { StudioReplaceModal } from "./StudioReplaceModal";
 import { StudioTypographyModal } from "./StudioTypographyModal";
@@ -862,11 +863,20 @@ export function StudioLiveMirror({
     const timer = setTimeout(async () => {
       setSaveState({ kind: "saving" });
       try {
-        const res = await fetch("/api/studio/save", {
+        // fetchWithRetry handles offline waits + exponential backoff on
+        // transient 5xx / network drops, so a flaky connection during
+        // autosave self-heals without the merchant noticing.
+        const res = await fetchWithRetry("/api/studio/save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ pageId, layoutJson: layout }),
-          keepalive: true
+          keepalive: true,
+          onRetry: (attempt, delayMs) => {
+            setSaveState({
+              kind: "error",
+              message: `Retrying save (attempt ${attempt + 1}) in ${Math.round(delayMs / 100) / 10}s…`
+            });
+          }
         });
         const json = (await res.json()) as
           | { ok: true; savedAt: string }
@@ -893,7 +903,9 @@ export function StudioLiveMirror({
   const publish = useCallback(async () => {
     setPublishState({ kind: "publishing" });
     try {
-      const res = await fetch("/api/studio/publish", {
+      // Publish is high-stakes — retry on transient 5xx / network so
+      // "Publish" never silently fails when the network hiccups.
+      const res = await fetchWithRetry("/api/studio/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pageId })
