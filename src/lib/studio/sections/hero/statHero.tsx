@@ -35,6 +35,8 @@ type Config = {
   testimonialQuote: string;
   testimonialAuthor: string;
   surface: "dark" | "cream";
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function StatHero({
@@ -69,6 +71,31 @@ function StatHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.stat_hero_1", "Stat-Anchor Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background: isDark
+              ? "linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 100%)"
+              : "linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.4) 100%)"
+          }}
+        />
+      )}
+
       <div className="relative mx-auto max-w-6xl px-5 py-20 sm:px-6 sm:py-28">
         {/* Stat label */}
         <p
@@ -207,19 +234,21 @@ const registration: SectionRegistration<Config> = {
   description:
     "Numbers-first hero. A giant honest stat becomes the visual anchor. Perfect for established trades with a track record.",
   editableFields: [
-    { key: "statValue", label: "Stat value", type: { kind: "text", maxLength: 10 }, default: "847", priority: "text", aiPromptable: false, group: "The stat" },
-    { key: "statUnit", label: "Stat unit / suffix", type: { kind: "text", maxLength: 10 }, default: "+", priority: "text", group: "The stat" },
-    { key: "statLabel", label: "Stat label", type: { kind: "text", maxLength: 60 }, default: "Jobs completed since 2011", priority: "text", aiPromptable: true, group: "The stat" },
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Established 2011", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The record speaks for itself.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "13 years, 4 counties, one team. If your neighbour's had a job done in the last decade, we probably did it.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Read reviews", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#reviews", group: "CTAs" },
+    { key: "statValue", role: "stat_value",label: "Stat value", type: { kind: "text", maxLength: 10 }, default: "847", priority: "text", aiPromptable: false, group: "The stat" },
+    { key: "statUnit", role: "stat_unit",label: "Stat unit / suffix", type: { kind: "text", maxLength: 10 }, default: "+", priority: "text", group: "The stat" },
+    { key: "statLabel", role: "stat_label",label: "Stat label", type: { kind: "text", maxLength: 60 }, default: "Jobs completed since 2011", priority: "text", aiPromptable: true, group: "The stat" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Established 2011", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The record speaks for itself.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "13 years, 4 counties, one team. If your neighbour's had a job done in the last decade, we probably did it.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Read reviews", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#reviews", group: "CTAs" },
     { key: "testimonialQuote", label: "Testimonial quote", type: { kind: "text", maxLength: 200, multiline: true }, default: "Turned up when he said he would. Finished when he said he would. Rare.", priority: "text", aiPromptable: true, group: "Testimonial" },
     { key: "testimonialAuthor", label: "Testimonial author", type: { kind: "text", maxLength: 60 }, default: "Sarah, Leeds", priority: "text", group: "Testimonial" },
-    { key: "surface", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "cream", label: "Cream" }] }, default: "dark", group: "Layout" }
+    { key: "surface", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "cream", label: "Cream" }] }, default: "dark", group: "Layout" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_23_15%20PM.png", group: "Background", description: "Full-bleed photo behind the giant stat + copy. Leave empty for the plain surface." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "count-up", "fade-in"],
   aiPrompts: {
@@ -245,7 +274,10 @@ const registration: SectionRegistration<Config> = {
     secondaryCtaHref: "#reviews",
     testimonialQuote: "Turned up when he said he would. Finished when he said he would. Rare.",
     testimonialAuthor: "Sarah, Leeds",
-    surface: "dark"
+    surface: "dark",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_23_15%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: StatHero
 };

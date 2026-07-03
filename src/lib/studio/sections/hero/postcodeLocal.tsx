@@ -36,6 +36,8 @@ type Config = {
   chip3: string;
   supportingCopy: string;
   surface: "dark" | "light";
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function PostcodeLocalHero({
@@ -81,6 +83,30 @@ function PostcodeLocalHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.postcode_local_1", "Postcode-Local Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
       <div className="mx-auto max-w-3xl px-5 py-20 text-center sm:px-6 sm:py-24">
         {config.eyebrow && (
           <p
@@ -206,16 +232,18 @@ const registration: SectionRegistration<Config> = {
   description:
     "Postcode search as the hero's centre of gravity. Three fact chips (response time, insurance, years). Built for local service trades where coverage is the deciding factor.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Covering your area", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "A plumber, right here on your street.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Type your postcode and we'll be on WhatsApp with a quote before the kettle boils.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Covering your area", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "A plumber, right here on your street.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Type your postcode and we'll be on WhatsApp with a quote before the kettle boils.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "postcodePlaceholder", label: "Postcode placeholder", type: { kind: "text", maxLength: 30 }, default: "e.g. LS1 4AB", group: "Search" },
-    { key: "submitLabel", label: "Submit button label", type: { kind: "text", maxLength: 20 }, default: "Get quote", priority: "button", group: "Search" },
-    { key: "chip1", label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "45 min avg on-site", group: "Fact chips" },
-    { key: "chip2", label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "£5m public liability", group: "Fact chips" },
-    { key: "chip3", label: "Chip 3", type: { kind: "text", maxLength: 40 }, default: "12 years in trade", group: "Fact chips" },
-    { key: "supportingCopy", label: "Supporting copy", type: { kind: "text", maxLength: 120 }, default: "No call centres · One-tap WhatsApp · Never pay to enquire", priority: "text", group: "Copy" },
-    { key: "surface", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" }
+    { key: "submitLabel", role: "primary_action_label",label: "Submit button label", type: { kind: "text", maxLength: 20 }, default: "Get quote", priority: "button", group: "Search" },
+    { key: "chip1", role: "feature_line",label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "45 min avg on-site", group: "Fact chips" },
+    { key: "chip2", role: "feature_line",label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "£5m public liability", group: "Fact chips" },
+    { key: "chip3", role: "feature_line",label: "Chip 3", type: { kind: "text", maxLength: 40 }, default: "12 years in trade", group: "Fact chips" },
+    { key: "supportingCopy", role: "supporting_copy",label: "Supporting copy", type: { kind: "text", maxLength: 120 }, default: "No call centres · One-tap WhatsApp · Never pay to enquire", priority: "text", group: "Copy" },
+    { key: "surface", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_16_17%20PM.png", group: "Background", description: "Full-bleed photo behind the postcode search. Leave empty for the plain surface." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -238,7 +266,10 @@ const registration: SectionRegistration<Config> = {
     chip2: "£5m public liability",
     chip3: "12 years in trade",
     supportingCopy: "No call centres · One-tap WhatsApp · Never pay to enquire",
-    surface: "dark"
+    surface: "dark",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_16_17%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: PostcodeLocalHero
 };

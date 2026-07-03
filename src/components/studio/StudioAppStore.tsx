@@ -11,7 +11,8 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { FrozenAppManifest } from "@/platform/manifest/types";
 import type { EligibilityDecision } from "@/platform/appEligibility";
-import { AppStoreCard, type InstallState } from "./AppStoreCard";
+import { AppStoreCard, type InstallState, type Readiness } from "./AppStoreCard";
+import { useNotify } from "./Toaster";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -46,6 +47,7 @@ export function StudioAppStore({
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("browse");
   const [error, setError] = useState<string | null>(null);
+  const notify = useNotify();
 
   async function refresh() {
     setError(null);
@@ -116,6 +118,86 @@ export function StudioAppStore({
       items?.filter((i) => i.installState.kind === "installed").length ?? 0,
     [items]
   );
+
+  // Lookup used by every card to derive pre-flight readiness — missing
+  // dependencies, active conflicts. Cheaper to compute once than per
+  // card render.
+  const installedSlugs = useMemo(() => {
+    const set = new Set<string>();
+    for (const i of items ?? []) {
+      if (i.installState.kind === "installed") set.add(i.manifest.slug);
+    }
+    return set;
+  }, [items]);
+
+  const nameLookup = useMemo(() => {
+    const m = new Map<string, string>();
+    for (const i of items ?? []) m.set(i.manifest.slug, i.manifest.name);
+    return m;
+  }, [items]);
+
+  function readinessFor(manifest: FrozenAppManifest): Readiness {
+    const missingDeps = manifest.requirements.dependencies.filter(
+      (slug) => !installedSlugs.has(slug)
+    );
+    const activeConflicts = manifest.requirements.conflicts.filter((slug) =>
+      installedSlugs.has(slug)
+    );
+    if (activeConflicts.length > 0) {
+      return {
+        kind: "blocked-conflict",
+        conflicts: activeConflicts.map((s) => ({
+          slug: s,
+          name: nameLookup.get(s) ?? s
+        }))
+      };
+    }
+    if (missingDeps.length > 0) {
+      return {
+        kind: "needs-prerequisites",
+        missing: missingDeps.map((s) => ({
+          slug: s,
+          name: nameLookup.get(s) ?? s
+        }))
+      };
+    }
+    return { kind: "ready" };
+  }
+
+  // Chain-install a prerequisite: user hits the "Install X first" chip on
+  // a card, we install the dep + refresh + toast so they can see progress.
+  async function installPrerequisite(slug: string) {
+    const name = nameLookup.get(slug) ?? slug;
+    notify.info({ title: `Installing ${name}…` });
+    try {
+      const res = await fetch("/api/platform/apps/install", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug })
+      });
+      const json = (await res.json()) as
+        | { ok: true }
+        | { ok: false; error: { code: string; reason?: string } };
+      if (!json.ok) {
+        notify.error({
+          title: `Couldn't install ${name}`,
+          detail: json.error.reason ?? json.error.code
+        });
+        return;
+      }
+      notify.success({
+        title: `${name} installed`,
+        detail: "You can now install anything that depends on it."
+      });
+      applyOptimistic(slug, "installed");
+      void refresh();
+    } catch (err) {
+      notify.error({
+        title: `Couldn't install ${name}`,
+        detail: (err as Error).message ?? "Network error"
+      });
+    }
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
@@ -203,9 +285,11 @@ export function StudioAppStore({
                 manifest={item.manifest}
                 installState={item.installState}
                 eligibility={item.eligibility}
+                readiness={readinessFor(item.manifest)}
                 merchantSlug={merchantSlug}
                 onChanged={() => void refresh()}
                 onOptimistic={applyOptimistic}
+                onInstallPrerequisite={installPrerequisite}
               />
             </li>
           ))}

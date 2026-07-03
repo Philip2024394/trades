@@ -44,6 +44,8 @@ type Config = {
   review5Author: string;
   review6: string;
   review6Author: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function ReviewWaveHero({
@@ -89,6 +91,30 @@ function ReviewWaveHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.review_wave_1", "Review-Wave Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%)"
+          }}
+        />
+      )}
+
       {/* Reviews marquee — top strip */}
       {reviews.length > 0 && (
         <div
@@ -259,27 +285,29 @@ const registration: SectionRegistration<Config> = {
   description:
     "Social-proof hero with a live-scrolling marquee of real review snippets across the top strip. Rating badge anchors bottom-left.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "4.9 ★ across 127 reviews", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade your neighbours already booked.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Verified reviews from real customers, no filters, no cherry-picking. Read them all, then decide.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Read all reviews", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#reviews", group: "CTAs" },
-    { key: "ratingValue", label: "Star rating", type: { kind: "number", min: 0, max: 5, step: 0.1 }, default: 4.9, group: "Rating badge" },
-    { key: "ratingCount", label: "Review count", type: { kind: "number", min: 0, max: 999999, step: 1 }, default: 127, group: "Rating badge" },
-    { key: "review1", label: "Review 1", type: { kind: "text", maxLength: 120 }, default: "Turned up on time, quoted honestly, cleaned up after.", group: "Marquee reviews" },
-    { key: "review1Author", label: "Review 1 author", type: { kind: "text", maxLength: 40 }, default: "Sarah, Leeds", group: "Marquee reviews" },
-    { key: "review2", label: "Review 2", type: { kind: "text", maxLength: 120 }, default: "Best plumber I've used in 20 years.", group: "Marquee reviews" },
-    { key: "review2Author", label: "Review 2 author", type: { kind: "text", maxLength: 40 }, default: "Mark, York", group: "Marquee reviews" },
-    { key: "review3", label: "Review 3", type: { kind: "text", maxLength: 120 }, default: "Quoted on WhatsApp within 20 minutes. Job done next day.", group: "Marquee reviews" },
-    { key: "review3Author", label: "Review 3 author", type: { kind: "text", maxLength: 40 }, default: "Priya, Manchester", group: "Marquee reviews" },
-    { key: "review4", label: "Review 4", type: { kind: "text", maxLength: 120 }, default: "Really tidy work, priced fairly, no drama.", group: "Marquee reviews" },
-    { key: "review4Author", label: "Review 4 author", type: { kind: "text", maxLength: 40 }, default: "James, Sheffield", group: "Marquee reviews" },
-    { key: "review5", label: "Review 5", type: { kind: "text", maxLength: 120 }, default: "Would recommend without hesitation.", group: "Marquee reviews" },
-    { key: "review5Author", label: "Review 5 author", type: { kind: "text", maxLength: 40 }, default: "Anna, Wakefield", group: "Marquee reviews" },
-    { key: "review6", label: "Review 6", type: { kind: "text", maxLength: 120 }, default: "Great team. Clean finish. Fair price.", group: "Marquee reviews" },
-    { key: "review6Author", label: "Review 6 author", type: { kind: "text", maxLength: 40 }, default: "Tom, Bradford", group: "Marquee reviews" }
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "4.9 ★ across 127 reviews", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade your neighbours already booked.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Verified reviews from real customers, no filters, no cherry-picking. Read them all, then decide.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Read all reviews", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#reviews", group: "CTAs" },
+    { key: "ratingValue", role: "rating_value",label: "Star rating", type: { kind: "number", min: 0, max: 5, step: 0.1 }, default: 4.9, group: "Rating badge" },
+    { key: "ratingCount", role: "rating_count",label: "Review count", type: { kind: "number", min: 0, max: 999999, step: 1 }, default: 127, group: "Rating badge" },
+    { key: "review1", role: "quote",label: "Review 1", type: { kind: "text", maxLength: 120 }, default: "Turned up on time, quoted honestly, cleaned up after.", group: "Marquee reviews" },
+    { key: "review1Author", role: "quote_author",label: "Review 1 author", type: { kind: "text", maxLength: 40 }, default: "Sarah, Leeds", group: "Marquee reviews" },
+    { key: "review2", role: "quote",label: "Review 2", type: { kind: "text", maxLength: 120 }, default: "Best plumber I've used in 20 years.", group: "Marquee reviews" },
+    { key: "review2Author", role: "quote_author",label: "Review 2 author", type: { kind: "text", maxLength: 40 }, default: "Mark, York", group: "Marquee reviews" },
+    { key: "review3", role: "quote",label: "Review 3", type: { kind: "text", maxLength: 120 }, default: "Quoted on WhatsApp within 20 minutes. Job done next day.", group: "Marquee reviews" },
+    { key: "review3Author", role: "quote_author",label: "Review 3 author", type: { kind: "text", maxLength: 40 }, default: "Priya, Manchester", group: "Marquee reviews" },
+    { key: "review4", role: "quote",label: "Review 4", type: { kind: "text", maxLength: 120 }, default: "Really tidy work, priced fairly, no drama.", group: "Marquee reviews" },
+    { key: "review4Author", role: "quote_author",label: "Review 4 author", type: { kind: "text", maxLength: 40 }, default: "James, Sheffield", group: "Marquee reviews" },
+    { key: "review5", role: "quote",label: "Review 5", type: { kind: "text", maxLength: 120 }, default: "Would recommend without hesitation.", group: "Marquee reviews" },
+    { key: "review5Author", role: "quote_author",label: "Review 5 author", type: { kind: "text", maxLength: 40 }, default: "Anna, Wakefield", group: "Marquee reviews" },
+    { key: "review6", role: "quote",label: "Review 6", type: { kind: "text", maxLength: 120 }, default: "Great team. Clean finish. Fair price.", group: "Marquee reviews" },
+    { key: "review6Author", role: "quote_author",label: "Review 6 author", type: { kind: "text", maxLength: 40 }, default: "Tom, Bradford", group: "Marquee reviews" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_40_16%20AM.png?updatedAt=1783042883919", group: "Background", description: "Full-bleed photo behind the review marquee + copy. Leave empty for the plain dark surface." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "marquee", "fade-in"],
   aiPrompts: {
@@ -313,7 +341,10 @@ const registration: SectionRegistration<Config> = {
     review5: "Would recommend without hesitation.",
     review5Author: "Anna, Wakefield",
     review6: "Great team. Clean finish. Fair price.",
-    review6Author: "Tom, Bradford"
+    review6Author: "Tom, Bradford",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_40_16%20AM.png?updatedAt=1783042883919",
+    backgroundImageOpacity: 1
   }),
   renderer: ReviewWaveHero
 };

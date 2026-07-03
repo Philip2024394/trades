@@ -18,6 +18,7 @@ import { sendTelemetry, trackEvent } from "@/lib/studio/telemetry";
 import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
 import { StudioTreeNavigator } from "./StudioTreeNavigator";
 import { StudioReplaceModal } from "./StudioReplaceModal";
+import { SmartSwapModal } from "./SmartSwapModal";
 import { StudioTypographyModal } from "./StudioTypographyModal";
 import { StudioImagePickerModal } from "./StudioImagePickerModal";
 import { StudioLinkModal } from "./StudioLinkModal";
@@ -71,6 +72,19 @@ type ReplaceModalState =
       treeId: string;
       instanceId: string;
       currentSectionId: string;
+    };
+
+/** Smart Swap modal — content-preserving section swap (Universal Smart
+ *  Section Engine). Different from ReplaceModalState because we need
+ *  the FULL source config to run the swap engine, and we route the
+ *  commit through commitSmartSwap (which carries content across, not
+ *  just the key). */
+type SmartSwapModalState =
+  | null
+  | {
+      instanceId: string;
+      sourceSectionId: string;
+      sourceConfig: Record<string, unknown>;
     };
 
 type TypographyModalState =
@@ -183,6 +197,7 @@ export function StudioLiveMirror({
     kind: "idle"
   });
   const [replaceModal, setReplaceModal] = useState<ReplaceModalState>(null);
+  const [smartSwapModal, setSmartSwapModal] = useState<SmartSwapModalState>(null);
   const [typographyModal, setTypographyModal] =
     useState<TypographyModalState>(null);
   const [imagePicker, setImagePicker] = useState<ImagePickerState>(null);
@@ -282,6 +297,26 @@ export function StudioLiveMirror({
               treeId: msg.payload.treeId,
               instanceId: iid,
               currentSectionId: instance.key
+            });
+            break;
+          }
+        }
+        // Universal Smart Section Engine — content-preserving swap.
+        // Opens SmartSwapModal, which diffs source vs candidates by
+        // semantic role and commits via commitSmartSwap.
+        if (
+          msg.payload.tool === "smart-swap" &&
+          msg.payload.kind === "section"
+        ) {
+          const iid = instanceIdFromTreeId(msg.payload.treeId);
+          const instance = iid
+            ? layout.sections.find((s) => s.instanceId === iid)
+            : null;
+          if (iid && instance) {
+            setSmartSwapModal({
+              instanceId: iid,
+              sourceSectionId: instance.key,
+              sourceConfig: instance.config
             });
             break;
           }
@@ -821,6 +856,62 @@ export function StudioLiveMirror({
     [mutate, pageId]
   );
 
+  // Universal Smart Section Engine — commit path.
+  // Rewrites both `key` and `config` in one mutation so preview never
+  // renders the new section with the old config or vice versa. Orphaned
+  // fields go under `_orphaned` so a subsequent swap-back can restore
+  // them via the same modal.
+  const commitSmartSwap = useCallback(
+    (
+      instanceId: string,
+      nextRegistrationId: string,
+      nextConfig: Record<string, unknown>,
+      orphaned: { sourceKey: string; role?: string; value: unknown }[]
+    ) => {
+      mutate((prev) => {
+        const previous = prev.sections.find(
+          (s) => s.instanceId === instanceId
+        );
+        trackEvent({
+          event: "pick",
+          pageId,
+          layoutVariant: nextRegistrationId,
+          sectionKey: nextRegistrationId,
+          metadata: {
+            instanceId,
+            previousKey: previous?.key,
+            source: "smart-swap",
+            orphanedCount: orphaned.length
+          }
+        });
+        return {
+          ...prev,
+          sections: prev.sections.map((s) => {
+            if (s.instanceId !== instanceId) return s;
+            const nextOrphans =
+              orphaned.length > 0
+                ? {
+                    _orphaned: {
+                      ...(s.config._orphaned as Record<string, unknown> | undefined),
+                      ...Object.fromEntries(
+                        orphaned.map((o) => [o.sourceKey, o.value])
+                      )
+                    }
+                  }
+                : {};
+            return {
+              ...s,
+              key: nextRegistrationId,
+              config: { ...nextConfig, ...nextOrphans }
+            };
+          })
+        };
+      });
+      setSmartSwapModal(null);
+    },
+    [mutate, pageId]
+  );
+
   const applyTextEdit = useCallback(
     (instanceId: string, elementKey: string, value: string) => {
       mutate((prev) => {
@@ -1340,6 +1431,54 @@ export function StudioLiveMirror({
           onClose={() => setReplaceModal(null)}
         />
       )}
+
+      {smartSwapModal && (() => {
+        const sourceReg = sectionRegistry.get(smartSwapModal.sourceSectionId);
+        if (!sourceReg) return null;
+        // Candidates: every registered section EXCEPT the current one.
+        // Filtering to `library === sourceReg.library` restricts to
+        // sibling variants (Hero → Hero); dropping the filter would
+        // widen this to cross-library swap (Hero → FAQ), which the
+        // engine already supports but merchants shouldn't discover
+        // until we scope the picker properly.
+        const candidates = sectionRegistry
+          .list()
+          .filter(
+            (r) =>
+              r.id !== smartSwapModal.sourceSectionId &&
+              r.library === sourceReg.library
+          )
+          .map((r) => ({
+            id: r.id,
+            name: r.name,
+            description: r.description,
+            editableFields: r.editableFields,
+            defaultConfig: r.defaultConfig
+          }));
+        return (
+          <SmartSwapModal
+            sourceInstanceId={smartSwapModal.instanceId}
+            source={{
+              registration: {
+                id: sourceReg.id,
+                name: sourceReg.name,
+                editableFields: sourceReg.editableFields
+              },
+              config: smartSwapModal.sourceConfig
+            }}
+            candidates={candidates}
+            onCancel={() => setSmartSwapModal(null)}
+            onCommit={(commit) =>
+              commitSmartSwap(
+                smartSwapModal.instanceId,
+                commit.targetSectionId,
+                commit.targetConfig,
+                commit.orphanedFields
+              )
+            }
+          />
+        );
+      })()}
 
       {typographyModal && (
         <StudioTypographyModal

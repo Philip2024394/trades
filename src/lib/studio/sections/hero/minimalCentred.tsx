@@ -171,6 +171,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 40 },
       default: "Local · Insured · Same-day",
       priority: "text",
+      role: "eyebrow",
       group: "Copy"
     },
     {
@@ -179,6 +180,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 120, multiline: true },
       default: "Broken? We'll be there today.",
       priority: "text",
+      role: "headline",
       aiPromptable: true,
       description: "Under 8 words. State the outcome, not the service.",
       group: "Copy"
@@ -190,6 +192,7 @@ const registration: SectionRegistration<Config> = {
       default:
         "Same-day emergency call-outs across the region. Fully qualified, £5M public liability, no call-out fee if we can't fix it.",
       priority: "text",
+      role: "subhead",
       aiPromptable: true,
       group: "Copy"
     },
@@ -199,6 +202,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 24 },
       default: "Call now",
       priority: "button",
+      role: "primary_action_label",
       group: "Buttons"
     },
     {
@@ -206,6 +210,7 @@ const registration: SectionRegistration<Config> = {
       label: "Main button link",
       type: { kind: "link", allowInternal: true, allowExternal: true },
       default: "#whatsapp",
+      role: "primary_action_href",
       description: 'Use "#whatsapp" for WhatsApp, "tel:0800…" for a phone.',
       group: "Buttons"
     },
@@ -215,6 +220,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 24 },
       default: "Get a quote",
       priority: "button",
+      role: "secondary_action_label",
       group: "Buttons"
     },
     {
@@ -222,6 +228,7 @@ const registration: SectionRegistration<Config> = {
       label: "Second button link",
       type: { kind: "link", allowInternal: true, allowExternal: true },
       default: "/quote",
+      role: "secondary_action_href",
       group: "Buttons"
     },
     {
@@ -237,6 +244,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 200 },
       default: "Fully insured, Gas Safe, 24/7 callout, No callout fee",
       priority: "text",
+      role: "trust_line",
       aiPromptable: true,
       description:
         "3-5 items. Comma-separated. Renders as a row of ticked credentials.",

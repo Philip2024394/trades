@@ -826,16 +826,16 @@ const registration: SectionRegistration<Config> = {
   description:
     "The signature trade hero: a giant animated tool (hammer swings, saw slides, wrench turns, drill bit spins, paintbrush sweeps) on the right, headline + CTAs on the left. Pure SVG + CSS.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real trade · Real tools · Real work", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade that gets it done.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real trade · Real tools · Real work", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade that gets it done.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "headingAccent", label: "Word in headline to accent", type: { kind: "text", maxLength: 40 }, default: "done", group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Tools in the van, plan in the head, boots on your driveway before the coffee's cold. That's the trade you booked.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
-    { key: "chip1", label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "12 years in trade", group: "Chips" },
-    { key: "chip2", label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "£5m public liability", group: "Chips" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Tools in the van, plan in the head, boots on your driveway before the coffee's cold. That's the trade you booked.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "chip1", role: "feature_line",label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "12 years in trade", group: "Chips" },
+    { key: "chip2", role: "feature_line",label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "£5m public liability", group: "Chips" },
     {
       key: "tool",
       label: "Tool animation",
@@ -867,7 +867,7 @@ const registration: SectionRegistration<Config> = {
       group: "Animation"
     },
     { key: "showParticles", label: "Show particles / sparks", type: { kind: "boolean" }, default: true, group: "Animation" },
-    { key: "surface", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Onyx" }, { value: "steel", label: "Brushed steel" }] }, default: "dark", group: "Layout" }
+    { key: "surface", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Onyx" }, { value: "steel", label: "Brushed steel" }] }, default: "dark", group: "Layout" }
   ],
   animations: ["swing", "slide", "rotate", "sweep", "spin"],
   aiPrompts: {

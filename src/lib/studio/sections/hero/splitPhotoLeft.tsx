@@ -66,7 +66,7 @@ function SplitPhotoLeftHero({
             <img
               src={config.imageUrl}
               alt={config.imageAlt || ""}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-contain"
               {...treeAttrs(instanceId, "imageUrl", "Photo", "image")}
             />
           ) : (
@@ -163,6 +163,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 40 },
       default: "Since 1998",
       priority: "text",
+      role: "eyebrow",
       group: "Copy"
     },
     {
@@ -171,6 +172,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 120, multiline: true },
       default: "The work speaks. The photos prove it.",
       priority: "text",
+      role: "headline",
       aiPromptable: true,
       group: "Copy"
     },
@@ -181,6 +183,7 @@ const registration: SectionRegistration<Config> = {
       default:
         "Domestic and commercial builds across the region. Every job photographed, referenced, and guaranteed for two years.",
       priority: "text",
+      role: "subhead",
       aiPromptable: true,
       group: "Copy"
     },
@@ -190,6 +193,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 24 },
       default: "See recent work",
       priority: "button",
+      role: "primary_action_label",
       group: "Buttons"
     },
     {
@@ -197,6 +201,7 @@ const registration: SectionRegistration<Config> = {
       label: "Button link",
       type: { kind: "link", allowInternal: true, allowExternal: true },
       default: "/portfolio",
+      role: "primary_action_href",
       description: 'Type "#whatsapp" to open WhatsApp instead.',
       group: "Buttons"
     },
@@ -204,8 +209,10 @@ const registration: SectionRegistration<Config> = {
       key: "imageUrl",
       label: "Photo",
       type: { kind: "image", aspectRatio: "4/3", recommendedWidthPx: 1200 },
-      default: "",
+      default:
+        "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_03_18%20PM.png",
       priority: "image",
+      role: "hero_media",
       description:
         "A landscape site or finished-job photo. Bright, single subject, no watermarks.",
       group: "Media"
@@ -232,6 +239,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 80 },
       default: "4.9 average · 380 verified reviews",
       priority: "text",
+      role: "trust_line",
       aiPromptable: true,
       group: "Trust"
     }
@@ -289,7 +297,8 @@ const registration: SectionRegistration<Config> = {
       "Domestic and commercial builds across the region. Every job photographed, referenced, and guaranteed for two years.",
     primaryCtaLabel: "See recent work",
     primaryCtaHref: "/portfolio",
-    imageUrl: "",
+    imageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_03_18%20PM.png",
     imageAlt: "Recent job",
     ratingText: "4.9 average · 380 verified reviews",
     showRating: true

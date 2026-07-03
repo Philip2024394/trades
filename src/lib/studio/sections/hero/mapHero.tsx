@@ -15,8 +15,10 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
+import { iframeEmit } from "@/lib/studio/bus";
 import type {
   SectionRegistration,
   SectionRendererProps
@@ -28,16 +30,10 @@ type Config = {
   subheading: string;
   primaryCtaLabel: string;
   primaryCtaHref: string;
-  yardCity: string;
-  ring1Label: string;
-  ring2Label: string;
-  ring3Label: string;
-  pin1: string;
-  pin2: string;
-  pin3: string;
-  pin4: string;
-  pin5: string;
-  pin6: string;
+  backgroundImageUrl: string;
+  locationLabel: string;
+  pingXPercent: number;
+  pingYPercent: number;
   chip1: string;
   chip2: string;
   chip3: string;
@@ -47,7 +43,8 @@ function MapHero({
   instanceId,
   config,
   tokens,
-  data
+  data,
+  mode
 }: SectionRendererProps<Config>) {
   const accent = (tokens["color.accent"] as string) ?? "#FFB300";
   const bg = "linear-gradient(180deg, #0A0A0A 0%, #141414 100%)";
@@ -61,30 +58,155 @@ function MapHero({
       ? data.whatsappHref
       : config.primaryCtaHref;
 
-  // Pin positions — spread evenly around the ring. Keep 6 slots so
-  // merchants can name up to 6 towns; empty slots are just skipped.
-  const pinPositions = [
-    { x: 250, y: 85, label: config.pin1 },
-    { x: 415, y: 155, label: config.pin2 },
-    { x: 440, y: 305, label: config.pin3 },
-    { x: 260, y: 385, label: config.pin4 },
-    { x: 90, y: 300, label: config.pin5 },
-    { x: 75, y: 155, label: config.pin6 }
-  ].filter((p) => p.label?.trim().length > 0);
-
   const chips = [config.chip1, config.chip2, config.chip3].filter(
     (c) => c && c.trim().length > 0
   );
 
+  // Clamp merchant-controlled ping coordinates to the visible area so a
+  // typo can't push the beacon off-canvas. The Studio bus stores field
+  // values as strings, so coerce to Number defensively before clamping.
+  const rawX = Number(config.pingXPercent);
+  const rawY = Number(config.pingYPercent);
+  const pingX = Math.max(0, Math.min(100, Number.isFinite(rawX) ? rawX : 82));
+  const pingY = Math.max(0, Math.min(100, Number.isFinite(rawY) ? rawY : 62));
+  const PING_RED = "#EF4444";
+  const isEditing = mode === "edit";
+
+  // Emit a text-edit patch through the Studio postMessage bus so parent
+  // Studio persists the new coordinate. Same commit path the toolbar
+  // number-stepper uses — merchant hits an arrow, the value moves, live
+  // preview + autosave both update.
+  function nudge(axis: "x" | "y", direction: -1 | 1) {
+    const current = axis === "x" ? pingX : pingY;
+    const next = Math.max(0, Math.min(100, current + direction));
+    iframeEmit.textEdit(
+      instanceId,
+      axis === "x" ? "pingXPercent" : "pingYPercent",
+      String(next)
+    );
+  }
+
   return (
     <section
       className="relative isolate w-full overflow-hidden"
-      style={{ background: bg, color: ink, fontFamily: bodyFont }}
+      style={{
+        background: config.backgroundImageUrl ? "#000000" : bg,
+        color: ink,
+        fontFamily: bodyFont,
+        minHeight: 520
+      }}
       {...sectionRootAttrs(instanceId, "hero.map_hero_1", "Coverage Map Hero")}
     >
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-16 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-14 lg:py-24">
-        {/* LEFT — copy */}
-        <div>
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background map", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
+      {/* Red satellite ping — merchant nudges pingXPercent /
+          pingYPercent from the Studio toolbar to move it up / down /
+          left / right over the map. */}
+      <div
+        className="pointer-events-none absolute z-10 flex -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-2"
+        style={{ left: `${pingX}%`, top: `${pingY}%` }}
+        {...treeAttrs(instanceId, "pingXPercent", "Ping position", "container")}
+      >
+        <span className="relative grid h-6 w-6 place-items-center">
+          <span
+            aria-hidden="true"
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: PING_RED,
+              opacity: 0.35,
+              animation: `map-ping-${instanceId} 2.4s ease-out infinite`
+            }}
+          />
+          <span
+            aria-hidden="true"
+            className="absolute inset-1 rounded-full"
+            style={{
+              background: PING_RED,
+              opacity: 0.55,
+              animation: `map-ping-${instanceId} 2.4s ease-out infinite`,
+              animationDelay: "0.6s"
+            }}
+          />
+          <span
+            className="relative h-2.5 w-2.5 rounded-full"
+            style={{
+              background: PING_RED,
+              boxShadow: `0 0 0 3px rgba(0,0,0,0.6), 0 0 18px ${PING_RED}`
+            }}
+          />
+        </span>
+        {config.locationLabel && (
+          <span
+            className="rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-widest text-white"
+            style={{
+              background: "rgba(0,0,0,0.65)",
+              backdropFilter: "blur(6px)",
+              WebkitBackdropFilter: "blur(6px)"
+            }}
+            {...treeAttrs(instanceId, "locationLabel", "Location label", "text")}
+          >
+            {config.locationLabel}
+          </span>
+        )}
+        {isEditing && (
+          <div
+            className="pointer-events-auto mt-1 grid grid-cols-3 gap-0.5 rounded-lg border p-1"
+            style={{
+              background: "rgba(0,0,0,0.78)",
+              borderColor: "rgba(255,255,255,0.18)",
+              backdropFilter: "blur(8px)",
+              WebkitBackdropFilter: "blur(8px)"
+            }}
+            aria-label="Nudge ping position"
+          >
+            <span />
+            <NudgeButton label="Up" onClick={() => nudge("y", -1)}>
+              <path d="m6 15 6-6 6 6" />
+            </NudgeButton>
+            <span />
+            <NudgeButton label="Left" onClick={() => nudge("x", -1)}>
+              <path d="m15 18-6-6 6-6" />
+            </NudgeButton>
+            <span
+              className="grid h-6 w-6 place-items-center rounded-md text-[9px] font-extrabold text-white/70"
+              aria-hidden="true"
+            >
+              {Math.round(pingX)},{Math.round(pingY)}
+            </span>
+            <NudgeButton label="Right" onClick={() => nudge("x", 1)}>
+              <path d="m9 18 6-6-6-6" />
+            </NudgeButton>
+            <span />
+            <NudgeButton label="Down" onClick={() => nudge("y", 1)}>
+              <path d="m6 9 6 6 6-6" />
+            </NudgeButton>
+            <span />
+          </div>
+        )}
+      </div>
+
+      {/* Left-anchored copy column sitting over the map */}
+      <div className="relative z-10 mx-auto max-w-6xl px-5 py-16 sm:px-6 sm:py-24">
+        <div className="max-w-xl">
           {config.eyebrow && (
             <p
               className="text-[11px] font-extrabold uppercase tracking-[0.28em]"
@@ -118,14 +240,16 @@ function MapHero({
                   key={i}
                   className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-extrabold uppercase tracking-wider"
                   style={{
-                    background: "rgba(255,255,255,0.04)",
+                    background: "rgba(0,0,0,0.4)",
                     borderColor: "rgba(255,255,255,0.14)",
-                    color: ink
+                    color: ink,
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)"
                   }}
                 >
                   <span
                     className="inline-block h-1.5 w-1.5 rounded-full"
-                    style={{ background: accent }}
+                    style={{ background: PING_RED }}
                     aria-hidden="true"
                   />
                   {c}
@@ -150,97 +274,58 @@ function MapHero({
             </svg>
           </Link>
         </div>
-
-        {/* RIGHT — abstract SVG map */}
-        <div className="relative">
-          <div
-            className="relative overflow-hidden rounded-2xl border"
-            style={{
-              borderColor: "rgba(255,255,255,0.1)",
-              background: "radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0A0A0A 80%)"
-            }}
-          >
-            <svg
-              viewBox="0 0 500 460"
-              className="block h-auto w-full"
-              aria-hidden="true"
-            >
-              {/* Ambient grid */}
-              <defs>
-                <pattern id={`grid-${instanceId}`} width="30" height="30" patternUnits="userSpaceOnUse">
-                  <path d="M 30 0 L 0 0 0 30" fill="none" stroke="rgba(255,255,255,0.03)" strokeWidth="1" />
-                </pattern>
-                <radialGradient id={`ring-glow-${instanceId}`} cx="0.5" cy="0.5" r="0.5">
-                  <stop offset="0%" stopColor={accent} stopOpacity="0.35" />
-                  <stop offset="100%" stopColor={accent} stopOpacity="0" />
-                </radialGradient>
-              </defs>
-              <rect width="500" height="460" fill={`url(#grid-${instanceId})`} />
-
-              {/* Rings — outer to inner */}
-              <circle cx="250" cy="230" r="220" fill="none" stroke={accent} strokeWidth="1" strokeDasharray="4 4" opacity="0.25" />
-              <circle cx="250" cy="230" r="150" fill="none" stroke={accent} strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
-              <circle cx="250" cy="230" r="80" fill="none" stroke={accent} strokeWidth="1.5" opacity="0.65" />
-
-              {/* Ring labels */}
-              <text x="250" y="35" fill={muted} fontSize="11" fontWeight="800" textAnchor="middle" letterSpacing="2">
-                {config.ring3Label.toUpperCase()}
-              </text>
-              <text x="250" y="90" fill={muted} fontSize="10" fontWeight="700" textAnchor="middle" letterSpacing="2">
-                {config.ring2Label.toUpperCase()}
-              </text>
-              <text x="250" y="150" fill={accent} fontSize="10" fontWeight="800" textAnchor="middle" letterSpacing="2">
-                {config.ring1Label.toUpperCase()}
-              </text>
-
-              {/* Central beacon glow */}
-              <circle cx="250" cy="230" r="60" fill={`url(#ring-glow-${instanceId})`} />
-              <circle cx="250" cy="230" r="10" fill={accent}>
-                <animate attributeName="r" values="10;16;10" dur="2.4s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="1;0.5;1" dur="2.4s" repeatCount="indefinite" />
-              </circle>
-              <circle cx="250" cy="230" r="5" fill="#FFFFFF" />
-
-              {/* Central label */}
-              <text
-                x="250"
-                y="260"
-                fill="#FFFFFF"
-                fontSize="12"
-                fontWeight="800"
-                textAnchor="middle"
-                letterSpacing="1.5"
-              >
-                {(config.yardCity ?? "").toUpperCase()}
-              </text>
-
-              {/* Pins */}
-              {pinPositions.map((p, i) => (
-                <g key={i}>
-                  <path
-                    d={`M ${p.x} ${p.y - 12} l -6 8 a 6 6 0 1 0 12 0 z`}
-                    fill={accent}
-                    stroke="#0A0A0A"
-                    strokeWidth="1.5"
-                  />
-                  <circle cx={p.x} cy={p.y - 6} r="2.5" fill="#0A0A0A" />
-                  <text
-                    x={p.x}
-                    y={p.y + 14}
-                    fill="#FFFFFF"
-                    fontSize="10"
-                    fontWeight="700"
-                    textAnchor="middle"
-                  >
-                    {p.label}
-                  </text>
-                </g>
-              ))}
-            </svg>
-          </div>
-        </div>
       </div>
+
+      <style>{`
+        @keyframes map-ping-${instanceId} {
+          0%   { transform: scale(1);   opacity: 0.55; }
+          70%  { transform: scale(3.6); opacity: 0;    }
+          100% { transform: scale(3.6); opacity: 0;    }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          @keyframes map-ping-${instanceId} {
+            from { transform: none; opacity: 0.4; }
+            to   { transform: none; opacity: 0.4; }
+          }
+        }
+      `}</style>
     </section>
+  );
+}
+
+// Small SVG arrow button used inside the in-editor nudge pad. Emits its
+// click to the parent from within a pointer-events:auto container so
+// the pad accepts clicks even though its wrapper is pointer-events:none.
+function NudgeButton({
+  label,
+  onClick,
+  children
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="grid h-6 w-6 place-items-center rounded-md text-white/90 transition hover:bg-white/10"
+    >
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        {children}
+      </svg>
+    </button>
   );
 }
 
@@ -252,24 +337,18 @@ const registration: SectionRegistration<Config> = {
   description:
     "Location-first hero with a pure-SVG coverage map (rings + pins + pulsing beacon). Answers 'do you cover me?' instantly. Zero external map API.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local, not national", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "We're on your patch.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "One yard, one crew, one radius. If you're inside our zone you get a quote back in minutes and a van at your door the same week.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Am I in your zone?", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "yardCity", label: "Your yard / base city", type: { kind: "text", maxLength: 30 }, default: "LEEDS", priority: "text", group: "Map" },
-    { key: "ring1Label", label: "Ring 1 label (innermost)", type: { kind: "text", maxLength: 30 }, default: "15 min · same-day", group: "Map" },
-    { key: "ring2Label", label: "Ring 2 label (middle)", type: { kind: "text", maxLength: 30 }, default: "30 min · next-day", group: "Map" },
-    { key: "ring3Label", label: "Ring 3 label (outer)", type: { kind: "text", maxLength: 30 }, default: "45 min · scheduled", group: "Map" },
-    { key: "pin1", label: "Pin 1 (top)", type: { kind: "text", maxLength: 20 }, default: "Harrogate", group: "Pins" },
-    { key: "pin2", label: "Pin 2 (top-right)", type: { kind: "text", maxLength: 20 }, default: "York", group: "Pins" },
-    { key: "pin3", label: "Pin 3 (bottom-right)", type: { kind: "text", maxLength: 20 }, default: "Selby", group: "Pins" },
-    { key: "pin4", label: "Pin 4 (bottom)", type: { kind: "text", maxLength: 20 }, default: "Wakefield", group: "Pins" },
-    { key: "pin5", label: "Pin 5 (bottom-left)", type: { kind: "text", maxLength: 20 }, default: "Huddersfield", group: "Pins" },
-    { key: "pin6", label: "Pin 6 (top-left)", type: { kind: "text", maxLength: 20 }, default: "Bradford", group: "Pins" },
-    { key: "chip1", label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "6 towns covered", group: "Chips" },
-    { key: "chip2", label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "45 mins max", group: "Chips" },
-    { key: "chip3", label: "Chip 3", type: { kind: "text", maxLength: 40 }, default: "No callout fee", group: "Chips" }
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local, not national", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "We're on your patch.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "One yard, one crew, one radius. If you're inside our zone you get a quote back in minutes and a van at your door the same week.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Am I in your zone?", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Map background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_43_45%20PM.png", group: "Map", description: "The map image behind the hero. Any country / region map works." },
+    { key: "locationLabel", role: "location_label",label: "Ping location label", type: { kind: "text", maxLength: 40 }, default: "London, UK", priority: "text", group: "Map", description: "The city or country the ping represents — free text, any country." },
+    { key: "pingXPercent", label: "Ping X (left-right)", type: { kind: "number", min: 0, max: 100, step: 1, unit: "%" }, default: 82, group: "Map", description: "0 = far left · 100 = far right. Use the on-canvas arrow pad or the stepper arrows to nudge the ping." },
+    { key: "pingYPercent", label: "Ping Y (up-down)", type: { kind: "number", min: 0, max: 100, step: 1, unit: "%" }, default: 62, group: "Map", description: "0 = top · 100 = bottom. Use the on-canvas arrow pad or the stepper arrows to nudge the ping." },
+    { key: "chip1", role: "feature_line",label: "Chip 1", type: { kind: "text", maxLength: 40 }, default: "6 towns covered", group: "Chips" },
+    { key: "chip2", role: "feature_line",label: "Chip 2", type: { kind: "text", maxLength: 40 }, default: "45 mins max", group: "Chips" },
+    { key: "chip3", role: "feature_line",label: "Chip 3", type: { kind: "text", maxLength: 40 }, default: "No callout fee", group: "Chips" }
   ],
   animations: ["none", "pulse", "fade-in"],
   aiPrompts: {
@@ -288,16 +367,11 @@ const registration: SectionRegistration<Config> = {
     subheading: "One yard, one crew, one radius. If you're inside our zone you get a quote back in minutes and a van at your door the same week.",
     primaryCtaLabel: "Am I in your zone?",
     primaryCtaHref: "#whatsapp",
-    yardCity: "LEEDS",
-    ring1Label: "15 min · same-day",
-    ring2Label: "30 min · next-day",
-    ring3Label: "45 min · scheduled",
-    pin1: "Harrogate",
-    pin2: "York",
-    pin3: "Selby",
-    pin4: "Wakefield",
-    pin5: "Huddersfield",
-    pin6: "Bradford",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_43_45%20PM.png",
+    locationLabel: "London, UK",
+    pingXPercent: 82,
+    pingYPercent: 62,
     chip1: "6 towns covered",
     chip2: "45 mins max",
     chip3: "No callout fee"

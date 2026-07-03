@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import type { StudioBrand, StudioMerchant } from "@/lib/studio/session";
 import { OfflineBanner } from "./OfflineBanner";
+import { StudioToaster } from "./Toaster";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -44,6 +45,18 @@ const NAV: NavItem[] = [
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
         <polyline points="14 2 14 8 20 8" />
+      </svg>
+    )
+  },
+  {
+    href: "/studio/sections",
+    label: "Sections",
+    group: "content",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="4" width="18" height="4" rx="1" />
+        <rect x="3" y="10" width="18" height="4" rx="1" />
+        <rect x="3" y="16" width="18" height="4" rx="1" />
       </svg>
     )
   },
@@ -81,6 +94,19 @@ const NAV: NavItem[] = [
         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
         <polyline points="21 15 16 10 5 21" />
+      </svg>
+    )
+  },
+  {
+    href: "/studio/presets",
+    label: "Presets",
+    group: "content",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="13.5" cy="6.5" r="2.5" />
+        <circle cx="17.5" cy="10.5" r="2.5" />
+        <circle cx="6.5" cy="10.5" r="2.5" />
+        <path d="M12 22a10 10 0 1 0 0-20" />
       </svg>
     )
   },
@@ -129,6 +155,7 @@ export function StudioShell({
   const groups: NavItem["group"][] = ["workspace", "content", "system"];
 
   return (
+    <StudioToaster>
     <div className="flex min-h-screen bg-neutral-50 text-neutral-900">
       {/* Sticky top banner surfaces offline / reconnect state above
           every Studio route. */}
@@ -289,6 +316,7 @@ export function StudioShell({
         </div>
       )}
     </div>
+    </StudioToaster>
   );
 }
 

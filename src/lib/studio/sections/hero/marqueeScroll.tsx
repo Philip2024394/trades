@@ -39,6 +39,8 @@ type Config = {
   row3SpeedSec: number;
   surface: "onyx" | "cream" | "brand";
   rowStyle: "solid" | "outline" | "mixed";
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function MarqueeScrollHero({
@@ -101,6 +103,20 @@ function MarqueeScrollHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.marquee_scroll_1", "Marquee Scroll Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-contain"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+
       {/* Row 1 — top edge, scrolls right→left */}
       <MarqueeRow
         uid={uid}
@@ -302,13 +318,13 @@ const registration: SectionRegistration<Config> = {
   description:
     "Editorial marquee. Three rows of massive typography scroll in alternating directions at independent speeds, with static copy anchored in the middle. Balenciaga aesthetic for trades.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Established · Insured · Reviewed", priority: "text", aiPromptable: true, group: "Middle band" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Trade craft. Since 2011.", priority: "text", aiPromptable: true, group: "Middle band" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Real work. Real prices. Real results. Every job photographed, every quote written down, every customer treated like the last.", priority: "text", aiPromptable: true, group: "Middle band" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Portfolio", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Established · Insured · Reviewed", priority: "text", aiPromptable: true, group: "Middle band" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Trade craft. Since 2011.", priority: "text", aiPromptable: true, group: "Middle band" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Real work. Real prices. Real results. Every job photographed, every quote written down, every customer treated like the last.", priority: "text", aiPromptable: true, group: "Middle band" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Portfolio", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
     { key: "row1Words", label: "Row 1 words (pipe-separated)", type: { kind: "text", maxLength: 300 }, default: "PLUMBING|HEATING|GAS|EMERGENCY|BOILER", priority: "text", group: "Row 1 (top)" },
     { key: "row1SpeedSec", label: "Row 1 speed (seconds per loop)", type: { kind: "number", min: 15, max: 90, step: 5 }, default: 45, group: "Row 1 (top)" },
     { key: "row2Words", label: "Row 2 words (pipe-separated)", type: { kind: "text", maxLength: 300 }, default: "TRUSTED|SINCE 2011|LEEDS|LOCAL|247", priority: "text", group: "Row 2 (middle)" },
@@ -317,7 +333,7 @@ const registration: SectionRegistration<Config> = {
     { key: "row3SpeedSec", label: "Row 3 speed (seconds per loop)", type: { kind: "number", min: 15, max: 90, step: 5 }, default: 55, group: "Row 3 (bottom)" },
     {
       key: "surface",
-      label: "Surface",
+      role: "surface_mode",label: "Surface",
       type: {
         kind: "select",
         options: [
@@ -342,7 +358,9 @@ const registration: SectionRegistration<Config> = {
       },
       default: "mixed",
       group: "Layout"
-    }
+    },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_14_02%20PM.png", group: "Background", description: "Sits behind the marquee rows and copy. Leave empty for the plain surface colour." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background", description: "1 = photo fully visible. Lower to fade toward the surface colour." }
   ],
   animations: ["marquee", "scroll-hover-pause"],
   aiPrompts: {
@@ -370,7 +388,10 @@ const registration: SectionRegistration<Config> = {
     row3Words: "GAS SAFE|REGISTERED|INSURED|GUARANTEED|REVIEWED",
     row3SpeedSec: 55,
     surface: "onyx",
-    rowStyle: "mixed"
+    rowStyle: "mixed",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_14_02%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: MarqueeScrollHero
 };

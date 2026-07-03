@@ -141,8 +141,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Three review cards side-by-side. Star rating, quote, name, role. Stacks on mobile. Add an aggregate line (\"4.9 · 380 reviews\") in the top-right for extra credibility.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What customers say", priority: "text", group: "Copy" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Not us — them.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What customers say", priority: "text", group: "Copy" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Not us — them.", priority: "text", aiPromptable: true, group: "Copy" },
     ...slotFields(1),
     ...slotFields(2),
     ...slotFields(3),

@@ -226,12 +226,12 @@ const registration: SectionRegistration<Config> = {
   description:
     "Trust-first hero for regulated trades. Renders up to 8 accreditation badges as embossed metallic emblems. Perfect for gas, electrical, structural, roofing.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Registered · Certified · Insured", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The credentials to back the work.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every accreditation on this wall is live, checkable and current. Ask us for the certificate — we send it before we come out.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "supportingCopy", label: "Supporting copy", type: { kind: "text", maxLength: 80 }, default: "Certificates available on request", priority: "text", group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Registered · Certified · Insured", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The credentials to back the work.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every accreditation on this wall is live, checkable and current. Ask us for the certificate — we send it before we come out.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "supportingCopy", role: "supporting_copy",label: "Supporting copy", type: { kind: "text", maxLength: 80 }, default: "Certificates available on request", priority: "text", group: "Copy" },
     { key: "badge1Name", label: "Badge 1 name", type: { kind: "text", maxLength: 40 }, default: "Gas Safe", group: "Badge 1" },
     { key: "badge1Tier", label: "Badge 1 tier", type: { kind: "text", maxLength: 40 }, default: "Registered", group: "Badge 1" },
     { key: "badge1Number", label: "Badge 1 number", type: { kind: "text", maxLength: 40 }, default: "127384", group: "Badge 1" },

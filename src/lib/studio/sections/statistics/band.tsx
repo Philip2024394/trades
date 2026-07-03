@@ -133,8 +133,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Four big numbers with short labels — years in business, jobs completed, star rating, areas covered. Dark surface by default; toggle for a light band that matches the surrounding sections.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker (optional)", type: { kind: "text", maxLength: 40 }, default: "By the numbers", priority: "text", group: "Header" },
-    { key: "heading", label: "Main headline (optional)", type: { kind: "text", maxLength: 120 }, default: "", priority: "text", aiPromptable: true, description: "Leave blank for a pure numbers band.", group: "Header" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker (optional)", type: { kind: "text", maxLength: 40 }, default: "By the numbers", priority: "text", group: "Header" },
+    { key: "heading", role: "headline",label: "Main headline (optional)", type: { kind: "text", maxLength: 120 }, default: "", priority: "text", aiPromptable: true, description: "Leave blank for a pure numbers band.", group: "Header" },
     ...statFields(1, "28", "Years in business"),
     ...statFields(2, "12,000+", "Jobs completed"),
     ...statFields(3, "4.9★", "Average rating"),

@@ -36,6 +36,8 @@ type Config = {
   credential2: string;
   credential3: string;
   surface: "dark" | "light";
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 // A very small, deterministic pseudo-QR renderer. This is NOT a real
@@ -127,6 +129,20 @@ function QrPosterHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.qr_poster_hero_1", "QR Poster Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-16 sm:px-6 lg:grid-cols-[1fr_1.1fr] lg:items-center lg:gap-14 lg:py-24">
         {/* LEFT — copy */}
         <div>
@@ -178,11 +194,10 @@ function QrPosterHero({
 
           <Link
             href={ctaHref || "#"}
-            className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-xl px-6 text-[13px] font-extrabold uppercase tracking-widest transition active:scale-[0.98]"
+            className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-xl px-6 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95 active:scale-[0.98]"
             style={{
-              background: accent,
-              color: "#0A0A0A",
-              boxShadow: `0 8px 24px ${accent}55`
+              background: "#25D366",
+              boxShadow: "0 8px 24px rgba(37,211,102,0.45)"
             }}
             {...treeAttrs(instanceId, "ctaLabel", "CTA label", "button")}
           >
@@ -259,18 +274,20 @@ const registration: SectionRegistration<Config> = {
   description:
     "Giant scannable QR code as the hero. Van-vinyl / business-card / yard-sign friendly. Scans straight into WhatsApp. Prints cleanly too.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Scan · WhatsApp · Quote", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Point your camera. Get a quote.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "The QR opens WhatsApp with our engineer's number pre-filled. Tap send and you're talking in seconds.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Scan · WhatsApp · Quote", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Point your camera. Get a quote.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "The QR opens WhatsApp with our engineer's number pre-filled. Tap send and you're talking in seconds.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "qrTargetUrl", label: "QR target URL (real QR replacement)", type: { kind: "text", maxLength: 500 }, default: "", group: "QR", description: "When populated, replace the pseudo-QR with a real QR image at build time." },
     { key: "qrCallout", label: "QR callout text", type: { kind: "text", maxLength: 40 }, default: "Scan to WhatsApp", group: "QR" },
     { key: "brandDomain", label: "Brand domain / short URL", type: { kind: "text", maxLength: 40 }, default: "xratedtrade.com/mike", priority: "text", group: "QR" },
-    { key: "ctaLabel", label: "Fallback CTA label", type: { kind: "text", maxLength: 30 }, default: "Or tap here to WhatsApp", priority: "button", aiPromptable: true, group: "CTA" },
-    { key: "ctaHref", label: "Fallback CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
+    { key: "ctaLabel", role: "primary_action_label",label: "Fallback CTA label", type: { kind: "text", maxLength: 30 }, default: "Or tap here to WhatsApp", priority: "button", aiPromptable: true, group: "CTA" },
+    { key: "ctaHref", role: "primary_action_href",label: "Fallback CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
     { key: "credential1", label: "Credential 1", type: { kind: "text", maxLength: 60 }, default: "Gas Safe #127384", group: "Credentials" },
     { key: "credential2", label: "Credential 2", type: { kind: "text", maxLength: 60 }, default: "£5m public liability insured", group: "Credentials" },
     { key: "credential3", label: "Credential 3", type: { kind: "text", maxLength: 60 }, default: "12 years serving Leeds & Wakefield", group: "Credentials" },
-    { key: "surface", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" }
+    { key: "surface", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_56_55%20AM.png?updatedAt=1783043872246", group: "Background", description: "Full-bleed photo behind the copy + QR. Leave empty for the plain surface colour." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background", description: "1 = photo fully visible. Lower to let the surface colour show through." }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -295,7 +312,10 @@ const registration: SectionRegistration<Config> = {
     credential1: "Gas Safe #127384",
     credential2: "£5m public liability insured",
     credential3: "12 years serving Leeds & Wakefield",
-    surface: "dark"
+    surface: "dark",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_56_55%20AM.png?updatedAt=1783043872246",
+    backgroundImageOpacity: 1
   }),
   renderer: QrPosterHero
 };

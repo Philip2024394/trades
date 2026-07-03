@@ -40,6 +40,8 @@ type Config = {
   msg4Merchant: string;
   msg4Time: string;
   onlineStatus: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 const WA_GREEN = "#25D366";
@@ -72,6 +74,30 @@ function ChatBubbleHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.chat_bubble_hero_1", "WhatsApp Chat Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-16 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-14 lg:py-24">
         {/* LEFT — copy column */}
         <div>
@@ -334,14 +360,14 @@ const registration: SectionRegistration<Config> = {
   description:
     "Show-don't-tell hero: renders a realistic WhatsApp conversation preview so customers see exactly what tapping the CTA produces.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real quotes. Real fast.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Message us. We reply in minutes.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "No phone calls, no forms, no email tag. One WhatsApp message and a real engineer replies with a quote — usually inside 20 minutes.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "ctaLabel", label: "CTA label", type: { kind: "text", maxLength: 30 }, default: "Message us on WhatsApp", priority: "button", aiPromptable: true, group: "CTA" },
-    { key: "ctaHref", label: "CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
-    { key: "supportingCopy", label: "Supporting copy", type: { kind: "text", maxLength: 80 }, default: "Avg reply: 12 minutes · Mon-Sat, 7am-9pm", priority: "text", group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real quotes. Real fast.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Message us. We reply in minutes.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "No phone calls, no forms, no email tag. One WhatsApp message and a real engineer replies with a quote — usually inside 20 minutes.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "ctaLabel", role: "primary_action_label",label: "CTA label", type: { kind: "text", maxLength: 30 }, default: "Message us on WhatsApp", priority: "button", aiPromptable: true, group: "CTA" },
+    { key: "ctaHref", role: "primary_action_href",label: "CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
+    { key: "supportingCopy", role: "supporting_copy",label: "Supporting copy", type: { kind: "text", maxLength: 80 }, default: "Avg reply: 12 minutes · Mon-Sat, 7am-9pm", priority: "text", group: "Copy" },
     { key: "customerName", label: "Customer name (mockup)", type: { kind: "text", maxLength: 40 }, default: "Sarah — Leeds", priority: "text", group: "Chat mockup" },
-    { key: "customerAvatarUrl", label: "Customer avatar URL", type: { kind: "image", aspectRatio: "1:1", recommendedWidthPx: 200 }, default: "", group: "Chat mockup" },
+    { key: "customerAvatarUrl", role: "avatar_media",label: "Customer avatar URL", type: { kind: "image", aspectRatio: "1:1", recommendedWidthPx: 200 }, default: "", group: "Chat mockup" },
     { key: "onlineStatus", label: "Online status", type: { kind: "text", maxLength: 40 }, default: "online now", group: "Chat mockup" },
     { key: "msg1Customer", label: "Message 1 (customer)", type: { kind: "text", maxLength: 200, multiline: true }, default: "Hi, my boiler's making a weird noise — can you take a look this week?", group: "Messages" },
     { key: "msg1Time", label: "Message 1 time", type: { kind: "text", maxLength: 10 }, default: "10:14", group: "Messages" },
@@ -350,7 +376,9 @@ const registration: SectionRegistration<Config> = {
     { key: "msg3Customer", label: "Message 3 (customer)", type: { kind: "text", maxLength: 200, multiline: true }, default: "Knocking. And it says F22.", group: "Messages" },
     { key: "msg3Time", label: "Message 3 time", type: { kind: "text", maxLength: 10 }, default: "10:19", group: "Messages" },
     { key: "msg4Merchant", label: "Message 4 (you)", type: { kind: "text", maxLength: 200, multiline: true }, default: "Sounds like the pump. £180 for the fix, in stock, I can be there tomorrow morning. Shall I book you in?", group: "Messages" },
-    { key: "msg4Time", label: "Message 4 time", type: { kind: "text", maxLength: 10 }, default: "10:23", group: "Messages" }
+    { key: "msg4Time", label: "Message 4 time", type: { kind: "text", maxLength: 10 }, default: "10:23", group: "Messages" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_25_35%20AM.png?updatedAt=1783045558515", group: "Background", description: "Full-bleed photo behind the copy + chat mockup. Leave empty for the plain dark gradient." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in", "type-in"],
   aiPrompts: {
@@ -380,7 +408,10 @@ const registration: SectionRegistration<Config> = {
     msg3Customer: "Knocking. And it says F22.",
     msg3Time: "10:19",
     msg4Merchant: "Sounds like the pump. £180 for the fix, in stock, I can be there tomorrow morning. Shall I book you in?",
-    msg4Time: "10:23"
+    msg4Time: "10:23",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_25_35%20AM.png?updatedAt=1783045558515",
+    backgroundImageOpacity: 1
   }),
   renderer: ChatBubbleHero
 };

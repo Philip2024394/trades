@@ -38,6 +38,8 @@ type Config = {
   mockCardPrice: string;
   mockCardBadge: string;
   mockCardImageUrl: string;
+  containerImageUrl: string;
+  containerImageOpacity: number;
   tiltIntensity: number;
   glareIntensity: number;
   surface: "onyx" | "midnight" | "steel";
@@ -166,6 +168,23 @@ function Tilt3dHero({
               `
             }}
           >
+            {/* Optional background image inside the tilt card. Sits
+                behind the glare and content so it inherits the 3D tilt
+                but never fights the copy for legibility. */}
+            {config.containerImageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={config.containerImageUrl}
+                alt=""
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 h-full w-full rounded-3xl object-contain"
+                style={{
+                  opacity: Math.max(0, Math.min(1, config.containerImageOpacity))
+                }}
+                {...treeAttrs(instanceId, "containerImageUrl", "Container photo", "image")}
+              />
+            )}
+
             {/* Glare overlay — bright reflection that follows cursor */}
             <div
               aria-hidden="true"
@@ -195,7 +214,18 @@ function Tilt3dHero({
                   className="mt-3 text-4xl font-extrabold leading-[0.95] sm:text-5xl lg:text-6xl"
                   style={{
                     fontFamily: headingFont,
-                    letterSpacing: "-0.03em"
+                    letterSpacing: "-0.03em",
+                    // Inverse-rotate the headline to cancel the parent
+                    // card's cursor-driven tilt. The rest of the card
+                    // still tilts + glares + parallaxes — only the
+                    // headline visually stays put so the reader isn't
+                    // chasing the words.
+                    transform: `rotateX(${-tilt.rx}deg) rotateY(${-tilt.ry}deg)`,
+                    transformOrigin: "center center",
+                    transition: tilt.active
+                      ? "transform 60ms linear"
+                      : "transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+                    willChange: "transform"
                   }}
                   {...treeAttrs(instanceId, "heading", "Headline", "text")}
                 >
@@ -269,7 +299,7 @@ function Tilt3dHero({
                       <img
                         src={config.mockCardImageUrl}
                         alt=""
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-contain"
                       />
                     ) : (
                       <PlaceholderIcon />
@@ -352,23 +382,25 @@ const registration: SectionRegistration<Config> = {
   description:
     "Apple / Stripe aesthetic. A big card containing copy + floating mock product tilts in 3D based on cursor position. Glare reflection follows the cursor across the surface.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Product-quality trade", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Every job. Product-perfect.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "The finish that shows in the light. The details that show in the manual. The care that shows in the reviews.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Portfolio", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Product-quality trade", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Every job. Product-perfect.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "The finish that shows in the light. The details that show in the manual. The care that shows in the reviews.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Portfolio", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
     { key: "mockCardTitle", label: "Mock card title", type: { kind: "text", maxLength: 60 }, default: "Bespoke Oak Kitchen", priority: "text", group: "Mock product" },
     { key: "mockCardCategory", label: "Mock card category", type: { kind: "text", maxLength: 40 }, default: "Recent installation", priority: "text", group: "Mock product" },
     { key: "mockCardPrice", label: "Mock card price", type: { kind: "text", maxLength: 30 }, default: "From £24,500", priority: "text", group: "Mock product" },
     { key: "mockCardBadge", label: "Mock card badge", type: { kind: "text", maxLength: 20 }, default: "Featured", group: "Mock product" },
-    { key: "mockCardImageUrl", label: "Mock card image URL", type: { kind: "image", aspectRatio: "3:2", recommendedWidthPx: 800 }, default: "", group: "Mock product" },
+    { key: "mockCardImageUrl", label: "Mock card image URL", type: { kind: "image", aspectRatio: "3:2", recommendedWidthPx: 800 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_10_31%20PM.png", group: "Mock product" },
+    { key: "containerImageUrl", label: "Container background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1600 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_09_05%20PM.png", group: "Container", description: "Sits inside the tilting card, behind the copy. Leave empty to use the plain surface colour." },
+    { key: "containerImageOpacity", label: "Container photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Container", description: "1 = photo fully visible. Lower to let the surface colour show through." },
     { key: "tiltIntensity", label: "Tilt intensity (degrees)", type: { kind: "number", min: 4, max: 24, step: 2, unit: "°" }, default: 12, group: "Interaction" },
     { key: "glareIntensity", label: "Glare intensity", type: { kind: "number", min: 0, max: 1, step: 0.1 }, default: 0.7, group: "Interaction" },
     {
       key: "surface",
-      label: "Surface",
+      role: "surface_mode",label: "Surface",
       type: {
         kind: "select",
         options: [
@@ -404,7 +436,11 @@ const registration: SectionRegistration<Config> = {
     mockCardCategory: "Recent installation",
     mockCardPrice: "From £24,500",
     mockCardBadge: "Featured",
-    mockCardImageUrl: "",
+    mockCardImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_10_31%20PM.png",
+    containerImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_09_05%20PM.png",
+    containerImageOpacity: 1,
     tiltIntensity: 12,
     glareIntensity: 0.7,
     surface: "onyx"

@@ -38,6 +38,8 @@ type Config = {
   primaryCtaLabel: string;
   primaryCtaHref: string;
   disclaimer: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function CompareHero({
@@ -73,10 +75,53 @@ function CompareHero({
   return (
     <section
       className="relative isolate w-full overflow-hidden"
-      style={{ background: bg, color: ink, fontFamily: bodyFont }}
+      style={{
+        // With a background image, let the photo dominate and paint a
+        // solid black behind it as a safety fallback. Without one, fall
+        // back to the original dark gradient so the layout still reads.
+        background: config.backgroundImageUrl ? "#000000" : bg,
+        color: ink,
+        fontFamily: bodyFont
+      }}
       {...sectionRootAttrs(instanceId, "hero.compare_hero_1", "Compare Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
       <div className="mx-auto max-w-5xl px-5 py-16 sm:px-6 sm:py-24">
+        {/* Frosted-glass content container — black tint + blur so the
+            copy and compare table read cleanly over any photo. */}
+        <div
+          className="rounded-3xl border p-6 sm:p-10"
+          style={{
+            background: "rgba(0,0,0,0.55)",
+            borderColor: "rgba(255,255,255,0.10)",
+            backdropFilter: "blur(20px) saturate(140%)",
+            WebkitBackdropFilter: "blur(20px) saturate(140%)",
+            boxShadow: "0 30px 80px rgba(0,0,0,0.45)"
+          }}
+        >
         {/* Header */}
         <div className="text-center">
           {config.eyebrow && (
@@ -125,13 +170,14 @@ function CompareHero({
             </span>
             <span
               className="text-center text-[11px] font-extrabold uppercase tracking-widest"
-              style={{ color: accent }}
+              style={{ color: "#FFB300" }}
               {...treeAttrs(instanceId, "usColumnLabel", "Us column label", "text")}
             >
               {config.usColumnLabel}
             </span>
             <span
-              className="text-center text-[11px] font-bold uppercase tracking-widest text-white/45"
+              className="text-center text-[11px] font-extrabold uppercase tracking-widest"
+              style={{ color: "#FFB300" }}
               {...treeAttrs(instanceId, "themColumnLabel", "Them column label", "text")}
             >
               {config.themColumnLabel}
@@ -209,6 +255,7 @@ function CompareHero({
             {config.disclaimer}
           </p>
         )}
+        </div>
       </div>
     </section>
   );
@@ -222,9 +269,9 @@ const registration: SectionRegistration<Config> = {
   description:
     "Side-by-side comparison hero for independent trades competing with corporate chains. Every row is a real customer pain point solved by using an independent.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "The independent difference", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Why customers leave the big names.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Same qualifications, better service, half the drama. Here's what changes when you switch to a local independent.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "The independent difference", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Why customers leave the big names.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Same qualifications, better service, half the drama. Here's what changes when you switch to a local independent.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "usColumnLabel", label: "Us column label", type: { kind: "text", maxLength: 30 }, default: "Us", priority: "text", group: "Table" },
     { key: "themColumnLabel", label: "Them column label", type: { kind: "text", maxLength: 30 }, default: "The chains", priority: "text", group: "Table" },
     { key: "row1", label: "Row 1", type: { kind: "text", maxLength: 80 }, default: "You get through to a real engineer, not a call centre", group: "Rows" },
@@ -233,9 +280,11 @@ const registration: SectionRegistration<Config> = {
     { key: "row4", label: "Row 4", type: { kind: "text", maxLength: 80 }, default: "No upsell to a service plan you don't need", group: "Rows" },
     { key: "row5", label: "Row 5", type: { kind: "text", maxLength: 80 }, default: "Photos of the job in your inbox, warts and all", group: "Rows" },
     { key: "row6", label: "Row 6", type: { kind: "text", maxLength: 80 }, default: "12-month written guarantee, not fine-print excuses", group: "Rows" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Switch to us", priority: "button", aiPromptable: true, group: "CTA" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
-    { key: "disclaimer", label: "Disclaimer", type: { kind: "text", maxLength: 200, multiline: true }, default: "Not affiliated with any named provider. Comparison based on published price lists + customer feedback.", priority: "text", group: "Legal" }
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Switch to us", priority: "button", aiPromptable: true, group: "CTA" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTA" },
+    { key: "disclaimer", role: "disclaimer",label: "Disclaimer", type: { kind: "text", maxLength: 200, multiline: true }, default: "Not affiliated with any named provider. Comparison based on published price lists + customer feedback.", priority: "text", group: "Legal" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_28_07%20PM.png", group: "Background", description: "Full-bleed photo behind the compare table. Leave empty for the plain dark gradient." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -262,7 +311,10 @@ const registration: SectionRegistration<Config> = {
     row6: "12-month written guarantee, not fine-print excuses",
     primaryCtaLabel: "Switch to us",
     primaryCtaHref: "#whatsapp",
-    disclaimer: "Not affiliated with any named provider. Comparison based on published price lists + customer feedback."
+    disclaimer: "Not affiliated with any named provider. Comparison based on published price lists + customer feedback.",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_28_07%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: CompareHero
 };

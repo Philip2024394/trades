@@ -68,7 +68,7 @@ function PlantHireBoldHero({
           src={config.backgroundImageUrl}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="absolute inset-0 -z-10 h-full w-full object-contain"
           {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
         />
       )}
@@ -130,7 +130,8 @@ function PlantHireBoldHero({
           {config.secondaryCtaLabel && (
             <Link
               href={secondaryHref || "#"}
-              className="inline-flex h-12 items-center rounded-xl border-2 border-white/40 bg-white/5 px-5 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:bg-white/10"
+              className="inline-flex h-12 items-center gap-2 rounded-xl px-5 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
+              style={{ background: "#25D366" }}
               tabIndex={isEditing ? -1 : undefined}
               {...treeAttrs(instanceId, "secondaryCtaLabel", "Second button", "button")}
             >
@@ -166,6 +167,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 40 },
       default: "Plant hire",
       priority: "text",
+      role: "eyebrow",
       description: "The uppercase line above the headline. Keep it short.",
       group: "Copy"
     },
@@ -175,6 +177,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 120, multiline: true },
       default: "Every Machine You Need. On Your Site.",
       priority: "text",
+      role: "headline",
       aiPromptable: true,
       description: "The largest text on the page. Under 8 words reads best.",
       group: "Copy"
@@ -186,6 +189,7 @@ const registration: SectionRegistration<Config> = {
       default:
         "0.8T micro digger to 14T excavator. CPA-standard machines, 24/7 breakdown line, delivered same day locally.",
       priority: "text",
+      role: "subhead",
       aiPromptable: true,
       group: "Copy"
     },
@@ -195,6 +199,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 24 },
       default: "See the fleet",
       priority: "button",
+      role: "primary_action_label",
       group: "Buttons"
     },
     {
@@ -202,9 +207,7 @@ const registration: SectionRegistration<Config> = {
       label: "Main button link",
       type: { kind: "link", allowInternal: true, allowExternal: true },
       default: "/plant-hire/machines",
-      // No priority — property of the primaryCtaLabel button, not its
-      // own DOM node. Editing this field happens inside the button's
-      // toolbar (Module 2).
+      role: "primary_action_href",
       description: 'Type "#whatsapp" to open WhatsApp instead of a link.',
       group: "Buttons"
     },
@@ -214,6 +217,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 24 },
       default: "WhatsApp quote",
       priority: "button",
+      role: "secondary_action_label",
       group: "Buttons"
     },
     {
@@ -221,6 +225,7 @@ const registration: SectionRegistration<Config> = {
       label: "Second button link",
       type: { kind: "link", allowInternal: true, allowExternal: true },
       default: "#whatsapp",
+      role: "secondary_action_href",
       group: "Buttons"
     },
     {
@@ -233,6 +238,7 @@ const registration: SectionRegistration<Config> = {
       },
       default: "",
       priority: "image",
+      role: "background_media",
       description:
         "A landscape site photo works best. Leave empty for a solid brand-colour hero.",
       group: "Media"
@@ -242,7 +248,7 @@ const registration: SectionRegistration<Config> = {
       label: "Photo darkness",
       type: { kind: "number", min: 0, max: 1, step: 0.05 },
       default: 0.55,
-      // No priority — a numeric knob on the image, not its own element.
+      role: "opacity",
       description:
         "Darken the photo so the white text stays readable. 0 = clear photo, 1 = fully dark.",
       group: "Media"
@@ -260,6 +266,7 @@ const registration: SectionRegistration<Config> = {
       type: { kind: "text", maxLength: 80 },
       default: "CPA-standard · 24/7 breakdown · Insured",
       priority: "text",
+      role: "trust_line",
       aiPromptable: true,
       group: "Trust"
     }
@@ -318,8 +325,9 @@ const registration: SectionRegistration<Config> = {
     primaryCtaHref: "/plant-hire/machines",
     secondaryCtaLabel: "WhatsApp quote",
     secondaryCtaHref: "#whatsapp",
-    backgroundImageUrl: "",
-    overlayOpacity: 0.55,
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2001_57_56%20PM.png",
+    overlayOpacity: 0,
     showTrustBadge: true,
     trustBadgeText: "CPA-standard · 24/7 breakdown · Insured"
   }),

@@ -34,6 +34,8 @@ type Config = {
   chipLabel: string;
   gradientIntensity: "subtle" | "medium" | "bold";
   darkOrLight: "dark" | "light";
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function AnimatedGradientHero({
@@ -86,6 +88,20 @@ function AnimatedGradientHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.animated_gradient_1", "Animated Gradient Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+
       {/* Gradient blobs — pure CSS, animated via keyframes */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div
@@ -256,16 +272,18 @@ const registration: SectionRegistration<Config> = {
     "Zero-image mesh-gradient hero. Slow-drifting colour blobs create depth without a single kilobyte of image data. Perfect for merchants without brand photography.",
   editableFields: [
     { key: "chipLabel", label: "Chip label", type: { kind: "text", maxLength: 60 }, default: "New in your area", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local · Insured · Reviewed", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade you'll actually recommend.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local · Insured · Reviewed", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "The trade you'll actually recommend.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "headingAccentWord", label: "Word in headline to accent", type: { kind: "text", maxLength: 40 }, default: "recommend", priority: "text", group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "Friendly, professional, on time. That's the boring bit — the reason customers text their family about us afterwards is we do the small stuff nobody notices until it's missing.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "Friendly, professional, on time. That's the boring bit — the reason customers text their family about us afterwards is we do the small stuff nobody notices until it's missing.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Get a quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
     { key: "gradientIntensity", label: "Gradient intensity", type: { kind: "select", options: [{ value: "subtle", label: "Subtle" }, { value: "medium", label: "Medium" }, { value: "bold", label: "Bold" }] }, default: "medium", group: "Layout" },
-    { key: "darkOrLight", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" }
+    { key: "darkOrLight", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_49_26%20AM.png?updatedAt=1783047003198", group: "Background", description: "Full-bleed photo behind the drifting gradient blobs. Leave empty for the plain surface + gradient only." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "gradient-drift"],
   aiPrompts: {
@@ -289,7 +307,10 @@ const registration: SectionRegistration<Config> = {
     secondaryCtaLabel: "See our work",
     secondaryCtaHref: "#projects",
     gradientIntensity: "medium",
-    darkOrLight: "dark"
+    darkOrLight: "dark",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2009_49_26%20AM.png?updatedAt=1783047003198",
+    backgroundImageOpacity: 1
   }),
   renderer: AnimatedGradientHero
 };

@@ -45,6 +45,8 @@ type Config = {
   product5Label: string;
   product6Image: string;
   product6Label: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function ProductShowroomHero({
@@ -86,6 +88,30 @@ function ProductShowroomHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.product_showroom_1", "Product Showroom Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 px-5 py-16 sm:px-6 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-14 lg:py-24">
         {/* LEFT — copy + CTAs + chips */}
         <div>
@@ -134,11 +160,10 @@ function ProductShowroomHero({
             {config.secondaryCtaLabel && (
               <Link
                 href={secondaryHref || "#"}
-                className="inline-flex h-14 items-center justify-center rounded-xl border px-6 text-[13px] font-extrabold uppercase tracking-widest transition hover:bg-neutral-50"
+                className="inline-flex h-14 items-center justify-center rounded-xl px-6 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
                 style={{
-                  borderColor: border,
-                  color: ink,
-                  background: "transparent"
+                  background: "#5C3A21",
+                  boxShadow: "0 8px 24px rgba(92,58,33,0.45)"
                 }}
                 {...treeAttrs(instanceId, "secondaryCtaLabel", "Secondary CTA", "button")}
               >
@@ -266,28 +291,30 @@ const registration: SectionRegistration<Config> = {
   description:
     "Storefront-first hero for building merchants, tool suppliers, materials yards. Product grid on the right, copy + trade-account CTA + delivery chip on the left.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Yard open · Monday to Saturday", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Everything you need to get on site.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Building materials, tools and consumables in stock. Same-day delivery inside our zone. Trade account holders get 30-day credit.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Open a trade account", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#trade-account", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Browse stock", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#shop", group: "CTAs" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Yard open · Monday to Saturday", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Everything you need to get on site.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Building materials, tools and consumables in stock. Same-day delivery inside our zone. Trade account holders get 30-day credit.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Open a trade account", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#trade-account", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "Browse stock", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#shop", group: "CTAs" },
     { key: "deliveryChip", label: "Delivery chip", type: { kind: "text", maxLength: 40 }, default: "Same-day within 15 miles", group: "Chips" },
     { key: "tradeAccountChip", label: "Trade account chip", type: { kind: "text", maxLength: 40 }, default: "30-day trade credit", group: "Chips" },
-    { key: "product1Image", label: "Product 1 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Product 1 (featured)" },
-    { key: "product1Label", label: "Product 1 label", type: { kind: "text", maxLength: 30 }, default: "Cement 25kg", group: "Product 1 (featured)" },
-    { key: "product1Badge", label: "Product 1 badge", type: { kind: "text", maxLength: 20 }, default: "New", group: "Product 1 (featured)" },
-    { key: "product2Image", label: "Product 2 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
-    { key: "product2Label", label: "Product 2 label", type: { kind: "text", maxLength: 30 }, default: "Plasterboard", group: "Products" },
-    { key: "product3Image", label: "Product 3 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
-    { key: "product3Label", label: "Product 3 label", type: { kind: "text", maxLength: 30 }, default: "Insulation", group: "Products" },
-    { key: "product4Image", label: "Product 4 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
-    { key: "product4Label", label: "Product 4 label", type: { kind: "text", maxLength: 30 }, default: "Timber", group: "Products" },
-    { key: "product5Image", label: "Product 5 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
-    { key: "product5Label", label: "Product 5 label", type: { kind: "text", maxLength: 30 }, default: "Tools", group: "Products" },
-    { key: "product6Image", label: "Product 6 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
-    { key: "product6Label", label: "Product 6 label", type: { kind: "text", maxLength: 30 }, default: "Fixings", group: "Products" }
+    { key: "product1Image", role: "hero_media",label: "Product 1 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Product 1 (featured)" },
+    { key: "product1Label", role: "product_name",label: "Product 1 label", type: { kind: "text", maxLength: 30 }, default: "Cement 25kg", group: "Product 1 (featured)" },
+    { key: "product1Badge", role: "product_badge",label: "Product 1 badge", type: { kind: "text", maxLength: 20 }, default: "New", group: "Product 1 (featured)" },
+    { key: "product2Image", role: "hero_media",label: "Product 2 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
+    { key: "product2Label", role: "product_name",label: "Product 2 label", type: { kind: "text", maxLength: 30 }, default: "Plasterboard", group: "Products" },
+    { key: "product3Image", role: "hero_media",label: "Product 3 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
+    { key: "product3Label", role: "product_name",label: "Product 3 label", type: { kind: "text", maxLength: 30 }, default: "Insulation", group: "Products" },
+    { key: "product4Image", role: "hero_media",label: "Product 4 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
+    { key: "product4Label", role: "product_name",label: "Product 4 label", type: { kind: "text", maxLength: 30 }, default: "Timber", group: "Products" },
+    { key: "product5Image", role: "hero_media",label: "Product 5 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
+    { key: "product5Label", role: "product_name",label: "Product 5 label", type: { kind: "text", maxLength: 30 }, default: "Tools", group: "Products" },
+    { key: "product6Image", role: "hero_media",label: "Product 6 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
+    { key: "product6Label", role: "product_name",label: "Product 6 label", type: { kind: "text", maxLength: 30 }, default: "Fixings", group: "Products" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%202,%202026,%2002_36_48%20PM.png?updatedAt=1782977828849", group: "Background", description: "Full-bleed photo behind the copy + product grid. Leave empty for the plain dark surface." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -322,7 +349,10 @@ const registration: SectionRegistration<Config> = {
     product5Image: "",
     product5Label: "Tools",
     product6Image: "",
-    product6Label: "Fixings"
+    product6Label: "Fixings",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%202,%202026,%2002_36_48%20PM.png?updatedAt=1782977828849",
+    backgroundImageOpacity: 1
   }),
   renderer: ProductShowroomHero
 };

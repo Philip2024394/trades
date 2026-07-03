@@ -25,6 +25,12 @@ export type AiTaskKind =
   | "page.score"
   | "page.improve"
   | "page.recommend"
+  // App-scoped
+  //   app.recommend: given a merchant's natural-language description,
+  //   return the top-N Apps from the registry that fit. Retrieval-first
+  //   — provider MUST only reference slugs from the corpus supplied
+  //   in payload.
+  | "app.recommend"
   // Copy tasks
   | "copy.rewrite"
   | "copy.translate"

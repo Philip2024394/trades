@@ -278,21 +278,21 @@ const registration: SectionRegistration<Config> = {
   description:
     "Editorial two-column hero anchored by a floating rating card and a strip of verified badges. Built for trades whose sale is trust.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Verified & insured", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 120 }, default: "The trade your neighbours already trust.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "127 five-star reviews, fully insured, Gas Safe registered. Same-day quotes over WhatsApp.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
-    { key: "ratingValue", label: "Star rating", type: { kind: "number", min: 0, max: 5, step: 0.1 }, default: 4.9, group: "Trust card" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Verified & insured", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 120 }, default: "The trade your neighbours already trust.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "127 five-star reviews, fully insured, Gas Safe registered. Same-day quotes over WhatsApp.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "ratingValue", role: "rating_value",label: "Star rating", type: { kind: "number", min: 0, max: 5, step: 0.1 }, default: 4.9, group: "Trust card" },
     { key: "ratingReviewCount", label: "Review count", type: { kind: "number", min: 0, max: 999999, step: 1 }, default: 127, group: "Trust card" },
     { key: "ratingLabel", label: "Rating eyebrow", type: { kind: "text", maxLength: 40 }, default: "Google + Xrated rating", group: "Trust card" },
     { key: "badge1", label: "Badge 1", type: { kind: "text", maxLength: 30 }, default: "Gas Safe", group: "Badges" },
     { key: "badge2", label: "Badge 2", type: { kind: "text", maxLength: 30 }, default: "NICEIC", group: "Badges" },
     { key: "badge3", label: "Badge 3", type: { kind: "text", maxLength: 30 }, default: "£5m insured", group: "Badges" },
     { key: "badge4", label: "Badge 4", type: { kind: "text", maxLength: 30 }, default: "TrustMark", group: "Badges" },
-    { key: "surface", label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" }
+    { key: "surface", role: "surface_mode",label: "Surface", type: { kind: "select", options: [{ value: "dark", label: "Dark" }, { value: "light", label: "Light" }] }, default: "dark", group: "Layout" }
   ],
   animations: ["none", "fade-in", "slide-up"],
   aiPrompts: {

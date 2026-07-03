@@ -139,8 +139,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Four-cell grid of icon-badged feature bullets — insurance, response time, guarantee, hours. Rings the merchant's trust bell.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Why hire us", priority: "text", group: "Copy" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Four things every job gets.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Why hire us", priority: "text", group: "Copy" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Four things every job gets.", priority: "text", aiPromptable: true, group: "Copy" },
     ...featureFields(1),
     ...featureFields(2),
     ...featureFields(3),

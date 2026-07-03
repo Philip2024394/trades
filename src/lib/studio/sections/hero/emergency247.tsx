@@ -240,9 +240,9 @@ const registration: SectionRegistration<Config> = {
   description:
     "Panic-mode-optimised hero for reactive trades. Massive Call Now button, pulsing response-time chip, urgency accent, coverage strip.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "24/7 emergency response", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Emergency? Call now.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "24-hour emergency callouts across your area. Real engineers on the phone, not a call centre.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "24/7 emergency response", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Emergency? Call now.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "24-hour emergency callouts across your area. Real engineers on the phone, not a call centre.", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "callPhoneNumber", label: "Phone number (E.164)", type: { kind: "text", maxLength: 20 }, default: "0800 000 000", priority: "text", group: "Call button" },
     { key: "callCtaLabel", label: "Call button label", type: { kind: "text", maxLength: 30 }, default: "Call now", priority: "button", group: "Call button" },
     { key: "whatsappCtaLabel", label: "WhatsApp CTA label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp instead", priority: "button", group: "WhatsApp" },

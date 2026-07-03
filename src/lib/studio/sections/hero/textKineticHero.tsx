@@ -51,6 +51,8 @@ type Config = {
   surface: "dark" | "cream" | "gradient";
   accentColorMode: "brand" | "hot-pink" | "electric-blue" | "acid-green";
   showScrollHint: boolean;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 const SPEED_MS: Record<Speed, number> = {
@@ -130,7 +132,21 @@ function TextKineticHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.text_kinetic_1", "Kinetic Typography Hero")}
     >
-      {/* Ambient accent glow */}
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-contain"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+
+      {/* Ambient accent glow — sits above the photo, below the copy */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
@@ -673,15 +689,15 @@ const registration: SectionRegistration<Config> = {
   description:
     "Text-animation-first hero. Six selectable kinetic-typography styles: roll-up, fall-down, wipe-reveal, blur-focus, word-rotate, typewriter. Zero JS, pure CSS.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local · Insured · Guaranteed", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Local · Insured · Guaranteed", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "headingPrefix", label: "Headline — prefix (static)", type: { kind: "text", maxLength: 60 }, default: "Your", priority: "text", aiPromptable: true, group: "Copy" },
     { key: "headingRotator", label: "Headline — rotator (pipe-separated)", type: { kind: "text", maxLength: 200 }, default: "plumber|electrician|carpenter|roofer|painter", priority: "text", group: "Copy", description: "Pipe-separated words that cycle in the middle of the headline. For non-rotate styles, only the first word is used." },
     { key: "headingSuffix", label: "Headline — suffix (static)", type: { kind: "text", maxLength: 60 }, default: "in Leeds.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "One number. One trade. Real work, real prices, quoted on WhatsApp before the kettle boils.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp quote", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 240, multiline: true }, default: "One number. One trade. Real work, real prices, quoted on WhatsApp before the kettle boils.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp quote", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See our work", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
     {
       key: "animationStyle",
       label: "Text animation",
@@ -716,7 +732,7 @@ const registration: SectionRegistration<Config> = {
     { key: "loop", label: "Loop animation forever", type: { kind: "boolean" }, default: false, group: "Animation", description: "When on: roll-up and word-rotate cycle continuously. Other styles play once then stay in final state." },
     {
       key: "surface",
-      label: "Surface",
+      role: "surface_mode",label: "Surface",
       type: {
         kind: "select",
         options: [
@@ -743,7 +759,9 @@ const registration: SectionRegistration<Config> = {
       default: "brand",
       group: "Layout"
     },
-    { key: "showScrollHint", label: "Show 'Scroll' hint at bottom", type: { kind: "boolean" }, default: true, group: "Layout" }
+    { key: "showScrollHint", label: "Show 'Scroll' hint at bottom", type: { kind: "boolean" }, default: true, group: "Layout" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_17_19%20PM.png", group: "Background", description: "Full-bleed photo behind the kinetic type. Leave empty for the plain surface colour." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background", description: "1 = photo fully visible. Lower to let the surface colour show through." }
   ],
   animations: ["roll-up", "fall-down", "wipe-reveal", "blur-focus", "word-rotate", "typewriter"],
   aiPrompts: {
@@ -771,7 +789,10 @@ const registration: SectionRegistration<Config> = {
     loop: false,
     surface: "dark",
     accentColorMode: "brand",
-    showScrollHint: true
+    showScrollHint: true,
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_17_19%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: TextKineticHero
 };

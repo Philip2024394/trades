@@ -215,8 +215,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Three pricing cards side-by-side, middle one optionally lifted as \"most popular\". Comma-separated features become tick lists. Best for trades that package callout tiers, service plans, or maintenance contracts.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Simple pricing", priority: "text", group: "Header" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Three ways to work with us.", priority: "text", aiPromptable: true, group: "Header" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Simple pricing", priority: "text", group: "Header" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Three ways to work with us.", priority: "text", aiPromptable: true, group: "Header" },
     ...tierFields(1, "Standard", "£75", "/ hour", "Non-emergency work, booked within 3-5 working days.", "Free quote, Free callout, 12-month workmanship guarantee", "Book standard", false),
     ...tierFields(2, "Urgent", "£120", "/ hour", "Same-day response across our catchment. First priority in the diary.", "Priority slot, Same-day arrival, 12-month workmanship guarantee, WhatsApp updates", "Request urgent", true),
     ...tierFields(3, "Emergency", "£175", "callout", "24/7 line. Out-of-hours + weekend rate. First hour + travel included.", "24/7 arrival, First hour + travel included, 24-month workmanship guarantee, Direct line", "Call now", false)

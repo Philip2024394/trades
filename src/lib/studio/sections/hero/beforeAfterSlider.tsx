@@ -34,6 +34,8 @@ type Config = {
   secondaryCtaHref: string;
   beforeImageUrl: string;
   afterImageUrl: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
   beforeLabel: string;
   afterLabel: string;
   jobDescription: string;
@@ -103,6 +105,30 @@ function BeforeAfterSliderHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.before_after_slider_1", "Before/After Slider Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+      {config.backgroundImageUrl && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.55) 100%)"
+          }}
+        />
+      )}
+
       <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-20">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-12">
           {/* LEFT — copy */}
@@ -175,36 +201,80 @@ function BeforeAfterSliderHero({
               onMouseDown={() => setDragging(true)}
               onTouchStart={() => setDragging(true)}
             >
-              {/* After (bottom layer) */}
-              {config.afterImageUrl ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={config.afterImageUrl}
-                  alt={config.afterLabel}
-                  className="absolute inset-0 h-full w-full object-cover"
-                  draggable={false}
-                />
-              ) : (
-                <PlaceholderTile label={config.afterLabel} tone="green" />
-              )}
+              {/* Composite mode: when the merchant supplies a SINGLE
+                  side-by-side image (before on the left half, after on
+                  the right half) as both URLs, we render each frame as
+                  a scaled 200%-wide background aligned to its half. */}
+              {(() => {
+                const composite =
+                  !!config.beforeImageUrl &&
+                  config.beforeImageUrl === config.afterImageUrl
+                    ? config.beforeImageUrl
+                    : null;
 
-              {/* Before (top layer, clipped to position) */}
-              <div
-                className="absolute inset-0 overflow-hidden"
-                style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
-              >
-                {config.beforeImageUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={config.beforeImageUrl}
-                    alt={config.beforeLabel}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    draggable={false}
-                  />
-                ) : (
-                  <PlaceholderTile label={config.beforeLabel} tone="grey" />
-                )}
-              </div>
+                return (
+                  <>
+                    {/* After (bottom layer) */}
+                    {composite ? (
+                      <div
+                        aria-label={config.afterLabel}
+                        role="img"
+                        className="absolute inset-0"
+                        style={{
+                          backgroundImage: `url(${composite})`,
+                          backgroundSize: "200% 100%",
+                          backgroundPosition: "100% 50%",
+                          backgroundRepeat: "no-repeat"
+                        }}
+                        {...treeAttrs(instanceId, "afterImageUrl", "After photo", "image")}
+                      />
+                    ) : config.afterImageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={config.afterImageUrl}
+                        alt={config.afterLabel}
+                        className="absolute inset-0 h-full w-full object-cover"
+                        draggable={false}
+                        {...treeAttrs(instanceId, "afterImageUrl", "After photo", "image")}
+                      />
+                    ) : (
+                      <PlaceholderTile label={config.afterLabel} tone="green" />
+                    )}
+
+                    {/* Before (top layer, clipped to position) */}
+                    <div
+                      className="absolute inset-0 overflow-hidden"
+                      style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
+                    >
+                      {composite ? (
+                        <div
+                          aria-label={config.beforeLabel}
+                          role="img"
+                          className="absolute inset-0"
+                          style={{
+                            backgroundImage: `url(${composite})`,
+                            backgroundSize: "200% 100%",
+                            backgroundPosition: "0% 50%",
+                            backgroundRepeat: "no-repeat"
+                          }}
+                          {...treeAttrs(instanceId, "beforeImageUrl", "Before photo", "image")}
+                        />
+                      ) : config.beforeImageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={config.beforeImageUrl}
+                          alt={config.beforeLabel}
+                          className="absolute inset-0 h-full w-full object-cover"
+                          draggable={false}
+                          {...treeAttrs(instanceId, "beforeImageUrl", "Before photo", "image")}
+                        />
+                      ) : (
+                        <PlaceholderTile label={config.beforeLabel} tone="grey" />
+                      )}
+                    </div>
+                  </>
+                );
+              })()}
 
               {/* Labels */}
               <span
@@ -310,18 +380,20 @@ const registration: SectionRegistration<Config> = {
   description:
     "Interactive draggable slider revealing before/after photos of real work. Zero words needed. Perfect for painters, roofers, cleaners, restorers, tilers.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real work · Real transformations", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Drag. See the difference.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every job photographed before we start and after we finish. Same care, same finish, every time.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Start your project", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See more work", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
-    { key: "beforeImageUrl", label: "Before image URL", type: { kind: "image", aspectRatio: "4:3", recommendedWidthPx: 1200 }, default: "", group: "Photos" },
-    { key: "afterImageUrl", label: "After image URL", type: { kind: "image", aspectRatio: "4:3", recommendedWidthPx: 1200 }, default: "", group: "Photos" },
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Real work · Real transformations", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Drag. See the difference.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every job photographed before we start and after we finish. Same care, same finish, every time.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Start your project", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "See more work", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "beforeImageUrl", label: "Before image URL", type: { kind: "image", aspectRatio: "4:3", recommendedWidthPx: 1200 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_00_28%20PM.png", group: "Photos", description: "If this and 'After image URL' point to the same URL, the slider treats it as a composite: left half = Before, right half = After." },
+    { key: "afterImageUrl", label: "After image URL", type: { kind: "image", aspectRatio: "4:3", recommendedWidthPx: 1200 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_00_28%20PM.png", group: "Photos", description: "Point to a separate After photo for two-image mode, or match Before URL for composite mode." },
     { key: "beforeLabel", label: "Before label", type: { kind: "text", maxLength: 20 }, default: "Before", group: "Labels" },
     { key: "afterLabel", label: "After label", type: { kind: "text", maxLength: 20 }, default: "After", group: "Labels" },
-    { key: "jobDescription", label: "Job caption", type: { kind: "text", maxLength: 120 }, default: "Victorian terraced house · Full external repaint · 5-day job", priority: "text", group: "Caption" }
+    { key: "jobDescription", label: "Job caption", type: { kind: "text", maxLength: 120 }, default: "Victorian terraced house · Full external repaint · 5-day job", priority: "text", group: "Caption" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_58_48%20PM.png", group: "Background", description: "Full-bleed photo behind the whole hero. Leave empty for the plain dark gradient." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -342,11 +414,16 @@ const registration: SectionRegistration<Config> = {
     primaryCtaHref: "#whatsapp",
     secondaryCtaLabel: "See more work",
     secondaryCtaHref: "#projects",
-    beforeImageUrl: "",
-    afterImageUrl: "",
+    beforeImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_00_28%20PM.png",
+    afterImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_00_28%20PM.png",
     beforeLabel: "Before",
     afterLabel: "After",
-    jobDescription: "Victorian terraced house · Full external repaint · 5-day job"
+    jobDescription: "Victorian terraced house · Full external repaint · 5-day job",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_58_48%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: BeforeAfterSliderHero
 };

@@ -78,6 +78,7 @@ const TOOLS_BY_PRIORITY: Record<Priority, Tool[]> = {
 
 const SECTION_TOOLS: Tool[] = [
   { id: "replace-layout", label: "Replace", icon: "⇄" },
+  { id: "smart-swap", label: "Smart swap", icon: "↹" },
   { id: "ai-improve", label: "AI", icon: "✦" },
   { id: "background", label: "BG", icon: "▨" },
   { id: "duplicate", label: "Copy", icon: "⧉" },

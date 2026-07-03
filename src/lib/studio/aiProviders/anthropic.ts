@@ -30,6 +30,7 @@ const SUPPORTED_TASKS: AiTaskKind[] = [
   "page.score",
   "page.improve",
   "page.recommend",
+  "app.recommend",
   "copy.rewrite",
   "copy.translate",
   "design.suggestPalette",
@@ -53,6 +54,23 @@ STYLE:
 
 Return the raw JSON object with no wrapping.`;
 
+// Retrieval-only system prompt for the App Store recommender. The
+// merchant asks for something in plain English; we match against a
+// finite corpus of installed Apps. Hallucinating a slug that isn't in
+// the corpus is a critical failure — the API layer will reject it.
+const APP_RECOMMEND_SYSTEM_PROMPT = `You are a Studio App Store recommender for UK trades.
+
+Given a merchant's description of what they want to build, pick the Apps from the CORPUS that best fit. The corpus is finite — you can ONLY reference slugs that appear in it. Do not invent Apps. Do not suggest categories that aren't represented.
+
+STRICT OUTPUT RULES:
+- Return ONLY a JSON object — no markdown, no code fences, no prose
+- Shape: { "matches": [ { "slug": "<from-corpus>", "confidence": 0.0-1.0, "reasoning": "<one plain sentence explaining the fit>" } ] }
+- Return up to 3 matches, ordered best-first
+- If nothing in the corpus fits, return { "matches": [] } — never invent
+- Reasoning must be trade-plain: short, concrete, no marketing fluff
+
+Return the raw JSON object with no wrapping.`;
+
 /** Extract the first JSON object from a text blob. Handles the case
  *  where the model leaks a preamble ("Here's the patch:") or wraps in
  *  code fences. */
@@ -71,6 +89,7 @@ function extractJson(text: string): unknown | null {
 }
 
 function buildPrompt(req: AiCompleteRequest): string {
+  if (req.task === "app.recommend") return buildAppRecommendPrompt(req);
   const payload = req.context.payload ?? {};
   const promptTemplate =
     (payload.promptTemplate as string | undefined) ??
@@ -91,6 +110,23 @@ Editable fields (only these can be changed):
 ${JSON.stringify(aiPromptable, null, 2)}
 
 Return a JSON object with only the fields you're changing.`;
+}
+
+function buildAppRecommendPrompt(req: AiCompleteRequest): string {
+  const payload = req.context.payload ?? {};
+  const description = (payload.description as string | undefined) ?? "";
+  const corpus =
+    (payload.corpus as
+      | { slug: string; name: string; tagline: string; category: string; tags: string[]; description?: string }[]
+      | undefined) ?? [];
+
+  return `Merchant description:
+${description || "(no description provided)"}
+
+Corpus of installable Apps (only recommend slugs from this list):
+${JSON.stringify(corpus, null, 2)}
+
+Return the top 3 best-fit Apps as { "matches": [...] }. If nothing fits, return { "matches": [] }.`;
 }
 
 export const anthropicProvider: AiProvider = {
@@ -128,7 +164,10 @@ export const anthropicProvider: AiProvider = {
         body: JSON.stringify({
           model: MODEL,
           max_tokens: MAX_TOKENS,
-          system: SYSTEM_PROMPT,
+          system:
+            req.task === "app.recommend"
+              ? APP_RECOMMEND_SYSTEM_PROMPT
+              : SYSTEM_PROMPT,
           messages: [{ role: "user", content: buildPrompt(req) }]
         })
       });

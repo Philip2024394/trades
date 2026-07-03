@@ -179,8 +179,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Vertical menu of 5 services. Icon glyph + name + short description + from-price on the right, whole row is a link. Distinct from a product grid — best for service-heavy trades (plumbing, electrical, HVAC, boiler repair).",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What we do", priority: "text", group: "Header" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Five services, one number.", priority: "text", aiPromptable: true, group: "Header" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What we do", priority: "text", group: "Header" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Five services, one number.", priority: "text", aiPromptable: true, group: "Header" },
     ...serviceFields(1, "🔧", "Boiler installation", "Combi, system or heat-only. Fully certified, 10-year warranty.", "From £2,400"),
     ...serviceFields(2, "🚨", "Emergency callout", "Same-day response across the region, 24/7.", "£75 / hour"),
     ...serviceFields(3, "🔥", "Annual service", "Landlord CP12, homeowner service, boiler health check.", "£95"),

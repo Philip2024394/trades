@@ -99,8 +99,9 @@ export function defaultLayoutForPage(pageId: string): StudioLayoutJson {
             primaryCtaHref: "/plant-hire/machines",
             secondaryCtaLabel: "WhatsApp quote",
             secondaryCtaHref: "#whatsapp",
-            backgroundImageUrl: "",
-            overlayOpacity: 0.55,
+            backgroundImageUrl:
+              "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2001_57_56%20PM.png",
+            overlayOpacity: 0,
             showTrustBadge: true,
             trustBadgeText: "CPA-standard · 24/7 breakdown · Insured"
           }

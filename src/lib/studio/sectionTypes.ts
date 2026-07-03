@@ -75,6 +75,69 @@ export type SelectionPriority =
   | "card"
   | "container";
 
+/** Semantic role — the MEANING of a field, independent of the field
+ *  type or the section it lives in. Powers the Universal Smart Section
+ *  Engine (variant/category swap that preserves merchant content).
+ *
+ *  Rule: two fields with the same role carry the same meaning even if
+ *  their `key` differs. Swap engine matches by role first, key second,
+ *  so a Hero A `heading` (role: "headline") carries into Hero B
+ *  `mainTitle` (role: "headline") without merchant intervention.
+ *
+ *  Adding a role is a schema change — coordinate with the swap engine
+ *  in `smartSwap.ts` so orphan detection stays accurate. */
+export type SemanticRole =
+  // ─── Copy ────────────────────────────────────
+  | "eyebrow"
+  | "headline"
+  | "subhead"
+  | "body"
+  | "supporting_copy"
+  | "quote"
+  | "quote_author"
+  | "question"
+  | "answer"
+  | "step_title"
+  | "step_body"
+  | "list_item"
+  | "caption"
+  | "location_label"
+  | "disclaimer"
+  // ─── Actions ─────────────────────────────────
+  | "primary_action_label"
+  | "primary_action_href"
+  | "secondary_action_label"
+  | "secondary_action_href"
+  // ─── Commerce ────────────────────────────────
+  | "price_value"
+  | "price_currency"
+  | "price_period"
+  | "product_name"
+  | "product_badge"
+  | "feature_line"
+  | "discount_label"
+  // ─── Media ───────────────────────────────────
+  | "background_media"
+  | "hero_media"
+  | "gallery_media"
+  | "logo_media"
+  | "avatar_media"
+  | "video_url"
+  | "video_poster"
+  // ─── Data / social proof ─────────────────────
+  | "stat_value"
+  | "stat_unit"
+  | "stat_label"
+  | "rating_value"
+  | "rating_count"
+  | "trust_line"
+  // ─── Meta ────────────────────────────────────
+  | "surface_mode"
+  | "layout_variant"
+  | "opacity"
+  | "position_x"
+  | "position_y";
+
 export type EditableField = {
   /** Key inside the section's `config` object. */
   key: string;
@@ -89,6 +152,11 @@ export type EditableField = {
    *  click. Leave undefined for URL / number / boolean fields whose
    *  value is used but not directly rendered. */
   priority?: SelectionPriority;
+  /** Semantic role — the MEANING of this field, independent of key
+   *  or type. See SemanticRole above. Powers the Universal Smart
+   *  Section Engine: swapping a section preserves the value of every
+   *  field whose role matches on the target. */
+  role?: SemanticRole;
   /** Whether AI is allowed to rewrite / regenerate this field.
    *  Prevents the AI Assistant from touching structural fields. */
   aiPromptable?: boolean;

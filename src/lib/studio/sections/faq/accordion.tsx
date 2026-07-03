@@ -138,8 +138,8 @@ const registration: SectionRegistration<Config> = {
   description:
     "Expandable Q&A list — 6 fixed rows, native <details> so no JavaScript loads. Merchants who leave later rows blank get only the populated ones. Best just above a CTA or footer to catch last-minute hesitations.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Frequently asked", priority: "text", group: "Header" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "The stuff we get asked most.", priority: "text", aiPromptable: true, group: "Header" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Frequently asked", priority: "text", group: "Header" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "The stuff we get asked most.", priority: "text", aiPromptable: true, group: "Header" },
     ...qaFields(1, "Are you insured?", "£5M public liability + £10M employer's liability. Certificates on request before any work starts."),
     ...qaFields(2, "How quickly can you come out?", "Same day for emergencies across our catchment. 3-5 working days for planned work — sooner if we've been in touch."),
     ...qaFields(3, "Do you charge a callout fee?", "No. Free quote, free callout. You only pay if we do the work and you're happy with it."),

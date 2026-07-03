@@ -38,6 +38,8 @@ type Config = {
   photo6: string;
   overlayOpacity: number;
   projectCountLabel: string;
+  backgroundImageUrl: string;
+  backgroundImageOpacity: number;
 };
 
 function PortfolioMosaicHero({
@@ -80,6 +82,20 @@ function PortfolioMosaicHero({
       }}
       {...sectionRootAttrs(instanceId, "hero.portfolio_mosaic_1", "Portfolio Mosaic Hero")}
     >
+      {config.backgroundImageUrl && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={config.backgroundImageUrl}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
+          style={{
+            opacity: Math.max(0, Math.min(1, config.backgroundImageOpacity ?? 1))
+          }}
+          {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
+        />
+      )}
+
       {/* Photo mosaic — CSS grid so gaps are consistent and any photo
           missing collapses gracefully. */}
       {photos.length > 0 && (
@@ -191,21 +207,23 @@ const registration: SectionRegistration<Config> = {
   description:
     "6-photo mosaic background with centred copy. Built for visual trades whose portfolio is the pitch — builders, kitchen fitters, landscape designers, tilers.",
   editableFields: [
-    { key: "eyebrow", label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Recent work", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "heading", label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Work that speaks for itself.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every project photographed. Every job signed off in writing. Every homeowner gets the same care.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Start your project", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
-    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "View all projects", priority: "button", aiPromptable: true, group: "CTAs" },
-    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
-    { key: "photo1", label: "Photo 1", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "photo2", label: "Photo 2", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "photo3", label: "Photo 3", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "photo4", label: "Photo 4", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "photo5", label: "Photo 5", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "photo6", label: "Photo 6", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
-    { key: "overlayOpacity", label: "Overlay darkness", type: { kind: "number", min: 0.3, max: 0.9, step: 0.05 }, default: 0.6, group: "Layout" },
-    { key: "projectCountLabel", label: "Project count line", type: { kind: "text", maxLength: 80 }, default: "218 projects completed · 2011 – today", priority: "text", group: "Copy" }
+    { key: "eyebrow", role: "eyebrow",label: "Eyebrow", type: { kind: "text", maxLength: 60 }, default: "Recent work", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "heading", role: "headline",label: "Headline", type: { kind: "text", maxLength: 100 }, default: "Work that speaks for itself.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "Every project photographed. Every job signed off in writing. Every homeowner gets the same care.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Primary CTA label", type: { kind: "text", maxLength: 30 }, default: "Start your project", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Primary CTA link", type: { kind: "link" }, default: "#whatsapp", group: "CTAs" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Secondary CTA label", type: { kind: "text", maxLength: 30 }, default: "View all projects", priority: "button", aiPromptable: true, group: "CTAs" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Secondary CTA link", type: { kind: "link" }, default: "#projects", group: "CTAs" },
+    { key: "photo1", role: "gallery_media",label: "Photo 1", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "photo2", role: "gallery_media",label: "Photo 2", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "photo3", role: "gallery_media",label: "Photo 3", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "photo4", role: "gallery_media",label: "Photo 4", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "photo5", role: "gallery_media",label: "Photo 5", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "photo6", role: "gallery_media",label: "Photo 6", type: { kind: "image", aspectRatio: "4:3" }, default: "", group: "Photos" },
+    { key: "overlayOpacity", role: "opacity",label: "Overlay darkness", type: { kind: "number", min: 0.3, max: 0.9, step: 0.05 }, default: 0.6, group: "Layout" },
+    { key: "projectCountLabel", role: "trust_line",label: "Project count line", type: { kind: "text", maxLength: 80 }, default: "218 projects completed · 2011 – today", priority: "text", group: "Copy" },
+    { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_27_08%20PM.png", group: "Background", description: "Full-bleed photo behind the mosaic + overlay. Fills the whole hero when Photos 1-6 aren't set." },
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
   ],
   animations: ["none", "fade-in", "parallax"],
   aiPrompts: {
@@ -233,7 +251,10 @@ const registration: SectionRegistration<Config> = {
     photo5: "",
     photo6: "",
     overlayOpacity: 0.6,
-    projectCountLabel: "218 projects completed · 2011 – today"
+    projectCountLabel: "218 projects completed · 2011 – today",
+    backgroundImageUrl:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2003_27_08%20PM.png",
+    backgroundImageOpacity: 1
   }),
   renderer: PortfolioMosaicHero
 };

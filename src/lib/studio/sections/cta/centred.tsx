@@ -132,13 +132,13 @@ const registration: SectionRegistration<Config> = {
   description:
     "One purpose, one action. Small kicker, big headline, sub-line, main button, optional second button. Best near the bottom of a page or between two long sections.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Ready when you are", priority: "text", group: "Copy" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120, multiline: true }, default: "Get a quote today.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Supporting line", type: { kind: "text", maxLength: 220, multiline: true }, default: "We reply on WhatsApp within one working hour, Monday to Saturday.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "primaryCtaLabel", label: "Main button text", type: { kind: "text", maxLength: 24 }, default: "WhatsApp now", priority: "button", group: "Buttons" },
-    { key: "primaryCtaHref", label: "Main button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "#whatsapp", description: 'Type "#whatsapp" for WhatsApp, "tel:0800…" for a phone.', group: "Buttons" },
-    { key: "secondaryCtaLabel", label: "Second button text", type: { kind: "text", maxLength: 24 }, default: "See recent work", priority: "button", group: "Buttons" },
-    { key: "secondaryCtaHref", label: "Second button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "/portfolio", group: "Buttons" },
+    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Ready when you are", priority: "text", group: "Copy" },
+    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120, multiline: true }, default: "Get a quote today.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "subheading", role: "subhead",label: "Supporting line", type: { kind: "text", maxLength: 220, multiline: true }, default: "We reply on WhatsApp within one working hour, Monday to Saturday.", priority: "text", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", role: "primary_action_label",label: "Main button text", type: { kind: "text", maxLength: 24 }, default: "WhatsApp now", priority: "button", group: "Buttons" },
+    { key: "primaryCtaHref", role: "primary_action_href",label: "Main button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "#whatsapp", description: 'Type "#whatsapp" for WhatsApp, "tel:0800…" for a phone.', group: "Buttons" },
+    { key: "secondaryCtaLabel", role: "secondary_action_label",label: "Second button text", type: { kind: "text", maxLength: 24 }, default: "See recent work", priority: "button", group: "Buttons" },
+    { key: "secondaryCtaHref", role: "secondary_action_href",label: "Second button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "/portfolio", group: "Buttons" },
     { key: "showTrustLine", label: "Show trust line", type: { kind: "boolean" }, default: true, group: "Trust" },
     { key: "trustLine", label: "Trust line copy", type: { kind: "text", maxLength: 80 }, default: "Fully insured · CPA-standard · No callout fee", priority: "text", aiPromptable: true, group: "Trust" }
   ],

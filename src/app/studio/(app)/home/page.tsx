@@ -4,6 +4,7 @@
 
 import Link from "next/link";
 import { loadStudioSession } from "@/lib/studio/session";
+import { StudioHomeAiEntry } from "@/components/studio/StudioHomeAiEntry";
 
 const YELLOW = "#FFB300";
 
@@ -37,6 +38,13 @@ export default async function StudioHomePage() {
           maintenance-oriented quick actions. */}
       <div className="mt-8">
         <AddAppCard />
+      </div>
+
+      {/* AI recommender — for merchants who know what they want but
+          don't know which App matches. Retrieval-first: matches only
+          come from the live App Registry. */}
+      <div className="mt-4">
+        <StudioHomeAiEntry />
       </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
