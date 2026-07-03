@@ -33,6 +33,9 @@ import "./hero/videoBackground";
 import "./hero/magazineEditorial";
 import "./hero/compareHero";
 import "./hero/qrPosterHero";
+// Signature trade hero — animated tools (hammer swings, saw slides,
+// wrench turns, drill bit spins, paintbrush sweeps). Pure SVG + CSS.
+import "./hero/animationHero";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
