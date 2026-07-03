@@ -85,6 +85,21 @@ export function StudioTemplatesLibrary({ merchantSlug, brandName }: Props) {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
+      {/* Perf: freeze animations inside preview cards + defer off-screen
+          cards. Rendering 24 heroes with infinite CSS animations at
+          400% scale otherwise crushes the browser. Full-scale
+          animation still plays inside the preview modal. */}
+      <style>{`
+        [data-tmpl-preview-frozen],
+        [data-tmpl-preview-frozen] * {
+          animation-play-state: paused !important;
+          animation-delay: 0s !important;
+        }
+        [data-tmpl-card] {
+          content-visibility: auto;
+          contain-intrinsic-size: 380px;
+        }
+      `}</style>
       <p
         className="text-[10px] font-extrabold uppercase tracking-widest"
         style={{ color: YELLOW }}
@@ -193,9 +208,13 @@ function SectionCard({
   };
 
   return (
-    <article className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md">
-      {/* Preview — the real renderer, scaled down. Clicking opens the
-          full-viewport preview modal. Truth-by-construction. */}
+    <article
+      data-tmpl-card
+      className="flex flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm transition hover:border-neutral-400 hover:shadow-md"
+    >
+      {/* Preview — the real renderer, scaled down + animation-frozen.
+          Clicking opens the full-viewport preview modal where the
+          animations play at full quality. */}
       <button
         type="button"
         onClick={onOpen}
@@ -203,6 +222,7 @@ function SectionCard({
         aria-label={`Preview ${reg.name} full size`}
       >
         <div
+          data-tmpl-preview-frozen
           style={{
             position: "absolute",
             top: 0,
