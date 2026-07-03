@@ -14,6 +14,7 @@
 // (dismisses).
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 // Side-effect: registers every built-in section so the catalogue is
 // populated before we render.
@@ -29,6 +30,16 @@ type AnySection = ReturnType<typeof sectionRegistry.list>[number];
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
+
+const VALID_LIBRARIES: SectionLibrary[] = [
+  "hero", "product_grid", "categories", "banner", "services", "features",
+  "testimonials", "faq", "gallery", "video", "pricing", "statistics",
+  "brands", "team", "newsletter", "contact", "map", "footer", "cta"
+];
+
+function isValidLibrary(v: unknown): v is SectionLibrary {
+  return typeof v === "string" && (VALID_LIBRARIES as string[]).includes(v);
+}
 
 const LIBRARY_LABEL: Record<SectionLibrary, string> = {
   hero: "Hero",
@@ -95,9 +106,17 @@ export function SectionLibraryBrowser({
     return ordering.filter((lib) => populated.has(lib));
   }, [all]);
 
+  const searchParams = useSearchParams();
+  const initialCat = searchParams?.get("cat");
   const [activeLibrary, setActiveLibrary] = useState<SectionLibrary | "all">(
-    "all"
+    isValidLibrary(initialCat) ? (initialCat as SectionLibrary) : "all"
   );
+  useEffect(() => {
+    const cat = searchParams?.get("cat");
+    if (isValidLibrary(cat)) {
+      setActiveLibrary(cat as SectionLibrary);
+    }
+  }, [searchParams]);
   const [query, setQuery] = useState("");
   const [previewReg, setPreviewReg] = useState<AnySection | null>(null);
   // Mobile categories: closed by default so the grid gets full width;

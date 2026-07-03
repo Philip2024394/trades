@@ -23,7 +23,27 @@ type NavItem = {
   label: string;
   icon: ReactNode;
   group: "workspace" | "content" | "system";
+  /** If set, clicking the row expands an inline accordion of shortcuts
+   *  instead of navigating. The label falls back to a full navigate on
+   *  clicking the small "See all" chevron on the right of the row. */
+  children?: { href: string; label: string }[];
 };
+
+// Section library shortcuts — exposed inline when merchant clicks
+// Sections in the sidebar so they can jump straight to a category.
+// The label is a static list matching the SectionLibrary union in
+// sectionTypes.ts; the query-param picks up on the /studio/sections
+// page via `?cat=hero` etc.
+const SECTION_SHORTCUTS: { href: string; label: string }[] = [
+  { href: "/studio/sections?cat=hero", label: "Hero" },
+  { href: "/studio/sections?cat=faq", label: "FAQ" },
+  { href: "/studio/sections?cat=testimonials", label: "Testimonials" },
+  { href: "/studio/sections?cat=statistics", label: "Statistics" },
+  { href: "/studio/sections?cat=features", label: "Features" },
+  { href: "/studio/sections?cat=services", label: "Services" },
+  { href: "/studio/sections?cat=pricing", label: "Pricing" },
+  { href: "/studio/sections?cat=cta", label: "CTA" }
+];
 
 const NAV: NavItem[] = [
   {
@@ -58,7 +78,8 @@ const NAV: NavItem[] = [
         <rect x="3" y="10" width="18" height="4" rx="1" />
         <rect x="3" y="16" width="18" height="4" rx="1" />
       </svg>
-    )
+    ),
+    children: SECTION_SHORTCUTS
   },
   {
     href: "/studio/templates",
@@ -151,6 +172,14 @@ export function StudioShell({
 }) {
   const pathname = usePathname() ?? "";
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  // Nav rows with `children` expand inline. Track which rows are open
+  // by their href (unique per row). Auto-expand a row when the user is
+  // already inside its route so the shortcuts they'd expect stay
+  // visible on refresh.
+  const [expanded, setExpanded] = useState<Record<string, boolean>>({});
+  function toggleExpanded(href: string) {
+    setExpanded((prev) => ({ ...prev, [href]: !prev[href] }));
+  }
 
   const groups: NavItem["group"][] = ["workspace", "content", "system"];
 
@@ -189,6 +218,104 @@ export function StudioShell({
                 {NAV.filter((n) => n.group === g).map((n) => {
                   const active =
                     pathname === n.href || pathname.startsWith(n.href + "/");
+                  const hasChildren = !!n.children && n.children.length > 0;
+                  const isOpen = hasChildren
+                    ? (expanded[n.href] ?? active)
+                    : false;
+
+                  if (hasChildren) {
+                    return (
+                      <li key={n.href}>
+                        <button
+                          type="button"
+                          onClick={() => toggleExpanded(n.href)}
+                          aria-expanded={isOpen}
+                          className="flex h-10 w-full items-center gap-3 rounded-lg px-2 text-[13px] font-bold transition"
+                          style={{
+                            background: active ? YELLOW : "transparent",
+                            color: active ? BLACK : "#404040"
+                          }}
+                        >
+                          <span className="grid h-6 w-6 place-items-center">
+                            {n.icon}
+                          </span>
+                          <span className="flex-1 truncate text-left">
+                            {n.label}
+                          </span>
+                          <span
+                            className="grid h-5 w-5 place-items-center transition-transform"
+                            style={{
+                              transform: isOpen
+                                ? "rotate(180deg)"
+                                : "rotate(0deg)"
+                            }}
+                            aria-hidden="true"
+                          >
+                            <svg
+                              width="12"
+                              height="12"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path d="m6 9 6 6 6-6" />
+                            </svg>
+                          </span>
+                        </button>
+                        {/* Sliding accordion. Grid-rows trick: rows go
+                            from 0fr → 1fr with a CSS transition, so the
+                            child height animates smoothly without
+                            hard-coding a max-height that breaks when
+                            more shortcuts are added later. */}
+                        <div
+                          className="grid transition-[grid-template-rows] duration-200 ease-out"
+                          style={{
+                            gridTemplateRows: isOpen ? "1fr" : "0fr"
+                          }}
+                        >
+                          <div className="overflow-hidden">
+                            <ul className="ml-8 mt-1 flex flex-col gap-0.5 border-l border-neutral-200 pl-2">
+                              {n.children!.map((c) => {
+                                const childActive =
+                                  pathname + (typeof window !== "undefined"
+                                    ? window.location.search
+                                    : "") === c.href;
+                                return (
+                                  <li key={c.href}>
+                                    <Link
+                                      href={c.href}
+                                      className="block truncate rounded-md px-2 py-1.5 text-[12px] font-bold transition"
+                                      style={{
+                                        background: childActive
+                                          ? "#F5F5F5"
+                                          : "transparent",
+                                        color: childActive ? BLACK : "#525252"
+                                      }}
+                                    >
+                                      {c.label}
+                                    </Link>
+                                  </li>
+                                );
+                              })}
+                              <li>
+                                <Link
+                                  href={n.href}
+                                  className="block truncate rounded-md px-2 py-1.5 text-[11px] font-extrabold uppercase tracking-widest transition hover:bg-neutral-100"
+                                  style={{ color: "#737373" }}
+                                >
+                                  See all →
+                                </Link>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  }
+
                   return (
                     <li key={n.href}>
                       <Link
