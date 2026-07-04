@@ -149,7 +149,8 @@ const NAV: NavItem[] = [
     ),
     children: [
       { href: "/studio/payments", label: "Providers" },
-      { href: "/studio/payments/orders", label: "Orders" }
+      { href: "/studio/payments/orders", label: "Orders" },
+      { href: "/studio/payments/webhooks", label: "Webhooks" }
     ]
   },
   {
