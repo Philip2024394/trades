@@ -46,6 +46,7 @@ import "./hero/tilt3d";
 
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
+import "./cta/checkoutStack";
 
 // ─── Product Grid library ─────────────────────────────────────────
 import "./product_grid/classic3col";
