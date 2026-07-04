@@ -21,6 +21,12 @@ export type AiTaskKind =
   | "section.rewrite"
   | "section.score"
   | "section.suggestAlternative"
+  // Button-scoped — manifest-bound; providers can only patch fields
+  // declared on the button's editableFields.
+  | "button.improveCopy"
+  | "button.restyle"
+  | "button.suggestIcon"
+  | "button.scoreConversion"
   // Page-scoped
   | "page.score"
   | "page.improve"

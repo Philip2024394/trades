@@ -214,20 +214,24 @@ function BeforeAfterSliderHero({
 
                 return (
                   <>
-                    {/* After (bottom layer) */}
+                    {/* After (bottom layer) — RIGHT half of the composite.
+                        We use a real <img> at 200% width with the
+                        composite shifted -100% left so only the right
+                        half is visible inside the clipping frame. This
+                        preserves aspect ratio via object-cover, unlike
+                        `background-size: 200% 100%` which distorts. */}
                     {composite ? (
-                      <div
-                        aria-label={config.afterLabel}
-                        role="img"
-                        className="absolute inset-0"
-                        style={{
-                          backgroundImage: `url(${composite})`,
-                          backgroundSize: "200% 100%",
-                          backgroundPosition: "100% 50%",
-                          backgroundRepeat: "no-repeat"
-                        }}
-                        {...treeAttrs(instanceId, "afterImageUrl", "After photo", "image")}
-                      />
+                      <div className="absolute inset-0 overflow-hidden">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={composite}
+                          alt={config.afterLabel}
+                          className="absolute inset-y-0 h-full max-w-none object-cover"
+                          style={{ width: "200%", left: "-100%" }}
+                          draggable={false}
+                          {...treeAttrs(instanceId, "afterImageUrl", "After photo", "image")}
+                        />
+                      </div>
                     ) : config.afterImageUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
@@ -241,24 +245,25 @@ function BeforeAfterSliderHero({
                       <PlaceholderTile label={config.afterLabel} tone="green" />
                     )}
 
-                    {/* Before (top layer, clipped to position) */}
+                    {/* Before (top layer, clipped to slider position) —
+                        LEFT half of the composite via left: 0 on the
+                        200%-wide img. */}
                     <div
                       className="absolute inset-0 overflow-hidden"
                       style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}
                     >
                       {composite ? (
-                        <div
-                          aria-label={config.beforeLabel}
-                          role="img"
-                          className="absolute inset-0"
-                          style={{
-                            backgroundImage: `url(${composite})`,
-                            backgroundSize: "200% 100%",
-                            backgroundPosition: "0% 50%",
-                            backgroundRepeat: "no-repeat"
-                          }}
-                          {...treeAttrs(instanceId, "beforeImageUrl", "Before photo", "image")}
-                        />
+                        <div className="absolute inset-0 overflow-hidden">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={composite}
+                            alt={config.beforeLabel}
+                            className="absolute inset-y-0 h-full max-w-none object-cover"
+                            style={{ width: "200%", left: "0" }}
+                            draggable={false}
+                            {...treeAttrs(instanceId, "beforeImageUrl", "Before photo", "image")}
+                          />
+                        </div>
                       ) : config.beforeImageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img

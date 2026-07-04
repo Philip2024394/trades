@@ -136,7 +136,19 @@ export type SemanticRole =
   | "layout_variant"
   | "opacity"
   | "position_x"
-  | "position_y";
+  | "position_y"
+  // ─── Button-scoped intents (Button Studio) ──
+  | "cta_book"
+  | "cta_buy"
+  | "cta_quote"
+  | "cta_contact"
+  | "cta_download"
+  | "cta_subscribe"
+  | "cta_join"
+  | "cta_learn_more"
+  | "cta_call"
+  | "cta_whatsapp"
+  | "cta_email";
 
 export type EditableField = {
   /** Key inside the section's `config` object. */

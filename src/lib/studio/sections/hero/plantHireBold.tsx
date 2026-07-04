@@ -68,7 +68,7 @@ function PlantHireBoldHero({
           src={config.backgroundImageUrl}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 -z-10 h-full w-full object-contain"
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
           {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
         />
       )}

@@ -69,6 +69,26 @@ const NAV: NavItem[] = [
     )
   },
   {
+    href: "/studio/buttons",
+    label: "Buttons",
+    group: "content",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="8" width="18" height="8" rx="4" />
+      </svg>
+    ),
+    children: [
+      { href: "/studio/buttons?cat=basic", label: "Basic" },
+      { href: "/studio/buttons?cat=marketing", label: "Marketing" },
+      { href: "/studio/buttons?cat=ecommerce", label: "Ecommerce" },
+      { href: "/studio/buttons?cat=navigation", label: "Navigation" },
+      { href: "/studio/buttons?cat=social", label: "Social" },
+      { href: "/studio/buttons?cat=utility", label: "Utility" },
+      { href: "/studio/buttons?cat=floating", label: "Floating" },
+      { href: "/studio/buttons/global", label: "Global buttons" }
+    ]
+  },
+  {
     href: "/studio/sections",
     label: "Sections",
     group: "content",
@@ -115,6 +135,16 @@ const NAV: NavItem[] = [
         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
         <circle cx="8.5" cy="8.5" r="1.5" />
         <polyline points="21 15 16 10 5 21" />
+      </svg>
+    )
+  },
+  {
+    href: "/studio/payments",
+    label: "Payments",
+    group: "content",
+    icon: (
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="10" y2="15"/>
       </svg>
     )
   },
