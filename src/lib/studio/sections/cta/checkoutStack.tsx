@@ -171,7 +171,9 @@ function CheckoutStack({
                 data={data}
                 mode={mode}
                 paymentContext={{
-                  brandId: (data.domain?.brandId as string | undefined) ?? undefined,
+                  brandId:
+                    data.brandId ??
+                    ((data.domain?.brandId as string | undefined) ?? undefined),
                   amountMinor: config.amountMinor,
                   currency: config.currency,
                   orderRef: config.orderRef,

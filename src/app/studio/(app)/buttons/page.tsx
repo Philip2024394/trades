@@ -18,6 +18,7 @@ export default async function StudioButtonsPage() {
     city: "Leeds",
     whatsappHref: null,
     brandName: session.brand.name,
+    brandId: session.brand.id,
     domain: {}
   };
   return (

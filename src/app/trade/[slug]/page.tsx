@@ -444,6 +444,7 @@ export default async function TradiePublicProfilePage({
             ? `https://wa.me/${adminWhatsapp()}`
             : null,
         brandName: live.brandName,
+        brandId: live.brandId,
         domain: {
           addonsEnabled: addonDomain.addonsEnabled,
           addons: addonDomain.addons,

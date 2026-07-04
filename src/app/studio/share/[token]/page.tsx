@@ -120,6 +120,7 @@ export default async function StudioSharePage({
     city: merchant.city ?? "",
     whatsappHref: adminWhatsapp() ? `https://wa.me/${adminWhatsapp()}` : null,
     brandName: brand.name,
+    brandId: brand.id,
     domain: {}
   };
 

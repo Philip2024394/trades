@@ -43,6 +43,10 @@ export function PaymentProviderSettings() {
   const [saving, setSaving] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<Record<string, "ok" | "err">>({});
   const [drafts, setDrafts] = useState<Record<string, Record<string, string>>>({});
+  const [testing, setTesting] = useState<string | null>(null);
+  const [testResult, setTestResult] = useState<
+    Record<string, { ok: boolean; info?: string; error?: string }>
+  >({});
 
   const load = useCallback(async () => {
     setError(null);
@@ -91,6 +95,36 @@ export function PaymentProviderSettings() {
       setSaveState((prev) => ({ ...prev, [providerId]: "err" }));
     } finally {
       setSaving(null);
+    }
+  }
+
+  async function testConnection(providerId: string) {
+    setTesting(providerId);
+    setTestResult((prev) => {
+      const { [providerId]: _, ...rest } = prev;
+      return rest;
+    });
+    try {
+      const res = await fetchWithRetry(
+        `/api/studio/payments/${providerId}/test`,
+        { method: "POST" }
+      );
+      const json = (await res.json()) as
+        | { ok: true; result: { ok: boolean; info?: string; error?: string } }
+        | { ok: false; error: string };
+      if (!json.ok) throw new Error(json.error);
+      setTestResult((prev) => ({ ...prev, [providerId]: json.result }));
+      await load();
+    } catch (err) {
+      setTestResult((prev) => ({
+        ...prev,
+        [providerId]: {
+          ok: false,
+          error: (err as Error).message ?? "network"
+        }
+      }));
+    } finally {
+      setTesting(null);
     }
   }
 
@@ -327,7 +361,46 @@ export function PaymentProviderSettings() {
                         >
                           {saving === c.providerId ? "Saving…" : "Save credentials"}
                         </button>
+                        <button
+                          type="button"
+                          onClick={() => testConnection(c.providerId)}
+                          disabled={testing === c.providerId || !c.hasCredentials}
+                          className="inline-flex h-10 items-center rounded-xl border border-neutral-300 px-4 text-[12px] font-extrabold uppercase tracking-widest text-neutral-800 transition hover:bg-neutral-50 disabled:opacity-40"
+                        >
+                          {testing === c.providerId ? "Testing…" : "Test connection"}
+                        </button>
                       </div>
+                      {testResult[c.providerId] && (
+                        <p
+                          role="status"
+                          className="rounded-lg px-3 py-2 text-[11px] font-bold"
+                          style={{
+                            background: testResult[c.providerId].ok
+                              ? "rgba(16,185,129,0.08)"
+                              : "rgba(220,38,38,0.08)",
+                            color: testResult[c.providerId].ok ? GREEN : RED
+                          }}
+                        >
+                          {testResult[c.providerId].ok
+                            ? `Connected — ${testResult[c.providerId].info}`
+                            : `Failed — ${testResult[c.providerId].error}`}
+                        </p>
+                      )}
+                      {!testResult[c.providerId] && c.lastTestedAt && (
+                        <p
+                          className="text-[10px] text-neutral-500"
+                        >
+                          Last tested{" "}
+                          {new Date(c.lastTestedAt).toLocaleString()} —{" "}
+                          {c.lastTestOk ? (
+                            <span style={{ color: GREEN, fontWeight: 700 }}>PASSED</span>
+                          ) : (
+                            <span style={{ color: RED, fontWeight: 700 }}>
+                              FAILED ({c.lastTestError})
+                            </span>
+                          )}
+                        </p>
+                      )}
                     </div>
                   )}
                 </article>

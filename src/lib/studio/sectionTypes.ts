@@ -253,6 +253,11 @@ export type MerchantData = {
   city: string;
   whatsappHref: string | null;
   brandName: string;
+  /** Studio brand id — required by payment sessions so the orchestrator
+   *  can load the brand's configured processor credentials. Optional
+   *  for backward compat with callers that don't source a brand id
+   *  (public preview iframes running on demo data). */
+  brandId?: string;
   /** Vertical-specific data the section may need. Type-erased here;
    *  each section that needs data casts + validates. */
   domain: Record<string, unknown>;

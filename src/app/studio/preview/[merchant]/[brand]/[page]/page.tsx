@@ -96,6 +96,7 @@ export default async function StudioPreviewPage({
     city: merchant.city,
     whatsappHref: waHref,
     brandName: brand.name,
+    brandId: brand.id,
     domain: {}
   };
 

@@ -25,6 +25,7 @@ export default async function StudioSectionsPage() {
     city: "Leeds",
     whatsappHref: null,
     brandName: session.brand.name,
+    brandId: session.brand.id,
     domain: {}
   };
 

@@ -9,6 +9,14 @@ import { NextResponse } from "next/server";
 import { loadStudioSession } from "@/lib/studio/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import Stripe from "stripe";
+import {
+  refundPaypal,
+  refundMollie,
+  refundRazorpay,
+  refundCoinbase,
+  refundKlarna,
+  refundAdyen
+} from "@/platform/buttons/payments/refunds";
 
 export const runtime = "nodejs";
 
@@ -59,20 +67,17 @@ export async function POST(
   let providerRefundOk = false;
   let providerRefundError: string | null = null;
 
-  // Stripe refund via SDK. Other providers left as manual reconciliation
-  // for v1 — real refunds require per-provider REST calls that need
-  // their own testing surface.
-  if (orderRes.data.provider_id === "stripe") {
+  const pid = orderRes.data.provider_id;
+  const externalRef = orderRes.data.external_ref;
+
+  if (!externalRef) {
+    providerRefundError = "no-external-ref-on-order";
+  } else if (pid === "stripe") {
     try {
       const secretKey = credentials.secret_key as string | undefined;
       if (!secretKey) throw new Error("stripe-secret-missing");
       const stripe = new Stripe(secretKey);
-      // For Checkout Sessions the payment_intent is the refund target.
-      // We retrieve the session to get the PI, then refund it.
-      if (!orderRes.data.external_ref) throw new Error("no-external-ref");
-      const s = await stripe.checkout.sessions.retrieve(
-        orderRes.data.external_ref
-      );
+      const s = await stripe.checkout.sessions.retrieve(externalRef);
       if (!s.payment_intent) throw new Error("no-payment-intent-on-session");
       await stripe.refunds.create({
         payment_intent: s.payment_intent as string
@@ -81,6 +86,57 @@ export async function POST(
     } catch (err) {
       providerRefundError = (err as Error).message ?? "stripe-refund-failed";
     }
+  } else if (pid === "paypal") {
+    const r = await refundPaypal({
+      credentials,
+      externalRef,
+      amountMinor: orderRes.data.amount_minor,
+      currency: orderRes.data.currency
+    });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else if (pid === "mollie") {
+    const r = await refundMollie({
+      credentials,
+      externalRef,
+      amountMinor: orderRes.data.amount_minor,
+      currency: orderRes.data.currency
+    });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else if (pid === "razorpay") {
+    const r = await refundRazorpay({
+      credentials,
+      externalRef,
+      amountMinor: orderRes.data.amount_minor
+    });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else if (pid === "coinbase") {
+    const r = await refundCoinbase({ credentials, externalRef });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else if (pid === "klarna") {
+    const r = await refundKlarna({
+      credentials,
+      externalRef,
+      amountMinor: orderRes.data.amount_minor
+    });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else if (pid === "adyen") {
+    const r = await refundAdyen({
+      credentials,
+      externalRef,
+      amountMinor: orderRes.data.amount_minor,
+      currency: orderRes.data.currency
+    });
+    providerRefundOk = r.ok;
+    providerRefundError = r.ok ? null : r.error;
+  } else {
+    // Offline / stub providers — no API call. Order is still marked
+    // refunded and the merchant reconciles manually.
+    providerRefundError = `${pid} refunds are manual — marked in Studio, action the payout yourself.`;
   }
 
   const upd = await supabaseAdmin
