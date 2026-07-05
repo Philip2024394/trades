@@ -18,9 +18,11 @@
 /** Kebab-case slug — `plumbing`, `plant-hire-bold`. */
 export const SLUG_RE = /^[a-z0-9][a-z0-9-]*[a-z0-9]$/;
 
-/** Namespaced id — `hero.trust_minimal_1`, `buttons.primary`. Enforced
- *  by `sectionRegistry`, `buttonRegistry`, `designSystemRegistry`. */
-export const NAMESPACED_ID_RE = /^[a-z][a-z0-9_]*\.[a-z][a-z0-9_-]*$/;
+/** Namespaced id — `hero.trust_minimal_1`, `buttons.primary`,
+ *  `gallery.minImages`. Enforced by `sectionRegistry`, `buttonRegistry`,
+ *  `designSystemRegistry`, `facetKindRegistry`. Category is kebab-only;
+ *  name may include camelCase to match existing facet conventions. */
+export const NAMESPACED_ID_RE = /^[a-z][a-z0-9_]*\.[a-zA-Z][a-zA-Z0-9_-]*$/;
 
 /** Strict semver, optionally with a pre-release tag. Matches the
  *  regex used by `appRegistry` + `packRegistry` + `blueprintRegistry`. */

@@ -31,7 +31,7 @@ type FrozenFacetKindRegistration = Frozen<FacetKindRegistration>;
 
 const inner = createRegistry<FacetKindRegistration>({
   label: "facetKindRegistry",
-  idFormat: "slug",
+  idFormat: "namespacedId",
   validate: (m) => {
     if (m.manifestVersion !== 1)
       throw new Error(`unsupported manifestVersion for facet "${m.slug}".`);
