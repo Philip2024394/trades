@@ -19,7 +19,7 @@ Reference index: [`references/PATTERNS.md`](./references/PATTERNS.md) — 30 cur
 | 3 | Forms | ✅ Complete | FieldGroup, TextInput, TextArea, Select, RadioGroup, CheckboxGroup, Checkbox, Toggle, FormSection, StickySubmit, FileUpload |
 | 4 | Data display + Overlays | ✅ Complete | DataTable, ListView, ActivityFeed, Timeline, Tabs, Popover, Tooltip, DropdownMenu |
 | 5 | Media + Onboarding | ✅ Complete | AspectRatio, BeforeAfterSlider, ImageWithCaption, VideoThumb, PhotoGridPreview, AvatarCluster, SetupChecklist, EmptyStateIllustrations (6), StepDots, SuccessCard |
-| 6 | Layout Recipes | 🚧 Next | ServiceOverviewLayout, DashboardLayout, BookingLayout, CoachLayout, MarketplaceLayout |
+| 6 | Layout Recipes | ✅ Complete | LayoutShell, SectionRenderer, ServiceOverviewLayout, DashboardLayout, CoachLayout, BookingLayout, MarketplaceLayout, SettingsLayout |
 
 ---
 

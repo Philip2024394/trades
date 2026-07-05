@@ -218,3 +218,27 @@ export type { StepDotsProps, StepDotsStep } from "./onboarding/StepDots";
 // ─── Feedback additions (Phase 5) ───────────────────────────
 export { SuccessCard } from "./feedback/SuccessCard";
 export type { SuccessCardProps } from "./feedback/SuccessCard";
+
+// ─── Layout Recipes (Phase 6) ───────────────────────────────
+export { BookingLayout } from "./layouts/BookingLayout";
+export type { BookingLayoutProps } from "./layouts/BookingLayout";
+export { CoachLayout } from "./layouts/CoachLayout";
+export type { CoachLayoutProps } from "./layouts/CoachLayout";
+export { DashboardLayout } from "./layouts/DashboardLayout";
+export type {
+  DashboardGreeting,
+  DashboardLayoutProps
+} from "./layouts/DashboardLayout";
+export { LayoutShell } from "./layouts/LayoutShell";
+export type { LayoutShellProps } from "./layouts/LayoutShell";
+export { MarketplaceLayout } from "./layouts/MarketplaceLayout";
+export type { MarketplaceLayoutProps } from "./layouts/MarketplaceLayout";
+export { SectionRenderer } from "./layouts/SectionRenderer";
+export { ServiceOverviewLayout } from "./layouts/ServiceOverviewLayout";
+export type { ServiceOverviewLayoutProps } from "./layouts/ServiceOverviewLayout";
+export { SettingsLayout } from "./layouts/SettingsLayout";
+export type {
+  SettingsLayoutProps,
+  SettingsSectionLink
+} from "./layouts/SettingsLayout";
+export type { LayoutSection } from "./layouts/types";
