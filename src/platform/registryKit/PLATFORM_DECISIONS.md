@@ -1148,3 +1148,128 @@ missing rationales fall back to synthesised reasoning.
 ADR-027 (Business Evidence Framework). Amendment 7 §Playbooks.
 Phase 3 (AI Composition Engine v2) will consume `rationale` when
 composing AI-authored copy.
+
+---
+
+## ADR-029 — AI Composition Engine v2 is a Creative Director, not a page generator
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 3)
+
+### Context
+"AI Composition Engine v2" was originally scoped as a page
+generator. That framing pushes it back into "decide layout +
+theme + strategy + copy at once" — which we've already
+disaggregated across ResolvedStrategy + Trade Intelligence +
+Layouts + Blueprints.
+
+The composer should NEVER decide anything it doesn't have to. It
+receives a fully resolved brief and produces STRUCTURED CONTENT.
+
+### Decision
+The composer is renamed and reframed as the **AI Creative
+Director**. It:
+
+1. Accepts a `CreativeBrief` = ResolvedStrategy + brandVoice +
+   projects + pageSlugs + outputMedium.
+2. Dispatches to **four specialist composers** registered in a
+   `composerRegistry` at Business OS Layer 15:
+   - `copy` — hero, service-list, value-props, trust-copy, faq
+   - `project-story` — case studies from photo metadata
+   - `seo` — page structures from trade SEO templates
+   - `brand-voice` — personality profile (feeds LLM adapter later)
+3. Assembles output into a `ContentManifest` with typed pages +
+   sections + blocks.
+4. Returns deterministically. Never invents intent, layout, or
+   strategy — those are inputs.
+
+Composer specialists declare `supportedBlockKinds`,
+`supportedOutputMedia`, and `backend: "template" | "llm" |
+"hybrid"`. Multiple composers may register for the same slug
+(template + LLM implementations); the director picks per plan
+tier and cost budget. v1 ships template backends across all four.
+
+### Consequences
+- Output medium is a first-class dimension: same intelligence can
+  produce a website, quote document, email campaign, Google
+  Business post, brochure, SMS follow-up — v1 ships `website`;
+  the shape supports the rest without schema changes.
+- Adding a new content type (e.g. `case-study-summary` for LinkedIn
+  posts) = one composer + one block kind. Everything else is
+  reusable.
+- LLM backends drop in without changes to the director — they
+  register alongside template backends at the same slug.
+- The registry is the single source of "what generators exist" —
+  discoverable, versioned, plan-gate-able.
+
+### Related
+ADR-030 (Content Manifest with provenance). ADR-021 (Composer as
+assembler). ADR-025 (Trade Intelligence). Amendment 7.
+
+---
+
+## ADR-030 — Every content block carries a Content Manifest with provenance
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 3)
+
+### Context
+Merchants regenerating an entire page to fix one hero is wasteful
+and destructive of merchant edits. The alternative — free-text
+LLM outputs with no addressability — makes targeted regeneration
+impossible.
+
+We also want the merchant "Why is this on my page?" button to
+work for ANY block, not only the top-level strategy decisions.
+
+### Decision
+Every `ContentBlock` in a `ContentManifest` carries:
+
+**Provenance** (`ContentProvenance`):
+- `generatedBy` (composer slug) + `generatorVersion` +
+  `generatorBackend` (template / llm / hybrid)
+- `sources`: profile / strategy / recipe / trade / playbooks /
+  patterns / evidence / knowledgeRefs
+- `purpose` (trust / conversion / seo / education / reassurance /
+  showcase / engagement / compliance / brand-voice)
+- `audience` (optional)
+- `primaryGoal` (the merchant's current growth goal)
+- `confidenceBand` (inherited from strongest cited playbook)
+- `generatedAt` (ISO timestamp)
+
+**Regeneration hints** (`RegenerationHints`):
+- `scopes` (block / section / page / manifest)
+- `editableFields` (which fields can be edited inline without regen)
+- `invalidatedBy` (which upstream sources invalidate this block)
+- `regenerationHint` (merchant-facing description of what a re-run
+  would achieve)
+
+Output is STRUCTURED — never HTML or markdown. Rendering happens
+later. This gives us versioning, editing, translation, analytics,
+and A/B testing without redesigning the system.
+
+`CreativeDirector.regenerate(manifest, brief, request)` supports
+targeted regeneration at `block`, `section`, `page`, or `manifest`
+scope; blocks outside the target set are preserved bit-for-bit
+including any merchant edits.
+
+Migration `20260705180000_content_manifests.sql` — three tables
+with RLS: `studio_content_manifests`, `studio_content_blocks`
+(denormalised for query + targeted regen), `studio_content_regenerations`
+(audit trail).
+
+### Consequences
+- Merchant can say "regenerate the hero" and only the hero changes.
+- Merchant can say "keep the strategy but make the hero more
+  premium" — `overrides.brandVoice = "luxury"` re-runs only
+  hero-producing composers with the new brand voice.
+- Every block can answer "Why is this on my page?" — same
+  explainer machinery as strategy-level decisions.
+- Analytics can filter by `purpose`, `audience`, `generatedBy`,
+  `generatorBackend` — cost + performance analysis is derivable,
+  not bolted on.
+- Same content model supports future outputs: quote docs, emails,
+  ads, brochures, SMS, AI-assistant responses, portal messaging.
+  The website is one output.
+
+### Related
+ADR-029 (Creative Director). ADR-024 (Explainer). ADR-027
+(Evidence). ADR-028 (Playbook Rationale).
