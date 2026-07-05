@@ -938,3 +938,97 @@ Skipping unknown facets silently — vocabulary grows without breaking.
 ### Related
 Amendment 7 §Playbooks + Provenance. ADR-016 (5-registry business
 intelligence). ADR-021 (Composer as assembler).
+
+---
+
+## ADR-025 — Trade Intelligence Registry is the moat, not another facet
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 1)
+
+### Context
+Every website builder can render sections and prompt an LLM. What
+they cannot easily copy is **trade-specific business knowledge**:
+that carpenters make money from fire doors and lose it on small
+repairs; that electricians live and die on emergency response
+time; that kitchen companies hide prices and sell showroom visits.
+
+Encoding that as prompts is brittle. Encoding it as data —
+structured, versioned, evidence-tracked — is the moat.
+
+### Decision
+`tradeIntelligenceRegistry` at Business OS Layer 1. Each entry
+declares: business goals, service economics (margin bands, survey
+requirements, regulation flags), trust builders, image strategy
+(priority order + gallery mix + minimum photo counts), pricing
+presentation, primary CTA, content flow, SEO keyword templates,
+common FAQs + objections, buying journey, seasonality, positioning
+modifiers (emergency / luxury / commercial / residential /
+premium / budget overrides), and compliance requirements.
+
+Every seed carries `TradeEvidence { confidence, strength,
+sampleSize, marketsValidated, sources, lastReviewed }`. v1 seeds
+ship at `strength: "anecdotal"`, `confidence: 60`, `sampleSize: 0`
+— honest by construction. Numbers that cannot be sourced (e.g.
+average job value) are OMITTED rather than fabricated.
+
+Phase 2 (Industry Research Framework) upgrades strength to
+`measured`. Phase 5 (Evidence & Outcome Engine) upgrades to
+`validated` based on merchant outcomes.
+
+### Consequences
+- Trade knowledge becomes discoverable, versioned, and auditable.
+- Adding a new trade = one file. Adding a new *country* for an
+  existing trade = one entry in `countries[]` + localised
+  positioning overrides.
+- Restaurants + hospitality fit the same manifest — the schema is
+  business-elastic without needing a hospitality schema.
+- Evidence honesty prevents the "confident-sounding but made-up"
+  failure mode that has plagued LLM-authored content.
+
+### Related
+Phase 2 (Industry Research Framework). Phase 5 (Evidence &
+Outcome Engine). Amendment 7. ADR-016.
+
+---
+
+## ADR-026 — Trade → Playbook cascade: trade contributes first
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 1)
+
+### Context
+Facet merging previously ran over `recipe.playbooks` only. Now
+that Trade Intelligence contributes facets too, the resolver needs
+an unambiguous order.
+
+### Decision
+StrategyResolver folds facet contributions in this fixed order:
+
+1. **Trade Intelligence base** — derived from the merchant's
+   `profile.trade`. Sets defaults for CTA, pricing, gallery mix,
+   trust builders, and sections emphasis.
+2. **Playbooks in recipe order** — recipe-declared playbooks
+   layer over trade defaults.
+3. **Positioning-triggered extra playbooks** — trade's positioning
+   modifier (e.g. `luxury` → `premium-luxury` playbook) folds in
+   next.
+4. **Recipe overrides** — always win last.
+
+Per-facet merge strategy still governs how contributions combine
+(override / union / intersection / highest-confidence / custom).
+
+Trade contributions are attributed to `trade:<slug>` in
+provenance; positioning-extra playbooks carry their normal slug.
+
+### Consequences
+- Every ResolvedStrategy has a base cascade even when the recipe
+  has zero playbooks — never a blank site.
+- Provenance is fully traceable: the explainer can say "gallery
+  mix comes from your trade" vs "CTA overridden by
+  emergency-response playbook".
+- Playbooks can be more surgical — they only override the trade
+  where they genuinely add value, not restate defaults.
+- Adding a new trade automatically improves every recipe that uses
+  it. No recipe author has to know about new trades.
+
+### Related
+ADR-025 (Trade Intelligence). ADR-021 (Composer as assembler).

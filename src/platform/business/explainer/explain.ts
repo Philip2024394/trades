@@ -9,6 +9,7 @@
 
 import { playbookRegistry } from "../playbooks";
 import type { ResolvedStrategy } from "../resolver";
+import { tradeIntelligenceRegistry } from "../trades";
 import {
   labelForGoal,
   labelForTrade,
@@ -44,6 +45,31 @@ export function explainStrategy(strategy: ResolvedStrategy): StrategyExplanation
   // ─── Decisions ──────────────────────────────────────────────
   const decisions: ExplanationLine[] = [];
 
+  // If Trade Intelligence exists, prepend a Content decision citing
+  // it — the merchant sees WHY the base site skeleton looks this way.
+  const trade = tradeIntelligenceRegistry.get(profile.trade);
+  if (trade) {
+    if (trade.imageStrategy.galleryMix) {
+      const mix = Object.entries(trade.imageStrategy.galleryMix)
+        .map(([k, v]) => `${v}% ${k.replace(/-/g, " ")}`)
+        .join(" / ");
+      decisions.push({
+        bucket: "Content",
+        sentence: `Weight your gallery ${mix} — the mix that suits ${tradeLabel.toLowerCase()}`,
+        citedPlaybooks: [`trade:${trade.slug}`],
+        confidence: trade.evidence.confidence
+      });
+    }
+    decisions.push({
+      bucket: "Content",
+      sentence: `Prioritise ${trade.imageStrategy.priorityOrder
+        .slice(0, 3)
+        .join(" then ")} imagery on the home page`,
+      citedPlaybooks: [`trade:${trade.slug}`],
+      confidence: trade.evidence.confidence
+    });
+  }
+
   for (const rule of PHRASE_RULES) {
     const facet = strategy.get(rule.domain, rule.field) as
       | Record<string, unknown>
@@ -57,16 +83,23 @@ export function explainStrategy(strategy: ResolvedStrategy): StrategyExplanation
     const kindSlug = `${rule.domain}.${rule.field}`;
     const prov = strategy.provenance.find((p) => p.kind === kindSlug);
     const citedPlaybooks = prov?.contributedBy ?? [];
-    const strongest = citedPlaybooks
+    // Trade contributions are prefixed `trade:` and aren't in
+    // playbookRegistry — the confidence comes from tradeIntelligenceRegistry.
+    const strongestPlaybook = citedPlaybooks
+      .filter((slug) => !slug.startsWith("trade:") && !slug.startsWith("recipe:"))
       .map((slug) => playbookRegistry.get(slug))
       .filter((p): p is NonNullable<typeof p> => Boolean(p))
       .sort((a, b) => b.evidence.confidence - a.evidence.confidence)[0];
+    const tradeCited = citedPlaybooks.find((s) => s.startsWith("trade:"));
+    const confidence =
+      strongestPlaybook?.evidence.confidence ??
+      (tradeCited ? trade?.evidence.confidence : undefined);
 
     decisions.push({
       bucket: rule.bucket,
       sentence: rule.sentence(facet),
       citedPlaybooks,
-      confidence: strongest?.evidence.confidence
+      confidence
     });
   }
 

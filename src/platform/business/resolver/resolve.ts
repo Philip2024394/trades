@@ -11,7 +11,84 @@ import type { PlaybookFacets } from "../playbooks/types";
 import type { FrozenBusinessProfileManifest } from "../profile/types";
 import type { FrozenGrowthStrategyManifest } from "../strategy/types";
 import type { FrozenWebsiteRecipeManifest } from "../recipes/types";
+import { tradeIntelligenceRegistry } from "../trades";
+import type {
+  FrozenTradeIntelligenceManifest,
+  PositioningOverride
+} from "../trades/types";
 import type { FacetProvenance, ResolvedStrategy } from "./types";
+
+/** Derive facet contributions from a Trade Intelligence manifest.
+ *  These land BEFORE playbook contributions so playbooks may override
+ *  but every site cascades from what the trade actually is. */
+function tradeToFacets(
+  trade: FrozenTradeIntelligenceManifest,
+  positioning: PositioningOverride | undefined
+): PlaybookFacets {
+  const facets: PlaybookFacets = {};
+
+  // Primary CTA
+  const primaryCta = positioning?.primaryCta ?? trade.primaryCta;
+  const intent = ctaLabelToIntent(primaryCta);
+  facets["cta.primary"] = { intent, ctaLabelHint: primaryCta };
+
+  // Pricing presentation
+  const pricing = positioning?.pricingPresentation ?? trade.pricingPresentation;
+  facets["pricing.display"] = { value: pricing };
+
+  // Gallery style + mix
+  const galleryMix = positioning?.galleryMix ?? trade.imageStrategy.galleryMix;
+  if (galleryMix) facets["gallery.mix"] = { mix: galleryMix };
+  if (trade.imageStrategy.requiresBeforeAfter) {
+    facets["gallery.requiresBeforeAfter"] = { value: true };
+  }
+
+  // Trust builders
+  const trustBuilders = new Set<string>(trade.trustBuilders);
+  for (const extra of positioning?.extraTrustBuilders ?? []) trustBuilders.add(extra);
+  facets["trust.elements"] = { list: Array.from(trustBuilders) };
+
+  // Sections emphasise — derived from the trade's content flow.
+  const emphasise: string[] = [];
+  const cf = trade.contentFlow;
+  if (cf.servicesPlacement !== "footer") emphasise.push("services-list");
+  if (cf.galleryPlacement !== "footer") emphasise.push("portfolio-grid");
+  if (cf.testimonialsPlacement !== "footer") emphasise.push("testimonials");
+  if (cf.faqPlacement !== "footer") emphasise.push("faq");
+  facets["sections.emphasise"] = { roles: emphasise };
+
+  return facets;
+}
+
+function ctaLabelToIntent(label: string): string {
+  const l = label.toLowerCase();
+  if (l.includes("call now")) return "call-now";
+  if (l.includes("call for")) return "call-now";
+  if (l.includes("book free survey")) return "free-survey";
+  if (l.includes("book showroom")) return "book-appointment";
+  if (l.includes("book design consultation")) return "book-consultation";
+  if (l.includes("book private consultation")) return "book-consultation";
+  if (l.includes("book consultation")) return "book-consultation";
+  if (l.includes("book a table")) return "book-appointment";
+  if (l.includes("reserve table")) return "book-appointment";
+  if (l.includes("book appointment")) return "book-appointment";
+  if (l.includes("request commercial quote")) return "request-quote";
+  if (l.includes("request trade quote")) return "open-trade-account";
+  if (l.includes("request quote")) return "request-quote";
+  return "start-conversation";
+}
+
+function positioningKeyFor(
+  profile: FrozenBusinessProfileManifest
+): keyof import("../trades/types").PositioningModifiers | undefined {
+  if (profile.isEmergency) return "emergency";
+  if (profile.isLuxury) return "luxury";
+  if (profile.isCommercial) return "commercial";
+  if (profile.positioning === "premium") return "premium";
+  if (profile.positioning === "budget") return "budget";
+  if (profile.isResidential) return "residential";
+  return undefined;
+}
 
 /** Deep-freeze utility. */
 function freeze<T>(v: T): T {
@@ -115,11 +192,37 @@ export function resolve(input: {
 }): ResolvedStrategy {
   const { profile, strategy, recipe } = input;
 
-  // 1. Collect contributions from every playbook in recipe order.
   const contributions = new Map<string, FacetContribution[]>();
+
+  // 0. Trade Intelligence — cascades before anything else. Facets
+  //    here are the trade defaults; playbooks and recipe overrides
+  //    can override them via merge-strategy rules.
+  const trade = tradeIntelligenceRegistry.get(profile.trade);
+  const positioning = trade
+    ? trade.positioningModifiers[positioningKeyFor(profile) ?? "residential"]
+    : undefined;
+  if (trade) {
+    const tradeFacets = tradeToFacets(trade, positioning);
+    fold(
+      contributions,
+      `trade:${trade.slug}`,
+      tradeFacets,
+      trade.evidence.confidence
+    );
+  }
+
+  // 1. Collect contributions from every playbook in recipe order.
   for (const playbookSlug of recipe.playbooks) {
     const pb = playbookRegistry.getOrThrow(playbookSlug);
     fold(contributions, pb.slug, pb.facets, pb.evidence.confidence);
+  }
+
+  // 1b. Positioning modifiers on the trade may append extra playbooks.
+  for (const extraPlaybook of positioning?.extraPlaybooks ?? []) {
+    const pb = playbookRegistry.get(extraPlaybook);
+    if (pb) {
+      fold(contributions, pb.slug, pb.facets, pb.evidence.confidence);
+    }
   }
 
   // 2. Apply recipe-level overrides last so they always win.

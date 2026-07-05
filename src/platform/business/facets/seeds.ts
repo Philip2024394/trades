@@ -51,6 +51,18 @@ facetKindRegistry.register({
   field: "requiresBeforeAfter",
   mergeStrategy: "override"
 });
+facetKindRegistry.register({
+  manifestVersion: 1,
+  slug: "gallery.mix",
+  name: "Gallery image mix",
+  description:
+    "Percentage mix of image categories in the main gallery — sourced from tradeIntelligenceRegistry.imageStrategy.galleryMix.",
+  version: "1.0.0",
+  ownerLayer: 8,
+  domain: "gallery",
+  field: "mix",
+  mergeStrategy: "override"
+});
 
 // ─── Pricing (Section layer 8) ────────────────────────────────
 facetKindRegistry.register({

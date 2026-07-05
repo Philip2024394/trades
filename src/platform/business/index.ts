@@ -7,6 +7,7 @@
 //  4. resolver (consumes all above)
 
 import "./facets";
+import "./trades";
 import "./playbooks";
 import "./profile";
 import "./strategy";
@@ -17,6 +18,23 @@ export { growthStrategyRegistry } from "./strategy";
 export { playbookRegistry } from "./playbooks";
 export { websiteRecipeRegistry } from "./recipes";
 export { facetKindRegistry } from "./facets";
+export { tradeIntelligenceRegistry } from "./trades";
+export type {
+  BusinessGoalOption,
+  CommonFaq,
+  CommonObjection,
+  ContentFlow,
+  ContentFlowPlacement,
+  FrozenTradeIntelligenceManifest,
+  ImageStrategy,
+  PositioningModifiers,
+  PositioningOverride,
+  SeoKeywordTemplate,
+  ServiceEconomics,
+  TradeEvidence,
+  TradeIntelligenceManifest,
+  TrustBuilderKind
+} from "./trades";
 export { resolve, strategyResolver } from "./resolver";
 export type { ResolvedStrategy, FacetProvenance } from "./resolver";
 export {
