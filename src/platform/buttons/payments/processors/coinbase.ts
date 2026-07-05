@@ -9,6 +9,7 @@ import {
   paymentProcessors,
   type PaymentProcessor
 } from "../processor";
+import { formatMajorString } from "../currency";
 
 const BASE = "https://api.commerce.coinbase.com";
 
@@ -31,7 +32,7 @@ const processor: PaymentProcessor = {
         description: req.description ?? req.orderRef,
         pricing_type: "fixed_price",
         local_price: {
-          amount: (req.amountMinor / 100).toFixed(2),
+          amount: formatMajorString(req.amountMinor, req.currency),
           currency: req.currency
         },
         metadata: { orderRef: req.orderRef, brandId: req.brandId },

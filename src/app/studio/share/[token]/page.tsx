@@ -11,6 +11,8 @@ import type { Metadata } from "next";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { loadLayoutForPage } from "@/lib/studio/layoutLoader";
 import { loadBrandTokens } from "@/lib/studio/tokensLoader";
+import { loadPublicCredentialsForBrand } from "@/lib/studio/credentials/loader";
+import { loadActiveStormMode } from "@/lib/studio/stormMode/loader";
 import { StudioPageClient } from "@/components/studio/StudioPageClient";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import type { MerchantData, SectionRenderMode } from "@/lib/studio/sectionTypes";
@@ -107,9 +109,11 @@ export default async function StudioSharePage({
   const merchant = (merchantRes.data ?? null) as MerchantRow | null;
   if (!merchant) return <ShareError msg="Merchant not found." />;
 
-  const [layout, tokens] = await Promise.all([
+  const [layout, tokens, credentials, stormMode] = await Promise.all([
     loadLayoutForLink(link, merchant.id),
-    loadBrandTokens(brand.id)
+    loadBrandTokens(brand.id),
+    loadPublicCredentialsForBrand(brand.id),
+    loadActiveStormMode(brand.id)
   ]);
   if (!layout) return <ShareError msg="Preview content not found." />;
 
@@ -121,7 +125,9 @@ export default async function StudioSharePage({
     whatsappHref: adminWhatsapp() ? `https://wa.me/${adminWhatsapp()}` : null,
     brandName: brand.name,
     brandId: brand.id,
-    domain: {}
+    domain: {},
+    credentials,
+    stormMode
   };
 
   const mode: SectionRenderMode = "preview";

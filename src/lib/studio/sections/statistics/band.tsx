@@ -6,14 +6,41 @@
 // default makes the numbers pop, but every colour is token-bound so
 // Colour tool can flip it to light in one click.
 
+"use client";
+
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 
 type Slot = 1 | 2 | 3 | 4;
+
+/** Parse a stat string like "12,000+" or "4.9★" or "28" into a numeric
+ *  value + non-numeric prefix/suffix so the NumberTicker can count up
+ *  the numeric part while preserving the merchant's original garnish. */
+function parseStatValue(raw: string): {
+  numeric: number | null;
+  prefix: string;
+  suffix: string;
+  decimals: number;
+} {
+  if (typeof raw !== "string" || raw.length === 0) {
+    return { numeric: null, prefix: "", suffix: "", decimals: 0 };
+  }
+  // Match "<prefix><number><suffix>" where number can be "12,000" or "4.9".
+  const m = raw.match(/^(\D*)(\d[\d,]*(?:\.\d+)?)(.*)$/);
+  if (!m) return { numeric: null, prefix: "", suffix: "", decimals: 0 };
+  const numericStr = m[2].replace(/,/g, "");
+  const decimals = numericStr.includes(".") ? numericStr.split(".")[1].length : 0;
+  const numeric = Number(numericStr);
+  if (!Number.isFinite(numeric)) {
+    return { numeric: null, prefix: "", suffix: "", decimals: 0 };
+  }
+  return { numeric, prefix: m[1] ?? "", suffix: m[3] ?? "", decimals };
+}
 
 type Config = {
   eyebrow: string;
@@ -88,7 +115,9 @@ function StatisticsBand({
             config.eyebrow || config.heading ? "mt-10" : ""
           }`}
         >
-          {stats.map((s) => (
+          {stats.map((s) => {
+            const parsed = parseStatValue(s.value);
+            return (
             <li key={s.i} className="text-center">
               <p
                 className="text-4xl leading-none sm:text-5xl"
@@ -99,7 +128,16 @@ function StatisticsBand({
                 }}
                 {...treeAttrs(instanceId, `s${s.i}Value`, `Stat ${s.i} value`, "text")}
               >
-                {s.value}
+                {parsed.numeric !== null ? (
+                  <NumberTicker
+                    value={parsed.numeric}
+                    decimals={parsed.decimals}
+                    prefix={parsed.prefix}
+                    suffix={parsed.suffix}
+                  />
+                ) : (
+                  s.value
+                )}
               </p>
               <p
                 className="mt-2 text-[12px] font-bold uppercase tracking-widest"
@@ -113,7 +151,8 @@ function StatisticsBand({
                 {s.label}
               </p>
             </li>
-          ))}
+            );
+          })}
         </ul>
       </div>
     </section>

@@ -131,7 +131,17 @@ export function brandTokensToDesignTheme(tokens: BrandTokens): DesignTheme {
       heading: read("font.heading", base.font.heading),
       body: read("font.body", base.font.body),
       mono: read("font.mono", base.font.mono),
-      scale: read("font.scale", base.font.scale)
+      scale: read("font.scale", base.font.scale),
+      weightRegular: base.font.weightRegular,
+      weightMedium: base.font.weightMedium,
+      weightBold: base.font.weightBold,
+      weightExtraBold: base.font.weightExtraBold,
+      leadingTight: base.font.leadingTight,
+      leadingNormal: base.font.leadingNormal,
+      leadingRelaxed: base.font.leadingRelaxed,
+      trackingTight: base.font.trackingTight,
+      trackingNormal: base.font.trackingNormal,
+      trackingWide: base.font.trackingWide
     },
     radius: {
       xs: read("radius.xs", base.radius.xs),
@@ -159,7 +169,16 @@ export function brandTokensToDesignTheme(tokens: BrandTokens): DesignTheme {
     motion: {
       fast: read("motion.fast", base.motion.fast),
       normal: read("motion.normal", base.motion.normal),
-      slow: read("motion.slow", base.motion.slow)
-    }
+      slow: read("motion.slow", base.motion.slow),
+      easeStandard: base.motion.easeStandard,
+      easeEmphasis: base.motion.easeEmphasis,
+      easeDecelerate: base.motion.easeDecelerate
+    },
+    gradient: base.gradient,
+    pattern: base.pattern,
+    iconStyle: base.iconStyle,
+    effect: base.effect,
+    mode: base.mode,
+    brandOverrides: base.brandOverrides
   };
 }

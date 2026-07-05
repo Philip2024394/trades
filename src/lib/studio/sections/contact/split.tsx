@@ -1,20 +1,26 @@
-// contact.split_1 — form left, contact panel right.
+// contact.split_1 — Phase 2 rebuild on shadcn foundation.
 //
-// Native HTML form POST — merchant pastes their Formspree /
-// Formsubmit.co / merchant-endpoint action URL and the browser handles
-// submission. Right column carries a WhatsApp CTA (uses the merchant's
-// registered number via data.whatsappHref), phone + email fallbacks,
-// and opening hours.
+// Left column: form with shadcn-styled inputs + Framer Motion Reveal.
+// Right column: WhatsApp CTA + phone + email + opening hours panel.
+// Mobile: stacks form-then-panel; Desktop: 60/40 grid.
 //
-// On mobile stacks form-then-panel; on desktop 60/40 split.
+// Native HTML form POST — merchant provides their Formspree /
+// Formsubmit.co / merchant-endpoint action URL.
+
+"use client";
 
 import Link from "next/link";
+import { Phone, Mail, MessageCircle, Clock } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { Card, CardContent } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
+import { cn } from "@/lib/utils";
+import { ContactForm } from "./_ContactForm";
 
 type Config = {
   eyebrow: string;
@@ -27,11 +33,14 @@ type Config = {
   messagePlaceholder: string;
   showPhoneField: boolean;
   submitLabel: string;
+  ctaLabel: string;
+  consentLine: string;
   whatsappCtaLabel: string;
   phoneNumber: string;
   emailAddress: string;
   hoursLabel: string;
   hoursValue: string;
+  surface: "light" | "dark";
 };
 
 function ContactSplit({
@@ -41,207 +50,219 @@ function ContactSplit({
   data,
   mode
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const surface = (tokens["color.surface"] as string | undefined) ?? "#FFFFFF";
-  const text = (tokens["color.text"] as string | undefined) ?? "#0A0A0A";
-  const muted = (tokens["color.muted"] as string | undefined) ?? "#737373";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
-  const bodyWeight = tokens["font.body.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
+  const isDark = config.surface === "dark";
   const isEditing = mode === "edit";
-  const hasAction = Boolean(config.formActionUrl);
-  const whatsappHref = data.whatsappHref ?? "#";
-  const telHref = config.phoneNumber
-    ? `tel:${config.phoneNumber.replace(/[^\d+]/g, "")}`
-    : "#";
-  const mailHref = config.emailAddress
-    ? `mailto:${config.emailAddress}`
-    : "#";
+
+  // Defensive fallbacks.
+  const eyebrow = typeof config.eyebrow === "string" ? config.eyebrow : "";
+  const heading = typeof config.heading === "string" ? config.heading : "Get in touch";
+  const subheading = typeof config.subheading === "string" ? config.subheading : "";
+  const formActionUrl = typeof config.formActionUrl === "string" ? config.formActionUrl : "";
+  const namePlaceholder = typeof config.namePlaceholder === "string" ? config.namePlaceholder : "Your name";
+  const emailPlaceholder = typeof config.emailPlaceholder === "string" ? config.emailPlaceholder : "you@email.com";
+  const phonePlaceholder = typeof config.phonePlaceholder === "string" ? config.phonePlaceholder : "07…";
+  const messagePlaceholder = typeof config.messagePlaceholder === "string" ? config.messagePlaceholder : "What's the job?";
+  const showPhoneField = config.showPhoneField !== false;
+  const submitLabel = (typeof config.submitLabel === "string" && config.submitLabel) || (typeof config.ctaLabel === "string" && config.ctaLabel) || "Send message";
+  const consentLine = typeof config.consentLine === "string" ? config.consentLine : "";
+
+  const whatsappCtaLabel = (typeof config.whatsappCtaLabel === "string" && config.whatsappCtaLabel) || "WhatsApp us";
+  const phoneNumber = typeof config.phoneNumber === "string" ? config.phoneNumber : "";
+  const emailAddress = typeof config.emailAddress === "string" ? config.emailAddress : "";
+  const hoursLabel = (typeof config.hoursLabel === "string" && config.hoursLabel) || "Opening hours";
+  const hoursValue = typeof config.hoursValue === "string" ? config.hoursValue : "";
+
+  const whatsappHref = data.whatsappHref ?? "#whatsapp";
 
   return (
     <section
-      className="w-full"
-      style={{ background: surface, color: text }}
-      {...sectionRootAttrs(instanceId, "contact.split_1", "Contact")}
+      className={cn(
+        "relative w-full overflow-x-clip",
+        isDark ? "bg-foreground text-background" : "bg-background text-foreground"
+      )}
+      {...sectionRootAttrs(instanceId, "contact.split_1", "Contact · split")}
     >
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        <div>
-          {config.eyebrow && (
-            <p
-              className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
-              style={{ color: accent }}
-              {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
-            >
-              {config.eyebrow}
-            </p>
+      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+        {/* Header */}
+        <div className="mb-8 text-center sm:mb-10 sm:text-left">
+          {eyebrow && (
+            <Reveal>
+              <p
+                className="text-eyebrow font-extrabold uppercase"
+                style={{ color: accent }}
+                {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
+              >
+                {eyebrow}
+              </p>
+            </Reveal>
           )}
-          {config.heading && (
+          <Reveal delay={0.05}>
             <h2
-              className="mt-2 text-3xl leading-tight sm:text-4xl"
-              style={{ fontFamily: headingFont, fontWeight: headingWeight ?? 800 }}
-              {...treeAttrs(instanceId, "heading", "Main headline", "text")}
+              className="mt-3 text-display-sm font-extrabold sm:text-display-md lg:text-display-lg"
+              {...treeAttrs(instanceId, "heading", "Heading", "text")}
             >
-              {config.heading}
+              {heading}
             </h2>
-          )}
-          {config.subheading && (
-            <p
-              className="mt-3 max-w-2xl text-[14px] leading-relaxed sm:text-[16px]"
-              style={{
-                color: muted,
-                fontFamily: bodyFont,
-                fontWeight: bodyWeight ?? 500
-              }}
-              {...treeAttrs(instanceId, "subheading", "Supporting line", "text")}
-            >
-              {config.subheading}
-            </p>
+          </Reveal>
+          {subheading && (
+            <Reveal delay={0.1}>
+              <p
+                className="mt-3 max-w-2xl text-body-md text-muted-foreground sm:text-body-lg"
+                {...treeAttrs(instanceId, "subheading", "Subheading", "text")}
+              >
+                {subheading}
+              </p>
+            </Reveal>
           )}
         </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-5">
-          {/* Form (3/5 wide on desktop) */}
-          <form
-            action={hasAction ? config.formActionUrl : undefined}
-            method="post"
-            className="col-span-1 flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm lg:col-span-3"
-          >
-            <div>
-              <label className="block text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
-                Name
-              </label>
-              <input
-                type="text"
-                name="name"
-                required
-                placeholder={config.namePlaceholder || "Your name"}
-                aria-label="Your name"
-                disabled={isEditing || !hasAction}
-                className="mt-1 h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-[14px] text-neutral-900 focus:border-neutral-500 focus:outline-none disabled:bg-neutral-50"
-              />
-            </div>
-            <div>
-              <label className="block text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
-                Email
-              </label>
-              <input
-                type="email"
-                name="email"
-                required
-                placeholder={config.emailPlaceholder || "you@email.com"}
-                aria-label="Your email"
-                disabled={isEditing || !hasAction}
-                className="mt-1 h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-[14px] text-neutral-900 focus:border-neutral-500 focus:outline-none disabled:bg-neutral-50"
-              />
-            </div>
-            {config.showPhoneField && (
-              <div>
-                <label className="block text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
-                  Phone (optional)
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder={config.phonePlaceholder || "07…"}
-                  aria-label="Your phone"
-                  disabled={isEditing || !hasAction}
-                  className="mt-1 h-11 w-full rounded-lg border border-neutral-300 bg-white px-3 text-[14px] text-neutral-900 focus:border-neutral-500 focus:outline-none disabled:bg-neutral-50"
+        {/* Body — form (left) + panel (right) */}
+        <div className="grid gap-6 lg:grid-cols-[3fr_2fr] lg:gap-8">
+          {/* Form */}
+          <Reveal delay={0.15}>
+            <Card className="border-border/60 shadow-sm">
+              <CardContent className="p-5 sm:p-6">
+                {/* RHF + Zod validation with a native POST fallback so
+                    the merchant's Formspree / custom endpoint continues
+                    to receive submissions. See ./_ContactForm.tsx. */}
+                <ContactForm
+                  formActionUrl={formActionUrl}
+                  namePlaceholder={namePlaceholder}
+                  emailPlaceholder={emailPlaceholder}
+                  phonePlaceholder={phonePlaceholder}
+                  messagePlaceholder={messagePlaceholder}
+                  showPhoneField={showPhoneField}
+                  submitLabel={submitLabel}
+                  consentLine={consentLine}
+                  accent={accent}
+                  disabled={isEditing}
                 />
-              </div>
-            )}
-            <div>
-              <label className="block text-[10px] font-extrabold uppercase tracking-widest text-neutral-500">
-                Message
-              </label>
-              <textarea
-                name="message"
-                required
-                rows={4}
-                placeholder={
-                  config.messagePlaceholder ||
-                  "What's the job? Photos help — attach in the reply."
-                }
-                aria-label="Your message"
-                disabled={isEditing || !hasAction}
-                className="mt-1 w-full rounded-lg border border-neutral-300 bg-white p-3 text-[14px] text-neutral-900 focus:border-neutral-500 focus:outline-none disabled:bg-neutral-50"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={isEditing || !hasAction}
-              className="mt-2 inline-flex h-12 items-center justify-center rounded-xl px-5 text-[13px] font-extrabold uppercase tracking-widest transition hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-50"
-              style={{ background: accent, color: "#0A0A0A" }}
-              {...treeAttrs(instanceId, "submitLabel", "Submit button", "button")}
-            >
-              {config.submitLabel || "Send message"} →
-            </button>
-            {isEditing && !hasAction && (
-              <p
-                role="alert"
-                className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-[11px] font-bold text-amber-800"
-              >
-                Add your Formspree / Formsubmit / merchant endpoint URL
-                in Form action URL for real submissions.
-              </p>
-            )}
-          </form>
+              </CardContent>
+            </Card>
+          </Reveal>
 
-          {/* Contact panel (2/5 wide on desktop) */}
-          <div className="col-span-1 flex flex-col gap-3 rounded-2xl border border-neutral-200 bg-neutral-50 p-5 lg:col-span-2">
-            <p
-              className="text-[10px] font-extrabold uppercase tracking-widest"
-              style={{ color: accent }}
-            >
-              Prefer to skip the form?
-            </p>
-            <Link
-              href={whatsappHref}
-              className="inline-flex h-12 items-center justify-center rounded-xl px-4 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
-              style={{ background: "#25D366" }}
-              {...treeAttrs(instanceId, "whatsappCtaLabel", "WhatsApp button", "button")}
-            >
-              {config.whatsappCtaLabel || "💬 WhatsApp"}
-            </Link>
-            {config.phoneNumber && (
-              <Link
-                href={telHref}
-                className="inline-flex h-11 items-center rounded-xl border border-neutral-300 bg-white px-4 text-[13px] font-bold transition hover:bg-neutral-100"
-                style={{ color: text }}
-                {...treeAttrs(instanceId, "phoneNumber", "Phone", "text")}
-              >
-                📞 {config.phoneNumber}
-              </Link>
-            )}
-            {config.emailAddress && (
-              <Link
-                href={mailHref}
-                className="inline-flex h-11 items-center rounded-xl border border-neutral-300 bg-white px-4 text-[13px] font-bold transition hover:bg-neutral-100"
-                style={{ color: text }}
-                {...treeAttrs(instanceId, "emailAddress", "Email", "text")}
-              >
-                ✉ {config.emailAddress}
-              </Link>
-            )}
-            {config.hoursValue && (
-              <div className="mt-2 border-t border-neutral-200 pt-3">
-                <p
-                  className="text-[10px] font-extrabold uppercase tracking-widest"
-                  style={{ color: muted }}
-                  {...treeAttrs(instanceId, "hoursLabel", "Hours label", "text")}
-                >
-                  {config.hoursLabel || "Opening hours"}
-                </p>
-                <p
-                  className="mt-1 text-[12px] leading-relaxed"
-                  style={{ color: text, fontFamily: bodyFont }}
-                  {...treeAttrs(instanceId, "hoursValue", "Hours", "text")}
-                >
-                  {config.hoursValue}
-                </p>
-              </div>
-            )}
-          </div>
+          {/* Contact panel */}
+          <Reveal delay={0.22}>
+            <div className="flex h-full flex-col gap-3">
+              {/* WhatsApp CTA */}
+              <Card className="border-border/60 shadow-sm">
+                <CardContent className="p-5">
+                  <div className="flex items-start gap-3">
+                    <div
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                      style={{ background: "rgba(37,211,102,0.12)", color: "#25D366" }}
+                    >
+                      <MessageCircle strokeWidth={2.25} size={20} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-caption font-extrabold uppercase text-muted-foreground">
+                        Prefer to skip the form?
+                      </p>
+                      <Link
+                        href={whatsappHref}
+                        className="mt-1 inline-flex items-center gap-1.5 text-heading-sm font-extrabold text-foreground hover:text-primary"
+                        {...treeAttrs(
+                          instanceId,
+                          "whatsappCtaLabel",
+                          "WhatsApp CTA",
+                          "button"
+                        )}
+                      >
+                        {whatsappCtaLabel}
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Phone + email quick-actions */}
+              {(phoneNumber || emailAddress) && (
+                <Card className="border-border/60 shadow-sm">
+                  <CardContent className="flex flex-col gap-3 p-5">
+                    {phoneNumber && (
+                      <Link
+                        href={`tel:${phoneNumber.replace(/\s+/g, "")}`}
+                        className="group flex items-center gap-3 text-foreground hover:text-primary"
+                      >
+                        <div
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                          style={{ background: `${accent}14`, color: accent }}
+                        >
+                          <Phone strokeWidth={2.25} size={18} />
+                        </div>
+                        <span
+                          className="text-body-md font-extrabold"
+                          {...treeAttrs(
+                            instanceId,
+                            "phoneNumber",
+                            "Phone",
+                            "text"
+                          )}
+                        >
+                          {phoneNumber}
+                        </span>
+                      </Link>
+                    )}
+                    {emailAddress && (
+                      <Link
+                        href={`mailto:${emailAddress}`}
+                        className="group flex items-center gap-3 text-foreground hover:text-primary"
+                      >
+                        <div
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                          style={{ background: `${accent}14`, color: accent }}
+                        >
+                          <Mail strokeWidth={2.25} size={18} />
+                        </div>
+                        <span
+                          className="min-w-0 truncate text-body-md font-extrabold"
+                          {...treeAttrs(
+                            instanceId,
+                            "emailAddress",
+                            "Email",
+                            "text"
+                          )}
+                        >
+                          {emailAddress}
+                        </span>
+                      </Link>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Hours */}
+              {hoursValue && (
+                <Card className="border-border/60 shadow-sm">
+                  <CardContent className="p-5">
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
+                        style={{ background: `${accent}14`, color: accent }}
+                      >
+                        <Clock strokeWidth={2.25} size={18} />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p
+                          className="text-caption font-extrabold uppercase text-muted-foreground"
+                          {...treeAttrs(instanceId, "hoursLabel", "Hours label", "text")}
+                        >
+                          {hoursLabel}
+                        </p>
+                        <p
+                          className="mt-1 text-body-sm text-foreground"
+                          {...treeAttrs(instanceId, "hoursValue", "Hours value", "text")}
+                        >
+                          {hoursValue}
+                        </p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -250,65 +271,61 @@ function ContactSplit({
 
 const registration: SectionRegistration<Config> = {
   id: "contact.split_1",
-  name: "Contact form + panel",
-  version: "1.0.0",
+  name: "Contact · split",
+  version: "2.0.0",
   library: "contact",
   description:
-    "Form on the left (name / email / phone / message), contact info panel on the right (WhatsApp CTA + phone + email + hours). Native HTML POST — no JavaScript. Stacks on mobile.",
+    "Contact form + panel side-by-side on shadcn Card + Framer Motion. Form left, WhatsApp + phone + email + hours cards right. Mobile: stacks. Desktop: 60/40 grid.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Get in touch", priority: "text", group: "Copy" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Tell us about the job.", priority: "text", aiPromptable: true, group: "Copy" },
-    { key: "subheading", label: "Supporting line", type: { kind: "text", maxLength: 220, multiline: true }, default: "We reply within one working hour, Mon-Sat. Photos of the problem help us quote accurately.", priority: "text", aiPromptable: true, group: "Copy" },
-
-    { key: "formActionUrl", label: "Form action URL", type: { kind: "link", allowInternal: false, allowExternal: true }, default: "", description: "Paste your Formspree / Formsubmit / merchant endpoint URL.", group: "Form" },
-    { key: "namePlaceholder", label: "Name placeholder", type: { kind: "text", maxLength: 40 }, default: "Your name", group: "Form" },
-    { key: "emailPlaceholder", label: "Email placeholder", type: { kind: "text", maxLength: 40 }, default: "you@email.com", group: "Form" },
-    { key: "phonePlaceholder", label: "Phone placeholder", type: { kind: "text", maxLength: 40 }, default: "07…", group: "Form" },
+    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Get in touch", priority: "text", role: "eyebrow", group: "Copy" },
+    { key: "heading", label: "Heading", type: { kind: "text", maxLength: 80 }, default: "Book a quote", priority: "text", role: "headline", aiPromptable: true, group: "Copy" },
+    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "We reply within one working hour, Mon-Sat. Photos of the problem help us quote accurately.", priority: "text", role: "subhead", aiPromptable: true, group: "Copy" },
+    { key: "formActionUrl", label: "Form action URL", type: { kind: "link", allowExternal: true }, default: "", description: "Formspree / Formsubmit.co / your endpoint. Leave blank for demo mode.", group: "Form" },
+    { key: "namePlaceholder", label: "Name placeholder", type: { kind: "text", maxLength: 30 }, default: "Your name", group: "Form" },
+    { key: "emailPlaceholder", label: "Email placeholder", type: { kind: "text", maxLength: 30 }, default: "you@email.com", group: "Form" },
+    { key: "phonePlaceholder", label: "Phone placeholder", type: { kind: "text", maxLength: 30 }, default: "07…", group: "Form" },
+    { key: "messagePlaceholder", label: "Message placeholder", type: { kind: "text", maxLength: 100, multiline: true }, default: "What's the job? Photos help — attach in the reply.", group: "Form" },
     { key: "showPhoneField", label: "Show phone field", type: { kind: "boolean" }, default: true, group: "Form" },
-    { key: "messagePlaceholder", label: "Message placeholder", type: { kind: "text", maxLength: 140 }, default: "What's the job? Photos help — attach in the reply.", group: "Form" },
-    { key: "submitLabel", label: "Submit button text", type: { kind: "text", maxLength: 24 }, default: "Send message", priority: "button", group: "Form" },
-
-    { key: "whatsappCtaLabel", label: "WhatsApp button text", type: { kind: "text", maxLength: 24 }, default: "💬 WhatsApp", priority: "button", group: "Panel" },
-    { key: "phoneNumber", label: "Phone number", type: { kind: "text", maxLength: 40 }, default: "0800 000 0000", priority: "text", group: "Panel" },
-    { key: "emailAddress", label: "Email address", type: { kind: "text", maxLength: 80 }, default: "hello@yourbusiness.co.uk", priority: "text", group: "Panel" },
-    { key: "hoursLabel", label: "Hours label", type: { kind: "text", maxLength: 40 }, default: "Opening hours", priority: "text", group: "Panel" },
-    { key: "hoursValue", label: "Hours value", type: { kind: "text", maxLength: 120, multiline: true }, default: "Mon-Fri 07:30-18:00 · Sat 08:00-14:00 · Emergency line 24/7", priority: "text", aiPromptable: true, group: "Panel" }
-  ],
-  animations: ["none", "fade"],
+    { key: "submitLabel", label: "Submit label", type: { kind: "text", maxLength: 30 }, default: "Send message", priority: "button", role: "primary_action_label", group: "Form" },
+    { key: "consentLine", label: "Consent line", type: { kind: "text", maxLength: 100 }, default: "We reply within 4 working hours.", priority: "text", role: "disclaimer", group: "Form" },
+    { key: "whatsappCtaLabel", label: "WhatsApp CTA", type: { kind: "text", maxLength: 30 }, default: "WhatsApp us", priority: "button", role: "cta_whatsapp", group: "Panel" },
+    { key: "phoneNumber", label: "Phone number", type: { kind: "text", maxLength: 40 }, default: "0800 000 0000", priority: "text", role: "cta_call", group: "Panel" },
+    { key: "emailAddress", label: "Email address", type: { kind: "text", maxLength: 60 }, default: "hello@yourbusiness.co.uk", priority: "text", role: "cta_email", group: "Panel" },
+    { key: "hoursLabel", label: "Hours label", type: { kind: "text", maxLength: 30 }, default: "Opening hours", priority: "text", group: "Panel" },
+    { key: "hoursValue", label: "Hours value", type: { kind: "text", maxLength: 140, multiline: true }, default: "Mon-Fri 07:30-18:00 · Sat 08:00-14:00 · Emergency line 24/7", priority: "text", group: "Panel" },
+    { key: "surface", role: "surface_mode", label: "Surface", type: { kind: "select", options: [{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }] }, default: "light", group: "Layout" }
+  ] as unknown as SectionRegistration<Config>["editableFields"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain: "Explain why a contact form + panel works for UK trades. Reference specific copy.",
-    improve: "Improve without layout change. Headline under 6 words. Sub-line one sentence. Return only patched config.",
-    rewrite: "Rewrite copy in a {tone} voice.",
-    suggestAlternative: "Suggest an alternative contact layout from library='contact'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    explain: "A contact split section. Explain when this beats a single call-to-action.",
+    improve: "Tighten heading + subheading. Return patched fields only.",
+    rewrite: "Rewrite heading + subheading in a {tone} voice.",
+    suggestAlternative: "Suggest an alternative when the merchant only wants WhatsApp.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail: "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/contact-split-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 0 },
-    accessibility: { contrastMin: 4.5 },
-    sales: { primaryActionRequired: true },
-    seo: { headingLevel: 2, structuredData: "ContactPage" },
-    mobile: { minTapTargetPx: 44 },
-    brandConsistency: { boundTokens: ["color.accent", "color.surface", "color.text"] }
-  },
-  telemetryTags: ["contact", "split", "form_left_panel_right", "no_js", "external_action"],
-  bestForVerticals: ["plumbing", "electrical", "hvac", "landscaping", "roofing", "joinery", "plant_hire", "tool_hire", "building_merchant", "kitchen_install", "bathroom_install", "handyman"],
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 0 }, accessibility: { contrastMin: 4.5 }, sales: { primaryActionRequired: true }, seo: { headingLevel: 2 }, mobile: { minTapTargetPx: 44 }, brandConsistency: { boundTokens: ["color.accent"] } },
+  telemetryTags: ["contact", "form", "split", "shadcn", "framer_motion"],
+  bestForVerticals: ["electrician", "plumber", "gas-engineer", "hvac-contractor", "handyman", "landscaper", "extension-builder"],
   defaultConfig: () => ({
     eyebrow: "Get in touch",
-    heading: "Tell us about the job.",
+    heading: "Book a quote",
     subheading: "We reply within one working hour, Mon-Sat. Photos of the problem help us quote accurately.",
     formActionUrl: "",
     namePlaceholder: "Your name",
     emailPlaceholder: "you@email.com",
     phonePlaceholder: "07…",
-    showPhoneField: true,
     messagePlaceholder: "What's the job? Photos help — attach in the reply.",
+    showPhoneField: true,
     submitLabel: "Send message",
-    whatsappCtaLabel: "💬 WhatsApp",
+    ctaLabel: "Send message",
+    consentLine: "We reply within 4 working hours.",
+    whatsappCtaLabel: "WhatsApp us",
     phoneNumber: "0800 000 0000",
     emailAddress: "hello@yourbusiness.co.uk",
     hoursLabel: "Opening hours",
-    hoursValue: "Mon-Fri 07:30-18:00 · Sat 08:00-14:00 · Emergency line 24/7"
+    hoursValue: "Mon-Fri 07:30-18:00 · Sat 08:00-14:00 · Emergency line 24/7",
+    surface: "light"
   }),
   renderer: ContactSplit
 };

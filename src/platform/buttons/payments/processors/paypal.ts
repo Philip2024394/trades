@@ -15,6 +15,7 @@ import {
   paymentProcessors,
   type PaymentProcessor
 } from "../processor";
+import { formatMajorString } from "../currency";
 
 const BASE_LIVE = "https://api-m.paypal.com";
 const BASE_SANDBOX = "https://api-m.sandbox.paypal.com";
@@ -59,7 +60,10 @@ const processor: PaymentProcessor = {
             description: req.description ?? req.orderRef,
             amount: {
               currency_code: req.currency,
-              value: (req.amountMinor / 100).toFixed(2)
+              // PayPal expects the MAJOR-unit string with the right
+              // number of decimals per ISO 4217 (2 for USD, 0 for JPY /
+              // IDR / KRW, 3 for BHD / KWD).
+              value: formatMajorString(req.amountMinor, req.currency)
             }
           }
         ],

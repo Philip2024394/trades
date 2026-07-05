@@ -1,15 +1,22 @@
-// footer.minimal_1 — dark brand-name + 3-column link footer.
+// footer.minimal_1 — Phase 2 rebuild on shadcn foundation.
 //
-// Every published page needs one. Merchant fills 3 columns of links
-// (comma-separated), a WhatsApp / email row, and a copyright line.
+// Dark brand-name + 3-column link footer with WhatsApp/email row and
+// copyright. Uses platform typography scale + Lucide icons + Framer
+// Motion Reveal.
+
+"use client";
 
 import Link from "next/link";
+import { MessageCircle, Mail, ArrowUpRight } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { Reveal } from "@/components/ui/reveal";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 type Config = {
   brandLine: string;
@@ -28,7 +35,8 @@ type Config = {
 
 type LinkPair = { label: string; href: string };
 
-function parseLinks(raw: string): LinkPair[] {
+function parseLinks(raw: unknown): LinkPair[] {
+  if (typeof raw !== "string" || raw.length === 0) return [];
   return raw
     .split(",")
     .map((s) => s.trim())
@@ -45,170 +53,213 @@ function FooterMinimal({
   tokens,
   data
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
 
-  const cols = [
-    { i: 1 as const, title: config.col1Title, links: parseLinks(config.col1Links) },
-    { i: 2 as const, title: config.col2Title, links: parseLinks(config.col2Links) },
-    { i: 3 as const, title: config.col3Title, links: parseLinks(config.col3Links) }
-  ];
+  // Defensive fallbacks.
+  const brandLine =
+    typeof config.brandLine === "string" ? config.brandLine : "Your Business";
+  const tagline =
+    typeof config.tagline === "string" ? config.tagline : "";
+  const col1Title =
+    typeof config.col1Title === "string" ? config.col1Title : "";
+  const col2Title =
+    typeof config.col2Title === "string" ? config.col2Title : "";
+  const col3Title =
+    typeof config.col3Title === "string" ? config.col3Title : "";
+  const contactWhatsappLabel =
+    (typeof config.contactWhatsappLabel === "string" &&
+      config.contactWhatsappLabel) ||
+    "WhatsApp us";
+  const contactEmailLabel =
+    (typeof config.contactEmailLabel === "string" &&
+      config.contactEmailLabel) ||
+    "Email";
+  const contactEmailValue =
+    typeof config.contactEmailValue === "string"
+      ? config.contactEmailValue
+      : "";
+  const copyright =
+    (typeof config.copyright === "string" && config.copyright) ||
+    `© ${new Date().getFullYear()} ${brandLine}. All rights reserved.`;
 
-  const whatsappHref = data.whatsappHref ?? "#";
-  const mailHref = config.contactEmailValue
-    ? `mailto:${config.contactEmailValue}`
-    : "#";
+  const col1Links = parseLinks(config.col1Links);
+  const col2Links = parseLinks(config.col2Links);
+  const col3Links = parseLinks(config.col3Links);
+
+  const whatsappHref = data.whatsappHref ?? "#whatsapp";
 
   return (
-    <section
-      className="w-full"
-      style={{ background: "#0A0A0A", color: "#FFFFFF" }}
+    <footer
+      className={cn(
+        "relative w-full overflow-x-clip bg-foreground text-background"
+      )}
       {...sectionRootAttrs(instanceId, "footer.minimal_1", "Footer")}
     >
       <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
-          <div>
-            <p
-              className="text-2xl leading-tight"
-              style={{
-                fontFamily: headingFont,
-                fontWeight: headingWeight ?? 900,
-                color: accent
-              }}
-              {...treeAttrs(instanceId, "brandLine", "Brand line", "text")}
-            >
-              {config.brandLine}
-            </p>
-            <p
-              className="mt-2 max-w-xs text-[12px] leading-relaxed"
-              style={{ color: "rgba(255,255,255,0.65)", fontFamily: bodyFont }}
-              {...treeAttrs(instanceId, "tagline", "Tagline", "text")}
-            >
-              {config.tagline}
-            </p>
-          </div>
-
-          {cols.map((c) => (
-            <div key={c.i}>
+        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4 lg:gap-10">
+          {/* Brand column */}
+          <Reveal>
+            <div>
               <p
-                className="text-[10px] font-extrabold uppercase tracking-widest"
-                style={{ color: accent }}
-                {...treeAttrs(instanceId, `col${c.i}Title`, `Column ${c.i} title`, "text")}
+                className="text-heading-lg font-extrabold tracking-tight"
+                {...treeAttrs(instanceId, "brandLine", "Brand name", "text")}
               >
-                {c.title}
+                {brandLine}
               </p>
-              <ul
-                className="mt-3 space-y-2"
-                {...treeAttrs(instanceId, `col${c.i}Links`, `Column ${c.i} links`, "text")}
-              >
-                {c.links.map((l, idx) => (
-                  <li key={idx}>
-                    <Link
-                      href={l.href}
-                      className="text-[13px] font-bold text-white transition hover:text-white/70"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              {tagline && (
+                <p
+                  className="mt-2 max-w-xs text-body-sm opacity-70"
+                  {...treeAttrs(instanceId, "tagline", "Tagline", "text")}
+                >
+                  {tagline}
+                </p>
+              )}
             </div>
-          ))}
+          </Reveal>
+
+          {/* Link columns */}
+          {[
+            { title: col1Title, links: col1Links, idx: 1 },
+            { title: col2Title, links: col2Links, idx: 2 },
+            { title: col3Title, links: col3Links, idx: 3 }
+          ].map((col) =>
+            col.title || col.links.length > 0 ? (
+              <Reveal key={col.idx} delay={0.05 * col.idx}>
+                <div>
+                  {col.title && (
+                    <p
+                      className="text-caption font-extrabold uppercase opacity-60"
+                      {...treeAttrs(
+                        instanceId,
+                        `col${col.idx}Title`,
+                        `Column ${col.idx} title`,
+                        "text"
+                      )}
+                    >
+                      {col.title}
+                    </p>
+                  )}
+                  {col.links.length > 0 && (
+                    <ul className="mt-3 flex flex-col gap-2">
+                      {col.links.map((l, i) => (
+                        <li key={i}>
+                          <Link
+                            href={l.href}
+                            className="inline-flex items-center gap-1 text-body-sm opacity-80 transition-opacity hover:opacity-100"
+                          >
+                            {l.label}
+                            <ArrowUpRight
+                              size={12}
+                              strokeWidth={2}
+                              className="opacity-0 transition-opacity group-hover:opacity-100"
+                              aria-hidden="true"
+                            />
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </Reveal>
+            ) : null
+          )}
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
-          <div className="flex flex-wrap gap-3">
-            {config.contactWhatsappLabel && (
+        {/* Divider */}
+        <Separator className="my-8 bg-background/10 sm:my-10" />
+
+        {/* Bottom row — contact + copyright */}
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <Reveal delay={0.2}>
+            <div className="flex flex-wrap items-center gap-3">
               <Link
                 href={whatsappHref}
-                className="inline-flex h-10 items-center rounded-xl px-4 text-[12px] font-extrabold uppercase tracking-widest"
-                style={{ background: "#25D366", color: "#FFFFFF" }}
-                {...treeAttrs(instanceId, "contactWhatsappLabel", "WhatsApp button", "button")}
+                className="inline-flex items-center gap-2 rounded-full border border-background/20 px-4 py-1.5 text-caption font-extrabold uppercase transition-colors hover:border-background/40"
               >
-                {config.contactWhatsappLabel}
+                <MessageCircle
+                  size={14}
+                  strokeWidth={2.25}
+                  style={{ color: "#25D366" }}
+                  aria-hidden="true"
+                />
+                {contactWhatsappLabel}
               </Link>
-            )}
-            {config.contactEmailLabel && (
-              <Link
-                href={mailHref}
-                className="inline-flex h-10 items-center rounded-xl px-4 text-[12px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-110"
-                style={{ background: "rgba(255,255,255,0.10)" }}
-                {...treeAttrs(instanceId, "contactEmailLabel", "Email button", "button")}
-              >
-                {config.contactEmailLabel}
-              </Link>
-            )}
-          </div>
-          <p
-            className="text-[11px]"
-            style={{ color: "rgba(255,255,255,0.4)" }}
-            {...treeAttrs(instanceId, "copyright", "Copyright", "text")}
-          >
-            {config.copyright}
-          </p>
+              {contactEmailValue && (
+                <Link
+                  href={`mailto:${contactEmailValue}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-background/20 px-4 py-1.5 text-caption font-extrabold uppercase transition-colors hover:border-background/40"
+                >
+                  <Mail
+                    size={14}
+                    strokeWidth={2.25}
+                    style={{ color: accent }}
+                    aria-hidden="true"
+                  />
+                  {contactEmailLabel}
+                </Link>
+              )}
+            </div>
+          </Reveal>
+          <Reveal delay={0.25}>
+            <p
+              className="text-caption font-bold opacity-50"
+              {...treeAttrs(instanceId, "copyright", "Copyright", "text")}
+            >
+              {copyright}
+            </p>
+          </Reveal>
         </div>
       </div>
-    </section>
+    </footer>
   );
 }
 
-const columnFields = (i: 1 | 2 | 3, title: string, links: string) => [
-  { key: `col${i}Title`, label: `Column ${i} title`, type: { kind: "text" as const, maxLength: 30 }, default: title, priority: "text" as const, group: `Column ${i}` },
-  { key: `col${i}Links`, label: `Column ${i} links`, type: { kind: "text" as const, maxLength: 400, multiline: true }, default: links, priority: "text" as const, description: "Format: Label:/href, Label:/href, …", group: `Column ${i}` }
-];
-
 const registration: SectionRegistration<Config> = {
   id: "footer.minimal_1",
-  name: "Minimal footer",
-  version: "1.0.0",
+  name: "Footer · minimal",
+  version: "2.0.0",
   library: "footer",
   description:
-    "Dark 4-column footer: brand + tagline + 3 link columns. Bottom row: WhatsApp + email + copyright. Ships on every published page.",
+    "Dark 3-column link footer with brand line + tagline + WhatsApp/email chips + copyright. Framer Motion staggered entrance. Lucide icons.",
   editableFields: [
-    { key: "brandLine", label: "Brand line", type: { kind: "text", maxLength: 40 }, default: "Your Business", priority: "text", group: "Brand" },
-    { key: "tagline", label: "Tagline", type: { kind: "text", maxLength: 160 }, default: "Trades done right, first time, insured and guaranteed.", priority: "text", aiPromptable: true, group: "Brand" },
-    ...columnFields(1, "Services", "Home:/, Services:/services, Prices:/pricing, Areas we cover:/areas"),
-    ...columnFields(2, "About", "About us:/about, Our team:/team, Reviews:/reviews, Guarantees:/guarantee"),
-    ...columnFields(3, "Get in touch", "Quote:/quote, Emergency:/emergency, Book an appointment:/book, WhatsApp:#whatsapp"),
-    { key: "contactWhatsappLabel", label: "WhatsApp button text", type: { kind: "text", maxLength: 24 }, default: "💬 WhatsApp us", priority: "button", group: "Contact row" },
-    { key: "contactEmailLabel", label: "Email button text", type: { kind: "text", maxLength: 24 }, default: "✉ Email", priority: "button", group: "Contact row" },
-    { key: "contactEmailValue", label: "Email address", type: { kind: "text", maxLength: 80 }, default: "hello@yourbusiness.co.uk", group: "Contact row" },
-    { key: "copyright", label: "Copyright line", type: { kind: "text", maxLength: 120 }, default: "© Your Business Ltd. Registered in England.", priority: "text", group: "Legal" }
+    { key: "brandLine", label: "Brand name", type: { kind: "text", maxLength: 40 }, default: "Your Business", priority: "text", group: "Brand" },
+    { key: "tagline", label: "Tagline", type: { kind: "text", maxLength: 120 }, default: "Trades done right, first time, insured and guaranteed.", priority: "text", role: "trust_line", aiPromptable: true, group: "Brand" },
+    { key: "col1Title", label: "Column 1 title", type: { kind: "text", maxLength: 30 }, default: "Services", group: "Column 1" },
+    { key: "col1Links", label: "Column 1 links", type: { kind: "text", maxLength: 400 }, default: "Home:/, Services:/services, Prices:/prices, Areas we cover:/areas", description: "Comma-separated 'Label:/href' pairs.", group: "Column 1" },
+    { key: "col2Title", label: "Column 2 title", type: { kind: "text", maxLength: 30 }, default: "About", group: "Column 2" },
+    { key: "col2Links", label: "Column 2 links", type: { kind: "text", maxLength: 400 }, default: "About us:/about, Our team:/team, Reviews:/reviews, Guarantees:/guarantees", group: "Column 2" },
+    { key: "col3Title", label: "Column 3 title", type: { kind: "text", maxLength: 30 }, default: "Get in touch", group: "Column 3" },
+    { key: "col3Links", label: "Column 3 links", type: { kind: "text", maxLength: 400 }, default: "Quote:/contact, Emergency:/emergency, Book an appointment:/book", group: "Column 3" },
+    { key: "contactWhatsappLabel", label: "WhatsApp chip label", type: { kind: "text", maxLength: 30 }, default: "WhatsApp us", priority: "text", group: "Contact" },
+    { key: "contactEmailLabel", label: "Email chip label", type: { kind: "text", maxLength: 30 }, default: "Email", priority: "text", group: "Contact" },
+    { key: "contactEmailValue", label: "Email address", type: { kind: "text", maxLength: 60 }, default: "hello@yourbusiness.co.uk", priority: "text", group: "Contact" },
+    { key: "copyright", label: "Copyright line", type: { kind: "text", maxLength: 120 }, default: "", description: "Leave blank to auto-generate '© {year} {brand}. All rights reserved.'", priority: "text", role: "disclaimer", group: "Legal" }
   ],
-  animations: ["none"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain: "Explain why merchants need a footer this rich. Reference the 3 link columns.",
-    improve: "Improve without layout change. Column titles under 3 words. Link labels under 4 words. Return only patched config.",
+    explain: "A minimal 3-column footer. Explain when this beats a mega-footer.",
+    improve: "Tighten link labels. Return patched fields only.",
     rewrite: "Rewrite the tagline in a {tone} voice.",
-    suggestAlternative: "Suggest an alternative footer from library='footer'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    suggestAlternative: "Suggest an alternative when the merchant has 30+ links.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail: "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/footer-minimal-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 0 },
-    accessibility: { contrastMin: 4.5 },
-    sales: { primaryActionRequired: true },
-    seo: { headingLevel: 2 },
-    mobile: { minTapTargetPx: 44 },
-    brandConsistency: { boundTokens: ["color.accent"] }
-  },
-  telemetryTags: ["footer", "minimal", "dark", "four_column", "contact_row"],
-  bestForVerticals: ["plumbing", "electrical", "hvac", "landscaping", "roofing", "joinery", "plant_hire", "kitchen_install", "bathroom_install"],
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 0 }, accessibility: { contrastMin: 4.5 }, sales: { primaryActionRequired: false }, seo: { headingLevel: 3 }, mobile: { minTapTargetPx: 44 }, brandConsistency: { boundTokens: ["color.accent"] } },
+  telemetryTags: ["footer", "minimal", "3col", "shadcn", "framer_motion"],
+  bestForVerticals: ["electrician", "plumber", "gas-engineer", "hvac-contractor", "roofer", "landscaper", "extension-builder"],
   defaultConfig: () => ({
     brandLine: "Your Business",
     tagline: "Trades done right, first time, insured and guaranteed.",
     col1Title: "Services",
-    col1Links: "Home:/, Services:/services, Prices:/pricing, Areas we cover:/areas",
+    col1Links: "Home:/, Services:/services, Prices:/prices, Areas we cover:/areas",
     col2Title: "About",
-    col2Links: "About us:/about, Our team:/team, Reviews:/reviews, Guarantees:/guarantee",
+    col2Links: "About us:/about, Our team:/team, Reviews:/reviews, Guarantees:/guarantees",
     col3Title: "Get in touch",
-    col3Links: "Quote:/quote, Emergency:/emergency, Book an appointment:/book, WhatsApp:#whatsapp",
-    contactWhatsappLabel: "💬 WhatsApp us",
-    contactEmailLabel: "✉ Email",
+    col3Links: "Quote:/contact, Emergency:/emergency, Book an appointment:/book",
+    contactWhatsappLabel: "WhatsApp us",
+    contactEmailLabel: "Email",
     contactEmailValue: "hello@yourbusiness.co.uk",
-    copyright: "© Your Business Ltd. Registered in England."
+    copyright: ""
   }),
   renderer: FooterMinimal
 };

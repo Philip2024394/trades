@@ -25,6 +25,7 @@
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import { ButtonSlot } from "@/platform/buttons/ButtonSlot";
+import { formatMoney } from "@/platform/buttons/payments/currency";
 import "@/platform/buttons";
 import type {
   SectionRegistration,
@@ -191,18 +192,10 @@ function CheckoutStack({
   );
 }
 
-/** Convert minor units to a human display string. Falls back to the
- *  raw major-unit division when a currency isn't in the Intl table. */
+/** Currency-aware amount formatter — handles zero-decimal (IDR, JPY,
+ *  KRW, VND) and three-decimal (BHD, KWD) currencies correctly. */
 function formatAmount(minor: number, currency: string): string {
-  const value = (minor ?? 0) / 100;
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: currency ?? "USD"
-    }).format(value);
-  } catch {
-    return `${currency ?? ""} ${value.toFixed(2)}`;
-  }
+  return formatMoney(minor ?? 0, currency ?? "USD");
 }
 
 const registration: SectionRegistration<Config> = {

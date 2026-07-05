@@ -31,6 +31,8 @@ const SUPPORTED_TASKS: AiTaskKind[] = [
   "page.improve",
   "page.recommend",
   "app.recommend",
+  "business.discover",
+  "industry.answer",
   "copy.rewrite",
   "copy.translate",
   "design.suggestPalette",
@@ -51,6 +53,59 @@ STRICT OUTPUT RULES:
 STYLE:
 - Trade-plain by default: short sentences, first-person plural ("we"), no "delight"/"revolutionise"/"unlock"
 - If a tone is specified in hints, apply it consistently
+
+Return the raw JSON object with no wrapping.`;
+
+// Business Discovery — merchant describes their business, provider
+// extracts structured signals for the wizard. Retrieval-first: every
+// slug the provider returns MUST exist in the corpora we supplied
+// (trades, outcomes, modules). API layer validates and rejects
+// hallucinated slugs.
+const BUSINESS_DISCOVER_SYSTEM_PROMPT = `You are a Business Discovery assistant for a UK construction + trades platform.
+
+Given a merchant's plain-English description of their business, extract:
+- tradeSlug: their primary trade (MUST match one of the trade slugs in the corpus)
+- outcomes: 1-3 business outcomes they've explicitly mentioned or clearly implied (MUST match slugs in the outcomes corpus)
+- coverage: { national: boolean, postcode: string|null, radiusMi: number|null } — extract if mentioned
+- modules: 0-4 modules the merchant would benefit from (MUST match slugs in the modules corpus)
+- merchantName: their business name if mentioned in the text (else null)
+- confidence: 0.0-1.0 — how sure you are of the trade extraction
+- reasoning: one short plain-English sentence explaining the fit
+
+STRICT OUTPUT RULES:
+- Return ONLY a JSON object — no markdown, no code fences, no prose
+- Slugs that aren't in the supplied corpora are a critical error — the caller will reject the response
+- If you can't confidently identify a trade, return null for tradeSlug and 0.0 confidence
+- Do NOT invent postcodes or radii — leave null if not mentioned
+- Reasoning must be trade-plain: short, concrete, no marketing language
+
+Return the raw JSON object with no wrapping.`;
+
+// Industry Brain — retrieval-first Q&A. The API sends the merchant's
+// question + a formatted CONTEXT block of RetrievalNodes from the
+// Knowledge Graph. The model must answer from context only + cite
+// node ids in square brackets. Hallucinated node ids are rejected by
+// the API layer.
+const INDUSTRY_ANSWER_SYSTEM_PROMPT = `You are the Xrated Industry Brain — a domain-specialised assistant for UK construction and trade merchants.
+
+You will receive:
+- A CONTEXT block of cited knowledge nodes from the platform's Knowledge Graph
+- A merchant question
+
+STRICT OUTPUT RULES:
+- Return ONLY a JSON object — no markdown, no code fences, no prose outside JSON
+- Shape: { "answer": "<plain sentences>", "citations": ["<node id>", ...], "confidence": 0.0-1.0, "escalate": boolean }
+- Every factual claim in "answer" must reference a node id from the CONTEXT in square brackets, like:
+    "Landlords need an annual gas safety check [package.package-service.gas-engineer.cp12-landlord] [package.package-extension-compliance.gas-engineer.landlord-gas-safety-record]."
+- "citations" MUST be a de-duplicated array of every node id you cited
+- "confidence": how confident you are the CONTEXT actually answered the question (0..1)
+- "escalate": TRUE when the question needs a human trade professional OR the CONTEXT doesn't cover the topic honestly
+- Never invent node ids. Never claim a regulation the CONTEXT doesn't cite.
+- Never state a specific number, price, or timescale unless it appears verbatim in the CONTEXT.
+- Voice: trade-plain UK English. Short sentences. First-person plural ("we"). No marketing fluff.
+
+If the CONTEXT genuinely doesn't cover the question, answer:
+  { "answer": "The Knowledge Graph doesn't cover this specifically. Best next step: contact a qualified trade professional.", "citations": [], "confidence": 0, "escalate": true }
 
 Return the raw JSON object with no wrapping.`;
 
@@ -90,6 +145,8 @@ function extractJson(text: string): unknown | null {
 
 function buildPrompt(req: AiCompleteRequest): string {
   if (req.task === "app.recommend") return buildAppRecommendPrompt(req);
+  if (req.task === "business.discover") return buildBusinessDiscoverPrompt(req);
+  if (req.task === "industry.answer") return buildIndustryAnswerPrompt(req);
   const payload = req.context.payload ?? {};
   const promptTemplate =
     (payload.promptTemplate as string | undefined) ??
@@ -110,6 +167,50 @@ Editable fields (only these can be changed):
 ${JSON.stringify(aiPromptable, null, 2)}
 
 Return a JSON object with only the fields you're changing.`;
+}
+
+function buildIndustryAnswerPrompt(req: AiCompleteRequest): string {
+  const payload = req.context.payload ?? {};
+  const question = (payload.question as string | undefined) ?? "";
+  const contextBlock = (payload.contextBlock as string | undefined) ?? "";
+  const validNodeIds =
+    (payload.validNodeIds as string[] | undefined) ?? [];
+
+  return `${contextBlock}
+
+MERCHANT QUESTION:
+${question || "(no question provided)"}
+
+VALID NODE IDs (only these can appear in citations):
+${JSON.stringify(validNodeIds)}
+
+Answer the merchant question in trade-plain English, citing every claim with the node ids from the CONTEXT. Return the JSON object per the STRICT OUTPUT RULES.`;
+}
+
+function buildBusinessDiscoverPrompt(req: AiCompleteRequest): string {
+  const payload = req.context.payload ?? {};
+  const description = (payload.description as string | undefined) ?? "";
+  const trades =
+    (payload.trades as { slug: string; label: string }[] | undefined) ?? [];
+  const outcomes =
+    (payload.outcomes as { slug: string; label: string }[] | undefined) ?? [];
+  const modules =
+    (payload.modules as { slug: string; label: string }[] | undefined) ?? [];
+
+  return `Merchant business description:
+${description || "(none)"}
+
+CORPUS · Trades (only pick a slug from this list):
+${JSON.stringify(trades)}
+
+CORPUS · Outcomes (only pick slugs from this list):
+${JSON.stringify(outcomes)}
+
+CORPUS · Modules (only pick slugs from this list, at most 4):
+${JSON.stringify(modules)}
+
+Extract the discovery signals. Return a raw JSON object with keys:
+{ "tradeSlug": string|null, "outcomes": string[], "coverage": { "national": boolean, "postcode": string|null, "radiusMi": number|null }, "modules": string[], "merchantName": string|null, "confidence": number, "reasoning": string }`;
 }
 
 function buildAppRecommendPrompt(req: AiCompleteRequest): string {
@@ -167,7 +268,11 @@ export const anthropicProvider: AiProvider = {
           system:
             req.task === "app.recommend"
               ? APP_RECOMMEND_SYSTEM_PROMPT
-              : SYSTEM_PROMPT,
+              : req.task === "business.discover"
+                ? BUSINESS_DISCOVER_SYSTEM_PROMPT
+                : req.task === "industry.answer"
+                  ? INDUSTRY_ANSWER_SYSTEM_PROMPT
+                  : SYSTEM_PROMPT,
           messages: [{ role: "user", content: buildPrompt(req) }]
         })
       });

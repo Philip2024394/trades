@@ -1,10 +1,17 @@
-// Studio dashboard. First screen a merchant sees after signing in.
-// Module 0.4 ships a functional landing (recent pages + quick actions);
-// richer analytics + AI Co-Pilot arrive in later modules.
+// Studio home — Business Builder positioning.
+//
+// Three stacked surfaces in priority order:
+//   1. Trade-card hero — "start a fresh build" trade grid
+//   2. Growth Coach — top 3 next wins on live merchant state
+//   3. Business Modules teaser — see the honest module inventory
+//   4. Legacy quick actions — keep for merchants used to them
 
 import Link from "next/link";
 import { loadStudioSession } from "@/lib/studio/session";
-import { StudioHomeAiEntry } from "@/components/studio/StudioHomeAiEntry";
+import { StudioHomeHero } from "@/components/studio/StudioHomeHero";
+import { GrowthCoachCard } from "@/components/studio/GrowthCoachCard";
+import { BusinessDiscoveryInput } from "@/components/studio/BusinessDiscoveryInput";
+import { IndustryBrainCard } from "@/components/studio/IndustryBrainCard";
 
 const YELLOW = "#FFB300";
 
@@ -12,109 +19,95 @@ export const dynamic = "force-dynamic";
 
 export default async function StudioHomePage() {
   const session = await loadStudioSession();
-  // Layout gate already redirected if session was null, but re-checking
-  // keeps this component pure for testing.
   if (!session) return null;
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10 sm:py-14">
-      <p
-        className="text-[10px] font-extrabold uppercase tracking-widest"
-        style={{ color: YELLOW }}
-      >
-        Welcome back
-      </p>
-      <h1 className="mt-2 text-3xl font-extrabold leading-tight text-neutral-900 sm:text-4xl">
-        {session.merchant.display_name}
-      </h1>
-      <p className="mt-2 max-w-2xl text-[14px] leading-relaxed text-neutral-600">
-        Your workspace for building and running the {session.brand.name} site.
-        Edit pages, manage media, tune your brand, and publish — all in one
-        place.
-      </p>
+    <div className="mx-auto max-w-6xl px-6 py-10 sm:py-14">
+      <StudioHomeHero merchantName={session.merchant.display_name} />
 
-      {/* Hero action — installing an App is the "start here" moment
-          for any new brand, so it deserves its own row above the
-          maintenance-oriented quick actions. */}
+      {/* Business Discovery — the LLM path alternative to picking a
+          trade card. Retrieval-constrained: extracted trade, outcomes,
+          coverage, modules must all exist in real registries. */}
       <div className="mt-8">
-        <AddAppCard />
+        <BusinessDiscoveryInput />
       </div>
 
-      {/* AI recommender — for merchants who know what they want but
-          don't know which App matches. Retrieval-first: matches only
-          come from the live App Registry. */}
-      <div className="mt-4">
-        <StudioHomeAiEntry />
+      {/* Growth Coach — always the retention hook */}
+      <div className="mt-6">
+        <GrowthCoachCard />
       </div>
 
-      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+      {/* Industry Brain — first live consumer of the Knowledge Graph.
+          Retrieval-constrained Q&A over Domains + Package + Merchant
+          data; hallucinations dropped server-side. */}
+      <div className="mt-6">
+        <IndustryBrainCard />
+      </div>
+
+      {/* Business Modules teaser */}
+      <div className="mt-6">
+        <Link
+          href="/studio/modules"
+          className="group flex flex-col justify-between gap-4 overflow-hidden rounded-2xl border-2 border-neutral-900 bg-neutral-900 p-6 text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-2xl sm:flex-row sm:items-center"
+        >
+          <div className="min-w-0">
+            <p
+              className="text-[10px] font-extrabold uppercase tracking-widest"
+              style={{ color: YELLOW }}
+            >
+              Your business modules
+            </p>
+            <h2 className="mt-1 text-[22px] font-extrabold leading-tight">
+              See what's shipped, what's coming
+            </h2>
+            <p className="mt-1 max-w-md text-[12px] text-white/70">
+              Website, Verified Badges, Coverage Radius, Local SEO,
+              Growth Coach, Storm Mode, Payments — all live. Stock,
+              CRM, Analytics — honest waitlist. No fake modules.
+            </p>
+          </div>
+          <span
+            className="inline-flex h-12 shrink-0 items-center rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest text-neutral-900 transition group-hover:brightness-95"
+            style={{ background: YELLOW }}
+          >
+            Open modules →
+          </span>
+        </Link>
+      </div>
+
+      {/* Legacy quick actions — kept for muscle-memory */}
+      <p
+        className="mt-10 text-[10px] font-extrabold uppercase tracking-widest text-neutral-500"
+      >
+        Jump into an area
+      </p>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <QuickAction
           href="/studio/pages"
-          title="Edit your website"
-          body="Move sections, replace layouts, edit copy — all on the real page."
-          cta="Open pages →"
+          title="Edit pages"
+          body="Move sections, replace layouts, edit copy on the real page."
+          cta="Open →"
         />
         <QuickAction
-          href="/studio/templates"
-          title="Browse templates"
-          body="10 professionally designed layouts per section. Pick and go."
-          cta="Open library →"
+          href="/studio/blueprints"
+          title="Blueprints"
+          body="45+ full business blueprints — pick one, publish live."
+          cta="Browse →"
         />
         <QuickAction
           href="/studio/brands"
-          title="Tune your brand"
-          body="Colours, fonts, buttons, spacing. Change once — everywhere updates."
-          cta="Open brand →"
+          title="Brand"
+          body="Colours, fonts, buttons, spacing — one place, everywhere updates."
+          cta="Tune →"
         />
         <QuickAction
           href="/studio/media"
-          title="Manage media"
+          title="Media"
           body="Upload, replace, and optimise every image in one library."
-          cta="Open media →"
+          cta="Open →"
         />
       </div>
     </div>
-  );
-}
-
-function AddAppCard() {
-  return (
-    <Link
-      href="/studio/apps"
-      className="group relative flex overflow-hidden rounded-2xl border-2 border-neutral-900 bg-neutral-900 text-white shadow-lg transition hover:-translate-y-0.5 hover:shadow-2xl"
-    >
-      <div
-        className="pointer-events-none absolute inset-y-0 right-0 w-2/3 opacity-30 transition group-hover:opacity-50"
-        style={{
-          background:
-            "radial-gradient(circle at 80% 40%, #FFB300 0%, transparent 60%)"
-        }}
-      />
-      <div className="relative flex w-full flex-col justify-between gap-4 p-6 sm:flex-row sm:items-center sm:p-8">
-        <div className="min-w-0">
-          <p
-            className="text-[10px] font-extrabold uppercase tracking-widest"
-            style={{ color: YELLOW }}
-          >
-            Add an App
-          </p>
-          <h2 className="mt-1 text-[22px] font-extrabold leading-tight sm:text-[26px]">
-            Start with a new App
-          </h2>
-          <p className="mt-2 max-w-md text-[13px] leading-relaxed text-white/70">
-            Meet the Team, Newsletter, Delivery Zones — install any App and
-            we&rsquo;ll create its pages. Pick a hero on the new page and
-            you&rsquo;re live.
-          </p>
-        </div>
-        <span
-          className="inline-flex h-12 shrink-0 items-center rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest text-neutral-900 transition group-hover:brightness-95"
-          style={{ background: YELLOW }}
-        >
-          Browse App Store →
-        </span>
-      </div>
-    </Link>
   );
 }
 
@@ -132,18 +125,18 @@ function QuickAction({
   return (
     <Link
       href={href}
-      className="group flex flex-col justify-between gap-4 rounded-2xl border border-neutral-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-400 hover:shadow-md"
+      className="group flex flex-col justify-between gap-3 rounded-2xl border border-neutral-200 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-neutral-400 hover:shadow-md"
     >
       <div>
-        <p className="text-[16px] font-extrabold leading-tight text-neutral-900">
+        <p className="text-[14px] font-extrabold leading-tight text-neutral-900">
           {title}
         </p>
-        <p className="mt-1 text-[12px] leading-relaxed text-neutral-600">
+        <p className="mt-1 text-[11px] leading-relaxed text-neutral-600">
           {body}
         </p>
       </div>
       <span
-        className="inline-flex h-10 items-center rounded-xl px-3 text-[11px] font-extrabold uppercase tracking-widest text-neutral-900 transition group-hover:brightness-95"
+        className="inline-flex w-fit items-center rounded-lg px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-neutral-900 transition group-hover:brightness-95"
         style={{ background: YELLOW }}
       >
         {cta}

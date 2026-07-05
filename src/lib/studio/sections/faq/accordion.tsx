@@ -1,9 +1,11 @@
-// faq.accordion_1 — expandable Q&A list.
+// faq.accordion_1 — Phase 2 rebuild on shadcn Accordion (Radix).
 //
-// Uses native <details>/<summary> elements — expand/collapse works
-// without JavaScript, respects reduced-motion, and screen readers get
-// disclosure semantics for free. Six fixed Q&A slots (merchants can
-// leave later ones blank and only the filled ones render).
+// Uses the platform shadcn Accordion primitive under the hood — proper
+// keyboard nav, aria-expanded, focus management via Radix. Framer
+// Motion Reveal for entrance. 6 Q&A slots; blueprints can also seed
+// a `preseed` array which is merged in.
+
+"use client";
 
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
@@ -11,8 +13,17 @@ import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent
+} from "@/components/ui/accordion";
+import { Reveal } from "@/components/ui/reveal";
+import { cn } from "@/lib/utils";
+import { packageForTrade } from "@/lib/knowledge";
 
-type Slot = 1 | 2 | 3 | 4 | 5 | 6;
+type PreseedItem = { q?: string; a?: string };
 
 type Config = {
   eyebrow: string;
@@ -23,186 +34,218 @@ type Config = {
   q4: string; a4: string;
   q5: string; a5: string;
   q6: string; a6: string;
+  preseed?: PreseedItem[];
+  /** When true, pulls Q&A from the Knowledge Graph
+   *  packageForTrade(primaryTrade).commonFaqs. Merchant overrides
+   *  later via the section editor. */
+  useKnowledgeGraph: boolean;
+  surface: "light" | "dark";
 };
 
 function FaqAccordion({
   instanceId,
   config,
-  tokens
+  tokens,
+  data
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const surface = (tokens["color.surface"] as string | undefined) ?? "#FFFFFF";
-  const text = (tokens["color.text"] as string | undefined) ?? "#0A0A0A";
-  const muted = (tokens["color.muted"] as string | undefined) ?? "#737373";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
-  const bodyWeight = tokens["font.body.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
+  const isDark = config.surface === "dark";
 
-  type Row = { i: Slot; q: string; a: string };
-  const rows: Row[] = [
-    { i: 1, q: config.q1, a: config.a1 },
-    { i: 2, q: config.q2, a: config.a2 },
-    { i: 3, q: config.q3, a: config.a3 },
-    { i: 4, q: config.q4, a: config.a4 },
-    { i: 5, q: config.q5, a: config.a5 },
-    { i: 6, q: config.q6, a: config.a6 }
-  ];
-  const items = rows.filter((r) => r.q);
+  // Defensive fallbacks.
+  const eyebrow =
+    typeof config.eyebrow === "string" ? config.eyebrow : "";
+  const heading =
+    typeof config.heading === "string" ? config.heading : "";
+  const useKnowledgeGraph = config.useKnowledgeGraph === true;
+
+  // Resolution order:
+  //   1. preseed[]              — explicit blueprint seed
+  //   2. q1..q6 slots           — legacy config
+  //   3. Knowledge Graph        — packageForTrade(primaryTrade).commonFaqs
+  let items: Array<{ q: string; a: string }> = [];
+
+  if (!useKnowledgeGraph && Array.isArray(config.preseed) && config.preseed.length > 0) {
+    items = config.preseed
+      .map((r) => ({
+        q: typeof r.q === "string" ? r.q : "",
+        a: typeof r.a === "string" ? r.a : ""
+      }))
+      .filter((r) => r.q.length > 0);
+  }
+
+  if (items.length === 0 && !useKnowledgeGraph) {
+    const legacy = [
+      { q: config.q1, a: config.a1 },
+      { q: config.q2, a: config.a2 },
+      { q: config.q3, a: config.a3 },
+      { q: config.q4, a: config.a4 },
+      { q: config.q5, a: config.a5 },
+      { q: config.q6, a: config.a6 }
+    ]
+      .map((r) => ({
+        q: typeof r.q === "string" ? r.q : "",
+        a: typeof r.a === "string" ? r.a : ""
+      }))
+      .filter((r) => r.q.length > 0);
+    if (legacy.length > 0 && typeof config.q1 === "string" && config.q1.length > 0) {
+      items = legacy;
+    }
+  }
+
+  if (items.length === 0 && data.primaryTrade) {
+    const pkg = packageForTrade(data.primaryTrade);
+    if (pkg) {
+      items = pkg.commonFaqs.slice(0, 6).map((f) => ({
+        q: f.question,
+        a: f.answer
+      }));
+    }
+  }
+
+  if (items.length === 0) return null;
 
   return (
     <section
-      className="w-full"
-      style={{ background: surface, color: text }}
+      className={cn(
+        "relative w-full overflow-x-clip",
+        isDark ? "bg-foreground text-background" : "bg-background text-foreground"
+      )}
       {...sectionRootAttrs(instanceId, "faq.accordion_1", "FAQ")}
     >
-      <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20">
-        {config.eyebrow && (
-          <p
-            className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: accent }}
-            {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
-          >
-            {config.eyebrow}
-          </p>
-        )}
-        {config.heading && (
-          <h2
-            className="mt-2 text-3xl leading-tight sm:text-4xl"
-            style={{ fontFamily: headingFont, fontWeight: headingWeight ?? 800 }}
-            {...treeAttrs(instanceId, "heading", "Main headline", "text")}
-          >
-            {config.heading}
-          </h2>
-        )}
+      <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+        {/* Header */}
+        <div className="text-center sm:text-left">
+          {eyebrow && (
+            <Reveal>
+              <p
+                className="text-eyebrow font-extrabold uppercase"
+                style={{ color: accent }}
+                {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
+              >
+                {eyebrow}
+              </p>
+            </Reveal>
+          )}
+          {heading && (
+            <Reveal delay={0.05}>
+              <h2
+                className="mt-3 text-display-sm font-extrabold sm:text-display-md lg:text-display-lg"
+                {...treeAttrs(instanceId, "heading", "Main headline", "text")}
+              >
+                {heading}
+              </h2>
+            </Reveal>
+          )}
+        </div>
 
-        <ul className="mt-8 divide-y divide-neutral-200 rounded-2xl border border-neutral-200 bg-white shadow-sm">
-          {items.map((row) => (
-            <li key={row.i}>
-              <details className="group">
-                <summary
-                  className="flex cursor-pointer items-center justify-between gap-4 p-4 transition hover:bg-neutral-50 sm:p-5"
-                  style={{ listStyle: "none" }}
+        {/* Accordion — shadcn Radix under the hood */}
+        <Reveal delay={0.12}>
+          <Accordion
+            type="single"
+            collapsible
+            className="mt-8 sm:mt-10"
+          >
+            {items.map((row, i) => (
+              <AccordionItem key={i} value={`item-${i + 1}`}>
+                <AccordionTrigger
+                  {...treeAttrs(instanceId, `q${i + 1}`, `Question ${i + 1}`, "text")}
                 >
-                  <span
-                    className="flex-1 text-[15px]"
-                    style={{
-                      color: text,
-                      fontFamily: headingFont,
-                      fontWeight: headingWeight ?? 800
-                    }}
-                    {...treeAttrs(instanceId, `q${row.i}`, `Question ${row.i}`, "text")}
-                  >
-                    {row.q}
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-[15px] font-extrabold transition group-open:rotate-45"
-                    style={{ background: accent, color: "#0A0A0A" }}
-                  >
-                    +
-                  </span>
-                </summary>
-                {row.a && (
-                  <p
-                    className="px-4 pb-5 text-[13px] leading-relaxed sm:px-5"
-                    style={{
-                      color: muted,
-                      fontFamily: bodyFont,
-                      fontWeight: bodyWeight ?? 500
-                    }}
-                    {...treeAttrs(instanceId, `a${row.i}`, `Answer ${row.i}`, "text")}
-                  >
-                    {row.a}
-                  </p>
-                )}
-              </details>
-            </li>
-          ))}
-        </ul>
+                  {row.q}
+                </AccordionTrigger>
+                <AccordionContent
+                  {...treeAttrs(instanceId, `a${i + 1}`, `Answer ${i + 1}`, "text")}
+                >
+                  {row.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </Reveal>
       </div>
     </section>
   );
 }
 
-const qaFields = (i: Slot, q: string, a: string) => [
-  { key: `q${i}`, label: `Question ${i}`, type: { kind: "text" as const, maxLength: 160 }, default: q, priority: "text" as const, aiPromptable: true, group: `Q&A ${i}` },
-  { key: `a${i}`, label: `Answer ${i}`, type: { kind: "text" as const, maxLength: 400, multiline: true }, default: a, priority: "text" as const, aiPromptable: true, group: `Q&A ${i}` }
-];
-
 const registration: SectionRegistration<Config> = {
   id: "faq.accordion_1",
-  name: "FAQ accordion",
-  version: "1.0.0",
+  name: "FAQ Accordion",
+  version: "2.0.0",
   library: "faq",
   description:
-    "Expandable Q&A list — 6 fixed rows, native <details> so no JavaScript loads. Merchants who leave later rows blank get only the populated ones. Best just above a CTA or footer to catch last-minute hesitations.",
+    "Expandable Q&A on shadcn Accordion (Radix). Proper keyboard nav + aria-expanded semantics. 6 Q&A slots; blueprints can also seed a preseed array. Framer Motion entrance choreography.",
   editableFields: [
-    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Frequently asked", priority: "text", group: "Header" },
-    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "The stuff we get asked most.", priority: "text", aiPromptable: true, group: "Header" },
-    ...qaFields(1, "Are you insured?", "£5M public liability + £10M employer's liability. Certificates on request before any work starts."),
-    ...qaFields(2, "How quickly can you come out?", "Same day for emergencies across our catchment. 3-5 working days for planned work — sooner if we've been in touch."),
-    ...qaFields(3, "Do you charge a callout fee?", "No. Free quote, free callout. You only pay if we do the work and you're happy with it."),
-    ...qaFields(4, "What areas do you cover?", "Anywhere within 25 miles of the postcode on our contact page. Further afield by arrangement — ask us."),
-    ...qaFields(5, "Do you guarantee your work?", "Two years on workmanship, plus the manufacturer's warranty on any parts. We'll come back if anything's not right."),
-    ...qaFields(6, "Can I pay by card / bank transfer?", "Card, bank transfer, or cash. VAT-registered — invoices provided. Trade accounts on request.")
+    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Frequently asked", priority: "text", role: "eyebrow", group: "Copy" },
+    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 80 }, default: "Common questions", priority: "text", role: "headline", aiPromptable: true, group: "Copy" },
+    { key: "useKnowledgeGraph", label: "Pull FAQs from Knowledge Graph", type: { kind: "boolean" }, default: false, description: "When ON, ignores the Q1..Q6 below and pulls trade-specific FAQs from the platform Knowledge Graph.", group: "Data source" },
+    { key: "q1", label: "Question 1", type: { kind: "text", maxLength: 120 }, default: "Are you insured?", priority: "text", role: "question", aiPromptable: true, group: "Q1" },
+    { key: "a1", label: "Answer 1", type: { kind: "text", maxLength: 400, multiline: true }, default: "Yes — £5M public liability. Certificate on request.", priority: "text", role: "answer", aiPromptable: true, group: "Q1" },
+    { key: "q2", label: "Question 2", type: { kind: "text", maxLength: 120 }, default: "How quickly can you come out?", priority: "text", role: "question", aiPromptable: true, group: "Q2" },
+    { key: "a2", label: "Answer 2", type: { kind: "text", maxLength: 400, multiline: true }, default: "Same-day for emergencies. Standard bookings within 3 working days.", priority: "text", role: "answer", aiPromptable: true, group: "Q2" },
+    { key: "q3", label: "Question 3", type: { kind: "text", maxLength: 120 }, default: "Do you charge a callout fee?", priority: "text", role: "question", aiPromptable: true, group: "Q3" },
+    { key: "a3", label: "Answer 3", type: { kind: "text", maxLength: 400, multiline: true }, default: "No callout fee within our coverage area. Diagnostic quoted before any work starts.", priority: "text", role: "answer", aiPromptable: true, group: "Q3" },
+    { key: "q4", label: "Question 4", type: { kind: "text", maxLength: 120 }, default: "What areas do you cover?", priority: "text", role: "question", aiPromptable: true, group: "Q4" },
+    { key: "a4", label: "Answer 4", type: { kind: "text", maxLength: 400, multiline: true }, default: "Full coverage across our 25-mile radius. Outside the area on a case-by-case basis.", priority: "text", role: "answer", aiPromptable: true, group: "Q4" },
+    { key: "q5", label: "Question 5", type: { kind: "text", maxLength: 120 }, default: "Do you guarantee your work?", priority: "text", role: "question", aiPromptable: true, group: "Q5" },
+    { key: "a5", label: "Answer 5", type: { kind: "text", maxLength: 400, multiline: true }, default: "2-year workmanship guarantee. Manufacturer warranty on parts.", priority: "text", role: "answer", aiPromptable: true, group: "Q5" },
+    { key: "q6", label: "Question 6", type: { kind: "text", maxLength: 120 }, default: "Can I pay by card / bank transfer?", priority: "text", role: "question", aiPromptable: true, group: "Q6" },
+    { key: "a6", label: "Answer 6", type: { kind: "text", maxLength: 400, multiline: true }, default: "Card, bank transfer, WhatsApp Pay. No cheques.", priority: "text", role: "answer", aiPromptable: true, group: "Q6" },
+    { key: "surface", role: "surface_mode", label: "Surface", type: { kind: "select", options: [{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }] }, default: "light", group: "Layout" }
   ],
-  animations: ["none"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain:
-      "Explain why an FAQ section works near the bottom of a trade landing page. Reference specific Q&As.",
-    improve:
-      "Improve without layout change. Questions phrased as the customer would ask. Answers under 40 words each. Return only patched config.",
-    rewrite:
-      "Rewrite questions and answers in a {tone} voice. Answers stay factual.",
-    suggestAlternative:
-      "Suggest an alternative layout from library='faq'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    explain: "An FAQ accordion. Explain when it works vs a dedicated FAQ page.",
+    improve: "Tighten questions + answers. Return patched fields only.",
+    rewrite: "Rewrite Q + A in a {tone} voice, preserving structure.",
+    suggestAlternative: "Suggest an alternative when there are 15+ FAQs.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail:
-    "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/faq-accordion-1.png",
+  thumbnail: "",
   scoreHints: {
     loading: { imageWeightBudgetKb: 0 },
     accessibility: { contrastMin: 4.5 },
-    sales: { primaryActionRequired: false },
-    seo: { headingLevel: 2, structuredData: "FAQPage" },
-    mobile: { minTapTargetPx: 44 },
-    brandConsistency: { boundTokens: ["color.accent", "color.surface", "color.text"] }
+    sales: { socialProofRecommended: false },
+    seo: { headingLevel: 2 },
+    mobile: { minTapTargetPx: 48 },
+    brandConsistency: { boundTokens: ["color.accent"] }
   },
-  telemetryTags: [
-    "faq",
-    "accordion",
-    "six_qa",
-    "native_details",
-    "no_js"
+  telemetryTags: ["faq", "accordion", "questions", "shadcn", "radix", "framer_motion"],
+  bestForVerticals: ["electrician", "plumber", "gas-engineer", "hvac-contractor", "handyman", "landscaper", "extension-builder"],
+
+  // ─── Slice D extended manifest ──────────────────────────────────
+  category: "faq",
+  supportedThemes: ["all"],
+  supportedIndustries: ["all"],
+  responsiveBehaviour: {
+    mobile: "collapse",
+    tablet: "collapse",
+    desktop: "collapse"
+  },
+  imagePlaceholders: [],
+  lucideIconsUsed: ["ChevronDown"],
+  ctaArea: {
+    hasPrimary: false,
+    hasSecondary: false
+  },
+  accessibilityNotes: [
+    "Radix Accordion primitive handles aria-expanded / aria-controls automatically",
+    "Keyboard navigation: Tab focus, Enter/Space expand, Arrow keys between triggers",
+    "ChevronDown icon flips via [data-state=open] — respects reduced-motion",
+    "H2 heading is the section landmark; questions are H3-level triggers"
   ],
-  bestForVerticals: [
-    "plumbing",
-    "electrical",
-    "hvac",
-    "landscaping",
-    "roofing",
-    "joinery",
-    "plant_hire",
-    "kitchen_install",
-    "bathroom_install",
-    "locksmith"
-  ],
+
   defaultConfig: () => ({
     eyebrow: "Frequently asked",
-    heading: "The stuff we get asked most.",
-    q1: "Are you insured?",
-    a1: "£5M public liability + £10M employer's liability. Certificates on request before any work starts.",
-    q2: "How quickly can you come out?",
-    a2: "Same day for emergencies across our catchment. 3-5 working days for planned work — sooner if we've been in touch.",
-    q3: "Do you charge a callout fee?",
-    a3: "No. Free quote, free callout. You only pay if we do the work and you're happy with it.",
-    q4: "What areas do you cover?",
-    a4: "Anywhere within 25 miles of the postcode on our contact page. Further afield by arrangement — ask us.",
-    q5: "Do you guarantee your work?",
-    a5: "Two years on workmanship, plus the manufacturer's warranty on any parts. We'll come back if anything's not right.",
-    q6: "Can I pay by card / bank transfer?",
-    a6: "Card, bank transfer, or cash. VAT-registered — invoices provided. Trade accounts on request."
+    heading: "Common questions",
+    useKnowledgeGraph: true,
+    // Legacy defaults kept as fallback if primaryTrade is unset AND no
+    // preseed AND merchant hasn't authored their own.
+    q1: "", a1: "",
+    q2: "", a2: "",
+    q3: "", a3: "",
+    q4: "", a4: "",
+    q5: "", a5: "",
+    q6: "", a6: "",
+    surface: "light"
   }),
   renderer: FaqAccordion
 };

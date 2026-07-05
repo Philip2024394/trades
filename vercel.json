@@ -15,6 +15,10 @@
     {
       "path": "/api/cron/affiliate-fraud-check",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/verify-credentials",
+      "schedule": "0 8 * * *"
     }
   ]
 }

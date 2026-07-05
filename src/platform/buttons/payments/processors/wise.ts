@@ -11,6 +11,7 @@ import {
   paymentProcessors,
   type PaymentProcessor
 } from "../processor";
+import { amountToMajor } from "../currency";
 
 const BASE = "https://api.wise.com";
 
@@ -31,7 +32,7 @@ const processor: PaymentProcessor = {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          amountValue: req.amountMinor / 100,
+          amountValue: amountToMajor(req.amountMinor, req.currency),
           currency: req.currency,
           description: req.description ?? req.orderRef,
           reference: req.orderRef

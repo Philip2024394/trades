@@ -24,6 +24,8 @@ import type {
   MerchantData
 } from "@/lib/studio/sectionTypes";
 import type { StudioLayoutJson } from "@/lib/studio/schema";
+import { StormBanner } from "@/components/studio/StormBanner";
+import { SectionErrorBoundary } from "@/components/studio/SectionErrorBoundary";
 
 export function StudioLiveShell({
   layout,
@@ -40,6 +42,7 @@ export function StudioLiveShell({
 
   return (
     <div data-studio-live="1">
+      {data.stormMode && <StormBanner storm={data.stormMode} />}
       {layout.rows.map((row) => {
         const cols = row.columns
           .map((instanceId) => byInstanceId.get(instanceId))
@@ -74,13 +77,15 @@ export function StudioLiveShell({
 
               return (
                 <Fragment key={instance.instanceId}>
-                  <Renderer
-                    instanceId={instance.instanceId}
-                    config={instance.config}
-                    tokens={mergedTokens}
-                    data={data}
-                    mode="published"
-                  />
+                  <SectionErrorBoundary sectionKey={instance.key}>
+                    <Renderer
+                      instanceId={instance.instanceId}
+                      config={instance.config}
+                      tokens={mergedTokens}
+                      data={data}
+                      mode="published"
+                    />
+                  </SectionErrorBoundary>
                 </Fragment>
               );
             })}

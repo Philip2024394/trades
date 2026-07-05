@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  /* ── Existing brand tokens (unchanged) ── */
   --brand-bg: 0 0 0;
   --brand-surface: 12 12 12;
   --brand-line: 31 31 31;
@@ -14,6 +15,74 @@
   --brand-social-whatsapp: 37 211 102;
   --brand-social-facebook: 24 119 242;
   --brand-social-x: 245 245 245;
+
+  /* ── shadcn/ui semantic tokens (Phase 1 — LIGHT default) ──
+     Every Phase 1+ rebuilt section reads these via Tailwind classes
+     (bg-background, text-foreground, border-border, etc.). Values are
+     HSL triplets (H S% L%) to match shadcn's own conventions and let
+     alpha suffixes work (`bg-primary/80`). */
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+
+  --primary: 44 100% 50%;               /* Trade Yellow #FFB300 */
+  --primary-foreground: 240 10% 3.9%;
+
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 44 100% 50%;
+
+  --radius: 0.75rem;
+}
+
+/* Dark mode overrides — activated by <html class="dark"> or by theme
+   toggle. Semantic tokens flip; brand tokens stay owned by the merchant
+   theme picker. */
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 44 100% 50%;
+  --primary-foreground: 240 10% 3.9%;
+
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --ring: 44 100% 50%;
 }
 
 html, body {
@@ -276,4 +345,44 @@ body {
   .hx-spark,
   .hx-cutoff-urgent { animation: none !important; transition: none !important; }
   .group:hover .hx-card-tilt { transform: none; }
+}
+
+/* ─── Site-Foreman Mode ────────────────────────────────────────────
+ * PRD Feature #84. Ultra-high-contrast palette for editing Studio in
+ * direct outdoor sunlight (van / driveway / roof). Toggled via the
+ * Studio header — sets data-site-foreman="on" on <html>, which forces
+ * neutral surfaces to pure black + text to pure white + accent chrome
+ * yellow. Only applies inside /studio/* routes (scoped by attribute on
+ * the html element AND a body class the Studio shell sets). */
+html[data-site-foreman="on"] .studio-shell,
+html[data-site-foreman="on"] .studio-shell * {
+  --brand-surface: 0 0 0 !important;
+  --brand-text: 255 255 255 !important;
+  --brand-line: 60 60 60 !important;
+  --brand-accent: 255 179 0 !important;
+}
+html[data-site-foreman="on"] .studio-shell {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+html[data-site-foreman="on"] .studio-shell .bg-white,
+html[data-site-foreman="on"] .studio-shell [class*="bg-white"] {
+  background-color: #0A0A0A !important;
+  color: #FFFFFF !important;
+}
+html[data-site-foreman="on"] .studio-shell .text-neutral-900,
+html[data-site-foreman="on"] .studio-shell .text-neutral-800,
+html[data-site-foreman="on"] .studio-shell .text-neutral-700,
+html[data-site-foreman="on"] .studio-shell .text-neutral-600,
+html[data-site-foreman="on"] .studio-shell .text-neutral-500 {
+  color: #FFFFFF !important;
+}
+html[data-site-foreman="on"] .studio-shell .border-neutral-200,
+html[data-site-foreman="on"] .studio-shell .border-neutral-300,
+html[data-site-foreman="on"] .studio-shell .border-neutral-100 {
+  border-color: #3C3C3C !important;
+}
+html[data-site-foreman="on"] .studio-shell .bg-neutral-50,
+html[data-site-foreman="on"] .studio-shell .bg-neutral-100 {
+  background-color: #171717 !important;
 }

@@ -16,6 +16,7 @@ import "./hero/minimalCentred";
 // Each is designed for a specific merchant intent (trust / emergency /
 // portfolio / stats / postcode / storefront / social-proof).
 import "./hero/trustAnchor";
+import "./hero/trustMinimal";
 import "./hero/emergency247";
 import "./hero/portfolioMosaic";
 import "./hero/statHero";
@@ -47,6 +48,10 @@ import "./hero/tilt3d";
 // ─── CTA library ───────────────────────────────────────────────────
 import "./cta/centred";
 import "./cta/checkoutStack";
+import "./cta/compactBand";
+
+// ─── Trust bar library ─────────────────────────────────────────────
+import "./trust_bar/iconRow";
 
 // ─── Product Grid library ─────────────────────────────────────────
 import "./product_grid/classic3col";
@@ -92,6 +97,7 @@ import "./categories/grid";
 
 // ─── Features library ──────────────────────────────────────────────
 import "./features/iconGrid";
+import "./features/threeUpReasons";
 
 // ─── Testimonials library ──────────────────────────────────────────
 import "./testimonials/cardGrid";

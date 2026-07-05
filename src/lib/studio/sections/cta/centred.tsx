@@ -41,12 +41,23 @@ function CtaCentred({
   const bodyWeight = tokens["font.body.weight"] as number | undefined;
   const isEditing = mode === "edit";
 
-  const primaryHref =
-    config.primaryCtaHref === "#whatsapp" && data.whatsappHref
+  // Assembly-runtime CTA override (S2.K2e2). Centred CTA sections read
+  // the same home.*-cta slots as heroes so the merchant's accepted
+  // add-cta proposals surface here too. Fall back to config when null.
+  const assemblyPrimary = data.assemblyCtaBySlot?.["home.primary-cta"] ?? null;
+  const assemblySecondary =
+    data.assemblyCtaBySlot?.["home.secondary-cta"] ?? null;
+  const primaryLabel = assemblyPrimary?.label ?? config.primaryCtaLabel;
+  const primaryHref = assemblyPrimary
+    ? assemblyPrimary.href
+    : config.primaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.primaryCtaHref;
-  const secondaryHref =
-    config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
+  const secondaryLabel =
+    assemblySecondary?.label ?? config.secondaryCtaLabel;
+  const secondaryHref = assemblySecondary
+    ? assemblySecondary.href
+    : config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.secondaryCtaHref;
 
@@ -56,7 +67,7 @@ function CtaCentred({
       style={{ background: surface, color: text }}
       {...sectionRootAttrs(instanceId, "cta.centred_1", "Centred CTA")}
     >
-      <div className="mx-auto flex max-w-3xl flex-col items-center gap-4 px-4 py-14 text-center sm:px-6 sm:py-20">
+      <div className="mx-auto flex max-w-3xl flex-col items-center gap-3 px-4 py-8 text-center sm:gap-4 sm:px-6 sm:py-14 lg:py-20">
         {config.eyebrow && (
           <p
             className="text-[11px] font-extrabold uppercase tracking-[0.28em]"
@@ -67,7 +78,7 @@ function CtaCentred({
           </p>
         )}
         <h2
-          className="text-3xl leading-tight sm:text-5xl"
+          className="text-[26px] leading-tight sm:text-4xl lg:text-5xl"
           style={{ fontFamily: headingFont, fontWeight: headingWeight ?? 800 }}
           {...treeAttrs(instanceId, "heading", "Main headline", "text")}
         >
@@ -87,7 +98,7 @@ function CtaCentred({
           </p>
         )}
         <div className="mt-2 flex flex-wrap justify-center gap-3">
-          {config.primaryCtaLabel && (
+          {primaryLabel && (
             <Link
               href={primaryHref || "#"}
               tabIndex={isEditing ? -1 : undefined}
@@ -95,10 +106,10 @@ function CtaCentred({
               style={{ background: accent, color: "#0A0A0A" }}
               {...treeAttrs(instanceId, "primaryCtaLabel", "Main button", "button")}
             >
-              {config.primaryCtaLabel} →
+              {primaryLabel} →
             </Link>
           )}
-          {config.secondaryCtaLabel && (
+          {secondaryLabel && (
             <Link
               href={secondaryHref || "#"}
               tabIndex={isEditing ? -1 : undefined}
@@ -106,7 +117,7 @@ function CtaCentred({
               style={{ background: "transparent", color: text, border: `2px solid ${text}` }}
               {...treeAttrs(instanceId, "secondaryCtaLabel", "Second button", "button")}
             >
-              {config.secondaryCtaLabel}
+              {secondaryLabel}
             </Link>
           )}
         </div>

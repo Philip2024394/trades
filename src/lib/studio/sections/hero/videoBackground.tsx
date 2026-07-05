@@ -52,12 +52,22 @@ function VideoBackgroundHero({
   const headingFont = (tokens["font.heading"] as string) ?? "inherit";
   const bodyFont = (tokens["font.body"] as string) ?? "inherit";
 
-  const primaryHref =
-    config.primaryCtaHref === "#whatsapp" && data.whatsappHref
+  // Assembly-runtime CTA override (S2.K2e2). Falls back to config so
+  // existing merchants without accepted add-cta proposals see no change.
+  const assemblyPrimary = data.assemblyCtaBySlot?.["home.primary-cta"] ?? null;
+  const assemblySecondary =
+    data.assemblyCtaBySlot?.["home.secondary-cta"] ?? null;
+  const primaryLabel = assemblyPrimary?.label ?? config.primaryCtaLabel;
+  const primaryHref = assemblyPrimary
+    ? assemblyPrimary.href
+    : config.primaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.primaryCtaHref;
-  const secondaryHref =
-    config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
+  const secondaryLabel =
+    assemblySecondary?.label ?? config.secondaryCtaLabel;
+  const secondaryHref = assemblySecondary
+    ? assemblySecondary.href
+    : config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.secondaryCtaHref;
 
@@ -138,7 +148,7 @@ function VideoBackgroundHero({
         }}
       />
 
-      <div className="relative mx-auto flex min-h-[540px] max-w-4xl flex-col justify-end px-5 py-16 sm:px-6 sm:py-24">
+      <div className="relative mx-auto flex min-h-[380px] max-w-4xl flex-col justify-end px-5 py-10 sm:min-h-[480px] sm:px-6 sm:py-16 lg:min-h-[540px] lg:py-24">
         {config.eyebrow && (
           <p
             className="text-[11px] font-extrabold uppercase tracking-[0.28em]"
@@ -149,7 +159,7 @@ function VideoBackgroundHero({
           </p>
         )}
         <h1
-          className="mt-4 max-w-3xl text-5xl font-extrabold leading-[0.95] text-white sm:text-7xl md:text-8xl"
+          className="mt-3 max-w-3xl text-[32px] font-extrabold leading-[0.95] text-white sm:mt-4 sm:text-6xl md:text-7xl lg:text-8xl"
           style={{
             fontFamily: headingFont,
             letterSpacing: "-0.03em",
@@ -172,7 +182,7 @@ function VideoBackgroundHero({
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Link
             href={primaryHref || "#"}
-            className="inline-flex h-14 items-center justify-center gap-2 rounded-xl px-6 text-[13px] font-extrabold uppercase tracking-widest transition active:scale-[0.98]"
+            className="inline-flex h-12 items-center justify-center gap-2 rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest transition active:scale-[0.98] sm:h-14 sm:px-6 sm:text-[13px]"
             style={{
               background: accent,
               color: "#0A0A0A",
@@ -180,12 +190,12 @@ function VideoBackgroundHero({
             }}
             {...treeAttrs(instanceId, "primaryCtaLabel", "Primary CTA", "button")}
           >
-            <span>{config.primaryCtaLabel}</span>
+            <span>{primaryLabel}</span>
           </Link>
-          {config.secondaryCtaLabel && (
+          {secondaryLabel && (
             <Link
               href={secondaryHref || "#"}
-              className="inline-flex h-14 items-center justify-center rounded-xl border px-6 text-[13px] font-extrabold uppercase tracking-widest backdrop-blur-md transition hover:bg-white/10"
+              className="inline-flex h-12 items-center justify-center rounded-xl border px-5 text-[12px] font-extrabold uppercase tracking-widest backdrop-blur-md transition hover:bg-white/10 sm:h-14 sm:px-6 sm:text-[13px]"
               style={{
                 borderColor: "rgba(255,255,255,0.3)",
                 color: "#FFFFFF",
@@ -193,7 +203,7 @@ function VideoBackgroundHero({
               }}
               {...treeAttrs(instanceId, "secondaryCtaLabel", "Secondary CTA", "button")}
             >
-              {config.secondaryCtaLabel}
+              {secondaryLabel}
             </Link>
           )}
         </div>

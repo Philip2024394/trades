@@ -25,7 +25,11 @@ export type DesignComponentCategory =
   | "forms"
   | "navigation"
   | "sections"
-  | "media";
+  | "media"
+  | "overlays"
+  | "feedback"
+  | "data-display"
+  | "inputs";
 
 // ─── Content shape ─────────────────────────────────────────────
 //
@@ -68,7 +72,14 @@ export type EditableProp = {
 
 // ─── Responsive behaviour ──────────────────────────────────────
 
-export type ResponsiveMode = "unchanged" | "stack" | "compact" | "hide";
+export type ResponsiveMode =
+  | "unchanged"
+  | "stack"
+  | "compact"
+  | "hide"
+  | "collapse"
+  | "carousel"
+  | "sticky";
 
 export type ResponsiveBehaviour = {
   mobile?: ResponsiveMode;
@@ -114,6 +125,29 @@ export type DesignComponentRegistration<
   defaultContent: () => TContent;
   /** The pure React component that renders this design component. */
   renderer: ComponentType<DesignComponentRendererProps<TProps, TContent>>;
+
+  // ─── Platform Constitution v1 fields (all optional) ────────────
+  //
+  // Mirror the fields added to RegistrationBase in Milestone 1/2 so
+  // AI + marketplace + a11y audits have uniform metadata across
+  // registered components.
+  tags?: readonly string[];
+  author?: string;
+  compatibleContainers?: readonly string[];
+  compatibleThemes?: readonly string[];
+  supportedDevices?: readonly ("mobile" | "tablet" | "desktop")[];
+  accessibilityStatus?: "wcag-aaa" | "wcag-aa" | "wcag-a" | "unverified";
+  performanceCost?: "low" | "medium" | "high";
+  documentationUrl?: string;
+
+  /** Container tier (Constitution Amendment 6 §RGP-7).
+   *  Required for `category === "containers"`; ignored otherwise. */
+  tier?: "layout" | "content" | "utility";
+
+  /** Legacy ids that transparently resolve to this component. Powers
+   *  stable references across renames + composition-as-alias
+   *  (`containers.grid` aliases `gallery` and `pricing` per ADR-012). */
+  aliases?: readonly string[];
 };
 
 /** Every renderer receives exactly this shape. Theme comes from

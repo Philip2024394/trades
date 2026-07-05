@@ -16,6 +16,7 @@ import {
   paymentProcessors,
   type PaymentProcessor
 } from "../processor";
+import { amountToMajor } from "../currency";
 
 const BASE = "https://app.midtrans.com/snap/v1";
 
@@ -36,7 +37,14 @@ const factory = (providerId: string): PaymentProcessor => ({
       body: JSON.stringify({
         transaction_details: {
           order_id: req.orderRef,
-          gross_amount: Math.round(req.amountMinor / 100) // Midtrans uses full rupiah
+          // Midtrans expects the MAJOR-unit integer. For IDR (which is
+          // the currency Midtrans transacts in) that's the whole
+          // rupiah — amountMinor already equals it because IDR is
+          // zero-decimal. amountToMajor correctly returns amountMinor
+          // unchanged for zero-decimal currencies AND divides by 100
+          // for any two-decimal currency the merchant might use for
+          // cross-border cases.
+          gross_amount: Math.round(amountToMajor(req.amountMinor, req.currency))
         },
         customer_details: {
           email: req.customerEmail

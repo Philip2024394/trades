@@ -3,6 +3,13 @@ import { notFound, permanentRedirect } from "next/navigation";
 import { loadLivePublishedLayout } from "@/lib/studio/liveLayoutLoader";
 import { hydrateAddonDomain } from "@/lib/studio/addonDataLoader";
 import { hydrateAppDomain } from "@/platform/apps/_shared/appDataLoader";
+import { loadPublicCredentialsForBrand } from "@/lib/studio/credentials/loader";
+import { loadActiveStormMode } from "@/lib/studio/stormMode/loader";
+import {
+  loadAssemblyCtasForBrand,
+  loadAssemblyNavEntriesForBrand
+} from "@/lib/studio/assembly";
+import { AssemblyNavPillStrip } from "@/components/studio/AssemblyNavPillStrip";
 // Side-effect: registers every manifest-driven App with the App
 // Registry + populates the app data loader map. Must import before
 // the storefront hydrator runs.
@@ -429,10 +436,35 @@ export default async function TradiePublicProfilePage({
     const live = await loadLivePublishedLayout(listing.id, "home");
     if (live && live.layout.sections.length > 0) {
       const waDigits = whatsappDigits(listing.whatsapp ?? "");
-      const [addonDomain, appDomain] = await Promise.all([
+      const [
+        addonDomain,
+        appDomain,
+        credentials,
+        stormMode,
+        assemblyCtas,
+        assemblyHeaderNav
+      ] = await Promise.all([
         hydrateAddonDomain(listing, live.layout),
-        hydrateAppDomain(listing, live.layout)
+        hydrateAppDomain(listing, live.layout),
+        loadPublicCredentialsForBrand(live.brandId),
+        loadActiveStormMode(live.brandId),
+        loadAssemblyCtasForBrand(live.brandId),
+        loadAssemblyNavEntriesForBrand(live.brandId, "nav.header")
       ]);
+      // Snapshot the assembly CTAs into the serialisable renderer shape
+      // so client sections don't need the server-only ctaResolver.
+      const assemblyCtaBySlot: Record<
+        string,
+        { label: string; href: string; priority: number; sourceModuleId: string }
+      > = {};
+      for (const [slot, cta] of Object.entries(assemblyCtas)) {
+        assemblyCtaBySlot[slot] = {
+          label: cta.label,
+          href: cta.href,
+          priority: cta.priority,
+          sourceModuleId: cta.sourceModuleId
+        };
+      }
       const merchantData: MerchantData = {
         merchantId: listing.id,
         slug: listing.slug,
@@ -449,14 +481,21 @@ export default async function TradiePublicProfilePage({
           addonsEnabled: addonDomain.addonsEnabled,
           addons: addonDomain.addons,
           apps: appDomain.apps
-        }
+        },
+        credentials,
+        stormMode,
+        assemblyCtaBySlot,
+        primaryTrade: listing.primary_trade
       };
       return (
-        <StudioLiveShell
-          layout={live.layout}
-          tokens={live.tokens}
-          data={merchantData}
-        />
+        <>
+          <AssemblyNavPillStrip entries={assemblyHeaderNav} />
+          <StudioLiveShell
+            layout={live.layout}
+            tokens={live.tokens}
+            data={merchantData}
+          />
+        </>
       );
     }
   } catch {

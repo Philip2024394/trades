@@ -16,6 +16,10 @@ import type {
   UninstallError
 } from "@/platform/runtime";
 import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
+import {
+  AssemblyProposalSheet,
+  type ProposalDecisions
+} from "./AssemblyProposalSheet";
 
 const YELLOW = "#FFB300";
 const BLACK = "#0A0A0A";
@@ -49,6 +53,9 @@ export function InstallProgressModal({
   const [currentInstall, setCurrentInstall] = useState<InstalledAppRow | null>(
     null
   );
+  const [proposalDecisions, setProposalDecisions] = useState<ProposalDecisions>(
+    { accepted: [], dismissed: [] }
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +87,32 @@ export function InstallProgressModal({
 
   async function install() {
     setState({ kind: "installing" });
+
+    // Record the merchant's assembly decisions FIRST so the audit trail
+    // is written even if the install itself fails. The endpoint is a
+    // no-op when there are no decisions to record (empty arrays return
+    // 400 which we silently swallow — the install still proceeds).
+    if (
+      proposalDecisions.accepted.length > 0 ||
+      proposalDecisions.dismissed.length > 0
+    ) {
+      try {
+        await fetch("/api/studio/assembly/decide", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            moduleIds: [manifest.slug],
+            accepted: proposalDecisions.accepted,
+            dismissed: proposalDecisions.dismissed
+          })
+        });
+      } catch {
+        // Decision persistence failure is non-fatal — the install must
+        // still work. The merchant can re-decide from the assembly
+        // preview surface later.
+      }
+    }
+
     try {
       // fetchWithRetry gives us exponential backoff on transient
       // 5xx / network errors + waits for reconnect if offline. Install
@@ -106,6 +139,17 @@ export function InstallProgressModal({
         createdPages: json.createdPages
       });
       onOptimistic?.("installed");
+
+      // Fire the executor now that install has succeeded. Executor is
+      // idempotent so a re-fire on retry is safe. Failure here is
+      // non-fatal — the merchant can manually re-apply from the
+      // assembly preview surface, and Growth Coach still surfaces
+      // pending suggestions on the next dashboard load.
+      try {
+        await fetch("/api/studio/assembly/apply", { method: "POST" });
+      } catch {
+        // swallowed — install itself is the headline outcome.
+      }
     } catch (err) {
       setState({
         kind: "install-error",
@@ -188,7 +232,11 @@ export function InstallProgressModal({
           )}
 
           {state.kind === "idle" && !activelyInstalled && (
-            <InstallIdle manifest={manifest} onInstall={install} />
+            <InstallIdle
+              manifest={manifest}
+              onInstall={install}
+              onDecisionsChange={setProposalDecisions}
+            />
           )}
 
           {state.kind === "installing" && <BusyLine label="Installing…" />}
@@ -227,10 +275,12 @@ export function InstallProgressModal({
 
 function InstallIdle({
   manifest,
-  onInstall
+  onInstall,
+  onDecisionsChange
 }: {
   manifest: FrozenAppManifest;
   onInstall: () => void;
+  onDecisionsChange: (d: ProposalDecisions) => void;
 }) {
   const willCreatePages = manifest.compatibility.createsPages.length > 0;
   const deps = manifest.requirements.dependencies;
@@ -261,6 +311,14 @@ function InstallIdle({
       {perms.length > 0 && (
         <InfoRow label="Permissions" value={perms.join(", ")} />
       )}
+
+      {/* Assembly proposals — "platform proposes, you decide". The
+       *  sheet is a no-op when the module has no assembly rules, so
+       *  installing anything without DNA still works. */}
+      <AssemblyProposalSheet
+        moduleIds={[manifest.slug]}
+        onChange={onDecisionsChange}
+      />
 
       <button
         type="button"

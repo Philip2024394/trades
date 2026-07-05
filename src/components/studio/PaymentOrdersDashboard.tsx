@@ -8,6 +8,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
+import { formatMoney } from "@/platform/buttons/payments/currency";
 
 const YELLOW = "#FFB300";
 const GREEN = "#10B981";
@@ -316,15 +317,7 @@ function Td({ children }: { children: React.ReactNode }) {
 }
 
 function formatAmount(minor: number, currency: string): string {
-  const value = (minor ?? 0) / 100;
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: currency ?? "USD"
-    }).format(value);
-  } catch {
-    return `${currency ?? ""} ${value.toFixed(2)}`;
-  }
+  return formatMoney(minor ?? 0, currency ?? "USD");
 }
 function formatDate(iso: string): string {
   try {

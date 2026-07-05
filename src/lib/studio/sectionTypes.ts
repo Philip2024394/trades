@@ -33,7 +33,8 @@ export type SectionLibrary =
   | "contact"
   | "map"
   | "footer"
-  | "cta";
+  | "cta"
+  | "trust_bar";
 
 // ─── Editable field schema ─────────────────────────────────────────
 //
@@ -261,6 +262,57 @@ export type MerchantData = {
   /** Vertical-specific data the section may need. Type-erased here;
    *  each section that needs data casts + validates. */
   domain: Record<string, unknown>;
+  /** The merchant's verified/self-declared trade credentials (Gas Safe,
+   *  NICEIC, Companies House, VAT, TrustMark, FMB, ...). Sections that
+   *  render trust badges filter this to the schemes they surface. Optional
+   *  so callers that don't source credentials (demo previews, older
+   *  fallback profiles) still type-check. */
+  credentials?: PublicCredentialLite[];
+  /** Optional active storm-mode banner payload. Present when the
+   *  merchant has manually flipped Storm Mode on + it hasn't expired.
+   *  The public shell renders this as a top ribbon; sections can also
+   *  react to it (e.g. sticky "we're on it" copy under the hero). */
+  stormMode?: StormModePayload | null;
+  /** Assembly-runtime CTA overrides — one entry per slot, populated
+   *  from studio_assembly_ctas after the executor materialises accepted
+   *  add-cta proposals. When a slot has an entry, section renderers
+   *  swap in the assembly label + href over their config default.
+   *  Serialisable snapshot so client renderers don't roundtrip. */
+  assemblyCtaBySlot?: Record<string, AssemblyCtaSnapshot>;
+  /** The merchant's primary trade slug (from hammerex_trade_off_listings
+   *  or, in preview mode, from the blueprint's canonical trade). Section
+   *  renderers use this to pull trade-specific defaults from the
+   *  Knowledge Graph (services list, common FAQs, industry intelligence)
+   *  when their config doesn't explicitly seed the content. */
+  primaryTrade?: string;
+};
+
+/** Serialisable snapshot of an assembly-driven CTA. Mirrors
+ *  ResolvedAssemblyCta from @/lib/studio/assembly/ctaResolver without
+ *  importing it here (keeps sections free of server-only). */
+export type AssemblyCtaSnapshot = {
+  label: string;
+  href: string;
+  priority: number;
+  sourceModuleId: string;
+};
+
+export type StormModePayload = {
+  message: string;
+  ctaLabel: string | null;
+  ctaHref: string | null;
+  expiresAt: string | null;
+};
+
+/** Minimal credential row exposed to renderers. Shape mirrors the
+ *  loader in @/lib/studio/credentials/loader without importing it here
+ *  (avoids a server→client boundary cross in section files). */
+export type PublicCredentialLite = {
+  scheme: string;
+  status: "verified" | "self-declared";
+  number: string;
+  displayLabel: string | null;
+  verifiedAt: string | null;
 };
 
 /** Brand tokens as a flat map keyed by "kind.key" (e.g. "color.primary",
@@ -293,6 +345,88 @@ export type SectionVariant<TConfig> = {
 
 // ─── The registration itself ──────────────────────────────────────
 
+// ─── Extended manifest fields (Slice D) ──────────────────────────
+//
+// Logical layout categories. Every section declares one so the AI
+// composer (Slice E) can pick the right section for a page slot.
+export type SectionCategory =
+  | "hero"
+  | "about"
+  | "services"
+  | "gallery"
+  | "testimonials"
+  | "faq"
+  | "pricing"
+  | "booking"
+  | "contact"
+  | "footer"
+  | "statistics"
+  | "timeline"
+  | "team"
+  | "portfolio"
+  | "blog"
+  | "cta"
+  | "trust"
+  | "logo_strip"
+  | "banner"
+  | "newsletter"
+  | "video";
+
+// Theme presets a section renders well under (from themePresets.ts).
+export type ThemePresetIdRef =
+  | "modern"
+  | "corporate"
+  | "luxury"
+  | "industrial"
+  | "minimal"
+  | "creative";
+
+// Responsive intent — how the section adapts across breakpoints.
+// Any behaviour value is valid at any breakpoint (mobile could be
+// "grid_2" for a services grid; desktop could be "stack" for a linear
+// FAQ). Naming is behavioural, not breakpoint-specific.
+export type ResponsiveLayoutBehaviour =
+  | "stack"          // items stack vertically
+  | "carousel"       // items scroll horizontally
+  | "collapse"       // items collapse into an accordion
+  | "compact"        // maintains grid but tighter
+  | "sticky"         // sticky-position variant
+  | "grid_2"
+  | "grid_3"
+  | "grid_4"
+  | "split_50_50"
+  | "split_60_40"
+  | "split_60_40_reverse"
+  | "asymmetric";
+
+export type ResponsiveBehaviour = {
+  mobile: ResponsiveLayoutBehaviour;
+  tablet?: ResponsiveLayoutBehaviour;
+  desktop?: ResponsiveLayoutBehaviour;
+};
+
+// Declarative image slot — used by the asset library resolver so
+// buildLayoutFromSeeds knows which slots to auto-populate.
+export type ImagePlaceholder = {
+  /** Config key that receives the URL. */
+  configKey: string;
+  /** Semantic purpose — matches AssetPurpose from assetLibrary.ts. */
+  purpose: "hero" | "gallery" | "background" | "team" | "service" | "banner";
+  orientation?: "landscape" | "portrait" | "square";
+  recommendedWidthPx?: number;
+  recommendedAspect?: string;
+  /** Optional alt-text config key that gets set alongside the URL. */
+  altConfigKey?: string;
+};
+
+// Whether this section has primary/secondary CTAs — helps the AI
+// composer avoid placing 3 CTA-heavy sections adjacent to each other.
+export type CtaAreaSpec = {
+  hasPrimary: boolean;
+  hasSecondary?: boolean;
+  isSticky?: boolean;
+};
+
 export type SectionRegistration<TConfig extends Record<string, unknown> = Record<string, unknown>> = {
   /** Namespaced id: "hero.plant_hire_bold_1", "product_grid.classic_3col". */
   id: string;
@@ -314,21 +448,50 @@ export type SectionRegistration<TConfig extends Record<string, unknown> = Record
   thumbnail: string;
   /** Score-engine hints. */
   scoreHints?: ScoreHints;
-  /** Tags for telemetry grouping (Live Component Intelligence uses
-   *  these to slice usage stats). */
+  /** Tags for telemetry grouping. */
   telemetryTags: string[];
-  /** Verticals this section is best for. Powers "Best for Builders
-   *  Merchants" badge in the Library UI. */
+  /** LEGACY — verticals this section is best for. Kept for backwards
+   *  compat with old blueprints/UIs. New code should read
+   *  supportedIndustries instead. */
   bestForVerticals?: string[];
   /** Factory returning a starter config when a merchant picks this
    *  section fresh. */
   defaultConfig: () => TConfig;
-  /** The React component that renders this section. Must be pure —
-   *  never reach for I/O, cookies, or external state. All data enters
-   *  via props. */
+  /** The React component that renders this section. */
   renderer: ComponentType<SectionRendererProps<TConfig>>;
   /** Optional variants — same renderer, different baseline configs. */
   variants?: SectionVariant<TConfig>[];
+
+  // ─── Slice D extended manifest fields (all optional) ────────────
+  //
+  // The AI composer (Slice E) reads these to reason about which
+  // sections can slot into a given page layout, theme, and trade.
+  // Section registrations that don't declare them still work — the
+  // composer just falls back to safer defaults.
+
+  /** Logical layout category. Sections compete for the same page slot
+   *  based on category (e.g. only one "hero" per page unless intended). */
+  category?: SectionCategory;
+  /** Theme presets this section renders well under. Omit or set to
+   *  ["all"] to signal universal compatibility. */
+  supportedThemes?: (ThemePresetIdRef | "all")[];
+  /** Industries this section is a canonical fit for. Replaces
+   *  bestForVerticals — same semantics, clearer name. When omitted,
+   *  falls back to bestForVerticals or "all". */
+  supportedIndustries?: (string | "all")[];
+  /** Responsive layout behaviour declaration — mobile-first. */
+  responsiveBehaviour?: ResponsiveBehaviour;
+  /** Declarative image slots — the asset library resolver reads this
+   *  to know which config keys to auto-populate. */
+  imagePlaceholders?: ImagePlaceholder[];
+  /** Lucide icon names this section references. Enables asset audits
+   *  + AI icon substitution. */
+  lucideIconsUsed?: string[];
+  /** CTA structure — for composer heuristics. */
+  ctaArea?: CtaAreaSpec;
+  /** Notable accessibility considerations for future audits + AI
+   *  guidance. */
+  accessibilityNotes?: string[];
 };
 
 // Convenience: a registration with type erasure for storing in the Map.

@@ -7,6 +7,7 @@
 // fetch-based so no additional dependencies required.
 
 import { createHmac } from "crypto";
+import { formatMajorString } from "./currency";
 
 export type RefundResult =
   | { ok: true }
@@ -69,7 +70,7 @@ export async function refundPaypal(args: {
       },
       body: JSON.stringify({
         amount: {
-          value: (args.amountMinor / 100).toFixed(2),
+          value: formatMajorString(args.amountMinor, args.currency),
           currency_code: args.currency
         }
       })
@@ -102,7 +103,7 @@ export async function refundMollie(args: {
       body: JSON.stringify({
         amount: {
           currency: args.currency,
-          value: (args.amountMinor / 100).toFixed(2)
+          value: formatMajorString(args.amountMinor, args.currency)
         }
       })
     }

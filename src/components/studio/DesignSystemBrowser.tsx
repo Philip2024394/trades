@@ -28,7 +28,11 @@ const CATEGORY_LABELS: Record<DesignComponentCategory, string> = {
   forms: "Forms",
   navigation: "Navigation",
   sections: "Sections",
-  media: "Media"
+  media: "Media",
+  overlays: "Overlays",
+  feedback: "Feedback",
+  "data-display": "Data display",
+  inputs: "Inputs"
 };
 
 const ORDERED_CATEGORIES: DesignComponentCategory[] = [
@@ -37,7 +41,11 @@ const ORDERED_CATEGORIES: DesignComponentCategory[] = [
   "containers",
   "cards",
   "forms",
+  "inputs",
   "navigation",
+  "overlays",
+  "feedback",
+  "data-display",
   "sections",
   "media"
 ];

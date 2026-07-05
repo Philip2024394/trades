@@ -21,6 +21,11 @@ import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { GridPattern } from "@/components/magicui/grid-pattern";
+
+/** Product-showroom uses grid pattern only — an animated aurora would
+ *  fight the product tile grid and stock photography. */
+type VisualEffect = "none" | "grid";
 
 type Config = {
   eyebrow: string;
@@ -32,6 +37,7 @@ type Config = {
   secondaryCtaHref: string;
   deliveryChip: string;
   tradeAccountChip: string;
+  visualEffect: VisualEffect;
   product1Image: string;
   product1Label: string;
   product1Badge: string;
@@ -57,6 +63,8 @@ function ProductShowroomHero({
 }: SectionRendererProps<Config>) {
   const accent = (tokens["color.accent"] as string) ?? "#FFB300";
   const bg = (tokens["color.surface"] as string) ?? "#FFFFFF";
+  const visualEffect: VisualEffect =
+    config.visualEffect === "none" ? "none" : "grid";
   const subtle = (tokens["color.subtle"] as string) ?? "#F5F5F5";
   const ink = (tokens["color.ink"] as string) ?? "#0A0A0A";
   const muted = (tokens["color.muted"] as string) ?? "#525252";
@@ -88,6 +96,15 @@ function ProductShowroomHero({
       style={{ background: bg, color: ink, fontFamily: bodyFont }}
       {...sectionRootAttrs(instanceId, "hero.product_showroom_1", "Product Showroom Hero")}
     >
+      {/* Magic UI grid — sits above the background photo overlay so it
+          reads on both photo and no-photo variants. */}
+      {visualEffect === "grid" && (
+        <GridPattern
+          size={48}
+          strokeWidth={1}
+          className="-z-10 text-neutral-900/[0.05]"
+        />
+      )}
       {config.backgroundImageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
@@ -314,7 +331,8 @@ const registration: SectionRegistration<Config> = {
     { key: "product6Image", role: "hero_media",label: "Product 6 image", type: { kind: "image", aspectRatio: "1:1" }, default: "", group: "Products" },
     { key: "product6Label", role: "product_name",label: "Product 6 label", type: { kind: "text", maxLength: 30 }, default: "Fixings", group: "Products" },
     { key: "backgroundImageUrl", role: "background_media",label: "Background photo", type: { kind: "image", aspectRatio: "16:9", recommendedWidthPx: 1920 }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%202,%202026,%2002_36_48%20PM.png?updatedAt=1782977828849", group: "Background", description: "Full-bleed photo behind the copy + product grid. Leave empty for the plain dark surface." },
-    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" }
+    { key: "backgroundImageOpacity", role: "opacity",label: "Background photo opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 1, group: "Background" },
+    { key: "visualEffect", label: "Background effect", type: { kind: "select", options: [{ value: "grid", label: "Grid pattern (default)" }, { value: "none", label: "None" }] }, default: "grid", description: "Subtle Magic UI grid layered above the background photo.", group: "Background" }
   ],
   animations: ["none", "fade-in"],
   aiPrompts: {
@@ -352,7 +370,8 @@ const registration: SectionRegistration<Config> = {
     product6Label: "Fixings",
     backgroundImageUrl:
       "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%202,%202026,%2002_36_48%20PM.png?updatedAt=1782977828849",
-    backgroundImageOpacity: 1
+    backgroundImageOpacity: 1,
+    visualEffect: "grid"
   }),
   renderer: ProductShowroomHero
 };

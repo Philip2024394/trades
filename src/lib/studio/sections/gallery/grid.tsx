@@ -1,223 +1,219 @@
-// gallery.grid_1 — 8-tile uniform photo grid.
+// gallery.grid_1 — Phase 3 rebuild on shadcn foundation.
 //
-// Portfolio / finished-job / before-after showcase. Every tile is
-// square, no captions, minimal chrome — the photos do the talking.
-// Merchants add photos slot by slot via the Module 7 image picker.
-// Optional "See all photos" CTA below the grid points at a dedicated
-// portfolio page.
-//
-// A future gallery.masonry_1 will offer variable-height Pinterest-style
-// tiles; grid_1 is the safest first pick for merchants uploading mixed
-// aspect-ratio photos.
+// Photo gallery grid for portfolio trades. Mobile: 2-col grid;
+// Tablet: 3-col; Desktop: 4-col. Framer Motion staggered reveal.
+// Click-through goes to a lightbox route (or plain link).
+// Supports fixed photo1..8 slots OR items[] array.
+
+"use client";
 
 import Link from "next/link";
+import { ImageOff } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { Reveal } from "@/components/ui/reveal";
+import { cn } from "@/lib/utils";
 
-type Slot = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+type ItemShape = { url?: string; alt?: string; href?: string };
 
 type Config = {
   eyebrow: string;
   heading: string;
-  p1ImageUrl: string; p1Alt: string;
-  p2ImageUrl: string; p2Alt: string;
-  p3ImageUrl: string; p3Alt: string;
-  p4ImageUrl: string; p4Alt: string;
-  p5ImageUrl: string; p5Alt: string;
-  p6ImageUrl: string; p6Alt: string;
-  p7ImageUrl: string; p7Alt: string;
-  p8ImageUrl: string; p8Alt: string;
-  showSeeAll: boolean;
-  seeAllLabel: string;
-  seeAllHref: string;
+  subheading: string;
+  photo1Url: string; photo1Alt: string; photo1Href: string;
+  photo2Url: string; photo2Alt: string; photo2Href: string;
+  photo3Url: string; photo3Alt: string; photo3Href: string;
+  photo4Url: string; photo4Alt: string; photo4Href: string;
+  photo5Url: string; photo5Alt: string; photo5Href: string;
+  photo6Url: string; photo6Alt: string; photo6Href: string;
+  photo7Url: string; photo7Alt: string; photo7Href: string;
+  photo8Url: string; photo8Alt: string; photo8Href: string;
+  items?: ItemShape[];
+  surface: "light" | "dark";
 };
 
 function GalleryGrid({
   instanceId,
   config,
-  tokens,
-  mode
+  tokens
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const surface = (tokens["color.surface"] as string | undefined) ?? "#FFFFFF";
-  const text = (tokens["color.text"] as string | undefined) ?? "#0A0A0A";
-  const muted = (tokens["color.muted"] as string | undefined) ?? "#737373";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
-  const isEditing = mode === "edit";
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
+  const isDark = config.surface === "dark";
 
-  type Photo = { i: Slot; url: string; alt: string };
-  const slots: Photo[] = [
-    { i: 1, url: config.p1ImageUrl, alt: config.p1Alt },
-    { i: 2, url: config.p2ImageUrl, alt: config.p2Alt },
-    { i: 3, url: config.p3ImageUrl, alt: config.p3Alt },
-    { i: 4, url: config.p4ImageUrl, alt: config.p4Alt },
-    { i: 5, url: config.p5ImageUrl, alt: config.p5Alt },
-    { i: 6, url: config.p6ImageUrl, alt: config.p6Alt },
-    { i: 7, url: config.p7ImageUrl, alt: config.p7Alt },
-    { i: 8, url: config.p8ImageUrl, alt: config.p8Alt }
-  ];
-  // In edit mode we render EVERY slot (including empty ones) so the
-  // merchant can click the placeholder and upload. In preview/published
-  // empty slots are hidden.
-  const photos = isEditing ? slots : slots.filter((p) => p.url);
+  const eyebrow = typeof config.eyebrow === "string" ? config.eyebrow : "";
+  const heading = typeof config.heading === "string" ? config.heading : "";
+  const subheading = typeof config.subheading === "string" ? config.subheading : "";
+
+  let photos: Array<{ i: number; url: string; alt: string; href: string }> = [];
+  if (Array.isArray(config.items) && config.items.length > 0) {
+    photos = config.items
+      .map((it, idx) => ({
+        i: idx + 1,
+        url: typeof it.url === "string" ? it.url : "",
+        alt: typeof it.alt === "string" ? it.alt : "",
+        href: typeof it.href === "string" ? it.href : ""
+      }))
+      .filter((p) => p.url.length > 0);
+  } else {
+    photos = [
+      { i: 1, url: config.photo1Url, alt: config.photo1Alt, href: config.photo1Href },
+      { i: 2, url: config.photo2Url, alt: config.photo2Alt, href: config.photo2Href },
+      { i: 3, url: config.photo3Url, alt: config.photo3Alt, href: config.photo3Href },
+      { i: 4, url: config.photo4Url, alt: config.photo4Alt, href: config.photo4Href },
+      { i: 5, url: config.photo5Url, alt: config.photo5Alt, href: config.photo5Href },
+      { i: 6, url: config.photo6Url, alt: config.photo6Alt, href: config.photo6Href },
+      { i: 7, url: config.photo7Url, alt: config.photo7Alt, href: config.photo7Href },
+      { i: 8, url: config.photo8Url, alt: config.photo8Alt, href: config.photo8Href }
+    ]
+      .map((p) => ({
+        i: p.i,
+        url: typeof p.url === "string" ? p.url : "",
+        alt: typeof p.alt === "string" ? p.alt : "",
+        href: typeof p.href === "string" ? p.href : ""
+      }))
+      .filter((p) => p.url.length > 0);
+  }
+
+  if (photos.length === 0) return null;
 
   return (
     <section
-      className="w-full"
-      style={{ background: surface, color: text }}
-      {...sectionRootAttrs(instanceId, "gallery.grid_1", "Gallery")}
+      className={cn(
+        "relative w-full overflow-x-clip",
+        isDark ? "bg-foreground text-background" : "bg-background text-foreground"
+      )}
+      {...sectionRootAttrs(instanceId, "gallery.grid_1", "Gallery grid")}
     >
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        {config.eyebrow && (
-          <p
-            className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: accent }}
-            {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
-          >
-            {config.eyebrow}
-          </p>
-        )}
-        {config.heading && (
-          <h2
-            className="mt-2 text-3xl leading-tight sm:text-4xl"
-            style={{ fontFamily: headingFont, fontWeight: headingWeight ?? 800 }}
-            {...treeAttrs(instanceId, "heading", "Main headline", "text")}
-          >
-            {config.heading}
-          </h2>
-        )}
-
-        <ul className="mt-8 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 lg:grid-cols-4">
-          {photos.map((p) => (
-            <li
-              key={p.i}
-              className="relative aspect-square overflow-hidden rounded-2xl bg-neutral-100"
-            >
-              {p.url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={p.url}
-                  alt={p.alt || `Photo ${p.i}`}
-                  loading="lazy"
-                  className="absolute inset-0 h-full w-full object-cover"
-                  {...treeAttrs(instanceId, `p${p.i}ImageUrl`, `Photo ${p.i}`, "image")}
-                />
-              ) : (
-                <span
-                  className="absolute inset-0 grid place-items-center text-[10px] font-extrabold uppercase tracking-widest text-neutral-400"
-                  {...treeAttrs(instanceId, `p${p.i}ImageUrl`, `Photo ${p.i}`, "image")}
+      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+        {(eyebrow || heading || subheading) && (
+          <div className="mb-10 text-center sm:mb-12">
+            {eyebrow && (
+              <Reveal>
+                <p
+                  className="text-eyebrow font-extrabold uppercase"
+                  style={{ color: accent }}
+                  {...treeAttrs(instanceId, "eyebrow", "Eyebrow", "text")}
                 >
-                  + Photo {p.i}
-                </span>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        {config.showSeeAll && config.seeAllLabel && (
-          <div className="mt-8 flex justify-center">
-            <Link
-              href={config.seeAllHref || "#"}
-              tabIndex={isEditing ? -1 : undefined}
-              className="inline-flex h-12 items-center rounded-xl px-5 text-[12px] font-extrabold uppercase tracking-widest transition hover:brightness-95"
-              style={{ background: accent, color: "#0A0A0A" }}
-              {...treeAttrs(instanceId, "seeAllLabel", "See-all button", "button")}
-            >
-              {config.seeAllLabel} →
-            </Link>
+                  {eyebrow}
+                </p>
+              </Reveal>
+            )}
+            {heading && (
+              <Reveal delay={0.05}>
+                <h2
+                  className="mt-3 text-display-sm font-extrabold sm:text-display-md lg:text-display-lg"
+                  {...treeAttrs(instanceId, "heading", "Heading", "text")}
+                >
+                  {heading}
+                </h2>
+              </Reveal>
+            )}
+            {subheading && (
+              <Reveal delay={0.1}>
+                <p
+                  className="mx-auto mt-4 max-w-2xl text-body-md text-muted-foreground sm:text-body-lg"
+                  {...treeAttrs(instanceId, "subheading", "Subheading", "text")}
+                >
+                  {subheading}
+                </p>
+              </Reveal>
+            )}
           </div>
         )}
+
+        <ul className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4">
+          {photos.map((p, i) => {
+            const inner = p.url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={p.url}
+                alt={p.alt}
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                {...treeAttrs(instanceId, `photo${p.i}Url`, `Photo ${p.i}`, "image")}
+              />
+            ) : (
+              <div className="grid h-full w-full place-items-center bg-muted text-muted-foreground">
+                <ImageOff size={20} strokeWidth={2} />
+              </div>
+            );
+            return (
+              <li key={p.i}>
+                <Reveal delay={0.1 + i * 0.04}>
+                  {p.href ? (
+                    <Link
+                      href={p.href}
+                      className="group block aspect-square overflow-hidden rounded-xl border border-border/40 transition-shadow hover:shadow-lg"
+                    >
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className="group aspect-square overflow-hidden rounded-xl border border-border/40">
+                      {inner}
+                    </div>
+                  )}
+                </Reveal>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
 }
 
-const photoFields = (i: Slot) => [
-  { key: `p${i}ImageUrl`, label: `Photo ${i}`, type: { kind: "image" as const, aspectRatio: "1/1", recommendedWidthPx: 800 }, default: "", priority: "image" as const, group: `Photo ${i}` },
-  { key: `p${i}Alt`, label: `Photo ${i} alt text`, type: { kind: "text" as const, maxLength: 120 }, default: "", description: "Short description — search engines and screen readers.", group: `Photo ${i}` }
-];
+const buildPhotoFields = () => {
+  const fields = [];
+  for (let i = 1; i <= 8; i++) {
+    fields.push({ key: `photo${i}Url`, label: `Photo ${i} URL`, type: { kind: "image" as const, aspectRatio: "1/1", recommendedWidthPx: 800 }, default: "", priority: "image" as const, role: "gallery_media" as const, group: `Photo ${i}` });
+    fields.push({ key: `photo${i}Alt`, label: `Photo ${i} alt`, type: { kind: "text" as const, maxLength: 100 }, default: `Portfolio image ${i}`, group: `Photo ${i}` });
+    fields.push({ key: `photo${i}Href`, label: `Photo ${i} link (optional)`, type: { kind: "link" as const, allowInternal: true, allowExternal: true }, default: "", group: `Photo ${i}` });
+  }
+  return fields;
+};
 
 const registration: SectionRegistration<Config> = {
   id: "gallery.grid_1",
-  name: "Photo grid",
-  version: "1.0.0",
+  name: "Gallery grid",
+  version: "2.0.0",
   library: "gallery",
   description:
-    "8-tile uniform photo grid. 4-column desktop, 2-column mobile. Best for finished-job portfolios — landscaping, joinery, tiling, kitchen fits. In edit mode every empty slot shows a placeholder so upload is one click.",
+    "Photo gallery grid on shadcn foundation. Mobile: 2-col; Tablet: 3-col; Desktop: 4-col. Staggered Framer Motion reveal. Supports fixed photo1..8 slots OR items[] array.",
   editableFields: [
-    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Recent work", priority: "text", group: "Header" },
-    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "The last eight jobs.", priority: "text", aiPromptable: true, group: "Header" },
-    ...photoFields(1),
-    ...photoFields(2),
-    ...photoFields(3),
-    ...photoFields(4),
-    ...photoFields(5),
-    ...photoFields(6),
-    ...photoFields(7),
-    ...photoFields(8),
-    { key: "showSeeAll", label: "Show See-all button", type: { kind: "boolean" }, default: true, group: "Footer" },
-    { key: "seeAllLabel", label: "See-all button text", type: { kind: "text", maxLength: 24 }, default: "See every job", priority: "button", group: "Footer" },
-    { key: "seeAllHref", label: "See-all button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "/portfolio", group: "Footer" }
-  ],
-  animations: ["none", "fade", "stagger"],
+    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Recent work", priority: "text", role: "eyebrow", group: "Copy" },
+    { key: "heading", label: "Heading", type: { kind: "text", maxLength: 80 }, default: "Some of our projects", priority: "text", role: "headline", aiPromptable: true, group: "Copy" },
+    { key: "subheading", label: "Subheading", type: { kind: "text", maxLength: 200, multiline: true }, default: "", priority: "text", role: "subhead", aiPromptable: true, group: "Copy" },
+    ...buildPhotoFields(),
+    { key: "surface", role: "surface_mode", label: "Surface", type: { kind: "select", options: [{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }] }, default: "light", group: "Layout" }
+  ] as unknown as SectionRegistration<Config>["editableFields"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain:
-      "Explain why a photo grid works for photo-heavy UK trades. Reference the specific layout choices (uniform tiles, 4-col desktop).",
-    improve:
-      "Improve without layout change. Headline under 6 words. See-all label verb-first. Return only patched config.",
-    rewrite:
-      "Rewrite the headline in a {tone} voice.",
-    suggestAlternative:
-      "Suggest an alternative gallery layout from library='gallery'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    explain: "A photo gallery grid. Explain when this beats a carousel.",
+    improve: "Curate a stronger subset of 6 photos from 8. Return patched fields only.",
+    rewrite: "Rewrite alt text in a {tone} voice for accessibility + SEO.",
+    suggestAlternative: "Suggest an alternative when photos are diverse aspect ratios.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail:
-    "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/gallery-grid-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 1200 },
-    accessibility: { contrastMin: 4.5, requiredAlt: ["p1Alt", "p2Alt", "p3Alt", "p4Alt", "p5Alt", "p6Alt", "p7Alt", "p8Alt"] },
-    sales: { socialProofRecommended: true },
-    seo: { headingLevel: 2 },
-    mobile: { noHorizontalScroll: true },
-    brandConsistency: { boundTokens: ["color.accent", "color.surface", "color.text"] }
-  },
-  telemetryTags: [
-    "gallery",
-    "grid",
-    "uniform_tiles",
-    "eight_slots",
-    "photo_heavy"
-  ],
-  bestForVerticals: [
-    "landscaping",
-    "joinery",
-    "tiling",
-    "kitchen_install",
-    "bathroom_install",
-    "roofing",
-    "carpentry",
-    "brickwork",
-    "plastering"
-  ],
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 1200 }, accessibility: { contrastMin: 4.5, requiredAlt: ["photo1Url", "photo2Url", "photo3Url", "photo4Url"] }, sales: { socialProofRecommended: true }, seo: { headingLevel: 2 }, mobile: { minTapTargetPx: 44 }, brandConsistency: { boundTokens: [] } },
+  telemetryTags: ["gallery", "grid", "portfolio", "photo_heavy", "shadcn", "framer_motion"],
+  bestForVerticals: ["landscaping", "carpentry", "tiling", "roofing", "extension-builder", "kitchen-fitter", "bathroom-fitter", "painter"],
   defaultConfig: () => ({
     eyebrow: "Recent work",
-    heading: "The last eight jobs.",
-    p1ImageUrl: "", p1Alt: "",
-    p2ImageUrl: "", p2Alt: "",
-    p3ImageUrl: "", p3Alt: "",
-    p4ImageUrl: "", p4Alt: "",
-    p5ImageUrl: "", p5Alt: "",
-    p6ImageUrl: "", p6Alt: "",
-    p7ImageUrl: "", p7Alt: "",
-    p8ImageUrl: "", p8Alt: "",
-    showSeeAll: true,
-    seeAllLabel: "See every job",
-    seeAllHref: "/portfolio"
+    heading: "Some of our projects",
+    subheading: "",
+    photo1Url: "", photo1Alt: "Portfolio image 1", photo1Href: "",
+    photo2Url: "", photo2Alt: "Portfolio image 2", photo2Href: "",
+    photo3Url: "", photo3Alt: "Portfolio image 3", photo3Href: "",
+    photo4Url: "", photo4Alt: "Portfolio image 4", photo4Href: "",
+    photo5Url: "", photo5Alt: "Portfolio image 5", photo5Href: "",
+    photo6Url: "", photo6Alt: "Portfolio image 6", photo6Href: "",
+    photo7Url: "", photo7Alt: "Portfolio image 7", photo7Href: "",
+    photo8Url: "", photo8Alt: "Portfolio image 8", photo8Href: "",
+    surface: "light"
   }),
   renderer: GalleryGrid
 };

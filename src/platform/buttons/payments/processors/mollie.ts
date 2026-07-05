@@ -4,6 +4,7 @@ import {
   paymentProcessors,
   type PaymentProcessor
 } from "../processor";
+import { formatMajorString } from "../currency";
 
 const BASE = "https://api.mollie.com/v2";
 
@@ -21,7 +22,7 @@ const processor: PaymentProcessor = {
       body: JSON.stringify({
         amount: {
           currency: req.currency,
-          value: (req.amountMinor / 100).toFixed(2)
+          value: formatMajorString(req.amountMinor, req.currency)
         },
         description: req.description ?? req.orderRef,
         redirectUrl: req.returnUrl,

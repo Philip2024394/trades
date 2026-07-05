@@ -60,7 +60,8 @@ const LIBRARY_LABEL: Record<SectionLibrary, string> = {
   contact: "Contact",
   map: "Map",
   footer: "Footer",
-  cta: "CTA"
+  cta: "CTA",
+  trust_bar: "Trust bar"
 };
 
 const LIBRARY_PITCH: Partial<Record<SectionLibrary, string>> = {

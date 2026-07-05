@@ -1,96 +1,122 @@
 // Section Registry — singleton store.
 //
-// Every section calls `sectionRegistry.register()` at module load. The
-// renderer, editor, Library UI, AI features, and Score engine all read
-// from this ONE registry. Zero coupling between sections; adding a new
-// section is one file.
+// Milestone 1 · Registry Kit migration:
+// Composes over `createRegistry` from @/platform/registryKit. All 48
+// existing section files self-register unchanged; every existing
+// caller (renderer, editor, Library UI, AI features, Score engine,
+// blueprint installer, generate composer) works verbatim.
 //
-// Registrations are frozen once accepted — no mutation after registration
-// to guarantee the renderer + editor see the same schema for the life of
-// the process.
+// Facade behaviour preserved:
+//   • `.list(library?)` — with optional library filter
+//   • `.ids(library?)` — with optional library filter
+//   • `.libraries()` — returns SectionLibrary[] with at least one section
+//   • `.counts()` — returns `Record<SectionLibrary, number>` for library
+//     badges. The kit's counts() returns {total, byCategory}, so the
+//     facade extracts byCategory into the historic shape.
 
+import type { Frozen, RegistrationBase } from "@/platform/registryKit";
+import { createRegistry } from "@/platform/registryKit";
 import type {
   AnySectionRegistration,
   SectionLibrary,
   SectionRegistration
 } from "./sectionTypes";
 
-class SectionRegistry {
-  private registrations = new Map<string, AnySectionRegistration>();
-  private byLibrary = new Map<SectionLibrary, AnySectionRegistration[]>();
+type SectionRegistrationWithBase = AnySectionRegistration & RegistrationBase;
+type FrozenSectionRegistration = Frozen<SectionRegistrationWithBase>;
 
-  /** Register a section. Throws if id is duplicated — a duplicate id
-   *  is always a bug (bundle drift, copy-paste), never intentional. */
+const inner = createRegistry<SectionRegistrationWithBase>({
+  label: "sectionRegistry",
+  idFormat: "namespacedId"
+});
+
+function normalise(
+  reg: AnySectionRegistration
+): SectionRegistrationWithBase {
+  // RegistrationBase — SectionRegistration already has id/name/
+  // description/version. The RegistrationBase.category slot maps to
+  // `library` (SectionLibrary is the primary index key that Studio
+  // uses for the library-badge counts). Sections that also declare
+  // the Slice-D `category: SectionCategory` field keep that value —
+  // it's a different classification axis used elsewhere.
+  return {
+    ...reg,
+    // Cast: RegistrationBase.category is `string`; SectionLibrary
+    // is a subset of that. AnySectionRegistration also carries an
+    // optional `category: SectionCategory` used by the Slice D
+    // manifest — we intentionally overwrite that with library so
+    // the kit's primary index groups by SectionLibrary.
+    category: reg.library as string
+  } as SectionRegistrationWithBase & { tags: string[] };
+}
+
+// Attach tags separately so TypeScript accepts the intersection
+// widening. The kit ingests tags via RegistrationBase.tags.
+function normaliseWithTags(
+  reg: AnySectionRegistration
+): SectionRegistrationWithBase {
+  const base = normalise(reg);
+  return {
+    ...base,
+    tags: [
+      ...(reg.bestForVerticals ?? []),
+      ...(reg.telemetryTags ?? [])
+    ]
+  };
+}
+
+export const sectionRegistry = {
   register<TConfig extends Record<string, unknown>>(
     reg: SectionRegistration<TConfig>
   ): void {
-    if (this.registrations.has(reg.id)) {
-      throw new Error(
-        `sectionRegistry: duplicate registration for "${reg.id}". ` +
-          `Every section id must be unique across all libraries.`
-      );
-    }
-    const frozen = Object.freeze(reg) as AnySectionRegistration;
-    this.registrations.set(reg.id, frozen);
-    const bucket = this.byLibrary.get(reg.library) ?? [];
-    bucket.push(frozen);
-    this.byLibrary.set(reg.library, bucket);
-  }
+    inner.register(normaliseWithTags(reg as AnySectionRegistration));
+  },
 
-  /** Get a single registration by id. Returns undefined if not
-   *  registered — the caller decides how to handle a missing section
-   *  (skip render, fall back to a "section unavailable" placeholder,
-   *  etc.). */
-  get(id: string): AnySectionRegistration | undefined {
-    return this.registrations.get(id);
-  }
+  get(id: string): FrozenSectionRegistration | undefined {
+    return inner.get(id);
+  },
 
-  /** Same as get() but throws — for code paths that treat a missing
-   *  section as a fatal invariant violation. */
-  getOrThrow(id: string): AnySectionRegistration {
-    const r = this.registrations.get(id);
-    if (!r) {
-      throw new Error(
-        `sectionRegistry: no section registered for id "${id}". ` +
-          `Ensure @/lib/studio/sections is imported before use.`
-      );
-    }
-    return r;
-  }
+  getOrThrow(id: string): FrozenSectionRegistration {
+    return inner.getOrThrow(id);
+  },
 
   /** All sections, or all sections in one library. */
-  list(library?: SectionLibrary): AnySectionRegistration[] {
-    if (library) return [...(this.byLibrary.get(library) ?? [])];
-    return Array.from(this.registrations.values());
-  }
+  list(library?: SectionLibrary): FrozenSectionRegistration[] {
+    if (library) return inner.listByCategory(library);
+    return inner.list();
+  },
 
-  /** All libraries that have at least one registration. Useful for the
-   *  Library UI "which libraries are populated" navigation. */
+  /** All libraries that have at least one registration. */
   libraries(): SectionLibrary[] {
-    return Array.from(this.byLibrary.keys());
-  }
+    return inner.categories() as SectionLibrary[];
+  },
 
-  /** Ids only — for lightweight enumeration in server contexts. */
+  /** Ids only — lightweight enumeration. */
   ids(library?: SectionLibrary): string[] {
-    return this.list(library).map((r) => r.id);
-  }
+    return (library ? inner.listByCategory(library) : inner.list()).map(
+      (r) => r.id
+    );
+  },
 
   /** True if any registration matches the id. */
   has(id: string): boolean {
-    return this.registrations.has(id);
-  }
+    return inner.has(id);
+  },
 
-  /** How many sections exist per library. Powers the Library UI badges. */
+  /** How many sections exist per library. Preserves the historic
+   *  `Record<SectionLibrary, number>` shape (kit returns
+   *  `{total, byCategory}`; we extract byCategory). */
   counts(): Record<SectionLibrary, number> {
-    const out = {} as Record<SectionLibrary, number>;
-    this.byLibrary.forEach((bucket, lib) => {
-      out[lib] = bucket.length;
-    });
-    return out;
-  }
-}
+    return inner.counts().byCategory as Record<SectionLibrary, number>;
+  },
 
-/** The one and only registry instance for the process. Server and
- *  client bundles each hold their own copy; because registrations are
- *  pure metadata + a component reference, both copies are identical. */
-export const sectionRegistry = new SectionRegistry();
+  // ─── New surface inherited from the kit ─────────────────────────
+  search: inner.search,
+  describe: inner.describe,
+  listByTag: inner.listByTag,
+  tags: inner.tags,
+  resolveAlias: inner.resolveAlias,
+  selfCheck: inner.selfCheck,
+  snapshot: inner.snapshot,
+  size: inner.size
+};

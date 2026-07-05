@@ -37,6 +37,22 @@ export type AiTaskKind =
   //   — provider MUST only reference slugs from the corpus supplied
   //   in payload.
   | "app.recommend"
+  // Business Discovery
+  //   business.discover: given a merchant's free-text description of
+  //   their business, extract structured discovery signals for the
+  //   wizard: trade slug, outcome slugs, coverage, suggested modules.
+  //   Retrieval-first — provider MUST only reference slugs that exist
+  //   in the corpora supplied via payload (trades, outcomes, modules).
+  | "business.discover"
+  // Industry Brain
+  //   industry.answer: merchant asks a trade-relevant question. The
+  //   API loads Knowledge Graph context via retrieveKnowledge() and
+  //   sends it as the system-prompt payload. Provider MUST answer
+  //   from context only + cite node ids. Every claim gets a bracket
+  //   cite: "You need a CP12 [package.package-service.gas-engineer.cp12-landlord]."
+  //   Hallucinated node ids are a critical failure — the API drops
+  //   answers with unknown cite refs.
+  | "industry.answer"
   // Copy tasks
   | "copy.rewrite"
   | "copy.translate"

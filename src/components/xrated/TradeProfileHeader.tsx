@@ -30,20 +30,34 @@ function initials(name: string): string {
   );
 }
 
+export type AssemblyNavPill = {
+  id: string;
+  label: string;
+  href: string;
+  icon: string | null;
+};
+
 export function TradeProfileHeader({
   listing,
   appName,
-  backHref
+  backHref,
+  assemblyNavPills
 }: {
   listing: HammerexTradeOffListing;
   appName: string;
   backHref?: string;
+  /** Assembly-runtime nav entries the merchant accepted at install time
+   *  (from studio_assembly_nav_entries where target_slot='nav.header').
+   *  Rendered as a horizontal pill strip below the sticky top row. Empty
+   *  or omitted → no strip renders, existing merchants see no change. */
+  assemblyNavPills?: AssemblyNavPill[];
 }) {
   const avatarUrl =
     typeof listing.avatar_url === "string" && listing.avatar_url.trim().length > 0
       ? listing.avatar_url
       : null;
   const cartHref = `/${listing.slug}/cart`;
+  const pills = assemblyNavPills ?? [];
 
   return (
     <header
@@ -100,6 +114,32 @@ export function TradeProfileHeader({
 
         <HeaderCartButton slug={listing.slug} cartHref={cartHref} />
       </div>
+
+      {pills.length > 0 && (
+        <nav
+          aria-label="Actions"
+          className="border-t border-white/10"
+          style={{ background: "#0A0A0A" }}
+        >
+          <ul className="mx-auto flex w-full max-w-6xl items-center gap-2 overflow-x-auto px-3 py-2 sm:px-6">
+            {pills.map((p) => (
+              <li key={p.id} className="shrink-0">
+                <Link
+                  href={p.href}
+                  className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/15 px-3 text-[12px] font-extrabold uppercase tracking-widest text-white transition hover:bg-white/10"
+                >
+                  {p.icon && (
+                    <span aria-hidden="true" className="text-[14px]">
+                      {p.icon}
+                    </span>
+                  )}
+                  {p.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }

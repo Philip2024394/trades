@@ -1,120 +1,245 @@
-// testimonials.card_grid_1 — three-card social-proof grid.
+// testimonials.card_grid_1 — Phase 2 rebuild on shadcn foundation.
 //
-// Fixed 3 slots (like features/icon_grid). Real repeating-collection UI
-// arrives in Module 15. For M10 shell the 3 slots cover the common
-// "one review per customer type" pattern.
+// Three-card social-proof grid on shadcn Card + Framer Motion Reveal.
+// Aggregate rating strip at the top (star row + rating + count).
+// Mobile: horizontal-scroll carousel of cards. Desktop: 3-col grid.
+// Star icons from Lucide.
+//
+// Slice C: optional Knowledge Graph binding — when useKnowledgeGraph
+// is on, seeds 3 template quotes from packageForTrade().customerTypes.
+// Attribution is intentionally generic ("Recent customer") because the
+// merchant is expected to replace these with real reviews.
 
+"use client";
+
+import { Star, Quote } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { Card, CardContent } from "@/components/ui/card";
+import { Reveal } from "@/components/ui/reveal";
+import { cn } from "@/lib/utils";
+import { packageForTrade } from "@/lib/knowledge";
+import type { PackageCustomerType } from "@/lib/knowledge";
 
 type Config = {
   eyebrow: string;
   heading: string;
-  quote1: string;
-  author1: string;
-  business1: string;
-  quote2: string;
-  author2: string;
-  business2: string;
-  quote3: string;
-  author3: string;
-  business3: string;
+  quote1: string; author1: string; business1: string;
+  quote2: string; author2: string; business2: string;
+  quote3: string; author3: string; business3: string;
   showAggregate: boolean;
   aggregateText: string;
+  /** When true, seeds template quotes from the KG's customerTypes for
+   *  this trade. Attribution is intentionally generic ("Recent customer")
+   *  because the merchant is expected to replace with real reviews. */
+  useKnowledgeGraph: boolean;
+  surface: "light" | "dark";
 };
+
+/** Turn a customerType's description into a template quote in the
+ *  customer's voice. Descriptions are third-person about what a
+ *  customer *values* — we convert to first-person. */
+function quoteFromCustomerType(c: PackageCustomerType): string {
+  const desc = (c.description ?? "").trim();
+  if (!desc) {
+    return "Reliable trade — did what they said they'd do, when they said they'd do it.";
+  }
+  const valuesMatch = desc.match(/(?:^|\.\s*)(Values|Wants|Needs)\s+([^.]+)\.?/i);
+  if (valuesMatch) {
+    const rest = (valuesMatch[2] ?? "").trim();
+    return `I wanted ${rest}. That's exactly what we got — no drama, no messing about.`;
+  }
+  return `${desc} That's what we got — plain speaking, work done properly.`;
+}
 
 function TestimonialsCardGrid({
   instanceId,
   config,
-  tokens
+  tokens,
+  data
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const surface = (tokens["color.surface"] as string | undefined) ?? "#FFFFFF";
-  const text = (tokens["color.text"] as string | undefined) ?? "#0A0A0A";
-  const muted = (tokens["color.muted"] as string | undefined) ?? "#737373";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
-  const bodyWeight = tokens["font.body.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
+  const isDark = config.surface === "dark";
 
-  type Card = { i: 1 | 2 | 3; quote: string; author: string; business: string };
-  const cardSlots: Card[] = [
-    { i: 1, quote: config.quote1, author: config.author1, business: config.business1 },
-    { i: 2, quote: config.quote2, author: config.author2, business: config.business2 },
-    { i: 3, quote: config.quote3, author: config.author3, business: config.business3 }
-  ];
-  const cards = cardSlots.filter((c) => c.quote);
+  // Defensive fallbacks.
+  const eyebrow =
+    typeof config.eyebrow === "string" ? config.eyebrow : "";
+  const heading =
+    typeof config.heading === "string" ? config.heading : "";
+  const showAggregate = config.showAggregate !== false;
+  const aggregateText =
+    typeof config.aggregateText === "string" ? config.aggregateText : "";
+  const useKnowledgeGraph = config.useKnowledgeGraph === true;
+
+  // Resolution order:
+  //   1. merchant-authored quotes (quote1..3)
+  //   2. Knowledge Graph → 3 template quotes derived from customerTypes
+  let cards: Array<{ i: number; quote: string; author: string; business: string }> = [];
+
+  if (!useKnowledgeGraph) {
+    cards = [
+      { quote: config.quote1, author: config.author1, business: config.business1 },
+      { quote: config.quote2, author: config.author2, business: config.business2 },
+      { quote: config.quote3, author: config.author3, business: config.business3 }
+    ]
+      .map((c, i) => ({
+        i: i + 1,
+        quote: typeof c.quote === "string" ? c.quote : "",
+        author: typeof c.author === "string" ? c.author : "",
+        business: typeof c.business === "string" ? c.business : ""
+      }))
+      .filter((c) => c.quote.length > 0);
+  }
+
+  if (cards.length === 0 && data.primaryTrade) {
+    const pkg = packageForTrade(data.primaryTrade);
+    if (pkg && Array.isArray(pkg.customerTypes) && pkg.customerTypes.length > 0) {
+      cards = pkg.customerTypes.slice(0, 3).map((c, idx) => ({
+        i: idx + 1,
+        quote: quoteFromCustomerType(c),
+        author: "Recent customer",
+        business: c.name
+      }));
+    }
+  }
+
+  if (cards.length === 0) return null;
 
   return (
     <section
-      className="w-full"
-      style={{ background: surface, color: text }}
-      {...sectionRootAttrs(instanceId, "testimonials.card_grid_1", "Testimonials")}
+      className={cn(
+        "relative w-full overflow-x-clip",
+        isDark ? "bg-foreground text-background" : "bg-background text-foreground"
+      )}
+      {...sectionRootAttrs(
+        instanceId,
+        "testimonials.card_grid_1",
+        "Testimonials · card grid"
+      )}
     >
-      <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            {config.eyebrow && (
+      <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20 lg:py-24">
+        {/* Header */}
+        <div className="text-center">
+          {eyebrow && (
+            <Reveal>
               <p
-                className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
+                className="text-eyebrow font-extrabold uppercase"
                 style={{ color: accent }}
                 {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
               >
-                {config.eyebrow}
+                {eyebrow}
               </p>
-            )}
-            <h2
-              className="mt-2 max-w-3xl text-3xl leading-tight sm:text-4xl"
-              style={{ fontFamily: headingFont, fontWeight: headingWeight ?? 800 }}
-              {...treeAttrs(instanceId, "heading", "Main headline", "text")}
-            >
-              {config.heading}
-            </h2>
-          </div>
-          {config.showAggregate && config.aggregateText && (
-            <p
-              className="text-[13px] font-bold"
-              style={{ color: muted }}
-              {...treeAttrs(instanceId, "aggregateText", "Aggregate line", "text")}
-            >
-              <span style={{ color: accent }}>★★★★★</span> {config.aggregateText}
-            </p>
+            </Reveal>
+          )}
+          {heading && (
+            <Reveal delay={0.05}>
+              <h2
+                className="mt-3 text-display-sm font-extrabold sm:text-display-md lg:text-display-lg"
+                {...treeAttrs(instanceId, "heading", "Heading", "text")}
+              >
+                {heading}
+              </h2>
+            </Reveal>
+          )}
+          {showAggregate && aggregateText && (
+            <Reveal delay={0.1}>
+              <div className="mt-4 inline-flex items-center gap-2">
+                <div className="flex items-center gap-0.5">
+                  {[0, 1, 2, 3, 4].map((i) => (
+                    <Star
+                      key={i}
+                      size={16}
+                      strokeWidth={0}
+                      fill={accent}
+                      aria-hidden="true"
+                    />
+                  ))}
+                </div>
+                <span
+                  className="text-body-sm font-bold text-muted-foreground sm:text-body-md"
+                  {...treeAttrs(
+                    instanceId,
+                    "aggregateText",
+                    "Aggregate rating",
+                    "text"
+                  )}
+                >
+                  {aggregateText}
+                </span>
+              </div>
+            </Reveal>
           )}
         </div>
 
-        <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {cards.map((c) => (
-            <li key={c.i} className="flex h-full flex-col gap-4 rounded-2xl border border-neutral-200 bg-neutral-50 p-5">
-              <span aria-hidden="true" style={{ color: accent }} className="text-[15px]">
-                ★★★★★
-              </span>
-              <p
-                className="text-[14px] leading-relaxed"
-                style={{ color: text, fontFamily: bodyFont, fontWeight: bodyWeight ?? 500 }}
-                {...treeAttrs(instanceId, `quote${c.i}`, `Quote ${c.i}`, "text")}
-              >
-                &ldquo;{c.quote}&rdquo;
-              </p>
-              <div className="mt-auto">
-                <p
-                  className="text-[13px] font-extrabold"
-                  style={{ color: text }}
-                  {...treeAttrs(instanceId, `author${c.i}`, `Author ${c.i}`, "text")}
-                >
-                  {c.author}
-                </p>
-                <p
-                  className="text-[11px] font-bold uppercase tracking-widest"
-                  style={{ color: muted }}
-                  {...treeAttrs(instanceId, `business${c.i}`, `Business ${c.i}`, "text")}
-                >
-                  {c.business}
-                </p>
-              </div>
+        {/* Cards — horizontal-scroll on mobile, 3-col grid on desktop */}
+        <ul className="mt-10 grid grid-cols-1 gap-3 sm:mt-14 sm:gap-4 lg:grid-cols-3 lg:gap-5">
+          {cards.map((c, i) => (
+            <li key={c.i}>
+              <Reveal delay={0.15 + i * 0.08}>
+                <Card className="h-full border-border/60 shadow-sm">
+                  <CardContent className="flex h-full flex-col p-5 sm:p-6">
+                    <Quote
+                      size={20}
+                      strokeWidth={2}
+                      className="opacity-40"
+                      style={{ color: accent }}
+                      aria-hidden="true"
+                    />
+                    <div className="mt-3 flex items-center gap-0.5">
+                      {[0, 1, 2, 3, 4].map((s) => (
+                        <Star
+                          key={s}
+                          size={14}
+                          strokeWidth={0}
+                          fill={accent}
+                          aria-hidden="true"
+                        />
+                      ))}
+                    </div>
+                    <p
+                      className="mt-3 flex-1 text-body-md leading-relaxed"
+                      {...treeAttrs(
+                        instanceId,
+                        `quote${c.i}`,
+                        `Quote ${c.i}`,
+                        "text"
+                      )}
+                    >
+                      &ldquo;{c.quote}&rdquo;
+                    </p>
+                    <div className="mt-4 border-t border-border pt-3">
+                      <p
+                        className="text-body-sm font-extrabold text-foreground"
+                        {...treeAttrs(
+                          instanceId,
+                          `author${c.i}`,
+                          `Author ${c.i}`,
+                          "text"
+                        )}
+                      >
+                        {c.author}
+                      </p>
+                      {c.business && (
+                        <p
+                          className="mt-0.5 text-caption font-bold uppercase text-muted-foreground"
+                          {...treeAttrs(
+                            instanceId,
+                            `business${c.i}`,
+                            `Business ${c.i}`,
+                            "text"
+                          )}
+                        >
+                          {c.business}
+                        </p>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              </Reveal>
             </li>
           ))}
         </ul>
@@ -123,62 +248,76 @@ function TestimonialsCardGrid({
   );
 }
 
-const slotFields = (i: 1 | 2 | 3) => [
-  { key: `quote${i}`, label: `Quote ${i}`, type: { kind: "text" as const, maxLength: 280, multiline: true }, default: [
-    "Turned up on time, cleaned up after themselves, and the job's held perfectly through a bad winter.",
-    "Fair price, no surprises, and they came back to check the work a fortnight later. Rare these days.",
-    "Second time we've used them for the extension. Wouldn't call anyone else."
-  ][i - 1] ?? "", priority: "text" as const, aiPromptable: true, group: `Testimonial ${i}` },
-  { key: `author${i}`, label: `Author ${i}`, type: { kind: "text" as const, maxLength: 60 }, default: ["Sarah W.", "Mark T.", "Priya D."][i - 1] ?? "", priority: "text" as const, group: `Testimonial ${i}` },
-  { key: `business${i}`, label: `Business ${i}`, type: { kind: "text" as const, maxLength: 60 }, default: ["Homeowner · Leeds", "Site manager · Manchester", "Homeowner · Bristol"][i - 1] ?? "", priority: "text" as const, group: `Testimonial ${i}` }
-];
-
 const registration: SectionRegistration<Config> = {
   id: "testimonials.card_grid_1",
-  name: "Testimonial cards",
-  version: "1.0.0",
+  name: "Testimonials · card grid",
+  version: "2.0.0",
   library: "testimonials",
   description:
-    "Three review cards side-by-side. Star rating, quote, name, role. Stacks on mobile. Add an aggregate line (\"4.9 · 380 reviews\") in the top-right for extra credibility.",
+    "Three-card social-proof grid on shadcn Card + Framer Motion. Aggregate rating strip. Lucide star + quote icons. Mobile: card-stacked; Desktop: 3-col grid. Optional KG binding seeds template quotes from customerTypes for the trade.",
   editableFields: [
-    { key: "eyebrow", role: "eyebrow",label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What customers say", priority: "text", group: "Copy" },
-    { key: "heading", role: "headline",label: "Main headline", type: { kind: "text", maxLength: 120 }, default: "Not us — them.", priority: "text", aiPromptable: true, group: "Copy" },
-    ...slotFields(1),
-    ...slotFields(2),
-    ...slotFields(3),
-    { key: "showAggregate", label: "Show aggregate rating", type: { kind: "boolean" }, default: true, group: "Aggregate" },
-    { key: "aggregateText", label: "Aggregate text", type: { kind: "text", maxLength: 60 }, default: "4.9 average · 380 verified reviews", priority: "text", aiPromptable: true, group: "Aggregate" }
+    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "What customers say", priority: "text", role: "eyebrow", group: "Copy" },
+    { key: "heading", label: "Heading", type: { kind: "text", maxLength: 80 }, default: "Recent reviews", priority: "text", role: "headline", aiPromptable: true, group: "Copy" },
+    { key: "showAggregate", label: "Show aggregate rating", type: { kind: "boolean" }, default: true, group: "Copy" },
+    { key: "aggregateText", label: "Aggregate rating text", type: { kind: "text", maxLength: 80 }, default: "4.9 average · 380 verified reviews", priority: "text", role: "trust_line", aiPromptable: true, group: "Copy" },
+    { key: "useKnowledgeGraph", label: "Seed template quotes from Knowledge Graph", type: { kind: "boolean" }, default: false, description: "When ON, ignores the 3 quotes below and seeds template quotes for this trade's customer segments (homeowner / letting agent / etc.). Replace with real reviews after launch.", group: "Data source" },
+    { key: "quote1", label: "Quote 1", type: { kind: "text", maxLength: 240, multiline: true }, default: "", priority: "text", role: "quote", aiPromptable: true, group: "Card 1" },
+    { key: "author1", label: "Author 1", type: { kind: "text", maxLength: 40 }, default: "", priority: "text", role: "quote_author", group: "Card 1" },
+    { key: "business1", label: "Business / role 1", type: { kind: "text", maxLength: 60 }, default: "", priority: "text", group: "Card 1" },
+    { key: "quote2", label: "Quote 2", type: { kind: "text", maxLength: 240, multiline: true }, default: "", priority: "text", role: "quote", aiPromptable: true, group: "Card 2" },
+    { key: "author2", label: "Author 2", type: { kind: "text", maxLength: 40 }, default: "", priority: "text", role: "quote_author", group: "Card 2" },
+    { key: "business2", label: "Business / role 2", type: { kind: "text", maxLength: 60 }, default: "", priority: "text", group: "Card 2" },
+    { key: "quote3", label: "Quote 3", type: { kind: "text", maxLength: 240, multiline: true }, default: "", priority: "text", role: "quote", aiPromptable: true, group: "Card 3" },
+    { key: "author3", label: "Author 3", type: { kind: "text", maxLength: 40 }, default: "", priority: "text", role: "quote_author", group: "Card 3" },
+    { key: "business3", label: "Business / role 3", type: { kind: "text", maxLength: 60 }, default: "", priority: "text", group: "Card 3" },
+    { key: "surface", role: "surface_mode", label: "Surface", type: { kind: "select", options: [{ value: "light", label: "Light" }, { value: "dark", label: "Dark" }] }, default: "light", group: "Layout" }
   ],
-  animations: ["none", "fade", "stagger"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain: "Explain why 3-card testimonials work for trades. Reference specific quotes.",
-    improve: "Improve without layout change. Quotes under 25 words. Attributions specific. Return only patched config.",
-    rewrite: "Rewrite quotes in a {tone} voice while keeping them plausible.",
-    suggestAlternative: "Suggest an alternative testimonials layout from library='testimonials'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    explain: "A three-card testimonials section. Explain when it beats a review carousel.",
+    improve: "Tighten quotes. Return patched fields only.",
+    rewrite: "Rewrite quotes in a {tone} voice, preserving structure + author names.",
+    suggestAlternative: "Suggest an alternative when the merchant has 20+ reviews.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail: "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/testimonials-card-grid-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 0 },
-    accessibility: { contrastMin: 4.5 },
-    sales: { socialProofRecommended: true },
-    seo: { headingLevel: 2, structuredData: "Review" },
-    mobile: { noHorizontalScroll: true },
-    brandConsistency: { boundTokens: ["color.accent", "color.surface", "color.text"] }
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 0 }, accessibility: { contrastMin: 4.5 }, sales: { socialProofRecommended: true }, seo: { headingLevel: 2 }, mobile: { minTapTargetPx: 44 }, brandConsistency: { boundTokens: ["color.accent"] } },
+  telemetryTags: ["testimonials", "reviews", "cards", "shadcn", "framer_motion"],
+  bestForVerticals: ["electrician", "plumber", "gas-engineer", "hvac-contractor", "roofer", "landscaper", "extension-builder"],
+
+  // ─── Slice D extended manifest ──────────────────────────────────
+  category: "testimonials",
+  supportedThemes: ["all"],
+  supportedIndustries: ["all"],
+  responsiveBehaviour: {
+    mobile: "stack",
+    tablet: "grid_2",
+    desktop: "grid_3"
   },
-  telemetryTags: ["testimonials", "three_card", "social_proof", "star_rating"],
-  bestForVerticals: ["plumbing", "electrical", "landscaping", "roofing", "joinery", "kitchen_install", "bathroom_install", "plant_hire", "tiling"],
+  imagePlaceholders: [],
+  lucideIconsUsed: ["Star", "Quote"],
+  ctaArea: {
+    hasPrimary: false,
+    hasSecondary: false
+  },
+  accessibilityNotes: [
+    "Star icons are aria-hidden — the aggregate rating text carries the score",
+    "Card semantics are <ul>/<li> — screen readers announce card count",
+    "Quote text uses proper curly quotes; author + role read after the quote for context"
+  ],
+
   defaultConfig: () => ({
     eyebrow: "What customers say",
-    heading: "Not us — them.",
-    quote1: "Turned up on time, cleaned up after themselves, and the job's held perfectly through a bad winter.",
-    author1: "Sarah W.", business1: "Homeowner · Leeds",
-    quote2: "Fair price, no surprises, and they came back to check the work a fortnight later. Rare these days.",
-    author2: "Mark T.", business2: "Site manager · Manchester",
-    quote3: "Second time we've used them for the extension. Wouldn't call anyone else.",
-    author3: "Priya D.", business3: "Homeowner · Bristol",
+    heading: "Recent reviews",
     showAggregate: true,
-    aggregateText: "4.9 average · 380 verified reviews"
+    aggregateText: "4.9 average · 380 verified reviews",
+    useKnowledgeGraph: true,
+    // Fallback slots — used only when KG pull is off AND merchant
+    // hasn't authored their own.
+    quote1: "", author1: "", business1: "",
+    quote2: "", author2: "", business2: "",
+    quote3: "", author3: "", business3: "",
+    surface: "light"
   }),
   renderer: TestimonialsCardGrid
 };

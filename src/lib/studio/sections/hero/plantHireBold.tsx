@@ -1,20 +1,26 @@
-// hero.plant_hire_bold_1 — first registered section.
+// hero.plant_hire_bold_1 — Phase 3 rebuild on shadcn foundation.
 //
-// Bold trade-vertical hero for UK plant hire / tool hire / building
-// merchants. Serves as the reference implementation proving the
-// Section Registry contract works end-to-end.
-//
-// The renderer is a pure React component: receives fully-resolved
-// props, renders JSX, no I/O. Works in server and client bundles
-// identically.
+// Bold industrial hero for plant hire + heavy-equipment merchants.
+// Full-bleed background photo, dark surface, big trust badge line.
+// Banner proportions (1600×800). shadcn Button + Badge + Reveal.
+// Typography scale. Defensive fallbacks.
+
+"use client";
 
 import Link from "next/link";
+import { ArrowRight, ShieldCheck, MessageCircle } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { Button } from "@/components/ui/button";
+import { Reveal } from "@/components/ui/reveal";
+import { GridPattern } from "@/components/magicui/grid-pattern";
+import { cn } from "@/lib/utils";
+
+type VisualEffect = "none" | "grid";
 
 type Config = {
   eyebrow: string;
@@ -28,125 +34,153 @@ type Config = {
   overlayOpacity: number;
   showTrustBadge: boolean;
   trustBadgeText: string;
+  visualEffect: VisualEffect;
 };
 
 function PlantHireBoldHero({
   instanceId,
   config,
   tokens,
-  data,
-  mode
+  data
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const bg = (tokens["color.surface"] as string | undefined) ?? "#0A0A0A";
-  const overlay = Math.max(0, Math.min(1, config.overlayOpacity));
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
-  const bodyWeight = tokens["font.body.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
+  const overlay = Math.max(0, Math.min(1, Number(config.overlayOpacity) || 0.6));
+  const visualEffect: VisualEffect =
+    config.visualEffect === "none" ? "none" : "grid";
 
-  const primaryHref =
-    config.primaryCtaHref === "#whatsapp" && data.whatsappHref
+  // Defensive fallbacks.
+  const eyebrow = typeof config.eyebrow === "string" ? config.eyebrow : "";
+  const heading = (typeof config.heading === "string" && config.heading) || "Every machine you need. On site.";
+  const subheading = typeof config.subheading === "string" ? config.subheading : "";
+  const backgroundImageUrl = typeof config.backgroundImageUrl === "string" ? config.backgroundImageUrl : "";
+  const showTrustBadge = config.showTrustBadge !== false;
+  const trustBadgeText = typeof config.trustBadgeText === "string" ? config.trustBadgeText : "";
+
+  const assemblyPrimary = data.assemblyCtaBySlot?.["home.primary-cta"] ?? null;
+  const assemblySecondary = data.assemblyCtaBySlot?.["home.secondary-cta"] ?? null;
+  const primaryLabel = assemblyPrimary?.label ?? config.primaryCtaLabel;
+  const primaryHref = assemblyPrimary
+    ? assemblyPrimary.href
+    : config.primaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.primaryCtaHref;
-  const secondaryHref =
-    config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
+  const secondaryLabel = assemblySecondary?.label ?? config.secondaryCtaLabel;
+  const secondaryHref = assemblySecondary
+    ? assemblySecondary.href
+    : config.secondaryCtaHref === "#whatsapp" && data.whatsappHref
       ? data.whatsappHref
       : config.secondaryCtaHref;
 
-  const isEditing = mode === "edit";
-
   return (
     <section
-      className="relative isolate w-full overflow-hidden"
-      style={{ background: bg, minHeight: 380 }}
+      className="relative isolate w-full overflow-x-clip bg-neutral-950 text-white"
       {...sectionRootAttrs(instanceId, "hero.plant_hire_bold_1", "Bold trade hero")}
     >
-      {config.backgroundImageUrl && (
+      {backgroundImageUrl && (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={config.backgroundImageUrl}
+          src={backgroundImageUrl}
           alt=""
           aria-hidden="true"
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
+          className="absolute inset-0 -z-20 h-full w-full object-cover"
           {...treeAttrs(instanceId, "backgroundImageUrl", "Background photo", "image")}
         />
       )}
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background: `linear-gradient(180deg, rgba(0,0,0,${overlay * 0.6}) 0%, rgba(0,0,0,${overlay}) 100%)`
         }}
       />
+      {/* Magic UI grid — engineering-precision layer sits over the
+          overlay gradient. Barely visible; contributes depth not noise. */}
+      {visualEffect === "grid" && (
+        <GridPattern
+          size={52}
+          strokeWidth={1}
+          className="-z-10 text-white/[0.05]"
+        />
+      )}
 
-      <div className="mx-auto flex max-w-6xl flex-col justify-center gap-5 px-4 py-14 text-white sm:px-6 sm:py-20">
-        {config.eyebrow && (
-          <p
-            className="text-[11px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: accent }}
-            {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
-          >
-            {config.eyebrow}
-          </p>
+      <div className="mx-auto flex w-full max-w-5xl flex-col justify-center px-4 py-14 sm:px-6 sm:py-20 lg:min-h-[600px] lg:max-h-[800px] lg:py-24">
+        {eyebrow && (
+          <Reveal>
+            <p
+              className="text-eyebrow font-extrabold uppercase"
+              style={{ color: accent }}
+              {...treeAttrs(instanceId, "eyebrow", "Small kicker", "text")}
+            >
+              {eyebrow}
+            </p>
+          </Reveal>
         )}
 
-        <h1
-          className="max-w-3xl text-3xl leading-tight sm:text-5xl"
-          style={{
-            fontFamily: headingFont,
-            fontWeight: headingWeight ?? 800
-          }}
-          {...treeAttrs(instanceId, "heading", "Main headline", "text")}
-        >
-          {config.heading}
-        </h1>
-
-        {config.subheading && (
-          <p
-            className="max-w-2xl text-[14px] leading-relaxed text-white/80 sm:text-[16px]"
-            style={{
-              fontFamily: bodyFont,
-              fontWeight: bodyWeight ?? 500
-            }}
-            {...treeAttrs(instanceId, "subheading", "Supporting line", "text")}
+        <Reveal delay={0.08}>
+          <h1
+            className="mt-4 max-w-3xl text-display-md font-extrabold leading-[1.02] sm:mt-6 sm:text-display-lg lg:text-display-xl"
+            {...treeAttrs(instanceId, "heading", "Main headline", "text")}
           >
-            {config.subheading}
-          </p>
+            {heading}
+          </h1>
+        </Reveal>
+
+        {subheading && (
+          <Reveal delay={0.16}>
+            <p
+              className="mt-4 max-w-2xl text-body-md text-white/70 sm:mt-5 sm:text-body-lg"
+              {...treeAttrs(instanceId, "subheading", "Supporting line", "text")}
+            >
+              {subheading}
+            </p>
+          </Reveal>
         )}
 
-        <div className="mt-2 flex flex-wrap gap-3">
-          {config.primaryCtaLabel && (
-            <Link
-              href={primaryHref || "#"}
-              className="inline-flex h-12 items-center rounded-xl px-5 text-[13px] font-extrabold uppercase tracking-widest transition hover:brightness-95"
-              style={{ background: accent, color: "#0A0A0A" }}
-              tabIndex={isEditing ? -1 : undefined}
-              {...treeAttrs(instanceId, "primaryCtaLabel", "Main button", "button")}
-            >
-              {config.primaryCtaLabel} →
-            </Link>
-          )}
-          {config.secondaryCtaLabel && (
-            <Link
-              href={secondaryHref || "#"}
-              className="inline-flex h-12 items-center gap-2 rounded-xl px-5 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
-              style={{ background: "#25D366" }}
-              tabIndex={isEditing ? -1 : undefined}
-              {...treeAttrs(instanceId, "secondaryCtaLabel", "Second button", "button")}
-            >
-              {config.secondaryCtaLabel}
-            </Link>
-          )}
-        </div>
+        <Reveal delay={0.24}>
+          <div className="mt-8 flex max-w-md flex-col gap-2.5 sm:flex-row sm:gap-3">
+            {primaryLabel && (
+              <Button
+                asChild
+                size="xl"
+                className="group w-full"
+                style={{
+                  background: accent,
+                  color: "#0A0A0A",
+                  boxShadow: `0 12px 32px ${accent}55, inset 0 1px 0 rgba(255,255,255,0.5)`
+                }}
+              >
+                <Link href={primaryHref || "#"} {...treeAttrs(instanceId, "primaryCtaLabel", "Primary CTA", "button")}>
+                  <span>{primaryLabel}</span>
+                  <ArrowRight strokeWidth={2.5} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                </Link>
+              </Button>
+            )}
+            {secondaryLabel && (
+              <Button
+                asChild
+                variant="outline"
+                size="xl"
+                className="w-full border-white/25 bg-white/5 text-white backdrop-blur-md hover:bg-white/10"
+              >
+                <Link href={secondaryHref || "#"} {...treeAttrs(instanceId, "secondaryCtaLabel", "Secondary CTA", "button")}>
+                  <MessageCircle strokeWidth={2.5} style={{ color: "#25D366" }} aria-hidden="true" />
+                  {secondaryLabel}
+                </Link>
+              </Button>
+            )}
+          </div>
+        </Reveal>
 
-        {config.showTrustBadge && config.trustBadgeText && (
-          <p
-            className="mt-3 text-[11px] font-bold uppercase tracking-widest text-white/50"
-            {...treeAttrs(instanceId, "trustBadgeText", "Trust line", "text")}
-          >
-            {config.trustBadgeText}
-          </p>
+        {showTrustBadge && trustBadgeText && (
+          <Reveal delay={0.32}>
+            <div
+              className="mt-6 inline-flex items-center gap-2 text-caption font-bold uppercase text-white/60"
+              {...treeAttrs(instanceId, "trustBadgeText", "Trust badge", "text")}
+            >
+              <ShieldCheck size={12} strokeWidth={2.5} style={{ color: accent }} />
+              {trustBadgeText}
+            </div>
+          </Reveal>
         )}
       </div>
     </section>
@@ -156,180 +190,49 @@ function PlantHireBoldHero({
 const registration: SectionRegistration<Config> = {
   id: "hero.plant_hire_bold_1",
   name: "Bold trade hero",
-  version: "1.0.0",
+  version: "3.0.0",
   library: "hero",
   description:
-    "Full-bleed dark hero with eyebrow, big headline, subhead, two CTAs and a small trust badge. Best for merchants selling into UK construction / trades where credibility beats decoration.",
+    "Bold industrial hero for plant hire + heavy-equipment merchants. Full-bleed background photo, dark surface, big display headline, dual CTA. Banner proportions on desktop. shadcn Button + Framer Motion.",
   editableFields: [
-    {
-      key: "eyebrow",
-      label: "Small kicker",
-      type: { kind: "text", maxLength: 40 },
-      default: "Plant hire",
-      priority: "text",
-      role: "eyebrow",
-      description: "The uppercase line above the headline. Keep it short.",
-      group: "Copy"
-    },
-    {
-      key: "heading",
-      label: "Main headline",
-      type: { kind: "text", maxLength: 120, multiline: true },
-      default: "Every Machine You Need. On Your Site.",
-      priority: "text",
-      role: "headline",
-      aiPromptable: true,
-      description: "The largest text on the page. Under 8 words reads best.",
-      group: "Copy"
-    },
-    {
-      key: "subheading",
-      label: "Supporting line",
-      type: { kind: "text", maxLength: 240, multiline: true },
-      default:
-        "0.8T micro digger to 14T excavator. CPA-standard machines, 24/7 breakdown line, delivered same day locally.",
-      priority: "text",
-      role: "subhead",
-      aiPromptable: true,
-      group: "Copy"
-    },
-    {
-      key: "primaryCtaLabel",
-      label: "Main button text",
-      type: { kind: "text", maxLength: 24 },
-      default: "See the fleet",
-      priority: "button",
-      role: "primary_action_label",
-      group: "Buttons"
-    },
-    {
-      key: "primaryCtaHref",
-      label: "Main button link",
-      type: { kind: "link", allowInternal: true, allowExternal: true },
-      default: "/plant-hire/machines",
-      role: "primary_action_href",
-      description: 'Type "#whatsapp" to open WhatsApp instead of a link.',
-      group: "Buttons"
-    },
-    {
-      key: "secondaryCtaLabel",
-      label: "Second button text",
-      type: { kind: "text", maxLength: 24 },
-      default: "WhatsApp quote",
-      priority: "button",
-      role: "secondary_action_label",
-      group: "Buttons"
-    },
-    {
-      key: "secondaryCtaHref",
-      label: "Second button link",
-      type: { kind: "link", allowInternal: true, allowExternal: true },
-      default: "#whatsapp",
-      role: "secondary_action_href",
-      group: "Buttons"
-    },
-    {
-      key: "backgroundImageUrl",
-      label: "Background photo",
-      type: {
-        kind: "image",
-        aspectRatio: "16/9",
-        recommendedWidthPx: 1920
-      },
-      default: "",
-      priority: "image",
-      role: "background_media",
-      description:
-        "A landscape site photo works best. Leave empty for a solid brand-colour hero.",
-      group: "Media"
-    },
-    {
-      key: "overlayOpacity",
-      label: "Photo darkness",
-      type: { kind: "number", min: 0, max: 1, step: 0.05 },
-      default: 0.55,
-      role: "opacity",
-      description:
-        "Darken the photo so the white text stays readable. 0 = clear photo, 1 = fully dark.",
-      group: "Media"
-    },
-    {
-      key: "showTrustBadge",
-      label: "Show trust line",
-      type: { kind: "boolean" },
-      default: true,
-      group: "Trust"
-    },
-    {
-      key: "trustBadgeText",
-      label: "Trust line copy",
-      type: { kind: "text", maxLength: 80 },
-      default: "CPA-standard · 24/7 breakdown · Insured",
-      priority: "text",
-      role: "trust_line",
-      aiPromptable: true,
-      group: "Trust"
-    }
+    { key: "eyebrow", label: "Small kicker", type: { kind: "text", maxLength: 40 }, default: "Plant hire", priority: "text", role: "eyebrow", group: "Copy" },
+    { key: "heading", label: "Main headline", type: { kind: "text", maxLength: 120, multiline: true }, default: "Every Machine You Need. On Your Site.", priority: "text", role: "headline", aiPromptable: true, group: "Copy" },
+    { key: "subheading", label: "Supporting line", type: { kind: "text", maxLength: 240, multiline: true }, default: "0.8T micro digger to 14T excavator. CPA-standard machines, 24/7 breakdown line, delivered same day locally.", priority: "text", role: "subhead", aiPromptable: true, group: "Copy" },
+    { key: "primaryCtaLabel", label: "Primary CTA label", type: { kind: "text", maxLength: 24 }, default: "See the fleet", priority: "button", role: "primary_action_label", group: "CTAs" },
+    { key: "primaryCtaHref", label: "Primary CTA link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "/plant-hire/machines", role: "primary_action_href", group: "CTAs" },
+    { key: "secondaryCtaLabel", label: "Secondary CTA label", type: { kind: "text", maxLength: 24 }, default: "WhatsApp quote", priority: "button", role: "secondary_action_label", group: "CTAs" },
+    { key: "secondaryCtaHref", label: "Secondary CTA link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "#whatsapp", role: "secondary_action_href", group: "CTAs" },
+    { key: "backgroundImageUrl", role: "background_media", label: "Background photo", type: { kind: "image" }, default: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2001_57_56%20PM.png", priority: "image", group: "Media" },
+    { key: "overlayOpacity", label: "Overlay opacity", type: { kind: "number", min: 0, max: 1, step: 0.05 }, default: 0.6, group: "Media" },
+    { key: "showTrustBadge", label: "Show trust badge", type: { kind: "boolean" }, default: true, group: "Trust" },
+    { key: "trustBadgeText", label: "Trust badge text", type: { kind: "text", maxLength: 100 }, default: "CPA-standard · 24/7 breakdown · Insured", priority: "text", role: "trust_line", aiPromptable: true, group: "Trust" },
+    { key: "visualEffect", label: "Background effect", type: { kind: "select", options: [{ value: "grid", label: "Grid pattern (default)" }, { value: "none", label: "None" }] }, default: "grid", description: "Subtle Magic UI grid layered over the photo overlay for engineered depth.", group: "Media" }
   ],
-  animations: ["none", "fade", "slide-up", "zoom-photo"],
+  animations: ["none", "fade-in", "slide-up"],
   aiPrompts: {
-    explain:
-      "You're looking at a plant-hire hero for a UK trades merchant. Explain in 3 short bullets what makes it work and 2 bullets on what could be improved. Ground every claim in the specific headline, buttons, or photo — never generic advice.",
-    improve:
-      "Improve this plant-hire hero without changing the layout. Preserve headline strength, tighten the sub-line if it's over 15 words, and ensure the primary CTA verb is action-first ('Hire', 'Book', 'See'). Return only the patched config fields, not prose.",
-    rewrite:
-      "Rewrite the headline and sub-line in a {tone} voice. Tone options: 'trade-plain' (UK site voice, no marketing fluff), 'reassuring' (safety-first), 'premium' (fleet + heritage). Preserve the field lengths within 10 percent.",
-    suggestAlternative:
-      "The merchant may want a different hero from the same Library. Suggest one alternative section id (from library='hero') that would fit a UK plant-hire merchant better if their business is heavy plant + haulage rather than tool hire. Explain in one sentence.",
-    score:
-      "Score this hero across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency (each 0–100). Loading: check photo weight budget. Accessibility: check contrast against overlay. Sales: check CTA above the fold. SEO: single H1, meaningful copy. Mobile: 44px tap targets. Brand: are colours bound to brand tokens or hard-coded? Return JSON only."
+    explain: "A bold industrial hero. Explain when it beats trust_anchor.",
+    improve: "Tighten headline. Return patched fields only.",
+    rewrite: "Rewrite headline + subhead in a {tone} voice.",
+    suggestAlternative: "Suggest an alternative for merchants without strong industrial photography.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail:
-    "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/hero-plant-hire-bold-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 240 },
-    accessibility: { contrastMin: 4.5, requiredAlt: ["backgroundImageUrl"] },
-    sales: {
-      ctaAboveFold: true,
-      primaryActionRequired: true,
-      socialProofRecommended: true
-    },
-    seo: { headingLevel: 1 },
-    mobile: { minTapTargetPx: 44, noHorizontalScroll: true },
-    brandConsistency: {
-      boundTokens: ["color.accent", "color.surface"]
-    }
-  },
-  telemetryTags: [
-    "hero",
-    "trade_vertical",
-    "uk_trades",
-    "plant_hire",
-    "dark",
-    "photo_bg",
-    "two_cta",
-    "trust_line"
-  ],
-  bestForVerticals: [
-    "plant_hire",
-    "tool_hire",
-    "building_merchant",
-    "scaffolding"
-  ],
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 480 }, accessibility: { contrastMin: 4.5, requiredAlt: ["backgroundImageUrl"] }, sales: { primaryActionRequired: true, ctaAboveFold: true }, seo: { headingLevel: 1 }, mobile: { minTapTargetPx: 48 }, brandConsistency: { boundTokens: ["color.accent"] } },
+  telemetryTags: ["hero", "bold", "photo", "industrial", "shadcn", "framer_motion"],
+  bestForVerticals: ["plant-hire", "tool-hire", "aggregate-supplier", "concrete-supplier", "skip-hire", "building-merchant", "commercial-vehicle-hire"],
   defaultConfig: () => ({
     eyebrow: "Plant hire",
     heading: "Every Machine You Need. On Your Site.",
-    subheading:
-      "0.8T micro digger to 14T excavator. CPA-standard machines, 24/7 breakdown line, delivered same day locally.",
+    subheading: "0.8T micro digger to 14T excavator. CPA-standard machines, 24/7 breakdown line, delivered same day locally.",
     primaryCtaLabel: "See the fleet",
     primaryCtaHref: "/plant-hire/machines",
     secondaryCtaLabel: "WhatsApp quote",
     secondaryCtaHref: "#whatsapp",
-    backgroundImageUrl:
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2001_57_56%20PM.png",
-    overlayOpacity: 0,
+    backgroundImageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2001_57_56%20PM.png",
+    overlayOpacity: 0.6,
     showTrustBadge: true,
-    trustBadgeText: "CPA-standard · 24/7 breakdown · Insured"
+    trustBadgeText: "CPA-standard · 24/7 breakdown · Insured",
+    visualEffect: "grid"
   }),
   renderer: PlantHireBoldHero
 };

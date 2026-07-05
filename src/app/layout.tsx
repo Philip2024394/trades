@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BRAND } from "@/lib/seo";
 import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
+import { allFontVariables } from "@/lib/fonts";
 
 // Minimal root layout for Xrated Trades — Phase 1 of the split from
 // the Hammerex monorepo. Page chrome (header, footer, dock) lives on
@@ -111,7 +112,7 @@ const websiteLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={allFontVariables}>
       <head>
         {/* App Studio fonts — preloaded once at the root so every
             tradesperson's font_family pick (Inter / Roboto / Lora /

@@ -1,22 +1,19 @@
-// banner.ribbon_1 — slim horizontal promo band.
+// banner.ribbon_1 — Phase 3 rebuild on shadcn foundation.
 //
-// Full-width single-row band. Merchant sets the message, optional icon
-// glyph, optional CTA link. Three visual styles (accent / dark / light-
-// bordered) via a select-like boolean pair, since we don't yet have a
-// proper enum editable field kind.
-//
-// Best pinned to the top of a page — seasonal offer, emergency
-// availability, free consultation window. Not editable at the
-// individual-word level (single flat message field) because merchants
-// use these to shout ONE thing.
+// Slim horizontal promo band pinned above the hero. Merchant sets the
+// message, icon, and optional CTA link. Three visual styles.
+
+"use client";
 
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { sectionRegistry } from "@/lib/studio/sectionRegistry";
 import { sectionRootAttrs, treeAttrs } from "@/lib/studio/treeIds";
 import type {
   SectionRegistration,
   SectionRendererProps
 } from "@/lib/studio/sectionTypes";
+import { cn } from "@/lib/utils";
 
 type Config = {
   icon: string;
@@ -33,74 +30,66 @@ function BannerRibbon({
   data,
   mode
 }: SectionRendererProps<Config>) {
-  const accent = (tokens["color.accent"] as string | undefined) ?? "#FFB300";
-  const text = (tokens["color.text"] as string | undefined) ?? "#0A0A0A";
-  const headingFont = tokens["font.heading"] as string | undefined;
-  const bodyFont = tokens["font.body"] as string | undefined;
-  const headingWeight = tokens["font.heading.weight"] as number | undefined;
+  const accent = (tokens["color.accent"] as string) ?? "#FFB300";
   const isEditing = mode === "edit";
 
-  const ctaHref =
-    config.ctaHref === "#whatsapp" && data.whatsappHref
-      ? data.whatsappHref
-      : config.ctaHref;
+  // Defensive fallbacks.
+  const icon = typeof config.icon === "string" ? config.icon : "";
+  const message = typeof config.message === "string" ? config.message : "";
+  const ctaLabel = typeof config.ctaLabel === "string" ? config.ctaLabel : "";
+  const rawHref = typeof config.ctaHref === "string" ? config.ctaHref : "";
+  const style = config.style ?? "accent";
 
-  const style = config.style;
-  const bg =
-    style === "accent" ? accent : style === "dark" ? "#0A0A0A" : "#FFFFFF";
-  const fg =
-    style === "accent" ? "#0A0A0A" : style === "dark" ? "#FFFFFF" : text;
-  const borderTop =
-    style === "light" ? "1px solid #E5E5E5" : "none";
-  const borderBottom =
-    style === "light" ? "1px solid #E5E5E5" : "none";
-  const ctaBg =
-    style === "accent" ? "#0A0A0A" : accent;
-  const ctaFg =
-    style === "accent" ? "#FFFFFF" : "#0A0A0A";
+  if (!message) return null;
+
+  const ctaHref =
+    rawHref === "#whatsapp" && data.whatsappHref ? data.whatsappHref : rawHref;
 
   return (
     <section
-      className="w-full"
-      style={{
-        background: bg,
-        color: fg,
-        borderTop,
-        borderBottom
-      }}
-      {...sectionRootAttrs(instanceId, "banner.ribbon_1", "Banner")}
+      className={cn(
+        "relative w-full overflow-x-clip border-b",
+        style === "dark" && "border-white/10 bg-neutral-950 text-white",
+        style === "light" && "border-border bg-background text-foreground",
+        style === "accent" && "border-transparent"
+      )}
+      style={
+        style === "accent"
+          ? { background: accent, color: "#0A0A0A" }
+          : undefined
+      }
+      {...sectionRootAttrs(instanceId, "banner.ribbon_1", "Ribbon banner")}
     >
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-4 gap-y-2 px-4 py-3 text-center sm:px-6">
-        {config.icon && (
+      <div className="mx-auto flex max-w-6xl items-center justify-center gap-3 px-4 py-2 text-center sm:px-6 sm:py-2.5">
+        {icon && (
           <span
+            className="text-body-md"
             aria-hidden="true"
-            className="text-[16px]"
-            {...treeAttrs(instanceId, "icon", "Banner icon", "text")}
+            {...treeAttrs(instanceId, "icon", "Icon", "text")}
           >
-            {config.icon}
+            {icon}
           </span>
         )}
-        {config.message && (
-          <p
-            className="text-[13px] leading-tight"
-            style={{
-              fontFamily: bodyFont,
-              fontWeight: headingWeight ?? 700
-            }}
-            {...treeAttrs(instanceId, "message", "Banner message", "text")}
-          >
-            {config.message}
-          </p>
-        )}
-        {config.ctaLabel && (
+        <p
+          className="text-caption font-extrabold uppercase tracking-widest sm:text-body-sm"
+          {...treeAttrs(instanceId, "message", "Message", "text")}
+        >
+          {message}
+        </p>
+        {ctaLabel && ctaHref && (
           <Link
-            href={ctaHref || "#"}
+            href={ctaHref}
             tabIndex={isEditing ? -1 : undefined}
-            className="inline-flex h-8 items-center rounded-full px-3 text-[11px] font-extrabold uppercase tracking-widest transition hover:brightness-95"
-            style={{ background: ctaBg, color: ctaFg, fontFamily: headingFont }}
-            {...treeAttrs(instanceId, "ctaLabel", "Banner button", "button")}
+            className="group inline-flex items-center gap-1 text-caption font-extrabold uppercase tracking-widest underline-offset-4 hover:underline sm:text-body-sm"
+            {...treeAttrs(instanceId, "ctaLabel", "CTA", "button")}
           >
-            {config.ctaLabel} →
+            {ctaLabel}
+            <ArrowRight
+              size={12}
+              strokeWidth={2.5}
+              className="transition-transform group-hover:translate-x-0.5"
+              aria-hidden="true"
+            />
           </Link>
         )}
       </div>
@@ -111,45 +100,34 @@ function BannerRibbon({
 const registration: SectionRegistration<Config> = {
   id: "banner.ribbon_1",
   name: "Ribbon banner",
-  version: "1.0.0",
+  version: "2.0.0",
   library: "banner",
   description:
-    "Slim horizontal promo band — icon + one-line message + optional CTA. Pin to the top of a page for seasonal offers, emergency availability, or free-consultation windows. Accent / dark / light-bordered styles.",
+    "Slim horizontal promo band on shadcn foundation. Icon + message + optional CTA link. Three styles: accent (branded), dark, light-bordered.",
   editableFields: [
-    { key: "icon", label: "Icon glyph (optional)", type: { kind: "text", maxLength: 4 }, default: "⚡", priority: "text", description: "One emoji or symbol — leave blank for text-only.", group: "Content" },
-    { key: "message", label: "Message", type: { kind: "text", maxLength: 200 }, default: "Same-day emergency callouts — WhatsApp us any time.", priority: "text", aiPromptable: true, group: "Content" },
-    { key: "ctaLabel", label: "Button text (optional)", type: { kind: "text", maxLength: 24 }, default: "Message us", priority: "button", group: "Button" },
-    { key: "ctaHref", label: "Button link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "#whatsapp", description: 'Use "#whatsapp" for WhatsApp.', group: "Button" },
-    { key: "style", label: "Style", type: { kind: "select", options: [
-      { value: "accent", label: "Accent (yellow)" },
-      { value: "dark", label: "Dark (black)" },
-      { value: "light", label: "Light (bordered)" }
-    ] }, default: "accent", description: "Accent = highlighted; Dark = urgent; Light = calm.", group: "Style" }
+    { key: "icon", label: "Icon glyph", type: { kind: "text", maxLength: 4 }, default: "⚡", group: "Content" },
+    { key: "message", label: "Message", type: { kind: "text", maxLength: 120 }, default: "24/7 emergency callout — reply in 45 min", priority: "text", role: "trust_line", aiPromptable: true, group: "Content" },
+    { key: "ctaLabel", label: "CTA label (optional)", type: { kind: "text", maxLength: 24 }, default: "Call Now", priority: "button", group: "CTA" },
+    { key: "ctaHref", label: "CTA link", type: { kind: "link", allowInternal: true, allowExternal: true }, default: "tel:0800000000", role: "primary_action_href", group: "CTA" },
+    { key: "style", label: "Style", type: { kind: "select", options: [{ value: "accent", label: "Accent (branded)" }, { value: "dark", label: "Dark" }, { value: "light", label: "Light bordered" }] }, default: "accent", group: "Layout" }
   ],
-  animations: ["none", "fade", "slide-down"],
+  animations: ["none", "fade-in"],
   aiPrompts: {
-    explain: "Explain why a slim ribbon banner works at the top of a UK trades page. Reference specific copy.",
-    improve: "Improve without layout change. Message under 12 words. Button verb-first. Return only patched config.",
-    rewrite: "Rewrite message in a {tone} voice.",
-    suggestAlternative: "Suggest an alternative banner layout from library='banner'. One-sentence rationale.",
-    score: "Score across 6 dimensions. JSON only."
+    explain: "A ribbon banner. Explain when it converts vs distracts.",
+    improve: "Tighten message to under 8 words. Return patched fields only.",
+    rewrite: "Rewrite the message in a {tone} voice.",
+    suggestAlternative: "Suggest an alternative when the message is more than one line.",
+    score: "Score across Loading, Accessibility, Sales, SEO, Mobile, Brand Consistency. JSON only."
   },
-  thumbnail: "https://ik.imagekit.io/9mrgsv2rp/studio/thumbnails/banner-ribbon-1.png",
-  scoreHints: {
-    loading: { imageWeightBudgetKb: 0 },
-    accessibility: { contrastMin: 4.5 },
-    sales: { primaryActionRequired: false },
-    seo: { headingLevel: 2 },
-    mobile: { minTapTargetPx: 44 },
-    brandConsistency: { boundTokens: ["color.accent", "color.text"] }
-  },
-  telemetryTags: ["banner", "ribbon", "one_line", "three_styles", "promo"],
-  bestForVerticals: ["plumbing", "electrical", "hvac", "boiler_repair", "locksmith", "drain_clearance", "landscaping", "roofing", "joinery", "handyman"],
+  thumbnail: "",
+  scoreHints: { loading: { imageWeightBudgetKb: 0 }, accessibility: { contrastMin: 4.5 }, sales: { primaryActionRequired: false }, seo: { headingLevel: 3 }, mobile: { minTapTargetPx: 32 }, brandConsistency: { boundTokens: ["color.accent"] } },
+  telemetryTags: ["banner", "ribbon", "promo", "shadcn"],
+  bestForVerticals: ["electrician", "plumber", "gas-engineer", "emergency-callout", "hvac-contractor", "roofer"],
   defaultConfig: () => ({
     icon: "⚡",
-    message: "Same-day emergency callouts — WhatsApp us any time.",
-    ctaLabel: "Message us",
-    ctaHref: "#whatsapp",
+    message: "24/7 emergency callout — reply in 45 min",
+    ctaLabel: "Call Now",
+    ctaHref: "tel:0800000000",
     style: "accent"
   }),
   renderer: BannerRibbon

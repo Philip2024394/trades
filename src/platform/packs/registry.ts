@@ -1,109 +1,139 @@
-// Pack Registry — the runtime index of every Industry Pack manifest.
+// Pack Registry — Industry Pack manifests.
 //
-// Mirrors appRegistry (src/platform/registry.ts). Same discipline:
-// packs self-register at module load, duplicate slugs throw,
-// manifests are deep-frozen on registration.
+// Milestone 1 · Registry Kit migration:
+// This registry now composes over `createRegistry` from
+// @/platform/registryKit. The public API is preserved verbatim so
+// existing callers (packInstall.ts, /api/platform/packs/*, essentials-
+// pack registration) work unchanged. New capabilities inherited from
+// the kit: `.search()`, `.describe()`, `.selfCheck()`, `.listByTag()`,
+// `.snapshot()`, alias resolution, telemetry + analytics hooks.
+//
+// Manifest shape (`PackManifest`) is unchanged — the facade normalises
+// each manifest into a full `RegistrationBase` at register time by
+// mapping `slug → id`. Every existing manifest field carries through.
 
-import type { FrozenPackManifest, PackManifest } from "./types";
+import type {
+  Frozen,
+  MarketplaceMetadata,
+  RegistrationBase
+} from "@/platform/registryKit";
+import { createRegistry } from "@/platform/registryKit";
+import type { PackManifest } from "./types";
 
-const SLUG_RE = /^[a-z0-9][a-z0-9-]*[a-z0-9]$/;
-const SEMVER_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+/** Adapter shape stored inside the registry — PackManifest facts +
+ *  the RegistrationBase fields the kit requires. Callers never see
+ *  this: `.get()` still returns the original PackManifest shape. */
+type PackRegistration = PackManifest & RegistrationBase;
 
-class PackRegistry {
-  private manifests = new Map<string, FrozenPackManifest>();
-  private byIndustry = new Map<string, FrozenPackManifest[]>();
+type FrozenPackRegistration = Frozen<PackRegistration>;
 
-  register(manifest: PackManifest): FrozenPackManifest {
-    validatePackManifest(manifest);
-    if (this.manifests.has(manifest.slug)) {
-      throw new Error(
-        `PackRegistry: duplicate slug "${manifest.slug}".`
-      );
-    }
-    const frozen = deepFreeze(manifest) as FrozenPackManifest;
-    this.manifests.set(manifest.slug, frozen);
-    const bucket = this.byIndustry.get(frozen.industry) ?? [];
-    bucket.push(frozen);
-    this.byIndustry.set(frozen.industry, bucket);
-    return frozen;
+const inner = createRegistry<PackRegistration>({
+  label: "packRegistry",
+  idFormat: "slug",
+  validate: validatePackManifest,
+  indexes: {
+    // Preserve the byIndustry behaviour the previous class provided.
+    byIndustry: (m) => [m.industry]
   }
+});
 
-  get(slug: string): FrozenPackManifest | undefined {
-    return this.manifests.get(slug);
-  }
-
-  getOrThrow(slug: string): FrozenPackManifest {
-    const m = this.manifests.get(slug);
-    if (!m) throw new Error(`PackRegistry: no pack for slug "${slug}"`);
-    return m;
-  }
-
+/** Public facade — preserves the previous PackRegistry class surface
+ *  1:1. Every method used by existing callers remains identical. */
+export const packRegistry = {
+  register(manifest: PackManifest): FrozenPackRegistration {
+    return inner.register(normalise(manifest));
+  },
+  get(slug: string): FrozenPackRegistration | undefined {
+    return inner.get(slug);
+  },
+  getOrThrow(slug: string): FrozenPackRegistration {
+    return inner.getOrThrow(slug);
+  },
   has(slug: string): boolean {
-    return this.manifests.has(slug);
-  }
-
-  list(): FrozenPackManifest[] {
-    return Array.from(this.manifests.values());
-  }
-
-  listByIndustry(industry: string): FrozenPackManifest[] {
-    if (industry === "*") return this.list();
-    return [...(this.byIndustry.get(industry) ?? [])].concat(
-      // Wildcard packs surface in every industry filter.
-      this.list().filter((p) => p.industry === "*")
-    );
-  }
-
+    return inner.has(slug);
+  },
+  list(): FrozenPackRegistration[] {
+    return inner.list();
+  },
+  listByIndustry(industry: string): FrozenPackRegistration[] {
+    if (industry === "*") return inner.list();
+    // Preserve legacy "wildcard packs surface in every industry" rule.
+    const industryMatches = inner.listByIndex("byIndustry", industry);
+    const wildcardMatches = inner
+      .listByIndex("byIndustry", "*")
+      .filter((p) => p.industry === "*");
+    return [...industryMatches, ...wildcardMatches];
+  },
   size(): number {
-    return this.manifests.size;
-  }
+    return inner.size();
+  },
+  // ─── New surface inherited from the kit ─────────────────────────
+  search: inner.search,
+  describe: inner.describe,
+  listByTag: inner.listByTag,
+  categories: inner.categories,
+  tags: inner.tags,
+  counts: inner.counts,
+  resolveAlias: inner.resolveAlias,
+  selfCheck: inner.selfCheck,
+  snapshot: inner.snapshot
+};
+
+// ─── Facade internals ─────────────────────────────────────────────
+
+function normalise(m: PackManifest): PackRegistration {
+  const marketplace: MarketplaceMetadata = {
+    displayName: m.name,
+    tagline: m.tagline,
+    author: m.publisher.name,
+    previewImageUrl: m.packStore.screenshots[0],
+    tags: m.packStore.benefits
+  };
+  return {
+    ...m,
+    // RegistrationBase fields
+    id: m.slug,
+    version: m.version,
+    name: m.name,
+    description: m.description,
+    category: "industry-pack",
+    tags: [m.industry, ...(m.packStore.benefits ?? [])].filter(Boolean),
+    searchKeywords: [m.industry, m.tagline, ...(m.packStore.benefits ?? [])],
+    marketplace
+  };
 }
 
-function validatePackManifest(m: PackManifest): void {
+function validatePackManifest(m: PackRegistration): void {
   if (m.manifestVersion !== 1) {
     throw new Error(
-      `PackRegistry: unsupported manifestVersion ${m.manifestVersion}.`
-    );
-  }
-  if (!SLUG_RE.test(m.slug)) {
-    throw new Error(
-      `PackRegistry: invalid slug "${m.slug}" — must be kebab-case.`
-    );
-  }
-  if (!SEMVER_RE.test(m.version)) {
-    throw new Error(
-      `PackRegistry: invalid version "${m.version}" — must be semver.`
+      `unsupported manifestVersion ${m.manifestVersion} for pack "${m.slug}".`
     );
   }
   if (!m.name || !m.tagline || !m.description) {
     throw new Error(
-      `PackRegistry: pack "${m.slug}" missing name/tagline/description.`
+      `pack "${m.slug}" missing name/tagline/description.`
     );
+  }
+  if (!m.industry) {
+    throw new Error(`pack "${m.slug}" missing industry slug.`);
   }
   if (m.apps.length === 0) {
     throw new Error(
-      `PackRegistry: pack "${m.slug}" must install at least one App.`
+      `pack "${m.slug}" must install at least one App.`
     );
   }
   const seen = new Set<string>();
   for (const entry of m.apps) {
     if (seen.has(entry.slug)) {
       throw new Error(
-        `PackRegistry: pack "${m.slug}" lists App "${entry.slug}" twice.`
+        `pack "${m.slug}" lists App "${entry.slug}" twice.`
       );
     }
     seen.add(entry.slug);
   }
 }
 
-function deepFreeze<T>(value: T): T {
-  if (value === null || typeof value !== "object") return value;
-  const anyValue = value as unknown as Record<string, unknown>;
-  for (const key of Object.keys(anyValue)) {
-    deepFreeze(anyValue[key]);
-  }
-  return Object.freeze(value);
-}
-
-export const packRegistry = new PackRegistry();
-export type { PackRegistry };
+// `FrozenPackManifest` remains exported from ./types; callers that
+// imported it from this file historically get the same shape via
+// packRegistry.get() which returns FrozenPackRegistration (a superset
+// assignable to FrozenPackManifest by structural typing).

@@ -17,6 +17,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { paymentProcessors } from "@/platform/buttons/payments/processor";
 import "@/platform/buttons/payments/processors";
+import { sendReceiptForOrder } from "@/platform/buttons/payments/receiptEmail";
 
 export const runtime = "nodejs";
 
@@ -220,6 +221,12 @@ export async function POST(
         headers_preview: headersPreview,
         latency_ms: Date.now() - startedAt
       });
+      // Fire the receipt email if the customer just paid. Fully async
+      // and idempotent — sendReceiptForOrder checks receipt_sent_at
+      // and no-ops on retries. Failures are logged into the order row.
+      if (result.status === "paid" && matched.data?.id) {
+        void sendReceiptForOrder(matched.data.id);
+      }
       return NextResponse.json({ ok: true, updated: result.status });
     }
   }

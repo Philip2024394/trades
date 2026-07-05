@@ -1,13 +1,18 @@
 // Xrated Design System — component registry.
 //
-// The single-process index of every registered visual component.
-// Studio, Apps, AI, and preview surfaces all read from here.
+// Milestone 1 · Registry Kit migration:
+// Composes over `createRegistry` from @/platform/registryKit.
+// Every existing caller (design component registrations across
+// /components/*, /api/platform/design/[id], /api/platform/design/list)
+// works verbatim.
 //
-// Mirrors the discipline of appRegistry + packRegistry:
-//   • components self-register at module load
-//   • duplicate ids throw
-//   • frozen on registration to prevent post-hoc mutation
+// Preserved: the domain-specific describe() output (editableProps,
+// themeTokensUsed, animations facts) piped through
+// describeRegistration()'s extraFacts option. The id-prefix-matches-
+// category invariant is preserved as a validate() hook.
 
+import type { Frozen, RegistrationBase } from "@/platform/registryKit";
+import { createRegistry, describeRegistration } from "@/platform/registryKit";
 import type {
   AnyDesignComponentRegistration,
   DesignComponentCategory,
@@ -15,165 +20,109 @@ import type {
   FrozenDesignComponent
 } from "./types";
 
-const ID_RE = /^[a-z][a-z0-9_]*\.[a-z][a-z0-9_-]*$/;
-const SEMVER_RE = /^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/;
+type DesignRegistration = AnyDesignComponentRegistration & RegistrationBase;
+type FrozenDesignRegistration = Frozen<DesignRegistration>;
 
-class DesignSystemRegistry {
-  private registrations = new Map<string, FrozenDesignComponent>();
-  private byCategory = new Map<
-    DesignComponentCategory,
-    FrozenDesignComponent[]
-  >();
+const inner = createRegistry<DesignRegistration>({
+  label: "designSystemRegistry",
+  idFormat: "namespacedId",
+  validate: (reg) => {
+    const [prefix] = reg.id.split(".");
+    if (prefix !== reg.category) {
+      throw new Error(
+        `id prefix "${prefix}" does not match category "${reg.category}" on "${reg.id}".`
+      );
+    }
+    if (!reg.editableProps || !Array.isArray(reg.editableProps)) {
+      throw new Error(`"${reg.id}" missing editableProps[].`);
+    }
+    if (!reg.themeTokensUsed || !Array.isArray(reg.themeTokensUsed)) {
+      throw new Error(`"${reg.id}" missing themeTokensUsed[].`);
+    }
+    // Amendment 6 §RGP-7: containers must declare tier.
+    if (reg.category === "containers" && !reg.tier) {
+      throw new Error(
+        `container "${reg.id}" missing required tier — declare "layout" | "content" | "utility".`
+      );
+    }
+  }
+});
 
+function normalise(reg: AnyDesignComponentRegistration): DesignRegistration {
+  return {
+    ...reg,
+    tags: [reg.contentShape, ...(reg.compatibleLayouts ?? [])]
+  };
+}
+
+/** Preserve the previous domain-specific describe() output by hooking
+ *  the kit's describeRegistration() with extraFacts. */
+function designExtraFacts(reg: Frozen<DesignRegistration>): string[] {
+  const editable = reg.editableProps
+    .map((p) => `${p.key} (${p.type.kind})`)
+    .join(", ");
+  return [
+    `Content shape: ${reg.contentShape}.`,
+    `Editable props: ${editable || "none"}.`,
+    `Theme tokens: ${reg.themeTokensUsed.join(", ") || "none"}.`,
+    `Animations: ${reg.animations.join(", ") || "none"}.`
+  ];
+}
+
+export const designSystemRegistry = {
   register<
     TProps extends Record<string, unknown>,
     TContent extends Record<string, unknown>
   >(
     reg: DesignComponentRegistration<TProps, TContent>
-  ): FrozenDesignComponent {
-    validate(reg as AnyDesignComponentRegistration);
-    if (this.registrations.has(reg.id)) {
-      throw new Error(
-        `DesignSystemRegistry: duplicate id "${reg.id}". Every component id must be unique across the whole platform.`
-      );
-    }
-    const frozen = deepFreeze(reg) as FrozenDesignComponent;
-    this.registrations.set(reg.id, frozen);
-    const bucket = this.byCategory.get(reg.category) ?? [];
-    bucket.push(frozen);
-    this.byCategory.set(reg.category, bucket);
-    return frozen;
-  }
-
-  get(id: string): FrozenDesignComponent | undefined {
-    return this.registrations.get(id);
-  }
-
-  getOrThrow(id: string): FrozenDesignComponent {
-    const r = this.registrations.get(id);
-    if (!r) {
-      throw new Error(
-        `DesignSystemRegistry: no component registered for "${id}". Ensure @/platform/design/components is imported.`
-      );
-    }
-    return r;
-  }
-
+  ): FrozenDesignRegistration {
+    return inner.register(
+      normalise(reg as unknown as AnyDesignComponentRegistration)
+    );
+  },
+  get(id: string): FrozenDesignRegistration | undefined {
+    return inner.get(id);
+  },
+  getOrThrow(id: string): FrozenDesignRegistration {
+    return inner.getOrThrow(id);
+  },
   has(id: string): boolean {
-    return this.registrations.has(id);
-  }
-
-  list(): FrozenDesignComponent[] {
-    return Array.from(this.registrations.values());
-  }
-
+    return inner.has(id);
+  },
+  list(): FrozenDesignRegistration[] {
+    return inner.list();
+  },
   listByCategory(
     category: DesignComponentCategory
-  ): FrozenDesignComponent[] {
-    return [...(this.byCategory.get(category) ?? [])];
-  }
-
-  /** Categories that currently have at least one registered component.
-   *  Powers picker UIs that grow as new categories light up. */
+  ): FrozenDesignRegistration[] {
+    return inner.listByCategory(category);
+  },
   categories(): DesignComponentCategory[] {
-    return Array.from(this.byCategory.keys());
-  }
-
-  /** Ranked keyword search. Prioritises exact id/name matches; falls
-   *  through to keyword + description matches. Returns highest first.
-   *
-   *  Used by AI to find "the button" without having to know every id. */
-  search(query: string, limit = 20): FrozenDesignComponent[] {
-    const q = query.trim().toLowerCase();
-    if (!q) return this.list().slice(0, limit);
-    const words = q.split(/\s+/);
-
-    const scored: { reg: FrozenDesignComponent; score: number }[] = [];
-    for (const reg of this.registrations.values()) {
-      let score = 0;
-      const hay = [
-        reg.id,
-        reg.name.toLowerCase(),
-        reg.description.toLowerCase(),
-        ...reg.searchKeywords.map((k) => k.toLowerCase()),
-        reg.category
-      ].join(" ");
-      for (const w of words) {
-        if (reg.id.includes(w)) score += 8;
-        if (reg.name.toLowerCase().includes(w)) score += 6;
-        if (reg.searchKeywords.some((k) => k.toLowerCase() === w))
-          score += 5;
-        if (reg.searchKeywords.some((k) => k.toLowerCase().includes(w)))
-          score += 3;
-        if (reg.description.toLowerCase().includes(w)) score += 2;
-        if (hay.includes(w)) score += 1;
-      }
-      if (score > 0) scored.push({ reg, score });
-    }
-    scored.sort((a, b) => b.score - a.score);
-    return scored.slice(0, limit).map((s) => s.reg);
-  }
-
-  /** Structured description an AI can reason over — no HTML, no styling
-   *  — pure facts about the component. Used by the AI SDK to build
-   *  natural-language capability lists. */
-  describe(id: string): string {
-    const r = this.registrations.get(id);
-    if (!r) return `${id}: not registered.`;
-    const editable = r.editableProps
-      .map((p) => `${p.key} (${p.type.kind})`)
-      .join(", ");
-    return [
-      `${r.name} (${r.id}) — ${r.description}`,
-      `Category: ${r.category}. Content shape: ${r.contentShape}.`,
-      `Editable props: ${editable || "none"}.`,
-      `Theme tokens: ${r.themeTokensUsed.join(", ") || "none"}.`,
-      `Animations: ${r.animations.join(", ") || "none"}.`,
-      `Keywords: ${r.searchKeywords.join(", ") || "none"}.`
-    ].join(" ");
-  }
-
+    return inner.categories() as DesignComponentCategory[];
+  },
   size(): number {
-    return this.registrations.size;
-  }
-}
+    return inner.size();
+  },
+  search: inner.search,
 
-// ─── Validation ────────────────────────────────────────────────
+  /** AI-consumable describe with design-specific facts appended. */
+  describe(id: string): string {
+    const reg = inner.get(id);
+    if (!reg) return `${id}: not registered.`;
+    return describeRegistration<DesignRegistration>(reg, designExtraFacts);
+  },
 
-function validate(reg: AnyDesignComponentRegistration): void {
-  if (!ID_RE.test(reg.id)) {
-    throw new Error(
-      `DesignSystemRegistry: invalid id "${reg.id}". Must be "<category>.<name>" with kebab-case name.`
-    );
-  }
-  const [category] = reg.id.split(".");
-  if (category !== reg.category) {
-    throw new Error(
-      `DesignSystemRegistry: id prefix "${category}" does not match category "${reg.category}" on registration "${reg.id}".`
-    );
-  }
-  if (!SEMVER_RE.test(reg.version)) {
-    throw new Error(
-      `DesignSystemRegistry: invalid semver "${reg.version}" for "${reg.id}".`
-    );
-  }
-  if (!reg.name || !reg.description) {
-    throw new Error(
-      `DesignSystemRegistry: "${reg.id}" missing name or description.`
-    );
-  }
-}
+  // ─── New surface inherited from the kit ─────────────────────────
+  listByTag: inner.listByTag,
+  tags: inner.tags,
+  counts: inner.counts,
+  resolveAlias: inner.resolveAlias,
+  selfCheck: inner.selfCheck,
+  snapshot: inner.snapshot
+};
 
-function deepFreeze<T>(value: T): T {
-  if (value === null || typeof value !== "object") return value;
-  const anyValue = value as unknown as Record<string, unknown>;
-  for (const key of Object.keys(anyValue)) {
-    deepFreeze(anyValue[key]);
-  }
-  return Object.freeze(value);
-}
-
-// ─── Singleton ─────────────────────────────────────────────────
-
-export const designSystemRegistry = new DesignSystemRegistry();
-export type { DesignSystemRegistry };
+// Legacy type re-export.
+export type { FrozenDesignComponent };
+/** Legacy type — the shape of the registry facade. Callers that used
+ *  `import type { DesignSystemRegistry }` get the facade's interface. */
+export type DesignSystemRegistry = typeof designSystemRegistry;

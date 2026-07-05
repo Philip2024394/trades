@@ -10,6 +10,7 @@
 import { NextResponse } from "next/server";
 import { loadStudioSession } from "@/lib/studio/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { formatMajorString } from "@/platform/buttons/payments/currency";
 
 export const runtime = "nodejs";
 
@@ -72,7 +73,12 @@ export async function GET(req: Request) {
 
   const header = CSV_COLUMNS.join(",");
   const lines = (res.data ?? []).map((r) => {
-    const amountMajor = ((r.amount_minor ?? 0) / 100).toFixed(2);
+    // Currency-aware conversion — IDR/JPY/KRW/VND are zero-decimal,
+    // BHD/KWD are three-decimal. Two-decimal is the default.
+    const amountMajor = formatMajorString(
+      r.amount_minor ?? 0,
+      r.currency ?? "USD"
+    );
     return [
       csvCell(r.id),
       csvCell(r.created_at),

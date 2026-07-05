@@ -7,7 +7,8 @@
 import { runtime, type ComposedNavigation } from "../runtime";
 
 export function getNavigation(
-  merchantId: string
+  merchantId: string,
+  brandId?: string
 ): Promise<ComposedNavigation> {
-  return runtime.composeNavigation(merchantId);
+  return runtime.composeNavigation(merchantId, brandId);
 }

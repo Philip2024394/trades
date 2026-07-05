@@ -76,6 +76,7 @@ designSystemRegistry.register<SingleColumnProps, SingleColumnContent>({
   id: "containers.single-column",
   name: "Single Column",
   category: "containers",
+  tier: "layout",
   description:
     "Full-width centered column with a readable max-width. The workhorse layout — used for hero copy, body content, form sections.",
   version: "1.0.0",
