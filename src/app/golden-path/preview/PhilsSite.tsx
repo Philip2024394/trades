@@ -36,6 +36,14 @@ import {
   Wrench,
   X
 } from "lucide-react";
+import {
+  Button,
+  Grid,
+  MobileNavDrawer,
+  ProjectTile,
+  ServiceTile,
+  StickyBottomActionBar
+} from "@/platform/ui";
 
 /** Service slug → Lucide icon. Falls back to Hammer for anything not
  *  registered here. Extend as new services appear in trade seeds. */
@@ -345,46 +353,18 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               {services.data.intro}
             </p>
           ) : null}
-          <div className="mt-6 grid grid-cols-3 gap-2 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-            {services.data.items.map((s) => {
-              const Icon = serviceIcon(s.slug);
-              return (
-                <div
+          <div className="mt-6 md:mt-8">
+            <Grid density="compact">
+              {services.data.items.map((s) => (
+                <ServiceTile
                   key={s.slug}
-                  className={`relative flex flex-col rounded-xl border p-3 transition md:rounded-2xl md:p-5 ${
-                    s.featured
-                      ? "border-amber-300 bg-amber-50"
-                      : "border-neutral-200 bg-white hover:border-neutral-300"
-                  }`}
-                >
-                  {s.featured ? (
-                    <span className="absolute right-1.5 top-1.5 hidden rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-neutral-900 md:inline">
-                      Featured
-                    </span>
-                  ) : null}
-                  <div
-                    className={`mb-2 flex h-9 w-9 items-center justify-center rounded-lg md:mb-3 md:h-10 md:w-10 ${
-                      s.featured
-                        ? "bg-amber-400 text-neutral-900"
-                        : "bg-neutral-900 text-white"
-                    }`}
-                  >
-                    <Icon className="h-4 w-4 md:h-5 md:w-5" />
-                  </div>
-                  <h3 className="text-[12px] font-semibold leading-tight text-neutral-900 md:text-[15px]">
-                    {s.title}
-                  </h3>
-                  {s.featured ? (
-                    <span className="mt-1 inline-flex w-fit rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-semibold text-neutral-900 md:hidden">
-                      Featured
-                    </span>
-                  ) : null}
-                  <p className="mt-1 hidden text-[13px] text-neutral-700 md:block">
-                    {s.description}
-                  </p>
-                </div>
-              );
-            })}
+                  icon={serviceIcon(s.slug)}
+                  title={s.title}
+                  description={s.description}
+                  featured={s.featured}
+                />
+              ))}
+            </Grid>
           </div>
         </section>
       ) : null}
@@ -435,78 +415,21 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
                 {projects.length} completed jobs
               </div>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
-              {projects.slice(0, 6).map((p) => (
-                <article
-                  key={p.slug}
-                  className="overflow-hidden rounded-xl border border-neutral-200 bg-white md:rounded-2xl"
-                >
-                  <div className="aspect-[4/3] bg-neutral-200">
-                    <div className="flex h-full flex-col items-center justify-center gap-1 text-neutral-500">
-                      <Camera className="h-6 w-6 md:h-8 md:w-8" />
-                      <div className="text-[10px] md:text-[11px]">
-                        {p.data.photoCount} photos
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-3 md:p-4">
-                    <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-neutral-500 md:text-[11px]">
-                      {p.data.location ? (
-                        <span className="inline-flex items-center gap-1">
-                          <MapPin className="h-3 w-3" />
-                          {p.data.location}
-                        </span>
-                      ) : null}
-                      {p.data.duration ? (
-                        <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {p.data.duration}
-                        </span>
-                      ) : null}
-                    </div>
-                    <h3 className="text-[13px] font-semibold leading-tight text-neutral-900 md:text-[15px]">
-                      {p.data.title}
-                    </h3>
-                    <p className="mt-1 hidden text-[12px] text-neutral-600 md:block">
-                      {p.data.solution}
-                    </p>
-                    {p.data.customerQuote ? (
-                      <blockquote className="mt-2 hidden rounded-lg bg-amber-50 p-3 text-[12px] italic text-neutral-800 md:block">
-                        &ldquo;{p.data.customerQuote.text}&rdquo;
-                        <div className="mt-1 text-[11px] not-italic text-neutral-600">
-                          — {p.data.customerQuote.attribution}
-                        </div>
-                      </blockquote>
-                    ) : (
-                      <div className="mt-2 hidden rounded-lg bg-neutral-100 p-3 text-[11px] italic text-neutral-500 md:block">
-                        Customer quote coming — the coach will nudge Phil to
-                        request one.
-                      </div>
-                    )}
-                    {p.data.materials.length ? (
-                      <div className="mt-2 hidden flex-wrap gap-1 md:flex">
-                        {p.data.materials.slice(0, 3).map((m, i) => (
-                          <span
-                            key={i}
-                            className="rounded-full bg-neutral-100 px-2 py-0.5 text-[10px] text-neutral-700"
-                          >
-                            {m}
-                          </span>
-                        ))}
-                      </div>
-                    ) : null}
-                    {/* Mobile-only quote indicator — subtle chip when a
-                        real quote exists so buyers see the social proof
-                        even on the compact card. */}
-                    {p.data.customerQuote ? (
-                      <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-800 md:hidden">
-                        <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
-                        Customer review
-                      </div>
-                    ) : null}
-                  </div>
-                </article>
-              ))}
+            <div className="mt-6 md:mt-8">
+              <Grid density="cards">
+                {projects.slice(0, 6).map((p) => (
+                  <ProjectTile
+                    key={p.slug}
+                    title={p.data.title}
+                    location={p.data.location}
+                    duration={p.data.duration}
+                    photoCount={p.data.photoCount}
+                    solution={p.data.solution}
+                    materials={p.data.materials}
+                    customerQuote={p.data.customerQuote}
+                  />
+                ))}
+              </Grid>
             </div>
           </div>
         </section>
@@ -646,23 +569,24 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       </section>
 
       {/* ── Sticky mobile action bar ────────────────────────── */}
-      <div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-neutral-200 bg-white/95 px-3 py-2 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] backdrop-blur md:hidden">
-        <a
-          href="tel:+35300000000"
-          className="flex min-h-[48px] flex-1 items-center justify-center gap-1.5 rounded-full border border-neutral-300 text-[13px] font-semibold text-neutral-900"
-        >
-          <Phone className="h-4 w-4" />
-          Call Phil
-        </a>
-        <a
-          href="#contact"
-          className="flex min-h-[48px] flex-[1.4] items-center justify-center gap-1.5 rounded-full bg-amber-400 text-[13px] font-semibold text-neutral-900"
-        >
-          {hero?.data.primaryCtaLabel ?? "Get in touch"}
-        </a>
-      </div>
-      {/* pad below footer so sticky bar doesn't cover it on mobile */}
-      <div className="h-16 md:hidden" aria-hidden="true" />
+      <StickyBottomActionBar
+        left={
+          <Button
+            href="tel:+35300000000"
+            intent="secondary"
+            size="lg"
+            icon={Phone}
+            block
+          >
+            Call Phil
+          </Button>
+        }
+        right={
+          <Button href="#contact" intent="primary" size="lg" block>
+            {hero?.data.primaryCtaLabel ?? "Get in touch"}
+          </Button>
+        }
+      />
 
       {/* ── Footer ──────────────────────────────────────────── */}
       <footer className="border-t border-neutral-200 bg-white py-8">
