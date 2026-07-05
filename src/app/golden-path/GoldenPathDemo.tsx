@@ -422,14 +422,30 @@ function ManifestPreview({ manifest }: { manifest: ContentManifest }) {
   const faqBlock = homeBlocks.find((b) => b.kind === "faq") as
     | ContentBlock<FaqBlockData>
     | undefined;
-  const projectBlocks = manifest.pages
-    .flatMap((p) => p.sections)
-    .flatMap((s) => s.blocks)
-    .filter((b) => b.kind === "project-story") as ContentBlock<ProjectStoryBlockData>[];
-  const seoBlocks = manifest.pages
-    .flatMap((p) => p.sections)
-    .flatMap((s) => s.blocks)
-    .filter((b) => b.kind === "seo-page") as ContentBlock<SeoPageBlockData>[];
+  // Project stories appear on both the /projects index page AND on
+  // each project's own detail page — dedupe by slug for rendering.
+  const projectBlocksMap = new Map<string, ContentBlock<ProjectStoryBlockData>>();
+  for (const page of manifest.pages) {
+    for (const section of page.sections) {
+      for (const block of section.blocks) {
+        if (block.kind === "project-story" && !projectBlocksMap.has(block.slug)) {
+          projectBlocksMap.set(block.slug, block as ContentBlock<ProjectStoryBlockData>);
+        }
+      }
+    }
+  }
+  const projectBlocks = Array.from(projectBlocksMap.values());
+  const seoBlocksMap = new Map<string, ContentBlock<SeoPageBlockData>>();
+  for (const page of manifest.pages) {
+    for (const section of page.sections) {
+      for (const block of section.blocks) {
+        if (block.kind === "seo-page" && !seoBlocksMap.has(block.slug)) {
+          seoBlocksMap.set(block.slug, block as ContentBlock<SeoPageBlockData>);
+        }
+      }
+    }
+  }
+  const seoBlocks = Array.from(seoBlocksMap.values());
 
   return (
     <div className="flex flex-col gap-4 text-[13px]">
