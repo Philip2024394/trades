@@ -63,6 +63,26 @@ export type CoachContext = {
   outputMedium?: string;
 };
 
+/** Expected outcome of taking the action — consultant-style specificity.
+ *  All fields optional. If nothing here is quantified honestly, omit
+ *  the field entirely rather than fabricate a percentage. */
+export type ExpectedImpact = {
+  /** Direction of change if the action is taken. */
+  direction: "up" | "down";
+  /** Which metric this affects (matches metricRegistry slug when known). */
+  metric?: string;
+  /** Short human sentence — "+8-14% quote requests" OR "noticeable lift
+   *  in quote quality" (qualitative when no evidence-backed number
+   *  exists). NEVER a made-up number. */
+  headline: string;
+  /** How the number/claim was derived — the transparency line the
+   *  merchant sees under the headline. */
+  source: string;
+  /** Optional numeric range — populated only when a cited pattern's
+   *  `quantification` field carries a real sample size. */
+  range?: { min: number; max: number; unit: string };
+};
+
 /** Result of a recommendation's condition check. */
 export type RecommendationEvaluation = {
   triggered: boolean;
@@ -75,7 +95,20 @@ export type RecommendationEvaluation = {
   targetValue?: number | string;
   /** Gap size 0-100 — 100 means the merchant is 100% short. */
   gapPercentage?: number;
+  /** Consultant-style expected impact of doing the recommended action. */
+  expectedImpact?: ExpectedImpact;
+  /** Override the recommendation's default title when the check needs
+   *  to be more specific — e.g. "Add Fire Door case studies" instead of
+   *  the generic "Add case studies for your growing services". */
+  titleOverride?: string;
+  /** Distinguisher appended to the recommendation slug so per-instance
+   *  triggers coexist in the backlog (e.g. one row per push service). */
+  slugSuffix?: string;
 };
+
+/** When a backlog item should ideally be tackled. Derived
+ *  deterministically from priority + impact. */
+export type BacklogTimeframe = "this-week" | "this-month" | "this-quarter";
 
 /** One backlog item — the merchant-facing thing they click on. */
 export type BacklogItem = {
@@ -84,6 +117,7 @@ export type BacklogItem = {
   dimension: HealthDimension;
   priority: 1 | 2 | 3 | 4 | 5;                    // 5 = highest urgency
   estimatedImpact: ImpactBand;
+  timeframe: BacklogTimeframe;
   detail: string;
   actionLabel: string;
   /** Optional handler slug that the Studio maps to a route / wizard. */
@@ -97,6 +131,10 @@ export type BacklogItem = {
   citedEvidence: readonly string[];
   whyItMatters: string;
   expectedOutcome: string;
+  /** Consultant-quality expected impact (optional). */
+  expectedImpactHeadline?: string;
+  expectedImpactSource?: string;
+  expectedImpactRange?: { min: number; max: number; unit: string };
 };
 
 /** Prioritised backlog for a given timeframe. */

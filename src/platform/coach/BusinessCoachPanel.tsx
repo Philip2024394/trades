@@ -13,12 +13,16 @@
 import {
   BadgeCheck,
   BookOpen,
+  Calendar,
+  CalendarClock,
+  CalendarDays,
   Camera,
   ClipboardCheck,
   Compass,
   MapPin,
   Sparkles,
   Star,
+  TrendingUp,
   Wand2,
   Zap
 } from "lucide-react";
@@ -26,6 +30,7 @@ import { useMemo, useState } from "react";
 import { assess, backlog, DIMENSION_LABEL } from "./BusinessCoach";
 import type {
   BacklogItem,
+  BacklogTimeframe,
   BusinessHealthScore,
   CoachBacklog,
   CoachContext,
@@ -79,8 +84,6 @@ export function BusinessCoachPanel({
   const score = useMemo<BusinessHealthScore>(() => assess(context), [context]);
   const list = useMemo<CoachBacklog>(() => backlog(context), [context]);
   const [expandedDim, setExpandedDim] = useState<HealthDimension | null>(null);
-
-  const topItems = list.items.slice(0, 6);
 
   return (
     <section className="mx-auto w-full max-w-4xl rounded-2xl border border-neutral-200 bg-white p-6 shadow-sm">
@@ -167,15 +170,11 @@ export function BusinessCoachPanel({
         {/* ── BACKLOG ───────────────────────────────────────── */}
         <div>
           <h3 className="mb-2 text-[13px] font-semibold text-neutral-900">
-            This month — {list.items.length} action
+            Your plan — {list.items.length} action
             {list.items.length === 1 ? "" : "s"}
           </h3>
-          {topItems.length ? (
-            <ul className="flex flex-col gap-2">
-              {topItems.map((item) => (
-                <BacklogRow key={item.recommendationSlug} item={item} onFixNow={onFixNow} />
-              ))}
-            </ul>
+          {list.items.length ? (
+            <TimeframeGroups items={list.items} onFixNow={onFixNow} />
           ) : (
             <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-[13px] text-emerald-900">
               <Sparkles className="mb-1 h-4 w-4" />
@@ -231,6 +230,17 @@ function BacklogRow({
             </span>
           </div>
           <div className="mt-0.5 text-[12px] text-neutral-700">{item.detail}</div>
+          {item.expectedImpactHeadline ? (
+            <div className="mt-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 py-1 text-[11px] text-emerald-900">
+              <TrendingUp className="mr-1 inline h-3 w-3" />
+              <strong>Expected impact:</strong> {item.expectedImpactHeadline}
+              {item.expectedImpactSource ? (
+                <span className="ml-1 text-emerald-700/70">
+                  · {item.expectedImpactSource}
+                </span>
+              ) : null}
+            </div>
+          ) : null}
           <div className="mt-1 flex items-center gap-2 text-[11px]">
             <button
               type="button"
@@ -279,5 +289,56 @@ function BacklogRow({
         </div>
       </div>
     </li>
+  );
+}
+
+const TIMEFRAME_ORDER: readonly BacklogTimeframe[] = [
+  "this-week",
+  "this-month",
+  "this-quarter"
+];
+
+const TIMEFRAME_META: Record<BacklogTimeframe, { label: string; icon: typeof Calendar }> = {
+  "this-week": { label: "This week", icon: CalendarClock },
+  "this-month": { label: "This month", icon: Calendar },
+  "this-quarter": { label: "This quarter", icon: CalendarDays }
+};
+
+function TimeframeGroups({
+  items,
+  onFixNow
+}: {
+  items: readonly BacklogItem[];
+  onFixNow?: BusinessCoachPanelProps["onFixNow"];
+}) {
+  const byTimeframe: Record<BacklogTimeframe, BacklogItem[]> = {
+    "this-week": [],
+    "this-month": [],
+    "this-quarter": []
+  };
+  for (const item of items) byTimeframe[item.timeframe].push(item);
+
+  return (
+    <div className="flex flex-col gap-4">
+      {TIMEFRAME_ORDER.map((tf) => {
+        const bucket = byTimeframe[tf];
+        if (!bucket.length) return null;
+        const meta = TIMEFRAME_META[tf];
+        const Icon = meta.icon;
+        return (
+          <div key={tf}>
+            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-600">
+              <Icon className="h-3 w-3" />
+              {meta.label} · {bucket.length} action{bucket.length === 1 ? "" : "s"}
+            </div>
+            <ul className="flex flex-col gap-2">
+              {bucket.map((item) => (
+                <BacklogRow key={item.recommendationSlug} item={item} onFixNow={onFixNow} />
+              ))}
+            </ul>
+          </div>
+        );
+      })}
+    </div>
   );
 }

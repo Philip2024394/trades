@@ -4,9 +4,34 @@
 // Every seed is cross-checked against playbookRegistry / patternRegistry
 // / evidenceRegistry at registration — dangling citations fail loudly.
 
-import { tradeIntelligenceRegistry } from "@/platform/business";
-import type { CoachContext, RecommendationEvaluation } from "../types";
+import { patternRegistry, tradeIntelligenceRegistry } from "@/platform/business";
+import type { CoachContext, ExpectedImpact, RecommendationEvaluation } from "../types";
 import { recommendationRegistry } from "./registry";
+
+/** Build an ExpectedImpact backed by a real pattern's quantification.
+ *  If the pattern doesn't have a real sample size, returns a QUALITATIVE
+ *  impact — never a fabricated percentage. */
+function impactFromPattern(input: {
+  patternSlug: string;
+  direction: "up" | "down";
+  headline: string;
+  metric?: string;
+}): ExpectedImpact | undefined {
+  const p = patternRegistry.get(input.patternSlug);
+  if (!p) return undefined;
+  const q = p.quantification;
+  const sample = q?.sampleSize
+    ? `${q.sampleSize} ${q.unit ?? "sites"} observed`
+    : "competitor observation";
+  return {
+    direction: input.direction,
+    metric: input.metric,
+    headline: input.headline,
+    source: `Pattern: ${p.title} · ${sample} · ${patternRegistry.confidenceOf(
+      p.slug
+    )}% derived confidence`
+  };
+}
 
 const P = { name: "Xrated Trades Platform", verified: true } as const;
 
@@ -51,7 +76,16 @@ recommendationRegistry.register({
           projectCount === 1 ? "" : "s"
         }; similar ${
           trade?.name.toLowerCase() ?? "trade"
-        } businesses typically show ${target}. Add ${gap} more.`
+        } businesses typically show ${target}. Add ${gap} more.`,
+        expectedImpact: {
+          direction: "up",
+          metric: "quote_requests",
+          headline: `Noticeable lift in quote requests for a ${
+            trade?.name.toLowerCase() ?? "trade"
+          } with your positioning.`,
+          source:
+            "Trade Intelligence · minFinishedWorkPhotos benchmark for this trade"
+        }
       };
     }
   },
@@ -317,7 +351,13 @@ recommendationRegistry.register({
         triggered: true,
         currentValue: current,
         targetValue: recommended,
-        detail: `Your goal is "${goal.replace(/-/g, " ")}" but your primary CTA intent is "${current}". Similar businesses win more work with "${recommended}".`
+        detail: `Your goal is "${goal.replace(/-/g, " ")}" but your primary CTA intent is "${current}". Similar businesses win more work with "${recommended}".`,
+        expectedImpact: impactFromPattern({
+          patternSlug: "doors-carpenter-free-survey-gallery-first",
+          direction: "up",
+          metric: "form_conversion_rate",
+          headline: "Higher form conversion — closer alignment between search intent and page ask."
+        })
       };
     }
   },
@@ -482,7 +522,92 @@ recommendationRegistry.register({
   publisher: P
 });
 
-// ─── 10. Strategy hasn't been reviewed in 90+ days ───────────
+// ─── 10. Push service without a case study on-site ───────────
+// Fires when the merchant's growth-strategy push services don't
+// have matching project-story blocks in the manifest. Emits one
+// row per missing service via titleOverride + slugSuffix so the
+// backlog reads like "Add Fire Door case studies", not the
+// generic "Add case studies for your growing services".
+recommendationRegistry.register({
+  manifestVersion: 1,
+  slug: "push-service-no-case-studies",
+  title: "Add case studies for the services you're pushing",
+  description:
+    "Push services without case studies work against your growth goal — buyers filter on visible proof of past work.",
+  version: "1.0.0",
+  dimension: "portfolio",
+  category: "portfolio",
+  scope: { trades: ["*"], countries: ["*"] },
+  condition: {
+    description:
+      "For each pushService, no matching project-story block on-site",
+    check: (ctx): RecommendationEvaluation => {
+      const pushServices = ctx.strategy.inputs.strategy.pushServices ?? [];
+      if (!pushServices.length) return { triggered: false, detail: "" };
+      const projectBlocks =
+        ctx.manifest?.pages
+          .flatMap((p) => p.sections)
+          .flatMap((s) => s.blocks)
+          .filter((b) => b.kind === "project-story") ?? [];
+      // Find the first push service with zero case studies — surface
+      // that one at the highest priority. Remaining ones surface via
+      // the same rule firing on subsequent coach cycles once the
+      // merchant closes the first gap.
+      for (const service of pushServices) {
+        const count = projectBlocks.filter(
+          (b) =>
+            (b.data as { service?: string }).service === service
+        ).length;
+        if (count > 0) continue;
+        const trade = tradeIntelligenceRegistry.get(
+          ctx.strategy.inputs.profile.trade
+        );
+        const svcLabel =
+          trade?.services.find((s) => s.slug === service)?.label ??
+          service.replace(/-/g, " ");
+        return {
+          triggered: true,
+          currentValue: 0,
+          targetValue: 3,
+          slugSuffix: service,
+          titleOverride: `Add ${svcLabel} case studies`,
+          detail: `You have 0 case studies for ${svcLabel} — but it's one of the services you're actively growing. Add 3-5 so buyers of that service can see finished work.`,
+          expectedImpact: impactFromPattern({
+            patternSlug: "doors-carpenter-free-survey-gallery-first",
+            direction: "up",
+            metric: "quote_requests",
+            headline: `More qualified enquiries specifically for ${svcLabel}.`
+          }) ?? {
+            direction: "up",
+            metric: "quote_requests",
+            headline: `More qualified enquiries specifically for ${svcLabel}.`,
+            source:
+              "Portfolio-Heavy playbook — case-study visibility on the growing service is the top conversion lever."
+          }
+        };
+      }
+      return { triggered: false, detail: "" };
+    }
+  },
+  action: {
+    label: "Upload case studies",
+    autoFix: { handler: "open-project-wizard" }
+  },
+  priority: 5,
+  estimatedImpact: "high",
+  citesPlaybooks: ["portfolio-heavy", "quote-driven"],
+  citesPatterns: ["doors-carpenter-free-survey-gallery-first"],
+  citesEvidence: ["gallery-before-pricing-visual-trades"],
+  rationale: {
+    whyItMatters:
+      "Case-study coverage of the service you're actively pushing is the tightest possible match between growth strategy and site content. A gap here works against every other improvement you make.",
+    expectedOutcome:
+      "Higher-quality enquiries specifically for the service driving your quarterly plan."
+  },
+  publisher: P
+});
+
+// ─── 11. Strategy hasn't been reviewed in 90+ days ───────────
 recommendationRegistry.register({
   manifestVersion: 1,
   slug: "strategy-quarterly-review-due",

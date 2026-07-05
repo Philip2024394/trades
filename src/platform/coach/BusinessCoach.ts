@@ -11,11 +11,15 @@
 
 import type {
   BacklogItem,
+  BacklogTimeframe,
   BusinessHealthScore,
   CoachBacklog,
   CoachContext,
+  ExpectedImpact,
   HealthDimension,
-  HealthScoreEntry
+  HealthScoreEntry,
+  ImpactBand,
+  RecommendationEvaluation
 } from "./types";
 import { DIMENSION_LABEL, HEALTH_DIMENSIONS, IMPACT_WEIGHT } from "./types";
 import { recommendationRegistry } from "./recommendations";
@@ -24,6 +28,9 @@ import type { FrozenRecommendationManifest } from "./recommendations";
 type Triggered = {
   manifest: FrozenRecommendationManifest;
   detail: string;
+  expectedImpact?: ExpectedImpact;
+  titleOverride?: string;
+  slugSuffix?: string;
 };
 
 function evaluateAll(ctx: CoachContext): Triggered[] {
@@ -51,7 +58,7 @@ function evaluateAll(ctx: CoachContext): Triggered[] {
     }
 
     // Condition check.
-    let evaluation;
+    let evaluation: RecommendationEvaluation;
     try {
       evaluation = rec.condition.check(ctx);
     } catch (err) {
@@ -64,11 +71,35 @@ function evaluateAll(ctx: CoachContext): Triggered[] {
         }`
       };
     }
+    // A single evaluation may return multiple triggered items via
+    // slugSuffix — but our RecommendationCondition returns one
+    // evaluation. Per-instance fan-out is handled by the recommendation
+    // registering multiple triggers via multiple items when its check
+    // returns them serialized. For v1 we accept one evaluation per
+    // recommendation and let per-service recommendations short-circuit
+    // by producing the most-severe row (the seed handles the loop).
     if (evaluation.triggered) {
-      results.push({ manifest: rec, detail: evaluation.detail });
+      results.push({
+        manifest: rec,
+        detail: evaluation.detail,
+        expectedImpact: evaluation.expectedImpact,
+        titleOverride: evaluation.titleOverride,
+        slugSuffix: evaluation.slugSuffix
+      });
     }
   }
   return results;
+}
+
+/** Derive a backlog timeframe from priority + impact — deterministic
+ *  so the merchant sees a consistent plan. */
+function timeframeFor(
+  priority: 1 | 2 | 3 | 4 | 5,
+  impact: ImpactBand
+): BacklogTimeframe {
+  if (priority >= 4 && impact === "high") return "this-week";
+  if (priority >= 3) return "this-month";
+  return "this-quarter";
 }
 
 function scoreDimension(
@@ -105,12 +136,14 @@ function overallScore(dimensions: readonly HealthScoreEntry[]): number {
 
 function toBacklogItem(t: Triggered): BacklogItem {
   const m = t.manifest;
+  const slug = t.slugSuffix ? `${m.slug}--${t.slugSuffix}` : m.slug;
   return Object.freeze({
-    recommendationSlug: m.slug,
-    title: m.title,
+    recommendationSlug: slug,
+    title: t.titleOverride ?? m.title,
     dimension: m.dimension,
     priority: m.priority,
     estimatedImpact: m.estimatedImpact,
+    timeframe: timeframeFor(m.priority, m.estimatedImpact),
     detail: t.detail,
     actionLabel: m.action.label,
     autoFix: m.action.autoFix,
@@ -118,7 +151,10 @@ function toBacklogItem(t: Triggered): BacklogItem {
     citedPatterns: m.citesPatterns ?? [],
     citedEvidence: m.citesEvidence ?? [],
     whyItMatters: m.rationale.whyItMatters,
-    expectedOutcome: m.rationale.expectedOutcome
+    expectedOutcome: m.rationale.expectedOutcome,
+    expectedImpactHeadline: t.expectedImpact?.headline,
+    expectedImpactSource: t.expectedImpact?.source,
+    expectedImpactRange: t.expectedImpact?.range
   });
 }
 
