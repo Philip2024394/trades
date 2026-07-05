@@ -18,10 +18,12 @@ import {
   FileCheck,
   Hammer,
   MapPin,
+  Menu,
   Phone,
   ShieldCheck,
   Star,
-  Truck
+  Truck,
+  X
 } from "lucide-react";
 import { useMemo, useState } from "react";
 import type {
@@ -87,31 +89,39 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
   }, [manifest]);
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
+  const closeMobileNav = () => setMobileNavOpen(false);
 
   return (
     <div className="min-h-screen bg-neutral-50">
       {/* ── Demo banner ─────────────────────────────────────── */}
       <div className="border-b border-amber-200 bg-amber-50">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-2 text-[12px]">
-          <div className="flex items-center gap-2 text-amber-900">
-            <Camera className="h-3.5 w-3.5" /> Golden Path preview — this
-            site was composed by the platform, not hand-authored.
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-2 text-[12px]">
+          <div className="flex min-w-0 items-center gap-2 text-amber-900">
+            <Camera className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden truncate sm:inline">
+              Golden Path preview — this site was composed by the
+              platform, not hand-authored.
+            </span>
+            <span className="truncate sm:hidden">Golden Path preview</span>
           </div>
           <Link
             href="/golden-path"
-            className="inline-flex items-center gap-1 rounded-full bg-amber-900 px-2.5 py-1 font-medium text-white hover:bg-amber-800"
+            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-900 px-2.5 py-1 font-medium text-white hover:bg-amber-800"
           >
             <ArrowLeft className="h-3 w-3" />
-            Back to Golden Path
+            <span className="hidden sm:inline">Back to Golden Path</span>
+            <span className="sm:hidden">Back</span>
           </Link>
         </div>
       </div>
 
       {/* ── Site nav ────────────────────────────────────────── */}
-      <nav className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <nav className="sticky top-0 z-40 border-b border-neutral-200 bg-white">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-neutral-900 text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-900 text-white">
               <Hammer className="h-4 w-4" />
             </div>
             <div className="text-[15px] font-bold text-neutral-900">
@@ -135,14 +145,87 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               Contact
             </a>
           </div>
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-3 py-1.5 text-[12px] font-semibold text-neutral-900 hover:bg-amber-300"
-          >
-            {hero?.data.primaryCtaLabel ?? "Get in touch"}
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href="#contact"
+              className="hidden min-h-[44px] items-center gap-1.5 rounded-full bg-amber-400 px-4 text-[13px] font-semibold text-neutral-900 hover:bg-amber-300 md:inline-flex"
+            >
+              {hero?.data.primaryCtaLabel ?? "Get in touch"}
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileNavOpen(true)}
+              aria-label="Open menu"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-lg border border-neutral-200 text-neutral-900 hover:bg-neutral-50 md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </nav>
+
+      {/* ── Mobile nav drawer ───────────────────────────────── */}
+      {mobileNavOpen ? (
+        <div className="fixed inset-0 z-50 md:hidden" role="dialog">
+          <div
+            className="absolute inset-0 bg-neutral-900/60"
+            onClick={closeMobileNav}
+          />
+          <div className="absolute right-0 top-0 flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-2xl">
+            <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+              <span className="text-[15px] font-bold text-neutral-900">
+                Phil&apos;s Carpentry
+              </span>
+              <button
+                type="button"
+                onClick={closeMobileNav}
+                aria-label="Close menu"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-lg text-neutral-700 hover:bg-neutral-100"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+            <nav className="flex-1 overflow-y-auto p-4">
+              <ul className="flex flex-col gap-1 text-[15px]">
+                {[
+                  { href: "#services", label: "Services" },
+                  { href: "#projects", label: "Projects" },
+                  { href: "#trust", label: "Why us" },
+                  { href: "#faq", label: "FAQ" },
+                  { href: "#contact", label: "Contact" }
+                ].map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      onClick={closeMobileNav}
+                      className="flex min-h-[44px] items-center rounded-lg px-3 text-neutral-900 hover:bg-neutral-50"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="border-t border-neutral-200 p-4">
+              <a
+                href="#contact"
+                onClick={closeMobileNav}
+                className="flex min-h-[48px] items-center justify-center rounded-full bg-amber-400 px-4 text-[14px] font-semibold text-neutral-900 hover:bg-amber-300"
+              >
+                {hero?.data.primaryCtaLabel ?? "Get in touch"}
+              </a>
+              <a
+                href="tel:+35300000000"
+                onClick={closeMobileNav}
+                className="mt-2 flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-neutral-200 px-4 text-[13px] font-semibold text-neutral-900 hover:bg-neutral-50"
+              >
+                <Phone className="h-4 w-4" />
+                Call Phil
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {/* ── Hero ────────────────────────────────────────────── */}
       {hero ? (
@@ -150,14 +233,14 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           <div className="absolute inset-0 opacity-20">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_theme(colors.amber.500)_0%,_transparent_50%)]" />
           </div>
-          <div className="relative mx-auto max-w-6xl px-4 py-16 md:py-24">
+          <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-24">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
                 <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium text-amber-200">
                   <MapPin className="h-3 w-3" />
                   Dublin · Cork · Galway
                 </div>
-                <h1 className="text-3xl font-bold leading-tight md:text-5xl">
+                <h1 className="text-[26px] font-bold leading-[1.15] sm:text-3xl md:text-5xl md:leading-tight">
                   {hero.data.headline}
                 </h1>
                 {hero.data.subheadline ? (
@@ -221,7 +304,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── Services ────────────────────────────────────────── */}
       {services ? (
-        <section id="services" className="mx-auto max-w-6xl px-4 py-16">
+        <section id="services" className="mx-auto max-w-6xl px-4 py-12 md:py-16">
           <h2 className="text-2xl font-bold text-neutral-900">
             What we do
           </h2>
@@ -230,7 +313,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               {services.data.intro}
             </p>
           ) : null}
-          <div className="mt-8 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {services.data.items.map((s) => (
               <div
                 key={s.slug}
@@ -270,7 +353,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── Value props ─────────────────────────────────────── */}
       {valueProps ? (
-        <section className="bg-white py-16">
+        <section className="bg-white py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4">
             <h2 className="text-2xl font-bold text-neutral-900">
               {valueProps.data.heading}
@@ -304,7 +387,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── Projects ────────────────────────────────────────── */}
       {projects.length ? (
-        <section id="projects" className="bg-neutral-50 py-16">
+        <section id="projects" className="bg-neutral-50 py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4">
             <div className="flex items-baseline justify-between">
               <h2 className="text-2xl font-bold text-neutral-900">
@@ -384,7 +467,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── Trust ───────────────────────────────────────────── */}
       {trust ? (
-        <section id="trust" className="bg-white py-16">
+        <section id="trust" className="bg-white py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
@@ -439,7 +522,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── FAQ ─────────────────────────────────────────────── */}
       {faq ? (
-        <section id="faq" className="bg-neutral-50 py-16">
+        <section id="faq" className="bg-neutral-50 py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4">
             <h2 className="text-2xl font-bold text-neutral-900">
               {faq.data.heading}
@@ -487,7 +570,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       ) : null}
 
       {/* ── Contact ─────────────────────────────────────────── */}
-      <section id="contact" className="bg-neutral-900 py-16 text-white">
+      <section id="contact" className="bg-neutral-900 py-12 md:py-16 text-white">
         <div className="mx-auto max-w-3xl px-4 text-center">
           <h2 className="text-2xl font-bold md:text-3xl">
             Ready to talk to Phil?
@@ -497,23 +580,42 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               ? "A free on-site survey with a fixed quote afterwards. No obligation."
               : "Get in touch — Phil replies within one working day."}
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mx-auto mt-6 flex max-w-md flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
             <a
               href="tel:+35300000000"
-              className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-3 text-[14px] font-semibold text-neutral-900 hover:bg-amber-300"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-amber-400 px-5 text-[14px] font-semibold text-neutral-900 hover:bg-amber-300"
             >
               <Phone className="h-4 w-4" />
               Call Phil
             </a>
             <a
               href="mailto:phil@example.com"
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-[14px] font-semibold text-white hover:bg-white/10"
+              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/30 px-5 text-[14px] font-semibold text-white hover:bg-white/10"
             >
               {hero?.data.primaryCtaLabel ?? "Get in touch"}
             </a>
           </div>
         </div>
       </section>
+
+      {/* ── Sticky mobile action bar ────────────────────────── */}
+      <div className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-neutral-200 bg-white/95 px-3 py-2 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] backdrop-blur md:hidden">
+        <a
+          href="tel:+35300000000"
+          className="flex min-h-[48px] flex-1 items-center justify-center gap-1.5 rounded-full border border-neutral-300 text-[13px] font-semibold text-neutral-900"
+        >
+          <Phone className="h-4 w-4" />
+          Call Phil
+        </a>
+        <a
+          href="#contact"
+          className="flex min-h-[48px] flex-[1.4] items-center justify-center gap-1.5 rounded-full bg-amber-400 text-[13px] font-semibold text-neutral-900"
+        >
+          {hero?.data.primaryCtaLabel ?? "Get in touch"}
+        </a>
+      </div>
+      {/* pad below footer so sticky bar doesn't cover it on mobile */}
+      <div className="h-16 md:hidden" aria-hidden="true" />
 
       {/* ── Footer ──────────────────────────────────────────── */}
       <footer className="border-t border-neutral-200 bg-white py-8">
