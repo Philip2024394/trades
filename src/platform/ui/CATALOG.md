@@ -6,6 +6,7 @@
 
 Location: `src/platform/ui/`
 Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £100M SaaS product.
+Reference index: [`references/PATTERNS.md`](./references/PATTERNS.md) — 30 curated mobile-first patterns from top GitHub UI repos, filtered for trade fit. Every remaining Phase 5/6 primitive has 1-2 references documented there.
 
 ---
 
