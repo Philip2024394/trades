@@ -1,0 +1,232 @@
+# Xrated Trades — Mobile UI Kit Catalog
+
+> **Rule:** No page hand-writes Tailwind class strings.
+> Every visual element on the platform comes from a primitive in this kit.
+> If the primitive doesn't exist, add it here first — never inline it.
+
+Location: `src/platform/ui/`
+Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £100M SaaS product.
+
+---
+
+## Progress at a glance
+
+| Phase | Focus | Status | Components |
+|---|---|---|---|
+| 1 | Foundation | ✅ Complete | Tokens, Grid, Card, Button, Nav, Sheets, Gallery, Content, Sections, Feedback |
+| 2 | Heroes + Bands | 🚧 Next | SplitHero, MinimalHero, EmergencyHero, TrustBar, StatsBand, CtaBand, TestimonialBand |
+| 3 | Forms | ⏳ Planned | TextInput, Select, Radio, Checkbox, TextArea, FileUpload, DatePicker, Toggle, FieldGroup |
+| 4 | Data display + Overlays | ⏳ Planned | DataTable, ListView, ActivityFeed, Timeline, Popover, Tooltip, Dropdown, CommandPalette |
+| 5 | Media + Onboarding | ⏳ Planned | ImageWithCaption, BeforeAfterSlider, AspectRatio, Avatar, OnboardingChecklist, Tour |
+| 6 | Layout Recipes | ⏳ Planned | ServiceOverviewLayout, DashboardLayout, BookingLayout, CoachLayout, MarketplaceLayout |
+
+---
+
+## Phase 1 — Foundation (✅ complete)
+
+### Tokens (`tokens/`)
+
+| Token | Purpose |
+|---|---|
+| `spacing` | 4px scale, `SECTION_PAD_Y`, `TAP_TARGET_MIN` |
+| `radius` | `CARD_RADIUS` scales mobile→desktop (`xl` → `2xl`) |
+| `elevation` | 6 subtle shadow levels, `ELEVATION_INVERTED` for sticky-bottom |
+| `typography` | 12 typed styles: `TYPE_DISPLAY` / `TYPE_H1..4` / `TYPE_BODY` / `TYPE_META` / `TYPE_BUTTON` etc. |
+| `animation` | `DURATION.fast/base/slow` + `EASE.standard/enter/exit` + Tailwind `TRANSITION` classes |
+
+### Content primitives (`content/`)
+
+| Component | Purpose |
+|---|---|
+| `Overline` | Small uppercase label above a heading, 5 tones |
+| `Chip` | Rounded pill, 6 tones × 3 sizes |
+| `Badge` | Icon + text badge (tighter than Chip), 6 tones |
+| `Divider` | 3 variants (line / hairline / dotted), 3 spacings, optional inline label |
+| `Blockquote` | 2 variants: `default` (inline) + `spotlight` (hero-scale) |
+| `Prose` | Long-form typography wrapper — styles h2/h3/p/ul/ol/a/code/blockquote |
+
+### Section headers (`sections/`)
+
+| Component | Purpose |
+|---|---|
+| `SectionHeader` | Overline + title + subtitle + trailing action. Left or center. |
+| `PageHeader` | Larger page-level heading with breadcrumbs + overline + actions row |
+
+### Feedback (`feedback/`)
+
+| Component | Purpose |
+|---|---|
+| `Alert` | Inline banner, 4 intents (info / warning / success / danger) |
+| `Callout` | Highlighted content block, 5 tones incl. `editorial` (dark) |
+
+### Primitives (`primitives/`)
+
+| Component | Purpose |
+|---|---|
+| `Grid` | 7 density presets: `icons` / `compact` / `cards` / `rich` / `feature` / `kpi` / `stats-3` |
+| `SectionContainer` | Enforces max-width + padding + surface across every page section |
+| `SurfaceCard` | 9 variants × 4 paddings |
+| `Button` | 4 intents × 3 sizes, all WCAG-compliant (min-h 36/44/48px) |
+| `EmptyState` | Icon + title + description + optional action |
+| `Skeleton` / `SkeletonCard` | Loading placeholders — no spinners for content |
+
+### Cards (`cards/`)
+
+| Component | Purpose |
+|---|---|
+| `ServiceTile` | 3-up mobile compact / 2-3-up desktop expanded, with per-service icon |
+| `ProjectTile` | 2-up mobile compact / 3-up desktop expanded, "Customer review" chip on quotes |
+| `MetricCard` | KPI widget with optional trend delta |
+
+### Navigation (`nav/`)
+
+| Component | Purpose |
+|---|---|
+| `StickyTopNav` | Sticky brand + desktop links + mobile hamburger, wraps drawer |
+| `MobileNavDrawer` | Right-side drawer with backdrop + footer slot |
+| `StickyBottomActionBar` | Mobile-only bottom bar with left/right slots + configurable ratio |
+
+### Sheets (`sheets/`)
+
+| Component | Purpose |
+|---|---|
+| `BottomSheet` | Mobile bottom sheet + desktop centered modal in one component |
+
+### Gallery (`gallery/`)
+
+| Component | Purpose |
+|---|---|
+| `SwipeGallery` | Horizontal snap-scroll on mobile with progress dots, grid on desktop |
+
+---
+
+## Phase 2 — Heroes + Bands (🚧 next)
+
+### Heroes (`heroes/`)
+
+| Component | Purpose | Status |
+|---|---|---|
+| `SplitHero` | Text left + image right (Phil's site pattern), mobile → 1fr + fixed image column | ⏳ Not built |
+| `MinimalHero` | Centered headline + CTA, no image | ⏳ Not built |
+| `EmergencyHero` | 24/7 badge, Call Now hero for emergency trades | ⏳ Not built |
+| `EditorialHero` | Magazine-style, large photography, sparse text | ⏳ Not built |
+| `FullBleedHero` | Background image + overlay text | ⏳ Not built |
+
+### Bands (`bands/`)
+
+| Component | Purpose | Status |
+|---|---|---|
+| `TrustBar` | Logo/badge strip — "As seen on", "Certified by", "Trusted since 2010" | ⏳ Not built |
+| `StatsBand` | 3-4 stat callouts inline — "15 years / 800 jobs / 5★ rating" | ⏳ Not built |
+| `CtaBand` | Full-width CTA section — "Ready to talk to Phil?" | ⏳ Not built |
+| `TestimonialBand` | Featured quote or 3-up quote grid | ⏳ Not built |
+| `ProcessBand` | Numbered 3-4 step process — "How we work" | ⏳ Not built |
+| `LogoStrip` | Client / partner / supplier logo grid | ⏳ Not built |
+
+---
+
+## Phase 3 — Forms (⏳ planned)
+
+| Component | Purpose |
+|---|---|
+| `TextInput` | Single-line text with label, hint, error, prefix/suffix |
+| `TextArea` | Multi-line text with character counter |
+| `Select` | Native + custom trigger with search |
+| `RadioGroup` | Styled radio buttons with card option |
+| `CheckboxGroup` | Styled checkboxes |
+| `Toggle` | Switch component |
+| `FileUpload` | Drag+drop + button, photo preview grid |
+| `DatePicker` | Calendar dropdown (mobile: BottomSheet variant) |
+| `TimePicker` | Time selector |
+| `FieldGroup` | Consistent field wrapper — label + hint + error + input slot |
+| `FormSection` | Group of fields with heading |
+| `StickySubmit` | Sticky submit button pattern for long forms |
+| `InlineValidation` | Real-time field validation display |
+
+---
+
+## Phase 4 — Data display + Overlays (⏳ planned)
+
+| Component | Purpose |
+|---|---|
+| `DataTable` | Responsive table with mobile card fallback |
+| `ListView` | Vertical item list with icons + actions |
+| `ActivityFeed` | Timeline-style activity items |
+| `Timeline` | Horizontal + vertical timeline |
+| `TabBar` | Tabbed navigation |
+| `Popover` | Anchored overlay |
+| `Tooltip` | Hover / focus tooltip |
+| `DropdownMenu` | Overflow / actions menu |
+| `CommandPalette` | Cmd+K search + actions |
+| `ContextMenu` | Right-click / long-press menu |
+
+---
+
+## Phase 5 — Media + Onboarding (⏳ planned)
+
+| Component | Purpose |
+|---|---|
+| `ImageWithCaption` | Consistent captioned image |
+| `BeforeAfterSlider` | Drag-slider for before/after project comparison |
+| `AspectRatio` | Ratio wrapper (4:3, 16:9, square, portrait) |
+| `Avatar` | User avatar with initials fallback |
+| `VideoEmbed` | Responsive video wrapper |
+| `OnboardingChecklist` | Merchant setup progress |
+| `Tour` | Interactive product tour overlay |
+| `EmptyStateIllustrations` | Named SVG illustrations for empty states |
+| `SkeletonPreset` | Named skeleton compositions (SkeletonHero, SkeletonList, SkeletonForm) |
+
+---
+
+## Phase 6 — Layout Recipes (⏳ planned)
+
+These are **declarative page compositions**. A page says `<ServiceOverviewLayout>` and the kit assembles the correct primitives in the correct order.
+
+| Recipe | Slots |
+|---|---|
+| `ServiceOverviewLayout` | Hero → Quick Stats → Featured Services → Projects → Reviews → CTA |
+| `DashboardLayout` | Greeting → Business Score → Priority Actions → KPIs → Activity → Insights |
+| `BookingLayout` | Hero → Steps → Calendar → Details → Summary → Payment → Confirmation |
+| `CoachLayout` | Score header → Backlog by timeframe → Explainer drilldown |
+| `MarketplaceLayout` | Filter bar → Result grid → Featured band → Pagination |
+| `SettingsLayout` | Sidebar nav → Section content → Sticky save bar |
+
+---
+
+## Design principles this kit enforces
+
+1. **Mobile-first, always.** Every component starts at 320px and enhances up.
+2. **44px tap target minimum.** Every interactive element passes WCAG.
+3. **Typography scale.** 12px absolute floor for readable copy. `TYPE_*` tokens only.
+4. **Section padding token.** `py-12 md:py-16` — never `py-16` alone.
+5. **Card radius token.** `rounded-xl md:rounded-2xl` — never `rounded-2xl` alone.
+6. **No hand-rolled grids.** `<Grid density="...">` always.
+7. **No hand-rolled shadows.** `ELEVATION[n]` only.
+8. **Lucide icons only.** No emojis-as-icons.
+9. **`object-contain` on merchant media.** `object-cover` only for full-bleed hero backgrounds.
+10. **Skeletons over spinners** for content loading.
+
+---
+
+## Migration status by page
+
+| Page | Kit adoption | Notes |
+|---|---|---|
+| `/golden-path/preview` (Phil's site) | 🟡 60% | Services + Projects + StickyBottom migrated. Hero + Trust + FAQ + Contact still hand-rolled — next |
+| `/golden-path` | 🔴 0% | Step cards still hand-rolled — next |
+| `BusinessCoachPanel` | 🔴 0% | Uses hand-rolled cards — next |
+| `StrategyExplainerPanel` | 🔴 0% | Uses hand-rolled cards — next |
+| `StudioShell` | 🔴 0% | Uses shadcn — needs kit-first refactor |
+| Payment orders dashboard | 🔴 0% | Hand-rolled — kit migration deferred |
+| Blueprint wizard | 🔴 0% | Hand-rolled — kit migration deferred |
+
+---
+
+## How to add a new primitive
+
+1. Add the file under `src/platform/ui/<category>/<Name>.tsx`.
+2. Consume tokens — never hard-code spacing / radius / colours outside the token scale.
+3. Always accept `className?: string` and merge with `.trim()`.
+4. Export from `src/platform/ui/index.ts` (both the component AND its Props type).
+5. Update this CATALOG.md — move from "planned" to "complete", add a row.
+6. If it's used on Phil's site, migrate that usage in the same commit.

@@ -5,9 +5,47 @@
 //
 // This kit does NOT touch business logic. It consumes ResolvedStrategy,
 // ContentManifest, BusinessHealthScore etc. — never modifies them.
+//
+// See CATALOG.md for the full component index + roadmap.
 
 // ─── Tokens ─────────────────────────────────────────────────
 export * from "./tokens";
+
+// ─── Content primitives ─────────────────────────────────────
+export { Badge } from "./content/Badge";
+export type { BadgeProps, BadgeTone } from "./content/Badge";
+export { Blockquote } from "./content/Blockquote";
+export type {
+  BlockquoteProps,
+  BlockquoteVariant
+} from "./content/Blockquote";
+export { Chip } from "./content/Chip";
+export type { ChipProps, ChipSize, ChipTone } from "./content/Chip";
+export { Divider } from "./content/Divider";
+export type {
+  DividerProps,
+  DividerSpacing,
+  DividerVariant
+} from "./content/Divider";
+export { Overline } from "./content/Overline";
+export type { OverlineProps, OverlineTone } from "./content/Overline";
+export { Prose } from "./content/Prose";
+export type { ProseProps, ProseSize } from "./content/Prose";
+
+// ─── Section headers ────────────────────────────────────────
+export { PageHeader } from "./sections/PageHeader";
+export type { PageHeaderProps } from "./sections/PageHeader";
+export { SectionHeader } from "./sections/SectionHeader";
+export type {
+  SectionHeaderAlign,
+  SectionHeaderProps
+} from "./sections/SectionHeader";
+
+// ─── Feedback ───────────────────────────────────────────────
+export { Alert } from "./feedback/Alert";
+export type { AlertIntent, AlertProps } from "./feedback/Alert";
+export { Callout } from "./feedback/Callout";
+export type { CalloutProps, CalloutTone } from "./feedback/Callout";
 
 // ─── Primitives ─────────────────────────────────────────────
 export { Button } from "./primitives/Button";

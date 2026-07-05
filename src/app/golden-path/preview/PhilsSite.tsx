@@ -10,6 +10,7 @@ import {
   ArrowLeft,
   Award,
   BadgeCheck,
+  BookOpen,
   Building2,
   CalendarClock,
   Camera,
@@ -37,10 +38,12 @@ import {
   X
 } from "lucide-react";
 import {
+  Alert,
   Button,
   Grid,
   MobileNavDrawer,
   ProjectTile,
+  SectionHeader,
   ServiceTile,
   StickyBottomActionBar
 } from "@/platform/ui";
@@ -141,14 +144,14 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           <div className="flex min-w-0 items-center gap-2 text-amber-900">
             <Camera className="h-3.5 w-3.5 shrink-0" />
             <span className="hidden truncate sm:inline">
-              Golden Path preview — this site was composed by the
-              platform, not hand-authored.
+              Golden Path preview — this site was composed by the platform,
+              not hand-authored.
             </span>
             <span className="truncate sm:hidden">Golden Path preview</span>
           </div>
           <Link
             href="/golden-path"
-            className="inline-flex shrink-0 items-center gap-1 rounded-full bg-amber-900 px-2.5 py-1 font-medium text-white hover:bg-amber-800"
+            className="inline-flex min-h-[32px] shrink-0 items-center gap-1 rounded-full bg-amber-900 px-2.5 py-1 font-medium text-white hover:bg-amber-800"
           >
             <ArrowLeft className="h-3 w-3" />
             <span className="hidden sm:inline">Back to Golden Path</span>
@@ -345,14 +348,12 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       {/* ── Services ────────────────────────────────────────── */}
       {services ? (
         <section id="services" className="mx-auto max-w-6xl px-4 py-12 md:py-16">
-          <h2 className="text-2xl font-bold text-neutral-900">
-            What we do
-          </h2>
-          {services.data.intro ? (
-            <p className="mt-2 max-w-2xl text-[15px] text-neutral-700">
-              {services.data.intro}
-            </p>
-          ) : null}
+          <SectionHeader
+            overline="Services"
+            overlineIcon={Hammer}
+            title="What we do"
+            subtitle={services.data.intro}
+          />
           <div className="mt-6 md:mt-8">
             <Grid density="compact">
               {services.data.items.map((s) => (
@@ -407,14 +408,18 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       {projects.length ? (
         <section id="projects" className="bg-neutral-50 py-12 md:py-16">
           <div className="mx-auto max-w-6xl px-4">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-2xl font-bold text-neutral-900">
-                Recent projects
-              </h2>
-              <div className="text-[13px] text-neutral-500">
-                {projects.length} completed jobs
-              </div>
-            </div>
+            <SectionHeader
+              overline="Portfolio"
+              overlineIcon={Camera}
+              title="Recent projects"
+              subtitle="Real finished jobs. Real materials. Real customer feedback."
+              trailing={
+                <span>
+                  {projects.length}{" "}
+                  {projects.length === 1 ? "completed job" : "completed jobs"}
+                </span>
+              }
+            />
             <div className="mt-6 md:mt-8">
               <Grid density="cards">
                 {projects.slice(0, 6).map((p) => (
@@ -441,14 +446,12 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           <div className="mx-auto max-w-6xl px-4">
             <div className="grid gap-8 md:grid-cols-2 md:items-center">
               <div>
-                <h2 className="text-2xl font-bold text-neutral-900">
-                  {trust.data.heading}
-                </h2>
-                {trust.data.intro ? (
-                  <p className="mt-2 text-[15px] text-neutral-700">
-                    {trust.data.intro}
-                  </p>
-                ) : null}
+                <SectionHeader
+                  overline="Why us"
+                  overlineIcon={ShieldCheck}
+                  title={trust.data.heading}
+                  subtitle={trust.data.intro}
+                />
                 <ul className="mt-6 flex flex-col gap-3">
                   {trust.data.bullets.map((b, i) => (
                     <li
@@ -494,9 +497,12 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       {faq ? (
         <section id="faq" className="bg-neutral-50 py-12 md:py-16">
           <div className="mx-auto max-w-3xl px-4">
-            <h2 className="text-2xl font-bold text-neutral-900">
-              {faq.data.heading}
-            </h2>
+            <SectionHeader
+              overline="FAQ"
+              overlineIcon={BookOpen}
+              title={faq.data.heading}
+              subtitle="Straight answers to the questions we get on nearly every survey."
+            />
             <ul className="mt-6 flex flex-col gap-2">
               {faq.data.items.map((item, i) => {
                 const open = openFaq === i;
