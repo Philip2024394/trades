@@ -180,3 +180,41 @@ export { Tabs } from "./overlays/Tabs";
 export type { Tab, TabsProps } from "./overlays/Tabs";
 export { Tooltip } from "./overlays/Tooltip";
 export type { TooltipProps, TooltipSide } from "./overlays/Tooltip";
+
+// ─── Media (Phase 5) ────────────────────────────────────────
+export { AspectRatio } from "./media/AspectRatio";
+export type { AspectRatioPreset, AspectRatioProps } from "./media/AspectRatio";
+export { AvatarCluster } from "./media/AvatarCluster";
+export type {
+  AvatarClusterProps,
+  ClusterAvatar
+} from "./media/AvatarCluster";
+export { BeforeAfterSlider } from "./media/BeforeAfterSlider";
+export type { BeforeAfterSliderProps } from "./media/BeforeAfterSlider";
+export { ImageWithCaption } from "./media/ImageWithCaption";
+export type { ImageWithCaptionProps } from "./media/ImageWithCaption";
+export { PhotoGridPreview } from "./media/PhotoGridPreview";
+export type { PhotoGridPreviewProps } from "./media/PhotoGridPreview";
+export { VideoThumb } from "./media/VideoThumb";
+export type { VideoThumbProps } from "./media/VideoThumb";
+
+// ─── Onboarding (Phase 5) ───────────────────────────────────
+export {
+  AllDoneIllustration,
+  NoLeadsIllustration,
+  NoMessagesIllustration,
+  NoProjectsIllustration,
+  NoReviewsIllustration,
+  WelcomeIllustration
+} from "./onboarding/EmptyStateIllustrations";
+export { SetupChecklist } from "./onboarding/SetupChecklist";
+export type {
+  SetupChecklistItem,
+  SetupChecklistProps
+} from "./onboarding/SetupChecklist";
+export { StepDots } from "./onboarding/StepDots";
+export type { StepDotsProps, StepDotsStep } from "./onboarding/StepDots";
+
+// ─── Feedback additions (Phase 5) ───────────────────────────
+export { SuccessCard } from "./feedback/SuccessCard";
+export type { SuccessCardProps } from "./feedback/SuccessCard";

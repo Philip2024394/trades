@@ -39,6 +39,8 @@ import {
 } from "lucide-react";
 import {
   Alert,
+  AvatarCluster,
+  BeforeAfterSlider,
   Button,
   CtaBand,
   Grid,
@@ -415,13 +417,76 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               title="Recent projects"
               subtitle="Real finished jobs. Real materials. Real customer feedback."
               trailing={
-                <span>
-                  {projects.length}{" "}
-                  {projects.length === 1 ? "completed job" : "completed jobs"}
-                </span>
+                <AvatarCluster
+                  size="xs"
+                  leadingIcon={Star}
+                  avatars={[
+                    { alt: "Maria O'Sullivan" },
+                    { alt: "Rónán Byrne" },
+                    { alt: "Ann Kelly" },
+                    { alt: "James Doyle" }
+                  ]}
+                  trailingLabel={`${projects.length} completed jobs`}
+                />
               }
             />
-            <div className="mt-6 md:mt-8">
+
+            {/* Featured before/after showcase */}
+            <div className="mt-6 grid gap-4 md:grid-cols-[minmax(0,1fr)_1fr] md:items-center md:gap-8">
+              <div>
+                <div className="mb-2 inline-flex items-center gap-2 rounded-full bg-amber-100 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-800">
+                  Featured
+                </div>
+                <h3 className="text-[17px] font-semibold text-neutral-900 md:text-[19px]">
+                  Dublin fire door installation
+                </h3>
+                <p className="mt-1.5 text-[13px] leading-relaxed text-neutral-700 md:text-[14px]">
+                  Landlord needed FD30 fire doors installed across three
+                  flats ahead of a compliance inspection. Drag the handle to
+                  see the transformation.
+                </p>
+                <div className="mt-3 inline-flex flex-wrap gap-1.5 text-[11px]">
+                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700">
+                    Oak veneer FD30
+                  </span>
+                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700">
+                    2 days
+                  </span>
+                  <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-neutral-700">
+                    Dublin
+                  </span>
+                </div>
+              </div>
+              <BeforeAfterSlider
+                aspect="landscape"
+                before={
+                  <div className="flex h-full items-center justify-center bg-gradient-to-br from-neutral-400 to-neutral-600 text-neutral-200">
+                    <div className="text-center">
+                      <div className="text-[11px] font-semibold uppercase tracking-wide">
+                        Original doors
+                      </div>
+                      <div className="mt-0.5 text-[10px] opacity-80">
+                        Photo slot — before
+                      </div>
+                    </div>
+                  </div>
+                }
+                after={
+                  <div className="flex h-full items-center justify-center bg-gradient-to-br from-amber-300 to-amber-500 text-neutral-900">
+                    <div className="text-center">
+                      <div className="text-[11px] font-semibold uppercase tracking-wide">
+                        FD30 Oak veneer
+                      </div>
+                      <div className="mt-0.5 text-[10px] opacity-70">
+                        Photo slot — after
+                      </div>
+                    </div>
+                  </div>
+                }
+              />
+            </div>
+
+            <div className="mt-8 md:mt-10">
               <Grid density="cards">
                 {projects.slice(0, 6).map((p) => (
                   <ProjectTile

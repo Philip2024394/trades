@@ -43,7 +43,7 @@ Then browse locally to see the patterns cited below.
 
 ## Section 1 — Media + Imagery (Phase 5 target)
 
-### 1. Before-After image slider · 🚧
+### 1. Before-After image slider · ✅ `media/BeforeAfterSlider.tsx`
 - **Source:** shadcn.io / shadcnspace — search `compare` or `before-after`
 - **License:** MIT
 - **Compact mobile size:** full-width card, aspect-[4/3], drag handle 44×44px
@@ -52,7 +52,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** roofers · painters · kitchen fitters · bathroom fitters · landscapers · tilers · plasterers · joiners · rendering
 - **Kit target:** `src/platform/ui/gallery/BeforeAfterSlider.tsx`
 
-### 2. Aspect-ratio image tile · 🚧
+### 2. Aspect-ratio image tile · ✅ `media/AspectRatio.tsx`
 - **Source:** HyperUI · Marketing / Cards section
 - **License:** MIT
 - **Compact mobile size:** 2-per-row, aspect-[4/5] portrait, `rounded-xl`
@@ -61,7 +61,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** every trade — universal media wrapper
 - **Kit target:** `src/platform/ui/media/AspectRatio.tsx`
 
-### 3. Image with caption overlay · ⏳
+### 3. Image with caption overlay · ✅ `media/ImageWithCaption.tsx`
 - **Source:** Flowbite · Content sections · Image cards
 - **License:** MIT
 - **Compact mobile size:** full-width, dark gradient overlay from `bottom-40%` to transparent, caption text at `TYPE_H4`
@@ -70,7 +70,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** case study heroes, project detail pages
 - **Kit target:** `src/platform/ui/media/ImageWithCaption.tsx`
 
-### 4. Video thumbnail with play badge · ⏳
+### 4. Video thumbnail with play badge · ✅ `media/VideoThumb.tsx`
 - **Source:** Preline · Cards · Video preview
 - **License:** MIT
 - **Compact mobile size:** aspect-[16/9] card, centred play badge 48×48px `rounded-full bg-white/90`
@@ -79,7 +79,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** trade demos, testimonial videos, before/after time-lapses
 - **Kit target:** `src/platform/ui/media/VideoThumb.tsx`
 
-### 5. Photo grid with "+N more" · ⏳
+### 5. Photo grid with "+N more" · ✅ `media/PhotoGridPreview.tsx`
 - **Source:** admin-dash (next-shadcn-admin) · Media gallery
 - **License:** MIT
 - **Compact mobile size:** 2×2 grid where the 4th tile shows `+N` overlay with amber gradient
@@ -88,7 +88,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** project count previews on service cards
 - **Kit target:** `src/platform/ui/media/PhotoGridPreview.tsx`
 
-### 6. Avatar cluster · ⏳
+### 6. Avatar cluster · ✅ `media/AvatarCluster.tsx`
 - **Source:** shadcn/ui · Avatar composition example
 - **License:** MIT
 - **Compact mobile size:** 3-4 avatars stacked with `-ml-2` overlap, 24×24 or 32×32
@@ -101,7 +101,7 @@ Then browse locally to see the patterns cited below.
 
 ## Section 2 — Onboarding + Progress (Phase 5 target)
 
-### 7. Setup checklist card with % ring · 🚧
+### 7. Setup checklist card with % ring · ✅ `onboarding/SetupChecklist.tsx`
 - **Source:** admin-dash · Dashboard · Onboarding widget
 - **License:** MIT
 - **Compact mobile size:** full-width card, ring SVG 48×48, 4-5 checkbox rows
@@ -110,7 +110,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** merchant onboarding — "5 things to publish your website" (upload logo · add 3 projects · answer FAQs · connect calendar · request first review)
 - **Kit target:** `src/platform/ui/onboarding/SetupChecklist.tsx`
 
-### 8. Rich empty state with illustration · 🚧
+### 8. Rich empty state with illustration · ✅ `onboarding/EmptyStateIllustrations.tsx`
 - **Source:** Vercel Design (referenced via HyperUI empty-state block)
 - **License:** MIT
 - **Compact mobile size:** 240×160 SVG illustration + `TYPE_H3` title + supporting line + primary Button
@@ -119,7 +119,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** empty leads inbox · no projects yet · coach backlog all-clear
 - **Kit target:** `src/platform/ui/onboarding/EmptyStateIllustrations.tsx`
 
-### 9. Success card with subtle celebration · ⏳
+### 9. Success card with subtle celebration · ✅ `feedback/SuccessCard.tsx`
 - **Source:** launch-ui · Post-submit state
 - **License:** MIT
 - **Compact mobile size:** centered 280px width, 56×56 emerald ring + tick, 2-line copy
@@ -128,7 +128,7 @@ Then browse locally to see the patterns cited below.
 - **Trade fit:** quote submitted · review posted · project uploaded
 - **Kit target:** `src/platform/ui/feedback/SuccessCard.tsx`
 
-### 10. Multi-step progress dots · ⏳
+### 10. Multi-step progress dots · ✅ `onboarding/StepDots.tsx`
 - **Source:** shadcn.io · Wizard block
 - **License:** MIT
 - **Compact mobile size:** 3-5 dots, current dot `w-6 h-1.5` amber, others `w-1.5 h-1.5 neutral-300`
