@@ -6,7 +6,9 @@
 
 "use client";
 
+import Link from "next/link";
 import {
+  ArrowLeft,
   ArrowRight,
   BadgeCheck,
   BookOpen,
@@ -15,8 +17,11 @@ import {
   Camera,
   ClipboardList,
   Compass,
+  ExternalLink,
+  Eye,
   FileText,
   Hammer,
+  Home,
   Layers,
   MapPin,
   MessageSquareQuote,
@@ -103,6 +108,32 @@ export function GoldenPathDemo(props: Props) {
 
   return (
     <main className="min-h-screen bg-neutral-50">
+      {/* ── Sticky top nav ─────────────────────────────────────── */}
+      <nav className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-[13px] font-medium text-neutral-700 hover:text-neutral-900"
+          >
+            <Home className="h-4 w-4" />
+            Home
+          </Link>
+          <div className="hidden text-[12px] text-neutral-500 md:block">
+            Golden Path Demo · Phil&apos;s Carpentry
+          </div>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/golden-path/preview"
+              className="inline-flex items-center gap-1.5 rounded-full bg-amber-400 px-3 py-1.5 text-[12px] font-semibold text-neutral-900 hover:bg-amber-300"
+            >
+              <Eye className="h-3.5 w-3.5" />
+              View Phil&apos;s site
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       <div className="mx-auto max-w-5xl px-4 py-10">
         {/* ── Hero framing ────────────────────────────────────── */}
         <header className="mb-8">
@@ -196,6 +227,20 @@ export function GoldenPathDemo(props: Props) {
 
         {/* ── STEP 5 · What the platform BUILT ────────────────── */}
         <StepCard step={5} icon={FileText} label="What the platform built">
+          <div className="mb-4 flex items-center justify-between rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-[13px]">
+            <div className="text-amber-900">
+              Want to see this as a real website instead of a structured
+              preview?
+            </div>
+            <Link
+              href="/golden-path/preview"
+              className="inline-flex items-center gap-1.5 rounded-full bg-neutral-900 px-3 py-1.5 text-[12px] font-semibold text-white hover:bg-neutral-800"
+            >
+              <Eye className="h-3.5 w-3.5" />
+              Open Phil&apos;s site
+              <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
           <ManifestPreview manifest={active.manifest} />
         </StepCard>
 
@@ -332,6 +377,66 @@ export function GoldenPathDemo(props: Props) {
             No hand-authored demo copy. No fabricated numbers. When the
             evidence gets stronger, everything on this page gets smarter.
           </p>
+
+          {/* ── Next steps ─────────────────────────────────────── */}
+          <div className="mt-6 border-t border-neutral-200 pt-4">
+            <div className="mb-3 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
+              Where to next
+            </div>
+            <div className="grid gap-2 md:grid-cols-3">
+              <Link
+                href="/golden-path/preview"
+                className="group flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 hover:border-neutral-900 hover:bg-neutral-50"
+              >
+                <span className="flex items-center gap-2 text-neutral-900">
+                  <Eye className="h-4 w-4 text-neutral-500" />
+                  <div>
+                    <div className="text-[13px] font-semibold">
+                      View Phil&apos;s site
+                    </div>
+                    <div className="text-[11px] text-neutral-500">
+                      See the composed website as a real page
+                    </div>
+                  </div>
+                </span>
+                <ArrowRight className="h-4 w-4 text-neutral-400 group-hover:text-neutral-900" />
+              </Link>
+              <Link
+                href="/studio"
+                className="group flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 hover:border-neutral-900 hover:bg-neutral-50"
+              >
+                <span className="flex items-center gap-2 text-neutral-900">
+                  <Wand2 className="h-4 w-4 text-neutral-500" />
+                  <div>
+                    <div className="text-[13px] font-semibold">
+                      Open Studio
+                    </div>
+                    <div className="text-[11px] text-neutral-500">
+                      Merchant admin dashboard
+                    </div>
+                  </div>
+                </span>
+                <ExternalLink className="h-4 w-4 text-neutral-400 group-hover:text-neutral-900" />
+              </Link>
+              <Link
+                href="/"
+                className="group flex items-center justify-between rounded-xl border border-neutral-200 bg-white px-4 py-3 hover:border-neutral-900 hover:bg-neutral-50"
+              >
+                <span className="flex items-center gap-2 text-neutral-900">
+                  <Home className="h-4 w-4 text-neutral-500" />
+                  <div>
+                    <div className="text-[13px] font-semibold">
+                      Xrated Trades home
+                    </div>
+                    <div className="text-[11px] text-neutral-500">
+                      Back to the top-level site
+                    </div>
+                  </div>
+                </span>
+                <ArrowLeft className="h-4 w-4 text-neutral-400 group-hover:text-neutral-900" />
+              </Link>
+            </div>
+          </div>
         </footer>
       </div>
     </main>
