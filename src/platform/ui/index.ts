@@ -152,3 +152,31 @@ export { TextInput } from "./forms/TextInput";
 export type { TextInputProps } from "./forms/TextInput";
 export { Toggle } from "./forms/Toggle";
 export type { ToggleProps } from "./forms/Toggle";
+
+// ─── Data display (Phase 4) ─────────────────────────────────
+export { ActivityFeed } from "./data/ActivityFeed";
+export type {
+  ActivityFeedItem,
+  ActivityFeedProps
+} from "./data/ActivityFeed";
+export { DataTable } from "./data/DataTable";
+export type { DataTableColumn, DataTableProps } from "./data/DataTable";
+export { ListView } from "./data/ListView";
+export type { ListViewItem, ListViewProps } from "./data/ListView";
+export { Timeline } from "./data/Timeline";
+export type { TimelineProps, TimelineStep } from "./data/Timeline";
+
+// ─── Overlays (Phase 4) ─────────────────────────────────────
+export { DropdownMenu } from "./overlays/DropdownMenu";
+export type {
+  DropdownDivider,
+  DropdownEntry,
+  DropdownItem,
+  DropdownMenuProps
+} from "./overlays/DropdownMenu";
+export { Popover } from "./overlays/Popover";
+export type { PopoverPlacement, PopoverProps } from "./overlays/Popover";
+export { Tabs } from "./overlays/Tabs";
+export type { Tab, TabsProps } from "./overlays/Tabs";
+export { Tooltip } from "./overlays/Tooltip";
+export type { TooltipProps, TooltipSide } from "./overlays/Tooltip";

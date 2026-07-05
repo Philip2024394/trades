@@ -49,8 +49,7 @@ import {
   ServiceTile,
   SplitHero,
   StatsBand,
-  StickyBottomActionBar,
-  TrustBar
+  StickyBottomActionBar
 } from "@/platform/ui";
 import { QuoteRequestSheet } from "./QuoteRequestSheet";
 
@@ -296,6 +295,7 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
             icon: Phone
           }}
           trustBadges={hero.data.trustBadges}
+          imageIcon={DoorOpen}
           imageHint={hero.data.imageHint}
         />
       ) : null}
@@ -310,16 +310,12 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
         variant="muted"
       />
 
-      {/* ── Trust bar ───────────────────────────────────────── */}
-      <TrustBar
-        overline="Accredited by"
-        badges={[
-          { label: "City & Guilds NVQ 2", icon: Award },
-          { label: "FIRAS (Fire doors)", icon: ShieldCheck },
-          { label: "Fully insured", icon: BadgeCheck },
-          { label: "Checkatrade", icon: BadgeCheck }
-        ]}
-      />
+      {/* ── TrustBar intentionally omitted for residential carpentry ─
+          "Accredited by" strip is reserved for high-risk / regulated
+          trades (electricians · gas engineers · roofers · scaffolders
+          · pest control · steel fab · fire-safety installers). For
+          low-risk residential trades, trust signals live inside the
+          value-props section and the trust panel below. */}
 
       {/* ── Services ────────────────────────────────────────── */}
       {services ? (

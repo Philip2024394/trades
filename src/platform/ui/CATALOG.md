@@ -16,8 +16,8 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 | 1 | Foundation | ✅ Complete | Tokens, Grid, Card, Button, Nav, Sheets, Gallery, Content, Sections, Feedback |
 | 2 | Heroes + Bands | ✅ Complete | SplitHero, MinimalHero, EmergencyHero, TrustBar, StatsBand, CtaBand, TestimonialBand, ProcessBand |
 | 3 | Forms | ✅ Complete | FieldGroup, TextInput, TextArea, Select, RadioGroup, CheckboxGroup, Checkbox, Toggle, FormSection, StickySubmit, FileUpload |
-| 4 | Data display + Overlays | 🚧 Next | DataTable, ListView, ActivityFeed, Timeline, Popover, Tooltip, Dropdown, CommandPalette |
-| 5 | Media + Onboarding | ⏳ Planned | ImageWithCaption, BeforeAfterSlider, AspectRatio, Avatar, OnboardingChecklist, Tour |
+| 4 | Data display + Overlays | ✅ Complete | DataTable, ListView, ActivityFeed, Timeline, Tabs, Popover, Tooltip, DropdownMenu |
+| 5 | Media + Onboarding | 🚧 Next | ImageWithCaption, BeforeAfterSlider, AspectRatio, Avatar, OnboardingChecklist, Tour |
 | 6 | Layout Recipes | ⏳ Planned | ServiceOverviewLayout, DashboardLayout, BookingLayout, CoachLayout, MarketplaceLayout |
 
 ---
@@ -146,20 +146,20 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 
 ---
 
-## Phase 4 — Data display + Overlays (⏳ planned)
+## Phase 4 — Data display + Overlays (✅ complete)
 
-| Component | Purpose |
-|---|---|
-| `DataTable` | Responsive table with mobile card fallback |
-| `ListView` | Vertical item list with icons + actions |
-| `ActivityFeed` | Timeline-style activity items |
-| `Timeline` | Horizontal + vertical timeline |
-| `TabBar` | Tabbed navigation |
-| `Popover` | Anchored overlay |
-| `Tooltip` | Hover / focus tooltip |
-| `DropdownMenu` | Overflow / actions menu |
-| `CommandPalette` | Cmd+K search + actions |
-| `ContextMenu` | Right-click / long-press menu |
+| Component | Purpose | Status |
+|---|---|---|
+| `DataTable` | Responsive `<table>` on desktop, stacked labelled cards on mobile | ✅ Built |
+| `ListView` | Vertical item list with icons + subtitle + meta + optional action, dividers, hover state | ✅ Built |
+| `ActivityFeed` | Vertical timeline of activity items with tone-coloured icon dots + action links | ✅ Built |
+| `Timeline` | Journey pattern with numbered nodes + done/current/upcoming status | ✅ Built |
+| `Tabs` | Segmented control with underline + pills variants, count badges | ✅ Built |
+| `Popover` | Anchored overlay with click-outside + Escape close | ✅ Built |
+| `Tooltip` | CSS-only hover / focus tooltip (4 sides) | ✅ Built |
+| `DropdownMenu` | Actions menu composed on Popover with icon + label + danger + disabled + dividers | ✅ Built |
+| `CommandPalette` | Cmd+K search + actions | ⏳ Deferred to Phase 6 |
+| `ContextMenu` | Right-click / long-press menu | ⏳ Deferred to Phase 6 |
 
 ---
 
@@ -193,6 +193,29 @@ These are **declarative page compositions**. A page says `<ServiceOverviewLayout
 | `SettingsLayout` | Sidebar nav → Section content → Sticky save bar |
 
 ---
+
+## Hero image sizing rules
+
+The `SplitHero` mobile layout uses `grid-cols-[minmax(0,1fr)_128px]` — the `minmax(0, 1fr)` on the text column is what prevents the headline from squeezing the image column. Never remove it.
+
+- **Mobile (≤ 640px):** Image column is fixed 128px wide, `aspect-[3/4]` portrait — gives the image real visual weight without wrapping the headline into thin ribbons.
+- **Small (≥ 640px):** Image column grows to 180px, still portrait aspect.
+- **Medium+ (≥ 768px):** 50/50 grid split with landscape `aspect-[4/3]` image slot.
+
+Pass `imageIcon` to fill the placeholder with a trade-relevant Lucide icon (DoorOpen / Flame / ChefHat / Hammer). The placeholder ships an amber radial glow behind the icon so it never looks like a dev artifact.
+
+## When to use `TrustBar`
+
+Reserve the "Accredited by" TrustBar for **high-risk / regulated trades** where certification is legally required or safety-critical:
+
+- Electricians (NICEIC, NAPIT, Part P)
+- Gas engineers (Gas Safe)
+- Roofers + scaffolders (working-at-height)
+- Pest control + chemical spraying (RSPH, BASIS)
+- Steel fabricators (CE marking, CSCS)
+- Fire-safety installers (FIRAS, BAFE)
+
+For **low-risk residential trades** (generic carpentry, painting, tiling), don't stack an "Accredited by" band — trust signals belong in the value-props section and the trust panel. A blanket accreditation strip on a low-risk trade signals over-selling.
 
 ## Design principles this kit enforces
 

@@ -28,9 +28,13 @@ export type SplitHeroProps = {
   secondaryCta?: SplitHeroCta;
   /** Trust chips. Hidden below sm: to keep mobile clean. */
   trustBadges?: readonly string[];
-  /** Custom image slot. If not supplied, a subtle placeholder is
-   *  used with the hint text (desktop only). */
+  /** Custom image slot. If not supplied, a rich placeholder is used
+   *  showing `imageIcon` (or a default photo icon) in a gradient. */
   imageSlot?: ReactNode;
+  /** Icon shown in the placeholder when no custom imageSlot is given.
+   *  Prefer a trade-specific icon (DoorOpen for door specialist,
+   *  Flame for fire doors, ChefHat for kitchen fitter). */
+  imageIcon?: ComponentType<{ className?: string }>;
   imageHint?: string;
   /** Dark background is the default premium look. */
   surface?: "dark" | "brand";
@@ -45,6 +49,7 @@ export function SplitHero({
   secondaryCta,
   trustBadges,
   imageSlot,
+  imageIcon: ImageIcon,
   imageHint,
   surface = "dark"
 }: SplitHeroProps) {
@@ -59,7 +64,7 @@ export function SplitHero({
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_theme(colors.amber.500)_0%,_transparent_50%)]" />
       </div>
       <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-24">
-        <div className="grid grid-cols-[1fr_112px] items-center gap-4 sm:grid-cols-[1fr_140px] sm:gap-6 md:grid-cols-2 md:gap-10">
+        <div className="grid grid-cols-[minmax(0,1fr)_128px] items-center gap-3 sm:grid-cols-[minmax(0,1fr)_180px] sm:gap-6 md:grid-cols-2 md:gap-10">
           <div>
             {eyebrow ? (
               <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-amber-200">
@@ -113,21 +118,30 @@ export function SplitHero({
               </div>
             ) : null}
           </div>
-          <div>
-            <div className="rounded-2xl border border-white/10 bg-neutral-800/50 p-2 backdrop-blur md:p-4">
-              <div className="aspect-square w-full overflow-hidden rounded-xl bg-gradient-to-br from-neutral-700/70 to-neutral-800/60 md:aspect-[4/3]">
+          <div className="min-w-0">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-amber-500/20 via-neutral-800/70 to-neutral-900 shadow-2xl">
+              <div className="relative aspect-[3/4] w-full sm:aspect-[3/4] md:aspect-[4/3]">
                 {imageSlot ?? (
-                  <div className="flex h-full flex-col items-center justify-center gap-1 p-2 text-neutral-400 md:gap-2">
-                    <PlaceholderIcon />
-                    <div className="hidden text-[11px] md:block">
-                      Hero image slot
+                  <>
+                    {/* Amber glow behind the icon */}
+                    <div className="absolute inset-0 opacity-70">
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_theme(colors.amber.400)_0%,_transparent_60%)] blur-2xl" />
                     </div>
-                    {imageHint ? (
-                      <div className="hidden text-center text-[11px] text-neutral-600 md:block">
-                        {imageHint}
+                    <div className="relative flex h-full flex-col items-center justify-center gap-3 p-4">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur-md md:h-20 md:w-20">
+                        {ImageIcon ? (
+                          <ImageIcon className="h-7 w-7 text-amber-300 md:h-10 md:w-10" />
+                        ) : (
+                          <PlaceholderIcon />
+                        )}
                       </div>
-                    ) : null}
-                  </div>
+                      {imageHint ? (
+                        <div className="hidden max-w-[80%] text-center text-[11px] text-neutral-400 md:block">
+                          {imageHint}
+                        </div>
+                      ) : null}
+                    </div>
+                  </>
                 )}
               </div>
             </div>

@@ -3,6 +3,21 @@
 //
 // Layout: overline label + horizontally-scrolling row on mobile,
 // justify-around row on desktop.
+//
+// ─── When to use ─────────────────────────────────────────────
+// Reserve this component (with "Accredited by" overline) for
+// HIGH-RISK / REGULATED trades where certification is legally
+// required or safety-critical. Examples:
+//   • Electricians (NICEIC, NAPIT, Part P)
+//   • Gas engineers (Gas Safe)
+//   • Roofers + scaffolders (working-at-height)
+//   • Pest control + chemical spraying (RSPH, BASIS)
+//   • Steel fabricators (CE marking, CSCS)
+//   • Fire-safety installers (FIRAS, BAFE)
+// For LOW-RISK residential trades (generic carpentry, painting,
+// tiling), don't stack an "Accredited by" band — trust signals
+// belong in the value-props section and the trust panel. A blanket
+// accreditation strip on a low-risk trade signals over-selling.
 
 import type { ComponentType, ReactNode } from "react";
 
