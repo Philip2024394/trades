@@ -6,25 +6,57 @@
 
 import Link from "next/link";
 import {
+  Archive,
   ArrowLeft,
   Award,
   BadgeCheck,
+  Building2,
   CalendarClock,
   Camera,
+  ChefHat,
   Check,
   ChevronDown,
   ChevronUp,
   Clock,
+  DoorClosed,
+  DoorOpen,
   FileCheck,
+  Flame,
+  Frame,
+  Grid3x3,
   Hammer,
+  Layers,
   MapPin,
   Menu,
   Phone,
+  Ruler,
   ShieldCheck,
   Star,
   Truck,
+  Wrench,
   X
 } from "lucide-react";
+
+/** Service slug → Lucide icon. Falls back to Hammer for anything not
+ *  registered here. Extend as new services appear in trade seeds. */
+const SERVICE_ICON: Record<string, typeof Hammer> = {
+  "door-installation": DoorOpen,
+  "fire-doors": Flame,
+  "composite-doors": ShieldCheck,
+  "internal-doors": DoorClosed,
+  "custom-doors": Ruler,
+  "kitchen-fitting": ChefHat,
+  "fitted-wardrobes": Archive,
+  decking: Layers,
+  flooring: Grid3x3,
+  "commercial-fit-out": Building2,
+  "small-repairs": Wrench,
+  architraves: Frame
+};
+
+function serviceIcon(slug: string): typeof Hammer {
+  return SERVICE_ICON[slug] ?? Hammer;
+}
 import { useMemo, useState } from "react";
 import type {
   ContentBlock,
@@ -234,42 +266,42 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_theme(colors.amber.500)_0%,_transparent_50%)]" />
           </div>
           <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-24">
-            <div className="grid gap-8 md:grid-cols-2 md:items-center">
+            <div className="grid grid-cols-[1fr_112px] items-center gap-4 sm:grid-cols-[1fr_140px] sm:gap-6 md:grid-cols-2 md:gap-10">
               <div>
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] font-medium text-amber-200">
+                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-amber-200">
                   <MapPin className="h-3 w-3" />
                   Dublin · Cork · Galway
                 </div>
-                <h1 className="text-[26px] font-bold leading-[1.15] sm:text-3xl md:text-5xl md:leading-tight">
+                <h1 className="text-[22px] font-bold leading-[1.15] sm:text-3xl md:text-5xl md:leading-tight">
                   {hero.data.headline}
                 </h1>
                 {hero.data.subheadline ? (
-                  <p className="mt-4 text-[15px] text-neutral-200 md:text-[17px]">
+                  <p className="mt-3 text-[13px] leading-relaxed text-neutral-200 md:mt-4 md:text-[17px]">
                     {hero.data.subheadline}
                   </p>
                 ) : null}
                 {hero.data.supportingLine ? (
-                  <p className="mt-2 text-[13px] text-neutral-300">
+                  <p className="mt-2 hidden text-[13px] text-neutral-300 sm:block">
                     {hero.data.supportingLine}
                   </p>
                 ) : null}
-                <div className="mt-6 flex flex-wrap items-center gap-3">
+                <div className="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
                   <a
                     href="#contact"
-                    className="inline-flex items-center gap-2 rounded-full bg-amber-400 px-5 py-3 text-[14px] font-semibold text-neutral-900 hover:bg-amber-300"
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-amber-400 px-4 text-[13px] font-semibold text-neutral-900 hover:bg-amber-300 md:min-h-[48px] md:px-5 md:text-[14px]"
                   >
                     {hero.data.primaryCtaLabel}
                   </a>
                   <a
                     href="tel:+35300000000"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/30 px-5 py-3 text-[14px] font-semibold text-white hover:bg-white/10"
+                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/30 px-4 text-[13px] font-semibold text-white hover:bg-white/10 md:min-h-[48px] md:px-5 md:text-[14px]"
                   >
                     <Phone className="h-4 w-4" />
                     Call Phil
                   </a>
                 </div>
                 {hero.data.trustBadges?.length ? (
-                  <div className="mt-6 flex flex-wrap gap-2 text-[11px]">
+                  <div className="mt-5 hidden flex-wrap gap-2 text-[11px] sm:flex">
                     {hero.data.trustBadges.map((badge, i) => (
                       <span
                         key={i}
@@ -282,15 +314,15 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
                   </div>
                 ) : null}
               </div>
-              <div className="hidden md:block">
-                <div className="rounded-2xl border border-white/10 bg-neutral-800/50 p-4 backdrop-blur">
-                  <div className="aspect-[4/3] w-full rounded-xl bg-neutral-700/50">
-                    <div className="flex h-full flex-col items-center justify-center gap-2 text-neutral-500">
-                      <Camera className="h-8 w-8" />
-                      <div className="text-[11px]">
+              <div>
+                <div className="rounded-2xl border border-white/10 bg-neutral-800/50 p-2 backdrop-blur md:p-4">
+                  <div className="aspect-square w-full rounded-xl bg-gradient-to-br from-neutral-700/70 to-neutral-800/60 md:aspect-[4/3]">
+                    <div className="flex h-full flex-col items-center justify-center gap-1 p-2 text-neutral-400 md:gap-2">
+                      <Camera className="h-6 w-6 md:h-8 md:w-8" />
+                      <div className="hidden text-[11px] md:block">
                         Hero image slot
                       </div>
-                      <div className="text-[11px] text-neutral-600">
+                      <div className="hidden text-center text-[11px] text-neutral-600 md:block">
                         {hero.data.imageHint}
                       </div>
                     </div>
@@ -313,40 +345,46 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               {services.data.intro}
             </p>
           ) : null}
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {services.data.items.map((s) => (
-              <div
-                key={s.slug}
-                className={`rounded-2xl border p-5 transition ${
-                  s.featured
-                    ? "border-amber-300 bg-amber-50"
-                    : "border-neutral-200 bg-white hover:border-neutral-300"
-                }`}
-              >
-                <div className="mb-2 flex items-center gap-2">
+          <div className="mt-6 grid grid-cols-3 gap-2 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
+            {services.data.items.map((s) => {
+              const Icon = serviceIcon(s.slug);
+              return (
+                <div
+                  key={s.slug}
+                  className={`relative flex flex-col rounded-xl border p-3 transition md:rounded-2xl md:p-5 ${
+                    s.featured
+                      ? "border-amber-300 bg-amber-50"
+                      : "border-neutral-200 bg-white hover:border-neutral-300"
+                  }`}
+                >
+                  {s.featured ? (
+                    <span className="absolute right-1.5 top-1.5 hidden rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-neutral-900 md:inline">
+                      Featured
+                    </span>
+                  ) : null}
                   <div
-                    className={`flex h-8 w-8 items-center justify-center rounded-lg ${
+                    className={`mb-2 flex h-9 w-9 items-center justify-center rounded-lg md:mb-3 md:h-10 md:w-10 ${
                       s.featured
                         ? "bg-amber-400 text-neutral-900"
                         : "bg-neutral-900 text-white"
                     }`}
                   >
-                    <Hammer className="h-4 w-4" />
+                    <Icon className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
+                  <h3 className="text-[12px] font-semibold leading-tight text-neutral-900 md:text-[15px]">
+                    {s.title}
+                  </h3>
                   {s.featured ? (
-                    <span className="rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-semibold text-neutral-900">
+                    <span className="mt-1 inline-flex w-fit rounded-full bg-amber-400 px-1.5 py-0.5 text-[9px] font-semibold text-neutral-900 md:hidden">
                       Featured
                     </span>
                   ) : null}
+                  <p className="mt-1 hidden text-[13px] text-neutral-700 md:block">
+                    {s.description}
+                  </p>
                 </div>
-                <h3 className="text-[15px] font-semibold text-neutral-900">
-                  {s.title}
-                </h3>
-                <p className="mt-1 text-[13px] text-neutral-700">
-                  {s.description}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
       ) : null}
@@ -397,22 +435,22 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
                 {projects.length} completed jobs
               </div>
             </div>
-            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-6 grid grid-cols-2 gap-3 md:mt-8 md:grid-cols-2 md:gap-4 lg:grid-cols-3">
               {projects.slice(0, 6).map((p) => (
                 <article
                   key={p.slug}
-                  className="overflow-hidden rounded-2xl border border-neutral-200 bg-white"
+                  className="overflow-hidden rounded-xl border border-neutral-200 bg-white md:rounded-2xl"
                 >
                   <div className="aspect-[4/3] bg-neutral-200">
                     <div className="flex h-full flex-col items-center justify-center gap-1 text-neutral-500">
-                      <Camera className="h-8 w-8" />
-                      <div className="text-[11px]">
+                      <Camera className="h-6 w-6 md:h-8 md:w-8" />
+                      <div className="text-[10px] md:text-[11px]">
                         {p.data.photoCount} photos
                       </div>
                     </div>
                   </div>
-                  <div className="p-4">
-                    <div className="mb-1 flex items-center gap-2 text-[11px] text-neutral-500">
+                  <div className="p-3 md:p-4">
+                    <div className="mb-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] text-neutral-500 md:text-[11px]">
                       {p.data.location ? (
                         <span className="inline-flex items-center gap-1">
                           <MapPin className="h-3 w-3" />
@@ -426,27 +464,27 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
                         </span>
                       ) : null}
                     </div>
-                    <h3 className="text-[15px] font-semibold text-neutral-900">
+                    <h3 className="text-[13px] font-semibold leading-tight text-neutral-900 md:text-[15px]">
                       {p.data.title}
                     </h3>
-                    <p className="mt-1 text-[12px] text-neutral-600">
+                    <p className="mt-1 hidden text-[12px] text-neutral-600 md:block">
                       {p.data.solution}
                     </p>
                     {p.data.customerQuote ? (
-                      <blockquote className="mt-3 rounded-lg bg-amber-50 p-3 text-[12px] italic text-neutral-800">
+                      <blockquote className="mt-2 hidden rounded-lg bg-amber-50 p-3 text-[12px] italic text-neutral-800 md:block">
                         &ldquo;{p.data.customerQuote.text}&rdquo;
                         <div className="mt-1 text-[11px] not-italic text-neutral-600">
                           — {p.data.customerQuote.attribution}
                         </div>
                       </blockquote>
                     ) : (
-                      <div className="mt-3 rounded-lg bg-neutral-100 p-3 text-[11px] italic text-neutral-500">
+                      <div className="mt-2 hidden rounded-lg bg-neutral-100 p-3 text-[11px] italic text-neutral-500 md:block">
                         Customer quote coming — the coach will nudge Phil to
                         request one.
                       </div>
                     )}
                     {p.data.materials.length ? (
-                      <div className="mt-3 flex flex-wrap gap-1">
+                      <div className="mt-2 hidden flex-wrap gap-1 md:flex">
                         {p.data.materials.slice(0, 3).map((m, i) => (
                           <span
                             key={i}
@@ -455,6 +493,15 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
                             {m}
                           </span>
                         ))}
+                      </div>
+                    ) : null}
+                    {/* Mobile-only quote indicator — subtle chip when a
+                        real quote exists so buyers see the social proof
+                        even on the compact card. */}
+                    {p.data.customerQuote ? (
+                      <div className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[10px] font-medium text-amber-800 md:hidden">
+                        <Star className="h-2.5 w-2.5 fill-amber-400 text-amber-400" />
+                        Customer review
                       </div>
                     ) : null}
                   </div>
