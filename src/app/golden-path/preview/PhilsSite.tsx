@@ -40,12 +40,17 @@ import {
 import {
   Alert,
   Button,
+  CtaBand,
   Grid,
   MobileNavDrawer,
+  ProcessBand,
   ProjectTile,
   SectionHeader,
   ServiceTile,
-  StickyBottomActionBar
+  SplitHero,
+  StatsBand,
+  StickyBottomActionBar,
+  TrustBar
 } from "@/platform/ui";
 
 /** Service slug → Lucide icon. Falls back to Hammer for anything not
@@ -272,78 +277,42 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
       {/* ── Hero ────────────────────────────────────────────── */}
       {hero ? (
-        <section className="relative overflow-hidden bg-gradient-to-br from-neutral-900 via-neutral-900 to-neutral-800 text-white">
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_theme(colors.amber.500)_0%,_transparent_50%)]" />
-          </div>
-          <div className="relative mx-auto max-w-6xl px-4 py-12 sm:py-16 md:py-24">
-            <div className="grid grid-cols-[1fr_112px] items-center gap-4 sm:grid-cols-[1fr_140px] sm:gap-6 md:grid-cols-2 md:gap-10">
-              <div>
-                <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-white/10 px-2.5 py-1 text-[11px] font-medium text-amber-200">
-                  <MapPin className="h-3 w-3" />
-                  Dublin · Cork · Galway
-                </div>
-                <h1 className="text-[22px] font-bold leading-[1.15] sm:text-3xl md:text-5xl md:leading-tight">
-                  {hero.data.headline}
-                </h1>
-                {hero.data.subheadline ? (
-                  <p className="mt-3 text-[13px] leading-relaxed text-neutral-200 md:mt-4 md:text-[17px]">
-                    {hero.data.subheadline}
-                  </p>
-                ) : null}
-                {hero.data.supportingLine ? (
-                  <p className="mt-2 hidden text-[13px] text-neutral-300 sm:block">
-                    {hero.data.supportingLine}
-                  </p>
-                ) : null}
-                <div className="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
-                  <a
-                    href="#contact"
-                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-amber-400 px-4 text-[13px] font-semibold text-neutral-900 hover:bg-amber-300 md:min-h-[48px] md:px-5 md:text-[14px]"
-                  >
-                    {hero.data.primaryCtaLabel}
-                  </a>
-                  <a
-                    href="tel:+35300000000"
-                    className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-white/30 px-4 text-[13px] font-semibold text-white hover:bg-white/10 md:min-h-[48px] md:px-5 md:text-[14px]"
-                  >
-                    <Phone className="h-4 w-4" />
-                    Call Phil
-                  </a>
-                </div>
-                {hero.data.trustBadges?.length ? (
-                  <div className="mt-5 hidden flex-wrap gap-2 text-[11px] sm:flex">
-                    {hero.data.trustBadges.map((badge, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-white"
-                      >
-                        <BadgeCheck className="h-3 w-3 text-amber-300" />
-                        {badge}
-                      </span>
-                    ))}
-                  </div>
-                ) : null}
-              </div>
-              <div>
-                <div className="rounded-2xl border border-white/10 bg-neutral-800/50 p-2 backdrop-blur md:p-4">
-                  <div className="aspect-square w-full rounded-xl bg-gradient-to-br from-neutral-700/70 to-neutral-800/60 md:aspect-[4/3]">
-                    <div className="flex h-full flex-col items-center justify-center gap-1 p-2 text-neutral-400 md:gap-2">
-                      <Camera className="h-6 w-6 md:h-8 md:w-8" />
-                      <div className="hidden text-[11px] md:block">
-                        Hero image slot
-                      </div>
-                      <div className="hidden text-center text-[11px] text-neutral-600 md:block">
-                        {hero.data.imageHint}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <SplitHero
+          eyebrow={{ icon: MapPin, label: "Dublin · Cork · Galway" }}
+          headline={hero.data.headline}
+          subheadline={hero.data.subheadline}
+          supportingLine={hero.data.supportingLine}
+          primaryCta={{ label: hero.data.primaryCtaLabel, href: "#contact" }}
+          secondaryCta={{
+            label: "Call Phil",
+            href: "tel:+35300000000",
+            icon: Phone
+          }}
+          trustBadges={hero.data.trustBadges}
+          imageHint={hero.data.imageHint}
+        />
       ) : null}
+
+      {/* ── Stats band ──────────────────────────────────────── */}
+      <StatsBand
+        stats={[
+          { value: 15, label: "Years trading", suffix: "+", icon: Award },
+          { value: 200, label: "Jobs completed", suffix: "+", icon: Hammer },
+          { value: "5.0", label: "Average review", icon: Star }
+        ]}
+        variant="muted"
+      />
+
+      {/* ── Trust bar ───────────────────────────────────────── */}
+      <TrustBar
+        overline="Accredited by"
+        badges={[
+          { label: "City & Guilds NVQ 2", icon: Award },
+          { label: "FIRAS (Fire doors)", icon: ShieldCheck },
+          { label: "Fully insured", icon: BadgeCheck },
+          { label: "Checkatrade", icon: BadgeCheck }
+        ]}
+      />
 
       {/* ── Services ────────────────────────────────────────── */}
       {services ? (
@@ -403,6 +372,35 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           </div>
         </section>
       ) : null}
+
+      {/* ── How we work ─────────────────────────────────────── */}
+      <ProcessBand
+        overline="How we work"
+        heading="From first call to finished job"
+        subheading="Straightforward, predictable, no surprises."
+        steps={[
+          {
+            title: "Free survey",
+            description: "Visit within 3 working days. Measurements + honest opinion.",
+            icon: MapPin
+          },
+          {
+            title: "Fixed quote",
+            description: "Detailed quote within 48 hours. What you sign is what you pay.",
+            icon: FileCheck
+          },
+          {
+            title: "Installation",
+            description: "Our in-house team. No subcontractors. Site left clean daily.",
+            icon: Hammer
+          },
+          {
+            title: "Guarantee",
+            description: "Written guarantee on workmanship. We come back if anything's off.",
+            icon: ShieldCheck
+          }
+        ]}
+      />
 
       {/* ── Projects ────────────────────────────────────────── */}
       {projects.length ? (
@@ -546,33 +544,26 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
       ) : null}
 
       {/* ── Contact ─────────────────────────────────────────── */}
-      <section id="contact" className="bg-neutral-900 py-12 md:py-16 text-white">
-        <div className="mx-auto max-w-3xl px-4 text-center">
-          <h2 className="text-2xl font-bold md:text-3xl">
-            Ready to talk to Phil?
-          </h2>
-          <p className="mx-auto mt-3 max-w-lg text-[15px] text-neutral-300">
-            {hero?.data.primaryCtaLabel === "Book Free Survey"
+      <div id="contact">
+        <CtaBand
+          overline="Get in touch"
+          headline="Ready to talk to Phil?"
+          subheadline={
+            hero?.data.primaryCtaLabel === "Book Free Survey"
               ? "A free on-site survey with a fixed quote afterwards. No obligation."
-              : "Get in touch — Phil replies within one working day."}
-          </p>
-          <div className="mx-auto mt-6 flex max-w-md flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-            <a
-              href="tel:+35300000000"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-amber-400 px-5 text-[14px] font-semibold text-neutral-900 hover:bg-amber-300"
-            >
-              <Phone className="h-4 w-4" />
-              Call Phil
-            </a>
-            <a
-              href="mailto:phil@example.com"
-              className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full border border-white/30 px-5 text-[14px] font-semibold text-white hover:bg-white/10"
-            >
-              {hero?.data.primaryCtaLabel ?? "Get in touch"}
-            </a>
-          </div>
-        </div>
-      </section>
+              : "Get in touch — Phil replies within one working day."
+          }
+          primaryCta={{
+            label: "Call Phil",
+            href: "tel:+35300000000",
+            icon: Phone
+          }}
+          secondaryCta={{
+            label: hero?.data.primaryCtaLabel ?? "Get in touch",
+            href: "mailto:phil@example.com"
+          }}
+        />
+      </div>
 
       {/* ── Sticky mobile action bar ────────────────────────── */}
       <StickyBottomActionBar

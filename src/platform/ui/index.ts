@@ -94,3 +94,26 @@ export type { BottomSheetProps } from "./sheets/BottomSheet";
 // ─── Gallery ────────────────────────────────────────────────
 export { SwipeGallery } from "./gallery/SwipeGallery";
 export type { SwipeGalleryProps } from "./gallery/SwipeGallery";
+
+// ─── Heroes (Phase 2) ───────────────────────────────────────
+export { EmergencyHero } from "./heroes/EmergencyHero";
+export type { EmergencyHeroProps } from "./heroes/EmergencyHero";
+export { MinimalHero } from "./heroes/MinimalHero";
+export type { MinimalHeroCta, MinimalHeroProps } from "./heroes/MinimalHero";
+export { SplitHero } from "./heroes/SplitHero";
+export type { SplitHeroCta, SplitHeroProps } from "./heroes/SplitHero";
+
+// ─── Bands (Phase 2) ────────────────────────────────────────
+export { CtaBand } from "./bands/CtaBand";
+export type { CtaBandCta, CtaBandProps } from "./bands/CtaBand";
+export { ProcessBand } from "./bands/ProcessBand";
+export type { ProcessBandProps, ProcessStep } from "./bands/ProcessBand";
+export { StatsBand } from "./bands/StatsBand";
+export type { Stat, StatsBandProps } from "./bands/StatsBand";
+export { TestimonialBand } from "./bands/TestimonialBand";
+export type {
+  Testimonial,
+  TestimonialBandProps
+} from "./bands/TestimonialBand";
+export { TrustBar } from "./bands/TrustBar";
+export type { TrustBadge, TrustBarProps } from "./bands/TrustBar";

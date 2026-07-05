@@ -14,8 +14,8 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 | Phase | Focus | Status | Components |
 |---|---|---|---|
 | 1 | Foundation | ✅ Complete | Tokens, Grid, Card, Button, Nav, Sheets, Gallery, Content, Sections, Feedback |
-| 2 | Heroes + Bands | 🚧 Next | SplitHero, MinimalHero, EmergencyHero, TrustBar, StatsBand, CtaBand, TestimonialBand |
-| 3 | Forms | ⏳ Planned | TextInput, Select, Radio, Checkbox, TextArea, FileUpload, DatePicker, Toggle, FieldGroup |
+| 2 | Heroes + Bands | ✅ Complete | SplitHero, MinimalHero, EmergencyHero, TrustBar, StatsBand, CtaBand, TestimonialBand, ProcessBand |
+| 3 | Forms | 🚧 Next | TextInput, Select, Radio, Checkbox, TextArea, FileUpload, DatePicker, Toggle, FieldGroup |
 | 4 | Data display + Overlays | ⏳ Planned | DataTable, ListView, ActivityFeed, Timeline, Popover, Tooltip, Dropdown, CommandPalette |
 | 5 | Media + Onboarding | ⏳ Planned | ImageWithCaption, BeforeAfterSlider, AspectRatio, Avatar, OnboardingChecklist, Tour |
 | 6 | Layout Recipes | ⏳ Planned | ServiceOverviewLayout, DashboardLayout, BookingLayout, CoachLayout, MarketplaceLayout |
@@ -100,28 +100,28 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 
 ---
 
-## Phase 2 — Heroes + Bands (🚧 next)
+## Phase 2 — Heroes + Bands (✅ complete)
 
 ### Heroes (`heroes/`)
 
 | Component | Purpose | Status |
 |---|---|---|
-| `SplitHero` | Text left + image right (Phil's site pattern), mobile → 1fr + fixed image column | ⏳ Not built |
-| `MinimalHero` | Centered headline + CTA, no image | ⏳ Not built |
-| `EmergencyHero` | 24/7 badge, Call Now hero for emergency trades | ⏳ Not built |
-| `EditorialHero` | Magazine-style, large photography, sparse text | ⏳ Not built |
-| `FullBleedHero` | Background image + overlay text | ⏳ Not built |
+| `SplitHero` | Text left + image right (Phil's site pattern), mobile → 1fr + fixed image column | ✅ Built |
+| `MinimalHero` | Centered headline + CTA, no image | ✅ Built |
+| `EmergencyHero` | 24/7 badge, Call Now hero for emergency trades | ✅ Built |
+| `EditorialHero` | Magazine-style, large photography, sparse text | ⏳ Deferred to Phase 5 |
+| `FullBleedHero` | Background image + overlay text | ⏳ Deferred to Phase 5 |
 
 ### Bands (`bands/`)
 
 | Component | Purpose | Status |
 |---|---|---|
-| `TrustBar` | Logo/badge strip — "As seen on", "Certified by", "Trusted since 2010" | ⏳ Not built |
-| `StatsBand` | 3-4 stat callouts inline — "15 years / 800 jobs / 5★ rating" | ⏳ Not built |
-| `CtaBand` | Full-width CTA section — "Ready to talk to Phil?" | ⏳ Not built |
-| `TestimonialBand` | Featured quote or 3-up quote grid | ⏳ Not built |
-| `ProcessBand` | Numbered 3-4 step process — "How we work" | ⏳ Not built |
-| `LogoStrip` | Client / partner / supplier logo grid | ⏳ Not built |
+| `TrustBar` | Logo/badge strip — "As seen on", "Certified by", "Trusted since 2010" | ✅ Built |
+| `StatsBand` | 3-4 stat callouts inline — "15 years / 800 jobs / 5★ rating" | ✅ Built |
+| `CtaBand` | Full-width CTA section — "Ready to talk to Phil?" | ✅ Built |
+| `TestimonialBand` | Featured quote or 3-up quote grid | ✅ Built |
+| `ProcessBand` | Numbered 3-4 step process — "How we work" | ✅ Built |
+| `LogoStrip` | Client / partner / supplier logo grid | ⏳ Deferred to Phase 5 |
 
 ---
 
@@ -212,7 +212,7 @@ These are **declarative page compositions**. A page says `<ServiceOverviewLayout
 
 | Page | Kit adoption | Notes |
 |---|---|---|
-| `/golden-path/preview` (Phil's site) | 🟡 60% | Services + Projects + StickyBottom migrated. Hero + Trust + FAQ + Contact still hand-rolled — next |
+| `/golden-path/preview` (Phil's site) | 🟢 90% | Hero (SplitHero) + Stats (StatsBand) + Trust (TrustBar) + Services + How we work (ProcessBand) + Projects + Contact (CtaBand) + StickyBottom all migrated. Trust panel + FAQ accordion + footer still hand-rolled |
 | `/golden-path` | 🔴 0% | Step cards still hand-rolled — next |
 | `BusinessCoachPanel` | 🔴 0% | Uses hand-rolled cards — next |
 | `StrategyExplainerPanel` | 🔴 0% | Uses hand-rolled cards — next |
