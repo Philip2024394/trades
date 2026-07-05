@@ -6,7 +6,9 @@ import type {
   RegistryMetadata
 } from "@/platform/registryKit";
 import { createRegistry } from "@/platform/registryKit";
+import { evidenceRegistry } from "../evidence/registry";
 import { facetKindRegistry } from "../facets";
+import { patternRegistry } from "../patterns/registry";
 import type { PlaybookManifest } from "./types";
 
 export const REGISTRY_METADATA: RegistryMetadata = {
@@ -49,6 +51,23 @@ const inner = createRegistry<PlaybookRegistration>({
     }
     if (m.evidence.confidence < 0 || m.evidence.confidence > 100)
       throw new Error(`playbook "${m.slug}" confidence must be 0..100.`);
+    // If rationale cites patterns or evidence, they must exist.
+    if (m.rationale) {
+      for (const slug of m.rationale.citesPatterns ?? []) {
+        if (!patternRegistry.has(slug)) {
+          throw new Error(
+            `playbook "${m.slug}" rationale cites unknown pattern "${slug}".`
+          );
+        }
+      }
+      for (const slug of m.rationale.citesEvidence ?? []) {
+        if (!evidenceRegistry.has(slug)) {
+          throw new Error(
+            `playbook "${m.slug}" rationale cites unknown evidence "${slug}".`
+          );
+        }
+      }
+    }
   },
   indexes: {
     byCategory: (m) => [m.category],

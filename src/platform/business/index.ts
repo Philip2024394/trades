@@ -8,6 +8,8 @@
 
 import "./facets";
 import "./trades";
+import "./evidence";
+import "./patterns";
 import "./playbooks";
 import "./profile";
 import "./strategy";
@@ -19,6 +21,23 @@ export { playbookRegistry } from "./playbooks";
 export { websiteRecipeRegistry } from "./recipes";
 export { facetKindRegistry } from "./facets";
 export { tradeIntelligenceRegistry } from "./trades";
+export { evidenceRegistry, EVIDENCE_STATE_WEIGHT } from "./evidence";
+export { patternRegistry, bandForConfidence } from "./patterns";
+export type {
+  EvidenceFindingManifest,
+  EvidenceMetric,
+  EvidenceReview,
+  EvidenceScope,
+  EvidenceSourceKind,
+  EvidenceValidationState,
+  FrozenEvidenceFindingManifest
+} from "./evidence";
+export type {
+  EvidenceStrengthBand,
+  FrozenPatternManifest,
+  PatternCandidacyStatus,
+  PatternManifest
+} from "./patterns";
 export type {
   BusinessGoalOption,
   CommonFaq,

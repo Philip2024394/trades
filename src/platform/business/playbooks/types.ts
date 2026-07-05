@@ -47,6 +47,24 @@ export type EvidenceProfile = {
  *  is the data payload for that kind. */
 export type PlaybookFacets = Record<string, Record<string, unknown>>;
 
+/** The "Why?" explanation for a playbook. Amendment 7 addendum
+ *  (2026-07-05) — every new playbook SHOULD declare a rationale so
+ *  merchants can click "Why?" and see the reasoning + evidence.
+ *  Optional on legacy playbooks; backfilled progressively. */
+export type PlaybookRationale = {
+  /** Short one-liner — "Why this playbook works". */
+  statement: string;
+  /** Longer plain-English reasoning, present tense. Must NOT invent
+   *  numbers — quote patterns or evidence, don't fabricate. */
+  reasoning: string;
+  /** Slugs from patternRegistry that back this rationale. */
+  citesPatterns?: readonly string[];
+  /** Slugs from evidenceRegistry that directly back this rationale.
+   *  Prefer patterns; cite evidence when the rationale hinges on one
+   *  specific finding. */
+  citesEvidence?: readonly string[];
+};
+
 export type PlaybookManifest = {
   manifestVersion: 1;
   slug: string;
@@ -65,6 +83,10 @@ export type PlaybookManifest = {
 
   /** The typed facet contributions. Keys are facetKind slugs. */
   facets: PlaybookFacets;
+
+  /** The "Why?" — optional on legacy playbooks; required-in-spirit on
+   *  new playbooks. */
+  rationale?: PlaybookRationale;
 
   source: "platform-authored" | "agency-authored" | "data-derived";
   evidence: EvidenceProfile;

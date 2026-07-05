@@ -28,6 +28,14 @@ playbookRegistry.register({
     "sections.emphasise": { roles: ["trust-anchor-hero", "trust-bar", "reviews"] },
     "hero.style": { value: "trust-anchor" }
   },
+  rationale: {
+    statement:
+      "Placing trust signals above the fold makes credibility the first thing every visitor sees.",
+    reasoning:
+      "Public UX and CRO research (Nielsen Norman Group, Baymard Institute) consistently finds trust signals in the hero band correlate with higher perceived credibility and reduced bounce. Where the trade is regulated (Gas Safe for plumbers, NICEIC for electricians), the absence of a visible badge is a known enquiry disqualifier.",
+    citesPatterns: ["trust-above-the-fold-general"],
+    citesEvidence: ["trust-badges-above-fold-general", "gas-safe-badge-plumber-trust"]
+  },
   source: "platform-authored",
   evidence: E,
   publisher: P
@@ -110,6 +118,14 @@ playbookRegistry.register({
     "booking.depositPolicy": { value: "optional" },
     "booking.availabilityDisplay": { value: "consultation" }
   },
+  rationale: {
+    statement:
+      "Premium buyers respond to editorial imagery and a consultation booking, not a quote form.",
+    reasoning:
+      "Peer analysis of 6 UK premium kitchen brands (Neptune, Tom Howley, Roundhouse and peers) consistently hides prices and leads with a design-consultation booking rather than a quote form. Luxury buyers self-select on brand fit and portfolio before they engage on price — showing a price too early filters the wrong direction.",
+    citesPatterns: ["luxury-kitchen-consultation-first"],
+    citesEvidence: ["consultation-first-luxury-kitchens"]
+  },
   source: "platform-authored",
   evidence: E,
   publisher: P
@@ -159,6 +175,17 @@ playbookRegistry.register({
       ]
     }
   },
+  rationale: {
+    statement:
+      "For emergency businesses, seconds matter — the site's job is to convert the panicked search into a phone call.",
+    reasoning:
+      "Observation across 12 UK emergency plumber sites: those with an explicit response-time promise ('within 60 minutes') in the hero band consistently pair with a Call Now primary CTA. Search intent for 'emergency plumber near me' is urgent — trust plus response-time is what converts. Booking flows should gate on 'Is this an emergency?' rather than force service browsing.",
+    citesPatterns: ["emergency-plumber-response-promise"],
+    citesEvidence: [
+      "emergency-response-time-promise-plumbers",
+      "gas-safe-badge-plumber-trust"
+    ]
+  },
   source: "platform-authored",
   evidence: {
     ...E,
@@ -206,6 +233,17 @@ playbookRegistry.register({
         "upload-recent-project-photos"
       ]
     }
+  },
+  rationale: {
+    statement:
+      "For premium services with variable pricing, a free-survey CTA converts better than a generic quote form.",
+    reasoning:
+      "Among 18 top-listed UK Checkatrade carpenter sites specialising in doors, 'Book Free Survey' appears more commonly as the primary CTA than 'Request a Quote', paired with the project gallery placed above the pricing section. The free-survey framing removes friction (no commitment) while still qualifying the lead for the merchant. Best suited to trades whose price genuinely varies by site conditions.",
+    citesPatterns: ["doors-carpenter-free-survey-gallery-first"],
+    citesEvidence: [
+      "free-survey-cta-carpenter-doors",
+      "gallery-before-pricing-visual-trades"
+    ]
   },
   source: "platform-authored",
   evidence: E,

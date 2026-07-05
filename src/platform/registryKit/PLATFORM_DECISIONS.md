@@ -1032,3 +1032,119 @@ provenance; positioning-extra playbooks carry their normal slug.
 
 ### Related
 ADR-025 (Trade Intelligence). ADR-021 (Composer as assembler).
+
+---
+
+## ADR-027 — Business Evidence Framework, not "Industry Research"
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 2)
+
+### Context
+Phase 2 of the Business Growth Intelligence direction. Previous
+name "Industry Research Framework" implied an internal
+documentation system. The reality is a live **evidence engine**
+that consumes multiple input types and produces confidence
+increments.
+
+### Decision
+Rename to **Business Evidence Framework**. Ship two registries at
+Layer 1 (Business OS):
+
+**`evidenceRegistry`** — Stage 1 raw findings. Each finding is a
+structured, atomic observation with typed source (
+`competitor-research | merchant-interview | a-b-test |
+measured-outcome | industry-report | academic-study |
+expert-opinion | internal-analysis`), typed scope (trade / country
+/ goal / profileFlag), a validation lifecycle (
+`draft → reviewed → approved → a-b-tested → measured → proven`),
+corroboration count, and a reviewer audit trail. `draft` findings
+have weight 0; only `proven` findings carry weight 1.
+
+**`patternRegistry`** — Stage 2 aggregated conclusions extracted
+from multiple findings ("82% of high-performing UK carpenter
+sites…"). Candidacy lifecycle (
+`proposed → adopted → rejected → superseded`). **Confidence is
+derived** from underlying evidence via a fixed formula
+(`EVIDENCE_STATE_WEIGHT` weighted mean + corroboration boost),
+never hand-set. This is the honesty guarantee.
+
+Stage 3 (Validation) is the lifecycle machinery baked into both
+registries. Stage 4 (Outcome Feedback) lands in Phase 4 —
+`studio_measured_outcomes` table shipped now with the consent flag
+so the schema is ready.
+
+Migrations:
+`20260705170000_business_evidence.sql` — three tables with RLS:
+`studio_evidence_findings`, `studio_evidence_patterns`,
+`studio_measured_outcomes` (private-per-merchant, consent required
+to publish for platform-wide learning).
+
+### Consequences
+- Confidence is honest by construction — no fabricated numbers.
+  A pattern citing only `draft` evidence has confidence 0.
+- Anyone can add a finding; nothing changes on the merchant surface
+  until the finding progresses through the lifecycle.
+- Phase 4 outcome data drops into the same schema — the loop
+  becomes self-improving without an API break.
+- Explainer can cite evidence (not just playbooks) — the merchant
+  sees which observations back a recommendation.
+
+### Related
+ADR-025 (Trade Intelligence). ADR-028 (Playbook Rationale). Phase
+4 (Outcome Feedback Engine).
+
+---
+
+## ADR-028 — Every playbook declares a Rationale — the "Why?" surface
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 2)
+
+### Context
+Merchants distrust systems they cannot see through. Playbooks
+were confident but opaque — the merchant could not click
+"Why is this recommended?" and get a real answer.
+
+### Decision
+`PlaybookManifest.rationale` — optional on legacy playbooks,
+expected on all new playbooks. Shape:
+
+```ts
+{
+  statement: string;              // "Why this playbook works" one-liner
+  reasoning: string;              // Plain-English WHY, present tense
+  citesPatterns?: string[];       // patternRegistry slugs
+  citesEvidence?: string[];       // evidenceRegistry slugs
+}
+```
+
+Playbook registry validation cross-checks every cited pattern and
+evidence slug exists at load time — dangling citations fail loudly
+in dev.
+
+`explainDecision(strategy, domain, field)` API returns a
+`DecisionExplanation` with the recommendation, reasoning, cited
+playbooks, cited patterns with derived confidence, cited evidence
+with lifecycle state, and an overall strength band
+(`insufficient / emerging / moderate / high / very-high`) mapped
+to a human sentence ("High — supported by platform research and
+reviewed evidence").
+
+Four playbooks backfilled with rationale in this batch:
+`trust-first`, `quote-driven`, `premium-luxury`,
+`emergency-response`. Rest to be backfilled progressively —
+missing rationales fall back to synthesised reasoning.
+
+### Consequences
+- Every AI recommendation on the merchant surface can answer
+  "Why?"
+- Rationales cite structured evidence, not prompts.
+- The evidence lifecycle drives the strength band — as evidence
+  moves `draft → measured → proven`, the merchant sees the
+  strength label improve without any code change.
+- New playbooks without rationale won't fail — but reviewers can
+  reject them at PR time. Cultural, not enforced.
+
+### Related
+ADR-027 (Business Evidence Framework). Amendment 7 §Playbooks.
+Phase 3 (AI Composition Engine v2) will consume `rationale` when
+composing AI-authored copy.

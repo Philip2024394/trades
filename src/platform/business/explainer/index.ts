@@ -1,9 +1,14 @@
 // Strategy Explainer — barrel.
 
-export { explainStrategy, groupDecisionsByBucket } from "./explain";
+export {
+  explainDecision,
+  explainStrategy,
+  groupDecisionsByBucket
+} from "./explain";
 export { StrategyExplainerPanel } from "./StrategyExplainerPanel";
 export type { StrategyExplainerPanelProps } from "./StrategyExplainerPanel";
 export type {
+  DecisionExplanation,
   ExplanationBucket,
   ExplanationLine,
   StrategyExplanation

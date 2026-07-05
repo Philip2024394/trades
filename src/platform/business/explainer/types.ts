@@ -54,3 +54,42 @@ export type StrategyExplanation = {
   /** ISO 8601 timestamp of the explanation. */
   generatedAt: string;
 };
+
+/** Deep-dive "Why is this specific recommendation on my site?" for
+ *  ONE (domain, field) decision. Consumed by the per-tile "Why?"
+ *  buttons on the merchant surface. */
+export type DecisionExplanation = {
+  domain: string;
+  field: string;
+  /** Human-readable recommendation — "Prioritise Door Installation". */
+  recommendation: string;
+  /** The concise Why — pulled from the strongest playbook's rationale
+   *  when available, or synthesised from provenance if not. */
+  reasoning: string;
+  /** Cited playbooks that contributed to this decision. */
+  citedPlaybooks: readonly {
+    slug: string;
+    name: string;
+    confidence: number;
+    rationaleStatement?: string;
+  }[];
+  /** Patterns cited by the strongest playbook's rationale. */
+  citedPatterns: readonly {
+    slug: string;
+    title: string;
+    statement: string;
+    derivedConfidence: number;
+  }[];
+  /** Evidence findings cited by the strongest playbook's rationale. */
+  citedEvidence: readonly {
+    slug: string;
+    title: string;
+    state: string;
+    sourceKind: string;
+  }[];
+  /** Overall evidence strength band ("insufficient" → "very-high"). */
+  strengthBand: string;
+  /** Merchant-facing overall strength label — "High (supported by
+   *  platform research and measured outcomes)". */
+  strengthLabel: string;
+};
