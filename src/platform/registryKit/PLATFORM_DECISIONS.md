@@ -1273,3 +1273,124 @@ with RLS: `studio_content_manifests`, `studio_content_blocks`
 ### Related
 ADR-029 (Creative Director). ADR-024 (Explainer). ADR-027
 (Evidence). ADR-028 (Playbook Rationale).
+
+---
+
+## ADR-031 — Business Operating Coach, not Business Advisor
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 4)
+
+### Context
+An advisor waits until asked. A coach watches what's happening
+and proactively tells the merchant what to do next. That
+distinction was surfaced by the user during Phase 4 planning.
+
+### Decision
+Ship the **Business Operating Coach** — a pure service at
+Business OS Layer 16 that:
+
+1. Consumes a `CoachContext` = ResolvedStrategy + optional
+   ContentManifest + projectCount + reviewCount + certifications
+   + lastStrategyReviewAt + metricValues + outputMedium.
+2. Walks every registered recommendation, evaluates its condition
+   against the context, and returns triggered items.
+3. Groups triggered recommendations into a `BusinessHealthScore`
+   across six transparent dimensions:
+   Strategy Alignment / Trust / Local SEO / Portfolio /
+   Conversion / Content Quality.
+4. Emits a prioritised backlog ordered by (priority DESC,
+   impact-weight DESC) — a **roadmap, not tips**.
+
+Every recommendation, dimension score, and backlog item is
+transparent: it cites the playbooks, patterns, and evidence
+that produced it. The merchant can always ask "why is this on
+my list?" and get a structured answer.
+
+Filter for future work: **"Will this help a tradesperson win
+more work, save time, or make more money?"** If a proposed
+feature doesn't answer yes, it doesn't ship here.
+
+### Consequences
+- Coaching becomes data-driven, not prompt-driven.
+- Adding a new coaching rule = one registered recommendation
+  (condition function + rationale + provenance). No changes
+  to the coach service.
+- Dimension scores are traceable — merchants distrust opaque
+  scores; transparent ones build trust.
+- The scorecard + backlog become the primary Studio surface.
+  Everything else (editors, wizards, autoFix handlers) exists
+  to serve the backlog.
+- Same architecture supports future outputs (quote docs,
+  emails, ads) — coach recommendations can scope by
+  `outputMedium`.
+
+### Related
+ADR-032 (Recommendation Registry). ADR-027 (Evidence). ADR-028
+(Playbook Rationale). ADR-030 (Content Manifest — coach reads
+manifests to detect content gaps).
+
+---
+
+## ADR-032 — Recommendation Registry: playbooks say HOW to build; recommendations say WHAT to do next
+
+**Status:** accepted · **Date:** 2026-07-05 · **Batch:** M3 B8 (Phase 4)
+
+### Context
+The playbook registry answers "how do we build this kind of
+site?" It does not answer "what's the highest-impact action for
+this merchant, this week?" Attempting to encode coaching rules
+as playbooks would conflate build-time patterns with runtime
+diagnostics.
+
+### Decision
+`recommendationRegistry` at Business OS Layer 16. Each entry
+declares:
+
+- `dimension` — which health dimension it affects
+- `category` — grouping label (strategy / trust / seo / …)
+- `scope` — trades / countries / goals / profileFlags
+- `condition` — pure function `(ctx: CoachContext) => RecommendationEvaluation`
+- `action` — merchant-facing label + optional `autoFix.handler` slug
+- `priority` (1-5) + `estimatedImpact` (high/medium/low)
+- `citesPlaybooks / citesPatterns / citesEvidence` (validated at
+  registration — dangling citations fail loudly)
+- `rationale` — `whyItMatters` + `expectedOutcome`
+
+Conditions are code, not data — they need to inspect ContentManifest
+structure, walk facets, count items. Trying to serialise them as
+JSON would either be too weak or reinvent a DSL.
+
+The 10 seed recommendations cover the six dimensions:
+Portfolio (project count vs trade minimum), Local SEO (missing
+service pages + missing town pages), Trust (missing certifications
++ reviews below benchmark), Conversion (CTA mismatch with goal +
+missing response-time promise for emergency trades),
+Content Quality (unanswered FAQs + missing customer quotes),
+Strategy Alignment (90-day review nudge).
+
+Scoring: each dimension starts at 100 and deducts
+IMPACT_WEIGHT[impact] per triggered recommendation
+(high=18, medium=10, low=4), floored at 0. Overall = mean of
+dimensions.
+
+Migrations: `20260705190000_business_coach.sql` — three tables
+with RLS: `studio_coach_assessments` (score snapshots),
+`studio_coach_backlog_items` (persistent items with status),
+`studio_coach_actions` (audit trail).
+
+### Consequences
+- Coaching rules are data-driven, discoverable, versionable.
+- Same registry pattern as playbooks / patterns / evidence /
+  composers — consistent developer ergonomics across the
+  platform.
+- AutoFix handlers form a natural extension point: Studio maps
+  handler slugs to routes / wizards / regeneration calls. As
+  the platform grows, more recommendations get auto-fixes;
+  fewer stay "manual action."
+- Evidence-cited recommendations move up in priority
+  automatically as their backing evidence progresses through
+  the lifecycle (Phase 2 loop closes here).
+
+### Related
+ADR-031 (Business Operating Coach). ADR-027 (Evidence).
+ADR-028 (Playbook Rationale). ADR-030 (Content Manifest).
