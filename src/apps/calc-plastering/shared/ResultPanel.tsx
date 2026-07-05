@@ -1,0 +1,112 @@
+// ResultPanel — plastering result renderer.
+
+"use client";
+
+import { AlertTriangle, ChevronDown, ChevronUp } from "lucide-react";
+import { useState } from "react";
+import { SurfaceCard } from "@/platform/ui";
+import type { CalculatorOutput, CalculatorOutputLine } from "../logic";
+
+export type ResultPanelDensity = "full" | "condensed";
+export type ResultPanelProps = {
+  result: CalculatorOutput;
+  density?: ResultPanelDensity;
+};
+
+function LineRow({ line }: { line: CalculatorOutputLine }) {
+  const tone = line.tone ?? "muted";
+  const labelCls =
+    tone === "primary"
+      ? "text-[13px] font-semibold text-neutral-900"
+      : tone === "warning"
+      ? "text-[12px] text-amber-800"
+      : "text-[12px] text-neutral-700";
+  const valueCls =
+    tone === "primary"
+      ? "text-[14px] font-bold text-neutral-900"
+      : "text-[12px] font-medium text-neutral-800";
+  return (
+    <div className="flex items-start justify-between gap-2 py-1.5">
+      <div className="min-w-0 flex-1">
+        <div className={labelCls}>{line.label}</div>
+        {line.detail ? (
+          <div className="text-[11px] text-neutral-500">{line.detail}</div>
+        ) : null}
+      </div>
+      <div className={`shrink-0 text-right ${valueCls}`}>{line.value}</div>
+    </div>
+  );
+}
+
+export function ResultPanel({ result, density = "full" }: ResultPanelProps) {
+  const [showAll, setShowAll] = useState(density === "full");
+  const totalLine = result.lines.find(
+    (l) => l.tone === "primary" && l.label.startsWith("Job total")
+  );
+  const others = result.lines.filter((l) => l !== totalLine);
+  const isCondensed = density === "condensed" && !showAll;
+
+  return (
+    <SurfaceCard variant="secondary" padding="md">
+      {totalLine ? (
+        <div className="mb-2 flex items-baseline justify-between rounded-lg bg-amber-50 px-3 py-2">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-amber-900">
+              Estimated total
+            </div>
+            {totalLine.detail ? (
+              <div className="text-[10px] text-amber-800">
+                {totalLine.detail}
+              </div>
+            ) : null}
+          </div>
+          <span className="text-[18px] font-bold text-neutral-900 tabular-nums">
+            {totalLine.value.replace("£", "£")}
+          </span>
+        </div>
+      ) : null}
+
+      {others.length && !isCondensed ? (
+        <ul className="flex flex-col divide-y divide-neutral-100">
+          {others.map((line, i) => (
+            <li key={i}>
+              <LineRow line={line} />
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {density === "condensed" && others.length ? (
+        <button
+          type="button"
+          onClick={() => setShowAll((v) => !v)}
+          className="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-neutral-700 hover:text-neutral-900"
+        >
+          {showAll ? (
+            <>
+              <ChevronUp className="h-3 w-3" /> Hide breakdown
+            </>
+          ) : (
+            <>
+              <ChevronDown className="h-3 w-3" /> See full breakdown
+            </>
+          )}
+        </button>
+      ) : null}
+
+      {result.warnings?.length ? (
+        <div className="mt-2 flex flex-col gap-1">
+          {result.warnings.map((w, i) => (
+            <div
+              key={i}
+              className="flex items-start gap-1.5 rounded-md bg-amber-50 px-2 py-1.5 text-[11px] leading-relaxed text-amber-900"
+            >
+              <AlertTriangle className="mt-0.5 h-3 w-3 shrink-0" />
+              {w}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </SurfaceCard>
+  );
+}
