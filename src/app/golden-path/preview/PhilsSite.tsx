@@ -52,6 +52,7 @@ import {
   StickyBottomActionBar,
   TrustBar
 } from "@/platform/ui";
+import { QuoteRequestSheet } from "./QuoteRequestSheet";
 
 /** Service slug → Lucide icon. Falls back to Hammer for anything not
  *  registered here. Extend as new services appear in trade seeds. */
@@ -138,8 +139,11 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
+  const [quoteSheetOpen, setQuoteSheetOpen] = useState(false);
 
   const closeMobileNav = () => setMobileNavOpen(false);
+  const openQuoteSheet = () => setQuoteSheetOpen(true);
+  const closeQuoteSheet = () => setQuoteSheetOpen(false);
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -282,7 +286,10 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           headline={hero.data.headline}
           subheadline={hero.data.subheadline}
           supportingLine={hero.data.supportingLine}
-          primaryCta={{ label: hero.data.primaryCtaLabel, href: "#contact" }}
+          primaryCta={{
+            label: hero.data.primaryCtaLabel,
+            onClick: openQuoteSheet
+          }}
           secondaryCta={{
             label: "Call Phil",
             href: "tel:+35300000000",
@@ -554,13 +561,13 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
               : "Get in touch — Phil replies within one working day."
           }
           primaryCta={{
+            label: hero?.data.primaryCtaLabel ?? "Request a Quote",
+            onClick: openQuoteSheet
+          }}
+          secondaryCta={{
             label: "Call Phil",
             href: "tel:+35300000000",
             icon: Phone
-          }}
-          secondaryCta={{
-            label: hero?.data.primaryCtaLabel ?? "Get in touch",
-            href: "mailto:phil@example.com"
           }}
         />
       </div>
@@ -579,11 +586,14 @@ export function PhilsSite({ manifest }: { manifest: ContentManifest }) {
           </Button>
         }
         right={
-          <Button href="#contact" intent="primary" size="lg" block>
+          <Button onClick={openQuoteSheet} intent="primary" size="lg" block>
             {hero?.data.primaryCtaLabel ?? "Get in touch"}
           </Button>
         }
       />
+
+      {/* ── Quote request bottom sheet ──────────────────────── */}
+      <QuoteRequestSheet open={quoteSheetOpen} onClose={closeQuoteSheet} />
 
       {/* ── Footer ──────────────────────────────────────────── */}
       <footer className="border-t border-neutral-200 bg-white py-8">

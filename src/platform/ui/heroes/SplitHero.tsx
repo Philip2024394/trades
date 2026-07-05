@@ -8,7 +8,9 @@ import { Button } from "../primitives/Button";
 
 export type SplitHeroCta = {
   label: string;
-  href: string;
+  /** Provide either href OR onClick. */
+  href?: string;
+  onClick?: () => void;
   icon?: ComponentType<{ className?: string }>;
 };
 
@@ -81,6 +83,7 @@ export function SplitHero({
             <div className="mt-5 flex flex-col items-stretch gap-2 sm:flex-row sm:items-center sm:gap-3">
               <Button
                 href={primaryCta.href}
+                onClick={primaryCta.onClick}
                 intent="primary"
                 size="lg"
                 icon={primaryCta.icon}
@@ -90,6 +93,7 @@ export function SplitHero({
               {secondaryCta ? (
                 <Button
                   href={secondaryCta.href}
+                  onClick={secondaryCta.onClick}
                   intent="secondary"
                   size="lg"
                   icon={secondaryCta.icon}

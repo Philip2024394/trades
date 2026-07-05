@@ -15,8 +15,8 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 |---|---|---|---|
 | 1 | Foundation | ✅ Complete | Tokens, Grid, Card, Button, Nav, Sheets, Gallery, Content, Sections, Feedback |
 | 2 | Heroes + Bands | ✅ Complete | SplitHero, MinimalHero, EmergencyHero, TrustBar, StatsBand, CtaBand, TestimonialBand, ProcessBand |
-| 3 | Forms | 🚧 Next | TextInput, Select, Radio, Checkbox, TextArea, FileUpload, DatePicker, Toggle, FieldGroup |
-| 4 | Data display + Overlays | ⏳ Planned | DataTable, ListView, ActivityFeed, Timeline, Popover, Tooltip, Dropdown, CommandPalette |
+| 3 | Forms | ✅ Complete | FieldGroup, TextInput, TextArea, Select, RadioGroup, CheckboxGroup, Checkbox, Toggle, FormSection, StickySubmit, FileUpload |
+| 4 | Data display + Overlays | 🚧 Next | DataTable, ListView, ActivityFeed, Timeline, Popover, Tooltip, Dropdown, CommandPalette |
 | 5 | Media + Onboarding | ⏳ Planned | ImageWithCaption, BeforeAfterSlider, AspectRatio, Avatar, OnboardingChecklist, Tour |
 | 6 | Layout Recipes | ⏳ Planned | ServiceOverviewLayout, DashboardLayout, BookingLayout, CoachLayout, MarketplaceLayout |
 
@@ -125,23 +125,24 @@ Benchmark: The Golden Path preview (`/golden-path/preview`) must look like a £1
 
 ---
 
-## Phase 3 — Forms (⏳ planned)
+## Phase 3 — Forms (✅ complete)
 
-| Component | Purpose |
-|---|---|
-| `TextInput` | Single-line text with label, hint, error, prefix/suffix |
-| `TextArea` | Multi-line text with character counter |
-| `Select` | Native + custom trigger with search |
-| `RadioGroup` | Styled radio buttons with card option |
-| `CheckboxGroup` | Styled checkboxes |
-| `Toggle` | Switch component |
-| `FileUpload` | Drag+drop + button, photo preview grid |
-| `DatePicker` | Calendar dropdown (mobile: BottomSheet variant) |
-| `TimePicker` | Time selector |
-| `FieldGroup` | Consistent field wrapper — label + hint + error + input slot |
-| `FormSection` | Group of fields with heading |
-| `StickySubmit` | Sticky submit button pattern for long forms |
-| `InlineValidation` | Real-time field validation display |
+| Component | Purpose | Status |
+|---|---|---|
+| `FieldGroup` | Consistent field wrapper — label + labelBadge + hint + error + slot | ✅ Built |
+| `TextInput` | Single-line text with label, hint, error, prefix/suffix, character counter | ✅ Built |
+| `TextArea` | Multi-line text with character counter | ✅ Built |
+| `Select` | Native `<select>` + styled shell + chevron | ✅ Built |
+| `RadioGroup` | Styled radio buttons — list variant + cards variant (with description + icon) | ✅ Built |
+| `CheckboxGroup` | Styled checkboxes — list + cards variants | ✅ Built |
+| `Checkbox` | Single checkbox (consent / terms fields) | ✅ Built |
+| `Toggle` | iOS-style switch | ✅ Built |
+| `FormSection` | Numbered step group of fields with heading + description | ✅ Built |
+| `StickySubmit` | Sticky submit action row (container or viewport scope) | ✅ Built |
+| `FileUpload` | Drag+drop + button + mobile camera capture + preview grid | ✅ Built |
+| `DatePicker` | Calendar dropdown (mobile: BottomSheet variant) | ⏳ Deferred to Phase 5 |
+| `TimePicker` | Time selector | ⏳ Deferred to Phase 5 |
+| `InlineValidation` | Real-time field validation display | ⏳ Deferred to Phase 4 |
 
 ---
 
@@ -212,7 +213,7 @@ These are **declarative page compositions**. A page says `<ServiceOverviewLayout
 
 | Page | Kit adoption | Notes |
 |---|---|---|
-| `/golden-path/preview` (Phil's site) | 🟢 90% | Hero (SplitHero) + Stats (StatsBand) + Trust (TrustBar) + Services + How we work (ProcessBand) + Projects + Contact (CtaBand) + StickyBottom all migrated. Trust panel + FAQ accordion + footer still hand-rolled |
+| `/golden-path/preview` (Phil's site) | 🟢 95% | Hero + Stats + Trust + Services + How we work + Projects + Contact + Sticky + **Quote request form (BottomSheet)** all migrated. Real 3-step form with 11 primitives composed. Trust panel + FAQ accordion + footer still hand-rolled |
 | `/golden-path` | 🔴 0% | Step cards still hand-rolled — next |
 | `BusinessCoachPanel` | 🔴 0% | Uses hand-rolled cards — next |
 | `StrategyExplainerPanel` | 🔴 0% | Uses hand-rolled cards — next |

@@ -117,3 +117,38 @@ export type {
 } from "./bands/TestimonialBand";
 export { TrustBar } from "./bands/TrustBar";
 export type { TrustBadge, TrustBarProps } from "./bands/TrustBar";
+
+// ─── Forms (Phase 3) ────────────────────────────────────────
+export {
+  Checkbox,
+  CheckboxGroup
+} from "./forms/CheckboxGroup";
+export type {
+  CheckboxGroupProps,
+  CheckboxOption,
+  CheckboxProps
+} from "./forms/CheckboxGroup";
+export {
+  FIELD_BASE_CLASS,
+  FIELD_BORDER_CLASS,
+  FIELD_BORDER_ERROR_CLASS,
+  FIELD_PAD_CLASS,
+  FieldGroup
+} from "./forms/FieldGroup";
+export type { FieldGroupProps } from "./forms/FieldGroup";
+export { FileUpload } from "./forms/FileUpload";
+export type { FileUploadProps } from "./forms/FileUpload";
+export { FormSection } from "./forms/FormSection";
+export type { FormSectionProps } from "./forms/FormSection";
+export { RadioGroup } from "./forms/RadioGroup";
+export type { RadioGroupProps, RadioOption } from "./forms/RadioGroup";
+export { Select } from "./forms/Select";
+export type { SelectOption, SelectProps } from "./forms/Select";
+export { StickySubmit } from "./forms/StickySubmit";
+export type { StickySubmitProps } from "./forms/StickySubmit";
+export { TextArea } from "./forms/TextArea";
+export type { TextAreaProps } from "./forms/TextArea";
+export { TextInput } from "./forms/TextInput";
+export type { TextInputProps } from "./forms/TextInput";
+export { Toggle } from "./forms/Toggle";
+export type { ToggleProps } from "./forms/Toggle";

@@ -8,7 +8,9 @@ import { Button } from "../primitives/Button";
 
 export type CtaBandCta = {
   label: string;
-  href: string;
+  /** Provide either href OR onClick. */
+  href?: string;
+  onClick?: () => void;
   icon?: ComponentType<{ className?: string }>;
 };
 
@@ -72,6 +74,7 @@ export function CtaBand({
         <div className="mx-auto mt-6 flex max-w-md flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
           <Button
             href={primaryCta.href}
+            onClick={primaryCta.onClick}
             intent={variant === "brand" ? "secondary" : "primary"}
             size="lg"
             icon={primaryCta.icon}
@@ -82,6 +85,7 @@ export function CtaBand({
           {secondaryCta ? (
             <Button
               href={secondaryCta.href}
+              onClick={secondaryCta.onClick}
               intent="secondary"
               size="lg"
               icon={secondaryCta.icon}
