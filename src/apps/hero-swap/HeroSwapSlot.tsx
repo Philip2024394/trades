@@ -30,6 +30,15 @@ export function HeroSwapSlot({
   const [open, setOpen] = useState(false);
   const calc = useHeroSwap(calcOptions);
 
+  if (calc.isLoadingLibrary && !calc.image) {
+    return (
+      <div className="flex aspect-[16/9] w-full items-center justify-center rounded-2xl bg-gradient-to-br from-neutral-200 to-neutral-300">
+        <div className="text-[12px] font-medium text-neutral-600">
+          Loading your hero library…
+        </div>
+      </div>
+    );
+  }
   if (!calc.image) {
     return (
       <div className="flex aspect-[16/9] w-full items-center justify-center rounded-2xl border border-dashed border-neutral-300 bg-neutral-50 text-center text-neutral-500">

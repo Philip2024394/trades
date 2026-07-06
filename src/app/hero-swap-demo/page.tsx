@@ -57,6 +57,7 @@ const PERSONAS = [
 
 export default function HeroSwapDemoPage() {
   const [personaId, setPersonaId] = useState(PERSONAS[0].id);
+  const [loaderMode, setLoaderMode] = useState<"static" | "api">("static");
   const persona = PERSONAS.find((p) => p.id === personaId) ?? PERSONAS[0];
 
   return (
@@ -92,19 +93,46 @@ export default function HeroSwapDemoPage() {
               </button>
             ))}
           </div>
+
+          <div className="mt-3 flex items-center gap-2 text-[11px]">
+            <span className="text-neutral-500">Loader mode:</span>
+            <button
+              type="button"
+              onClick={() => setLoaderMode("static")}
+              className={`rounded-md border px-2 py-1 font-medium transition ${
+                loaderMode === "static"
+                  ? "border-amber-400 bg-amber-50 text-amber-900"
+                  : "border-neutral-200 bg-white text-neutral-700"
+              }`}
+            >
+              Static JSON
+            </button>
+            <button
+              type="button"
+              onClick={() => setLoaderMode("api")}
+              className={`rounded-md border px-2 py-1 font-medium transition ${
+                loaderMode === "api"
+                  ? "border-amber-400 bg-amber-50 text-amber-900"
+                  : "border-neutral-200 bg-white text-neutral-700"
+              }`}
+            >
+              API (Supabase-first)
+            </button>
+          </div>
         </div>
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-8">
         <div className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm">
           <HeroSwapSlot
-            key={personaId}
+            key={`${personaId}-${loaderMode}`}
             merchantTradeKeywords={persona.keywords}
             headline={persona.headline}
             subhead={persona.subhead}
             ctaLabel={persona.ctaLabel}
             slotKey="landing_hero"
             siteSlotKeys={["landing_hero", "about_hero", "services_hero", "contact_hero"]}
+            loaderMode={loaderMode}
           />
         </div>
 

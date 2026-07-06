@@ -9,8 +9,10 @@ import { evaluateHeroSlot } from "@/lib/hero-swap/suggestionEngine";
 import {
   heroImageById,
   matchImagesForMerchant,
-  siblingsForImage
+  siblingsForImage,
+  siblingsFromList
 } from "@/lib/hero-swap/library";
+import { useHeroLibrary } from "./useHeroLibrary";
 import type {
   AspectRatio,
   CropFocalPoint
@@ -50,23 +52,57 @@ export type UseHeroSwapOptions = {
    *  "Apply series across site" bulk write. Defaults to just the
    *  current slotKey (no bulk write). */
   siteSlotKeys?: string[];
+  /** Where to load matched images from.
+   *  - "static" (default) — bundled JSON, synchronous, zero-config
+   *  - "api" — /api/hero-library, async, editable at runtime,
+   *    falls back to static on failure. */
+  loaderMode?: "static" | "api";
 };
 
 export function useHeroSwap(options: UseHeroSwapOptions) {
-  const matchedImages = useMemo(
-    () => matchImagesForMerchant(options.merchantTradeKeywords),
-    [options.merchantTradeKeywords]
+  const useApi = options.loaderMode === "api";
+
+  // API path — hook always runs (rules-of-hooks). When useApi=false,
+  // pass empty keywords so it early-returns without a network request.
+  const apiState = useHeroLibrary({
+    merchantTradeKeywords: useApi ? options.merchantTradeKeywords : []
+  });
+
+  const staticImages = useMemo(
+    () =>
+      useApi
+        ? []
+        : matchImagesForMerchant(options.merchantTradeKeywords),
+    [useApi, options.merchantTradeKeywords]
   );
+
+  const matchedImages = useApi ? apiState.images : staticImages;
+  const isLoadingLibrary = useApi ? apiState.loading : false;
+  const librarySource: "api" | "static-fallback" | "static" | "idle" =
+    useApi ? apiState.source : "static";
 
   const initialImage: HeroImage | null = useMemo(() => {
     if (options.initialImageId) {
-      const found = heroImageById(options.initialImageId);
+      // For API mode we can only resolve initialImageId once matched
+      // images have loaded — fall through to matched[0] until then.
+      const found =
+        matchedImages.find((e) => e.id === options.initialImageId) ??
+        (useApi ? null : heroImageById(options.initialImageId));
       if (found) return found;
     }
     return matchedImages[0] ?? null;
-  }, [options.initialImageId, matchedImages]);
+  }, [options.initialImageId, matchedImages, useApi]);
 
   const [image, setImage] = useState<HeroImage | null>(initialImage);
+
+  // When API images arrive after the first render, adopt the first
+  // one as the current image if we didn't have one yet.
+  useEffect(() => {
+    if (!image && matchedImages.length > 0) {
+      setImage(matchedImages[0]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [matchedImages]);
   const [preset, setPreset] = useState<HeroPreset>(
     options.initialPreset ?? "full_bleed"
   );
@@ -97,11 +133,16 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
   );
 
   /** Other images in the same sibling group as the current image.
-   *  Empty when the current image has no group. Powers the SiblingsRail. */
-  const siblings = useMemo<HeroImage[]>(
-    () => (image ? siblingsForImage(image.id) : []),
-    [image]
-  );
+   *  Empty when the current image has no group. Powers the SiblingsRail.
+   *  For the API loader mode, siblings are filtered from the merchant's
+   *  matched-set — this preserves the strict-match rule (a paver never
+   *  sees the roofer variant of a cross-trade sibling group). */
+  const siblings = useMemo<HeroImage[]>(() => {
+    if (!image) return [];
+    return useApi
+      ? siblingsFromList(matchedImages, image.id)
+      : siblingsForImage(image.id);
+  }, [image, useApi, matchedImages]);
 
   const swapToImageId = useCallback((id: string) => {
     const found = heroImageById(id);
@@ -232,6 +273,9 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     siblings,
     // upload focals per aspect
     uploadFocals,
+    // loader state (useful for showing "Loading" while API fetches)
+    isLoadingLibrary,
+    librarySource,
     // persistence
     saveState,
     // actions

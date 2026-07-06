@@ -64,8 +64,7 @@ export function groupBySibling(
 }
 
 /** Return all images in the same sibling group as `imageId`, EXCLUDING
- *  the image itself. Used to power the "use this series across your
- *  site" prompt. If the image has no sibling group, returns []. */
+ *  the image itself. Static-only variant — reads the bundled JSON. */
 export function siblingsForImage(imageId: string): HeroImage[] {
   const image = heroImageById(imageId);
   if (!image?.sibling_group_id) return [];
@@ -75,8 +74,30 @@ export function siblingsForImage(imageId: string): HeroImage[] {
   );
 }
 
+/** Pure sibling lookup — takes a list of images (e.g. the merchant's
+ *  matched-set from Supabase) and returns the siblings within that
+ *  list. Used by the API loader path so we never leak wrong-trade
+ *  siblings into the merchant's carousel.
+ *
+ *  Note: this only returns siblings that are ALSO in the input list.
+ *  If a sibling group spans multiple trades (e.g.
+ *  dark-tshirt-moody-outdoor-series covers paver + blocklayer +
+ *  roofer), a paver merchant only sees the paver sibling — not the
+ *  roofer one. Correct strict-match behaviour. */
+export function siblingsFromList(
+  images: HeroImage[],
+  imageId: string
+): HeroImage[] {
+  const image = images.find((e) => e.id === imageId);
+  if (!image?.sibling_group_id) return [];
+  return images.filter(
+    (e) =>
+      e.sibling_group_id === image.sibling_group_id && e.id !== image.id
+  );
+}
+
 /** Return ALL images in a sibling group (including the current). Useful
- *  for the "preview whole series" flyout. */
+ *  for the "preview whole series" flyout. Static-only. */
 export function imagesInSiblingGroup(groupId: string): HeroImage[] {
   return LIBRARY.entries.filter((e) => e.sibling_group_id === groupId);
 }
