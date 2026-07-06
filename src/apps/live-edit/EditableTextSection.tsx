@@ -9,7 +9,7 @@
 "use client";
 
 import { X } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditMode } from "./EditModeContext";
 import { EditableSection } from "./EditableSection";
 
@@ -35,6 +35,14 @@ export function EditableTextSection({ id, initial }: EditableTextSectionProps) {
     ctaLabel: initial?.ctaLabel ?? "Get started"
   });
   const [editing, setEditing] = useState(false);
+
+  // Report current state to the shell's registry so auto-save picks
+  // it up. Runs on every values change including initial mount so
+  // the merchant's page always has an up-to-date snapshot.
+  useEffect(() => {
+    editCtx.registerSectionState(id, values);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, values]);
 
   const patch = (field: keyof typeof values, v: string) => {
     setValues((f) => ({ ...f, [field]: v }));

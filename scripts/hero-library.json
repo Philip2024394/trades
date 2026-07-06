@@ -1487,6 +1487,68 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero"
+    },
+    {
+      "id": "shower-showroom-02_10_15",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_10_15%20PM.png",
+      "subject": "Dark modern shower showroom interior with 8+ shower systems displayed against dark tiled walls — rain heads, chrome + matte black finishes, walk-in enclosure centre-stage with running water, sample bathroom staged behind, industrial track lighting, moody premium retail feel",
+      "keywords_strict": ["shower showroom", "bathroom showroom", "shower supplier", "bathroom supplier", "shower installer showroom", "bathroom shop"],
+      "excluded_trades": ["carpenter", "plasterer", "roofer", "loft ladders"],
+      "vibe": "premium retail / dark moody showroom",
+      "text_zone": { "primary": "top-strip (dark ceiling)", "container_required": true, "container_style": "top-scrim" },
+      "theme_palette": { "primary": "#8a857a", "secondary": "#2a2a2a", "surface_warm": "#c9b485", "surface_deep": "#0a0a0a", "accent": "#d4d4d4" },
+      "aspect_variants": { "16:9": "native", "1:1": "centre-stall", "3:4": "not recommended" },
+      "hero_use_case": "Landing hero for premium shower / bathroom retailers. Dark moody palette signals high-end brand differentiation.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "shower-installation-02_04_52",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_04_52%20PM.png",
+      "subject": "Product-hero close-up of installed chrome shower running water, chrome rain head + slide bar + hand-held mixer, glass enclosure, grey stone-effect large-format tile background, warm accent LED under-mount lighting left, single house plant, moody residential bathroom",
+      "keywords_strict": ["shower installation", "shower fitter", "bathroom installer", "shower fitting service", "wet room installer", "bathroom fitter"],
+      "excluded_trades": ["carpenter", "plasterer", "roofer", "loft ladders"],
+      "vibe": "product hero / premium bathroom",
+      "text_zone": { "primary": "left third (dark tile)", "container_required": false, "text_shadow_recommended": true },
+      "theme_palette": { "primary": "#8a857a", "secondary": "#c9c4b8", "surface_warm": "#e5dcc9", "surface_deep": "#1a1a1a", "accent": "#d8a44a" },
+      "aspect_variants": { "16:9": "native", "1:1": "centre-shower", "3:4": "portrait-shower" },
+      "hero_use_case": "Landing hero for shower / bathroom installers. Product-hero angle signals 'we fit premium kit'. Left tile has great dark rest zone for hero text overlay.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "plumbing-fittings-copper-brass-02_03_04",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+      "subject": "Product-hero flat-lay of plumbing components — copper pipes + brass gate valve with red wheel + PVC white pipes + braided flexi hose + brass fittings + adjustable wrench + red pipe wrench, dark textured slate / concrete background",
+      "keywords_strict": ["plumbing", "plumber", "plumbing supplier", "plumbing merchant", "plumbing fittings", "pipework installation"],
+      "excluded_trades": ["carpenter", "plasterer", "roofer", "loft ladders", "electrician"],
+      "vibe": "product hero / trade materials / marketing",
+      "text_zone": { "primary": "top-left (dark background)", "container_required": false, "text_shadow_recommended": true },
+      "theme_palette": { "primary": "#b87a44", "secondary": "#8a5232", "surface_warm": "#c9c4b8", "surface_deep": "#1a1a1e", "accent": "#c92828" },
+      "aspect_variants": { "16:9": "native", "1:1": "centre-fittings", "3:4": "not recommended" },
+      "sibling_group_id": "plumbing-product-hero-series",
+      "hero_use_case": "Landing hero for plumbers / plumbing merchants. Copper + red-wrench palette pops on dark backgrounds — good for high-contrast text overlay.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "plumbing-under-sink-02_01_34",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png",
+      "subject": "Under-sink plumbing scene — chrome P-trap + waste pipes + copper stop-tap + red pipe wrench + adjustable wrench + fittings + white PVC pipe segments + blue tool bag on grey tile floor, working-domestic feel",
+      "keywords_strict": ["plumbing", "plumber", "plumbing services", "domestic plumbing", "emergency plumber", "leak repair"],
+      "excluded_trades": ["carpenter", "plasterer", "roofer", "loft ladders", "electrician"],
+      "vibe": "documentary product / working scene",
+      "text_zone": { "primary": "top strip (dark tile)", "container_required": true, "container_style": "top-scrim" },
+      "theme_palette": { "primary": "#8a857a", "secondary": "#c92828", "surface_warm": "#c9c4b8", "surface_deep": "#1a1a1e", "accent": "#3468c9" },
+      "aspect_variants": { "16:9": "native", "1:1": "centre-fittings", "3:4": "not recommended" },
+      "sibling_group_id": "plumbing-product-hero-series",
+      "hero_use_case": "Landing hero for domestic plumbers / emergency plumbing services. 'Real work' vibe suggests 'we've done this before'.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
     }
   ]
 }

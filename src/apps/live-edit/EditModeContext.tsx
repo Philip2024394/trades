@@ -9,6 +9,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useRef,
   useState
 } from "react";
 import type { PublishStatus } from "@/lib/live-edit/types";
@@ -26,6 +27,14 @@ type EditModeContextValue = {
   markDirty: () => void;
   markClean: () => void;
   hasUnsaved: boolean;
+
+  /** Section registry — each EditableSection reports its current
+   *  config here so LiveEditShell can persist the full page as one
+   *  atomic draft. Keys are section IDs, values are section-specific
+   *  configs. Stored in a ref (not state) so registration doesn't
+   *  cause re-renders. */
+  registerSectionState: (id: string, state: unknown) => void;
+  getAllSectionState: () => Record<string, unknown>;
 };
 
 const EditModeContext = createContext<EditModeContextValue | null>(null);
@@ -74,6 +83,17 @@ export function EditModeProvider({
     setPublishStatus("clean");
   }, []);
 
+  // Section registry lives in a ref so registrations don't trigger
+  // re-renders on the whole tree.
+  const sectionStates = useRef<Record<string, unknown>>({});
+  const registerSectionState = useCallback((id: string, state: unknown) => {
+    sectionStates.current[id] = state;
+  }, []);
+  const getAllSectionState = useCallback(
+    () => ({ ...sectionStates.current }),
+    []
+  );
+
   const value = useMemo<EditModeContextValue>(
     () => ({
       isEditMode,
@@ -83,9 +103,20 @@ export function EditModeProvider({
       setPublishStatus,
       markDirty,
       markClean,
-      hasUnsaved
+      hasUnsaved,
+      registerSectionState,
+      getAllSectionState
     }),
-    [isEditMode, publishStatus, toggleEditMode, markDirty, markClean, hasUnsaved]
+    [
+      isEditMode,
+      publishStatus,
+      toggleEditMode,
+      markDirty,
+      markClean,
+      hasUnsaved,
+      registerSectionState,
+      getAllSectionState
+    ]
   );
 
   return (

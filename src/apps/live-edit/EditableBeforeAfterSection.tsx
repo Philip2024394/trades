@@ -8,8 +8,8 @@
 
 "use client";
 
-import { Plus, X } from "lucide-react";
-import { useState } from "react";
+import { ChevronDown, ChevronUp, Plus, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { BeforeAfterViewer } from "@/apps/before-after/BeforeAfterViewer";
 import { matchBeforeAfterForMerchant } from "@/lib/before-after/library";
 import type {
@@ -56,6 +56,25 @@ export function EditableBeforeAfterSection({
   const [editing, setEditing] = useState(false);
 
   const matchedLibrary = matchBeforeAfterForMerchant(merchantTradeKeywords);
+
+  // Report section state to the shell's auto-save registry
+  useEffect(() => {
+    editCtx.registerSectionState(id, { pairs, heading, subhead });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, pairs, heading, subhead]);
+
+  const movePair = (pairId: string, direction: "up" | "down") => {
+    setPairs((prev) => {
+      const idx = prev.findIndex((p) => p.id === pairId);
+      if (idx < 0) return prev;
+      const targetIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const next = [...prev];
+      [next[idx], next[targetIdx]] = [next[targetIdx], next[idx]];
+      return next;
+    });
+    editCtx.markDirty();
+  };
 
   const addFromLibrary = (entry: BeforeAfterLibraryEntry) => {
     if (pairs.length >= MAX_PAIRS) return;
@@ -154,11 +173,31 @@ export function EditableBeforeAfterSection({
                 </div>
               ) : (
                 <ul className="flex flex-col gap-2">
-                  {pairs.map((p) => (
+                  {pairs.map((p, idx) => (
                     <li
                       key={p.id}
                       className="flex gap-2 rounded-lg border border-neutral-200 bg-white p-2"
                     >
+                      <div className="flex flex-col gap-0.5">
+                        <button
+                          type="button"
+                          onClick={() => movePair(p.id, "up")}
+                          disabled={idx === 0}
+                          aria-label="Move up"
+                          className="rounded-md border border-neutral-200 bg-white p-0.5 text-neutral-600 transition hover:bg-neutral-100 disabled:opacity-30 disabled:hover:bg-white"
+                        >
+                          <ChevronUp className="h-3 w-3" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => movePair(p.id, "down")}
+                          disabled={idx === pairs.length - 1}
+                          aria-label="Move down"
+                          className="rounded-md border border-neutral-200 bg-white p-0.5 text-neutral-600 transition hover:bg-neutral-100 disabled:opacity-30 disabled:hover:bg-white"
+                        >
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
+                      </div>
                       <img
                         src={p.before_url}
                         alt=""
