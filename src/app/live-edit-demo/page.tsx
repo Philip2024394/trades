@@ -8,10 +8,13 @@
 import { useState } from "react";
 import { HeroSwapSlot } from "@/apps/hero-swap";
 import {
+  EditableBeforeAfterSection,
   EditableSection,
   EditableTextSection,
   LiveEditShell
 } from "@/apps/live-edit";
+import { matchBeforeAfterForMerchant } from "@/apps/before-after";
+import type { BeforeAfterPair } from "@/apps/before-after";
 
 const PERSONAS = [
   {
@@ -24,25 +27,65 @@ const PERSONAS = [
       "loft ladders showroom",
       "loft ladder company"
     ],
+    ba_keywords: ["internal door replacement", "door replacement"],
     headline: "Fitted in an afternoon. Guaranteed for 10 years.",
     subhead: "UK-wide loft ladder supply + installation, from £249.",
     ctaLabel: "Book a survey"
   },
   {
-    id: "site-carpenter",
-    label: "Site Carpenter",
+    id: "roofer",
+    label: "Roofer",
     keywords: [
-      "site carpenter",
-      "first-fix carpenter",
-      "carpenter formwork",
-      "roofing carpenter",
-      "carpenter roofing"
+      "roof tiling",
+      "slate roof repair",
+      "roof slate renovation",
+      "roofer"
     ],
-    headline: "First-fix carpentry. On site, on time.",
-    subhead: "Frames, roofs, formwork. 15 years across new-build + refurb.",
-    ctaLabel: "Get a quote"
+    ba_keywords: [
+      "roof tiling",
+      "roof slate renovation",
+      "slate roof repair"
+    ],
+    headline: "Slate roofs re-done properly. First time.",
+    subhead: "20 years on UK roofs. Fully insured. Free callout.",
+    ctaLabel: "Get a callout"
+  },
+  {
+    id: "extension-builder",
+    label: "Extension Builder",
+    keywords: [
+      "house extension",
+      "single storey extension",
+      "extension builder",
+      "house renovation"
+    ],
+    ba_keywords: [
+      "house extension",
+      "house renovation",
+      "house building"
+    ],
+    headline: "Your extension, delivered. On time. On budget.",
+    subhead: "Full design + build. 30+ projects across Yorkshire.",
+    ctaLabel: "Book a survey"
   }
 ];
+
+/** Pre-populate the section with up to 3 pairs matching the merchant's
+ *  trade so the demo shows a full 1-main + 2-thumbnail viewer right
+ *  away. In production the merchant starts empty and adds their own. */
+function initialBeforeAfterPairs(keywords: string[]): BeforeAfterPair[] {
+  const matches = matchBeforeAfterForMerchant(keywords).slice(0, 3);
+  return matches.map((entry) => ({
+    id: entry.id,
+    mode: entry.mode,
+    before_url: entry.image_url,
+    orientation: entry.orientation,
+    composite_split: entry.composite_split,
+    before_label: entry.before_label,
+    after_label: entry.after_label,
+    caption: entry.subject
+  }));
+}
 
 export default function LiveEditDemoPage() {
   const [personaId, setPersonaId] = useState(PERSONAS[0].id);
@@ -126,6 +169,17 @@ export default function LiveEditDemoPage() {
                   "Real reviews. Fixed prices. A tradesperson who returns your call.",
                 ctaLabel: "See recent work"
               }}
+            />
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+            <EditableBeforeAfterSection
+              key={`ba-${personaId}`}
+              id="before-after-block"
+              merchantTradeKeywords={persona.ba_keywords}
+              heading="Before / After"
+              subhead={`Real ${persona.label.toLowerCase()} jobs. Drag the slider to compare.`}
+              initialPairs={initialBeforeAfterPairs(persona.ba_keywords)}
             />
           </div>
 

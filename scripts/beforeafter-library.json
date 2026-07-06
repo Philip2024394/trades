@@ -1,0 +1,214 @@
+{
+  "$schema_version": "1.0.0",
+  "$generated_by": "Claude image scan session 2026-07-06",
+  "$notes": "Before/After showcase library. Powers the EditableBeforeAfterSection. Each entry is either 'dual' (2 separate URLs) or 'composite' (1 URL with before+after merged). Strict-match rule enforced: merchants only see pairs matching their trade_keywords.",
+  "entries": [
+    {
+      "id": "fence-replacement-02_29_46",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_29_46%20PM.png",
+      "subject": "Weathered old timber garden fence transformed to premium tanalised fence with LED integrated lighting, dark planted borders, immaculate lawn",
+      "keywords_strict": [
+        "garden fence replacement",
+        "wooden fence replacement",
+        "fence installation",
+        "garden fencing",
+        "fencer service",
+        "fence upgrade"
+      ],
+      "excluded_trades": ["carpenter interior", "plasterer", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "dramatic-transformation / landscape upgrade",
+      "notes": "Pre-labelled composite. Top half = before, bottom half = after."
+    },
+    {
+      "id": "house-renovation-02_28_29",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_28_29%20PM.png",
+      "subject": "Full house renovation transformation, top-bottom composite",
+      "keywords_strict": [
+        "house renovation",
+        "property renovation",
+        "full home refurbishment",
+        "house transformation",
+        "renovation contractor",
+        "home renovation"
+      ],
+      "excluded_trades": ["single-trade", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "full-scope transformation",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "shed-replacement-02_26_16",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_26_16%20PM.png",
+      "subject": "Old rotten garden shed replaced with new timber shed",
+      "keywords_strict": [
+        "garden shed replacement",
+        "shed installer",
+        "shed replacement",
+        "wooden shed supplier",
+        "shed installation service"
+      ],
+      "excluded_trades": ["metal shed supplier", "plasterer", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "before-after showcase",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "house-building-02_24_25",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_24_25%20PM.png",
+      "subject": "Ground clearance/foundation phase to completed house build",
+      "keywords_strict": [
+        "house building",
+        "new build construction",
+        "custom home builder",
+        "residential builder",
+        "new build contractor",
+        "self build contractor"
+      ],
+      "excluded_trades": ["single-trade", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "ground-up transformation",
+      "notes": "Pre-labelled composite. Full new-build showcase."
+    },
+    {
+      "id": "plastering-02_23_23",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_23_23%20PM.png",
+      "subject": "Rough / damaged wall surface transformed to smooth skim-plastered finish",
+      "keywords_strict": [
+        "plastering",
+        "plasterer",
+        "wall plastering",
+        "skim plaster finish",
+        "interior plastering",
+        "plaster repair"
+      ],
+      "excluded_trades": ["carpenter", "roofer", "decorator", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "surface-finish transformation",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "roof-tiling-02_21_17",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_21_17%20PM.png",
+      "subject": "Worn concrete tile roof to fresh new-tile roof",
+      "keywords_strict": [
+        "roof tiling",
+        "roof tile replacement",
+        "roofer",
+        "roof re-tile",
+        "tile roof replacement",
+        "roof restoration"
+      ],
+      "excluded_trades": ["carpenter", "plasterer", "decorator", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "roof upgrade transformation",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "roof-slate-02_20_09",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_20_09%20PM.png",
+      "subject": "Damaged slate roof to freshly replaced slate roof",
+      "keywords_strict": [
+        "roof slate renovation",
+        "slate roof repair",
+        "slate roof replacement",
+        "slate roofer",
+        "slate roofing"
+      ],
+      "excluded_trades": ["carpenter", "plasterer", "decorator", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "slate roof transformation",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "house-extension-02_17_53",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_17_53%20PM.png",
+      "subject": "House pre-extension to completed extension build",
+      "keywords_strict": [
+        "house extension",
+        "single storey extension",
+        "extension builder",
+        "rear extension",
+        "home extension contractor"
+      ],
+      "excluded_trades": ["single-trade", "loft ladders"],
+      "orientation": "vertical",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "extension transformation",
+      "notes": "Pre-labelled composite."
+    },
+    {
+      "id": "window-replacement-02_17_10",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_17_10%20PM.png",
+      "subject": "Old timber sash windows to modern white UPVC windows",
+      "keywords_strict": [
+        "window replacement",
+        "window installer",
+        "UPVC window installation",
+        "window fitter",
+        "double glazing installer",
+        "window upgrade"
+      ],
+      "excluded_trades": ["carpenter interior", "plasterer", "loft ladders"],
+      "orientation": "horizontal",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "window transformation",
+      "notes": "Pre-labelled composite. Left half = before, right half = after (horizontal orientation)."
+    },
+    {
+      "id": "door-replacement-02_16_39",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_16_39%20PM.png",
+      "subject": "Old worn internal door to fresh new internal door",
+      "keywords_strict": [
+        "internal door replacement",
+        "door replacement",
+        "door installer",
+        "door fitter",
+        "internal door supply",
+        "door hanging"
+      ],
+      "excluded_trades": ["plasterer", "roofer", "loft ladders"],
+      "orientation": "horizontal",
+      "mode": "composite",
+      "composite_split": 50,
+      "before_label": "BEFORE",
+      "after_label": "AFTER",
+      "vibe": "door transformation",
+      "notes": "Pre-labelled composite. Left/right orientation."
+    }
+  ]
+}

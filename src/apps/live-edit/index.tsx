@@ -9,6 +9,9 @@ export type { EditableSectionProps } from "./EditableSection";
 export { EditableTextSection } from "./EditableTextSection";
 export type { EditableTextSectionProps } from "./EditableTextSection";
 
+export { EditableBeforeAfterSection } from "./EditableBeforeAfterSection";
+export type { EditableBeforeAfterSectionProps } from "./EditableBeforeAfterSection";
+
 export {
   EditModeProvider,
   useEditMode,
