@@ -11,9 +11,20 @@ import {
   matchImagesForMerchant,
   siblingsForImage
 } from "@/lib/hero-swap/library";
+import type {
+  AspectRatio,
+  CropFocalPoint
+} from "@/lib/hero-swap/imageCrop";
 import {
   DEFAULT_HERO_EDITS
 } from "@/lib/hero-swap/types";
+
+const DEFAULT_FOCAL: CropFocalPoint = { x: 50, y: 50 };
+const DEFAULT_FOCALS: Record<AspectRatio, CropFocalPoint> = {
+  "16:9": { ...DEFAULT_FOCAL },
+  "1:1": { ...DEFAULT_FOCAL },
+  "3:4": { ...DEFAULT_FOCAL }
+};
 import type {
   HeroEdits,
   HeroImage,
@@ -53,6 +64,9 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
   );
   const [edits, setEdits] = useState<HeroEdits>(DEFAULT_HERO_EDITS);
   const [uploadUrl, setUploadUrl] = useState<string | null>(null);
+  const [uploadFocals, setUploadFocals] = useState<
+    Record<AspectRatio, CropFocalPoint>
+  >(DEFAULT_FOCALS);
 
   const heroTextColor = options.heroTextColor ?? "#ffffff";
 
@@ -115,7 +129,15 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
 
   const setUpload = useCallback((dataUrl: string | null) => {
     setUploadUrl(dataUrl);
+    setUploadFocals(DEFAULT_FOCALS);
   }, []);
+
+  const setUploadFocal = useCallback(
+    (aspect: AspectRatio, focal: CropFocalPoint) => {
+      setUploadFocals((prev) => ({ ...prev, [aspect]: focal }));
+    },
+    []
+  );
 
   return {
     // library-matched images (only those legal for merchant's trade)
@@ -130,13 +152,16 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     suggestion,
     // sibling group
     siblings,
+    // upload focals per aspect
+    uploadFocals,
     // actions
     swapToImageId,
     swapToImage,
     applyPreset,
     patchEdit,
     restoreOriginal,
-    setUpload
+    setUpload,
+    setUploadFocal
   };
 }
 

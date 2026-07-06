@@ -5,6 +5,7 @@
 "use client";
 
 import { RotateCcw, X } from "lucide-react";
+import { CropPreview } from "./CropPreview";
 import { EditControls } from "./EditControls";
 import { LibraryCarousel } from "./LibraryCarousel";
 import { PresetPicker } from "./PresetPicker";
@@ -97,6 +98,15 @@ export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
               onUpload={calc.setUpload}
               uploadUrl={calc.uploadUrl}
             />
+            {calc.uploadUrl ? (
+              <div className="mt-3">
+                <CropPreview
+                  sourceDataUrl={calc.uploadUrl}
+                  focals={calc.uploadFocals}
+                  onFocalChange={calc.setUploadFocal}
+                />
+              </div>
+            ) : null}
           </div>
 
           <div className="mb-4">
