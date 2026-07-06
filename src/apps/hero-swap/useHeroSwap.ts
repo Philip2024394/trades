@@ -8,7 +8,8 @@ import { useCallback, useMemo, useState } from "react";
 import { evaluateHeroSlot } from "@/lib/hero-swap/suggestionEngine";
 import {
   heroImageById,
-  matchImagesForMerchant
+  matchImagesForMerchant,
+  siblingsForImage
 } from "@/lib/hero-swap/library";
 import {
   DEFAULT_HERO_EDITS
@@ -73,6 +74,13 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     [slotState]
   );
 
+  /** Other images in the same sibling group as the current image.
+   *  Empty when the current image has no group. Powers the SiblingsRail. */
+  const siblings = useMemo<HeroImage[]>(
+    () => (image ? siblingsForImage(image.id) : []),
+    [image]
+  );
+
   const swapToImageId = useCallback((id: string) => {
     const found = heroImageById(id);
     if (found) {
@@ -120,6 +128,8 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     slotState,
     // advisory
     suggestion,
+    // sibling group
+    siblings,
     // actions
     swapToImageId,
     swapToImage,

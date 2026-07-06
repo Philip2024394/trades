@@ -62,3 +62,21 @@ export function groupBySibling(
   }
   return groups;
 }
+
+/** Return all images in the same sibling group as `imageId`, EXCLUDING
+ *  the image itself. Used to power the "use this series across your
+ *  site" prompt. If the image has no sibling group, returns []. */
+export function siblingsForImage(imageId: string): HeroImage[] {
+  const image = heroImageById(imageId);
+  if (!image?.sibling_group_id) return [];
+  return LIBRARY.entries.filter(
+    (e) =>
+      e.sibling_group_id === image.sibling_group_id && e.id !== image.id
+  );
+}
+
+/** Return ALL images in a sibling group (including the current). Useful
+ *  for the "preview whole series" flyout. */
+export function imagesInSiblingGroup(groupId: string): HeroImage[] {
+  return LIBRARY.entries.filter((e) => e.sibling_group_id === groupId);
+}

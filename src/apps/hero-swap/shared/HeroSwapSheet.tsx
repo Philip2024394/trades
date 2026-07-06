@@ -8,6 +8,7 @@ import { RotateCcw, X } from "lucide-react";
 import { EditControls } from "./EditControls";
 import { LibraryCarousel } from "./LibraryCarousel";
 import { PresetPicker } from "./PresetPicker";
+import { SiblingsRail } from "./SiblingsRail";
 import { SuggestionChip } from "./SuggestionChip";
 import { UploadPanel } from "./UploadPanel";
 import type { UseHeroSwapReturn } from "../useHeroSwap";
@@ -68,6 +69,28 @@ export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
               onSelect={calc.swapToImageId}
             />
           </div>
+
+          {calc.image && calc.siblings.length > 0 ? (
+            <div className="mb-4">
+              <SiblingsRail
+                currentImage={calc.image}
+                siblings={calc.siblings}
+                onSelectSibling={calc.swapToImageId}
+                onApplyAcrossSite={() => {
+                  // Merchant persistence hook — see PLATFORM_HERO_SWAP.md.
+                  // For now this just gives a visual confirmation. In
+                  // production the platform saves the sibling_group_id
+                  // to the merchant's page-hero settings so all pages
+                  // draw from the same series.
+                  if (typeof window !== "undefined") {
+                    window.alert(
+                      "In production, this saves the series across your landing, about, and service pages."
+                    );
+                  }
+                }}
+              />
+            </div>
+          ) : null}
 
           <div className="mb-4">
             <UploadPanel
