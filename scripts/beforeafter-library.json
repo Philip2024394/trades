@@ -43,7 +43,8 @@
       "before_label": "BEFORE",
       "after_label": "AFTER",
       "vibe": "full-scope transformation",
-      "notes": "Pre-labelled composite."
+      "notes": "Pre-labelled composite.",
+      "sibling_group_id": "house-build-refurb-series"
     },
     {
       "id": "shed-replacement-02_26_16",
@@ -84,7 +85,8 @@
       "before_label": "BEFORE",
       "after_label": "AFTER",
       "vibe": "ground-up transformation",
-      "notes": "Pre-labelled composite. Full new-build showcase."
+      "notes": "Pre-labelled composite. Full new-build showcase.",
+      "sibling_group_id": "house-build-refurb-series"
     },
     {
       "id": "plastering-02_23_23",
@@ -126,7 +128,8 @@
       "before_label": "BEFORE",
       "after_label": "AFTER",
       "vibe": "roof upgrade transformation",
-      "notes": "Pre-labelled composite."
+      "notes": "Pre-labelled composite.",
+      "sibling_group_id": "roof-transformation-series"
     },
     {
       "id": "roof-slate-02_20_09",
@@ -146,7 +149,8 @@
       "before_label": "BEFORE",
       "after_label": "AFTER",
       "vibe": "slate roof transformation",
-      "notes": "Pre-labelled composite."
+      "notes": "Pre-labelled composite.",
+      "sibling_group_id": "roof-transformation-series"
     },
     {
       "id": "house-extension-02_17_53",
@@ -166,7 +170,8 @@
       "before_label": "BEFORE",
       "after_label": "AFTER",
       "vibe": "extension transformation",
-      "notes": "Pre-labelled composite."
+      "notes": "Pre-labelled composite.",
+      "sibling_group_id": "house-build-refurb-series"
     },
     {
       "id": "window-replacement-02_17_10",

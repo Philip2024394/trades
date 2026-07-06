@@ -9,7 +9,10 @@ import { useState } from "react";
 import { HeroSwapSlot } from "@/apps/hero-swap";
 import {
   EditableBeforeAfterSection,
+  EditableContactSection,
+  EditableGallerySection,
   EditableSection,
+  EditableServicesSection,
   EditableTextSection,
   LiveEditShell
 } from "@/apps/live-edit";
@@ -173,6 +176,13 @@ export default function LiveEditDemoPage() {
           </div>
 
           <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+            <EditableServicesSection
+              key={`svc-${personaId}`}
+              id="services-block"
+            />
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
             <EditableBeforeAfterSection
               key={`ba-${personaId}`}
               id="before-after-block"
@@ -180,6 +190,25 @@ export default function LiveEditDemoPage() {
               heading="Before / After"
               subhead={`Real ${persona.label.toLowerCase()} jobs. Drag the slider to compare.`}
               initialPairs={initialBeforeAfterPairs(persona.ba_keywords)}
+            />
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+            <EditableGallerySection
+              key={`gallery-${personaId}`}
+              id="gallery-block"
+            />
+          </div>
+
+          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+            <EditableContactSection
+              key={`contact-${personaId}`}
+              id="contact-block"
+              initial={{
+                phone: "020 7946 0000",
+                whatsapp: "+44 7700 900000",
+                email: `hello@${personaId.replace(/-/g, "")}.example.com`
+              }}
             />
           </div>
 

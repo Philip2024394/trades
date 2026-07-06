@@ -60,4 +60,7 @@ export type BeforeAfterLibraryEntry = {
   after_label?: string;
   vibe?: string;
   notes?: string;
+  /** Optional — groups related showcases (e.g. all roof jobs from
+   *  the same photoshoot). Powers sibling swap. */
+  sibling_group_id?: string;
 };

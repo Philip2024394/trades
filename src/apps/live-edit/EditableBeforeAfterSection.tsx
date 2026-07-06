@@ -11,11 +11,15 @@
 import { ChevronDown, ChevronUp, Plus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { BeforeAfterViewer } from "@/apps/before-after/BeforeAfterViewer";
-import { matchBeforeAfterForMerchant } from "@/lib/before-after/library";
+import {
+  matchBeforeAfterForMerchant,
+  siblingsFromBeforeAfterList
+} from "@/lib/before-after/library";
 import type {
   BeforeAfterLibraryEntry,
   BeforeAfterPair
 } from "@/lib/before-after/types";
+import { Sparkles } from "lucide-react";
 import { useEditMode } from "./EditModeContext";
 import { EditableSection } from "./EditableSection";
 
@@ -244,6 +248,57 @@ export function EditableBeforeAfterSection({
                 </ul>
               )}
             </div>
+
+            {/* Sibling series — if any of the current pairs belongs to a
+                library series, offer to add the whole series in one tap. */}
+            {(() => {
+              // Find the first current pair that has siblings in the
+              // matched library not yet added
+              const pairIdsInPairs = new Set(pairs.map((p) => p.id));
+              const availableSiblings = pairs.flatMap((p) => {
+                const sibs = siblingsFromBeforeAfterList(matchedLibrary, p.id);
+                return sibs.filter((s) => !pairIdsInPairs.has(s.id));
+              });
+              // Dedupe by id
+              const dedupedSiblings = Array.from(
+                new Map(availableSiblings.map((s) => [s.id, s])).values()
+              );
+              if (dedupedSiblings.length === 0) return null;
+              const remainingSlots = MAX_PAIRS - pairs.length;
+              const takeCount = Math.min(remainingSlots, dedupedSiblings.length);
+              return (
+                <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
+                  <div className="mb-2 flex items-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5 text-blue-600" />
+                    <span className="text-[11px] font-semibold uppercase tracking-wide text-blue-900">
+                      Part of a series ({dedupedSiblings.length})
+                    </span>
+                  </div>
+                  <p className="mb-2 text-[11px] text-blue-800">
+                    Your current pairs belong to a shared series. Add the rest
+                    with one tap for consistent brand visuals across your
+                    site.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      dedupedSiblings.slice(0, takeCount).forEach((s) => {
+                        setPairs((prev) =>
+                          prev.length >= MAX_PAIRS ? prev : [...prev, entryToPair(s)]
+                        );
+                      });
+                      editCtx.markDirty();
+                    }}
+                    disabled={remainingSlots === 0}
+                    className="rounded-md bg-blue-600 px-2.5 py-1 text-[11px] font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+                  >
+                    {remainingSlots === 0
+                      ? "No slots left"
+                      : `Add ${takeCount} more from series`}
+                  </button>
+                </div>
+              );
+            })()}
 
             {/* Suggested from library */}
             {matchedLibrary.length > 0 && pairs.length < MAX_PAIRS ? (
