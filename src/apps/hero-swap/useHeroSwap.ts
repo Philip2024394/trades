@@ -12,6 +12,7 @@ import {
   siblingsForImage,
   siblingsFromList
 } from "@/lib/hero-swap/library";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import { useHeroLibrary } from "./useHeroLibrary";
 import type {
   AspectRatio,
@@ -131,6 +132,16 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     () => (slotState ? evaluateHeroSlot(slotState) : null),
     [slotState]
   );
+
+  // Signal the LiveEditShell that unsaved changes exist so the
+  // Publish button lights up. No-op when outside a shell.
+  const editCtx = useEditModeOptional();
+  useEffect(() => {
+    if (!editCtx) return;
+    // Skip the initial render (nothing changed yet)
+    editCtx.markDirty();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [image, preset, edits, uploadUrl]);
 
   /** Other images in the same sibling group as the current image.
    *  Empty when the current image has no group. Powers the SiblingsRail.

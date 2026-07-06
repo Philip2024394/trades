@@ -5,6 +5,7 @@
 "use client";
 
 import { useState } from "react";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import { ChangeImageChip } from "./shared/ChangeImageChip";
 import { HeroPreview } from "./shared/HeroPreview";
 import { HeroSwapSheet } from "./shared/HeroSwapSheet";
@@ -29,6 +30,12 @@ export function HeroSwapSlot({
 }: HeroSwapSlotProps) {
   const [open, setOpen] = useState(false);
   const calc = useHeroSwap(calcOptions);
+  const editCtx = useEditModeOptional();
+  // When inside a LiveEditShell, the chip only appears in edit mode.
+  // When standalone (no shell), the chip follows the `editable` prop
+  // as before — preserves backwards-compatible demo behaviour.
+  const showChip =
+    editable && (editCtx == null ? true : editCtx.isEditMode);
 
   if (calc.isLoadingLibrary && !calc.image) {
     return (
@@ -65,7 +72,7 @@ export function HeroSwapSlot({
           ctaLabel={ctaLabel}
           onCtaClick={onCtaClick}
         />
-        {editable ? (
+        {showChip ? (
           <ChangeImageChip
             matchedCount={calc.matchedImages.length}
             onClick={() => setOpen(true)}
