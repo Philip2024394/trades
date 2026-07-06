@@ -4,7 +4,7 @@
 
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { evaluateHeroSlot } from "@/lib/hero-swap/suggestionEngine";
 import {
   heroImageById,
@@ -42,6 +42,14 @@ export type UseHeroSwapOptions = {
   initialPreset?: HeroPreset;
   /** Hero text colour used for contrast checks. */
   heroTextColor?: string;
+  /** Slot key for persistence (e.g. "landing_hero", "about_hero").
+   *  When set, changes auto-save to /api/hero-library/save-slot with
+   *  a 600ms debounce. Omit for demo mode with no persistence. */
+  slotKey?: string;
+  /** Other slot keys that belong to the same site — used by the
+   *  "Apply series across site" bulk write. Defaults to just the
+   *  current slotKey (no bulk write). */
+  siteSlotKeys?: string[];
 };
 
 export function useHeroSwap(options: UseHeroSwapOptions) {
@@ -139,6 +147,76 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     []
   );
 
+  // ---- Persistence (auto-save with debounce) ----
+  const [saveState, setSaveState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const persistCurrentSlot = useCallback(async () => {
+    if (!options.slotKey || !image) return;
+    setSaveState("saving");
+    try {
+      const res = await fetch("/api/hero-library/save-slot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          slotKey: options.slotKey,
+          imageId: image.id,
+          preset,
+          edits,
+          uploadUrl,
+          uploadFocals
+        })
+      });
+      setSaveState(res.ok ? "saved" : "error");
+    } catch {
+      setSaveState("error");
+    }
+  }, [options.slotKey, image, preset, edits, uploadUrl, uploadFocals]);
+
+  // Debounced auto-save on any state change
+  useEffect(() => {
+    if (!options.slotKey || !image) return;
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      void persistCurrentSlot();
+    }, 600);
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, [options.slotKey, image, preset, edits, uploadUrl, uploadFocals, persistCurrentSlot]);
+
+  /** Apply the whole sibling series to every configured site slot.
+   *  Cycles through siblings in order — e.g. landing gets the current
+   *  image, about gets sibling[0], services gets sibling[1], etc. */
+  const applySeriesAcrossSite = useCallback(async () => {
+    if (!image || !siblings.length || !options.siteSlotKeys?.length) return;
+    const slots = options.siteSlotKeys;
+    const chain = [image, ...siblings];
+    const imageIdByKey: Record<string, string> = {};
+    slots.forEach((slotKey, i) => {
+      const chosen = chain[i % chain.length];
+      imageIdByKey[slotKey] = chosen.id;
+    });
+    setSaveState("saving");
+    try {
+      const res = await fetch("/api/hero-library/save-slot", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          applyAcrossSlots: slots,
+          imageIdByKey,
+          preset,
+          edits
+        })
+      });
+      setSaveState(res.ok ? "saved" : "error");
+    } catch {
+      setSaveState("error");
+    }
+  }, [image, siblings, options.siteSlotKeys, preset, edits]);
+
   return {
     // library-matched images (only those legal for merchant's trade)
     matchedImages,
@@ -154,6 +232,8 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     siblings,
     // upload focals per aspect
     uploadFocals,
+    // persistence
+    saveState,
     // actions
     swapToImageId,
     swapToImage,
@@ -161,7 +241,8 @@ export function useHeroSwap(options: UseHeroSwapOptions) {
     patchEdit,
     restoreOriginal,
     setUpload,
-    setUploadFocal
+    setUploadFocal,
+    applySeriesAcrossSite
   };
 }
 

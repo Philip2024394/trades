@@ -103,6 +103,8 @@ export default function HeroSwapDemoPage() {
             headline={persona.headline}
             subhead={persona.subhead}
             ctaLabel={persona.ctaLabel}
+            slotKey="landing_hero"
+            siteSlotKeys={["landing_hero", "about_hero", "services_hero", "contact_hero"]}
           />
         </div>
 

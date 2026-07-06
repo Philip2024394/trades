@@ -78,18 +78,24 @@ export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
                 siblings={calc.siblings}
                 onSelectSibling={calc.swapToImageId}
                 onApplyAcrossSite={() => {
-                  // Merchant persistence hook — see PLATFORM_HERO_SWAP.md.
-                  // For now this just gives a visual confirmation. In
-                  // production the platform saves the sibling_group_id
-                  // to the merchant's page-hero settings so all pages
-                  // draw from the same series.
-                  if (typeof window !== "undefined") {
-                    window.alert(
-                      "In production, this saves the series across your landing, about, and service pages."
-                    );
-                  }
+                  void calc.applySeriesAcrossSite();
                 }}
               />
+            </div>
+          ) : null}
+          {calc.saveState !== "idle" ? (
+            <div className="mb-3 flex items-center gap-1.5 text-[11px]">
+              {calc.saveState === "saving" ? (
+                <span className="text-neutral-500">Saving…</span>
+              ) : null}
+              {calc.saveState === "saved" ? (
+                <span className="text-emerald-700">✓ Saved to your site</span>
+              ) : null}
+              {calc.saveState === "error" ? (
+                <span className="text-red-700">
+                  Save failed — will retry when you edit next
+                </span>
+              ) : null}
             </div>
           ) : null}
 
