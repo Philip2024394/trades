@@ -21,6 +21,7 @@ const NAV_ITEMS: { href: string; label: string; live: boolean }[] = [
   { href: "/admin/yard", label: "Yard", live: true },
   { href: "/admin/news", label: "News", live: true },
   { href: "/admin/affiliates", label: "Affiliates", live: true },
+  { href: "/admin/hero-library", label: "Hero Library", live: true },
   { href: "/admin/reports", label: "Reports", live: false },
   { href: "/admin/password-recovery", label: "Password Reset", live: true }
 ];
