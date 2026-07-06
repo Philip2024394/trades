@@ -1,0 +1,112 @@
+// HeroSwapSheet — the sheet that opens when the merchant taps
+// "Change image" on the hero. Combines LibraryCarousel + UploadPanel
+// + PresetPicker + EditControls + SuggestionChip + a Restore button.
+
+"use client";
+
+import { RotateCcw, X } from "lucide-react";
+import { EditControls } from "./EditControls";
+import { LibraryCarousel } from "./LibraryCarousel";
+import { PresetPicker } from "./PresetPicker";
+import { SuggestionChip } from "./SuggestionChip";
+import { UploadPanel } from "./UploadPanel";
+import type { UseHeroSwapReturn } from "../useHeroSwap";
+
+export type HeroSwapSheetProps = {
+  open: boolean;
+  onClose: () => void;
+  calc: UseHeroSwapReturn;
+};
+
+export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
+  if (!open) return null;
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-40 flex items-end justify-center">
+      <div
+        className="absolute inset-0 bg-black/40"
+        aria-hidden
+        onClick={onClose}
+      />
+      <div className="relative z-10 w-full max-w-3xl overflow-hidden rounded-t-3xl bg-white shadow-2xl">
+        <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+          <div>
+            <div className="text-[13px] font-semibold text-neutral-900">
+              Change your hero
+            </div>
+            <div className="text-[11px] text-neutral-500">
+              Suggested for your trade — swap in one tap
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={calc.restoreOriginal}
+              className="inline-flex items-center gap-1.5 rounded-md border border-neutral-200 bg-white px-2.5 py-1.5 text-[11px] font-medium text-neutral-700 transition hover:bg-neutral-50"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              Restore
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              className="rounded-md p-1.5 text-neutral-500 transition hover:bg-neutral-100"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
+          <div className="mb-4">
+            <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
+              Suggested for your trade ({calc.matchedImages.length})
+            </div>
+            <LibraryCarousel
+              images={calc.matchedImages}
+              currentImageId={calc.image?.id}
+              onSelect={calc.swapToImageId}
+            />
+          </div>
+
+          <div className="mb-4">
+            <UploadPanel
+              onUpload={calc.setUpload}
+              uploadUrl={calc.uploadUrl}
+            />
+          </div>
+
+          <div className="mb-4">
+            <PresetPicker
+              current={calc.preset}
+              onChange={calc.applyPreset}
+              suggested={calc.suggestion?.suggest_preset}
+            />
+          </div>
+
+          {calc.suggestion ? (
+            <div className="mb-4">
+              <SuggestionChip
+                suggestion={calc.suggestion}
+                onApply={() => {
+                  if (calc.suggestion?.suggest_preset) {
+                    calc.applyPreset(calc.suggestion.suggest_preset);
+                  }
+                }}
+                onDismiss={() => {
+                  // no-op — the suggestion is derived, it'll re-appear
+                  // if the underlying condition still matches. This
+                  // dismiss is UI-only (visual acknowledgement).
+                }}
+              />
+            </div>
+          ) : null}
+
+          <div className="mb-2">
+            <EditControls edits={calc.edits} onChange={calc.patchEdit} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
