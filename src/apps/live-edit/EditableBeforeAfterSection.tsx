@@ -37,7 +37,11 @@ function entryToPair(entry: BeforeAfterLibraryEntry): BeforeAfterPair {
   return {
     id: entry.id,
     mode: entry.mode,
-    before_url: entry.image_url,
+    // Route the library URL through the watermark endpoint so public
+    // views get the preview-tier watermark + SEO backlink. Merchants
+    // with an active licence get standard/clean tier automatically
+    // once Phase C wires up image_licenses lookup.
+    before_url: `/api/image/serve/${encodeURIComponent(entry.id)}`,
     orientation: entry.orientation,
     composite_split: entry.composite_split,
     before_label: entry.before_label,
@@ -319,7 +323,7 @@ export function EditableBeforeAfterSection({
                       >
                         <div className="aspect-[16/9] w-full overflow-hidden bg-neutral-100">
                           <img
-                            src={entry.image_url}
+                            src={`/api/image/serve/${encodeURIComponent(entry.id)}`}
                             alt=""
                             className="h-full w-full object-cover"
                             loading="lazy"

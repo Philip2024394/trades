@@ -17,7 +17,7 @@ import {
 } from "../processor";
 
 const stub: PaymentProcessor = {
-  providerId: "amazon_pay",
+  providerId: "amazon-pay",
   async createSession() {
     return {
       kind: "not-implemented",

@@ -22,6 +22,7 @@ import type { ComponentType } from "react";
 import { useEffect, useState } from "react";
 import { useEditMode } from "./EditModeContext";
 import { EditableSection } from "./EditableSection";
+import { useSectionPlacement } from "./useSectionPlacement";
 
 export type ServiceItem = {
   id: string;
@@ -97,6 +98,18 @@ function newServiceId(): string {
   return `svc-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function gridColsForVariant(variant: string): string {
+  switch (variant) {
+    case "2col":
+      return "md:grid-cols-2";
+    case "4col":
+      return "md:grid-cols-2 lg:grid-cols-4";
+    case "3col":
+    default:
+      return "md:grid-cols-3";
+  }
+}
+
 export function EditableServicesSection({
   id,
   initial
@@ -110,6 +123,8 @@ export function EditableServicesSection({
     initial?.services ?? DEFAULT_SERVICES
   );
   const [editing, setEditing] = useState(false);
+  const { variant } = useSectionPlacement(id, "3col");
+  const gridCols = gridColsForVariant(variant);
 
   useEffect(() => {
     editCtx.registerSectionState(id, { heading, subhead, services });
@@ -179,7 +194,7 @@ export function EditableServicesSection({
             </p>
           ) : null}
         </div>
-        <div className="mx-auto grid max-w-5xl gap-3 md:grid-cols-3">
+        <div className={`mx-auto grid max-w-5xl gap-3 ${gridCols}`}>
           {services.map((svc) => {
             const Icon = ICON_MAP[svc.icon];
             return (

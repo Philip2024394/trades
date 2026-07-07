@@ -8,6 +8,7 @@ import { ChevronLeft, ChevronRight, Plus, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useEditMode } from "./EditModeContext";
 import { EditableSection } from "./EditableSection";
+import { useSectionPlacement } from "./useSectionPlacement";
 
 export type GalleryImage = {
   id: string;
@@ -28,6 +29,18 @@ function newImageId(): string {
   return `img-${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function galleryGridForVariant(variant: string): string {
+  switch (variant) {
+    case "2col":
+      return "grid-cols-2";
+    case "4col":
+      return "grid-cols-2 md:grid-cols-3 lg:grid-cols-4";
+    case "3col":
+    default:
+      return "grid-cols-2 md:grid-cols-3";
+  }
+}
+
 export function EditableGallerySection({
   id,
   initial
@@ -41,6 +54,8 @@ export function EditableGallerySection({
   const [editing, setEditing] = useState(false);
   const [lightbox, setLightbox] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { variant } = useSectionPlacement(id, "3col");
+  const gridCols = galleryGridForVariant(variant);
 
   useEffect(() => {
     editCtx.registerSectionState(id, { heading, subhead, images });
@@ -115,7 +130,7 @@ export function EditableGallerySection({
             No images yet. Tap this section in edit mode to add photos of your work.
           </div>
         ) : (
-          <div className="mx-auto grid max-w-6xl gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className={`mx-auto grid max-w-6xl gap-3 ${gridCols}`}>
             {images.map((img, idx) => (
               <button
                 key={img.id}

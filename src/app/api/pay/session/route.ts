@@ -15,10 +15,21 @@
 
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { paymentProcessors } from "@/platform/buttons/payments/processor";
-import "@/platform/buttons/payments/processors";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+// Payment processor registry is loaded on-demand inside the handler
+// so Next.js's build-time page-data collection does not evaluate the
+// entire processor barrel. This unblocks the production build without
+// affecting runtime behaviour.
+async function loadRegistry() {
+  const [{ paymentProcessors }] = await Promise.all([
+    import("@/platform/buttons/payments/processor"),
+    import("@/platform/buttons/payments/processors")
+  ]);
+  return paymentProcessors;
+}
 
 type Body = {
   brandId: string;
@@ -63,6 +74,7 @@ export async function POST(req: Request) {
     );
   }
 
+  const paymentProcessors = await loadRegistry();
   const processor = paymentProcessors.get(body.providerId);
   if (!processor) {
     return NextResponse.json(

@@ -159,11 +159,28 @@ async function loadResults(opts: {
     return (res.data ?? []) as FindCardListing[];
   }
 
+  // V2 paid-only directory rule: Sarah's search surfaces only paying
+  // merchants (premium / verified / merchant_pro). Free-tier merchants
+  // remain discoverable via ecosystem paths (Trade Circle, direct URL,
+  // banner rotation) but are excluded from directory search. The tier
+  // column is authoritative on os_business_listings; we join by id to
+  // filter without changing the SELECT / return shape of the legacy
+  // FindCardListing.
+  const { data: paidIds } = await supabaseAdmin
+    .from("os_business_listings")
+    .select("id")
+    .in("tier", ["premium", "verified", "merchant_pro"])
+    .eq("ecosystem_participation", true)
+    .is("deleted_at", null);
+  const paidIdArr = (paidIds ?? []).map((r) => r.id);
+  if (paidIdArr.length === 0) return [];
+
   let q = supabaseAdmin
     .from("hammerex_trade_off_listings")
     .select(SELECT_COLS)
     .eq("status", "live")
     .eq("country", countryLabel)
+    .in("id", paidIdArr)
     .order("rating_avg", { ascending: false, nullsFirst: false })
     .order("rating_count", { ascending: false, nullsFirst: false })
     .limit(24);

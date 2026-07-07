@@ -19,6 +19,7 @@
 import type { HammerexTradeOffListing } from "@/lib/supabase";
 import type { StudioLayoutJson } from "./schema";
 import { isAddonEnabled } from "@/lib/xratedAddons";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 const ADDON_ID_PREFIX = "addon.";
 
@@ -71,6 +72,41 @@ export async function hydrateAddonDomain(
         // The PDP hydrator (product-page route) will populate the real
         // cards when that page-level probe lands.
         addons[slug] = { cards: [], productSlug: "" };
+        break;
+      }
+      case "ai_visualiser": {
+        // Load the merchant's ticked catalogue leaves so the tile can
+        // render its trade-specific copy + so the flow knows what to
+        // pass to the design tree. If no leaves are ticked the tile
+        // won't render — the wrapper handles the empty scope silently.
+        const { data: scopeRows } = await supabaseAdmin
+          .from("app_ai_visualiser_catalogue_scope")
+          .select(
+            "leaf_slug, ai_visualiser_taxonomy_leaves!inner(display_name, synonyms)"
+          )
+          .eq("merchant_id", listing.id)
+          .eq("is_enabled", true);
+        type LeafJoin = { display_name: string; synonyms: string[] };
+        const scope = (scopeRows || []).map((r) => {
+          const rawLeaf = (
+            r as unknown as {
+              ai_visualiser_taxonomy_leaves?: LeafJoin | LeafJoin[];
+            }
+          ).ai_visualiser_taxonomy_leaves;
+          const leaf = Array.isArray(rawLeaf) ? rawLeaf[0] : rawLeaf;
+          return {
+            slug: r.leaf_slug as string,
+            display_name: leaf?.display_name ?? r.leaf_slug,
+            synonyms: leaf?.synonyms ?? []
+          };
+        });
+        addons[slug] = {
+          merchantId: listing.id,
+          merchantDisplayName:
+            listing.trading_name || listing.display_name || "us",
+          scope,
+          primaryLeafSlug: scope[0]?.slug ?? null
+        };
         break;
       }
       default:

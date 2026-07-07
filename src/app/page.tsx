@@ -1,8 +1,17 @@
-import { redirect } from "next/navigation";
+// The canonical landing page — bright warm audience gate.
 
-// Phase 1 — server-side bounce to the Xrated landing. URL re-org
-// (/trade-off/* → /*) is deferred to a Phase 2 polish so we don't
-// have to rewire dozens of internal hrefs in one go.
+import { AudienceGateBright } from "@/components/homepage/AudienceGateBright";
+
+export const metadata = {
+  title: "The Construction Notebook · XRatedTrade",
+  description:
+    "Every job. Every home. On the record. Britain's construction notebook — for homeowners and the trades who build with them."
+};
+
 export default function Home() {
-  redirect("/trade-off");
+  return (
+    <main className="bg-[#FBF6EC]">
+      <AudienceGateBright />
+    </main>
+  );
 }

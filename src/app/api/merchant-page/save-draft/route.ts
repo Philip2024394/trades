@@ -1,11 +1,13 @@
 // POST /api/merchant-page/save-draft
 //
 // Auto-save endpoint called by LiveEditShell on every debounced state
-// change. Body: { pageSlug, sections }. Merchant identity from
-// x-merchant-id header (production would use Supabase auth session).
+// change. Body: { pageSlug, sections, placements }. Merchant identity
+// from x-merchant-id header (production would use Supabase auth
+// session).
 
 import { NextResponse } from "next/server";
 import { saveDraftSections } from "@/lib/live-edit/merchantPageLoader";
+import type { PlacementsMap } from "@/lib/live-edit/merchantPageLoader";
 
 export const runtime = "nodejs";
 
@@ -17,7 +19,11 @@ export async function POST(request: Request) {
       { status: 200 }
     );
   }
-  let body: { pageSlug?: string; sections?: Record<string, unknown> };
+  let body: {
+    pageSlug?: string;
+    sections?: Record<string, unknown>;
+    placements?: PlacementsMap;
+  };
   try {
     body = await request.json();
   } catch {
@@ -29,6 +35,11 @@ export async function POST(request: Request) {
       { status: 400 }
     );
   }
-  const ok = await saveDraftSections(merchantId, body.pageSlug, body.sections);
+  const ok = await saveDraftSections(
+    merchantId,
+    body.pageSlug,
+    body.sections,
+    body.placements ?? {}
+  );
   return NextResponse.json({ ok });
 }

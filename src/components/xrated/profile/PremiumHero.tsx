@@ -137,7 +137,7 @@ export async function PremiumHero({
           }}
         />
 
-        <div className="absolute inset-y-0 left-0 z-10 flex w-full items-center px-3 sm:px-8">
+        <div className="absolute inset-y-0 left-0 z-10 flex w-full items-center px-3 pb-8 sm:px-8 sm:pb-14">
           <div className="w-full max-w-md">
             <div className="flex items-start gap-4 sm:gap-5">
               <div className="relative shrink-0">
@@ -146,9 +146,9 @@ export async function PremiumHero({
                     of 100. The avatar itself sits inset inside the ring
                     so the photo isn't obscured. */}
                 <div className="relative h-24 w-24 sm:h-28 sm:w-28">
-                  {/* Background ring (full circle, faded) + earned arc */}
+                  {/* Full amber rim around the avatar. */}
                   <svg
-                    className="absolute inset-0 h-full w-full -rotate-90"
+                    className="absolute inset-0 h-full w-full"
                     viewBox="0 0 100 100"
                     aria-hidden="true"
                   >
@@ -157,19 +157,8 @@ export async function PremiumHero({
                       cy="50"
                       r="46"
                       fill="none"
-                      stroke="rgba(255,255,255,0.18)"
-                      strokeWidth="5"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="46"
-                      fill="none"
                       stroke="#FFB300"
                       strokeWidth="5"
-                      strokeDasharray={ringCircumference.toFixed(2)}
-                      strokeDashoffset={ringDashOffset.toFixed(2)}
-                      strokeLinecap="round"
                     />
                   </svg>
                   {/* Avatar inset inside the ring */}
@@ -200,36 +189,6 @@ export async function PremiumHero({
                     )}
                   </div>
                 </div>
-                {/* Trust Score badge — replaces the X{level} badge.
-                    Shows the live 0-100 number. Click-through to the
-                    marketing page so customers can read what the number
-                    means. */}
-                <a
-                  href="/trade-off/trust"
-                  className="absolute -bottom-1.5 -right-1.5 inline-flex h-9 min-w-[2.25rem] items-center justify-center rounded-full px-2 text-sm font-extrabold ring-2 ring-black transition hover:scale-105 sm:h-11 sm:min-w-[2.75rem] sm:text-base"
-                  style={{ background: "var(--trade-accent, #FFB300)", color: "#0A0A0A" }}
-                  aria-label={`Trust Score ${trustScore}/100 — ${trustBand.label}`}
-                  title={`Trust Score ${trustScore}/100 — ${trustBand.label}. Tap to learn how the score works.`}
-                >
-                  {trustScore}
-                </a>
-                {/* Verified-check tick — smaller circle at top-right.
-                    Separate signal from the Trust Score number: the
-                    score is the gauge, the tick is the verification
-                    flag. Only renders when the Hammerex Standard flag
-                    is true. */}
-                {listing.hammerex_standard_verified && (
-                  <span
-                    className="absolute -right-1 -top-1 inline-flex h-6 w-6 items-center justify-center rounded-full ring-2 ring-black sm:h-7 sm:w-7"
-                    style={{ background: "var(--trade-accent, #FFB300)" }}
-                    aria-label="Verified by Xrated"
-                    title="Verified by Xrated"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M20 6 9 17l-5-5" />
-                    </svg>
-                  </span>
-                )}
               </div>
 
               <div className="min-w-0 flex-1">
@@ -314,39 +273,34 @@ export async function PremiumHero({
                     </svg>
                     <span className="font-semibold">{listing.city}</span>
                   </span>
-                  {rating && (
-                    <span className="inline-flex items-center gap-1">
-                      <svg width="13" height="13" viewBox="0 0 24 24" fill="#FFB300" aria-hidden="true">
-                        <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" />
-                      </svg>
-                      <span className="font-semibold">{rating}</span>
-                      <span className="text-neutral-300">({reviewCount} reviews)</span>
-                    </span>
-                  )}
                 </div>
 
-                {trustBadges.length > 0 && (
-                  <div
-                    className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-white"
-                    style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
-                  >
-                    {trustBadges.map((b) => (
-                      <span key={b.label} className="inline-flex items-center gap-1">
-                        <span
-                          className="inline-flex h-4 w-4 items-center justify-center rounded-full"
-                          style={{ background: "rgba(255,179,0,0.22)" }}
-                        >
-                          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                            <path d="M20 6 9 17l-5-5" />
-                          </svg>
-                        </span>
-                        <span className="font-semibold">{b.label}</span>
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
+
+            {trustBadges.length > 0 && (
+              <div
+                className="mt-3 flex w-full flex-nowrap items-center justify-center gap-x-3 text-[11px] text-white sm:text-xs"
+                style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
+              >
+                {trustBadges.map((b) => (
+                  <span
+                    key={b.label}
+                    className="inline-flex shrink-0 items-center gap-1 whitespace-nowrap"
+                  >
+                    <span
+                      className="inline-flex h-4 w-4 items-center justify-center rounded-full"
+                      style={{ background: "rgba(255,179,0,0.22)" }}
+                    >
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                    </span>
+                    <span className="font-semibold">{b.label}</span>
+                  </span>
+                ))}
+              </div>
+            )}
 
             {/* Hero CTAs — paid profiles get the full 3-up row
                 (Contact us / Call Now / WhatsApp). Free profiles only
@@ -380,50 +334,14 @@ export async function PremiumHero({
                     bannerUrl={heroUrl}
                   />
                 )}
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold text-white shadow-lg transition active:scale-[0.97] sm:text-sm"
-                  style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />
-                  </svg>
-                  WhatsApp
-                </a>
               </div>
-            ) : (
-              <div className="mt-4">
-                <a
-                  href={waUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex h-11 w-full items-center justify-center gap-1.5 rounded-xl text-xs font-extrabold text-white shadow-lg transition active:scale-[0.97] sm:text-sm"
-                  style={{ background: "#0F7A3F", boxShadow: "0 8px 22px rgba(15,122,63,0.45)" }}
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />
-                  </svg>
-                  Message on WhatsApp
-                </a>
-              </div>
-            )}
+            ) : null}
           </div>
         </div>
       </section>
 
       <section className="relative z-10 -mt-10 px-4 pb-4 sm:-mt-14 sm:px-6">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-1 overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl sm:grid-cols-4">
-          <StatTile
-            icon={
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFB300" aria-hidden="true">
-                <path d="m12 2 3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.56 5.82 22 7 14.14l-5-4.87 6.91-1.01L12 2z" />
-              </svg>
-            }
-            value={rating ?? "—"}
-            label="Rating"
-          />
+        <div className="mx-auto grid max-w-5xl grid-cols-3 gap-1 overflow-hidden rounded-2xl bg-neutral-900 shadow-2xl">
           <StatTile
             icon={
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -459,8 +377,12 @@ export async function PremiumHero({
                 <circle cx="18.5" cy="18.5" r="2.5" />
               </svg>
             }
-            value="Available"
-            label="Delivery"
+            value={
+              (listing.rating_count ?? 0) > 0
+                ? `${listing.rating_count}`
+                : "—"
+            }
+            label="Projects"
           />
         </div>
       </section>

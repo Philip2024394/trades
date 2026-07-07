@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { notFound, permanentRedirect } from "next/navigation";
 import { loadLivePublishedLayout } from "@/lib/studio/liveLayoutLoader";
 import { hydrateAddonDomain } from "@/lib/studio/addonDataLoader";
@@ -19,6 +20,8 @@ import { adminWhatsapp } from "@/lib/whatsapp";
 import { whatsappDigits } from "@/lib/tradeOff";
 import type { MerchantData } from "@/lib/studio/sectionTypes";
 import { TradeProfileHeader } from "@/components/xrated/TradeProfileHeader";
+import { TradeProfileStickyCTA } from "@/components/xrated/TradeProfileStickyCTA";
+import { ServicesGrid } from "@/components/xrated/profile/ServicesGrid";
 import { FloatingBackToMerchant } from "@/components/trade-off/FloatingBackToMerchant";
 import { PremiumHero } from "@/components/xrated/profile/PremiumHero";
 import { HeroStatusStrip } from "@/components/xrated/HeroStatusStrip";
@@ -27,7 +30,7 @@ import { VideoLightbox } from "@/components/xrated/profile/VideoLightbox";
 import { EnquireButton } from "@/components/xrated/profile/EnquireButton";
 import { ServicesTabbedGallery } from "@/components/xrated/profile/service/ServicesTabbedGallery";
 import { TeamGrid } from "@/components/xrated/profile/TeamGrid";
-import { RecommendedTrades } from "@/components/xrated/profile/RecommendedTrades";
+import { TradeCircleRail } from "@/components/xrated/TradeCircleRail";
 import { AboutFlipPanel } from "@/components/xrated/profile/AboutFlipPanel";
 import { TradeIcon } from "@/lib/tradeIcons";
 import { ReviewsCarousel } from "@/components/xrated/profile/ReviewsCarousel";
@@ -411,6 +414,11 @@ export default async function TradiePublicProfilePage({
   // we don't need a signed token — anyone can preview, the tradie's owner
   // is the only person likely to care. A fixed top-bar makes it obvious.
   const previewStandard = previewRaw === "standard";
+  // Embedded-in-iframe mode (e.g. inside the /join iPhone preview).
+  // We suppress the fixed sticky CTA + let the parent page own the CTA
+  // instead — inside a short iframe the sticky overlaps the hero.
+  const embedRaw = Array.isArray(sp.embed) ? sp.embed[0] : sp.embed;
+  const isEmbed = embedRaw === "1";
   const { listing, projects, reviews } = await loadListing(slug);
   if (!listing) {
     // Before 404'ing, check the slug-redirect table — a tradesperson
@@ -561,7 +569,7 @@ export default async function TradiePublicProfilePage({
 
   return (
     <main
-      className="flex flex-1 flex-col pb-20 md:pb-0"
+      className="flex flex-1 flex-col"
       style={
         {
           ...brandVars,
@@ -572,6 +580,17 @@ export default async function TradiePublicProfilePage({
     >
       <XratedViewTracker page="profile" listingId={listing.id} />
       {previewStandard && <PreviewModeBar slug={listing.slug} />}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            html, body { scrollbar-width: none !important; -ms-overflow-style: none !important; }
+            html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+            *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
+            * { scrollbar-width: none !important; }
+          `
+        }}
+      />
+      {isEmbed && null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
@@ -637,27 +656,17 @@ export default async function TradiePublicProfilePage({
         waUrl={waUrl}
         profileFullUrl={profileFullUrl}
         tier={renderTier}
+        isEmbed={isEmbed}
       />
 
       <div className="mt-auto">
         <TradeProfileFooter listing={listing} appName={`${primary} Service`} />
       </div>
 
-      {/* Older mobile action bar — suppressed on premium tier because the
-          QrFooterDock already shows a big WhatsApp button on mobile, and
-          stacking both creates a double sticky bar.
-          Wrapped in WhatsappClickTracker so the WA tap fires the same
-          conversion beacon the QrFooterDock uses on the premium layout. */}
-      {!isPremium && (
-        <WhatsappClickTracker listingId={listing.id}>
-          <TradeMobileActionBar
-            waUrl={waUrl}
-            phone={listing.phone}
-            email={listing.email}
-            displayName={listing.display_name}
-          />
-        </WhatsappClickTracker>
-      )}
+      {/* Older TradeMobileActionBar removed — replaced by
+          TradeProfileStickyCTA mounted above (rating left, WhatsApp
+          right, single black bar). Kept the WhatsappClickTracker
+          conversion beacon inline on the sticky CTA itself. */}
     </main>
   );
 }
@@ -674,7 +683,8 @@ function PremiumLayout({
   tierLabel,
   waUrl,
   profileFullUrl,
-  tier
+  tier,
+  isEmbed
 }: {
   listing: HammerexTradeOffListing;
   projects: HammerexTradeOffProject[];
@@ -685,6 +695,7 @@ function PremiumLayout({
   waUrl: string;
   profileFullUrl: string;
   tier: "free" | "paid";
+  isEmbed: boolean;
 }) {
   const isPaid = tier === "paid";
   // Shop Mode swap — only honour when the storefront add-on is on AND
@@ -751,6 +762,7 @@ function PremiumLayout({
   return (
     <>
       <PremiumHero listing={listing} waUrl={waUrl} tier={tier} />
+      <TradeProfileStickyCTA listing={listing} waUrl={waUrl} />
       {/* Under-hero rail.
        *  – Plant-hire flagship yards (primary_trade='plant-hire') get the
        *    machine scroller directly under the hero and skip the status
@@ -767,7 +779,7 @@ function PremiumLayout({
         </div>
       ) : (listing.shop_categories ?? []).some((c) => c.enabled !== false) ? (
         <ShopCategoriesStrip slug={listing.slug} categories={listing.shop_categories} />
-      ) : (
+      ) : isEmbed ? null : (
         <HeroStatusStrip listing={listing} />
       )}
 
@@ -779,49 +791,34 @@ function PremiumLayout({
 
       {/* Free-tier upgrade banner — pinned high under the hero so it's
           one of the first things visitors see, BUT below the hero so
-          the profile still looks legit at a glance. */}
-      {!isPaid && (
+          the profile still looks legit at a glance. Suppressed in embed
+          mode (marketing preview inside the /join iPhone frame). */}
+      {!isPaid && !isEmbed && (
         <FreeTierUpgradeBanner
           slug={listing.slug}
           displayName={listing.display_name}
         />
       )}
 
-      {/* About + intro-video section. The video sub-tile follows the
-          rule: demo profiles fall back to a theme clip from
-          DEMO_TRADE_VIDEOS when they have no own upload; real
-          tradespeople hide the video column entirely if they haven't
-          uploaded — no placeholder, no dead frame. Bio reflows to
-          full-width when video is absent. */}
+      {/* About + intro-video section — comes ABOVE the Our Services grid
+          so the bio primes the visitor before they see the card grid. */}
       <AboutAndVideo listing={listing} />
-      {shopMode ? (
-        <ShopTeaser listing={listing} />
-      ) : plantHireFlagship ? (
-        // Plant-hire flagship yards move Our Services to the bottom of
-        // the page (see block near BottomTrustStrip below) so the
-        // machine fleet is the primary above-the-fold story.
-        null
-      ) : (
-        <ServicesTabbedGallery
-          slug={listing.slug}
-          pricedServices={listing.priced_services ?? []}
-          servicesOffered={listing.services_offered ?? []}
-          reviews={reviews}
-          stripped={!isPaid}
-          acceptingJobs={Boolean(listing.accepting_jobs)}
-          operatingHours={listing.operating_hours ?? null}
+
+      {/* Services grid — 4-up card grid with View → yellow-rim modal
+          (Close / Enquire). Renders only when the tradesperson has
+          populated services_offered. */}
+      {(listing.services_offered ?? []).length > 0 && (
+        <ServicesGrid
+          services={listing.services_offered}
+          waUrl={waUrl}
         />
       )}
-      {/* ClientsCarousel intentionally removed from the home profile.
-          Reviews still load + remain accessible on /<slug>/contact +
-          /<slug>/review surfaces; the home page just no longer
-          surfaces them inline. */}
-      {/* Services & Prices inline teaser — paid tier + add-on on. Server
-          component, self-renders nothing when the trade has no live
-          services so a profile without entries never shows a dead
-          section. View-all link to /<slug>/services-prices for the
-          dedicated grid. */}
-      {servicesGrid && <ServicesPricedSection listing={listing} />}
+
+      {/* Plant-hire flagship yards still surface their Shop teaser,
+          otherwise the ServicesTabbedGallery + ServicesPricedSection
+          duplicates the Our Services grid above and is intentionally
+          removed. */}
+      {shopMode ? <ShopTeaser listing={listing} /> : null}
       {/* Downloads inline teaser — paid tier + add-on on. Server-fetches
           up to 6 live downloads; self-hides when zero. View-all link
           points at /<slug>/downloads where the full grid lives. */}
@@ -857,15 +854,67 @@ function PremiumLayout({
           "Trade Materials & Companies I Work With" so the customer sees
           one cohesive supply-chain story rather than two competing
           recommendations sections. */}
-      {Array.isArray(listing.recommendations) && listing.recommendations.length > 0 && (
-        <TrustedTradesCta
-          slug={listing.slug}
-          firstName={listing.display_name.split(/\s+/)[0] ?? listing.display_name}
-          displayName={listing.display_name}
-          count={listing.recommendations.length}
-          materialsOn={materialsOn}
-        />
-      )}
+      {/* Trade Circle — compact white banner strip: label on the left,
+          small subtext, and a small yellow arrow button. Rail keeps its
+          own separate presence below. */}
+      <section className="mx-auto w-full max-w-6xl px-4 pt-2 sm:px-6 sm:pt-3">
+        <div
+          className="relative flex items-center justify-between gap-3 rounded-2xl border px-4 py-3 sm:px-5"
+          style={{
+            background: "#0A0A0A",
+            borderColor: "rgba(255,179,0,0.25)",
+            boxShadow:
+              "0 20px 40px -24px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04)"
+          }}
+        >
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-lg sm:h-12 sm:w-12">
+              <Image
+                src="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2029,%202026,%2006_48_57%20PM.png?updatedAt=1782733759964"
+                alt="Trade Circle membership badge"
+                fill
+                sizes="48px"
+                className="object-cover"
+                unoptimized
+              />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-[15px] font-extrabold leading-tight text-white sm:text-[16px]">
+                Trade Circle
+              </h2>
+              <p className="mt-0.5 text-[11px] text-white/60 sm:text-[12px]">
+                Construction Trade Member
+              </p>
+            </div>
+          </div>
+          {/* Static membership badge — solid amber on the black card so
+              the tick reads as an earned, filled seal. */}
+          <span
+            aria-hidden
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+            style={{
+              background: "#FFB300",
+              boxShadow: "0 6px 14px -6px rgba(255,179,0,0.55)"
+            }}
+          >
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0A0A0A"
+              strokeWidth="3.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          </span>
+        </div>
+        <div className="mt-4">
+          <TradeCircleRail slug={listing.slug} variant="carousel" limit={8} />
+        </div>
+      </section>
       {/* FAQ Page CTA card — paid tier + add-on on. Server component
           self-hides when zero live FAQs so a freshly-toggled add-on
           doesn't leave a dead container on the profile. Renders BELOW
@@ -886,7 +935,8 @@ function PremiumLayout({
           operatingHours={listing.operating_hours ?? null}
         />
       )}
-      <BottomTrustStrip />
+      {/* Social icons moved INTO the TradeProfileFooter, sitting across
+          from "Carpenter Service" — see TradeProfileFooter.tsx. */}
       {/* Coloured social-icon strip + website chip, sits just above the
           "Powered by Xrated" credit on paid profiles. Auto-hides if the
           tradesperson hasn't filled any social fields. */}
@@ -1286,42 +1336,132 @@ function ClientsCarousel({
   );
 }
 
+// ─── Section: Social media icon strip ─────────────────────────────────
+// Instagram · TikTok · Facebook rendered as three floating circular
+// brand-coloured icons — no card, no border, no label. High-quality
+// official SVG paths (Simple Icons). Missing handles self-hide the
+// icon; the strip disappears entirely if none are set.
+function SocialLinksStrip({
+  listing
+}: {
+  listing: HammerexTradeOffListing;
+}) {
+  function ensureUrl(input: string | null | undefined, base: string): string | null {
+    const raw = (input ?? "").trim();
+    if (!raw) return null;
+    if (/^https?:\/\//i.test(raw)) return raw;
+    const handle = raw.replace(/^@/, "");
+    return `${base}${handle}`;
+  }
+  const insta = ensureUrl(listing.instagram, "https://instagram.com/");
+  const tiktok = ensureUrl(listing.tiktok, "https://tiktok.com/@");
+  const fb = ensureUrl(listing.facebook, "https://facebook.com/");
+
+  type Item = {
+    href: string;
+    label: string;
+    background: string;
+    icon: React.ReactNode;
+  };
+  const items: Item[] = [
+    insta
+      ? {
+          href: insta,
+          label: "Instagram",
+          background:
+            "radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%)",
+          icon: (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
+              <path d="M12 2.163c3.204 0 3.584.012 4.849.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.849.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
+            </svg>
+          )
+        }
+      : null,
+    tiktok
+      ? {
+          href: tiktok,
+          label: "TikTok",
+          background: "#000",
+          icon: (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z" />
+            </svg>
+          )
+        }
+      : null,
+    fb
+      ? {
+          href: fb,
+          label: "Facebook",
+          background: "#1877F2",
+          icon: (
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+            </svg>
+          )
+        }
+      : null
+  ].filter((x): x is Item => x !== null);
+
+  if (items.length === 0) return null;
+  return (
+    <section className="w-full px-4 pb-2 pt-2 sm:px-6">
+      <div className="flex items-center justify-center gap-5 sm:gap-8">
+        {items.map((l) => (
+          <a
+            key={l.label}
+            href={l.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={l.label}
+            title={l.label}
+            className="inline-flex h-12 w-12 items-center justify-center rounded-full transition-transform hover:-translate-y-0.5 active:scale-95 sm:h-14 sm:w-14"
+            style={{
+              background: l.background,
+              boxShadow: "0 8px 20px -8px rgba(0,0,0,0.35)"
+            }}
+          >
+            {l.icon}
+          </a>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ─── Section: Bottom 3-up trust strip ─────────────────────────────────
 function BottomTrustStrip() {
   return (
-    <section className="w-full px-4 pb-10 pt-6 sm:px-6">
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <section className="w-full px-4 pb-6 pt-4 sm:px-6">
+      <div className="grid grid-cols-3 gap-2 sm:gap-4">
         <TrustCell
           icon={
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 2 3 7v6c0 5 4 9 9 9s9-4 9-9V7l-9-5z" />
               <path d="M9 12l2 2 4-4" />
             </svg>
           }
           title="Free Quotes"
-          subtitle="No obligation"
         />
         <TrustCell
           icon={
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M1 3h15v13H1z" />
               <path d="M16 8h4l3 3v5h-7z" />
               <circle cx="5.5" cy="18.5" r="2.5" />
               <circle cx="18.5" cy="18.5" r="2.5" />
             </svg>
           }
-          title="Fast Response"
-          subtitle="Estimated 1 Hour Reply"
+          title="1-Hour Reply"
         />
         <TrustCell
           icon={
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <path d="M12 2 3 7v6c0 5 4 9 9 9s9-4 9-9V7l-9-5z" />
               <path d="m9 12 2 2 4-4" />
             </svg>
           }
-          title="Quality Guaranteed"
-          subtitle="We stand by our work"
+          title="Guaranteed"
         />
       </div>
     </section>
@@ -1330,22 +1470,19 @@ function BottomTrustStrip() {
 
 function TrustCell({
   icon,
-  title,
-  subtitle
+  title
 }: {
   icon: React.ReactNode;
   title: string;
-  subtitle: string;
 }) {
   return (
-    <div className="flex items-center gap-3">
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FFB300]/15">
+    <div className="flex items-center gap-2 rounded-lg border border-neutral-200 bg-white px-2 py-2 shadow-sm">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#FFB300]/15">
         {icon}
       </span>
-      <div>
-        <p className="text-sm font-extrabold text-neutral-900">{title}</p>
-        <p className="text-xs text-neutral-500">{subtitle}</p>
-      </div>
+      <p className="truncate text-[12px] font-extrabold leading-tight text-neutral-900 sm:text-[13px]">
+        {title}
+      </p>
     </div>
   );
 }

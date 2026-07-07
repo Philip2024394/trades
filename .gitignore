@@ -9,3 +9,5 @@ node_modules
 # Pexels populator cache — regenerated every run, not source of truth
 scripts/.pexels-results.json
 scripts/.pexels-query-cache.json
+
+.vercel

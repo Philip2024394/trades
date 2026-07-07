@@ -21,7 +21,19 @@
 
 import { GripVertical, GripHorizontal } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import type { BeforeAfterPair } from "@/lib/before-after/types";
+
+/** Append ?m={merchantId} to any /api/image/serve URL so the serve
+ *  endpoint can resolve licence tier for the caller. Passes through
+ *  URLs that don't look like our serve endpoint (external images,
+ *  merchant uploads). */
+function withMerchant(url: string, merchantId: string | null | undefined): string {
+  if (!merchantId) return url;
+  if (!url.startsWith("/api/image/serve/")) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}m=${encodeURIComponent(merchantId)}`;
+}
 
 export type BeforeAfterSliderProps = {
   pair: BeforeAfterPair;
@@ -51,6 +63,11 @@ export function BeforeAfterSlider({
   const containerRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<number>(initial);
   const [dragging, setDragging] = useState(false);
+  const editCtx = useEditModeOptional();
+  const beforeSrc = withMerchant(pair.before_url, editCtx?.merchantId);
+  const afterSrc = pair.after_url
+    ? withMerchant(pair.after_url, editCtx?.merchantId)
+    : undefined;
 
   const isVertical = pair.orientation === "vertical";
   const isDual = pair.mode === "dual";
@@ -148,16 +165,16 @@ export function BeforeAfterSlider({
           - Composite mode: this IS the whole before+after image.
           - Dual mode: this is the BEFORE image. */}
       <img
-        src={pair.before_url}
+        src={beforeSrc}
         alt={pair.before_label ?? "Before"}
         className="pointer-events-none absolute inset-0 h-full w-full object-cover"
         draggable={false}
       />
 
       {/* Dual mode: after image layered on top, clipped by divider */}
-      {isDual && pair.after_url ? (
+      {isDual && afterSrc ? (
         <img
-          src={pair.after_url}
+          src={afterSrc}
           alt={pair.after_label ?? "After"}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover"
           style={{ clipPath: afterClip }}

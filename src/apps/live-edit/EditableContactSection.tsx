@@ -14,6 +14,7 @@ import {
 import { useEffect, useState } from "react";
 import { useEditMode } from "./EditModeContext";
 import { EditableSection } from "./EditableSection";
+import { useSectionPlacement } from "./useSectionPlacement";
 
 export type EditableContactSectionProps = {
   id: string;
@@ -43,6 +44,8 @@ export function EditableContactSection({
     initial?.hours ?? "Mon–Fri 8am–6pm · Sat by appointment"
   );
   const [editing, setEditing] = useState(false);
+  const { variant } = useSectionPlacement(id, "3col");
+  const gridCols = variant === "stacked" ? "" : "md:grid-cols-3";
 
   useEffect(() => {
     editCtx.registerSectionState(id, {
@@ -85,7 +88,7 @@ export function EditableContactSection({
             </p>
           ) : null}
         </div>
-        <div className="mx-auto grid max-w-3xl gap-3 md:grid-cols-3">
+        <div className={`mx-auto grid max-w-3xl gap-3 ${gridCols}`}>
           {telHref ? (
             <a
               href={telHref}

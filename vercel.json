@@ -19,6 +19,13 @@
     {
       "path": "/api/cron/verify-credentials",
       "schedule": "0 8 * * *"
-    }
+    },
+    { "path": "/api/cron/publish-due", "schedule": "*/15 * * * *" },
+    { "path": "/api/cron/sweep-idle-arcs", "schedule": "0 6 * * *" },
+    { "path": "/api/cron/compute-insights", "schedule": "0 4 * * 1" },
+    { "path": "/api/cron/predict-gold-path", "schedule": "0 7 * * 1" },
+    { "path": "/api/cron/send-monthly-digests", "schedule": "0 9 1 * *" },
+    { "path": "/api/cron/ai-visualiser-rollover", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/os-event-drain", "schedule": "* * * * *" }
   ]
 }

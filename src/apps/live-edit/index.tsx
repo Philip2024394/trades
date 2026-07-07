@@ -33,5 +33,18 @@ export {
   useEditMode,
   useEditModeOptional
 } from "./EditModeContext";
+export type {
+  SectionPlacement,
+  PagePlacements
+} from "./EditModeContext";
 
 export { StickyEditFooter } from "./StickyEditFooter";
+
+export { PageBuilder } from "./PageBuilder";
+export type {
+  PageBuilderProps,
+  PageBuilderSection
+} from "./PageBuilder";
+
+export { useSectionPlacement } from "./useSectionPlacement";
+export { useDragReorder } from "./useDragReorder";

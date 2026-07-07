@@ -7,8 +7,16 @@
 
 import { LayoutTemplate, MoveHorizontal, MoveVertical } from "lucide-react";
 import { useState } from "react";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import type { BeforeAfterPair } from "@/lib/before-after/types";
 import { BeforeAfterSlider } from "./BeforeAfterSlider";
+
+function withMerchant(url: string, merchantId: string | null | undefined): string {
+  if (!merchantId) return url;
+  if (!url.startsWith("/api/image/serve/")) return url;
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}m=${encodeURIComponent(merchantId)}`;
+}
 
 export type BeforeAfterViewerProps = {
   pairs: BeforeAfterPair[];
@@ -24,6 +32,7 @@ export function BeforeAfterViewer({
   className = ""
 }: BeforeAfterViewerProps) {
   const [activeId, setActiveId] = useState<string>(pairs[0]?.id ?? "");
+  const editCtx = useEditModeOptional();
 
   if (pairs.length === 0) {
     return (
@@ -78,7 +87,7 @@ export function BeforeAfterViewer({
               >
                 <div className="relative aspect-[16/9] w-full overflow-hidden">
                   <img
-                    src={p.before_url}
+                    src={withMerchant(p.before_url, editCtx?.merchantId)}
                     alt={p.caption ?? "Before/After thumbnail"}
                     className="h-full w-full object-cover"
                     loading="lazy"

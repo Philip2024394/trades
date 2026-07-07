@@ -41,19 +41,6 @@ export function AboutFlipPanel({
         <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
           About Us
         </h2>
-        <a
-          href={`/trade/${slug}/services`}
-          className="inline-flex h-11 items-center gap-2 rounded-lg px-5 text-sm font-extrabold text-neutral-900 shadow-sm transition active:scale-[0.97]"
-          style={{ background: "#FFB300" }}
-        >
-          {/* Folded-map icon — signals "delivery zones, see the map" */}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6" />
-            <line x1="8" y1="2" x2="8" y2="18" />
-            <line x1="16" y1="6" x2="16" y2="22" />
-          </svg>
-          Delivery Zones
-        </a>
       </div>
 
       <div

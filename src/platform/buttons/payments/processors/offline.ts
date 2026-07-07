@@ -32,7 +32,7 @@ const cod: PaymentProcessor = {
 };
 
 const bankTransfer: PaymentProcessor = {
-  providerId: "bank_transfer",
+  providerId: "bank-transfer",
   async createSession(req, credentials) {
     const bankName = credentials.bank_name as string | undefined;
     const account = credentials.account_number as string | undefined;

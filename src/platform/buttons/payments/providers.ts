@@ -127,7 +127,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["USD", "AUD", "GBP", "NZD", "CAD"]
   },
   {
-    id: "apple_pay",
+    id: "apple-pay",
     name: "Apple Pay",
     region: "Global (via Stripe/Adyen)",
     variantKey: "pay.apple_1",
@@ -142,7 +142,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["USD", "EUR", "GBP", "AUD", "CAD", "JPY"]
   },
   {
-    id: "google_pay",
+    id: "google-pay",
     name: "Google Pay",
     region: "Global (via Stripe/Adyen)",
     variantKey: "pay.google_1",
@@ -157,7 +157,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["USD", "EUR", "GBP", "AUD", "IDR", "INR"]
   },
   {
-    id: "shop_pay",
+    id: "shop-pay",
     name: "Shop Pay",
     region: "Global (Shopify merchants)",
     variantKey: "pay.shop_pay_1",
@@ -172,7 +172,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["USD", "EUR", "GBP", "CAD", "AUD"]
   },
   {
-    id: "amazon_pay",
+    id: "amazon-pay",
     name: "Amazon Pay",
     region: "US / EU / JP",
     variantKey: "pay.amazon_pay_1",
@@ -188,7 +188,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["USD", "EUR", "GBP", "JPY"]
   },
   {
-    id: "cash_app",
+    id: "cash-app",
     name: "Cash App Pay",
     region: "US (via Square)",
     variantKey: "pay.cash_app_1",
@@ -460,7 +460,7 @@ export const PAYMENT_PROVIDERS: PaymentProvider[] = [
     supportedCurrencies: ["EUR"]
   },
   {
-    id: "bank_transfer",
+    id: "bank-transfer",
     name: "Bank Transfer",
     region: "Global",
     variantKey: "pay.bank_transfer_1",

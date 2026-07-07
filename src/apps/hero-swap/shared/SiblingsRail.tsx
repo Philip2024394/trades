@@ -10,6 +10,8 @@
 "use client";
 
 import { Sparkles } from "lucide-react";
+import { watermarkedUrl } from "@/lib/watermark/urls";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import type { HeroImage } from "@/lib/hero-swap/types";
 
 export type SiblingsRailProps = {
@@ -25,6 +27,7 @@ export function SiblingsRail({
   onSelectSibling,
   onApplyAcrossSite
 }: SiblingsRailProps) {
+  const editCtx = useEditModeOptional();
   if (siblings.length === 0) return null;
   const groupId = currentImage.sibling_group_id;
   if (!groupId) return null;
@@ -68,7 +71,10 @@ export function SiblingsRail({
           >
             <div className="aspect-[16/9] w-full overflow-hidden bg-neutral-100">
               <img
-                src={sib.image_url}
+                src={watermarkedUrl(sib.id, {
+                  fallback: sib.image_url,
+                  merchantId: editCtx?.merchantId
+                })}
                 alt={sib.subject}
                 className="h-full w-full object-cover"
                 loading="lazy"

@@ -4,7 +4,9 @@
 
 "use client";
 
-import { RotateCcw, X } from "lucide-react";
+import { Info, RotateCcw, X } from "lucide-react";
+import Link from "next/link";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import { CropPreview } from "./CropPreview";
 import { EditControls } from "./EditControls";
 import { LibraryCarousel } from "./LibraryCarousel";
@@ -21,6 +23,10 @@ export type HeroSwapSheetProps = {
 };
 
 export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
+  const editCtx = useEditModeOptional();
+  const merchantParam = editCtx?.merchantId
+    ? `&merchantId=${encodeURIComponent(editCtx.merchantId)}`
+    : "";
   if (!open) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 flex items-end justify-center">
@@ -60,6 +66,30 @@ export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
         </div>
 
         <div className="max-h-[70vh] overflow-y-auto px-4 py-4">
+          {calc.image ? (
+            <div className="mb-3 flex items-start gap-2 rounded-xl border border-blue-200 bg-blue-50 p-2.5">
+              <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-700" />
+              <div className="flex-1 text-[11px] leading-snug text-blue-900">
+                <span className="font-semibold">Free to use.</span> Your live
+                site shows a subtle <span className="font-mono">xratedtrades.com</span>{" "}
+                mark in the corner —{" "}
+                <Link
+                  href={`/xrated-trades-images/${calc.image.id}?tier=standard${merchantParam}`}
+                  className="font-semibold underline"
+                >
+                  licence for £39
+                </Link>{" "}
+                to remove it, or{" "}
+                <Link
+                  href={`/xrated-trades-images/${calc.image.id}?tier=regional${merchantParam}`}
+                  className="font-semibold underline"
+                >
+                  lock it to your area from £29/mo
+                </Link>
+                .
+              </div>
+            </div>
+          ) : null}
           <div className="mb-4">
             <div className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
               Suggested for your trade ({calc.matchedImages.length})

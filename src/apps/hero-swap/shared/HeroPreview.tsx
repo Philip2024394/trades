@@ -8,6 +8,8 @@
 "use client";
 
 import { HERO_PRESETS } from "@/lib/hero-swap/presets";
+import { watermarkedUrl } from "@/lib/watermark/urls";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import type {
   HeroEdits,
   HeroImage,
@@ -65,7 +67,18 @@ export function HeroPreview({
   aspectClass = "aspect-[16/9]"
 }: HeroPreviewProps) {
   const spec = HERO_PRESETS[preset];
-  const src = uploadUrl ?? image.image_url;
+  // Merchant-uploaded images bypass the watermark endpoint — they own
+  // that content. Library images route through /api/image/serve for
+  // the preview-tier watermark + SEO backlink. If the merchant is
+  // signed in, their id is threaded via ?m= so the endpoint can
+  // upgrade tier to standard/clean based on their active licences.
+  const editCtx = useEditModeOptional();
+  const src =
+    uploadUrl ??
+    watermarkedUrl(image.id, {
+      fallback: image.image_url,
+      merchantId: editCtx?.merchantId
+    });
   const filter = buildFilter(edits);
 
   if (preset === "card") {

@@ -2,10 +2,19 @@
 //
 // Supabase-first. Falls back to in-memory (never persists) when no
 // Supabase creds are set, so demo mode still works.
+//
+// Two parallel maps per page:
+//   sections    — sectionId → { section-type-specific config }
+//   placements  — sectionId → { slotId, variant } for the reorder /
+//                  variant-aware placement system
 
 import { createClient } from "@supabase/supabase-js";
 
 type SectionsMap = Record<string, unknown>;
+export type PlacementsMap = Record<
+  string,
+  { slotId: string; variant: string }
+>;
 
 function getServerClient() {
   const url = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -16,47 +25,59 @@ function getServerClient() {
   return createClient(url, key, { auth: { persistSession: false } });
 }
 
-/** Read the current published sections for a merchant page. Public
- *  visitors always see this. Merchants in edit mode call this on
- *  first mount to hydrate the last saved state. */
+/** Read the current published sections + placements for a merchant
+ *  page. Public visitors always see this. */
 export async function loadPublishedSections(
   merchantId: string,
   pageSlug: string
-): Promise<SectionsMap | null> {
+): Promise<{
+  sections: SectionsMap;
+  placements: PlacementsMap;
+} | null> {
   const client = getServerClient();
   if (!client) return null;
   const { data, error } = await client
     .from("merchant_pages")
-    .select("published_sections")
+    .select("published_sections, published_placements")
     .eq("merchant_id", merchantId)
     .eq("page_slug", pageSlug)
     .maybeSingle();
   if (error || !data) return null;
-  return (data.published_sections as SectionsMap) ?? {};
+  return {
+    sections: (data.published_sections as SectionsMap) ?? {},
+    placements: (data.published_placements as PlacementsMap) ?? {}
+  };
 }
 
 /** Read the draft — for merchants previewing unpublished changes. */
 export async function loadDraftSections(
   merchantId: string,
   pageSlug: string
-): Promise<SectionsMap | null> {
+): Promise<{
+  sections: SectionsMap;
+  placements: PlacementsMap;
+} | null> {
   const client = getServerClient();
   if (!client) return null;
   const { data, error } = await client
     .from("merchant_pages")
-    .select("draft_sections")
+    .select("draft_sections, draft_placements")
     .eq("merchant_id", merchantId)
     .eq("page_slug", pageSlug)
     .maybeSingle();
   if (error || !data) return null;
-  return (data.draft_sections as SectionsMap) ?? {};
+  return {
+    sections: (data.draft_sections as SectionsMap) ?? {},
+    placements: (data.draft_placements as PlacementsMap) ?? {}
+  };
 }
 
-/** Write draft sections (auto-save on every change from the client). */
+/** Write draft sections + placements (auto-save from the client). */
 export async function saveDraftSections(
   merchantId: string,
   pageSlug: string,
-  sections: SectionsMap
+  sections: SectionsMap,
+  placements: PlacementsMap = {}
 ): Promise<boolean> {
   const client = getServerClient();
   if (!client) return false;
@@ -66,7 +87,8 @@ export async function saveDraftSections(
       {
         merchant_id: merchantId,
         page_slug: pageSlug,
-        draft_sections: sections
+        draft_sections: sections,
+        draft_placements: placements
       },
       { onConflict: "merchant_id,page_slug" }
     );
@@ -80,23 +102,25 @@ export async function publishPage(
 ): Promise<boolean> {
   const client = getServerClient();
   if (!client) return false;
-  // Read current draft, then write both fields in one upsert
   const { data, error: readErr } = await client
     .from("merchant_pages")
-    .select("draft_sections")
+    .select("draft_sections, draft_placements")
     .eq("merchant_id", merchantId)
     .eq("page_slug", pageSlug)
     .maybeSingle();
   if (readErr || !data) return false;
-  const draft = data.draft_sections;
+  const draftSections = data.draft_sections;
+  const draftPlacements = data.draft_placements;
   const { error: writeErr } = await client
     .from("merchant_pages")
     .upsert(
       {
         merchant_id: merchantId,
         page_slug: pageSlug,
-        draft_sections: draft,
-        published_sections: draft,
+        draft_sections: draftSections,
+        draft_placements: draftPlacements,
+        published_sections: draftSections,
+        published_placements: draftPlacements,
         published_at: new Date().toISOString()
       },
       { onConflict: "merchant_id,page_slug" }

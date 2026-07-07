@@ -527,6 +527,138 @@ export const XRATED_ADDONS: XratedAddon[] = [
       "Auto-attaches to products by category — no per-product tickboxes",
       "Trades attach a £/m² rate to quote installation labour alongside materials"
     ]
+  },
+  {
+    slug: "products",
+    name: "Products",
+    tagline: "The canonical product layer — manufacturer to homeowner in one record",
+    summary:
+      "Not just another catalogue. Products is the canonical layer every other app reads from. Manufacturers publish once — brand, spec, warranty, imagery. Suppliers distribute. Merchants set price + stock + delivery. Trades quote against real SKUs. Homeowners see real products in AI Visualiser designs and in their Home Timeline warranty ledger. Zero re-typing. One update propagates everywhere.",
+    glyph: "📦",
+    image_url: null,
+    personas: ["Manufacturers", "Suppliers", "Merchants", "Kitchen fitters", "Bathroom fitters", "Roofers", "Decorators", "Electricians", "Plumbers"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Publish once, update everywhere", "Real SKUs in AI renders", "Warranty auto-binding"],
+    pricing: { kind: "paid", monthly_pence: 4900 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "products",
+    includedWithPaid: true,
+    benefits: [
+      "One product record used by AI Visualiser, Quote Workspace, Job Diary and Warranty Ledger",
+      "Manufacturer canonical + merchant price + supplier distribution in one graph",
+      "Update a spec once — every downstream app picks it up automatically"
+    ]
+  },
+  {
+    slug: "crm",
+    name: "Contacts (CRM)",
+    tagline: "One page per customer — every render, quote, job, review in one timeline",
+    summary:
+      "Not another CRM. The one contact view that already knows everything. Every render they've asked for, every quote you've sent, every job you've done, every review they've left — one page, one thumb-scrollable timeline. When a customer's gone quiet, the follow-up WhatsApp is already drafted based on where you left off. No spreadsheets. No 'did we ever get back to them?'. No lead-lifecycle software you'll never actually use.",
+    glyph: "👥",
+    image_url: null,
+    personas: ["Kitchen fitters", "Bathroom fitters", "Carpenters", "Roofers", "Decorators", "Electricians", "Plumbers", "Merchants"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["360° contact view", "Auto-drafted follow-ups", "Zero data entry"],
+    pricing: { kind: "free" },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "crm",
+    includedWithPaid: true,
+    benefits: [
+      "Every customer touchpoint on one page — no data entry required",
+      "Auto-drafts your follow-up message based on the last activity",
+      "Silent-since flag surfaces customers you'd otherwise lose"
+    ]
+  },
+  {
+    slug: "reviews",
+    name: "Reviews",
+    tagline: "Verified only — every review tied to a signed-off job",
+    summary:
+      "Reviews earned, not scraped. The moment a job is signed off in Job Diary, the customer gets a one-tap review link — rating, headline, body, up to four photos, no account to create. Because every review is bound to a completed sign-off, drive-by fakes are architecturally impossible. Merchant responses are public. Disputes go through platform admin, not a hidden 'delete' button. Every review lands on the property's Home Timeline and on your public profile.",
+    glyph: "★",
+    image_url: null,
+    personas: ["Kitchen fitters", "Bathroom fitters", "Roofers", "Decorators", "Electricians", "Plumbers", "Merchants", "Suppliers"],
+    editorial_badge: "premium_credibility",
+    callouts: ["Verified only", "One-tap for the customer", "Public merchant response"],
+    pricing: { kind: "free" },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "reviews",
+    includedWithPaid: true,
+    benefits: [
+      "Every review is tied to a real signed-off job — no drive-by fakes",
+      "One-tap for the customer (no account, no login)",
+      "Merchant responses are public — you always get right of reply"
+    ]
+  },
+  {
+    slug: "job_diary",
+    name: "Job Diary",
+    tagline: "Every accepted job — check-ins, photos, sign-off, warranties — one place",
+    summary:
+      "The operational spine from won quote to signed-off install. Auto-opens the moment a homeowner accepts a quote. Log daily check-ins + photos + notes from the site on your phone. Homeowner sees progress updates on their Home page — no more \"when are you starting?\" phone calls. At sign-off, warranties auto-register against every product installed and a review request fires — solving the biggest end-of-job admin drain in one tap.",
+    glyph: "📋",
+    image_url: null,
+    personas: ["Kitchen fitters", "Bathroom fitters", "Carpenters", "Roofers", "Decorators", "Electricians", "Plumbers", "Builders"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Auto-opens on quote acceptance", "One-thumb site check-ins", "Sign-off auto-registers warranties"],
+    pricing: { kind: "paid", monthly_pence: 900 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "job-diary",
+    includedWithPaid: true,
+    benefits: [
+      "Auto-opens the second a homeowner accepts your quote — no data re-entry",
+      "Site check-ins + photos + notes in one thumb-friendly mobile view",
+      "Sign-off registers warranties + fires the review request in a single tap"
+    ]
+  },
+  {
+    slug: "quote_workspace",
+    name: "Quote Workspace",
+    tagline: "Draft, send, track — every quote pinned to a project and comparable side-by-side",
+    summary:
+      "Replaces the Word + PDF + email dance every trade knows too well. Auto-drafts a quote from any AI Visualiser render (the BOM's already there), lets you polish + send via WhatsApp or email, and tracks sent → viewed → accepted → rejected in one pipeline. Homeowners see all their quotes in one place per project and compare side-by-side — no more spreadsheet chases. Every state change lands on the property's Home Timeline so the whole job's audit-trailed forever.",
+    glyph: "📄",
+    image_url: null,
+    personas: ["Kitchen fitters", "Bathroom fitters", "Carpenters", "Roofers", "Decorators", "Electricians", "Plumbers", "Merchants"],
+    editorial_badge: "built_for_merchants",
+    callouts: ["Auto-draft from renders", "WhatsApp send", "Side-by-side comparison"],
+    pricing: { kind: "paid", monthly_pence: 900 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "quote-workspace",
+    includedWithPaid: true,
+    benefits: [
+      "Auto-drafts a quote from any AI Visualiser render — BOM already populated",
+      "One-tap send via WhatsApp or email; homeowner opens in browser, no login",
+      "Real-time sent/viewed/accepted/rejected pipeline, no chasing spreadsheets"
+    ]
+  },
+  {
+    slug: "ai_visualiser",
+    name: "AI Visualiser",
+    tagline: "Homeowners see their renovation on their own space — every render captures a lead",
+    summary:
+      "A tappable tile on your app page. Homeowners upload a photo of their space, pick a style / material / colour / finish from your catalogue, and get a photo-real AI render on their own room. To see it they register their name, email, WhatsApp and postcode — landing straight in your inbox as a hot lead with the design spec attached. The AI can only render things you actually sell — tick which categories fit and any off-scope upload is politely refused, protecting your credits and stopping leads leaking to a competitor. Free tier ships with your Merchant Pro plan; Starter £19 / Growth £49 / Unlimited £129 for standalone.",
+    glyph: "✨",
+    image_url: null,
+    personas: ["Kitchen fitters", "Bathroom fitters", "Staircase makers", "Door suppliers", "Flooring installers", "Landscapers", "Roofers", "Decorators"],
+    editorial_badge: "viral_growth",
+    callouts: ["Free-to-try for homeowners", "Contact-first lead capture", "Catalogue-scoped AI"],
+    pricing: { kind: "paid", monthly_pence: 1900 },
+    availability: "ready",
+    hasEditor: true,
+    editorPath: "ai-visualiser",
+    includedWithPaid: true,
+    benefits: [
+      "Every render creates a lead with name, email, WhatsApp, postcode + design spec",
+      "AI is locked to what you sell — no off-scope uploads waste your credits",
+      "Free for the homeowner (no card required); merchant pays a fixed monthly plan"
+    ]
   }
 ];
 

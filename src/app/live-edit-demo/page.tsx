@@ -1,7 +1,12 @@
-// Live Edit demo — a fake merchant page with 3 sections wrapped in
-// LiveEditShell. Merchant persona picker at top. Tap "Edit" in the
-// sticky footer to reveal outlines + edit buttons. Tap "Publish" to
-// simulate a persist.
+// Live Edit demo — a fake merchant page rendered through PageBuilder
+// so we get the full reorder + snap + variant-aware placement flow.
+//
+// Merchant persona picker at top → each persona is a different trade
+// that swaps hero + before/after + copy. In edit mode a "Rearrange"
+// button appears in the sticky footer → tapping it collapses every
+// section to a drag card and reveals slot drop targets. Drag any
+// section to any slot; its layout variant auto-swaps to match the
+// slot's aspect hint.
 
 "use client";
 
@@ -14,8 +19,11 @@ import {
   EditableSection,
   EditableServicesSection,
   EditableTextSection,
-  LiveEditShell
+  LiveEditShell,
+  PageBuilder
 } from "@/apps/live-edit";
+import type { PageBuilderSection } from "@/apps/live-edit";
+import { LANDING_PAGE_SLOTS } from "@/lib/live-edit/pageSlots";
 import { matchBeforeAfterForMerchant } from "@/apps/before-after";
 import type { BeforeAfterPair } from "@/apps/before-after";
 
@@ -81,7 +89,10 @@ function initialBeforeAfterPairs(keywords: string[]): BeforeAfterPair[] {
   return matches.map((entry) => ({
     id: entry.id,
     mode: entry.mode,
-    before_url: entry.image_url,
+    // Route library URLs through the watermark endpoint — preview
+    // tier for public views (SEO backlink), auto-upgraded once
+    // Phase C licences kick in.
+    before_url: `/api/image/serve/${encodeURIComponent(entry.id)}`,
     orientation: entry.orientation,
     composite_split: entry.composite_split,
     before_label: entry.before_label,
@@ -93,6 +104,152 @@ function initialBeforeAfterPairs(keywords: string[]): BeforeAfterPair[] {
 export default function LiveEditDemoPage() {
   const [personaId, setPersonaId] = useState(PERSONAS[0].id);
   const persona = PERSONAS.find((p) => p.id === personaId) ?? PERSONAS[0];
+
+  const sections: PageBuilderSection[] = [
+    {
+      id: "landing-hero",
+      type: "hero",
+      label: "Hero image",
+      defaultSlotId: "slot_hero",
+      defaultVariant: "full_bleed",
+      node: (
+        <EditableSection
+          id="landing-hero"
+          type="hero"
+          label="Hero"
+          hasInlineEditor
+        >
+          <div className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm">
+            <HeroSwapSlot
+              key={personaId}
+              merchantTradeKeywords={persona.keywords}
+              headline={persona.headline}
+              subhead={persona.subhead}
+              ctaLabel={persona.ctaLabel}
+              slotKey="landing_hero"
+              siteSlotKeys={[
+                "landing_hero",
+                "about_hero",
+                "services_hero",
+                "contact_hero"
+              ]}
+            />
+          </div>
+        </EditableSection>
+      )
+    },
+    {
+      id: "about-block",
+      type: "text",
+      label: "About us",
+      defaultSlotId: "slot_intro",
+      defaultVariant: "center-hero",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableTextSection
+            id="about-block"
+            initial={{
+              eyebrow: "Why us",
+              headline: `${persona.label}s that show up when they say they will.`,
+              subhead:
+                "Real reviews. Fixed prices. A tradesperson who returns your call.",
+              ctaLabel: "See recent work"
+            }}
+          />
+        </div>
+      )
+    },
+    {
+      id: "services-block",
+      type: "services",
+      label: "Services",
+      defaultSlotId: "slot_services",
+      defaultVariant: "3col",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableServicesSection
+            key={`svc-${personaId}`}
+            id="services-block"
+          />
+        </div>
+      )
+    },
+    {
+      id: "before-after-block",
+      type: "custom",
+      label: "Before / After",
+      defaultSlotId: "slot_proof",
+      defaultVariant: "single",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableBeforeAfterSection
+            key={`ba-${personaId}`}
+            id="before-after-block"
+            merchantTradeKeywords={persona.ba_keywords}
+            heading="Before / After"
+            subhead={`Real ${persona.label.toLowerCase()} jobs. Drag the slider to compare.`}
+            initialPairs={initialBeforeAfterPairs(persona.ba_keywords)}
+          />
+        </div>
+      )
+    },
+    {
+      id: "contact-block",
+      type: "contact",
+      label: "Contact",
+      defaultSlotId: "slot_contact",
+      defaultVariant: "3col",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableContactSection
+            key={`contact-${personaId}`}
+            id="contact-block"
+            initial={{
+              phone: "020 7946 0000",
+              whatsapp: "+44 7700 900000",
+              email: `hello@${personaId.replace(/-/g, "")}.example.com`
+            }}
+          />
+        </div>
+      )
+    },
+    {
+      id: "cta-block",
+      type: "text",
+      label: "Closing CTA",
+      defaultSlotId: "slot_cta",
+      defaultVariant: "center-hero",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableTextSection
+            id="cta-block"
+            initial={{
+              eyebrow: "Ready when you are",
+              headline: "Get a quote in under 24 hours.",
+              subhead:
+                "Message us with what you need and a photo. We reply the same day, weekdays 8–6.",
+              ctaLabel: "Message us"
+            }}
+          />
+        </div>
+      )
+    },
+    {
+      id: "gallery-block",
+      type: "gallery",
+      label: "Gallery",
+      defaultSlotId: "slot_gallery",
+      defaultVariant: "4col",
+      node: (
+        <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
+          <EditableGallerySection
+            key={`gallery-${personaId}`}
+            id="gallery-block"
+          />
+        </div>
+      )
+    }
+  ];
 
   return (
     <LiveEditShell
@@ -115,8 +272,9 @@ export default function LiveEditDemoPage() {
             </h1>
             <p className="mt-1 max-w-2xl text-[13px] text-neutral-700">
               Tap <strong>Edit</strong> in the sticky footer → every editable
-              section reveals an outline + edit button. Change anything, then
-              tap <strong>Publish live</strong> to save.
+              section reveals its outline. Tap <strong>Rearrange</strong> →
+              sections collapse to drag cards + drop-target slots appear. Drag
+              any section to any slot; its layout auto-adjusts to fit.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               {PERSONAS.map((p) => (
@@ -138,92 +296,7 @@ export default function LiveEditDemoPage() {
         </header>
 
         <div className="mx-auto max-w-6xl px-4 py-8">
-          <EditableSection
-            id="landing-hero"
-            type="hero"
-            label="Hero"
-            hasInlineEditor
-          >
-            <div className="rounded-3xl border border-neutral-200 bg-white p-3 shadow-sm">
-              <HeroSwapSlot
-                key={personaId}
-                merchantTradeKeywords={persona.keywords}
-                headline={persona.headline}
-                subhead={persona.subhead}
-                ctaLabel={persona.ctaLabel}
-                slotKey="landing_hero"
-                siteSlotKeys={[
-                  "landing_hero",
-                  "about_hero",
-                  "services_hero",
-                  "contact_hero"
-                ]}
-              />
-            </div>
-          </EditableSection>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableTextSection
-              id="about-block"
-              initial={{
-                eyebrow: "Why us",
-                headline: `${persona.label}s that show up when they say they will.`,
-                subhead:
-                  "Real reviews. Fixed prices. A tradesperson who returns your call.",
-                ctaLabel: "See recent work"
-              }}
-            />
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableServicesSection
-              key={`svc-${personaId}`}
-              id="services-block"
-            />
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableBeforeAfterSection
-              key={`ba-${personaId}`}
-              id="before-after-block"
-              merchantTradeKeywords={persona.ba_keywords}
-              heading="Before / After"
-              subhead={`Real ${persona.label.toLowerCase()} jobs. Drag the slider to compare.`}
-              initialPairs={initialBeforeAfterPairs(persona.ba_keywords)}
-            />
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableGallerySection
-              key={`gallery-${personaId}`}
-              id="gallery-block"
-            />
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableContactSection
-              key={`contact-${personaId}`}
-              id="contact-block"
-              initial={{
-                phone: "020 7946 0000",
-                whatsapp: "+44 7700 900000",
-                email: `hello@${personaId.replace(/-/g, "")}.example.com`
-              }}
-            />
-          </div>
-
-          <div className="mt-6 rounded-3xl border border-neutral-200 bg-white">
-            <EditableTextSection
-              id="cta-block"
-              initial={{
-                eyebrow: "Ready when you are",
-                headline: "Get a quote in under 24 hours.",
-                subhead:
-                  "Message us with what you need and a photo. We reply the same day, weekdays 8–6.",
-                ctaLabel: "Message us"
-              }}
-            />
-          </div>
+          <PageBuilder slots={LANDING_PAGE_SLOTS} sections={sections} />
         </div>
       </main>
     </LiveEditShell>

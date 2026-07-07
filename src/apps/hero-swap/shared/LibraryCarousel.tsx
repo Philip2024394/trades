@@ -9,6 +9,8 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { watermarkedUrl } from "@/lib/watermark/urls";
+import { useEditModeOptional } from "@/apps/live-edit/EditModeContext";
 import type { HeroImage } from "@/lib/hero-swap/types";
 
 export type LibraryCarouselProps = {
@@ -22,6 +24,7 @@ export function LibraryCarousel({
   currentImageId,
   onSelect
 }: LibraryCarouselProps) {
+  const editCtx = useEditModeOptional();
   if (images.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-neutral-200 bg-neutral-50 p-6 text-center">
@@ -52,7 +55,10 @@ export function LibraryCarousel({
           >
             <div className="aspect-[16/9] w-full overflow-hidden bg-neutral-100">
               <img
-                src={image.image_url}
+                src={watermarkedUrl(image.id, {
+                  fallback: image.image_url,
+                  merchantId: editCtx?.merchantId
+                })}
                 alt={image.subject}
                 className="h-full w-full object-cover"
                 loading="lazy"

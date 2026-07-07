@@ -43,7 +43,7 @@ function factory(providerId: string): PaymentProcessor {
           checkout_options: {
             redirect_url: req.returnUrl,
             accepted_payment_methods:
-              providerId === "cash_app"
+              providerId === "cash-app"
                 ? {
                     apple_pay: false,
                     google_pay: false,
@@ -70,4 +70,4 @@ function factory(providerId: string): PaymentProcessor {
 }
 
 paymentProcessors.register(factory("square"));
-paymentProcessors.register(factory("cash_app"));
+paymentProcessors.register(factory("cash-app"));

@@ -37,7 +37,7 @@ function AutoSaveDraft({
   merchantId?: string;
   pageSlug: string;
 }) {
-  const { hasUnsaved, getAllSectionState } = useEditMode();
+  const { hasUnsaved, getAllSectionState, placements } = useEditMode();
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -54,7 +54,8 @@ function AutoSaveDraft({
           },
           body: JSON.stringify({
             pageSlug,
-            sections: getAllSectionState()
+            sections: getAllSectionState(),
+            placements
           })
         });
       } catch {
@@ -64,7 +65,7 @@ function AutoSaveDraft({
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [hasUnsaved, merchantId, pageSlug, getAllSectionState]);
+  }, [hasUnsaved, merchantId, pageSlug, getAllSectionState, placements]);
 
   return null;
 }
@@ -92,7 +93,7 @@ export function LiveEditShell({
   const publishHandler = onPublish ?? (isMerchant ? defaultPublish : undefined);
 
   return (
-    <EditModeProvider>
+    <EditModeProvider merchantId={merchantId ?? null}>
       {children}
       {isMerchant ? (
         <>

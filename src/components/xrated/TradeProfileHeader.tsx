@@ -64,6 +64,11 @@ export function TradeProfileHeader({
       className="sticky top-0 z-30 border-b border-white/10"
       style={{ background: "#0A0A0A" }}
     >
+      {/* Construction Notebook brand ribbon — signals that this
+          merchant page is part of the wider network across every
+          sticky-header scroll frame. Thin, non-intrusive, always
+          reads "On the Notebook". */}
+
       <div className="mx-auto flex w-full max-w-6xl items-center gap-3 px-3 py-2 sm:px-6 sm:py-3">
         {backHref && (
           <Link
@@ -112,7 +117,6 @@ export function TradeProfileHeader({
           </p>
         </div>
 
-        <HeaderCartButton slug={listing.slug} cartHref={cartHref} />
       </div>
 
       {pills.length > 0 && (

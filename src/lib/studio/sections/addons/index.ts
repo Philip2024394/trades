@@ -10,6 +10,7 @@
 import "./team";
 import "./newsletter";
 import "./trade_connections";
+import "./ai_visualiser";
 
 // ─── Add Library descriptor list ──────────────────────────────────
 //
@@ -55,6 +56,12 @@ export const STUDIO_ADDON_DESCRIPTORS: StudioAddonDescriptor[] = [
     sectionId: "addon.trade_connections",
     library: "products",
     compatiblePageIds: ["home", "shop", "product"]
+  },
+  {
+    slug: "ai_visualiser",
+    sectionId: "addon.ai_visualiser",
+    library: "sales",
+    compatiblePageIds: ["home", "services", "shop"]
   }
 ];
 

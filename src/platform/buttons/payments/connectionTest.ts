@@ -263,10 +263,10 @@ export async function testProvider(
     case "coinbase":
       return testCoinbase(credentials);
     case "square":
-    case "cash_app":
+    case "cash-app":
       return testSquare(credentials);
     case "cod":
-    case "bank_transfer":
+    case "bank-transfer":
       // No API to test — as long as required credential fields are set
       // the config is valid.
       if (providerId === "bank_transfer") {
