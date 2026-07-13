@@ -7,13 +7,14 @@
 // Center, Notebook, Reviews page) stay unchanged.
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import type { Canteen, CanteenMember, CanteenProduct, SideLanePost, BrowseProductRow, BrowseSort } from "@/lib/canteens";
+import type { Canteen, CanteenMember, CanteenProduct, CanteenDesign, SideLanePost, BrowseProductRow, BrowseSort } from "@/lib/canteens";
 import {
   canteenBySlug as canteenBySlugMock,
   membersForCanteen as membersForCanteenMock,
   adminForCanteen as adminForCanteenMock,
   productsForCanteen as productsForCanteenMock,
   canteenProductById as canteenProductByIdMock,
+  designsForCanteen as designsForCanteenMock,
   canteenHostedByMerchant as canteenHostedByMerchantMock,
   canteenBannerForMerchant as canteenBannerForMerchantMock,
   platformSideLane as platformSideLaneMock,
@@ -137,6 +138,50 @@ export async function canteenProductByIdFromDb(id: string): Promise<CanteenProdu
   }
   if (!res.data) return canteenProductByIdMock(id);
   return shapeProduct(res.data);
+}
+
+// ─── Designs ─────────────────────────────────────────────
+//
+// Fetch merchant-editable design portfolio for a canteen. Same
+// fail-safe pattern as products: mock id → mock; DB error → mock;
+// empty result → mock (so Mike's demo-mode page still shows the
+// hardcoded kitchen designs while we onboard him into the editor).
+// The moment his first real design lands in the DB, the mock stops
+// showing and real data takes over.
+
+export async function designsForCanteenFromDb(canteenId: string): Promise<CanteenDesign[]> {
+  if (!isUuid(canteenId)) return designsForCanteenMock(canteenId);
+  const res = await supabaseAdmin
+    .from("hammerex_canteen_designs")
+    .select("*")
+    .eq("canteen_id", canteenId)
+    .is("archived_at", null)
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
+  if (res.error) {
+    // eslint-disable-next-line no-console
+    console.error("[canteens.server] designs", res.error);
+    return designsForCanteenMock(canteenId);
+  }
+  const rows = res.data ?? [];
+  if (rows.length === 0) return designsForCanteenMock(canteenId);
+  return rows.map(shapeDesign);
+}
+
+function shapeDesign(r: Record<string, unknown>): CanteenDesign {
+  return {
+    id:          String(r.id),
+    canteenId:   String(r.canteen_id),
+    ref:         String(r.ref),
+    name:        String(r.name),
+    tagline:     (r.tagline as string | null) ?? null,
+    description: (r.description as string | null) ?? null,
+    style:       (r.style as string | null) ?? null,
+    imageUrl:    String(r.image_url),
+    galleryUrls: (Array.isArray(r.gallery_urls) ? r.gallery_urls : []) as string[],
+    sortOrder:   Number(r.sort_order ?? 0),
+    createdAt:   String(r.created_at)
+  };
 }
 
 // ─── Merchant helpers ─────────────────────────────────────

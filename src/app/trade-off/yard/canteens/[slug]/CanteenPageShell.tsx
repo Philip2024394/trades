@@ -30,7 +30,7 @@ import { CanteenProductFocus } from "@/components/xrated/yard/CanteenProductFocu
 import { CanteenProfileFocus } from "@/components/xrated/yard/CanteenProfileFocus";
 import { CanteenCounterExplainer } from "@/components/xrated/yard/CanteenCounterExplainer";
 import { canteenProductById } from "@/lib/canteens";
-import type { Canteen, SideLanePost, CanteenMember, CanteenProduct } from "@/lib/canteens";
+import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
@@ -47,6 +47,7 @@ export function CanteenPageShell({
   featuredProducts,
   totalProducts,
   initialChatPosts,
+  designs,
   initialFocusProductId,
   returnHref,
   returnLabel
@@ -60,6 +61,10 @@ export function CanteenPageShell({
   /** Real DB posts, top-level only. When the array is empty, the
    *  shell falls back to CANTEEN_MOCK_POSTS. */
   initialChatPosts?: CanteenChatPost[];
+  /** Merchant portfolio designs. Empty array is fine — the tabbed
+   *  section falls back to the hardcoded DEMO_DESIGNS so the surface
+   *  reads full while a new merchant onboards into the designs editor. */
+  designs?: CanteenDesign[];
   /** SSR-supplied product ID from `?focus=` — opens the page in
    *  product-focus mode on first paint. Skipped when the URL param
    *  points to a product not in this canteen (server-validated). */
@@ -249,6 +254,7 @@ export function CanteenPageShell({
                   isHost={isHost}
                   posts={pickRotatorPosts(initialChatPosts)}
                   products={featuredProducts}
+                  designs={designs ?? []}
                   hostDisplayName={canteen.hostDisplayName}
                   hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
                   hostSlug={canteen.hostSlug}

@@ -29,7 +29,7 @@ import {
   MapPin,
   Clock
 } from "lucide-react";
-import type { CanteenProduct } from "@/lib/canteens";
+import type { CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { RotatorPost } from "@/components/xrated/yard/CanteenMobilePostsRotator";
 import { competitorSlugsFor, tradeLabel as lookupTradeLabel } from "@/lib/tradeOff";
 import { reviewsForMerchant, overallForReview } from "@/lib/reviews";
@@ -55,7 +55,16 @@ const TABS: { slug: TabSlug; label: string }[] = [
 // short catchy name, a tagline, and full description for the popup.
 type DemoDesign = {
   id: string;
+  /** Design reference number — printed on card + modal so customers can
+   *  quote "Ref DS-101" when they message the merchant. Makes the
+   *  connection between "which design" and "who to contact" trivial. */
+  ref: string;
   imageUrl: string;
+  /** Optional extra angles / detail shots. Rendered as rounded-square
+   *  thumbnails in the design modal; tap to swap the main image.
+   *  Max 3 additional (4 total with the hero) so it stays a focused
+   *  "here's my kitchen" story rather than a scrolling gallery. */
+  galleryUrls?: string[];
   name: string;
   tagline: string;
   description: string;
@@ -65,51 +74,66 @@ type DemoDesign = {
 const DEMO_DESIGNS: DemoDesign[] = [
   {
     id: "d1",
+    ref: "DS-101",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2012_31_13%20PM.png",
-    name: "Handleless Shaker",
-    tagline: "Timeless with a modern edge",
-    description: "Full-height handleless shaker doors in warm off-white, paired with a matt-black island. Quartz worktop, brushed brass hardware. A run-and-a-half layout — around 4.2m of frontage, comfortable for a family of four.",
-    style: "Modern Shaker"
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_37_29%20PM.png"
+    ],
+    name: "Signature Handleless",
+    tagline: "Bespoke to your space",
+    description: "Full-height handleless doors with a soft-close mechanism, wrapped in a warm neutral palette. Quartz worktops with a matching upstand, integrated appliances, and hidden pantry storage. A design that reads calm and clean — every line intentional. Priced from £14,500 including install and 10-year cabinet warranty.",
+    style: "Modern Handleless"
   },
   {
     id: "d2",
-    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png",
-    name: "Slab Contemporary",
-    tagline: "Clean lines, deep tones",
-    description: "Flat-slab units in a rich forest green with a mitred-edge dekton worktop. Integrated appliances and a hidden pantry. Best suited to open-plan spaces above 5.5m.",
-    style: "Contemporary"
+    ref: "DS-102",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_52_07%20PM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_49_21%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_46_41%20PM.png"
+    ],
+    name: "Statement Island",
+    tagline: "Built around the family",
+    description: "A wide central island in a bold contrast tone — quartz surface, integrated wine cooler, breakfast bar seating for four. Perfect for open-plan family homes where the kitchen is the social hub. Pairs with either shaker or slab door styles. From £18,900 fitted, typically installed in 3-4 weeks.",
+    style: "Family Kitchen"
   },
   {
     id: "d3",
-    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png",
-    name: "Traditional In-Frame",
-    tagline: "Craftsmanship-first",
-    description: "In-frame painted doors with beaded detailing. Solid oak worktops, Belfast sink, and a classic dresser end. Built to last three decades. Perfect for period properties.",
-    style: "Traditional"
+    ref: "DS-103",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_49_21%20PM.png",
+    name: "Contemporary Two-Tone",
+    tagline: "Bold and balanced",
+    description: "A two-tone finish — deep base units contrasted against light wall cabinets. Brushed brass accents on handles and taps. Mitred-edge worktops for a premium seamless look. Best in kitchens over 4m wide where the contrast can breathe. From £16,200 supplied and fitted.",
+    style: "Two-Tone Modern"
   },
   {
     id: "d4",
-    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png",
-    name: "Scandi Minimal",
-    tagline: "Light, warm, uncluttered",
-    description: "Light oak veneers with white accents and open shelving. Minimalist handles, hidden storage. Designed for smaller footprints — works from 2.4m upward.",
-    style: "Scandi"
+    ref: "DS-104",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_46_41%20PM.png",
+    name: "Classic In-Frame",
+    tagline: "Craftsmanship, no compromise",
+    description: "In-frame painted doors with beaded detailing — the mark of a joiner-built kitchen. Solid oak worktops, Belfast sink, and a shaker dresser end. Built to last 30 years without a wobble. Ideal for period properties and Victorian terraces. From £22,400 including hand-finish paint job.",
+    style: "Traditional"
   },
   {
     id: "d5",
-    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
-    name: "Industrial Loft",
-    tagline: "Steel, timber, presence",
-    description: "Blackened steel frames, reclaimed timber worktops, and exposed shelving. Statement pendant lighting. A kitchen that becomes the room's focal point.",
-    style: "Industrial"
+    ref: "DS-105",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_37_29%20PM.png",
+    name: "Compact Galley",
+    tagline: "Small footprint, full function",
+    description: "A galley layout designed for narrow terraces and flat conversions — every inch working hard. Corner pull-outs, integrated bin, tall pantry unit. Handleless doors keep the space feeling open. Works from 2.4m upwards. From £9,800 including appliances and install.",
+    style: "Compact"
   },
   {
     id: "d6",
-    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2003_00_00%20PM.png",
-    name: "Coastal Painted",
-    tagline: "Soft blues, quiet mornings",
-    description: "Duck-egg blue in-frame doors with a solid walnut top. Painted island in bone white, brushed nickel handles. A calm, coastal palette — beautiful in south-facing rooms.",
-    style: "Coastal"
+    ref: "DS-106",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_32_24%20PM.png",
+    name: "Open-Plan Showstopper",
+    tagline: "Design-led, entertain-ready",
+    description: "A statement piece for open-plan spaces — long island, waterfall worktop, floor-to-ceiling larder tower. Integrated seating and hidden charging points. Colour and finish tailored to your home during the design consultation. From £26,500, install in 4-5 weeks.",
+    style: "Luxury Open-Plan"
   }
 ];
 
@@ -203,6 +227,7 @@ export function CanteenTabbedSection({
   isHost: _isHost,
   posts,
   products,
+  designs = [],
   hostDisplayName,
   hostFirstName,
   hostSlug,
@@ -220,6 +245,11 @@ export function CanteenTabbedSection({
   isHost: boolean;
   posts: RotatorPost[];
   products: CanteenProduct[];
+  /** DB-backed merchant designs. When empty, the tab falls back to the
+   *  hardcoded DEMO_DESIGNS so a fresh merchant's page reads full during
+   *  onboarding. The moment their first real design lands in the DB,
+   *  real data takes over — no code change needed. */
+  designs?: CanteenDesign[];
   hostDisplayName?: string;
   hostFirstName: string;
   /** Merchant slug — powers the Reviews tab lookup against the
@@ -323,6 +353,24 @@ export function CanteenTabbedSection({
     return DEMO_TRADES.filter((t) => !banned.has(t.tradeSlug));
   }, [tradeSlug]);
 
+  // Designs — real DB rows when the merchant has published any,
+  // otherwise the hardcoded DEMO_DESIGNS fallback so the surface reads
+  // full during onboarding. The moment merchant adds their first real
+  // design, real data takes over — no code change required.
+  const activeDesigns = useMemo<DemoDesign[]>(() => {
+    if (!designs || designs.length === 0) return DEMO_DESIGNS;
+    return designs.map((d) => ({
+      id:          d.id,
+      ref:         d.ref,
+      imageUrl:    d.imageUrl,
+      galleryUrls: d.galleryUrls,
+      name:        d.name,
+      tagline:     d.tagline ?? "",
+      description: d.description ?? "",
+      style:       d.style ?? ""
+    }));
+  }, [designs]);
+
   // Reviews — pulled from the canonical review store keyed by merchant
   // slug so the same reviews shown on `/trade/{hostSlug}/reviews` render
   // inside the Reviews tab. Falls back to DEMO_REVIEWS when the host
@@ -349,7 +397,7 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? "Jobs"
     : activeTab === "trades" ? "Trades"
     : activeTab === "reviews" ? "Reviews"
-    : activeTab === "designs" ? "Designs"
+    : activeTab === "designs" ? "Design Service"
     : "Contact";
 
   // Total items in the active list — powers the "N more" badge on
@@ -360,7 +408,7 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? jobs.length
     : activeTab === "trades" ? complementaryTrades.length
     : activeTab === "reviews" ? reviews.length
-    : activeTab === "designs" ? DEMO_DESIGNS.length
+    : activeTab === "designs" ? activeDesigns.length
     : 0;
   const isContact = activeTab === "contact";
   const hiddenCount = Math.max(0, totalForActive - limit);
@@ -373,7 +421,7 @@ export function CanteenTabbedSection({
     : "";
 
   const viewingDesign = viewingDesignId
-    ? DEMO_DESIGNS.find((d) => d.id === viewingDesignId) ?? null
+    ? activeDesigns.find((d) => d.id === viewingDesignId) ?? null
     : null;
 
   return (
@@ -407,6 +455,11 @@ export function CanteenTabbedSection({
       {activeTab === "reviews" && (
         <p className="mb-2 text-[10.5px] leading-snug text-neutral-500">
           Reviews left by customers on Thenetworkers — <span className="font-black text-neutral-700">unverified.</span> Treat them as guidance, not proof.
+        </p>
+      )}
+      {activeTab === "designs" && (
+        <p className="mb-2 text-[11px] leading-snug text-neutral-500">
+          Call us today for your kitchen vision. Quote the design <span className="font-black text-neutral-700">Ref</span> when you get in touch.
         </p>
       )}
 
@@ -454,7 +507,7 @@ export function CanteenTabbedSection({
         )}
         {activeTab === "designs" && (
           <DesignsList
-            designs={DEMO_DESIGNS.slice(0, limit)}
+            designs={activeDesigns.slice(0, limit)}
             onOpen={(id) => setViewingDesignId(id)}
           />
         )}
@@ -540,6 +593,8 @@ export function CanteenTabbedSection({
     {viewingDesign && (
       <DesignModal
         design={viewingDesign}
+        hostFirstName={hostFirstName}
+        hostWhatsapp={hostWhatsapp}
         onClose={() => setViewingDesignId(null)}
       />
     )}
@@ -548,6 +603,28 @@ export function CanteenTabbedSection({
 }
 
 // ─── Feed rows ─────────────────────────────────────────────
+
+// Slow upward marquee for the Feed tab — posts float up continuously
+// so the section reads as alive even when the tab is idle. Hovering
+// (or long-pressing on touch) pauses the animation so the user can
+// actually read what's on screen. Respects prefers-reduced-motion.
+const FEED_MARQUEE_CSS = `
+@keyframes canteen-feed-scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.canteen-feed-marquee {
+  animation: canteen-feed-scroll-up 180s linear infinite;
+  will-change: transform;
+}
+.canteen-feed-shell:hover .canteen-feed-marquee,
+.canteen-feed-shell:active .canteen-feed-marquee {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .canteen-feed-marquee { animation: none; }
+}
+`;
 
 function FeedList({
   posts,
@@ -559,14 +636,38 @@ function FeedList({
   tradeLabel: string;
 }) {
   if (posts.length === 0) return <EmptyRow label="No posts yet"/>;
+  // Duplicate the list so the -50% keyframe loops seamlessly. Only
+  // marquee when there are enough posts to justify it (>= 3) —
+  // otherwise render static so the section doesn't look broken.
+  const shouldMarquee = posts.length >= 3;
+  const rows = shouldMarquee ? [...posts, ...posts] : posts;
   return (
-    <ul className="flex flex-col gap-2">
-      {posts.map((p, i) => {
+    <>
+      <style>{FEED_MARQUEE_CSS}</style>
+      <div
+        className={
+          shouldMarquee
+            ? "canteen-feed-shell relative overflow-hidden h-[min(60vh,520px)]"
+            : ""
+        }
+        style={
+          shouldMarquee
+            ? {
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)"
+              }
+            : undefined
+        }
+      >
+    <ul className={`flex flex-col gap-2 ${shouldMarquee ? "canteen-feed-marquee" : ""}`}>
+      {rows.map((p, i) => {
         const thumb = p.imageUrl || DEMO_THUMBS[
           (p.authorSlug.charCodeAt(0) + i) % DEMO_THUMBS.length
         ];
         return (
-          <li key={p.id}>
+          <li key={`${p.id}-${i}`}>
             <Link
               href={`/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(p.id)}`}
               className="flex items-center gap-3 rounded-xl p-2 transition active:bg-neutral-900/[0.03]"
@@ -625,6 +726,8 @@ function FeedList({
         );
       })}
     </ul>
+      </div>
+    </>
   );
 }
 
@@ -782,26 +885,24 @@ function ProductQuickView({
         <X size={14} strokeWidth={2.6}/>
       </button>
 
-      {/* Hero image — bulk-buy chip stays (it's meaningful info,
-          not a badge). Featured badge + price pill removed per spec. */}
-      <div
-        className="relative aspect-[4/3] w-full overflow-hidden rounded-xl"
-        style={{
-          backgroundImage: `url('${product.imageUrl}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundColor: "#F3F4F6"
-        }}
-        aria-hidden
-      >
-        {product.bulkBuy && (
-          <span
-            className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
-            style={{ backgroundColor: "#166534" }}
-          >
-            Bulk · {product.bulkBuy.committedCount}/{product.bulkBuy.targetCount}
-          </span>
-        )}
+      {/* Hero + thumb gallery — shared ImageGallery renders main
+          image sharp (object-contain) + up to 3 additional shots
+          from galleryUrls. Bulk-buy chip overlays on the main image. */}
+      <div className="overflow-hidden rounded-xl">
+        <ImageGallery
+          images={[product.imageUrl, ...(product.galleryUrls ?? [])]}
+          altBase={product.name}
+          overlay={
+            product.bulkBuy ? (
+              <span
+                className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
+                style={{ backgroundColor: "#166534" }}
+              >
+                Bulk · {product.bulkBuy.committedCount}/{product.bulkBuy.targetCount}
+              </span>
+            ) : null
+          }
+        />
       </div>
 
       {/* Body — no card wrapper, sits directly on the tab section bg */}
@@ -958,6 +1059,100 @@ function EmptyRow({ label }: { label: string }) {
       style={{ borderColor: "rgba(139,69,19,0.20)" }}
     >
       {label}
+    </div>
+  );
+}
+
+// ─── ImageGallery (shared by DesignModal + ProductQuickView) ──────
+//
+// Renders a main <img> (object-contain, sharp) with an optional row of
+// rounded-square thumbnails below. Tap a thumb to swap the main image.
+// Hidden entirely when there's only one image so single-image entries
+// don't get an awkward one-thumb row.
+//
+// Design principle: max 4 total (1 hero + up to 3 additional). Beyond
+// that a full gallery UI is warranted — this is meant to tell a focused
+// "here's my kitchen" or "here's my product" story, not paginate.
+
+function ImageGallery({
+  images,
+  altBase,
+  overlay
+}: {
+  /** [hero, ...additional]. First image is the initial main. */
+  images: string[];
+  /** Alt-text prefix — the position index is appended per image. */
+  altBase: string;
+  /** Absolute-positioned overlays to render on top of the main image
+   *  (chips, badges, etc). Renders inside the main-image container. */
+  overlay?: React.ReactNode;
+}) {
+  const clean = images.filter((s) => s && s.trim().length > 0);
+  const [activeIndex, setActiveIndex] = useState(0);
+  useEffect(() => { setActiveIndex(0); }, [images]);
+  if (clean.length === 0) return null;
+  const active = clean[Math.min(activeIndex, clean.length - 1)];
+  const showThumbs = clean.length > 1;
+
+  return (
+    <div className="w-full">
+      {/* Main image — real <img> with object-contain so the full
+          composition shows sharp, no CSS-scaled blur, no crop. */}
+      <div className="relative w-full bg-neutral-100">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={active}
+          alt={`${altBase} — image ${activeIndex + 1} of ${clean.length}`}
+          className="block h-auto max-h-[60vh] w-full object-contain"
+          loading="eager"
+          decoding="async"
+        />
+        {overlay}
+        {showThumbs && (
+          <span
+            className="absolute left-3 bottom-3 rounded-full bg-black/70 px-2 py-0.5 text-[9px] font-black tracking-wider text-white backdrop-blur"
+          >
+            {activeIndex + 1} / {clean.length}
+          </span>
+        )}
+      </div>
+
+      {/* Thumb row — hidden if there's only one image. Rounded-square
+          (rectangles that read as "kitchen angles", not round chips
+          which read as products). */}
+      {showThumbs && (
+        <div className="mt-2 flex items-center gap-2 px-1">
+          {clean.slice(0, 4).map((src, i) => {
+            const isActive = i === activeIndex;
+            return (
+              <button
+                key={`${src}-${i}`}
+                type="button"
+                onClick={() => setActiveIndex(i)}
+                aria-label={`Show image ${i + 1} of ${clean.length}`}
+                className={`relative block h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg transition ${
+                  isActive ? "" : "opacity-70 hover:opacity-100"
+                }`}
+                style={{
+                  boxShadow: isActive
+                    ? "0 0 0 2px #FFB300"
+                    : "0 0 0 1px rgba(139,69,19,0.15)"
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt=""
+                  aria-hidden
+                  className="block h-full w-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }
@@ -1307,11 +1502,52 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
   );
 }
 
+// Reviews marquee — same slow upward scroll pattern as the Feed tab.
+// Keyframe named separately so both lists animate independently.
+const REVIEWS_MARQUEE_CSS = `
+@keyframes canteen-reviews-scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.canteen-reviews-marquee {
+  animation: canteen-reviews-scroll-up 210s linear infinite;
+  will-change: transform;
+}
+.canteen-reviews-shell:hover .canteen-reviews-marquee,
+.canteen-reviews-shell:active .canteen-reviews-marquee {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .canteen-reviews-marquee { animation: none; }
+}
+`;
+
 function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
   if (reviews.length === 0) return <EmptyRow label="No reviews yet"/>;
+  const shouldMarquee = reviews.length >= 3;
+  const rows = shouldMarquee ? [...reviews, ...reviews] : reviews;
   return (
-    <ul className="flex flex-col gap-2">
-      {reviews.map((r) => {
+    <>
+      <style>{REVIEWS_MARQUEE_CSS}</style>
+      <div
+        className={
+          shouldMarquee
+            ? "canteen-reviews-shell relative overflow-hidden h-[min(60vh,520px)]"
+            : ""
+        }
+        style={
+          shouldMarquee
+            ? {
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)"
+              }
+            : undefined
+        }
+      >
+    <ul className={`flex flex-col gap-2 ${shouldMarquee ? "canteen-reviews-marquee" : ""}`}>
+      {rows.map((r, i) => {
         const posted = new Date(r.createdAt);
         const daysAgo = Math.max(1, Math.floor((Date.now() - posted.getTime()) / (24 * 60 * 60 * 1000)));
         const timeLabel = daysAgo < 7
@@ -1326,7 +1562,7 @@ function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
           .slice(0, 2)
           .toUpperCase();
         return (
-          <li key={r.id}>
+          <li key={`${r.id}-${i}`}>
             <div
               className="flex items-center gap-3 rounded-xl border bg-white p-2 shadow-sm transition"
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
@@ -1386,6 +1622,8 @@ function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
         );
       })}
     </ul>
+      </div>
+    </>
   );
 }
 
@@ -1430,6 +1668,15 @@ function DesignsList({
             >
               {d.style}
             </span>
+            {/* Ref badge top-right — customers quote this when they
+                message the merchant. Dark chip for high contrast on
+                the light-image top corner. */}
+            <span
+              className="absolute right-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
+              style={{ backgroundColor: "rgba(10,10,10,0.85)", backdropFilter: "blur(4px)" }}
+            >
+              Ref {d.ref}
+            </span>
             {/* Header + tagline overlay */}
             <div className="absolute inset-x-0 bottom-0 p-2.5 text-left">
               <div className="text-[13px] font-black leading-tight text-white drop-shadow-md">
@@ -1448,11 +1695,22 @@ function DesignsList({
 
 function DesignModal({
   design,
+  hostFirstName,
+  hostWhatsapp,
   onClose
 }: {
   design: DemoDesign;
+  hostFirstName: string;
+  hostWhatsapp: string | null;
   onClose: () => void;
 }) {
+  // Pre-filled WhatsApp deep link that includes the design ref so the
+  // merchant instantly knows which kitchen the customer is asking about.
+  const waUrl = hostWhatsapp
+    ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
+        `Hi ${hostFirstName}, I'm interested in the ${design.name} kitchen design (Ref ${design.ref}). Can you tell me more?`
+      )}`
+    : null;
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -1480,39 +1738,49 @@ function DesignModal({
         className="relative flex w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
         style={{ maxHeight: "calc(100vh - 3rem)" }}
       >
-        {/* Close */}
+        {/* Close — yellow chip so it reads as a positive dismiss action
+            rather than a warning. Sits on the top-right corner of the
+            entire modal (not the hero). */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full text-white shadow-md transition active:scale-[0.95]"
-          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+          className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
+          style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
         >
-          <X size={16} strokeWidth={2.5}/>
+          <X size={16} strokeWidth={2.8}/>
         </button>
 
-        {/* Hero image */}
-        <div
-          className="relative aspect-[4/3] w-full flex-shrink-0"
-          style={{
-            backgroundImage: `url('${design.imageUrl}')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundColor: "#F3F4F6"
-          }}
-        >
-          <span
-            className="absolute left-3 top-3 rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-md"
-            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
-          >
-            {design.style}
-          </span>
-        </div>
+        {/* Hero + thumb gallery — shared ImageGallery renders main
+            image sharp (object-contain) + optional 3 additional angles
+            below. Chips overlay on the main image. */}
+        <ImageGallery
+          images={[design.imageUrl, ...(design.galleryUrls ?? [])]}
+          altBase={`${design.name} kitchen design`}
+          overlay={
+            <>
+              <span
+                className="absolute left-3 top-3 rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-md"
+                style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+              >
+                {design.style}
+              </span>
+              <span
+                className="absolute right-3 bottom-3 rounded-sm px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-md"
+                style={{ backgroundColor: "rgba(10,10,10,0.85)", backdropFilter: "blur(4px)" }}
+              >
+                Ref {design.ref}
+              </span>
+            </>
+          }
+        />
 
         {/* Details */}
         <div className="overflow-y-auto p-4">
-          <div className="text-[9px] font-black uppercase tracking-[0.22em] text-neutral-500">
-            Kitchen Design
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-[9px] font-black uppercase tracking-[0.22em] text-neutral-500">
+              Kitchen Design · Ref {design.ref}
+            </div>
           </div>
           <h2 className="mt-0.5 text-[18px] font-black leading-tight text-neutral-900 md:text-[20px]">
             {design.name}
@@ -1523,6 +1791,37 @@ function DesignModal({
           <p className="mt-3 text-[12px] leading-relaxed text-neutral-700 md:text-[13px]">
             {design.description}
           </p>
+          <p className="mt-3 rounded-lg border p-2.5 text-[11px] leading-relaxed text-neutral-700 md:text-[12px]"
+             style={{ borderColor: "rgba(184,134,11,0.20)", backgroundColor: "#FBF6EC" }}>
+            <span className="font-black text-neutral-900">Quote Ref {design.ref}</span> when you enquire — we&apos;ll pull the design straight up and can price it for your space.
+          </p>
+
+          {/* Enquire Now — dark green WhatsApp pill, pre-filled with the
+              design ref so the merchant knows exactly which kitchen the
+              customer means. Falls back to a disabled placeholder when
+              the merchant hasn't published a WhatsApp number. */}
+          <div className="mt-4">
+            {waUrl ? (
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-full text-[13px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.98]"
+                style={{ backgroundColor: "#166534" }}
+              >
+                <MessageCircle size={14} strokeWidth={2.6}/>
+                Enquire Now
+              </a>
+            ) : (
+              <span
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-full border text-[13px] font-black uppercase tracking-wider text-neutral-500"
+                style={{ borderColor: "rgba(139,69,19,0.15)", backgroundColor: "#F9FAFB" }}
+              >
+                <MessageCircle size={14} strokeWidth={2.4}/>
+                Contact details coming soon
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>

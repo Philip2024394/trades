@@ -12,6 +12,7 @@ import {
   membersForCanteenFromDb,
   adminForCanteenFromDb,
   productsForCanteenFromDb,
+  designsForCanteenFromDb,
   platformSideLaneFromDb,
   canteenPostsFromDb
 } from "@/lib/canteens.server";
@@ -62,13 +63,14 @@ export default async function CanteenDetailPage({
   if (!canteen) notFound();
   // Platform-wide feed + members + admin + products — 5 concurrent
   // reads. Mock fallback per source when the tables are empty.
-  const [sideLane, members, admin, featuredProducts, allProducts, chatPosts] = await Promise.all([
+  const [sideLane, members, admin, featuredProducts, allProducts, chatPosts, designs] = await Promise.all([
     platformSideLaneFromDb(canteen.tradeSlug),
     membersForCanteenFromDb(canteen.id),
     adminForCanteenFromDb(canteen.id),
     productsForCanteenFromDb(canteen.id, { featuredOnly: true }),
     productsForCanteenFromDb(canteen.id),
-    canteenPostsFromDb(canteen.id)
+    canteenPostsFromDb(canteen.id),
+    designsForCanteenFromDb(canteen.id)
   ]);
   const totalProducts = allProducts.length;
 
@@ -92,6 +94,7 @@ export default async function CanteenDetailPage({
       featuredProducts={featuredProducts}
       totalProducts={totalProducts}
       initialChatPosts={chatPosts}
+      designs={designs}
       initialFocusProductId={initialFocusProductId}
       returnHref={returnOrigin?.href}
       returnLabel={returnOrigin?.label}

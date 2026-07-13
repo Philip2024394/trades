@@ -705,6 +705,39 @@ export function canteenProductById(id: string): CanteenProduct | null {
   return MOCK_CANTEEN_PRODUCTS.find((p) => p.id === id) ?? null;
 }
 
+// ─── Designs ─────────────────────────────────────────────
+//
+// Merchant portfolio designs — kitchens for a kitchen fitter,
+// bathrooms for a bathroom fitter, etc. Rendered on the Designs tab of
+// the canteen mobile app. Customers quote the `ref` when they enquire
+// so the merchant knows exactly which design the message is about.
+
+export type CanteenDesign = {
+  id: string;
+  canteenId: string;
+  /** Customer-facing reference code — e.g. "DS-101". Merchant-editable
+   *  so their filing / WhatsApp language matches ("we have your DS-101
+   *  pulled up"). Unique per canteen. */
+  ref: string;
+  name: string;
+  tagline: string | null;
+  description: string | null;
+  style: string | null;
+  imageUrl: string;
+  /** Up to 3 additional shots for the modal thumb gallery. */
+  galleryUrls: string[];
+  sortOrder: number;
+  createdAt: string;
+};
+
+export const MOCK_CANTEEN_DESIGNS: CanteenDesign[] = [];
+
+export function designsForCanteen(canteenId: string): CanteenDesign[] {
+  return MOCK_CANTEEN_DESIGNS
+    .filter((d) => d.canteenId === canteenId)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
 /** Enriched product row used by the Trade Center browse grid. Joins
  *  the raw product with host + trade metadata so every card can render
  *  the merchant chip, trade tag, and canonical canteen link without a
