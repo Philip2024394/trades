@@ -37,8 +37,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const canteen = await canteenBySlugFromDb(slug);
-  if (!canteen) return { title: "Canteen products | The Network" };
-  const title = `${canteen.hostDisplayName}'s products · ${canteen.name} | The Network`;
+  if (!canteen) return { title: "Canteen products | Thenetworkers" };
+  const title = `${canteen.hostDisplayName}'s products · ${canteen.name} | Thenetworkers`;
   return {
     title,
     description: `All products from ${canteen.hostDisplayName} — full catalogue in the ${canteen.name} canteen.`,
@@ -55,7 +55,7 @@ export async function generateMetadata({
 
 function productWhatsappUrl(whatsapp: string, hostFirstName: string, productName: string): string {
   const digits = whatsappDigits(whatsapp);
-  const message = `Hi ${hostFirstName}, I'm interested in "${productName}" from your canteen on The Network. Can you tell me more?`;
+  const message = `Hi ${hostFirstName}, I'm interested in "${productName}" from your canteen on Thenetworkers. Can you tell me more?`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 

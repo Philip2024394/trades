@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
     : `£${XRATED_PRICING.monthlyGbp}/month`;
 
   const lines = [
-    `Hi Xrated Trades — I'd like to upgrade my xratedtrade.com profile to the App tier (${plan}).`,
+    `Hi Xrated Trades — I'd like to upgrade my thenetworkers.app profile to the App tier (${plan}).`,
     "",
     `Tradie: ${row.data.display_name}`,
     `Slug: ${row.data.slug}`,

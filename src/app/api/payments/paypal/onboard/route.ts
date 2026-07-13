@@ -76,7 +76,7 @@ export async function POST(req: Request) {
         tracking_id: trackingId,
         partner_config_override: {
           return_url: returnUrl,
-          return_url_description: "Return to xratedtrade.com"
+          return_url_description: "Return to thenetworkers.app"
         },
         operations: [
           {

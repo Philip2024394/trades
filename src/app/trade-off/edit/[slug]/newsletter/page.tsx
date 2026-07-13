@@ -1,4 +1,4 @@
-// xratedtrade.com Trade Off — Newsletter subscribers editor.
+// thenetworkers.app Trade Off — Newsletter subscribers editor.
 //
 // Server shell. Validates the magic-link edit_token, loads the
 // listing's currently-active subscribers (capped at 1000 rows for
@@ -30,7 +30,7 @@ import type { HammerexXratedNewsletterSubscriber } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Newsletter subscribers | xratedtrade.com",
+  title: "Newsletter subscribers | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 
@@ -137,14 +137,14 @@ export default async function TradeOffNewsletterEditPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi xratedtrade.com — I'm trying to manage my newsletter subscribers but my link isn't working. Can you help?"
+    "Hi thenetworkers.app — I'm trying to manage my newsletter subscribers but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          xratedtrade.com
+          thenetworkers.app
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This link is invalid or has expired.

@@ -1,7 +1,7 @@
 // Affiliate dashboard — Link generator.
 //
 // Server shell + client form that appends ?ref=N to any
-// xratedtrade.com URL. Provides quick-link buttons for the most
+// thenetworkers.app URL. Provides quick-link buttons for the most
 // commonly shared pages.
 import { readAffiliateSessionServer } from "@/lib/affiliateSession";
 import { LinkGeneratorForm } from "./LinkGeneratorForm";
@@ -19,7 +19,7 @@ export default async function AffiliateLinksPage() {
           Link generator
         </h1>
         <p className="mt-1 text-[13px] text-brand-muted">
-          Build a referral link for any page on xratedtrade.com. Your
+          Build a referral link for any page on thenetworkers.app. Your
           affiliate ID is appended automatically.
         </p>
       </header>
@@ -28,7 +28,7 @@ export default async function AffiliateLinksPage() {
         title="Make a custom link for any page"
         description="Your main referral link sends people to the homepage. But sometimes you want to point them at a specific page — pricing, the showcase, a particular trade demo. This page stamps your referral code onto any URL."
         steps={[
-          "Paste any xratedtrade.com URL",
+          "Paste any thenetworkers.app URL",
           "Click Generate",
           "Copy the result",
           "Share it — the cookie still works for 30 days"

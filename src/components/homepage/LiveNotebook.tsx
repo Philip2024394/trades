@@ -67,7 +67,7 @@ function NotebookMock({ notebook }: { notebook: LiveNotebookContent }) {
         <div className="h-2.5 w-2.5 rounded-full bg-amber-400" />
         <div className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
         <div className="mx-auto text-[13px] font-mono text-neutral-400">
-          xratedtrade.com/{notebook.businessName.toLowerCase().replace(/\s+/g, "-")}
+          thenetworkers.app/{notebook.businessName.toLowerCase().replace(/\s+/g, "-")}
         </div>
       </div>
 

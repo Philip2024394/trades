@@ -1,9 +1,9 @@
-// /join — Trade join entry for The Network.
+// /join — Trade join entry for Thenetworkers.
 //
 // Landing page for tradespeople arriving via the split gate. Per the
 // master-brand decision (project_thenetwork_domain_option.md,
 // 2026-07-09) the Construction Notebook framing was retired: all
-// tradesperson-facing surfaces now push "Join The Network." The old
+// tradesperson-facing surfaces now push "Join Thenetworkers." The old
 // "Trade Notebook / Trade Circle" vocabulary is superseded by "your
 // business app / your canteen."
 
@@ -30,7 +30,7 @@ const STEP_IMAGES = {
 };
 
 export const metadata = {
-  title: "Join The Network — Free for life",
+  title: "Join Thenetworkers — Free for life",
   description:
     "Get your free business app, canteen, and URL live in under 5 minutes. No card, no commission, free for life."
 };
@@ -76,7 +76,7 @@ export default function JoinTradePage() {
         </Link>
 
         <h1 className="mt-8 text-[38px] font-bold leading-[1.05] tracking-tight text-[#1B1A17] md:text-[56px]">
-          Join The Network.
+          Join Thenetworkers.
         </h1>
         <p className="mt-4 max-w-xl text-[16px] leading-[1.55] text-[#1B1A17]/70 md:text-[18px]">
           Your business app. Your canteen. Your URL live. Under 5 minutes. Free for life.
@@ -129,7 +129,7 @@ export default function JoinTradePage() {
             imageUrl={STEP_IMAGES.circle}
             icon={<Users className="h-4 w-4" aria-hidden />}
             title="Join a canteen"
-            body="Your trade's private group on The Network. Recommend and get recommended. Grow together."
+            body="Your trade's private group on Thenetworkers. Recommend and get recommended. Grow together."
           />
         </div>
 
@@ -145,7 +145,7 @@ export default function JoinTradePage() {
 
         <div className="mt-14 border-t border-[#1B1A17]/12 pt-6">
           <p className="text-[13px] text-[#1B1A17]/55">
-            Already on The Network?{" "}
+            Already on Thenetworkers?{" "}
             <Link href="/sign-in" className="text-amber-300 hover:text-amber-200">
               Sign in
             </Link>

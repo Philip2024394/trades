@@ -38,14 +38,79 @@ const TAN = "#B8860B";
 const TAN_SOFT = "#F5E9D3";
 const BRAND_BLACK = "#0A0A0A";
 
-type TabSlug = "feed" | "products" | "jobs" | "contact" | "trades" | "reviews";
+type TabSlug = "feed" | "products" | "jobs" | "contact" | "trades" | "reviews" | "designs";
 const TABS: { slug: TabSlug; label: string }[] = [
   { slug: "feed",     label: "Feed" },
   { slug: "products", label: "Products" },
+  { slug: "designs",  label: "Designs" },
   { slug: "jobs",     label: "Jobs" },
   { slug: "contact",  label: "Contact" },
   { slug: "trades",   label: "Trades" },
   { slug: "reviews",  label: "Reviews" }
+];
+
+// Demo designs — landscape image cards with header + text overlay. Real
+// design data will land when the design gallery editor ships. Format
+// matches what a kitchen supplier would populate: a hero image, a
+// short catchy name, a tagline, and full description for the popup.
+type DemoDesign = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  tagline: string;
+  description: string;
+  style: string;
+};
+
+const DEMO_DESIGNS: DemoDesign[] = [
+  {
+    id: "d1",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2012_31_13%20PM.png",
+    name: "Handleless Shaker",
+    tagline: "Timeless with a modern edge",
+    description: "Full-height handleless shaker doors in warm off-white, paired with a matt-black island. Quartz worktop, brushed brass hardware. A run-and-a-half layout — around 4.2m of frontage, comfortable for a family of four.",
+    style: "Modern Shaker"
+  },
+  {
+    id: "d2",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png",
+    name: "Slab Contemporary",
+    tagline: "Clean lines, deep tones",
+    description: "Flat-slab units in a rich forest green with a mitred-edge dekton worktop. Integrated appliances and a hidden pantry. Best suited to open-plan spaces above 5.5m.",
+    style: "Contemporary"
+  },
+  {
+    id: "d3",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png",
+    name: "Traditional In-Frame",
+    tagline: "Craftsmanship-first",
+    description: "In-frame painted doors with beaded detailing. Solid oak worktops, Belfast sink, and a classic dresser end. Built to last three decades. Perfect for period properties.",
+    style: "Traditional"
+  },
+  {
+    id: "d4",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png",
+    name: "Scandi Minimal",
+    tagline: "Light, warm, uncluttered",
+    description: "Light oak veneers with white accents and open shelving. Minimalist handles, hidden storage. Designed for smaller footprints — works from 2.4m upward.",
+    style: "Scandi"
+  },
+  {
+    id: "d5",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    name: "Industrial Loft",
+    tagline: "Steel, timber, presence",
+    description: "Blackened steel frames, reclaimed timber worktops, and exposed shelving. Statement pendant lighting. A kitchen that becomes the room's focal point.",
+    style: "Industrial"
+  },
+  {
+    id: "d6",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2003_00_00%20PM.png",
+    name: "Coastal Painted",
+    tagline: "Soft blues, quiet mornings",
+    description: "Duck-egg blue in-frame doors with a solid walnut top. Painted island in bone white, brushed nickel handles. A calm, coastal palette — beautiful in south-facing rooms.",
+    style: "Coastal"
+  }
 ];
 
 // Demo reviews for the Reviews tab. Real review data will land when
@@ -177,6 +242,9 @@ export function CanteenTabbedSection({
   // Product detail lightbox — when set, the Products tab renders the
   // compact detail view for that product id instead of the row list.
   const [viewingProductId, setViewingProductId] = useState<string | null>(null);
+  // Design quick-view — when set the Designs tab renders a popup modal
+  // overlay showing the full design image + description + details.
+  const [viewingDesignId, setViewingDesignId] = useState<string | null>(null);
   // Per-tab expanded state so switching tabs doesn't leak the "see
   // all" state across sections.
   const [expanded, setExpanded] = useState<Record<TabSlug, boolean>>({
@@ -185,7 +253,8 @@ export function CanteenTabbedSection({
     jobs:     false,
     contact:  false,
     trades:   false,
-    reviews:  false
+    reviews:  false,
+    designs:  false
   });
   const isExpanded = expanded[activeTab];
   const limit = isExpanded ? DEFAULT_LIMIT + REVEAL_MORE : DEFAULT_LIMIT;
@@ -203,20 +272,20 @@ export function CanteenTabbedSection({
     // Read hash on mount so a shared URL like /uk-kitchen-fitters#tab-jobs
     // opens on the right tab.
     const initial = window.location.hash.replace(/^#tab-/, "");
-    if (initial === "products" || initial === "jobs" || initial === "feed" || initial === "contact" || initial === "trades" || initial === "reviews") {
+    if (initial === "products" || initial === "jobs" || initial === "feed" || initial === "contact" || initial === "trades" || initial === "reviews" || initial === "designs") {
       setActiveTab(initial as TabSlug);
     }
     function handleSetTab(e: Event) {
       const detail = (e as CustomEvent).detail;
       if (!detail) return;
       const t = detail.tab;
-      if (t === "products" || t === "jobs" || t === "feed" || t === "contact" || t === "trades" || t === "reviews") {
+      if (t === "products" || t === "jobs" || t === "feed" || t === "contact" || t === "trades" || t === "reviews" || t === "designs") {
         setActiveTab(t);
       }
     }
     function handleHashChange() {
       const h = window.location.hash.replace(/^#tab-/, "");
-      if (h === "products" || h === "jobs" || h === "feed" || h === "contact" || h === "trades" || h === "reviews") {
+      if (h === "products" || h === "jobs" || h === "feed" || h === "contact" || h === "trades" || h === "reviews" || h === "designs") {
         setActiveTab(h as TabSlug);
       }
     }
@@ -280,6 +349,7 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? "Jobs"
     : activeTab === "trades" ? "Trades"
     : activeTab === "reviews" ? "Reviews"
+    : activeTab === "designs" ? "Designs"
     : "Contact";
 
   // Total items in the active list — powers the "N more" badge on
@@ -290,6 +360,7 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? jobs.length
     : activeTab === "trades" ? complementaryTrades.length
     : activeTab === "reviews" ? reviews.length
+    : activeTab === "designs" ? DEMO_DESIGNS.length
     : 0;
   const isContact = activeTab === "contact";
   const hiddenCount = Math.max(0, totalForActive - limit);
@@ -298,9 +369,15 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? "jobs"
     : activeTab === "trades" ? "trades"
     : activeTab === "reviews" ? "reviews"
+    : activeTab === "designs" ? "designs"
     : "";
 
+  const viewingDesign = viewingDesignId
+    ? DEMO_DESIGNS.find((d) => d.id === viewingDesignId) ?? null
+    : null;
+
   return (
+    <>
     <section id="canteen-tabbed">
       {/* Section header — label only, no tab controls. Content
           switches based on Quick Action button hash (#tab-products /
@@ -321,7 +398,7 @@ export function CanteenTabbedSection({
 
       {/* Trades tab disclaimer — honest positioning: platform helps
           the customer find, never vets the trades. Legal protection +
-          fair-standing brand mark for The Network. */}
+          fair-standing brand mark for Thenetworkers. */}
       {activeTab === "trades" && (
         <p className="mb-2 text-[10.5px] leading-snug text-neutral-500">
           Trades listed to help you find a tradesperson in your area — <span className="font-black text-neutral-700">we don&apos;t verify any trade.</span> Always do your own checks.
@@ -329,7 +406,7 @@ export function CanteenTabbedSection({
       )}
       {activeTab === "reviews" && (
         <p className="mb-2 text-[10.5px] leading-snug text-neutral-500">
-          Reviews left by customers on The Network — <span className="font-black text-neutral-700">unverified.</span> Treat them as guidance, not proof.
+          Reviews left by customers on Thenetworkers — <span className="font-black text-neutral-700">unverified.</span> Treat them as guidance, not proof.
         </p>
       )}
 
@@ -374,6 +451,12 @@ export function CanteenTabbedSection({
         )}
         {activeTab === "reviews" && (
           <ReviewsList reviews={reviews.slice(0, limit)}/>
+        )}
+        {activeTab === "designs" && (
+          <DesignsList
+            designs={DEMO_DESIGNS.slice(0, limit)}
+            onOpen={(id) => setViewingDesignId(id)}
+          />
         )}
         {activeTab === "contact" && (
           <ContactCard
@@ -451,6 +534,16 @@ export function CanteenTabbedSection({
         </div>
       )}
     </section>
+
+    {/* Design popup modal — renders full image + description + details
+        when a design card is tapped. Click backdrop or X to close. */}
+    {viewingDesign && (
+      <DesignModal
+        design={viewingDesign}
+        onClose={() => setViewingDesignId(null)}
+      />
+    )}
+    </>
   );
 }
 
@@ -672,7 +765,7 @@ function ProductQuickView({
   }
   const waUrl = hostWhatsapp
     ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-        `Hi ${hostFirstName}, I'm interested in "${product.name}" on The Network. Can you tell me more?`
+        `Hi ${hostFirstName}, I'm interested in "${product.name}" on Thenetworkers. Can you tell me more?`
       )}`
     : null;
 
@@ -803,7 +896,7 @@ function JobsList({
         const jobsHref = `/trade-off/yard/canteens/${canteenSlug}/jobs`;
         const waUrl = hostWhatsapp
           ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-              `Hi ${hostFirstName}, I saw one of your jobs on The Network — I'd like to book similar ${tradeLabel.toLowerCase()} work.`
+              `Hi ${hostFirstName}, I saw one of your jobs on Thenetworkers — I'd like to book similar ${tradeLabel.toLowerCase()} work.`
             )}`
           : null;
         return (
@@ -925,7 +1018,7 @@ function ContactCard({
 
   function buildEnquiryText(): string {
     const lines: string[] = [];
-    lines.push(`Hi ${hostFirstName}, enquiry from The Network:`);
+    lines.push(`Hi ${hostFirstName}, enquiry from Thenetworkers:`);
     lines.push("");
     if (name) lines.push(`Name: ${name}`);
     if (email) lines.push(`Email: ${email}`);
@@ -957,7 +1050,7 @@ function ContactCard({
       // Fallback: mailto with the form contents. When the host has
       // no published email either, prefix uses `contact@` at the
       // canteen domain — the shell can wire a real address later.
-      const subject = `Enquiry from ${name || "The Network"} · ${tradeLabel}`;
+      const subject = `Enquiry from ${name || "Thenetworkers"} · ${tradeLabel}`;
       window.location.href = `mailto:hello@thenetwork.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
     setSent(true);
@@ -1154,7 +1247,7 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
       {trades.map((t) => {
         const label = lookupTradeLabel(t.tradeSlug);
         const waUrl = `https://wa.me/${t.whatsapp}?text=${encodeURIComponent(
-          `Hi ${t.displayName.split(" ")[0]}, I found you on The Network — I'd like to get in touch about ${label.toLowerCase()}.`
+          `Hi ${t.displayName.split(" ")[0]}, I found you on Thenetworkers — I'd like to get in touch about ${label.toLowerCase()}.`
         )}`;
         return (
           <li key={t.slug}>
@@ -1293,6 +1386,146 @@ function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
         );
       })}
     </ul>
+  );
+}
+
+function DesignsList({
+  designs,
+  onOpen
+}: {
+  designs: DemoDesign[];
+  onOpen: (id: string) => void;
+}) {
+  if (designs.length === 0) return <EmptyRow label="No designs yet"/>;
+  return (
+    <ul className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      {designs.map((d) => (
+        <li key={d.id}>
+          <button
+            type="button"
+            onClick={() => onOpen(d.id)}
+            aria-label={`View ${d.name} design`}
+            className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.99]"
+            style={{
+              borderColor: "rgba(139,69,19,0.15)",
+              backgroundImage: `url('${d.imageUrl}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundColor: "#F3F4F6"
+            }}
+          >
+            {/* Bottom-up gradient for text legibility */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 bottom-0 h-3/5"
+              style={{
+                background:
+                  "linear-gradient(to top, rgba(0,0,0,0.85) 15%, rgba(0,0,0,0.30) 60%, transparent 100%)"
+              }}
+            />
+            {/* Style chip top-left */}
+            <span
+              className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider shadow-md"
+              style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+            >
+              {d.style}
+            </span>
+            {/* Header + tagline overlay */}
+            <div className="absolute inset-x-0 bottom-0 p-2.5 text-left">
+              <div className="text-[13px] font-black leading-tight text-white drop-shadow-md">
+                {d.name}
+              </div>
+              <div className="mt-0.5 text-[10.5px] font-bold text-white/85 drop-shadow-sm">
+                {d.tagline}
+              </div>
+            </div>
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function DesignModal({
+  design,
+  onClose
+}: {
+  design: DemoDesign;
+  onClose: () => void;
+}) {
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [onClose]);
+
+  return (
+    <div
+      aria-modal="true"
+      role="dialog"
+      aria-label={`${design.name} design details`}
+      className="fixed inset-0 z-[100] flex items-center justify-center px-3 py-6"
+      style={{ backgroundColor: "rgba(0,0,0,0.65)" }}
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative flex w-full max-w-lg flex-col overflow-hidden rounded-2xl bg-white shadow-2xl"
+        style={{ maxHeight: "calc(100vh - 3rem)" }}
+      >
+        {/* Close */}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full text-white shadow-md transition active:scale-[0.95]"
+          style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(6px)" }}
+        >
+          <X size={16} strokeWidth={2.5}/>
+        </button>
+
+        {/* Hero image */}
+        <div
+          className="relative aspect-[4/3] w-full flex-shrink-0"
+          style={{
+            backgroundImage: `url('${design.imageUrl}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundColor: "#F3F4F6"
+          }}
+        >
+          <span
+            className="absolute left-3 top-3 rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-md"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+          >
+            {design.style}
+          </span>
+        </div>
+
+        {/* Details */}
+        <div className="overflow-y-auto p-4">
+          <div className="text-[9px] font-black uppercase tracking-[0.22em] text-neutral-500">
+            Kitchen Design
+          </div>
+          <h2 className="mt-0.5 text-[18px] font-black leading-tight text-neutral-900 md:text-[20px]">
+            {design.name}
+          </h2>
+          <p className="mt-1 text-[12px] font-bold text-neutral-600 md:text-[13px]">
+            {design.tagline}
+          </p>
+          <p className="mt-3 text-[12px] leading-relaxed text-neutral-700 md:text-[13px]">
+            {design.description}
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 

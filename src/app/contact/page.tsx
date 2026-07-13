@@ -21,16 +21,16 @@ const CONTACT_HERO_IMAGE =
   "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/contact-hero.png";
 
 export const metadata: Metadata = {
-  title: "Contact — The Network",
+  title: "Contact — Thenetworkers",
   description:
-    "Send a message to The Network team. Replies within 24 hours, UK business hours. Plus acceptable use guidance.",
+    "Send a message to the Thenetworkers team. Replies within 24 hours, UK business hours. Plus acceptable use guidance.",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Contact — The Network",
+    title: "Contact — Thenetworkers",
     description:
-      "Send a message to The Network team. Replies within 24 hours.",
+      "Send a message to the Thenetworkers team. Replies within 24 hours.",
     url: absolute("/contact")
   }
 };
@@ -47,7 +47,7 @@ export default function ContactPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={CONTACT_HERO_IMAGE}
-          alt="Talk to our team — The Network support"
+          alt="Talk to our team — Thenetworkers support"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div

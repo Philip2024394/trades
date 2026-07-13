@@ -1,4 +1,4 @@
-// The Network — step-by-step signup wizard.
+// Thenetworkers — step-by-step signup wizard.
 // Alternate entry to the flat signup form. Breaks the sign-up into
 // one-question-per-screen for tradespeople who prefer a guided flow.
 //
@@ -17,9 +17,9 @@ import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 import { ShieldCheck, MessageCircle, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Join The Network — quick signup | The Network",
+  title: "Join Thenetworkers — quick signup | Thenetworkers",
   description:
-    "Join The Network. Free for life — your business app, canteen, URL, and access to The Yard + Trade Center. One question per screen. No card. No commission.",
+    "Join Thenetworkers. Free for life — your business app, canteen, URL, and access to The Yard + Trade Center. One question per screen. No card. No commission.",
   alternates: { canonical: "/trade-off/signup/wizard" }
 };
 
@@ -34,7 +34,7 @@ export default function TradeOffSignupWizardPage() {
       <XratedViewTracker page="signup" listingId={null} />
       <XratedHeader />
 
-      {/* Trust strip — sits above the wizard so the "Join The Network
+      {/* Trust strip — sits above the wizard so the "Join Thenetworkers
           · Free for life" framing lands before the first question.
           Wizard has its own step counter, so we don't duplicate the
           SignupUnlockSteps card here — this compact strip serves the
@@ -60,7 +60,7 @@ export default function TradeOffSignupWizardPage() {
             </div>
             <div>
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-neutral-700">
-                Join The Network
+                Join Thenetworkers
               </div>
               <div className="text-[13px] font-black text-neutral-900">
                 4 free unlocks · Free for life

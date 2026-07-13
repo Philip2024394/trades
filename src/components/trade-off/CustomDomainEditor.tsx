@@ -193,7 +193,7 @@ export function CustomDomainEditor({
   async function handleDisconnect() {
     if (
       !window.confirm(
-        `Disconnect ${domain}? Your profile will go back to xratedtrade.com/${slug}.`
+        `Disconnect ${domain}? Your profile will go back to thenetworkers.app/${slug}.`
       )
     ) {
       return;

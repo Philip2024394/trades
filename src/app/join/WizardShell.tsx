@@ -3,10 +3,10 @@
 //
 // Post-July 2026 master-brand rebrand: the earlier "Construction
 // Notebook · For trades" eyebrow is retired; this shell now:
-//   - Renders the canonical XratedHeader (yellow-dot + "The Network"
+//   - Renders the canonical XratedHeader (yellow-dot + "Thenetworkers"
 //     wordmark) so joiners can navigate to Yard/Warehouse/Trade News
 //     from within the wizard without feeling isolated
-//   - Uses "Join The Network" eyebrow
+//   - Uses "Join Thenetworkers" eyebrow
 //   - Displays the 4 free unlocks strip so the trades see what they're
 //     picking up at every step, not just "step 1 of 3"
 //
@@ -86,7 +86,7 @@ export function WizardShell({
             </div>
             <div>
               <div className="text-[10px] font-black uppercase tracking-[0.24em] text-[#1B1A17]/70">
-                Join The Network
+                Join Thenetworkers
               </div>
               <div className="text-[13px] font-black text-[#1B1A17]">
                 4 free unlocks · Free for life
@@ -153,7 +153,7 @@ export function WizardShell({
             className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400"
             aria-hidden
           />
-          The Network · For trades
+          Thenetworkers · For trades
         </div>
 
         <h1 className="mt-4 text-[32px] font-bold leading-[1.1] tracking-tight md:text-[42px]">

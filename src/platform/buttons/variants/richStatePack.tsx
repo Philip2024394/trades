@@ -71,7 +71,7 @@ const COPY_REG: ButtonRegistration<CopyConfig> = {
   shortPitch: "Copy → ✓ Copied → back to Copy.",
   editableFields: [
     { key: "label", label: "Label", type: { kind: "text", maxLength: 24 }, default: "Copy link", role: "primary_action_label", priority: "text", aiPromptable: true, group: "Content" },
-    { key: "value", label: "Value to copy", type: { kind: "text", maxLength: 500 }, default: "https://xratedtrade.com", group: "Content" }
+    { key: "value", label: "Value to copy", type: { kind: "text", maxLength: 500 }, default: "https://thenetworkers.app", group: "Content" }
   ],
   states: {
     default: { backgroundLiteral: "#FFFFFF", inkLiteral: "#0A0A0A", borderLiteral: "#D4D4D4", borderWidthPx: 1 },
@@ -86,7 +86,7 @@ const COPY_REG: ButtonRegistration<CopyConfig> = {
   conversionHints: { primaryActionRecommended: false, aboveFoldRecommended: false, minContrast: 4.5, minTapTargetPx: 32 },
   aiPrompts: { explain: "Copy button", improveCopy: "Copy X", improveStyle: "Match {mood}", restyle: "Match {mood}", generateFromBrief: "", scoreConversion: "n/a", scoreAccessibility: "aria-live for success", suggestIcon: "clipboard" },
   searchKeywords: ["copy", "clipboard", "share"],
-  defaultConfig: () => ({ label: "Copy link", value: "https://xratedtrade.com" }),
+  defaultConfig: () => ({ label: "Copy link", value: "https://thenetworkers.app" }),
   renderer: CopyButton
 };
 buttonRegistry.register(COPY_REG);
@@ -497,7 +497,7 @@ const QR_REG: ButtonRegistration<QrConfig> = {
   shortPitch: "One tap, offline-to-online bridge.",
   editableFields: [
     { key: "label", label: "Label", type: { kind: "text", maxLength: 24 }, default: "Show QR", role: "primary_action_label", priority: "text", aiPromptable: true, group: "Content" },
-    { key: "value", label: "Encoded value", type: { kind: "text", maxLength: 500 }, default: "https://xratedtrade.com", group: "Content" }
+    { key: "value", label: "Encoded value", type: { kind: "text", maxLength: 500 }, default: "https://thenetworkers.app", group: "Content" }
   ],
   states: {
     default: { backgroundLiteral: "#FFFFFF", inkLiteral: "#0A0A0A", borderLiteral: "#D4D4D4", borderWidthPx: 1 }
@@ -511,7 +511,7 @@ const QR_REG: ButtonRegistration<QrConfig> = {
   conversionHints: { primaryActionRecommended: false, aboveFoldRecommended: false, minContrast: 4.5, minTapTargetPx: 32 },
   aiPrompts: { explain: "qr trigger", improveCopy: "Show QR / Scan me", improveStyle: "Match {mood}", restyle: "Match {mood}", generateFromBrief: "", scoreConversion: "n/a", scoreAccessibility: "dialog role", suggestIcon: "qr" },
   searchKeywords: ["qr", "scan", "share", "print"],
-  defaultConfig: () => ({ label: "Show QR", value: "https://xratedtrade.com" }),
+  defaultConfig: () => ({ label: "Show QR", value: "https://thenetworkers.app" }),
   renderer: QrButton
 };
 buttonRegistry.register(QR_REG);

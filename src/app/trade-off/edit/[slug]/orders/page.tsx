@@ -1,4 +1,4 @@
-// xratedtrade.com — merchant order dashboard.
+// thenetworkers.app — merchant order dashboard.
 //
 // Lists every order that hit the merchant's cart. Filterable by status
 // (all / paid / pending / failed) and fulfilment (all / unfulfilled /
@@ -18,7 +18,7 @@ import { OrdersIsland } from "@/components/trade-off/OrdersIsland";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Orders | xratedtrade.com",
+  title: "Orders | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

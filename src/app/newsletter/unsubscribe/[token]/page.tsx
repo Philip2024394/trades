@@ -1,4 +1,4 @@
-// xratedtrade.com — Newsletter unsubscribe (public, no auth).
+// thenetworkers.app — Newsletter unsubscribe (public, no auth).
 //
 // Reachable via the per-subscriber unsubscribe URL the merchant
 // includes in every marketing email. Looks up the subscriber by the
@@ -19,7 +19,7 @@ import { NewsletterUnsubscribeConfirm } from "./NewsletterUnsubscribeConfirm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Unsubscribe | The Network",
+  title: "Unsubscribe | Thenetworkers",
   robots: { index: false, follow: false }
 };
 
@@ -102,7 +102,7 @@ function InvalidLink() {
       <XratedHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          xratedtrade.com
+          thenetworkers.app
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This unsubscribe link is invalid or has expired.

@@ -16,7 +16,7 @@
 //   │                           │ Display Name        │
 //   │                           │ City                │
 //   │                           │ +44 xxx xxx xxxx    │
-//   │                           │ xratedtrade.com/x   │
+//   │                           │ thenetworkers.app/x   │
 //   │                           │ [ QR 180x180 ]      │
 //   └────────────────────────────────────────────────┘
 

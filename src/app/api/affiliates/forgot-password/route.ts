@@ -45,7 +45,7 @@ function siteOrigin(req: NextRequest): string {
   const proto = req.headers.get("x-forwarded-proto") ?? "https";
   const host = req.headers.get("x-forwarded-host") ?? req.headers.get("host");
   if (host) return `${proto}://${host}`;
-  return "https://xratedtrade.com";
+  return "https://thenetworkers.app";
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
@@ -131,7 +131,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Build a wa.me URL to admin (works regardless of which path we took).
   const adminWa = digits(adminWhatsapp());
   const messageLines = [
-    "Hi xratedtrade.com — I forgot my affiliate password.",
+    "Hi thenetworkers.app — I forgot my affiliate password.",
     `My WhatsApp: ${waDigits}`,
     code ? `Recovery code: ${code}` : null,
     "Please verify and send me a set-password link."

@@ -38,7 +38,7 @@ export async function generateMetadata({
   if (!listing) return { title: "Contact" };
   const primary = tradeLabel(listing.primary_trade);
   return {
-    title: `Contact ${listing.display_name} — ${primary} in ${listing.city} | The Network`,
+    title: `Contact ${listing.display_name} — ${primary} in ${listing.city} | Thenetworkers`,
     description: `Send ${listing.display_name} a message about your ${primary.toLowerCase()} job. Reply by email or WhatsApp.`
   };
 }

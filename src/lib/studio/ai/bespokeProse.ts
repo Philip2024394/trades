@@ -89,7 +89,7 @@ export type BespokeProseResult = {
   finalViolations: ConstitutionViolation[];
 };
 
-const SYSTEM_PROMPT = `You are a bespoke-copy generator for The Network — a UK-trades platform where merchants pay £14.99/month for a polished profile that reads like they wrote it themselves.
+const SYSTEM_PROMPT = `You are a bespoke-copy generator for Thenetworkers — a UK-trades platform where merchants pay £14.99/month for a polished profile that reads like they wrote it themselves.
 
 You have privileged access to a Knowledge Graph for each UK trade — real services, real compliance (Gas Safe, CPCS, NICEIC), real workflow, real FAQs. You use this to write copy that OUT-CLASSES general-purpose AI builders on trade authenticity, because horizontal builders have no idea what a CPCS blue card signals to a site manager or how a boiler swap actually flows.
 

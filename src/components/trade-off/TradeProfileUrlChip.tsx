@@ -1,7 +1,7 @@
 "use client";
 
 // Copyable chip showing the tradie's canonical public URL —
-// `xratedtrade.com/<slug>` — sat at the top of the profile hero.
+// `thenetworkers.app/<slug>` — sat at the top of the profile hero.
 // One-click clipboard copy with a 2s "Copied!" flash.
 
 import { useState } from "react";
@@ -11,12 +11,12 @@ export function TradeProfileUrlChip({
   fullUrl
 }: {
   slug: string;
-  // Pre-resolved absolute URL (e.g. `https://xratedtrade.com/<slug>`).
+  // Pre-resolved absolute URL (e.g. `https://thenetworkers.app/<slug>`).
   // Falls back to a relative form if not provided.
   fullUrl?: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const display = `xratedtrade.com/${slug}`;
+  const display = `thenetworkers.app/${slug}`;
   const target = fullUrl ?? `/${slug}`;
 
   async function copy() {

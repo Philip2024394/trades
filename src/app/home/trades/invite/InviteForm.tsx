@@ -57,7 +57,7 @@ export function InviteForm() {
       if (data.alreadyOnPlatform) {
         setMsg({
           tone: "info",
-          text: `${data.displayName ?? "That trade"} is already on xratedtrade.com — we'll add them to your Circle in the next step.`
+          text: `${data.displayName ?? "That trade"} is already on thenetworkers.app — we'll add them to your Circle in the next step.`
         });
       } else if (data.alreadyPending) {
         setMsg({

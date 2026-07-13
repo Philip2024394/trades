@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 const PER_RUN_CAP = 200;
 const TIMEOUT_MS = 5000;
 const USER_AGENT =
-  "Mozilla/5.0 (compatible; XratedTradesHealthBot/1.0; +https://xratedtrade.com/affiliates)";
+  "Mozilla/5.0 (compatible; XratedTradesHealthBot/1.0; +https://thenetworkers.app/affiliates)";
 
 type Status = "active" | "broken" | "removed";
 

@@ -19,7 +19,7 @@ type Faq = { q: string; a: string };
 const FAQS: ReadonlyArray<Faq> = [
   {
     q: "Can I add my own domain name?",
-    a: "Yes — we keep this flexible. Two options: (a) point your domain at your xratedtrade.com app, we host the app, you stay in control of the domain — the easiest way to keep your app running smoothly during launch traffic and traffic spikes; (b) we host both the domain and the app together as one package. Either works. Both keep you free to move at any time."
+    a: "Yes — we keep this flexible. Two options: (a) point your domain at your thenetworkers.app app, we host the app, you stay in control of the domain — the easiest way to keep your app running smoothly during launch traffic and traffic spikes; (b) we host both the domain and the app together as one package. Either works. Both keep you free to move at any time."
   },
   {
     q: "Can I have changes or added features built into my app?",
@@ -30,11 +30,11 @@ const FAQS: ReadonlyArray<Faq> = [
     a: "Yes — multi-app teams are something we set up regularly. We can also build you a back-end admin panel so you can monitor every app under the team and the traffic each one's getting. Talk to us about how you'd like the structure to work."
   },
   {
-    q: "Does xratedtrade.com have its own payment gateway?",
+    q: "Does thenetworkers.app have its own payment gateway?",
     a: "No. We use Stripe — they handle the money, we handle the app. That means we never see your customer's card details, never store them, never touch them. If you've got a payment issue, get in touch — we'll work out what happened and use it to improve the system for every tradesperson."
   },
   {
-    q: "Can I promote xratedtrade.com apps as a reseller?",
+    q: "Can I promote thenetworkers.app apps as a reseller?",
     a: "It depends on the direction you'd take it. After a good conversation, if there's real energy that aligns with what we're building for the trades, a reseller programme is possible. Drop us a message via the form below with what you have in mind — we listen first, decide after."
   },
   {
@@ -43,11 +43,11 @@ const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: "What if I want to cancel?",
-    a: "Open your dashboard, click 'Manage subscription' — that opens the Stripe Customer Portal where you cancel in one tap, at period end. Your app keeps running. We move it from your branded xratedtrade.com URL onto a hammerexdirect.com URL — your profile stays online, your reviews stay live, your customers can still reach you. The popular branded URLs stay reserved for paid customers, so we never give your old URL away. Re-upgrade any time to get it back."
+    a: "Open your dashboard, click 'Manage subscription' — that opens the Stripe Customer Portal where you cancel in one tap, at period end. Your app keeps running. We move it from your branded thenetworkers.app URL onto a hammerexdirect.com URL — your profile stays online, your reviews stay live, your customers can still reach you. The popular branded URLs stay reserved for paid customers, so we never give your old URL away. Re-upgrade any time to get it back."
   },
   {
     q: "Do you take a commission on jobs I win?",
-    a: "No. xratedtrade.com is a flat-fee subscription, not a marketplace. The money your customers pay you is between you and them — we don't see it, don't touch it, don't take a percentage. We make our money from the subscription, not from your invoices."
+    a: "No. thenetworkers.app is a flat-fee subscription, not a marketplace. The money your customers pay you is between you and them — we don't see it, don't touch it, don't take a percentage. We make our money from the subscription, not from your invoices."
   },
   {
     q: "What support do I get?",

@@ -1085,7 +1085,7 @@ function EmptyThread({ onBack }: { onBack: () => void }) {
         Pick a thread to open it
       </p>
       <p className="text-[13px] text-neutral-500">
-        Every UK member you see here is a paying member of The Network.
+        Every UK member you see here is a paying member of Thenetworkers.
       </p>
     </div>
   );

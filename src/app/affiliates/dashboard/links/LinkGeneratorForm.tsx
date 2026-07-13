@@ -4,10 +4,10 @@ import { useMemo, useState } from "react";
 import { CopyButton } from "../CopyButton";
 
 const QUICK_LINKS: { href: string; label: string }[] = [
-  { href: "https://xratedtrade.com/", label: "Homepage" },
-  { href: "https://xratedtrade.com/trade-off/pricing", label: "Pricing" },
-  { href: "https://xratedtrade.com/trade-off/trades", label: "Trade examples" },
-  { href: "https://xratedtrade.com/showcase", label: "Showcase" }
+  { href: "https://thenetworkers.app/", label: "Homepage" },
+  { href: "https://thenetworkers.app/trade-off/pricing", label: "Pricing" },
+  { href: "https://thenetworkers.app/trade-off/trades", label: "Trade examples" },
+  { href: "https://thenetworkers.app/showcase", label: "Showcase" }
 ];
 
 function append(url: string, affiliateId: number): string {
@@ -16,14 +16,14 @@ function append(url: string, affiliateId: number): string {
     u.searchParams.set("ref", String(affiliateId));
     return u.toString();
   } catch {
-    // Bare slug — assume xratedtrade.com origin.
+    // Bare slug — assume thenetworkers.app origin.
     const path = url.startsWith("/") ? url : `/${url}`;
-    return `https://xratedtrade.com${path}?ref=${affiliateId}`;
+    return `https://thenetworkers.app${path}?ref=${affiliateId}`;
   }
 }
 
 export function LinkGeneratorForm({ affiliateId }: { affiliateId: number }) {
-  const [input, setInput] = useState("https://xratedtrade.com/");
+  const [input, setInput] = useState("https://thenetworkers.app/");
   const generated = useMemo(
     () => append(input, affiliateId),
     [input, affiliateId]
@@ -34,7 +34,7 @@ export function LinkGeneratorForm({ affiliateId }: { affiliateId: number }) {
       <div className="rounded-xl border border-brand-line bg-brand-surface p-5">
         <label className="block">
           <span className="text-[13px] font-bold text-brand-text">
-            Paste any xratedtrade.com URL
+            Paste any thenetworkers.app URL
           </span>
           <input
             type="url"

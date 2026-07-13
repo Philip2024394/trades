@@ -3,7 +3,7 @@
 // saving so the merchant gets instant confirmation the keys work, then
 // encrypt at rest.
 //
-// No platform-level API keys involved. xratedtrade.com is the middleman
+// No platform-level API keys involved. thenetworkers.app is the middleman
 // on the CODE side only; every network call to a payment provider uses
 // the merchant's own credentials.
 

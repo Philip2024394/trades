@@ -17,7 +17,7 @@ import { SetPasswordForm } from "./SetPasswordForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Set your password | The Network",
+  title: "Set your password | Thenetworkers",
   robots: { index: false, follow: false }
 };
 
@@ -46,7 +46,7 @@ export default async function SetPasswordPage({
       <XratedHeader />
       <section className="mx-auto max-w-md px-4 pb-16 pt-12">
         <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-brand-accent">
-          xratedtrade.com
+          thenetworkers.app
         </p>
         <h1 className="mt-1 text-3xl font-extrabold leading-tight sm:text-4xl">
           {isRecovery ? "Reset your password" : "Set your password"}

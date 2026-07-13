@@ -54,7 +54,7 @@ export async function POST(req: Request) {
     body.origin ??
     req.headers.get("origin") ??
     req.headers.get("x-forwarded-host") ??
-    "https://xratedtrade.com";
+    "https://thenetworkers.app";
 
   const slug = listing.data?.slug ?? "";
 

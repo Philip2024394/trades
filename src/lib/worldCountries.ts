@@ -1,7 +1,7 @@
-// Canonical worldwide country list for xratedtrade.com.
+// Canonical worldwide country list for thenetworkers.app.
 //
 // Sourced from ISO 3166-1 alpha-2. Top-of-list bias: GB / IE / US / AU /
-// CA — xratedtrade.com's home + primary English-speaking markets where
+// CA — thenetworkers.app's home + primary English-speaking markets where
 // the affiliate programme launched. After those five the list is
 // strictly alphabetical by `name`, so anyone outside the top markets
 // finds their country quickly.

@@ -1,4 +1,4 @@
-// The Network — public marketing footer. Rebranded 2026-07-10 from the
+// Thenetworkers — public marketing footer. Rebranded 2026-07-10 from the
 // old dark XratedFooter. Cream backdrop matching the platform, yellow-
 // dot brand mark, condensed 4-column link directory (was 6 — dropped
 // dead columns: "Examples", "Verified waitlist", "Xrated demo").
@@ -64,7 +64,7 @@ export function XratedFooter() {
               className="inline-flex h-11 items-center gap-1.5 rounded-full px-4 text-[13px] font-black uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97]"
               style={{ background: BRAND_YELLOW }}
             >
-              Join The Network
+              Join Thenetworkers
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>
@@ -84,7 +84,7 @@ export function XratedFooter() {
           <FooterColumn
             title="Platform"
             links={[
-              { href: "/trade-off/what",     label: "What is The Network?" },
+              { href: "/trade-off/what",     label: "What is Thenetworkers?" },
               { href: "/trade-off/how",      label: "How it works" },
               { href: "/trade-off/pricing",  label: "Pricing" },
               { href: "/apps",               label: "App Warehouse" },

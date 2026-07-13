@@ -33,7 +33,7 @@ export async function POST() {
       { status: 400 }
     );
   }
-  const base = process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app";
   const portal = await stripeClient().billingPortal.sessions.create({
     customer: customer.stripe_customer_id,
     return_url: `${base}/site-office/hub`

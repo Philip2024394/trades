@@ -25,16 +25,16 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const canteen = canteenBySlug(slug);
-  if (!canteen) return { title: "Canteen — The Network" };
+  if (!canteen) return { title: "Canteen — Thenetworkers" };
   return {
-    title: `Manage ${canteen.name} — The Network`,
+    title: `Manage ${canteen.name} — Thenetworkers`,
     description: `Host dashboard for ${canteen.name}. Manage banner, tagline, products, members, and activity.`,
     alternates: { canonical: `/trade-off/yard/canteens/${slug}/manage` },
     robots: { index: false, follow: false },
     openGraph: {
       type: "website",
       siteName: BRAND.name,
-      title: `Manage ${canteen.name} — The Network`,
+      title: `Manage ${canteen.name} — Thenetworkers`,
       url: absolute(`/trade-off/yard/canteens/${slug}/manage`)
     }
   };

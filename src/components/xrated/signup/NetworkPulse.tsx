@@ -211,7 +211,7 @@ export function NetworkPulse() {
         >
           <Zap size={12} color={BRAND_BLACK} strokeWidth={2.5}/>
           <span className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700">
-            Right now on The Network
+            Right now on Thenetworkers
           </span>
         </div>
         <div

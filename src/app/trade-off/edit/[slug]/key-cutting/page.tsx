@@ -1,4 +1,4 @@
-// xratedtrade.com — Key Cutting service editor.
+// thenetworkers.app — Key Cutting service editor.
 //
 // Merchant enables / prices the 8 key categories, picks fulfilment
 // modes (walk-in / photo-scan / postal), sets machine brand, years,
@@ -16,7 +16,7 @@ import { normaliseKeyCuttingConfig } from "@/lib/keyCutting";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Key Cutting | xratedtrade.com",
+  title: "Key Cutting | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

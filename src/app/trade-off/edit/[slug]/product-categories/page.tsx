@@ -94,7 +94,7 @@ export default async function ProductCategoriesPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi xratedtrade.com — I'm trying to edit my product categories but the link isn't working."
+    "Hi thenetworkers.app — I'm trying to edit my product categories but the link isn't working."
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">

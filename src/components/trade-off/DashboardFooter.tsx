@@ -29,7 +29,7 @@ export function DashboardFooter({ slug }: { slug?: string }) {
             href="/trade-off"
             className="transition hover:text-brand-accent"
           >
-            xratedtrade.com · Dashboard
+            thenetworkers.app · Dashboard
           </Link>
         </p>
         <div className="flex flex-wrap items-center justify-center gap-2">

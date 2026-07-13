@@ -1,6 +1,6 @@
 // POST /api/checkout/stripe — creates a Stripe Checkout Session for
 // the merchant's connected Express account. Funds settle direct to the
-// merchant. xratedtrade.com never sees the money.
+// merchant. thenetworkers.app never sees the money.
 //
 // Customer flow:
 //   1. Cart "Pay Now" hits /api/checkout/create which routes here when

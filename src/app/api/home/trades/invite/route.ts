@@ -1,7 +1,7 @@
 // POST /api/home/trades/invite
 //
 // Owner-only. Records an invitation for Mike the Carpenter (or whoever)
-// to join xratedtrade.com. Fires a Notebook invitation email. When Mike
+// to join thenetworkers.app. Fires a Notebook invitation email. When Mike
 // completes /join with the invite token, the row is marked accepted and
 // linked to his newly-created listing.
 

@@ -655,7 +655,7 @@ export function TradeOffForm({
           chosen trade drives every downstream conditional (merchant vs
           service template, sections that show, helper copy). The URL
           sits with it because the two together create the live app:
-          "I'm a Building Supplies seller at xratedtrade.com/holt". */}
+          "I'm a Building Supplies seller at thenetworkers.app/holt". */}
       <Section title="Your trade & app URL">
         <Field label="What trade are you? *">
           <select
@@ -1584,7 +1584,7 @@ export function TradeOffForm({
         </button>
       </div>
       <p className="text-xs text-brand-muted">
-        xratedtrade.com is free for life. Customers contact you on WhatsApp — we never take a cut.
+        thenetworkers.app is free for life. Customers contact you on WhatsApp — we never take a cut.
       </p>
     </div>
   );

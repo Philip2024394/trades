@@ -40,13 +40,13 @@ const MARKET_HERO_IMAGE =
 
 export const metadata: Metadata = {
   title:
-    "The Network — buy direct from UK trades on WhatsApp + Stripe",
+    "Thenetworkers — buy direct from UK trades on WhatsApp + Stripe",
   description:
     "Browse products and services from thousands of UK trades. Add to cart, pay with Stripe, or enquire on WhatsApp — direct with the trade, no middleman markup.",
   alternates: { canonical: "/market" },
   openGraph: {
     type: "website",
-    title: "The Network — buy direct from UK trades",
+    title: "Thenetworkers — buy direct from UK trades",
     description:
       "Every product from every UK trade in one place. Cart to Stripe or WhatsApp handoff."
   }
@@ -206,7 +206,7 @@ export default async function MarketPage() {
           <div className="flex flex-col justify-center">
             <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-amber-100 px-3 py-1 text-[10.5px] font-black uppercase tracking-[0.20em] text-amber-800">
               <ShoppingBag className="h-3 w-3" aria-hidden />
-              The Network Marketplace
+              Thenetworkers Marketplace
             </span>
             <h1 className="mt-5 text-[30px] font-black leading-[1.05] tracking-tight text-[#1B1A17] sm:text-[38px] md:text-[52px]">
               Every UK trade.{" "}
@@ -320,7 +320,7 @@ export default async function MarketPage() {
                 />
                 <div>
                   <p className="text-[13px] font-black text-[#1B1A17]">
-                    How The Network works
+                    How Thenetworkers works
                   </p>
                   <p className="mt-1 text-[12.5px] leading-[1.5] text-[#1B1A17]/70">
                     Every product has two buy paths:{" "}

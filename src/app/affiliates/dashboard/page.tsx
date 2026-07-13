@@ -112,7 +112,7 @@ export default async function AffiliateOverviewPage() {
     0
   );
 
-  const referralUrl = `https://xratedtrade.com/?ref=${id}`;
+  const referralUrl = `https://thenetworkers.app/?ref=${id}`;
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=4&data=${encodeURIComponent(referralUrl)}`;
 
   const paymentDetailsMissing = !payments.data?.payment_details_completed_at;

@@ -21,16 +21,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Why do I need The Network? Facebook, WhatsApp and business cards can't do this.",
+    "Why do I need Thenetworkers? Facebook, WhatsApp and business cards can't do this.",
   description:
-    "Already have a Facebook page, a WhatsApp number, business cards or a basic website? Here's exactly what each one cannot do — and how The Network covers all of it in one platform. Photos of real work, real reviews, your prices, instant WhatsApp and a verified badge. 14-day free trial, no card.",
+    "Already have a Facebook page, a WhatsApp number, business cards or a basic website? Here's exactly what each one cannot do — and how Thenetworkers covers all of it in one platform. Photos of real work, real reviews, your prices, instant WhatsApp and a verified badge. 14-day free trial, no card.",
   alternates: { canonical: "/trade-off/why" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title: "Already got a Facebook page? Here's why that's not enough.",
     description:
-      "Facebook posts disappear. WhatsApp can't show your prices. A business card can't show your reviews. A website costs £1,000+ and breaks. The Network covers all of it in one platform. 14-day free trial.",
+      "Facebook posts disappear. WhatsApp can't show your prices. A business card can't show your reviews. A website costs £1,000+ and breaks. Thenetworkers covers all of it in one platform. 14-day free trial.",
     url: absolute("/trade-off/why")
   }
 };
@@ -72,7 +72,7 @@ const COMPARE_CARDS: CompareCard[] = [
       "Agency builds it once, then disappears. Domain renewal expires, the contact form stops working, the SSL certificate goes red. Customers see 'not secure' and leave."
   },
   {
-    title: "The Network",
+    title: "Thenetworkers",
     status: "win",
     problem: "Everything in one platform.",
     detail:

@@ -528,7 +528,7 @@ export function ContactForm() {
       {/* Account reference */}
       <div>
         <label htmlFor="contact-account-ref" className={labelClass}>
-          Your xratedtrade.com URL or account reference{" "}
+          Your thenetworkers.app URL or account reference{" "}
           <span className="font-normal normal-case tracking-normal text-neutral-500">
             (optional)
           </span>
@@ -537,7 +537,7 @@ export function ContactForm() {
           id="contact-account-ref"
           name="accountRef"
           type="text"
-          placeholder="xratedtrade.com/your-name"
+          placeholder="thenetworkers.app/your-name"
           value={accountRef}
           onChange={(e) => setAccountRef(e.target.value)}
           onFocus={(e) =>

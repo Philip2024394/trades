@@ -81,7 +81,7 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const subscribedVia = `xratedtrade.com/${listing.data.slug}`;
+  const subscribedVia = `thenetworkers.app/${listing.data.slug}`;
   const header = ["email", "consent_at", "subscribed_via", "unsubscribe_url"]
     .map(csvCell)
     .join(",");

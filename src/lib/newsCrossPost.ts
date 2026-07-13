@@ -19,7 +19,7 @@ import { ADMIN_LISTING_ID, ADMIN_DISPLAY_NAME } from "@/lib/yardAdmin";
 // /news/<slug>; the yard echo just rolls off the recent-chat feed.
 const YARD_EXPIRY_DAYS = 30;
 
-const PUBLIC_BASE = "https://xratedtrade.com";
+const PUBLIC_BASE = "https://thenetworkers.app";
 
 export type NewsPostLite = {
   id: string;

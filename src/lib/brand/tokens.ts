@@ -1,4 +1,4 @@
-// Brand tokens — the canonical colour set for The Network.
+// Brand tokens — the canonical colour set for Thenetworkers.
 //
 // One source of truth. Every new component reads from here rather
 // than re-defining locally-scoped hex constants. This is what stops
@@ -10,7 +10,7 @@
 // generates CSS custom properties. This file is the compile-time
 // helper for React inline styles.
 
-/** Primary brand accent — The Network's amber-yellow. Used in Yard,
+/** Primary brand accent — Thenetworkers's amber-yellow. Used in Yard,
  *  Studio, Xrated profile cards, marketing cards, everywhere. */
 export const BRAND_YELLOW = "#FFB300";
 

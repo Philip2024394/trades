@@ -31,7 +31,7 @@ function buildWelcomeBody(name: string): string {
   return [
     `Welcome to The Yard, ${name}! 👋`,
     "",
-    "The Yard is where trades chat — share job tips, ask questions, post wins, find help with quirky problems. Pinned posts at the top are from the xratedtrade.com team.",
+    "The Yard is where trades chat — share job tips, ask questions, post wins, find help with quirky problems. Pinned posts at the top are from the thenetworkers.app team.",
     "",
     "New here? Try saying hi in the next 24 hours — the community will welcome you back. Be respectful, no spam, no hard sells. We moderate flagged posts within a few hours.",
     "",

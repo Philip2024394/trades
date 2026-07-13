@@ -21,9 +21,9 @@ export function absolute(path: string): string {
 // imports `import { BRAND } from "@/lib/seo"` keep their full type
 // surface intact. Values are Xrated-branded for the standalone repo.
 export const BRAND = {
-  name: "xratedtrade.com",
-  legalName: "xratedtrade.com",
-  tagline: "The Business Operating System for Trade Businesses",
+  name: "Thenetworkers",
+  legalName: "Thenetworkers",
+  tagline: "The Trades Network. On your phone.",
   description:
     "The Business Operating System for trade businesses. Studio to design your app, an App Store to install features as you grow, Industry Packs built for your trade, and AI that helps you run the business — all in one platform.",
   descriptionShort:

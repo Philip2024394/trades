@@ -13,18 +13,18 @@ import { BRAND, absolute } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-const SUPPORT_EMAIL = "support@xratedtrade.com";
+const SUPPORT_EMAIL = "support@thenetworkers.app";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Acceptable Use Policy — The Network",
+  title: "Acceptable Use Policy — Thenetworkers",
   description:
-    "What you may and may not do on The Network — no fake reviews, no impersonation, no illegal trades, no scraping, no harassment, no payment fraud. Consequences of breach: suspension, removal, refund refusal, ban.",
+    "What you may and may not do on Thenetworkers — no fake reviews, no impersonation, no illegal trades, no scraping, no harassment, no payment fraud. Consequences of breach: suspension, removal, refund refusal, ban.",
   alternates: { canonical: "/legal/aup" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Acceptable Use Policy — The Network",
+    title: "Acceptable Use Policy — Thenetworkers",
     description:
       "Plain-English platform rules and the consequences of breaching them.",
     url: absolute("/legal/aup")

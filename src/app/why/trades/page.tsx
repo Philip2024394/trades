@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "For trades · The Network",
+  title: "For trades · Thenetworkers",
   description:
     "One network. One profile. One community. The UK's construction relationship platform — everything your trade business needs, built by trades for trades."
 };
@@ -74,7 +74,7 @@ export default function WhyTradesPage() {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: PALETTE.honeyBright }}
             />
-            The Network
+            Thenetworkers
           </Link>
           <nav className="flex items-center gap-4 text-[13px] font-semibold">
             <Link
@@ -363,7 +363,7 @@ export default function WhyTradesPage() {
               icon={<CheckCircle2 className="h-5 w-5" />}
               positive
               title="You own your data — leave any time with it"
-              body="Every photo, every review, every enquiry log. Export it whenever you want. Take your reputation with you if you decide The Network isn&apos;t for you."
+              body="Every photo, every review, every enquiry log. Export it whenever you want. Take your reputation with you if you decide Thenetworkers isn&apos;t for you."
             />
           </div>
         </section>

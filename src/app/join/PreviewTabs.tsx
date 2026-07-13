@@ -115,7 +115,7 @@ function AppPreview() {
         <p className="mt-6 text-center text-[13px] leading-[1.55] text-[#1B1A17]/60">
           Your Trade App — live at a URL like{" "}
           <span className="font-mono text-[#1B1A17]/80">
-            xratedtrade.com/your-name
+            thenetworkers.app/your-name
           </span>
           .<br />
           Same shape, filled with <em>your</em> details.

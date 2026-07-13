@@ -20,7 +20,7 @@ export default async function NewAnnouncementPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-6">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-lg font-semibold">New xratedtrade.com announcement</h1>
+        <h1 className="text-lg font-semibold">New thenetworkers.app announcement</h1>
         <Link
           href="/admin/yard?tab=announcements"
           className="rounded border border-brand-line px-3 py-1.5 text-[11px] text-brand-muted hover:bg-brand-line hover:text-brand-text"
@@ -30,7 +30,7 @@ export default async function NewAnnouncementPage() {
       </div>
       <p className="mb-4 text-xs text-brand-muted">
         Announcements are pinned to the top of the Yard feed and rendered
-        with the yellow rim + xratedtrade.com Team brand. Markdown is allowed
+        with the yellow rim + thenetworkers.app Team brand. Markdown is allowed
         in the body — keep it short and direct.
       </p>
       <NewAnnouncementForm />

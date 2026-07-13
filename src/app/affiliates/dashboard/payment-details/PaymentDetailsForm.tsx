@@ -19,11 +19,11 @@ type Initial = {
 // The three agreement texts are stored here verbatim. They render
 // inside <details> blocks so the user expands and reads in full before
 // ticking the box. NEVER paraphrase — these are real commitments.
-const TAX_AGREEMENT = `You are not employed by xratedtrade.com. You operate as an independent affiliate. xratedtrade.com reserves the right to request additional information for tax or regulatory reporting as required by your country of residence. Before joining, please research your obligations regarding online income, self-employment, and any laws in your country that apply. xratedtrade.com is not liable for tax, government fees, or penalties arising from your participation in this programme.`;
+const TAX_AGREEMENT = `You are not employed by thenetworkers.app. You operate as an independent affiliate. thenetworkers.app reserves the right to request additional information for tax or regulatory reporting as required by your country of residence. Before joining, please research your obligations regarding online income, self-employment, and any laws in your country that apply. thenetworkers.app is not liable for tax, government fees, or penalties arising from your participation in this programme.`;
 
 const CONTENT_AGREEMENT = `Posting your affiliate links on any platform or in any content involving children, minors, or sexual material is strictly prohibited. Violations result in immediate ban from the affiliate programme. All pending and approved funds will be frozen. No exceptions.`;
 
-const TIMING_AGREEMENT = `Approved commissions are paid 30 days after reaching Approved status, subject to the £50 minimum payout. Standard banking transaction fees (sender, receiver, intermediary) are deducted from the payout. xratedtrade.com is not responsible for fees charged by your bank, PayPal, Wise, or any intermediary.`;
+const TIMING_AGREEMENT = `Approved commissions are paid 30 days after reaching Approved status, subject to the £50 minimum payout. Standard banking transaction fees (sender, receiver, intermediary) are deducted from the payout. thenetworkers.app is not responsible for fees charged by your bank, PayPal, Wise, or any intermediary.`;
 
 export function PaymentDetailsForm({
   countries,

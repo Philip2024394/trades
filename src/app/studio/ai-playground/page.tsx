@@ -11,7 +11,7 @@
 import { StudioAiPlayground } from "@/components/studio/StudioAiPlayground";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Studio AI Playground — The Network" };
+export const metadata = { title: "Studio AI Playground — Thenetworkers" };
 
 export default function AiPlaygroundPage() {
   return <StudioAiPlayground />;

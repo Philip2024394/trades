@@ -77,7 +77,7 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  const base = process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app";
   const checkout = await stripeClient().checkout.sessions.create({
     mode: "subscription",
     customer: customerId,

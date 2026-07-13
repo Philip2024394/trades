@@ -84,7 +84,7 @@ export function NearbyInstallers({
             aria-hidden
           />
           <p>
-            These are independent trades on The Network. We don&apos;t
+            These are independent trades on Thenetworkers. We don&apos;t
             vet, verify or guarantee their work. Message on WhatsApp to
             check availability, insurance and reviews before booking.
           </p>

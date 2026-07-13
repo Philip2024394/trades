@@ -171,7 +171,7 @@ export const FEED_POST_FIXTURES: FeedPost[] = [
     commentCount: 17,
     shareCount: 12
   },
-  // ─── Cross-project posts (from The Network side) ─────────────────
+  // ─── Cross-project posts (from Thenetworkers side) ─────────────────
   // These prove unified feed aggregation works — posts made in Canteen
   // and Yard flow into the same NetworkFeedCard stream on /tc/hub.
   {

@@ -1,6 +1,6 @@
 "use client";
 
-// The Network — persistent app shell.
+// Thenetworkers — persistent app shell.
 //
 // Wraps every "in-network" surface (Yard, prices, discover, dashboards)
 // so signed-in trades never feel like they're navigating between
@@ -127,7 +127,7 @@ function AppTopBar({
         <Link
           href="/"
           className="inline-flex shrink-0 items-center gap-1.5"
-          aria-label="The Network"
+          aria-label="Thenetworkers"
         >
           <span
             aria-hidden
@@ -135,7 +135,7 @@ function AppTopBar({
             style={{ backgroundColor: "#FFB300" }}
           />
           <span className="hidden text-[12px] font-black uppercase tracking-[0.20em] text-[#B8860B] sm:inline">
-            The Network
+            Thenetworkers
           </span>
         </Link>
 

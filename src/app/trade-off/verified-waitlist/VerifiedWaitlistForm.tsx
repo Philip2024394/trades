@@ -74,7 +74,7 @@ export function VerifiedWaitlistForm() {
           verification queue opens — you&rsquo;ll be first in.
         </p>
         <p className="mt-3 text-xs text-neutral-600">
-          In the meantime, you can claim your xratedtrade.com URL on the Paid
+          In the meantime, you can claim your thenetworkers.app URL on the Paid
           14-day trial. Your slug stays yours either way.
         </p>
         <div className="mt-5 flex flex-wrap gap-3">

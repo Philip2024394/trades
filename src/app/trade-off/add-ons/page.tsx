@@ -23,15 +23,15 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "The Network · App Warehouse — install apps for your trade business",
+    "Thenetworkers · App Warehouse — install apps for your trade business",
   description:
-    "The App Warehouse on The Network. Install apps as you grow — Product Catalogue, Trade Circle, Meet the Team, Delivery Zones, Newsletter, and more. One platform, one Studio, one Warehouse. 14-day free trial.",
+    "The App Warehouse on Thenetworkers. Install apps as you grow — Product Catalogue, Trade Circle, Meet the Team, Delivery Zones, Newsletter, and more. One platform, one Studio, one Warehouse. 14-day free trial.",
   alternates: { canonical: "/trade-off/add-ons" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title:
-      "The Network — App Warehouse. Install apps for your trade business.",
+      "Thenetworkers — App Warehouse. Install apps for your trade business.",
     description:
       "Install apps for products, teams, quotes, downloads, deliveries and more. Everything you need to run and grow your trade business online. 14-day free trial.",
     url: absolute("/trade-off/add-ons")
@@ -224,7 +224,7 @@ export default function AddOnsPage() {
                 One business · every App
               </p>
               <h2 className="mt-2 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                Every App. One business app. Join The Network. Free for life.
+                Every App. One business app. Join Thenetworkers. Free for life.
               </h2>
             </div>
             <a

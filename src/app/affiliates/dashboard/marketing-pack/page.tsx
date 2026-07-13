@@ -82,7 +82,7 @@ export default async function MarketingPackPage({
   const { data } = await q;
   const assets = (data ?? []) as Asset[];
 
-  const referralUrl = `https://xratedtrade.com/?ref=${id}`;
+  const referralUrl = `https://thenetworkers.app/?ref=${id}`;
   const qrUrl = (size: number) =>
     `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&margin=4&data=${encodeURIComponent(referralUrl)}`;
 
@@ -99,7 +99,7 @@ export default async function MarketingPackPage({
 
       <PageExplainer
         title="Ready-made graphics, videos and your personal QR code"
-        description="Download any of these and post them on social media. Include your referral link in the caption — that's how people find xratedtrade.com through you. Your QR code is the easiest — print it on a sticker, your van, your business card."
+        description="Download any of these and post them on social media. Include your referral link in the caption — that's how people find thenetworkers.app through you. Your QR code is the easiest — print it on a sticker, your van, your business card."
         steps={[
           "Download a banner or video",
           "Post it on Instagram / Facebook / TikTok",

@@ -73,14 +73,14 @@ export async function generateMetadata({
   const post = await loadPost(slug);
   if (!post) {
     return {
-      title: "Newsroom | xratedtrade.com",
+      title: "Newsroom | thenetworkers.app",
       description: "Newsroom post not found."
     };
   }
   const description =
-    post.excerpt ?? `${post.title} — xratedtrade.com Newsroom.`;
+    post.excerpt ?? `${post.title} — thenetworkers.app Newsroom.`;
   return {
-    title: `${post.title} | xratedtrade.com Newsroom`,
+    title: `${post.title} | thenetworkers.app Newsroom`,
     description,
     alternates: { canonical: `/news/${post.slug}` },
     openGraph: {
@@ -117,10 +117,10 @@ export default async function NewsPostPage({
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
-    author: { "@type": "Organization", name: "xratedtrade.com" },
+    author: { "@type": "Organization", name: "thenetworkers.app" },
     publisher: {
       "@type": "Organization",
-      name: "xratedtrade.com",
+      name: "thenetworkers.app",
       logo: { "@type": "ImageObject", url: BRAND.logo }
     },
     datePublished: post.published_at ?? undefined,
@@ -178,7 +178,7 @@ export default async function NewsPostPage({
         )}
 
         <p className="mt-4 text-[13px] text-neutral-500">
-          xratedtrade.com team
+          thenetworkers.app team
           {dateLabel ? ` · published ${dateLabel}` : ""} · {minutes} min read
         </p>
 

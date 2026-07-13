@@ -3,7 +3,7 @@
 // tradies type into Google ("how to price brickwork", "win more jobs",
 // "QR codes on vans"). Each card links to a future deep-dive article;
 // for now the targets are '#' placeholders. Bottom invites tradies to
-// submit their own tips to tips@xratedtrade.com.
+// submit their own tips to tips@thenetworkers.app.
 
 import type { Metadata } from "next";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Tips for Trades — The Network. Win more jobs, get paid more.",
+    "Tips for Trades — Thenetworkers. Win more jobs, get paid more.",
   description:
     "Practical advice from real tradespeople — how to win customers on social, how to price your work, how to photograph jobs, how to collect reviews and how to use QR codes on the van. Free guides for working trades.",
   alternates: { canonical: "/trade-off/tips" },
@@ -280,11 +280,11 @@ export default function TipsPage() {
             WhatsApp template or a customer-handling move that works for
             you — email it to{" "}
             <a
-              href="mailto:tips@xratedtrade.com"
+              href="mailto:tips@thenetworkers.app"
               className="font-extrabold underline"
               style={{ color: "#0A0A0A" }}
             >
-              tips@xratedtrade.com
+              tips@thenetworkers.app
             </a>
             . We credit every published tip with your name, your trade
             and a link back to your Xrated profile.
@@ -320,7 +320,7 @@ export default function TipsPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

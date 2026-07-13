@@ -45,8 +45,8 @@ export async function generateMetadata({
     canteenBySlugFromDb(slug),
     canteenProductByIdFromDb(productId)
   ]);
-  if (!canteen || !product) return { title: "Product | The Network" };
-  const title = `${product.name} · ${canteen.hostDisplayName} | The Network`;
+  if (!canteen || !product) return { title: "Product | Thenetworkers" };
+  const title = `${product.name} · ${canteen.hostDisplayName} | Thenetworkers`;
   return {
     title,
     description: product.blurb,
@@ -64,7 +64,7 @@ export async function generateMetadata({
 
 function productWhatsappUrl(whatsapp: string, hostFirstName: string, productName: string): string {
   const digits = whatsappDigits(whatsapp);
-  const message = `Hi ${hostFirstName}, I'm interested in "${productName}" from your canteen on The Network. Can you tell me more?`;
+  const message = `Hi ${hostFirstName}, I'm interested in "${productName}" from your canteen on Thenetworkers. Can you tell me more?`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 
@@ -259,7 +259,7 @@ export default async function CanteenProductDetailPage({
             >
               <ShieldCheck size={14} className="mt-0.5 flex-shrink-0" style={{ color: BRAND_GREEN_DARK }}/>
               <div className="text-[11px] leading-snug text-neutral-700">
-                Direct from the seller. Quote and payment handled between you and {hostFirstName} — The Network doesn&apos;t hold funds.
+                Direct from the seller. Quote and payment handled between you and {hostFirstName} — Thenetworkers doesn&apos;t hold funds.
               </div>
             </div>
           </aside>

@@ -1,10 +1,10 @@
 // Xrated Trades — pricing page (Free vs Paid 2-tier comparison).
 // Two-tier freemium: Free Profile on hammerexdirect.com (basic, forever
-// free) vs Paid Profile on xratedtrade.com (£14.99/mo or £139.99/yr, 14-day
+// free) vs Paid Profile on thenetworkers.app (£14.99/mo or £139.99/yr, 14-day
 // trial). Every signup starts FREE with all premium features unlocked
 // for 14 days; if they don't convert by day 15 the profile auto-reverts
 // to the free-for-life tier. No card required either way. The brandable
-// xratedtrade.com URL is the central upgrade lever.
+// thenetworkers.app URL is the central upgrade lever.
 //
 // Page layout: hero → two-card comparison (PricingTierCards client child)
 // → side-by-side feature comparison table → FAQ → closing CTA.
@@ -27,14 +27,14 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title:
-    "Pricing — The Network. Free · Starter £9.99/mo · Professional £14.99/mo · Business £24.99/mo.",
+    "Pricing — Thenetworkers. Free · Starter £9.99/mo · Professional £14.99/mo · Business £24.99/mo.",
   description:
-    "Four plans on The Network. Free forever · Starter £9.99/mo · Professional £14.99/mo (recommended) · Business £24.99/mo. Every paid plan includes Studio, the App Warehouse, and a 14-day free trial with no card on signup.",
+    "Four plans on Thenetworkers. Free forever · Starter £9.99/mo · Professional £14.99/mo (recommended) · Business £24.99/mo. Every paid plan includes Studio, the App Warehouse, and a 14-day free trial with no card on signup.",
   alternates: { canonical: "/trade-off/pricing" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "The Network — Pricing. Free · Starter · Professional · Business.",
+    title: "Thenetworkers — Pricing. Free · Starter · Professional · Business.",
     description:
       "One platform, four plans. Studio, App Warehouse, The Yard and Verified Business on every paid tier. 14-day free trial, no card.",
     url: absolute("/trade-off/pricing")
@@ -57,7 +57,7 @@ type FeatureRow = {
 const COMPARE_ROWS: FeatureRow[] = [
   // ─────────────────── URL + identity ───────────────────
   { section: "URL & identity", label: "", free: "", paid: "", verified: "" },
-  { label: "URL domain", free: "hammerexdirect.com", paid: "xratedtrade.com", verified: "xratedtrade.com", highlight: true },
+  { label: "URL domain", free: "hammerexdirect.com", paid: "thenetworkers.app", verified: "thenetworkers.app", highlight: true },
   { label: "Branded URL slug (yours forever)", free: true, paid: true, verified: true },
   { label: "Xrated header on profile", free: "Visible", paid: "Hidden (white-label)", verified: "Hidden (white-label)", highlight: true },
   { label: "Custom domain (yourtrade.co.uk)", free: false, paid: "App £5/mo", verified: "App £5/mo" },
@@ -163,15 +163,15 @@ const PRICING_FAQ = [
   },
   {
     q: "How does the 14-day free trial work?",
-    a: "Sign up free. Your first 14 days unlock every premium feature — brandable xratedtrade.com URL, video, contact form, custom theme, the lot. No card required. On day 15 you either start a £14.99/mo (or £139.99/yr) subscription to keep premium, or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change is automatic. Your slug stays yours forever either way."
+    a: "Sign up free. Your first 14 days unlock every premium feature — brandable thenetworkers.app URL, video, contact form, custom theme, the lot. No card required. On day 15 you either start a £14.99/mo (or £139.99/yr) subscription to keep premium, or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change is automatic. Your slug stays yours forever either way."
   },
   {
     q: "What happens when I downgrade — do I lose my work?",
-    a: "Your reviews, photos, services, opening hours and team grid all stay. What changes: the URL flips from xratedtrade.com to hammerexdirect.com (with a 301 redirect so old shared links still work), the Xrated header appears, and the paid-only widgets hide (video, contact form, Meet-the-team, service prices). Upgrade later and everything snaps back."
+    a: "Your reviews, photos, services, opening hours and team grid all stay. What changes: the URL flips from thenetworkers.app to hammerexdirect.com (with a 301 redirect so old shared links still work), the Xrated header appears, and the paid-only widgets hide (video, contact form, Meet-the-team, service prices). Upgrade later and everything snaps back."
   },
   {
-    q: "Can I keep my xratedtrade.com URL by paying?",
-    a: "Yes — that is the whole point. The xratedtrade.com URL is reserved for paid profiles only. Your slug stays yours forever (no one else can claim it) but it lives on hammerexdirect.com when you are on Free and on xratedtrade.com when you are Paid."
+    q: "Can I keep my thenetworkers.app URL by paying?",
+    a: "Yes — that is the whole point. The thenetworkers.app URL is reserved for paid profiles only. Your slug stays yours forever (no one else can claim it) but it lives on hammerexdirect.com when you are on Free and on thenetworkers.app when you are Paid."
   },
   {
     q: "What is the difference between monthly and annual?",
@@ -261,7 +261,7 @@ export default async function PricingPage() {
             <span style={{ color: XRATED_BRAND.accent }}>The whole platform — £14.99/mo.</span>
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
-            Your branded xratedtrade.com app{" "}
+            Your branded thenetworkers.app app{" "}
             <span className="font-bold text-white">PLUS</span> The Yard
             (private trades-only forum){" "}
             <span className="font-bold text-white">PLUS</span> auto-listing
@@ -728,7 +728,7 @@ export default async function PricingPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off"

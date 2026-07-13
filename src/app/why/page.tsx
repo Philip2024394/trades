@@ -1,4 +1,4 @@
-// /why — the strategic case for joining The Network.
+// /why — the strategic case for joining Thenetworkers.
 //
 // Everything here is either evidenced (footnote to a public source) or
 // labelled as an assumption. No fabricated numbers, no invented years,
@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Why join The Network · The Network",
+  title: "Why join Thenetworkers · Thenetworkers",
   description:
     "Documented homes sell faster and lose fewer chips in the survey. Insurance discounts, transferable warranties, and paperwork buyers already ask for."
 };
@@ -69,7 +69,7 @@ export default function WhyPage() {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: PALETTE.honeyBright }}
             />
-            The Network
+            Thenetworkers
           </Link>
           <nav className="flex items-center gap-4 text-[13px] font-semibold">
             <Link
@@ -111,7 +111,7 @@ export default function WhyPage() {
             className="text-[12px] font-extrabold uppercase tracking-[0.22em]"
             style={{ color: PALETTE.honey }}
           >
-            Why join The Network
+            Why join Thenetworkers
           </p>
           <h1 className="mt-4 text-[38px] font-black leading-[1.0] tracking-tight md:text-[64px]">
             Documented homes sell faster.<br />
@@ -123,7 +123,7 @@ export default function WhyPage() {
             className="mt-6 max-w-[52ch] text-[16px] leading-[1.6] md:text-[18px]"
             style={{ color: PALETTE.inkSoft }}
           >
-            The Network is not a photo album. It&apos;s an evidence chain
+            Thenetworkers is not a photo album. It&apos;s an evidence chain
             attached to the address — the paperwork surveyors, solicitors,
             insurers, and future contractors already ask for, kept in one place
             for the life of the property.
@@ -133,7 +133,7 @@ export default function WhyPage() {
         {/* Evidenced benefits */}
         <section className="mt-14 md:mt-20">
           <SectionHeading eyebrow="What&apos;s evidenced">
-            Four ways The Network pays back
+            Four ways Thenetworkers pays back
           </SectionHeading>
 
           <div className="mt-8 grid gap-4 md:gap-5">
@@ -158,7 +158,7 @@ export default function WhyPage() {
             <EvidencedCard
               icon={<Landmark className="h-5 w-5" aria-hidden />}
               title="Scotland already requires a version of this by law"
-              body="The Scottish Home Report has been mandatory since 2008. It includes a Property Questionnaire covering work history, energy performance, and a single survey. One of the four nations already forces the buyer to see what The Network chooses to preserve."
+              body="The Scottish Home Report has been mandatory since 2008. It includes a Property Questionnaire covering work history, energy performance, and a single survey. One of the four nations already forces the buyer to see what Thenetworkers chooses to preserve."
               source="Scottish Government · Housing (Scotland) Act 2006"
             />
           </div>
@@ -176,7 +176,7 @@ export default function WhyPage() {
               style={{ color: PALETTE.honey }}
               aria-hidden
             />
-            We don&apos;t claim The Network adds a specific percentage to your
+            We don&apos;t claim Thenetworkers adds a specific percentage to your
             sale price — that number has never been published by Rightmove or
             Zoopla, and estate-agent blog posts aren&apos;t evidence. What we
             claim is what&apos;s documented above: you sell faster, with fewer
@@ -196,7 +196,7 @@ export default function WhyPage() {
           >
             Every previous UK home log — Home Information Packs, Log Book of
             the Home, Property Passport — died the same death: it was a
-            passive record no one used. The Network Passport fixes that. You
+            passive record no one used. Thenetworkers Passport fixes that. You
             mint a read-only code that lets a specific person see specific
             sections, for a specific length of time. Fully revocable. Watermarked
             with the viewer&apos;s email on every page.
@@ -298,7 +298,7 @@ export default function WhyPage() {
         {/* The honest what-we-are-NOT section */}
         <section className="mt-16 md:mt-24">
           <SectionHeading eyebrow="Being straight with you">
-            What The Network is not
+            What Thenetworkers is not
           </SectionHeading>
 
           <div className="mt-8 grid gap-4">
@@ -364,7 +364,7 @@ export default function WhyPage() {
               className="text-[12px] font-extrabold uppercase tracking-[0.22em]"
               style={{ color: PALETTE.honeyBright }}
             >
-              Join The Network
+              Join Thenetworkers
             </p>
             <h2 className="mt-4 text-[32px] font-black leading-[1.05] tracking-tight md:text-[48px]">
               Start with one project.<br />
@@ -375,7 +375,7 @@ export default function WhyPage() {
               style={{ color: "rgba(251,246,236,0.72)" }}
             >
               No account required to submit your first brief. If you want the
-              record kept, join The Network free when you&apos;re ready.
+              record kept, join Thenetworkers free when you&apos;re ready.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link

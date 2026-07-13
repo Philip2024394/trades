@@ -381,7 +381,7 @@ export function LeaveReviewShell({
                   72-hour response window
                 </div>
                 <p className="mt-0.5 text-[12px] leading-snug text-neutral-700">
-                  Your overall is under 4★. The merchant has 72 hours to respond privately, publicly, or dispute with evidence before this publishes. If they resolve the issue, you can edit or withdraw. This is what makes The Network's reviews trustworthy.
+                  Your overall is under 4★. The merchant has 72 hours to respond privately, publicly, or dispute with evidence before this publishes. If they resolve the issue, you can edit or withdraw. This is what makes Thenetworkers's reviews trustworthy.
                 </p>
               </div>
             </div>

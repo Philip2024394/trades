@@ -180,7 +180,7 @@ export async function POST(
   }
 
   // ── Build WhatsApp share URLs for phone numbers ──
-  const waMessage = `Join ${canteenName} on The Network: ${inviteUrl}`;
+  const waMessage = `Join ${canteenName} on Thenetworkers: ${inviteUrl}`;
   const whatsAppShares = phoneEntries.map((p) => ({
     phone: p.value,
     href: `https://wa.me/${p.value.replace(/^\+/, "")}?text=${encodeURIComponent(waMessage)}`

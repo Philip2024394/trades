@@ -6,7 +6,7 @@ import type { MetadataRoute } from "next";
 // first to confirm the site is intentionally indexable.
 
 const SITE =
-  process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://xratedtrade.com";
+  process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://thenetworkers.app";
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -119,7 +119,7 @@ export function MarketplaceGrid({ rows }: { rows: MarketRow[] }) {
               onChange={(e) => setQ(e.target.value)}
               placeholder="Search products, services, trades…"
               className="h-11 w-full rounded-full border border-[#1B1A17]/10 bg-white pl-10 pr-9 text-[13.5px] outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-300/40"
-              aria-label="Search The Network"
+              aria-label="Search Thenetworkers"
             />
             {q && (
               <button

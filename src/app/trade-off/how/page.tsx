@@ -1,7 +1,7 @@
 // Xrated Trades — "How it works" walkthrough.
 // Six-step setup grid, behind-the-scenes narrative + dashboard mockup
 // placeholder, and before/after comparison of the tradie's
-// pre-Xrated tool stack vs the single xratedtrade.com URL.
+// pre-Xrated tool stack vs the single thenetworkers.app URL.
 // Server component only; mirrors the design system from
 // /trade-off/pricing (XratedHeader top, black hero with yellow accent,
 // max-w-5xl body, 13px text floor, XratedFooter bottom).
@@ -16,16 +16,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "How it works — The Network. Set up in 5 minutes, go live the moment you save.",
+    "How it works — Thenetworkers. Set up in 5 minutes, go live the moment you save.",
   description:
-    "Six steps to your shareable profile on The Network. Create your account, add your logo, photos, services and prices, then share the link. 14-day free trial, no card on signup.",
+    "Six steps to your shareable profile on Thenetworkers. Create your account, add your logo, photos, services and prices, then share the link. 14-day free trial, no card on signup.",
   alternates: { canonical: "/trade-off/how" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "The Network — How it works. Set up in 5 minutes.",
+    title: "Thenetworkers — How it works. Set up in 5 minutes.",
     description:
-      "Six steps to your shareable profile on The Network. No code. No designer. No card on signup.",
+      "Six steps to your shareable profile on Thenetworkers. No code. No designer. No card on signup.",
     url: absolute("/trade-off/how")
   }
 };
@@ -65,7 +65,7 @@ const STEPS: Step[] = [
   {
     n: "6",
     title: "Share your link",
-    body: "Copy xratedtrade.com/your-name and paste it anywhere customers look."
+    body: "Copy thenetworkers.app/your-name and paste it anywhere customers look."
   }
 ];
 
@@ -93,7 +93,7 @@ const BEFORE_AFTER: BeforeAfter[] = [
   },
   {
     kind: "after",
-    title: "One xratedtrade.com URL",
+    title: "One thenetworkers.app URL",
     body:
       "Your logo, photos, services, prices, reviews and WhatsApp button — on one short link. Edit from your phone in seconds.",
     bullets: ["£14.99/mo flat", "Edit from your phone", "Built for trades"]
@@ -207,7 +207,7 @@ export default function HowItWorksPage() {
               Big tap targets. Photo uploads that work off a dusty phone in the
               back of the van. Prices you can edit between jobs. The dashboard
               autosaves so you never lose work, and every change shows up on
-              your public xratedtrade.com URL within seconds.
+              your public thenetworkers.app URL within seconds.
             </p>
             <ul className="mt-4 flex flex-col gap-2 text-xs text-neutral-700 sm:text-sm">
               <li className="flex items-start gap-2">
@@ -237,7 +237,7 @@ export default function HowItWorksPage() {
                 <span className="inline-block h-2.5 w-2.5 rounded-full bg-neutral-300" aria-hidden="true" />
                 <span className="inline-block h-2.5 w-2.5 rounded-full bg-neutral-300" aria-hidden="true" />
                 <span className="ml-2 text-[11px] font-bold text-neutral-500">
-                  xratedtrade.com/dashboard
+                  thenetworkers.app/dashboard
                 </span>
               </div>
               <div className="flex flex-1 items-center justify-center p-6">
@@ -360,7 +360,7 @@ export default function HowItWorksPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

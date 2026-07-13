@@ -34,7 +34,7 @@ export function TradeReportButton({ listingId }: { listingId: string }) {
   if (status === "done") {
     return (
       <p className="text-xs text-brand-success">
-        Reported — thanks for helping keep xratedtrade.com clean.
+        Reported — thanks for helping keep thenetworkers.app clean.
       </p>
     );
   }

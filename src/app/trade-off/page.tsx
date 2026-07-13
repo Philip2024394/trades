@@ -1,7 +1,7 @@
-// The Network — landing page.
+// Thenetworkers — landing page.
 // Server component. Free-for-life positioning: base tier (app +
 // canteen + URL + Yard + Trade Center access) is free forever; Pro
-// tier is optional. Hero CTA: Join The Network. Trial-language
+// tier is optional. Hero CTA: Join Thenetworkers. Trial-language
 // retired 2026-07-10 (see feedback_diamond_standard_no_lies rule —
 // freemium-forever is what actually ships, so that's what we sell).
 
@@ -20,14 +20,14 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
-    "Join The Network — Free for life. Studio, App Warehouse, Yard.",
+    "Join Thenetworkers — Free for life. Studio, App Warehouse, Yard.",
   description:
-    "Join The Network. Free for life — your business app, your canteen, your URL live, plus access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.",
+    "Join Thenetworkers. Free for life — your business app, your canteen, your URL live, plus access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.",
   alternates: { canonical: "/trade-off" },
   openGraph: {
     type: "website",
     title:
-      "Join The Network — Free for life",
+      "Join Thenetworkers — Free for life",
     description:
       "Free app, free canteen, free URL, free access to The Yard + Trade Center. Optional Pro £14.99/mo.",
     url: absolute("/trade-off"),
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title:
-      "Join The Network — Free for life",
+      "Join Thenetworkers — Free for life",
     description:
       "Free app, canteen, URL, and access to The Yard + Trade Center."
   }
@@ -232,7 +232,7 @@ export default async function TradeOffLandingPage() {
           Built for every trade
         </h2>
         <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          Real tradies already on The Network. Tap a face to see a live profile.
+          Real tradies already on Thenetworkers. Tap a face to see a live profile.
         </p>
 
         <div className="mt-5 flex flex-wrap items-start justify-center gap-4 sm:gap-6 md:gap-8">
@@ -292,14 +292,14 @@ export default async function TradeOffLandingPage() {
             Why tradies switch
           </p>
           <h2 className="mt-2 text-3xl font-extrabold leading-tight text-neutral-900 sm:text-4xl md:text-5xl">
-            Three ways The Network{" "}
+            Three ways Thenetworkers{" "}
             <span style={{ color: XRATED_BRAND.accent }}>wins you the job.</span>
           </h2>
         </div>
 
         {/* Reason 01 — Social bio. White surface matching Reasons 02 & 03.
             The visual is a real iPhone screenshot of an Instagram bio
-            with xratedtrade.com/bricklondo in the link slot — instant
+            with thenetworkers.app/bricklondo in the link slot — instant
             "ah, this is what I paste in mine" recognition. A 70% stat
             badge floats top-right as a corner sticker. */}
         <div className="mt-10 bg-white sm:mt-14">
@@ -309,7 +309,7 @@ export default async function TradeOffLandingPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b9d8cb08c0c-Untitledeqweqeqweqdsadasdasd.png"
-                  alt="iPhone showing an Instagram bio with xratedtrade.com/bricklondo as the link."
+                  alt="iPhone showing an Instagram bio with thenetworkers.app/bricklondo as the link."
                   className="relative mx-auto block h-auto w-full object-contain"
                   loading="lazy"
                 />
@@ -511,7 +511,7 @@ export default async function TradeOffLandingPage() {
             One link. Every customer.
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join The Network today.
+            Join Thenetworkers today.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Free for life. No card. No commission, ever. Save your progress any time.
@@ -525,7 +525,7 @@ export default async function TradeOffLandingPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

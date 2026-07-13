@@ -11,7 +11,7 @@
 //   3. Route the cart's Pay Now button through the credentials the
 //      merchant chose as active
 //
-// xratedtrade.com never registered as a "platform" with any provider.
+// thenetworkers.app never registered as a "platform" with any provider.
 // We take zero commission. Money settles direct to the merchant's own
 // provider account.
 

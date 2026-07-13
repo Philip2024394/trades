@@ -28,7 +28,7 @@ const EMPTY: Form = {
   slug: "",
   title: "",
   tagline: "",
-  cta_text: "Join xratedtrade.com",
+  cta_text: "Join thenetworkers.app",
   hero_image_url: "",
   body_markdown: ""
 };

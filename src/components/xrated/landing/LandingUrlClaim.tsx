@@ -1,7 +1,7 @@
 "use client";
 
 // Hero URL-claim widget — the visitor types the slug they want for
-// their xratedtrade.com/<slug> URL, then clicks Join XratedTrade.
+// their thenetworkers.app/<slug> URL, then clicks Join XratedTrade.
 // We slugify live (lowercase, hyphen-separated, no funky characters)
 // so the user always sees a valid preview, and we navigate to the
 // signup page with the slug pre-populated.
@@ -36,7 +36,7 @@ export function LandingUrlClaim() {
         {/* Domain prefix — visible on tablet+; on mobile we save the
             space and surface the full URL in the preview line below. */}
         <span className="hidden select-none items-center bg-neutral-50 pl-3 pr-1 text-xs font-bold text-neutral-500 sm:flex sm:text-sm">
-          xratedtrade.com/
+          thenetworkers.app/
         </span>
         <input
           type="text"
@@ -66,10 +66,10 @@ export function LandingUrlClaim() {
 
       {/* URL preview — own line so it never breaks the form layout on
           tight mobile widths. Also doubles as the only place mobile sees
-          the full xratedtrade.com domain (the prefix is hidden in the
+          the full thenetworkers.app domain (the prefix is hidden in the
           input on mobile to give the typed slug more room). */}
       <p className="mt-2.5 break-all rounded-md bg-black/40 px-3 py-1.5 font-mono text-[13px] text-white shadow-sm sm:text-sm">
-        xratedtrade.com/<span style={{ color: "#FFB300" }}>{slug || placeholder}</span>
+        thenetworkers.app/<span style={{ color: "#FFB300" }}>{slug || placeholder}</span>
       </p>
       {error && (
         <p

@@ -2,7 +2,7 @@
 //
 // Standalone surface a tradesperson can share separately from their main
 // profile — e.g. "All the questions I get about plastering, with photos:
-// xratedtrade.com/<slug>/faq". Hero up top so the visitor knows whose
+// thenetworkers.app/<slug>/faq". Hero up top so the visitor knows whose
 // FAQs these are; category filter chips; one card per FAQ with the ref
 // code badge, question, answer, image grid (lightbox), share button.
 //
@@ -303,7 +303,7 @@ export default async function FaqPage({
               className="inline-flex h-11 items-center justify-center gap-1.5 rounded-lg px-5 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98] sm:text-sm"
               style={{ background: "#FFB300" }}
             >
-              Join The Network
+              Join Thenetworkers
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

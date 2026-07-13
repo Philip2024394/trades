@@ -111,7 +111,7 @@ export const APP_CATEGORIES: {
   { key: "portfolio", label: "Portfolio", description: "Showcase finished work." },
   { key: "customer", label: "Customer", description: "Track relationships + repeat work." },
   { key: "content", label: "Content", description: "Keep the profile alive." },
-  { key: "network", label: "Network", description: "The Network features only we have." },
+  { key: "network", label: "Network", description: "Thenetworkers features only we have." },
   { key: "team", label: "Team", description: "Show off the people who do the work." }
 ];
 
@@ -144,7 +144,7 @@ export const WAREHOUSE_APPS: WarehouseApp[] = [
       "Every post from a trade you follow becomes a reason for a returning customer to come back.",
       "No content-treadmill: your network's posts do the heavy lifting."
     ],
-    bestForContext: "Ideal if you post infrequently but still want visitors to see The Network buzzing when they land on your profile.",
+    bestForContext: "Ideal if you post infrequently but still want visitors to see Thenetworkers buzzing when they land on your profile.",
     recommendForJourneys: [
       "research-then-quote",
       "browse-then-book",

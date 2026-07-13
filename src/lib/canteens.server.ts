@@ -121,6 +121,10 @@ export async function productsForCanteenFromDb(
 }
 
 export async function canteenProductByIdFromDb(id: string): Promise<CanteenProduct | null> {
+  // Guard against mock ids like "p1" — Supabase's id column is UUID so
+  // querying with a non-UUID returns an opaque error object. Match the
+  // pattern used by productsForCanteenFromDb and short-circuit to mock.
+  if (!isUuid(id)) return canteenProductByIdMock(id);
   const res = await supabaseAdmin
     .from("hammerex_canteen_products")
     .select("*")

@@ -143,7 +143,7 @@ export default async function PostalFormPage({
 
         {/* FOOTER */}
         <footer className="mt-6 text-center text-[10px] text-neutral-500">
-          Form generated at {new Date().toISOString().slice(0, 10)} — Powered by xratedtrade.com
+          Form generated at {new Date().toISOString().slice(0, 10)} — Powered by thenetworkers.app
         </footer>
       </div>
     </main>

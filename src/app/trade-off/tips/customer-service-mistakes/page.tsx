@@ -20,7 +20,7 @@ const HERO =
   "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/3b72a2f8e677-ChatGPT_Image_Jun_27__2026__07_04_17_AM.png";
 
 export const metadata: Metadata = {
-  title: `${TITLE} | xratedtrade.com guides`,
+  title: `${TITLE} | thenetworkers.app guides`,
   description: DESCRIPTION,
   alternates: { canonical: SLUG },
   openGraph: {
@@ -37,10 +37,10 @@ const ARTICLE_JSONLD = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: TITLE,
-  author: { "@type": "Organization", name: "xratedtrade.com" },
+  author: { "@type": "Organization", name: "thenetworkers.app" },
   publisher: {
     "@type": "Organization",
-    name: "xratedtrade.com",
+    name: "thenetworkers.app",
     logo: { "@type": "ImageObject", url: BRAND.logo }
   },
   datePublished: "2026-06-28",
@@ -265,7 +265,7 @@ function TopicBadge({ children }: { children: React.ReactNode }) {
 function Byline({ minutes }: { minutes: number }) {
   return (
     <p className="mt-4 text-[13px] text-neutral-500">
-      {minutes} min read · The xratedtrade.com team
+      {minutes} min read · The thenetworkers.app team
     </p>
   );
 }

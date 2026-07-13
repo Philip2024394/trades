@@ -44,7 +44,7 @@ async function siteOriginFromRequest(): Promise<string> {
   const host = h.get("x-forwarded-host") ?? h.get("host");
   const proto = h.get("x-forwarded-proto") ?? "https";
   if (host) return `${proto}://${host}`;
-  return "https://xratedtrade.com";
+  return "https://thenetworkers.app";
 }
 
 function firstName(name: string | null): string {
@@ -131,7 +131,7 @@ export default async function AdminAffiliatePasswordRecoveryPage() {
                     .filter(Boolean)
                     .join(" ") || row.company_name
                 );
-                const messageBody = `Hi ${name}, here's your affiliate password reset link for xratedtrade.com: ${recoveryUrl}\n\nThis link expires in 24 hours.`;
+                const messageBody = `Hi ${name}, here's your affiliate password reset link for thenetworkers.app: ${recoveryUrl}\n\nThis link expires in 24 hours.`;
                 const waUrl =
                   waDigits && recoveryUrl
                     ? `https://wa.me/${waDigits}?text=${encodeURIComponent(messageBody)}`

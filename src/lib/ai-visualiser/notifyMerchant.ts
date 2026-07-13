@@ -115,7 +115,7 @@ export async function sendMerchantLeadEmail(
           </table>
         </td></tr>
         <tr><td style="padding:16px 24px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#888;">
-          Sent by xratedtrade.com AI Visualiser. Reply within 24h for the best response rate.
+          Sent by thenetworkers.app AI Visualiser. Reply within 24h for the best response rate.
         </td></tr>
       </table>
     </td></tr>

@@ -86,7 +86,7 @@ const TUTORIALS: Tutorial[] = [
 ];
 
 const POPULAR_ARTICLES: Array<{ title: string; href: string }> = [
-  { title: "Why hasn't my xratedtrade.com URL gone live yet?", href: "#" },
+  { title: "Why hasn't my thenetworkers.app URL gone live yet?", href: "#" },
   { title: "How do I change my slug after signup?", href: "#" },
   { title: "What happens when my 14-day trial ends?", href: "#" },
   { title: "How do I move my reviews from a directory site?", href: "#" },
@@ -248,7 +248,7 @@ export default function HelpCentrePage() {
           {/* Email */}
           <li>
             <a
-              href="mailto:support@xratedtrade.com"
+              href="mailto:support@thenetworkers.app"
               className="group flex h-full flex-col rounded-2xl border border-neutral-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-neutral-300 hover:shadow-lg"
             >
               <span
@@ -265,7 +265,7 @@ export default function HelpCentrePage() {
                 Email
               </h3>
               <p className="mt-1 text-xs leading-relaxed text-neutral-600">
-                support@xratedtrade.com &mdash; replies within one
+                support@thenetworkers.app &mdash; replies within one
                 business day.
               </p>
               <span

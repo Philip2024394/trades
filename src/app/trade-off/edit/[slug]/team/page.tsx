@@ -1,4 +1,4 @@
-// xratedtrade.com — Meet the Team editor.
+// thenetworkers.app — Meet the Team editor.
 //
 // Merchant adds up to 10 team members. First entry is the Boss (pinned
 // in slot 0 of TeamGrid). Slots 2-4 auto-rotate through the rest of
@@ -16,7 +16,7 @@ import type { HammerexTradeOffListing } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Meet the Team | xratedtrade.com",
+  title: "Meet the Team | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

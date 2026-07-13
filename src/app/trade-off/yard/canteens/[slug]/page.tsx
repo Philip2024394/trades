@@ -27,8 +27,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const canteen = await canteenBySlugFromDb(slug);
-  if (!canteen) return { title: "Canteen not found — The Network" };
-  const title = `${canteen.name} — Canteen | The Network`;
+  if (!canteen) return { title: "Canteen not found — Thenetworkers" };
+  const title = `${canteen.name} — Canteen | Thenetworkers`;
   return {
     title,
     description: canteen.tagline,

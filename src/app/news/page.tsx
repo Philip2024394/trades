@@ -21,9 +21,9 @@ export const dynamic = "force-dynamic";
 const HERO_BANNER =
   "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/news-hero.png";
 
-const TITLE = "Trade News — The Network";
+const TITLE = "Trade News — Thenetworkers";
 const DESCRIPTION =
-  "Construction news, platform announcements, and working-tradesperson opinion from The Network. Stay updated across every project.";
+  "Construction news, platform announcements, and working-tradesperson opinion from Thenetworkers. Stay updated across every project.";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: absolute("/news"),
-    images: [{ url: HERO_BANNER, alt: "xratedtrade.com Construction News" }]
+    images: [{ url: HERO_BANNER, alt: "thenetworkers.app Construction News" }]
   }
 };
 
@@ -103,7 +103,7 @@ export default async function NewsIndexPage({
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={HERO_BANNER}
-          alt="xratedtrade.com Construction News — what's new at the platform"
+          alt="thenetworkers.app Construction News — what's new at the platform"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div

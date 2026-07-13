@@ -961,7 +961,7 @@ export function isTradeConnectionsOn(
  *  least one payment provider (Stripe Connect, PayPal Commerce, Square
  *  OAuth, or a hosted Payment Link). The cart shows a green "Pay Now"
  *  button alongside the existing yellow WhatsApp Enquire so customers
- *  can pay on the spot. Funds NEVER touch xratedtrade.com — they route
+ *  can pay on the spot. Funds NEVER touch thenetworkers.app — they route
  *  direct to the merchant's connected account or the hosted link's
  *  underlying provider.
  *

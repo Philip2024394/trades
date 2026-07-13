@@ -1,6 +1,6 @@
 "use client";
 
-// The Network — burger menu overlay. Facebook-style: primary
+// Thenetworkers — burger menu overlay. Facebook-style: primary
 // destinations as tiles at the top, personal actions in the middle,
 // secondary pages buried under a collapsed "More" section so nothing
 // important gets diluted by a boring link dump.
@@ -173,7 +173,7 @@ export function BurgerMenu() {
                 className="text-[16px] font-black tracking-tight"
                 style={{ color: BRAND_BLACK }}
               >
-                The Network
+                Thenetworkers
               </span>
             </div>
             <button
@@ -277,7 +277,7 @@ export function BurgerMenu() {
               <span className="flex items-center gap-2">
                 <Wrench size={13} className="text-neutral-500"/>
                 <span className="text-[12px] font-black uppercase tracking-wider text-neutral-700">
-                  More on The Network
+                  More on Thenetworkers
                 </span>
               </span>
               <ChevronDown
@@ -343,7 +343,7 @@ export function BurgerMenu() {
               </Link>
             </div>
             <p className="text-[10px] leading-snug text-neutral-500">
-              The Network — Of The Construction Trades.
+              Thenetworkers — Of The Construction Trades.
             </p>
           </div>
         </div>

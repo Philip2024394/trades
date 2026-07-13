@@ -39,7 +39,7 @@ const STYLE_ATTR = /style=["'][^"']*["']/gi;
 const CSS_COLOR_RULE = /(?:background(?:-color)?|color)\s*:\s*(#[0-9a-f]{6}|rgb\([^)]+\))/gi;
 
 const USER_AGENT =
-  "Mozilla/5.0 (compatible; StudioBrandExtractor/1.0; +https://xratedtrade.com)";
+  "Mozilla/5.0 (compatible; StudioBrandExtractor/1.0; +https://thenetworkers.app)";
 
 const FETCH_TIMEOUT_MS = 6000;
 const MAX_HTML_BYTES = 1_500_000; // 1.5 MB — safety cap

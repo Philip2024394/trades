@@ -12,7 +12,7 @@ import { LEVEL_META, type AffiliateLevel } from "@/lib/affiliateLevel";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Affiliate leaderboard | The Network"
+  title: "Affiliate leaderboard | Thenetworkers"
 };
 
 function pounds(pence: number): string {

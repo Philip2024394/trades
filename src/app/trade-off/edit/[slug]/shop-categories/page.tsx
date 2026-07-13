@@ -1,4 +1,4 @@
-// xratedtrade.com — Shop Categories editor.
+// thenetworkers.app — Shop Categories editor.
 //
 // Merchant reorders / renames / toggles / uploads images for the
 // horizontal category strip that sits under their hero. Save button
@@ -16,7 +16,7 @@ import type { ShopCategory } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Shop Categories | xratedtrade.com",
+  title: "Shop Categories | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

@@ -34,7 +34,7 @@ const PALETTE = {
 export function AudienceGateBright() {
   return (
     <section
-      aria-label="The Network"
+      aria-label="Thenetworkers"
       className="relative min-h-[100dvh] w-full"
       style={{ backgroundColor: PALETTE.cream, color: PALETTE.ink }}
     >
@@ -51,7 +51,7 @@ export function AudienceGateBright() {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: PALETTE.honeyBright }}
             />
-            The Network
+            Thenetworkers
           </div>
           <div className="flex items-center gap-3 text-[13px] font-semibold">
             <Link
@@ -59,7 +59,7 @@ export function AudienceGateBright() {
               className="hidden underline-offset-4 hover:underline sm:inline"
               style={{ color: PALETTE.ink }}
             >
-              Why The Network
+              Why Thenetworkers
             </Link>
             <Link
               href="/trade-off/yard"
@@ -126,7 +126,7 @@ export function AudienceGateBright() {
               >
                 Every project.<br />
                 Every site.<br />
-                <span style={{ color: PALETTE.honeyBright }}>On The Network.</span>
+                <span style={{ color: PALETTE.honeyBright }}>On Thenetworkers.</span>
               </h1>
 
               <p

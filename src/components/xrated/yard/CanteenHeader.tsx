@@ -238,7 +238,7 @@ export function CanteenHeader({
               hostWhatsapp ? (
                 <a
                   href={`https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                    `Hi ${canteen.hostDisplayName.split(/\s+/)[0]}, I found your canteen "${canteen.name}" on The Network — I'd like to get in touch about ${canteen.tradeLabel.toLowerCase()}.`
+                    `Hi ${canteen.hostDisplayName.split(/\s+/)[0]}, I found your canteen "${canteen.name}" on Thenetworkers — I'd like to get in touch about ${canteen.tradeLabel.toLowerCase()}.`
                   )}`}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -451,7 +451,7 @@ export function CanteenHeader({
               <div className="mt-3 border-t px-5 py-3 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-400"
                 style={{ borderColor: "rgba(27,26,23,0.08)" }}
               >
-                The Network
+                Thenetworkers
               </div>
               <ul className="flex flex-col">
                 <DrawerLink

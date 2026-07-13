@@ -1,4 +1,4 @@
-// xratedtrade.com Trade Off — edit flow
+// thenetworkers.app Trade Off — edit flow
 // Server shell that validates the magic-link token, loads the listing,
 // and hands it to the shared TradeOffForm in "edit" mode.
 //
@@ -33,7 +33,7 @@ import type { HammerexXratedVoucher } from "@/lib/supabase";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Edit your xratedtrade.com profile | xratedtrade.com",
+  title: "Edit your thenetworkers.app profile | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 
@@ -667,14 +667,14 @@ function WelcomeKnifeCard({ voucher }: { voucher: HammerexXratedVoucher }) {
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi xratedtrade.com — I'm trying to edit my xratedtrade.com profile but my link isn't working. Can you help?"
+    "Hi thenetworkers.app — I'm trying to edit my thenetworkers.app profile but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          xratedtrade.com
+          thenetworkers.app
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This link is invalid or has expired.

@@ -14,14 +14,14 @@ import { BRAND, absolute } from "@/lib/seo";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Trade Center — Every UK trade product in one place | The Network",
+  title: "Trade Center — Every UK trade product in one place | Thenetworkers",
   description:
-    "Browse products from every trade on The Network. Every listing routes into the merchant's canteen — real people, real trades, real WhatsApp handoff. No middleman.",
+    "Browse products from every trade on Thenetworkers. Every listing routes into the merchant's canteen — real people, real trades, real WhatsApp handoff. No middleman.",
   alternates: { canonical: "/trade-off/trade-center" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Trade Center — The Network",
+    title: "Trade Center — Thenetworkers",
     description: "Trades-to-trades marketplace. Every listing lands in a real trade community.",
     url: absolute("/trade-off/trade-center")
   }

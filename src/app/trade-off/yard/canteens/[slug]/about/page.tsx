@@ -30,10 +30,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const canteen = await canteenBySlugFromDb(slug);
   if (!canteen) {
-    return { title: "Canteen not found | The Network" };
+    return { title: "Canteen not found | Thenetworkers" };
   }
   return {
-    title: `About ${canteen.name} | The Network`,
+    title: `About ${canteen.name} | Thenetworkers`,
     description: canteen.tagline,
     alternates: { canonical: `/trade-off/yard/canteens/${slug}/about` },
     openGraph: {

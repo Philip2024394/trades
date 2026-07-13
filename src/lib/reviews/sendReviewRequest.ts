@@ -103,7 +103,7 @@ export async function sendReviewRequest(
     return { requestId: created.id, reused: false, emailSent: false };
   }
 
-  const base = process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app";
   const linkUrl = `${base}/review/${shareToken}`;
   const merchantName =
     merchant.data?.trading_name || merchant.data?.display_name || "your trade";

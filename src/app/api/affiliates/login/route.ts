@@ -62,7 +62,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       {
         ok: false,
         error:
-          "This affiliate account is not active. Contact support@xratedtrade.com"
+          "This affiliate account is not active. Contact support@thenetworkers.app"
       },
       { status: 403 }
     );

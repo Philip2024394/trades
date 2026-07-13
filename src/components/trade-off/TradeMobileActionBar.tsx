@@ -16,7 +16,7 @@ export function TradeMobileActionBar({
   displayName: string;
 }) {
   const mailto = email
-    ? `mailto:${email}?subject=${encodeURIComponent("Quotation request via xratedtrade.com")}&body=${encodeURIComponent(`Hi ${displayName}, I found your profile on xratedtrade.com.`)}`
+    ? `mailto:${email}?subject=${encodeURIComponent("Quotation request via thenetworkers.app")}&body=${encodeURIComponent(`Hi ${displayName}, I found your profile on thenetworkers.app.`)}`
     : null;
   const tel = phone ? `tel:${phone.replace(/\s+/g, "")}` : null;
 

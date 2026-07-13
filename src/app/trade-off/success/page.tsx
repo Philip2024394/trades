@@ -20,14 +20,14 @@ export const metadata: Metadata = {
   title:
     "Success Stories — Xrated Trades. Real trades. Real results.",
   description:
-    "Four real Xrated Trades members share how their xratedtrade.com URL changed their pipeline. Drywaller, scaffolder, plasterer, electrician — verified review counts and monthly enquiry numbers.",
+    "Four real Xrated Trades members share how their thenetworkers.app URL changed their pipeline. Drywaller, scaffolder, plasterer, electrician — verified review counts and monthly enquiry numbers.",
   alternates: { canonical: "/trade-off/success" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title: "Xrated Trades — Success Stories. Real trades, real results.",
     description:
-      "Real Xrated Trades members share how their xratedtrade.com URL changed their pipeline.",
+      "Real Xrated Trades members share how their thenetworkers.app URL changed their pipeline.",
     url: absolute("/trade-off/success")
   }
 };
@@ -67,7 +67,7 @@ const STORIES: Story[] = [
     quote:
       "Booked 8 jobs from one Instagram post with my Xrated link in the bio.",
     body:
-      "Billy runs a two-truck scaffolding crew across the West Midlands. He used to lose enquiries because customers wanted to compare three quotes before calling. Now his Instagram bio links straight to his xratedtrade.com URL — every prospect lands on his prices, his sites, his five-star reviews. The decision is made before he picks up the phone.",
+      "Billy runs a two-truck scaffolding crew across the West Midlands. He used to lose enquiries because customers wanted to compare three quotes before calling. Now his Instagram bio links straight to his thenetworkers.app URL — every prospect lands on his prices, his sites, his five-star reviews. The decision is made before he picks up the phone.",
     stats: { reviews: 31, viewsPerMonth: "940", enquiriesPerMonth: 19 },
     href: "/demo-billy-ahmed-scaffolder-birmingham"
   },
@@ -122,7 +122,7 @@ export default function SuccessStoriesPage() {
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/80 sm:text-sm">
             Four members. Four trades. Four cities. Each one shares the
-            numbers behind their xratedtrade.com URL — reviews, monthly
+            numbers behind their thenetworkers.app URL — reviews, monthly
             profile views, monthly WhatsApp enquiries.{" "}
             <span className="font-bold text-white">
               All numbers self-reported in the dashboard.
@@ -289,7 +289,7 @@ export default function SuccessStoriesPage() {
             Tell us how Xrated changed your pipeline.
           </h2>
           <p className="mt-3 max-w-3xl text-xs leading-relaxed text-neutral-700 sm:text-sm">
-            If your xratedtrade.com URL is bringing in real work we want to
+            If your thenetworkers.app URL is bringing in real work we want to
             hear from you. Featured members get a long-form story on this
             page, a callout in the homepage rail, and a free year on
             Verified. Send us a WhatsApp with your slug and a one-line
@@ -326,7 +326,7 @@ export default function SuccessStoriesPage() {
             Be the next success story.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
-            14-day free trial. No card. Your xratedtrade.com URL is live
+            14-day free trial. No card. Your thenetworkers.app URL is live
             the moment you save.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">

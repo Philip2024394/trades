@@ -1,7 +1,7 @@
 // Studio session — cookie helpers + merchant/brand loaders.
 //
 // Auth model for the workspace: the merchant clicks a magic link
-// `https://xratedtrade.com/studio?enter=<edit_token>`. The entry route
+// `https://thenetworkers.app/studio?enter=<edit_token>`. The entry route
 // validates the token, stores it in an HttpOnly cookie, and redirects
 // to /studio/home. Every gated route reads the cookie and loads the
 // merchant + default brand once at layout render.

@@ -190,7 +190,7 @@ export const TRADE_OFF_TRADES: Array<{
   // ─── Phase 3 expansion — closing the 90% coverage gap ─────────────
   //
   // Systematic scan added the following buckets so any construction-
-  // adjacent business has a home on The Network. Rule: if the business
+  // adjacent business has a home on Thenetworkers. Rule: if the business
   // touches buildings, materials, sites, or the interior of a home, it
   // gets a slug. Anything past this list falls to CUSTOM_TRADE_SLUG.
 
@@ -924,7 +924,7 @@ export function whatsappDigits(input: string): string {
 
 export function whatsappQuoteUrl(whatsapp: string, displayName: string, tradeLabelText: string): string {
   const digits = whatsappDigits(whatsapp);
-  const message = `Hi ${displayName}, I found your profile on xratedtrade.com. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
+  const message = `Hi ${displayName}, I found your profile on thenetworkers.app. I'd like a quote for some ${tradeLabelText.toLowerCase()} work.`;
   return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
 }
 

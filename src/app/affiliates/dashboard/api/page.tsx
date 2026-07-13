@@ -67,7 +67,7 @@ export default async function ApiTokensPage() {
           Example request
         </p>
         <pre className="mt-2 overflow-x-auto rounded-lg bg-brand-bg p-3 text-[13px] leading-relaxed text-brand-text">
-          <code>{`curl https://xratedtrade.com/api/v1/affiliates/me \\
+          <code>{`curl https://thenetworkers.app/api/v1/affiliates/me \\
   -H "Authorization: Bearer YOUR_TOKEN_HERE"`}</code>
         </pre>
         <p className="mt-2 text-[12px] text-neutral-500">

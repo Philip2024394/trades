@@ -36,8 +36,8 @@ export function CanteenMobileAppShowcase({
   heroTitle: string;
 }) {
   const [copied, setCopied] = useState(false);
-  const displayUrl = `thenetwork.co/${hostSlug}`;
-  const openUrl = `https://thenetwork.co/${hostSlug}`;
+  const displayUrl = `thenetworkers.app/${hostSlug}`;
+  const openUrl = `https://thenetworkers.app/${hostSlug}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(openUrl)}`;
 
   async function handleCopy() {
@@ -140,7 +140,7 @@ export function CanteenMobileAppShowcase({
           hijacking Mick's brand. */}
       <div className="relative mt-3 border-t pt-2 text-center" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
         <span className="text-[9px] font-black uppercase tracking-[0.22em] text-neutral-500">
-          Powered by <span style={{ color: "#B8860B" }}>Thenetwork.co</span>
+          Powered by <span style={{ color: "#B8860B" }}>Thenetworkers.app</span>
         </span>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-// Canteen invite modal — send an invite to trades on The Network or
+// Canteen invite modal — send an invite to trades on Thenetworkers or
 // share a public invite link (Facebook-group-style). Mobile-first
 // bottom-sheet, cream + yellow-dot brand.
 
@@ -116,7 +116,7 @@ export function CanteenInviteModal({
             {canteenName}
           </div>
           <div className="mt-0.5 text-[12px] text-neutral-500">
-            Trades on The Network can join with one tap.
+            Trades on Thenetworkers can join with one tap.
           </div>
         </div>
 
@@ -156,7 +156,7 @@ export function CanteenInviteModal({
                 style={{ resize: "none" }}
               />
               <p className="mt-2 text-[10px] leading-snug text-neutral-500">
-                Handles auto-match against The Network directory. WhatsApp numbers get a click-to-send invite text with the join link.
+                Handles auto-match against Thenetworkers directory. WhatsApp numbers get a click-to-send invite text with the join link.
               </p>
               {submitError && (
                 <div className="mt-2 flex items-center gap-1.5 rounded-md bg-red-50 px-2 py-1.5 text-[11px] font-bold text-red-700">
@@ -210,7 +210,7 @@ export function CanteenInviteModal({
                   )}
                   {result.unrecognisedSlugs.length > 0 && (
                     <div className="text-[11px] text-red-600">
-                      Not found on The Network: {result.unrecognisedSlugs.join(", ")}
+                      Not found on Thenetworkers: {result.unrecognisedSlugs.join(", ")}
                     </div>
                   )}
                   {result.invalid.length > 0 && (
@@ -256,7 +256,7 @@ export function CanteenInviteModal({
               {/* Quick-share buttons */}
               <div className="mt-3 grid grid-cols-2 gap-2">
                 <a
-                  href={`https://wa.me/?text=${encodeURIComponent(`Join our canteen on The Network: ${inviteUrl}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(`Join our canteen on Thenetworkers: ${inviteUrl}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full text-[11px] font-black uppercase tracking-wider text-white"
@@ -265,7 +265,7 @@ export function CanteenInviteModal({
                   Share via WhatsApp
                 </a>
                 <a
-                  href={`mailto:?subject=${encodeURIComponent(`Join ${canteenName} on The Network`)}&body=${encodeURIComponent(inviteUrl)}`}
+                  href={`mailto:?subject=${encodeURIComponent(`Join ${canteenName} on Thenetworkers`)}&body=${encodeURIComponent(inviteUrl)}`}
                   className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full border border-neutral-200 bg-white text-[11px] font-black uppercase tracking-wider text-neutral-700"
                 >
                   Email invite

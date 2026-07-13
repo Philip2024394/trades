@@ -47,7 +47,7 @@ export function CanteenCounterExplainer({ onBack }: { onBack: () => void }) {
               The Counter · one live marketplace across every canteen
             </h2>
             <p className="mt-1.5 max-w-md text-[13px] leading-snug text-white/85">
-              Not a static grid. Not a per-canteen silo. One flowing feed of trade deals, seen by every trade on The Network.
+              Not a static grid. Not a per-canteen silo. One flowing feed of trade deals, seen by every trade on Thenetworkers.
             </p>
           </div>
         </div>
@@ -62,7 +62,7 @@ export function CanteenCounterExplainer({ onBack }: { onBack: () => void }) {
           <Row
             icon={Store}
             title="Trade-safe by design"
-            body="Every offer routes through WhatsApp first — the seller confirms before payment. Only buyer-protected rails are allowed: PayPal G&S, escrow, or cash-on-collection. The Network never touches the money."
+            body="Every offer routes through WhatsApp first — the seller confirms before payment. Only buyer-protected rails are allowed: PayPal G&S, escrow, or cash-on-collection. Thenetworkers never touches the money."
           />
           <Row
             icon={Users}

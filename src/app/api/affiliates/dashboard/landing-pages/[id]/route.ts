@@ -57,7 +57,7 @@ export async function PATCH(
     patch.tagline = body.tagline.trim() || null;
   }
   if (typeof body.cta_text === "string") {
-    patch.cta_text = body.cta_text.trim() || "Join xratedtrade.com";
+    patch.cta_text = body.cta_text.trim() || "Join thenetworkers.app";
   }
   if (typeof body.hero_image_url === "string") {
     patch.hero_image_url = body.hero_image_url.trim() || null;

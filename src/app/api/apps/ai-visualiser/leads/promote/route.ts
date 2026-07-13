@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
     leafDisplayName: leaf?.display_name || render.leaf_slug,
     designSummary,
     renderThumbUrl: render.render_url || undefined,
-    dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com"}/dashboard/leads/${render.homeowner_id}`,
+    dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app"}/dashboard/leads/${render.homeowner_id}`,
     isFirstContact: false
   });
 

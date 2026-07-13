@@ -32,7 +32,7 @@ function DoneShell({ slug }: { slug: string }) {
   return (
     <WizardShell
       step="done"
-      title="You joined The Network."
+      title="You joined Thenetworkers."
       subtitle="Check your inbox — we&apos;ve sent your finish-setup link and your public business-app URL."
     >
       <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
@@ -43,7 +43,7 @@ function DoneShell({ slug }: { slug: string }) {
           />
           <div>
             <p className="text-[15px] font-bold text-[#1B1A17]">
-              You&apos;re on The Network.
+              You&apos;re on Thenetworkers.
             </p>
             <p className="mt-1 text-[13px] leading-[1.5] text-[#1B1A17]/70">
               Welcome email sent. Click the link inside to add photos,
@@ -62,7 +62,7 @@ function DoneShell({ slug }: { slug: string }) {
                 Your public business app
               </p>
               <p className="mt-1 truncate font-mono text-[14px] text-amber-300">
-                xratedtrade.com/{slug}
+                thenetworkers.app/{slug}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Link
@@ -103,7 +103,7 @@ function DoneShell({ slug }: { slug: string }) {
           <NextStep
             n="02"
             title="Join your trade&apos;s canteen"
-            body="Your trade&apos;s private group on The Network. Recommend and get recommended."
+            body="Your trade&apos;s private group on Thenetworkers. Recommend and get recommended."
           />
           <NextStep
             n="03"
@@ -114,7 +114,7 @@ function DoneShell({ slug }: { slug: string }) {
       </div>
 
       <div className="mt-8 border-t border-[#1B1A17]/12 pt-6 text-[13px] text-[#1B1A17]/45">
-        On The Network since {new Date().toLocaleDateString("en-GB")}.
+        On Thenetworkers since {new Date().toLocaleDateString("en-GB")}.
       </div>
     </WizardShell>
   );

@@ -276,7 +276,7 @@ export function StudioOnboardWizard() {
               aria-hidden="true"
             />
             <p className="text-[12px] font-black uppercase tracking-[0.22em] text-neutral-900">
-              The Network
+              Thenetworkers
             </p>
             <span className="ml-auto text-[11px] font-bold text-neutral-500">
               Step {step} of 7

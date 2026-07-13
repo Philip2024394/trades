@@ -52,7 +52,7 @@ export default function StepContact() {
       if (!res.ok || !data.ok) {
         setError(
           data.error === "email_in_use"
-            ? "This email is already on The Network. Try signing in instead."
+            ? "This email is already on Thenetworkers. Try signing in instead."
             : data.error === "slug_conflict"
               ? "That business name already exists — try adding your city or number to make it unique."
               : "Could not create your account. Please try again."
@@ -163,7 +163,7 @@ export default function StepContact() {
             ) : (
               <ArrowRight className="h-4 w-4" aria-hidden />
             )}
-            Join The Network
+            Join Thenetworkers
           </button>
           {error ? (
             <p className="mt-3 text-[13px] text-red-300">{error}</p>

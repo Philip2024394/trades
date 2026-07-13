@@ -10,7 +10,7 @@ type AffiliateLite = {
   first_name?: string | null;
 };
 
-const FROM_DEFAULT = "Xrated Trades <noreply@xratedtrade.com>";
+const FROM_DEFAULT = "Xrated Trades <noreply@thenetworkers.app>";
 
 function fromAddress(): string {
   return (
@@ -66,7 +66,7 @@ function pounds(pence: number): string {
 }
 
 function shell(html: string): string {
-  return `<!doctype html><html><body style="font-family:system-ui,sans-serif;background:#000;color:#fff;padding:24px;">${html}<p style="font-size:13px;color:#888;margin-top:24px;">— Xrated Trades · xratedtrade.com</p></body></html>`;
+  return `<!doctype html><html><body style="font-family:system-ui,sans-serif;background:#000;color:#fff;padding:24px;">${html}<p style="font-size:13px;color:#888;margin-top:24px;">— Xrated Trades · thenetworkers.app</p></body></html>`;
 }
 
 export async function sendWelcomeEmail(a: AffiliateLite): Promise<void> {
@@ -77,7 +77,7 @@ export async function sendWelcomeEmail(a: AffiliateLite): Promise<void> {
     html: shell(
       `<h2 style="color:#FFB300;font-size:20px;">Welcome aboard.</h2>
        <p style="font-size:13px;">Your affiliate ID is <strong>${a.affiliate_id}</strong>. Your permanent link:</p>
-       <p style="font-size:13px;"><a href="https://xratedtrade.com/?ref=${a.affiliate_id}" style="color:#FFB300;">https://xratedtrade.com/?ref=${a.affiliate_id}</a></p>
+       <p style="font-size:13px;"><a href="https://thenetworkers.app/?ref=${a.affiliate_id}" style="color:#FFB300;">https://thenetworkers.app/?ref=${a.affiliate_id}</a></p>
        <p style="font-size:13px;">Share that link. When someone signs up as a tradesperson via it and upgrades, you earn £10.</p>`
     )
   });
@@ -158,7 +158,7 @@ export async function sendLevelPromotedEmail(
     html: shell(
       `<h2 style="color:#FFB300;font-size:20px;">Welcome to ${label}.</h2>
        <p style="font-size:13px;">Congratulations — you've levelled up on the Xrated Trades Affiliate Programme. ${label}-tier perks are now unlocked on your dashboard, including exclusive marketing assets gated to your new level.</p>
-       <p style="font-size:13px;"><a href="https://xratedtrade.com/affiliates/dashboard" style="color:#FFB300;">Open your dashboard →</a></p>`
+       <p style="font-size:13px;"><a href="https://thenetworkers.app/affiliates/dashboard" style="color:#FFB300;">Open your dashboard →</a></p>`
     )
   });
 }
@@ -174,7 +174,7 @@ export async function sendPaymentDetailsNeededEmail(
     html: shell(
       `<h2 style="color:#FFB300;font-size:20px;">You have ${pounds(amount_pence)} waiting.</h2>
        <p style="font-size:13px;">Your approved commission balance is ${pounds(amount_pence)}, but we can't pay you until your payment details are on file.</p>
-       <p style="font-size:13px;"><a href="https://xratedtrade.com/affiliates/dashboard/payment-details" style="color:#FFB300;">Complete your payment details →</a></p>`
+       <p style="font-size:13px;"><a href="https://thenetworkers.app/affiliates/dashboard/payment-details" style="color:#FFB300;">Complete your payment details →</a></p>`
     )
   });
 }

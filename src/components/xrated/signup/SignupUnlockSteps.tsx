@@ -84,7 +84,7 @@ const UNLOCKS: readonly UnlockDef[] = [
   {
     key: "url",
     title: "Your free URL, live",
-    subtitle: "xratedtrade.com/your-name — screenshot it, put it on your van",
+    subtitle: "thenetworkers.app/your-name — screenshot it, put it on your van",
     requiredSectionTitles: ["Location details", "Contact"]
   },
   {
@@ -232,7 +232,7 @@ export function SignupUnlockSteps() {
           </div>
         </div>
       )}
-      {/* Header — Join The Network + unlock counter */}
+      {/* Header — Join Thenetworkers + unlock counter */}
       <div
         className="flex items-center justify-between p-4"
         style={{ borderBottom: "1px solid rgba(139,69,19,0.10)" }}
@@ -250,7 +250,7 @@ export function SignupUnlockSteps() {
           </div>
           <div>
             <div className="text-[10px] font-black uppercase tracking-[0.24em] text-neutral-700">
-              Join The Network
+              Join Thenetworkers
             </div>
             <div className="text-[13px] font-black text-neutral-900">
               Your 4 free unlocks

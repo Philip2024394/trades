@@ -151,7 +151,7 @@ export function InstantQuoteForm({
       .filter((p) => p.status === "done" && p.url)
       .map((p) => p.url as string);
     const lines = [
-      `Hi ${displayName}, quote request via xratedtrade.com.`,
+      `Hi ${displayName}, quote request via thenetworkers.app.`,
       "",
       `Customer: ${name.trim()}`,
       `Postcode: ${postcode.trim().toUpperCase()}`,

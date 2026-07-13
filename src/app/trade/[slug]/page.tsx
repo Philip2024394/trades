@@ -222,14 +222,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // the listing's USP from the bio. Standard demo / live profiles keep
   // the existing format so we don't churn established SERP titles.
   const title = isLead
-    ? `${listing.display_name} — ${primary} in ${listing.city} | The Network`
-    : `${listing.display_name} — ${primary} in ${listing.city} | The Network`;
+    ? `${listing.display_name} — ${primary} in ${listing.city} | Thenetworkers`
+    : `${listing.display_name} — ${primary} in ${listing.city} | Thenetworkers`;
   const bioDesc = clampDescription(stripMarkdown(listing.bio), 160);
   const description = isLead
     ? bioDesc ||
-      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Live case study on The Network — reviews, prices, photos, WhatsApp quote in one link.`
+      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Live case study on Thenetworkers — reviews, prices, photos, WhatsApp quote in one link.`
     : bioDesc ||
-      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on The Network.`;
+      `${listing.display_name}, ${primary.toLowerCase()} in ${listing.city}. Free WhatsApp quotation on Thenetworkers.`;
   const url = absolute(`/trade/${listing.slug}`);
   const heroImg = listing.custom_app_hero_url || listing.avatar_url || listing.photos[0] || BRAND.logo;
   return {
@@ -526,7 +526,7 @@ export default async function TradiePublicProfilePage({
   const cityLower = listing.city.toLowerCase();
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "The Network", url: "/trade-off" },
+    { name: "Thenetworkers", url: "/trade-off" },
     { name: primary, url: `/trade-off/${listing.primary_trade}` },
     { name: listing.city, url: `/trade-off/${listing.primary_trade}/${encodeURIComponent(cityLower)}` },
     { name: listing.display_name, url: `/trade/${listing.slug}` }
@@ -1143,7 +1143,7 @@ function PremiumSocialFooter({ listing }: { listing: HammerexTradeOffListing }) 
   );
 }
 
-// ─── Powered by The Network footer credit ──────────────────────────
+// ─── Powered by Thenetworkers footer credit ──────────────────────────
 // Renders on EVERY profile, free + paid, until the £3/mo white-label
 // add-on is shipped. Doubles as Linktree-style top-of-funnel — every
 // visitor sees a soft "get yours" link.
@@ -1157,7 +1157,7 @@ function PoweredByXratedFooter({ slug }: { slug: string }) {
             href={`/trade-off?ref=${encodeURIComponent(slug)}`}
             className="font-extrabold text-neutral-900 hover:text-[#FFB300]"
           >
-            The Network
+            Thenetworkers
           </a>{" "}
           — of the construction trades.
         </p>
@@ -1643,7 +1643,7 @@ function StandardLayout({
   const gallery = listing.photos.slice(1);
   const cityLower = listing.city.toLowerCase();
   const initial = (listing.display_name.charAt(0) || "?").toUpperCase();
-  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via The Network")}`;
+  const mailto = `mailto:${listing.email}?subject=${encodeURIComponent("Quotation request via Thenetworkers")}`;
 
   return (
     <>
@@ -1652,7 +1652,7 @@ function StandardLayout({
         <div className="rounded-full bg-neutral-100 px-3 py-1.5 text-center text-[13px] text-brand-muted">
           <span aria-hidden="true">⚡</span> Powered by{" "}
           <a href="/trade-off" className="font-semibold text-brand-text hover:text-[#FFB300]">
-            The Network
+            Thenetworkers
           </a>{" "}
           · Of the construction trades
         </div>
@@ -1680,7 +1680,7 @@ function StandardLayout({
         <ol className="flex flex-wrap items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">The Network</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">Thenetworkers</a></li>
           <li>/</li>
           <li>
             <a href={`/trade-off/${listing.primary_trade}`} className="hover:text-brand-text">
@@ -1734,7 +1734,7 @@ function StandardLayout({
           <div className="flex flex-col pt-10 lg:pt-0">
             <div className="flex flex-wrap items-center gap-2">
               <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-                The Network
+                Thenetworkers
               </p>
             </div>
             <h1 className="mt-2 text-2xl font-bold leading-tight text-brand-text sm:text-4xl">

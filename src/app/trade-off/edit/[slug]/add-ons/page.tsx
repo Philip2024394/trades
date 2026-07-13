@@ -191,11 +191,11 @@ async function MerchantProDashboardBody({
 
   // Build the public URL from request origin. We don't have headers()
   // imported here, so we construct from the slug using the canonical
-  // xratedtrade.com host in production and localhost:3008 in dev.
+  // thenetworkers.app host in production and localhost:3008 in dev.
   const origin =
     process.env.XRATED_PUBLIC_ORIGIN ??
     process.env.NEXT_PUBLIC_XRATED_ORIGIN ??
-    "https://xratedtrade.com";
+    "https://thenetworkers.app";
   const publicUrl = `${origin}/trade/${encodeURIComponent(listing.slug)}`;
 
   const adminDigits = whatsappDigits(adminWhatsapp());

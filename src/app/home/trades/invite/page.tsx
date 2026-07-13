@@ -1,7 +1,7 @@
 // /home/trades/invite
 //
 // Owner-facing. Sarah invites her existing trades (Mike the carpenter,
-// Bob the plumber) to xratedtrade.com so their records live inside her
+// Bob the plumber) to thenetworkers.app so their records live inside her
 // Notebook Circle from day one.
 
 import Link from "next/link";
@@ -115,7 +115,7 @@ export default async function InvitePage() {
               className="mr-1.5 inline h-3.5 w-3.5 align-text-bottom text-amber-300"
               aria-hidden
             />
-            If the trade you enter is already on xratedtrade.com, we&apos;ll
+            If the trade you enter is already on thenetworkers.app, we&apos;ll
             skip the email and add them to your Circle directly.
           </p>
         </div>

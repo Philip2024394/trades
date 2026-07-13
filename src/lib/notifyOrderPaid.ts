@@ -165,7 +165,7 @@ async function sendMerchantEmail(listing: ListingRow, order: OrderRow): Promise<
     subject: `💰 ${amount} paid via ${providerLabel(order.provider)} — order ${order.order_ref}`,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; max-width: 560px;">
-        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">xratedtrade.com</p>
+        <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">thenetworkers.app</p>
         <h1 style="margin: 8px 0 4px 0; font-size: 24px;">New paid order</h1>
         <p style="margin: 0 0 24px 0; color: #666;">${customer} just paid <strong>${amount}</strong> via ${providerLabel(order.provider)}.</p>
         <div style="border: 1px solid #eee; border-radius: 12px; padding: 16px; margin-bottom: 20px;">
@@ -217,7 +217,7 @@ async function sendCustomerReceipt(listing: ListingRow, order: OrderRow): Promis
         </div>
         <p style="font-size: 14px; color: #333;">${listing.display_name ?? "The merchant"} will be in touch about delivery. Any questions — WhatsApp them direct:</p>
         <a href="https://wa.me/${merchantWa}?text=${encodeURIComponent(`Hi, my order reference is ${order.order_ref}`)}" style="display: inline-block; background: #25D366; color: #fff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 13px;">Message on WhatsApp →</a>
-        <p style="margin: 24px 0 0 0; font-size: 11px; color: #999;">This receipt is from xratedtrade.com on behalf of ${listing.display_name ?? "the merchant"}. Payment processed by ${providerLabel(order.provider)}.</p>
+        <p style="margin: 24px 0 0 0; font-size: 11px; color: #999;">This receipt is from thenetworkers.app on behalf of ${listing.display_name ?? "the merchant"}. Payment processed by ${providerLabel(order.provider)}.</p>
       </div>
     `
   });

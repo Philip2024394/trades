@@ -3,7 +3,7 @@
 import { AudienceGateBright } from "@/components/homepage/AudienceGateBright";
 
 export const metadata = {
-  title: "The Network · For every trade, homeowner, and merchant",
+  title: "Thenetworkers · For every trade, homeowner, and merchant",
   description:
     "One network. One profile. One community — for every trade, homeowner, and merchant in the UK. Free for life."
 };

@@ -34,13 +34,13 @@ export async function generateMetadata({
   const m = findMerchant(slug);
   const name = m?.displayName ?? slug;
   return {
-    title: `Review ${name} | The Network`,
-    description: `Leave a verified review for ${name} on The Network. Multi-dimensional rating, honest by design, 72h response window for low ratings.`,
+    title: `Review ${name} | Thenetworkers`,
+    description: `Leave a verified review for ${name} on Thenetworkers. Multi-dimensional rating, honest by design, 72h response window for low ratings.`,
     alternates: { canonical: `/trade/${slug}/reviews/new` },
     openGraph: {
       type: "website",
       siteName: BRAND.name,
-      title: `Review ${name} — The Network`,
+      title: `Review ${name} — Thenetworkers`,
       description: "Verified, honest, protective. Every review helps the next trade.",
       url: absolute(`/trade/${slug}/reviews/new`)
     }

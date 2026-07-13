@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
   }
 
   const token = buildMagicLinkToken(party.id);
-  const base = process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app";
   const linkUrl = `${base}/api/os/homeowner/session/verify?token=${encodeURIComponent(
     token
   )}&next=${encodeURIComponent(next)}`;

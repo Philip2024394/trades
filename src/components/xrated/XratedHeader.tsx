@@ -1,6 +1,6 @@
 "use client";
 
-// The Network — public header. Rebranded 2026-07-10 from the old dark
+// Thenetworkers — public header. Rebranded 2026-07-10 from the old dark
 // XratedHeader. Light cream backdrop matching the Yard + Warehouse,
 // plain text links, no dark chrome. Kept as an `XratedHeader` export
 // so every existing import continues to work.
@@ -21,7 +21,7 @@ export function XratedHeader() {
       }}
     >
       <div className="mx-auto flex h-[60px] max-w-6xl items-center justify-between gap-3 px-4 sm:h-[68px] sm:gap-4">
-        {/* Wordmark — canonical: yellow dot before "The Network" text.
+        {/* Wordmark — canonical: yellow dot before "Thenetworkers" text.
             Rule: this exact pattern is the platform logo everywhere. */}
         <a
           href="/trade-off"

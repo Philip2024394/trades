@@ -55,7 +55,7 @@ export async function sendQuote(input: {
   const homeowner = homeownerRes.data;
   const merchant = merchantRes.data;
 
-  const base = process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com";
+  const base = process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app";
   const quoteUrl = `${base}/quote/${quote.share_token}`;
   const totalGbp = `£${(quote.total_pence / 100).toFixed(2)}`;
   const merchantName =

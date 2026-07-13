@@ -37,7 +37,7 @@ export default function YardLayout({
       <YardDiyGuard/>
 
       {/* App shell — persistent top bar + mobile bottom nav + avatar
-          drawer. Same shell wraps every The Network surface so members
+          drawer. Same shell wraps every Thenetworkers surface so members
           never feel like they're leaving the platform. */}
       <Suspense fallback={<div className="min-h-[100dvh]">{children}</div>}>
         <AppShell>{children}</AppShell>

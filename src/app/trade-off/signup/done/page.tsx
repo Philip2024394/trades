@@ -69,7 +69,7 @@ function Inner() {
     setProfileAbsolute(`${window.location.origin}${profilePath}`);
   }, [editPath, profilePath]);
 
-  const profileDisplay = `xratedtrade.com/${slug}`;
+  const profileDisplay = `thenetworkers.app/${slug}`;
 
   const [urlCopied, setUrlCopied] = useState(false);
   const [editCopied, setEditCopied] = useState(false);
@@ -110,7 +110,7 @@ function Inner() {
   }
 
   const waShareUrl = `https://wa.me/?text=${encodeURIComponent(
-    `Just launched my business app on The Network — ${profileAbsolute}`
+    `Just launched my business app on Thenetworkers — ${profileAbsolute}`
   )}`;
 
   return (
@@ -152,7 +152,7 @@ function Inner() {
               {isLive ? (
                 <>
                   <Sparkles size={10} strokeWidth={2.5}/>
-                  {isEdit ? "Changes saved · Your app is live" : "You joined The Network"}
+                  {isEdit ? "Changes saved · Your app is live" : "You joined Thenetworkers"}
                 </>
               ) : (
                 <>
@@ -165,7 +165,7 @@ function Inner() {
           <h1 className="mt-3 text-[28px] font-black leading-[1.05] text-white md:text-[42px]">
             {isLive ? (
               <>
-                You joined The Network.<br/>
+                You joined Thenetworkers.<br/>
                 <span style={{ color: BRAND_YELLOW }}>Free for life. Yours now.</span>
               </>
             ) : (
@@ -330,7 +330,7 @@ function Inner() {
                 icon={ShoppingBag}
                 href="/trade-off/trade-center"
                 title="List on Trade Center"
-                body="Every product you sell, cross-syndicated to every canteen on The Network."
+                body="Every product you sell, cross-syndicated to every canteen on Thenetworkers."
                 cta="Add your first"
               />
             </div>

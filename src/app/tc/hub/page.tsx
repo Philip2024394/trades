@@ -50,7 +50,7 @@ type QuickAction = {
   external?: boolean;
 };
 
-// Grouped quick actions — every major area of The Network reachable
+// Grouped quick actions — every major area of Thenetworkers reachable
 // from Hub in one tap. Groups keep the grid scannable rather than
 // dumping 10+ icons in a flat row.
 const BUY_ACTIONS: QuickAction[] = [

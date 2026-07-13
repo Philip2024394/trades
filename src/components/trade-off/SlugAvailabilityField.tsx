@@ -1,7 +1,7 @@
 "use client";
 
 // Vanity-slug picker for the Trade Off signup form. Live-prefixed with
-// `xratedtrade.com/`, strips/lowercases to [a-z0-9-] as the tradie types,
+// `thenetworkers.app/`, strips/lowercases to [a-z0-9-] as the tradie types,
 // and shows a debounced availability check (green ✓ / red ✗) next to the
 // input.
 //
@@ -90,7 +90,7 @@ export function SlugAvailabilityField({
           className="inline-flex items-center px-3 text-[12px] font-extrabold text-neutral-900"
           style={{ background: "#FFB300" }}
         >
-          xratedtrade.com/
+          thenetworkers.app/
         </span>
         <input
           type="text"

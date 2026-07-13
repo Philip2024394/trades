@@ -209,7 +209,7 @@ export default async function FindTradesPage({
           </p>
         ) : (
           <p className="mt-2 max-w-2xl text-[12.5px] font-bold leading-snug text-neutral-700 md:text-[14px]">
-            Discover trades across The Network.
+            Discover trades across Thenetworkers.
           </p>
         )}
       </section>
@@ -251,7 +251,7 @@ export default async function FindTradesPage({
 
 function TradeCard({ trade }: { trade: DemoTrade }) {
   const waUrl = `https://wa.me/${trade.whatsapp}?text=${encodeURIComponent(
-    `Hi ${trade.displayName.split(" ")[0]}, I found you on The Network — I'd like to get in touch about ${tradeLabel(trade.tradeSlug).toLowerCase()}.`
+    `Hi ${trade.displayName.split(" ")[0]}, I found you on Thenetworkers — I'd like to get in touch about ${tradeLabel(trade.tradeSlug).toLowerCase()}.`
   )}`;
   const profileHref = `/trade-off/yard/canteens/${trade.slug}`;
   return (
@@ -334,7 +334,7 @@ function EmptyState() {
         No matches yet
       </div>
       <p className="mx-auto mt-1 max-w-md text-[11.5px] leading-snug text-neutral-600">
-        Try a different search term or clear filters. As more trades join The Network, they&apos;ll appear here.
+        Try a different search term or clear filters. As more trades join Thenetworkers, they&apos;ll appear here.
       </p>
     </div>
   );

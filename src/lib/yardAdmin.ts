@@ -20,7 +20,7 @@ export const ADMIN_LISTING_ID = "00000000-0000-0000-0000-0000000000ad";
 // branches on `post.listing_id === ADMIN_LISTING_ID` or
 // `post.is_admin_announcement === true` to render this instead of a
 // real member's display_name.
-export const ADMIN_DISPLAY_NAME = "xratedtrade.com Team";
+export const ADMIN_DISPLAY_NAME = "thenetworkers.app Team";
 
 // Threshold mirrors the public flag route — surfaces in the
 // admin nav badge alongside any post already at moderation_status

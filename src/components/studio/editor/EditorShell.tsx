@@ -455,7 +455,7 @@ export function EditorShell({ brandId }: { brandId: string }): JSX.Element {
       >
         <img
           src="https://ik.imagekit.io/9mrgsv2rp/Untitledxcxzxczxc-removebg-preview.png"
-          alt="The Network — Editor"
+          alt="Thenetworkers — Editor"
           className="h-8 w-auto"
         />
         <span
@@ -2596,7 +2596,7 @@ function HeaderSignInBlock(): JSX.Element {
     <div className="flex items-center gap-3 border-b border-slate-200 bg-white px-4 py-3">
       <div className="flex items-center gap-2">
         <div className="h-7 w-7 rounded" style={{ backgroundColor: BRAND_BLACK }} />
-        <div className="text-[13px] font-bold text-slate-900">The Network</div>
+        <div className="text-[13px] font-bold text-slate-900">Thenetworkers</div>
       </div>
       <div className="ml-6 flex gap-4">
         {["Home", "Explore", "Pricing"].map((l) => (

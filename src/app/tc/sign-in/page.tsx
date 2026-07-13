@@ -5,7 +5,7 @@
 //   • Email + WhatsApp OTP below the fold as the fallback.
 //   • Same flow for sign-in and sign-up — one code, no password.
 //   • Header treatment matches the "Network" wordmark: yellow dot +
-//     "The Network" wordmark, subtitle "Sign in or create account".
+//     "Thenetworkers" wordmark, subtitle "Sign in or create account".
 
 "use client";
 

@@ -49,7 +49,7 @@ type MutateBody = {
   prompt?: string;
 };
 
-const CACHED_SYSTEM_RUBRIC = `You mutate a single Studio section for The Network — a UK-trades platform. The merchant paid £14.99/month and expects instant, precise changes.
+const CACHED_SYSTEM_RUBRIC = `You mutate a single Studio section for Thenetworkers — a UK-trades platform. The merchant paid £14.99/month and expects instant, precise changes.
 
 Your job: read the section's field schema + current values + the merchant's edit request. Return a JSON PATCH — an object with ONLY the fields that must change.
 

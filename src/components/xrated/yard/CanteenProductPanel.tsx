@@ -86,7 +86,7 @@ export function CanteenProductPanel({
               Turn this canteen into a real shop.
             </div>
             <p className="mt-1 text-[12px] leading-snug text-neutral-600">
-              Add your first product — it flows across every canteen on The Network. Merchants who list see 5× more profile visits and unlock the Founding 100 free-app perk faster.
+              Add your first product — it flows across every canteen on Thenetworkers. Merchants who list see 5× more profile visits and unlock the Founding 100 free-app perk faster.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-2">
               {manageHref && (

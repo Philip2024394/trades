@@ -117,7 +117,7 @@ export function YardChatPost({
             <span
               className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
               aria-hidden="true"
-              title="Announcement from xratedtrade.com"
+              title="Announcement from thenetworkers.app"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -155,7 +155,7 @@ export function YardChatPost({
                 href={isAnnouncement ? "#" : poster ? `/${poster.slug}` : "#"}
                 className="truncate text-[14px] font-extrabold text-neutral-900 sm:text-[15px]"
               >
-                {isAnnouncement ? "xratedtrade.com Team" : posterName}
+                {isAnnouncement ? "thenetworkers.app Team" : posterName}
               </a>
               {/* "Real tradesperson" badge — every Yard poster is a
                   paid member or builder-grade trade, so they've passed

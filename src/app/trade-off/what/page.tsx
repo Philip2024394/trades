@@ -22,14 +22,14 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "What is The Network? Studio, App Warehouse, Yard, Profile. 14-day free trial.",
+    "What is Thenetworkers? Studio, App Warehouse, Yard, Profile. 14-day free trial.",
   description:
-    "The Network is the platform for construction trades. Design your business app in Studio, install what you need from the App Warehouse, post in the Yard, and share a public profile that turns visitors into enquiries. Free for life. No card. No commission, ever.",
+    "Thenetworkers is the platform for construction trades. Design your business app in Studio, install what you need from the App Warehouse, post in the Yard, and share a public profile that turns visitors into enquiries. Free for life. No card. No commission, ever.",
   alternates: { canonical: "/trade-off/what" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "What is The Network? Of The Construction Trades.",
+    title: "What is Thenetworkers? Of The Construction Trades.",
     description:
       "Studio, App Warehouse, The Yard, Profile — one platform for construction trades. 14-day free trial, no card.",
     url: absolute("/trade-off/what")
@@ -49,7 +49,7 @@ type FeatureCard = {
 const FEATURES: FeatureCard[] = [
   {
     title: "Profile",
-    blurb: "Your own page at xratedtrade.com/your-name — photos, bio, the lot.",
+    blurb: "Your own page at thenetworkers.app/your-name — photos, bio, the lot.",
     href: "/trade-off",
     iconBg: "#FFF4DA",
     iconColor: "#7A5300",
@@ -147,7 +147,7 @@ export default function WhatPage() {
             online profile on one shareable URL. Photos of real jobs, customer
             reviews, services with prices, a WhatsApp button, an intro video
             and a verified badge — all on{" "}
-            <span className="font-bold text-white">xratedtrade.com/your-name</span>.
+            <span className="font-bold text-white">thenetworkers.app/your-name</span>.
             Send it on a quote, stick the QR on the van, drop it in your
             Instagram bio. One link is everything a customer needs to hire you.
           </p>

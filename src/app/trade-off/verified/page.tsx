@@ -19,9 +19,9 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Verified Business — The Network. The badge backed by a real Companies House check. £199.99/yr.",
+    "Verified Business — Thenetworkers. The badge backed by a real Companies House check. £199.99/yr.",
   description:
-    "Verified Business is the £199.99/yr trust tier on The Network. We confirm active company registration with Companies House (or your local registry) so customers know you are real. Optional add-on badges for Insurance and On-site checked. Verification launches Q3 2026 — waitlist members lock £199.99/yr for life.",
+    "Verified Business is the £199.99/yr trust tier on Thenetworkers. We confirm active company registration with Companies House (or your local registry) so customers know you are real. Optional add-on badges for Insurance and On-site checked. Verification launches Q3 2026 — waitlist members lock £199.99/yr for life.",
   alternates: { canonical: "/trade-off/verified" },
   openGraph: {
     type: "website",
@@ -329,7 +329,7 @@ export default function VerifiedPage() {
             {
               n: "4",
               title: "Badge appears on your profile",
-              body: "Your Verified badge goes live on your xratedtrade.com URL. Add-on badges (Insurance, On-site) layer on top automatically if their checks passed."
+              body: "Your Verified badge goes live on your thenetworkers.app URL. Add-on badges (Insurance, On-site) layer on top automatically if their checks passed."
             }
           ].map((step) => (
             <li

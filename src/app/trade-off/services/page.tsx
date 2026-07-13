@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Service Cards — Photo, price, one tap to WhatsApp | The Network",
+    "Service Cards — Photo, price, one tap to WhatsApp | Thenetworkers",
   description:
     "Every service becomes a card customers can tap. A photo, the job name, a real price, and one button that lands the lead in your WhatsApp with the service pre-filled. Set up in 5 minutes.",
   alternates: { canonical: "/trade-off/services" },
@@ -110,7 +110,7 @@ const SETUP_STEPS: SetupStep[] = [
   {
     n: 1,
     title: "Open your dashboard",
-    body: "Sign in to xratedtrade.com and tap 'Services' in the side nav. You get a blank card you can fill in seconds."
+    body: "Sign in to thenetworkers.app and tap 'Services' in the side nav. You get a blank card you can fill in seconds."
   },
   {
     n: 2,
@@ -333,7 +333,7 @@ export default function ServiceCardsPage() {
             </span>{" "}
             On the free tier (hammerexdirect.com) your cards show image +
             service name only — no price, no description. Upgrade to Paid
-            (£14.99/mo on xratedtrade.com, 14-day free trial) to unlock full
+            (£14.99/mo on thenetworkers.app, 14-day free trial) to unlock full
             prices, descriptions and the WhatsApp pre-fill flow.
           </p>
         </aside>
@@ -352,7 +352,7 @@ export default function ServiceCardsPage() {
             Build your service grid in 5 minutes
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join The Network. Free for life.
+            Join Thenetworkers. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Customers
@@ -367,7 +367,7 @@ export default function ServiceCardsPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

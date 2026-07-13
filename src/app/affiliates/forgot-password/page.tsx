@@ -14,7 +14,7 @@ import { AffiliateForgotPasswordForm } from "./AffiliateForgotPasswordForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Forgot password | The Network",
+  title: "Forgot password | Thenetworkers",
   robots: { index: false, follow: false }
 };
 

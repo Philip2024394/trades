@@ -15,7 +15,7 @@
 //
 // Origin
 // ──────
-// Same-origin for now (editor and iframe share xratedtrade.com). Both
+// Same-origin for now (editor and iframe share thenetworkers.app). Both
 // sides also validate `event.source` against the expected window, which
 // is the stronger guarantee. When we split origins (studio.* vs
 // preview.*) the origin string check activates via BUS_TARGET_ORIGIN

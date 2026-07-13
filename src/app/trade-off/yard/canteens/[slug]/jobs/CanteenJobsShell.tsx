@@ -259,7 +259,7 @@ function JobCard({
   const photos = job.photoUrls ?? [];
   const quote = quoteFor(job.id);
   const waUrl = hostWhatsapp
-    ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi ${hostFirstName}, I saw one of your jobs on The Network — I'd like to book something similar for ${tradeLabel.toLowerCase()} work.`)}`
+    ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(`Hi ${hostFirstName}, I saw one of your jobs on Thenetworkers — I'd like to book something similar for ${tradeLabel.toLowerCase()} work.`)}`
     : null;
 
   return (

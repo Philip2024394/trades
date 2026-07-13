@@ -139,7 +139,7 @@ export function TradeProfileFooter({
               href="/trade-off"
               className="text-white/70 underline-offset-4 hover:text-white hover:underline"
             >
-              xratedtrade.com
+              thenetworkers.app
             </a>
           </p>
         </div>

@@ -1,4 +1,4 @@
-// The Network review system — data model + math library.
+// Thenetworkers review system — data model + math library.
 //
 // Design principles (see full architecture in the reviews brainstorm
 // captured in project_the_network_review_system.md):

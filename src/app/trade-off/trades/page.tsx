@@ -344,7 +344,7 @@ export default function TradeExamplesPage() {
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Pick your slug, drop in your photos, list your services with
-            prices. Your xratedtrade.com URL is live the moment you save.
+            prices. Your thenetworkers.app URL is live the moment you save.
             14-day free trial, no card.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">

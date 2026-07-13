@@ -486,7 +486,7 @@ function ProductsSection({
   onSaved: (label: string) => void;
 }) {
   const promoteToCounter = async (p: CanteenProduct) => {
-    const confirmMsg = `Promote "${p.name}" to The Counter? Every canteen on The Network will see this listing.`;
+    const confirmMsg = `Promote "${p.name}" to The Counter? Every canteen on Thenetworkers will see this listing.`;
     if (!window.confirm(confirmMsg)) return;
     try {
       const res = await fetch(`/api/canteens/${encodeURIComponent(canteenSlug)}/posts/create`, {

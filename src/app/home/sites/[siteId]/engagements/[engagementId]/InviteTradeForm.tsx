@@ -59,7 +59,7 @@ export function InviteTradeForm({
       if (data.alreadyOnPlatform) {
         setMsg({
           tone: "success",
-          text: `${hiredDisplayName} is already on xratedtrade.com — engagement linked directly.`
+          text: `${hiredDisplayName} is already on thenetworkers.app — engagement linked directly.`
         });
       } else if (data.alreadyPending) {
         setMsg({ tone: "info", text: "Invitation already pending." });

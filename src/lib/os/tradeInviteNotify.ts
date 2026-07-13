@@ -4,7 +4,7 @@ import { Resend } from "resend";
 
 const FROM =
   process.env.HAMMEREX_TRADE_FROM_EMAIL ||
-  "Construction Notebook <hello@xratedtrade.com>";
+  "Construction Notebook <hello@thenetworkers.app>";
 
 const BASE =
   process.env.NEXT_PUBLIC_HAMMEREX_SITE_URL || "https://xratedtrade.vercel.app";
@@ -66,7 +66,7 @@ export async function notifyTradeInvited(input: {
   <div style="margin-top:22px;padding-top:18px;border-top:1px solid #eee;font-size:13px;color:#333">
     <strong>What you get</strong>
     <ul style="padding-left:20px;margin:8px 0 0;line-height:1.7">
-      <li>Free Notebook profile — indexed on xratedtrade.com</li>
+      <li>Free Notebook profile — indexed on thenetworkers.app</li>
       <li>Photos + materials list for every job you record</li>
       <li>${escapeHtml(input.inviterDisplayName)} added to your circle from day one</li>
     </ul>

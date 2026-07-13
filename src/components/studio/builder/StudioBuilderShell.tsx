@@ -547,7 +547,7 @@ export function StudioBuilderShell({
         <div className="flex items-center gap-3">
           <img
             src="https://ik.imagekit.io/9mrgsv2rp/Untitledxcxzxczxc-removebg-preview.png"
-            alt="The Network — App Builder"
+            alt="Thenetworkers — App Builder"
             className="h-9 w-auto"
           />
           <div className="rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wider text-slate-600">
@@ -649,7 +649,7 @@ export function StudioBuilderShell({
               <div className="flex-1 overflow-y-auto p-5">
                 <div className="mb-4">
                   <div className="text-[17px] font-bold text-slate-900">
-                    Let's get you in The Network
+                    Let's get you in Thenetworkers
                   </div>
                   <div className="mt-1 text-[12px] leading-relaxed text-slate-600">
                     Fill what you can — the more you give me, the better your app.
@@ -1350,7 +1350,7 @@ function BusinessWizard({
     <div className="flex flex-col gap-3">
       <div>
         <div className="text-[15px] font-bold text-slate-900">
-          Let's get you in The Network
+          Let's get you in Thenetworkers
         </div>
         <div className="mt-0.5 text-[11px] leading-relaxed text-slate-600">
           One question at a time. What you add activates on your app; what you skip stays off. You can jump back anytime.

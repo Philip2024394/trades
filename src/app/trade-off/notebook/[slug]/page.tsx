@@ -37,7 +37,7 @@ export async function generateMetadata({
   const m = findMerchant(slug);
   const name = m?.displayName ?? slug;
   return {
-    title: `${name}'s Notebook | The Network`,
+    title: `${name}'s Notebook | Thenetworkers`,
     description: `Private business feed for ${name}. Leads, reviews, canteen mentions, product enquiries, boost campaigns — all in one journal.`,
     alternates: { canonical: `/trade-off/notebook/${slug}` },
     // Notebook is private by design — no OG image, no share preview,

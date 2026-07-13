@@ -24,9 +24,9 @@ import {
 
 export const revalidate = 300;
 
-const TITLE = "See it in action — The Network Showcase";
+const TITLE = "See it in action — Thenetworkers Showcase";
 const DESCRIPTION =
-  "Seven real-world profiles built across the main trade types on The Network. Each is a live, indexable app — explore what yours could look like.";
+  "Seven real-world profiles built across the main trade types on Thenetworkers. Each is a live, indexable app — explore what yours could look like.";
 const HERO =
   TRADE_OFF_HERO_IMAGES["building-merchant"] ?? BRAND.logo;
 
@@ -151,13 +151,13 @@ export default async function ShowcasePage() {
             className="text-[11px] font-extrabold uppercase tracking-[0.28em]"
             style={{ color: XRATED_BRAND.accent }}
           >
-            Real xratedtrade.com apps
+            Real thenetworkers.app apps
           </p>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white sm:text-5xl">
             See it in action
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-[13px] leading-relaxed text-white/80 sm:text-base">
-            Seven real-world xratedtrade.com profiles built across the main trade types.
+            Seven real-world thenetworkers.app profiles built across the main trade types.
             Each is a live, indexable app — explore what yours could
             look like.
           </p>
@@ -238,11 +238,11 @@ export default async function ShowcasePage() {
             Built to rank for real searches
           </h2>
           <p className="mt-3 max-w-3xl text-[13px] leading-relaxed text-neutral-700 sm:text-[15px]">
-            Each case study is a working example of how an xratedtrade.com
+            Each case study is a working example of how an thenetworkers.app
             profile ranks for the search a customer would actually type. The
             profiles below are demos, but the underlying app, JSON-LD, FAQ
             schema and review structure are exactly what you get on a paid
-            xratedtrade.com plan.
+            thenetworkers.app plan.
           </p>
           <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2">
             {LEAD_CASE_STUDIES.map((c) => (

@@ -12,7 +12,7 @@ import { SignInForm } from "./SignInForm";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Sign in — The Network",
+  title: "Sign in — Thenetworkers",
   robots: { index: false, follow: false }
 };
 
@@ -60,7 +60,7 @@ export default async function SignInPage({
               Property Operating System
             </p>
             <h2 className="text-[26px] font-black leading-[1.05] text-white drop-shadow-lg sm:text-[34px] lg:text-[42px]">
-              The Network Of The Construction Trades
+              The trades network. On your phone.
             </h2>
             <p className="mt-3 max-w-md text-[13px] leading-relaxed text-white/90 drop-shadow-md sm:text-[14px]">
               The construction record that stays with your property.

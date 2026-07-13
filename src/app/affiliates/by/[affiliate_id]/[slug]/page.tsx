@@ -69,15 +69,15 @@ export async function generateMetadata({
   const { affiliate_id, slug } = await params;
   const aid = Number(affiliate_id);
   if (!Number.isFinite(aid)) {
-    return { title: "Affiliate page | xratedtrade.com" };
+    return { title: "Affiliate page | thenetworkers.app" };
   }
   const page = await loadPage(aid, slug);
   if (!page) {
-    return { title: "Affiliate page | xratedtrade.com" };
+    return { title: "Affiliate page | thenetworkers.app" };
   }
   const profile = await loadAffiliateProfile(aid);
   return {
-    title: `${page.title} | xratedtrade.com`,
+    title: `${page.title} | thenetworkers.app`,
     description: page.tagline ?? profile.bio ?? undefined,
     robots: { index: false, follow: true }
   };

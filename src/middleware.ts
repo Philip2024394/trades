@@ -29,8 +29,8 @@ import { createClient } from "@supabase/supabase-js";
 // Lowercased hosts that bypass the host-router. Keep in sync with
 // the Vercel project's primary + preview domains.
 const SYSTEM_HOSTS = new Set<string>([
-  "xratedtrade.com",
-  "www.xratedtrade.com",
+  "thenetworkers.app",
+  "www.thenetworkers.app",
   "theconstructionnotebook.com",
   "www.theconstructionnotebook.com",
   "localhost",
@@ -41,7 +41,7 @@ const SYSTEM_HOSTS = new Set<string>([
 // bobs-plumbing.theconstructionnotebook.com → /trade/bobs-plumbing.
 // Add the paid domain first (canonical), then the legacy Xrated root
 // so historical links keep working during the rebrand window.
-const SUBDOMAIN_ROOTS = ["theconstructionnotebook.com", "xratedtrade.com"];
+const SUBDOMAIN_ROOTS = ["theconstructionnotebook.com", "thenetworkers.app"];
 
 // Reserved subdomains that must NOT be treated as trade slugs — these
 // are our own subdomains for admin / API / marketing surfaces.

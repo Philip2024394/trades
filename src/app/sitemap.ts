@@ -4,7 +4,7 @@ import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 import { isLeadCaseStudy } from "@/lib/leadCaseStudies";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-// Full sitemap for xratedtrade.com — surfaces the marketing pages, the
+// Full sitemap for thenetworkers.app — surfaces the marketing pages, the
 // templated trade landings (108 entries), every demo profile (106
 // entries), legal pages, and core utility routes. Stripe risk reviews
 // (and trust-signal scrapers in general) read a well-organised sitemap
@@ -13,9 +13,9 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 // Canonical origin — env-driven so the rebrand to
 // theconstructionnotebook.com can flip without a code change. Default
-// preserves current xratedtrade.com behaviour.
+// preserves current thenetworkers.app behaviour.
 const SITE =
-  process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://xratedtrade.com";
+  process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://thenetworkers.app";
 
 type Entry = MetadataRoute.Sitemap[number];
 

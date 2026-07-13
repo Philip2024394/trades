@@ -1,4 +1,4 @@
-// /trade-off/signup — Launch your business app on The Network.
+// /trade-off/signup — Launch your business app on Thenetworkers.
 //
 // Overhaul: split-screen with the form on the left and the Network
 // Pulse (live ecosystem sidebar) on the right. Same TradeOffForm
@@ -27,9 +27,9 @@ import { ShieldCheck, MessageCircle, Sparkles, Rocket } from "lucide-react";
 const CREAM = "#FBF6EC";
 
 export const metadata: Metadata = {
-  title: "Join The Network — free for life | The Network",
+  title: "Join Thenetworkers — free for life | Thenetworkers",
   description:
-    "Join The Network. Free for life, not a trial. Studio, App Warehouse, The Yard, Trade Center, and your own URL — no card, no commission. Customers WhatsApp you direct.",
+    "Join Thenetworkers. Free for life, not a trial. Studio, App Warehouse, The Yard, Trade Center, and your own URL — no card, no commission. Customers WhatsApp you direct.",
   alternates: { canonical: "/trade-off/signup" }
 };
 
@@ -54,11 +54,11 @@ export default function TradeOffSignupPage() {
               style={{ backgroundColor: `${BRAND_YELLOW}22`, color: BRAND_YELLOW }}
             >
               <Sparkles size={10} strokeWidth={2.5}/>
-              Join The Network · Founding 100 · 43 slots left
+              Join Thenetworkers · Founding 100 · 43 slots left
             </span>
           </div>
           <h1 className="mt-3 max-w-3xl text-[28px] font-black leading-[1.05] text-white md:text-[42px]">
-            Join The Network.<br/>
+            Join Thenetworkers.<br/>
             <span style={{ color: BRAND_YELLOW }}>Yours in 90 seconds. Live in 24 hours.</span>
           </h1>
           <p className="mt-3 max-w-xl text-[13px] leading-snug text-neutral-300 md:text-[14px]">
@@ -69,7 +69,7 @@ export default function TradeOffSignupPage() {
           <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
             <TrustBadge icon={ShieldCheck} label="No card. No commission. Ever."/>
             <TrustBadge icon={MessageCircle} label="Customers WhatsApp you direct"/>
-            <TrustBadge icon={Rocket} label="127 tradies joined The Network · last 24h"/>
+            <TrustBadge icon={Rocket} label="127 tradies joined Thenetworkers · last 24h"/>
           </ul>
         </div>
       </section>

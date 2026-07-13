@@ -107,7 +107,7 @@ export function NewsComposer({ initial, mode }: Props) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="mt-1 w-full rounded border border-brand-line bg-brand-surface px-3 py-2 text-sm text-brand-text"
-          placeholder="e.g. xratedtrade.com is live — what we built and why"
+          placeholder="e.g. thenetworkers.app is live — what we built and why"
         />
       </div>
 

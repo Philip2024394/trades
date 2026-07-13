@@ -26,8 +26,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { id } = await params;
   return {
-    title: `Reviewer · The Network`,
-    description: `Accountability record + reviews written by this member on The Network.`,
+    title: `Reviewer · Thenetworkers`,
+    description: `Accountability record + reviews written by this member on Thenetworkers.`,
     alternates: { canonical: `/reviewer/${id}` },
     robots: { index: false, follow: false },
     openGraph: {
@@ -98,7 +98,7 @@ export default async function ReviewerProfilePage({
               className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-neutral-400 hover:text-white"
             >
               <ArrowLeft size={11} strokeWidth={2.5}/>
-              Back to The Network
+              Back to Thenetworkers
             </Link>
             <div className="mt-4 flex items-center gap-4">
               <div
@@ -133,7 +133,7 @@ export default async function ReviewerProfilePage({
                 {trustTone === "contested" && <ShieldAlert size={12} color="#FCA5A5" strokeWidth={2.5}/>}
                 {trustTone === "default" && <ShieldCheck size={12} color="#FFB300" strokeWidth={2.5}/>}
                 <span className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-300">
-                  {trustTone === "trusted" ? "Trusted voice on The Network" : trustTone === "contested" ? "Contested reviewer history" : "Reviewer accountability"}
+                  {trustTone === "trusted" ? "Trusted voice on Thenetworkers" : trustTone === "contested" ? "Contested reviewer history" : "Reviewer accountability"}
                 </span>
               </div>
               <div className="flex flex-wrap items-baseline gap-x-6 gap-y-2 text-[12px] text-neutral-300">

@@ -270,7 +270,7 @@ export function ReviewsShell({
           </ul>
         )}
 
-        {/* Trust footer — how The Network reviews work */}
+        {/* Trust footer — how Thenetworkers reviews work */}
         <div
           className="mt-6 rounded-2xl border bg-white p-5 shadow-sm"
           style={{ borderColor: `${BRAND_YELLOW}44` }}
@@ -278,7 +278,7 @@ export function ReviewsShell({
           <div className="mb-2 flex items-center gap-1.5">
             <Info size={12} color={BRAND_BLACK} strokeWidth={2.5}/>
             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700">
-              How reviews work on The Network
+              How reviews work on Thenetworkers
             </span>
           </div>
           <ul className="grid grid-cols-1 gap-2 text-[12px] leading-snug text-neutral-700 md:grid-cols-2">

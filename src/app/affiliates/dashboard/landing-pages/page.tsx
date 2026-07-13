@@ -45,12 +45,12 @@ export default async function LandingPagesIndex() {
       </header>
 
       <PageExplainer
-        title="Your own xratedtrade.com mini-pages"
+        title="Your own thenetworkers.app mini-pages"
         description={
           <>
             Make your own landing page on a public URL like{" "}
             <code className="font-mono">
-              xratedtrade.com/affiliates/by/{id}/&lt;your-slug&gt;
+              thenetworkers.app/affiliates/by/{id}/&lt;your-slug&gt;
             </code>
             . Write your own pitch, link to whatever resonates with your
             audience. Every visit drops the referral cookie automatically.

@@ -1,19 +1,18 @@
 // Xrated Trades — brand wordmark for the public Trade Off surface.
 // Shares the Hammerex yellow accent (#FFB300); has its own logo and
 // domain. Routes stay under /trade-off and /trade for now;
-// xratedtrade.com points at the Hammerex deployment via Vercel.
+// thenetworkers.app is the canonical brand domain (purchased 2026-07-13).
 
 import type { HammerexTradeOffListing } from "./supabase";
 
-// 2026-07-10 rebrand — Philip: "the app is now called The Network".
-// XRATED_BRAND is kept as the config export name so nothing imports
-// break, but every user-facing string reads "The Network". Domain
-// alias stays xratedtrade.com until the new domain is chosen.
+// 2026-07-13 rebrand — Philip: brand is now "Thenetworkers" and the
+// canonical domain is thenetworkers.app (purchased). XRATED_BRAND is
+// kept as the config export name so nothing imports break.
 export const XRATED_BRAND = {
-  name: "The Network",
-  shortName: "Network",
-  domain: "xratedtrade.com",
-  tagline: "The Network Of The Construction Trades.",
+  name: "Thenetworkers",
+  shortName: "Thenetworkers",
+  domain: "thenetworkers.app",
+  tagline: "The Trades Network. On your phone.",
   // Brand yellow — same as BRAND_YELLOW in tokens.ts.
   accent: "#FFB300",
   accentHover: "#E5A500",
@@ -62,7 +61,7 @@ export const XRATED_PRICING = {
   // signup. After expiry the listing auto-flips to `app_expired`.
   trialDays: 14,
   whatsappPaymentInstructions:
-    "Send 'XRATED' + your xratedtrade.com URL to our WhatsApp to renew. We confirm payment manually and flip your tier within 24 hours."
+    "Send 'RENEW' + your thenetworkers.app URL to our WhatsApp to renew. We confirm payment manually and flip your tier within 24 hours."
 };
 
 export function isAppTier(tier: XratedTier): boolean {

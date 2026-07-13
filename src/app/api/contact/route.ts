@@ -164,7 +164,7 @@ export async function POST(req: NextRequest) {
   const waUrl = waDigits ? `https://wa.me/${waDigits}` : null;
   const replyToMailto = `mailto:${email}`;
 
-  const subject = `[xratedtrade.com Contact] ${reason}: ${name}`;
+  const subject = `[thenetworkers.app Contact] ${reason}: ${name}`;
 
   const html = `<!doctype html>
 <html>
@@ -173,7 +173,7 @@ export async function POST(req: NextRequest) {
     <tr><td align="center">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border:1px solid #e5e5e5;border-radius:12px;overflow:hidden;">
         <tr><td style="background:#0a0a0a;padding:20px 24px;">
-          <div style="color:#FFB300;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">xratedtrade.com Contact</div>
+          <div style="color:#FFB300;font-size:11px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;">thenetworkers.app Contact</div>
           <div style="color:#ffffff;font-size:18px;font-weight:800;margin-top:4px;">${escapeHtml(reason)}</div>
         </td></tr>
         <tr><td style="padding:24px;">
@@ -203,7 +203,7 @@ export async function POST(req: NextRequest) {
           </table>
         </td></tr>
         <tr><td style="padding:16px 24px;background:#fafafa;border-top:1px solid #eee;font-size:12px;color:#888;">
-          Sent from the xratedtrade.com /contact form.
+          Sent from the thenetworkers.app /contact form.
         </td></tr>
       </table>
     </td></tr>
@@ -212,7 +212,7 @@ export async function POST(req: NextRequest) {
 </html>`;
 
   const textLines = [
-    `[xratedtrade.com Contact] ${reason}`,
+    `[thenetworkers.app Contact] ${reason}`,
     "",
     `Reason:      ${reason}`,
     `Name:        ${name}`,

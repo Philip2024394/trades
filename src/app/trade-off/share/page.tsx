@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Share Anywhere — Xrated Trades. One xratedtrade.com URL across every channel.",
+    "Share Anywhere — Xrated Trades. One thenetworkers.app URL across every channel.",
   description:
     "Paste your Xrated link on Instagram, TikTok, Facebook, WhatsApp, your van QR, business cards, email signature and Google Business Profile. One URL, every channel customers find tradies on.",
   alternates: { canonical: "/trade-off/share" },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: BRAND.name,
     title: "Xrated Trades — One URL. Every channel.",
     description:
-      "Your short xratedtrade.com link on every channel customers use to find tradies.",
+      "Your short thenetworkers.app link on every channel customers use to find tradies.",
     url: absolute("/trade-off/share")
   }
 };
@@ -133,7 +133,7 @@ export default function ShareAnywherePage() {
             <span style={{ color: XRATED_BRAND.accent }}>Every channel</span>.
           </h1>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-white/85 drop-shadow sm:text-sm">
-            Your xratedtrade.com link is built to be shared. Paste it
+            Your thenetworkers.app link is built to be shared. Paste it
             everywhere customers actually look for tradies — social profiles,
             stickers on the van, the back of a business card, your email
             sign-off — and let the URL do the selling.
@@ -216,7 +216,7 @@ export default function ShareAnywherePage() {
             >
               <FakeQr />
               <p className="mt-3 text-center text-[11px] font-bold uppercase tracking-widest text-neutral-500">
-                xratedtrade.com/your-name
+                thenetworkers.app/your-name
               </p>
             </div>
           </div>

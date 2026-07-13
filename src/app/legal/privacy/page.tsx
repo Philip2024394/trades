@@ -14,20 +14,20 @@ import { BRAND, absolute } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-const SUPPORT_EMAIL = "support@xratedtrade.com";
+const SUPPORT_EMAIL = "support@thenetworkers.app";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — The Network",
+  title: "Privacy Policy — Thenetworkers",
   description:
-    "How The Network collects, uses, shares and protects your personal data under UK GDPR — including our sub-processors (Stripe, Supabase, Vercel, Resend, ImageKit, Cloudflare) and your data-subject rights.",
+    "How Thenetworkers collects, uses, shares and protects your personal data under UK GDPR — including our sub-processors (Stripe, Supabase, Vercel, Resend, ImageKit, Cloudflare) and your data-subject rights.",
   alternates: { canonical: "/legal/privacy" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Privacy Policy — The Network",
+    title: "Privacy Policy — Thenetworkers",
     description:
-      "UK GDPR privacy policy for The Network — data collected, legal bases, retention, sub-processors and your rights.",
+      "UK GDPR privacy policy for Thenetworkers — data collected, legal bases, retention, sub-processors and your rights.",
     url: absolute("/legal/privacy")
   }
 };
@@ -68,13 +68,13 @@ export default function PrivacyPage() {
           <Section n="1" title="Who is the data controller?">
             <p>
               <strong>Xrated Trades</strong> (trading as
-              “xratedtrade.com”) is the data
+              “thenetworkers.app”) is the data
               controller for personal data collected through
-              xratedtrade.com.
+              thenetworkers.app.
             </p>
             <p>
               <strong>
-                xratedtrade.com operates from the Republic of Ireland.
+                thenetworkers.app operates from the Republic of Ireland.
               </strong>{" "}
               EU GDPR applies as our baseline. UK GDPR applies to UK
               residents. US (CCPA / state privacy laws), Australian

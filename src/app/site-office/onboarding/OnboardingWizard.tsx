@@ -74,7 +74,7 @@ export function OnboardingWizard({
     }
   }
 
-  const embedSnippet = `<script src="https://xratedtrade.com/embed/ai-visualiser.js" data-merchant="YOUR-BUSINESS-SLUG" async></script>`;
+  const embedSnippet = `<script src="https://thenetworkers.app/embed/ai-visualiser.js" data-merchant="YOUR-BUSINESS-SLUG" async></script>`;
 
   return (
     <div className="mx-auto max-w-3xl p-4 md:p-8">

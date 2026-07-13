@@ -14,20 +14,20 @@ import { BRAND, absolute } from "@/lib/seo";
 
 export const revalidate = 3600;
 
-const SUPPORT_EMAIL = "support@xratedtrade.com";
+const SUPPORT_EMAIL = "support@thenetworkers.app";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Refund Policy — The Network",
+  title: "Refund Policy — Thenetworkers",
   description:
-    "Refund rules for The Network subscriptions and add-ons — UK 14-day cooling-off, monthly vs annual handling, processing times and how to request a refund.",
+    "Refund rules for Thenetworkers subscriptions and add-ons — UK 14-day cooling-off, monthly vs annual handling, processing times and how to request a refund.",
   alternates: { canonical: "/legal/refunds" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Refund Policy — The Network",
+    title: "Refund Policy — Thenetworkers",
     description:
-      "14-day cooling-off, pro-rata rules, processing times and how to request a refund for The Network.",
+      "14-day cooling-off, pro-rata rules, processing times and how to request a refund for Thenetworkers.",
     url: absolute("/legal/refunds")
   }
 };
@@ -135,7 +135,7 @@ export default function RefundsPage() {
               By starting your subscription you may ask us to begin
               providing the paid features straight away — for
               example by activating an add-on, switching your URL to{" "}
-              <code>xratedtrade.com</code>, sending lead messages,
+              <code>thenetworkers.app</code>, sending lead messages,
               displaying a Verified-tier badge or unlocking The Yard
               posts. That’s fine; we’ll start delivering.
             </p>

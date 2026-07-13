@@ -21,7 +21,7 @@ import { PendingReviewsShell } from "./PendingReviewsShell";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Pending reviews · The Network",
+  title: "Pending reviews · Thenetworkers",
   description: "Reviews in the 72h response window. Reply, dispute with evidence, or let the window close.",
   robots: { index: false, follow: false },
   openGraph: {

@@ -43,14 +43,14 @@ export async function generateMetadata({
   params: Params;
 }): Promise<Metadata> {
   const { id } = await params;
-  if (!UUID_RE.test(id)) return { title: "Post — The Yard | The Network" };
+  if (!UUID_RE.test(id)) return { title: "Post — The Yard | Thenetworkers" };
   const { data } = await supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select("title, body")
     .eq("id", id)
     .maybeSingle();
-  if (!data) return { title: "Post — The Yard | The Network" };
-  const title = `${data.title} — The Yard | The Network`;
+  if (!data) return { title: "Post — The Yard | Thenetworkers" };
+  const title = `${data.title} — The Yard | Thenetworkers`;
   const description = (data.body ?? "").slice(0, 160);
   return {
     title,

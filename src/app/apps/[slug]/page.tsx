@@ -111,7 +111,7 @@ export default async function AppDetailPage({
             <DetailBlock label="Trades it fits">
               <div className="text-[13px] text-slate-700">
                 {app.tradeAllowlist.includes("*")
-                  ? "Every trade on The Network."
+                  ? "Every trade on Thenetworkers."
                   : `${app.tradeAllowlist.length} trades — including ${app.tradeAllowlist.slice(0, 3).join(", ")}${app.tradeAllowlist.length > 3 ? "…" : ""}`}
               </div>
             </DetailBlock>

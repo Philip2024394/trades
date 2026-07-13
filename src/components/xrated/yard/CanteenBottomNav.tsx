@@ -29,7 +29,7 @@ export function CanteenBottomNav({
   const showRating = hostReviews && hostReviews.count >= 5;
   const waUrl = hostWhatsapp
     ? `https://wa.me/${whatsappDigits(hostWhatsapp)}?text=${encodeURIComponent(
-        `Hi ${hostFirstName ?? "there"}, I found you on The Network — I'd like to get in touch.`
+        `Hi ${hostFirstName ?? "there"}, I found you on Thenetworkers — I'd like to get in touch.`
       )}`
     : null;
   const visible = hostFirstName && (showRating || waUrl);

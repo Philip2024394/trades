@@ -56,10 +56,10 @@ export function CanteenBusinessCardModal({
 
   if (!open) return null;
 
-  const openUrl = `https://thenetwork.co/${hostSlug}`;
+  const openUrl = `https://thenetworkers.app/${hostSlug}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(openUrl)}`;
   const digits = hostWhatsapp ? hostWhatsapp.replace(/[^0-9]/g, "") : null;
-  const shareMessage = `Hi ${hostFirstName} — I found your card on The Network. Get in touch about ${tradeLabel.toLowerCase()}.`;
+  const shareMessage = `Hi ${hostFirstName} — I found your card on Thenetworkers. Get in touch about ${tradeLabel.toLowerCase()}.`;
   const shareWaUrl = digits
     ? `https://wa.me/${digits}?text=${encodeURIComponent(shareMessage)}`
     : null;
@@ -195,7 +195,7 @@ export function CanteenBusinessCardModal({
           >
             <img
               src={qrUrl}
-              alt={`Scan to open ${hostDisplayName} on The Network`}
+              alt={`Scan to open ${hostDisplayName} on Thenetworkers`}
               width={72}
               height={72}
               className="block"

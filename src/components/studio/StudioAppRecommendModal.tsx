@@ -510,7 +510,7 @@ function SubmitIdeaStage({
         </ol>
         <p className="mt-3 text-[10px] leading-relaxed text-neutral-500">
           By submitting, you agree the resulting App and its materials
-          become the property of xratedtrade.com. See our{" "}
+          become the property of thenetworkers.app. See our{" "}
           <Link
             href="/legal/terms"
             className="underline decoration-neutral-400 underline-offset-2"

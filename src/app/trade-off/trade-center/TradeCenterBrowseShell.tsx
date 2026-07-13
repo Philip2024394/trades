@@ -93,11 +93,11 @@ export function TradeCenterBrowseShell({
               Trade Center
             </span>
             <span className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
-              · The Network
+              · Thenetworkers
             </span>
           </div>
           <h1 className="mt-2 text-[26px] font-black leading-tight text-white md:text-[34px]">
-            Every product on The Network.<br className="hidden md:inline"/>
+            Every product on Thenetworkers.<br className="hidden md:inline"/>
             <span style={{ color: BRAND_YELLOW }}>One click to the trade.</span>
           </h1>
           <p className="mt-2 max-w-xl text-[13px] leading-snug text-neutral-300">
@@ -415,7 +415,7 @@ function EmptyState({ onClear }: { onClear: () => void }) {
         Try clearing the filter.
       </h3>
       <p className="mt-1.5 text-[12px] leading-snug text-neutral-500">
-        Every product on The Network flows through here. If nothing matches, the filter's too tight.
+        Every product on Thenetworkers flows through here. If nothing matches, the filter's too tight.
       </p>
       <button
         onClick={onClear}

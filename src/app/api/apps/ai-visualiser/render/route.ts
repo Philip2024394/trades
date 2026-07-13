@@ -490,7 +490,7 @@ export async function POST(req: NextRequest) {
           leafDisplayName: leaf.display_name,
           designSummary: summariseChoices(promptChoices),
           renderThumbUrl: result.imageUrl,
-          dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com"}/dashboard/leads/${homeowner.id}`,
+          dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app"}/dashboard/leads/${homeowner.id}`,
           isFirstContact: false
         });
       }

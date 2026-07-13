@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "The Network FAQ — everything tradies ask.",
+    title: "Thenetworkers FAQ — everything tradies ask.",
     description:
       "Quick answers on pricing, the 14-day trial, reviews, slugs, insurance and cancellation — for tradies thinking about signing up.",
     url: absolute("/trade-off/faq")
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 const FAQ: { q: string; a: string }[] = [
   {
     q: "Do I need a website?",
-    a: "No. Your Xrated URL — xratedtrade.com/your-name — replaces a website for most working tradies. You get a fully-branded profile with your photos, services with prices, reviews, opening hours, contact buttons and a QR code for the van, all in one shareable link. Most tradies who try Xrated cancel the £19.99/mo Wix or Squarespace site they were paying for and never miss it."
+    a: "No. Your Xrated URL — thenetworkers.app/your-name — replaces a website for most working tradies. You get a fully-branded profile with your photos, services with prices, reviews, opening hours, contact buttons and a QR code for the van, all in one shareable link. Most tradies who try Xrated cancel the £19.99/mo Wix or Squarespace site they were paying for and never miss it."
   },
   {
     q: "Can customers call me directly?",
@@ -62,11 +62,11 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "What happens to my reviews if I cancel?",
-    a: "Your reviews stay yours forever. They migrate with your slug from xratedtrade.com to the free-for-life tier on hammerexdirect.com and remain visible on your profile. Customers can still submit new reviews on the Free tier as a read-only display — they just won't be moderated through the priority queue. If you resubscribe later, everything reconnects automatically."
+    a: "Your reviews stay yours forever. They migrate with your slug from thenetworkers.app to the free-for-life tier on hammerexdirect.com and remain visible on your profile. Customers can still submit new reviews on the Free tier as a read-only display — they just won't be moderated through the priority queue. If you resubscribe later, everything reconnects automatically."
   },
   {
     q: "How does the 14-day trial work?",
-    a: "Everyone starts free with no card on signup. Your first 14 days unlock every Paid-tier feature — brandable xratedtrade.com URL, intro video, contact form, custom theme, the lot. On day 15 you either subscribe to keep premium (£14.99/mo or £139.99/yr) or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change happens automatically."
+    a: "Everyone starts free with no card on signup. Your first 14 days unlock every Paid-tier feature — brandable thenetworkers.app URL, intro video, contact form, custom theme, the lot. On day 15 you either subscribe to keep premium (£14.99/mo or £139.99/yr) or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change happens automatically."
   },
   {
     q: "Do I need to upload insurance documents?",
@@ -156,7 +156,7 @@ export default function FaqPage() {
             Still curious?
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join The Network. Free for life.
+            Join Thenetworkers. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Your
@@ -172,7 +172,7 @@ export default function FaqPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

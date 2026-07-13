@@ -142,7 +142,7 @@ const PAGE_TO_LIBRARY: Array<{ id: string; library: string; intent: (a: Answers)
   }
 ];
 
-const CACHED_SYSTEM_RUBRIC = `You are the Studio composer for The Network — a UK-trades platform where merchants pay £14.99/month for a polished custom profile.
+const CACHED_SYSTEM_RUBRIC = `You are the Studio composer for Thenetworkers — a UK-trades platform where merchants pay £14.99/month for a polished custom profile.
 
 Your job: given a merchant's intent + business context, pick the single best-fit section from the catalog and fill its editable fields with content specific to that merchant.
 

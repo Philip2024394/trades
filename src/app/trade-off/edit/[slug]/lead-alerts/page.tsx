@@ -1,4 +1,4 @@
-// xratedtrade.com Trade Off — Lead Alerts editor.
+// thenetworkers.app Trade Off — Lead Alerts editor.
 //
 // Server shell. Validates the magic-link edit_token, loads the
 // listing's add-on state + paid tier, and hands them to the
@@ -19,7 +19,7 @@ import { LeadAlertsSetupCard } from "@/components/trade-off/LeadAlertsSetupCard"
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Lead Alerts | xratedtrade.com",
+  title: "Lead Alerts | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 
@@ -107,14 +107,14 @@ export default async function TradeOffLeadAlertsEditPage({
 function InvalidLink({ reason }: { reason: string }) {
   const wa = adminWhatsapp().replace(/\D/g, "");
   const msg = encodeURIComponent(
-    "Hi xratedtrade.com — I'm trying to set up Lead Alerts but my link isn't working. Can you help?"
+    "Hi thenetworkers.app — I'm trying to set up Lead Alerts but my link isn't working. Can you help?"
   );
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <DashboardHeader />
       <section className="mx-auto max-w-xl px-4 pb-16 pt-16 text-center">
         <p className="text-xs font-bold uppercase tracking-widest text-brand-accent">
-          xratedtrade.com
+          thenetworkers.app
         </p>
         <h1 className="mt-2 text-3xl font-extrabold leading-tight">
           This link is invalid or has expired.

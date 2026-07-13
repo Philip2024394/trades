@@ -5,20 +5,20 @@ import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
 import { GlobalTradeCenterLink } from "@/apps/hub/components/GlobalTradeCenterLink";
 import { allFontVariables } from "@/lib/fonts";
 
-// Root layout for The Network. Page chrome (header, footer, dock)
+// Root layout for Thenetworkers. Page chrome (header, footer, dock)
 // lives on the route segments themselves; the root only owns html/body,
 // brand tokens, the shared metadata defaults, and the site-wide
 // Organization + WebSite JSON-LD that every Stripe / search trust
 // scraper looks for.
 //
-// Rebranded 2026-07-10: "The Network — Of The Construction Trades"
+// Rebranded 2026-07-10: "Thenetworkers — Of The Construction Trades"
 // supersedes "Xrated Trades" as the surface brand. URL host stays
-// xratedtrade.com until a new domain is chosen.
+// thenetworkers.app until a new domain is chosen.
 
-const SITE_URL = "https://xratedtrade.com";
+const SITE_URL = "https://thenetworkers.app";
 const DEFAULT_OG_IMAGE = BRAND.logo;
 const DEFAULT_DESCRIPTION =
-  "The Network of the construction trades. Free for life — your business app, canteen, URL, and access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.";
+  "Thenetworkers of the construction trades. Free for life — your business app, canteen, URL, and access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -30,17 +30,17 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "The Network — Of The Construction Trades",
-    template: "%s | The Network"
+    default: "Thenetworkers — Of The Construction Trades",
+    template: "%s | Thenetworkers"
   },
   description: DEFAULT_DESCRIPTION,
-  applicationName: "The Network",
+  applicationName: "Thenetworkers",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: BRAND.name,
-    title: "The Network — Of The Construction Trades",
+    title: "Thenetworkers — Of The Construction Trades",
     description: DEFAULT_DESCRIPTION,
     locale: "en_GB",
     images: [
@@ -48,13 +48,13 @@ export const metadata: Metadata = {
         url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "The Network — of the construction trades"
+        alt: "Thenetworkers — of the construction trades"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Network — Of The Construction Trades",
+    title: "Thenetworkers — Of The Construction Trades",
     description: DEFAULT_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE]
   },
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   // feel.
   appleWebApp: {
     capable: true,
-    title: "The Network",
+    title: "Thenetworkers",
     statusBarStyle: "black-translucent"
   }
 };
@@ -79,18 +79,18 @@ export const metadata: Metadata = {
 const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "The Network",
-  alternateName: ["The Network — Of The Construction Trades", "xratedtrade.com"],
+  name: "Thenetworkers",
+  alternateName: ["Thenetworkers — Of The Construction Trades", "thenetworkers.app"],
   url: SITE_URL,
   logo: BRAND.logo,
   description:
-    "The Network of the construction trades. Studio, App Warehouse, The Yard, and a public profile — one platform for UK construction trades.",
+    "Thenetworkers of the construction trades. Studio, App Warehouse, The Yard, and a public profile — one platform for UK construction trades.",
   sameAs: [] as string[],
   contactPoint: [
     {
       "@type": "ContactPoint",
       contactType: "customer support",
-      email: "support@xratedtrade.com",
+      email: "support@thenetworkers.app",
       areaServed: "GB",
       availableLanguage: ["en-GB", "en"]
     }

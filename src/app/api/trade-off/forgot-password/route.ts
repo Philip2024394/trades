@@ -111,7 +111,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // admin doesn't have to fish. The recovery code (when minted) is
   // included so the admin can verify the request matches what's in DB.
   const messageLines = [
-    "Hi xratedtrade.com — I forgot my xratedtrade.com password.",
+    "Hi thenetworkers.app — I forgot my thenetworkers.app password.",
     `My WhatsApp: ${whatsappDigitsIn}`,
     listing ? `My app: ${listing.slug}` : null,
     code ? `Recovery code: ${code}` : null,

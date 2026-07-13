@@ -1,4 +1,4 @@
-// xratedtrade.com Trade Off — Online Payments editor.
+// thenetworkers.app Trade Off — Online Payments editor.
 //
 // Phase 1: Payment Link mode fully working (paste a hosted-pay URL from
 // any UK provider — Worldpay / SumUp / Klarna / Mollie / Revolut / Tide
@@ -19,7 +19,7 @@ import { PaymentsEditorIsland } from "@/components/trade-off/PaymentsEditorIslan
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Online Payments | xratedtrade.com",
+  title: "Online Payments | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

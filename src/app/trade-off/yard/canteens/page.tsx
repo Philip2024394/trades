@@ -15,14 +15,14 @@ export const dynamic = "force-dynamic";
 const CREAM = "#FBF6EC";
 
 export const metadata: Metadata = {
-  title: "Canteens — The Yard | The Network",
+  title: "Canteens — The Yard | Thenetworkers",
   description:
     "Canteens are trade-specific corners of The Yard. Kitchen fitters, sparks, scaffolders — talk shop, sell tools, share leads.",
   alternates: { canonical: "/trade-off/yard/canteens" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Canteens — The Yard | The Network",
+    title: "Canteens — The Yard | Thenetworkers",
     description:
       "Trade-specific corners of The Yard. Open groups with a marketing The Counter and a private-view listing pattern.",
     url: absolute("/trade-off/yard/canteens")

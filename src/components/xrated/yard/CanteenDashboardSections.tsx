@@ -16,7 +16,7 @@ import {
   Mail,
   Home,
   Users,
-  ClipboardList,
+  Palette,
   ShoppingCart,
   Tag,
   ChevronRight,
@@ -26,7 +26,7 @@ import {
 } from "lucide-react";
 import { BRAND_BLACK } from "@/lib/brand/tokens";
 
-const TAN = "#B8860B";       // Warm gold, matches "The Network" wordmark
+const TAN = "#B8860B";       // Warm gold, matches "Thenetworkers" wordmark
 const TAN_SOFT = "#F5E9D3";  // Soft peach/tan card background
 const TAN_LIGHT = "#FBF6EC"; // Cream
 
@@ -48,7 +48,7 @@ export function CanteenQuickActions({ canteenSlug, tradeSlug, inline = false }: 
     { icon: <Home size={18} strokeWidth={2.3}/>,           label: "Home",        href: `#tab-feed` },
     { icon: <Mail size={18} strokeWidth={2.3}/>,           label: "Contact us",  href: `#tab-contact` },
     { icon: <Users size={18} strokeWidth={2.3}/>,          label: "Find Trades", href: `#tab-trades` },
-    { icon: <ClipboardList size={18} strokeWidth={2.3}/>,  label: "My Jobs",     href: `#tab-jobs` },
+    { icon: <Palette size={18} strokeWidth={2.3}/>,        label: "Designs",     href: `#tab-designs` },
     { icon: <ShoppingCart size={18} strokeWidth={2.3}/>,   label: "Products",    href: `#tab-products` }
   ];
   const grid = (
@@ -231,6 +231,24 @@ type TrendingItem = {
 
 const HL = "https://ik.imagekit.io/9mrgsv2rp"; // hero library base
 
+// Per-trade heading noun for the trending ribbon. Keeps each trade's
+// header sounding natural — a kitchen fitter shows "Kitchen Designs"
+// while an electrician shows "Electrical Work", etc.
+const TRENDING_HEADING_BY_TRADE: Record<string, string> = {
+  "kitchen-fitter":  "Trending Kitchen Style",
+  "bathroom-fitter": "Trending Bathroom Designs",
+  "electrician":     "Trending Electrical Work",
+  "plumber":         "Trending Plumbing Jobs",
+  "bricklayer":      "Trending Brickwork",
+  "scaffolder":      "Trending Scaffolding Setups",
+  "roofer":          "Trending Roofing Jobs",
+  "landscaper":      "Trending Landscape Designs",
+  "carpenter":       "Trending Carpentry Builds",
+  "painter-decorator": "Trending Paint & Decor",
+  "tiler":           "Trending Tile Work",
+  "plasterer":       "Trending Plaster Finishes"
+};
+
 const TRENDING_BY_TRADE: Record<string, TrendingItem[]> = {
   "kitchen-fitter": [
     { slug: "cabinets",  label: "Cabinets",  keywords: ["cabinet", "carcass", "unit"],       fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png` },
@@ -319,11 +337,15 @@ export function CanteenTrendingRibbon({
   compact?: boolean;
 }) {
   const categories = (tradeSlug && TRENDING_BY_TRADE[tradeSlug]) || FALLBACK_TRENDING;
+  // Per-trade heading noun. Falls back to the generic "in {trade}"
+  // phrasing when no mapping exists.
+  const trendingHeading = TRENDING_HEADING_BY_TRADE[tradeSlug ?? ""]
+    ?? `Trending in ${tradeLabel} today`;
   return (
     <section className={`mx-auto max-w-6xl px-3 md:px-6 ${compact ? "pt-3" : "pt-4 md:pt-6"}`}>
       <div className="mb-2 px-1">
         <span className={`font-black text-neutral-900 ${compact ? "text-[11px] uppercase tracking-[0.14em]" : "text-[14px] md:text-[15px]"}`}>
-          Trending in {tradeLabel} today
+          {trendingHeading}
         </span>
       </div>
       {/* Fixed 4-col grid — larger square tiles for higher visual

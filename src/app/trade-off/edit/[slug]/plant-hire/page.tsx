@@ -1,4 +1,4 @@
-// xratedtrade.com — Plant Hire service editor.
+// thenetworkers.app — Plant Hire service editor.
 //
 // Merchant enables / prices the 12 plant categories, picks fulfilment
 // modes (collect / delivery / operator / long-term), sets years, damage
@@ -18,7 +18,7 @@ import { tradeLabel } from "@/lib/tradeOff";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Plant Hire | xratedtrade.com",
+  title: "Plant Hire | thenetworkers.app",
   robots: { index: false, follow: false }
 };
 

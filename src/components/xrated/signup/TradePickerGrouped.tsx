@@ -238,7 +238,7 @@ export function TradePickerGrouped({
             "{query}" isn't in the list yet.
           </h3>
           <p className="mt-1 text-[12px] leading-snug text-neutral-600">
-            Enter your trade below — every custom trade helps The Network's next tradesperson find their category.
+            Enter your trade below — every custom trade helps Thenetworkers's next tradesperson find their category.
           </p>
         </div>
       )}

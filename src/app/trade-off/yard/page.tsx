@@ -34,9 +34,9 @@ import { tradeCircleContext } from "@/lib/tradeCircleContexts";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "The Yard — UK trades-to-trades job board | The Network",
+  title: "The Yard — UK trades-to-trades job board | Thenetworkers",
   description:
-    "Post when you're free or post when you need crew. The Yard is the public trades-to-trades board on The Network — every post auto-expires after 14 days. Bricklayers, scaffolders, sparks, joiners — every UK trade.",
+    "Post when you're free or post when you need crew. The Yard is the public trades-to-trades board on Thenetworkers — every post auto-expires after 14 days. Bricklayers, scaffolders, sparks, joiners — every UK trade.",
   alternates: { canonical: "/trade-off/yard" },
   openGraph: {
     type: "website",
@@ -665,7 +665,7 @@ export default async function YardFeedPage({
             Post once. Every UK member sees it.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
-            Free for life. No card. Your xratedtrade.com URL is live the
+            Free for life. No card. Your thenetworkers.app URL is live the
             moment you save — and The Yard opens with it.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -677,7 +677,7 @@ export default async function YardFeedPage({
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join The Network
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

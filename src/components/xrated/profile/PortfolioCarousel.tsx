@@ -80,7 +80,7 @@ export function PortfolioCarousel({
             Verified work
           </h2>
           <p className="mt-1 text-xs text-brand-muted">
-            Swipe — every project verified by xratedtrade.com.
+            Swipe — every project verified by thenetworkers.app.
           </p>
         </div>
         <div className="hidden gap-2 sm:flex">

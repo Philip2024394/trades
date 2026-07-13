@@ -170,7 +170,7 @@ export const COMPOSER_TYPES: ComposerType[] = [
     areaLabel: "Counter",
     Icon: Radio,
     areaColour: "#0A0A0A",
-    description: "Promote a TC product to the Counter feed on The Network side.",
+    description: "Promote a TC product to the Counter feed on Thenetworkers side.",
     destinationRoute: "/trade-off/counter",
     cta: "Cross-post to Counter",
     fields: [

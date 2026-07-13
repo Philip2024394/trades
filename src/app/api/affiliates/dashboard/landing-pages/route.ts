@@ -51,7 +51,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     cta_text:
       typeof body.cta_text === "string" && body.cta_text.trim()
         ? body.cta_text.trim()
-        : "Join xratedtrade.com",
+        : "Join thenetworkers.app",
     hero_image_url:
       typeof body.hero_image_url === "string" && body.hero_image_url.trim()
         ? body.hero_image_url.trim()

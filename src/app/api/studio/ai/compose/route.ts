@@ -60,7 +60,7 @@ type SectionProposal = {
 // Cached rubric — describes the JOB to the model. Never changes across
 // requests. Under prompt caching this is billed at 10% of input token
 // cost after the first hit.
-const CACHED_SYSTEM_RUBRIC = `You are the Studio composer for The Network — a UK-trades platform where merchants pay £14.99/month for a polished custom profile.
+const CACHED_SYSTEM_RUBRIC = `You are the Studio composer for Thenetworkers — a UK-trades platform where merchants pay £14.99/month for a polished custom profile.
 
 Your job: given a merchant's intent + business context, pick the single best-fit section from the catalog and fill its editable fields with content specific to that merchant.
 
@@ -107,7 +107,7 @@ async function loadMerchantContext(
     (data.rating_count ?? 0) > 0
       ? `Reviews: ${data.rating_count} on record`
       : "",
-    yearsInTrade ? `Years on The Network: ${yearsInTrade}` : ""
+    yearsInTrade ? `Years on Thenetworkers: ${yearsInTrade}` : ""
   ]
     .filter(Boolean)
     .join("\n");

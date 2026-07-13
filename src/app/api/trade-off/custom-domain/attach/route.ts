@@ -36,7 +36,7 @@ const APEX_DOMAIN_RE =
 
 const RESERVED_SUFFIXES = [
   ".vercel.app",
-  ".xratedtrade.com",
+  ".thenetworkers.app",
   ".now.sh"
 ];
 

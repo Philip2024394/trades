@@ -1295,7 +1295,7 @@ export function PremiumCustomisationPanel({
                 </div>
                 <div>
                   <label className="block text-[10px] font-bold uppercase tracking-widest text-brand-muted">
-                    Their xratedtrade.com slug
+                    Their thenetworkers.app slug
                   </label>
                   <input
                     type="text"

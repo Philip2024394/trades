@@ -28,9 +28,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const canteen = await canteenBySlugFromDb(slug);
-  if (!canteen) return { title: "Contact | The Network" };
+  if (!canteen) return { title: "Contact | Thenetworkers" };
   return {
-    title: `Contact ${canteen.hostDisplayName} · ${canteen.name} | The Network`,
+    title: `Contact ${canteen.hostDisplayName} · ${canteen.name} | Thenetworkers`,
     description: `Get in touch with ${canteen.hostDisplayName} about ${canteen.tradeLabel}.`,
     alternates: { canonical: `/trade-off/yard/canteens/${slug}/contact` },
     openGraph: {

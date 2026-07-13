@@ -39,7 +39,7 @@ const HOW_STEPS: HowStep[] = [
   {
     n: 1,
     title: "Ask the customer after the job",
-    body: "Send them your Xrated URL — xratedtrade.com/your-name — with a 'leave a review' prompt. One tap from WhatsApp. No app download, no sign-up wall."
+    body: "Send them your Xrated URL — thenetworkers.app/your-name — with a 'leave a review' prompt. One tap from WhatsApp. No app download, no sign-up wall."
   },
   {
     n: 2,
@@ -297,7 +297,7 @@ export default function ReviewsPage() {
             Collect verified reviews on your URL
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join The Network. Free for life.
+            Join Thenetworkers. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Build the

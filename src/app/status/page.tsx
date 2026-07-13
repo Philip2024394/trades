@@ -13,19 +13,19 @@ import { BRAND, absolute } from "@/lib/seo";
 // Cheap render — no DB calls, no edge headers.
 export const dynamic = "force-dynamic";
 
-const SUPPORT_EMAIL = "support@xratedtrade.com";
+const SUPPORT_EMAIL = "support@thenetworkers.app";
 
 export const metadata: Metadata = {
-  title: "Service status — The Network",
+  title: "Service status — Thenetworkers",
   description:
-    "Real-time status for The Network. The platform is operating normally. Email support@xratedtrade.com to receive incident updates.",
+    "Real-time status for Thenetworkers. The platform is operating normally. Email support@thenetworkers.app to receive incident updates.",
   alternates: { canonical: "/status" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Service status — The Network",
+    title: "Service status — Thenetworkers",
     description:
-      "Platform operational status and incident history for The Network.",
+      "Platform operational status and incident history for Thenetworkers.",
     url: absolute("/status")
   }
 };
@@ -55,7 +55,7 @@ export default function StatusPage() {
             Service status
           </h1>
           <p className="mt-3 text-[13px] leading-relaxed text-white/75 sm:text-sm">
-            Live operational state of xratedtrade.com, our APIs and the
+            Live operational state of thenetworkers.app, our APIs and the
             Stripe billing surface. Page updates as we ship incidents.
           </p>
         </div>
@@ -74,7 +74,7 @@ export default function StatusPage() {
             </span>
             <div>
               <p className="text-[13px] font-extrabold text-emerald-900">
-                xratedtrade.com is operating normally.
+                thenetworkers.app is operating normally.
               </p>
               <p className="mt-0.5 text-[13px] text-emerald-800/80">
                 Public site, dashboards, APIs, and Stripe billing are all
@@ -92,7 +92,7 @@ export default function StatusPage() {
             Component status
           </h2>
           <ul className="mt-3 flex flex-col gap-2">
-            <ComponentRow name="Marketing site (xratedtrade.com)" />
+            <ComponentRow name="Marketing site (thenetworkers.app)" />
             <ComponentRow name="Public profile pages (/trade/*)" />
             <ComponentRow name="Tradesperson dashboards" />
             <ComponentRow name="Sign-in & magic links" />

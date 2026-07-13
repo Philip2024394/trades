@@ -15,7 +15,8 @@ import { CanteenPrivateView } from "@/components/xrated/yard/CanteenPrivateView"
 import { CanteenMobilePostsRotator, type RotatorPost } from "@/components/xrated/yard/CanteenMobilePostsRotator";
 import {
   CanteenQuickActions,
-  CanteenTradeDeals
+  CanteenTradeDeals,
+  CanteenTrendingRibbon
 } from "@/components/xrated/yard/CanteenDashboardSections";
 import { CanteenHeroWow } from "@/components/xrated/yard/CanteenHeroWow";
 import { CanteenLiveFeedWow } from "@/components/xrated/yard/CanteenLiveFeedWow";
@@ -280,7 +281,20 @@ export function CanteenPageShell({
             live on their own pages (/map + /contact) and are reached
             via the "Contact us" quick action. Landing stays cleaner. */}
 
-        {/* Trending ribbon moved to /products page 2026-07-13 per Philip. */}
+        {/* Trending ribbon — restored to the mobile app footer area
+            2026-07-13 per Philip. Compact 4-tile grid so it reads as
+            a footer discovery strip, not a dominant section. */}
+        <CanteenTrendingRibbon
+          tradeLabel={canteen.tradeLabel}
+          tradeSlug={canteen.tradeSlug}
+          products={featuredProducts.slice(0, 5).map((p) => ({
+            id:       p.id,
+            name:     p.name,
+            imageUrl: p.imageUrl,
+            hrefPath: `/trade-off/yard/canteens/${canteen.slug}/products/${encodeURIComponent(p.id)}`
+          }))}
+          compact
+        />
 
 
         {/* "Powered by" strip + optional social icons — sits between
@@ -292,7 +306,7 @@ export function CanteenPageShell({
             schema grows a `social_links` field. */}
         <div className="mx-auto mt-5 flex max-w-6xl items-center justify-center px-3 md:px-6">
           <span className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
-            Powered by <span style={{ color: "#B8860B" }}>Thenetwork.com</span>
+            Powered by <span style={{ color: "#B8860B" }}>Thenetworkers.co</span>
           </span>
         </div>
         <CanteenSocialLinks

@@ -14,14 +14,14 @@ import { BRAND, absolute } from "@/lib/seo";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "About — The Network",
+  title: "About — Thenetworkers",
   description:
-    "The Network is the platform for construction trades. Studio, App Warehouse, The Yard, and a public profile. Independent, Ireland-based, no lead-gen middleman.",
+    "Thenetworkers is the platform for construction trades. Studio, App Warehouse, The Yard, and a public profile. Independent, Ireland-based, no lead-gen middleman.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "About — The Network",
+    title: "About — Thenetworkers",
     description:
       "Who we are, who runs us, where we operate from, and how to reach us.",
     url: absolute("/about")
@@ -49,7 +49,7 @@ export default function AboutPage() {
             middlemen.
           </h1>
           <p className="mt-3 text-[13px] leading-relaxed text-white/75 sm:text-sm">
-            xratedtrade.com gives tradespeople a
+            thenetworkers.app gives tradespeople a
             shareable profile customers can actually read, share and
             trust. No pay-per-lead. No bidding on your own name. Just one
             link that does the work of a website, quote form and business
@@ -59,11 +59,11 @@ export default function AboutPage() {
       </section>
 
       <article className="mx-auto mt-10 flex max-w-3xl flex-col gap-8 px-4 text-[13px] leading-relaxed text-neutral-800 sm:px-6 sm:text-sm">
-        <Section title="What xratedtrade.com is">
+        <Section title="What thenetworkers.app is">
           <p>
-            xratedtrade.com is a construction trades directory and SaaS
+            thenetworkers.app is a construction trades directory and SaaS
             platform. Tradespeople get a public profile under a clean
-            URL (<code>xratedtrade.com/your-name</code>) with reviews,
+            URL (<code>thenetworkers.app/your-name</code>) with reviews,
             photos, prices, service cards, WhatsApp contact and the rest
             of the surface their customers expect.
           </p>
@@ -112,7 +112,7 @@ export default function AboutPage() {
           <p>
             We're not a job platform, an agency, or a bidding site. We
             don't broker jobs and we don't take a cut of the work you
-            quote. xratedtrade.com is a profile platform — what your customer
+            quote. thenetworkers.app is a profile platform — what your customer
             sees and what your reputation is built on.
           </p>
         </Section>

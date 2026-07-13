@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
 const CREAM = "#FBF6EC";
 
 export const metadata: Metadata = {
-  title: "Start a Canteen | The Network",
+  title: "Start a Canteen | Thenetworkers",
   description:
     "Start a trade-specific corner of The Yard. Pick a trade, name it, invite your first crew. Free to run.",
   alternates: { canonical: "/trade-off/yard/canteens/new" },

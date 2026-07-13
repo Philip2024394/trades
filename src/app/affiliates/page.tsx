@@ -13,9 +13,9 @@ import { listActiveCampaigns } from "@/lib/affiliateCampaigns";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Affiliate Programme | The Network",
+  title: "Affiliate Programme | Thenetworkers",
   description:
-    "Earn £10 for every tradesperson who joins The Network via your link. Free to join, paid monthly.",
+    "Earn £10 for every tradesperson who joins Thenetworkers via your link. Free to join, paid monthly.",
   robots: { index: true, follow: true }
 };
 
@@ -34,7 +34,7 @@ export default async function AffiliatesLandingPage() {
         </h1>
         <p className="mt-4 max-w-2xl text-[13px] leading-relaxed text-brand-muted sm:text-base">
           Free to join. Paid monthly once you reach £50. British plumbers,
-          electricians, joiners and decorators sign up to xratedtrade.com
+          electricians, joiners and decorators sign up to thenetworkers.app
           every day. If you have an audience that overlaps with the trades,
           we&apos;ll pay you to point them at us.
         </p>
@@ -72,7 +72,7 @@ export default async function AffiliatesLandingPage() {
         <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <FeatureCard
             title="Permanent link"
-            body="Your link xratedtrade.com/?ref=N never expires. 30-day cookie window from the first click."
+            body="Your link thenetworkers.app/?ref=N never expires. 30-day cookie window from the first click."
           />
           <FeatureCard
             title="£10 per upgrade"
@@ -88,7 +88,7 @@ export default async function AffiliatesLandingPage() {
         <div className="mt-12 rounded-xl border border-brand-line bg-brand-surface p-4 text-[13px] leading-relaxed text-brand-muted">
           <p className="font-bold text-brand-text">Before you join</p>
           <p className="mt-2">
-            You are not employed by xratedtrade.com — you operate as an
+            You are not employed by thenetworkers.app — you operate as an
             independent affiliate. Posting your links on platforms or in
             content involving children, minors, or sexual material is
             strictly prohibited and results in immediate ban with frozen

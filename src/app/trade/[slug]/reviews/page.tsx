@@ -26,13 +26,13 @@ export async function generateMetadata({
   const merchant = findMerchant(slug);
   const name = merchant?.displayName ?? slug;
   return {
-    title: `Reviews for ${name} | The Network`,
+    title: `Reviews for ${name} | Thenetworkers`,
     description: `Verified reviews from Network members for ${name}. Multi-dimensional ratings across quality, communication, punctuality, value, and site care.`,
     alternates: { canonical: `/trade/${slug}/reviews` },
     openGraph: {
       type: "website",
       siteName: BRAND.name,
-      title: `Reviews for ${name} — The Network`,
+      title: `Reviews for ${name} — Thenetworkers`,
       description: `Verified member reviews across quality, communication, punctuality, value, and site care.`,
       url: absolute(`/trade/${slug}/reviews`)
     }
@@ -65,7 +65,7 @@ export default async function ReviewsPage({
   // the canteens INDEX page (`/trade-off/yard/canteens`) rather than
   // `/trade/{slug}` — the trade profile route 404s for mock merchants
   // without a real DB row, and the canteens index is guaranteed to
-  // exist as a real route on The Network.
+  // exist as a real route on Thenetworkers.
   const [hostedCanteenSlug, bannerUrl, recovery] = await Promise.all([
     canteenHostedByMerchantFromDb(slug),
     canteenBannerForMerchantFromDb(slug),

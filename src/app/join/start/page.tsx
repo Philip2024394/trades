@@ -105,8 +105,8 @@ function StepStart() {
       backHref="/join"
       title={
         inviteContext
-          ? `${inviteContext.inviterName} added you to their canteen on The Network.`
-          : "Join The Network."
+          ? `${inviteContext.inviterName} added you to their canteen on Thenetworkers.`
+          : "Join Thenetworkers."
       }
       subtitle={
         inviteContext

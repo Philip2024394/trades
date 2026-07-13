@@ -15,7 +15,7 @@ import { TradeLoginForm } from "./TradeLoginForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Log in — The Network",
+  title: "Log in — Thenetworkers",
   robots: { index: false, follow: false }
 };
 

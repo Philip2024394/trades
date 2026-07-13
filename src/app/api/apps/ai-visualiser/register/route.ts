@@ -278,7 +278,7 @@ export async function POST(req: NextRequest) {
         postcode
       },
       leafDisplayName: firstLeafSlug || "renovation",
-      dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://xratedtrade.com"}/dashboard/leads/${homeowner.id}`,
+      dashboardLink: `${process.env.NEXT_PUBLIC_APP_URL || "https://thenetworkers.app"}/dashboard/leads/${homeowner.id}`,
       isFirstContact: true
     });
   }

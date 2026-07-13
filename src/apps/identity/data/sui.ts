@@ -1,5 +1,5 @@
 // Single User Identity (SUI) — the unified identity model that makes
-// Trade Center + The Network + Canteen + Yard + Counter behave as ONE
+// Trade Center + Thenetworkers + Canteen + Yard + Counter behave as ONE
 // product for the user.
 //
 // Before SUI: identity was scattered across
