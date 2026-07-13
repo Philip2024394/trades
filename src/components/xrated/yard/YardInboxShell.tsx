@@ -41,7 +41,8 @@ import {
   User,
   UserPlus,
   Video,
-  X
+  X,
+  Radio
 } from "lucide-react";
 import { BottomSheet } from "@/platform/ui/sheets/BottomSheet";
 import { tradeLabel } from "@/lib/tradeOff";
@@ -156,14 +157,22 @@ export function YardInboxShell({
 
       <div className="mx-auto w-full max-w-[1400px] px-3 pb-24 md:px-6 md:pb-8">
         {/* Desktop: 3-column grid. Mobile: single-column stack that
-            swaps between list + thread via mobileSheet state. */}
-        <div className="grid gap-4 md:grid-cols-[300px_1fr] lg:grid-cols-[300px_1fr_320px]">
-          {/* LEFT — conversation list */}
+            swaps between list + thread via mobileSheet state.
+            lg:gap-6 matches the outer container's md:px-6 so the
+            right-hand hero card has equal breathing room on its left
+            (gap from feed) and right (page edge) — was 16px vs 24px
+            before, which read as visually crowded on the right side. */}
+        <div className="grid gap-4 md:grid-cols-[300px_1fr] lg:gap-6 lg:grid-cols-[300px_1fr_320px]">
+          {/* LEFT — conversation list. md:pt-3 nudges the column
+              down slightly so the top of the list sits a hair below
+              the top of the centre feed's first white card — reads
+              as intentional layered layout rather than three tables
+              hard-crashing into one horizontal line. */}
           <aside
             className={
               mobileSheet === "list"
-                ? "md:block"
-                : "hidden md:block"
+                ? "md:block md:pt-3"
+                : "hidden md:block md:pt-3"
             }
           >
             <ConversationList
@@ -212,8 +221,10 @@ export function YardInboxShell({
 
           {/* RIGHT — poster + post summary when a thread is focused,
               otherwise a welcome + trending panel so the column
-              stays balanced (Facebook Groups pattern). */}
-          <aside className="hidden lg:block">
+              stays balanced (Facebook Groups pattern). lg:pt-3
+              matches the left-column offset so both side columns
+              sit slightly below the top of the centre feed. */}
+          <aside className="hidden lg:block lg:pt-3">
             {selected && selectedPoster ? (
               <RightPanel post={selected} poster={selectedPoster} />
             ) : (
@@ -945,39 +956,52 @@ function ThreadCard({
         <YardCommentsPanel
           postId={post.id}
           initialCount={post.comment_count ?? 0}
+          postAuthorSlug={post.author_slug ?? undefined}
         />
       </div>
 
       {/* Reply bar — WhatsApp CTA (mimics Facebook's "Write a comment"
-          strip; primary reply mode for The Yard is WhatsApp handoff). */}
-      <footer
-        className="flex items-center gap-2 border-t bg-neutral-50 px-4 py-3"
-        style={{ borderColor: CARD_BORDER }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-1 items-center rounded-full border bg-white px-4 text-[13px] font-medium text-neutral-500 hover:bg-neutral-50"
-          style={{ borderColor: CARD_BORDER, height: 40 }}
+          strip; primary reply mode for The Yard is WhatsApp handoff).
+          The OP can turn this off from the ⋯ menu when they're being
+          spammed. When off, we show a subtle "only replying inside the
+          app" line instead so commenters know why the button is gone. */}
+      {post.whatsapp_replies_enabled !== false ? (
+        <footer
+          className="flex items-center gap-2 border-t bg-neutral-50 px-4 py-3"
+          style={{ borderColor: CARD_BORDER }}
+          onClick={(e) => e.stopPropagation()}
         >
-          Reply to {firstName} on WhatsApp…
-        </a>
-        <a
-          href={waUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-neutral-900 transition active:scale-[0.97]"
-          style={{
-            background: BRAND,
-            boxShadow: `0 4px 14px ${BRAND}55`
-          }}
-          aria-label="Send WhatsApp"
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-1 items-center rounded-full border bg-white px-4 text-[13px] font-medium text-neutral-500 hover:bg-neutral-50"
+            style={{ borderColor: CARD_BORDER, height: 40 }}
+          >
+            Reply to {firstName} on WhatsApp…
+          </a>
+          <a
+            href={waUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-neutral-900 transition active:scale-[0.97]"
+            style={{
+              background: BRAND,
+              boxShadow: `0 4px 14px ${BRAND}55`
+            }}
+            aria-label="Send WhatsApp"
+          >
+            <Send size={16} aria-hidden="true" />
+          </a>
+        </footer>
+      ) : (
+        <footer
+          className="border-t bg-neutral-50 px-4 py-2.5 text-center text-[11.5px] font-bold text-neutral-500"
+          style={{ borderColor: CARD_BORDER }}
         >
-          <Send size={16} aria-hidden="true" />
-        </a>
-      </footer>
+          {firstName} is only replying inside the app.
+        </footer>
+      )}
     </section>
   );
 }
@@ -1140,8 +1164,10 @@ function DefaultRightPanel({
 
   return (
     <div className="space-y-3">
+      {/* p-5 (was p-4) — a hair more internal padding so the copy has
+          breathing room inside the card matching the outer symmetry. */}
       <div
-        className="rounded-2xl border p-4"
+        className="rounded-2xl border p-5"
         style={{ borderColor: CARD_BORDER, background: `${BRAND}0F` }}
       >
         <p
@@ -2071,6 +2097,13 @@ function PostOptionsSheet({
   const [reported, setReported] = useState(false);
   const [reporting, setReporting] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  // OP-only WhatsApp-toggle state. Viewer slug resolved from the trade
+  // session cookie; the toggle item only renders when viewerSlug ===
+  // poster.slug. Local `waEnabled` mirrors the DB flag so the pill can
+  // flip immediately without a full refetch.
+  const [viewerSlug, setViewerSlug] = useState<string | null>(null);
+  const [waEnabled, setWaEnabled] = useState<boolean>(post.whatsapp_replies_enabled !== false);
+  const [waSaving, setWaSaving] = useState(false);
 
   // Sync from localStorage when the sheet opens.
   useEffect(() => {
@@ -2079,6 +2112,50 @@ function PostOptionsSheet({
     setFollowing(readSet(LS_FOLLOWING).has(poster.slug));
     setHidden(readSet(LS_HIDDEN).has(post.id));
   }, [open, post.id, poster.slug]);
+
+  // Resolve viewer identity from the trade session cookie so we can
+  // decide whether to show the OP-only WhatsApp toggle item.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    fetch("/api/trade-off/session", { credentials: "include", cache: "no-store" })
+      .then((r) => r.ok ? r.json() : { ok: false })
+      .then((body: { ok?: boolean; slug?: string }) => {
+        if (cancelled) return;
+        if (body?.ok && body.slug) setViewerSlug(body.slug);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [open]);
+
+  async function handleWaToggle() {
+    if (waSaving) return;
+    const next = !waEnabled;
+    setWaSaving(true);
+    // Optimistic flip so the pill responds instantly.
+    setWaEnabled(next);
+    try {
+      const res = await fetch(`/api/trade-off/yard/posts/${encodeURIComponent(post.id)}/wa-toggle`, {
+        method: "PATCH",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ enabled: next })
+      });
+      const data = (await res.json()) as { ok?: boolean; whatsapp_replies_enabled?: boolean };
+      if (!res.ok || !data.ok) {
+        // Roll back on failure.
+        setWaEnabled(!next);
+        flashToast("Couldn't save — try again");
+      } else {
+        flashToast(next ? "WhatsApp replies ON" : "WhatsApp replies OFF");
+      }
+    } catch {
+      setWaEnabled(!next);
+      flashToast("Network error");
+    } finally {
+      setWaSaving(false);
+    }
+  }
 
   function flashToast(msg: string) {
     setToast(msg);
@@ -2166,7 +2243,23 @@ function PostOptionsSheet({
     onClick: () => void;
     danger?: boolean;
     active?: boolean;
+    /** Optional coloured pill treatment. "on" = green (allowed),
+     *  "off" = red (protected). Only used by the WhatsApp toggle. */
+    variant?: "on" | "off";
   }> = [
+    // OP-only WhatsApp-replies toggle. Green pill = allowed, red pill
+    // = protected. Rendered at the top of the sheet so the OP finds
+    // it fast when their inbox is being drowned.
+    ...(viewerSlug === poster.slug ? [{
+      label: waEnabled ? "WhatsApp replies · ON" : "WhatsApp replies · OFF",
+      hint: waEnabled
+        ? "Commenters can WhatsApp you directly. Turn off if you're getting spammed."
+        : "Commenters can only reply inside the app. Turn on to accept WhatsApp again.",
+      icon: Radio,
+      onClick: handleWaToggle,
+      active: waEnabled,
+      variant: (waEnabled ? "on" : "off") as "on" | "off"
+    }] : []),
     {
       label: saved ? "Saved" : "Save post",
       hint: saved ? "Tap to remove from saved" : "Read later in your saved list",
@@ -2217,6 +2310,21 @@ function PostOptionsSheet({
       <ul className="divide-y" style={{ borderColor: CARD_BORDER }}>
         {items.map((it) => {
           const Icon = it.icon;
+          // Variant colouring — green (allowed) / red (protected) for
+          // toggle items. Falls back to the danger + active + neutral
+          // ladder for every other item.
+          const variantColor =
+            it.variant === "on"
+              ? "#166534"          // dark green
+              : it.variant === "off"
+                ? "#B91C1C"        // dark red
+                : undefined;
+          const variantBg =
+            it.variant === "on"
+              ? "rgba(22,101,52,0.10)"
+              : it.variant === "off"
+                ? "rgba(185,28,28,0.09)"
+                : undefined;
           return (
             <li key={it.label}>
               <button
@@ -2226,30 +2334,37 @@ function PostOptionsSheet({
                   "flex w-full items-center gap-3 px-4 py-3.5 text-left transition hover:bg-neutral-50 " +
                   (it.danger ? "text-red-700" : "text-neutral-800")
                 }
+                style={variantBg ? { backgroundColor: variantBg } : undefined}
               >
                 <Icon
                   size={18}
                   className={
                     it.danger
                       ? "text-red-500"
-                      : it.active
+                      : it.variant
                         ? ""
-                        : "text-neutral-500"
+                        : it.active
+                          ? ""
+                          : "text-neutral-500"
                   }
                   style={
-                    it.active && !it.danger
-                      ? { color: BRAND_HOVER }
-                      : undefined
+                    variantColor
+                      ? { color: variantColor }
+                      : it.active && !it.danger
+                        ? { color: BRAND_HOVER }
+                        : undefined
                   }
                   aria-hidden="true"
                 />
                 <span className="min-w-0 flex-1">
                   <span
-                    className="block text-[14px] font-bold"
+                    className="block text-[14px] font-black"
                     style={
-                      it.active && !it.danger
-                        ? { color: BRAND_HOVER }
-                        : undefined
+                      variantColor
+                        ? { color: variantColor }
+                        : it.active && !it.danger
+                          ? { color: BRAND_HOVER }
+                          : undefined
                     }
                   >
                     {it.label}

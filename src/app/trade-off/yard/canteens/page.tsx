@@ -5,8 +5,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, Plus } from "lucide-react";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { MOCK_CANTEENS } from "@/lib/canteens";
 import { canteensAllFromDb } from "@/lib/canteens.server";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { TRADE_SESSION_COOKIE_NAME, verifyTradeSession } from "@/lib/tradeSession";
 import { CanteensIndexShell } from "./CanteensIndexShell";
 import { BRAND, absolute } from "@/lib/seo";
 
@@ -29,7 +33,58 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function CanteensIndexPage() {
+export default async function CanteensIndexPage({
+  searchParams
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  // Signed-in-merchant fast path: if the viewer is a signed-in merchant,
+  // route them straight to their own canteen instead of the discovery
+  // listing — no hunt for their own card among hundreds. Opt-out with
+  // ?browse=1 for merchants who explicitly want the listing (e.g.
+  // discovery browsing to join another trade's canteen).
+  const sp = (await searchParams) ?? {};
+  const wantsBrowse = sp.browse === "1" || sp.browse === "true";
+  if (!wantsBrowse) {
+    const jar = await cookies();
+    const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
+    const merchantSession = verifyTradeSession(sessionRaw);
+    if (merchantSession?.slug) {
+      // Canonical fixture shortcut. If this merchant is a known host
+      // in MOCK_CANTEENS (e.g. Mike Watson → uk-kitchen-fitters,
+      // Craig McDermott → north-uk-sparks, Jason Hardy → uk-scaffolders),
+      // route straight to the fixture-defined canteen. Bypasses the DB
+      // lookup entirely so drift can't send us to a wrongly-named
+      // auto-seed. Applies to demos + any real merchant later added
+      // to the fixture roster.
+      const fixtureCanteen = MOCK_CANTEENS.find((c) => c.hostSlug === merchantSession.slug);
+      if (fixtureCanteen) {
+        redirect(`/trade-off/yard/canteens/${fixtureCanteen.slug}`);
+      }
+
+      // Otherwise ask the DB. `.limit(1)` + `.order` beats `.maybeSingle()`
+      // which errors when 2+ rows exist for this host (which shouldn't
+      // happen, but did during the demo-canteen naming drift). Newest
+      // canteen wins on a tie so a merchant who spun up a fresh one
+      // lands on the fresh one.
+      const { data: dbCanteens } = await supabaseAdmin
+        .from("hammerex_canteens")
+        .select("slug, created_at")
+        .eq("host_slug", merchantSession.slug)
+        .order("created_at", { ascending: false })
+        .limit(1);
+      const ownCanteen = dbCanteens?.[0];
+      if (ownCanteen?.slug) {
+        redirect(`/trade-off/yard/canteens/${ownCanteen.slug}`);
+      }
+      // Signed-in merchant without a canteen yet → the create flow is
+      // the correct destination (no reason to browse a listing to
+      // realise they don't have one). They can still hit ?browse=1 to
+      // see the discovery listing.
+      redirect(`/trade-off/yard/canteens/new`);
+    }
+  }
+
   // Real DB with mock fallback. If DB returns nothing (fresh env) we
   // fall back to mocks so the page still ships a discoverable list.
   const dbCanteens = await canteensAllFromDb();

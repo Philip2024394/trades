@@ -42,13 +42,30 @@ type Comment = {
 
 const BRAND_YELLOW = "#FFB300";
 
+// How many top-level comments render before the "View all" link
+// collapses the rest. Matches Facebook/Instagram (2–3 preview).
+const PREVIEW_COUNT = 3;
+
+// Any comment created within this many seconds of render is "just
+// now" — gets a small green pulse dot so the thread feels live.
+const FRESH_WINDOW_SECONDS = 30;
+
 export function YardCommentsPanel({
   postId,
-  initialCount
+  initialCount,
+  postAuthorSlug
 }: {
   postId: string;
   initialCount: number;
+  /** The OP's slug — used to pin an OP follow-up comment above the
+   *  newest 3 preview when the OP has replied to their own thread
+   *  (clarification, postcode, day rate, etc.). Optional so existing
+   *  call sites keep compiling. */
+  postAuthorSlug?: string;
 }) {
+  // Comment preview state — newest 3 shown by default. Merchant taps
+  // "View all N" to expand inline; collapses back with "Show fewer".
+  const [expanded, setExpanded] = useState(false);
   // Comments panel is always open per Philip 2026-07-13 — no collapse
   // toggle. Kept as a state variable so the load effect still fires.
   const [open] = useState(true);
@@ -65,17 +82,33 @@ export function YardCommentsPanel({
   const [error, setError] = useState<string | null>(null);
   const composerRef = useRef<HTMLTextAreaElement>(null);
 
-  // Pull the magic-link identity off the URL. Same pattern as the
-  // reaction bar. If missing, the composer nudges the user to sign in.
+  // Auth precedence: URL magic-link params → cookie trade session.
+  // Cookie sessions authenticate downstream on the POST endpoint (see
+  // the endpoint's readTradeSession fallback), so the token can be
+  // empty here — we still show the composer and let the server verify.
   useEffect(() => {
     if (typeof window === "undefined") return;
     const sp = new URLSearchParams(window.location.search);
-    const slug = sp.get("slug");
-    const token = sp.get("token");
-    if (slug && token) {
-      setAuth({ slug, token });
+    const urlSlug = sp.get("slug");
+    const urlToken = sp.get("token");
+    if (urlSlug && urlToken) {
+      setAuth({ slug: urlSlug, token: urlToken });
       setAuthed(true);
+      return;
     }
+    let cancelled = false;
+    fetch("/api/trade-off/session", { credentials: "include", cache: "no-store" })
+      .then((res) => res.ok ? res.json() : { ok: false })
+      .then((body: { ok?: boolean; slug?: string }) => {
+        if (cancelled) return;
+        if (body?.ok && body.slug) {
+          // Token is empty; the endpoint reads the cookie session.
+          setAuth({ slug: body.slug, token: "" });
+          setAuthed(true);
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
 
   const load = useCallback(async () => {
@@ -121,6 +154,37 @@ export function YardCommentsPanel({
     return { topLevel: top, repliesByParent: replies };
   }, [comments]);
 
+  // Preview slicing:
+  //   - Newest 3 comments render by default (bottom of the list — the
+  //     most recent responses to the OP)
+  //   - Any comment authored by the OP inside the hidden set is pinned
+  //     ABOVE the newest 3 with a small "author" chip so buyers don't
+  //     miss OP clarifications (postcode / day rate / update)
+  //   - "View all N comments" text link toggles the full list
+  //   - When expanded, a "Show fewer" collapse sits at the bottom
+  const { visibleTop, hiddenCount, pinnedOp } = useMemo(() => {
+    if (expanded || topLevel.length <= PREVIEW_COUNT) {
+      return { visibleTop: topLevel, hiddenCount: 0, pinnedOp: null as Comment | null };
+    }
+    const sliceStart = topLevel.length - PREVIEW_COUNT;
+    const visible = topLevel.slice(sliceStart);
+    const hidden = topLevel.slice(0, sliceStart);
+    // First OP-authored comment in the hidden set — the most
+    // context-carrying one (usually the OP's early clarification).
+    const opFollow = postAuthorSlug
+      ? hidden.find((c) => c.author?.slug === postAuthorSlug) ?? null
+      : null;
+    return { visibleTop: visible, hiddenCount: hidden.length, pinnedOp: opFollow };
+  }, [expanded, topLevel, postAuthorSlug]);
+
+  // "Just now" freshness check — comment created inside the fresh window.
+  const nowMs = Date.now();
+  function isFresh(iso: string): boolean {
+    const t = Date.parse(iso);
+    if (!Number.isFinite(t)) return false;
+    return (nowMs - t) / 1000 <= FRESH_WINDOW_SECONDS;
+  }
+
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (posting) return;
@@ -138,6 +202,10 @@ export function YardCommentsPanel({
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          // Send the session cookie so cookie-auth sessions (Dev Pass
+          // + normal login) authenticate on the server even when the
+          // token isn't in the body.
+          credentials: "include",
           body: JSON.stringify({
             slug: auth.slug,
             edit_token: auth.token,
@@ -205,6 +273,16 @@ export function YardCommentsPanel({
 
   return (
     <div className="mt-2 border-t border-neutral-100 pt-2">
+      {/* Keyframes for the "just now" fresh dot on comment avatars.
+          Same 2.2s pulse cadence used elsewhere on the platform so
+          "live" indicators feel consistent. */}
+      <style>{`
+        @keyframes yc-fresh-pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(22,101,52,0.55); }
+          70%  { box-shadow: 0 0 0 5px rgba(22,101,52,0); }
+          100% { box-shadow: 0 0 0 0 rgba(22,101,52,0); }
+        }
+      `}</style>
       <div
         className="inline-flex w-full items-center gap-1.5 px-2 py-2 text-[12px] font-extrabold text-neutral-700"
       >
@@ -224,37 +302,89 @@ export function YardCommentsPanel({
               No comments yet. Be the first to reply.
             </p>
           ) : (
-            <ul className="space-y-3">
-              {topLevel.map((c) => (
-                <li key={c.id}>
+            <div className="space-y-2">
+              {/* Pinned OP follow-up — only when there's a hidden OP
+                  comment above the newest 3. Rendered with a small
+                  "author" chip so buyers spot the OP context first. */}
+              {pinnedOp && (
+                <div>
+                  <div className="mb-1 inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[9.5px] font-black uppercase tracking-[0.14em] text-amber-800">
+                    From the poster
+                  </div>
                   <CommentRow
-                    comment={c}
+                    comment={pinnedOp}
+                    fresh={isFresh(pinnedOp.createdAt)}
                     onReact={authed ? react : undefined}
-                    onReply={
-                      authed
-                        ? (id) => {
-                            setReplyTo(id);
-                            setTimeout(() => composerRef.current?.focus(), 0);
-                          }
-                        : undefined
-                    }
                   />
-                  {repliesByParent[c.id]?.length ? (
-                    <ul className="ml-8 mt-2 space-y-2 border-l-2 border-neutral-200 pl-3">
-                      {repliesByParent[c.id].map((r) => (
-                        <li key={r.id}>
-                          <CommentRow
-                            comment={r}
-                            small
-                            onReact={authed ? react : undefined}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </li>
-              ))}
-            </ul>
+                </div>
+              )}
+
+              {/* "View all" text link — only visible when there are
+                  hidden comments and the panel is collapsed. Right-
+                  aligned + generous tap area so trade fingers hit
+                  it cleanly without accidentally tapping a comment. */}
+              {!expanded && hiddenCount > 0 && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(true)}
+                    className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-[12.5px] font-black text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 active:scale-[0.98]"
+                  >
+                    View all {count} comments
+                    <span aria-hidden className="text-[11px]">↓</span>
+                  </button>
+                </div>
+              )}
+
+              <ul className="space-y-3">
+                {visibleTop.map((c) => (
+                  <li key={c.id}>
+                    <CommentRow
+                      comment={c}
+                      fresh={isFresh(c.createdAt)}
+                      onReact={authed ? react : undefined}
+                      onReply={
+                        authed
+                          ? (id) => {
+                              setReplyTo(id);
+                              setTimeout(() => composerRef.current?.focus(), 0);
+                            }
+                          : undefined
+                      }
+                    />
+                    {repliesByParent[c.id]?.length ? (
+                      <ul className="ml-8 mt-2 space-y-2 border-l-2 border-neutral-200 pl-3">
+                        {repliesByParent[c.id].map((r) => (
+                          <li key={r.id}>
+                            <CommentRow
+                              comment={r}
+                              small
+                              fresh={isFresh(r.createdAt)}
+                              onReact={authed ? react : undefined}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+
+              {/* Collapse — visible when expanded, right-aligned +
+                  same tap area as the "View all" trigger for consistency. */}
+              {expanded && topLevel.length > PREVIEW_COUNT && (
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(false)}
+                    className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full px-4 text-[12px] font-black text-neutral-500 hover:bg-neutral-100 hover:text-neutral-800 active:scale-[0.98]"
+                  >
+                    <span aria-hidden className="text-[11px]">↑</span>
+                    Show fewer comments
+                  </button>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Composer */}
@@ -323,11 +453,16 @@ export function YardCommentsPanel({
 function CommentRow({
   comment,
   small = false,
+  fresh = false,
   onReact,
   onReply
 }: {
   comment: Comment;
   small?: boolean;
+  /** True when this comment was posted inside the fresh window
+   *  (≤30s ago). Renders a small green pulse dot next to the avatar
+   *  so the thread feels live without motion elsewhere. */
+  fresh?: boolean;
   onReact?: (id: string, kind: "like" | "dislike") => void;
   onReply?: (parentId: string) => void;
 }) {
@@ -337,22 +472,36 @@ function CommentRow({
   const avatarSize = small ? "h-6 w-6" : "h-7 w-7";
   return (
     <div className="flex gap-2">
-      {author?.avatar_url ? (
-        /* eslint-disable-next-line @next/next/no-img-element */
-        <img
-          src={author.avatar_url}
-          alt=""
-          className={`${avatarSize} shrink-0 rounded-full object-cover ring-1 ring-neutral-200`}
-        />
-      ) : (
-        <span
-          className={`${avatarSize} inline-flex shrink-0 items-center justify-center rounded-full text-[10px] font-black text-neutral-900`}
-          style={{ background: BRAND_YELLOW }}
-          aria-hidden
-        >
-          {name.charAt(0)}
-        </span>
-      )}
+      <div className="relative shrink-0">
+        {author?.avatar_url ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={author.avatar_url}
+            alt=""
+            className={`${avatarSize} rounded-full object-cover ring-1 ring-neutral-200`}
+          />
+        ) : (
+          <span
+            className={`${avatarSize} inline-flex items-center justify-center rounded-full text-[10px] font-black text-neutral-900`}
+            style={{ background: BRAND_YELLOW }}
+            aria-hidden
+          >
+            {name.charAt(0)}
+          </span>
+        )}
+        {/* Just-now pulse — small green dot on the corner of the
+            avatar with the same 2.2s glow cadence used elsewhere. */}
+        {fresh && (
+          <span
+            aria-label="Just posted"
+            className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full border-2 border-white"
+            style={{
+              backgroundColor: "#166534",
+              animation: "yc-fresh-pulse 2.2s ease-out infinite"
+            }}
+          />
+        )}
+      </div>
       <div className="min-w-0 flex-1">
         <div className="inline-block rounded-2xl bg-white px-3 py-1.5 shadow-sm">
           <div className="flex items-baseline gap-1.5">

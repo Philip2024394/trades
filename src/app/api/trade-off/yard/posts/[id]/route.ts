@@ -6,6 +6,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { timingSafeEqual } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { readTradeSession } from "@/lib/tradeSession";
 import {
   YARD_TITLE_MAX,
   YARD_TITLE_MIN,
@@ -40,28 +41,39 @@ function dateOrNull(v: unknown): string | null {
 }
 
 async function authorise(
+  req: NextRequest,
   id: string,
   payload: Record<string, unknown>
 ): Promise<
   | { ok: true; listingId: string; postId: string }
   | { ok: false; status: number; error: string }
 > {
+  // Auth precedence: body slug+token (magic-link) → cookie session
+  // (signed-in merchant, no token needed — used by the in-card 3-dots
+  // menu on the Yard feed).
+  let listingId: string | null = null;
+
   const slug = s(payload.slug);
   const token = s(payload.token);
-  if (!slug || !token) {
-    return { ok: false, status: 400, error: "Missing slug or token" };
-  }
-
-  const listing = await supabaseAdmin
-    .from("hammerex_trade_off_listings")
-    .select("id, edit_token")
-    .eq("slug", slug)
-    .maybeSingle();
-  if (!listing.data) {
-    return { ok: false, status: 404, error: "Listing not found" };
-  }
-  if (!constantTimeEq(token, listing.data.edit_token ?? "")) {
-    return { ok: false, status: 403, error: "Bad token" };
+  if (slug && token) {
+    const listing = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("id, edit_token")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (!listing.data) {
+      return { ok: false, status: 404, error: "Listing not found" };
+    }
+    if (!constantTimeEq(token, listing.data.edit_token ?? "")) {
+      return { ok: false, status: 403, error: "Bad token" };
+    }
+    listingId = listing.data.id;
+  } else {
+    const session = readTradeSession(req);
+    if (!session?.listing_id) {
+      return { ok: false, status: 401, error: "Not signed in" };
+    }
+    listingId = session.listing_id;
   }
 
   const post = await supabaseAdmin
@@ -72,13 +84,16 @@ async function authorise(
   if (!post.data) {
     return { ok: false, status: 404, error: "Post not found" };
   }
-  if (post.data.listing_id !== listing.data.id) {
+  if (post.data.listing_id !== listingId) {
     return { ok: false, status: 403, error: "Not your post" };
   }
   if (post.data.is_sample) {
     return { ok: false, status: 403, error: "Sample posts are read-only" };
   }
-  return { ok: true, listingId: listing.data.id, postId: post.data.id };
+  // listingId is guaranteed non-null at this point (both auth branches
+  // above set it or return early) but TS can't infer that across the
+  // branches — assert.
+  return { ok: true, listingId: listingId as string, postId: post.data.id };
 }
 
 export async function PATCH(
@@ -97,7 +112,7 @@ export async function PATCH(
     );
   }
 
-  const auth = await authorise(id, payload);
+  const auth = await authorise(req, id, payload);
   if (!auth.ok) {
     return NextResponse.json(
       { ok: false, error: auth.error },
@@ -185,7 +200,7 @@ export async function DELETE(
     );
   }
 
-  const auth = await authorise(id, payload);
+  const auth = await authorise(req, id, payload);
   if (!auth.ok) {
     return NextResponse.json(
       { ok: false, error: auth.error },

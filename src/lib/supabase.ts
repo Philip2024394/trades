@@ -1136,6 +1136,11 @@ export type HammerexTradeOffYardPost = {
   // Denormalised count of live, non-deleted comments on the post. Kept
   // in sync by trigger (see migration 20260708170000_yard_comments_v1).
   comment_count: number;
+  // OP-controlled toggle. When false, the "Reply on WhatsApp" footer on
+  // every comment card for this post is hidden — commenters can still
+  // leave in-app comments. Defaults to true so existing rows behave
+  // unchanged. Anti-spam. See ADR-0014.
+  whatsapp_replies_enabled?: boolean;
   // Boost — paid pin-to-top. Post floats to the top of every relevant
   // filter while is_boosted_until > now(); returns to natural slot
   // when the timestamp expires. boost_count is historical.

@@ -30,6 +30,7 @@ import { YardReactionBar } from "./YardReactionBar";
 import { YardFlagButton } from "./YardFlagButton";
 import { YardCommentsPanel } from "./YardCommentsPanel";
 import { YardBoostButton } from "./YardBoostButton";
+import { PostCardActionsMenu } from "./PostCardActionsMenu";
 import {
   HardHat,
   Hammer,
@@ -103,7 +104,8 @@ export function YardPostCard({
   post,
   poster,
   reactions = {},
-  inCircle = false
+  inCircle = false,
+  currentListingId = null
 }: {
   post: HammerexTradeOffYardPost;
   poster: YardPoster | null;
@@ -111,7 +113,11 @@ export function YardPostCard({
   /** Viewer signed in with magic link and this post's author is in
    *  their Trade Circle — painted as a subtle amber corner ribbon. */
   inCircle?: boolean;
+  /** Signed-in merchant's listing_id. If it matches post.listing_id,
+   *  the 3-dot actions menu appears top-right. */
+  currentListingId?: string | null;
 }) {
+  const isOwnPost = currentListingId !== null && post.listing_id === currentListingId;
   const kindBg = YARD_KIND_BG[post.kind];
   const kindFg = YARD_KIND_FG[post.kind];
   const KindIcon = iconFor(post.kind);
@@ -159,8 +165,10 @@ export function YardPostCard({
       }`}
     >
       {/* Trade Circle ribbon — top-right, painted only when the signed-in
-          viewer has an endorsement edge with this post's author. */}
-      {inCircle && (
+          viewer has an endorsement edge with this post's author. Hidden
+          for the viewer's own posts (the 3-dot actions menu takes that
+          slot instead). */}
+      {inCircle && !isOwnPost && (
         <div
           className="pointer-events-none absolute right-0 top-0 z-10 select-none rounded-bl-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em]"
           style={{
@@ -170,6 +178,27 @@ export function YardPostCard({
           title="From your Trade Circle"
         >
           Your Circle
+        </div>
+      )}
+
+      {/* Owner-only actions menu — top-right pulse-dot trigger + drop
+          down / bottom sheet with View / Boost / Archive / Delete.
+          Replaces the deleted /trade-off/yard/manage dashboard. */}
+      {isOwnPost && (
+        <div className="absolute right-2 top-2 z-20">
+          <PostCardActionsMenu
+            postId={post.id}
+            status={post.status === "archived" ? "archived" : "live"}
+            onDeleted={() => {
+              // Reload the page to remove the deleted card from the
+              // feed. Simpler than surgically splicing the list — the
+              // feed is server-rendered per SSR fetch.
+              if (typeof window !== "undefined") window.location.reload();
+            }}
+            onArchived={() => {
+              if (typeof window !== "undefined") window.location.reload();
+            }}
+          />
         </div>
       )}
       {/* Boosted ribbon — top-left when the post has an active boost.

@@ -178,16 +178,20 @@ export function CanteenLiveFeedWow({
                   )}
                 </div>
 
-                {/* Thumbnail — right side, aspect-square */}
+                {/* Thumbnail — right side, aspect-square. object-contain
+                    per platform rule (no cropping). */}
                 <div
-                  className="h-[86px] w-[86px] flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 shadow-sm sm:h-24 sm:w-24"
-                  style={{
-                    backgroundImage: `url('${thumbUrl}')`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center"
-                  }}
+                  className="relative h-[86px] w-[86px] flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 shadow-sm sm:h-24 sm:w-24"
                   aria-hidden
-                />
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={thumbUrl}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-contain p-1"
+                    loading="lazy"
+                  />
+                </div>
               </Link>
             </li>
           );

@@ -75,13 +75,17 @@ function FeedCard({
       className="group overflow-hidden rounded-2xl border border-neutral-200 bg-white transition hover:border-neutral-300 hover:shadow-sm"
     >
       {post.heroImageUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={post.heroImageUrl}
-          alt={post.headline}
-          className="aspect-[16/9] w-full object-cover"
-          loading="lazy"
-        />
+        // object-contain per platform rule (no cropping). Soft grey
+        // padding on either side when the source isn't 16:9.
+        <div className="relative aspect-[16/9] w-full bg-[#F3F4F6]">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={post.heroImageUrl}
+            alt={post.headline}
+            className="absolute inset-0 h-full w-full object-contain p-1"
+            loading="lazy"
+          />
+        </div>
       ) : null}
       <div className="p-4">
         <div className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">

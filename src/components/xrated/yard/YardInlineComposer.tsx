@@ -37,8 +37,27 @@ import {
 import { BottomSheet } from "@/platform/ui/sheets/BottomSheet";
 
 const BRAND_YELLOW = "#FFB300";
+// Ultimate fallback placeholder — only reached when we have no name
+// AND no slug to derive initials from (never for a signed-in merchant).
 const CHAT_AVATAR_IMAGE =
   "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2002_57_40%20PM.png";
+
+// Same deterministic initial-circle palette as AppShell so the
+// composer's avatar matches the header when both fall back to initials.
+const INITIALS_COLOURS = ["#FFB300", "#F59E0B", "#166534", "#B91C1C", "#7A5300", "#1B1A17"];
+function pickInitialsColour(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  return INITIALS_COLOURS[Math.abs(hash) % INITIALS_COLOURS.length];
+}
+function computeInitials(source: string): string {
+  if (!source) return "";
+  const parts = source.replace(/^demo-/, "").split(/[\s-]+/).filter(Boolean);
+  return ((parts[0]?.charAt(0) ?? "") + (parts[1]?.charAt(0) ?? "")).toUpperCase().slice(0, 2);
+}
 
 type Auth = { slug: string; token: string };
 
@@ -56,6 +75,13 @@ export function YardInlineComposer() {
   const router = useRouter();
   const [auth, setAuth] = useState<Auth | null>(null);
   const [checkedAuth, setCheckedAuth] = useState(false);
+  // Viewer identity for the composer avatar. Fetched from
+  // /api/trade-off/session when URL params aren't present so the
+  // composer circle shows the signed-in merchant's real face — not
+  // the CHAT_AVATAR_IMAGE placeholder.
+  const [viewerAvatar, setViewerAvatar] = useState<string | null>(null);
+  const [viewerName, setViewerName] = useState<string | null>(null);
+  const [viewerSlug, setViewerSlug] = useState<string | null>(null);
   // Always-open composer per product spec — the collapsed pill was
   // removed. Kept the setter for legacy callsites (Cancel button) but
   // it's a no-op on initial render.
@@ -89,8 +115,30 @@ export function YardInlineComposer() {
     const sp = new URLSearchParams(window.location.search);
     const slug = sp.get("slug");
     const token = sp.get("token");
-    if (slug && token) setAuth({ slug, token });
+    if (slug && token) {
+      setAuth({ slug, token });
+      setViewerSlug(slug);
+    }
     setCheckedAuth(true);
+
+    // Also fetch session data (avatar + display name + slug) so the
+    // composer circle shows the signed-in merchant even when the URL
+    // doesn't carry magic-link params (cookie-auth sessions like
+    // Dev · Pass sign-in). Doesn't gate the composer — the POST auth
+    // still uses whatever's in `auth`.
+    let cancelled = false;
+    fetch("/api/trade-off/session", { credentials: "include", cache: "no-store" })
+      .then((res) => res.ok ? res.json() : { ok: false })
+      .then((body: { ok?: boolean; slug?: string; avatarUrl?: string | null; displayName?: string | null }) => {
+        if (cancelled) return;
+        if (body?.ok && body.slug) {
+          setViewerSlug(body.slug);
+          setViewerAvatar(body.avatarUrl ?? null);
+          setViewerName(body.displayName ?? null);
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
 
   async function handleImagePick(e: React.ChangeEvent<HTMLInputElement>) {
@@ -221,17 +269,11 @@ export function YardInlineComposer() {
       {expanded && (
         <div className="p-3 sm:p-4">
           <div className="flex items-start gap-2.5">
-            <span
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
-              aria-hidden
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={CHAT_AVATAR_IMAGE}
-                alt=""
-                className="h-full w-full object-cover"
-              />
-            </span>
+            <ComposerAvatar
+              avatarUrl={viewerAvatar}
+              displayName={viewerName}
+              slug={viewerSlug}
+            />
             <div className="min-w-0 flex-1">
               <textarea
                 value={body}
@@ -569,5 +611,49 @@ function YardSignInPromptModal({ onClose }: { onClose: () => void }) {
         </div>
       </div>
     </div>
+  );
+}
+
+/** Composer avatar — the round profile picture beside the "What's
+ *  happening?" textarea. Renders the merchant's real photo when we
+ *  have one; otherwise a coloured initials circle (Gmail-style)
+ *  matching the AppShell header pattern. Never falls back to the
+ *  ChatGPT placeholder for a signed-in merchant.
+ */
+function ComposerAvatar({
+  avatarUrl,
+  displayName,
+  slug
+}: {
+  avatarUrl: string | null;
+  displayName: string | null;
+  slug: string | null;
+}) {
+  const initials = computeInitials(displayName ?? slug ?? "");
+  const bg = pickInitialsColour(slug ?? "anon");
+  return (
+    <span
+      className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
+      aria-hidden
+    >
+      {avatarUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={avatarUrl}
+          alt={displayName ?? ""}
+          className="h-full w-full object-cover"
+        />
+      ) : initials ? (
+        <span
+          className="flex h-full w-full items-center justify-center font-black text-white"
+          style={{ backgroundColor: bg, fontSize: 13, letterSpacing: "0.02em" }}
+        >
+          {initials}
+        </span>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={CHAT_AVATAR_IMAGE} alt="" className="h-full w-full object-cover"/>
+      )}
+    </span>
   );
 }

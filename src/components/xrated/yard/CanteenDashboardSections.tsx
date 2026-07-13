@@ -5,12 +5,16 @@
 //
 //   1. CanteenQuickActions   — 5 verb-forward icon buttons (owner-only)
 //   2. CanteenTradeDeals     — soft-tan promo strip (all viewers)
-//   3. CanteenTrendingRibbon — horizontal scroll of category tiles
+//   3. CanteenTrendingRibbon — 4-tile category grid; when host context
+//                              is provided, tiles open an Instagram
+//                              Stories-style swipe sheet with the
+//                              dual-button pattern (WhatsApp + TC).
 //
 // All three match the mockup pattern but ported to our off-white
 // palette with warm-tan accent (#B8860B) instead of bright yellow so
 // they read as calm, editorial cards — not attention-grabbing.
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Mail,
@@ -25,6 +29,11 @@ import {
   Star
 } from "lucide-react";
 import { BRAND_BLACK } from "@/lib/brand/tokens";
+import {
+  CanteenTrendingSwipeSheet,
+  type TrendingSwipeItem
+} from "./CanteenTrendingSwipeSheet";
+import type { CanteenProductVariants } from "@/lib/canteens";
 
 const TAN = "#B8860B";       // Warm gold, matches "Thenetworkers" wordmark
 const TAN_SOFT = "#F5E9D3";  // Soft peach/tan card background
@@ -300,6 +309,18 @@ export type TrendingProduct = {
   name: string;
   imageUrl: string;
   hrefPath: string;
+  /** Price in GBP — powers the swipe sheet price line. Optional so old
+   *  callers still compile; defaults to 0 → "Price on request". */
+  priceGbp?: number;
+  /** Short one-liner shown under the name in the swipe sheet. */
+  blurb?: string;
+  /** When set + `sendToTradeCenter` is true on the merchant, the swipe
+   *  sheet renders a "Buy on Trade Center" button that deep-links to
+   *  the TC listing. */
+  tradeCenterListingId?: string;
+  /** Variant shape — when present, the swipe sheet renders the shared
+   *  CanteenVariantPicker below the price. */
+  variants?: CanteenProductVariants;
 };
 
 /** Match a category to one of the host's products by keyword.
@@ -317,11 +338,40 @@ function matchProductForCategory(
   return { imageUrl: category.fallback, hrefPath: null };
 }
 
+/** Return every product whose name matches at least one of the
+ *  category's keywords. Used by the swipe sheet to build a filtered
+ *  list of items for that category. Falls back to an empty array (the
+ *  sheet then shows an empty state). */
+function productsForCategory(
+  category: TrendingItem,
+  products: TrendingProduct[]
+): TrendingSwipeItem[] {
+  return products
+    .filter((p) => {
+      const name = p.name.toLowerCase();
+      return category.keywords.some((k) => name.includes(k.toLowerCase()));
+    })
+    .map((p) => ({
+      id:                    p.id,
+      name:                  p.name,
+      imageUrl:              p.imageUrl,
+      priceGbp:              p.priceGbp ?? 0,
+      blurb:                 p.blurb,
+      tradeCenterListingId:  p.tradeCenterListingId,
+      hrefPath:              p.hrefPath,
+      variants:              p.variants
+    }));
+}
+
 export function CanteenTrendingRibbon({
   tradeLabel,
   tradeSlug,
   products = [],
-  compact = false
+  compact = false,
+  canteenSlug,
+  hostFirstName,
+  hostWhatsapp = null,
+  sendToTradeCenter = false
 }: {
   tradeLabel: string;
   tradeSlug?: string;
@@ -335,12 +385,32 @@ export function CanteenTrendingRibbon({
    *  the /products page where the ribbon sits directly under the hero
    *  as a "smaller square" navigator. */
   compact?: boolean;
+  /** When these are provided, tapping a tile opens the Instagram
+   *  Stories-style swipe sheet filtered to products in that category
+   *  instead of navigating to a product URL. If omitted, ribbon falls
+   *  back to the plain-Link behavior (used on standalone pages that
+   *  don't have host context). */
+  canteenSlug?: string;
+  hostFirstName?: string;
+  hostWhatsapp?: string | null;
+  sendToTradeCenter?: boolean;
 }) {
   const categories = (tradeSlug && TRENDING_BY_TRADE[tradeSlug]) || FALLBACK_TRENDING;
   // Per-trade heading noun. Falls back to the generic "in {trade}"
   // phrasing when no mapping exists.
   const trendingHeading = TRENDING_HEADING_BY_TRADE[tradeSlug ?? ""]
     ?? `Trending in ${tradeLabel} today`;
+
+  // Swipe-sheet mode is only active when the host context props are
+  // present. Without them we can't build a WhatsApp message or key the
+  // sheet to a merchant, so the ribbon stays link-only.
+  const swipeMode = Boolean(canteenSlug && hostFirstName);
+  const [openCategoryIdx, setOpenCategoryIdx] = useState<number | null>(null);
+  const openCategory = openCategoryIdx != null ? categories[openCategoryIdx] : null;
+  const swipeItems = openCategory
+    ? productsForCategory(openCategory, products)
+    : [];
+
   return (
     <section className={`mx-auto max-w-6xl px-3 md:px-6 ${compact ? "pt-3" : "pt-4 md:pt-6"}`}>
       <div className="mb-2 px-1">
@@ -354,7 +424,6 @@ export function CanteenTrendingRibbon({
       <div className={`grid grid-cols-4 ${compact ? "gap-1.5 md:gap-2 max-w-md" : "gap-2 md:gap-3"}`}>
         {categories.slice(0, 4).map((cat, i) => {
           const match = matchProductForCategory(cat, products);
-          const TileTag = match.hrefPath ? Link : "div";
           const commonProps = {
             className:
               "relative flex aspect-square w-full overflow-hidden rounded-xl border shadow-sm transition active:scale-[0.97]",
@@ -377,6 +446,23 @@ export function CanteenTrendingRibbon({
               </span>
             </>
           );
+
+          // Swipe-mode: tile is a <button> that opens the swipe sheet.
+          if (swipeMode) {
+            return (
+              <button
+                key={cat.slug}
+                type="button"
+                onClick={() => setOpenCategoryIdx(i)}
+                aria-label={`Open ${cat.label} trending`}
+                {...commonProps}
+              >
+                {content}
+              </button>
+            );
+          }
+          // Legacy mode: tile is a <Link> when we have a product match,
+          // else a passive <div>.
           return match.hrefPath ? (
             <Link key={cat.slug} href={match.hrefPath} {...commonProps}>
               {content}
@@ -388,6 +474,21 @@ export function CanteenTrendingRibbon({
           );
         })}
       </div>
+
+      {/* Swipe sheet — only mounts in swipe mode, only visible when a
+          category tile has been tapped. */}
+      {swipeMode && openCategory && (
+        <CanteenTrendingSwipeSheet
+          open={openCategoryIdx != null}
+          onClose={() => setOpenCategoryIdx(null)}
+          items={swipeItems}
+          categoryLabel={openCategory.label}
+          canteenSlug={canteenSlug!}
+          hostFirstName={hostFirstName!}
+          hostWhatsapp={hostWhatsapp}
+          sendToTradeCenter={sendToTradeCenter}
+        />
+      )}
     </section>
   );
 }

@@ -6,7 +6,7 @@
 // logo. Mobile-first.
 
 import Link from "next/link";
-import { Users, Send, Info, Check, LogOut, Menu, X, Home, ShoppingBag, Store, Settings, MessageCircle, Mail, Star, Bell, Package, Plus } from "lucide-react";
+import { Users, Send, Info, Check, LogOut, Menu, X, Home, ShoppingBag, Store, Settings, MessageCircle, Mail, Star, Bell, Package, Plus, BookOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Canteen } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
@@ -23,7 +23,9 @@ export function CanteenHeader({
   onLeave,
   hostHasProducts = false,
   hostWhatsapp = null,
-  hostReviews = null
+  hostReviews = null,
+  editMode = false,
+  onToggleEditMode
 }: {
   canteen: Canteen;
   onInvite: () => void;
@@ -41,6 +43,11 @@ export function CanteenHeader({
   /** Host review aggregate — powers the floating "Rating" KPI card.
    *   Only rendered when count>=5 to preserve the honest-signal rule. */
   hostReviews?: { avg: number; count: number } | null;
+  /** Host-only Edit mode. When true, the canteen page shows editable
+   *  affordances (yellow ring, "you're editing" strip, in-place editor
+   *  panels). Ignored when isHost is false. */
+  editMode?: boolean;
+  onToggleEditMode?: () => void;
 }) {
   const [joining, setJoining] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
@@ -219,22 +226,28 @@ export function CanteenHeader({
           />
         </div>
 
-        {/* Primary CTA row — mockup shows a tan pill button "+ New
-            Project" for owners; guests get WhatsApp / Contact routed
-            to the host. QR chip pinned right on mobile at the same
-            vertical level. */}
+        {/* Primary CTA row — guests get WhatsApp / Contact routed to
+            the host. Hosts in Edit mode get "Button Features" — the
+            reference manual for every action tile in the Edit-mode
+            stats carousel below. Left-aligned per Philip 2026-07-14.
+            QR chip still pins right on mobile at the same vertical
+            level. */}
         <div className="mt-5 flex items-center justify-between gap-3">
           <div className="flex-1">
-            {isHost ? (
-              <Link
-                href={`/trade-off/yard/canteens/${canteen.slug}/post`}
-                className="inline-flex h-10 items-center gap-2 rounded-full px-5 text-[13px] font-black text-neutral-50 shadow-md transition active:scale-[0.97]"
-                style={{ backgroundColor: "#B8860B" }}
+            {isHost && editMode ? (
+              <button
+                type="button"
+                onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "button-features" } }))}
+                className="inline-flex h-10 items-center gap-2 rounded-full border px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-md backdrop-blur transition hover:-translate-y-0.5 active:scale-[0.97]"
+                style={{
+                  backgroundColor: BRAND_YELLOW,
+                  borderColor: "#166534"
+                }}
               >
-                <Plus size={14} strokeWidth={2.6}/>
-                New Project
-              </Link>
-            ) : !isMember ? (
+                <BookOpen size={14} strokeWidth={2.6}/>
+                Button Features
+              </button>
+            ) : isHost ? null : !isMember ? (
               hostWhatsapp ? (
                 <a
                   href={`https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
@@ -334,25 +347,11 @@ export function CanteenHeader({
               New post
             </button>
           )}
-          {(isMember || isHost) && (
-            <button
-              onClick={onInvite}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-white/60 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-800 shadow-sm backdrop-blur transition hover:bg-white/90"
-              style={{ borderColor: "rgba(139,69,19,0.15)" }}
-            >
-              <Users size={12} strokeWidth={2.5}/>
-              Invite trades
-            </button>
-          )}
-          {isHost && (
-            <Link
-              href={`/trade-off/yard/canteens/${canteen.slug}/manage`}
-              className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-white/60 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-800 shadow-sm backdrop-blur transition hover:bg-white/90"
-              style={{ borderColor: "rgba(139,69,19,0.15)" }}
-            >
-              Manage
-            </Link>
-          )}
+          {/* Invite trades, Manage, and Edit-mode toggle removed
+              2026-07-14 per Philip. Edit mode toggle lives in the
+              AppShell (top-right chip). Invite + Manage will surface
+              inside the Edit-mode stats carousel via the Button
+              Features documentation panel. */}
         </div>
       </div>
 

@@ -47,10 +47,11 @@ export function CanteenVideoUpsellModal({
         <div className="relative overflow-hidden" style={{ backgroundColor: BRAND_BLACK }}>
           <button
             onClick={onClose}
-            className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full text-white/80 transition hover:bg-white/10 hover:text-white"
+            className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
             aria-label="Close"
           >
-            <X size={16} />
+            <X size={16} strokeWidth={2.8}/>
           </button>
 
           <div className="px-5 pb-5 pt-5 sm:px-6 sm:pb-6 sm:pt-6">

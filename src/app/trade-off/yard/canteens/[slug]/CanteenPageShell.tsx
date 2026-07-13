@@ -8,6 +8,32 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CanteenHeader } from "@/components/xrated/yard/CanteenHeader";
 import { CanteenSideLane } from "@/components/xrated/yard/CanteenSideLane";
+import { ProductEditorForm, type ProductEditorInitial } from "@/app/trade-off/edit/[slug]/products/[id]/ProductEditorForm";
+
+// Empty-state initial for the inline Add product form on the canteen.
+// Mirrors the standalone editor page's EMPTY constant. See
+// src/app/trade-off/edit/[slug]/products/[id]/page.tsx.
+const PRODUCT_EDITOR_EMPTY: ProductEditorInitial = {
+  id: "",
+  name: "",
+  blurb: "",
+  description: "",
+  imageUrl: "",
+  galleryUrls: [],
+  videoUrls: [],
+  priceGbp: 0,
+  currency: "GBP",
+  specs: [],
+  tradeCenterListingId: null,
+  showInCanteenProducts: true,
+  showInTrending: true,
+  showInTradeCenter: true,
+  featured: false,
+  variants: null,
+  commerce: null,
+  categorySlug: "",
+  categoryAspects: {}
+};
 import { CanteenInviteModal } from "@/components/xrated/yard/CanteenInviteModal";
 import { CanteenAdminCard } from "@/components/xrated/yard/CanteenAdminCard";
 import { CanteenVideoUpsellModal } from "@/components/xrated/yard/CanteenVideoUpsellModal";
@@ -32,7 +58,7 @@ import { CanteenCounterExplainer } from "@/components/xrated/yard/CanteenCounter
 import { canteenProductById } from "@/lib/canteens";
 import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
-import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench } from "lucide-react";
+import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
 import { MOOD_LIBRARY, suggestMood, type MoodSlug } from "@/lib/yardMoods";
 import { requiresProUpload, type MembershipTier } from "@/lib/tierGates";
@@ -89,6 +115,94 @@ export function CanteenPageShell({
   const [removedIds, setRemovedIds] = useState<Set<string>>(new Set());
   const [isMember, setIsMember] = useState<boolean>(false);
   const [isHost, setIsHost] = useState<boolean>(false);
+  // Host-only Edit mode. When true, the whole shell renders in an
+  // editable state: yellow ring border, sticky "you're editing" strip
+  // at the top, in-place editor affordances on each section (Phase 2
+  // will wire the stats-container quick-create + product grid). Toggle
+  // lives BOTH in CanteenHeader and (per Philip's rule) in the AppShell
+  // header beside the bell. AppShell dispatches
+  // `canteen:toggle-edit` events; we listen + toggle, then broadcast
+  // `canteen:edit-mode-changed` so the AppShell pill stays in sync.
+  const [editMode, setEditMode] = useState<boolean>(false);
+  useEffect(() => {
+    function onToggle() {
+      if (!isHost) return; // Non-hosts can't turn it on.
+      setEditMode((v) => !v);
+    }
+    window.addEventListener("canteen:toggle-edit", onToggle);
+    return () => window.removeEventListener("canteen:toggle-edit", onToggle);
+  }, [isHost]);
+  useEffect(() => {
+    // Broadcast state so the AppShell header pill can render the right
+    // label ("Edit mode" vs "Exit edit").
+    window.dispatchEvent(
+      new CustomEvent("canteen:edit-mode-changed", { detail: { active: editMode } })
+    );
+  }, [editMode]);
+  useEffect(() => {
+    // When Edit mode is force-off (e.g. host toggled off before nav-away),
+    // broadcast a clean state on unmount so a subsequent canteen page
+    // doesn't inherit stale "on" state.
+    return () => {
+      window.dispatchEvent(
+        new CustomEvent("canteen:edit-mode-changed", { detail: { active: false } })
+      );
+    };
+  }, []);
+
+  // Listen for tile-click events from the Edit-mode stats container.
+  // "add-item" opens a two-step inline flow:
+  //   1. Kind picker — "What are you adding? Product or Service?"
+  //   2. Selected form — Product path uses the eBay-style
+  //      ProductEditorForm; Service path shows a placeholder (Phase 2).
+  // Members + Reviews are stubs for the next slice.
+  // Each creation flow has its own direct-entry tile in the stats
+  // container. No picker step — merchants decide Product vs Service by
+  // tapping the right tile, not by answering a prompt after tapping a
+  // generic "Add Item" button. The old picker + AddItemKindPicker
+  // component are kept in the file (dead code, low cost) in case we
+  // want a "not sure which?" flow later.
+  const [addItemStep, setAddItemStep] = useState<"closed" | "product" | "service" | "live" | "profile" | "trending" | "reviews" | "kitchens" | "features" | "plan-storage">("closed");
+  const addProductPanelOpen = addItemStep !== "closed";
+  useEffect(() => {
+    if (!isHost) return;
+    function onAction(e: Event) {
+      const detail = (e as CustomEvent).detail as { kind?: string } | undefined;
+      if (!detail?.kind) return;
+      if (detail.kind === "add-product") {
+        setAddItemStep("product");
+      } else if (detail.kind === "add-service") {
+        setAddItemStep("service");
+      } else if (detail.kind === "live-listing") {
+        setAddItemStep("live");
+      } else if (detail.kind === "edit-profile") {
+        setAddItemStep("profile");
+      } else if (detail.kind === "edit-trending") {
+        setAddItemStep("trending");
+      } else if (detail.kind === "manage-reviews") {
+        setAddItemStep("reviews");
+      } else if (detail.kind === "kitchen-designs") {
+        setAddItemStep("kitchens");
+      } else if (detail.kind === "button-features") {
+        setAddItemStep("features");
+      } else if (detail.kind === "plan-storage") {
+        setAddItemStep("plan-storage");
+      } else {
+        return;
+      }
+      // Smooth scroll so the picker/form is at the top of Mike's view.
+      setTimeout(() => {
+        document.getElementById("canteen-add-item")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }, 100);
+      // Future: kind === "members" → open invite/manage panel
+      // Future: kind === "reviews" → open moderation panel
+    }
+    window.addEventListener("canteen:edit-action", onAction);
+    return () => window.removeEventListener("canteen:edit-action", onAction);
+  }, [isHost]);
   const [memberDelta, setMemberDelta] = useState<number>(0);
   // Ticker so relative timestamps ("5m", "3h") stay honest as the
   // user sits on the page. Bumps once per minute; every call to
@@ -107,6 +221,17 @@ export function CanteenPageShell({
     actionLabel: string | null;
     actionHref: string | null;
   }>>([]);
+  // Auto-dismiss the host action banner 10s after the merchant arrives
+  // on the canteen page. The header bell + red badge + popover keep the
+  // signal reachable — Mike doesn't need a persistent banner in his
+  // feed. Starts as visible, timer flips it to hidden. Small CSS fade
+  // for a soft exit rather than a hard pop.
+  const [actionBannerVisible, setActionBannerVisible] = useState(true);
+  useEffect(() => {
+    if (hostActions.length === 0) return;
+    const t = setTimeout(() => setActionBannerVisible(false), 10_000);
+    return () => clearTimeout(t);
+  }, [hostActions.length]);
 
   useEffect(() => {
     let cancelled = false;
@@ -197,6 +322,11 @@ export function CanteenPageShell({
   }
   const privateViewPost = sideLane.find((p) => p.id === privateViewPostId) ?? null;
   const focusedProduct = focusedProductId ? canteenProductById(focusedProductId) : null;
+  // Public-facing product list: filters out any product the merchant
+  // has hidden from the canteen Products tab via the per-product
+  // `showInCanteenProducts` toggle. The owner's post composer still
+  // gets the full list so hidden products can be attached to a post.
+  const publicProducts = featuredProducts.filter((p) => p.showInCanteenProducts !== false);
   // Map of featured products so post cards can inflate a
   // [[product:<id>]] marker into an inline product tile.
   const productsById: Record<string, CanteenProduct> = {};
@@ -208,7 +338,16 @@ export function CanteenPageShell({
   const canPostVideo = !requiresProUpload("canteen-video", viewerTier);
 
   return (
-    <main className="min-h-screen overflow-x-hidden" style={{ backgroundColor: CREAM }}>
+    <main
+      className="relative min-h-screen overflow-x-hidden"
+      style={{
+        backgroundColor: CREAM,
+        // Inset yellow ring when Edit mode is on. 3px so it reads
+        // clearly at any viewport without feeling loud. Uses inset
+        // box-shadow so it doesn't shift page layout on toggle.
+        boxShadow: editMode ? "inset 0 0 0 3px #FFB300" : undefined
+      }}
+    >
       {/* ── Mobile view — pixel-mirror of the mockup dashboard.
           Only 5 elements: Hero (avatar+greeting+bell / split copy+photo
           with KPI overlay), Quick Actions row, Live Feed, Trade Deals,
@@ -253,7 +392,7 @@ export function CanteenPageShell({
                   canteenSlug={canteen.slug}
                   isHost={isHost}
                   posts={pickRotatorPosts(initialChatPosts)}
-                  products={featuredProducts}
+                  products={publicProducts}
                   designs={designs ?? []}
                   hostDisplayName={canteen.hostDisplayName}
                   hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
@@ -262,6 +401,7 @@ export function CanteenPageShell({
                   tradeSlug={canteen.tradeSlug}
                   tradeLabel={canteen.tradeLabel}
                   hostRating={admin?.reviews && admin.reviews.count >= 5 ? admin.reviews : null}
+                  sendToTradeCenter={admin?.sendToTradeCenter ?? false}
                   addressLine={admin?.showroom?.addressLine ?? null}
                   postcode={admin?.showroom?.postcode ?? null}
                   city={admin?.city ?? null}
@@ -289,17 +429,34 @@ export function CanteenPageShell({
 
         {/* Trending ribbon — restored to the mobile app footer area
             2026-07-13 per Philip. Compact 4-tile grid so it reads as
-            a footer discovery strip, not a dominant section. */}
+            a footer discovery strip, not a dominant section. When
+            canteenSlug + hostFirstName are provided the ribbon opens
+            an Instagram Stories-style swipe sheet on tile-tap instead
+            of routing to the products page. */}
         <CanteenTrendingRibbon
           tradeLabel={canteen.tradeLabel}
           tradeSlug={canteen.tradeSlug}
-          products={featuredProducts.slice(0, 5).map((p) => ({
-            id:       p.id,
-            name:     p.name,
-            imageUrl: p.imageUrl,
-            hrefPath: `/trade-off/yard/canteens/${canteen.slug}/products/${encodeURIComponent(p.id)}`
-          }))}
+          products={featuredProducts
+            // Merchant per-product visibility: only include products the
+            // merchant flagged as showInTrending. Undefined → treated as
+            // true (existing rows without the flag stay visible).
+            .filter((p) => p.showInTrending !== false)
+            .slice(0, 8)
+            .map((p) => ({
+              id:                    p.id,
+              name:                  p.name,
+              imageUrl:              p.imageUrl,
+              hrefPath:              `/trade-off/yard/canteens/${canteen.slug}/products/${encodeURIComponent(p.id)}`,
+              priceGbp:              p.priceGbp,
+              blurb:                 p.blurb,
+              tradeCenterListingId:  p.tradeCenterListingId,
+              variants:              p.variants
+            }))}
           compact
+          canteenSlug={canteen.slug}
+          hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+          hostWhatsapp={admin?.whatsapp ?? null}
+          sendToTradeCenter={admin?.sendToTradeCenter ?? false}
         />
 
 
@@ -336,6 +493,29 @@ export function CanteenPageShell({
         tradeLabel={canteen.tradeLabel}
       />
 
+      {/* Edit mode sticky strip — shown at the very top of the
+          canteen when the host has Edit mode on. Positioned above the
+          header so it reads as chrome, not content. */}
+      {isHost && editMode && (
+        <div
+          className="sticky top-0 z-30 border-b bg-[#FFB300] px-3 py-1.5 text-center text-[10.5px] font-black uppercase tracking-[0.18em] text-[#0A0A0A] md:px-6"
+          style={{ borderColor: "rgba(0,0,0,0.1)" }}
+        >
+          You&apos;re editing your canteen · changes save as drafts
+        </div>
+      )}
+
+      {/* Floating Edit mode toggle — host-only. Same button on every
+          breakpoint so mobile Mike can enter/exit Edit mode without
+          hunting through the header. Positioned in the top-right,
+          respects safe-area on iOS. Hidden inside the desktop header
+          on lg+ (where the header pill takes over) to avoid double
+          buttons. */}
+      {/* Floating mobile Edit-mode toggle removed 2026-07-14 per
+          Philip. Edit mode is now driven entirely by the AppShell
+          top-right chip which is visible on every page and every
+          breakpoint. */}
+
       {/* ── Desktop view — the richer existing shell. Hidden below lg. */}
       <div className="hidden lg:block">
       <CanteenHeader
@@ -352,6 +532,8 @@ export function CanteenPageShell({
         hostHasProducts={totalProducts > 0}
         hostWhatsapp={admin?.whatsapp ?? null}
         hostReviews={admin?.reviews ?? null}
+        editMode={editMode}
+        onToggleEditMode={() => setEditMode((v) => !v)}
       />
 
       {/* Hero stats card — floats at the bottom of the hero, overlapping
@@ -364,20 +546,97 @@ export function CanteenPageShell({
         reviews={admin?.reviews ?? null}
         productsCount={totalProducts}
         hostHasProducts={totalProducts > 0}
+        editMode={isHost && editMode}
+        activeStep={addItemStep}
       />
+
+      {/* Direct-entry creation flows mounted NATIVELY on the canteen
+          page (no iframe). Each tile in the stats container is a
+          distinct entry point — no picker step. Everything else on the
+          page is hidden while a flow is active. */}
+      {isHost && editMode && addItemStep !== "closed" && (
+        <div id="canteen-add-item" className="mx-auto mt-4 max-w-6xl px-3 md:px-6">
+          {addItemStep === "product" && (
+            <>
+              <div className="mb-3 flex items-center justify-end">
+                <button
+                  type="button"
+                  onClick={() => setAddItemStep("closed")}
+                  className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+                >
+                  Cancel
+                </button>
+              </div>
+              <ProductEditorForm
+                slug={canteen.hostSlug}
+                editToken=""
+                initial={PRODUCT_EDITOR_EMPTY}
+                isNew={true}
+                merchantTier="free"
+              />
+            </>
+          )}
+          {addItemStep === "service" && (
+            <AddServicePlaceholder
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "live" && (
+            <LiveListingPlaceholder
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "profile" && (
+            <EditProfilePlaceholder
+              slug={canteen.hostSlug}
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "trending" && (
+            <EditTrendingPlaceholder
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "reviews" && (
+            <ManageReviewsPlaceholder
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "kitchens" && (
+            <KitchenDesignsPlaceholder
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "features" && (
+            <ButtonFeaturesPanel
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+          {addItemStep === "plan-storage" && (
+            <PlanStoragePanel
+              slug={canteen.hostSlug}
+              onCancel={() => setAddItemStep("closed")}
+            />
+          )}
+        </div>
+      )}
 
       {/* Host's product carousel — full-width strip that sits directly
           under the hero on ALL breakpoints. Was previously nested
           inside the main feed section (below the right column on
           mobile); moved here so the host's shop is the first thing
           scrolled to after the hero, before the chat or side lane.
-          Hidden when a focus overlay takes over the section. */}
-      {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && (
-        <div className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6">
+          Hidden when a focus overlay takes over the section OR when
+          the add-product panel is active (focused-editing mode). */}
+      {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && !addProductPanelOpen && (
+        <div
+          id="canteen-products-library"
+          className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6"
+        >
           <CanteenProductPanel
             hostDisplayName={canteen.hostDisplayName}
             canteenSlug={canteen.slug}
-            products={featuredProducts}
+            products={publicProducts}
             totalCount={totalProducts}
             onSelect={setFocusedProductId}
             manageHref={`/trade-off/yard/canteens/${canteen.slug}/manage`}
@@ -393,7 +652,7 @@ export function CanteenPageShell({
           Takes the newest chat posts and auto-scrolls a 3-slot window;
           tap "Reply" on any card to open the compose overlay page.
           Desktop keeps the full feed + The Counter side-lane instead. */}
-      {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && (
+      {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && !addProductPanelOpen && (
         <div className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6 lg:hidden">
           <CanteenMobilePostsRotator
             posts={pickRotatorPosts(initialChatPosts)}
@@ -418,7 +677,14 @@ export function CanteenPageShell({
           ABOVE the main feed so users get "who runs this" + "what's
           on The Counter" as context before scrolling into the chat.
           Desktop keeps the original main-left / rail-right split. */}
-      <div className="mx-auto max-w-6xl px-3 pb-16 pt-5 md:px-6 md:pt-6">
+      {/* Main feed + right rail. Hidden when Mike's Add product panel
+          is active so his focus stays on the form (per Philip's spec:
+          only stats container + product form visible in that mode). */}
+      <div
+        className={`mx-auto max-w-6xl px-3 pb-16 pt-5 md:px-6 md:pt-6 ${
+          addProductPanelOpen ? "hidden" : ""
+        }`}
+      >
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
           {/* Main feed — min-w-0 so wide children (carousel) can't push
               the right column off-screen. */}
@@ -490,11 +756,16 @@ export function CanteenPageShell({
             )}
             {/* Host action banner — only visible when the viewer is
                 the canteen host AND their notebook has open actions.
-                Silent otherwise. */}
+                Auto-dismisses 10s after arrival — Mike sees it once,
+                the header bell + red badge keep the actions reachable.
+                Fades out (opacity + max-height) rather than popping. */}
             {hostActions.length > 0 && (
               <div
-                className="mb-3 overflow-hidden rounded-xl border-2 shadow-sm"
+                className={`overflow-hidden rounded-xl border-2 shadow-sm transition-all duration-500 ${
+                  actionBannerVisible ? "mb-3 max-h-[400px] opacity-100" : "mb-0 max-h-0 opacity-0"
+                }`}
                 style={{ borderColor: BRAND_AMBER, backgroundColor: "#FFFBEB" }}
+                aria-hidden={!actionBannerVisible}
               >
                 <div className="flex items-center gap-2 px-3 pt-2.5 text-[10px] font-black uppercase tracking-[0.22em]" style={{ color: "#78350F" }}>
                   <HelpCircle size={12}/>
@@ -766,14 +1037,119 @@ function CanteenHeroStats({
   memberCount,
   reviews,
   productsCount,
-  hostHasProducts
+  hostHasProducts,
+  editMode = false,
+  activeStep = "closed"
 }: {
   memberCount: number;
   reviews: { avg: number; count: number } | null;
   productsCount: number;
   hostHasProducts: boolean;
+  /** When true, the 3 stats tiles become square action buttons the
+   *  host taps to manage each section (Products / Members / Reviews).
+   *  Only ever true when Edit mode is on AND the viewer is the host. */
+  editMode?: boolean;
+  /** Which creation flow is currently open — used to highlight the
+   *  matching tile in yellow ("you're editing this"). */
+  activeStep?: "closed" | "product" | "service" | "live" | "profile" | "trending" | "reviews" | "kitchens" | "features" | "plan-storage";
 }) {
   const showRating = reviews && reviews.count >= 5;
+
+  // In Edit mode: tiles become square action buttons. Primary tile
+  // (yellow) is the "Add product" quick-action — highest-leverage
+  // thing Mike does. Secondary tiles (cream) are Members + Reviews.
+  // Small corner badge keeps the count visible so Mike doesn't lose
+  // the "how many do I have" signal in the swap. Container height
+  // unchanged from view mode.
+  if (editMode) {
+    return (
+      <div className="mx-auto -mt-8 max-w-6xl px-3 md:px-6">
+        {/* Horizontal carousel — every tile is fixed width. Fits ~9
+            tiles on desktop max-w-6xl; on mobile it scrolls horizontally
+            (snap-x) so the merchant swipes rather than the container
+            wrapping into multiple rows. Same compact tile size as the
+            hero StatTile in view mode. */}
+        <div
+          className="relative z-10 flex snap-x snap-mandatory gap-2 overflow-x-auto rounded-2xl border-2 p-2.5 shadow-xl md:justify-center md:p-3 [&::-webkit-scrollbar]:hidden"
+          style={{
+            borderColor: "#166534",
+            backgroundColor: "#FFFDF6",
+            scrollbarWidth: "none"
+          }}
+        >
+          <EditActionSquare
+            icon={<Package size={18} strokeWidth={2.4}/>}
+            label="Add Product"
+            badge={String(productsCount)}
+            active={activeStep === "product"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "add-product" } }))}
+          />
+          <EditActionSquare
+            icon={<Wrench size={18} strokeWidth={2.4}/>}
+            label="Add Service"
+            active={activeStep === "service"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "add-service" } }))}
+          />
+          <EditActionSquare
+            icon={<Radio size={18} strokeWidth={2.4}/>}
+            label="Live Listing"
+            badge="New"
+            active={activeStep === "live"}
+            liveDot
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "live-listing" } }))}
+          />
+          <EditActionSquare
+            icon={<LayoutDashboard size={18} strokeWidth={2.4}/>}
+            label="Kitchen Designs"
+            active={activeStep === "kitchens"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "kitchen-designs" } }))}
+          />
+          <EditActionSquare
+            icon={<UserCog size={18} strokeWidth={2.4}/>}
+            label="Edit Profile"
+            active={activeStep === "profile"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "edit-profile" } }))}
+          />
+          <EditActionSquare
+            icon={<TrendingUp size={18} strokeWidth={2.4}/>}
+            label="Edit Trending"
+            active={activeStep === "trending"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "edit-trending" } }))}
+          />
+          <EditActionSquare
+            icon={<MessageSquare size={18} strokeWidth={2.4}/>}
+            label="Manage Reviews"
+            badge={showRating ? String(reviews.count) : "New"}
+            active={activeStep === "reviews"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "manage-reviews" } }))}
+          />
+          <EditActionSquare
+            icon={<Rocket size={18} strokeWidth={2.4}/>}
+            label="Plan & Storage"
+            active={activeStep === "plan-storage"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "plan-storage" } }))}
+          />
+          <EditActionSquare
+            icon={<Users size={18} strokeWidth={2.4}/>}
+            label="Members"
+            badge={String(memberCount)}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "members" } }))}
+          />
+          <EditActionSquare
+            icon={<Star size={18} strokeWidth={2.4} fill="currentColor"/>}
+            label="Reviews"
+            badge={showRating ? String(reviews.count) : "New"}
+            onClick={() => window.dispatchEvent(new CustomEvent("canteen:edit-action", { detail: { kind: "reviews" } }))}
+          />
+          {/* Button Features moved out of the carousel 2026-07-14 —
+              it's now the yellow pill in the hero (top-left of the
+              CTA row). Kept the "features" activeStep + panel below
+              so the event still fires. */}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto -mt-8 max-w-6xl px-3 md:px-6">
       <div
@@ -807,6 +1183,88 @@ function CanteenHeroStats({
         />
       </div>
     </div>
+  );
+}
+
+// Square action button used inside the stats container when Edit mode
+// is active. Big icon + label centred, small count badge in the top-
+// right corner. Yellow variant marks the primary action (Products);
+// cream variant marks secondary ones (Members, Reviews). Each tile
+// dispatches a `canteen:edit-action` CustomEvent with its kind so
+// downstream editors (Phase 2) can open the right panel.
+// Square-styled button that fits INSIDE the existing stats container
+// without growing the container height. Matches the original StatTile
+// padding so the row keeps the same vertical footprint — just swaps
+// info tiles for tappable action buttons in Edit mode.
+// EditActionSquare — compact tile inside the stats container when
+// Edit mode is on. Size matches the view-mode StatTile (natural
+// height, ~70-80px). Yellow (BRAND_YELLOW #FFB300) means SELECTED:
+// the tile's flow is currently open below the container. Cream white
+// is the idle state. Sized to fit ~9 tiles in the container on
+// desktop; mobile horizontal-scrolls when tiles overflow.
+function EditActionSquare({
+  icon,
+  label,
+  badge,
+  active,
+  liveDot,
+  onClick
+}: {
+  icon: React.ReactNode;
+  label: string;
+  badge?: string;
+  active?: boolean;
+  liveDot?: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`relative flex w-20 shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-xl border px-1.5 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.97] md:w-24 md:py-2.5 ${
+        active ? "ring-2 ring-[#166534]" : ""
+      }`}
+      style={{
+        backgroundColor: active ? "#FFB300" : "#FFFFFF",
+        borderColor: active ? "#166534" : "rgba(22,101,52,0.20)",
+        color: active ? "#0A0A0A" : "#1B1A17"
+      }}
+    >
+      {/* Small pulsing green dot in top-LEFT for the Live Listing
+          tile. Uses #10B981 which the platform reserves for live/
+          in-stock indicators only. Visually differentiates a "live
+          feed" action from a normal creation action. */}
+      {liveDot && (
+        <span
+          aria-hidden
+          className="absolute left-1 top-1 inline-flex h-2 w-2 items-center justify-center"
+        >
+          <span
+            className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
+            style={{ backgroundColor: "#10B981" }}
+          />
+          <span
+            className="relative inline-flex h-2 w-2 rounded-full"
+            style={{ backgroundColor: "#10B981" }}
+          />
+        </span>
+      )}
+      {badge && (
+        <span
+          className="absolute right-1 top-1 inline-flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-black shadow-sm"
+          style={{
+            backgroundColor: active ? "#0A0A0A" : "#166534",
+            color: "#FFFFFF"
+          }}
+        >
+          {badge}
+        </span>
+      )}
+      <span style={{ color: active ? "#0A0A0A" : "#166534" }}>{icon}</span>
+      <span className="mt-0.5 text-center text-[10px] font-black uppercase leading-tight tracking-[0.10em] md:text-[10.5px]">
+        {label}
+      </span>
+    </button>
   );
 }
 
@@ -1763,5 +2221,670 @@ function ReactionRow({
         </div>
       )}
     </>
+  );
+}
+
+// ─── Add Item kind picker ───────────────────────────────────
+//
+// First step of the "Add Item" inline flow. Splits the merchant into
+// the right form: Product (physical thing you sell) vs Service (work
+// you offer). Two large tap-targets side by side; small cancel below.
+
+function AddItemKindPicker({
+  onPickProduct,
+  onPickService,
+  onCancel
+}: {
+  onPickProduct: () => void;
+  onPickService: () => void;
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-5">
+        <div className="text-[10px] font-black uppercase tracking-[0.22em] text-[#166534]">
+          Adding to your canteen
+        </div>
+        <h2 className="mt-1 text-[22px] font-black leading-tight text-neutral-900 md:text-[26px]">
+          What are you adding?
+        </h2>
+        <p className="mt-1 text-[13px] leading-relaxed text-neutral-600">
+          Pick one — the form matches what you&apos;re listing.
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+        <button
+          type="button"
+          onClick={onPickProduct}
+          className="group flex flex-col items-start rounded-2xl border-2 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+          style={{ borderColor: "rgba(22,101,52,0.20)" }}
+        >
+          <div
+            className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl transition group-hover:scale-105"
+            style={{ backgroundColor: "#FFF8E6" }}
+          >
+            <Package size={22} strokeWidth={2.2} style={{ color: "#B8860B" }}/>
+          </div>
+          <div className="text-[16px] font-black text-neutral-900">Product</div>
+          <p className="mt-1 text-[12px] leading-snug text-neutral-600">
+            A physical item you sell — worktops, tools, cabinets, tiles.
+          </p>
+          <div
+            className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+          >
+            Add a product →
+          </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={onPickService}
+          className="group flex flex-col items-start rounded-2xl border-2 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+          style={{ borderColor: "rgba(22,101,52,0.20)" }}
+        >
+          <div
+            className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl transition group-hover:scale-105"
+            style={{ backgroundColor: "#DCFCE7" }}
+          >
+            <Wrench size={22} strokeWidth={2.2} style={{ color: "#166534" }}/>
+          </div>
+          <div className="text-[16px] font-black text-neutral-900">Service</div>
+          <p className="mt-1 text-[12px] leading-snug text-neutral-600">
+            Work you offer — kitchen fitting, plumbing, electrical, tiling.
+          </p>
+          <div
+            className="mt-3 inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider text-white shadow-sm"
+            style={{ backgroundColor: "#166534" }}
+          >
+            Add a service →
+          </div>
+        </button>
+      </div>
+
+      <div className="mt-5 flex justify-center">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="text-[11px] font-black uppercase tracking-wider text-neutral-500 hover:text-neutral-800"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Add Service placeholder ────────────────────────────────
+//
+// Phase 2 will replace this with a proper service-listing form
+// (service name, price model, service area, portfolio). For now, a
+// small holding card so the merchant can see the service path exists
+// and knows what's coming.
+
+function AddServicePlaceholder({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#DCFCE7" }}>
+          <Wrench size={22} strokeWidth={2.2} style={{ color: "#166534" }}/>
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Service listing — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          The service form is being built next: <b>service name</b>, price model (hourly / fixed / quoted), service area, callout fee, availability, portfolio.
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          For now, list your services as products with &ldquo;<b>Price on request</b>&rdquo; and use the description for details.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Live Listing placeholder ────────────────────────────────
+//
+// Live Listings are a distinct concept from the regular product
+// editor — think Facebook Marketplace + eBay auction + "gone today"
+// classifieds. Merchants use them for time-limited or immediate-
+// availability offers: van-loads, cash-and-carry, seconds/damaged,
+// end-of-day stock, or 24h auction-style listings.
+//
+// Phase 2 will replace this with the real form. For now, a holding
+// card so the merchant can see the flow exists and knows what fields
+// are coming. No "← Change item type" button because Live Listing
+// skips the Product/Service picker — it's its own entry point from
+// the stats container tile.
+
+function LiveListingPlaceholder({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+          <Radio size={22} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+        </div>
+        <div className="mb-2 inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em]"
+          style={{ backgroundColor: "rgba(16,185,129,0.14)", color: "#166534" }}
+        >
+          <span className="relative inline-flex h-1.5 w-1.5">
+            <span
+              className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-70"
+              style={{ backgroundColor: "#10B981" }}
+            />
+            <span
+              className="relative inline-flex h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: "#10B981" }}
+            />
+          </span>
+          Live feed
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Live listing — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          Live listings are for time-limited or immediate stock: <b>van-loads</b>, <b>end-of-day clearance</b>, <b>cash &amp; carry</b>, <b>seconds</b>, or <b>24-hour auctions</b>. They surface at the top of The Counter and expire when you say they do.
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          The form will include: <b>title</b>, <b>photo</b>, <b>quantity</b>, <b>price or auction</b>, <b>collection window</b> (e.g. today 4pm–7pm), and <b>expiry</b>. Different from a regular product — no VAT tax banded into card, no delivery grid, no multi-buy tiers. Fast and time-boxed.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Edit Profile placeholder ────────────────────────────────
+//
+// "Edit Profile" opens the merchant's canteen identity in-place —
+// avatar/logo, business name, bio, service area, trades covered,
+// contact, cover image, hours, verification badges.
+//
+// The real editor already exists at
+// /trade-off/yard/canteens/[slug]/manage (CanteenManageShell), but
+// it lives on a separate page. Phase 2 will pull those fields inline
+// so Mike edits without leaving his canteen. Until then, this card
+// tells him what's coming and offers a direct link to the full
+// manage page so he isn't blocked.
+
+function EditProfilePlaceholder({
+  slug,
+  onCancel
+}: {
+  slug: string;
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+          <UserCog size={22} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Inline profile editor — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          Editing your profile without leaving this page is coming. It will include: <b>logo</b>, <b>cover image</b>, <b>business name</b>, <b>bio</b>, <b>trades covered</b>, <b>service area</b>, <b>opening hours</b>, <b>contact</b>, and <b>verification badges</b>.
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          In the meantime, the full profile manager is one tap away.
+        </p>
+        <Link
+          href={`/trade-off/yard/canteens/${slug}/manage`}
+          className="mt-4 inline-flex h-10 items-center gap-2 rounded-full px-5 text-[12px] font-black uppercase tracking-wider shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          style={{ backgroundColor: "#166534", color: "#FFFFFF" }}
+        >
+          <UserCog size={14} strokeWidth={2.4}/>
+          Open profile manager
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// ─── Edit Trending placeholder ───────────────────────────────
+//
+// "Edit Trending Today" lets the merchant curate which of their own
+// products appear in the "Trending Today" strip on their canteen —
+// the row that highlights hero SKUs / deals of the day / stock
+// clearance. Phase 2 will be a drag-to-reorder grid + a scheduled
+// window (start/end datetime) per pinned product.
+
+function EditTrendingPlaceholder({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+          <TrendingUp size={22} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Edit Trending Today — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          Curate the products that appear in the <b>Trending Today</b> strip on your canteen. Push hero SKUs, deals of the day, or clearance stock to the top of what buyers see first.
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          The editor will let you: <b>pin products</b>, <b>drag to reorder</b>, <b>set a start/end time</b> for scheduled promos, and <b>preview the strip</b> as buyers will see it. Cap: 6 pinned products at a time.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Manage Reviews placeholder ──────────────────────────────
+//
+// "Manage Reviews" opens the review moderation panel — reply to
+// reviews, feature one on the canteen hero, request revisions from
+// buyers who left <=3 stars, or flag suspected fake reviews. Distinct
+// from the "Reviews" stat tile which just surfaces the count/rating.
+
+function ManageReviewsPlaceholder({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+          <MessageSquare size={22} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Manage Reviews — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          Reply to reviews, feature one on your hero, ask a buyer to revise a low rating, or flag a suspected fake — all in one place.
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          The panel will let you: <b>reply publicly</b> to any review, <b>feature a review</b> in the canteen hero, <b>request revision</b> for ≤3-star reviews, and <b>flag review</b> for platform moderation.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Kitchen Designs placeholder ─────────────────────────────
+//
+// Trade-specific portfolio surface — for kitchen fitters (Mike),
+// this shows off completed kitchen installs / 3D renders / concept
+// mockups. Different from Products (which he sells) and Services
+// (which he offers) — this is credibility content: "look what I've
+// built." Phase 2 will be a per-design gallery with photos, style
+// tags, materials, price band, testimonial, and links to related
+// product listings.
+
+function KitchenDesignsPlaceholder({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-6 text-center shadow-sm"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+          <LayoutDashboard size={22} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+        </div>
+        <h3 className="text-[18px] font-black text-neutral-900">Kitchen Designs — coming soon.</h3>
+        <p className="mx-auto mt-2 max-w-md text-[13px] leading-relaxed text-neutral-600">
+          A portfolio surface for completed kitchen installs, 3D renders, and concept mockups. Different from Products or Services — this is credibility content: <b>&ldquo;look what I&rsquo;ve built.&rdquo;</b>
+        </p>
+        <p className="mx-auto mt-3 max-w-md text-[12px] leading-snug text-neutral-500">
+          Each design will have: <b>photos</b> (before/after or gallery), <b>style tags</b> (modern / shaker / handleless / traditional), <b>materials</b>, <b>installed price band</b>, <b>location</b>, an optional <b>testimonial</b>, and <b>links to related product listings</b> so buyers can shop the look.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ─── Button Features documentation panel ─────────────────────
+//
+// The "manual" for the Edit-mode stats carousel. Each entry lists a
+// button's name, what it does, where the output appears in the app,
+// and what state it's in (live / coming soon / stub). Merchants can
+// read this to understand every action available in Edit mode
+// without trial-and-error. Also serves as an internal spec of what
+// still needs to be built.
+
+function ButtonFeaturesPanel({
+  onCancel
+}: {
+  onCancel: () => void;
+}) {
+  const features: Array<{
+    icon: React.ReactNode;
+    label: string;
+    status: "live" | "coming-soon";
+    what: string;
+    where: string;
+    notes?: string;
+  }> = [
+    {
+      icon: <Package size={16} strokeWidth={2.4}/>,
+      label: "Add Product",
+      status: "live",
+      what: "Publishes a physical product (worktops, tools, cabinets, tiles). Full eBay-style form with Pricing & Delivery, VAT position, images, variants, and multi-buy tiers.",
+      where: "Product cards appear on your canteen product list, in the Trade Center marketplace (if enabled), and can pin to Trending Today.",
+      notes: "Category-warning banner: wrong-category listings get moved without notice so buyers can find them."
+    },
+    {
+      icon: <Wrench size={16} strokeWidth={2.4}/>,
+      label: "Add Service",
+      status: "coming-soon",
+      what: "Publishes a service you offer (kitchen fitting, plumbing, electrical). Different fields from products — price model (hourly / fixed / quoted), service area, callout fee, availability, portfolio.",
+      where: "Service cards will appear on your canteen alongside products, tagged as services.",
+      notes: "Interim: list services as products with 'Price on request'."
+    },
+    {
+      icon: <Radio size={16} strokeWidth={2.4}/>,
+      label: "Live Listing",
+      status: "coming-soon",
+      what: "Publishes a time-limited or immediate-availability listing — van-loads, end-of-day clearance, cash & carry, seconds, 24-hour auctions.",
+      where: "Surfaces at the top of The Counter feed (platform marketplace stream). Expires when the collection window closes or quantity hits zero.",
+      notes: "No VAT, no delivery grid, no multi-buy tiers. Fast and time-boxed."
+    },
+    {
+      icon: <LayoutDashboard size={16} strokeWidth={2.4}/>,
+      label: "Kitchen Designs",
+      status: "coming-soon",
+      what: "Portfolio surface for completed kitchen installs, 3D renders, and concept mockups. Credibility content — not for sale, for proof.",
+      where: "New tab on your canteen (between Products and Reviews). Each design links to related product listings so buyers can shop the look.",
+      notes: "Trade-specific. Other trades will see equivalent portfolio surfaces (e.g. Bathroom Designs for plumbers)."
+    },
+    {
+      icon: <UserCog size={16} strokeWidth={2.4}/>,
+      label: "Edit Profile",
+      status: "coming-soon",
+      what: "Editing your canteen identity inline — logo, cover image, business name, bio, trades covered, service area, opening hours, contact, verification badges.",
+      where: "Reflects everywhere your canteen surfaces — hero card, search results, Trade Center merchant tile.",
+      notes: "The full manager already exists at /trade-off/yard/canteens/{slug}/manage — the inline version will pull those fields into this panel."
+    },
+    {
+      icon: <TrendingUp size={16} strokeWidth={2.4}/>,
+      label: "Edit Trending",
+      status: "coming-soon",
+      what: "Curate the products in your Trending Today strip. Pin hero SKUs, deals of the day, or clearance stock so buyers see them first.",
+      where: "The Trending Today horizontal strip on your canteen page, above the Products list.",
+      notes: "Drag-to-reorder, scheduled start/end times per pinned product, cap of 6 pins at a time."
+    },
+    {
+      icon: <MessageSquare size={16} strokeWidth={2.4}/>,
+      label: "Manage Reviews",
+      status: "coming-soon",
+      what: "Review moderation panel — reply publicly, feature a review on the hero, request revision for ≤3-star reviews, flag suspected fakes for platform moderation.",
+      where: "Reviews live on the Reviews tab of your canteen and feed into your overall rating shown on the hero stats bar.",
+      notes: "Distinct from the Reviews stat tile (which just surfaces count/rating)."
+    },
+    {
+      icon: <Rocket size={16} strokeWidth={2.4}/>,
+      label: "Plan & Storage",
+      status: "live",
+      what: "Your back-office. Boost individual products via Stripe, track storage against your tier, and see Founding 100 activity progress.",
+      where: "Opens a panel here with links to the classic manager for each sub-section. Phase 2 will fold the actual controls inline.",
+      notes: "This is the replacement for the /trade-off/yard/canteens/{slug}/manage dashboard. Same functionality, canonical entry point is here now."
+    },
+    {
+      icon: <Users size={16} strokeWidth={2.4}/>,
+      label: "Members",
+      status: "coming-soon",
+      what: "Currently a stat tile showing member count. Will become a management panel — invite trades, approve/remove members, message members in bulk.",
+      where: "Members appear in your canteen's Members section and can post to the wall.",
+      notes: "The 'Invite trades' action from the old header has moved into this panel."
+    },
+    {
+      icon: <Star size={16} strokeWidth={2.4} fill="currentColor"/>,
+      label: "Reviews",
+      status: "live",
+      what: "Read-only stat tile showing your rating and total review count. Displays 'New' if you have fewer than 5 reviews (avoids advertising a 0.0 star average).",
+      where: "Same tile position on the hero stats bar in both view mode and edit mode.",
+      notes: "Use Manage Reviews (above) to actually reply/moderate."
+    },
+    {
+      icon: <BookOpen size={16} strokeWidth={2.4}/>,
+      label: "Button Features",
+      status: "live",
+      what: "This panel — the reference manual for every button in the carousel.",
+      where: "Only visible in Edit mode on the canteen page.",
+      notes: "Kept up to date as new tiles ship or existing ones move from 'coming soon' to 'live'."
+    }
+  ];
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-4 shadow-sm md:p-6"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mb-4 flex items-start gap-3">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+            <BookOpen size={20} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-[18px] font-black text-neutral-900">Button Features</h3>
+            <p className="mt-0.5 text-[12.5px] leading-snug text-neutral-600">
+              Every button in the Edit-mode carousel above — what it does, where it displays, and its status.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {features.map((f) => (
+            <div
+              key={f.label}
+              className="rounded-xl border p-3 md:p-4"
+              style={{ borderColor: "rgba(22,101,52,0.15)" }}
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: "#FFF8E6", color: "#0A0A0A" }}>
+                  {f.icon}
+                </span>
+                <span className="text-[14px] font-black text-neutral-900">{f.label}</span>
+                <span
+                  className="inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
+                  style={
+                    f.status === "live"
+                      ? { backgroundColor: "rgba(16,185,129,0.14)", color: "#166534" }
+                      : { backgroundColor: "rgba(245,158,11,0.14)", color: "#92400E" }
+                  }
+                >
+                  {f.status === "live" ? "Live" : "Coming soon"}
+                </span>
+              </div>
+              <p className="mt-2 text-[12.5px] leading-relaxed text-neutral-700">
+                <b className="font-black text-neutral-900">What it does:</b> {f.what}
+              </p>
+              <p className="mt-1.5 text-[12.5px] leading-relaxed text-neutral-700">
+                <b className="font-black text-neutral-900">Where it appears:</b> {f.where}
+              </p>
+              {f.notes && (
+                <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-500">
+                  <b className="font-black text-neutral-700">Note:</b> {f.notes}
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Plan & Storage panel ────────────────────────────────────
+//
+// The "back-office" surface that the old /trade-off/yard/canteens/
+// [slug]/manage page used to be. Wraps three sub-sections currently
+// living on that page: Boost per product, Storage/tier meter, and
+// Founding-100 activity progress. Phase 2 will port the actual UI
+// into this panel; for now the panel links to the classic manager
+// so merchants don't lose functionality while we migrate.
+
+function PlanStoragePanel({
+  slug,
+  onCancel
+}: {
+  slug: string;
+  onCancel: () => void;
+}) {
+  const sections: Array<{
+    icon: React.ReactNode;
+    tint: string;
+    label: string;
+    desc: string;
+    where: string;
+  }> = [
+    {
+      icon: <Rocket size={18} strokeWidth={2.2}/>,
+      tint: "#FFF8E6",
+      label: "Boost your products",
+      desc: "Pay to promote a product for a fixed window. Boosted products float above their category and get a green ribbon.",
+      where: "Stripe checkout — 30-day boost per SKU. Live today on the classic manager."
+    },
+    {
+      icon: <HardDrive size={18} strokeWidth={2.2}/>,
+      tint: "#EFF6FF",
+      label: "Storage & tier",
+      desc: "See how much of your tier's storage you're using and upgrade if you need more headroom for images and video.",
+      where: "Live today on the classic manager. Server-side storage cap enforced per lib/tierGates."
+    },
+    {
+      icon: <Sparkles size={18} strokeWidth={2.2}/>,
+      tint: "#FEF3C7",
+      label: "Founding 100 progress",
+      desc: "Your progress toward the Founding 100 tier — activity streaks, member growth, product adds. Complete it and lock in the founding rate for life.",
+      where: "Live today on the classic manager."
+    }
+  ];
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onCancel}
+          className="inline-flex h-8 items-center gap-1 rounded-full bg-neutral-100 px-3 text-[11px] font-black uppercase tracking-wider text-neutral-700 hover:bg-neutral-200"
+        >
+          Cancel
+        </button>
+      </div>
+      <div className="rounded-2xl border-2 bg-white p-4 shadow-sm md:p-6"
+        style={{ borderColor: "rgba(22,101,52,0.20)" }}
+      >
+        <div className="mb-4 flex items-start gap-3">
+          <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "#FFF8E6" }}>
+            <Rocket size={20} strokeWidth={2.2} style={{ color: "#0A0A0A" }}/>
+          </div>
+          <div className="min-w-0">
+            <h3 className="text-[18px] font-black text-neutral-900">Plan &amp; Storage</h3>
+            <p className="mt-0.5 text-[12.5px] leading-snug text-neutral-600">
+              Your back-office. Boost individual products, track storage against your tier, and see Founding 100 progress. Full inline editor is Phase 2 — for now these open the classic manager.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {sections.map((s) => (
+            <Link
+              key={s.label}
+              href={`/trade-off/yard/canteens/${slug}/manage`}
+              className="block rounded-xl border p-3 transition hover:-translate-y-0.5 hover:border-[#FFB300] hover:shadow-md md:p-4"
+              style={{ borderColor: "rgba(22,101,52,0.15)" }}
+            >
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-neutral-900" style={{ backgroundColor: s.tint }}>
+                  {s.icon}
+                </span>
+                <span className="text-[14px] font-black text-neutral-900">{s.label}</span>
+                <ArrowUpRight size={14} className="ml-auto text-neutral-400" strokeWidth={2.4}/>
+              </div>
+              <p className="mt-2 text-[12.5px] leading-relaxed text-neutral-700">{s.desc}</p>
+              <p className="mt-1.5 text-[11.5px] leading-relaxed text-neutral-500">
+                <b className="font-black text-neutral-700">Status:</b> {s.where}
+              </p>
+            </Link>
+          ))}
+        </div>
+
+        <div className="mt-4 rounded-xl border-l-4 border-l-amber-400 border border-amber-100 bg-amber-50 p-3">
+          <p className="text-[11.5px] leading-snug text-amber-900">
+            <b className="font-black">Phase 2 note:</b> Boost / Storage / Founding-100 will land inline in this panel over the next iterations. Nothing you rely on today is going away — the classic manager stays live until each section is ported here.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }

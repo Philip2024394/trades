@@ -121,6 +121,59 @@ export async function productsForCanteenFromDb(
   return rows.map((r) => shapeProduct(r));
 }
 
+/** Lookup a canteen product by its merchant-declared Trade Center
+ *  listing id. Falls back to product-id lookup when the identifier
+ *  doesn't match any TC listing id, so URLs from both the internal
+ *  editor and the buyer-facing surfaces both resolve. */
+export async function canteenProductByTradeCenterListingIdFromDb(
+  tcListingId: string
+): Promise<CanteenProduct | null> {
+  if (!tcListingId) return null;
+  const res = await supabaseAdmin
+    .from("hammerex_canteen_products")
+    .select("*")
+    .eq("trade_center_listing_id", tcListingId)
+    .eq("show_in_trade_center", true)
+    .maybeSingle();
+  if (res.error) {
+    // eslint-disable-next-line no-console
+    console.error("[canteens.server] byTcListingId", res.error);
+    return null;
+  }
+  if (res.data) return shapeProduct(res.data);
+  // Not found by TC listing id — try product id as a fallback so the
+  // route works from both URL styles.
+  return canteenProductByIdFromDb(tcListingId);
+}
+
+/** Enrich a canteen product row with its host canteen metadata (slug,
+ *  trade, display name). Used by the PDP to render the "sold by" chip
+ *  + link back to the merchant's canteen. */
+export async function canteenHostForProductFromDb(
+  hostSlug: string
+): Promise<{ canteenSlug: string; hostDisplayName: string; tradeLabel: string; whatsapp: string | null } | null> {
+  if (!hostSlug) return null;
+  const res = await supabaseAdmin
+    .from("hammerex_canteens")
+    .select("slug, host_display_name, trade_label")
+    .eq("host_slug", hostSlug)
+    .maybeSingle();
+  if (res.error || !res.data) return null;
+  // Grab whatsapp from the admin member row (same shape used elsewhere).
+  const adminRes = await supabaseAdmin
+    .from("hammerex_canteen_members")
+    .select("whatsapp")
+    .eq("member_slug", hostSlug)
+    .eq("role", "admin")
+    .maybeSingle();
+  return {
+    canteenSlug: res.data.slug,
+    hostDisplayName: res.data.host_display_name,
+    tradeLabel: res.data.trade_label,
+    whatsapp: (adminRes.data as { whatsapp?: string | null } | null)?.whatsapp ?? null
+  };
+}
+
 export async function canteenProductByIdFromDb(id: string): Promise<CanteenProduct | null> {
   // Guard against mock ids like "p1" — Supabase's id column is UUID so
   // querying with a non-UUID returns an opaque error object. Match the
@@ -352,6 +405,12 @@ export async function browseAllProductsFromDb(opts?: {
   tradeSlug?: string;
   sort?: BrowseSort;
   q?: string;
+  /** Category slug filter — matches `category_slug` column exactly. */
+  categorySlug?: string;
+  /** Aspect filter — { aspectKey: expectedValue }. Applied client-side
+   *  after fetch because JSONB `?` operators aren't cleanly supported
+   *  through the JS SDK. Cheap for the current dataset. */
+  aspectFilters?: Record<string, string>;
 }): Promise<BrowseProductRow[]> {
   // Fetch products + join canteens for trade metadata in one round-trip.
   let q = supabaseAdmin
@@ -359,12 +418,21 @@ export async function browseAllProductsFromDb(opts?: {
     .select(`
       id, canteen_id, host_slug, name, blurb, description, image_url,
       price_gbp, specs, trade_center_listing_id, featured, bulk_buy, boost,
+      show_in_canteen_products, show_in_trending, show_in_trade_center,
+      category_slug, category_aspects, commerce,
       created_at,
       hammerex_canteens!inner(slug, trade_slug, trade_label, host_display_name, host_slug)
-    `);
+    `)
+    // Per-product Trade Center gate. Merchant master switch (send_to_trade_center)
+    // still enforced downstream — this is defence-in-depth so a product with
+    // show_in_trade_center=false never appears in TC browse under any condition.
+    .eq("show_in_trade_center", true);
   if (opts?.q) {
     const safe = opts.q.replace(/[%_,]/g, "");
     if (safe) q = q.or(`name.ilike.%${safe}%,blurb.ilike.%${safe}%`);
+  }
+  if (opts?.categorySlug) {
+    q = q.eq("category_slug", opts.categorySlug);
   }
   const res = await q;
 
@@ -419,7 +487,13 @@ export async function browseAllProductsFromDb(opts?: {
           tradeCenterListingId: r.trade_center_listing_id ?? undefined,
           featured: r.featured ?? false,
           bulkBuy: r.bulk_buy ?? undefined,
-          boost: r.boost ?? undefined
+          boost: r.boost ?? undefined,
+          showInCanteenProducts: r.show_in_canteen_products ?? true,
+          showInTrending: r.show_in_trending ?? true,
+          showInTradeCenter: r.show_in_trade_center ?? true,
+          categorySlug: r.category_slug ?? undefined,
+          categoryAspects: r.category_aspects ?? undefined,
+          commerce: r.commerce ?? undefined
         } satisfies CanteenProduct,
         hostSlug: canteen.host_slug,
         hostDisplayName: canteen.host_display_name,
@@ -431,7 +505,20 @@ export async function browseAllProductsFromDb(opts?: {
         hostRating: hostRatings.get(canteen.host_slug) ?? null
       };
     })
-    .filter((row) => !opts?.tradeSlug || row.tradeSlug === opts.tradeSlug);
+    .filter((row) => !opts?.tradeSlug || row.tradeSlug === opts.tradeSlug)
+    // Aspect filters — every {aspectKey: value} pair must match. Applied
+    // post-fetch since JSONB attribute-match through the JS SDK is
+    // awkward. Cheap while the dataset is small; move to a Postgres
+    // GIN index + `->>` clauses if aspects grow past ~10k listings.
+    .filter((row) => {
+      const filters = opts?.aspectFilters;
+      if (!filters || Object.keys(filters).length === 0) return true;
+      const aspects = row.product.categoryAspects ?? {};
+      for (const [k, v] of Object.entries(filters)) {
+        if (String(aspects[k] ?? "") !== v) return false;
+      }
+      return true;
+    });
 
   // Sort per opts.sort
   const sort = opts?.sort ?? "boosted";
@@ -467,6 +554,73 @@ export async function browseTradeFacetsFromDb(): Promise<Array<{ slug: string; l
   return Array.from(counts.entries())
     .map(([slug, v]) => ({ slug, label: v.label, count: v.count }))
     .sort((a, b) => b.count - a.count);
+}
+
+/** Category + aspect facets for Trade Center browse.
+ *  Returns:
+ *    categories — every category with a non-zero listing count
+ *    aspectFacets — per-aspect value counts when a category is active
+ *                   (empty when no category is picked, to keep the
+ *                    facet panel scoped and useful)
+ *
+ *  Called on every Trade Center browse render. Runs one query;
+ *  aggregates in memory. Move to a materialised view if the row count
+ *  passes ~50k. */
+export async function browseCategoryFacetsFromDb(opts?: {
+  activeCategorySlug?: string;
+}): Promise<{
+  categories: Array<{ slug: string; count: number }>;
+  aspectFacets: Array<{ key: string; values: Array<{ value: string; count: number }> }>;
+}> {
+  const res = await supabaseAdmin
+    .from("hammerex_canteen_products")
+    .select("category_slug, category_aspects")
+    .eq("show_in_trade_center", true);
+  if (res.error) {
+    // eslint-disable-next-line no-console
+    console.error("[canteens.server] browseCategoryFacets", res.error);
+    return { categories: [], aspectFacets: [] };
+  }
+  const rows = res.data ?? [];
+
+  const catCounts = new Map<string, number>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  for (const r of rows as any[]) {
+    if (!r.category_slug) continue;
+    catCounts.set(r.category_slug, (catCounts.get(r.category_slug) ?? 0) + 1);
+  }
+  const categories = Array.from(catCounts.entries())
+    .map(([slug, count]) => ({ slug, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // Aspect facets only calculated when a category is active — otherwise
+  // we would surface aspect keys from mismatched categories, which is
+  // confusing (e.g. "Wattage" appearing when the user is browsing paint).
+  if (!opts?.activeCategorySlug) {
+    return { categories, aspectFacets: [] };
+  }
+  const aspectCounts = new Map<string, Map<string, number>>();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  for (const r of rows as any[]) {
+    if (r.category_slug !== opts.activeCategorySlug) continue;
+    const aspects = (r.category_aspects ?? {}) as Record<string, string | number>;
+    for (const [k, v] of Object.entries(aspects)) {
+      if (v == null || v === "") continue;
+      const str = String(v);
+      const inner = aspectCounts.get(k) ?? new Map<string, number>();
+      inner.set(str, (inner.get(str) ?? 0) + 1);
+      aspectCounts.set(k, inner);
+    }
+  }
+  const aspectFacets = Array.from(aspectCounts.entries()).map(([key, inner]) => ({
+    key,
+    values: Array.from(inner.entries())
+      .map(([value, count]) => ({ value, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 12)
+  }));
+
+  return { categories, aspectFacets };
 }
 
 // ─── Shape helpers ────────────────────────────────────────
@@ -555,6 +709,18 @@ function shapeProduct(r: any): CanteenProduct {
     tradeCenterListingId: r.trade_center_listing_id ?? undefined,
     featured: r.featured ?? false,
     bulkBuy: r.bulk_buy ?? undefined,
-    boost: r.boost ?? undefined
+    boost: r.boost ?? undefined,
+    galleryUrls: Array.isArray(r.gallery_urls) && r.gallery_urls.length > 0 ? r.gallery_urls : undefined,
+    videoUrls: Array.isArray(r.video_urls) && r.video_urls.length > 0 ? r.video_urls : undefined,
+    // Defaults preserve old behavior: a row with these columns missing
+    // (or null from a pre-migration read) is treated as visible on
+    // every surface.
+    showInCanteenProducts: r.show_in_canteen_products ?? true,
+    showInTrending: r.show_in_trending ?? true,
+    showInTradeCenter: r.show_in_trade_center ?? true,
+    variants: r.variants ?? undefined,
+    commerce: r.commerce ?? undefined,
+    categorySlug: r.category_slug ?? undefined,
+    categoryAspects: r.category_aspects ?? undefined
   };
 }

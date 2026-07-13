@@ -123,10 +123,11 @@ function MemberMiniProfile({
         </div>
         <button
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-neutral-100"
+          className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
+          style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
           aria-label="Close"
         >
-          <X size={16} />
+          <X size={16} strokeWidth={2.8}/>
         </button>
 
         {/* Cream banner + avatar cut-through */}

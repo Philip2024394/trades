@@ -27,12 +27,14 @@ import {
   X,
   Map as MapIcon,
   MapPin,
-  Clock
+  Clock,
+  ShoppingBag
 } from "lucide-react";
 import type { CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { RotatorPost } from "@/components/xrated/yard/CanteenMobilePostsRotator";
 import { competitorSlugsFor, tradeLabel as lookupTradeLabel } from "@/lib/tradeOff";
 import { reviewsForMerchant, overallForReview } from "@/lib/reviews";
+import { CanteenVariantPicker, type VariantSelectionState } from "@/components/xrated/yard/CanteenVariantPicker";
 
 const TAN = "#B8860B";
 const TAN_SOFT = "#F5E9D3";
@@ -77,9 +79,9 @@ const DEMO_DESIGNS: DemoDesign[] = [
     ref: "DS-101",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2012_31_13%20PM.png",
     galleryUrls: [
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png",
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png",
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_37_29%20PM.png"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_14_25%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_08_59%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_05_46%20PM.png"
     ],
     name: "Signature Handleless",
     tagline: "Bespoke to your space",
@@ -119,6 +121,13 @@ const DEMO_DESIGNS: DemoDesign[] = [
     id: "d4",
     ref: "DS-104",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_46_41%20PM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_07_05%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_08_14%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_10_28%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_25_14%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_38_21%20PM.png"
+    ],
     name: "Classic In-Frame",
     tagline: "Craftsmanship, no compromise",
     description: "In-frame painted doors with beaded detailing — the mark of a joiner-built kitchen. Solid oak worktops, Belfast sink, and a shaker dresser end. Built to last 30 years without a wobble. Ideal for period properties and Victorian terraces. From £22,400 including hand-finish paint job.",
@@ -128,6 +137,13 @@ const DEMO_DESIGNS: DemoDesign[] = [
     id: "d5",
     ref: "DS-105",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_37_29%20PM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_45_13%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_45_49%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvv.png",
+      "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvf.png",
+      "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvff.png"
+    ],
     name: "Compact Galley",
     tagline: "Small footprint, full function",
     description: "A galley layout designed for narrow terraces and flat conversions — every inch working hard. Corner pull-outs, integrated bin, tall pantry unit. Handleless doors keep the space feeling open. Works from 2.4m upwards. From £9,800 including appliances and install.",
@@ -137,6 +153,11 @@ const DEMO_DESIGNS: DemoDesign[] = [
     id: "d6",
     ref: "DS-106",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_32_24%20PM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2008_58_14%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2008_59_27%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_00_24%20PM.png"
+    ],
     name: "Open-Plan Showstopper",
     tagline: "Design-led, entertain-ready",
     description: "A statement piece for open-plan spaces — long island, waterfall worktop, floor-to-ceiling larder tower. Integrated seating and hidden charging points. Colour and finish tailored to your home during the design consultation. From £26,500, install in 4-5 weeks.",
@@ -242,6 +263,7 @@ export function CanteenTabbedSection({
   tradeSlug,
   tradeLabel,
   hostRating,
+  sendToTradeCenter = false,
   addressLine,
   postcode,
   city,
@@ -269,6 +291,11 @@ export function CanteenTabbedSection({
   tradeSlug?: string | null;
   tradeLabel: string;
   hostRating: { avg: number; count: number } | null;
+  /** When true, product quick-view + trending sheet render a "Buy on
+   *  Trade Center" button alongside "Ask on WhatsApp" for any product
+   *  that has a tradeCenterListingId. Sourced from the merchant's
+   *  admin profile (`sendToTradeCenter`) — merchant explicitly opts in. */
+  sendToTradeCenter?: boolean;
   addressLine?: string | null;
   postcode?: string | null;
   city?: string | null;
@@ -488,6 +515,7 @@ export function CanteenTabbedSection({
                 hostFirstName={hostFirstName}
                 hostWhatsapp={hostWhatsapp}
                 hostRating={hostRating}
+                sendToTradeCenter={sendToTradeCenter}
                 onClose={() => setViewingProductId(null)}
               />
             : <ProductsList
@@ -847,6 +875,7 @@ function ProductQuickView({
   hostFirstName,
   hostWhatsapp,
   hostRating,
+  sendToTradeCenter = false,
   onClose
 }: {
   product: CanteenProduct | null;
@@ -854,6 +883,10 @@ function ProductQuickView({
   hostFirstName: string;
   hostWhatsapp: string | null;
   hostRating: { avg: number; count: number } | null;
+  /** Merchant preference — when true AND the product has a
+   *  tradeCenterListingId, we render a "Buy on Trade Center" button
+   *  alongside "Ask on WhatsApp". */
+  sendToTradeCenter?: boolean;
   onClose: () => void;
 }) {
   if (!product) {
@@ -873,10 +906,33 @@ function ProductQuickView({
       </div>
     );
   }
+  // Variant state — resolved by the CanteenVariantPicker when the
+  // product has variants. When no variants, `variantState` stays null
+  // and we fall back to the base product's fields.
+  const [variantState, setVariantState] = useState<VariantSelectionState | null>(null);
+
+  // Effective values — variant overrides beat product-level values.
+  const effectivePriceGbp = variantState?.priceGbp ?? product.priceGbp;
+  const effectiveImageUrl = variantState?.imageUrl || product.imageUrl;
+  const variantSuffix = variantState?.label ? ` (${variantState.label})` : "";
+  const outOfStockNote = variantState?.isOutOfStock ? " — is this variant back in stock?" : "";
+
   const waUrl = hostWhatsapp
     ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-        `Hi ${hostFirstName}, I'm interested in "${product.name}" on Thenetworkers. Can you tell me more?`
+        `Hi ${hostFirstName}, I'm interested in "${product.name}${variantSuffix}" on Thenetworkers${outOfStockNote}. Can you tell me more?`
       )}`
+    : null;
+
+  // Trade Center deep-link carries the selected combo key so the
+  // downstream PDP can preselect the same variant.
+  const tcHref = product.tradeCenterListingId
+    ? (() => {
+        const params = new URLSearchParams();
+        params.set("from", "canteen");
+        params.set("slug", canteenSlug);
+        if (variantState?.comboKey) params.set("v", variantState.comboKey);
+        return `/tc/product/${product.tradeCenterListingId}?${params.toString()}`;
+      })()
     : null;
 
   return (
@@ -886,18 +942,19 @@ function ProductQuickView({
         type="button"
         onClick={onClose}
         aria-label="Close product detail"
-        className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full text-white shadow-md active:scale-[0.95]"
-        style={{ backgroundColor: BRAND_BLACK }}
+        className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full shadow-md active:scale-[0.95]"
+        style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
       >
-        <X size={14} strokeWidth={2.6}/>
+        <X size={14} strokeWidth={2.8}/>
       </button>
 
       {/* Hero + thumb gallery — shared ImageGallery renders main
           image sharp (object-contain) + up to 3 additional shots
-          from galleryUrls. Bulk-buy chip overlays on the main image. */}
+          from galleryUrls. Main image swaps to the variant image when
+          the buyer picks a combo with an image override. */}
       <div className="overflow-hidden rounded-xl">
         <ImageGallery
-          images={[product.imageUrl, ...(product.galleryUrls ?? [])]}
+          images={[effectiveImageUrl, ...(product.galleryUrls ?? [])]}
           altBase={product.name}
           overlay={
             product.bulkBuy ? (
@@ -917,10 +974,10 @@ function ProductQuickView({
         <div className="text-[14px] font-black leading-tight text-neutral-900">
           {product.name}
         </div>
-        {/* Price — plain typography, no pill. Falls back to
-            "Price on request" when the host hasn't set one. */}
+        {/* Price — updates live as the buyer picks variants. Falls
+            back to "Price on request" when the host hasn't set one. */}
         <div className="mt-0.5 text-[16px] font-black leading-none text-neutral-900">
-          {product.priceGbp > 0 ? `£${product.priceGbp}` : (
+          {effectivePriceGbp > 0 ? `£${effectivePriceGbp}` : (
             <span className="italic text-neutral-600">Price on request</span>
           )}
         </div>
@@ -958,20 +1015,54 @@ function ProductQuickView({
           </ul>
         )}
 
-        {/* Action — single compact centered pill. Short width so it
-            reads as a decisive CTA, not a full-width form button. */}
-        {waUrl && (
-          <div className="mt-3 flex justify-center">
-            <a
-              href={waUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-white shadow-md active:scale-[0.98]"
-              style={{ backgroundColor: "#166534" }}
-            >
-              <MessageCircle size={13} strokeWidth={2.5}/>
-              Ask about this
-            </a>
+        {/* Variant picker — renders only when the product has variants.
+            Selected combo drives effectivePriceGbp / effectiveImageUrl
+            (used in the price line and gallery above) and appears in
+            the WhatsApp message + Trade Center URL below. */}
+        {product.variants && (
+          <div className="mt-3">
+            <CanteenVariantPicker
+              variants={product.variants}
+              basePriceGbp={product.priceGbp}
+              baseImageUrl={product.imageUrl}
+              onChange={setVariantState}
+            />
+          </div>
+        )}
+
+        {/* Actions — dual button when the merchant has opted in
+            (sendToTradeCenter) AND the product has a tradeCenterListingId.
+            Otherwise just the WhatsApp button. Yellow "Ask on WhatsApp"
+            always primary; dark green "Buy on Trade Center" secondary. */}
+        {(waUrl || (sendToTradeCenter && tcHref)) && (
+          <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+            {waUrl && (
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noreferrer noopener"
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-neutral-900 shadow-md active:scale-[0.98]"
+                style={{ backgroundColor: "#FFB300" }}
+              >
+                <MessageCircle size={13} strokeWidth={2.6}/>
+                Ask on WhatsApp
+              </a>
+            )}
+            {sendToTradeCenter && tcHref && (
+              <Link
+                href={tcHref}
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-white shadow-md active:scale-[0.98]"
+                style={{ backgroundColor: "#166534" }}
+              >
+                <ShoppingBag size={13} strokeWidth={2.6}/>
+                Buy on Trade Center
+                {effectivePriceGbp > 0 && (
+                  <span className="ml-0.5 rounded-full bg-white/15 px-1.5 py-0.5 text-[10px]">
+                    £{effectivePriceGbp}
+                  </span>
+                )}
+              </Link>
+            )}
           </div>
         )}
       </div>

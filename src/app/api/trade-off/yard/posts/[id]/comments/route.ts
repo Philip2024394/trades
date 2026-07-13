@@ -12,10 +12,11 @@
 // Public read: anyone can GET the list — commenting requires a valid
 // trade listing. Homeowners view but never post.
 
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createHash } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { logCommentReply } from "@/lib/activity";
+import { readTradeSession } from "@/lib/tradeSession";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -142,18 +143,10 @@ export async function POST(req: Request, ctx: RouteCtx) {
     );
   }
 
-  const slug = s(body.slug).trim();
-  const editToken = s(body.edit_token).trim();
   const commentBody = s(body.body).trim();
   const parentCommentIdRaw = s(body.parent_comment_id).trim();
   const parentCommentId = parentCommentIdRaw || null;
 
-  if (!slug || !editToken) {
-    return NextResponse.json(
-      { ok: false, error: "missing_auth" },
-      { status: 401 }
-    );
-  }
   if (!commentBody || commentBody.length > 2000) {
     return NextResponse.json(
       { ok: false, error: "invalid_body" },
@@ -161,13 +154,38 @@ export async function POST(req: Request, ctx: RouteCtx) {
     );
   }
 
-  const { data: listing } = await supabaseAdmin
-    .from("hammerex_trade_off_listings")
-    .select("id, edit_token, status")
-    .eq("slug", slug)
-    .maybeSingle();
+  // Auth precedence:
+  //   1. body { slug, edit_token }  — magic-link callers
+  //   2. HMAC-signed trade session cookie — Dev · Pass + normal login
+  // Either path resolves to a `listing` row that owns this comment.
+  const providedSlug = s(body.slug).trim();
+  const providedToken = s(body.edit_token).trim();
+  let listing: { id: string; edit_token: string; status: string } | null = null;
 
-  if (!listing || !constantTimeEq(listing.edit_token, editToken)) {
+  if (providedSlug && providedToken) {
+    const { data } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("id, edit_token, status")
+      .eq("slug", providedSlug)
+      .maybeSingle();
+    if (data && constantTimeEq(data.edit_token, providedToken)) {
+      listing = data;
+    }
+  }
+
+  if (!listing) {
+    const session = readTradeSession(req as NextRequest);
+    if (session?.listing_id) {
+      const { data } = await supabaseAdmin
+        .from("hammerex_trade_off_listings")
+        .select("id, edit_token, status")
+        .eq("id", session.listing_id)
+        .maybeSingle();
+      if (data) listing = data;
+    }
+  }
+
+  if (!listing) {
     return NextResponse.json(
       { ok: false, error: "unauthorised" },
       { status: 401 }

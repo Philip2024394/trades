@@ -97,10 +97,11 @@ export function CanteenInviteModal({
         <div className="relative border-b border-neutral-200 px-5 pb-4 pt-4 sm:px-6 sm:pt-5">
           <button
             onClick={onClose}
-            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full transition hover:bg-neutral-100"
+            className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
             aria-label="Close"
           >
-            <X size={16}/>
+            <X size={16} strokeWidth={2.8}/>
           </button>
           <div className="flex items-center gap-2">
             <span

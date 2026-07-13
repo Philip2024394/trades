@@ -11,6 +11,7 @@
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { YardHero } from "@/components/xrated/yard/YardHero";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
@@ -26,6 +27,12 @@ import { YardBeaconCard } from "@/components/xrated/yard/YardBeaconCard";
 import { YardChatPost } from "@/components/xrated/yard/YardChatPost";
 import { YardFilters } from "@/components/xrated/yard/YardFilters";
 import { YardInboxShell } from "@/components/xrated/yard/YardInboxShell";
+import { MerchantQuickBar } from "@/components/xrated/yard/MerchantQuickBar";
+import { cookies } from "next/headers";
+import {
+  TRADE_SESSION_COOKIE_NAME,
+  verifyTradeSession
+} from "@/lib/tradeSession";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
@@ -221,6 +228,37 @@ export default async function YardFeedPage({
   const searchQ = readParam(sp.q);
   const context = readParam(sp.context);
   const ctx = tradeCircleContext(context);
+  // "My posts" filter — set by the /manage redirect and by the chip on
+  // the Yard toolbar. When ?mine=1 AND the viewer is signed in, only
+  // posts whose listing_id matches the session are shown.
+  const mineFilter = readParam((sp as { mine?: string | string[] }).mine) === "1";
+
+  // Signed-in merchant detection — reads the HMAC-signed trade session
+  // cookie. When present, we render a MerchantQuickBar at the top of
+  // the Yard so the merchant's workflows (Products / Canteen / TC /
+  // Messages) are one tap away. Public visitors don't see the bar.
+  const jar = await cookies();
+  const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
+  const merchantSession = verifyTradeSession(sessionRaw);
+  let merchantForBar: {
+    slug: string;
+    editToken: string;
+    displayName: string;
+  } | null = null;
+  if (merchantSession) {
+    const { data } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("slug, display_name, edit_token, status")
+      .eq("id", merchantSession.listing_id)
+      .maybeSingle();
+    if (data && data.status === "live") {
+      merchantForBar = {
+        slug: data.slug,
+        editToken: data.edit_token,
+        displayName: data.display_name
+      };
+    }
+  }
   const viewerSlug = readParam((sp as { viewer?: string | string[] }).viewer);
   const viewerToken = readParam(
     (sp as { viewer_token?: string | string[] }).viewer_token
@@ -280,7 +318,7 @@ export default async function YardFeedPage({
     }
   }
 
-  const [{ posts, posters, reactions }, counts] = await Promise.all([
+  const [{ posts: allPosts, posters, reactions }, counts] = await Promise.all([
     loadFeed({
       kind,
       trade,
@@ -290,6 +328,14 @@ export default async function YardFeedPage({
     }),
     loadCountsForKind()
   ]);
+
+  // Apply the "?mine=1" filter now that merchantSession is available.
+  // Public visitors with ?mine=1 see the unfiltered feed (silent no-op)
+  // so a stale bookmark from a signed-out state doesn't show blank.
+  const posts =
+    mineFilter && merchantSession?.listing_id
+      ? allPosts.filter((p) => p.listing_id === merchantSession.listing_id)
+      : allPosts;
 
   // Split the feed by kind so we can render chat as a Facebook-style
   // vertical feed and hire/available as a marketplace card grid.
@@ -329,6 +375,12 @@ export default async function YardFeedPage({
 
   return (
     <main className="pb-24 md:pb-0" style={{ backgroundColor: "#FBF6EC" }}>
+      {/* Merchant "Signed in as …" strip removed 2026-07-14 per Philip.
+          Rationale: the burger drop-down now shows the merchant's avatar
+          + name in a full profile card, so this thin strip on top of
+          the hero was redundant confirmation. Keeping the code path
+          (server-side session detection above) so surfaces that DO want
+          a lightweight signed-in cue in the future can re-mount it. */}
       <YardNewPostsRibbon loadedAt={loadedAt} />
       {/* NEW — THE NETWORK inbox shell. 3-column messaging layout
           (list · thread · post summary). Collapses to a list→thread
@@ -481,6 +533,32 @@ export default async function YardFeedPage({
           <YardFilters counts={counts} />
         </Suspense>
 
+        {/* "My posts" chip — only visible to signed-in merchants. Toggles
+            ?mine=1 which filters the feed to their own posts. Replaces
+            the old /trade-off/yard/manage dashboard. */}
+        {merchantSession && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <Link
+              href={mineFilter ? "/trade-off/yard" : "/trade-off/yard?mine=1"}
+              scroll={false}
+              className={`inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[11px] font-black uppercase tracking-wider transition ${
+                mineFilter
+                  ? "bg-[#FFB300] text-neutral-900 shadow-sm"
+                  : "border border-neutral-200 bg-white text-neutral-800 hover:bg-neutral-50"
+              }`}
+            >
+              {mineFilter ? "Showing: my posts" : "My posts"}
+            </Link>
+            {mineFilter && (
+              <span className="text-[11px] text-neutral-500">
+                {posts.length === 0
+                  ? "You haven't posted to The Yard yet."
+                  : `${posts.length} post${posts.length === 1 ? "" : "s"}`}
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Beacon composer — "need this now", red rim, above everything.
             Only renders for authed trades (has magic-link params). */}
         <div className="mt-6">
@@ -523,6 +601,7 @@ export default async function YardFeedPage({
                         poster={posters[p.listing_id] ?? null}
                         reactions={reactions[p.id] ?? {}}
                         inCircle={viewerCircleIds.has(p.listing_id)}
+                        currentListingId={merchantSession?.listing_id ?? null}
                       />
                     </YardCardFlipShell>
                   </li>

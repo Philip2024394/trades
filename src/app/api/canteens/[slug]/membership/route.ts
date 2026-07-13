@@ -11,6 +11,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getMerchantSlug } from "@/lib/merchantSession";
+import { MOCK_CANTEENS } from "@/lib/canteens";
 
 export async function GET(
   _req: Request,
@@ -22,16 +23,28 @@ export async function GET(
     return NextResponse.json({ ok: true, isMember: false, isHost: false, viewerSlug: null });
   }
 
-  const canteen = await supabaseAdmin
+  // Resolve the canteen. DB first; when missing, fall back to
+  // MOCK_CANTEENS so fixture-defined canteens (uk-kitchen-fitters,
+  // north-uk-sparks, uk-scaffolders) still report the correct host.
+  // Without this fallback, hosts like Mike Watson show isHost=false
+  // on their own fixture canteens and lose the Edit-mode toggle.
+  const canteenRes = await supabaseAdmin
     .from("hammerex_canteens")
     .select("id, host_slug")
     .eq("slug", slug)
     .maybeSingle();
-  if (canteen.error || !canteen.data) {
+  let canteenData: { id: string; host_slug: string } | null = canteenRes.data;
+  if (!canteenData) {
+    const fixture = MOCK_CANTEENS.find((c) => c.slug === slug);
+    if (fixture) {
+      canteenData = { id: fixture.id, host_slug: fixture.hostSlug };
+    }
+  }
+  if (!canteenData) {
     return NextResponse.json({ ok: true, isMember: false, isHost: false, viewerSlug });
   }
 
-  const isHost = canteen.data.host_slug === viewerSlug;
+  const isHost = canteenData.host_slug === viewerSlug;
 
   // Host is always considered a member (they own the canteen). Skip
   // the extra DB round-trip when we already know the answer.
@@ -42,7 +55,7 @@ export async function GET(
   const member = await supabaseAdmin
     .from("hammerex_canteen_members")
     .select("id")
-    .eq("canteen_id", canteen.data.id)
+    .eq("canteen_id", canteenData.id)
     .eq("member_slug", viewerSlug)
     .maybeSingle();
 

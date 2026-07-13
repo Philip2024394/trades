@@ -8,13 +8,18 @@
 import type { CSSProperties } from "react";
 import { Suspense } from "react";
 import { AppShell } from "@/components/shell/AppShell";
+import { resolveInitialAuth } from "@/components/shell/resolveInitialAuth";
 import { YardDiyGuard } from "@/components/xrated/yard/YardDiyGuard";
 
-export default function YardLayout({
+export default async function YardLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  // Server-resolve the trade session cookie so AppShell renders the
+  // signed-in header on first paint. No client-side "Join free / Sign
+  // in" flash while /api/trade-off/session round-trips.
+  const initialAuth = await resolveInitialAuth();
   return (
     <div
       className="min-h-screen bg-[#FBF6EC] text-[#1B1A17]"
@@ -40,7 +45,7 @@ export default function YardLayout({
           drawer. Same shell wraps every Thenetworkers surface so members
           never feel like they're leaving the platform. */}
       <Suspense fallback={<div className="min-h-[100dvh]">{children}</div>}>
-        <AppShell>{children}</AppShell>
+        <AppShell initialAuth={initialAuth}>{children}</AppShell>
       </Suspense>
     </div>
   );

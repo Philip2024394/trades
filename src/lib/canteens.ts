@@ -337,6 +337,14 @@ export type CanteenMember = {
   };
   /** Number of portfolio jobs — used for the chevron link. */
   portfolioCount?: number;
+  /** Merchant preference — when true, product quick-view + trending
+   *  swipe sheet show a "Buy on Trade Center" button alongside the
+   *  WhatsApp button (for products that have a tradeCenterListingId).
+   *  Default false — merchants have to opt in so they don't
+   *  accidentally send customers to a cart flow they don't understand.
+   *  Per-product control still comes from tradeCenterListingId — this
+   *  is the master switch on top of that. */
+  sendToTradeCenter?: boolean;
 };
 
 // Small stable avatar pool (Unsplash portraits, cropped square).
@@ -392,7 +400,11 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
         website: "watson-kitchens.co.uk"
       },
       reviews: { avg: 4.9, count: 128 },
-      portfolioCount: 48
+      portfolioCount: 48,
+      // Mike Watson opted in to Trade Center routing — his product
+      // quick-view + trending sheets show "Buy on Trade Center"
+      // alongside WhatsApp for products that have a tradeCenterListingId.
+      sendToTradeCenter: true
     },
     { slug: "demo-tom-fisher-kitchen-fitter-leeds", displayName: "Tom Fisher", tradeLabel: "Kitchen Fitter", city: "Leeds", avatarUrl: AV.m2, role: "moderator", whatsapp: "447700900102", bioShort: "Bespoke oak + walnut jobs. Full showroom fit-outs. West Yorks only.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
     { slug: "demo-rachel-simms-kitchen-fitter-liverpool", displayName: "Rachel Simms", tradeLabel: "Kitchen Fitter", city: "Liverpool", avatarUrl: AV.m3, role: "member", whatsapp: "447700900103", bioShort: "Insurance jobs + landlord fit-outs. 3-day full-fit turnaround.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
@@ -477,6 +489,9 @@ export type CanteenProduct = {
   imageUrl: string;
   /** Extra shots for the product-focus view gallery. */
   galleryUrls?: string[];
+  /** Product videos — 60s max each, tier-gated. Uploaded through the
+   *  Video app. Empty / absent for the vast majority of products. */
+  videoUrls?: string[];
   priceGbp: number;
   currency?: "GBP" | "EUR" | "USD" | "AUD" | "CAD";
   /** Short one-line description shown under the name in the panel. */
@@ -510,6 +525,199 @@ export type CanteenProduct = {
     targetTradeSlugs?: readonly string[];
     paidGbp: number;
   };
+  // ─── Per-surface visibility flags ────────────────────────
+  // "Upload once, flow to 3 surfaces" model. Each surface has its own
+  // flag so a merchant can (for example) show a product on Trade Center
+  // but hide it from the trending swipe sheet. Defaults are all true so
+  // existing rows behave unchanged. Trade Center visibility is
+  // additionally gated by the merchant-wide `sendToTradeCenter` master
+  // switch on their member profile.
+  /** Product renders in the canteen Products tab. Default true. */
+  showInCanteenProducts?: boolean;
+  /** Product is eligible for the trending swipe sheet on the canteen
+   *  mobile app. Default true. */
+  showInTrending?: boolean;
+  /** Product is listed on Trade Center. Requires merchant
+   *  `sendToTradeCenter = true` AND `tradeCenterListingId` set. Default
+   *  true (harmless without the other two). */
+  showInTradeCenter?: boolean;
+  /** Optional variants — sizes, colors, or both. When absent the
+   *  product is a single SKU. When present, the buyer picks a variant
+   *  before the WhatsApp / Trade Center action is composed. */
+  variants?: CanteenProductVariants;
+  /** Commerce metadata: brand, year, condition, country of origin,
+   *  warranty, shipping (local + international per-country), multi-buy
+   *  discount ladders, and optional trade-specific spec blocks. */
+  commerce?: CanteenProductCommerce;
+  /** Product category slug from src/lib/productCategories.ts. Drives
+   *  the per-category "aspects" schema shown in the editor + the
+   *  faceted filter surface on Trade Center browse. */
+  categorySlug?: string;
+  /** Per-category aspect values (key → string|number). Renders as the
+   *  "Item specifics" block on the buyer PDP + powers filters. */
+  categoryAspects?: Record<string, string | number>;
+};
+
+/** eBay-compatible condition ladder — the extra levels (new-other,
+ *  certified-refurbished, seller-refurbished, for-parts) matter for
+ *  trade goods where condition drives price and buyer expectations. */
+export type CanteenProductCondition =
+  | "new"
+  | "new-other"
+  | "certified-refurbished"
+  | "seller-refurbished"
+  | "used"
+  | "for-parts";
+
+export type CanteenProductCommerce = {
+  brand?: string;
+  /** Model / part number as printed by the manufacturer. Not the same
+   *  as MPN — this is the friendly name (e.g. "Greenstar 30i"). */
+  model?: string;
+  /** Manufacturer Part Number — the industrial code (e.g. "7716701164"). */
+  mpn?: string;
+  /** GTIN — EAN-13 / UPC-12 / ISBN. Enables product-catalog matching
+   *  and cross-marketplace SEO. */
+  gtin?: string;
+  yearMade?: number;
+  /** Extended eBay-style condition ladder — more granular than the old
+   *  new/used/refurbished triple. */
+  condition?: CanteenProductCondition;
+  /** Free-text detail for used/refurbished — mirrors eBay's
+   *  ConditionDescription field. */
+  conditionDescription?: string;
+  /** Two-letter ISO country code, e.g. "GB", "IE", "IT". */
+  countryOfOrigin?: string;
+  /** Free-text warranty description e.g. "12 months manufacturer". */
+  warranty?: string;
+  /** Physical dimensions — feeds shipping calculators + PDP display. */
+  weightKg?: number;
+  lengthMm?: number;
+  widthMm?: number;
+  heightMm?: number;
+  /** Dispatch time in working days. Feeds the "Order in next X for
+   *  dispatch today" surface. 0 = same-day. */
+  dispatchDays?: number;
+  /** Return policy block. */
+  returns?: {
+    accepted: boolean;
+    windowDays?: 14 | 30 | 60;
+    /** Who pays for the return shipping. */
+    paidBy?: "buyer" | "seller";
+    /** Restocking fee percent — 0-25. */
+    restockingFeePercent?: number;
+  };
+  /** Compatibility fitment — free-form pairs like "Boiler: Worcester
+   *  Greenstar 30i" or "Consumer unit: Wylex NM806L". Powers "fits X"
+   *  buyer-side filter. */
+  compatibility?: { label: string; value: string }[];
+  /** Age restriction — buyer must confirm. Rare but needed for
+   *  chemicals, blades, some paints. */
+  ageRestriction?: 16 | 18 | null;
+  shipping?: {
+    /** When true, local delivery is included in the product price. */
+    freeLocalShipping?: boolean;
+    /** Cost for local shipping in GBP. Ignored if freeLocalShipping. */
+    localShippingGbp?: number;
+    /** Master switch for the international-rates block. */
+    shipsInternationally?: boolean;
+    /** Per-country rates. Buyer picks their country → we quote. */
+    internationalRates?: { country: string; priceGbp: number }[];
+  };
+  multiBuy?: {
+    enabled: boolean;
+    /** Two mutually exclusive discount models:
+     *    tiered   — merchant sets absolute unit prices per qty tier
+     *    additive — 2nd unit gets X off, 3rd+ gets Y additional off */
+    model: "tiered" | "additive";
+    tiers?: { qty: number; unitPriceGbp: number }[];
+    additive?: {
+      secondUnitDiscountGbp: number;
+      thirdPlusUnitDiscountGbp: number;
+    };
+    /** Whether one delivery charge covers the whole multi-buy order
+     *  or each unit gets its own delivery charge (bulky items). */
+    deliveryModel: "single" | "per-item";
+  };
+  /** Electrical spec block — merchant opt-in. Free-text so we don't
+   *  gate on a schema for a fast-moving product landscape. */
+  electrical?: {
+    voltage?: string;
+    wattage?: string;
+    amps?: string;
+    plugType?: string;
+    certification?: string;
+  };
+};
+
+export type CanteenSizePreset =
+  | "uk_shoes"
+  | "eu_shoes"
+  | "uk_clothes"
+  | "us_clothes"
+  | "numeric"
+  | "trade_length"
+  | "custom";
+
+export type CanteenProductVariants = {
+  axis: "size" | "color" | "size_color";
+  sizePreset?: CanteenSizePreset;
+  /** The available size labels for this product. Merchant-editable. */
+  sizeOptions?: string[];
+  /** Colors offered — name is required, hex swatch is optional. */
+  colorOptions?: { name: string; hex?: string }[];
+  /** Per-combination overrides. Key is:
+   *    axis="size"        → the size label ("M", "L", "10")
+   *    axis="color"       → the color name ("Ivory Mist")
+   *    axis="size_color"  → `${size}|${color}` ("M|Ivory Mist")
+   *  Any missing field on an override falls back to the product-level
+   *  value. Empty overrides object = no per-variant customisation
+   *  (product-level price / image / SKU applies to every combo). */
+  overrides?: Record<string, VariantOverride>;
+};
+
+export type VariantOverride = {
+  sku?: string;
+  imageUrl?: string;
+  priceGbp?: number;
+  /** Stock count — 0 = out of stock, undefined = "not tracking". */
+  stock?: number;
+  mpn?: string;
+  gtin?: string;
+};
+
+/** Compute every combo key for the given variants shape. Order is
+ *  deterministic (size first, then color) so the editor can render
+ *  rows in a predictable order. */
+export function comboKeysForVariants(v: CanteenProductVariants): string[] {
+  const sizes = v.sizeOptions ?? [];
+  const colors = (v.colorOptions ?? []).map((c) => c.name);
+  if (v.axis === "size") return sizes;
+  if (v.axis === "color") return colors;
+  const out: string[] = [];
+  for (const s of sizes) {
+    for (const c of colors) out.push(`${s}|${c}`);
+  }
+  return out;
+}
+
+/** Human label for a combo key. `size_color` splits back to "M · Ivory Mist". */
+export function labelForComboKey(axis: CanteenProductVariants["axis"], key: string): string {
+  if (axis !== "size_color") return key;
+  const [size, color] = key.split("|");
+  return `${size} · ${color}`;
+}
+
+/** Preset templates so the merchant can pick "UK clothes" and get
+ *  S/M/L/XL/XXL without typing. Custom preset means "I'll type my own". */
+export const SIZE_PRESETS: Record<CanteenSizePreset, string[]> = {
+  uk_shoes:     ["6", "7", "8", "9", "10", "11", "12"],
+  eu_shoes:     ["39", "40", "41", "42", "43", "44", "45", "46"],
+  uk_clothes:   ["XS", "S", "M", "L", "XL", "XXL"],
+  us_clothes:   ["XS", "S", "M", "L", "XL", "XXL"],
+  numeric:      ["30", "32", "34", "36", "38"],
+  trade_length: ["1m", "2m", "2.4m", "3m", "4m"],
+  custom:       []
 };
 
 /** Boost plan taxonomy — offered from the Manage Dashboard when the
@@ -533,7 +741,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Solid Oak Worktop 40mm",
-    imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_20_03%20PM.png",
     priceGbp: 120,
     blurb: "Cut to size, oiled, delivered NW · £120/lm",
     description: "40mm solid European oak worktops, kiln-dried and pre-finished with Osmo. Any length up to 4m in one piece. Free NW delivery on orders over £400. Cut and edge-treated to your dimensions before dispatch.",
@@ -552,7 +760,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Shaker Cabinet Doors · Pack of 3",
-    imageUrl: "https://images.unsplash.com/photo-1600607686527-6fb886090705?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_21_27%20PM.png",
     priceGbp: 120,
     blurb: "White painted MDF · £120/pack",
     description: "Classic shaker profile in tulipwood-veneer MDF, primed and top-coated in Dulux Trade satinwood. Three doors per pack in any of five standard sizes.",
@@ -571,7 +779,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Prefab Pantry Carcasses",
-    imageUrl: "https://images.unsplash.com/photo-1616627052131-9d3f6f0f7d1c?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_22_21%20PM.png",
     priceGbp: 199,
     blurb: "Pack of 3 · 2000×600×580 · £199",
     description: "Pre-assembled tall pantry carcasses. Adjustable shelves + solid back panel. Ships flat-packed with dowels for on-site final assembly (about 8 minutes each).",
@@ -595,7 +803,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Brushed Brass Handles",
-    imageUrl: "https://images.unsplash.com/photo-1615873968403-89e068629265?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_24_55%20PM.png",
     priceGbp: 6,
     blurb: "From £6 trade · pull + knob sets",
     description: "Solid brushed-brass handles and knobs. Threaded stainless bolts included. Fashion-neutral brass tone that goes with cream, sage or dark wood.",
@@ -612,7 +820,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Quartz Offcuts · Assorted",
-    imageUrl: "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_29_23%20PM.png",
     priceGbp: 40,
     blurb: "Splash-back pieces · £40+",
     description: "End-of-project quartz offcuts. Great for splash-backs, sills and small vanities. Sizes and colours change weekly — first come first served.",
@@ -623,7 +831,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Undermount Stainless Sink 1.5 bowl",
-    imageUrl: "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_28_11%20PM.png",
     priceGbp: 165,
     blurb: "3mm deck · pre-drilled overflow",
     description: "1.5-bowl undermount stainless with sound-deadening. 3mm deck, pre-drilled overflow, all-in fixings included. Fits standard 800mm cabinets.",
@@ -634,7 +842,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Angled Chimney Extractor 90cm",
-    imageUrl: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2009_30_26%20PM.png",
     priceGbp: 249,
     blurb: "780m³/h · touch controls",
     description: "Modern angled glass extractor, 780m³/h airflow, 3-speed touch controls, LED, carbon filters swappable. Class-A energy.",
