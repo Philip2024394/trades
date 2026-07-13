@@ -195,6 +195,30 @@ export function SignInForm({
             We&apos;ll email you a one-time link. No password, no callback fee,
             no fuss.
           </p>
+
+          {/* [DEV BUTTON] — remove on "remove dev buttons".
+              Dev-only bypass: /api/auth/trade/dev-signin mints a demo
+              trade session with no email or OTP. */}
+          <div className="flex justify-center pt-1">
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  const res = await fetch("/api/auth/trade/dev-signin", { method: "POST" });
+                  if (!res.ok) throw new Error(String(res.status));
+                  router.push(nextParam ?? "/home");
+                } catch {
+                  /* silent — dev button */
+                }
+              }}
+              className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[9.5px] font-black uppercase tracking-wider shadow-sm"
+              style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+              title="Dev-only bypass — signs in as Demo Trade with no email or OTP"
+            >
+              Dev · Pass
+            </button>
+          </div>
+          {/* [/DEV BUTTON] */}
         </form>
       ) : (
         <div className="flex flex-col gap-3">

@@ -48,8 +48,11 @@ export function TradeLoginForm({ next }: { next?: string | null }) {
       // Honour ?next=/trade-off/... if provided (e.g. the Sell hub nudge
       // bounces here so the merchant lands back where they were).
       // sanitizeNext on the server has already validated the prefix.
-      window.location.href =
-        next ?? `/trade-off/edit/${encodeURIComponent(body.slug)}`;
+      // Default landing is /trade-off/yard — the merchant's home surface
+      // that shows every workflow (Products / Canteen / Yard feed /
+      // Trade Center) as entry cards. Answers "what would you like to
+      // do today?" implicitly, without a chooser modal.
+      window.location.href = next ?? "/trade-off/yard";
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Network error.");
     } finally {
@@ -136,6 +139,44 @@ export function TradeLoginForm({ next }: { next?: string | null }) {
       >
         {submitting ? "Logging in…" : "Log in"}
       </button>
+
+      {/* [DEV BUTTON] — remove on "remove dev buttons".
+          Explicit demo-merchant chips so the target is unambiguous.
+          Each lands on /trade-off/yard — the merchant's home surface
+          which shows Products / Canteen / Yard feed / Trade Center as
+          entry cards (the implicit "what would you like to do today"
+          answer). Auto-seeds the row if it doesn't exist. */}
+      <div className="flex flex-col items-center gap-1.5 pt-1">
+        <span className="text-[9.5px] font-black uppercase tracking-[0.18em] text-neutral-500">
+          Dev · Pass sign-in
+        </span>
+        <div className="flex flex-wrap justify-center gap-1.5">
+          <a
+            href={`/api/dev/impersonate?slug=demo-mike-watson-drywall-manchester&next=${encodeURIComponent(next ?? "/trade-off/yard")}`}
+            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+            title="Dev-only bypass — sign in as Mike Watson"
+          >
+            Mike Watson
+          </a>
+          <a
+            href={`/api/dev/impersonate?slug=demo-stuart-kingsley-building-merchant-hull&next=${encodeURIComponent(next ?? "/trade-off/yard")}`}
+            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+            title="Dev-only bypass — sign in as Stuart Kingsley"
+          >
+            Stuart Kingsley
+          </a>
+          <a
+            href={`/api/dev/impersonate?next=${encodeURIComponent(next ?? "/trade-off/yard")}`}
+            className="inline-flex items-center gap-1 rounded-full border border-neutral-300 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-wider text-neutral-800 shadow-sm"
+            title="Dev-only bypass — default demo merchant"
+          >
+            Default
+          </a>
+        </div>
+      </div>
+      {/* [/DEV BUTTON] */}
       <div className="flex flex-col gap-2 pt-2 text-[13px] sm:flex-row sm:justify-between">
         <a
           href={`/trade-off/set-password?wa=${encodeURIComponent(whatsapp)}`}

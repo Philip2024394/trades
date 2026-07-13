@@ -39,9 +39,35 @@ export function adminCookieValue(): string {
   return sign(COOKIE_PAYLOAD);
 }
 
+// Fixed dev-mode bypass token. Accepted ONLY when NODE_ENV is not
+// "production". Lets the [DEV BUTTON] admin sign-in work even when
+// ADMIN_COOKIE_SECRET isn't configured in .env.local — otherwise the
+// endpoint throws and admin can't get in without env-wrangling.
+const DEV_ADMIN_TOKEN = "DEV_ADMIN_ONLY_DEV_MODE_TOKEN";
+
+export function isDevAdminToken(raw: string | null | undefined): boolean {
+  if (process.env.NODE_ENV === "production") return false;
+  return raw === DEV_ADMIN_TOKEN;
+}
+
+export function devAdminCookieValue(): string {
+  return DEV_ADMIN_TOKEN;
+}
+
 export function verifyAdminCookie(raw: string | undefined | null): boolean {
   if (!raw || typeof raw !== "string") return false;
-  const expected = adminCookieValue();
+  // Dev-mode bypass: accept the fixed dev token when not in prod.
+  // Wrapped in NODE_ENV check inside the helper so it can never
+  // grant access on the live app.
+  if (isDevAdminToken(raw)) return true;
+  let expected: string;
+  try {
+    expected = adminCookieValue();
+  } catch {
+    // ADMIN_COOKIE_SECRET missing — no real cookie can ever verify,
+    // so bail. In dev, the dev token above already covered access.
+    return false;
+  }
   const a = Buffer.from(raw);
   const b = Buffer.from(expected);
   if (a.length !== b.length) return false;

@@ -71,6 +71,20 @@ export function AffiliateLoginForm() {
       >
         {submitting ? "Logging in…" : "Log in"}
       </button>
+
+      {/* [DEV BUTTON] — remove on "remove dev buttons".
+          Dev-only bypass: signs in as the first affiliate in the DB. */}
+      <div className="flex justify-center pt-1">
+        <a
+          href="/api/affiliates/dev-signin"
+          className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[9.5px] font-black uppercase tracking-wider shadow-sm"
+          style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+          title="Dev-only bypass — signs in as the first affiliate with no password"
+        >
+          Dev · Pass
+        </a>
+      </div>
+      {/* [/DEV BUTTON] */}
     </form>
   );
 }

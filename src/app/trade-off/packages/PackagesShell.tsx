@@ -10,10 +10,8 @@ import { Fragment, useState } from "react";
 import Link from "next/link";
 import {
   Check,
-  UserRound,
   Home,
   ShoppingBag,
-  Package,
   ShieldCheck,
   MessageCircle,
   ArrowRight,
@@ -21,7 +19,12 @@ import {
   Layers,
   Clock,
   Radio,
-  Truck
+  Truck,
+  Star,
+  ChevronDown,
+  ClipboardList,
+  BookOpen,
+  Users
 } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
 
@@ -29,6 +32,33 @@ const CREAM = "#FBF6EC";
 const TAN = "#B8860B";
 const TAN_HAIRLINE = "rgba(184,134,11,0.20)";
 const TAN_SOFT_TINT = "rgba(184,134,11,0.06)";
+
+// Slight pulsing glow behind the "Most popular" badge. Uses a
+// pseudo-element outside the badge so the box-shadow can fade in/out
+// smoothly without repainting the entire badge every frame.
+const PACKAGES_CSS = `
+@keyframes packages-badge-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(255,179,0,0.55), 0 2px 6px rgba(0,0,0,0.15);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(255,179,0,0), 0 2px 6px rgba(0,0,0,0.15);
+  }
+}
+.packages-badge-glow {
+  animation: packages-badge-pulse 2.4s ease-in-out infinite;
+  will-change: box-shadow;
+}
+@media (prefers-reduced-motion: reduce) {
+  .packages-badge-glow { animation: none; }
+}
+
+/* Native details/summary open-close chevron via CSS only. */
+.packages-faq details > summary { list-style: none; cursor: pointer; }
+.packages-faq details > summary::-webkit-details-marker { display: none; }
+.packages-faq details[open] > summary .packages-chevron { transform: rotate(180deg); }
+.packages-faq details > summary .packages-chevron { transition: transform 200ms ease; }
+`;
 
 type BillingCycle = "monthly" | "annual";
 
@@ -59,7 +89,13 @@ type FeatureGroup = { label: string; items: string[] };
 
 type Tier = {
   id: TierId;
-  icon: React.ComponentType<{ size?: number; strokeWidth?: number; className?: string; style?: React.CSSProperties }>;
+  /** Number of yellow stars shown beside the tier name — Free=1, up
+   *  to The Works=4. Ladder progression at a glance. */
+  stars: 1 | 2 | 3 | 4;
+  /** Hero image rendered at the top of the pricing card. Provided by
+   *  Philip, one per tier, aspect ~4:3. Falls back to a subtle
+   *  brand-gradient placeholder if omitted. */
+  heroImage?: string;
   name: string;
   positioning: string;
   audience: string;
@@ -72,9 +108,10 @@ type Tier = {
 const TIERS: Tier[] = [
   {
     id: "free",
-    icon: UserRound,
+    stars: 1,
+    heroImage: "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvffsdsddsdsdsd.png",
     name: "Free",
-    positioning: "Get discovered",
+    positioning: "Start moving",
     audience: "Homeowners + browsing merchants",
     ctaLabel: "Get started free",
     ctaHref: "/trade-off/signup",
@@ -110,11 +147,11 @@ const TIERS: Tier[] = [
   },
   {
     id: "canteen",
-    icon: Home,
+    stars: 2,
+    heroImage: "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvffsdsddsd.png",
     name: "Canteen",
-    positioning: "Your website + community presence",
+    positioning: "Step up. Get seen.",
     audience: "Service trades — kitchen fitters, sparks, plumbers",
-    badge: "Most popular",
     ctaLabel: "Start 14 day trial",
     ctaHref: "/trade-off/signup?plan=canteen",
     groups: [
@@ -150,9 +187,10 @@ const TIERS: Tier[] = [
   },
   {
     id: "marketplace",
-    icon: ShoppingBag,
+    stars: 3,
+    heroImage: "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvffsdsddsdsdsddd.png",
     name: "Marketplace",
-    positioning: "Sell products, parts + services",
+    positioning: "Load up. Get selling.",
     audience: "Product sellers — timber merchants, quartz, tools, kitchens",
     ctaLabel: "Start selling",
     ctaHref: "/trade-off/signup?plan=marketplace",
@@ -199,11 +237,12 @@ const TIERS: Tier[] = [
     // Display name changed to "The Works" per Philip 2026-07-13 —
     // trades-native ("give me the works"), not corporate.
     id: "ultimate",
-    icon: Package,
+    stars: 4,
+    heroImage: "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvffsdsd.png",
     name: "The Works",
-    positioning: "Give me the works",
+    positioning: "All terrain. Everything unlocked.",
     audience: "Hybrid merchants — sell products AND run service",
-    badge: "Best value",
+    badge: "Most popular",
     ctaLabel: "Get The Works",
     ctaHref: "/trade-off/signup?plan=ultimate",
     groups: [
@@ -355,48 +394,186 @@ type FeatureCardData = {
   demoHref: string;
 };
 
-const FEATURES: FeatureCardData[] = [
+// Feature cards grouped by intent: Traffic side first (where the
+// customers come from), then Merchant side (what you show them), then
+// Extensibility (how you make it yours). Merchants read top-down and
+// understand the whole platform loop, not just the surfaces they'll
+// build on.
+
+type FeatureGroupCards = { label: string; blurb: string; cards: FeatureCardData[] };
+
+const FEATURE_GROUPS: FeatureGroupCards[] = [
   {
-    icon: Home,
-    title: "Live canteen feed",
-    description: "Trade posts scroll up slowly, all day. Pause on hover. Members reply in one tap. Feels like a WhatsApp group that lives on your website.",
-    tierBadge: "Canteen +",
-    demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-feed"
+    label: "Where the customers come from",
+    blurb: "The demand side. Traffic engines that put your listing in front of a real buyer.",
+    cards: [
+      {
+        icon: ClipboardList,
+        title: "Submit Project",
+        description: "Homeowner posts their project on their private Notebook. Matched trades in the postcode get an alert. You reply on WhatsApp — no lead fee, no bidding, no cut.",
+        tierBadge: "All tiers",
+        demoHref: "/trade-off/notebook"
+      },
+      {
+        icon: BookOpen,
+        title: "Construction Notebook",
+        description: "Every homeowner gets a personal vault — quotes, photos, warranties, invoices — all tied to their property forever. That's why they come back and hire you again.",
+        tierBadge: "All tiers",
+        demoHref: "/trade-off/notebook"
+      },
+      {
+        icon: Users,
+        title: "The Yard",
+        description: "Active community feed where UK trades share jobs, tools, tips and shortcuts. You're not alone here — the yard has your back when a quote goes sideways.",
+        tierBadge: "All tiers",
+        demoHref: "/trade-off/yard"
+      }
+    ]
   },
   {
-    icon: Layers,
-    title: "Design portfolio with Refs",
-    description: "Every design has a Ref (DS-101, DS-102) that customers quote when they message. Photo gallery per design.",
-    tierBadge: "Canteen +",
-    demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-designs"
+    label: "What you show them",
+    blurb: "The supply side. Your live canteen page and the tools inside it.",
+    cards: [
+      {
+        icon: Home,
+        title: "Live canteen feed",
+        description: "Trade posts scroll up slowly, all day. Pause on hover. Members reply in one tap. Feels like a WhatsApp group that lives on your website.",
+        tierBadge: "Canteen +",
+        demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-feed"
+      },
+      {
+        icon: Layers,
+        title: "Design portfolio with Refs",
+        description: "Every design has a Ref (DS-101, DS-102) that customers quote when they message. Photo gallery per design.",
+        tierBadge: "Canteen +",
+        demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-designs"
+      },
+      {
+        icon: ShoppingBag,
+        title: "Products with galleries",
+        description: "Hero image plus up to 5 thumbnails. Prices, blurb, WhatsApp button. Customers see enough to enquire with intent.",
+        tierBadge: "Canteen +",
+        demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-products"
+      },
+      {
+        icon: TrendingUp,
+        title: "Priority in Find Trades",
+        description: "Pro-tier merchants sit at the top of the directory. Customers browsing for your trade see you before free-tier listings.",
+        tierBadge: "Canteen +",
+        demoHref: "/trade-off/find-trades?fromTrade=kitchen-fitter"
+      },
+      {
+        icon: Truck,
+        title: "Trade Center Marketplace",
+        description: "Sell products, parts and services. Cart + Stripe payouts direct to your bank. Bulk-buy, Wholesale, Plant Hire, Key Cutting modules.",
+        tierBadge: "Marketplace +",
+        demoHref: "/trade-off/trade-center"
+      },
+      {
+        icon: ShieldCheck,
+        title: "Verified badge + slug for life",
+        description: "Verified mark on every listing and every Find Trades result. Your slug reserved for life, no-one can claim it even if you cancel.",
+        tierBadge: "The Works",
+        demoHref: "/trade-off/verified"
+      }
+    ]
+  },
+  // App Warehouse group pulled 2026-07-13 per Philip — needs a proper
+  // canteen-side work area designed before we advertise it. Keep in
+  // the codebase; re-add when the Studio install/manage flow lands.
+];
+
+// Flattened for anywhere that still expects a plain array.
+const FEATURES: FeatureCardData[] = FEATURE_GROUPS.flatMap((g) => g.cards);
+
+// ─── FAQ ──────────────────────────────────────────────────
+//
+// Every question we hear pre-purchase, grouped. Answers are honest
+// and match the current build (30-day slug, Companies House optional,
+// no lead-selling, Stripe direct-to-bank, etc). Update as policies
+// change so merchants never get a stale answer.
+
+const FAQ_GROUPS: { label: string; questions: { q: string; a: React.ReactNode }[] }[] = [
+  {
+    label: "Trial & payment",
+    questions: [
+      {
+        q: "Do I need to enter a card for the 14-day trial?",
+        a: "No. Start on Free with no card. The 30-day full Canteen trial fires automatically the day you sign up. When it ends, your canteen features lock but your URL and account stay live — nothing goes away without you choosing it."
+      },
+      {
+        q: "What happens when my trial ends?",
+        a: "Canteen features (feed, products, designs, reviews) lock, but everything else stays. You can still log in, browse The Yard, submit to Notebook, and use your business card. Upgrade to any paid tier and everything unlocks instantly."
+      },
+      {
+        q: "Do you take a cut on Marketplace sales?",
+        a: "Never. Funds go direct from customer to your bank via Stripe Connect, PayPal, or Coinbase. We're not the counterparty. You keep 100% of every sale. That's the whole point of the platform."
+      },
+      {
+        q: "How much are Stripe fees?",
+        a: "Stripe's UK card fees are 1.5% + 20p per successful charge. We don't add anything on top. Annual subscribers pay less in fees per year than monthly ones (fewer transactions)."
+      }
+    ]
   },
   {
-    icon: ShoppingBag,
-    title: "Products with galleries",
-    description: "Hero image plus up to 5 thumbnails. Prices, blurb, WhatsApp button. Customers see enough to enquire with intent.",
-    tierBadge: "Canteen +",
-    demoHref: "/trade-off/yard/canteens/uk-kitchen-fitters#tab-products"
+    label: "What's included",
+    questions: [
+      {
+        q: "What's the actual difference between Canteen and Marketplace?",
+        a: (
+          <>
+            <strong>Canteen</strong> is your live website + reputation surface — feed, products showcase, designs portfolio, reviews, contact form. Perfect for service trades (kitchen fitters, sparks, plumbers).
+            <br/><br/>
+            <strong>Marketplace</strong> adds Trade Center selling on top — cart, checkout, Stripe payouts, orders management, Plant Hire, Key Cutting, Materials Network. Perfect for product sellers (timber merchants, quartz suppliers, tool retailers).
+          </>
+        )
+      },
+      {
+        q: "Is video available on Canteen or Marketplace?",
+        a: "No — video is The Works only. Hero video, product-detail videos, and video posts across your feeds. It's the biggest cost driver on our side (bandwidth), so it lives at the top tier where the pricing supports it."
+      },
+      {
+        q: "What happens if I hit The Works' 60 GB/mo bandwidth cap?",
+        a: "£1 per +25 GB above 60 GB. Fair use only kicks in if you go viral — normal traffic (a few thousand visitors/month) uses 10-30 GB. If you're consistently blowing through, we'll help you optimise before your bill grows."
+      },
+      {
+        q: "Is Companies House verification required?",
+        a: "No. If you type a business-name-like slug and we find a matching active UK company, we offer auto-verify as a bonus. You can also just verify manually later. Free tier merchants can't verify at all — Verified badge is Ultimate only."
+      },
+      {
+        q: "How does project matching work? Are you selling leads?",
+        a: "We never sell leads. When a homeowner submits a project through Notebook (their private vault), matched merchants get an alert. You choose which to reply to. No fee per lead, no bidding, no charge for a reply. It's yours to close."
+      }
+    ]
   },
   {
-    icon: TrendingUp,
-    title: "Priority in Find Trades",
-    description: "Pro-tier merchants sit at the top of the directory. Customers browsing for your trade see you before free-tier listings.",
-    tierBadge: "Canteen +",
-    demoHref: "/trade-off/find-trades?fromTrade=kitchen-fitter"
-  },
-  {
-    icon: Truck,
-    title: "Trade Center Marketplace",
-    description: "Sell products, parts and services. Cart + Stripe payouts direct to your bank. Bulk-buy, Wholesale, Plant Hire, Key Cutting modules.",
-    tierBadge: "Marketplace +",
-    demoHref: "/trade-off/trade-center"
-  },
-  {
-    icon: ShieldCheck,
-    title: "Verified badge + slug for life",
-    description: "Verified mark on every listing and every Find Trades result. Your slug reserved for life, no-one can claim it even if you cancel.",
-    tierBadge: "The Works",
-    demoHref: "/trade-off/verified"
+    label: "Cancel & control",
+    questions: [
+      {
+        q: "Can I cancel any time?",
+        a: "Yes. No contracts, no notice period. Cancel from your dashboard — your subscription stops at the end of the current billing period. Nothing auto-charges after that."
+      },
+      {
+        q: "Do I keep my data if I cancel?",
+        a: "Yes. Reviews, products, designs, photos, opening hours, WhatsApp number — all stay with you. Your account reverts to Free and everything paid-only locks (but doesn't delete). Re-subscribe any time and it all snaps back on."
+      },
+      {
+        q: "Will I keep my URL?",
+        a: "Paid tiers reserve your slug for life while your subscription is active. Free tier keeps the slug as long as you log in at least once every 30 days — otherwise it's released back to the pool. We email you at 15, 25 and 29 days before releasing."
+      },
+      {
+        q: "Can I switch tiers later?",
+        a: "Yes. Upgrade or downgrade any time from your dashboard. Upgrades take effect immediately with the price prorated. Downgrades take effect at the end of your current billing period."
+      },
+      {
+        q: "What's your refund policy?",
+        a: "First payment is 100% refundable within 14 days, no questions. After that, cancel any time for period-end — no partial refunds on active periods, but no further charges either."
+      },
+      {
+        q: "Where does support come from?",
+        a: "WhatsApp support during UK business hours. Canteen tier gets community/pooled response. Marketplace tier gets standard support (24-48h reply). The Works gets priority support (4-hour reply during business hours)."
+      }
+    ]
   }
 ];
 
@@ -407,6 +584,7 @@ export function PackagesShell() {
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: CREAM }}>
+      <style>{PACKAGES_CSS}</style>
       {/* Hero */}
       <section className="mx-auto max-w-6xl px-4 pb-4 pt-14 sm:px-6 sm:pt-20">
         <div className="flex flex-col items-center text-center">
@@ -472,6 +650,22 @@ export function PackagesShell() {
             Annual = 2 months free on Canteen, Marketplace and The Works.
           </p>
         )}
+
+        {/* Inline tier ladder — clickable jump links so visitors can
+            skim the progression at a glance. Also mirrors Philip's
+            vehicle metaphor: bike → motorbike → van → jeep. */}
+        <nav
+          aria-label="Package ladder"
+          className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[13px] font-black uppercase tracking-[0.16em] text-neutral-700"
+        >
+          <a href="#tier-free" className="hover:text-neutral-900">Free</a>
+          <span aria-hidden style={{ color: TAN }}>—</span>
+          <a href="#tier-canteen" className="hover:text-neutral-900">Canteen</a>
+          <span aria-hidden style={{ color: TAN }}>—</span>
+          <a href="#tier-marketplace" className="hover:text-neutral-900">Marketplace</a>
+          <span aria-hidden style={{ color: TAN }}>—</span>
+          <a href="#tier-ultimate" className="hover:text-neutral-900">Works</a>
+        </nav>
       </section>
 
       {/* Pricing grid — 4 columns */}
@@ -546,9 +740,23 @@ export function PackagesShell() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f) => (
-            <FeatureCard key={f.title} data={f}/>
+        <div className="flex flex-col gap-8">
+          {FEATURE_GROUPS.map((group) => (
+            <div key={group.label}>
+              <div className="mb-4 flex flex-col items-center text-center">
+                <span className="text-[11px] font-black uppercase tracking-[0.22em]" style={{ color: TAN }}>
+                  {group.label}
+                </span>
+                <p className="mt-1 max-w-2xl text-[13px] text-neutral-600">
+                  {group.blurb}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {group.cards.map((f) => (
+                  <FeatureCard key={f.title} data={f}/>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -570,6 +778,58 @@ export function PackagesShell() {
         <div className="flex flex-col gap-6">
           {TIERS.map((t) => (
             <TierDetailContainer key={t.id} tier={t} billing={billing}/>
+          ))}
+        </div>
+      </section>
+
+      {/* FAQ — collapsible, groups the most common pre-purchase
+          questions so merchants don't have to leave the page to make
+          a decision. Uses native details/summary — no client JS,
+          zero layout jank, works with keyboard + screen reader. */}
+      <section className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
+        <div className="mb-6 text-center">
+          <span className="inline-block text-[11px] font-black uppercase tracking-[0.22em] text-neutral-500">
+            FAQ
+          </span>
+          <h2 className="mt-1 text-[24px] font-black leading-tight text-neutral-900 sm:text-[30px]">
+            Every question we get before signup.
+          </h2>
+        </div>
+
+        <div className="packages-faq flex flex-col gap-6">
+          {FAQ_GROUPS.map((group) => (
+            <div key={group.label}>
+              <div className="mb-2 px-1 text-[10.5px] font-black uppercase tracking-[0.18em] text-neutral-500">
+                {group.label}
+              </div>
+              <ul className="flex flex-col gap-2">
+                {group.questions.map((q) => (
+                  <li key={q.q}>
+                    <details
+                      className="rounded-xl border bg-white shadow-sm"
+                      style={{ borderColor: TAN_HAIRLINE }}
+                    >
+                      <summary className="flex items-center justify-between gap-3 p-4 text-[13px] font-black text-neutral-900 sm:text-[14px]">
+                        <span>{q.q}</span>
+                        <span
+                          aria-hidden
+                          className="packages-chevron flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full"
+                          style={{ backgroundColor: `${BRAND_YELLOW}22`, color: BRAND_BLACK }}
+                        >
+                          <ChevronDown size={13} strokeWidth={2.6}/>
+                        </span>
+                      </summary>
+                      <div
+                        className="border-t px-4 py-3 text-[12.5px] leading-relaxed text-neutral-700 sm:text-[13px]"
+                        style={{ borderColor: TAN_HAIRLINE }}
+                      >
+                        {q.a}
+                      </div>
+                    </details>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </div>
       </section>
@@ -665,7 +925,7 @@ function PricingCard({ tier, billing }: { tier: Tier; billing: BillingCycle }) {
 
   return (
     <article
-      className="relative flex flex-col rounded-2xl border bg-white p-5 shadow-md"
+      className="relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-md"
       style={{
         borderColor: (isPopular || isBestValue) ? TAN : TAN_HAIRLINE,
         borderWidth: (isPopular || isBestValue) ? 2 : 1
@@ -673,22 +933,62 @@ function PricingCard({ tier, billing }: { tier: Tier; billing: BillingCycle }) {
     >
       {tier.badge && (
         <span
-          className="absolute right-4 top-[-10px] rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
-          style={{ backgroundColor: BRAND_BLACK }}
+          className="absolute right-4 top-3 z-10 rounded-full px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-neutral-900 packages-badge-glow"
+          style={{ backgroundColor: BRAND_YELLOW }}
         >
           {tier.badge}
         </span>
       )}
-      <div className="mb-3 flex items-center gap-2">
+
+      {/* Hero image — Philip's vehicle artwork per tier (push bike /
+          motor bike / van / jeep). Real <img> with object-contain per
+          the global image rule so the whole vehicle shows without
+          cropping. White backdrop across all tiers. Free + Canteen
+          get extra padding (smaller vehicles read better shrunken
+          slightly — the bike/motorbike shapes don't need to fill the
+          frame like a van or jeep does). */}
+      {tier.heroImage ? (
         <div
-          className="flex h-9 w-9 items-center justify-center rounded-full"
-          style={{ backgroundColor: `${BRAND_YELLOW}22`, color: BRAND_BLACK }}
+          className="relative flex w-full items-start justify-center bg-white"
+          style={{ aspectRatio: "4 / 3" }}
         >
-          <tier.icon size={17} strokeWidth={2.6}/>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={tier.heroImage}
+            alt={`${tier.name} tier`}
+            className={`block h-full w-full object-contain ${
+              tier.id === "free" || tier.id === "canteen"
+                ? "p-6 object-top"
+                : "p-4"
+            }`}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
+      ) : (
+        <div
+          className="w-full bg-white"
+          style={{ aspectRatio: "4 / 3" }}
+          aria-hidden
+        />
+      )}
+
+      <div className="flex flex-1 flex-col p-5">
+      <div className="mb-3 flex items-center gap-2">
         <h2 className="text-[16px] font-black uppercase tracking-wider text-neutral-900">
           {tier.name}
         </h2>
+        <span className="inline-flex items-center gap-0.5" aria-label={`${tier.stars} out of 4 tier stars`}>
+          {Array.from({ length: tier.stars }).map((_, i) => (
+            <Star
+              key={i}
+              size={13}
+              fill={BRAND_YELLOW}
+              strokeWidth={0}
+              style={{ color: BRAND_YELLOW }}
+            />
+          ))}
+        </span>
       </div>
       <p className="mb-3 text-[11.5px] leading-snug text-neutral-500">
         {tier.audience}
@@ -738,12 +1038,13 @@ function PricingCard({ tier, billing }: { tier: Tier; billing: BillingCycle }) {
 
       <Link
         href={tier.ctaHref}
-        className="mt-auto inline-flex h-11 items-center justify-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.98]"
-        style={{ backgroundColor: priced ? BRAND_GREEN_DARK : BRAND_BLACK }}
+        className="mt-auto inline-flex h-11 items-center justify-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition active:scale-[0.98]"
+        style={{ backgroundColor: BRAND_YELLOW }}
       >
         {tier.ctaLabel}
         <ArrowRight size={12} strokeWidth={2.6}/>
       </Link>
+      </div>
     </article>
   );
 }
@@ -804,8 +1105,8 @@ function FeatureCard({ data }: { data: FeatureCardData }) {
       </p>
       <Link
         href={data.demoHref}
-        className="inline-flex h-9 w-max items-center gap-1.5 rounded-full px-3.5 text-[10.5px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97]"
-        style={{ backgroundColor: BRAND_GREEN_DARK }}
+        className="inline-flex h-9 w-max items-center gap-1.5 rounded-full px-3.5 text-[10.5px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition active:scale-[0.97]"
+        style={{ backgroundColor: BRAND_YELLOW }}
       >
         See it live
         <ArrowRight size={11} strokeWidth={2.6}/>
@@ -829,18 +1130,23 @@ function TierDetailContainer({ tier, billing }: { tier: Tier; billing: BillingCy
         {/* Left — feature list */}
         <div className="min-w-0 flex-1">
           <div className="mb-3 flex items-center gap-2">
-            <div
-              className="flex h-10 w-10 items-center justify-center rounded-full"
-              style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-            >
-              <tier.icon size={18} strokeWidth={2.6}/>
-            </div>
             <div>
               <div className="text-[11px] font-black uppercase tracking-[0.18em]" style={{ color: TAN }}>
                 {tier.positioning}
               </div>
-              <h3 className="text-[20px] font-black leading-tight text-neutral-900">
+              <h3 className="flex items-center gap-2 text-[20px] font-black leading-tight text-neutral-900">
                 {tier.name}
+                <span className="inline-flex items-center gap-0.5" aria-hidden>
+                  {Array.from({ length: tier.stars }).map((_, i) => (
+                    <Star
+                      key={i}
+                      size={14}
+                      fill={BRAND_YELLOW}
+                      strokeWidth={0}
+                      style={{ color: BRAND_YELLOW }}
+                    />
+                  ))}
+                </span>
                 {priced && (
                   <span className="ml-2 text-[13px] font-bold text-neutral-500">
                     from £{price.toFixed(2)} / mo
@@ -872,8 +1178,8 @@ function TierDetailContainer({ tier, billing }: { tier: Tier; billing: BillingCy
           <div className="mt-5">
             <Link
               href={tier.ctaHref}
-              className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[11.5px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97]"
-              style={{ backgroundColor: priced ? BRAND_GREEN_DARK : BRAND_BLACK }}
+              className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[11.5px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition active:scale-[0.97]"
+              style={{ backgroundColor: BRAND_YELLOW }}
             >
               {tier.ctaLabel}
               <ArrowRight size={12} strokeWidth={2.6}/>

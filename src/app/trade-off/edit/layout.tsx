@@ -14,12 +14,16 @@
 import type { CSSProperties } from "react";
 import { Suspense } from "react";
 import { AppShell } from "@/components/shell/AppShell";
+import { resolveInitialAuth } from "@/components/shell/resolveInitialAuth";
 
-export default function TradeOffEditLayout({
+export default async function TradeOffEditLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  // Same server-side auth resolve as the Yard layout — signed-in state
+  // is known on first paint, no client-side header flash.
+  const initialAuth = await resolveInitialAuth();
   return (
     <div
       className="min-h-screen bg-[#FBF6EC] text-[#1B1A17]"
@@ -40,7 +44,7 @@ export default function TradeOffEditLayout({
           "admin" area into part of the same product. Suspense boundary
           matches the pattern used by the other shell mounts. */}
       <Suspense fallback={<div className="min-h-[100dvh]">{children}</div>}>
-        <AppShell>{children}</AppShell>
+        <AppShell initialAuth={initialAuth}>{children}</AppShell>
       </Suspense>
     </div>
   );

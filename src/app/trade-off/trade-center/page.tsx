@@ -7,7 +7,7 @@
 
 import type { Metadata } from "next";
 import { type BrowseSort } from "@/lib/canteens";
-import { browseAllProductsFromDb, browseTradeFacetsFromDb } from "@/lib/canteens.server";
+import { browseAllProductsFromDb, browseTradeFacetsFromDb, browseCategoryFacetsFromDb } from "@/lib/canteens.server";
 import { TradeCenterBrowseShell } from "./TradeCenterBrowseShell";
 import { BRAND, absolute } from "@/lib/seo";
 
@@ -32,26 +32,49 @@ const VALID_SORTS: BrowseSort[] = ["boosted", "price-asc", "price-desc", "newest
 export default async function TradeCenterPage({
   searchParams
 }: {
-  searchParams: Promise<{ trade?: string; sort?: string; q?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { trade, sort, q } = await searchParams;
+  const sp = await searchParams;
+  const trade = typeof sp.trade === "string" ? sp.trade : undefined;
+  const sort = typeof sp.sort === "string" ? sp.sort : undefined;
+  const q = typeof sp.q === "string" ? sp.q : undefined;
+  const category = typeof sp.category === "string" ? sp.category : undefined;
   const sortValue: BrowseSort = VALID_SORTS.includes(sort as BrowseSort)
     ? (sort as BrowseSort)
     : "boosted";
-  const [rows, facets] = await Promise.all([
+
+  // Aspect filters: every `?a.{key}=value` search param is a facet
+  // filter. Product must match ALL of them. Example URL:
+  //   /trade-off/trade-center?category=paint-decor&a.finish=Matt&a.base=Water-based
+  const aspectFilters: Record<string, string> = {};
+  for (const [k, v] of Object.entries(sp)) {
+    if (!k.startsWith("a.")) continue;
+    const key = k.slice(2);
+    const value = typeof v === "string" ? v : Array.isArray(v) ? v[0] : "";
+    if (key && value) aspectFilters[key] = value;
+  }
+
+  const [rows, tradeFacets, categoryFacets] = await Promise.all([
     browseAllProductsFromDb({
       tradeSlug: trade || undefined,
       sort: sortValue,
-      q: q || undefined
+      q: q || undefined,
+      categorySlug: category || undefined,
+      aspectFilters: Object.keys(aspectFilters).length > 0 ? aspectFilters : undefined
     }),
-    browseTradeFacetsFromDb()
+    browseTradeFacetsFromDb(),
+    browseCategoryFacetsFromDb({ activeCategorySlug: category || undefined })
   ]);
 
   return (
     <TradeCenterBrowseShell
       rows={rows}
-      facets={facets}
+      facets={tradeFacets}
+      categoryFacets={categoryFacets.categories}
+      aspectFacets={categoryFacets.aspectFacets}
       activeTradeSlug={trade || null}
+      activeCategorySlug={category || null}
+      activeAspectFilters={aspectFilters}
       activeSort={sortValue}
       activeQuery={q || ""}
     />

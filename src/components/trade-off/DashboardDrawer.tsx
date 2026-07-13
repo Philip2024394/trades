@@ -89,6 +89,12 @@ export function DashboardDrawer({
       icon: <ShareIcon />
     },
     {
+      href: `/trade-off/edit/${slug}/products${tokenQs}`,
+      label: "Products",
+      blurb: "One upload flows to your canteen, trending and Trade Center.",
+      icon: <BagIcon />
+    },
+    {
       href: `/trade-off/edit/${slug}/prices${tokenQs}`,
       label: "Live prices",
       blurb: "Publish market prices — trades see them instantly.",

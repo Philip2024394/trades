@@ -84,16 +84,30 @@ export function BurgerMenu() {
   const [moreOpen, setMoreOpen] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
   const [merchantSlug, setMerchantSlug] = useState<string | null>(null);
+  const [profile, setProfile] = useState<{
+    displayName: string | null;
+    avatarUrl: string | null;
+    tradeLabel: string | null;
+    city: string | null;
+  } | null>(null);
 
   useEffect(() => {
     // Detect signed-in state by hitting the session check endpoint —
     // works with the HMAC-signed cookie without exposing its value.
+    // Same call now also returns display name + avatar + trade + city
+    // so the profile card at the top of the menu renders in one hop.
     fetch("/api/trade-off/session", { cache: "no-store" })
       .then((r) => r.ok ? r.json() : null)
       .then((data) => {
         if (data?.ok && data.slug) {
           setSignedIn(true);
           setMerchantSlug(data.slug);
+          setProfile({
+            displayName: data.displayName ?? null,
+            avatarUrl: data.avatarUrl ?? null,
+            tradeLabel: data.tradeLabel ?? null,
+            city: data.city ?? null
+          });
         }
       })
       .catch(() => {
@@ -185,6 +199,72 @@ export function BurgerMenu() {
               <X size={18} strokeWidth={2.5}/>
             </button>
           </div>
+
+          {/* Signed-in profile card — avatar + name + trade · city.
+              Renders only when the merchant is signed in. Card is a
+              Link straight to their own canteen so tapping the whole
+              profile row is one gesture "go to my page". Fallback
+              initials avatar when the merchant hasn't uploaded one. */}
+          {signedIn && profile && (
+            <Link
+              href={merchantSlug ? `/trade-off/yard/canteens/${merchantSlug}` : "/trade-off/yard"}
+              onClick={() => setOpen(false)}
+              className="mb-5 flex items-center gap-3 rounded-2xl border p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+              style={{ backgroundColor: "#FFFDF6", borderColor: "rgba(139,69,19,0.15)" }}
+            >
+              {/* Avatar — amber ring so it reads as the account chip.
+                  object-cover here is intentional (crops to fill the
+                  circle) since profile avatars are square-cropped by
+                  convention. Fallback = initials on cream circle. */}
+              <div
+                className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full ring-2"
+                style={{ backgroundColor: "#FFF8E6", boxShadow: `0 0 0 2px ${BRAND_YELLOW}` }}
+              >
+                {profile.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={profile.avatarUrl}
+                    alt={profile.displayName ?? "Profile"}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <span className="text-[16px] font-black text-[#B8860B]">
+                    {(profile.displayName ?? "?").slice(0, 1).toUpperCase()}
+                  </span>
+                )}
+                {/* Live-session pulse dot in the corner */}
+                <span
+                  aria-hidden
+                  className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white"
+                  style={{
+                    backgroundColor: "#166534",
+                    animation: "burger-live-pulse 2.2s ease-out infinite"
+                  }}
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[10.5px] font-black uppercase tracking-[0.14em] text-neutral-500">
+                  Signed in as
+                </div>
+                <div className="mt-0.5 truncate text-[15px] font-black leading-tight text-neutral-900">
+                  {profile.displayName ?? "Your account"}
+                </div>
+                <div className="mt-0.5 truncate text-[11.5px] font-bold text-neutral-500">
+                  {[profile.tradeLabel, profile.city].filter(Boolean).join(" · ") || "View your canteen"}
+                </div>
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-700">
+                Open →
+              </span>
+              <style>{`
+                @keyframes burger-live-pulse {
+                  0%   { box-shadow: 0 0 0 0 rgba(22,101,52,0.55); }
+                  70%  { box-shadow: 0 0 0 6px rgba(22,101,52,0); }
+                  100% { box-shadow: 0 0 0 0 rgba(22,101,52,0); }
+                }
+              `}</style>
+            </Link>
+          )}
 
           {/* Primary tiles — Facebook-style icon grid */}
           <div>

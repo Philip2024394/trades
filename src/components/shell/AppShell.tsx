@@ -18,6 +18,7 @@
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { NotificationsPopover } from "./NotificationsPopover";
 import {
   Search,
   Bell,
@@ -43,29 +44,225 @@ import {
   Wrench
 } from "lucide-react";
 
-type Auth = { slug: string; token: string };
+// `token` is `null` when the session came from the signed cookie
+// (edit_tokens are never leaked to the client). Every preserveAuth /
+// URL-token consumer checks for a non-null token before appending.
+// avatarUrl + displayName are fetched from /api/trade-off/session so
+// the drawer button and profile chips render the signed-in merchant's
+// real face, not a hardcoded placeholder.
+type Auth = {
+  slug: string;
+  token: string | null;
+  avatarUrl?: string | null;
+  displayName?: string | null;
+};
 
+// Fallback placeholder image kept as an ultimate last-resort, only
+// used when we also can't compute initials (no display name AND no
+// slug). In practice the InitialsAvatar below covers every signed-in
+// merchant.
 const CHAT_AVATAR_IMAGE =
   "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2002_57_40%20PM.png";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+// Deterministic colour picker for the initials-circle fallback. Same
+// slug → same colour, so Mike's initial always sits on the same brand
+// hue instead of a random placeholder face. Pulled from platform
+// tokens (yellow, amber, dark green, dark red, blue-grey, warm ink).
+const INITIALS_COLOURS = ["#FFB300", "#F59E0B", "#166534", "#B91C1C", "#7A5300", "#1B1A17"];
+function pickInitialsColour(seed: string): string {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = (hash << 5) - hash + seed.charCodeAt(i);
+    hash |= 0;
+  }
+  return INITIALS_COLOURS[Math.abs(hash) % INITIALS_COLOURS.length];
+}
+function initialsFor(auth: Auth | null): string {
+  const source = auth?.displayName ?? auth?.slug ?? "";
+  if (!source) return "";
+  // Take the first letter of the first two space/dash-separated words.
+  const parts = source.replace(/^demo-/, "").split(/[\s-]+/).filter(Boolean);
+  const first = parts[0]?.charAt(0) ?? "";
+  const second = parts[1]?.charAt(0) ?? "";
+  return (first + second).toUpperCase().slice(0, 2);
+}
+
+/** Compact avatar for the header. Renders the merchant's real photo
+ *  when we have it; otherwise a colored initial circle (Gmail-style).
+ *  Never falls back to the ChatGPT placeholder for signed-in merchants
+ *  — that pattern was too easily mistaken for "someone else's face". */
+function ShellAvatar({ auth, size }: { auth: Auth | null; size: 36 | 44 }) {
+  const initials = initialsFor(auth);
+  const bg = pickInitialsColour(auth?.slug ?? "anon");
+  if (auth?.avatarUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={auth.avatarUrl}
+        alt={auth.displayName ?? ""}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+  if (initials) {
+    return (
+      <span
+        aria-hidden
+        className="flex h-full w-full items-center justify-center font-black text-white"
+        style={{
+          backgroundColor: bg,
+          fontSize: size === 44 ? "16px" : "13px",
+          letterSpacing: "0.02em"
+        }}
+      >
+        {initials}
+      </span>
+    );
+  }
+  return (
+    // Ultimate fallback — only reached when there's no name AND no
+    // slug to derive initials from (essentially never for a signed-in
+    // merchant). Kept so we don't render a broken box.
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={CHAT_AVATAR_IMAGE} alt="" className="h-full w-full object-cover"/>
+  );
+}
+
+export function AppShell({
+  children,
+  initialAuth = null
+}: {
+  children: React.ReactNode;
+  /** Server-resolved auth from the trade session cookie. When present,
+   *  the header renders the signed-in variant on first paint — no
+   *  client-side flash of "Join free / Sign in" while /api/trade-off/
+   *  session round-trips. Layouts read the cookie in their server
+   *  component + pass it in. */
+  initialAuth?: Auth | null;
+}) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [auth, setAuth] = useState<Auth | null>(null);
+  const [auth, setAuth] = useState<Auth | null>(initialAuth);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // Notebook pending actions (review-to-respond, quote-to-send, etc.).
+  // Drives the red-dot badge on both bell icons + updates the PWA app
+  // icon badge on the merchant's home screen via setAppBadge() when
+  // available. One fetch, one source of truth for every surface.
+  const [pendingCount, setPendingCount] = useState(0);
+  // Edit-mode state mirrored from the canteen page. When the merchant
+  // is on their canteen page, we render an "Edit mode" pill beside the
+  // bell (per Philip's rule). Toggling the pill dispatches a
+  // `canteen:toggle-edit` CustomEvent — the canteen page's shell
+  // listens for it + owns the actual edit-state (host-guarded there).
+  // We also listen for `canteen:edit-mode-changed` so the pill label
+  // stays in sync when Edit mode is toggled from anywhere.
+  const [canteenEditActive, setCanteenEditActive] = useState(false);
+  useEffect(() => {
+    function onChange(e: Event) {
+      const detail = (e as CustomEvent).detail as { active?: boolean } | undefined;
+      if (typeof detail?.active === "boolean") setCanteenEditActive(detail.active);
+    }
+    window.addEventListener("canteen:edit-mode-changed", onChange as EventListener);
+    return () => window.removeEventListener("canteen:edit-mode-changed", onChange as EventListener);
+  }, []);
+  function toggleCanteenEdit() {
+    window.dispatchEvent(new CustomEvent("canteen:toggle-edit"));
+  }
+  // Show the pill only on a canteen detail page — path pattern
+  // `/trade-off/yard/canteens/{slug}` where slug isn't the reserved
+  // "new" (creation flow) and isn't the plain index route. Non-hosts
+  // still see the button briefly but the canteen page guards the
+  // toggle downstream; the button label + state simply won't flip.
+  const isOnCanteenDetail = !!auth && !!pathname &&
+    pathname.startsWith("/trade-off/yard/canteens/") &&
+    pathname !== "/trade-off/yard/canteens/" &&
+    !pathname.endsWith("/new") &&
+    !pathname.includes("/new/") &&
+    !pathname.endsWith("/canteens");
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Precedence:
+    //   1. URL magic-link params (?slug=&token=) — overrides everything
+    //   2. Server-resolved initialAuth (already applied via useState)
+    //   3. Client fetch fallback to /api/trade-off/session
+    //
+    // When initialAuth was passed by the server layout, we already
+    // have the signed-in state on first paint — no client fetch needed
+    // and no "Sign in" flash before Mike's avatar loads.
     const sp = new URLSearchParams(window.location.search);
-    const slug = sp.get("slug");
-    const token = sp.get("token");
-    if (slug && token) setAuth({ slug, token });
-  }, []);
+    const urlSlug = sp.get("slug");
+    const urlToken = sp.get("token");
+    if (urlSlug && urlToken) {
+      setAuth({ slug: urlSlug, token: urlToken });
+      return;
+    }
+    if (initialAuth) return; // Server already resolved it.
+    let cancelled = false;
+    fetch("/api/trade-off/session", { credentials: "include", cache: "no-store" })
+      .then((res) => res.ok ? res.json() : { ok: false })
+      .then((body: {
+        ok?: boolean;
+        slug?: string;
+        avatarUrl?: string | null;
+        displayName?: string | null;
+      }) => {
+        if (cancelled) return;
+        if (body?.ok && body.slug) {
+          setAuth({
+            slug: body.slug,
+            token: null,
+            avatarUrl: body.avatarUrl ?? null,
+            displayName: body.displayName ?? null
+          });
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [initialAuth]);
+
+  // Fetch pending notebook actions once the merchant is signed in.
+  // Only signed-in merchants have actions; skipped for public visitors.
+  // Refetches every 60s so newly-arrived actions (review, comment,
+  // lead) light up the bell without a manual refresh.
+  useEffect(() => {
+    if (!auth) return;
+    let cancelled = false;
+    async function load() {
+      try {
+        const res = await fetch("/api/notebook/actions", { credentials: "include", cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        const count = Array.isArray(data?.actions) ? data.actions.length : 0;
+        setPendingCount(count);
+        // Update the PWA/home-screen app icon badge so Mike sees the
+        // pending action count on his phone without opening the app.
+        // Feature-detected — Safari/Chrome/Edge on modern OSes support
+        // this; browsers without it silently no-op.
+        if (typeof navigator !== "undefined" && "setAppBadge" in navigator) {
+          if (count > 0) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (navigator as any).setAppBadge(count).catch(() => {});
+          } else {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (navigator as any).clearAppBadge?.().catch(() => {});
+          }
+        }
+      } catch { /* offline — bell stays quiet */ }
+    }
+    load();
+    const int = setInterval(load, 60_000);
+    return () => { cancelled = true; clearInterval(int); };
+  }, [auth]);
 
   // Rebuild links preserving magic-link params so the shell stays
-  // authenticated across navigations.
+  // authenticated across navigations. Cookie-authenticated sessions
+  // (no token) skip URL param appending entirely — the cookie carries
+  // the auth across navigations, and appending a bare `?slug=` alone
+  // would be misleading.
   function preserveAuth(href: string): string {
-    if (!auth) return href;
+    if (!auth || !auth.token) return href;
     const [path, query] = href.split("?");
     const params = new URLSearchParams(query ?? "");
     if (!params.has("slug")) params.set("slug", auth.slug);
@@ -78,15 +275,49 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="relative min-h-[100dvh] overflow-x-hidden">
-      {/* Top bar — persistent on every shell page */}
+      {/* Keyframes for the red-dot bell pulse. Same 2.2s cadence used
+          by the "live session" dot in the burger profile card so
+          notification signals feel consistent across the app. */}
+      <style>{`
+        @keyframes shell-bell-pulse {
+          0%   { box-shadow: 0 0 0 0 rgba(185,28,28,0.55); }
+          70%  { box-shadow: 0 0 0 6px rgba(185,28,28,0); }
+          100% { box-shadow: 0 0 0 0 rgba(185,28,28,0); }
+        }
+        @keyframes editmode-glow {
+          0%   { box-shadow: 0 0 0 0 rgba(22,101,52,0.65), 0 2px 6px rgba(0,0,0,0.15); }
+          50%  { box-shadow: 0 0 0 6px rgba(22,101,52,0), 0 2px 6px rgba(0,0,0,0.15); }
+          100% { box-shadow: 0 0 0 0 rgba(22,101,52,0), 0 2px 6px rgba(0,0,0,0.15); }
+        }
+      `}</style>
+      {/* Top bar — persistent on every shell page. Desktop rendering
+          only (hidden md:block inside the component). */}
       <AppTopBar
         auth={auth}
         onOpenDrawer={() => setDrawerOpen(true)}
         preserveAuth={preserveAuth}
+        pendingCount={pendingCount}
+        showEditModeButton={isOnCanteenDetail}
+        editModeActive={canteenEditActive}
+        onToggleEditMode={toggleCanteenEdit}
       />
 
-      {/* Main content — bottom padding on mobile to clear the bottom nav */}
-      <main className="pb-20 md:pb-0">{children}</main>
+      {/* Mobile top bar — brand on left, notifications bell + burger
+          on right. The burger opens the same AppDrawer as the desktop
+          avatar so nav destinations stay identical across breakpoints.
+          Hidden on md+ so we don't double-stack with AppTopBar. */}
+      <MobileTopBar
+        auth={auth}
+        onOpenDrawer={() => setDrawerOpen(true)}
+        pendingCount={pendingCount}
+        showEditModeButton={isOnCanteenDetail}
+        editModeActive={canteenEditActive}
+        onToggleEditMode={toggleCanteenEdit}
+      />
+
+      {/* Main content — top padding on mobile clears the mobile top
+          bar; bottom padding clears the bottom nav. */}
+      <main className="pt-[56px] pb-20 md:pt-0 md:pb-0">{children}</main>
 
       {/* Mobile bottom nav — thumb-reach primary actions */}
       <AppBottomNav
@@ -111,12 +342,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 function AppTopBar({
   auth,
   onOpenDrawer,
-  preserveAuth
+  preserveAuth,
+  pendingCount,
+  showEditModeButton,
+  editModeActive,
+  onToggleEditMode
 }: {
   auth: Auth | null;
   onOpenDrawer: () => void;
   preserveAuth: (h: string) => string;
+  pendingCount: number;
+  showEditModeButton: boolean;
+  editModeActive: boolean;
+  onToggleEditMode: () => void;
 }) {
+  const [notifsOpen, setNotifsOpen] = useState(false);
   return (
     <header
       className="sticky top-0 z-40 hidden border-b md:block"
@@ -178,40 +418,71 @@ function AppTopBar({
           </span>
         </Link>
 
-        {/* Search — routes to Yard search. `min-w-0` on the flex child
-            is required for `truncate` to work; without it the intrinsic
-            placeholder width pushes the top bar past the mobile viewport
-            (was the cause of "screen cut on right" on canteen pages). */}
-        <Link
-          href={preserveAuth("/trade-off/yard")}
-          className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-[#1B1A17]/10 bg-white px-3 py-1.5 text-[12px] text-[#1B1A17]/50 hover:border-[#1B1A17]/20"
-        >
-          <Search className="h-3.5 w-3.5 flex-shrink-0" aria-hidden />
-          <span className="truncate">Search a trade, town or tool…</span>
-        </Link>
+        {/* Search bar removed — it was a decorative Link that only
+            routed to /trade-off/yard (no real query handling). Header
+            is now nav-only: brand + inline links + right-side actions.
+            Real search comes back when we have a search endpoint. */}
+        <div className="min-w-0 flex-1"/>
 
         {/* Right-side actions */}
         {auth ? (
           <>
-            <Link
-              href={preserveAuth(`/trade-off/edit/${auth.slug}/notifications`)}
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#1B1A17]/70 hover:bg-black/[0.04] hover:text-[#1B1A17]"
-              aria-label="Notifications"
-            >
-              <Bell className="h-4 w-4" aria-hidden />
-            </Link>
+            {/* Edit mode pill — canteen-only, sits to the LEFT of the
+                bell per Philip's spec. Yellow when idle; flips to dark
+                green with a slow pulse-glow when Edit mode is active
+                so Mike always sees at a glance whether he's editing
+                or viewing. Small rounded corners. */}
+            {showEditModeButton && (
+              <button
+                type="button"
+                onClick={onToggleEditMode}
+                aria-pressed={editModeActive}
+                className="inline-flex h-8 shrink-0 items-center gap-1 rounded-lg px-3 text-[10.5px] font-black uppercase tracking-wider shadow-sm transition active:scale-[0.97]"
+                style={{
+                  backgroundColor: editModeActive ? "#166534" : "#FFB300",
+                  color: editModeActive ? "#FFFFFF" : "#0A0A0A",
+                  animation: editModeActive ? "editmode-glow 2.2s ease-out infinite" : undefined
+                }}
+              >
+                {editModeActive ? "Exit edit" : "Edit mode"}
+              </button>
+            )}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setNotifsOpen((v) => !v)}
+                aria-label={pendingCount > 0 ? `Notifications · ${pendingCount} pending` : "Notifications"}
+                aria-expanded={notifsOpen}
+                className="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[#1B1A17]/70 hover:bg-black/[0.04] hover:text-[#1B1A17]"
+              >
+                <Bell className="h-4 w-4" aria-hidden />
+                {pendingCount > 0 && (
+                  <span
+                    aria-hidden
+                    className="absolute -right-0.5 -top-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full border-2 border-[#FBF6EC] px-1 text-[9px] font-black text-white shadow"
+                    style={{
+                      backgroundColor: "#B91C1C",
+                      animation: "shell-bell-pulse 2.2s ease-out infinite"
+                    }}
+                  >
+                    {pendingCount > 9 ? "9+" : pendingCount}
+                  </span>
+                )}
+              </button>
+              <NotificationsPopover
+                open={notifsOpen}
+                onClose={() => setNotifsOpen(false)}
+                viewAllHref={preserveAuth(`/trade-off/edit/${auth.slug}/notifications`)}
+                mode="desktop"
+              />
+            </div>
             <button
               type="button"
               onClick={onOpenDrawer}
               aria-label="Open menu"
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full ring-2 ring-amber-400 shadow-sm overflow-hidden bg-white"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full ring-2 ring-amber-400 shadow-sm"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={CHAT_AVATAR_IMAGE}
-                alt=""
-                className="h-full w-full object-cover"
-              />
+              <ShellAvatar auth={auth} size={36}/>
             </button>
           </>
         ) : (
@@ -231,6 +502,116 @@ function AppTopBar({
             </Link>
           </>
         )}
+      </div>
+    </header>
+  );
+}
+
+// Mobile-only sticky top bar. Brand on left, notifications bell +
+// burger on right. Height 56px matches iOS/Android convention. The
+// burger opens the shared AppDrawer via onOpenDrawer so nav destinations
+// stay identical to the desktop top bar's avatar button.
+function MobileTopBar({
+  auth,
+  onOpenDrawer,
+  pendingCount,
+  showEditModeButton,
+  editModeActive,
+  onToggleEditMode
+}: {
+  auth: Auth | null;
+  onOpenDrawer: () => void;
+  pendingCount: number;
+  showEditModeButton: boolean;
+  editModeActive: boolean;
+  onToggleEditMode: () => void;
+}) {
+  const [notifsOpen, setNotifsOpen] = useState(false);
+  // Notifications route — when we know the merchant's slug we link to
+  // their notifications page. Token is only appended for magic-link
+  // sessions; cookie sessions authenticate downstream. Signed-out
+  // visitors get the login page so the bell never dead-ends.
+  const notificationsHref = auth
+    ? auth.token
+      ? `/trade-off/edit/${auth.slug}/notifications?token=${encodeURIComponent(auth.token)}`
+      : `/trade-off/edit/${auth.slug}/notifications`
+    : `/trade-off/login`;
+  return (
+    <header
+      className="sticky top-0 z-40 border-b bg-[#FBF6EC]/95 backdrop-blur md:hidden"
+      style={{ borderColor: "rgba(27,26,23,0.08)" }}
+    >
+      <div className="flex h-[56px] items-center justify-between px-3">
+        {/* Brand — yellow dot + wordmark. Canonical logo pattern. */}
+        <Link
+          href="/"
+          className="inline-flex shrink-0 items-center gap-1.5"
+          aria-label="Thenetworkers home"
+        >
+          <span
+            aria-hidden
+            className="inline-block h-2.5 w-2.5 rounded-full"
+            style={{ backgroundColor: "#FFB300" }}
+          />
+          <span className="text-[13px] font-black uppercase tracking-[0.16em] text-[#B8860B]">
+            Thenetworkers
+          </span>
+        </Link>
+
+        {/* Right cluster — Edit mode pill (canteen only) + notifications
+            bell + burger. Bell + burger are 40px wide/tall for touch. */}
+        <div className="flex items-center gap-1">
+          {showEditModeButton && (
+            <button
+              type="button"
+              onClick={onToggleEditMode}
+              aria-pressed={editModeActive}
+              className="mr-1 inline-flex h-8 items-center gap-1 rounded-lg px-2.5 text-[10px] font-black uppercase tracking-wider shadow-sm transition active:scale-[0.97]"
+              style={{
+                backgroundColor: editModeActive ? "#166534" : "#FFB300",
+                color: editModeActive ? "#FFFFFF" : "#0A0A0A",
+                animation: editModeActive ? "editmode-glow 2.2s ease-out infinite" : undefined
+              }}
+            >
+              {editModeActive ? "Exit" : "Edit"}
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => setNotifsOpen((v) => !v)}
+            aria-label={pendingCount > 0 ? `Notifications · ${pendingCount} pending` : "Notifications"}
+            aria-expanded={notifsOpen}
+            className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#1B1A17]/80 hover:bg-black/[0.06] active:scale-[0.94]"
+          >
+            <Bell className="h-5 w-5" aria-hidden strokeWidth={2}/>
+            {pendingCount > 0 && (
+              <span
+                aria-hidden
+                className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full border-2 border-[#FBF6EC] px-1 text-[9px] font-black text-white shadow"
+                style={{
+                  backgroundColor: "#B91C1C",
+                  animation: "shell-bell-pulse 2.2s ease-out infinite"
+                }}
+              >
+                {pendingCount > 9 ? "9+" : pendingCount}
+              </span>
+            )}
+          </button>
+          <NotificationsPopover
+            open={notifsOpen}
+            onClose={() => setNotifsOpen(false)}
+            viewAllHref={notificationsHref}
+            mode="mobile"
+          />
+          <button
+            type="button"
+            onClick={onOpenDrawer}
+            aria-label="Open menu"
+            className="flex h-10 w-10 items-center justify-center rounded-full text-[#1B1A17]/80 hover:bg-black/[0.06] active:scale-[0.94]"
+          >
+            <Menu className="h-5 w-5" aria-hidden strokeWidth={2}/>
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -486,16 +867,11 @@ function AppDrawer({
               aria-hidden
               className="inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={CHAT_AVATAR_IMAGE}
-                alt=""
-                className="h-full w-full object-cover"
-              />
+              <ShellAvatar auth={auth} size={36}/>
             </span>
             <div>
               <p className="text-[13px] font-black text-[#1B1A17]">
-                {auth ? "Your Network" : "Menu"}
+                {auth?.displayName ?? (auth ? "Your Network" : "Menu")}
               </p>
               <p className="text-[10.5px] text-[#1B1A17]/55">
                 {auth ? `@${auth.slug}` : "Sign in to unlock"}

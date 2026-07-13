@@ -67,6 +67,23 @@ export default async function AdminLoginPage({
         >
           Sign in
         </button>
+
+        {/* [DEV BUTTON] — remove on "remove dev buttons".
+            Dev-only admin bypass — mints the signed admin cookie
+            without the shared password. Returns 404 in prod. */}
+        {process.env.NODE_ENV !== "production" && (
+          <div className="mt-3 flex justify-center">
+            <a
+              href={`/api/admin/dev-signin?next=${encodeURIComponent(next)}`}
+              className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[9.5px] font-black uppercase tracking-wider shadow-sm"
+              style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+              title="Dev-only bypass — mints the admin cookie with no password"
+            >
+              Dev · Pass
+            </a>
+          </div>
+        )}
+        {/* [/DEV BUTTON] */}
       </form>
     </div>
   );

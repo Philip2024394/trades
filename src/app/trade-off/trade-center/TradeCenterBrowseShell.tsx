@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import type { BrowseProductRow, BrowseSort } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { categoryBySlug } from "@/lib/productCategories";
 
 const CREAM = "#FBF6EC";
 
@@ -39,13 +40,27 @@ const SORT_LABELS: Record<BrowseSort, string> = {
 export function TradeCenterBrowseShell({
   rows,
   facets,
+  categoryFacets = [],
+  aspectFacets = [],
   activeTradeSlug,
+  activeCategorySlug = null,
+  activeAspectFilters = {},
   activeSort,
   activeQuery
 }: {
   rows: BrowseProductRow[];
   facets: Array<{ slug: string; label: string; count: number }>;
+  /** Category counts across the full inventory (independent of the
+   *  currently-active category). Renders as a chip row so buyers can
+   *  jump to a category from anywhere. */
+  categoryFacets?: Array<{ slug: string; count: number }>;
+  /** Per-aspect value counts SCOPED to the currently-active category.
+   *  Empty when no category is picked. Each aspect renders as a chip
+   *  group with click-to-filter values. */
+  aspectFacets?: Array<{ key: string; values: Array<{ value: string; count: number }> }>;
   activeTradeSlug: string | null;
+  activeCategorySlug?: string | null;
+  activeAspectFilters?: Record<string, string>;
   activeSort: BrowseSort;
   activeQuery: string;
 }) {
@@ -53,14 +68,41 @@ export function TradeCenterBrowseShell({
   const [isPending, startTransition] = useTransition();
   const [queryInput, setQueryInput] = useState(activeQuery);
 
-  const pushParams = (patch: Partial<{ trade: string | null; sort: BrowseSort; q: string }>) => {
+  // Build a URL from the current filter state + a patch. Aspect
+  // filters live under `?a.{key}=value` keys so multiple aspects can
+  // coexist in one URL and each is atomically toggleable.
+  const pushParams = (patch: Partial<{
+    trade: string | null;
+    sort: BrowseSort;
+    q: string;
+    category: string | null;
+    aspects: Record<string, string | null>;   // null value → remove
+  }>) => {
     const next = new URLSearchParams();
     const trade = patch.trade === undefined ? activeTradeSlug : patch.trade;
     const sort = patch.sort ?? activeSort;
     const q = patch.q ?? queryInput;
+    const category = patch.category === undefined ? activeCategorySlug : patch.category;
+    // Changing the category invalidates all active aspect filters —
+    // aspects are category-scoped and different categories have
+    // different aspect keys.
+    const aspectsBase = patch.category === undefined
+      ? { ...activeAspectFilters }
+      : {};
+    if (patch.aspects) {
+      for (const [k, v] of Object.entries(patch.aspects)) {
+        if (v === null || v === "") delete aspectsBase[k];
+        else aspectsBase[k] = v;
+      }
+    }
+
     if (trade) next.set("trade", trade);
     if (sort !== "boosted") next.set("sort", sort);
     if (q) next.set("q", q);
+    if (category) next.set("category", category);
+    for (const [k, v] of Object.entries(aspectsBase)) {
+      if (v) next.set(`a.${k}`, v);
+    }
     const url = `/trade-off/trade-center${next.toString() ? `?${next.toString()}` : ""}`;
     startTransition(() => router.push(url));
   };
@@ -73,6 +115,14 @@ export function TradeCenterBrowseShell({
   const activeFacetLabel = activeTradeSlug
     ? facets.find((f) => f.slug === activeTradeSlug)?.label ?? activeTradeSlug
     : null;
+  const activeCategory = activeCategorySlug ? categoryBySlug(activeCategorySlug) : null;
+  const activeCategoryLabel = activeCategory?.label ?? activeCategorySlug;
+  // Resolve aspect keys back to their human labels via the taxonomy.
+  const aspectKeyLabel = (key: string): string => {
+    if (!activeCategory) return key;
+    return activeCategory.specs.find((s) => s.key === key)?.label ?? key;
+  };
+  const activeAspectCount = Object.keys(activeAspectFilters).length;
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: CREAM }}>
@@ -174,6 +224,68 @@ export function TradeCenterBrowseShell({
               />
             ))}
           </div>
+
+          {/* Categories chip row — mirrors the Trades row. Only renders
+              when there are categorised products in the current DB —
+              otherwise the row is noise. */}
+          {categoryFacets.length > 0 && (
+            <div className="flex items-center gap-2 border-t border-neutral-100 py-3">
+              <div className="flex flex-shrink-0 items-center gap-1 pr-1 text-[10px] font-black uppercase tracking-wider text-neutral-500">
+                <Package size={11}/>
+                Category
+              </div>
+              <FacetChip
+                active={activeCategorySlug === null}
+                onClick={() => pushParams({ category: null })}
+                label="All"
+                count={rows.length}
+              />
+              {categoryFacets.map((c) => {
+                const label = categoryBySlug(c.slug)?.label ?? c.slug;
+                return (
+                  <FacetChip
+                    key={c.slug}
+                    active={activeCategorySlug === c.slug}
+                    onClick={() => pushParams({ category: c.slug })}
+                    label={label}
+                    count={c.count}
+                  />
+                );
+              })}
+            </div>
+          )}
+
+          {/* Aspect facet panel — only when a category is active. Each
+              aspect gets its own labelled chip group. Currently-active
+              value chips are yellow; others are outline. Tapping the
+              active chip removes the filter. */}
+          {activeCategorySlug && aspectFacets.length > 0 && (
+            <div className="border-t border-neutral-100 py-3">
+              <div className="flex flex-col gap-2">
+                {aspectFacets.map((facet) => {
+                  const activeVal = activeAspectFilters[facet.key];
+                  return (
+                    <div key={facet.key} className="flex flex-wrap items-center gap-1.5">
+                      <span className="mr-1 flex-shrink-0 text-[10px] font-black uppercase tracking-wider text-neutral-500">
+                        {aspectKeyLabel(facet.key)}
+                      </span>
+                      {facet.values.map((v) => (
+                        <FacetChip
+                          key={v.value}
+                          active={activeVal === v.value}
+                          onClick={() => pushParams({
+                            aspects: { [facet.key]: activeVal === v.value ? null : v.value }
+                          })}
+                          label={v.value}
+                          count={v.count}
+                        />
+                      ))}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Sort + active-filter strip. Only visible when there's
@@ -197,6 +309,37 @@ export function TradeCenterBrowseShell({
                 </button>
               </span>
             )}
+            {activeCategoryLabel && (
+              <span
+                className="inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-neutral-900"
+                style={{ backgroundColor: `${BRAND_YELLOW}44` }}
+              >
+                {activeCategoryLabel}
+                <button
+                  onClick={() => pushParams({ category: null })}
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-white/80 text-neutral-700 hover:bg-white"
+                  aria-label={`Clear ${activeCategoryLabel} filter`}
+                >
+                  <XIcon size={9} strokeWidth={2.5}/>
+                </button>
+              </span>
+            )}
+            {Object.entries(activeAspectFilters).map(([k, v]) => (
+              <span
+                key={k}
+                className="inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-neutral-900"
+                style={{ backgroundColor: `${BRAND_YELLOW}44` }}
+              >
+                {aspectKeyLabel(k)}: {v}
+                <button
+                  onClick={() => pushParams({ aspects: { [k]: null } })}
+                  className="flex h-4 w-4 items-center justify-center rounded-full bg-white/80 text-neutral-700 hover:bg-white"
+                  aria-label={`Clear ${aspectKeyLabel(k)} filter`}
+                >
+                  <XIcon size={9} strokeWidth={2.5}/>
+                </button>
+              </span>
+            ))}
             {activeQuery && (
               <span
                 className="inline-flex h-7 items-center gap-1.5 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-neutral-900"
@@ -215,7 +358,7 @@ export function TradeCenterBrowseShell({
                 </button>
               </span>
             )}
-            {(activeFacetLabel || activeQuery) && (
+            {(activeFacetLabel || activeQuery || activeCategoryLabel || activeAspectCount > 0) && (
               <button
                 onClick={clearAll}
                 className="text-[11px] font-black uppercase tracking-wider text-neutral-500 underline underline-offset-2 hover:text-neutral-800"
@@ -237,6 +380,27 @@ export function TradeCenterBrowseShell({
               ))}
             </select>
           </label>
+        </div>
+      </section>
+
+      {/* Zero-commission trust banner — the single most-important
+          differentiator between us and every other marketplace. Kept
+          quiet (thin strip, small type) so it doesn't feel like a
+          marketing bar; buyers scanning quickly still catch it. Buyer
+          sees this too — reinforces "you're not paying a hidden
+          markup". Reads as a factual statement, not a comparison
+          (see ADR-0003 / ADR-0010; comparison messaging lives on the
+          merchant pricing page, not here, to avoid discrimination
+          risk against other platforms named directly). */}
+      <section
+        className="border-b bg-emerald-50/60"
+        style={{ borderColor: "rgba(16,185,129,0.25)" }}
+      >
+        <div className="mx-auto flex max-w-6xl items-center gap-2 px-3 py-2 text-[11px] font-black uppercase tracking-wider text-emerald-900 md:px-6">
+          <span aria-hidden className="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-500"/>
+          <span className="min-w-0">
+            Trade Center takes 0% commission on your sale. Merchant subscription only. Bandwidth stays on us.
+          </span>
         </div>
       </section>
 
@@ -314,16 +478,20 @@ function ProductCard({ row }: { row: BrowseProductRow }) {
         boxShadow: isBoosted ? `0 0 0 1px ${BRAND_GREEN_DARK}44` : undefined
       }}
     >
-      {/* Image */}
-      <div
-        className="relative aspect-[4/3] flex-shrink-0"
-        style={{
-          backgroundImage: `url('${product.imageUrl}')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundColor: "#F3F4F6"
-        }}
-      >
+      {/* Image — object-contain per platform rule (no cropping).
+          Merchant uploads any aspect; the soft grey padding shows.
+          The optional pre-upload crop editor lets them reframe if
+          they want a tighter shot without losing the original. */}
+      <div className="relative aspect-[4/3] flex-shrink-0 bg-[#F3F4F6]">
+        {product.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={product.imageUrl}
+            alt={product.name}
+            className="absolute inset-0 h-full w-full object-contain p-2"
+            loading="lazy"
+          />
+        )}
         {isBoosted && (
           <span
             className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
