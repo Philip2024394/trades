@@ -109,7 +109,38 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     );
   }
 
-  const response = NextResponse.json({ ok: true, slug: listing.slug });
+  // Successful login — bump last_login_at and reset slug_expiry_stage
+  // to 'ok'. This is the only place the free-tier slug clock is reset,
+  // so it's critical: without it, every free user eventually expires.
+  //
+  // Non-blocking by design: if the update fails (transient DB issue,
+  // column not yet migrated), we STILL log the user in. The clock will
+  // reset on their next successful login.
+  try {
+    await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .update({
+        last_login_at:    new Date().toISOString(),
+        slug_expiry_stage: "ok"
+      })
+      .eq("id", listing.id);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn("[trade-off/login] last_login_at bump failed (non-fatal):", err);
+  }
+
+  // If the merchant's slug was previously archived by the free-tier
+  // expiry cron (renamed to `archived-<id>`), let them in as normal
+  // but flag it so the UI can prompt them to pick a new URL. Never
+  // block login — that would be a hard lockout for someone whose only
+  // sin was not logging in for 30 days.
+  const slugWasArchived = listing.slug.startsWith("archived-");
+
+  const response = NextResponse.json({
+    ok:                  true,
+    slug:                listing.slug,
+    slug_was_archived:   slugWasArchived
+  });
   setTradeSessionCookie(response, listing.id, listing.slug);
   return response;
 }

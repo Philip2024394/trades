@@ -30,6 +30,7 @@
     { "path": "/api/cron/yard-release-queued", "schedule": "*/10 * * * *" },
     { "path": "/api/cron/yard-expire-notifications", "schedule": "0 3 * * *" },
     { "path": "/api/reviews/publish-pending", "schedule": "*/15 * * * *" },
-    { "path": "/api/canteens/recalc-metrics", "schedule": "0 * * * *" }
+    { "path": "/api/canteens/recalc-metrics", "schedule": "0 * * * *" },
+    { "path": "/api/cron/free-slug-expiry", "schedule": "0 3 * * *" }
   ]
 }

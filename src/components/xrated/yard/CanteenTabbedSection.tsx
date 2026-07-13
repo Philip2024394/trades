@@ -91,22 +91,29 @@ const DEMO_DESIGNS: DemoDesign[] = [
     ref: "DS-102",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_52_07%20PM.png",
     galleryUrls: [
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_49_21%20PM.png",
-      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_46_41%20PM.png"
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_16_52%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_20_49%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_44_16%20PM.png"
     ],
-    name: "Statement Island",
-    tagline: "Built around the family",
-    description: "A wide central island in a bold contrast tone — quartz surface, integrated wine cooler, breakfast bar seating for four. Perfect for open-plan family homes where the kitchen is the social hub. Pairs with either shaker or slab door styles. From £18,900 fitted, typically installed in 3-4 weeks.",
-    style: "Family Kitchen"
+    name: "Walnut Statement Island",
+    tagline: "Warm walnut, clean lines",
+    description: "A wide central island in rich walnut, warming the room and balancing against light wall cabinets. Matt-finish undermount sink pairs with brushed brass taps and mitred-edge stone worktops. Integrated wine cooler and breakfast bar seating for four. Perfect for open-plan family homes where the kitchen is the social hub. From £18,900 fitted, typically installed in 3-4 weeks.",
+    style: "Walnut Two-Tone"
   },
   {
     id: "d3",
     ref: "DS-103",
     imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2001_49_21%20PM.png",
-    name: "Contemporary Two-Tone",
-    tagline: "Bold and balanced",
-    description: "A two-tone finish — deep base units contrasted against light wall cabinets. Brushed brass accents on handles and taps. Mitred-edge worktops for a premium seamless look. Best in kitchens over 4m wide where the contrast can breathe. From £16,200 supplied and fitted.",
-    style: "Two-Tone Modern"
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_54_07%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_57_15%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2002_58_59%20PM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2003_02_24%20PM.png"
+    ],
+    name: "Brushed Stainless",
+    tagline: "Professional-grade finish",
+    description: "Brushed stainless steel doors and worktops with soft-close mechanisms — the finish you see in restaurant kitchens, engineered for a family home. Hardwearing, hygienic, and virtually maintenance-free. Pairs with warm timber flooring to soften the industrial edge. Best in open-plan spaces where the metal can reflect light back into the room. From £17,400 supplied and fitted.",
+    style: "Brushed Stainless"
   },
   {
     id: "d4",
@@ -1122,7 +1129,7 @@ function ImageGallery({
           which read as products). */}
       {showThumbs && (
         <div className="mt-2 flex items-center gap-2 px-1">
-          {clean.slice(0, 4).map((src, i) => {
+          {clean.slice(0, 6).map((src, i) => {
             const isActive = i === activeIndex;
             return (
               <button

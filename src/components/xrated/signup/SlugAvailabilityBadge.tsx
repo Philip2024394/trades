@@ -9,17 +9,9 @@
 // unavailable" jargon; just "Taken. Try another." at trade-native
 // reading level.
 
-import { useSlugAvailability } from "./useSlugAvailability";
+import { useSlugAvailability, SLUG_REJECTION_MESSAGE } from "./useSlugAvailability";
 import { CircleCheck, CircleX, Loader2 } from "lucide-react";
 import { BRAND_GREEN_DARK } from "@/lib/brand/tokens";
-
-const REASON_COPY: Record<string, string> = {
-  "taken": "Taken. Try another.",
-  "invalid": "Letters, numbers, and dashes only.",
-  "reserved": "Reserved word. Try another.",
-  "too-short": "At least 3 characters.",
-  "too-long": "Under 40 characters."
-};
 
 export function SlugAvailabilityBadge({ slug }: { slug: string }) {
   const state = useSlugAvailability(slug);
@@ -48,9 +40,11 @@ export function SlugAvailabilityBadge({ slug }: { slug: string }) {
   }
 
   return (
-    <span className="inline-flex items-center gap-1 text-[11px] font-black uppercase tracking-wider text-red-600">
-      <CircleX size={11} strokeWidth={2.5}/>
-      {REASON_COPY[state.reason]}
+    <span className="inline-flex items-start gap-1 text-[11px] font-black leading-tight text-red-600">
+      <CircleX size={11} strokeWidth={2.5} className="mt-0.5 flex-shrink-0"/>
+      <span className="normal-case tracking-normal font-bold">
+        {SLUG_REJECTION_MESSAGE[state.reason]}
+      </span>
     </span>
   );
 }

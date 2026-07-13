@@ -10,11 +10,34 @@
 
 import { useEffect, useState } from "react";
 
+export type SlugRejectionReason =
+  | "taken"
+  | "invalid"
+  | "reserved"
+  | "reserved-trade"
+  | "reserved-city"
+  | "reserved-qualifier"
+  | "too-short"
+  | "too-long";
+
 export type SlugAvailability =
   | { status: "idle" }
   | { status: "checking" }
   | { status: "available" }
-  | { status: "unavailable"; reason: "taken" | "invalid" | "reserved" | "too-short" | "too-long" };
+  | { status: "unavailable"; reason: SlugRejectionReason };
+
+// User-facing messages per rejection reason. Squatter-block responses
+// suggest the fix ("add your business name") rather than just saying no.
+export const SLUG_REJECTION_MESSAGE: Record<SlugRejectionReason, string> = {
+  taken:                "Already taken — try adding your first name or town.",
+  invalid:              "Lowercase letters, numbers and hyphens only.",
+  reserved:             "This slug is reserved. Try adding your business name.",
+  "reserved-trade":     "That's a trade category, not a business name. Try mikes-kitchens or bright-electric.",
+  "reserved-city":      "City names alone aren't allowed. Add your business name first — e.g. mikes-kitchens-manchester.",
+  "reserved-qualifier": "Marketing words like best / top / cheap aren't allowed. Use your real business name.",
+  "too-short":          "At least 3 characters.",
+  "too-long":           "Keep it under 40 characters."
+};
 
 export function useSlugAvailability(slug: string): SlugAvailability {
   const [state, setState] = useState<SlugAvailability>({ status: "idle" });
@@ -56,7 +79,7 @@ export function useSlugAvailability(slug: string): SlugAvailability {
           setState({ status: "available" });
           return;
         }
-        const data = await res.json() as { available: boolean; reason?: SlugAvailability extends { reason: infer R } ? R : never };
+        const data = await res.json() as { available: boolean; reason?: SlugRejectionReason };
         if (data.available) {
           setState({ status: "available" });
         } else {
