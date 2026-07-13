@@ -34,10 +34,16 @@ type BillingCycle = "monthly" | "annual";
 
 // ─── Pricing model ─────────────────────────────────────────
 
+// Pricing rebalanced 2026-07-13 to clear post-data operating buffer:
+//   Canteen     >= £5/mo clear  (community CS)
+//   Marketplace >= £8/mo clear  (standard WhatsApp CS)
+//   Ultimate    >= £10/mo clear (priority WhatsApp CS + video + AI)
+// Verified against Stripe + Supabase egress + storage at typical-heavy
+// usage. Viral bandwidth outliers protected by fair-use policy.
 const PRICES = {
-  canteen:     { monthly: 6.99,  annual: 60,   annualSaving: 6.99 * 12 - 60 },
-  marketplace: { monthly: 9.99,  annual: 99,   annualSaving: 9.99 * 12 - 99 },
-  ultimate:    { monthly: 14.99, annual: 149,  annualSaving: 14.99 * 12 - 149 }
+  canteen:     { monthly: 7.99,  annual: 72,   annualSaving: 7.99 * 12 - 72 },
+  marketplace: { monthly: 11.99, annual: 120,  annualSaving: 11.99 * 12 - 120 },
+  ultimate:    { monthly: 15.99, annual: 175,  annualSaving: 15.99 * 12 - 175 }
 };
 
 function priceOf(tier: "canteen" | "marketplace" | "ultimate", billing: BillingCycle): number {
@@ -189,13 +195,16 @@ const TIERS: Tier[] = [
     ]
   },
   {
+    // Internal id kept as "ultimate" for URL / migration stability.
+    // Display name changed to "The Works" per Philip 2026-07-13 —
+    // trades-native ("give me the works"), not corporate.
     id: "ultimate",
     icon: Package,
-    name: "Ultimate",
-    positioning: "Everything + premium tools",
+    name: "The Works",
+    positioning: "Give me the works",
     audience: "Hybrid merchants — sell products AND run service",
     badge: "Best value",
-    ctaLabel: "Go Ultimate",
+    ctaLabel: "Get The Works",
     ctaHref: "/trade-off/signup?plan=ultimate",
     groups: [
       {
@@ -212,7 +221,8 @@ const TIERS: Tier[] = [
           "Hero video on your canteen",
           "Product-detail videos (autoplay muted)",
           "Video posts across Yard + Live Listings",
-          "Hosted on our CDN, no third-party account"
+          "Hosted on our CDN, no third-party account",
+          "60 GB/mo bandwidth included (£1 per +25 GB above)"
         ]
       },
       {
@@ -385,7 +395,7 @@ const FEATURES: FeatureCardData[] = [
     icon: ShieldCheck,
     title: "Verified badge + slug for life",
     description: "Verified mark on every listing and every Find Trades result. Your slug reserved for life, no-one can claim it even if you cancel.",
-    tierBadge: "Ultimate",
+    tierBadge: "The Works",
     demoHref: "/trade-off/verified"
   }
 ];
@@ -411,7 +421,7 @@ export function PackagesShell() {
             Four packages. One clear ladder.
           </h1>
           <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-neutral-700 sm:text-[15px]">
-            Free forever gives you your URL and browse-everything access. Canteen adds your live page. Marketplace unlocks Trade Center selling. Ultimate is everything, plus AI tools and video.
+            Free forever gives you your URL and browse-everything access. Canteen adds your live page. Marketplace unlocks Trade Center selling. The Works is everything, plus AI tools and video.
           </p>
 
         </div>
@@ -452,14 +462,14 @@ export function PackagesShell() {
                   color: billing === "annual" ? BRAND_YELLOW : "#6B7280"
                 }}
               >
-                Save up to £30
+                Save up to £24
               </span>
             </button>
           </div>
         </div>
         {billing === "annual" && (
           <p className="mt-2 text-center text-[11px] text-neutral-500">
-            Annual = 2 months free on Canteen, Marketplace and Ultimate.
+            Annual = 2 months free on Canteen, Marketplace and The Works.
           </p>
         )}
       </section>
@@ -495,7 +505,7 @@ export function PackagesShell() {
                 <th className="px-4 py-3 text-center text-[11px] font-black uppercase tracking-wider text-neutral-500">Free</th>
                 <th className="px-4 py-3 text-center text-[11px] font-black uppercase tracking-wider text-neutral-900">Canteen</th>
                 <th className="px-4 py-3 text-center text-[11px] font-black uppercase tracking-wider text-neutral-900">Marketplace</th>
-                <th className="px-4 py-3 text-center text-[11px] font-black uppercase tracking-wider text-neutral-900">Ultimate</th>
+                <th className="px-4 py-3 text-center text-[11px] font-black uppercase tracking-wider text-neutral-900">The Works</th>
               </tr>
             </thead>
             <tbody>
