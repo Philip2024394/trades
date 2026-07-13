@@ -3,9 +3,9 @@
 import { AudienceGateBright } from "@/components/homepage/AudienceGateBright";
 
 export const metadata = {
-  title: "The Construction Notebook · XRatedTrade",
+  title: "The Network · For every trade, homeowner, and merchant",
   description:
-    "Every job. Every home. On the record. Britain's construction notebook — for homeowners and the trades who build with them."
+    "One network. One profile. One community — for every trade, homeowner, and merchant in the UK. Free for life."
 };
 
 export default function Home() {

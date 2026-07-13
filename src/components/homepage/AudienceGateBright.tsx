@@ -8,9 +8,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Hammer } from "lucide-react";
+import { ActivityFeedPanel } from "./ActivityFeedPanel";
 
+// ImageKit URL transform:
+//   tr:w-1600  — max width the hero renders at on the largest viewport
+//   f-auto     — browser-negotiated AVIF > WebP > JPG (falls back to
+//                the source PNG only if the browser can't do any of
+//                those, which is virtually zero traffic in 2026)
+//   q-80       — quality; visually indistinguishable from lossless
+//                at photographic content, ~4-10× smaller than the PNG.
+// Result: LCP drops from a multi-MB PNG to a sub-500KB AVIF for
+// most visitors.
 const HERO_IMAGE =
-  "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsaaassdd.png";
+  "https://ik.imagekit.io/9mrgsv2rp/tr:w-1600,f-auto,q-80/Untitledsdsaaassdd.png";
 
 // Design tokens — local until the bright test is fully rolled out.
 const PALETTE = {
@@ -24,7 +34,7 @@ const PALETTE = {
 export function AudienceGateBright() {
   return (
     <section
-      aria-label="The Construction Notebook"
+      aria-label="The Network"
       className="relative min-h-[100dvh] w-full"
       style={{ backgroundColor: PALETTE.cream, color: PALETTE.ink }}
     >
@@ -41,7 +51,7 @@ export function AudienceGateBright() {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: PALETTE.honeyBright }}
             />
-            The Construction Notebook
+            The Network
           </div>
           <div className="flex items-center gap-3 text-[13px] font-semibold">
             <Link
@@ -49,12 +59,24 @@ export function AudienceGateBright() {
               className="hidden underline-offset-4 hover:underline sm:inline"
               style={{ color: PALETTE.ink }}
             >
-              Why Notebook
+              Why The Network
+            </Link>
+            <Link
+              href="/trade-off/yard"
+              className="hidden items-center gap-1.5 underline-offset-4 hover:underline sm:inline-flex"
+              style={{ color: PALETTE.ink }}
+            >
+              <span
+                aria-hidden
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: PALETTE.honeyBright }}
+              />
+              The Yard
             </Link>
             <Link
               href="/home/sign-in"
-              className="rounded-full border-2 px-4 py-1.5 hover:bg-[rgba(27,26,23,0.05)]"
-              style={{ borderColor: PALETTE.ink, color: PALETTE.ink }}
+              className="underline-offset-4 hover:underline"
+              style={{ color: PALETTE.ink }}
             >
               Sign in
             </Link>
@@ -77,6 +99,14 @@ export function AudienceGateBright() {
             className="object-cover"
           />
 
+          {/* Live activity feed — tall portrait panel floats top-left
+              of the hero with breathing padding, doesn't cover the
+              central image. Visible on every viewport; the panel itself
+              shrinks to 220px width on mobile. */}
+          <div className="absolute left-[22px] top-[22px] z-20 md:left-[34px] md:top-[34px] lg:left-[42px] lg:top-[42px]">
+            <ActivityFeedPanel />
+          </div>
+
           {/* Bottom dark gradient so overlaid copy is legible without dulling the top of the image. */}
           <div
             aria-hidden
@@ -96,16 +126,16 @@ export function AudienceGateBright() {
               >
                 Every project.<br />
                 Every site.<br />
-                <span style={{ color: PALETTE.honeyBright }}>On the record.</span>
+                <span style={{ color: PALETTE.honeyBright }}>On The Network.</span>
               </h1>
 
               <p
                 className="mt-5 max-w-[46ch] text-[15px] leading-[1.55] md:text-[17px]"
                 style={{ color: "rgba(255,247,229,0.85)" }}
               >
-                A construction notebook Britain&apos;s homes and trades share.
-                Photos, materials, warranties, and every trade you worked with —
-                recorded for the life of the property.
+                One network. One profile. One community — for every trade,
+                homeowner, and merchant in the UK. Buying and selling are two
+                things that happen here. Belonging is the rest.
               </p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
@@ -168,7 +198,21 @@ export function AudienceGateBright() {
                   className="inline-flex items-center gap-1.5 underline-offset-4 hover:underline"
                   style={{ color: PALETTE.honeyBright }}
                 >
-                  See a sample Notebook
+                  See a sample business app
+                  <ArrowRight className="h-3 w-3" aria-hidden />
+                </Link>
+                <span
+                  aria-hidden
+                  style={{ color: "rgba(255,247,229,0.35)" }}
+                >
+                  ·
+                </span>
+                <Link
+                  href="/why/trades"
+                  className="inline-flex items-center gap-1.5 underline-offset-4 hover:underline"
+                  style={{ color: PALETTE.honeyBright }}
+                >
+                  Trades — why join?
                   <ArrowRight className="h-3 w-3" aria-hidden />
                 </Link>
                 <span

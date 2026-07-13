@@ -19,10 +19,18 @@
 export const SLUG_RE = /^[a-z0-9][a-z0-9-]*[a-z0-9]$/;
 
 /** Namespaced id — `hero.trust_minimal_1`, `buttons.primary`,
- *  `gallery.minImages`. Enforced by `sectionRegistry`, `buttonRegistry`,
- *  `designSystemRegistry`, `facetKindRegistry`. Category is kebab-only;
- *  name may include camelCase to match existing facet conventions. */
-export const NAMESPACED_ID_RE = /^[a-z][a-z0-9_]*\.[a-zA-Z][a-zA-Z0-9_-]*$/;
+ *  `data-display.card`, `gallery.minImages`. Enforced by `sectionRegistry`,
+ *  `buttonRegistry`, `designSystemRegistry`, `facetKindRegistry`.
+ *
+ *  Category: kebab-case (letters, digits, hyphens, underscores) — must
+ *  start with a letter, end with a letter or digit, min 2 chars.
+ *  Name: may include camelCase + hyphens + underscores to match existing
+ *  facet conventions.
+ *
+ *  Historically this regex excluded hyphens in the category which
+ *  wrongly rejected `data-display.*` — restored 2026-07-09. */
+export const NAMESPACED_ID_RE =
+  /^[a-z][a-z0-9_-]*[a-z0-9]\.[a-zA-Z][a-zA-Z0-9_-]*$/;
 
 /** Strict semver, optionally with a pre-release tag. Matches the
  *  regex used by `appRegistry` + `packRegistry` + `blueprintRegistry`. */

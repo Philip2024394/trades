@@ -40,7 +40,7 @@ import { VaultVideoUploader } from "@/components/home/VaultVideoUploader";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Project record — Xrated Trades",
+  title: "Project record — The Network",
   robots: { index: false, follow: false }
 };
 

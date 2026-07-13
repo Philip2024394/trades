@@ -30,8 +30,8 @@ export async function generateMetadata({
   if (!listing) return { title: "Leave a review" };
   const primary = tradeLabel(listing.primary_trade);
   return {
-    title: `Leave a review for ${listing.display_name} — ${primary} | Xrated Trades`,
-    description: `Share your experience working with ${listing.display_name} on Xrated Trades. Honest reviews protect good tradespeople and help customers choose.`
+    title: `Leave a review for ${listing.display_name} — ${primary} | The Network`,
+    description: `Share your experience working with ${listing.display_name} on The Network. Honest reviews protect good tradespeople and help customers choose.`
   };
 }
 

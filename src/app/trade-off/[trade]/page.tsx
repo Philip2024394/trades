@@ -29,8 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ trade: st
   const { trade } = await params;
   if (!TRADE_OFF_TRADES.find((t) => t.slug === trade)) return { title: "Trade not found" };
   const label = tradeLabel(trade);
-  const title = `${label}s — Xrated Trades`;
-  const description = `Find a ${label.toLowerCase()} on Xrated Trades. Free WhatsApp quotation. Verified Hammerex Standard tradies first. Powered by Hammerex.`;
+  const title = `${label}s — The Network`;
+  const description = `Find a ${label.toLowerCase()} on The Network. Free WhatsApp quotation. Verified tradies first.`;
   return {
     title,
     description,
@@ -68,7 +68,7 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
 
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "xratedtrade.com", url: "/trade-off" },
+    { name: "The Network", url: "/trade-off" },
     { name: label, url: `/trade-off/${trade}` }
   ]);
 
@@ -86,16 +86,16 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
           <div className="relative h-48 w-full overflow-hidden sm:h-64 md:h-80">
             <img
               src={tradeHeroFor(trade) as string}
-              alt={`${label}s on Xrated Trades`}
+              alt={`${label}s on The Network`}
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/0" />
             <div className="absolute inset-x-0 bottom-0 mx-auto max-w-6xl px-4 pb-5">
               <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-                Xrated Trades
+                The Network
               </p>
               <h1 className="mt-1.5 text-2xl font-extrabold leading-tight text-white drop-shadow-md sm:text-3xl">
-                {label}s on Xrated Trades
+                {label}s on The Network
               </h1>
             </div>
           </div>
@@ -106,7 +106,7 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
         <ol className="flex items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">xratedtrade.com</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">The Network</a></li>
           <li>/</li>
           <li className="text-brand-text">{label}</li>
         </ol>
@@ -117,15 +117,15 @@ export default async function TradeOffByTradePage({ params }: { params: Promise<
           {!tradeHeroFor(trade) && (
             <>
               <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-                Xrated Trades
+                The Network
               </p>
               <h1 className="mt-3 text-2xl font-bold leading-tight text-brand-text sm:text-4xl">
-                {label}s on Xrated Trades
+                {label}s on The Network
               </h1>
             </>
           )}
           <p className={tradeHeroFor(trade) ? "max-w-2xl text-sm leading-relaxed text-brand-muted" : "mt-3 max-w-2xl text-sm leading-relaxed text-brand-muted"}>
-            {listings.length} live {listings.length === 1 ? "tradie" : "tradies"} — free WhatsApp quotation, verified Hammerex Standard tradies first.
+            {listings.length} live {listings.length === 1 ? "tradie" : "tradies"} — free WhatsApp quotation, verified tradies first.
           </p>
           <div className="mt-5">
             <a

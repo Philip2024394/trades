@@ -71,17 +71,23 @@ alter table studio_coach_assessments enable row level security;
 alter table studio_coach_backlog_items enable row level security;
 alter table studio_coach_actions enable row level security;
 
-create policy if not exists "coach_assessments_owner"
-  on studio_coach_assessments for all
+drop policy if exists "coach_assessments_owner" on studio_coach_assessments;
+create policy "coach_assessments_owner"
+  on studio_coach_assessments
+  for all
   using (merchant_id = auth.uid())
   with check (merchant_id = auth.uid());
 
-create policy if not exists "coach_backlog_owner"
-  on studio_coach_backlog_items for all
+drop policy if exists "coach_backlog_owner" on studio_coach_backlog_items;
+create policy "coach_backlog_owner"
+  on studio_coach_backlog_items
+  for all
   using (merchant_id = auth.uid())
   with check (merchant_id = auth.uid());
 
-create policy if not exists "coach_actions_owner"
-  on studio_coach_actions for all
+drop policy if exists "coach_actions_owner" on studio_coach_actions;
+create policy "coach_actions_owner"
+  on studio_coach_actions
+  for all
   using (merchant_id = auth.uid())
   with check (merchant_id = auth.uid());

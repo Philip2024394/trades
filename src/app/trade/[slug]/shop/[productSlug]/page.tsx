@@ -47,9 +47,10 @@ import {
 } from "@/components/xrated/profile/merchant/BuyColumnFlip";
 import { Breadcrumbs } from "@/components/xrated/profile/merchant/Breadcrumbs";
 import { breadcrumbJsonLd, productJsonLd } from "@/lib/seo";
-import { TradeConnectionsCarousel } from "@/components/trade-off/TradeConnectionsCarousel";
-import { loadTradeConnections } from "@/lib/tradeConnections";
-import { isTradeConnectionsOn } from "@/lib/xratedAddons";
+// TradeConnectionsCarousel + loadTradeConnections + isTradeConnectionsOn
+// retired 2026-07-09 — the endorsement-implying "Trade Circle" rail
+// was swapped for the disclaimer-first NearbyInstallers strip in
+// Phase A of the Nearby Installers pattern.
 import { SiblingsWithCompare } from "@/components/xrated/profile/merchant/SiblingsWithCompare";
 import { BulkTierTable } from "@/components/xrated/profile/merchant/BulkTierTable";
 import { StarsRating } from "@/components/xrated/profile/StarsRating";
@@ -58,6 +59,28 @@ import { PaymentIconsRow } from "@/components/xrated/profile/merchant/PaymentIco
 import { CurrencyDropdown } from "@/components/xrated/profile/merchant/CurrencyDropdown";
 import { PriceDisplay } from "@/components/xrated/profile/merchant/PriceDisplay";
 import { ProductReviewsBlock } from "@/components/xrated/profile/merchant/ProductReviewsBlock";
+import { TradeKeyFeatures } from "@/components/xrated/profile/merchant/TradeKeyFeatures";
+import { TradeProductFAQ } from "@/components/xrated/profile/merchant/TradeProductFAQ";
+import { TradeProductVideo } from "@/components/xrated/profile/merchant/TradeProductVideo";
+import { TradeDispatchBadge } from "@/components/xrated/profile/merchant/TradeDispatchBadge";
+import { TradeWhatsAppFAB } from "@/components/xrated/profile/merchant/TradeWhatsAppFAB";
+import { TradeShippingReturns } from "@/components/xrated/profile/merchant/TradeShippingReturns";
+import { TradeWarrantyTimeline } from "@/components/xrated/profile/merchant/TradeWarrantyTimeline";
+import {
+  TradePairsWith,
+  type TradePairsWithRow
+} from "@/components/xrated/profile/merchant/TradePairsWith";
+import { TradeInTheBox } from "@/components/xrated/profile/merchant/TradeInTheBox";
+import { TradeQABlock } from "@/components/xrated/profile/merchant/TradeQABlock";
+import {
+  NearbyInstallers,
+  type InstallerRow
+} from "@/components/xrated/profile/merchant/NearbyInstallers";
+import type {
+  HammerexXratedWhatInBox,
+  HammerexXratedQuestion,
+  HammerexXratedAnswer
+} from "@/lib/supabase";
 import { ProductQABlock } from "@/components/xrated/profile/merchant/ProductQABlock";
 import { StickyBuyBar } from "@/components/xrated/profile/merchant/StickyBuyBar";
 import { QtyStepper } from "@/components/xrated/profile/merchant/QtyStepper";
@@ -348,26 +371,16 @@ export default async function ProductDetailPage({
   const product = await loadProduct(listing.id, productSlug);
   if (!product) notFound();
   const compareIds = Array.isArray(product.compare_with) ? product.compare_with : [];
-  const tradeConnectionsOn = isTradeConnectionsOn({ addons_enabled: listing.addons_enabled });
-  const [siblings, compareTargets, stats, crossSellSiblings, tradeConnections] = await Promise.all([
+  // Phase A of the Nearby Installers pattern retired the previous
+  // "Trade Circle" carousel. It implied platform endorsement of the
+  // listed trades — a liability we're not set up to carry. The new
+  // strip (NearbyInstallers below) is pure discovery + WhatsApp
+  // handoff with an inline disclaimer.
+  const [siblings, compareTargets, stats, crossSellSiblings] = await Promise.all([
     loadSiblings(listing.id, product.id),
     loadCompareTargets(compareIds),
     loadProductStats(product.id),
-    loadCrossSellCandidates(listing.id, product.id),
-    tradeConnectionsOn
-      ? loadTradeConnections({
-          merchantListing: {
-            id: listing.id,
-            wholesale_origin_lat: listing.wholesale_origin_lat,
-            wholesale_origin_lng: listing.wholesale_origin_lng,
-            postcode_prefix: listing.postcode_prefix,
-            city: listing.city,
-            trade_connections_radius_km: listing.trade_connections_radius_km
-          },
-          category: product.merchant_category,
-          excludeSlugs: [listing.slug]
-        })
-      : Promise.resolve([])
+    loadCrossSellCandidates(listing.id, product.id)
   ]);
   // Batch the sibling + compare-target review aggregates in one
   // round-trip after the products are known. Keeps the rail from
@@ -376,6 +389,213 @@ export default async function ProductDetailPage({
     new Set([...siblings.map((s) => s.id), ...compareTargets.map((c) => c.id)])
   );
   const siblingStats = await loadProductsStats(railIds);
+
+  // Customer Q&A — questions + answers loaded in two shots and
+  // stitched into the {...q, answers: []} shape TradeQABlock renders.
+  // Deleted / moderation-hidden rows filtered out at query time.
+  const qRes = await supabase
+    .from("hammerex_xrated_questions")
+    .select("id, product_id, asked_by, body, flag_count, moderation_status, moderated_at, deleted_at, created_at")
+    .eq("product_id", product.id)
+    .is("deleted_at", null)
+    .eq("moderation_status", "live")
+    .order("created_at", { ascending: false })
+    .limit(30);
+  const qRows = qRes.data ?? [];
+  let qaThread: HammerexXratedQuestion[] = [];
+  if (qRows.length > 0) {
+    const qIds = qRows.map((q) => q.id as string);
+    const aRes = await supabase
+      .from("hammerex_xrated_answers")
+      .select("id, question_id, body, by_vendor, by_name, moderation_status, deleted_at, created_at")
+      .in("question_id", qIds)
+      .is("deleted_at", null)
+      .eq("moderation_status", "live")
+      .order("created_at", { ascending: true });
+    const answersByQ = new Map<string, HammerexXratedAnswer[]>();
+    for (const a of aRes.data ?? []) {
+      const arr = answersByQ.get(a.question_id as string) ?? [];
+      arr.push({
+        id: a.id as string,
+        question_id: a.question_id as string,
+        body: a.body as string,
+        by_vendor: a.by_vendor as boolean,
+        by_name: (a.by_name as string | null) ?? null,
+        moderation_status: a.moderation_status as
+          | "live"
+          | "hidden"
+          | "spam",
+        deleted_at: (a.deleted_at as string | null) ?? null,
+        created_at: a.created_at as string
+      });
+      answersByQ.set(a.question_id as string, arr);
+    }
+    qaThread = qRows.map((q) => ({
+      id: q.id as string,
+      product_id: q.product_id as string,
+      asked_by: (q.asked_by as string | null) ?? null,
+      body: q.body as string,
+      flag_count: q.flag_count as number,
+      moderation_status: q.moderation_status as "live" | "hidden" | "spam",
+      moderated_at: (q.moderated_at as string | null) ?? null,
+      deleted_at: (q.deleted_at as string | null) ?? null,
+      created_at: q.created_at as string,
+      answers: answersByQ.get(q.id as string) ?? []
+    }));
+  }
+
+  // What's in the box — single small query. Auto-hides when empty.
+  const boxRes = await supabase
+    .from("hammerex_xrated_what_in_box")
+    .select("id, product_id, label, qty, image_url, sort_order, created_at")
+    .eq("product_id", product.id)
+    .order("sort_order", { ascending: true })
+    .limit(30);
+  const whatInBox: HammerexXratedWhatInBox[] = (boxRes.data ?? []).map(
+    (r) => ({
+      id: r.id as string,
+      product_id: r.product_id as string,
+      label: r.label as string,
+      qty: r.qty as number,
+      image_url: (r.image_url as string | null) ?? null,
+      sort_order: r.sort_order as number,
+      created_at: r.created_at as string
+    })
+  );
+
+  // Nearby installers (Phase A) — only runs when this product declared
+  // an install category. Finds live service rows on other trades
+  // tagged with the same category, prefers same-city, caps at 3.
+  // Same-country filter keeps a UK product from showing an
+  // international install offer.
+  let nearbyInstallers: InstallerRow[] = [];
+  if (product.install_service_category) {
+    const svcRes = await supabase
+      .from("hammerex_xrated_products")
+      .select(
+        "id, name, slug, price_pence, unit, listing_id, service_category, status, kind"
+      )
+      .eq("service_category", product.install_service_category)
+      .eq("kind", "service")
+      .eq("status", "live")
+      .limit(24);
+    const svcRows = svcRes.data ?? [];
+    if (svcRows.length > 0) {
+      const listingIds = Array.from(
+        new Set(svcRows.map((r) => r.listing_id as string))
+      );
+      const listingsRes = await supabase
+        .from("hammerex_trade_off_listings")
+        .select("id, slug, display_name, trading_name, city, country, whatsapp, status")
+        .in("id", listingIds)
+        .eq("status", "live");
+      const listingMap = new Map(
+        (listingsRes.data ?? []).map((l) => [l.id as string, l])
+      );
+
+      // Aggregate review stats per listing so the card can render
+      // "★ 4.7 (32)". Only public reviews count.
+      const reviewsRes = await supabase
+        .from("hammerex_trade_off_reviews")
+        .select("listing_id, rating")
+        .in("listing_id", listingIds)
+        .eq("status", "live");
+      const reviewAgg = new Map<
+        string,
+        { count: number; sum: number }
+      >();
+      for (const rv of reviewsRes.data ?? []) {
+        const key = rv.listing_id as string;
+        const cur = reviewAgg.get(key) ?? { count: 0, sum: 0 };
+        cur.count += 1;
+        cur.sum += (rv.rating as number) ?? 0;
+        reviewAgg.set(key, cur);
+      }
+
+      const anchorCity = listing.city ?? null;
+      const anchorCountry = listing.country ?? "UK";
+      const scored: Array<{
+        row: (typeof svcRows)[number];
+        listing: NonNullable<ReturnType<typeof listingMap.get>>;
+        score: number;
+      }> = [];
+      for (const row of svcRows) {
+        const trade = listingMap.get(row.listing_id as string);
+        if (!trade) continue;
+        if ((trade.country ?? "UK") !== anchorCountry) continue;
+        // Skip the merchant recommending themselves — awkward UX.
+        if (trade.id === listing.id) continue;
+        // Same-city ⇒ score 0 (nearest). Same-country ⇒ score 1.
+        // Random tiebreak so a trade with 20 services doesn't always win.
+        const cityScore =
+          anchorCity && trade.city && trade.city === anchorCity ? 0 : 1;
+        scored.push({ row, listing: trade, score: cityScore + Math.random() });
+      }
+      scored.sort((a, b) => a.score - b.score);
+      nearbyInstallers = scored.slice(0, 3).map(({ row, listing: trade }) => {
+        const stats = reviewAgg.get(trade.id as string);
+        return {
+          serviceId: row.id as string,
+          serviceName: row.name as string,
+          serviceSlug: (row.slug as string | null) ?? null,
+          pricePence: row.price_pence as number,
+          unit: (row.unit as string | null) ?? null,
+          sellerSlug: trade.slug as string,
+          sellerName:
+            (trade.trading_name as string | null)?.trim() ||
+            (trade.display_name as string) ||
+            "Trade",
+          sellerCity: (trade.city as string | null) ?? null,
+          sellerWhatsapp: (trade.whatsapp as string | null) ?? "",
+          reviewCount: stats?.count ?? 0,
+          averageRating:
+            stats && stats.count > 0 ? stats.sum / stats.count : null
+        } satisfies InstallerRow;
+      });
+    }
+  }
+
+  // Pairs-with rail — two-hop query: fetch the pair rows for this
+  // anchor product, then resolve accessory data in one shot. Filters
+  // to same-listing accessories at the DB level so a rogue pair row
+  // pointing at another trade's product silently drops out.
+  const pairsRes = await supabase
+    .from("hammerex_xrated_pair_with")
+    .select("id, accessory_product_id, reason, sort_order")
+    .eq("product_id", product.id)
+    .order("sort_order", { ascending: true })
+    .limit(6);
+  const pairRows = pairsRes.data ?? [];
+  let pairsWithRail: TradePairsWithRow[] = [];
+  if (pairRows.length > 0) {
+    const accessoryIds = pairRows.map((r) => r.accessory_product_id);
+    const accRes = await supabase
+      .from("hammerex_xrated_products")
+      .select("id, name, slug, cover_url, price_pence, listing_id")
+      .in("id", accessoryIds)
+      .eq("listing_id", listing.id);
+    const accMap = new Map(
+      (accRes.data ?? []).map((a) => [a.id as string, a])
+    );
+    pairsWithRail = pairRows
+      .map((r) => {
+        const acc = accMap.get(r.accessory_product_id);
+        if (!acc) return null;
+        return {
+          id: r.id as string,
+          reason: r.reason ?? null,
+          accessory: {
+            id: acc.id as string,
+            name: acc.name as string,
+            slug: (acc.slug as string | null) ?? null,
+            coverUrl: (acc.cover_url as string | null) ?? null,
+            pricePence: acc.price_pence as number
+          },
+          sellerSlug: listing.slug
+        } satisfies TradePairsWithRow;
+      })
+      .filter((row): row is TradePairsWithRow => row !== null);
+  }
 
   const themeColor = listing.theme_color || "#FFB300";
   const appName = `${tradeLabel(listing.primary_trade)} Service`;
@@ -596,6 +816,9 @@ export default async function ProductDetailPage({
                 installPrefix={isInstall}
               />
               {!isInstall && <StockPill stock={stock} />}
+              {!isInstall && (
+                <TradeDispatchBadge dispatchDays={product.dispatch_days} />
+              )}
               {!isInstall && bulkTiers.length > 0 && (
                 <span
                   className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[13px] font-extrabold"
@@ -749,20 +972,48 @@ export default async function ProductDetailPage({
        *  pattern. The full-width slot here is now reserved for the
        *  Trade Connections rail. */}
 
-      {/* Trade Connections — top 3 (max 4) local trades who install
-       *  this product category, ranked verified→rating→nearest.
-       *  Default-on for every Merchant Pro listing; merchant can opt
-       *  out via the add-ons toggle. Disclaimer above the grid makes
-       *  it clear these trades are independent, not vetted by the
-       *  merchant. */}
-      {tradeConnections.length > 0 && (
-        <TradeConnectionsCarousel
-          cards={tradeConnections}
-          merchantSlug={listing.slug}
-          merchantName={listing.display_name ?? listing.slug}
-          productSlug={product.slug ?? product.id}
+      {/* Nearby Installers (Phase A) — replaces the previous Trade
+          Connections carousel. Framed as pure discovery: independent
+          local trades who offer the install this product needs,
+          proximity-sorted, disclaimer above the grid so the shopper
+          is clear the platform doesn't vet or vouch for these trades.
+          WhatsApp handoff — we introduce, they book. */}
+      {product.install_service_category && nearbyInstallers.length > 0 && (
+        <NearbyInstallers
+          installers={nearbyInstallers}
+          installCategory={product.install_service_category}
+          anchor={{
+            productId: product.id,
+            name: product.name,
+            pricePence: product.price_pence,
+            coverUrl: product.cover_url,
+            unit: product.unit,
+            sellerSlug: listing.slug,
+            sellerName: listing.display_name ?? listing.slug
+          }}
         />
       )}
+
+      {/* Phase 1–5 port from hammerexdirect PDP — visual bumps that
+          read existing fields on hammerex_xrated_products / _listings
+          with no schema change. Each renders nothing when the
+          underlying field is null / empty so PDPs without curated
+          content stay clean. */}
+      <TradeProductVideo url={product.video_url} title={product.name} />
+      <TradeInTheBox items={whatInBox} fallbackImage={product.cover_url} />
+      <TradeKeyFeatures features={product.features} />
+      <TradeProductFAQ faq={product.faq} />
+      <TradeShippingReturns
+        shippingMode={listing.retail_shipping_mode}
+        shippingUkPence={listing.retail_shipping_uk_pence}
+        shippingUkAreas={listing.retail_shipping_uk_areas}
+        shippingIntl={listing.retail_shipping_international}
+        shipsFromCity={listing.city}
+        dispatchDays={product.dispatch_days}
+        warrantyYears={product.warranty_years}
+      />
+      <TradeWarrantyTimeline warrantyYears={product.warranty_years} />
+      <TradePairsWith pairs={pairsWithRail} />
 
       {/* "More from {appName}" / "You might also like" siblings rail
        *  removed from the PDP per spec — Trade Connections now sits in
@@ -774,9 +1025,17 @@ export default async function ProductDetailPage({
        *  greppable. */}
 
       {/* Q&A — off by default (per-listing toggle in addons_enabled.qa).
-          When on, surfaces an "Ask on WhatsApp" CTA tied to this
-          product's ref. No backing table yet. */}
-      {isQAOn(listing) && <ProductQABlock product={product} listing={listing} />}
+          Phase 9a upgrade: replaced the empty-state ProductQABlock
+          with the schema-backed TradeQABlock. Public visitors can ask;
+          trades reply from their editor (Phase 9b). */}
+      {isQAOn(listing) && (
+        <TradeQABlock
+          productId={product.id}
+          productName={product.name}
+          initialQuestions={qaThread}
+          tradeDisplayName={listing.display_name ?? listing.slug}
+        />
+      )}
 
       {/* Warranty / Returns — collapsed to a single-line strip above the
           footer. The full-width WarrantyReturnsBlock was eating real
@@ -805,6 +1064,16 @@ export default async function ProductDetailPage({
       {!isInstall && (
         <StickyBuyBar product={product} stats={stats} whatsappHref={stickyChatHref} />
       )}
+
+      {/* Phase 4 port — floating WhatsApp FAB. Hidden while the buy
+          column is in view; slides in once it scrolls off. Falls back
+          to invisible when the trade has no WhatsApp on file. */}
+      <TradeWhatsAppFAB
+        sellerWhatsapp={listing.whatsapp}
+        sellerName={listing.display_name ?? listing.slug}
+        productName={product.name}
+        productRef={ref}
+      />
     </main>
   );
 }

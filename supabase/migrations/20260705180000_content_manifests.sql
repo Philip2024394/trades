@@ -91,17 +91,23 @@ alter table studio_content_manifests enable row level security;
 alter table studio_content_blocks enable row level security;
 alter table studio_content_regenerations enable row level security;
 
-create policy if not exists "manifest_merchant_owner"
-  on studio_content_manifests for all
+drop policy if exists "manifest_merchant_owner" on studio_content_manifests;
+create policy "manifest_merchant_owner"
+  on studio_content_manifests
+  for all
   using (merchant_id = auth.uid())
   with check (merchant_id = auth.uid());
 
-create policy if not exists "blocks_via_manifest_owner"
-  on studio_content_blocks for all
+drop policy if exists "blocks_via_manifest_owner" on studio_content_blocks;
+create policy "blocks_via_manifest_owner"
+  on studio_content_blocks
+  for all
   using (manifest_id in (select id from studio_content_manifests where merchant_id = auth.uid()))
   with check (manifest_id in (select id from studio_content_manifests where merchant_id = auth.uid()));
 
-create policy if not exists "regenerations_merchant_owner"
-  on studio_content_regenerations for all
+drop policy if exists "regenerations_merchant_owner" on studio_content_regenerations;
+create policy "regenerations_merchant_owner"
+  on studio_content_regenerations
+  for all
   using (merchant_id = auth.uid())
   with check (merchant_id = auth.uid());

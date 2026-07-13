@@ -48,10 +48,73 @@ function expiresAtFor(billing: string | undefined): string {
   return new Date(Date.now() + days * DAY_MS).toISOString();
 }
 
+async function handleBoostCompleted(
+  session: Stripe.Checkout.Session,
+  meta: { post_id: string; hours: string; unit_amount_pence?: string }
+): Promise<void> {
+  const postId = meta.post_id;
+  const hours = Number(meta.hours);
+  const paidPence = Number(meta.unit_amount_pence ?? 0);
+  if (!postId || !Number.isFinite(hours) || hours <= 0) {
+    console.warn(
+      "[stripe/webhook] boost checkout without valid post_id/hours; skipping",
+      { sessionId: session.id, meta }
+    );
+    return;
+  }
+  const { data: post } = await supabaseAdmin
+    .from("hammerex_trade_off_yard_posts")
+    .select("id, is_boosted_until, boost_count, boost_paid_pence")
+    .eq("id", postId)
+    .maybeSingle();
+  if (!post) {
+    console.warn(
+      "[stripe/webhook] boost checkout for missing post; skipping",
+      { sessionId: session.id, postId }
+    );
+    return;
+  }
+  // Extend from now OR the existing boost end — whichever is later —
+  // so paying to boost a still-live boost adds duration on top rather
+  // than replacing it.
+  const now = Date.now();
+  const existing = post.is_boosted_until
+    ? Date.parse(post.is_boosted_until)
+    : 0;
+  const startFrom = Number.isFinite(existing) && existing > now ? existing : now;
+  const newUntil = new Date(startFrom + hours * 60 * 60 * 1000).toISOString();
+  const upd = await supabaseAdmin
+    .from("hammerex_trade_off_yard_posts")
+    .update({
+      is_boosted_until: newUntil,
+      boost_count: (post.boost_count ?? 0) + 1,
+      boost_paid_pence: (post.boost_paid_pence ?? 0) + paidPence
+    })
+    .eq("id", postId);
+  if (upd.error) {
+    console.error(
+      "[stripe/webhook] boost apply failed:",
+      upd.error.message
+    );
+  }
+}
+
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
   const meta = session.metadata ?? {};
+
+  // Fork on kind — boost is a one-time payment for a specific post;
+  // subscription paths (below) upgrade a listing tier.
+  if (meta.kind === "boost") {
+    await handleBoostCompleted(session, {
+      post_id: String(meta.post_id ?? ""),
+      hours: String(meta.hours ?? "0"),
+      unit_amount_pence: String(meta.unit_amount_pence ?? "0")
+    });
+    return;
+  }
+
   const listing_id = meta.listing_id;
   const billing = meta.billing;
   const addonCsv = meta.addon_slugs ?? "";

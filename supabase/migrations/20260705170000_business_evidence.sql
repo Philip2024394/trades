@@ -118,17 +118,29 @@ alter table studio_measured_outcomes enable row level security;
 
 -- Findings + patterns are platform-authored; readable by any
 -- authenticated user, writable only by service role.
-create policy if not exists "evidence_findings_read"
-  on studio_evidence_findings for select using (true);
-create policy if not exists "evidence_patterns_read"
-  on studio_evidence_patterns for select using (true);
+drop policy if exists "evidence_findings_read" on studio_evidence_findings;
+create policy "evidence_findings_read"
+  on studio_evidence_findings
+  for select using (true);
+drop policy if exists "evidence_patterns_read" on studio_evidence_patterns;
+create policy "evidence_patterns_read"
+  on studio_evidence_patterns
+  for select using (true);
 
 -- Outcomes are private to each merchant unless they've consented.
-create policy if not exists "outcomes_owner_read"
-  on studio_measured_outcomes for select using (merchant_id = auth.uid());
-create policy if not exists "outcomes_consented_platform_read"
-  on studio_measured_outcomes for select using (merchant_consented = true);
-create policy if not exists "outcomes_owner_write"
-  on studio_measured_outcomes for insert with check (merchant_id = auth.uid());
-create policy if not exists "outcomes_owner_update"
-  on studio_measured_outcomes for update using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "outcomes_owner_read" on studio_measured_outcomes;
+create policy "outcomes_owner_read"
+  on studio_measured_outcomes
+  for select using (merchant_id = auth.uid());
+drop policy if exists "outcomes_consented_platform_read" on studio_measured_outcomes;
+create policy "outcomes_consented_platform_read"
+  on studio_measured_outcomes
+  for select using (merchant_consented = true);
+drop policy if exists "outcomes_owner_write" on studio_measured_outcomes;
+create policy "outcomes_owner_write"
+  on studio_measured_outcomes
+  for insert with check (merchant_id = auth.uid());
+drop policy if exists "outcomes_owner_update" on studio_measured_outcomes;
+create policy "outcomes_owner_update"
+  on studio_measured_outcomes
+  for update using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());

@@ -18,16 +18,16 @@ const SUPPORT_EMAIL = "support@xratedtrade.com";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Xrated Trades",
+  title: "Privacy Policy — The Network",
   description:
-    "How Xrated Trades collects, uses, shares and protects your personal data under UK GDPR — including our sub-processors (Stripe, Supabase, Vercel, Resend, ImageKit, Cloudflare) and your data-subject rights.",
+    "How The Network collects, uses, shares and protects your personal data under UK GDPR — including our sub-processors (Stripe, Supabase, Vercel, Resend, ImageKit, Cloudflare) and your data-subject rights.",
   alternates: { canonical: "/legal/privacy" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Privacy Policy — Xrated Trades",
+    title: "Privacy Policy — The Network",
     description:
-      "UK GDPR privacy policy for Xrated Trades — data collected, legal bases, retention, sub-processors and your rights.",
+      "UK GDPR privacy policy for The Network — data collected, legal bases, retention, sub-processors and your rights.",
     url: absolute("/legal/privacy")
   }
 };

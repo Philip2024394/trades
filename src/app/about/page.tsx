@@ -14,14 +14,14 @@ import { BRAND, absolute } from "@/lib/seo";
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Introduction — xratedtrade.com",
+  title: "About — The Network",
   description:
-    "xratedtrade.com is a construction trades directory and profile platform for UK tradespeople and customers worldwide. Independent, Ireland-based, no lead-gen middleman.",
+    "The Network is the platform for construction trades. Studio, App Warehouse, The Yard, and a public profile. Independent, Ireland-based, no lead-gen middleman.",
   alternates: { canonical: "/about" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Introduction — xratedtrade.com",
+    title: "About — The Network",
     description:
       "Who we are, who runs us, where we operate from, and how to reach us.",
     url: absolute("/about")

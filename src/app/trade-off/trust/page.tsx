@@ -16,7 +16,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Trust Score — Build your Trust Score. Win more jobs. | Xrated Trades",
+    "Trust Score — Build your Trust Score. Win more jobs. | The Network",
   description:
     "A single 0-100 score that shows customers at a glance you are the safest choice. Earn points for a complete profile, video, reviews, prices, WhatsApp, verified badge and insurance.",
   alternates: { canonical: "/trade-off/trust" },
@@ -434,7 +434,7 @@ export default function TrustScorePage() {
             One score. Every customer trusts you faster.
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Start your 14-day free trial.
+            Join The Network. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Build
@@ -449,7 +449,7 @@ export default function TrustScorePage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/demo-mike-watson-drywall-manchester"

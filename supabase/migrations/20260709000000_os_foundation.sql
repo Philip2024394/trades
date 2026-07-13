@@ -319,6 +319,8 @@ ALTER TABLE os_documents             ENABLE ROW LEVEL SECURITY;
 -- Deferred FK from os_property_claims.evidence_document_id
 -- ---------------------------------------------------------------------
 ALTER TABLE os_property_claims
+  DROP CONSTRAINT IF EXISTS os_property_claims_evidence_document_fk;
+ALTER TABLE os_property_claims
   ADD CONSTRAINT os_property_claims_evidence_document_fk
   FOREIGN KEY (evidence_document_id) REFERENCES os_documents(id) ON DELETE SET NULL;
 

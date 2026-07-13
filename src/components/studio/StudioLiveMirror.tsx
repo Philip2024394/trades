@@ -17,6 +17,7 @@ import { editorEmit, useBusFromIframe } from "@/lib/studio/bus";
 import { sendTelemetry, trackEvent } from "@/lib/studio/telemetry";
 import { fetchWithRetry } from "@/lib/studio/fetchWithRetry";
 import { StudioTreeNavigator } from "./StudioTreeNavigator";
+import { StudioSectionOutline } from "./StudioSectionOutline";
 import { StudioReplaceModal } from "./StudioReplaceModal";
 import { SmartSwapModal } from "./SmartSwapModal";
 import { StudioTypographyModal } from "./StudioTypographyModal";
@@ -27,6 +28,7 @@ import { StudioSaveComponentModal } from "./StudioSaveComponentModal";
 import { StudioVisibilityModal } from "./StudioVisibilityModal";
 import { StudioCommandPalette } from "./StudioCommandPalette";
 import { StudioAiModal, type AiPromptableField } from "./StudioAiModal";
+import { StudioPromptBar } from "./StudioPromptBar";
 import { StudioScoreModal } from "./StudioScoreModal";
 import { StudioAnalyticsModal } from "./StudioAnalyticsModal";
 import { StudioExperimentModal } from "./StudioExperimentModal";
@@ -612,6 +614,22 @@ export function StudioLiveMirror({
           metadata: { instanceId, direction }
         });
         return moveInstance(prev, instanceId, direction);
+      });
+    },
+    [pageId, mutate]
+  );
+
+  // Drag-drop reorder — many-step move from one row id to another.
+  const applyReorderRow = useCallback(
+    (fromRowId: string, toRowId: string) => {
+      if (fromRowId === toRowId) return;
+      mutate((prev) => {
+        trackEvent({
+          event: "move",
+          pageId,
+          metadata: { fromRowId, toRowId, source: "drag" }
+        });
+        return reorderRow(prev, fromRowId, toRowId);
       });
     },
     [pageId, mutate]
@@ -1397,12 +1415,22 @@ export function StudioLiveMirror({
 
       {/* Editing stage — Navigator on the left, iframe on the right. */}
       <div className="mx-auto flex w-full max-w-[1400px] gap-4">
-        <aside className="hidden h-[78vh] w-72 shrink-0 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm lg:block">
-          <StudioTreeNavigator
-            snapshot={snapshot}
-            selected={selected}
-            onNavigate={handleNavigate}
-          />
+        <aside className="hidden h-[78vh] w-72 shrink-0 flex-col overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm lg:flex">
+          <div className="max-h-[40%] shrink-0 overflow-y-auto border-b border-neutral-200">
+            <StudioSectionOutline
+              layout={layout}
+              selectedInstanceId={selected}
+              onSelect={handleNavigate}
+              onReorder={applyReorderRow}
+            />
+          </div>
+          <div className="min-h-0 flex-1">
+            <StudioTreeNavigator
+              snapshot={snapshot}
+              selected={selected}
+              onNavigate={handleNavigate}
+            />
+          </div>
         </aside>
 
         <div className="flex flex-1 justify-center">
@@ -1575,6 +1603,34 @@ export function StudioLiveMirror({
           onClose={() => setPaletteOpen(false)}
         />
       )}
+
+      {(() => {
+        // Persistent AI prompt bar — always mounted, selection-aware.
+        // Derives currentConfig + section registration on the fly so it
+        // stays in sync with history/undo.
+        const instanceId = selected ? instanceIdFromTreeId(selected) : null;
+        const instance = instanceId
+          ? layout.sections.find((s) => s.instanceId === instanceId)
+          : null;
+        const reg = instance ? sectionRegistry.get(instance.key) : null;
+        const promptBarSelected =
+          instanceId && instance
+            ? {
+                instanceId,
+                sectionId: instance.key,
+                sectionName: reg?.name ?? instance.key,
+                currentConfig: instance.config as Record<string, unknown>
+              }
+            : null;
+        return (
+          <StudioPromptBar
+            merchantSlug={merchantSlug}
+            token={token}
+            selected={promptBarSelected}
+            onApply={applyAiPatch}
+          />
+        );
+      })()}
 
       {aiModal && (
         <StudioAiModal
@@ -1853,4 +1909,22 @@ function removeInstance(
     (s) => s.instanceId !== instanceId
   );
   return { sections: nextSections, rows: nextRows };
+}
+
+// Many-step row reorder. Drag-drop drops a row on a different row's
+// position — this splices it into the new index. Unlike moveInstance
+// (which only steps ±1), this handles arbitrary from → to jumps.
+export function reorderRow(
+  layout: StudioLayoutJson,
+  fromRowId: string,
+  toRowId: string
+): StudioLayoutJson {
+  if (fromRowId === toRowId) return layout;
+  const from = layout.rows.findIndex((r) => r.id === fromRowId);
+  const to = layout.rows.findIndex((r) => r.id === toRowId);
+  if (from === -1 || to === -1) return layout;
+  const next = layout.rows.slice();
+  const [moved] = next.splice(from, 1);
+  next.splice(to, 0, moved);
+  return { ...layout, rows: next };
 }

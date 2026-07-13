@@ -16,6 +16,13 @@ export type BottomSheetProps = {
   children: ReactNode;
   /** Sticky action row at the foot of the sheet. */
   footer?: ReactNode;
+  /**
+   * "default" (grey grip pill + 15px title) or "prominent" (thicker
+   * yellow accent bar + larger 20/22px title). Prominent is used on
+   * marquee pickers like the mood chooser where the title should
+   * carry weight of its own.
+   */
+  variant?: "default" | "prominent";
 };
 
 export function BottomSheet({
@@ -23,7 +30,8 @@ export function BottomSheet({
   onClose,
   title,
   children,
-  footer
+  footer,
+  variant = "default"
 }: BottomSheetProps) {
   useEffect(() => {
     if (!open) return;
@@ -45,7 +53,7 @@ export function BottomSheet({
       <div
         className={`absolute inset-x-0 bottom-0 flex max-h-[85vh] flex-col rounded-t-2xl bg-white md:hidden ${ELEVATION[4]}`}
       >
-        <SheetShell title={title} onClose={onClose} footer={footer}>
+        <SheetShell title={title} onClose={onClose} footer={footer} variant={variant}>
           {children}
         </SheetShell>
       </div>
@@ -53,7 +61,7 @@ export function BottomSheet({
       <div
         className={`absolute left-1/2 top-1/2 hidden w-full max-w-lg -translate-x-1/2 -translate-y-1/2 rounded-2xl bg-white md:flex md:max-h-[80vh] md:flex-col ${ELEVATION[5]}`}
       >
-        <SheetShell title={title} onClose={onClose} footer={footer}>
+        <SheetShell title={title} onClose={onClose} footer={footer} variant={variant}>
           {children}
         </SheetShell>
       </div>
@@ -65,18 +73,44 @@ function SheetShell({
   title,
   onClose,
   children,
-  footer
+  footer,
+  variant = "default"
 }: {
   title: string;
   onClose: () => void;
   children: ReactNode;
   footer?: ReactNode;
+  variant?: "default" | "prominent";
 }) {
+  const prominent = variant === "prominent";
   return (
     <>
-      <div className="mx-auto my-2 h-1 w-10 shrink-0 rounded-full bg-neutral-300 md:hidden" />
-      <div className="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-        <h3 className="text-[15px] font-semibold text-neutral-900">{title}</h3>
+      {/* Top accent bar. Default = grey drag-handle grip (mobile only).
+          Prominent = thicker yellow accent bar across the full width,
+          visible on every viewport. */}
+      {prominent ? (
+        <div className="flex shrink-0 justify-center pt-2 pb-1">
+          <div
+            className="h-1 w-24 rounded-full sm:w-32"
+            style={{ backgroundColor: "#FFB300" }}
+            aria-hidden="true"
+          />
+        </div>
+      ) : (
+        <div className="mx-auto my-2 h-1 w-10 shrink-0 rounded-full bg-neutral-300 md:hidden" />
+      )}
+      <div className={
+        prominent
+          ? "flex items-center justify-between border-b border-neutral-200 px-5 py-4"
+          : "flex items-center justify-between border-b border-neutral-200 px-4 py-3"
+      }>
+        <h3 className={
+          prominent
+            ? "text-[20px] font-black leading-tight tracking-tight text-neutral-900 md:text-[22px]"
+            : "text-[15px] font-semibold text-neutral-900"
+        }>
+          {title}
+        </h3>
         <button
           type="button"
           onClick={onClose}

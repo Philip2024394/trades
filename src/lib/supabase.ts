@@ -336,6 +336,18 @@ export type HammerexXratedProduct = {
    *  / null = section hidden entirely. */
   faq: { q: string; a: string }[] | null;
   video_url: string | null;
+  /** Manufacturer / trade-supplied warranty in whole years. NULL when
+   *  the trade doesn't cover the item — the PDP's warranty timeline
+   *  auto-hides. Range enforced 1–25 at the DB level. */
+  warranty_years: number | null;
+  /** For kind='service' rows: which install taxonomy slug this row
+   *  covers (`door_install`, `tap_fitting`, …). NULL for products.
+   *  Populated from src/lib/serviceCategories.ts. */
+  service_category: string | null;
+  /** For kind='product' rows: which install service category typically
+   *  pairs with this product. NULL when no install is applicable.
+   *  Drives the "Independent local trades" strip on the PDP. */
+  install_service_category: string | null;
   price_pence: number;
   vat_inclusive: boolean | null;
   vat_rate_pct: number | null;
@@ -409,6 +421,57 @@ export type HammerexXratedProduct = {
   returns_text: string | null;
   created_at: string;
   updated_at: string;
+};
+
+// Customer Q&A — 1 question ⇒ N answers. See migration
+// 20260718090300_xrated_qa.sql. `by_vendor` marks answers from the
+// trade themselves (renders as a "Trade" badge on the PDP).
+export type HammerexXratedAnswer = {
+  id: string;
+  question_id: string;
+  body: string;
+  by_vendor: boolean;
+  by_name: string | null;
+  moderation_status: "live" | "hidden" | "spam";
+  deleted_at: string | null;
+  created_at: string;
+};
+export type HammerexXratedQuestion = {
+  id: string;
+  product_id: string;
+  asked_by: string | null;
+  body: string;
+  flag_count: number;
+  moderation_status: "live" | "hidden" | "spam";
+  moderated_at: string | null;
+  deleted_at: string | null;
+  created_at: string;
+  answers: HammerexXratedAnswer[];
+};
+
+// What's in the box — bento of items included with the product. One
+// row per line-item. See migration 20260718090200_xrated_what_in_box.sql.
+export type HammerexXratedWhatInBox = {
+  id: string;
+  product_id: string;
+  label: string;
+  qty: number;
+  image_url: string | null;
+  sort_order: number;
+  created_at: string;
+};
+
+// Pairs-with — curated accessory recommendations shown under the
+// PDP. Same-listing only: an anchor product recommends other products
+// in the same trade's catalogue. See migration
+// 20260718090100_xrated_pair_with.sql.
+export type HammerexXratedPairWith = {
+  id: string;
+  product_id: string;
+  accessory_product_id: string;
+  reason: string | null;
+  sort_order: number;
+  created_at: string;
 };
 
 // Shop Mode shipping config — one row per (listing, country).
@@ -971,7 +1034,21 @@ export type HammerexTradeOffYardReaction = {
 export type HammerexTradeOffYardPost = {
   id: string;
   listing_id: string;
-  kind: "available" | "needed" | "chat" | "product";
+  kind:
+    | "available"
+    | "needed"
+    | "chat"
+    | "product"
+    | "job-seek"
+    | "job-offer"
+    | "collab-help"
+    | "tools-sell"
+    | "tools-buy"
+    | "tools-rent"
+    | "materials-surplus"
+    | "abroad-job"
+    | "promo"
+    | "beacon";
   trade_slug: string;
   title: string;
   body: string;
@@ -1021,6 +1098,50 @@ export type HammerexTradeOffYardPost = {
   moderated_at: string | null;
   flag_count: number;
   metadata: Record<string, unknown>;
+  // Marketplace commerce fields (yard v3 migration
+  // 20260708150000_yard_v3_marketplace_commerce.sql). Filled for
+  // tools-sell / tools-buy / tools-rent / materials-surplus / product
+  // kinds; nullable/default on other kinds so the schema stays flat.
+  price_currency: "GBP" | "USD" | "EUR";
+  condition:
+    | "new"
+    | "used-like-new"
+    | "used-good"
+    | "used-fair"
+    | "for-parts"
+    | null;
+  warranty_status:
+    | "manufacturer"
+    | "seller-warranty"
+    | "sold-as-seen"
+    | null;
+  stock_qty: number;
+  delivery_options: Array<
+    "collection" | "local-delivery" | "uk-shipping" | "international"
+  >;
+  delivery_free_over_pence: number | null;
+  // Video attachments — paid tier only. API rejects video upload/save
+  // for standard-tier listings; existing video is grandfathered on
+  // downgrade so trades keep what they already posted.
+  video_urls: string[];
+  // Beacon fields — the "need this now" post kind. Populated only
+  // when kind === 'beacon'; null everywhere else.
+  beacon_expires_at: string | null;
+  beacon_lat: number | null;
+  beacon_lng: number | null;
+  beacon_radius_km: number | null;
+  beacon_response_count: number;
+  beacon_winner_response_id: string | null;
+  beacon_closed_at: string | null;
+  // Denormalised count of live, non-deleted comments on the post. Kept
+  // in sync by trigger (see migration 20260708170000_yard_comments_v1).
+  comment_count: number;
+  // Boost — paid pin-to-top. Post floats to the top of every relevant
+  // filter while is_boosted_until > now(); returns to natural slot
+  // when the timestamp expires. boost_count is historical.
+  is_boosted_until: string | null;
+  boost_count: number;
+  boost_paid_pence: number;
   created_at: string;
   expires_at: string;
 };

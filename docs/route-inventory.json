@@ -1,0 +1,49 @@
+{
+  "generatedAt": "2026-07-12T13:12:54.267Z",
+  "totalRoutes": 7,
+  "searchFilter": "canteen",
+  "routes": [
+    {
+      "url": "/trade-off/yard/canteens",
+      "file": "src/app/trade-off/yard/canteens/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens — Canteens index. Inline with the Yard. Public list of canteens, grouped by trade, with a \"Start a canteen\" CTA for hosts. First-100 badges attach here."
+    },
+    {
+      "url": "/trade-off/yard/canteens/[slug]",
+      "file": "src/app/trade-off/yard/canteens/[slug]/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/[slug] — Canteen detail page. Two-column on desktop: main feed on the left, The Counter on the right. Mobile: header → side-lane horizontal strip → main feed stack."
+    },
+    {
+      "url": "/trade-off/yard/canteens/[slug]/about",
+      "file": "src/app/trade-off/yard/canteens/[slug]/about/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/[slug]/about — read-only \"About this canteen\". Linked from the CanteenHeader's About chip. Renders canteen banner, name, tagline, host card, member/activity stats, founding-100 badge, and a back-"
+    },
+    {
+      "url": "/trade-off/yard/canteens/[slug]/manage",
+      "file": "src/app/trade-off/yard/canteens/[slug]/manage/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/[slug]/manage — host dashboard. Access: currently mocked to always allow (real gating lands with the auth + host-verification schema). Renders the CanteenManageShell with the current canteen + pr"
+    },
+    {
+      "url": "/trade-off/yard/canteens/[slug]/products",
+      "file": "src/app/trade-off/yard/canteens/[slug]/products/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/[slug]/products — full products list. Reached from the canteen page's \"View all N products\" link and the header's \"View products\" primary CTA. Renders every product the host has listed in this ca"
+    },
+    {
+      "url": "/trade-off/yard/canteens/[slug]/products/[productId]",
+      "file": "src/app/trade-off/yard/canteens/[slug]/products/[productId]/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/[slug]/products/[productId] — canteen PDP. Dedicated product detail page for a canteen product. Reached from the product grid's \"View details\" CTA on each card. Composition mirrors the Trade Cent"
+    },
+    {
+      "url": "/trade-off/yard/canteens/new",
+      "file": "src/app/trade-off/yard/canteens/new/page.tsx",
+      "topLevel": "trade-off",
+      "purpose": "/trade-off/yard/canteens/new — canteen creation form. The \"Start a Canteen\" CTA on the index routes here. The form is a thin client shell over POST /api/canteens/create. Anonymous callers see an inline nudge to log in (t"
+    }
+  ]
+}

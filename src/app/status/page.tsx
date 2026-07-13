@@ -16,16 +16,16 @@ export const dynamic = "force-dynamic";
 const SUPPORT_EMAIL = "support@xratedtrade.com";
 
 export const metadata: Metadata = {
-  title: "Service status — Xrated Trades",
+  title: "Service status — The Network",
   description:
-    "Real-time status for Xrated Trades. The platform is operating normally. Email support@xratedtrade.com to receive incident updates.",
+    "Real-time status for The Network. The platform is operating normally. Email support@xratedtrade.com to receive incident updates.",
   alternates: { canonical: "/status" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Service status — Xrated Trades",
+    title: "Service status — The Network",
     description:
-      "Platform operational status and incident history for Xrated Trades.",
+      "Platform operational status and incident history for The Network.",
     url: absolute("/status")
   }
 };

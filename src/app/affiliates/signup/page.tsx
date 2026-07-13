@@ -10,7 +10,7 @@ import { AffiliateSignupForm } from "./AffiliateSignupForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Join the Affiliate Programme | xratedtrade.com",
+  title: "Join the Affiliate Programme | The Network",
   robots: { index: false, follow: false }
 };
 

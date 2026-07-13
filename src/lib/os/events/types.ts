@@ -37,6 +37,15 @@ export const OS_EVENT_TYPES = [
   "quote.rejected",
   "quote.expired",
 
+  // Notebook (Quote Me flow — trade-initiated multi-merchant quote)
+  "notebook.basket.item_added",
+  "notebook.basket.item_removed",
+  "notebook.quote_request.sent",
+  "notebook.quote_request.quoted",
+  "notebook.quote_request.won",
+  "notebook.quote_request.expired",
+  "notebook.site_project.created",
+
   // Job Diary
   "job.opened",
   "job.checked_in",

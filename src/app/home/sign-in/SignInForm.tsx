@@ -14,7 +14,6 @@ import {
   ChevronDown,
   ChevronUp
 } from "lucide-react";
-import { SurfaceCard } from "@/platform/ui";
 
 type Channel = "email" | "whatsapp";
 
@@ -108,35 +107,38 @@ export function SignInForm({
 
   if (sent) {
     return (
-      <SurfaceCard variant="success" padding="lg">
+      <div className="rounded-2xl border border-emerald-400/40 bg-emerald-50 p-5 shadow-sm sm:p-6">
         <div className="flex items-start gap-3">
-          <CheckCircle2 className="mt-0.5 h-5 w-5" aria-hidden />
+          <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-700" aria-hidden />
           <div>
-            <div className="text-[15px] font-semibold">Check your inbox</div>
-            <p className="mt-1 text-[13px]">
+            <div className="text-[15px] font-black text-emerald-900">
+              Check your inbox
+            </div>
+            <p className="mt-1 text-[13px] text-emerald-900/85">
               If we recognise <b>{email}</b>, we&apos;ve sent a sign-in link. It
               expires in 30 minutes.
             </p>
-            <p className="mt-3 text-[13px] text-emerald-900/70">
+            <p className="mt-3 text-[12.5px] leading-snug text-emerald-900/60">
               Not seeing it? Check spam, or try a different email you may have
               used when you registered.
             </p>
           </div>
         </div>
-      </SurfaceCard>
+      </div>
     );
   }
 
   return (
-    <SurfaceCard variant="primary" padding="lg">
+    <div className="rounded-2xl border border-[#1B1A17]/10 bg-white p-5 shadow-sm sm:p-6">
       {errorParam ? (
-        <SurfaceCard variant="warning" padding="md" className="mb-4">
-          <div className="text-[13px]">
-            {errorParam === "expired"
-              ? "That sign-in link expired. Ask for a new one below."
-              : "Something went wrong with your sign-in link. Try again."}
-          </div>
-        </SurfaceCard>
+        <div
+          role="alert"
+          className="mb-4 rounded-xl border border-red-300 bg-red-50 px-3 py-2 text-[13px] text-red-800"
+        >
+          {errorParam === "expired"
+            ? "That sign-in link expired. Ask for a new one below."
+            : "Something went wrong with your sign-in link. Try again."}
+        </div>
       ) : null}
 
       <div
@@ -161,7 +163,7 @@ export function SignInForm({
 
       {channel === "email" ? (
         <form onSubmit={submit} className="flex flex-col gap-3">
-          <label className="block text-[13px] font-semibold text-neutral-700">
+          <label className="block text-[13px] font-black text-[#1B1A17]">
             Your email
           </label>
           <input
@@ -170,12 +172,12 @@ export function SignInForm({
             onChange={(e) => setEmail(e.target.value)}
             required
             placeholder="you@example.com"
-            className="min-h-[48px] w-full rounded-lg border border-neutral-200 bg-white px-3 text-[14px] outline-none focus:border-neutral-900"
+            className="min-h-[48px] w-full rounded-lg border border-[#1B1A17]/15 bg-white px-3 text-[14px] outline-none transition focus:border-amber-500 focus:ring-2 focus:ring-amber-300/40"
           />
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-neutral-900 px-4 text-[14px] font-semibold text-[#1B1A17] transition hover:bg-neutral-800 disabled:opacity-60"
+            className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-amber-400 px-4 text-[14px] font-black text-[#0A0A0A] shadow-sm transition hover:bg-amber-300 disabled:opacity-60"
           >
             {submitting ? (
               <>
@@ -189,42 +191,42 @@ export function SignInForm({
               </>
             )}
           </button>
-          <p className="mt-1 text-[13px] text-neutral-500">
+          <p className="mt-1 text-[12.5px] leading-snug text-[#1B1A17]/60">
             We&apos;ll email you a one-time link. No password, no callback fee,
             no fuss.
           </p>
         </form>
       ) : (
         <div className="flex flex-col gap-3">
-          <label className="block text-[13px] font-semibold text-neutral-700">
+          <label className="block text-[13px] font-black text-[#1B1A17]">
             WhatsApp number
           </label>
           <input
             type="tel"
             disabled
             placeholder="+44 7…"
-            className="min-h-[48px] w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3 text-[14px] text-neutral-400 outline-none"
+            className="min-h-[48px] w-full rounded-lg border border-[#1B1A17]/10 bg-neutral-50 px-3 text-[14px] text-neutral-400 outline-none"
           />
           <button
             type="button"
             disabled
-            className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-lg bg-neutral-300 px-4 text-[14px] font-semibold text-neutral-600"
+            className="inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-neutral-200 px-4 text-[14px] font-black text-neutral-500"
           >
             <MessageCircle className="h-4 w-4" aria-hidden />
             Send me a sign-in link on WhatsApp
           </button>
-          <p className="mt-1 text-[13px] text-neutral-500">
+          <p className="mt-1 text-[12.5px] leading-snug text-[#1B1A17]/60">
             WhatsApp sign-in is nearly ready — we&apos;re just waiting on
             template approval. For now, please use email.
           </p>
         </div>
       )}
 
-      <div className="mt-6 border-t border-neutral-200 pt-4">
+      <div className="mt-6 border-t border-[#1B1A17]/10 pt-4">
         <button
           type="button"
           onClick={() => setAdminOpen((v) => !v)}
-          className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-neutral-500 hover:text-neutral-800"
+          className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-[#1B1A17]/50 hover:text-[#1B1A17]"
         >
           <Shield className="h-3.5 w-3.5" aria-hidden />
           Admin bypass (dev)
@@ -290,7 +292,7 @@ export function SignInForm({
           </form>
         ) : null}
       </div>
-    </SurfaceCard>
+    </div>
   );
 }
 
@@ -313,19 +315,19 @@ function ChannelTab({
       role="tab"
       aria-selected={active}
       onClick={onClick}
-      className={`inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg border px-3 text-[13px] font-semibold transition ${
+      className={`inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border px-3 text-[13px] font-black transition ${
         active
-          ? "border-neutral-900 bg-neutral-900 text-[#1B1A17]"
-          : "border-neutral-200 bg-white text-neutral-700 hover:border-neutral-300"
+          ? "border-amber-400 bg-amber-400 text-[#0A0A0A] shadow-sm"
+          : "border-[#1B1A17]/10 bg-white text-[#1B1A17]/70 hover:border-[#1B1A17]/25"
       }`}
     >
       {icon}
       <span>{label}</span>
       {badge ? (
         <span
-          className={`rounded-full px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider ${
+          className={`rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] ${
             active
-              ? "bg-white/15 text-[#1B1A17]"
+              ? "bg-[#0A0A0A]/15 text-[#0A0A0A]"
               : "bg-amber-100 text-amber-800"
           }`}
         >

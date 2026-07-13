@@ -1,36 +1,15 @@
-// Lightweight header for /trade-off/edit/** dashboard pages. Replaces
-// the public XratedHeader which carries marketing nav (Showcase, News,
-// and — crucially — a "Log in" button that's nonsensical for a
-// tradesperson already inside their dashboard via magic link / session.
+// DEPRECATED — kept as a no-op for backwards compatibility.
 //
-// Two elements only: brand wordmark logo (links back to public Trade Off
-// landing) and a small "← View live site" link the merchant can use to
-// hop to the public marketing pages without losing their session.
-
-import { XRATED_BRAND } from "@/lib/xratedTrades";
+// The /trade-off/edit/** subtree now sits inside the persistent
+// AppShell (added to layout.tsx 2026-07-09), which provides the same
+// top bar / mobile bottom nav / avatar drawer as /trade-off/yard,
+// /trade-off/prices, /trade-off/following. Rendering this component
+// as well would produce a double-chrome effect — so it returns null.
+//
+// Pages that still `<DashboardHeader />` don't need to be edited to
+// stop the double-header: the null render is inert. Future cleanup
+// can remove the imports page-by-page without a migration.
 
 export function DashboardHeader() {
-  return (
-    <header className="sticky top-0 z-30 bg-black/95 backdrop-blur">
-      <div className="mx-auto flex h-[64px] max-w-6xl items-center justify-between gap-3 px-4 sm:h-[72px] sm:gap-4">
-        <a
-          href="/trade-off"
-          aria-label={`${XRATED_BRAND.name} home`}
-          className="block shrink-0 p-0"
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={XRATED_BRAND.logoUrl}
-            alt={XRATED_BRAND.name}
-            className="block h-10 w-auto object-contain sm:h-12"
-            style={{ background: "transparent" }}
-          />
-        </a>
-
-        <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/70">
-          Dashboard
-        </p>
-      </div>
-    </header>
-  );
+  return null;
 }

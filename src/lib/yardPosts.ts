@@ -8,21 +8,54 @@ export const YARD_KIND_LABELS: Record<HammerexTradeOffYardPost["kind"], string> 
   available: "Available",
   needed: "Hiring",
   chat: "Trade Chat",
-  product: "For Sale"
+  product: "For Sale",
+  "job-seek": "Available",
+  "job-offer": "Hiring",
+  "collab-help": "Collab / Help",
+  "tools-sell": "Tools For Sale",
+  "tools-buy": "Tools Wanted",
+  "tools-rent": "Day-Hire",
+  "materials-surplus": "Materials Surplus",
+  "abroad-job": "Work Abroad",
+  promo: "Promo",
+  beacon: "Beacon"
 };
 
+// Palette per kind. Green for "available now" signals, black+amber for
+// commercial/hiring, amber for chat/collab, deep tone for promo so it
+// reads as sponsored without looking spammy.
 export const YARD_KIND_BG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#0F7A3F",
   needed: "#0A0A0A",
   chat: "#FFB300",
-  product: "#0A0A0A"
+  product: "#0A0A0A",
+  "job-seek": "#0F7A3F",
+  "job-offer": "#0A0A0A",
+  "collab-help": "#FFB300",
+  "tools-sell": "#0A0A0A",
+  "tools-buy": "#0A0A0A",
+  "tools-rent": "#0A0A0A",
+  "materials-surplus": "#0A0A0A",
+  "abroad-job": "#1F3A6B",
+  promo: "#B8860B",
+  beacon: "#8B0F0F"
 };
 
 export const YARD_KIND_FG: Record<HammerexTradeOffYardPost["kind"], string> = {
   available: "#ffffff",
   needed: "#FFB300",
   chat: "#0A0A0A",
-  product: "#FFB300"
+  product: "#FFB300",
+  "job-seek": "#ffffff",
+  "job-offer": "#FFB300",
+  "collab-help": "#0A0A0A",
+  "tools-sell": "#FFB300",
+  "tools-buy": "#FFB300",
+  "tools-rent": "#FFB300",
+  "materials-surplus": "#FFB300",
+  "abroad-job": "#FFB300",
+  promo: "#FFF8E1",
+  beacon: "#ffffff"
 };
 
 // Kinds whose creation should fire push / email alerts to subscribers
@@ -40,6 +73,54 @@ export function formatPostPrice(pence: number | null): string {
     maximumFractionDigits: 2
   })}`;
 }
+
+// Currency-aware version. Used by marketplace posts where the trade
+// picked their preferred currency (GBP / USD / EUR).
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  GBP: "£",
+  USD: "$",
+  EUR: "€"
+};
+const CURRENCY_LOCALES: Record<string, string> = {
+  GBP: "en-GB",
+  USD: "en-US",
+  EUR: "en-IE"
+};
+export function formatPostPriceCurrency(
+  pence: number | null,
+  currency: string | null | undefined
+): string {
+  if (pence === null || pence === undefined) return "";
+  const c = (currency ?? "GBP").toUpperCase();
+  const sym = CURRENCY_SYMBOLS[c] ?? "£";
+  const locale = CURRENCY_LOCALES[c] ?? "en-GB";
+  const amt = pence / 100;
+  return `${sym}${amt.toLocaleString(locale, {
+    minimumFractionDigits: amt % 1 === 0 ? 0 : 2,
+    maximumFractionDigits: 2
+  })}`;
+}
+
+export const YARD_CONDITION_LABEL: Record<string, string> = {
+  new: "New",
+  "used-like-new": "Used — like new",
+  "used-good": "Used — good",
+  "used-fair": "Used — fair",
+  "for-parts": "For parts / not working"
+};
+
+export const YARD_WARRANTY_LABEL: Record<string, string> = {
+  manufacturer: "Manufacturer warranty",
+  "seller-warranty": "Seller warranty",
+  "sold-as-seen": "Sold as seen"
+};
+
+export const YARD_DELIVERY_LABEL: Record<string, string> = {
+  collection: "Collection",
+  "local-delivery": "Free local delivery",
+  "uk-shipping": "UK shipping",
+  international: "International shipping"
+};
 
 export function buildYardPurchaseUrl(args: {
   whatsapp: string;

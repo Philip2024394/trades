@@ -13,6 +13,7 @@ import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
 import { FaqAccordion } from "./FaqAccordion";
 import { ContactForm } from "./ContactForm";
+import { OpeningHoursPill } from "./OpeningHoursPill";
 
 export const revalidate = 3600;
 
@@ -20,16 +21,16 @@ const CONTACT_HERO_IMAGE =
   "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/contact-hero.png";
 
 export const metadata: Metadata = {
-  title: "Contact — Xrated Trades",
+  title: "Contact — The Network",
   description:
-    "Send a structured message to the Xrated Trades team. Replies within 24 hours, UK business hours. Plus acceptable use guidance.",
+    "Send a message to The Network team. Replies within 24 hours, UK business hours. Plus acceptable use guidance.",
   alternates: { canonical: "/contact" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Contact — Xrated Trades",
+    title: "Contact — The Network",
     description:
-      "Send a structured message to the Xrated Trades team. Replies within 24 hours.",
+      "Send a message to The Network team. Replies within 24 hours.",
     url: absolute("/contact")
   }
 };
@@ -46,7 +47,7 @@ export default function ContactPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={CONTACT_HERO_IMAGE}
-          alt="Talk to our team — Xrated Trades support"
+          alt="Talk to our team — The Network support"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div
@@ -58,12 +59,15 @@ export default function ContactPage() {
           }}
         />
         <div className="relative mx-auto flex min-h-[420px] max-w-5xl flex-col justify-end px-4 pb-12 pt-16 sm:min-h-[520px] sm:px-6 sm:pb-16 sm:pt-20 md:min-h-[600px]">
-          <p
-            className="text-[13px] font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Contact
-          </p>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p
+              className="text-[13px] font-bold uppercase tracking-[0.22em]"
+              style={{ color: XRATED_BRAND.accent }}
+            >
+              Contact us
+            </p>
+            <OpeningHoursPill/>
+          </div>
           <h1 className="mt-3 text-3xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl md:text-5xl">
             Talk to our team.
           </h1>

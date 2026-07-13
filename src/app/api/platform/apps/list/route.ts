@@ -14,10 +14,9 @@ import { runtime as platformRuntime } from "@/platform/runtime";
 import { canInstallApp } from "@/platform/appEligibility";
 import { loadStudioSession } from "@/lib/studio/session";
 import { supabase } from "@/lib/supabase";
-// Populate the platform's App Registry. Once Phase 9 lands the first
-// manifest-driven Apps this import fans out to `src/apps/*/manifest.ts`.
-// For now the platform boots with zero Apps and the store renders its
-// empty state honestly.
+// Populate the platform's App Registry. The barrel at src/platform/apps
+// fans out to every `src/apps/*/manifest.ts` so appRegistry.list() is
+// populated at module-load time — no runtime discovery.
 import "@/platform/apps";
 
 export const runtime = "nodejs";

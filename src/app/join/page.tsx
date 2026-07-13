@@ -1,8 +1,11 @@
-// /join — Trade join entry.
+// /join — Trade join entry for The Network.
 //
-// Landing page for merchants clicking "Join as a Trade" on the split
-// gate. Establishes the value proposition, shows the 3-step flow, and
-// hands off to the wizard (built as a follow-up).
+// Landing page for tradespeople arriving via the split gate. Per the
+// master-brand decision (project_thenetwork_domain_option.md,
+// 2026-07-09) the Construction Notebook framing was retired: all
+// tradesperson-facing surfaces now push "Join The Network." The old
+// "Trade Notebook / Trade Circle" vocabulary is superseded by "your
+// business app / your canteen."
 
 import Image from "next/image";
 import Link from "next/link";
@@ -27,9 +30,9 @@ const STEP_IMAGES = {
 };
 
 export const metadata = {
-  title: "Join as a Trade · The Construction Notebook",
+  title: "Join The Network — Free for life",
   description:
-    "Get discovered. Build your Notebook. Grow your reputation. Free forever."
+    "Get your free business app, canteen, and URL live in under 5 minutes. No card, no commission, free for life."
 };
 
 export default function JoinTradePage() {
@@ -73,10 +76,10 @@ export default function JoinTradePage() {
         </Link>
 
         <h1 className="mt-8 text-[38px] font-bold leading-[1.05] tracking-tight text-[#1B1A17] md:text-[56px]">
-          Create your Trade Notebook.
+          Join The Network.
         </h1>
         <p className="mt-4 max-w-xl text-[16px] leading-[1.55] text-[#1B1A17]/70 md:text-[18px]">
-          Your own live trade page. Under 5 minutes. Free forever.
+          Your business app. Your canteen. Your URL live. Under 5 minutes. Free for life.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -118,31 +121,31 @@ export default function JoinTradePage() {
             n="02"
             imageUrl={STEP_IMAGES.setUp}
             icon={<BookOpen className="h-4 w-4" aria-hidden />}
-            title="Set up your Notebook"
-            body="Add your first services, photos, and past work. Your presence, your brand."
+            title="Set up your business app"
+            body="Add your services, photos, and past work. Your presence, your brand. Live in Studio."
           />
           <FlowStep
             n="03"
             imageUrl={STEP_IMAGES.circle}
             icon={<Users className="h-4 w-4" aria-hidden />}
-            title="Join the Trade Circle"
-            body="Recommend the trades you work with. Get recommended back. Grow together."
+            title="Join a canteen"
+            body="Your trade's private group on The Network. Recommend and get recommended. Grow together."
           />
         </div>
 
         {/* Value markers */}
         <ul className="mt-12 grid gap-3 text-[14px] text-[#1B1A17]/80 md:grid-cols-2 md:gap-x-6">
-          <ValuePoint>Your own Notebook — free forever</ValuePoint>
+          <ValuePoint>Your own business app — free for life</ValuePoint>
           <ValuePoint>Verified badges (Companies House, Gas Safe, NICEIC)</ValuePoint>
           <ValuePoint>Every job on the record — permanent</ValuePoint>
-          <ValuePoint>Peer endorsements from other trades</ValuePoint>
-          <ValuePoint>Homeowner enquiries direct to you</ValuePoint>
+          <ValuePoint>Peer endorsements from other trades in your canteen</ValuePoint>
+          <ValuePoint>Customers WhatsApp you direct — zero commission</ValuePoint>
           <ValuePoint>Own your data — leave any time with it</ValuePoint>
         </ul>
 
         <div className="mt-14 border-t border-[#1B1A17]/12 pt-6">
           <p className="text-[13px] text-[#1B1A17]/55">
-            Already have a Notebook?{" "}
+            Already on The Network?{" "}
             <Link href="/sign-in" className="text-amber-300 hover:text-amber-200">
               Sign in
             </Link>

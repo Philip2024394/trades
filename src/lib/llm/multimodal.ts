@@ -2,7 +2,7 @@
 // image → structured JSON calls. Direct fetch, no SDK dependency.
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
-const DEFAULT_MODEL = "claude-sonnet-4-6";
+const DEFAULT_MODEL = "claude-opus-4-7";
 
 export type VisionAskInput = {
   imageBase64: string;

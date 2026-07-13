@@ -35,16 +35,16 @@ const SUPPORT_EMAIL = "support@xratedtrade.com";
 const LAST_UPDATED = "3 July 2026";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Xrated Trades",
+  title: "Terms & Conditions — The Network",
   description:
-    "The Terms & Conditions for Xrated Trades — the Business Operating System for trade businesses. Service description, account terms, subscription plans, auto-renewing billing, App Store terms, 14-day cooling-off rights and how to cancel.",
+    "The Terms & Conditions for The Network — the platform for construction trades. Service description, account terms, subscription plans, auto-renewing billing, App Warehouse terms, 14-day cooling-off rights and how to cancel.",
   alternates: { canonical: "/legal/terms" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Terms & Conditions — Xrated Trades",
+    title: "Terms & Conditions — The Network",
     description:
-      "Service terms, subscription terms, App Store terms, auto-renewal disclosure, cancellation rights and governing law for the Xrated Trades Business Operating System.",
+      "Service terms, subscription terms, App Warehouse terms, auto-renewal disclosure, cancellation rights and governing law for The Network.",
     url: absolute("/legal/terms")
   }
 };

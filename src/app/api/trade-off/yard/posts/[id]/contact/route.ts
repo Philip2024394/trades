@@ -12,6 +12,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { logContactReceived } from "@/lib/activity";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -53,6 +54,23 @@ export async function GET(
     } catch {
       // swallow — never block the user's tap
     }
+  }
+
+  // Log to the post owner's activity feed — best-effort, never blocks.
+  try {
+    const { data: postRow } = await supabaseAdmin
+      .from("hammerex_trade_off_yard_posts")
+      .select("listing_id")
+      .eq("id", id)
+      .maybeSingle();
+    if (postRow?.listing_id) {
+      await logContactReceived({
+        post_id: id,
+        post_owner_listing_id: postRow.listing_id
+      });
+    }
+  } catch {
+    /* swallow */
   }
 
   return NextResponse.redirect(dest, { status: 302 });

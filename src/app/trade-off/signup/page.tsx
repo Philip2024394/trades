@@ -1,59 +1,140 @@
-// xratedtrade.com Trade Off — onboarding wizard
-// Single-screen vertical form. Form lives in TradeOffForm so the same UX
-// can be reused by the /trade-off/edit/[slug] page.
+// /trade-off/signup — Launch your business app on The Network.
+//
+// Overhaul: split-screen with the form on the left and the Network
+// Pulse (live ecosystem sidebar) on the right. Same TradeOffForm
+// underneath — the form logic isn't rewritten, just re-framed inside
+// a signup-first shell that surfaces buzz, social proof, and the
+// Founding 100 scarcity gate.
+//
+// Layout:
+//   - Dark hero header (matches CanteenHeader family)
+//   - Mobile pulse strip (marquee) directly under the hero
+//   - lg+: two-column grid, form left, sticky NetworkPulse right
+//   - Cream (#FBF6EC) body per canonical theme rule
 
 import type { Metadata } from "next";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { TradeOffForm } from "./TradeOffForm";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
+import { NetworkPulse } from "@/components/xrated/signup/NetworkPulse";
+import { SignupPulseStrip } from "@/components/xrated/signup/SignupPulseStrip";
+import { SignupDraftTicker } from "@/components/xrated/signup/SignupDraftTicker";
+import { SignupUnlockSteps } from "@/components/xrated/signup/SignupUnlockSteps";
+import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { ShieldCheck, MessageCircle, Sparkles, Rocket } from "lucide-react";
+
+const CREAM = "#FBF6EC";
 
 export const metadata: Metadata = {
-  title: "Join Xrated Trades — launch your business app for free",
+  title: "Join The Network — free for life | The Network",
   description:
-    "Launch your business app on Xrated Trades. Studio, App Store, Industry Packs — the Business Operating System for trade businesses. Free for life, no card, no commission.",
+    "Join The Network. Free for life, not a trial. Studio, App Warehouse, The Yard, Trade Center, and your own URL — no card, no commission. Customers WhatsApp you direct.",
   alternates: { canonical: "/trade-off/signup" }
 };
 
-const SIGNUP_HERO =
-  "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated-signup-hero.png";
-
 export default function TradeOffSignupPage() {
   return (
-    <main className="min-h-screen bg-brand-bg text-brand-text">
+    <main className="min-h-screen" style={{ backgroundColor: CREAM }}>
       <XratedViewTracker page="signup" listingId={null} />
       <XratedHeader />
 
-      <section className="relative bg-black">
-        <div className="relative h-56 w-full overflow-hidden sm:h-72 md:h-96">
-          <img
-            src={SIGNUP_HERO}
-            alt="Xrated Trades — list your trade"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-          />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/0" />
-          <div className="absolute inset-x-0 bottom-0 mx-auto max-w-3xl px-4 pb-5 sm:pb-7">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-              Xrated Trades · Sign up
-            </p>
-            <h1 className="mt-1.5 text-2xl font-extrabold leading-tight text-white drop-shadow-md sm:text-4xl">
-              Launch your business app in minutes
-            </h1>
+      {/* Hero — dark banner, matches CanteenHeader family. Trust
+          density above the fold: eyebrow chip, headline, sub-line,
+          three-badge trust strip. No stock imagery — the ecosystem
+          panel does the visual heavy lifting. */}
+      <section
+        className="relative overflow-hidden border-b"
+        style={{ backgroundColor: BRAND_BLACK, borderColor: `${BRAND_YELLOW}33` }}
+      >
+        <div className="mx-auto max-w-6xl px-3 py-8 md:px-6 md:py-12">
+          <div className="flex items-center gap-2">
+            <span
+              className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-black uppercase tracking-[0.24em]"
+              style={{ backgroundColor: `${BRAND_YELLOW}22`, color: BRAND_YELLOW }}
+            >
+              <Sparkles size={10} strokeWidth={2.5}/>
+              Join The Network · Founding 100 · 43 slots left
+            </span>
           </div>
+          <h1 className="mt-3 max-w-3xl text-[28px] font-black leading-[1.05] text-white md:text-[42px]">
+            Join The Network.<br/>
+            <span style={{ color: BRAND_YELLOW }}>Yours in 90 seconds. Live in 24 hours.</span>
+          </h1>
+          <p className="mt-3 max-w-xl text-[13px] leading-snug text-neutral-300 md:text-[14px]">
+            Free for life. Not a trial. Not a bait-and-switch. Free app, free canteen, free URL, free access to The Yard + Trade Center. Customers WhatsApp you direct. Zero commission, ever.
+          </p>
+
+          {/* Trust badges — three above-the-fold signals */}
+          <ul className="mt-5 flex flex-wrap gap-x-4 gap-y-2">
+            <TrustBadge icon={ShieldCheck} label="No card. No commission. Ever."/>
+            <TrustBadge icon={MessageCircle} label="Customers WhatsApp you direct"/>
+            <TrustBadge icon={Rocket} label="127 tradies joined The Network · last 24h"/>
+          </ul>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 pb-6 pt-6">
-        <p className="max-w-xl text-xs text-brand-muted sm:text-sm">
-          Free for life. You get a starter business app, Studio to design it,
-          and the App Store to install more features as you grow. No card, no
-          commission — the jobs stay between you and the customer.
-        </p>
-      </section>
-      <section className="mx-auto max-w-3xl px-4 pb-16">
-        <TradeOffForm mode={{ kind: "create" }} />
-      </section>
+      {/* Mobile ecosystem strip — sits directly under the hero on
+          narrow viewports. Desktop uses the sticky NetworkPulse
+          sidebar instead. */}
+      <SignupPulseStrip />
+
+      {/* Content grid — form left, NetworkPulse right on lg+.
+          Cream body (canonical off-white theme). */}
+      <div className="mx-auto max-w-6xl px-3 pb-16 pt-6 md:px-6 md:pt-8">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px]">
+          {/* Form column — min-w-0 so wide children can't push the
+              sidebar off-screen. */}
+          <section className="min-w-0">
+            {/* Unlock steps — reward-framed progress card. Each row
+                ticks green as the corresponding form section is
+                meaningfully filled (detection via a MutationObserver
+                on the form's input names, same pattern as
+                SignupDraftTicker). Reframes the form as 4 free things
+                the tradesperson is picking up, not 4 tasks to grind. */}
+            <SignupUnlockSteps />
+
+            {/* The actual form — unchanged. Wrapping it doesn't
+                mutate submission behaviour. */}
+            <TradeOffForm mode={{ kind: "create" }} />
+
+            {/* Draft-safety ticker — reassures the user that their
+                in-progress typing is captured locally, and reminds
+                them the "Save as draft" button is the real durable
+                resume path. Reduces abandonment anxiety. */}
+            <SignupDraftTicker />
+          </section>
+
+          {/* NetworkPulse sidebar — sticky on lg+. Hidden on mobile
+              because SignupPulseStrip already ran above. */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-[80px]">
+              <NetworkPulse />
+            </div>
+          </aside>
+        </div>
+      </div>
+
       <XratedFooter />
     </main>
   );
 }
+
+function TrustBadge({
+  icon: Icon,
+  label
+}: {
+  icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number | string }>;
+  label: string;
+}) {
+  return (
+    <li
+      className="inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1"
+      style={{ borderColor: `${BRAND_YELLOW}55`, backgroundColor: "rgba(255,255,255,0.05)" }}
+    >
+      <Icon size={11} color={BRAND_YELLOW} strokeWidth={2.5}/>
+      <span className="text-[11px] font-black text-white">{label}</span>
+    </li>
+  );
+}
+

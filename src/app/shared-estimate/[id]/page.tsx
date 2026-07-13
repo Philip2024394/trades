@@ -15,7 +15,7 @@ import { formatGbp } from "@/lib/xratedCart";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Material estimate — Xrated Trades",
+  title: "Material estimate — The Network",
   robots: { index: false, follow: false }
 };
 

@@ -26,6 +26,8 @@ import { TradeOffForm, type TradeOffFormInitial } from "../../signup/TradeOffFor
 import { PremiumCustomisationPanel } from "./PremiumCustomisationPanel";
 import { ManageSubscriptionCard } from "./ManageSubscriptionCard";
 import { LogoutButton } from "./LogoutButton";
+import { NotificationsBell } from "./NotificationsBell";
+import { supabaseAdmin as supabaseAdminForNotifs } from "@/lib/supabaseAdmin";
 import type { HammerexXratedVoucher } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
@@ -240,6 +242,15 @@ export default async function TradeOffEditPage({
     password: ""
   };
 
+  // Live unread-notification count for the bell — small standalone
+  // query, cheap enough to run inline on every dashboard render.
+  const { count: unreadCount } = await supabaseAdminForNotifs
+    .from("hammerex_yard_targeted_notifications")
+    .select("id", { count: "exact", head: true })
+    .eq("recipient_listing_id", row.data.id)
+    .eq("is_read", false)
+    .gt("expires_at", new Date().toISOString());
+
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <DashboardHeader />
@@ -254,7 +265,14 @@ export default async function TradeOffEditPage({
               ? `Step 1 · ${tradeLabel(row.data.primary_trade)}`
               : "Step 1"}
           </p>
-          <LogoutButton />
+          <div className="flex items-center gap-2">
+            <NotificationsBell
+              slug={slug}
+              token={token}
+              unreadCount={unreadCount ?? 0}
+            />
+            <LogoutButton />
+          </div>
         </div>
         <h1 className="mt-1 text-3xl font-extrabold leading-tight sm:text-4xl">
           App Details

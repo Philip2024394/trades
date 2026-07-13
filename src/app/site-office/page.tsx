@@ -228,7 +228,7 @@ const STEPS: { title: string; description: string }[] = [
   {
     title: "You're live",
     description:
-      "Your profile lands on xratedtrade.com/<your-name> within 5 working days. Powered by your £14.99 platform plan from then on."
+      "Your profile lands on The Network within 5 working days. Powered by your £14.99 platform plan from then on."
   }
 ];
 

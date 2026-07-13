@@ -42,7 +42,7 @@ import { DashboardNoticeStrip } from "@/components/home/DashboardNoticeStrip";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Property Vault — Xrated Trades",
+  title: "Property Vault — The Network",
   robots: { index: false, follow: false }
 };
 

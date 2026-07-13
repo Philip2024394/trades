@@ -230,9 +230,13 @@ CREATE INDEX IF NOT EXISTS os_share_grants_business_grantee_idx
   ON os_share_grants (granted_to_business_id) WHERE granted_to_business_id IS NOT NULL;
 CREATE INDEX IF NOT EXISTS os_share_grants_token_idx
   ON os_share_grants (share_token) WHERE share_token IS NOT NULL;
+-- Note: WHERE ... expires_at > now() was removed because now() isn't
+-- IMMUTABLE and Postgres rejects it in a partial-index predicate. The
+-- query planner handles the expires_at > now() clause at query time
+-- against the base index below with negligible cost.
 CREATE INDEX IF NOT EXISTS os_share_grants_active_idx
   ON os_share_grants (subject_type, subject_id, expires_at)
-  WHERE revoked_at IS NULL AND (expires_at IS NULL OR expires_at > now());
+  WHERE revoked_at IS NULL;
 
 -- ---------------------------------------------------------------------
 -- 5. os_project_bundle_exports — end-of-project ZIP records

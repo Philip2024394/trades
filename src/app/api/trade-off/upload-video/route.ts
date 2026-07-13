@@ -1,7 +1,13 @@
 // POST /api/trade-off/upload-video
-// Multipart video upload for plant hire (and any future add-on that
-// needs short videos). Drops the bytes into the `product-images` bucket
-// under trade-off-video/<uuid>.<ext> and returns the public URL.
+// Multipart video upload. Currently used by plant hire AND The Yard
+// composer. Drops the bytes into the `product-images` bucket under
+// trade-off-video/<uuid>.<ext> and returns the public URL.
+//
+// Paid-tier gate: if slug + edit_token are provided we resolve the
+// listing's tier and reject standard-tier uploads with
+// `video_requires_paid`. This is the enforcement layer for The Yard
+// video feature — plant hire callers that don't pass auth still work
+// (their access is already gated at a higher level).
 //
 // Constraints:
 //   - video/* MIME only
@@ -10,13 +16,25 @@
 //     video.duration). Server can't ffprobe without extra tooling.
 
 import { NextResponse, type NextRequest } from "next/server";
-import { randomUUID } from "crypto";
+import { randomUUID, createHash } from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const runtime = "nodejs";
 
 const BUCKET = "product-images";
 const MAX_BYTES = 30 * 1024 * 1024;
+const PAID_TIERS = new Set(["app_trial", "app_paid", "verified"]);
+
+function constantTimeEq(a: string, b: string): boolean {
+  if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) {
+    return false;
+  }
+  const ha = createHash("sha256").update(a).digest();
+  const hb = createHash("sha256").update(b).digest();
+  let diff = 0;
+  for (let i = 0; i < ha.length; i++) diff |= ha[i] ^ hb[i];
+  return diff === 0;
+}
 
 function extFromMime(mime: string): string {
   if (mime === "video/mp4") return "mp4";
@@ -33,6 +51,41 @@ export async function POST(req: NextRequest) {
     form = await req.formData();
   } catch {
     return NextResponse.json({ ok: false, error: "Invalid form body" }, { status: 400 });
+  }
+
+  // Optional Yard-composer auth. When present, enforces paid tier.
+  const slug = String(form.get("slug") ?? "").trim();
+  const editToken = String(form.get("edit_token") ?? "").trim();
+  if (slug && editToken) {
+    const { data: listing } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("edit_token, tier, status")
+      .eq("slug", slug)
+      .maybeSingle();
+    if (!listing || !constantTimeEq(listing.edit_token, editToken)) {
+      return NextResponse.json(
+        { ok: false, error: "unauthorised" },
+        { status: 401 }
+      );
+    }
+    if (listing.status !== "live") {
+      return NextResponse.json(
+        { ok: false, error: "listing_not_live" },
+        { status: 403 }
+      );
+    }
+    const tier = (listing as { tier?: string }).tier ?? "standard";
+    if (!PAID_TIERS.has(tier)) {
+      return NextResponse.json(
+        {
+          ok: false,
+          error: "video_requires_paid",
+          detail:
+            "Video posts are a paid-tier feature. Upgrade to include video in your Yard posts."
+        },
+        { status: 403 }
+      );
+    }
   }
 
   const raw = form.get("file");

@@ -13,9 +13,9 @@ import { listActiveCampaigns } from "@/lib/affiliateCampaigns";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Affiliate Programme | xratedtrade.com",
+  title: "Affiliate Programme | The Network",
   description:
-    "Earn £10 for every tradesperson who joins Xrated Trades via your link. Free to join, paid monthly.",
+    "Earn £10 for every tradesperson who joins The Network via your link. Free to join, paid monthly.",
   robots: { index: true, follow: true }
 };
 

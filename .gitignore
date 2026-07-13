@@ -11,3 +11,5 @@ scripts/.pexels-results.json
 scripts/.pexels-query-cache.json
 
 .vercel
+
+.env.tools.local

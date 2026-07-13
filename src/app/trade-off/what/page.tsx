@@ -22,16 +22,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "What is Xrated Trades? Your trade, online, in one link. Free 14-day trial.",
+    "What is The Network? Studio, App Warehouse, Yard, Profile. 14-day free trial.",
   description:
-    "Xrated Trades gives every tradesperson their own professional online profile on one shareable URL — photos of real jobs, customer reviews, services with prices, instant WhatsApp, an intro video and a verified badge. Built for bricklayers, electricians, plumbers, scaffolders, roofers and every other construction trade. Start free, 14-day trial, no card.",
+    "The Network is the platform for construction trades. Design your business app in Studio, install what you need from the App Warehouse, post in the Yard, and share a public profile that turns visitors into enquiries. Free for life. No card. No commission, ever.",
   alternates: { canonical: "/trade-off/what" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "What is Xrated Trades? Your trade. Online. In one link.",
+    title: "What is The Network? Of The Construction Trades.",
     description:
-      "Every tradesperson gets a professional profile on one shareable URL — photos, reviews, prices, WhatsApp, video, verified badge. Built for the construction trades. 14-day free trial, no card.",
+      "Studio, App Warehouse, The Yard, Profile — one platform for construction trades. 14-day free trial, no card.",
     url: absolute("/trade-off/what")
   }
 };

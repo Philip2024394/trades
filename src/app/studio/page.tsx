@@ -24,20 +24,27 @@ const BLACK = "#0A0A0A";
 export default async function StudioEntryPage({
   searchParams
 }: {
-  searchParams: Promise<{ enter?: string; failed?: string }>;
+  searchParams: Promise<{ enter?: string; failed?: string; next?: string }>;
 }) {
   const sp = await searchParams;
   const entryToken = typeof sp.enter === "string" ? sp.enter.trim() : "";
+  // Deep-link target. Forwarded to the Route Handler so magic links
+  // like /studio?enter=X&next=/studio/apps land where they should.
+  // The API route re-validates the path (whitelist starts-with /studio/).
+  const rawNext = typeof sp.next === "string" ? sp.next.trim() : "";
+  const safeNext = rawNext && rawNext.startsWith("/studio/") ? rawNext : "";
 
   // Legacy magic-link format — bounce to the Route Handler that can
   // actually set the cookie.
   if (entryToken) {
-    redirect(`/api/studio/enter?token=${encodeURIComponent(entryToken)}`);
+    const params = new URLSearchParams({ token: entryToken });
+    if (safeNext) params.set("next", safeNext);
+    redirect(`/api/studio/enter?${params.toString()}`);
   }
 
-  // Already signed in — jump to home.
+  // Already signed in — jump to the requested deep-link or home.
   const session = await loadStudioSession();
-  if (session) redirect("/studio/home");
+  if (session) redirect(safeNext || "/studio/home");
 
   const badLink = sp.failed === "1";
 

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades FAQ — everything tradies ask.",
+    title: "The Network FAQ — everything tradies ask.",
     description:
       "Quick answers on pricing, the 14-day trial, reviews, slugs, insurance and cancellation — for tradies thinking about signing up.",
     url: absolute("/trade-off/faq")
@@ -156,7 +156,7 @@ export default function FaqPage() {
             Still curious?
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Start your 14-day free trial.
+            Join The Network. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Your
@@ -172,7 +172,7 @@ export default function FaqPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"

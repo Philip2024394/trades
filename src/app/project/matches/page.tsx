@@ -9,7 +9,9 @@ import {
   ShieldCheck,
   Send,
   Loader2,
-  AlertTriangle
+  AlertTriangle,
+  Megaphone,
+  ArrowRight
 } from "lucide-react";
 import { useDraft } from "../draftStore";
 import { WizardShell } from "../WizardShell";
@@ -26,10 +28,23 @@ type Match = {
   isLocal: boolean;
 };
 
+type YardPost = {
+  id: string;
+  slug: string;
+  title: string;
+  body: string;
+  region: string | null;
+  tradeSlug: string;
+  posterName: string;
+  posterSlug: string;
+  createdAt: string;
+};
+
 export default function StepMatches() {
   const router = useRouter();
   const { draft, patch, hydrated } = useDraft();
   const [matches, setMatches] = useState<Match[]>([]);
+  const [yardPosts, setYardPosts] = useState<YardPost[]>([]);
   const [status, setStatus] = useState<
     "idle" | "loading" | "loaded" | "empty" | "error" | "submitting"
   >("idle");
@@ -49,18 +64,24 @@ export default function StepMatches() {
     });
     fetch(`/api/project/matches?${params.toString()}`)
       .then((r) => r.json())
-      .then((data: { ok: boolean; matches?: Match[] }) => {
-        if (cancelled) return;
-        if (!data.ok || !data.matches) {
-          setStatus("error");
-          return;
+      .then(
+        (data: {
+          ok: boolean;
+          matches?: Match[];
+          yardPosts?: YardPost[];
+        }) => {
+          if (cancelled) return;
+          if (!data.ok || !data.matches) {
+            setStatus("error");
+            return;
+          }
+          setMatches(data.matches);
+          setYardPosts(data.yardPosts ?? []);
+          setStatus(data.matches.length === 0 ? "empty" : "loaded");
+          const initial = new Set(data.matches.slice(0, 3).map((m) => m.id));
+          setSelected(initial);
         }
-        setMatches(data.matches);
-        setStatus(data.matches.length === 0 ? "empty" : "loaded");
-        // Pre-select up to 3 matches
-        const initial = new Set(data.matches.slice(0, 3).map((m) => m.id));
-        setSelected(initial);
-      })
+      )
       .catch(() => {
         if (!cancelled) setStatus("error");
       });
@@ -217,6 +238,66 @@ export default function StepMatches() {
               );
             })}
           </div>
+
+          {yardPosts.length > 0 && (
+            <section className="mt-8 rounded-2xl border border-amber-400/40 bg-white p-4 shadow-sm">
+              <div className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                  style={{ background: "#FFB300" }}
+                >
+                  <Megaphone
+                    className="h-4 w-4 text-neutral-900"
+                    aria-hidden
+                  />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[13px] font-black text-[#1B1A17]">
+                    Live from The Yard
+                  </p>
+                  <p className="mt-0.5 text-[12px] leading-[1.45] text-[#1B1A17]/60">
+                    Trades saying they&apos;re available right now for your
+                    kind of job.
+                  </p>
+                </div>
+              </div>
+              <ul className="mt-4 space-y-2">
+                {yardPosts.map((p) => (
+                  <li key={p.id}>
+                    <a
+                      href={`/${p.posterSlug}`}
+                      className="flex items-start gap-3 rounded-xl border border-[#1B1A17]/10 bg-[#FBF6EC] p-3 transition hover:border-amber-400 hover:bg-white"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-baseline gap-2">
+                          <span className="truncate text-[13px] font-extrabold text-[#1B1A17]">
+                            {p.title}
+                          </span>
+                          {p.region && (
+                            <span className="inline-flex items-center gap-1 text-[11px] text-[#1B1A17]/55">
+                              <MapPin className="h-3 w-3" aria-hidden />
+                              {p.region}
+                            </span>
+                          )}
+                        </div>
+                        <p className="mt-1 line-clamp-2 text-[12px] leading-[1.45] text-[#1B1A17]/70">
+                          {p.body}
+                        </p>
+                        <p className="mt-1 text-[11px] font-semibold text-[#1B1A17]/50">
+                          {p.posterName} · {p.tradeSlug.replace(/-/g, " ")}
+                        </p>
+                      </div>
+                      <ArrowRight
+                        className="mt-1 h-4 w-4 shrink-0 text-amber-700"
+                        aria-hidden
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
 
           <div className="mt-8 flex flex-col items-start gap-3 border-t border-[#1B1A17]/12 pt-6 sm:flex-row sm:items-center sm:justify-between">
             <div className="text-[13px] text-[#1B1A17]/60">

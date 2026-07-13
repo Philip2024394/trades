@@ -102,5 +102,70 @@ export async function GET(request: Request) {
     isLocal: prefix && s.row.postcode_prefix === prefix
   }));
 
-  return NextResponse.json({ ok: true, matches: top });
+  // Yard job-seek posts matching the trade — "trades saying they're
+  // available right now". Shown as a secondary rail below the main
+  // match list so the homeowner sees active supply for their trade.
+  let yardPosts: Array<{
+    id: string;
+    slug: string;
+    title: string;
+    body: string;
+    region: string | null;
+    tradeSlug: string;
+    posterName: string;
+    posterSlug: string;
+    createdAt: string;
+  }> = [];
+  if (tradeSlugs.length > 0) {
+    const { data: seekRows } = await supabaseAdmin
+      .from("hammerex_trade_off_yard_posts")
+      .select(
+        "id, listing_id, title, body, region, trade_slug, kind, status, created_at, expires_at"
+      )
+      .eq("kind", "job-seek")
+      .eq("status", "live")
+      .in("trade_slug", tradeSlugs)
+      .gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(20);
+    if (seekRows && seekRows.length > 0) {
+      const listingIds = Array.from(
+        new Set(seekRows.map((r) => r.listing_id))
+      );
+      const { data: posters } = await supabaseAdmin
+        .from("hammerex_trade_off_listings")
+        .select("id, slug, display_name, city, postcode_prefix")
+        .in("id", listingIds);
+      const posterMap = new Map(
+        (posters ?? []).map((p) => [p.id, p])
+      );
+      yardPosts = seekRows
+        .map((r) => {
+          const p = posterMap.get(r.listing_id);
+          if (!p) return null;
+          return {
+            id: r.id,
+            slug: p.slug,
+            title: r.title,
+            body: r.body,
+            region: r.region ?? p.city ?? null,
+            tradeSlug: r.trade_slug,
+            posterName: p.display_name,
+            posterSlug: p.slug,
+            createdAt: r.created_at,
+            _local: prefix && p.postcode_prefix === prefix ? 1 : 0
+          };
+        })
+        .filter(Boolean) as typeof yardPosts;
+      // Local first, then newest.
+      yardPosts.sort((a, b) => {
+        const la = (a as { _local?: number })._local ?? 0;
+        const lb = (b as { _local?: number })._local ?? 0;
+        return lb - la;
+      });
+      yardPosts = yardPosts.slice(0, 5);
+    }
+  }
+
+  return NextResponse.json({ ok: true, matches: top, yardPosts });
 }

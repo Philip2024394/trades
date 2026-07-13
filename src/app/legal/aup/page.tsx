@@ -17,14 +17,14 @@ const SUPPORT_EMAIL = "support@xratedtrade.com";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Acceptable Use Policy — Xrated Trades",
+  title: "Acceptable Use Policy — The Network",
   description:
-    "What you may and may not do on Xrated Trades — no fake reviews, no impersonation, no illegal trades, no scraping, no harassment, no payment fraud. Consequences of breach: suspension, removal, refund refusal, ban.",
+    "What you may and may not do on The Network — no fake reviews, no impersonation, no illegal trades, no scraping, no harassment, no payment fraud. Consequences of breach: suspension, removal, refund refusal, ban.",
   alternates: { canonical: "/legal/aup" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Acceptable Use Policy — Xrated Trades",
+    title: "Acceptable Use Policy — The Network",
     description:
       "Plain-English platform rules and the consequences of breaching them.",
     url: absolute("/legal/aup")

@@ -19,15 +19,15 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Verified Business — Xrated Trades. The badge backed by a real Companies House check. £199.99/yr.",
+    "Verified Business — The Network. The badge backed by a real Companies House check. £199.99/yr.",
   description:
-    "Xrated Verified is the £199.99/yr trust tier. We confirm active company registration with Companies House (or your local registry) so customers know you are real. Optional add-on badges for Insurance and On-site checked. Verification launches Q3 2026 — waitlist members lock £199.99/yr for life.",
+    "Verified Business is the £199.99/yr trust tier on The Network. We confirm active company registration with Companies House (or your local registry) so customers know you are real. Optional add-on badges for Insurance and On-site checked. Verification launches Q3 2026 — waitlist members lock £199.99/yr for life.",
   alternates: { canonical: "/trade-off/verified" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title:
-      "Xrated Verified — the badge that says: this tradesperson is real. £199.99/yr.",
+      "Verified Business — The badge that says: this tradesperson is real. £199.99/yr.",
     description:
       "Active company registration check, optional Insurance + On-site add-on badges, priority search ranking. £199.99/yr, annual only. Launches Q3 2026 — join the waitlist.",
     url: absolute("/trade-off/verified")

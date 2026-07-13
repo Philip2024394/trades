@@ -91,6 +91,13 @@ const nextConfig = {
   // consolidates SEO authority on the new path.
   async redirects() {
     return [
+      // Old Mike Watson profile — retired 2026-07-13 in favour of his
+      // canteen home. Redirects both the clean URL and any legacy
+      // /trade/... variants to the new location.
+      { source: "/demo-mike-watson-drywall-manchester", destination: "/trade-off/yard/canteens/uk-kitchen-fitters", permanent: true },
+      { source: "/demo-mike-watson-drywall-manchester/:path*", destination: "/trade-off/yard/canteens/uk-kitchen-fitters", permanent: true },
+      { source: "/trade/demo-mike-watson-drywall-manchester", destination: "/trade-off/yard/canteens/uk-kitchen-fitters", permanent: true },
+      { source: "/trade/demo-mike-watson-drywall-manchester/:path*", destination: "/trade-off/yard/canteens/uk-kitchen-fitters", permanent: true },
       { source: "/trade/:slug", destination: "/:slug", permanent: true },
       { source: "/trade/:slug/contact", destination: "/:slug/contact", permanent: true },
       { source: "/trade/:slug/services", destination: "/:slug/services", permanent: true },
@@ -139,7 +146,17 @@ const nextConfig = {
       // Bounce old /trade/* trade-center-picks + per-pick detail URLs to
       // the clean form so Google consolidates SEO authority.
       { source: "/trade/:slug/trade-center-picks", destination: "/:slug/trade-center-picks", permanent: true },
-      { source: "/trade/:slug/picks/:pickId", destination: "/:slug/picks/:pickId", permanent: true }
+      { source: "/trade/:slug/picks/:pickId", destination: "/:slug/picks/:pickId", permanent: true },
+
+      // Trade Center Week 4 · ADR-053 — canteens migrate under
+      // /community/*. Permanent redirect + edge cache invalidation
+      // per TRADE_CENTER_2_SPEC.md §19.9.
+      //
+      // DISABLED 2026-07-12 — the /community/* target routes don't
+      // exist yet, so this redirect currently 404s (see prior "community:1
+      // 404" bug). Re-enable once /community/[slug]/page.tsx ships.
+      // { source: "/trade-off/yard/canteens", destination: "/community", permanent: true },
+      // { source: "/trade-off/yard/canteens/:path*", destination: "/community/:path*", permanent: true }
     ];
   }
 };

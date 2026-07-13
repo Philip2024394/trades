@@ -1,4 +1,4 @@
-// Xrated Trades — service worker.
+// The Network — service worker.
 //
 // Plain JavaScript (NOT TypeScript). Lives at the site root so it
 // owns the whole origin scope for push subscription. Three jobs:
@@ -12,7 +12,7 @@
 //      server-side row points at the live endpoint.
 
 const PAYLOAD_FALLBACK = {
-  title: 'Xrated Trades',
+  title: 'The Network',
   body: 'You have a new alert.',
   data: { url: '/' }
 };
@@ -43,7 +43,7 @@ self.addEventListener('push', (event) => {
 
   const title = typeof data.title === 'string' ? data.title : PAYLOAD_FALLBACK.title;
   const body = typeof data.body === 'string' ? data.body : PAYLOAD_FALLBACK.body;
-  const tag = typeof data.tag === 'string' ? data.tag : 'xrated-lead-alert';
+  const tag = typeof data.tag === 'string' ? data.tag : 'network-lead-alert';
   const vibrate = Array.isArray(data.vibrate) ? data.vibrate : [200, 100, 200, 100, 400];
   const requireInteraction = data.requireInteraction === true;
   const payload = typeof data.data === 'object' && data.data !== null ? data.data : { url: '/' };
@@ -56,10 +56,32 @@ self.addEventListener('push', (event) => {
     data: payload,
     badge: '/icon-badge.png',
     icon: '/icon-192.png',
-    renotify: true
+    renotify: true,
+    silent: false
   };
 
-  event.waitUntil(self.registration.showNotification(title, options));
+  // Paint the home-screen app icon badge with the unread count the
+  // server included in payload.badge. Best-effort — Safari + Chromium
+  // support this via the Badging API; other engines silently no-op.
+  event.waitUntil(
+    (async () => {
+      try {
+        if (self.navigator && typeof self.navigator.setAppBadge === 'function') {
+          const badgeCount = typeof payload.badge === 'number' ? payload.badge : 1;
+          if (badgeCount > 0) await self.navigator.setAppBadge(badgeCount);
+          else if (typeof self.navigator.clearAppBadge === 'function') await self.navigator.clearAppBadge();
+        }
+      } catch (_err) { /* not supported */ }
+      // Tell any open client tabs to refresh their notifications feed.
+      try {
+        const clients = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+        for (const client of clients) {
+          client.postMessage({ type: 'tc-notification', kind: payload.kind ?? null });
+        }
+      } catch (_err) { /* fine */ }
+      await self.registration.showNotification(title, options);
+    })()
+  );
 });
 
 self.addEventListener('notificationclick', (event) => {

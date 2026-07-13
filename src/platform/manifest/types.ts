@@ -29,6 +29,215 @@
 
 export type ManifestVersion = 1;
 
+// ─── Trade Center Week 1 extensions (all optional, all additive) ────
+//
+// Why they belong on the AppManifest (per 3-question rule in memory
+// `project_extend_dont_duplicate_permanent_rule.md`):
+//
+//   1. Why platform?  These declarations are consumed by platform-
+//      level subsystems (AI Dispatcher, Feature Flag Enforcer,
+//      Telemetry Bus, Command Palette). Duplicating them per App
+//      would rebuild the platform.
+//
+//   2. Which future Apps benefit?  Every App. Marketplace, Projects,
+//      Fleet, Insurance, Finance, Recruitment, Training — each will
+//      register AI tools, flags, telemetry, and palette commands.
+//
+//   3. Which doc authorises?  TRADE_CENTER_PLATFORM_DELTA §4.2 rows
+//      "Manifest version envelope / AI tool declarations / feature
+//      flag declarations / telemetry declarations". ADRs 033, 034,
+//      037, 038 (see PLATFORM_DECISIONS.md).
+
+/** Platform + API compatibility envelope. All fields optional so
+ *  existing manifests continue to validate. Populated Apps get
+ *  richer version-based upgrade tracking.
+ *
+ *  Authorised by ADR-033. */
+export type PlatformCompat = {
+  /** SemVer of the AppManifest surface the App targets. Distinct from
+   *  `manifestVersion` (which is the schema shape). Bump when the
+   *  App consumes new fields added by ADRs after ADR-033. */
+  apiVersion?: string;
+  /** SemVer of the App's own DB schema (its `app_<slug>_*` tables).
+   *  Migration tooling reads this to plan upgrades. */
+  schemaVersion?: string;
+  /** Head of the migrations directory the App expects live —
+   *  timestamp-slug format matching supabase/migrations/*.sql. */
+  migrationVersion?: string;
+  /** Minimum platform semver this App runs against. Boot loader
+   *  refuses to register the App if the running platform is older. */
+  minPlatformVersion?: string;
+};
+
+/** An AI tool the App contributes to the platform AI Dispatcher.
+ *  The Dispatcher discovers these at boot from every App's manifest
+ *  and exposes them to Opus/Haiku via the standard tool-use interface.
+ *
+ *  Authorised by ADR-034. Delta §4.3 "AI Dispatcher with tool
+ *  discovery per App". */
+export type AIToolDeclaration = {
+  /** Fully qualified tool name — MUST be `<appSlug>.<name>` to avoid
+   *  collisions across Apps. Validator enforces the prefix. */
+  name: string;
+  /** One-line description read by the model to decide when to call. */
+  description: string;
+  /** JSON Schema for the tool's parameters. Kept as `unknown` at the
+   *  manifest layer — validation done by the Dispatcher at call time. */
+  parameters: unknown;
+  /** Optional handler import path (relative to the manifest file). The
+   *  Dispatcher lazy-loads the module and invokes the default export
+   *  with the parsed arguments. */
+  handler?: string;
+  /** Tier gate — Dispatcher hides the tool from users below this tier. */
+  requiredTier?: AppPlan;
+  /** Rough per-call cost bucket — used by the cost router in
+   *  §7 of PLATFORM_ARCHITECTURE. Optional; defaults to "low". */
+  cost?: "low" | "medium" | "high";
+};
+
+/** A plugin-scoped feature flag the App owns.
+ *
+ *  Authorised by ADR-037. Delta §4.3 "Plugin-scoped feature flag
+ *  registry". */
+export type FeatureFlagDeclaration = {
+  /** Fully-qualified flag key — MUST be `<appSlug>.<local-key>`. */
+  key: string;
+  description: string;
+  /** Default value if no override rule matches. */
+  default: boolean;
+  /** Scope of evaluation. `user` = per-user override. `business` =
+   *  per-active-business. `country` = per detected country. `global` =
+   *  platform-wide. */
+  scope: "user" | "business" | "country" | "global";
+  /** Optional A/B variant labels — only meaningful when the flag
+   *  serves more than a boolean. */
+  variants?: readonly string[];
+};
+
+/** A custom telemetry metric the App emits beyond the auto-baseline
+ *  (which every App gets for free from the runtime wrapper).
+ *
+ *  Authorised by ADR-038. Delta §4.2 "AppManifest telemetry
+ *  declarations". */
+export type TelemetryDeclaration = {
+  /** Fully-qualified metric name — MUST be `<appSlug>.<local-name>`. */
+  metric: string;
+  kind: "counter" | "gauge" | "histogram";
+  description: string;
+  /** Optional label dimensions. Runtime rejects labels not declared. */
+  labels?: readonly string[];
+};
+
+/** A command the App contributes to the platform Command Palette.
+ *  ⌘K opens the palette; every registered command from every App
+ *  appears grouped by App with keyboard shortcuts.
+ *
+ *  Authorised by ADR-047 (workspace navigation pattern) + Delta §4.3
+ *  "Command Palette (⌘K)". */
+export type CommandDeclaration = {
+  /** Fully-qualified command id — MUST be `<appSlug>.<local-id>`. */
+  id: string;
+  /** Human-readable label shown in the palette row. */
+  label: string;
+  /** Group the command renders under. Palette buckets by group. */
+  group: "actions" | "products" | "merchants" | "categories" | "recent";
+  /** Optional keyboard shortcut in Linear-style notation ("g m", "⌘k"). */
+  shortcut?: string;
+  /** Optional handler module path (relative to the manifest file).
+   *  Palette runtime lazy-loads and invokes. */
+  handler?: string;
+  /** Optional lucide icon name — palette resolves via lucide-react. */
+  icon?: string;
+};
+
+/** A fine-grained capability the App mints. Distinct from
+ *  `requirements.capabilities` (the coarse-grained platform services
+ *  the App consumes). Capabilities declared here become the atomic
+ *  policy units that Enterprise Admins compose into roles.
+ *
+ *  Authorised by ADR-040 + Delta §4.3 "Capability model +
+ *  can() runtime". */
+export type PolicyCapabilityDeclaration = {
+  /** Fully-qualified key — MUST be `<appSlug>.<capability>`. Example:
+   *  "orders.approve_refund", "marketplace.moderate_listings". */
+  key: string;
+  /** Human-readable description shown in Admin role composers. */
+  description: string;
+  /** Evaluation scope. `user` = per-user. `business` = per-active-
+   *  business (multi-tenant). `platform` = platform-wide. */
+  scope: "user" | "business" | "platform";
+  /** Tier(s) the capability is available in by default. */
+  defaultTiers: readonly AppPlan[];
+  /** Role keys that receive this capability by default. */
+  defaultRoles?: readonly string[];
+};
+
+/** A widget the App contributes to a shell surface. Shell renders
+ *  widgets from every registered App for the matching slot without
+ *  hard-coding App slugs.
+ *
+ *  Authorised by ADR-048 + Delta §6 Week 2 "Home 'Today's Work'
+ *  strip + BFF endpoint". */
+export type WidgetDeclaration = {
+  /** Fully-qualified widget id — MUST be `<appSlug>.<widget>`. */
+  id: string;
+  /** Shell slot the widget renders into. */
+  slot: "home.today" | "home.secondary" | "right-panel";
+  /** One-line label shown above the widget. */
+  label: string;
+  /** Optional order hint — lower renders first. */
+  order?: number;
+  /** Handler module path (relative to the manifest file). The default
+   *  export is a React server component OR an async function returning
+   *  the payload the shell renders through its default renderer. */
+  handler: string;
+  /** Refresh interval in seconds — shell polls or invalidates on
+   *  events. Omit for static widgets. */
+  refreshInterval?: number;
+  /** Optional tier gate. */
+  requiredTier?: AppPlan;
+};
+
+/** A notification kind the App emits. The Notifications Platform
+ *  Service (ADR-049) discovers these and routes them to the user's
+ *  preferred channels (in-app / email / push).
+ *
+ *  Authorised by ADR-049. */
+export type NotificationKindDeclaration = {
+  /** Fully-qualified kind — MUST be `<appSlug>.<kind>`. Example:
+   *  "orders.dispatched", "reviews.published". */
+  kind: string;
+  /** Category the user sees in their notification preferences. */
+  category: string;
+  /** Human-readable description of when this notification fires. */
+  description: string;
+  /** Default channels — user preferences may override. */
+  defaultChannels: readonly ("in-app" | "email" | "push")[];
+  /** Optional severity hint — shells may prioritise. */
+  severity?: "info" | "warning" | "critical";
+};
+
+/** A Universal Search provider the App contributes. Search
+ *  orchestrator fans out to every registered provider in parallel.
+ *
+ *  Authorised by ADR-041 + Delta §4.3 "Universal Search
+ *  orchestrator". */
+export type SearchProviderDeclaration = {
+  /** Fully-qualified provider id — MUST be `<appSlug>.<provider>`. */
+  id: string;
+  /** Group the results render under (matches CommandDeclaration
+   *  groups so the palette + universal search share the taxonomy). */
+  kind: "products" | "merchants" | "categories" | "actions" | "content" | "files" | "users";
+  /** Human-readable group label. */
+  label: string;
+  /** Base weight (0–1) contribution to global result ranking. */
+  weight: number;
+  /** Handler module path — default export is `(q: string) => Promise<SearchResult[]>`. */
+  handler: string;
+  /** Whether this provider participates in semantic search (pgvector). */
+  supportsSemanticSearch?: boolean;
+};
+
 // ─── High-level enumerations ────────────────────────────────────────
 
 /** App Store category — used for browsing + filtering. Extend by
@@ -263,6 +472,48 @@ export type AppManifest = {
      *  UI — always read from here. */
     priceLabel: string;
   };
+
+  // ─── Trade Center Week 1 additions (ADR-033 through ADR-047) ────
+  //
+  // All optional. Existing manifests continue to validate. Apps
+  // opt in when they need the corresponding platform subsystem.
+
+  /** Platform + API compatibility envelope. ADR-033. */
+  platformCompat?: PlatformCompat;
+
+  /** AI tools the App contributes to the platform AI Dispatcher.
+   *  The Dispatcher auto-discovers these at boot. ADR-034. */
+  aiTools?: readonly AIToolDeclaration[];
+
+  /** Feature flags this App owns. Namespaced `<slug>.<key>`.
+   *  Shell reads via `flags.isEnabled()`. ADR-037. */
+  featureFlags?: readonly FeatureFlagDeclaration[];
+
+  /** Custom telemetry metrics this App emits beyond the auto-baseline
+   *  the runtime wrapper provides for every App. ADR-038. */
+  telemetry?: readonly TelemetryDeclaration[];
+
+  /** Commands this App contributes to the platform Command Palette.
+   *  Discovered at boot; no manual wiring. ADR-047. */
+  commands?: readonly CommandDeclaration[];
+
+  // ─── Trade Center Week 2 additions (ADR-040 through ADR-050) ────
+
+  /** Fine-grained capabilities this App mints. Enterprise Admin
+   *  role composers list these; runtime `can()` checks them. ADR-040. */
+  declaredCapabilities?: readonly PolicyCapabilityDeclaration[];
+
+  /** Search providers this App contributes to Universal Search.
+   *  Orchestrator fans out to every registered provider. ADR-041. */
+  searchProviders?: readonly SearchProviderDeclaration[];
+
+  /** Widgets this App contributes to shell surfaces (Home Today's
+   *  Work strip, right panel). Shell auto-renders. ADR-048. */
+  widgets?: readonly WidgetDeclaration[];
+
+  /** Notification kinds this App emits. Notifications Platform
+   *  Service routes to user's preferred channels. ADR-049. */
+  notificationKinds?: readonly NotificationKindDeclaration[];
 };
 
 // ─── Convenience type for the registry ─────────────────────────────

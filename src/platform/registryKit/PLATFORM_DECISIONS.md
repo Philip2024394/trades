@@ -1394,3 +1394,804 @@ with RLS: `studio_coach_assessments` (score snapshots),
 ### Related
 ADR-031 (Business Operating Coach). ADR-027 (Evidence).
 ADR-028 (Playbook Rationale). ADR-030 (Content Manifest).
+
+---
+
+## ADR-032a — Trade Center overlay reconciliation with the existing platform
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Governance
+**Related:** All Week 0 audit findings; ADRs 033–047 that follow.
+
+### Context
+The Trade Center 2.0 positioning docs (`TRADE_CENTER_2_SPEC.md`,
+`TRADE_CENTER_DESIGN_PRINCIPLES.md`, `TRADE_CENTER_PLATFORM_ARCHITECTURE.md`,
+`TRADE_CENTER_PLATFORM_ROADMAP_2035.md`) were drafted assuming a
+greenfield build. Week 0 audit found the existing Xrated Trades AI
+Platform already implements ~80% of the proposed architecture:
+Registry Kit (Foundation 82%), Runtime (event bus / install /
+slots / hooks), SDK (permissions / analytics / storage / context),
+Design System (60.5%, 100% primitives), UI Kit (60+ primitives),
+Business OS 18-layer stack, 32 prior ADRs, Platform Maturity Model
+(baseline 35.7%).
+
+Building parallel infrastructure would violate the
+"not a rebuild from scratch" directive and duplicate production-
+grade code.
+
+### Decision
+Trade Center is not a new platform. Trade Center is a positioning +
+overlay layer on the existing Xrated Trades AI Platform. The four
+Trade Center docs are RE-CLASSIFIED as follows:
+
+- `TRADE_CENTER_2_SPEC.md` — product/UX overlay (keep).
+- `TRADE_CENTER_DESIGN_PRINCIPLES.md` — feature approval gate
+  (keep; complements the existing Constitution + Design
+  Constitution).
+- `TRADE_CENTER_PLATFORM_ARCHITECTURE.md v1.1` — refactor into
+  overlay-only content. Duplicated sections on Registry Kit /
+  Runtime / SDK / Design System / UI Kit REMOVED. Existing docs
+  become primary references.
+- `TRADE_CENTER_PLATFORM_ROADMAP_2035.md` — strategic 10-year
+  positioning (keep). Phase→Milestone mapping added:
+  Phase 1 → M3–M4, Phase 2 → M5–M6, Phase 3 → M7–M8,
+  Phase 4 → M9–M10, Phase 5 → post-M10.
+
+The `TRADE_CENTER_PLATFORM_DELTA.md` and
+`TRADE_CENTER_MIGRATION_STRATEGY.md` docs (new, Week 0) become
+canonical for terminology mapping + delta analysis + migration
+governance.
+
+Trade Center-specific platform features land as ADRs-033
+through ADR-047+ under this decision log — never as parallel
+documents.
+
+### Consequences
+- One source of truth for platform architecture. Trade Center
+  amendments land inline with all prior platform decisions.
+- Existing 45+ platform components + 27 apps + 32 ADRs preserved.
+- Zero deprecations, zero replacements required by Trade Center
+  v1 → v2 transition.
+- All Week 1–4 implementation traces to a specific ADR row in
+  this file (starting at ADR-033).
+
+### Related
+`TRADE_CENTER_PLATFORM_DELTA.md`,
+`TRADE_CENTER_MIGRATION_STRATEGY.md`.
+
+---
+
+## ADR-033 — Manifest version envelope: apiVersion / schemaVersion / migrationVersion / minPlatformVersion
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension
+**Related:** ADR-003 (RegistrationBase extends additively).
+
+### Context
+AppManifest currently carries a single `version: string` semver
+field. Trade Center's platform maturation, cross-App upgrades,
+and future third-party plugin sandbox all need finer-grained
+version tracking:
+- Which manifest surface version does the App target?
+- Which DB schema does the App's tables assume?
+- Which migration head must be live before the App runs?
+- Which minimum platform version does the App support?
+
+### Decision
+Add an optional `platformCompat` block to `AppManifest`:
+```
+platformCompat?: {
+  apiVersion?: string;
+  schemaVersion?: string;
+  migrationVersion?: string;
+  minPlatformVersion?: string;
+}
+```
+All fields optional. Existing manifests continue to validate.
+Populated Apps get richer upgrade tracking + boot-time
+compatibility checks (added in wave 2).
+
+### Consequences
+- Purely additive. Zero existing App breaks.
+- Boot loader gains ability to refuse mismatched Apps (future).
+- Migration tooling has a durable "expected head" per App.
+
+### Related
+`src/platform/manifest/types.ts` — PlatformCompat type.
+
+---
+
+## ADR-034 — AI tool declarations on AppManifest (Dispatcher discovery)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension + New Subsystem
+**Related:** ADR-004 (AI Gateway kept separate); to be superseded
+by ADR-034b (streaming Dispatcher) when the copilot UI lands.
+
+### Context
+The platform AI Dispatcher (planned) must expose EVERY App's AI
+tools to the copilot via the standard tool-use interface, without
+hard-coding App slugs. Discovery must be pure projection over the
+App Registry.
+
+### Decision
+Add optional `aiTools?: AIToolDeclaration[]` to `AppManifest`.
+Each declaration carries name (namespaced `<slug>.<tool>`),
+description, JSON Schema parameters, optional handler module
+path, tier gate, and cost bucket. Discovery happens via
+`discoverAITools()` in `src/platform/aiTools/discovery.ts` —
+returns tools tagged with source App.
+
+The AI Dispatcher (Week 4) imports `catalogueAITools()` from
+`src/platform/aiTools/dispatcher.ts` and presents to Claude.
+
+### Consequences
+- Every App becomes copilot-callable the moment it registers.
+- Zero App-specific wiring in the Dispatcher.
+- Cost routing (Haiku vs Opus) preserved via `cost?` bucket.
+
+### Related
+`src/platform/aiTools/discovery.ts`,
+`src/platform/aiTools/dispatcher.ts`.
+
+---
+
+## ADR-037 — Plugin-scoped feature flags (namespaced, declared by App)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension + New Subsystem
+**Related:** ADR-034 (discovery pattern parallel).
+
+### Context
+Feature flags must belong to the App that owns them (never to
+the shell). Uniform enforcement, but authored per-App. Cross-App
+flags are rare and require an amendment.
+
+### Decision
+Add optional `featureFlags?: FeatureFlagDeclaration[]` to
+`AppManifest`. Each declaration carries key (namespaced
+`<slug>.<flag>`), description, default boolean, evaluation scope
+(user / business / country / global), and optional A/B variants.
+
+Discovery happens via `discoverFeatureFlags()` in
+`src/platform/featureFlags/discovery.ts`. Runtime evaluator with
+percent rollout + kill switch lands as ADR-037b in Week 2.
+
+### Consequences
+- Every App becomes gated via a uniform flag runtime.
+- Namespace prefix enforced at register time — no collisions.
+- Kill switches propagate through edge cache (future).
+
+### Related
+`src/platform/featureFlags/discovery.ts`.
+
+---
+
+## ADR-038 — Custom telemetry declarations on AppManifest
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension
+
+### Context
+Every App gets 12 baseline metrics auto-emitted by the runtime
+wrapper (ADR-044). Apps that emit domain-specific metrics beyond
+the baseline need a declarative surface so the metric name +
+allowed labels can be validated at emission time.
+
+### Decision
+Add optional `telemetry?: TelemetryDeclaration[]` to
+`AppManifest`. Each declaration carries metric (namespaced),
+kind (counter / gauge / histogram), description, and allowed
+label dimensions. `emitTelemetry()` validates against the
+declaration and drops invalid emissions with a dev warning.
+
+### Consequences
+- Custom telemetry contracts documented in the manifest.
+- Prod emissions guaranteed to conform to schema.
+- Discoverable via `discoverTelemetry()` for observability
+  dashboards.
+
+### Related
+`src/platform/telemetry/baseline.ts`.
+
+---
+
+## ADR-044 — Runtime auto-instrumented telemetry wrapper (12 baseline metrics)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension
+
+### Context
+Every App must emit baseline observability metrics
+(`plugin.request.count`, `plugin.request.duration_ms`,
+`plugin.error.count`, `plugin.usage.active_users`,
+`plugin.event.emitted`, `plugin.event.handled`,
+`plugin.command.executed`, `plugin.ai.tool_invoked`,
+`plugin.search.queried`, `plugin.navigation.route`,
+`plugin.workflow.step`, `plugin.flag.evaluated`) without
+per-App instrumentation code.
+
+### Decision
+Ship a runtime wrapper in `src/platform/telemetry/baseline.ts`
+that:
+- Exposes a swappable sink (`setSink()` — console in dev,
+  Sentry breadcrumb + OTel exporter in prod).
+- Provides `emitBaseline(metric, value, labels)` for the
+  runtime to call around every App invocation.
+- Provides `emitTelemetry(appSlug, metric, value, labels)` for
+  Apps' custom emissions (validated against ADR-038 declarations).
+
+Later waves wrap the runtime install / navigation / event
+handlers so Apps opt in to the baseline automatically.
+
+### Consequences
+- Uniform observability from day one.
+- Sink swap deploys metric pipeline changes without App code
+  changes.
+- 12 baseline metrics are the platform contract with SRE.
+
+### Related
+`src/platform/telemetry/baseline.ts`.
+
+---
+
+## ADR-046 — Trade Center brand pack as `DesignTokenSet`
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension (Design System)
+**Related:** Design Constitution v1 Amendment 1 (Token System).
+
+### Context
+Trade Center's brand (BRAND_YELLOW #FFB300, BRAND_BLACK #0A0A0A,
+BRAND_AMBER #F59E0B, BRAND_GREEN_DARK #166534, off-white
+#FBF6EC) must apply platform-wide without any App-level change,
+per Amendment 9 (UI as Platform Asset) and
+`feedback_platform_offwhite_canonical.md`.
+
+### Decision
+Ship the Trade Center brand as a `DesignTokenSet` registered
+into the existing `designTokenRegistry`. `applyBrandPack(packId)`
+swaps the active resolver set id and emits
+`preferences.theme_changed` (Amendment 5 — everything emits).
+
+Every component consuming tokens via `resolveToken()` picks up
+the new values on next render. Apps stay unchanged.
+
+### Consequences
+- Brand swaps at runtime with zero App code changes.
+- All memory-canonical colours codified once, referenced
+  everywhere.
+- Path clear for future brand packs (per-country, per-tenant,
+  seasonal).
+
+### Related
+`src/platform/design/tokens/tradeCenterBrand.ts`.
+
+---
+
+## ADR-047 — Command Palette (⌘K): commands declared per App, palette owned by shell
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension + New Shell Primitive
+**Related:** ADR-034 (discovery pattern parallel).
+
+### Context
+The workspace shell needs a universal ⌘K palette. Commands must
+come from every App that opts in, not from hard-coded shell
+lists. Muscle memory demands one palette across every workspace
+route.
+
+### Decision
+Add optional `commands?: CommandDeclaration[]` to `AppManifest`.
+Each declaration carries id (namespaced), label, group
+(`actions` / `products` / `merchants` / `categories` / `recent`),
+optional keyboard shortcut, optional handler module path,
+optional lucide icon name.
+
+Discovery happens via `discoverCommands()` +
+`discoverCommandsGrouped()` in `src/platform/commands/discovery.ts`.
+Shell renders through `<CommandPalette>` in
+`src/platform/shell/CommandPalette.tsx` using existing UI Kit
+primitives (no new UI primitives shipped, per Amendment 9).
+
+### Consequences
+- Every App contributes commands without touching shell code.
+- Palette groups + shortcuts uniform across the workspace.
+- Recent-command tracking + AI-search integration land in Week 2
+  as ADR-047b.
+
+### Related
+`src/platform/commands/discovery.ts`,
+`src/platform/shell/CommandPalette.tsx`.
+
+---
+
+## ADR-040 — Capability-based policies + can() runtime
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem
+**Related:** ADR-034 (discovery pattern parallel). Existing
+`sdk/permissions.ts` is orthogonal — coarse-grained App-level
+assertion, unchanged.
+
+### Context
+Roles alone become difficult to maintain as the platform grows.
+Trade Center's Enterprise tier promises composable roles — Admin
+composes a custom role from the platform's capability inventory
+without code changes. Runtime access checks (`can(ctx, key)`) must
+be uniform across every App and every service.
+
+### Decision
+Introduce a new subsystem at `src/platform/policy/*`. Every App
+mints fine-grained capabilities via
+`declaredCapabilities?: PolicyCapabilityDeclaration[]` on
+`AppManifest`. Capabilities are namespaced `<appSlug>.<local-key>`.
+Roles compose capabilities (transitively via `extends[]`). Grants
+bind users to roles with optional business scope. The runtime
+`can(ctx, capabilityKey)` walks the user's grants and returns
+boolean; every check emits `plugin.flag.evaluated` for observability.
+
+Storage (Wave 2): `tc_policy.capabilities` (mirrors declarations),
+`tc_policy.roles`, `tc_policy.role_capabilities`, `tc_policy.user_roles`.
+Week 2 ships in-memory engine — the API surface is identical so the
+persistent backend swaps without any consumer change.
+
+### Consequences
+- Enterprise-differentiating capability composition ships behind
+  the same `can()` API used by every route + widget + service.
+- Every App's minted capabilities are discoverable and composable.
+- Existing `sdk/permissions.ts` (App-level manifest assertion)
+  remains untouched — orthogonal concerns.
+
+### Related
+`src/platform/policy/engine.ts`,
+`src/platform/manifest/types.ts` (PolicyCapabilityDeclaration).
+
+---
+
+## ADR-041 — Universal Search orchestrator (cross-App fan-out + provider registry)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem
+**Related:** Existing per-registry `.search()` unchanged — the
+orchestrator composes over them + App-registered providers.
+
+### Context
+Universal search returns results across every kind — products,
+merchants, messages, orders, projects, files, users, commands.
+Per-registry `.search()` handles individual kinds but no
+cross-App orchestrator exists.
+
+### Decision
+Introduce `src/platform/search/orchestrator.ts` with:
+- Discovery: reads `searchProviders?: SearchProviderDeclaration[]`
+  from every registered App.
+- Fan-out: `universalSearch(q)` invokes every discovered provider
+  in parallel, weights each result by declared provider weight,
+  groups by kind, sorts by score desc, caps at 5 per group.
+- Handlers register via `registerProviderHandler(id, fn)` — in
+  production the runtime resolves lazily from the manifest's
+  `handler` module path.
+- Timings + telemetry recorded per invocation.
+
+Intent classification (Haiku routing) lands as ADR-041b in Week 3
+alongside voice + image search.
+
+### Consequences
+- One search bar covers every registered App.
+- Adding a new App with a search provider surfaces its results
+  immediately with zero shell code changes.
+- Foundation for Command Palette + Copilot search integration.
+
+### Related
+`src/platform/search/orchestrator.ts`,
+`src/platform/manifest/types.ts` (SearchProviderDeclaration).
+
+---
+
+## ADR-043 — Workspace state in the SDK (pinned / recent / current-App / right-panel)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension (Platform SDK)
+
+### Context
+The workspace shell needs cross-App state that persists per user:
+pinned items, recent visits, current App, right-panel slot, mode,
+theme, density. Existing `sdk/context.ts` is App-scoped
+(manifest + merchantId + brandId), not workspace-scoped.
+
+### Decision
+Add `src/platform/sdk/workspaceState.ts` as a separate module.
+Every mutation runs through `commit(next, eventKind, payload)`
+which persists + emits an event + baselines telemetry. Storage:
+in-memory + localStorage on client for Week 2; Wave 2 wires
+`tc_shell_workspace_state` for server-side persistence.
+
+### Consequences
+- Every mutation emits an event (Amendment 5 — "everything
+  emits") — analytics/audit/telemetry get workspace-state
+  observability for free.
+- The AppContext remains focused on App-scope; workspace state
+  is a distinct user-scope concern.
+
+### Related
+`src/platform/sdk/workspaceState.ts`.
+
+---
+
+## ADR-048 — Widget declarations on AppManifest (Home Today's Work + right panel)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** Extension
+
+### Context
+The Home dashboard's "Today's Work" strip and the workspace right
+panel are shell surfaces that render contributions from every
+App. Hard-coding widget lists in shell code fragments the shell
+per App.
+
+### Decision
+Add `widgets?: WidgetDeclaration[]` to `AppManifest`. Each
+declaration includes id (namespaced), slot (`home.today` |
+`home.secondary` | `right-panel`), label, optional order hint,
+handler module path, optional refresh interval, optional tier
+gate. Discovery via `src/platform/widgets/discovery.ts`. Shell
+BFF endpoint (Wave 2) collapses N widget fetches into 1 call.
+
+### Consequences
+- Home dashboard evolves as Apps register — no shell code change.
+- Widget slots become the composable primitive for cross-App
+  surfaces.
+
+### Related
+`src/platform/widgets/discovery.ts`,
+`src/platform/manifest/types.ts` (WidgetDeclaration).
+
+---
+
+## ADR-049 — Notifications platform service (registry + delivery inbox)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem
+
+### Context
+Notification delivery must be uniform across Apps. Users configure
+preferences once for every App (in-app / email / push). Each App
+declares its notification kinds; the platform routes.
+
+### Decision
+Add `notificationKinds?: NotificationKindDeclaration[]` to
+`AppManifest`. Each declaration includes kind (namespaced),
+category, description, default channels, optional severity.
+
+`src/platform/notifications/discovery.ts` ships:
+- Discovery: every kind declared by every App.
+- In-memory inbox: `deliver()` accepts declared kinds, rejects
+  undeclared ones with a dev warning.
+- Read-tracking: `unreadCountForUser()`, `markRead()`.
+
+Real channel delivery (SSE, Resend email, Web Push) lands as
+ADR-049b once `tc_notifications_*` schema is live.
+
+### Consequences
+- Zero App-level notification pipelines.
+- User preferences apply uniformly across Apps.
+- The bell UI reads unread count from a single source.
+
+### Related
+`src/platform/notifications/discovery.ts`,
+`src/platform/manifest/types.ts` (NotificationKindDeclaration).
+
+---
+
+## ADR-050 — Simple ↔ Workspace mode selector (no user-facing toggle)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem
+**Related:** TRADE_CENTER_2_SPEC.md §21.
+
+### Context
+Trade Center's onboarding thesis: not every user wants a full
+workspace on day one. Anonymous browsers + first-visit users
+see Simple Mode. Users graduate to Workspace Mode on their first
+workspace action; silently downgrade after 30 days of inactivity.
+No user-facing toggle — mode is derived from activity signals.
+
+### Decision
+Add `src/platform/shell/modeSelector.ts` with:
+- `classify(input)` — pure function of last-workspace-action
+  timestamp. Under 30 days = Workspace, else Simple.
+- `promoteToWorkspaceMode()` — called when a
+  `PROMOTION_EVENT_KINDS` event fires
+  (`saved.list_created`, `quote.drafted`, `quote.sent`,
+  `estimator.project_created`, `orders.placed`,
+  `community.post_created`).
+- `downgradeIfInactive(input)` — daily job checks activity;
+  silent downgrade when threshold crossed.
+
+The selector uses `readWorkspaceState()` + `setMode()` — no new
+persistence. Event bus fan-out to the promotion events lands as
+ADR-050b in Week 3.
+
+### Consequences
+- Onboarding surface stays lightweight; workspace unlocks
+  organically.
+- Six promotion event kinds are the platform's "user is
+  workflow-active" signal set.
+- Downgrade is silent (per spec §21.4) — no shame, no friction.
+
+### Related
+`src/platform/shell/modeSelector.ts`,
+`src/platform/sdk/workspaceState.ts`.
+
+---
+
+## ADR-051 — Marketplace App is Plugin #1 (reference implementation)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New App (reference implementation)
+**Related:** ADRs 033-050 (Marketplace opts into every declaration
+slice shipped Weeks 1-2).
+
+### Context
+The Marketplace App is Trade Center's Plugin #1 per
+`TRADE_CENTER_PLATFORM_ROADMAP_2035.md` Phase 1. Its purpose is
+twofold:
+
+1. Provide the reference implementation of AppManifest v1.1 for
+   every future App to mirror (Orders, Messages, Projects, Fleet,
+   Insurance, Finance, Recruitment, Training).
+2. Prove the platform services shipped Weeks 1-2 compose end-to-end
+   without any special-case shell code.
+
+### Decision
+Ship `src/apps/marketplace/` with:
+
+- `manifest.ts` implementing `AppManifest` and opting into every
+  Week 1-2 declaration slice: `platformCompat`, `aiTools` (4),
+  `featureFlags` (4), `telemetry` (4), `commands` (5),
+  `declaredCapabilities` (5), `searchProviders` (3), `widgets` (3),
+  `notificationKinds` (3).
+- `data/` — 12 product fixtures + 4 merchant fixtures with
+  8-layer trust scores per spec §19.1.
+- `handlers/` — search provider handlers wired into
+  `registerProviderHandler()` at bootstrap.
+- `components/` — `ProductCard.tsx` (v2 with merchant chip,
+  trust score, delivery, distance, trade + business pricing),
+  `TrustScoreChip.tsx`.
+- `CategoryWorkspace.tsx` — category-scoped grid with
+  sub-category filter chips and compare bar.
+- `register.ts` — idempotent bootstrap wiring called from
+  `src/platform/bootstrap.ts`.
+
+Routes at `src/app/tc/marketplace/*` render the shell + marketplace
+UI.
+
+### Consequences
+- Every future App has a working reference. New App = fork this
+  manifest, swap the domain data.
+- The 4 declaration slices ship exercised end-to-end: universal
+  search returns products AND merchants AND categories; the
+  copilot can invoke `marketplace.search_products` /
+  `marketplace.compare_products` / `marketplace.find_alternatives`;
+  the palette shows 5 Marketplace commands; the Home Today's Work
+  strip has 2 Marketplace widgets discoverable.
+- Trust scores render on every product card without any DB round-
+  trip in Week 3 — the primitive is ready for `tc_merchants.
+  verification` in Wave 2.
+- Zero existing platform code changed. Zero cross-App imports.
+  Every mutation emits.
+
+### Related
+`src/apps/marketplace/manifest.ts`,
+`src/apps/marketplace/CategoryWorkspace.tsx`,
+`src/apps/marketplace/components/ProductCard.tsx`,
+`src/app/tc/marketplace/page.tsx`,
+`scripts/verify-week3-demos.ts`.
+
+---
+
+## ADR-052 — AI Dispatcher runtime (cost router + transport + tool invocation)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem (Platform Service)
+**Related:** ADR-034 (AI tool declarations), ADR-044 (telemetry
+auto-instrumentation).
+
+### Context
+Week 1 shipped AI tool DECLARATIONS on `AppManifest`. What was
+still missing:
+1. A runtime that RUNS dispatch — routes → invokes tool handlers
+   → returns result.
+2. Cost routing per §19.5 (Haiku vs Opus vs Whisper vs image).
+3. Swappable transport so Anthropic ↔ OpenAI ↔ local Llama swap
+   at platform level.
+4. HTTP entrypoint at `/api/ai/dispatch`.
+5. Tool handler registry — `registerToolHandler(name, fn)`.
+
+### Decision
+Ship at `src/platform/aiTools/`:
+- `router.ts` — `classifyTaskClass()` + `route()`. Heuristic
+  classifier for Week 4. Real Haiku-based classifier lands as
+  ADR-052b.
+- `transport.ts` — `cannedTransport` (dev/test synthesises tool
+  calls from prompt keywords + parameter schema) + `setTransport()`
+  swap point. Production Anthropic transport lands as ADR-052c.
+- `dispatcher.ts` — `dispatch(input)` runs full loop, emits
+  `plugin.ai.tool_invoked` + `plugin.request.duration_ms`.
+- `src/app/api/ai/dispatch/route.ts` — Next.js POST route.
+- `src/platform/shell/Copilot.tsx` — right-panel client. Listens
+  to `AI_SEED_EVENT`; palette's Ask AI group fires it; Product
+  Card v2's "Find alternatives" chip fires `askAI()`.
+
+Marketplace tool handlers registered in `registerMarketplaceApp()`.
+
+### Consequences
+- Every App's tools become copilot-callable the moment the App
+  registers. Zero shell code changes.
+- Cost routing enforceable at platform boundary — Free tier
+  never hits Opus regardless of App declarations.
+- SSE streaming + Anthropic transport swap under `setTransport()`
+  without any App-level change.
+- Verification runs fully offline via canned transport — no API
+  keys needed for CI.
+
+### Related
+`src/platform/aiTools/router.ts`,
+`src/platform/aiTools/transport.ts`,
+`src/platform/aiTools/dispatcher.ts`,
+`src/app/api/ai/dispatch/route.ts`,
+`src/platform/shell/Copilot.tsx`,
+`scripts/verify-week4-demos.ts`.
+
+---
+
+## ADR-053 — Canteens URL migration: /trade-off/yard/canteens/* → /community/*
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** URL Migration
+**Related:** TRADE_CENTER_2_SPEC.md §19.9.
+
+### Context
+Trade Center v1 canteens live under `/trade-off/yard/canteens/*`.
+The v2 positioning places them as the Community plugin under
+`/community/*`. Bookmarks + backlinks must survive forever.
+
+### Decision
+Two permanent (301) redirects in `next.config.mjs`:
+- `/trade-off/yard/canteens → /community`
+- `/trade-off/yard/canteens/:path* → /community/:path*`
+
+### Consequences
+- Bookmark preservation forever.
+- Zero middleware complexity — the existing custom-domain
+  routing middleware is untouched.
+- Community App itself ships in a later wave; the 301 is stable
+  regardless of when the destination becomes live.
+
+### Related
+`next.config.mjs`.
+
+---
+
+## ADR-054 — Widget handler runtime + canonical shell renderer
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New Subsystem (Platform Service)
+**Related:** ADR-048 (widget declarations on AppManifest).
+
+### Context
+Week 1-2 shipped widget DECLARATIONS on `AppManifest`. Week 5
+needs the runtime that (a) invokes a registered handler per
+widget id, (b) returns a typed payload, and (c) canonically
+renders that payload in the shell — so every widget on Home,
+regardless of which App produced it, has the same visual
+signature.
+
+### Decision
+Ship at `src/platform/widgets/`:
+- `runtime.ts` — `registerWidgetHandler(id, fn)`,
+  `resolveWidgetHandler()`, `renderWidgetPayload()`. Handlers
+  return a typed `WidgetPayload` (headline / chips / rows /
+  emptyLabel / href). Chips union kinds: count / distance /
+  money / eta / info / warn / good.
+- `src/platform/shell/WidgetTile.tsx` — canonical renderer.
+  Walks the payload, renders through Platform Design System
+  primitives (Amendment 9). Apps cannot ship their own layouts.
+
+`src/app/tc/page.tsx` walks
+`discoverWidgetsForSlot("home.today")`, invokes handlers in
+parallel, renders each via `WidgetTile`. Zero hard-coded App
+slugs. Adding a new App with a `widgets` declaration + widget
+handler makes it appear on Home with no shell edit.
+
+### Consequences
+- Home dashboard evolves as Apps register.
+- Visual signature stays consistent as Apps proliferate.
+- Widget handler telemetry (`plugin.request.duration_ms`,
+  `plugin.error.count`) shipped via existing auto-instrumentation
+  (ADR-044).
+
+### Related
+`src/platform/widgets/runtime.ts`,
+`src/platform/shell/WidgetTile.tsx`,
+`src/app/tc/page.tsx`,
+`scripts/verify-week5-demos.ts`.
+
+---
+
+## ADR-055 — Orders App is Plugin #2 (second reference implementation)
+
+**Date:** 2026-07-11
+**Status:** Accepted
+**Category:** New App
+**Related:** ADR-051 (Marketplace as Plugin #1). Proves the
+platform is genuinely App-agnostic: Plugin #2 lands with zero
+platform code changes.
+
+### Context
+Plugin #1 (Marketplace) exercised every Week 1-2 declaration
+slice for the first time. A single reference implementation
+doesn't prove App-agnosticism; a second unrelated App landing
+without touching platform primitives does.
+
+### Decision
+Ship `src/apps/orders/` with:
+- `manifest.ts` — full `AppManifest` opting into 3 aiTools + 2
+  featureFlags + 3 telemetry + 3 commands + 3 declaredCapabilities
+  + 1 searchProvider + 2 widgets + 4 notificationKinds. Declares
+  `marketplace` as a dependency (proving cross-App dependency
+  works).
+- `data/orders.ts` — 4 order fixtures across placed / accepted /
+  dispatched / delivered.
+- `handlers/aiToolHandlers.ts` — `track_order`, `list_recent`,
+  `cancel_order`.
+- `handlers/widgetHandlers.ts` — `arriving_today`,
+  `awaiting_confirmation`.
+- `handlers/searchOrders.ts` — content search provider.
+- `register.ts` — idempotent bootstrap wiring.
+
+Route at `src/app/tc/orders/page.tsx` renders a 4-column Kanban
+grouping orders by status. Reuses Marketplace's merchant fixtures
+for trust score display.
+
+The ONLY platform code change was adding `registerOrdersApp()`
+to `src/platform/bootstrap.ts` — the same one-line addition
+Marketplace required, matching the established pattern.
+
+### Consequences
+- Home dashboard's Today's Work strip now surfaces widgets from
+  BOTH Marketplace AND Orders. Zero shell code change required.
+- Universal Search returns products AND orders in one query,
+  grouped by kind, without any orchestrator update.
+- Command Palette surfaces commands from BOTH Apps in one merged
+  list.
+- The Dispatcher sees 7 AI tools across 2 Apps — the copilot
+  gained Orders-specific abilities (`track_order`, `cancel_order`,
+  `list_recent`) with zero copilot code change.
+- App-agnostic thesis proven twice.
+
+### Related
+`src/apps/orders/manifest.ts`,
+`src/apps/orders/register.ts`,
+`src/app/tc/orders/page.tsx`,
+`src/platform/bootstrap.ts`,
+`scripts/verify-week5-demos.ts`.

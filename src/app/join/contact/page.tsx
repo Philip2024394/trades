@@ -52,10 +52,10 @@ export default function StepContact() {
       if (!res.ok || !data.ok) {
         setError(
           data.error === "email_in_use"
-            ? "This email is already on the Notebook. Try signing in instead."
+            ? "This email is already on The Network. Try signing in instead."
             : data.error === "slug_conflict"
               ? "That business name already exists — try adding your city or number to make it unique."
-              : "Could not create your Notebook. Please try again."
+              : "Could not create your account. Please try again."
         );
         setBusy(false);
         return;
@@ -72,7 +72,7 @@ export default function StepContact() {
       step="contact"
       backHref="/join/start"
       title="How can customers reach you?"
-      subtitle="Email is required so we can send your Notebook access link. Everything else is optional."
+      subtitle="Email is required so we can send your Network access link. Everything else is optional."
     >
       <form onSubmit={submit} className="space-y-6">
         <div>
@@ -106,7 +106,7 @@ export default function StepContact() {
             maxLength={30}
           />
           <p className="mt-1 text-[13px] text-[#1B1A17]/45">
-            Customers can WhatsApp you directly from your Notebook.
+            Customers can WhatsApp you directly from your business app.
           </p>
         </div>
 
@@ -148,7 +148,7 @@ export default function StepContact() {
           />
           <p className="mt-1 text-[13px] text-[#1B1A17]/45">
             If you provide it we&apos;ll verify + display the Verified badge on
-            your Notebook.
+            your business app.
           </p>
         </div>
 
@@ -163,14 +163,14 @@ export default function StepContact() {
             ) : (
               <ArrowRight className="h-4 w-4" aria-hidden />
             )}
-            Create my Notebook
+            Join The Network
           </button>
           {error ? (
             <p className="mt-3 text-[13px] text-red-300">{error}</p>
           ) : null}
           <p className="mt-3 text-[13px] text-[#1B1A17]/45">
             By continuing you agree that this is a real UK trade business
-            representation. Free forever.
+            representation. Free for life.
           </p>
         </div>
       </form>

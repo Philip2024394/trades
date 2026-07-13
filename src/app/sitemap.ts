@@ -11,7 +11,11 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 // as evidence of an established business; thin or missing sitemaps get
 // flagged on brand-name pattern alone.
 
-const SITE = "https://xratedtrade.com";
+// Canonical origin — env-driven so the rebrand to
+// theconstructionnotebook.com can flip without a code change. Default
+// preserves current xratedtrade.com behaviour.
+const SITE =
+  process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://xratedtrade.com";
 
 type Entry = MetadataRoute.Sitemap[number];
 
@@ -124,11 +128,60 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("[sitemap] news posts load failed:", err);
   }
 
+  // Live merchant listings — real trades who joined. Dedup against the
+  // demo profile slugs since those are already emitted above.
+  let liveListings: Entry[] = [];
+  try {
+    const demoSlugs = new Set(DEMO_TRADE_SEEDS.map((s) => s.profile_slug));
+    const { data } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("slug, updated_at")
+      .eq("status", "live")
+      .order("updated_at", { ascending: false })
+      .limit(1000);
+    liveListings = (data ?? [])
+      .filter((row) => row.slug && !demoSlugs.has(row.slug))
+      .map((row) => ({
+        url: url(`/trade/${row.slug}`),
+        lastModified: row.updated_at ? new Date(row.updated_at) : now,
+        changeFrequency: "weekly" as const,
+        priority: 0.75
+      }));
+  } catch (err) {
+    console.error("[sitemap] live listings load failed:", err);
+  }
+
+  // Live public Yard posts — surface every listing so buyers land
+  // straight on the item page from search. Auto-expiring posts drop
+  // out on the next sitemap refresh.
+  let yardPosts: Entry[] = [];
+  try {
+    const { data } = await supabaseAdmin
+      .from("hammerex_trade_off_yard_posts")
+      .select("id, created_at, expires_at")
+      .eq("status", "live")
+      .is("parent_id", null)
+      .not("moderation_status", "in", '("hidden","spam")')
+      .gt("expires_at", new Date().toISOString())
+      .order("created_at", { ascending: false })
+      .limit(1000);
+    yardPosts = (data ?? []).map((row) => ({
+      url: url(`/trade-off/yard/${row.id}`),
+      lastModified: row.created_at ? new Date(row.created_at) : now,
+      changeFrequency: "daily" as const,
+      priority: 0.55
+    }));
+  } catch (err) {
+    console.error("[sitemap] yard posts load failed:", err);
+  }
+
   return [
     root,
     ...main,
     ...tradeLandings,
     ...demoProfiles,
+    ...liveListings,
+    ...yardPosts,
     ...legal,
     ...news
   ];

@@ -12,13 +12,20 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { YardHero } from "@/components/xrated/yard/YardHero";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { YardPostCard, type YardPoster } from "@/components/xrated/yard/YardPostCard";
+import { YardCardFlipShell } from "@/components/xrated/yard/YardCardFlipShell";
+import { YardNewPostsRibbon } from "@/components/xrated/yard/YardNewPostsRibbon";
+import { YardInlineComposer } from "@/components/xrated/yard/YardInlineComposer";
+import { YardBeaconComposer } from "@/components/xrated/yard/YardBeaconComposer";
+import { YardBeaconCard } from "@/components/xrated/yard/YardBeaconCard";
 import { YardChatPost } from "@/components/xrated/yard/YardChatPost";
 import { YardFilters } from "@/components/xrated/yard/YardFilters";
+import { YardInboxShell } from "@/components/xrated/yard/YardInboxShell";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
@@ -27,16 +34,16 @@ import { tradeCircleContext } from "@/lib/tradeCircleContexts";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "The Yard — UK trades-to-trades job board | Xrated Trades",
+  title: "The Yard — UK trades-to-trades job board | The Network",
   description:
-    "Post when you're free or post when you need crew. The Yard is the trades-only job board — paid Xrated members only, every post auto-expires after 14 days. Bricklayers, scaffolders, sparks, joiners — every UK trade.",
+    "Post when you're free or post when you need crew. The Yard is the public trades-to-trades board on The Network — every post auto-expires after 14 days. Bricklayers, scaffolders, sparks, joiners — every UK trade.",
   alternates: { canonical: "/trade-off/yard" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title: "The Yard — UK trades-to-trades board",
     description:
-      "Trades-only job board. Post 'I'm free' or 'need crew' — only paying Xrated members see it. 14-day auto-expire.",
+      "Public trades-to-trades board. Post 'I'm free' or 'need crew' — 14-day auto-expire.",
     url: absolute("/trade-off/yard")
   }
 };
@@ -48,6 +55,7 @@ type SearchParams = Promise<{
   trade?: string | string[];
   region?: string | string[];
   context?: string | string[];
+  q?: string | string[];
 }>;
 
 function readParam(v: string | string[] | undefined): string {
@@ -60,6 +68,7 @@ async function loadFeed(opts: {
   trade: string;
   region: string;
   contextTrades: string[] | null;
+  q: string;
 }) {
   // Moderation: 'hidden' and 'spam' posts are HARD-REMOVED from the
   // public feed. 'flagged' posts stay visible until admin acts (the
@@ -69,7 +78,7 @@ async function loadFeed(opts: {
   let q = supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .select(
-      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, contact_count, is_admin_announcement, is_pinned, moderation_status, moderation_reason, moderated_at, flag_count, metadata, created_at, expires_at"
+      "id, listing_id, kind, trade_slug, title, body, country, region, start_date, end_date, crew_size_needed, day_rate_pence, is_sample, status, parent_id, image_urls, attachment_url, attachment_name, attachment_kind, link_url, link_title, product_price_pence, source_product_id, contact_count, is_admin_announcement, is_pinned, moderation_status, moderation_reason, moderated_at, flag_count, metadata, price_currency, condition, warranty_status, stock_qty, delivery_options, delivery_free_over_pence, video_urls, comment_count, is_boosted_until, boost_count, boost_paid_pence, beacon_expires_at, beacon_lat, beacon_lng, beacon_radius_km, beacon_response_count, beacon_winner_response_id, beacon_closed_at, created_at, expires_at"
     )
     .eq("status", "live")
     .eq("country", "UK")
@@ -91,8 +100,40 @@ async function loadFeed(opts: {
   else if (opts.contextTrades && opts.contextTrades.length > 0) q = q.in("trade_slug", opts.contextTrades);
   if (opts.region) q = q.ilike("region", `%${opts.region}%`);
 
+  // Free-text search across the fields buyers actually think in:
+  // title, body, trade_slug, region. Postgres' ILIKE is enough for
+  // this volume; escape SQL wildcards so the query text is literal.
+  if (opts.q) {
+    const safe = opts.q.replace(/[%_,]/g, "").slice(0, 60);
+    if (safe) {
+      q = q.or(
+        `title.ilike.%${safe}%,body.ilike.%${safe}%,trade_slug.ilike.%${safe}%,region.ilike.%${safe}%`
+      );
+    }
+  }
+
   const res = await q;
-  const posts = (res.data ?? []) as HammerexTradeOffYardPost[];
+  const rawPosts = (res.data ?? []) as HammerexTradeOffYardPost[];
+
+  // Boost re-sort: any post whose is_boosted_until is in the future
+  // floats above everything else, ordered by their boost timestamp
+  // (later expiry = higher). Expired boosts sort naturally by
+  // created_at with everything else — no floating dead boosts. A DB
+  // partial index expression can't call now() so we do this here.
+  const nowMs = Date.now();
+  const live: HammerexTradeOffYardPost[] = [];
+  const rest: HammerexTradeOffYardPost[] = [];
+  for (const p of rawPosts) {
+    const until = p.is_boosted_until ? Date.parse(p.is_boosted_until) : NaN;
+    if (Number.isFinite(until) && until > nowMs) live.push(p);
+    else rest.push(p);
+  }
+  live.sort((a, b) => {
+    const aM = Date.parse(a.is_boosted_until ?? "");
+    const bM = Date.parse(b.is_boosted_until ?? "");
+    return bM - aM;
+  });
+  const posts = [...live, ...rest];
 
   const ids = Array.from(new Set(posts.map((p) => p.listing_id)));
   const posters: Record<string, YardPoster> = {};
@@ -100,10 +141,11 @@ async function loadFeed(opts: {
     const lres = await supabaseAdmin
       .from("hammerex_trade_off_listings")
       .select(
-        "id, slug, display_name, trading_name, city, country, primary_trade, whatsapp, avatar_url"
+        "id, slug, display_name, trading_name, city, country, primary_trade, whatsapp, avatar_url, bio, tier, instagram, facebook, tiktok, youtube, photos, follower_count"
       )
       .in("id", ids);
     for (const l of lres.data ?? []) {
+      const photos = Array.isArray(l.photos) ? (l.photos as string[]) : [];
       posters[l.id] = {
         slug: l.slug,
         display_name: l.display_name,
@@ -112,7 +154,15 @@ async function loadFeed(opts: {
         country: l.country,
         primary_trade: l.primary_trade,
         whatsapp: l.whatsapp,
-        avatar_url: l.avatar_url
+        avatar_url: l.avatar_url,
+        bio: l.bio ?? null,
+        banner_url: photos.length > 0 ? photos[0] : null,
+        tier: l.tier ?? null,
+        instagram: l.instagram ?? null,
+        facebook: l.facebook ?? null,
+        tiktok: l.tiktok ?? null,
+        youtube: l.youtube ?? null,
+        follower_count: l.follower_count ?? 0
       };
     }
   }
@@ -162,38 +212,143 @@ async function loadCountsForKind() {
 export default async function YardFeedPage({
   searchParams
 }: {
-  searchParams: SearchParams;
+  searchParams: SearchParams & Promise<{ viewer?: string; viewer_token?: string }>;
 }) {
   const sp = await searchParams;
   const kind = readParam(sp.kind);
   const trade = readParam(sp.trade);
   const region = readParam(sp.region);
+  const searchQ = readParam(sp.q);
   const context = readParam(sp.context);
   const ctx = tradeCircleContext(context);
+  const viewerSlug = readParam((sp as { viewer?: string | string[] }).viewer);
+  const viewerToken = readParam(
+    (sp as { viewer_token?: string | string[] }).viewer_token
+  );
+
+  // Resolve viewer if a magic-link viewer identity is provided. Used to
+  // paint the Trade Circle ribbon on posts from businesses the viewer
+  // has endorsed (or vice versa).
+  let viewerCircleIds = new Set<string>();
+  if (viewerSlug && viewerToken) {
+    const { data: viewerRow } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("id, slug, edit_token")
+      .eq("slug", viewerSlug)
+      .maybeSingle();
+    if (viewerRow && viewerRow.edit_token === viewerToken) {
+      // Look up the viewer's mirrored os_business_listings row.
+      const { data: viewerBiz } = await supabaseAdmin
+        .from("os_business_listings")
+        .select("id")
+        .eq("slug", viewerRow.slug)
+        .maybeSingle();
+      if (viewerBiz) {
+        // Circle members = businesses the viewer endorses OR endorses them.
+        const { data: edges } = await supabaseAdmin
+          .from("os_business_endorsements")
+          .select("endorser_business_id, endorsed_business_id")
+          .or(
+            `endorser_business_id.eq.${viewerBiz.id},endorsed_business_id.eq.${viewerBiz.id}`
+          );
+        const circleOsIds = new Set<string>();
+        for (const e of edges ?? []) {
+          if (e.endorser_business_id !== viewerBiz.id)
+            circleOsIds.add(e.endorser_business_id);
+          if (e.endorsed_business_id !== viewerBiz.id)
+            circleOsIds.add(e.endorsed_business_id);
+        }
+        // Translate os_business_listings.id → hammerex_trade_off_listings.id
+        // via slug so we can compare against post.listing_id.
+        if (circleOsIds.size > 0) {
+          const { data: osBusinessRows } = await supabaseAdmin
+            .from("os_business_listings")
+            .select("slug")
+            .in("id", Array.from(circleOsIds));
+          const slugs = (osBusinessRows ?? [])
+            .map((r) => r.slug)
+            .filter(Boolean);
+          if (slugs.length > 0) {
+            const { data: hammerexRows } = await supabaseAdmin
+              .from("hammerex_trade_off_listings")
+              .select("id")
+              .in("slug", slugs);
+            for (const r of hammerexRows ?? []) viewerCircleIds.add(r.id);
+          }
+        }
+      }
+    }
+  }
 
   const [{ posts, posters, reactions }, counts] = await Promise.all([
     loadFeed({
       kind,
       trade,
       region,
-      contextTrades: ctx ? ctx.allowed_trades : null
+      contextTrades: ctx ? ctx.allowed_trades : null,
+      q: searchQ
     }),
     loadCountsForKind()
   ]);
 
   // Split the feed by kind so we can render chat as a Facebook-style
   // vertical feed and hire/available as a marketplace card grid.
+  const beaconPosts = posts.filter((p) => p.kind === "beacon");
   const chatPosts = posts.filter((p) => p.kind === "chat");
-  const boardPosts = posts.filter((p) => p.kind !== "chat");
+  const boardPosts = posts.filter(
+    (p) => p.kind !== "chat" && p.kind !== "beacon"
+  );
+
+  // Live pulse counters for the construction-style hero.
+  const now = Date.now();
+  const oneDayAgo = now - 24 * 60 * 60 * 1000;
+  const heroStats = {
+    newToday: posts.filter(
+      (p) => new Date(p.created_at).getTime() >= oneDayAgo
+    ).length,
+    toolsListed: posts.filter(
+      (p) =>
+        p.kind === "product" ||
+        p.kind === "tools-sell" ||
+        p.kind === "materials-surplus"
+    ).length,
+    jobsOffered: posts.filter(
+      (p) => p.kind === "needed" || p.kind === "job-offer"
+    ).length,
+    seekers: posts.filter(
+      (p) => p.kind === "available" || p.kind === "job-seek"
+    ).length,
+    abroad: posts.filter(
+      (p) => p.kind === "abroad-job" || (p.country && p.country !== "UK")
+    ).length
+  };
+
+  // Timestamp the server render so the ribbon polls for "posts newer
+  // than what this page was rendered with". Stable per request.
+  const loadedAt = new Date().toISOString();
 
   return (
-    <main className="bg-white pb-24 md:pb-0">
-      <XratedHeader />
+    <main className="pb-24 md:pb-0" style={{ backgroundColor: "#FBF6EC" }}>
+      <YardNewPostsRibbon loadedAt={loadedAt} />
+      {/* NEW — THE NETWORK inbox shell. 3-column messaging layout
+          (list · thread · post summary). Collapses to a list→thread
+          stack on mobile with a right-column bottom sheet. */}
+      <YardInboxShell
+        posts={posts}
+        posters={posters}
+        reactions={reactions}
+        viewerCircleIds={Array.from(viewerCircleIds)}
+      />
+      {/* Legacy hero + marketing sections hidden while we bed in the
+          new inbox shell. Keep the JSX below so we can A/B or revert
+          without git surgery. */}
+      <div className="mx-auto hidden w-full max-w-[1400px] px-3 pt-3 md:px-8 md:pt-6">
+        <YardHero stats={heroStats} initialQuery={searchQ} />
 
-      {/* HERO — full-bleed background image with dark left-to-right
-          gradient overlay for text legibility. Matches the /find +
-          /tips full-bleed pattern. */}
-      <section className="relative overflow-hidden border-b border-neutral-200">
+      {/* Legacy marketing hero — hidden. Replaced by the construction-
+          style YardHero above with live counters + quick-post chips.
+          Keep the markup in case we want to A/B a marketing variant. */}
+      <section className="relative hidden overflow-hidden border-b border-neutral-200">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/8725cd29fef6-ChatGPT_Image_Jun_27__2026__02_13_13_PM.png"
@@ -326,6 +481,32 @@ export default async function YardFeedPage({
           <YardFilters counts={counts} />
         </Suspense>
 
+        {/* Beacon composer — "need this now", red rim, above everything.
+            Only renders for authed trades (has magic-link params). */}
+        <div className="mt-6">
+          <YardBeaconComposer />
+        </div>
+
+        {/* Inline composer — Facebook-style always-visible post surface.
+            Auto-detects magic-link auth and gates video for free tier. */}
+        <div>
+          <YardInlineComposer />
+        </div>
+
+        {/* Live beacons at the top — always shown when active. */}
+        {beaconPosts.length > 0 && (
+          <ul className="mx-auto mt-4 flex max-w-2xl flex-col gap-3">
+            {beaconPosts.map((p) => (
+              <li key={p.id}>
+                <YardBeaconCard
+                  post={p}
+                  poster={posters[p.listing_id] ?? null}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+
         {posts.length === 0 ? (
           <EmptyState />
         ) : (
@@ -333,14 +514,17 @@ export default async function YardFeedPage({
             {/* Marketplace grid — Hire + Available cards. Hidden when
                 the Chat tab is active (kind === 'chat'). */}
             {boardPosts.length > 0 && (
-              <ul className="mt-7 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="mx-auto mt-7 grid max-w-2xl grid-cols-1 gap-3">
                 {boardPosts.map((p) => (
                   <li key={p.id} className="h-full">
-                    <YardPostCard
-                      post={p}
-                      poster={posters[p.listing_id] ?? null}
-                      reactions={reactions[p.id] ?? {}}
-                    />
+                    <YardCardFlipShell poster={posters[p.listing_id] ?? null}>
+                      <YardPostCard
+                        post={p}
+                        poster={posters[p.listing_id] ?? null}
+                        reactions={reactions[p.id] ?? {}}
+                        inCircle={viewerCircleIds.has(p.listing_id)}
+                      />
+                    </YardCardFlipShell>
                   </li>
                 ))}
               </ul>
@@ -374,6 +558,7 @@ export default async function YardFeedPage({
                         post={p}
                         poster={posters[p.listing_id] ?? null}
                         reactions={reactions[p.id] ?? {}}
+                        inCircle={viewerCircleIds.has(p.listing_id)}
                       />
                     </li>
                   ))}
@@ -474,13 +659,13 @@ export default async function YardFeedPage({
             className="text-[13px] font-bold uppercase tracking-widest"
             style={{ color: XRATED_BRAND.accent }}
           >
-            Free with paid membership
+            Free with your Network membership
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
             Post once. Every UK member sees it.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
-            14-day free trial. No card. Your xratedtrade.com URL is live the
+            Free for life. No card. Your xratedtrade.com URL is live the
             moment you save — and The Yard opens with it.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
@@ -492,7 +677,7 @@ export default async function YardFeedPage({
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"
@@ -504,7 +689,7 @@ export default async function YardFeedPage({
         </div>
       </section>
 
-      <XratedFooter />
+      </div>
     </main>
   );
 }

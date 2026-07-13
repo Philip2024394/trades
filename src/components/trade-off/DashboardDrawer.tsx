@@ -1,16 +1,22 @@
 "use client";
 
-// Trade-side dashboard drawer — burger trigger top-right that opens a
-// right-side slide drawer with the dashboard nav. Mounted on every
-// /trade-off/edit/[slug] sub-page so the tradesperson can hop between
-// Profile, App Studio, and the live public page from anywhere.
+// DEPRECATED as a rendered surface — kept live only for its exported
+// TYPE + nav-item list so future migrations can drain the drawer
+// items into other UI (e.g. an App Store, a dashboard grid).
 //
-// Lives outside XratedHeader because the burger only makes sense when
-// the tradesperson is signed into their dashboard (token-bound). The
-// shared header still renders the public marketing nav for everyone
-// else.
+// The /trade-off/edit/** subtree now uses the persistent AppShell
+// avatar drawer (in src/components/shell/AppShell.tsx) which carries
+// the same nav — Prices + Notifications + Orders + Team + more were
+// added there directly this session. Rendering DashboardDrawer AS
+// WELL would give the user two hamburgers / two overlapping menus.
+// The component now returns null; the nav list still builds so any
+// future code that reads it doesn't break.
 
 import { useEffect, useState } from "react";
+// Deprecation flag — flip to true and re-run to re-enable the drawer
+// for A/B or emergency rollback. Kept as a compile-time constant so
+// dead-code elimination strips the JSX in the disabled branch.
+const RENDER_LEGACY_DRAWER = false;
 
 type NavItem = {
   href: string;
@@ -62,6 +68,15 @@ export function DashboardDrawer({
       icon: <BrushIcon />
     },
     {
+      // Studio App Store — install / manage installable Apps. Uses the
+      // magic-link entry route so first-time visits still get a
+      // Studio session cookie set before landing on /studio/apps.
+      href: `/api/studio/enter?token=${encodeURIComponent(token)}&next=/studio/apps`,
+      label: "Apps",
+      blurb: "Install premium Apps — video, calculators, promos, more.",
+      icon: <AppsIcon />
+    },
+    {
       href: `/trade-off/edit/${slug}/add-ons${tokenQs}`,
       label: "Add-ons",
       blurb: "Sell products, custom domain, SMS alerts.",
@@ -74,10 +89,46 @@ export function DashboardDrawer({
       icon: <ShareIcon />
     },
     {
+      href: `/trade-off/edit/${slug}/prices${tokenQs}`,
+      label: "Live prices",
+      blurb: "Publish market prices — trades see them instantly.",
+      icon: <PriceIcon />
+    },
+    {
+      href: `/trade-off/edit/${slug}/notifications${tokenQs}`,
+      label: "Notifications",
+      blurb: "Comments, beacons, leads, tagged posts.",
+      icon: <BellIcon />
+    },
+    {
       href: `/trade-off/edit/${slug}/insights${tokenQs}`,
       label: "Insights",
       blurb: "Trust Score, plan status, rewards.",
       icon: <ChartIcon />
+    },
+    {
+      href: `/trade-off/edit/${slug}/orders${tokenQs}`,
+      label: "Orders & payments",
+      blurb: "Order history, payments, delivery admin.",
+      icon: <BagIcon />
+    },
+    {
+      href: `/trade-off/edit/${slug}/services-prices${tokenQs}`,
+      label: "Services & pricing",
+      blurb: "Priced services, shop mode, wholesale, bulk tiers.",
+      icon: <TagIcon />
+    },
+    {
+      href: `/trade-off/edit/${slug}/team${tokenQs}`,
+      label: "Team & operations",
+      blurb: "Team, operating hours, projects, job diary.",
+      icon: <TeamIcon />
+    },
+    {
+      href: `/trade-off/edit/${slug}/custom-domain${tokenQs}`,
+      label: "Domain & downloads",
+      blurb: "Custom domain, downloads, FAQ page.",
+      icon: <GlobeIcon />
     },
     {
       // Authed link to the public Yard feed — passes slug+token so the
@@ -97,6 +148,15 @@ export function DashboardDrawer({
       external: true
     }
   ];
+
+  // AppShell replaces this drawer. Bail before rendering to avoid a
+  // second hamburger next to AppShell's avatar drawer. The items array
+  // above still builds — future code can consume it without needing
+  // JSX to render.
+  if (!RENDER_LEGACY_DRAWER) {
+    void items;
+    return null;
+  }
 
   return (
     <>
@@ -239,6 +299,68 @@ function PlusIcon() {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <line x1="12" y1="5" x2="12" y2="19" />
       <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+function AppsIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="3" y="3" width="7" height="7" rx="1" />
+      <rect x="14" y="3" width="7" height="7" rx="1" />
+      <rect x="3" y="14" width="7" height="7" rx="1" />
+      <rect x="14" y="14" width="7" height="7" rx="1" />
+    </svg>
+  );
+}
+function PriceIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <line x1="12" y1="1" x2="12" y2="23" />
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+    </svg>
+  );
+}
+function BellIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </svg>
+  );
+}
+function BagIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+      <line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+}
+function TagIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+      <line x1="7" y1="7" x2="7.01" y2="7" />
+    </svg>
+  );
+}
+function TeamIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  );
+}
+function GlobeIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFB300" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="2" y1="12" x2="22" y2="12" />
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
     </svg>
   );
 }

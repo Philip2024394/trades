@@ -17,6 +17,7 @@ import {
   notifyInvitedTrades,
   notifyHomeownerBriefSubmitted
 } from "@/lib/projectNotify";
+import { logProjectPosted } from "@/lib/activity";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -255,6 +256,19 @@ export async function POST(request: Request) {
       projectId,
       projectTitle: titleForProjectType(body.projectType),
       invitedTradesCount: body.selectedTradeIds?.length ?? 0
+    });
+  } catch {
+    /* swallow — best-effort */
+  }
+
+  // Landing-page activity feed — public "new project" event + one
+  // personal "lead matched" event per invited trade. Fire-and-forget.
+  try {
+    await logProjectPosted({
+      project_id: projectId,
+      project_type: body.projectType,
+      postcode_prefix: body.postcode?.split(/\s+/)[0] ?? null,
+      matched_listing_ids: body.selectedTradeIds ?? []
     });
   } catch {
     /* swallow — best-effort */

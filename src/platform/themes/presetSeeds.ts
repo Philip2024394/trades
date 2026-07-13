@@ -149,6 +149,41 @@ themeRegistry.register({
 
 themeRegistry.register({
   manifestVersion: 1,
+  slug: "industrial-pro",
+  name: "Industrial Pro",
+  description:
+    "Command-centre aesthetic — Inter, charcoal surfaces, safety-orange accent, borders-not-shadows. Optimised for Business OS dashboards + operations pages on 1440 × 900 without scroll. See CONSTITUTION §3.2.",
+  version: "1.0.0",
+  bestForVerticals: [
+    "building-merchant",
+    "builders-supplies",
+    "tool-hire",
+    "plant-hire",
+    "heavy-machinery",
+    "metal-engineer",
+    "scaffolder",
+    "groundworker",
+    "concrete-supplier",
+    "aggregate-supplier",
+    "timber-merchant",
+    "skip-hire",
+    "welfare-unit-hire",
+    "site-safety",
+    "demolition"
+  ],
+  vars: {
+    "--font-heading": "var(--font-inter)",
+    "--font-body": "var(--font-inter)",
+    "--radius": "0.5rem",
+    "--section-padding": "3rem",
+    "--letter-spacing-tight": "-0.015em"
+  },
+  motion: "restrained",
+  publisher: P
+});
+
+themeRegistry.register({
+  manifestVersion: 1,
   slug: "creative",
   name: "Creative",
   description:

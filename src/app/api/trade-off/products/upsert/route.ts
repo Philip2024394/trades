@@ -313,6 +313,38 @@ export async function POST(req: NextRequest) {
   const price_pence = nonNegInt(productIn.price_pence);
   const stock_count = nonNegIntOrNull(productIn.stock_count);
   const dispatch_days = nonNegIntOrNull(productIn.dispatch_days);
+  // warranty_years — nullable, 1–25 clamp mirrors the DB CHECK
+  // constraint so a bad client payload is rejected with a clean error
+  // rather than a Postgres constraint violation.
+  const warranty_years = (() => {
+    const raw = productIn.warranty_years;
+    if (raw === null || raw === undefined || raw === "") return null;
+    const n = typeof raw === "number" ? raw : Number(raw);
+    if (!Number.isFinite(n)) return null;
+    const rounded = Math.round(n);
+    if (rounded < 1 || rounded > 25) return null;
+    return rounded;
+  })();
+
+  // Phase A taxonomy — install pairing. Both fields are nullable
+  // strings, whitelisted against SERVICE_CATEGORIES. A slug not in
+  // the taxonomy is coerced to null rather than rejected so a stale
+  // client (browser cache running an old taxonomy) doesn't hard-fail
+  // the whole save.
+  const { SERVICE_CATEGORIES } = await import("@/lib/serviceCategories");
+  const validServiceSlugs = new Set(SERVICE_CATEGORIES.map((c) => c.slug));
+  const service_category = (() => {
+    const raw = productIn.service_category;
+    if (typeof raw !== "string") return null;
+    const slug = raw.trim();
+    return slug && validServiceSlugs.has(slug) ? slug : null;
+  })();
+  const install_service_category = (() => {
+    const raw = productIn.install_service_category;
+    if (typeof raw !== "string") return null;
+    const slug = raw.trim();
+    return slug && validServiceSlugs.has(slug) ? slug : null;
+  })();
   const cover_url_raw = s(productIn.cover_url);
   const cover_url = cover_url_raw.length > 0 ? cover_url_raw.slice(0, 600) : null;
   const gallery_urls = arrStr(productIn.gallery_urls)
@@ -520,6 +552,9 @@ export async function POST(req: NextRequest) {
     price_pence,
     stock_count,
     dispatch_days,
+    warranty_years,
+    service_category,
+    install_service_category,
     cover_url,
     gallery_urls,
     compare_with,

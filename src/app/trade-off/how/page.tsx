@@ -16,16 +16,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "How it works — Xrated Trades. Set up in 5 minutes, go live the moment you save.",
+    "How it works — The Network. Set up in 5 minutes, go live the moment you save.",
   description:
-    "Six steps to your shareable xratedtrade.com URL. Create your account, add your logo, photos, services and prices, then share the link. 14-day free trial, no card on signup.",
+    "Six steps to your shareable profile on The Network. Create your account, add your logo, photos, services and prices, then share the link. 14-day free trial, no card on signup.",
   alternates: { canonical: "/trade-off/how" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades — How it works. Set up in 5 minutes.",
+    title: "The Network — How it works. Set up in 5 minutes.",
     description:
-      "Six steps to your shareable xratedtrade.com URL. No code. No designer. No card on signup.",
+      "Six steps to your shareable profile on The Network. No code. No designer. No card on signup.",
     url: absolute("/trade-off/how")
   }
 };
@@ -360,7 +360,7 @@ export default function HowItWorksPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"

@@ -11,7 +11,7 @@ import { SetPasswordForm } from "./SetPasswordForm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Reset affiliate password | xratedtrade.com",
+  title: "Reset affiliate password | The Network",
   robots: { index: false, follow: false }
 };
 

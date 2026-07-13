@@ -27,16 +27,16 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title:
-    "Pricing — Xrated Trades. Free · Starter £9.99/mo · Professional £14.99/mo · Business £24.99/mo.",
+    "Pricing — The Network. Free · Starter £9.99/mo · Professional £14.99/mo · Business £24.99/mo.",
   description:
-    "Four plans on the Business Operating System for trade businesses. Free forever · Starter £9.99/mo · Professional £14.99/mo (recommended) · Business £24.99/mo. Every paid plan includes Studio, the App Store, and a 14-day free trial with no card on signup.",
+    "Four plans on The Network. Free forever · Starter £9.99/mo · Professional £14.99/mo (recommended) · Business £24.99/mo. Every paid plan includes Studio, the App Warehouse, and a 14-day free trial with no card on signup.",
   alternates: { canonical: "/trade-off/pricing" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades — Pricing. Free · Starter · Professional · Business.",
+    title: "The Network — Pricing. Free · Starter · Professional · Business.",
     description:
-      "One platform, four plans. Studio, App Store and Industry Packs on every paid tier. 14-day free trial, no card.",
+      "One platform, four plans. Studio, App Warehouse, The Yard and Verified Business on every paid tier. 14-day free trial, no card.",
     url: absolute("/trade-off/pricing")
   }
 };
@@ -728,7 +728,7 @@ export default async function PricingPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off"

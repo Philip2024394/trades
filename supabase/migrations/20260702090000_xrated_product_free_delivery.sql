@@ -14,6 +14,8 @@ ALTER TABLE hammerex_xrated_products
   ADD COLUMN IF NOT EXISTS free_delivery_min_qty integer NULL;
 
 ALTER TABLE hammerex_xrated_products
+  DROP CONSTRAINT IF EXISTS chk_free_delivery_min_qty_positive;
+ALTER TABLE hammerex_xrated_products
   ADD CONSTRAINT chk_free_delivery_min_qty_positive
   CHECK (free_delivery_min_qty IS NULL OR free_delivery_min_qty > 0);
 

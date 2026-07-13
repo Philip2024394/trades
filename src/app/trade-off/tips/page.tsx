@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Tips for Trades — Xrated Trades. Win more jobs, get paid more.",
+    "Tips for Trades — The Network. Win more jobs, get paid more.",
   description:
     "Practical advice from real tradespeople — how to win customers on social, how to price your work, how to photograph jobs, how to collect reviews and how to use QR codes on the van. Free guides for working trades.",
   alternates: { canonical: "/trade-off/tips" },
@@ -320,7 +320,7 @@ export default function TipsPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"

@@ -15,8 +15,13 @@
 
 create table if not exists app_submissions (
   id               uuid primary key default gen_random_uuid(),
-  merchant_id      uuid not null references merchants(id) on delete cascade,
-  brand_id         uuid null references brands(id) on delete set null,
+  -- "merchant" is the trade listing — same convention as installed_apps
+  -- (2026-07-09: replaced legacy `merchants(id)` FK that never had a
+  -- create-table backing).
+  merchant_id      uuid not null references public.hammerex_trade_off_listings(id) on delete cascade,
+  -- "brand" is the Studio brand. If studio_brands isn't present yet,
+  -- keep the reference optional via `on delete set null`.
+  brand_id         uuid null references public.studio_brands(id) on delete set null,
   -- The raw merchant description, verbatim.
   description      text not null,
   -- The AI recommender's suggested slug at submission time, if any.

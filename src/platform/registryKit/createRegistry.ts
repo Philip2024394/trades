@@ -73,8 +73,23 @@ export function createRegistry<T extends RegistrationBase>(
     if (!reg.category || typeof reg.category !== "string") {
       throw new Error(`${label}: "${reg.id}" is missing category.`);
     }
+    // Aliases are shortcut names — they're allowed to be un-namespaced
+    // slugs (e.g. "gallery" as an alias for "containers.grid") even when
+    // the registry's canonical ids are namespaced. Only enforce basic
+    // shape: non-empty string, kebab-slug or namespaced. This is what
+    // makes `Grid` findable by its short name without duplicating an
+    // entry in the registry itself.
     for (const alias of reg.aliases ?? []) {
-      checkIdFormat(alias);
+      if (typeof alias !== "string" || alias.length === 0) {
+        throw new Error(
+          `${label}: "${reg.id}" has an invalid alias.`
+        );
+      }
+      if (!isSlug(alias) && !isNamespacedId(alias)) {
+        throw new Error(
+          `${label}: "${reg.id}" alias "${alias}" must be a kebab slug or namespaced id.`
+        );
+      }
       if (alias === reg.id) {
         throw new Error(
           `${label}: "${reg.id}" declares itself as an alias.`

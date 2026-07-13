@@ -12,6 +12,7 @@
 // at the API; un-authed visitors get a polite prompt to upgrade.
 
 import { useEffect, useMemo, useState } from "react";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 import {
   YARD_REACTION_EMOJI,
   YARD_REACTION_KINDS,
@@ -20,12 +21,22 @@ import {
 } from "@/lib/yardReactions";
 import type { YardReactionKind } from "@/lib/supabase";
 
+// Custom brand thumb — same asset flipped 180° for dislike. Used only
+// on marketplace board cards; chat cards use plain lucide black icons
+// via variant="minimal".
+const THUMB_IMAGE =
+  "https://ik.imagekit.io/9mrgsv2rp/Untitledzxx-removebg-preview.png";
+
 export function YardReactionBar({
   postId,
-  initialCounts
+  initialCounts,
+  variant = "branded"
 }: {
   postId: string;
   initialCounts: ReactionCounts;
+  /** "branded" = branded thumb PNG (board / marketplace cards).
+   *  "minimal" = plain black lucide thumbs (chat cards, compact). */
+  variant?: "branded" | "minimal";
 }) {
   const [counts, setCounts] = useState<ReactionCounts>(initialCounts);
   const [mine, setMine] = useState<YardReactionKind | null>(null);
@@ -131,7 +142,28 @@ export function YardReactionBar({
                 : { borderColor: "#e5e5e5", color: "#525252" }
             }
           >
-            <span aria-hidden="true">{YARD_REACTION_EMOJI[k]}</span>
+            {k === "like" || k === "dislike" ? (
+              variant === "minimal" ? (
+                k === "like" ? (
+                  <ThumbsUp className="h-3.5 w-3.5" aria-hidden />
+                ) : (
+                  <ThumbsDown className="h-3.5 w-3.5" aria-hidden />
+                )
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={THUMB_IMAGE}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-4 w-4 object-contain"
+                  style={{
+                    transform: k === "dislike" ? "rotate(180deg)" : undefined
+                  }}
+                />
+              )
+            ) : (
+              <span aria-hidden="true">{YARD_REACTION_EMOJI[k]}</span>
+            )}
             {n > 0 && <span>{n}</span>}
           </button>
         );

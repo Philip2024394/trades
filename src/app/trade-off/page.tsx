@@ -1,10 +1,9 @@
-// Xrated Trades — landing page.
-// Server component. Pivoted from a two-sided directory to a SaaS-for-
-// tradies positioning: the shareable trade profile that replaces a
-// tradesperson's website, quote form and business card with one
-// link. Customer-facing search, TradesOnStandby and live-jobs flows
-// have been removed; the page now sells exclusively to tradies.
-// Hero CTA: start the 14-day free trial.
+// The Network — landing page.
+// Server component. Free-for-life positioning: base tier (app +
+// canteen + URL + Yard + Trade Center access) is free forever; Pro
+// tier is optional. Hero CTA: Join The Network. Trial-language
+// retired 2026-07-10 (see feedback_diamond_standard_no_lies rule —
+// freemium-forever is what actually ships, so that's what we sell).
 
 import type { Metadata } from "next";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
@@ -21,25 +20,25 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
-    "Xrated Trades — The Business Operating System for Trade Businesses. Studio · App Store · Industry Packs.",
+    "Join The Network — Free for life. Studio, App Warehouse, Yard.",
   description:
-    "The Business Operating System for trade businesses. Design your business app in Studio, install Apps as you grow, drop in an Industry Pack for your trade, let AI help you run it — all in one platform. 14-day free trial, then £14.99/mo (billed in GBP). Powered by Hammerex.",
+    "Join The Network. Free for life — your business app, your canteen, your URL live, plus access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.",
   alternates: { canonical: "/trade-off" },
   openGraph: {
     type: "website",
     title:
-      "Xrated Trades — The Business Operating System for Trade Businesses. One platform. Every App you need.",
+      "Join The Network — Free for life",
     description:
-      "Studio, App Store, Industry Packs and AI in one platform. Design, install, publish — your business app is live in minutes. 14-day free trial, then £14.99/mo.",
+      "Free app, free canteen, free URL, free access to The Yard + Trade Center. Optional Pro £14.99/mo.",
     url: absolute("/trade-off"),
     siteName: BRAND.name
   },
   twitter: {
     card: "summary_large_image",
     title:
-      "Xrated Trades — The Business Operating System for Trade Businesses",
+      "Join The Network — Free for life",
     description:
-      "Studio, App Store, Industry Packs and AI in one platform. 14-day free trial."
+      "Free app, canteen, URL, and access to The Yard + Trade Center."
   }
 };
 
@@ -171,7 +170,7 @@ export default async function TradeOffLandingPage() {
             </div>
 
             <p className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-sm text-white/90 drop-shadow sm:text-base">
-              <span className="font-bold text-white">14-day trial</span>
+              <span className="font-bold text-white">Free for life</span>
               <span aria-hidden="true">·</span>
               <span>No card</span>
               <span aria-hidden="true">·</span>
@@ -233,7 +232,7 @@ export default async function TradeOffLandingPage() {
           Built for every trade
         </h2>
         <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          Real tradies already on Xrated. Tap a face to see a live profile.
+          Real tradies already on The Network. Tap a face to see a live profile.
         </p>
 
         <div className="mt-5 flex flex-wrap items-start justify-center gap-4 sm:gap-6 md:gap-8">
@@ -293,7 +292,7 @@ export default async function TradeOffLandingPage() {
             Why tradies switch
           </p>
           <h2 className="mt-2 text-3xl font-extrabold leading-tight text-neutral-900 sm:text-4xl md:text-5xl">
-            Three ways Xrated{" "}
+            Three ways The Network{" "}
             <span style={{ color: XRATED_BRAND.accent }}>wins you the job.</span>
           </h2>
         </div>
@@ -512,10 +511,10 @@ export default async function TradeOffLandingPage() {
             One link. Every customer.
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Start your 14-day free trial today.
+            Join The Network today.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
-            No card on signup. Full access for 14 days. Cancel any time.
+            Free for life. No card. No commission, ever. Save your progress any time.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <a
@@ -526,7 +525,7 @@ export default async function TradeOffLandingPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>

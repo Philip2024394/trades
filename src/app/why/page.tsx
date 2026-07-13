@@ -1,4 +1,4 @@
-// /why — the strategic case for keeping a Construction Notebook.
+// /why — the strategic case for joining The Network.
 //
 // Everything here is either evidenced (footnote to a public source) or
 // labelled as an assumption. No fabricated numbers, no invented years,
@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Why keep a Notebook · The Construction Notebook",
+  title: "Why join The Network · The Network",
   description:
     "Documented homes sell faster and lose fewer chips in the survey. Insurance discounts, transferable warranties, and paperwork buyers already ask for."
 };
@@ -69,7 +69,7 @@ export default function WhyPage() {
               className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: PALETTE.honeyBright }}
             />
-            The Construction Notebook
+            The Network
           </Link>
           <nav className="flex items-center gap-4 text-[13px] font-semibold">
             <Link
@@ -78,6 +78,13 @@ export default function WhyPage() {
               style={{ color: PALETTE.ink }}
             >
               Submit a project
+            </Link>
+            <Link
+              href="/why/trades"
+              className="hidden underline-offset-4 hover:underline sm:inline"
+              style={{ color: PALETTE.ink }}
+            >
+              For trades
             </Link>
             <Link
               href="/join/start"
@@ -104,7 +111,7 @@ export default function WhyPage() {
             className="text-[12px] font-extrabold uppercase tracking-[0.22em]"
             style={{ color: PALETTE.honey }}
           >
-            Why keep a Notebook
+            Why join The Network
           </p>
           <h1 className="mt-4 text-[38px] font-black leading-[1.0] tracking-tight md:text-[64px]">
             Documented homes sell faster.<br />
@@ -116,7 +123,7 @@ export default function WhyPage() {
             className="mt-6 max-w-[52ch] text-[16px] leading-[1.6] md:text-[18px]"
             style={{ color: PALETTE.inkSoft }}
           >
-            The Notebook is not a photo album. It&apos;s an evidence chain
+            The Network is not a photo album. It&apos;s an evidence chain
             attached to the address — the paperwork surveyors, solicitors,
             insurers, and future contractors already ask for, kept in one place
             for the life of the property.
@@ -126,7 +133,7 @@ export default function WhyPage() {
         {/* Evidenced benefits */}
         <section className="mt-14 md:mt-20">
           <SectionHeading eyebrow="What&apos;s evidenced">
-            Four ways a Notebook pays back
+            Four ways The Network pays back
           </SectionHeading>
 
           <div className="mt-8 grid gap-4 md:gap-5">
@@ -151,7 +158,7 @@ export default function WhyPage() {
             <EvidencedCard
               icon={<Landmark className="h-5 w-5" aria-hidden />}
               title="Scotland already requires a version of this by law"
-              body="The Scottish Home Report has been mandatory since 2008. It includes a Property Questionnaire covering work history, energy performance, and a single survey. One of the four nations already forces the buyer to see what the Notebook chooses to preserve."
+              body="The Scottish Home Report has been mandatory since 2008. It includes a Property Questionnaire covering work history, energy performance, and a single survey. One of the four nations already forces the buyer to see what The Network chooses to preserve."
               source="Scottish Government · Housing (Scotland) Act 2006"
             />
           </div>
@@ -169,7 +176,7 @@ export default function WhyPage() {
               style={{ color: PALETTE.honey }}
               aria-hidden
             />
-            We don&apos;t claim a Notebook adds a specific percentage to your
+            We don&apos;t claim The Network adds a specific percentage to your
             sale price — that number has never been published by Rightmove or
             Zoopla, and estate-agent blog posts aren&apos;t evidence. What we
             claim is what&apos;s documented above: you sell faster, with fewer
@@ -178,9 +185,9 @@ export default function WhyPage() {
           </p>
         </section>
 
-        {/* Notebook Passport — the killer feature */}
+        {/* Network Passport — the killer feature */}
         <section className="mt-16 md:mt-24">
-          <SectionHeading eyebrow="Notebook Passport">
+          <SectionHeading eyebrow="Network Passport">
             One code. Only who you choose. Only what you choose.
           </SectionHeading>
           <p
@@ -189,7 +196,7 @@ export default function WhyPage() {
           >
             Every previous UK home log — Home Information Packs, Log Book of
             the Home, Property Passport — died the same death: it was a
-            passive record no one used. The Notebook Passport fixes that. You
+            passive record no one used. The Network Passport fixes that. You
             mint a read-only code that lets a specific person see specific
             sections, for a specific length of time. Fully revocable. Watermarked
             with the viewer&apos;s email on every page.
@@ -229,14 +236,14 @@ export default function WhyPage() {
             <FlowStep
               n="01"
               icon={<Camera className="h-5 w-5" aria-hidden />}
-              title="Trade posts to their own Notebook"
-              body="Every trade on the platform builds their own portfolio Notebook. Photos, materials list, install date, warranty documents — attached to the project."
+              title="Trade posts to their own business app"
+              body="Every trade on the platform builds their own portfolio. Photos, materials list, install date, warranty documents — attached to the project."
             />
             <FlowStep
               n="02"
               icon={<ClipboardCheck className="h-5 w-5" aria-hidden />}
               title="You see it as a candidate feed"
-              body="&quot;Your roofer added 4 photos and a materials list. Add these to your property record?&quot; One tap accepts or ignores. Nothing appears on your property Notebook without your permission."
+              body="&quot;Your roofer added 4 photos and a materials list. Add these to your property record?&quot; One tap accepts or ignores. Nothing appears on your property record without your permission."
             />
             <FlowStep
               n="03"
@@ -258,7 +265,7 @@ export default function WhyPage() {
           >
             You already have a plumber, a carpenter, an electrician you trust.
             You don&apos;t need to swap them for platform-approved trades — you
-            invite yours. We&apos;ll send them a Notebook invitation on your
+            invite yours. We&apos;ll send them a Network invitation on your
             behalf; if they accept, every quote, invoice, message, and photo
             with them lives in one place from that day forward.
           </p>
@@ -291,7 +298,7 @@ export default function WhyPage() {
         {/* The honest what-we-are-NOT section */}
         <section className="mt-16 md:mt-24">
           <SectionHeading eyebrow="Being straight with you">
-            What the Notebook is not
+            What The Network is not
           </SectionHeading>
 
           <div className="mt-8 grid gap-4">
@@ -303,7 +310,7 @@ export default function WhyPage() {
             <HonestyRow
               icon={<XCircle className="h-5 w-5" aria-hidden />}
               title="Not a mandatory public record"
-              body="Nothing appears on the property Notebook without you tapping accept. Bad photos, half-finished work, disputes — you decide what stays private, what gets published, and what&apos;s revoked."
+              body="Nothing appears on the property record without you tapping accept. Bad photos, half-finished work, disputes — you decide what stays private, what gets published, and what&apos;s revoked."
             />
             <HonestyRow
               icon={<XCircle className="h-5 w-5" aria-hidden />}
@@ -357,7 +364,7 @@ export default function WhyPage() {
               className="text-[12px] font-extrabold uppercase tracking-[0.22em]"
               style={{ color: PALETTE.honeyBright }}
             >
-              Open a Notebook
+              Join The Network
             </p>
             <h2 className="mt-4 text-[32px] font-black leading-[1.05] tracking-tight md:text-[48px]">
               Start with one project.<br />
@@ -368,7 +375,7 @@ export default function WhyPage() {
               style={{ color: "rgba(251,246,236,0.72)" }}
             >
               No account required to submit your first brief. If you want the
-              record kept, open a free Notebook when you&apos;re ready.
+              record kept, join The Network free when you&apos;re ready.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -413,7 +420,7 @@ export default function WhyPage() {
               Home
             </Link>
             <Link href="/home" className="underline-offset-4 hover:underline">
-              My Notebook
+              My Network
             </Link>
           </div>
         </footer>

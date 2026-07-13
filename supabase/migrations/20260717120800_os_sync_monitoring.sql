@@ -118,27 +118,20 @@ BEGIN
     OR h.email IS DISTINCT FROM o.email
     OR h.whatsapp IS DISTINCT FROM o.whatsapp;
 
-  -- Drift samples (first 20 rows with any drift)
-  SELECT jsonb_agg(
-    jsonb_build_object(
-      'id', h.id,
-      'slug', h.slug,
-      'drift_type',
-        CASE
-          WHEN o.id IS NULL THEN 'missing_in_os_business'
-          WHEN h.slug IS DISTINCT FROM o.slug THEN 'slug'
-          WHEN h.display_name IS DISTINCT FROM o.display_name THEN 'display_name'
-          WHEN h.primary_trade IS DISTINCT FROM o.primary_trade THEN 'primary_trade'
-          WHEN h.city IS DISTINCT FROM o.city THEN 'city'
-          WHEN h.status IS DISTINCT FROM o.status THEN 'status'
-          WHEN h.email IS DISTINCT FROM o.email THEN 'email'
-          WHEN h.whatsapp IS DISTINCT FROM o.whatsapp THEN 'whatsapp'
-          ELSE 'unknown'
-        END
-    )
-  ) INTO v_samples
-  FROM (
-    SELECT h.*, o.*
+  -- Drift samples (first 20 rows with any drift). Reworked from an
+  -- attempted `drift_rows(h,o)` alias — Postgres doesn't allow row
+  -- aliasing after `SELECT *, *`. Using a CTE with explicit columns
+  -- gets the same result and passes SQL parsing.
+  WITH drift AS (
+    SELECT
+      h.id AS h_id, h.slug AS h_slug,
+      h.display_name AS h_display_name, h.primary_trade AS h_primary_trade,
+      h.city AS h_city, h.status AS h_status,
+      h.email AS h_email, h.whatsapp AS h_whatsapp,
+      o.id AS o_id, o.slug AS o_slug,
+      o.display_name AS o_display_name, o.primary_trade AS o_primary_trade,
+      o.city AS o_city, o.status AS o_status,
+      o.email AS o_email, o.whatsapp AS o_whatsapp
     FROM hammerex_trade_off_listings h
     LEFT JOIN os_business_listings o ON o.id = h.id
     WHERE
@@ -151,7 +144,26 @@ BEGIN
       OR h.email IS DISTINCT FROM o.email
       OR h.whatsapp IS DISTINCT FROM o.whatsapp
     LIMIT 20
-  ) drift_rows(h, o);
+  )
+  SELECT jsonb_agg(
+    jsonb_build_object(
+      'id', d.h_id,
+      'slug', d.h_slug,
+      'drift_type',
+        CASE
+          WHEN d.o_id IS NULL THEN 'missing_in_os_business'
+          WHEN d.h_slug IS DISTINCT FROM d.o_slug THEN 'slug'
+          WHEN d.h_display_name IS DISTINCT FROM d.o_display_name THEN 'display_name'
+          WHEN d.h_primary_trade IS DISTINCT FROM d.o_primary_trade THEN 'primary_trade'
+          WHEN d.h_city IS DISTINCT FROM d.o_city THEN 'city'
+          WHEN d.h_status IS DISTINCT FROM d.o_status THEN 'status'
+          WHEN d.h_email IS DISTINCT FROM d.o_email THEN 'email'
+          WHEN d.h_whatsapp IS DISTINCT FROM d.o_whatsapp THEN 'whatsapp'
+          ELSE 'unknown'
+        END
+    )
+  ) INTO v_samples
+  FROM drift d;
 
   v_samples := COALESCE(v_samples, '[]'::jsonb);
 

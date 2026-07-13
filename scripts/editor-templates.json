@@ -1,0 +1,108 @@
+{
+  "templates": [
+    {
+      "templateNumber": 37,
+      "name": "Woodcraft Carpenter Services",
+      "description": "",
+      "brandId": "4ba8de2a-166b-468b-8621-cfb10e715049",
+      "canvas": [
+        {
+          "instanceId": "inst_reoh629b",
+          "itemId": "section.header-burger",
+          "itemName": "Header — burger menu",
+          "category": "section",
+          "overrides": {
+            "bg": "#8B4513"
+          }
+        },
+        {
+          "instanceId": "inst_s3grp211",
+          "itemId": "section.hero-text-left",
+          "itemName": "Hero — text left, image right",
+          "category": "section",
+          "overrides": {
+            "eyebrow": "Crafted with Precision, Built for Life.",
+            "headline": "Expert Carpenter Services",
+            "subhead": "From custom furniture to beautiful interiors — we bring your ideas to life.",
+            "primaryLabel": "Book a Service",
+            "primaryBg": "#3B2413",
+            "primaryFg": "#FFFFFF",
+            "eyebrowColor": "#8B4513",
+            "headlineColor": "#3B2413",
+            "subheadColor": "#8B4513",
+            "bg": "#F5E6D3"
+          }
+        },
+        {
+          "instanceId": "inst_s7l1nx8d",
+          "itemId": "section.search-card-hero",
+          "itemName": "Search card — floating over hero",
+          "category": "section",
+          "overrides": {
+            "sectionPadding": "sm",
+            "cardPadding": "sm",
+            "containerHeight": "sm",
+            "locAction": "location-page"
+          }
+        },
+        {
+          "instanceId": "inst_iv790adt",
+          "itemId": "section.social-proof-avatars",
+          "itemName": "Social proof — avatars + count",
+          "category": "section",
+          "overrides": {}
+        },
+        {
+          "instanceId": "inst_9cjmp9ca",
+          "itemId": "section.features-4-icons-circle",
+          "itemName": "Features — 4 icon circles",
+          "category": "section",
+          "overrides": {
+            "f1Label": "Skilled & Verified Carpenters",
+            "f2Label": "Quality Workmanship",
+            "f3Label": "On-Time Service",
+            "f4Label": "Affordable Pricing",
+            "iconBg": "#F5E6D3",
+            "iconColor": "#8B4513",
+            "f2Action": "services-drawer"
+          }
+        },
+        {
+          "instanceId": "inst_6u0g95ih",
+          "itemId": "section.services-4-image-row",
+          "itemName": "Services — 4 image cards row",
+          "category": "section",
+          "overrides": {}
+        },
+        {
+          "instanceId": "inst_qu331xwn",
+          "itemId": "section.guarantee-banner",
+          "itemName": "Guarantee banner",
+          "category": "section",
+          "overrides": {
+            "heading": "Quality Work. Guaranteed.",
+            "body": "We use the best tools & materials to deliver durable and beautiful results.",
+            "bg": "#4A2C1A",
+            "fg": "#F5E6D3",
+            "accent": "#D4A056"
+          }
+        },
+        {
+          "instanceId": "inst_t4zrxll1",
+          "itemId": "section.bottom-nav-fab",
+          "itemName": "Bottom nav with FAB",
+          "category": "section",
+          "overrides": {
+            "tab1": "Home",
+            "tab2": "Bookings",
+            "tab4": "Messages",
+            "tab5": "Profile",
+            "fabLabel": "Book Now",
+            "fabBg": "#8B4513"
+          }
+        }
+      ],
+      "createdAt": "2026-07-09T16:08:03.868Z"
+    }
+  ]
+}

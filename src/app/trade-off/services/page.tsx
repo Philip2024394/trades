@@ -15,7 +15,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Service Cards — Photo, price, one tap to WhatsApp | Xrated Trades",
+    "Service Cards — Photo, price, one tap to WhatsApp | The Network",
   description:
     "Every service becomes a card customers can tap. A photo, the job name, a real price, and one button that lands the lead in your WhatsApp with the service pre-filled. Set up in 5 minutes.",
   alternates: { canonical: "/trade-off/services" },
@@ -352,7 +352,7 @@ export default function ServiceCardsPage() {
             Build your service grid in 5 minutes
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Start your 14-day free trial.
+            Join The Network. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Customers
@@ -367,7 +367,7 @@ export default function ServiceCardsPage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"

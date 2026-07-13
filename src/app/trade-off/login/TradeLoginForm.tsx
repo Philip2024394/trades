@@ -9,7 +9,7 @@
 
 import { useState } from "react";
 
-export function TradeLoginForm() {
+export function TradeLoginForm({ next }: { next?: string | null }) {
   const [whatsapp, setWhatsapp] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -45,7 +45,11 @@ export function TradeLoginForm() {
         setErr(body.error || "Invalid phone or password");
         return;
       }
-      window.location.href = `/trade-off/edit/${encodeURIComponent(body.slug)}`;
+      // Honour ?next=/trade-off/... if provided (e.g. the Sell hub nudge
+      // bounces here so the merchant lands back where they were).
+      // sanitizeNext on the server has already validated the prefix.
+      window.location.href =
+        next ?? `/trade-off/edit/${encodeURIComponent(body.slug)}`;
     } catch (e) {
       setErr(e instanceof Error ? e.message : "Network error.");
     } finally {

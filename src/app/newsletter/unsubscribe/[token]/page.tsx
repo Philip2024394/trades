@@ -19,7 +19,7 @@ import { NewsletterUnsubscribeConfirm } from "./NewsletterUnsubscribeConfirm";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Unsubscribe | xratedtrade.com",
+  title: "Unsubscribe | The Network",
   robots: { index: false, follow: false }
 };
 

@@ -63,6 +63,88 @@ const inner = createRegistry<AppRegistration>({
     if (m.requirements.conflicts.includes(m.slug)) {
       throw new Error(`App "${m.slug}" cannot conflict with itself.`);
     }
+
+    // ─── Trade Center Week 1 validation (ADR-033 through ADR-047) ──
+    //
+    // Every namespaced declaration MUST prefix its id with the App
+    // slug so cross-App discovery cannot collide. All fields are
+    // optional — Apps not opting in skip the checks entirely.
+    const nsPrefix = `${m.slug}.`;
+    if (m.aiTools?.length) {
+      for (const t of m.aiTools) {
+        if (!t.name.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" aiTool name "${t.name}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.featureFlags?.length) {
+      for (const f of m.featureFlags) {
+        if (!f.key.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" featureFlag key "${f.key}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.telemetry?.length) {
+      for (const t of m.telemetry) {
+        if (!t.metric.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" telemetry metric "${t.metric}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.commands?.length) {
+      for (const c of m.commands) {
+        if (!c.id.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" command id "${c.id}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.declaredCapabilities?.length) {
+      for (const cap of m.declaredCapabilities) {
+        if (!cap.key.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" declaredCapability key "${cap.key}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.searchProviders?.length) {
+      for (const sp of m.searchProviders) {
+        if (!sp.id.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" searchProvider id "${sp.id}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.widgets?.length) {
+      for (const w of m.widgets) {
+        if (!w.id.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" widget id "${w.id}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    if (m.notificationKinds?.length) {
+      for (const n of m.notificationKinds) {
+        if (!n.kind.startsWith(nsPrefix)) {
+          throw new Error(
+            `App "${m.slug}" notificationKind "${n.kind}" must start with "${nsPrefix}".`
+          );
+        }
+      }
+    }
+    // platformCompat semver validation — deferred to registryKit
+    // validators if/when we wire them; for Week 1 we accept any
+    // string and rely on downstream consumers to enforce.
   }
 });
 

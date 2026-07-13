@@ -24,9 +24,9 @@ import {
 
 export const revalidate = 300;
 
-const TITLE = "See it in action — xratedtrade.com showcase";
+const TITLE = "See it in action — The Network Showcase";
 const DESCRIPTION =
-  "Seven real-world xratedtrade.com profiles built across the main trade types. Each is a live, indexable app — explore what yours could look like.";
+  "Seven real-world profiles built across the main trade types on The Network. Each is a live, indexable app — explore what yours could look like.";
 const HERO =
   TRADE_OFF_HERO_IMAGES["building-merchant"] ?? BRAND.logo;
 

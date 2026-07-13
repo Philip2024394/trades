@@ -138,10 +138,14 @@ CREATE TABLE IF NOT EXISTS os_search_popularity (
   count_last_week integer NOT NULL DEFAULT 0,
   count_all_time integer NOT NULL DEFAULT 0,
   last_seen_at timestamptz NOT NULL DEFAULT now(),
-  updated_at timestamptz NOT NULL DEFAULT now(),
-
-  CONSTRAINT os_search_popularity_unique UNIQUE (lower(query), scope, lower(city))
+  updated_at timestamptz NOT NULL DEFAULT now()
+  -- (uniqueness on the case-insensitive tuple is created as a UNIQUE
+  --  INDEX below — Postgres doesn't allow function expressions inside
+  --  an inline table CONSTRAINT clause.)
 );
+
+CREATE UNIQUE INDEX IF NOT EXISTS os_search_popularity_unique
+  ON os_search_popularity (lower(query), scope, lower(city));
 
 CREATE INDEX IF NOT EXISTS os_search_popularity_scope_idx
   ON os_search_popularity (scope, count_this_week DESC);

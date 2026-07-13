@@ -5,14 +5,21 @@
 
 import type { HammerexTradeOffListing } from "./supabase";
 
+// 2026-07-10 rebrand — Philip: "the app is now called The Network".
+// XRATED_BRAND is kept as the config export name so nothing imports
+// break, but every user-facing string reads "The Network". Domain
+// alias stays xratedtrade.com until the new domain is chosen.
 export const XRATED_BRAND = {
-  name: "Xrated Trades",
+  name: "The Network",
+  shortName: "Network",
   domain: "xratedtrade.com",
-  tagline: "Find Trades. View Real Work. Get Quotes Fast.",
-  // Hammerex yellow accent — shared with the core Hammerex brand token.
+  tagline: "The Network Of The Construction Trades.",
+  // Brand yellow — same as BRAND_YELLOW in tokens.ts.
   accent: "#FFB300",
   accentHover: "#E5A500",
-  accentInk: "#FFFFFF",
+  accentInk: "#0A0A0A",
+  // Cream page background (the Yard/Warehouse standard).
+  surface: "#FBF6EC",
   logoUrl:
     "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/branding/xrated_logo_v3.png",
   heroImageUrl:

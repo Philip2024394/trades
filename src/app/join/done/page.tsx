@@ -32,8 +32,8 @@ function DoneShell({ slug }: { slug: string }) {
   return (
     <WizardShell
       step="done"
-      title="Your Notebook is open."
-      subtitle="Check your inbox — we&apos;ve sent your finish-setup link and your public Notebook URL."
+      title="You joined The Network."
+      subtitle="Check your inbox — we&apos;ve sent your finish-setup link and your public business-app URL."
     >
       <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-5">
         <div className="flex items-start gap-3">
@@ -43,11 +43,11 @@ function DoneShell({ slug }: { slug: string }) {
           />
           <div>
             <p className="text-[15px] font-bold text-[#1B1A17]">
-              You&apos;re on the Notebook.
+              You&apos;re on The Network.
             </p>
             <p className="mt-1 text-[13px] leading-[1.5] text-[#1B1A17]/70">
               Welcome email sent. Click the link inside to add photos,
-              services, and your Trade Circle.
+              services, and join your trade&apos;s canteen.
             </p>
           </div>
         </div>
@@ -59,7 +59,7 @@ function DoneShell({ slug }: { slug: string }) {
             <BookOpen className="mt-0.5 h-6 w-6 text-amber-400" aria-hidden />
             <div className="min-w-0 flex-1">
               <p className="text-[13px] font-semibold uppercase tracking-wider text-[#1B1A17]/55">
-                Your public Notebook
+                Your public business app
               </p>
               <p className="mt-1 truncate font-mono text-[14px] text-amber-300">
                 xratedtrade.com/{slug}
@@ -69,7 +69,7 @@ function DoneShell({ slug }: { slug: string }) {
                   href={`/${slug}`}
                   className="inline-flex min-h-[44px] items-center gap-2 rounded-full bg-amber-400 px-5 text-[14px] font-bold text-neutral-900 hover:bg-amber-300"
                 >
-                  View my Notebook
+                  View my app
                   <ArrowRight className="h-4 w-4" aria-hidden />
                 </Link>
                 <Link
@@ -102,8 +102,8 @@ function DoneShell({ slug }: { slug: string }) {
           />
           <NextStep
             n="02"
-            title="Invite your Trade Circle"
-            body="Recommend the trades you work with. Get recommended back."
+            title="Join your trade&apos;s canteen"
+            body="Your trade&apos;s private group on The Network. Recommend and get recommended."
           />
           <NextStep
             n="03"
@@ -114,7 +114,7 @@ function DoneShell({ slug }: { slug: string }) {
       </div>
 
       <div className="mt-8 border-t border-[#1B1A17]/12 pt-6 text-[13px] text-[#1B1A17]/45">
-        Notebook member since {new Date().toLocaleDateString("en-GB")}.
+        On The Network since {new Date().toLocaleDateString("en-GB")}.
       </div>
     </WizardShell>
   );

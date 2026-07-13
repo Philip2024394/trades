@@ -27,7 +27,7 @@ export async function generateMetadata({
     .maybeSingle();
   const name = data?.display_name ?? slug;
   return {
-    title: `${name} — Trade Circle · Xrated Trades`,
+    title: `${name} — Trade Circle · The Network`,
     description: `Trusted trades ${name} works with — recommended and verified.`
   };
 }

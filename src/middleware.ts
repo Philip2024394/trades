@@ -31,9 +31,36 @@ import { createClient } from "@supabase/supabase-js";
 const SYSTEM_HOSTS = new Set<string>([
   "xratedtrade.com",
   "www.xratedtrade.com",
+  "theconstructionnotebook.com",
+  "www.theconstructionnotebook.com",
   "localhost",
   "trades-philip2024394.vercel.app"
 ]);
+
+// Root domains under which subdomains resolve to trade profiles.
+// bobs-plumbing.theconstructionnotebook.com → /trade/bobs-plumbing.
+// Add the paid domain first (canonical), then the legacy Xrated root
+// so historical links keep working during the rebrand window.
+const SUBDOMAIN_ROOTS = ["theconstructionnotebook.com", "xratedtrade.com"];
+
+// Reserved subdomains that must NOT be treated as trade slugs — these
+// are our own subdomains for admin / API / marketing surfaces.
+const RESERVED_SUBDOMAINS = new Set<string>([
+  "www",
+  "api",
+  "admin",
+  "app",
+  "cdn",
+  "static",
+  "docs",
+  "mail",
+  "help",
+  "blog",
+  "assets"
+]);
+
+// Slug validator — matches the DB slug shape (lowercase kebab, no dots).
+const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
 
 // Static asset and API prefixes never need the rewrite. We also let
 // the matcher below exclude these for free, but the explicit check
@@ -133,6 +160,26 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   // dynamically named by Vercel.
   if (host.endsWith(".vercel.app")) {
     return applyAffiliateRef(req, NextResponse.next());
+  }
+
+  // Subdomain-per-trade — bobs-plumbing.theconstructionnotebook.com
+  // resolves to /trade/bobs-plumbing without any DB lookup or any DNS
+  // config beyond a wildcard *.theconstructionnotebook.com A record on
+  // Cloudflare. This is the make-or-break for the "canonical business
+  // page" slogan (memory: project_construction_notebook_slogan.md).
+  //
+  // Ordering: we test THIS BEFORE the custom-domain DB lookup so we
+  // never spend a query on requests we can route from the host alone.
+  for (const root of SUBDOMAIN_ROOTS) {
+    if (!host.endsWith(`.${root}`)) continue;
+    const sub = host.slice(0, host.length - root.length - 1);
+    // Exclude reserved subdomains + malformed slugs. Everything left
+    // is a live trade slug candidate.
+    if (RESERVED_SUBDOMAINS.has(sub) || !SLUG_RE.test(sub)) break;
+    const rewritten = req.nextUrl.clone();
+    rewritten.pathname =
+      pathname === "/" ? `/trade/${sub}` : `/trade/${sub}${pathname}`;
+    return applyAffiliateRef(req, NextResponse.rewrite(rewritten));
   }
 
   // Strip leading www. so the partial UNIQUE index matches either form.

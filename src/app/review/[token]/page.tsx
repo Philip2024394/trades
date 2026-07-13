@@ -6,7 +6,7 @@ import { ReviewSubmitForm } from "./ReviewSubmitForm";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "Leave a review — Xrated Trades",
+  title: "Leave a review — The Network",
   robots: { index: false, follow: false }
 };
 

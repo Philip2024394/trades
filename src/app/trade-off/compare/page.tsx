@@ -14,16 +14,16 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Why choose Xrated Trades? Stop juggling Facebook, a website and trade directories — use 1 link.",
+    "Why choose The Network? Stop juggling Facebook, a website and trade directories — use one platform.",
   description:
-    "Side-by-side comparison. Facebook posts disappear, websites cost £1k+ and break, trade directories rent you visibility for £100/mo. Xrated is one short xratedtrade.com URL — £14.99/mo, no card on signup.",
+    "Side-by-side comparison. Facebook posts disappear, websites cost £1k+ and break, trade directories rent you visibility for £100/mo. The Network is Studio + App Warehouse + Yard + a public profile — £14.99/mo, no card on signup.",
   alternates: { canonical: "/trade-off/compare" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Xrated Trades — Stop juggling 5 tools. Use 1 link.",
+    title: "The Network — Stop juggling 5 tools. Use one platform.",
     description:
-      "WhatsApp, reviews, service cards with prices, shareable link, built for trades — Xrated does in one URL what tradies were stitching together across Facebook, a website and trade directories.",
+      "WhatsApp, reviews, service cards with prices, shareable profile, built for trades — The Network does in one platform what tradies were stitching together across Facebook, a website and trade directories.",
     url: absolute("/trade-off/compare")
   }
 };
@@ -371,7 +371,7 @@ export default function ComparePage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join The Network
             </a>
             <a
               href="/trade-off/pricing"

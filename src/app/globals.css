@@ -386,3 +386,29 @@ html[data-site-foreman="on"] .studio-shell .bg-neutral-50,
 html[data-site-foreman="on"] .studio-shell .bg-neutral-100 {
   background-color: #171717 !important;
 }
+
+/* Landing activity feed — slow vertical marquee. The list is
+ * duplicated in the DOM; keyframes translate the whole stack up by
+ * exactly 50% (one full copy) so the loop is seamless. */
+@keyframes activity-marquee-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.activity-marquee {
+  animation: activity-marquee-up 45s linear infinite;
+}
+.activity-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Amber "QUOTING" chip pulse — opacity fade (not a flash) so it
+ * signals "activity in progress" without violating WCAG 2.3.1
+ * (no >3× per sec flashing) and without breaking the cream/amber
+ * palette by falling back to a red state. */
+@keyframes activity-quoting-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+.activity-quoting-chip {
+  animation: activity-quoting-pulse 1.6s ease-in-out infinite;
+}

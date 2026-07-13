@@ -98,6 +98,8 @@ CREATE TABLE IF NOT EXISTS os_business_endorsements (
 
 -- Self-ref FK for reciprocal — added after the table so the reference exists
 ALTER TABLE os_business_endorsements
+  DROP CONSTRAINT IF EXISTS os_business_endorsements_reciprocal_fk;
+ALTER TABLE os_business_endorsements
   ADD CONSTRAINT os_business_endorsements_reciprocal_fk
   FOREIGN KEY (reciprocal_edge_id) REFERENCES os_business_endorsements(id) ON DELETE SET NULL;
 
@@ -170,6 +172,8 @@ CREATE INDEX IF NOT EXISTS os_business_endorsement_invites_status_idx
   ON os_business_endorsement_invites (status, expires_at);
 
 -- Backfill FK on endorsements now that invites table exists
+ALTER TABLE os_business_endorsements
+  DROP CONSTRAINT IF EXISTS os_business_endorsements_invite_fk;
 ALTER TABLE os_business_endorsements
   ADD CONSTRAINT os_business_endorsements_invite_fk
   FOREIGN KEY (invite_id) REFERENCES os_business_endorsement_invites(id)

@@ -113,19 +113,33 @@ alter table studio_bookings enable row level security;
 alter table studio_booking_calendar_tokens enable row level security;
 
 -- Merchants can read/write their own rows.
-create policy if not exists "merchant_owns_booking_flows"
-  on studio_booking_flows for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
-create policy if not exists "merchant_owns_booking_services"
-  on studio_booking_services for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
-create policy if not exists "merchant_owns_booking_availability"
-  on studio_booking_availability for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
-create policy if not exists "merchant_owns_bookings_read"
-  on studio_bookings for select using (merchant_id = auth.uid());
-create policy if not exists "merchant_owns_bookings_write"
-  on studio_bookings for update using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "merchant_owns_booking_flows" on studio_booking_flows;
+create policy "merchant_owns_booking_flows"
+  on studio_booking_flows
+  for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "merchant_owns_booking_services" on studio_booking_services;
+create policy "merchant_owns_booking_services"
+  on studio_booking_services
+  for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "merchant_owns_booking_availability" on studio_booking_availability;
+create policy "merchant_owns_booking_availability"
+  on studio_booking_availability
+  for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "merchant_owns_bookings_read" on studio_bookings;
+create policy "merchant_owns_bookings_read"
+  on studio_bookings
+  for select using (merchant_id = auth.uid());
+drop policy if exists "merchant_owns_bookings_write" on studio_bookings;
+create policy "merchant_owns_bookings_write"
+  on studio_bookings
+  for update using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
 -- Anonymous customers can INSERT bookings for any merchant they hit
 -- through the public site.
-create policy if not exists "public_booking_insert"
-  on studio_bookings for insert with check (true);
-create policy if not exists "merchant_owns_calendar_tokens"
-  on studio_booking_calendar_tokens for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());
+drop policy if exists "public_booking_insert" on studio_bookings;
+create policy "public_booking_insert"
+  on studio_bookings
+  for insert with check (true);
+drop policy if exists "merchant_owns_calendar_tokens" on studio_booking_calendar_tokens;
+create policy "merchant_owns_calendar_tokens"
+  on studio_booking_calendar_tokens
+  for all using (merchant_id = auth.uid()) with check (merchant_id = auth.uid());

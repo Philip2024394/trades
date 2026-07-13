@@ -15,12 +15,12 @@ import "./hero/minimalCentred";
 // State-of-the-art heroes — trade-focused, theme-aware, mobile-first.
 // Each is designed for a specific merchant intent (trust / emergency /
 // portfolio / stats / postcode / storefront / social-proof).
-import "./hero/trustAnchor";
-import "./hero/trustMinimal";
-import "./hero/emergency247";
-import "./hero/portfolioMosaic";
-import "./hero/statHero";
-import "./hero/postcodeLocal";
+import "./hero/trustAnchor.meta";
+import "./hero/trustMinimal.meta";
+import "./hero/emergency247.meta";
+import "./hero/portfolioMosaic.meta";
+import "./hero/statHero.meta";
+import "./hero/postcodeLocal.meta";
 import "./hero/productShowroom";
 import "./hero/reviewWave";
 // Second wave — unique UI patterns, one hero per pattern to keep the
@@ -51,19 +51,22 @@ import "./cta/checkoutStack";
 import "./cta/compactBand";
 
 // ─── Trust bar library ─────────────────────────────────────────────
-import "./trust_bar/iconRow";
+import "./trust_bar/iconRow.meta";
 
 // ─── Product Grid library ─────────────────────────────────────────
 import "./product_grid/classic3col";
 
 // ─── Services library ─────────────────────────────────────────────
-import "./services/list";
+// Meta sidecar (not "use client") — server-side AI routes need this.
+import "./services/list.meta";
 
 // ─── FAQ library ──────────────────────────────────────────────────
-import "./faq/accordion";
+// Meta sidecar (task #41)
+import "./faq/accordion.meta";
 
 // ─── Gallery library ─────────────────────────────────────────────
-import "./gallery/grid";
+// Meta sidecar (task #41)
+import "./gallery/grid.meta";
 
 // ─── Video library ───────────────────────────────────────────────
 import "./video/embed";
@@ -72,7 +75,7 @@ import "./video/embed";
 import "./pricing/threeTier";
 
 // ─── Statistics library ─────────────────────────────────────────
-import "./statistics/band";
+import "./statistics/band.meta";
 
 // ─── Brands library ─────────────────────────────────────────────
 import "./brands/strip";
@@ -84,7 +87,8 @@ import "./team/cards";
 import "./newsletter/inline";
 
 // ─── Contact library ────────────────────────────────────────────
-import "./contact/split";
+// Meta sidecar (task #41)
+import "./contact/split.meta";
 
 // ─── Map library ────────────────────────────────────────────────
 import "./map/embed";
@@ -100,7 +104,8 @@ import "./features/iconGrid";
 import "./features/threeUpReasons";
 
 // ─── Testimonials library ──────────────────────────────────────────
-import "./testimonials/cardGrid";
+// Meta sidecar (task #41)
+import "./testimonials/cardGrid.meta";
 
 // ─── Footer library ────────────────────────────────────────────────
 import "./footer/minimal";

@@ -26,6 +26,10 @@
     { "path": "/api/cron/predict-gold-path", "schedule": "0 7 * * 1" },
     { "path": "/api/cron/send-monthly-digests", "schedule": "0 9 1 * *" },
     { "path": "/api/cron/ai-visualiser-rollover", "schedule": "0 3 * * *" },
-    { "path": "/api/cron/os-event-drain", "schedule": "* * * * *" }
+    { "path": "/api/cron/os-event-drain", "schedule": "* * * * *" },
+    { "path": "/api/cron/yard-release-queued", "schedule": "*/10 * * * *" },
+    { "path": "/api/cron/yard-expire-notifications", "schedule": "0 3 * * *" },
+    { "path": "/api/reviews/publish-pending", "schedule": "*/15 * * * *" },
+    { "path": "/api/canteens/recalc-metrics", "schedule": "0 * * * *" }
   ]
 }

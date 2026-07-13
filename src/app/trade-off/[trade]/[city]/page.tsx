@@ -45,12 +45,12 @@ export async function generateMetadata({
   if (!TRADE_OFF_TRADES.find((t) => t.slug === trade)) return { title: "Trade not found" };
   const label = tradeLabel(trade);
   const cityLabel = titleCase(decodeURIComponent(city));
-  const title = `${label}s in ${cityLabel} — Xrated Trades`;
+  const title = `${label}s in ${cityLabel} — The Network`;
   const data = await loadTradeCity(trade, city);
   const n = data?.listings.length ?? 0;
   const description = n
-    ? `${n} ${label.toLowerCase()}${n === 1 ? "" : "s"} in ${cityLabel} on Xrated Trades. Free WhatsApp quotation, Hammerex Standard verified pros first. Powered by Hammerex.`
-    : `Looking for a ${label.toLowerCase()} in ${cityLabel}? List your trade free on Xrated Trades — powered by Hammerex.`;
+    ? `${n} ${label.toLowerCase()}${n === 1 ? "" : "s"} in ${cityLabel} on The Network. Free WhatsApp quotation, verified pros first.`
+    : `Looking for a ${label.toLowerCase()} in ${cityLabel}? List your trade free on The Network.`;
   return {
     title,
     description,
@@ -83,7 +83,7 @@ export default async function TradeOffCityPage({
 
   const breadcrumb = breadcrumbJsonLd([
     { name: "Home", url: "/" },
-    { name: "xratedtrade.com", url: "/trade-off" },
+    { name: "The Network", url: "/trade-off" },
     { name: label, url: `/trade-off/${trade}` },
     { name: cityLabel, url: `/trade-off/${trade}/${city}` }
   ]);
@@ -110,7 +110,7 @@ export default async function TradeOffCityPage({
         <ol className="flex items-center gap-2">
           <li><a href="/" className="hover:text-brand-text">Home</a></li>
           <li>/</li>
-          <li><a href="/trade-off" className="hover:text-brand-text">xratedtrade.com</a></li>
+          <li><a href="/trade-off" className="hover:text-brand-text">The Network</a></li>
           <li>/</li>
           <li><a href={`/trade-off/${trade}`} className="hover:text-brand-text">{label}</a></li>
           <li>/</li>
@@ -121,7 +121,7 @@ export default async function TradeOffCityPage({
       <section className="border-b border-brand-line">
         <div className="mx-auto max-w-5xl px-4 pb-8 pt-6">
           <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
-            Xrated Trades
+            The Network
           </p>
           <h1 className="mt-3 text-2xl font-bold leading-tight text-brand-text sm:text-4xl">
             {label}s in {cityLabel}
@@ -170,7 +170,7 @@ function EmptyState({
   return (
     <div className="rounded-2xl border border-dashed border-brand-line bg-brand-surface p-8 sm:p-10">
       <p className="text-sm font-semibold text-brand-text">
-        No {tLabel.toLowerCase()}s in {cityLabel} on xratedtrade.com — yet.
+        No {tLabel.toLowerCase()}s in {cityLabel} on The Network — yet.
       </p>
       <p className="mt-1 text-xs text-brand-muted">
         Are you a {tLabel.toLowerCase()} in {cityLabel}? List your trade — free, takes two minutes.

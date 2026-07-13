@@ -3,6 +3,7 @@
 // feed, mobile-first. Distinct from YardPostCard so chat threads
 // stack like a forum, not a marketplace.
 
+import { Fragment } from "react";
 import { tradeLabel } from "@/lib/tradeOff";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import {
@@ -16,17 +17,56 @@ import type { YardPoster } from "./YardPostCard";
 import { YardReactionBar } from "./YardReactionBar";
 import { YardImageThumbs } from "./YardImageThumbs";
 import { YardFlagButton } from "./YardFlagButton";
+import { YardPostLightbox } from "./YardPostLightbox";
+import { YardCommentsPanel } from "./YardCommentsPanel";
 
 const BRAND_YELLOW = "#FFB300";
+const ANNOUNCEMENT_IMAGE =
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2002_20_45%20PM.png";
+const CHAT_AVATAR_IMAGE =
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2002_57_40%20PM.png";
+
+// Split a body string into React nodes with any http(s) URL rendered as a
+// clickable link. Trailing punctuation (. , ) ! ? ; :) is peeled off the
+// URL and rendered as plain text — otherwise "…profile." grabs the dot.
+// Keeps whitespace-pre-wrap semantics for non-URL segments (React
+// preserves the raw string).
+function renderBodyWithLinks(text: string) {
+  const URL_RE = /(https?:\/\/\S+)/g;
+  const segments = text.split(URL_RE);
+  return segments.map((segment, i) => {
+    if (!/^https?:\/\//.test(segment)) return segment;
+    const match = segment.match(/^(.*?)([.,;:!?)\]]*)$/);
+    const url = match?.[1] ?? segment;
+    const trailing = match?.[2] ?? "";
+    return (
+      <Fragment key={i}>
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="break-all font-semibold text-amber-700 underline underline-offset-2 hover:text-amber-800"
+        >
+          {url}
+        </a>
+        {trailing}
+      </Fragment>
+    );
+  });
+}
 
 export function YardChatPost({
   post,
   poster,
-  reactions
+  reactions,
+  inCircle = false
 }: {
   post: HammerexTradeOffYardPost;
   poster: YardPoster | null;
   reactions: ReactionCounts;
+  /** Viewer signed in with magic link and this post's author is in
+   *  their Trade Circle — subtle amber corner ribbon. */
+  inCircle?: boolean;
 }) {
   const posterName =
     poster?.trading_name?.trim() || poster?.display_name || "Member";
@@ -47,48 +87,66 @@ export function YardChatPost({
   // posts. Also overrides the trailing "Trade Chat" chip with
   // "ANNOUNCEMENT" further down.
   const isAnnouncement = post.is_admin_announcement === true;
+  // Cards are always white — only the border colour differentiates
+  // admin announcements from member posts (yellow rim vs neutral).
   const articleClass = isAnnouncement
-    ? "relative w-full overflow-hidden rounded-2xl border-2 bg-amber-50/40 shadow-sm"
+    ? "relative w-full overflow-hidden rounded-2xl border-2 bg-white shadow-sm"
     : "relative w-full overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm";
   const articleStyle = isAnnouncement ? { borderColor: BRAND_YELLOW } : undefined;
+  const heroImage = post.image_urls?.[0] ?? null;
+  const extraImages = (post.image_urls ?? []).slice(1, 4);
   return (
     <article className={articleClass} style={articleStyle}>
-
-      <div className="flex flex-col gap-3 p-4 sm:p-5">
-        {/* Poster header — avatar + name + verified tick + meta */}
-        <header className="flex items-center gap-3">
+      {inCircle && (
+        <div
+          className="pointer-events-none absolute right-0 top-0 z-10 select-none rounded-bl-lg px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em]"
+          style={{
+            background: "linear-gradient(135deg, #FFB300 0%, #B8860B 100%)",
+            color: "#1B1A17"
+          }}
+          title="From your Trade Circle"
+        >
+          Your Circle
+        </div>
+      )}
+      <div className="flex flex-col gap-2 p-3 sm:p-4">
+        {/* Poster header — avatar (left) + name/meta (middle) +
+            hero image thumbnail (right, if any). Compact 9x9 avatar. */}
+        <header className="flex items-start gap-2.5">
           {isAnnouncement && (
             <span
-              className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full text-[14px] font-extrabold text-neutral-900"
-              style={{ background: BRAND_YELLOW }}
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
               aria-hidden="true"
-              title="xratedtrade.com team"
+              title="Announcement from xratedtrade.com"
             >
-              TO
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={ANNOUNCEMENT_IMAGE}
+                alt=""
+                className="h-full w-full object-cover"
+              />
             </span>
           )}
-          {!isAnnouncement && poster && (
+          {!isAnnouncement && (
             <a
-              href={`/${poster.slug}`}
+              href={poster ? `/${poster.slug}` : "#"}
               className="shrink-0"
-              aria-label={`Open ${posterName}'s profile`}
+              aria-label={
+                poster ? `Open ${posterName}'s profile` : "Trade chat post"
+              }
             >
-              {poster.avatar_url ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
+              <span
+                className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-amber-400 shadow-sm"
+                aria-hidden="true"
+                title="Trade Chat"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={poster.avatar_url}
+                  src={CHAT_AVATAR_IMAGE}
                   alt=""
-                  className="h-11 w-11 rounded-full object-cover ring-2 ring-neutral-100"
+                  className="h-full w-full object-cover"
                 />
-              ) : (
-                <span
-                  className="inline-flex h-11 w-11 items-center justify-center rounded-full text-[14px] font-extrabold text-neutral-900"
-                  style={{ background: BRAND_YELLOW }}
-                  aria-hidden="true"
-                >
-                  {posterName.charAt(0)}
-                </span>
-              )}
+              </span>
             </a>
           )}
           <div className="min-w-0 flex-1">
@@ -120,21 +178,56 @@ export function YardChatPost({
               {timeAgoShort(post.created_at)}
             </p>
           </div>
-          <span
-            className="inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.16em] text-neutral-900"
-            style={{ background: BRAND_YELLOW }}
-          >
-            {isAnnouncement ? "Announcement" : "Trade Chat"}
-          </span>
+          {/* Hero image thumbnail — top-right, 44x44 square. Click
+              opens the full lightbox. Extra images render as small
+              thumbnails below in a mini strip. */}
+          {heroImage && (
+            <YardPostLightbox
+              postId={post.id}
+              imageUrl={heroImage}
+              title={post.title}
+              body={post.body}
+              poster={poster}
+              tradeText={tradeText}
+              region={post.region ?? null}
+              createdAt={post.created_at}
+              waReplyUrl={replyUrl}
+              variant="compact"
+            />
+          )}
         </header>
 
-        {/* Title + body */}
+        {/* Extra image thumbnails — a compact strip under the header
+            when the post has more than one image. Each opens the same
+            lightbox on click. */}
+        {extraImages.length > 0 && (
+          <div className="flex gap-1.5">
+            {extraImages.map((url) => (
+              <YardPostLightbox
+                key={url}
+                postId={post.id}
+                imageUrl={url}
+                title={post.title}
+                body={post.body}
+                poster={poster}
+                tradeText={tradeText}
+                region={post.region ?? null}
+                createdAt={post.created_at}
+                waReplyUrl={replyUrl}
+                variant="compact"
+              />
+            ))}
+          </div>
+        )}
+
+        {/* Title + body. whitespace-pre-wrap keeps every newline the
+            poster typed. Compact type sizes so the card stays tight. */}
         <div>
-          <h3 className="text-base font-extrabold leading-snug text-neutral-900 sm:text-lg">
+          <h3 className="text-[14px] font-extrabold leading-snug text-neutral-900 sm:text-[15px]">
             {post.title}
           </h3>
-          <p className="mt-2 whitespace-pre-line text-[14px] leading-relaxed text-neutral-800">
-            {post.body}
+          <p className="mt-2 whitespace-pre-wrap break-words text-[13px] leading-[1.5] text-neutral-800">
+            {renderBodyWithLinks(post.body)}
           </p>
         </div>
 
@@ -172,17 +265,20 @@ export function YardChatPost({
             (official) or on the viewer's own posts. */}
         <div className="flex items-start justify-between gap-3 border-t border-neutral-100 pt-3">
           <div className="min-w-0 flex-1">
-            <YardReactionBar postId={post.id} initialCounts={reactions} />
+            <YardReactionBar
+              postId={post.id}
+              initialCounts={reactions}
+              variant="minimal"
+            />
           </div>
           {!isAnnouncement && (
             <YardFlagButton postId={post.id} posterSlug={poster?.slug ?? null} />
           )}
         </div>
 
-        {/* Action row — Reply / Open thread on the left, image
-            thumbnails on the right. Thumbnails enlarge in a lightbox
-            on tap so members can see the project / drawing at full
-            size without leaving the feed. */}
+        {/* Action row — WhatsApp (private DM to poster) on the left,
+            image thumbnails on the right. Public conversation happens
+            via the Comments panel below, not here. */}
         <div className="flex items-center justify-between gap-3 border-t border-neutral-100 pt-3">
           <div className="flex flex-wrap items-center gap-2">
             {replyUrl ? (
@@ -195,26 +291,20 @@ export function YardChatPost({
                   background: BRAND_YELLOW,
                   boxShadow: `0 4px 14px ${BRAND_YELLOW}55`
                 }}
-                aria-label={`Reply to ${posterName} on WhatsApp`}
+                aria-label={`WhatsApp ${posterName} privately`}
               >
                 <ReplyGlyph />
-                Reply
+                WhatsApp
               </a>
             ) : null}
-            <a
-              href={`/trade-off/yard/${post.id}`}
-              className="inline-flex h-10 items-center gap-1.5 rounded-xl border border-neutral-200 bg-white px-3 text-[13px] font-extrabold text-neutral-700 transition hover:border-neutral-300"
-            >
-              Open thread
-            </a>
           </div>
-          {post.image_urls && post.image_urls.length > 0 && (
-            <YardImageThumbs
-              urls={post.image_urls}
-              alt={`Attached to: ${post.title}`}
-            />
-          )}
         </div>
+
+        {/* Public conversation — Facebook-style inline thread. */}
+        <YardCommentsPanel
+          postId={post.id}
+          initialCount={post.comment_count ?? 0}
+        />
 
         {/* Footer meta — contacted + days-left + new flag, one centred
             grey line. */}

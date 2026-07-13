@@ -17,7 +17,7 @@ import { HomeHub } from "./HomeHub";
 
 export const dynamic = "force-dynamic";
 export const metadata = {
-  title: "My Home — Xrated Trades",
+  title: "My Home — The Network",
   robots: { index: false, follow: false }
 };
 

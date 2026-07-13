@@ -21,6 +21,9 @@ import type {
   RetailShippingIntl
 } from "@/lib/supabase";
 import { RetailShippingEditor } from "@/components/trade-off/RetailShippingEditor";
+import { PairsWithEditor } from "@/components/trade-off/PairsWithEditor";
+import { WhatInBoxEditor } from "@/components/trade-off/WhatInBoxEditor";
+import { QAEditor } from "@/components/trade-off/QAEditor";
 import {
   ItemSpecsForm,
   specMapToSaved,
@@ -30,6 +33,7 @@ import {
   PRODUCT_CATEGORIES,
   categoryBySlug
 } from "@/lib/productCategories";
+import { SERVICE_CATEGORIES } from "@/lib/serviceCategories";
 import {
   PaymentMethodMark,
   type PaymentMethodKey
@@ -75,6 +79,19 @@ type FormState = {
   price_pounds: string;
   stock_count: string;
   dispatch_days: string;
+  // Manufacturer / trade-covered warranty in whole years. Empty ⇒ NULL
+  // in the DB (no warranty section on the PDP). Range 1–25 enforced at
+  // both edges — client for immediate feedback, DB for correctness.
+  warranty_years: string;
+  // Phase A taxonomy — nearby-installers pairing.
+  // service_category = which install this service row COVERS (set on
+  // kind='service' rows only). Empty ⇒ not surfaceable to the
+  // "Independent local trades" strip on any PDP.
+  service_category: string;
+  // install_service_category = which install typically PAIRS with
+  // this product (set on kind='product' rows only). Empty ⇒ no
+  // installer strip renders on this product's PDP.
+  install_service_category: string;
   cover_url: string;
   gallery_urls: string[];
   compare_with: string[];
@@ -134,6 +151,9 @@ const EMPTY_FORM: FormState = {
   price_pounds: "",
   stock_count: "",
   dispatch_days: "",
+  warranty_years: "",
+  service_category: "",
+  install_service_category: "",
   cover_url: "",
   gallery_urls: [],
   compare_with: [],
@@ -242,6 +262,12 @@ function productToForm(p: HammerexXratedProduct): FormState {
       p.dispatch_days === null || p.dispatch_days === undefined
         ? ""
         : String(p.dispatch_days),
+    warranty_years:
+      p.warranty_years === null || p.warranty_years === undefined
+        ? ""
+        : String(p.warranty_years),
+    service_category: p.service_category ?? "",
+    install_service_category: p.install_service_category ?? "",
     cover_url: p.cover_url ?? "",
     gallery_urls: Array.isArray(p.gallery_urls) ? p.gallery_urls : [],
     compare_with: Array.isArray(p.compare_with) ? p.compare_with : [],
@@ -420,7 +446,11 @@ export function ShopModeEditor({
     () =>
       products
         .filter((p) => p.status === "live" && p.id !== form.id)
-        .map((p) => ({ id: p.id, name: p.name })),
+        .map((p) => ({
+          id: p.id,
+          name: p.name,
+          cover_url: p.cover_url ?? null
+        })),
     [products, form.id]
   );
 
@@ -521,6 +551,12 @@ export function ShopModeEditor({
           ? null
           : Number(form.stock_count);
       const dispN = form.dispatch_days.trim().length === 0 ? null : Number(form.dispatch_days);
+      // Warranty — clamp 1-25 years (DB CHECK constraint). Empty ⇒ null
+      // so the PDP's warranty timeline auto-hides for products without
+      // a cover.
+      const warN = form.warranty_years.trim().length === 0
+        ? null
+        : Math.max(1, Math.min(25, Math.round(Number(form.warranty_years))));
       const sortN = Number(form.sort_order);
       const product = {
         ...(form.id ? { id: form.id } : {}),
@@ -530,6 +566,15 @@ export function ShopModeEditor({
         price_pence,
         stock_count: stockN === null || !Number.isFinite(stockN) || stockN < 0 ? null : Math.round(stockN),
         dispatch_days: dispN === null || !Number.isFinite(dispN) || dispN < 0 ? null : Math.round(dispN),
+        warranty_years: warN === null || !Number.isFinite(warN) ? null : warN,
+        // Phase A taxonomy — normalise to null when empty so the DB
+        // stores a clean NULL rather than an empty string.
+        service_category: isService
+          ? (form.service_category.trim() || null)
+          : null,
+        install_service_category: !isService
+          ? (form.install_service_category.trim() || null)
+          : null,
         cover_url: form.cover_url.trim(),
         gallery_urls: form.gallery_urls.slice(0, 3),
         compare_with: form.compare_with.slice(0, 10),
@@ -1434,7 +1479,7 @@ function ProductForm({
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
   slug: string;
   editToken: string;
-  compareOptions: { id: string; name: string }[];
+  compareOptions: { id: string; name: string; cover_url: string | null }[];
   submitting: boolean;
   onCancel: () => void;
   onSubmit: () => void;
@@ -1757,6 +1802,70 @@ function ProductForm({
             className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
           />
         </Field>
+        {!isService && (
+          <Field label="Warranty (years, optional)">
+            <input
+              type="number"
+              inputMode="numeric"
+              min="1"
+              max="25"
+              value={form.warranty_years}
+              onChange={(e) => update("warranty_years", e.target.value)}
+              placeholder="e.g. 2"
+              className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+            />
+            <p className="mt-1 text-[11px] text-brand-muted">
+              Adds the warranty timeline block to the PDP. Leave blank
+              if the item isn&apos;t covered.
+            </p>
+          </Field>
+        )}
+        {/* Phase A taxonomy — install pairing.
+            For products: which install typically pairs with this SKU
+            (adds a "get it fitted nearby" strip to the PDP).
+            For services: which install this service row covers
+            (surfaces this trade on matching product PDPs). */}
+        {!isService && (
+          <Field label="Typical install (optional)">
+            <select
+              value={form.install_service_category}
+              onChange={(e) => update("install_service_category", e.target.value)}
+              className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+            >
+              <option value="">Not applicable</option>
+              {SERVICE_CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-[11px] text-brand-muted">
+              Pick when this product typically needs an install. The
+              PDP will show independent local trades who offer that
+              install (WhatsApp handoff, no vetting badge).
+            </p>
+          </Field>
+        )}
+        {isService && (
+          <Field label="This service covers">
+            <select
+              value={form.service_category}
+              onChange={(e) => update("service_category", e.target.value)}
+              className="block h-11 w-full rounded-md border border-brand-line bg-brand-surface px-3 text-sm text-brand-text outline-none focus:border-brand-accent"
+            >
+              <option value="">Not tagged (won&apos;t surface on product PDPs)</option>
+              {SERVICE_CATEGORIES.map((c) => (
+                <option key={c.slug} value={c.slug}>
+                  {c.label}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-[11px] text-brand-muted">
+              Tag this service so it surfaces on product PDPs whose
+              seller marked them as needing this install.
+            </p>
+          </Field>
+        )}
         <Field label="Sort order">
           <input
             type="number"
@@ -1927,6 +2036,38 @@ function ProductForm({
           <option value="archived">Archived (hidden)</option>
         </select>
       </Field>
+
+      {/* Phase 7b — pairs-with editor. Only renders once the product
+          row exists so the anchor id is stable; hidden for services
+          (they don't ship products the buyer can bolt-on to). */}
+      {mode === "edit" && !isService && form.id && (
+        <PairsWithEditor
+          slug={slug}
+          editToken={editToken}
+          productId={form.id}
+          siblings={compareOptions}
+        />
+      )}
+
+      {/* Phase 8b — in-the-box bento editor. Same gate as pairs-with. */}
+      {mode === "edit" && !isService && form.id && (
+        <WhatInBoxEditor
+          slug={slug}
+          editToken={editToken}
+          productId={form.id}
+        />
+      )}
+
+      {/* Phase 9b — Q&A merchant reply editor. Shows every question
+          shoppers have asked, badges pending count, inline reply form
+          per question. Same product-row-must-exist gate. */}
+      {mode === "edit" && form.id && (
+        <QAEditor
+          slug={slug}
+          editToken={editToken}
+          productId={form.id}
+        />
+      )}
 
       <div className="flex flex-wrap gap-2 pt-2">
         <button

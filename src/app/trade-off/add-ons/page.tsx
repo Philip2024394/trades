@@ -23,17 +23,17 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title:
-    "Xrated Trades · App Store — install Apps for your trade business",
+    "The Network · App Warehouse — install apps for your trade business",
   description:
-    "The App Store for trade businesses. Install Apps as you grow — Product Catalogue, Trade Circle, Meet the Team, Delivery Zones, Newsletter, and more. One platform, one Studio, one App Store. 14-day free trial.",
+    "The App Warehouse on The Network. Install apps as you grow — Product Catalogue, Trade Circle, Meet the Team, Delivery Zones, Newsletter, and more. One platform, one Studio, one Warehouse. 14-day free trial.",
   alternates: { canonical: "/trade-off/add-ons" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
     title:
-      "Xrated Trades — App Store. Install Apps for your trade business.",
+      "The Network — App Warehouse. Install apps for your trade business.",
     description:
-      "Install Apps for products, teams, quotes, downloads, deliveries and more. Everything you need to run and grow your trade business online. 14-day free trial.",
+      "Install apps for products, teams, quotes, downloads, deliveries and more. Everything you need to run and grow your trade business online. 14-day free trial.",
     url: absolute("/trade-off/add-ons")
   }
 };
@@ -224,7 +224,7 @@ export default function AddOnsPage() {
                 One business · every App
               </p>
               <h2 className="mt-2 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                Every App. One business app. Start your 14-day free trial.
+                Every App. One business app. Join The Network. Free for life.
               </h2>
             </div>
             <a

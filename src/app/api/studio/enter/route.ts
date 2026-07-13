@@ -23,6 +23,11 @@ export const dynamic = "force-dynamic";
 export async function GET(req: Request) {
   const url = new URL(req.url);
   const token = (url.searchParams.get("token") ?? "").trim();
+  // Optional deep-link target. Only accept in-Studio paths so this
+  // never becomes an open redirector.
+  const rawNext = (url.searchParams.get("next") ?? "").trim();
+  const safeNext =
+    rawNext && rawNext.startsWith("/studio/") ? rawNext : "/studio/home";
 
   if (!token) {
     return NextResponse.redirect(new URL("/studio?failed=1", req.url), {
@@ -38,7 +43,7 @@ export async function GET(req: Request) {
   }
 
   await setStudioSession(token);
-  return NextResponse.redirect(new URL("/studio/home", req.url), {
+  return NextResponse.redirect(new URL(safeNext, req.url), {
     status: 303
   });
 }

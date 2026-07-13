@@ -178,9 +178,11 @@ CREATE TABLE IF NOT EXISTS os_data_erasure_requests (
   executed_by uuid,                         -- staff party id
   execution_evidence jsonb,                 -- structured audit trail of what was deleted
 
-  -- SLA
-  legal_deadline timestamptz                -- 30 days from receipt in UK/EU
-    GENERATED ALWAYS AS (requested_at + interval '30 days') STORED,
+  -- SLA. Note: Postgres GENERATED ALWAYS AS ... STORED must be
+  -- IMMUTABLE — adding an interval to a timestamptz is stable, not
+  -- immutable (depends on session timezone). Stored as a plain
+  -- column instead; applications compute it as needed.
+  legal_deadline timestamptz,               -- 30 days from receipt in UK/EU
 
   created_at timestamptz NOT NULL DEFAULT now(),
   updated_at timestamptz NOT NULL DEFAULT now()

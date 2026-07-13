@@ -2,20 +2,23 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BRAND } from "@/lib/seo";
 import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
+import { GlobalTradeCenterLink } from "@/apps/hub/components/GlobalTradeCenterLink";
 import { allFontVariables } from "@/lib/fonts";
 
-// Minimal root layout for Xrated Trades — Phase 1 of the split from
-// the Hammerex monorepo. Page chrome (header, footer, dock) lives on
-// the Xrated route segments themselves (`/trade-off/*` and
-// `/trade/<slug>/*`); the root layout only owns html/body, brand
-// tokens, the shared metadata defaults, and the site-wide
+// Root layout for The Network. Page chrome (header, footer, dock)
+// lives on the route segments themselves; the root only owns html/body,
+// brand tokens, the shared metadata defaults, and the site-wide
 // Organization + WebSite JSON-LD that every Stripe / search trust
 // scraper looks for.
+//
+// Rebranded 2026-07-10: "The Network — Of The Construction Trades"
+// supersedes "Xrated Trades" as the surface brand. URL host stays
+// xratedtrade.com until a new domain is chosen.
 
 const SITE_URL = "https://xratedtrade.com";
 const DEFAULT_OG_IMAGE = BRAND.logo;
 const DEFAULT_DESCRIPTION =
-  "The shareable trade profile for UK tradespeople. Reviews, photos, prices, WhatsApp — one link. Trade Center catalogue + cart for merchant trades. Free profiles, paid premium tiers.";
+  "The Network of the construction trades. Free for life — your business app, canteen, URL, and access to The Yard + Trade Center. Optional Pro £14.99/mo for merchant features. No card. No commission. Ever.";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -27,17 +30,17 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Xrated Trades — Your shareable trade profile",
-    template: "%s | Xrated Trades"
+    default: "The Network — Of The Construction Trades",
+    template: "%s | The Network"
   },
   description: DEFAULT_DESCRIPTION,
-  applicationName: "Xrated",
+  applicationName: "The Network",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: SITE_URL,
     siteName: BRAND.name,
-    title: "Xrated Trades — Your shareable trade profile",
+    title: "The Network — Of The Construction Trades",
     description: DEFAULT_DESCRIPTION,
     locale: "en_GB",
     images: [
@@ -45,13 +48,13 @@ export const metadata: Metadata = {
         url: DEFAULT_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Xrated Trades — shareable trade profiles for UK tradespeople"
+        alt: "The Network — of the construction trades"
       }
     ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "Xrated Trades — Your shareable trade profile",
+    title: "The Network — Of The Construction Trades",
     description: DEFAULT_DESCRIPTION,
     images: [DEFAULT_OG_IMAGE]
   },
@@ -60,11 +63,11 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png"
   },
   // iOS-specific PWA hints. Without these, an "Add to Home Screen"
-  // install on iPhone launches inside Safari with chrome — defeats the
-  // standalone feel.
+  // install launches inside Safari with chrome — defeats the standalone
+  // feel.
   appleWebApp: {
     capable: true,
-    title: "Xrated",
+    title: "The Network",
     statusBarStyle: "black-translucent"
   }
 };
@@ -76,12 +79,12 @@ export const metadata: Metadata = {
 const organizationLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: BRAND.name,
-  alternateName: ["xratedtrade.com", "Xrated Trades"],
+  name: "The Network",
+  alternateName: ["The Network — Of The Construction Trades", "xratedtrade.com"],
   url: SITE_URL,
   logo: BRAND.logo,
   description:
-    "Construction trades directory and SaaS for UK tradespeople. Free profiles, paid premium tiers, Trade Center catalogue + cart for merchant trades.",
+    "The Network of the construction trades. Studio, App Warehouse, The Yard, and a public profile — one platform for UK construction trades.",
   sameAs: [] as string[],
   contactPoint: [
     {
@@ -139,6 +142,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-brand-bg text-brand-text antialiased">
         {children}
+        {/* Persistent Trade Center shortcut — appears on every page
+            except /tc/* (which has the wordmark in its own header) so
+            users can always jump into the Trade Center app. */}
+        <GlobalTradeCenterLink/>
         {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
             Renders nothing on the server and self-hides once the visitor
             has chosen, so it never blocks page chrome on repeat visits. */}

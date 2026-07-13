@@ -105,13 +105,13 @@ function StepStart() {
       backHref="/join"
       title={
         inviteContext
-          ? `${inviteContext.inviterName} added you to their Notebook.`
-          : "Open your Notebook."
+          ? `${inviteContext.inviterName} added you to their canteen on The Network.`
+          : "Join The Network."
       }
       subtitle={
         inviteContext
-          ? "We've prefilled a few things from their invitation. Confirm your details to open your free Notebook."
-          : "Your business name, what you do, and where you work. Two minutes to the record."
+          ? "We've prefilled a few things from their invitation. Confirm your details to launch your free business app."
+          : "Your business name, what you do, and where you work. Two minutes to your free business app."
       }
     >
       {inviteError ? (

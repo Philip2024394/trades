@@ -366,6 +366,47 @@ export function HomeHub({
               </Link>
             </section>
 
+            {/* MATERIALS PASSPORT — one honest chain of every trade
+                action tagged to this property. Shareable link the
+                homeowner can send to a surveyor / insurer / buyer at
+                sale time. Self-hides on a placeholder property (no
+                confirmed address yet). */}
+            {!property.isPlaceholder && (
+              <section className="mb-4">
+                <Link
+                  href={`/property/${property.id}/materials`}
+                  aria-label="Open your Materials Passport"
+                >
+                  <SurfaceCard variant="primary" padding="md" interactive>
+                    <div className="flex items-center gap-3">
+                      <ShieldCheck
+                        className="h-5 w-5 text-emerald-700"
+                        aria-hidden
+                      />
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[13px] font-semibold uppercase tracking-wide text-neutral-500">
+                          Materials Passport
+                        </div>
+                        <div className="mt-0.5 text-[15px] font-black text-neutral-900">
+                          See who worked on your property.
+                        </div>
+                        <div className="mt-0.5 text-[13px] text-neutral-500">
+                          Every trade action tagged to this address — a
+                          shareable chain surveyors, insurers, and future
+                          buyers can verify without trusting anyone
+                          individually.
+                        </div>
+                      </div>
+                      <ChevronRight
+                        className="h-5 w-5 shrink-0 text-neutral-400"
+                        aria-hidden
+                      />
+                    </div>
+                  </SurfaceCard>
+                </Link>
+              </section>
+            )}
+
             {/* PROJECTS */}
             <section className="mb-4">
               <div className="mb-2 flex items-baseline justify-between gap-2">

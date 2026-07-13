@@ -18,16 +18,16 @@ const SUPPORT_EMAIL = "support@xratedtrade.com";
 const LAST_UPDATED = "28 June 2026";
 
 export const metadata: Metadata = {
-  title: "Refund Policy — Xrated Trades",
+  title: "Refund Policy — The Network",
   description:
-    "Refund rules for Xrated Trades subscriptions and add-ons — UK 14-day cooling-off, monthly vs annual handling, processing times and how to request a refund.",
+    "Refund rules for The Network subscriptions and add-ons — UK 14-day cooling-off, monthly vs annual handling, processing times and how to request a refund.",
   alternates: { canonical: "/legal/refunds" },
   openGraph: {
     type: "website",
     siteName: BRAND.name,
-    title: "Refund Policy — Xrated Trades",
+    title: "Refund Policy — The Network",
     description:
-      "14-day cooling-off, pro-rata rules, processing times and how to request a refund for Xrated Trades.",
+      "14-day cooling-off, pro-rata rules, processing times and how to request a refund for The Network.",
     url: absolute("/legal/refunds")
   }
 };

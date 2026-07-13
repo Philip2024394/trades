@@ -297,7 +297,7 @@ export default function ReviewsPage() {
             Collect verified reviews on your URL
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Start your 14-day free trial.
+            Join The Network. Free for life.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
             Full Paid-tier access for 14 days. No card on signup. Build the

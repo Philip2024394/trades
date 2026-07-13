@@ -21,9 +21,9 @@ export const dynamic = "force-dynamic";
 const HERO_BANNER =
   "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/news-hero.png";
 
-const TITLE = "Construction News | xratedtrade.com";
+const TITLE = "Trade News — The Network";
 const DESCRIPTION =
-  "Construction news, platform announcements and working-tradesperson opinion from the xratedtrade.com team. Stay updated whenever you've got a trade project running.";
+  "Construction news, platform announcements, and working-tradesperson opinion from The Network. Stay updated across every project.";
 
 export const metadata: Metadata = {
   title: TITLE,
