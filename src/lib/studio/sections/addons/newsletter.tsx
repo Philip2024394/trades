@@ -102,7 +102,7 @@ defineAddonSection<NewsletterAddonConfig, NewsletterAddonData>({
   library: "newsletter",
   name: "Newsletter",
   description:
-    "GDPR-compliant email capture. Merchants export the list; xratedtrade never sends emails. Appearance only.",
+    "GDPR-compliant email capture. Merchants export the list; Thenetworkers never sends emails. Appearance only.",
   thumbnail: "/studio/thumbnails/newsletter-signup.png",
   bestForVerticals: ["building-merchant", "builders-supplies", "tool-hire"],
   animations: ["none", "fade"],

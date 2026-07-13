@@ -456,7 +456,7 @@ export default async function TradeOffLandingPage() {
               step: 1,
               title: "Claim your URL",
               body:
-                "Type your name on the home page and tap Join XratedTrade. You're in your dashboard in 5 seconds — no signup form, no card."
+                "Type your name on the home page and tap Join Thenetworkers. You're in your dashboard in 5 seconds — no signup form, no card."
             },
             {
               step: 2,

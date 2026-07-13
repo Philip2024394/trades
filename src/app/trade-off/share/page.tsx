@@ -298,7 +298,7 @@ export default function ShareAnywherePage() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"

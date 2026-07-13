@@ -137,7 +137,7 @@ export default async function MarketingPackPage({
               />
               <a
                 href={qrUrl(size)}
-                download={`xratedtrade-affiliate-${id}-${size}px.png`}
+                download={`thenetworkers-affiliate-${id}-${size}px.png`}
                 className="mt-3 inline-flex h-10 items-center justify-center rounded-lg bg-brand-accent px-4 text-[13px] font-bold text-black hover:opacity-90"
               >
                 Download {size}px

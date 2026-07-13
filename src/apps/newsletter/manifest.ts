@@ -1,7 +1,7 @@
 // App: Newsletter.
 //
 // UK GDPR + PECR compliant email capture. Merchants export the list;
-// xratedtrade never sends emails on their behalf. Reuses the existing
+// Thenetworkers never sends emails on their behalf. Reuses the existing
 // NewsletterSignup profile component.
 
 import type { AppManifest } from "@/platform/manifest/types";

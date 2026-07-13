@@ -1276,7 +1276,7 @@ export const BUSINESS_MODULES: BusinessModule[] = [
     // ─── DNA (S2.K4) ──────────────────────────────────────────
     intent: {
       purpose:
-        "Capture opt-in email addresses on the merchant's public profile with a PECR-compliant consent flow so the merchant can notify customers when stock lands or promos run — without ever handling the send inside xratedtrade.",
+        "Capture opt-in email addresses on the merchant's public profile with a PECR-compliant consent flow so the merchant can notify customers when stock lands or promos run — without ever handling the send inside Thenetworkers.",
       businessGoals: ["capture-leads", "customer-retention"]
     },
     runtime: {

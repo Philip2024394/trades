@@ -83,7 +83,7 @@ const REGISTRATION: ButtonRegistration<Config> = {
   version: "1.0.0",
   category: "marketing",
   role: "cta_whatsapp",
-  description: "Canonical WhatsApp green pill with the WA glyph. Matches every live xratedtrade template.",
+  description: "Canonical WhatsApp green pill with the WA glyph. Matches every live Thenetworkers template.",
   shortPitch: "Universally recognisable, one-tap message.",
   editableFields: [
     { key: "label", label: "Label", type: { kind: "text", maxLength: 32 }, default: "Message on WhatsApp", role: "primary_action_label", priority: "text", aiPromptable: true, group: "Content" },

@@ -20,7 +20,7 @@ export function FindFooter() {
             Tradesperson? Get listed here.
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join xratedtrades today.
+            Join Thenetworkers today.
           </h2>
           <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
             £14.99/mo. 14-day free trial, no card. Your premium profile
@@ -36,7 +36,7 @@ export function FindFooter() {
                 boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
               }}
             >
-              Join XratedTrade
+              Join Thenetworkers
             </a>
             <a
               href="/trade-off/pricing"
@@ -50,7 +50,7 @@ export function FindFooter() {
         {/* Brand mark + copyright at the bottom of the panel */}
         <div className="mt-10 border-t border-white/10 pt-6 text-center">
           <p className="text-[13px] font-extrabold text-white">
-            xratedtrades<span style={{ color: XRATED_BRAND.accent }}>.com</span>
+            thenetworkers<span style={{ color: XRATED_BRAND.accent }}>.app</span>
           </p>
           <p className="mt-1 text-[11px] text-white/50">
             © {year} · UK trades, found direct. No middleman.

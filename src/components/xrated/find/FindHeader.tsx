@@ -13,13 +13,13 @@ export function FindHeader() {
       <div className="mx-auto flex h-[64px] max-w-6xl items-center justify-start gap-3 px-4 sm:h-[72px]">
         <a
           href="/find"
-          aria-label="xratedtrades home"
+          aria-label="Thenetworkers home"
           className="block shrink-0 p-0"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={XRATED_BRAND.logoUrl}
-            alt="xratedtrades"
+            alt="Thenetworkers"
             className="block h-10 w-auto object-contain sm:h-12"
             style={{ background: "transparent" }}
           />

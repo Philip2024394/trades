@@ -489,7 +489,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     name: "Online Payments",
     tagline: "Cards, Apple Pay, PayPal — funds go direct to your account, we never touch them",
     summary:
-      "Connect any UK payment provider in 60 seconds. Stripe, PayPal and Square get one-click OAuth onboarding — Worldpay, SumUp, Klarna, Mollie, Revolut, Tide and every other provider work via Payment Link mode (paste a hosted-pay URL from your existing dashboard). Customers tap Pay Now in the cart, get sent to the provider's hosted checkout (Apple Pay / Google Pay auto-shown), pay direct to your bank, then return to your app's order-success page. xratedtrade is a connector — funds never enter our accounts, we hold no card data, we are not a payment institution. Your provider, your money, your terms.",
+      "Connect any UK payment provider in 60 seconds. Stripe, PayPal and Square get one-click OAuth onboarding — Worldpay, SumUp, Klarna, Mollie, Revolut, Tide and every other provider work via Payment Link mode (paste a hosted-pay URL from your existing dashboard). Customers tap Pay Now in the cart, get sent to the provider's hosted checkout (Apple Pay / Google Pay auto-shown), pay direct to your bank, then return to your app's order-success page. Thenetworkers is a connector — funds never enter our accounts, we hold no card data, we are not a payment institution. Your provider, your money, your terms.",
     glyph: "💳",
     image_url: null,
     personas: ["Merchants", "Carpenters", "Painters", "Tilers", "Roofers", "Bricklayers", "Plasterers", "Joiners", "Electricians", "Plumbers"],
@@ -502,7 +502,7 @@ export const XRATED_ADDONS: XratedAddon[] = [
     includedWithPaid: true,
     benefits: [
       "Connect Stripe / PayPal / Square in one click — Worldpay & every other UK provider via paste-a-link",
-      "Money settles direct to your bank — xratedtrade never holds funds, never sees card data",
+      "Money settles direct to your bank — Thenetworkers never holds funds, never sees card data",
       "Cart 'Pay Now' button works alongside WhatsApp Enquire — buyer picks the lane"
     ]
   },

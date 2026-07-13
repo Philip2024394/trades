@@ -108,7 +108,7 @@ function QrPosterHero({
   const bodyFont = (tokens["font.body"] as string) ?? "inherit";
 
   const seed =
-    (config.qrTargetUrl?.trim() || config.brandDomain?.trim() || "xratedtrade") +
+    (config.qrTargetUrl?.trim() || config.brandDomain?.trim() || "thenetworkers") +
     "|" +
     instanceId;
   const grid = usePseudoQrGrid(seed);
