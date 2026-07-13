@@ -1,4 +1,4 @@
-// Minimal header for xratedtrades.com / /find.
+// Minimal header for thenetworkers.app / /find.
 //
 // This is the customer-facing portal — no burger menu, no alerts bell,
 // no signup nudge. The customer is here to find a tradesperson and

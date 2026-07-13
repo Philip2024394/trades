@@ -73,8 +73,8 @@ export async function generateMetadata({
     // Machine-readable copyright hint for image search bots.
     other: {
       "og:type": "article",
-      "article:author": "xratedtrades.com",
-      copyright: "© xratedtrades.com — All rights reserved"
+      "article:author": "thenetworkers.app",
+      copyright: "© thenetworkers.app — All rights reserved"
     }
   };
 }

@@ -50,7 +50,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes. No contracts, no notice period. Cancel from the dashboard and your subscription stops at the end of the current month (or the current year, if you went annual). Your profile auto-reverts to the free-for-life tier on hammerexdirect.com — you keep your slug, your reviews, your photos and your services. Nothing is deleted."
+    a: "Yes. No contracts, no notice period. Cancel from the dashboard and your subscription stops at the end of the current month (or the current year, if you went annual). Your profile auto-reverts to the free-for-life tier — same thenetworkers.app URL, just with a \"Free\" badge and paid-only widgets hidden. You keep your slug, your reviews, your photos and your services. Nothing is deleted."
   },
   {
     q: "Is the subscription tax deductible?",
@@ -62,11 +62,11 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "What happens to my reviews if I cancel?",
-    a: "Your reviews stay yours forever. They migrate with your slug from thenetworkers.app to the free-for-life tier on hammerexdirect.com and remain visible on your profile. Customers can still submit new reviews on the Free tier as a read-only display — they just won't be moderated through the priority queue. If you resubscribe later, everything reconnects automatically."
+    a: "Your reviews stay yours forever. Your slug and thenetworkers.app URL don't change on downgrade — the profile just switches to the free-for-life tier with a \"Free\" badge and paid-only widgets hidden. Customers can still submit new reviews on the Free tier as a read-only display — they just won't be moderated through the priority queue. If you resubscribe later, everything reconnects automatically."
   },
   {
     q: "How does the 14-day trial work?",
-    a: "Everyone starts free with no card on signup. Your first 14 days unlock every Paid-tier feature — brandable thenetworkers.app URL, intro video, contact form, custom theme, the lot. On day 15 you either subscribe to keep premium (£14.99/mo or £139.99/yr) or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change happens automatically."
+    a: "Everyone starts free with no card on signup. Your first 14 days unlock every Paid-tier feature — intro video, contact form, custom theme, the lot. On day 15 you either subscribe to keep premium (£14.99/mo or £139.99/yr) or your profile auto-reverts to the free-for-life tier. Either way you keep your thenetworkers.app URL; the free tier just shows a \"Free\" badge and hides the paid-only widgets. Either change happens automatically."
   },
   {
     q: "Do I need to upload insurance documents?",

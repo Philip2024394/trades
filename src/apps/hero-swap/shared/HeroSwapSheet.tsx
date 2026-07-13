@@ -71,7 +71,7 @@ export function HeroSwapSheet({ open, onClose, calc }: HeroSwapSheetProps) {
               <Info className="mt-0.5 h-3.5 w-3.5 shrink-0 text-blue-700" />
               <div className="flex-1 text-[11px] leading-snug text-blue-900">
                 <span className="font-semibold">Free to use.</span> Your live
-                site shows a subtle <span className="font-mono">xratedtrades.com</span>{" "}
+                site shows a subtle <span className="font-mono">thenetworkers.app</span>{" "}
                 mark in the corner —{" "}
                 <Link
                   href={`/xrated-trades-images/${calc.image.id}?tier=standard${merchantParam}`}

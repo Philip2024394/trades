@@ -11,7 +11,7 @@ export type LicenseDeliveryInput = {
   tier: string;
 };
 
-const FROM_ADDRESS = "xrated trades <images@xratedtrades.com>";
+const FROM_ADDRESS = "xrated trades <images@thenetworkers.app>";
 
 export async function sendLicenseDeliveryEmail(
   input: LicenseDeliveryInput
@@ -19,8 +19,8 @@ export async function sendLicenseDeliveryEmail(
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
   const resend = new Resend(key);
-  const downloadUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://xratedtrades.com"}/api/licenses/download/${input.licenseId}`;
-  const marketplaceUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://xratedtrades.com"}/xrated-trades-images/${input.imageId}`;
+  const downloadUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://thenetworkers.app"}/api/licenses/download/${input.licenseId}`;
+  const marketplaceUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://thenetworkers.app"}/xrated-trades-images/${input.imageId}`;
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
     to: input.toEmail,
@@ -47,8 +47,8 @@ export async function sendLicenseDeliveryEmail(
         <p style="font-size:11px;color:#888;">
           By using this image you agree to the xrated trades licence terms
           available at
-          <a href="https://xratedtrades.com/image-licence-terms">
-            xratedtrades.com/image-licence-terms
+          <a href="https://thenetworkers.app/image-licence-terms">
+            thenetworkers.app/image-licence-terms
           </a>.
         </p>
       </div>

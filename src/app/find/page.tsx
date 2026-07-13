@@ -1,7 +1,7 @@
-// xratedtrades.com — the customer-facing showcase portal.
+// thenetworkers.app — the customer-facing showcase portal.
 //
 // Served at /find while the host-routing middleware is pending. When
-// middleware ships, xratedtrades.com/ will serve this exact page.
+// middleware ships, thenetworkers.app/ will serve this exact page.
 //
 // Positioning is critical: this is a SHOWCASE of paying Xrated members,
 // not a directory. Every result is a real, live, premium app. The
@@ -28,7 +28,7 @@ export const revalidate = 300;
 
 export const metadata: Metadata = {
   title:
-    "Find a UK trade with an Xrated app | xratedtrades.com",
+    "Find a UK trade with an Xrated app | thenetworkers.app",
   description:
     "See who has a live Xrated app near you. Bricklayer, plumber, electrician, scaffolder, drywaller, roofer — every result is a real tradesperson with a premium profile. Tap a card and talk to them direct on WhatsApp. No middleman, no quote form, no lead routing.",
   alternates: { canonical: "/find" },

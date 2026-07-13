@@ -2,7 +2,7 @@
 //
 // Reads product.features (string[]) from hammerex_xrated_products and
 // renders an icon-anchored bullet grid above the fold — the same "at a
-// glance" surface hammerexdirect uses to sell a product's benefits
+// glance" surface thenetworkers.app uses to sell a product's benefits
 // without forcing the shopper to read the whole description.
 //
 // Icon assignment is heuristic on the feature text (keywords → glyph);

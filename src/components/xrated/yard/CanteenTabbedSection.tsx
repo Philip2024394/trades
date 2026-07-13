@@ -1051,7 +1051,7 @@ function ContactCard({
       // no published email either, prefix uses `contact@` at the
       // canteen domain — the shell can wire a real address later.
       const subject = `Enquiry from ${name || "Thenetworkers"} · ${tradeLabel}`;
-      window.location.href = `mailto:hello@thenetwork.uk?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+      window.location.href = `mailto:hello@thenetworkers.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
     setSent(true);
   }

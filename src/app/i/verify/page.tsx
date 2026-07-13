@@ -103,7 +103,7 @@ export default function VerifyPage() {
 }
 
 function VerifyResultView({ result }: { result: VerifyResult }) {
-  const stegHit = result.payload && result.payload.includes("xratedtrades.com");
+  const stegHit = result.payload && result.payload.includes("thenetworkers.app");
   const bestMatch = result.matches[0];
   const hashHit = bestMatch && bestMatch.confidence !== "low";
 

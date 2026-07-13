@@ -5,7 +5,7 @@
 // geocoding fails or returns nothing.
 
 const NOMINATIM = "https://nominatim.openstreetmap.org/search";
-const UA = "Hammerex Trade Off (hammerexdirect.com)";
+const UA = "Hammerex Trade Off (thenetworkers.app)";
 
 export async function geocodeListing(input: {
   postcode_prefix: string | null;

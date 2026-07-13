@@ -8,9 +8,8 @@ import { XRATED_BRAND } from "@/lib/xratedTrades";
 //
 // Manifest is Xrated-branded (not Hammerex) because the user's primary
 // acquisition push is the Xrated SaaS. Tradies install tools they use
-// weekly; shop visitors don't typically install storefronts. Once the
-// domains split (thenetworkers.app vs hammerexdirect.com) each gets its
-// own manifest.
+// weekly; shop visitors don't typically install storefronts. The whole
+// platform lives on thenetworkers.app under a single manifest.
 //
 // `start_url` opens to /trade-off so a fresh install lands on the
 // Xrated landing. Logged-in tradies who add from their own dashboard

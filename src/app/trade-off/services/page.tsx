@@ -331,9 +331,9 @@ export default function ServiceCardsPage() {
             <span className="font-extrabold text-neutral-900">
               Free vs Paid.
             </span>{" "}
-            On the free tier (hammerexdirect.com) your cards show image +
+            On the free tier your cards show image +
             service name only — no price, no description. Upgrade to Paid
-            (£14.99/mo on thenetworkers.app, 14-day free trial) to unlock full
+            (£14.99/mo, 14-day free trial) to unlock full
             prices, descriptions and the WhatsApp pre-fill flow.
           </p>
         </aside>

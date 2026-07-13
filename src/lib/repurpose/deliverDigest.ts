@@ -23,7 +23,7 @@ export async function deliverMonthlyDigest(
   const resend = new Resend(key);
   const from = input.fromEmail
     ? `${input.fromName ?? "Recent work"} <${input.fromEmail}>`
-    : `xrated studio <digest@xratedtrades.com>`;
+    : `xrated studio <digest@thenetworkers.app>`;
 
   const html = renderDigestHtml(input.draft, input.fromName ?? "");
   const { data, error } = await resend.emails.send({

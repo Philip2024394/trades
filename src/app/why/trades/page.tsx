@@ -206,7 +206,7 @@ export default function WhyTradesPage() {
               status="live"
               icon={<Hammer className="h-5 w-5" />}
               title="Your own app · free forever"
-              body="Not a listing on someone else's site. Your own live page at yourname.theconstructionnotebook.com — with photos, services, WhatsApp button. Drop the link in your Instagram, TikTok, Facebook bio and every social visitor becomes a WhatsApp enquiry."
+              body="Not a listing on someone else's site. Your own live page at yourname.thenetworkers.app — with photos, services, WhatsApp button. Drop the link in your Instagram, TikTok, Facebook bio and every social visitor becomes a WhatsApp enquiry."
             />
             <FeatureCard
               status="live"
@@ -323,7 +323,7 @@ export default function WhyTradesPage() {
               n="02"
               icon={<Sparkles className="h-5 w-5" />}
               title="Upload 3-6 photos + a short blurb"
-              body="What you do, how customers find you, one line about what makes you worth calling. Your app goes live at yourname.theconstructionnotebook.com the moment you hit save."
+              body="What you do, how customers find you, one line about what makes you worth calling. Your app goes live at yourname.thenetworkers.app the moment you hit save."
             />
             <FlowStep
               n="03"

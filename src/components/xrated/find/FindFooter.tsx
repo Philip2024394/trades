@@ -1,4 +1,4 @@
-// Footer for xratedtrades.com / /find.
+// Footer for thenetworkers.app / /find.
 //
 // One decisive black panel: tradesperson-acquisition CTA at the top,
 // brand mark + copyright pinned at the bottom. No add-on columns, no
@@ -25,7 +25,7 @@ export function FindFooter() {
           <p className="mx-auto mt-3 max-w-lg text-[13px] text-white/80 sm:text-sm">
             £14.99/mo. 14-day free trial, no card. Your premium profile
             goes live the moment you save &mdash; and you&rsquo;re
-            auto-listed on xratedtrades.com so customers find you.
+            auto-listed on thenetworkers.app so customers find you.
           </p>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <a

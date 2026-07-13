@@ -271,7 +271,7 @@ export function CanteenHeader({
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=1&data=${encodeURIComponent(`https://thenetwork.uk/trade-off/yard/canteens/${canteen.slug}`)}`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&margin=1&data=${encodeURIComponent(`https://thenetworkers.app/trade-off/yard/canteens/${canteen.slug}`)}`}
                 alt="Scan to open this canteen"
                 className="block h-full w-full"
                 loading="lazy"

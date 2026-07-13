@@ -31,17 +31,13 @@ import { createClient } from "@supabase/supabase-js";
 const SYSTEM_HOSTS = new Set<string>([
   "thenetworkers.app",
   "www.thenetworkers.app",
-  "theconstructionnotebook.com",
-  "www.theconstructionnotebook.com",
   "localhost",
   "trades-philip2024394.vercel.app"
 ]);
 
 // Root domains under which subdomains resolve to trade profiles.
-// bobs-plumbing.theconstructionnotebook.com → /trade/bobs-plumbing.
-// Add the paid domain first (canonical), then the legacy Xrated root
-// so historical links keep working during the rebrand window.
-const SUBDOMAIN_ROOTS = ["theconstructionnotebook.com", "thenetworkers.app"];
+// bobs-plumbing.thenetworkers.app → /trade/bobs-plumbing.
+const SUBDOMAIN_ROOTS = ["thenetworkers.app"];
 
 // Reserved subdomains that must NOT be treated as trade slugs — these
 // are our own subdomains for admin / API / marketing surfaces.
@@ -162,9 +158,9 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     return applyAffiliateRef(req, NextResponse.next());
   }
 
-  // Subdomain-per-trade — bobs-plumbing.theconstructionnotebook.com
+  // Subdomain-per-trade — bobs-plumbing.thenetworkers.app
   // resolves to /trade/bobs-plumbing without any DB lookup or any DNS
-  // config beyond a wildcard *.theconstructionnotebook.com A record on
+  // config beyond a wildcard *.thenetworkers.app A record on
   // Cloudflare. This is the make-or-break for the "canonical business
   // page" slogan (memory: project_construction_notebook_slogan.md).
   //

@@ -1,10 +1,11 @@
 // Xrated Trades — pricing page (Free vs Paid 2-tier comparison).
-// Two-tier freemium: Free Profile on hammerexdirect.com (basic, forever
-// free) vs Paid Profile on thenetworkers.app (£14.99/mo or £139.99/yr, 14-day
-// trial). Every signup starts FREE with all premium features unlocked
-// for 14 days; if they don't convert by day 15 the profile auto-reverts
-// to the free-for-life tier. No card required either way. The brandable
-// thenetworkers.app URL is the central upgrade lever.
+// Two-tier freemium: Free Profile (basic, forever free, "Free" badge on
+// profile, paid-only widgets hidden) vs Paid Profile (£14.99/mo or
+// £139.99/yr, 14-day trial). Both tiers live on thenetworkers.app —
+// upgrading removes the "Free" badge and unlocks the paid-only widgets.
+// Every signup starts FREE with all premium features unlocked for 14
+// days; if they don't convert by day 15 the profile auto-reverts to
+// the free-for-life tier. No card required either way.
 //
 // Page layout: hero → two-card comparison (PricingTierCards client child)
 // → side-by-side feature comparison table → FAQ → closing CTA.
@@ -57,7 +58,8 @@ type FeatureRow = {
 const COMPARE_ROWS: FeatureRow[] = [
   // ─────────────────── URL + identity ───────────────────
   { section: "URL & identity", label: "", free: "", paid: "", verified: "" },
-  { label: "URL domain", free: "hammerexdirect.com", paid: "thenetworkers.app", verified: "thenetworkers.app", highlight: true },
+  { label: "URL domain", free: "thenetworkers.app", paid: "thenetworkers.app", verified: "thenetworkers.app" },
+  { label: "\"Free\" badge on profile", free: true, paid: false, verified: false, highlight: true },
   { label: "Branded URL slug (yours forever)", free: true, paid: true, verified: true },
   { label: "Xrated header on profile", free: "Visible", paid: "Hidden (white-label)", verified: "Hidden (white-label)", highlight: true },
   { label: "Custom domain (yourtrade.co.uk)", free: false, paid: "App £5/mo", verified: "App £5/mo" },
@@ -74,9 +76,9 @@ const COMPARE_ROWS: FeatureRow[] = [
   { label: "14-day auto-vanish (no public footprint)", free: false, paid: true, verified: true, highlight: true },
   { label: "Builder trades get free Yard access", free: false, paid: "If builder-grade trade", verified: "If builder-grade trade" },
 
-  // ─────────────────── xratedtrades.com search portal ───────────────────
-  { section: "xratedtrades.com — customer search portal", label: "", free: "", paid: "", verified: "" },
-  { label: "Auto-listed on xratedtrades.com", free: false, paid: true, verified: true, highlight: true },
+  // ─────────────────── thenetworkers.app search portal ───────────────────
+  { section: "thenetworkers.app — customer search portal", label: "", free: "", paid: "", verified: "" },
+  { label: "Auto-listed on thenetworkers.app", free: false, paid: true, verified: true, highlight: true },
   { label: "Verified badge on every search result", free: false, paid: false, verified: true, highlight: true },
   { label: "Priority sort on search results", free: false, paid: false, verified: true },
   { label: "Receives Project Beacons (3-nearest customer pings)", free: false, paid: true, verified: true, highlight: true },
@@ -146,8 +148,8 @@ const PRICING_FAQ = [
     a: "Yes — The Yard is a paid-tier feature, included with every Paid and Verified plan. It's the private trades-only board nobody outside the membership can read. Post 'Available next week' or 'Need 3 sparks Monday', drop a Trade Chat about rates or suppliers, or list a tool for sale. Every post auto-vanishes after 14 days so there's no public footprint your customers can google. Builder-grade trades (general-builder, building-merchant, builders-supplies) get free Yard access as a marketplace-density boost."
   },
   {
-    q: "Will customers find me on xratedtrades.com?",
-    a: "Yes. Every paid profile is auto-listed on xratedtrades.com — our customer-facing UK search portal. Customers search by trade + city + postcode, see a list of real Xrated apps in their area, and tap straight through to YOUR app. We don't sit in the middle — no quote forms, no message routing, no commission. The customer lands on your profile and uses YOUR WhatsApp button. Verified members get the visible badge on every search result + priority sort."
+    q: "Will customers find me on thenetworkers.app?",
+    a: "Yes. Every paid profile is auto-listed on thenetworkers.app — our customer-facing UK search portal. Customers search by trade + city + postcode, see a list of real apps in their area, and tap straight through to YOUR app. We don't sit in the middle — no quote forms, no message routing, no commission. The customer lands on your profile and uses YOUR WhatsApp button. Verified members get the visible badge on every search result + priority sort."
   },
   {
     q: "What is the Verified tier and why does it cost £19.99/mo?",
@@ -163,15 +165,15 @@ const PRICING_FAQ = [
   },
   {
     q: "How does the 14-day free trial work?",
-    a: "Sign up free. Your first 14 days unlock every premium feature — brandable thenetworkers.app URL, video, contact form, custom theme, the lot. No card required. On day 15 you either start a £14.99/mo (or £139.99/yr) subscription to keep premium, or your profile auto-reverts to the free-for-life tier on hammerexdirect.com. Either change is automatic. Your slug stays yours forever either way."
+    a: "Sign up free. Your first 14 days unlock every premium feature — video, contact form, custom theme, the lot. No card required. On day 15 you either start a £14.99/mo (or £139.99/yr) subscription to keep premium, or your profile auto-reverts to the free-for-life tier. Either way you keep your thenetworkers.app URL; the free tier just shows a \"Free\" badge on the profile and hides the paid-only widgets. Your slug stays yours forever."
   },
   {
     q: "What happens when I downgrade — do I lose my work?",
-    a: "Your reviews, photos, services, opening hours and team grid all stay. What changes: the URL flips from thenetworkers.app to hammerexdirect.com (with a 301 redirect so old shared links still work), the Xrated header appears, and the paid-only widgets hide (video, contact form, Meet-the-team, service prices). Upgrade later and everything snaps back."
+    a: "Your reviews, photos, services, opening hours and team grid all stay. Your URL stays the same too — everyone lives on thenetworkers.app regardless of tier. What changes on downgrade: a \"Free\" badge appears on your profile, and the paid-only widgets hide (video, contact form, Meet-the-team, service prices). Upgrade later and the badge comes off and the widgets snap back."
   },
   {
-    q: "Can I keep my thenetworkers.app URL by paying?",
-    a: "Yes — that is the whole point. The thenetworkers.app URL is reserved for paid profiles only. Your slug stays yours forever (no one else can claim it) but it lives on hammerexdirect.com when you are on Free and on thenetworkers.app when you are Paid."
+    q: "Do I get a thenetworkers.app URL on the free tier?",
+    a: "Yes — every profile lives on thenetworkers.app regardless of tier. The free tier just shows a small \"Free\" badge on your profile and hides the paid-only widgets. Your slug stays yours forever (no one else can claim it) — upgrading later just removes the badge and unlocks the widgets."
   },
   {
     q: "What is the difference between monthly and annual?",
@@ -265,7 +267,7 @@ export default async function PricingPage() {
             <span className="font-bold text-white">PLUS</span> The Yard
             (private trades-only forum){" "}
             <span className="font-bold text-white">PLUS</span> auto-listing
-            on xratedtrades.com so customers find you{" "}
+            on thenetworkers.app so customers find you{" "}
             <span className="font-bold text-white">PLUS</span> the App Store
             so you install Apps as you grow. Every future feature lands free,
             automatic. 14-day trial, no card.{" "}

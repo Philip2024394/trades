@@ -59,9 +59,10 @@ const PAID_TIERS = new Set(["app_trial", "app_paid", "app_verified"]);
 const IS_PROD = process.env.NODE_ENV === "production";
 function profileHref(poster: YardPoster): string {
   if (!IS_PROD) return `/${poster.slug}`;
-  return PAID_TIERS.has(poster.tier ?? "standard")
-    ? `https://theconstructionnotebook.com/${poster.slug}`
-    : `https://hammerexdirect.com/${poster.slug}`;
+  // 2026-07-13: dual-domain paid/free routing retired — everything on
+  // the single thenetworkers.app domain. Tier gating is done at page
+  // level, not by domain.
+  return `https://thenetworkers.app/${poster.slug}`;
 }
 
 function formatWa(raw: string): string {

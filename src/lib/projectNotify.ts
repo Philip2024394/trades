@@ -11,7 +11,7 @@ const FROM =
   process.env.HAMMEREX_TRADE_FROM_EMAIL ||
   "Construction Notebook <hello@thenetworkers.app>";
 
-const BASE = process.env.NEXT_PUBLIC_HAMMEREX_SITE_URL || "https://xratedtrade.vercel.app";
+const BASE = process.env.NEXT_PUBLIC_HAMMEREX_SITE_URL || "https://thenetworkers.app";
 
 function escapeHtml(s: string): string {
   return s

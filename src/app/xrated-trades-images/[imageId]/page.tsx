@@ -122,7 +122,7 @@ export default async function ImageMarketplacePage({
               Every licence includes commercial-use rights for the buyer
               only. No sublicensing, no resale as-is. Full terms at{" "}
               <Link href="/image-licence-terms" className="underline">
-                xratedtrades.com/image-licence-terms
+                thenetworkers.app/image-licence-terms
               </Link>
               .
             </div>

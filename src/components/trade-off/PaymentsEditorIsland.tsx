@@ -604,7 +604,7 @@ function PaypalCard({
               steps={[
                 <>Log in to <a href="https://developer.paypal.com/dashboard/applications/live" target="_blank" rel="noreferrer" className="underline">developer.paypal.com/dashboard</a>. Sign in with your PayPal Business account.</>,
                 <>Under <strong>Apps &amp; Credentials</strong>, pick <strong>Sandbox</strong> for testing or <strong>Live</strong> for real payments.</>,
-                <>Click <strong>Create App</strong> if you don&rsquo;t have one. Name it &ldquo;xratedtrade&rdquo;. Product type: <strong>Merchant</strong>.</>,
+                <>Click <strong>Create App</strong> if you don&rsquo;t have one. Name it &ldquo;thenetworkers&rdquo;. Product type: <strong>Merchant</strong>.</>,
                 <>Copy <strong>Client ID</strong> and <strong>Secret</strong>. Paste them above.</>
               ]}
             />
@@ -771,7 +771,7 @@ function SquareCard({
             <HelpBlock
               steps={[
                 <>Log in to <a href="https://developer.squareup.com/apps" target="_blank" rel="noreferrer" className="underline">developer.squareup.com/apps</a> with your Square account.</>,
-                <>Click <strong>+ Create your first app</strong> if you have none. Name it &ldquo;xratedtrade&rdquo;.</>,
+                <>Click <strong>+ Create your first app</strong> if you have none. Name it &ldquo;thenetworkers&rdquo;.</>,
                 <>Open the app → <strong>Credentials</strong> tab → toggle <strong>Sandbox</strong> or <strong>Production</strong>.</>,
                 <>Copy <strong>Access Token</strong> (long string starting EAAA…) and <strong>Default Location ID</strong> (in the Locations tab). Paste both above.</>
               ]}
@@ -1038,7 +1038,7 @@ function TrustBar() {
     },
     {
       title: "Direct to you",
-      body: "Money settles into your own provider account. Never through xratedtrade."
+      body: "Money settles into your own provider account. Never through thenetworkers."
     },
     {
       title: "Your keys, your control",

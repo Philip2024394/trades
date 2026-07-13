@@ -24,7 +24,7 @@ export type DispatchNotificationInput = {
 
 const VAPID_PUBLIC  = process.env.NEXT_PUBLIC_XRATED_VAPID_PUBLIC_KEY;
 const VAPID_PRIVATE = process.env.XRATED_VAPID_PRIVATE_KEY;
-const VAPID_SUBJECT = process.env.XRATED_VAPID_SUBJECT ?? "mailto:admin@theconstructionnotebook.com";
+const VAPID_SUBJECT = process.env.XRATED_VAPID_SUBJECT ?? "mailto:admin@thenetworkers.app";
 let vapidConfigured = false;
 function configureVapidIfPossible(): boolean {
   if (vapidConfigured) return true;

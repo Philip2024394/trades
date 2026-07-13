@@ -21,7 +21,7 @@
 //     TWILIO_MESSAGING_SERVICE_SID (or TWILIO_FROM_NUMBER)
 //   Email:
 //     RESEND_API_KEY
-//     RESEND_FROM_ADDRESS          (defaults noreply@theconstructionnotebook.com)
+//     RESEND_FROM_ADDRESS          (defaults noreply@thenetworkers.app)
 
 import "server-only";
 
@@ -121,7 +121,7 @@ async function sendMerchantEmail(
   url: string
 ): Promise<{ ok: boolean }> {
   const key  = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_ADDRESS ?? "Trade Center <noreply@theconstructionnotebook.com>";
+  const from = process.env.RESEND_FROM_ADDRESS ?? "Trade Center <noreply@thenetworkers.app>";
   if (!key) return { ok: false };
   try {
     const res = await fetch("https://api.resend.com/emails", {
@@ -231,7 +231,7 @@ async function sendSms(dest: string, code: string): Promise<{ ok: boolean; provi
 // -----------------------------------------------------------
 async function sendEmail(dest: string, code: string): Promise<{ ok: boolean; provider: string; note?: string }> {
   const key  = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM_ADDRESS ?? "Trade Center <noreply@theconstructionnotebook.com>";
+  const from = process.env.RESEND_FROM_ADDRESS ?? "Trade Center <noreply@thenetworkers.app>";
   if (!key) return { ok: false, provider: "email", note: "env_missing_dev_only" };
 
   const res = await fetch("https://api.resend.com/emails", {

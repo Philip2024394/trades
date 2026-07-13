@@ -167,7 +167,7 @@ export async function seedMerchant(input: {
         city: "Nottingham",
         country: "United Kingdom",
         whatsapp: "+447000000000",
-        email: "manufacturer-samples@xratedtrade.internal",
+        email: "manufacturer-samples@thenetworkers.internal",
         bio: "Platform-owned sample manufacturer for pilot seeds. Do not link publicly.",
         status: "hidden"
       },

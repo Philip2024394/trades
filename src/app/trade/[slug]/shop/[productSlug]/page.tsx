@@ -994,7 +994,7 @@ export default async function ProductDetailPage({
         />
       )}
 
-      {/* Phase 1–5 port from hammerexdirect PDP — visual bumps that
+      {/* Phase 1–5 port from thenetworkers.app PDP — visual bumps that
           read existing fields on hammerex_xrated_products / _listings
           with no schema change. Each renders nothing when the
           underlying field is null / empty so PDPs without curated

@@ -43,7 +43,7 @@ const FAQS: ReadonlyArray<Faq> = [
   },
   {
     q: "What if I want to cancel?",
-    a: "Open your dashboard, click 'Manage subscription' — that opens the Stripe Customer Portal where you cancel in one tap, at period end. Your app keeps running. We move it from your branded thenetworkers.app URL onto a hammerexdirect.com URL — your profile stays online, your reviews stay live, your customers can still reach you. The popular branded URLs stay reserved for paid customers, so we never give your old URL away. Re-upgrade any time to get it back."
+    a: "Open your dashboard, click 'Manage subscription' — that opens the Stripe Customer Portal where you cancel in one tap, at period end. Your app keeps running on the same thenetworkers.app URL — we just switch it to the free-for-life tier, add a \"Free\" badge, and hide the paid-only widgets. Your profile stays online, your reviews stay live, your customers can still reach you. Your slug stays yours forever. Re-upgrade any time to remove the badge and unlock the widgets again."
   },
   {
     q: "Do you take a commission on jobs I win?",

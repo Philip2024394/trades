@@ -4,7 +4,7 @@
 // Metadata is trivially strippable by determined adversaries, but:
 //  - Most casual downloaders never touch it → free provenance signal
 //  - Google Images reads IPTC copyright and can show "provided by
-//    xratedtrades.com" in search results
+//    thenetworkers.app" in search results
 //  - DMCA process wants machine-readable copyright on the file itself
 //
 // We keep this layer cheap — Sharp handles it in-process.

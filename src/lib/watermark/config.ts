@@ -5,11 +5,11 @@
 // picks up the new brand automatically. Keeps visible marks + metadata
 // + steganography aligned so a stolen image always ties back to us.
 
-export const WATERMARK_BRAND = "xratedtrades.com";
-export const WATERMARK_URL_BASE = "https://xratedtrades.com/i";
-export const WATERMARK_COPYRIGHT = "© xratedtrades.com — All rights reserved";
+export const WATERMARK_BRAND = "thenetworkers.app";
+export const WATERMARK_URL_BASE = "https://thenetworkers.app/i";
+export const WATERMARK_COPYRIGHT = "© thenetworkers.app — All rights reserved";
 export const WATERMARK_LICENSE_TERMS_URL =
-  "https://xratedtrades.com/image-licence-terms";
+  "https://thenetworkers.app/image-licence-terms";
 
 /** Watermark tier — decides which layers apply.
  *

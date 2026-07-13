@@ -11,9 +11,8 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 // as evidence of an established business; thin or missing sitemaps get
 // flagged on brand-name pattern alone.
 
-// Canonical origin — env-driven so the rebrand to
-// theconstructionnotebook.com can flip without a code change. Default
-// preserves current thenetworkers.app behaviour.
+// Canonical origin — env-driven so a future rebrand can flip without a
+// code change. Default is thenetworkers.app (single-domain model).
 const SITE =
   process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://thenetworkers.app";
 

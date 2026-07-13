@@ -7,7 +7,7 @@
 // Env contract (already provisioned in .env.local):
 //   RESEND_API_KEY                 — Resend secret
 //   HAMMEREX_TRADE_FROM_EMAIL      — verified `from` (e.g. "Hammerex
-//                                    Trade <orders@hammerexdirect.com>")
+//                                    Trade <orders@thenetworkers.app>")
 //   HAMMEREX_TRADE_ADMIN_EMAIL     — inbox we forward to
 //
 // We deliberately do not log the WhatsApp number, email, or message

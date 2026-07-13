@@ -25,7 +25,7 @@ export const TIER_PRICING: Record<LicenseTier, TierPricing> = {
     amountPence: 3900, // £39
     billingCadence: "one-time",
     bullets: [
-      "Removes the xratedtrades.com corner mark",
+      "Removes the thenetworkers.app corner mark",
       "Use on your website, socials, print, digital ads",
       "One-off payment — yours to keep",
       "Non-exclusive (others can also licence)"

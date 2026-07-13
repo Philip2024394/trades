@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title:
-    "Send your project to the 3 nearest trades | xratedtrades.com",
+    "Send your project to the 3 nearest trades | thenetworkers.app",
   description:
     "Type your project once, push it to the 3 closest verified Xrated trades. They WhatsApp you direct. We don't sit in the middle — no quote forms, no lead routing, no commission.",
   alternates: { canonical: "/find/beacon" },
@@ -94,7 +94,7 @@ export default async function ProjectBeaconPage() {
           href="/find"
           className="inline-flex h-10 items-center gap-1.5 text-[12px] font-extrabold uppercase tracking-wider text-neutral-600 transition hover:text-neutral-900"
         >
-          &larr; Or browse trades on xratedtrades.com
+          &larr; Or browse trades on thenetworkers.app
         </a>
       </section>
 

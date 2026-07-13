@@ -2,7 +2,7 @@
 //
 // Decodes the steganographic payload from a supplied image. Used to
 // prove provenance of a suspected repost — upload the stolen image
-// and get back the original xratedtrades.com/i/{imageId} URL.
+// and get back the original thenetworkers.app/i/{imageId} URL.
 //
 // Body: multipart/form-data with field `file` (the image to check).
 // Response: { payload: string | null, ahash: string, matches: [...] }
