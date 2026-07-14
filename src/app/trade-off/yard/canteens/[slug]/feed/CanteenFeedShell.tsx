@@ -60,7 +60,7 @@ const MOCK_POSTS: CanteenChatPost[] = [
     authorSlug: "tom-fisher",
     authorDisplayName: "Tom Fisher",
     body: "Smashed the Whittington fit-out today. Full 3-day install into a new-build kitchen. Client over the moon.",
-    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_00_03%20PM.png"],
     moodSlug: "showcase",
     reactionsLike: 22,
     reactionsAgree: 5,

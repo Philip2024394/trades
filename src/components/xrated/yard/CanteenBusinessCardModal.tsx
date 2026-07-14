@@ -8,9 +8,10 @@
 // Triggered from the hero "Business card" button (replacing the old
 // direct WhatsApp CTA). Feels like flipping open the merchant's card.
 
-import { useEffect } from "react";
-import { X, Share2, MapPin, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
+import { X, MessageCircle, MapPin, Phone } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { VerifiedContactModal } from "@/components/xrated/VerifiedContactModal";
 
 const TAN = "#B8860B";
 
@@ -54,6 +55,13 @@ export function CanteenBusinessCardModal({
     };
   }, [open, onClose]);
 
+  // Verified contact modal state — the "Message on WhatsApp" button
+  // no longer opens WhatsApp directly. It opens the VerifiedContactModal
+  // which collects name/WA/comment and burns a washer on Send.
+  // Hook is placed BEFORE the early return so React sees a stable
+  // hook order across renders.
+  const [contactOpen, setContactOpen] = useState(false);
+
   if (!open) return null;
 
   // Split the display name the same way the canteen hero does — last
@@ -66,10 +74,6 @@ export function CanteenBusinessCardModal({
   const openUrl = `https://thenetworkers.app/${hostSlug}`;
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&margin=0&data=${encodeURIComponent(openUrl)}`;
   const digits = hostWhatsapp ? hostWhatsapp.replace(/[^0-9]/g, "") : null;
-  const shareMessage = `Hi ${hostFirstName} — I found your card on Thenetworkers. Get in touch about ${tradeLabel.toLowerCase()}.`;
-  const shareWaUrl = digits
-    ? `https://wa.me/${digits}?text=${encodeURIComponent(shareMessage)}`
-    : null;
   const addressFull = [addressLine, city, postcode].filter(Boolean).join(", ");
 
   return (
@@ -127,15 +131,21 @@ export function CanteenBusinessCardModal({
             }}
           />
 
-          {/* Close button — top-right of the card */}
+          {/* Close button — top-right of the card. Dark red so the
+              dismiss affordance reads unmistakably at any card colour. */}
           <button
             type="button"
             onClick={onClose}
             aria-label="Close business card"
-            className="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
-            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+            className="absolute z-20 inline-flex h-11 w-11 items-center justify-center rounded-full shadow-md transition active:scale-[0.95]"
+            style={{
+              backgroundColor: "#991B1B",
+              color: "#FFFFFF",
+              top:   "max(16px, env(safe-area-inset-top, 0))",
+              right: "max(16px, env(safe-area-inset-right, 0))"
+            }}
           >
-            <X size={16} strokeWidth={2.8}/>
+            <X size={20} strokeWidth={2.8}/>
           </button>
 
           {/* Card body — mirrors the canteen hero's typography
@@ -182,17 +192,17 @@ export function CanteenBusinessCardModal({
                   room stays in the bottom-right. */}
               <div className="mt-2 flex flex-col gap-1">
                 {addressFull && (
-                  <div className="flex items-start gap-1.5 text-white/85">
-                    <MapPin size={11} strokeWidth={2.5} className="mt-0.5 flex-shrink-0"/>
-                    <span className="text-[10.5px] font-bold leading-snug drop-shadow-sm sm:text-[11px]">
+                  <div className="flex items-start gap-1.5 text-white/90">
+                    <MapPin size={12} strokeWidth={2.5} className="mt-0.5 flex-shrink-0"/>
+                    <span className="text-[12px] font-bold leading-snug drop-shadow-sm sm:text-[12.5px]">
                       {addressFull}
                     </span>
                   </div>
                 )}
                 {digits && (
-                  <div className="flex items-center gap-1.5 text-white/85">
-                    <Phone size={11} strokeWidth={2.5}/>
-                    <span className="text-[10.5px] font-bold drop-shadow-sm sm:text-[11px]">
+                  <div className="flex items-center gap-1.5 text-white/90">
+                    <Phone size={12} strokeWidth={2.5}/>
+                    <span className="text-[12px] font-bold drop-shadow-sm sm:text-[12.5px]">
                       {hostWhatsapp}
                     </span>
                   </div>
@@ -206,8 +216,12 @@ export function CanteenBusinessCardModal({
               gets covered by the gradient. Matches how a real trade
               card would print a scannable code in the corner. */}
           <div
-            className="absolute bottom-3 right-3 z-20 flex flex-col items-center gap-1 rounded-lg bg-white p-1.5 shadow-md sm:bottom-5 sm:right-5 sm:p-2"
-            style={{ border: `2px solid ${TAN}` }}
+            className="absolute z-20 flex flex-col items-center gap-1 rounded-lg bg-white p-1.5 shadow-md sm:p-2"
+            style={{
+              border: `2px solid ${TAN}`,
+              bottom: "max(16px, env(safe-area-inset-bottom, 0))",
+              right:  "max(16px, env(safe-area-inset-right, 0))"
+            }}
           >
             <img
               src={qrUrl}
@@ -223,30 +237,43 @@ export function CanteenBusinessCardModal({
         </div>
 
         {/* Action buttons — outside the card so the card reads as a
-            card, not a form. */}
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          {shareWaUrl && (
-            <a
-              href={shareWaUrl}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[11.5px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+            card, not a form. Message routes through VerifiedContactModal
+            so we burn a washer only on a genuine send. */}
+        {digits && (
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <button
+              type="button"
+              onClick={() => setContactOpen(true)}
+              className="inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
               style={{ backgroundColor: BRAND_GREEN_DARK }}
             >
-              <Share2 size={12} strokeWidth={2.5}/>
-              Share to WhatsApp
-            </a>
-          )}
-          <button
-            type="button"
-            onClick={onClose}
-            className="inline-flex h-10 items-center gap-1.5 rounded-full border border-white/40 bg-white/10 px-4 text-[11.5px] font-black uppercase tracking-wider text-white backdrop-blur transition active:scale-[0.97]"
-          >
-            <X size={12} strokeWidth={2.5}/>
-            Close
-          </button>
-        </div>
+              <MessageCircle size={14} strokeWidth={2.5}/>
+              Message {hostFirstName}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Verified contact modal — collects name/WA/comment before
+          opening WhatsApp. Fires the washer deduction on Send. */}
+      {digits && (
+        <VerifiedContactModal
+          open={contactOpen}
+          onClose={() => {
+            setContactOpen(false);
+            onClose();
+          }}
+          merchantSlug={hostSlug}
+          merchantDisplayName={hostDisplayName}
+          merchantFirstName={hostFirstName}
+          merchantWhatsapp={digits}
+          tradeLabel={tradeLabel}
+          city={city}
+          source="canteen-business-card"
+          sourceLabel={`${hostFirstName}'s business card on Thenetworkers.app`}
+          canteenSlug={hostSlug}
+        />
+      )}
     </div>
   );
 }

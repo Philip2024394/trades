@@ -23,12 +23,8 @@ import {
   Search,
   Bell,
   User,
-  Home,
-  Radio,
   Users,
-  Compass,
   X,
-  Menu,
   Settings,
   DollarSign,
   MessageCircle,
@@ -41,7 +37,8 @@ import {
   Sparkles,
   ExternalLink,
   BarChart3,
-  Wrench
+  Wrench,
+  Circle
 } from "lucide-react";
 
 // `token` is `null` when the session came from the signed cookie
@@ -302,28 +299,18 @@ export function AppShell({
         onToggleEditMode={toggleCanteenEdit}
       />
 
-      {/* Mobile top bar — brand on left, notifications bell + burger
-          on right. The burger opens the same AppDrawer as the desktop
-          avatar so nav destinations stay identical across breakpoints.
-          Hidden on md+ so we don't double-stack with AppTopBar. */}
-      <MobileTopBar
-        auth={auth}
-        onOpenDrawer={() => setDrawerOpen(true)}
-        pendingCount={pendingCount}
-        showEditModeButton={isOnCanteenDetail}
-        editModeActive={canteenEditActive}
-        onToggleEditMode={toggleCanteenEdit}
-      />
+      {/* No mobile chrome cluster. The mobile view is the merchant's
+          public app surface — visitor navigation happens via the main
+          app entry (thenetworkers.app) and the bottom nav below. No
+          bell / no burger / no Edit chip on mobile. See the memory
+          note on desktop + iPad as the source of truth for editing. */}
 
-      {/* Main content — top padding on mobile clears the mobile top
-          bar; bottom padding clears the bottom nav. */}
-      <main className="pt-[56px] pb-20 md:pt-0 md:pb-0">{children}</main>
-
-      {/* Mobile bottom nav — thumb-reach primary actions */}
-      <AppBottomNav
-        isActive={isActive}
-        preserveAuth={preserveAuth}
-      />
+      {/* Main content. No top padding on mobile: the top-right icon
+          cluster is fixed-position (chrome-only), so page heroes render
+          at the true top of the viewport. Bottom mobile nav removed
+          per the "no footers on app surfaces" rule — navigation lives
+          in the top-right avatar drawer. */}
+      <main>{children}</main>
 
       {/* Avatar drawer — opens from the top-right avatar */}
       <AppDrawer
@@ -507,192 +494,6 @@ function AppTopBar({
   );
 }
 
-// Mobile-only sticky top bar. Brand on left, notifications bell +
-// burger on right. Height 56px matches iOS/Android convention. The
-// burger opens the shared AppDrawer via onOpenDrawer so nav destinations
-// stay identical to the desktop top bar's avatar button.
-function MobileTopBar({
-  auth,
-  onOpenDrawer,
-  pendingCount,
-  showEditModeButton,
-  editModeActive,
-  onToggleEditMode
-}: {
-  auth: Auth | null;
-  onOpenDrawer: () => void;
-  pendingCount: number;
-  showEditModeButton: boolean;
-  editModeActive: boolean;
-  onToggleEditMode: () => void;
-}) {
-  const [notifsOpen, setNotifsOpen] = useState(false);
-  // Notifications route — when we know the merchant's slug we link to
-  // their notifications page. Token is only appended for magic-link
-  // sessions; cookie sessions authenticate downstream. Signed-out
-  // visitors get the login page so the bell never dead-ends.
-  const notificationsHref = auth
-    ? auth.token
-      ? `/trade-off/edit/${auth.slug}/notifications?token=${encodeURIComponent(auth.token)}`
-      : `/trade-off/edit/${auth.slug}/notifications`
-    : `/trade-off/login`;
-  return (
-    <header
-      className="sticky top-0 z-40 border-b bg-[#FBF6EC]/95 backdrop-blur md:hidden"
-      style={{ borderColor: "rgba(27,26,23,0.08)" }}
-    >
-      <div className="flex h-[56px] items-center justify-between px-3">
-        {/* Brand — yellow dot + wordmark. Canonical logo pattern. */}
-        <Link
-          href="/"
-          className="inline-flex shrink-0 items-center gap-1.5"
-          aria-label="Thenetworkers home"
-        >
-          <span
-            aria-hidden
-            className="inline-block h-2.5 w-2.5 rounded-full"
-            style={{ backgroundColor: "#FFB300" }}
-          />
-          <span className="text-[13px] font-black uppercase tracking-[0.16em] text-[#B8860B]">
-            Thenetworkers
-          </span>
-        </Link>
-
-        {/* Right cluster — Edit mode pill (canteen only) + notifications
-            bell + burger. Bell + burger are 40px wide/tall for touch. */}
-        <div className="flex items-center gap-1">
-          {showEditModeButton && (
-            <button
-              type="button"
-              onClick={onToggleEditMode}
-              aria-pressed={editModeActive}
-              className="mr-1 inline-flex h-8 items-center gap-1 rounded-lg px-2.5 text-[10px] font-black uppercase tracking-wider shadow-sm transition active:scale-[0.97]"
-              style={{
-                backgroundColor: editModeActive ? "#166534" : "#FFB300",
-                color: editModeActive ? "#FFFFFF" : "#0A0A0A",
-                animation: editModeActive ? "editmode-glow 2.2s ease-out infinite" : undefined
-              }}
-            >
-              {editModeActive ? "Exit" : "Edit"}
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => setNotifsOpen((v) => !v)}
-            aria-label={pendingCount > 0 ? `Notifications · ${pendingCount} pending` : "Notifications"}
-            aria-expanded={notifsOpen}
-            className="relative flex h-10 w-10 items-center justify-center rounded-full text-[#1B1A17]/80 hover:bg-black/[0.06] active:scale-[0.94]"
-          >
-            <Bell className="h-5 w-5" aria-hidden strokeWidth={2}/>
-            {pendingCount > 0 && (
-              <span
-                aria-hidden
-                className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full border-2 border-[#FBF6EC] px-1 text-[9px] font-black text-white shadow"
-                style={{
-                  backgroundColor: "#B91C1C",
-                  animation: "shell-bell-pulse 2.2s ease-out infinite"
-                }}
-              >
-                {pendingCount > 9 ? "9+" : pendingCount}
-              </span>
-            )}
-          </button>
-          <NotificationsPopover
-            open={notifsOpen}
-            onClose={() => setNotifsOpen(false)}
-            viewAllHref={notificationsHref}
-            mode="mobile"
-          />
-          <button
-            type="button"
-            onClick={onOpenDrawer}
-            aria-label="Open menu"
-            className="flex h-10 w-10 items-center justify-center rounded-full text-[#1B1A17]/80 hover:bg-black/[0.06] active:scale-[0.94]"
-          >
-            <Menu className="h-5 w-5" aria-hidden strokeWidth={2}/>
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-function AppBottomNav({
-  isActive,
-  preserveAuth
-}: {
-  isActive: (t: string) => boolean;
-  preserveAuth: (h: string) => string;
-}) {
-  const items = [
-    {
-      href: preserveAuth("/trade-off/yard"),
-      label: "Yard",
-      icon: Home,
-      // Match /trade-off/yard exactly OR any subpath EXCEPT the
-      // compose subpath (which has its own visual identity).
-      match: "/trade-off/yard"
-    },
-    {
-      href: preserveAuth("/trade-off/prices"),
-      label: "Prices",
-      icon: DollarSign,
-      match: "/trade-off/prices"
-    },
-    {
-      // Beacon is a MODE of the Yard, not a separate route. Anchor
-      // to #beacon on the Yard so the composer scrolls into view.
-      href: preserveAuth("/trade-off/yard#beacon"),
-      label: "Beacon",
-      icon: Radio,
-      // No dedicated route — active state only on the Yard hash.
-      match: "/trade-off/yard"
-    },
-    {
-      href: preserveAuth("/trade-off/following"),
-      label: "Following",
-      icon: Users,
-      match: "/trade-off/following"
-    },
-    {
-      href: preserveAuth("/why/trades"),
-      label: "Discover",
-      icon: Compass,
-      match: "/why/trades"
-    }
-  ];
-  return (
-    <nav
-      className="fixed inset-x-0 bottom-0 z-40 border-t bg-[#FBF6EC]/95 backdrop-blur-md md:hidden"
-      style={{ borderColor: "rgba(27,26,23,0.08)" }}
-    >
-      <ul className="mx-auto flex max-w-[600px] items-stretch justify-around">
-        {items.map((it) => {
-          const active = isActive(it.match);
-          const Icon = it.icon;
-          return (
-            <li key={it.label} className="flex-1">
-              <Link
-                href={it.href}
-                className={`flex flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-black ${
-                  active ? "text-[#B8860B]" : "text-[#1B1A17]/55"
-                }`}
-              >
-                <Icon
-                  className="h-5 w-5"
-                  aria-hidden
-                  strokeWidth={active ? 2.5 : 2}
-                />
-                {it.label}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
-  );
-}
-
 function AppDrawer({
   open,
   onClose,
@@ -785,6 +586,18 @@ function AppDrawer({
           hint: "Nearby-installer leads (in + out)"
         },
         {
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/washers`),
+          icon: Circle,
+          label: "Washer bag",
+          hint: "Verified WhatsApp leads · buy packs · auto top-up"
+        },
+        {
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/templates`),
+          icon: Sparkles,
+          label: "App template",
+          hint: "Pick the visual theme your mobile app uses"
+        },
+        {
           href: preserveAuth(`/trade-off/edit/${auth.slug}`),
           icon: User,
           label: "Profile",
@@ -837,6 +650,12 @@ function AppDrawer({
           icon: ExternalLink,
           label: "View live profile",
           hint: "See your public page as a customer would"
+        },
+        {
+          href: "/report-an-issue",
+          icon: Bell,
+          label: "Report an issue",
+          hint: "Bug, broken link, or feature request — feeds the ops queue"
         }
       ]
     : [];

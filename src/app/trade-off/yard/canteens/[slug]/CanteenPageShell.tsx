@@ -58,12 +58,27 @@ import { CanteenCounterExplainer } from "@/components/xrated/yard/CanteenCounter
 import { canteenProductById } from "@/lib/canteens";
 import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
-import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles } from "lucide-react";
+import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles, Pencil, Pin, Flag } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
 import { MOOD_LIBRARY, suggestMood, type MoodSlug } from "@/lib/yardMoods";
 import { requiresProUpload, type MembershipTier } from "@/lib/tierGates";
 
 const CREAM = "#FBF6EC";
+
+// Fallback thumbnails for canteen post cards that have no photoUrls
+// yet. Deterministic pick by author-slug + card index so the same post
+// always resolves to the same fallback tile — matches the pattern the
+// mobile FeedList uses so a post reads the same on both surfaces.
+const CANTEEN_POST_THUMBS = [
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png",
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png",
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png",
+  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_00_58%20AM.png"
+];
+function canteenPostThumb(authorSlug: string, salt: number = 0): string {
+  const code = authorSlug.charCodeAt(0) + salt;
+  return CANTEEN_POST_THUMBS[Math.abs(code) % CANTEEN_POST_THUMBS.length];
+}
 
 export function CanteenPageShell({
   canteen,
@@ -357,11 +372,9 @@ export function CanteenPageShell({
       <div className="lg:hidden">
         <CanteenHeroWow
           canteen={canteen}
-          isHost={isHost}
           hostWhatsapp={admin?.whatsapp ?? null}
           hostReviews={admin?.reviews ?? null}
           hostAvatarUrl={admin?.avatarUrl ?? null}
-          notificationCount={isHost ? hostActions.length : 0}
           addressLine={admin?.showroom?.addressLine ?? null}
           postcode={admin?.showroom?.postcode ?? null}
           city={admin?.city ?? null}
@@ -406,6 +419,8 @@ export function CanteenPageShell({
                   postcode={admin?.showroom?.postcode ?? null}
                   city={admin?.city ?? null}
                   postcodeArea={admin?.postcodeArea ?? null}
+                  bioShort={admin?.bioShort ?? null}
+                  servicesOffered={admin?.servicesOffered ?? null}
                 />
               </div>
               {/* Container 3 — "Customers say it best" reviews callout.
@@ -454,22 +469,23 @@ export function CanteenPageShell({
             }))}
           compact
           canteenSlug={canteen.slug}
+          hostSlug={canteen.hostSlug}
           hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+          hostDisplayName={canteen.hostDisplayName}
           hostWhatsapp={admin?.whatsapp ?? null}
+          hostCity={admin?.city ?? null}
           sendToTradeCenter={admin?.sendToTradeCenter ?? false}
         />
 
 
-        {/* "Powered by" strip + optional social icons — sits between
-            the last content section and the sticky bottom nav. Social
-            icons render only for platforms the owner has published
-            (max 3: Instagram · TikTok · Facebook). Demo canteens
-            currently show placeholder handles so the row is visible;
-            real owner settings will replace these once the profile
-            schema grows a `social_links` field. */}
+        {/* Powered by credit — sits between the last content section
+            and the floating pill footer. */}
         <div className="mx-auto mt-5 flex max-w-6xl items-center justify-center px-3 md:px-6">
           <span className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
-            Powered by <span style={{ color: "#B8860B" }}>Thenetworkers.co</span>
+            Powered by{" "}
+            <Link href="/" style={{ color: "#B8860B" }} className="hover:underline">
+              Thenetworkers.app
+            </Link>
           </span>
         </div>
         <CanteenSocialLinks
@@ -477,31 +493,52 @@ export function CanteenPageShell({
           tiktok={`https://tiktok.com/@${canteen.hostSlug}`}
           facebook={`https://facebook.com/${canteen.hostSlug}`}
         />
-        {/* Exact clearance for the slimmer sticky contact bar — no
-            visible gap between social icons and the sticky footer. */}
-        <div className="h-12"/>
+
+        {/* Clearance so page content doesn't get hidden behind the
+            floating pill footer (pill ~40px + 12px bottom pad). */}
+        <div className="h-20"/>
       </div>
 
-      {/* Sticky bottom nav — mobile only, sits above AppShell's own
-          bottom nav via z-50. Home · Feed · [+] · Messages · Profile
-          with an elevated tan + button in the middle. */}
+      {/* Floating pill footer — fixed at bottom of viewport, padded
+          off all edges so it hovers like a floating action bar. Star
+          rating + WhatsApp CTA on one rounded-full container. */}
       <CanteenBottomNav
         canteenSlug={canteen.slug}
+        hostSlug={canteen.hostSlug}
         hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+        hostDisplayName={canteen.hostDisplayName}
         hostWhatsapp={admin?.whatsapp ?? null}
         hostReviews={admin?.reviews ?? null}
         tradeLabel={canteen.tradeLabel}
+        hostCity={admin?.city ?? null}
       />
 
       {/* Edit mode sticky strip — shown at the very top of the
           canteen when the host has Edit mode on. Positioned above the
-          header so it reads as chrome, not content. */}
+          header so it reads as chrome, not content. Now carries a
+          "Washer bag" pill on the right so the merchant can jump to
+          the washer purchase page in one tap. */}
       {isHost && editMode && (
         <div
-          className="sticky top-0 z-30 border-b bg-[#FFB300] px-3 py-1.5 text-center text-[10.5px] font-black uppercase tracking-[0.18em] text-[#0A0A0A] md:px-6"
+          className="sticky top-0 z-30 flex items-center justify-between gap-2 border-b bg-[#FFB300] px-3 py-1.5 text-[10.5px] font-black uppercase tracking-[0.18em] text-[#0A0A0A] md:px-6"
           style={{ borderColor: "rgba(0,0,0,0.1)" }}
         >
-          You&apos;re editing your canteen · changes save as drafts
+          <span className="hidden md:inline">
+            You&apos;re editing your canteen · changes save as drafts
+          </span>
+          <span className="md:hidden">
+            Editing · draft
+          </span>
+          <Link
+            href={`/trade-off/edit/${canteen.hostSlug}/washers`}
+            className="inline-flex h-7 items-center gap-1.5 rounded-full border border-black/20 bg-[#0A0A0A] px-2.5 text-[10px] font-black uppercase tracking-[0.14em] text-[#FFB300] shadow-sm transition active:scale-[0.97]"
+          >
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Washer bag
+          </Link>
         </div>
       )}
 
@@ -833,12 +870,15 @@ export function CanteenPageShell({
                         reactionsAgree: p.reactionsAgree,
                         reactionsQuestion: p.reactionsQuestion,
                         replies: p.replyCount,
-                        photoUrls: p.photoUrls
+                        photoUrls: p.photoUrls,
+                        avatarUrl: p.authorAvatarUrl
                       }}
                       tradeLabel={canteen.tradeLabel}
                       viewerSlug={viewerSlug}
                       hostSlug={canteen.hostSlug}
                       canteenSlug={canteen.slug}
+                      canteenName={canteen.name}
+                      hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
                       productsById={productsById}
                       onRemoved={handleRemoved}
                     />
@@ -852,6 +892,8 @@ export function CanteenPageShell({
                     viewerSlug={viewerSlug}
                     hostSlug={canteen.hostSlug}
                     canteenSlug={canteen.slug}
+                    canteenName={canteen.name}
+                    hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
                     productsById={productsById}
                     onRemoved={handleRemoved}
                   />
@@ -929,6 +971,7 @@ function pickRotatorPosts(dbPosts: CanteenChatPost[] | undefined): RotatorPost[]
       body:              p.body,
       createdAt:         p.createdAt,
       imageUrl:          p.photoUrls?.[0] ?? null,
+      authorAvatarUrl:   p.authorAvatarUrl,
       reactionsLike:     p.reactionsLike,
       replyCount:        p.replyCount
     }));
@@ -942,6 +985,7 @@ function pickRotatorPosts(dbPosts: CanteenChatPost[] | undefined): RotatorPost[]
     body:              p.body,
     createdAt:         approxIsoFromAgoLabel(p.postedAgo),
     imageUrl:          p.photoUrls?.[0] ?? null,
+    authorAvatarUrl:   p.avatarUrl ?? null,
     reactionsLike:     p.reactions,
     replyCount:        p.replies
   }));
@@ -979,40 +1023,62 @@ type CanteenPost = {
   reactionsQuestion?: number;
   replies: number;
   photoUrls?: string[];
+  /** Poster's avatar image. When null we fall back to the yellow
+   *  initial chip; when set the header renders an <img>. */
+  avatarUrl?: string | null;
 };
 
 // Canteen feed = chat + questions + announcements only.
 // For-sale posts route to The Counter, NOT the main feed — so the
 // for-sale / sold-out mood characters should never appear on canteen
 // cards. The mood picker (below) filters them out defensively.
+// Member avatars — reuse the same Unsplash face crops the canteen
+// member roster uses (MOCK_CANTEEN_MEMBERS in src/lib/canteens.ts)
+// so the poster's face on the feed card matches their face in the
+// "Members" popover / trade profile / directory.
+const CANTEEN_MEMBER_AVATARS: Record<string, string> = {
+  "mike-watson":     "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces",
+  "tom-fisher":      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=faces",
+  "rachel-simms":    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
+  "craig-mcdermott": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=faces"
+};
+
 const CANTEEN_MOCK_POSTS: CanteenPost[] = [
   {
     who: "Mike Watson",
     handle: "mike-watson",
     postedAgo: "2h",
     body: "Anyone tried the new Blum soft-close on 40mm oak? Fitting a corner unit next week and the standard hinges have been catching.",
-    reactions: 6, replies: 3
+    reactions: 6, replies: 3,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["mike-watson"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_02_52%20PM.png"]
   },
   {
     who: "Rachel Simms",
     handle: "rachel-simms",
     postedAgo: "4h",
     body: "Recommendations for a supplier doing 24h templating in the NW? Current one just went to 5 days and I've a customer breathing down my neck.",
-    reactions: 4, replies: 8
+    reactions: 4, replies: 8,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["rachel-simms"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_08_27%20PM.png"]
   },
   {
     who: "Tom Fisher",
     handle: "tom-fisher",
     postedAgo: "7h",
     body: "Smashed the Whittington fit-out today — 3-day install into a full new-build kitchen. Client over the moon, big handshake at the end.",
-    reactions: 18, replies: 6
+    reactions: 18, replies: 6,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["tom-fisher"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_00_03%20PM.png"]
   },
   {
     who: "Craig McDermott",
     handle: "craig-mcdermott",
     postedAgo: "1d",
     body: "Important notice for anyone on the Alder Grove site — access diverted through the north gate all next week. Save yourselves the ballache I had this morning.",
-    reactions: 22, replies: 4
+    reactions: 22, replies: 4,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["craig-mcdermott"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_05_53%20PM.png"]
   }
 ];
 
@@ -1320,48 +1386,6 @@ function EmptyPostsState({ canteenName }: { canteenName: string }) {
   );
 }
 
-function PostPhotoGrid({ urls }: { urls: string[] }) {
-  const shown = urls.slice(0, 4);
-  const overflow = Math.max(0, urls.length - 4);
-  // Layout: 1 → single, 2 → 2-col, 3 → 3-col, 4+ → 2x2.
-  const gridClass =
-    shown.length === 1 ? "grid grid-cols-1"
-    : shown.length === 2 ? "grid grid-cols-2 gap-1"
-    : shown.length === 3 ? "grid grid-cols-3 gap-1"
-    : "grid grid-cols-2 gap-1";
-  return (
-    <div className={`mt-2 overflow-hidden rounded-lg ${gridClass}`} style={{ maxHeight: "22rem" }}>
-      {shown.map((url, i) => (
-        <div
-          key={url}
-          className="relative aspect-square"
-          style={{ backgroundColor: "#F3F4F6" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={url} alt="" className="h-full w-full object-cover"/>
-          {i === shown.length - 1 && overflow > 0 && (
-            <div
-              className="absolute inset-0 flex items-center justify-center text-[16px] font-black text-white"
-              style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
-            >
-              +{overflow}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// Reply bodies that start with "@name " get the @name rendered as a
-// chip and the rest as body text. Handles names with dashes/dots/
-// numbers/underscores; stops at the first whitespace.
-function parseMentionPrefix(body: string): { name: string; rest: string } | null {
-  const match = body.match(/^@([A-Za-z0-9._-]+)\s+([\s\S]*)$/);
-  if (!match) return null;
-  return { name: match[1], rest: match[2] };
-}
-
 function formatAgoShort(iso: string): string {
   const ms = Date.now() - Date.parse(iso);
   const mins = Math.floor(ms / (60 * 1000));
@@ -1380,6 +1404,8 @@ function CanteenPostCard({
   viewerSlug,
   hostSlug,
   canteenSlug,
+  canteenName,
+  hostFirstName,
   productsById,
   onRemoved
 }: {
@@ -1388,6 +1414,12 @@ function CanteenPostCard({
   viewerSlug?: string | null;
   hostSlug?: string;
   canteenSlug?: string;
+  /** Canteen display name — used by the guest reply confirmation
+   *  ("Sent to Team {canteenName} for review"). */
+  canteenName?: string;
+  /** Canteen host's first name — used by the guest-reply terms line
+   *  ("By replying you agree to {firstName}'s terms & privacy"). */
+  hostFirstName?: string;
   productsById?: Record<string, CanteenProduct>;
   onRemoved?: (id: string) => void;
 }) {
@@ -1419,133 +1451,243 @@ function CanteenPostCard({
     }
   }
 
+  // Hero image on the LEFT of the card — same position + logic as the
+  // Yard card and the mobile Live Feed row. photoUrls[0] when set,
+  // deterministic fallback thumbnail otherwise so a bodied-only post
+  // still reads as content, not a blank row.
+  const heroImage = post.photoUrls && post.photoUrls.length > 0
+    ? post.photoUrls[0]
+    : canteenPostThumb(post.handle);
+
   return (
     <article
-      className="relative overflow-hidden rounded-xl border bg-white p-4 shadow-sm"
+      className="relative overflow-hidden rounded-xl border bg-white shadow-sm"
       style={{ borderColor: "rgba(139,69,19,0.15)", opacity: removing ? 0.5 : 1 }}
     >
-      <div className="mb-2 flex items-center gap-2">
-        <Link
-          href={`/trade/${post.handle}`}
-          className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-[12px] font-black transition hover:brightness-95"
-          style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-          aria-label={`View ${post.who}'s profile`}
+      {/* Landscape row: thumbnail left, content right — matches
+          YardPostCard's pattern so canteen + Yard cards feel like the
+          same object across surfaces. */}
+      <div className="flex gap-3 p-3 sm:gap-4 sm:p-4">
+        {/* Thumbnail */}
+        <div
+          className="relative aspect-square h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl sm:h-28 sm:w-28"
+          style={{ backgroundColor: CREAM }}
         >
-          {post.who.charAt(0)}
-        </Link>
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-1.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={heroImage}
+            alt=""
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        </div>
+
+        {/* Content column */}
+        <div className="flex min-w-0 flex-1 flex-col gap-2">
+          <div className="flex items-center gap-2">
             <Link
               href={`/trade/${post.handle}`}
-              className="truncate text-[13px] font-black text-neutral-900 hover:underline"
+              className="relative flex h-8 w-8 flex-shrink-0 items-center justify-center overflow-hidden rounded-full text-[12px] font-black transition hover:brightness-95"
+              style={{
+                backgroundColor: post.avatarUrl ? undefined : BRAND_YELLOW,
+                color: BRAND_BLACK
+              }}
+              aria-label={`View ${post.who}'s profile`}
             >
-              {post.who}
-            </Link>
-            {hostSlug && post.handle === hostSlug && (
-              <span
-                className="flex-shrink-0 rounded-sm px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.14em]"
-                style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
-                title="Canteen host"
-              >
-                Host
-              </span>
-            )}
-          </div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-            {tradeLabel} · {post.postedAgo}
-          </div>
-        </div>
-        {/* Send-to-Yard button removed — every canteen post now
-            auto-appears in the Yard feed by default. No opt-in
-            promotion needed. */}
-        {canRemove && (
-          <div className="relative flex-shrink-0">
-            <button
-              type="button"
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
-              aria-label="Post actions"
-            >
-              <MoreHorizontal size={16}/>
-            </button>
-            {menuOpen && (
-              <>
-                <div
-                  className="fixed inset-0 z-10"
-                  onClick={() => setMenuOpen(false)}
+              {post.avatarUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={post.avatarUrl}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
                 />
-                <div className="absolute right-0 top-full z-20 mt-1 min-w-[160px] overflow-hidden rounded-lg border bg-white shadow-lg"
-                  style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              ) : (
+                post.who.charAt(0)
+              )}
+            </Link>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-center gap-1.5">
+                <Link
+                  href={`/trade/${post.handle}`}
+                  className="truncate text-[13px] font-black text-neutral-900 hover:underline"
                 >
-                  <button
-                    type="button"
-                    onClick={remove}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-red-600 hover:bg-red-50"
+                  {post.who}
+                </Link>
+                {hostSlug && post.handle === hostSlug && (
+                  <span
+                    className="flex-shrink-0 rounded-sm px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.14em]"
+                    style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+                    title="Canteen host"
                   >
-                    <Trash2 size={13}/>
-                    Delete post
-                  </button>
+                    Host
+                  </span>
+                )}
+              </div>
+              <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                {tradeLabel} · {post.postedAgo}
+              </div>
+            </div>
+            {/* Post actions — always shown, top-right of the row.
+                Author + host see edit/delete/pin/boost; everyone sees
+                Report. Unimplemented actions surface a "Coming soon"
+                toast so we're honest about what's live. */}
+            <div className="relative flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => setMenuOpen((v) => !v)}
+                className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+                aria-label="Post actions"
+              >
+                <MoreHorizontal size={16}/>
+              </button>
+              {menuOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-10"
+                    onClick={() => setMenuOpen(false)}
+                  />
+                  <div className="absolute right-0 top-full z-20 mt-1 min-w-[170px] overflow-hidden rounded-lg border bg-white shadow-lg"
+                    style={{ borderColor: "rgba(139,69,19,0.15)" }}
+                  >
+                    {canRemove && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          window.alert("Edit post — coming soon.");
+                        }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
+                      >
+                        <Pencil size={13}/>
+                        Edit post
+                      </button>
+                    )}
+                    {canRemove && (
+                      <button
+                        type="button"
+                        onClick={remove}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-red-600 hover:bg-red-50"
+                      >
+                        <Trash2 size={13}/>
+                        Delete post
+                      </button>
+                    )}
+                    {hostSlug && viewerSlug === hostSlug && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          window.alert("Pin post — coming soon.");
+                        }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
+                      >
+                        <Pin size={13}/>
+                        Pin post
+                      </button>
+                    )}
+                    {canRemove && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setMenuOpen(false);
+                          window.alert("Boost post — coming soon.");
+                        }}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
+                      >
+                        <Rocket size={13}/>
+                        Boost post
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        setMenuOpen(false);
+                        const reason = window.prompt(
+                          "Why are you reporting this post? Please add a short reason (harmful / misleading / IP / under-18 unsuitable / other):"
+                        );
+                        if (!reason || reason.trim().length < 4) return;
+                        try {
+                          const res = await fetch(`/api/content-reports/create`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              contentType: "canteen-post",
+                              contentId: post.id ?? null,
+                              merchantSlug: hostSlug ?? null,
+                              reason: reason.trim(),
+                              reportedBody: post.body
+                            })
+                          });
+                          const data = await res.json();
+                          if (res.ok && data.ok) {
+                            window.alert("Report received. Thenetworkers admin will review shortly.");
+                          } else {
+                            window.alert("Report failed — please try again in a moment.");
+                          }
+                        } catch {
+                          window.alert("Network error — please try again in a moment.");
+                        }
+                      }}
+                      className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
+                    >
+                      <Flag size={13}/>
+                      Report post
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+
+          {/* Body */}
+          <p className="line-clamp-4 text-[13px] leading-relaxed text-neutral-700">
+            {bodyDisplay}
+          </p>
+
+          {/* Attached product tile — only when the marker resolves to
+              a real product we can render. */}
+          {attachedProduct && canteenSlug && (
+            <a
+              href={`/trade-off/yard/canteens/${canteenSlug}?focus=${encodeURIComponent(attachedProduct.id)}`}
+              className="flex items-center gap-2 rounded-lg border bg-neutral-50 p-2 shadow-sm transition hover:bg-white"
+              style={{ borderColor: "rgba(139,69,19,0.15)" }}
+            >
+              <div
+                className="h-14 w-14 flex-shrink-0 rounded"
+                style={{
+                  backgroundImage: `url('${attachedProduct.imageUrl}')`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundColor: "#F3F4F6"
+                }}
+              />
+              <div className="min-w-0 flex-1">
+                <div className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
+                  Featured product
                 </div>
-              </>
-            )}
-          </div>
-        )}
-      </div>
+                <div className="truncate text-[13px] font-black text-neutral-900">{attachedProduct.name}</div>
+                <div className="mt-0.5 text-[11px] font-bold" style={{ color: BRAND_GREEN_DARK }}>
+                  £{attachedProduct.priceGbp}
+                </div>
+              </div>
+              <ArrowUpRight size={14} className="flex-shrink-0 text-neutral-500"/>
+            </a>
+          )}
 
-      {/* Body — full width, no character reserving space anymore */}
-      <p className="text-[13px] leading-relaxed text-neutral-700">
-        {bodyDisplay}
-      </p>
-
-      {/* Photo grid — 1 photo goes full-width, 2 splits, 3-4 grid, 5+ shows
-          first 4 with a "+N more" overlay on the last tile. Uses
-          object-cover for tight aspect fitting; the feed reader can
-          promote to a lightbox later. */}
-      {post.photoUrls && post.photoUrls.length > 0 && (
-        <PostPhotoGrid urls={post.photoUrls}/>
-      )}
-
-      {/* Attached product tile — only when the marker resolves to a
-          real product we can render. Marker-only-without-lookup falls
-          silently to just the stripped body. */}
-      {attachedProduct && canteenSlug && (
-        <a
-          href={`/trade-off/yard/canteens/${canteenSlug}?focus=${encodeURIComponent(attachedProduct.id)}`}
-          className="mt-2 flex items-center gap-2 rounded-lg border bg-neutral-50 p-2 shadow-sm transition hover:bg-white"
-          style={{ borderColor: "rgba(139,69,19,0.15)" }}
-        >
-          <div
-            className="h-14 w-14 flex-shrink-0 rounded"
-            style={{
-              backgroundImage: `url('${attachedProduct.imageUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: "#F3F4F6"
-            }}
+          {/* Action row — Like + Comment. */}
+          <ReactionRow
+            initialCount={post.reactions}
+            initialAgree={post.reactionsAgree ?? 0}
+            initialQuestion={post.reactionsQuestion ?? 0}
+            initialReplies={post.replies}
+            postId={post.id ?? null}
+            canteenSlug={canteenSlug}
+            canteenName={canteenName}
+            hostFirstName={hostFirstName}
           />
-          <div className="min-w-0 flex-1">
-            <div className="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-500">
-              Featured product
-            </div>
-            <div className="truncate text-[13px] font-black text-neutral-900">{attachedProduct.name}</div>
-            <div className="mt-0.5 text-[11px] font-bold" style={{ color: BRAND_GREEN_DARK }}>
-              £{attachedProduct.priceGbp}
-            </div>
-          </div>
-          <ArrowUpRight size={14} className="flex-shrink-0 text-neutral-500"/>
-        </a>
-      )}
-
-      {/* Action row — Like + Comment. Real reactions posts to
-          /api/canteens/posts/[id]/react when the post has an id.
-          Mock posts (no id) fall back to optimistic-only. */}
-      <ReactionRow
-        initialCount={post.reactions}
-        initialAgree={post.reactionsAgree ?? 0}
-        initialQuestion={post.reactionsQuestion ?? 0}
-        initialReplies={post.replies}
-        postId={post.id ?? null}
-      />
+        </div>
+      </div>
     </article>
   );
 }
@@ -1949,13 +2091,22 @@ function ReactionRow({
   initialCount,
   initialAgree,
   initialQuestion,
-  initialReplies
+  initialReplies,
+  canteenSlug,
+  canteenName,
+  hostFirstName
 }: {
   postId: string | null;
   initialCount: number;
   initialAgree: number;
   initialQuestion: number;
   initialReplies: number;
+  canteenSlug?: string;
+  /** Canteen display name — used in the confirmation copy. */
+  canteenName?: string;
+  /** Canteen host first name — used in the terms line under the
+   *  guest reply form. */
+  hostFirstName?: string;
 }) {
   const [count, setCount] = useState(initialCount);
   const [agreeCount, setAgreeCount] = useState(initialAgree);
@@ -1965,23 +2116,23 @@ function ReactionRow({
   const [questioned, setQuestioned] = useState(false);
   const [pending, setPending] = useState(false);
   const [threadOpen, setThreadOpen] = useState(false);
-  const [replyCount, setReplyCount] = useState(initialReplies);
+  const [replyCount] = useState(initialReplies);
   const [replies, setReplies] = useState<Reply[] | null>(null);
   const [loadingReplies, setLoadingReplies] = useState(false);
-  const [draft, setDraft] = useState("");
-  const [posting, setPosting] = useState(false);
-  const [postError, setPostError] = useState<string | null>(null);
-  const [mentionTarget, setMentionTarget] = useState<{ slug: string; displayName: string } | null>(null);
-  const replyInputRef = useRef<HTMLInputElement | null>(null);
-
-  function startReplyTo(target: { slug: string; displayName: string }) {
-    setMentionTarget(target);
-    // Focus + insert the @mention. Uses the slug (never spaces) so
-    // parseMentionPrefix can round-trip it cleanly from the body.
-    const prefix = `@${target.slug} `;
-    setDraft((d) => (d.startsWith("@") ? prefix : `${prefix}${d}`));
-    setTimeout(() => replyInputRef.current?.focus(), 0);
-  }
+  // Guest reply state — name/WhatsApp/comment, submit flow, and the
+  // localStorage-backed "awaiting review" record so returning visitors
+  // still see their own pending reply until the host approves it.
+  const [guestName, setGuestName] = useState("");
+  const [guestWhatsapp, setGuestWhatsapp] = useState("");
+  const [guestBody, setGuestBody] = useState("");
+  const [guestSubmitting, setGuestSubmitting] = useState(false);
+  const [guestSubmitError, setGuestSubmitError] = useState<string | null>(null);
+  const [guestJustSubmitted, setGuestJustSubmitted] = useState(false);
+  const [guestPending, setGuestPending] = useState<{
+    name: string;
+    body: string;
+    submittedAt: string;
+  } | null>(null);
 
   async function toggleReaction(kind: "like" | "agree" | "question") {
     if (pending) return;
@@ -2043,39 +2194,70 @@ function ReactionRow({
     }
   }
 
-  async function submitReply() {
-    if (!postId || draft.trim().length < 2) return;
-    setPosting(true);
-    setPostError(null);
+  // Read any pending guest reply for this post from localStorage on
+  // mount so a returning visitor sees their own "awaiting review"
+  // entry until the host approves it. Cookie-equivalent, no server
+  // round-trip needed.
+  useEffect(() => {
+    if (typeof window === "undefined" || !postId) return;
     try {
-      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body: draft.trim() })
-      });
-      const data = await res.json();
-      if (!res.ok || !data.ok) {
-        if (data.error === "not-authenticated") setPostError("Log in to reply.");
-        else if (data.error === "not-a-member") setPostError("Join the canteen to reply.");
-        else setPostError(data.error ?? "reply-failed");
-        return;
+      const raw = window.localStorage.getItem(`canteen_guest_pending_${postId}`);
+      if (raw) setGuestPending(JSON.parse(raw));
+    } catch {
+      // ignore parse errors — treat as no pending
+    }
+  }, [postId]);
+
+  async function submitGuestReply() {
+    const name = guestName.trim();
+    const whatsapp = guestWhatsapp.trim();
+    const body = guestBody.trim();
+    if (name.length < 2) {
+      setGuestSubmitError("Please add your name.");
+      return;
+    }
+    if (whatsapp.replace(/[^0-9]/g, "").length < 7) {
+      setGuestSubmitError("Please add a valid WhatsApp number.");
+      return;
+    }
+    if (body.length < 4) {
+      setGuestSubmitError("Please write a longer reply.");
+      return;
+    }
+    setGuestSubmitError(null);
+    setGuestSubmitting(true);
+    // TODO(backend): POST to /api/canteens/posts/[id]/guest-reply which
+    // (a) stores the pending row, (b) fires a WhatsApp notification to
+    // the canteen host with Approve/Reject links. Endpoint is not wired
+    // yet — we optimistically record the submission client-side so the
+    // UX preview reads end-to-end.
+    try {
+      const submittedAt = new Date().toISOString();
+      if (postId) {
+        try {
+          await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/guest-reply`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, whatsapp, body })
+          });
+        } catch {
+          // Endpoint may not exist yet — swallow so the UI preview flows.
+        }
       }
-      // Optimistic append
-      const newReply: Reply = {
-        id: data.id,
-        authorSlug: "you",
-        authorDisplayName: "You",
-        authorAvatarUrl: null,
-        body: draft.trim(),
-        createdAt: new Date().toISOString(),
-        likeCount: 0
-      };
-      setReplies((prev) => [...(prev ?? []), newReply]);
-      setReplyCount((c) => c + 1);
-      setDraft("");
-      setMentionTarget(null);
+      const record = { name, body, submittedAt };
+      if (typeof window !== "undefined" && postId) {
+        window.localStorage.setItem(
+          `canteen_guest_pending_${postId}`,
+          JSON.stringify(record)
+        );
+      }
+      setGuestPending(record);
+      setGuestJustSubmitted(true);
+      setGuestName("");
+      setGuestWhatsapp("");
+      setGuestBody("");
     } finally {
-      setPosting(false);
+      setGuestSubmitting(false);
     }
   }
 
@@ -2133,90 +2315,130 @@ function ReactionRow({
         </button>
       </div>
 
-      {threadOpen && postId && (
+      {threadOpen && (
         <div className="mt-2 rounded-lg border bg-neutral-50 p-3" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
-          {loadingReplies && (
+          {/* Existing (approved) replies loaded from the DB. Guest replies
+              that are still pending appear separately below. */}
+          {postId && loadingReplies && (
             <div className="text-[11px] font-black uppercase tracking-wider text-neutral-500">Loading…</div>
           )}
-          {replies && replies.length === 0 && !loadingReplies && (
-            <div className="text-[11px] text-neutral-500">No replies yet — be the first.</div>
-          )}
-          {replies && replies.length > 0 && (
+          {postId && replies && replies.length > 0 && (
             <ul className="flex flex-col gap-2">
-              {replies.map((r) => {
-                const mention = parseMentionPrefix(r.body);
-                return (
-                  <li key={r.id} className="rounded-lg bg-white p-2 shadow-sm" style={{ border: "1px solid rgba(139,69,19,0.08)" }}>
-                    <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
-                      <Link href={`/trade/${r.authorSlug}`} className="text-neutral-900 hover:underline">
-                        {r.authorDisplayName}
-                      </Link>
-                      <span className="text-neutral-400">{formatAgoShort(r.createdAt)}</span>
-                    </div>
-                    <p className="mt-1 text-[12.5px] leading-snug text-neutral-800">
-                      {mention && (
-                        <span
-                          className="mr-1 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-black"
-                          style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-                        >
-                          @{mention.name}
-                        </span>
-                      )}
-                      {mention ? mention.rest : r.body}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => startReplyTo({ slug: r.authorSlug, displayName: r.authorDisplayName })}
-                      className="mt-1.5 inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-neutral-500 transition hover:text-neutral-900"
-                    >
-                      <MessageSquare size={10}/>
-                      Reply
-                    </button>
-                  </li>
-                );
-              })}
+              {replies.map((r) => (
+                <li key={r.id} className="rounded-lg bg-white p-2 shadow-sm" style={{ border: "1px solid rgba(139,69,19,0.08)" }}>
+                  <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
+                    <Link href={`/trade/${r.authorSlug}`} className="text-neutral-900 hover:underline">
+                      {r.authorDisplayName}
+                    </Link>
+                    <span className="text-neutral-400">{formatAgoShort(r.createdAt)}</span>
+                  </div>
+                  <p className="mt-1 text-[12.5px] leading-snug text-neutral-800">
+                    {r.body}
+                  </p>
+                </li>
+              ))}
             </ul>
           )}
-          {mentionTarget && (
-            <div className="mt-2 flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-neutral-500">
-              Replying to <span className="rounded-full px-1.5 py-0.5" style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}>@{mentionTarget.slug}</span>
-              <button
-                type="button"
-                onClick={() => {
-                  setMentionTarget(null);
-                  setDraft((d) => d.replace(/^@\S+\s?/, ""));
-                }}
-                className="ml-1 text-neutral-400 hover:text-red-600"
-                aria-label="Cancel reply-to"
-              >
-                <X size={11} strokeWidth={3}/>
-              </button>
+
+          {/* Guest's own pending reply — only visible to the guest via
+              localStorage, invisible to other viewers until the host
+              approves. Shows an "Awaiting review" tag so the guest
+              doesn't wonder if their reply vanished. */}
+          {guestPending && (
+            <div
+              className="mt-2 rounded-lg border bg-white p-2 shadow-sm"
+              style={{ borderColor: "rgba(255,179,0,0.55)" }}
+            >
+              <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
+                <span className="text-neutral-900">{guestPending.name}</span>
+                <span
+                  className="rounded-sm px-1.5 py-0.5"
+                  style={{ backgroundColor: `${BRAND_YELLOW}33`, color: "#7A5B00" }}
+                >
+                  Awaiting review
+                </span>
+              </div>
+              <p className="mt-1 text-[12.5px] leading-snug text-neutral-800">
+                {guestPending.body}
+              </p>
             </div>
           )}
-          <div className="mt-2 flex items-center gap-1.5">
-            <input
-              ref={replyInputRef}
-              type="text"
-              value={draft}
-              onChange={(e) => setDraft(e.target.value.slice(0, 4000))}
-              placeholder={mentionTarget ? `Reply to @${mentionTarget.slug}…` : "Reply to the canteen…"}
-              className="flex-1 rounded-full border bg-white px-3 py-2 text-[12px] text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+
+          {/* Guest reply composer OR confirmation panel */}
+          {guestJustSubmitted ? (
+            <div
+              className="mt-3 rounded-lg border bg-white p-3 shadow-sm"
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
-              onKeyDown={(e) => { if (e.key === "Enter") submitReply(); }}
-            />
-            <button
-              type="button"
-              onClick={submitReply}
-              disabled={posting || draft.trim().length < 2}
-              className="inline-flex h-9 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-neutral-900 shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-              style={{ backgroundColor: BRAND_YELLOW }}
             >
-              <Send size={11} strokeWidth={2.5}/>
-              {posting ? "…" : "Send"}
-            </button>
-          </div>
-          {postError && (
-            <div className="mt-1 text-[10px] font-black uppercase tracking-wider text-red-600">{postError}</div>
+              <div className="text-[12px] font-black text-neutral-900">
+                Reply received.
+              </div>
+              <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-700">
+                Your comment has been sent to Team {canteenName ?? "the canteen"} for review and will go live on this post once approved. Please check back within 24 hours.
+              </p>
+              <div className="mt-2 text-[10px] font-black uppercase tracking-[0.14em] text-neutral-500">
+                — Team {canteenName ?? "the canteen"}
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 flex flex-col gap-2">
+              <input
+                type="text"
+                value={guestName}
+                onChange={(e) => setGuestName(e.target.value.slice(0, 60))}
+                placeholder="Your name"
+                className="rounded-lg border bg-white px-3 py-2 text-[12px] text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+                style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              />
+              <input
+                type="tel"
+                inputMode="tel"
+                value={guestWhatsapp}
+                onChange={(e) => setGuestWhatsapp(e.target.value.slice(0, 24))}
+                placeholder="WhatsApp number (e.g. 07700 900101)"
+                className="rounded-lg border bg-white px-3 py-2 text-[12px] text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+                style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              />
+              <textarea
+                value={guestBody}
+                onChange={(e) => setGuestBody(e.target.value.slice(0, 4000))}
+                placeholder="Write your reply…"
+                rows={3}
+                className="rounded-lg border bg-white px-3 py-2 text-[12px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+                style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              />
+              <div className="flex items-center justify-between gap-2">
+                <div className="text-[9.5px] leading-snug text-neutral-500">
+                  By replying you agree to{" "}
+                  {canteenSlug ? (
+                    <Link
+                      href={`/trade-off/yard/canteens/${canteenSlug}/legal`}
+                      className="underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-900"
+                    >
+                      {hostFirstName ? `${hostFirstName}'s terms & privacy` : "the terms & privacy"}
+                    </Link>
+                  ) : (
+                    <>{hostFirstName ? `${hostFirstName}'s terms & privacy` : "the terms & privacy"}</>
+                  )}
+                  .
+                </div>
+                <button
+                  type="button"
+                  onClick={submitGuestReply}
+                  disabled={guestSubmitting}
+                  className="inline-flex h-9 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-neutral-900 shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{ backgroundColor: BRAND_YELLOW }}
+                >
+                  <Send size={11} strokeWidth={2.5}/>
+                  {guestSubmitting ? "Sending…" : "Submit for review"}
+                </button>
+              </div>
+              {guestSubmitError && (
+                <div className="text-[10px] font-black uppercase tracking-wider text-red-600">
+                  {guestSubmitError}
+                </div>
+              )}
+            </div>
           )}
         </div>
       )}

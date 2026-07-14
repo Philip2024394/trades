@@ -19,7 +19,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Bell, Check, Plus, Package, Star, IdCard, Mail } from "lucide-react";
+import { Check, Package, Star, IdCard, Mail, User } from "lucide-react";
 import type { Canteen } from "@/lib/canteens";
 import { BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
 import { CanteenBusinessCardModal } from "@/components/xrated/yard/CanteenBusinessCardModal";
@@ -30,23 +30,19 @@ const TAN_SOFT = "#F5E9D3";   // KPI icon backgrounds
 
 export function CanteenHeroWow({
   canteen,
-  isHost,
   hostWhatsapp,
   hostReviews,
   hostAvatarUrl = null,
-  notificationCount = 3,
   addressLine = null,
   postcode = null,
   city = null
 }: {
   canteen: Canteen;
-  isHost: boolean;
   hostWhatsapp: string | null;
   hostReviews: { avg: number; count: number } | null;
   /** Host's profile image URL. When present the hero avatar renders
    *  the photo; otherwise falls back to the initial letter chip. */
   hostAvatarUrl?: string | null;
-  notificationCount?: number;
   /** Contact fields piped through to the Business Card modal so the
    *  card shows a real address + phone. */
   addressLine?: string | null;
@@ -54,11 +50,6 @@ export function CanteenHeroWow({
   city?: string | null;
 }) {
   const [cardOpen, setCardOpen] = useState(false);
-  // Bell shows for everyone — matches the mockup. Owners see their
-  // real hostActions count; guests see a static demo count so the
-  // hero visual stays consistent across viewers.
-  const showBell = true;
-  const badgeCount = notificationCount > 0 ? notificationCount : 3;
   const firstName = canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName;
   const words = canteen.name.trim().split(/\s+/);
   const lastWord = words.pop() ?? canteen.name;
@@ -110,7 +101,7 @@ export function CanteenHeroWow({
         }}
       />
 
-      <div className="relative mx-auto max-w-6xl px-3 pt-4 pb-16 sm:px-6 sm:pt-5 sm:pb-20">
+      <div className="relative mx-auto max-w-6xl px-3 pt-[26px] pb-16 sm:px-6 sm:pt-[30px] sm:pb-20">
         {/* ── Row 1 · Header — clean credentials strip (no greeting).
             Avatar + name + trade specialty. Reduced bottom margin so
             the H1 sits closer to the top of the hero. */}
@@ -143,32 +134,14 @@ export function CanteenHeroWow({
             />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="text-[15px] font-black leading-tight text-neutral-900 sm:text-[17px]">
+            <div className="truncate text-[15px] font-black leading-tight text-neutral-900 sm:text-[17px]">
               {canteen.hostDisplayName}
             </div>
-            <div className="flex items-center gap-1 text-[11px] font-bold text-neutral-500 sm:text-[12px]">
-              {canteen.tradeLabel} Specialist
-              <Check size={12} strokeWidth={3} style={{ color: TAN }}/>
+            <div className="flex min-w-0 items-center gap-1 text-[12px] font-bold text-neutral-500 sm:text-[12.5px]">
+              <span className="truncate">{canteen.tradeLabel} Specialist</span>
+              <Check size={12} strokeWidth={3} className="flex-shrink-0" style={{ color: TAN }}/>
             </div>
           </div>
-          {/* Notification bell — owner-only. Badge only when > 0 so
-              a quiet inbox doesn't show a red dot. */}
-          {showBell && (
-            <button
-              type="button"
-              aria-label={`Notifications${notificationCount > 0 ? ` (${notificationCount} unread)` : ""}`}
-              className="relative flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full text-neutral-700 transition hover:bg-neutral-900/[0.06]"
-            >
-              <Bell size={20} strokeWidth={2.2}/>
-              <span
-                aria-hidden
-                className="absolute right-1 top-1 flex h-4 min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-black text-white"
-                style={{ backgroundColor: "#DC2626" }}
-              >
-                {badgeCount > 9 ? "9+" : badgeCount}
-              </span>
-            </button>
-          )}
         </header>
 
         {/* ── Row 2 · Copy on the LEFT, floating KPIs on the RIGHT.
@@ -192,25 +165,45 @@ export function CanteenHeroWow({
             <p className="mt-2 text-[12px] font-bold text-neutral-600 sm:text-[13px]">
               Connect. Share. Grow.
             </p>
-            <div className="mt-4 pr-3">
-              {isHost ? (
-                <Link
-                  href={`/trade-off/yard/canteens/${canteen.slug}/post`}
-                  className="inline-flex h-10 items-center gap-2 rounded-full px-4 text-[13px] font-black text-white shadow-md transition active:scale-[0.97]"
-                  style={{ backgroundColor: TAN }}
-                >
-                  <Plus size={15} strokeWidth={2.6}/>
-                  New Project
-                </Link>
-              ) : hostWhatsapp ? (
+            <div className="mt-4 flex items-center gap-2 pr-3">
+              {/* Profile — swaps the Live Feed panel into About Us via
+                  the same canteen:set-tab bus that Quick Actions use. */}
+              <button
+                type="button"
+                onClick={() => {
+                  if (typeof window === "undefined") return;
+                  // Match the Quick Actions pattern exactly: update the
+                  // URL hash first, then dispatch the tab-switch event,
+                  // then scroll the tabbed section into view. Belt-and-
+                  // braces so either the hashchange handler OR the
+                  // custom event handler in CanteenTabbedSection will
+                  // flip activeTab to "about".
+                  window.history.replaceState(null, "", "#tab-about");
+                  window.dispatchEvent(
+                    new CustomEvent("canteen:set-tab", { detail: { tab: "about" } })
+                  );
+                  document.getElementById("canteen-tabbed")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                  });
+                }}
+                className="inline-flex h-11 items-center gap-1.5 rounded-md px-4 text-[12px] font-black text-white shadow-md transition active:scale-[0.97]"
+                style={{ backgroundColor: TAN }}
+              >
+                <User size={14} strokeWidth={2.5}/>
+                Profile
+              </button>
+              {/* Card — opens the Business Card popup. Mobile is
+                  preview-only, so host + visitor both see this. */}
+              {hostWhatsapp ? (
                 <button
                   type="button"
                   onClick={() => setCardOpen(true)}
-                  className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-black text-white shadow-md transition active:scale-[0.97]"
+                  className="inline-flex h-11 items-center gap-1.5 rounded-md px-4 text-[12px] font-black text-white shadow-md transition active:scale-[0.97]"
                   style={{ backgroundColor: TAN }}
                 >
-                  <IdCard size={12} strokeWidth={2.5}/>
-                  Business card
+                  <IdCard size={14} strokeWidth={2.5}/>
+                  Card
                 </button>
               ) : (
                 <Link
