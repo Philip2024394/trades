@@ -35,15 +35,15 @@ import { findSocialProof } from "../../data/socialProof";
 import { useGuestBasket } from "../../lib/useGuestBasket";
 import { useQuoteBasket } from "@/apps/notebook/lib/quoteBasket";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
-import type { MarketplaceProduct } from "../../types";
-import type { MarketplaceMerchant } from "../../data/merchants";
+import type { TradeCenterProduct } from "../../types";
+import type { TradeCenterMerchant } from "../../data/merchants";
 import type { ProductDetails, ProductVariant } from "../../data/productDetails";
 
 type ViewerTier = "free" | "paid" | "verified" | "merchant-pro";
 
 type Props = {
-  product: MarketplaceProduct;
-  merchant: MarketplaceMerchant;
+  product: TradeCenterProduct;
+  merchant: TradeCenterMerchant;
   details: ProductDetails;
   viewerTier?: ViewerTier;
 };

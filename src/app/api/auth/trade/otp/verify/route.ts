@@ -215,14 +215,14 @@ export async function POST(req: Request) {
         if (!productSlug || !productName) continue;
         const incomingQty = Math.max(1, Math.round(Number(raw.qty ?? 1)));
         const { data: existing } = await supabaseAdmin
-          .from("app_marketplace_cart_items")
+          .from("app_tradecenter_cart_items")
           .select("qty")
           .eq("trade_id", userId)
           .eq("product_id", productId)
           .maybeSingle();
         const newQty = existing ? Number(existing.qty) + incomingQty : incomingQty;
         await supabaseAdmin
-          .from("app_marketplace_cart_items")
+          .from("app_tradecenter_cart_items")
           .upsert(
             {
               trade_id:       userId,

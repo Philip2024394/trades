@@ -27,7 +27,7 @@ import {
   type LucideIcon
 } from "lucide-react";
 import { PRODUCT_FIXTURES } from "./products";
-import type { MarketplaceProduct, ProductCategorySlug } from "../types";
+import type { TradeCenterProduct, ProductCategorySlug } from "../types";
 
 /** Rail categories in the exact order the mock shows them. */
 export type RailCategorySlug =
@@ -100,8 +100,8 @@ export const SUB_CATEGORIES: Partial<Record<RailCategorySlug, readonly string[]>
  *  widget handler is missing. */
 export function productsForRailCategory(
   slug: RailCategorySlug
-): MarketplaceProduct[] {
-  const fromLegacyCategories = (cats: ProductCategorySlug[]): MarketplaceProduct[] =>
+): TradeCenterProduct[] {
+  const fromLegacyCategories = (cats: ProductCategorySlug[]): TradeCenterProduct[] =>
     PRODUCT_FIXTURES.filter((p) => cats.includes(p.category));
 
   switch (slug) {

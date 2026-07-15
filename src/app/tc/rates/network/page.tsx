@@ -16,7 +16,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, TrendingUp, ShieldCheck, Info, ExternalLink } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { SOC_TO_TRADE_SLUG, UK_CITIES, citySlugToLabel } from "@/lib/rates/taxonomy";
 import { listCityRates, getNetworkAverage } from "@/lib/rates/getMarketRate";
 import { getGovernmentRate } from "@/lib/rates/getGovernmentRate";
@@ -56,7 +56,7 @@ export default async function NetworkRatesPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-6 md:px-6 md:py-8">
         <div className="flex flex-wrap items-center gap-2">
           <Link

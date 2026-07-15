@@ -21,17 +21,17 @@ import {
 } from "lucide-react";
 import { RAIL_CATEGORIES, type RailCategorySlug } from "../data/categoryTaxonomy";
 
-export type MarketplaceMobileDrawerProps = {
+export type TradeCenterMobileDrawerProps = {
   open: boolean;
   onClose: () => void;
   activeSlug: RailCategorySlug | null;
 };
 
-export function MarketplaceMobileDrawer({
+export function TradeCenterMobileDrawer({
   open,
   onClose,
   activeSlug
-}: MarketplaceMobileDrawerProps) {
+}: TradeCenterMobileDrawerProps) {
   // Trap focus + lock body scroll while open.
   useEffect(() => {
     if (!open) return;

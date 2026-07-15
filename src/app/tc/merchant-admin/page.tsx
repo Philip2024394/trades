@@ -19,14 +19,14 @@ import {
   Users,
   ArrowRight
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { UniversalComposer } from "@/apps/hub/components/UniversalComposer";
 import { RevenueSummary } from "@/apps/merchant/components/RevenueSummary";
 import { MerchantOrdersPanel } from "@/apps/merchant/components/MerchantOrdersPanel";
 import { ProductInsightsPanel } from "@/apps/merchant/components/ProductInsightsPanel";
 import { computeMerchantStats } from "@/apps/merchant/lib/merchantStats";
 import { currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 
 // For the demo, Bob is trade-only. We render the merchant dashboard for
 // the flagship merchant fixture instead. In production, the SUI resolver
@@ -48,7 +48,7 @@ export default function MerchantAdminPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-6 md:px-6 md:py-8">
         {/* Header */}
         <header className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">

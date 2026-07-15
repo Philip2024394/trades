@@ -34,7 +34,7 @@ import {
   Sparkles,
   TrendingUp
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import {
   PLASTERING_SERVICES,
   PLASTERING_CATEGORIES,
@@ -210,7 +210,7 @@ export default function PlasteringRatesPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-6 md:px-6 md:py-8">
         {/* Nav pills */}
         <div className="flex flex-wrap items-center gap-2">

@@ -5,8 +5,8 @@
 
 import Link from "next/link";
 import { Package, TrendingUp, ArrowRight } from "lucide-react";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { PRODUCT_SOCIAL_PROOF_FIXTURES } from "@/apps/marketplace/data/socialProof";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { PRODUCT_SOCIAL_PROOF_FIXTURES } from "@/apps/tradecenter/data/socialProof";
 
 type Props = {
   merchantSlug: string;

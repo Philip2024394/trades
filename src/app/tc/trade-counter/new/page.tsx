@@ -16,7 +16,7 @@ import {
   Handshake,
   Image as ImageIcon
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
 import type {
   TradeCounterCondition,
@@ -61,7 +61,7 @@ export default function PostTradeCounterItemPage() {
   if (submitted) {
     return (
       <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-        <MarketplaceHeader activeCategorySlug={null}/>
+        <TradeCenterHeader activeCategorySlug={null}/>
         <main className="mx-auto flex w-full max-w-2xl flex-1 items-center justify-center px-4 py-8">
           <div
             className="w-full rounded-2xl border bg-white p-6 text-center shadow-sm"
@@ -85,7 +85,7 @@ export default function PostTradeCounterItemPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-5 px-4 py-6 md:px-6 md:py-8">
         <Link
           href="/tc/trade-counter"

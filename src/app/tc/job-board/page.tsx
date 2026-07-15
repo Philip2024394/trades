@@ -9,7 +9,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Briefcase, Search, Filter, Plus } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { JobPostingCard } from "@/apps/jobBoard/components/JobPostingCard";
 import {
   DISCIPLINE_LABELS,
@@ -50,7 +50,7 @@ export default function JobBoardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-6 md:py-8">
         <header className="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-end md:justify-between">
           <div>

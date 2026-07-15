@@ -10,7 +10,7 @@
 
 import Link from "next/link";
 import { ArrowLeft, RefreshCw } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { ConfidenceCardPanel } from "@/apps/identity/components/ConfidenceCardPanel";
 import { buildDemoConfidenceCard } from "@/apps/identity/data/confidenceCard";
 
@@ -21,7 +21,7 @@ export default function ConfidenceCardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         <Link
           href="/tc/trade-center/plastering"

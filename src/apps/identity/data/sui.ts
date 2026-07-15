@@ -19,7 +19,7 @@
 // canonical source, and the shims disappear.
 
 import { findTradeIdentity, TRADE_IDENTITY_FIXTURES, currentViewerTrade, type VerifiedTradeIdentity, countVerifiedLayers } from "./tradeIdentities";
-import { findMerchant, MERCHANT_FIXTURES, type MarketplaceMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant, MERCHANT_FIXTURES, type TradeCenterMerchant } from "@/apps/tradecenter/data/merchants";
 import { findTradeProfile, type TradePublicProfile } from "@/apps/trades/data/tradeProfiles";
 import { BASE_FOLLOWER_COUNTS, BASE_FOLLOWING_COUNTS } from "@/apps/social/data/socialGraph";
 
@@ -58,7 +58,7 @@ export type Sui = {
   };
 
   /** Merchant capability (from marketplace/data/merchants.ts if role includes "merchant"). */
-  merchant?: MarketplaceMerchant;
+  merchant?: TradeCenterMerchant;
 
   /** Contact — one source of truth, referenced by every composer + form. */
   contact: SuiContact;

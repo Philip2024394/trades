@@ -1,7 +1,7 @@
 // Orders — AI tool handlers.
 
 import { findOrder, ORDER_FIXTURES } from "../data/orders";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 import type { Order } from "../types";
 
 function decorate(order: Order) {

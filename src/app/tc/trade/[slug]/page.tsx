@@ -14,7 +14,7 @@ import {
   MessageSquare,
   ShieldCheck
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { TradeProfileHero } from "@/apps/trades/components/TradeProfileHero";
 import { TradeGallerySection } from "@/apps/trades/components/TradeGallerySection";
 import { TradeTestimonialsSection } from "@/apps/trades/components/TradeTestimonialsSection";
@@ -44,7 +44,7 @@ export default async function TradeProfilePage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 md:px-8 md:py-8">
         <Link
           href="/tc/trades"

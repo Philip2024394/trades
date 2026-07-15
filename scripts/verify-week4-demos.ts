@@ -37,7 +37,7 @@ function assert(cond: unknown, msg: string): asserts cond {
 }
 
 async function main(): Promise<void> {
-  const { registerMarketplaceApp } = await import("@/apps/marketplace/register");
+  const { registerMarketplaceApp } = await import("@/apps/tradecenter/register");
   const { classifyTaskClass, route } = await import(
     "@/platform/aiTools/router"
   );

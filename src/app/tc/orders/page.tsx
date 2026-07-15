@@ -15,9 +15,9 @@ import {
   ArrowRight
 } from "lucide-react";
 import { bootstrapPlatform } from "@/platform/bootstrap";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { ORDER_FIXTURES, ordersByStatus } from "@/apps/orders/data/orders";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 import type { Order } from "@/apps/orders/types";
 
 bootstrapPlatform();
@@ -78,7 +78,7 @@ export default function OrdersPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 md:px-6 md:py-8">
         {/* Header — black surface with yellow accent — matches landing page hero */}
         <section

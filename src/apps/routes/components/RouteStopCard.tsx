@@ -10,7 +10,7 @@ import {
   ArrowRight,
   Package
 } from "lucide-react";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import type { RouteStop } from "../data/routes";
 
 type Props = {

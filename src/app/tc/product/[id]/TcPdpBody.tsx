@@ -20,7 +20,7 @@ import { useSearchParams } from "next/navigation";
 import { ArrowLeft, MessageCircle, ShoppingBag, Star, Store } from "lucide-react";
 import type { CanteenProduct } from "@/lib/canteens";
 import { CanteenVariantPicker, type VariantSelectionState } from "@/components/xrated/yard/CanteenVariantPicker";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 
 export function TcPdpBody({
   product,
@@ -85,7 +85,7 @@ export function TcPdpBody({
           basket. Signed-in merchants get their account menu; signed-out
           visitors get the Sign in / Join Free pair. Same header used on
           every /tc/* page for consistency. */}
-      <MarketplaceHeader/>
+      <TradeCenterHeader/>
 
       {/* Back link */}
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-3 pt-4 md:px-6 md:pt-6">

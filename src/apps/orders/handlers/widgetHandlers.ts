@@ -1,7 +1,7 @@
 // Orders — widget handlers.
 
 import { ordersArrivingWithin, ordersByStatus } from "../data/orders";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 import type { WidgetPayload } from "@/platform/widgets/runtime";
 import type { Order } from "../types";
 

@@ -18,8 +18,8 @@ import {
   ExternalLink,
   Package
 } from "lucide-react";
-import { findProductDetails } from "@/apps/marketplace/data/productDetails";
-import { formatMiles } from "@/apps/marketplace/lib/distance";
+import { findProductDetails } from "@/apps/tradecenter/data/productDetails";
+import { formatMiles } from "@/apps/tradecenter/lib/distance";
 import type { NotebookItem } from "../data/notebook";
 import type { NearestMatch } from "../lib/findNearestMerchant";
 

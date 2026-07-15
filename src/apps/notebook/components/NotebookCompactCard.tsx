@@ -23,7 +23,7 @@ import Link from "next/link";
 import { Send, Check, Star, Package, Plus, Minus, Eye, Trash2 } from "lucide-react";
 import type { NotebookItem } from "../data/notebook";
 import type { NearestMatch } from "../lib/findNearestMerchant";
-import { findProductDetails } from "@/apps/marketplace/data/productDetails";
+import { findProductDetails } from "@/apps/tradecenter/data/productDetails";
 import { useQuoteBasket } from "../lib/quoteBasket";
 
 function daysAgo(iso: string): string {

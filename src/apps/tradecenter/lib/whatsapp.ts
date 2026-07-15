@@ -8,7 +8,7 @@
 // project_trade_center_checkout_model rule).
 
 import type { GuestBasketItem } from "./useGuestBasket";
-import type { MarketplaceMerchant } from "../data/merchants";
+import type { TradeCenterMerchant } from "../data/merchants";
 
 /** Convert a stored E.164 number to the digits-only shape wa.me expects
  *  ("+441612000000" → "441612000000"). Strips anything non-numeric so
@@ -22,7 +22,7 @@ function formatCurrency(gbp: number): string {
 }
 
 export function buildWhatsAppCartMessage(
-  merchant: MarketplaceMerchant,
+  merchant: TradeCenterMerchant,
   items: GuestBasketItem[],
   deliveryChargeGbp: number
 ): string {
@@ -53,7 +53,7 @@ export function buildWhatsAppCartMessage(
 }
 
 export function buildWhatsAppCartUrl(
-  merchant: MarketplaceMerchant,
+  merchant: TradeCenterMerchant,
   items: GuestBasketItem[],
   deliveryChargeGbp: number
 ): string | null {

@@ -33,7 +33,7 @@ import {
 } from "lucide-react";
 import { HowItWorksButton } from "@/apps/hub/components/HowItWorksButton";
 import { PagePersonaBadge } from "@/apps/hub/components/PagePersonaBadge";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { UniversalComposer } from "@/apps/hub/components/UniversalComposer";
 import { ActivityFeed } from "@/apps/hub/components/ActivityFeed";
 import { NetworkFeedCard } from "@/apps/social/components/NetworkFeedCard";
@@ -82,7 +82,7 @@ export default function HubPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-5 md:px-6 md:py-8">
         {/* Back navigation — routes to Trade Center browse (the
             canonical landing). Users can also use browser back for

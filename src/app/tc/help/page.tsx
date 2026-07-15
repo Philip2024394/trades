@@ -7,14 +7,14 @@
 
 import Link from "next/link";
 import { ArrowLeft, HardHat, Home, ShieldCheck, MessageCircle, ShoppingCart, ScrollText, Info } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 
 export const dynamic = "force-dynamic";
 
 export default function HelpPage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 px-4 py-6 md:px-6 md:py-10">
         <Link
           href="/tc/trade-center"

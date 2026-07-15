@@ -22,7 +22,7 @@ import {
   Info,
   Calendar
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { RouteSummary } from "@/apps/routes/components/RouteSummary";
 import { RouteStopCard } from "@/apps/routes/components/RouteStopCard";
 import { findRoute, ROUTE_FIXTURES } from "@/apps/routes/data/routes";
@@ -40,7 +40,7 @@ export default function RoutesPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         <Link
           href="/tc/jobs"

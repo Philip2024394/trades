@@ -21,7 +21,7 @@ import { findMerchant } from "../data/merchants";
 import { askAI } from "@/platform/shell/WorkspaceShell";
 import { useGuestBasket } from "../lib/useGuestBasket";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
-import type { MarketplaceProduct } from "../types";
+import type { TradeCenterProduct } from "../types";
 import type { RailCategorySlug } from "../data/categoryTaxonomy";
 
 // Sort dropdown removed 2026-07-12 — Popular/Newest/Top-rated/Nearest
@@ -32,7 +32,7 @@ import type { RailCategorySlug } from "../data/categoryTaxonomy";
 type Props = {
   categorySlug: RailCategorySlug | null;
   categoryLabel: string;
-  products: MarketplaceProduct[];
+  products: TradeCenterProduct[];
   subCategories: readonly string[];
   viewerTier?: ViewerTier;
   viewerHasBusinessAccount?: boolean;

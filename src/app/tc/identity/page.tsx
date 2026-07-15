@@ -12,11 +12,11 @@
 
 import Link from "next/link";
 import { ArrowRight, PlusCircle, RefreshCcw, Share2, PoundSterling } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { VerifiedTradeIdentityPanel } from "@/apps/identity/components/VerifiedTradeIdentityPanel";
 import { VerifiedTradeIdentityBadge } from "@/apps/identity/components/VerifiedTradeIdentityBadge";
 import { currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +27,7 @@ export default function TradeIdentityDashboardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         {/* Header */}
         <header className="mb-6 flex flex-col gap-2 md:mb-8 md:flex-row md:items-end md:justify-between">

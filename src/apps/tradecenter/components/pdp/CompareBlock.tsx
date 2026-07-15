@@ -4,20 +4,20 @@
 import Link from "next/link";
 import { Package, Check } from "lucide-react";
 import { PRODUCT_FIXTURES } from "../../data/products";
-import type { MarketplaceProduct } from "../../types";
+import type { TradeCenterProduct } from "../../types";
 
 type Props = {
-  current: MarketplaceProduct;
+  current: TradeCenterProduct;
   compareSlugs: string[];
 };
 
 export function CompareBlock({ current, compareSlugs }: Props) {
   const others = compareSlugs
     .map((s) => PRODUCT_FIXTURES.find((p) => p.slug === s))
-    .filter((p): p is MarketplaceProduct => Boolean(p));
+    .filter((p): p is TradeCenterProduct => Boolean(p));
   if (others.length === 0) return null;
 
-  const lineup: Array<{ p: MarketplaceProduct; isCurrent: boolean }> = [
+  const lineup: Array<{ p: TradeCenterProduct; isCurrent: boolean }> = [
     { p: current, isCurrent: true },
     ...others.map((p) => ({ p, isCurrent: false }))
   ];

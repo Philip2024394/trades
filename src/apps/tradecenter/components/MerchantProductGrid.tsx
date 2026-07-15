@@ -12,12 +12,12 @@ import { useState } from "react";
 import { Grid, List, LayoutGrid, ChevronDown } from "lucide-react";
 import { ProductCard } from "./ProductCard";
 import { askAI } from "@/platform/shell/WorkspaceShell";
-import type { MarketplaceProduct } from "../types";
-import type { MarketplaceMerchant } from "../data/merchants";
+import type { TradeCenterProduct } from "../types";
+import type { TradeCenterMerchant } from "../data/merchants";
 
 type Props = {
-  merchant: MarketplaceMerchant;
-  products: MarketplaceProduct[];
+  merchant: TradeCenterMerchant;
+  products: TradeCenterProduct[];
 };
 
 export function MerchantProductGrid({ merchant, products }: Props) {

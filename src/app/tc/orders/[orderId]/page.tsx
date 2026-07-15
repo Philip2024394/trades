@@ -13,11 +13,11 @@ import {
   Building2,
   Calendar
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { EscrowTimeline } from "@/apps/orders/components/EscrowTimeline";
 import { OrderActions } from "@/apps/orders/components/OrderActions";
 import { findOrder } from "@/apps/orders/data/orders";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import type { EscrowDetails } from "@/apps/orders/types";
 
 const daysAheadIso = (n: number) => {
@@ -41,7 +41,7 @@ export default function OrderDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-6 md:px-6 md:py-8">
         <Link
           href="/tc/orders"

@@ -38,7 +38,7 @@ import { allTradeProfiles } from "@/apps/trades/data/tradeProfiles";
 import { findTradeIdentity, countVerifiedLayers, currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
 import { findNearestForNotebookItem } from "@/apps/notebook/lib/findNearestMerchant";
 import { CountdownTimer } from "@/apps/notebook/components/CountdownTimer";
-import { formatMiles } from "@/apps/marketplace/lib/distance";
+import { formatMiles } from "@/apps/tradecenter/lib/distance";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
 
 const LOCATION_KEY = "tc.notebook.location";

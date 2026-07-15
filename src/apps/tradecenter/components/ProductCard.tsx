@@ -14,16 +14,16 @@
 
 import Link from "next/link";
 import { ShoppingCart, Check, Star, Package, Eye, ShieldCheck } from "lucide-react";
-import type { MarketplaceProduct } from "../types";
-import type { MarketplaceMerchant } from "../data/merchants";
+import type { TradeCenterProduct } from "../types";
+import type { TradeCenterMerchant } from "../data/merchants";
 import { useGuestBasket } from "../lib/useGuestBasket";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
 
 export type ViewerTier = "free" | "paid" | "verified" | "merchant-pro";
 
 type Props = {
-  product: MarketplaceProduct;
-  merchant: MarketplaceMerchant;
+  product: TradeCenterProduct;
+  merchant: TradeCenterMerchant;
   viewerTier: ViewerTier;
   viewerHasBusinessAccount?: boolean;
   onCompareToggle?: (productId: string) => void;
@@ -35,7 +35,7 @@ function formatDistance(miles: number): string {
   return miles < 1 ? "<1mi" : miles < 10 ? `${miles.toFixed(0)}mi` : `${Math.round(miles)}mi`;
 }
 
-function topBadge(product: MarketplaceProduct): { label: string; bg: string; fg: string } | null {
+function topBadge(product: TradeCenterProduct): { label: string; bg: string; fg: string } | null {
   const b = product.badges?.[0];
   if (!b) return null;
   const YELLOW = { bg: "#FFB300", fg: "#0A0A0A" };

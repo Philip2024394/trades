@@ -18,7 +18,7 @@ import {
   Calendar,
   Send
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { QuoteCard } from "@/apps/jobBoard/components/QuoteCard";
 import {
   findJobPosting,
@@ -63,7 +63,7 @@ export default function JobPostingDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col gap-6 px-4 py-6 md:px-6 md:py-8">
         <Link
           href="/tc/job-board"

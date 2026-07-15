@@ -14,7 +14,7 @@ import {
   ShoppingBasket,
   Circle
 } from "lucide-react";
-import { formatMiles } from "@/apps/marketplace/lib/distance";
+import { formatMiles } from "@/apps/tradecenter/lib/distance";
 import type { NotebookItem, NotebookItemStatus } from "../data/notebook";
 import type { NearestMatch } from "../lib/findNearestMerchant";
 

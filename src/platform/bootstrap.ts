@@ -19,7 +19,7 @@
 
 import { appRegistry } from "@/platform/registry";
 import { helloWorldAppManifest } from "@/platform/demo/helloWorldApp";
-import { registerMarketplaceApp } from "@/apps/marketplace/register";
+import { registerMarketplaceApp } from "@/apps/tradecenter/register";
 import { registerOrdersApp } from "@/apps/orders/register";
 import type { AppManifest } from "@/platform/manifest/types";
 

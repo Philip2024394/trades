@@ -13,9 +13,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Send, Check, Package } from "lucide-react";
-import type { MarketplaceProduct } from "@/apps/marketplace/types";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import type { TradeCenterProduct } from "@/apps/tradecenter/types";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import { useQuoteBasket } from "../lib/quoteBasket";
 import { CountdownTimer } from "./CountdownTimer";
 
@@ -42,14 +42,14 @@ type Props = {
 };
 
 type ClearanceCard = {
-  product: MarketplaceProduct;
+  product: TradeCenterProduct;
   merchantName: string;
   merchantSlug: string;
   savingPct: number;
   expiresAtIso?: string;
 };
 
-function scoreClearance(p: MarketplaceProduct): number | null {
+function scoreClearance(p: TradeCenterProduct): number | null {
   if (p.stockState === "out") return null;
   if (p.tradePriceGbp !== undefined && p.priceGbp > 0) {
     const pct = ((p.priceGbp - p.tradePriceGbp) / p.priceGbp) * 100;
@@ -127,7 +127,7 @@ export function TradeClearanceCarousel({ merchantSlugs }: Props) {
         collectAvailable: true,
         starRating:     0,
         reviewCount:    0
-      } as MarketplaceProduct,
+      } as TradeCenterProduct,
       merchantName: s.merchantName,
       merchantSlug: s.merchantSlug,
       savingPct:    s.savingPct,

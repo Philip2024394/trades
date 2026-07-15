@@ -10,7 +10,7 @@
 
 import { useEffect, useState } from "react";
 import { Hammer } from "lucide-react";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 
 type Props = {
   itemCount: number;

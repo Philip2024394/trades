@@ -2,12 +2,12 @@
 //
 // Guest visitors write to localStorage only. Signed-in users get the
 // same interface but every mutation also syncs to
-// /api/apps/marketplace/cart so the cart follows them across devices.
+// /api/apps/tradecenter/cart so the cart follows them across devices.
 // The server row is authoritative once fetched; localStorage is the
 // warm cache that survives page loads + offline windows.
 //
 // Merge-on-signup: drainGuestBasket() reads + clears the local store
-// so the sign-up flow can POST /api/apps/marketplace/cart PUT to land
+// so the sign-up flow can POST /api/apps/tradecenter/cart PUT to land
 // pre-auth items on the newly-authed account.
 
 "use client";
@@ -30,7 +30,7 @@ export type GuestBasketItem = {
 
 const STORAGE_KEY = "tc.guest-basket";
 const EVT = "tc:guest-basket-change";
-const API = "/api/apps/marketplace/cart";
+const API = "/api/apps/tradecenter/cart";
 
 function readStore(): GuestBasketItem[] {
   if (typeof window === "undefined") return [];
@@ -52,7 +52,7 @@ function writeStore(items: GuestBasketItem[]) {
 
 /** Read + clear the localStorage cart. Called by the sign-up flow so
  *  the guest basket transfers to the newly-authed server cart via
- *  PUT /api/apps/marketplace/cart. */
+ *  PUT /api/apps/tradecenter/cart. */
 export function drainGuestBasket(): GuestBasketItem[] {
   const items = readStore();
   writeStore([]);

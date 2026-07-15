@@ -30,7 +30,7 @@ import { LeftMenuRail } from "@/apps/hub/components/LeftMenuRail";
 import { CategoriesEdgeRail } from "@/apps/hub/components/CategoriesEdgeRail";
 import { LocationOnboardingModal } from "@/apps/onboarding/components/LocationOnboardingModal";
 import { TradeAuthGuard } from "@/apps/hub/components/TradeAuthGuard";
-import { SignInPromptProvider } from "@/apps/marketplace/components/SignInPromptModal";
+import { SignInPromptProvider } from "@/apps/tradecenter/components/SignInPromptModal";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
 
 // Register demo Apps once per client boot. Server-side bootstrap

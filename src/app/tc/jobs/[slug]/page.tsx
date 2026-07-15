@@ -10,7 +10,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { ArrowLeft, MapPin, Calendar, User, FileText, Route as RouteIcon } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { MarginBar } from "@/apps/jobs/components/MarginBar";
 import { JobCostBreakdown } from "@/apps/jobs/components/JobCostBreakdown";
 import { PaymentStagesTracker } from "@/apps/jobs/components/PaymentStagesTracker";
@@ -39,7 +39,7 @@ export default function JobDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         {/* Back */}
         <Link

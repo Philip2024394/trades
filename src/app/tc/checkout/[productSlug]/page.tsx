@@ -17,9 +17,9 @@ import {
   Loader2,
   CheckCircle2
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import {
   GUARANTEE_THRESHOLD_GBP,
   SHIELDPAY_ESCROW_THRESHOLD_GBP,
@@ -49,7 +49,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-6 md:px-6 md:py-8">
         <Link
           href={`/tc/trade-center/product/${product.slug}`}

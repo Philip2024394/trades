@@ -25,7 +25,7 @@ import { UnifiedInboxBell } from "./UnifiedInboxBell";
 import { useCurrentTrade } from "@/lib/useCurrentTrade";
 import type { RailCategorySlug } from "../data/categoryTaxonomy";
 
-export type MarketplaceHeaderProps = {
+export type TradeCenterHeaderProps = {
   /** Unread messages count. */
   messagesBadge?: number;
   /** Basket item count. */
@@ -42,14 +42,14 @@ export type MarketplaceHeaderProps = {
   homeHref?: string;
 };
 
-export function MarketplaceHeader({
+export function TradeCenterHeader({
   messagesBadge = 3,
   basketCount: basketCountProp,
   basketTotalGbp: basketTotalGbpProp,
   activeCategorySlug: _activeCategorySlug = null,
   wordmark,
   homeHref
-}: MarketplaceHeaderProps) {
+}: TradeCenterHeaderProps) {
   const searchRef = useRef<HTMLInputElement | null>(null);
   const searchParams = useSearchParams();
   const router = useRouter();

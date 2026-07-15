@@ -7,16 +7,16 @@
 // Constitution reminder: we sort by DISTANCE only, never price. That's
 // how we keep merchants on the platform.
 
-import { MERCHANT_FIXTURES, findMerchant } from "@/apps/marketplace/data/merchants";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { milesBetweenCities } from "@/apps/marketplace/lib/distance";
-import type { MarketplaceProduct } from "@/apps/marketplace/types";
-import type { MarketplaceMerchant } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES, findMerchant } from "@/apps/tradecenter/data/merchants";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { milesBetweenCities } from "@/apps/tradecenter/lib/distance";
+import type { TradeCenterProduct } from "@/apps/tradecenter/types";
+import type { TradeCenterMerchant } from "@/apps/tradecenter/data/merchants";
 import type { NotebookItem } from "../data/notebook";
 
 export type NearestMatch = {
-  product: MarketplaceProduct;
-  merchant: MarketplaceMerchant;
+  product: TradeCenterProduct;
+  merchant: TradeCenterMerchant;
   distanceMi: number;
 };
 

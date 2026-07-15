@@ -4,10 +4,10 @@
 import Link from "next/link";
 import { MapPin, Calendar, Clock, Package, FileText, ShieldCheck } from "lucide-react";
 import { FavouriteButton } from "@/apps/favourites/components/FavouriteButton";
-import type { MarketplaceMerchant } from "../data/merchants";
+import type { TradeCenterMerchant } from "../data/merchants";
 
 type Props = {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
   productCount: number;
 };
 

@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import { ShoppingCart, Package, Check } from "lucide-react";
 import { useGuestBasket } from "../../lib/useGuestBasket";
 import { findMerchant } from "../../data/merchants";
-import type { MarketplaceProduct } from "../../types";
+import type { TradeCenterProduct } from "../../types";
 
 type Props = {
-  product: MarketplaceProduct;
+  product: TradeCenterProduct;
 };
 
 export function StickyBuyBar({ product }: Props) {

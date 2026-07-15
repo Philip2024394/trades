@@ -11,11 +11,11 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Send, ShieldCheck, Info } from "lucide-react";
-import type { MarketplaceMerchant } from "@/apps/marketplace/data/merchants";
+import type { TradeCenterMerchant } from "@/apps/tradecenter/data/merchants";
 import type { VerifiedTradeIdentity } from "../data/tradeIdentities";
 
 type Props = {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
   trade: VerifiedTradeIdentity;
 };
 

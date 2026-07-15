@@ -18,7 +18,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { PoundSterling, Share2, TrendingUp, ArrowLeft, Info, ExternalLink } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { RateCardEditor } from "@/apps/rates/components/RateCardEditor";
 import { RateCardPanel } from "@/apps/rates/components/RateCardPanel";
 import { ContributeRateForm } from "@/apps/rates/components/ContributeRateForm";
@@ -37,7 +37,7 @@ export default function RateCardPage() {
   if (!card) {
     return (
       <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-        <MarketplaceHeader activeCategorySlug={null}/>
+        <TradeCenterHeader activeCategorySlug={null}/>
         <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center justify-center gap-4 px-6 py-10 text-center">
           <PoundSterling size={40} className="text-neutral-400" strokeWidth={1.5}/>
           <h1 className="text-[20px] font-black text-neutral-900">
@@ -61,7 +61,7 @@ export default function RateCardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         <div className="flex flex-wrap items-center gap-2">
           <Link

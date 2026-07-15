@@ -1,7 +1,7 @@
 // /tc/apply/[merchant] — Open Trade Account application flow.
 //
 // Composition:
-//   MarketplaceHeader                       (persistent nav)
+//   TradeCenterHeader                       (persistent nav)
 //   Merchant summary                        (who you're applying to)
 //   TradeAccountApplicationForm             (autofilled from R07)
 //   VerifiedTradeIdentityPanel              (what merchant will see)
@@ -13,10 +13,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { TradeAccountApplicationForm } from "@/apps/identity/components/TradeAccountApplicationForm";
 import { VerifiedTradeIdentityPanel } from "@/apps/identity/components/VerifiedTradeIdentityPanel";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import { currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +34,7 @@ export default async function OpenAccountPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         {/* Back link */}
         <Link

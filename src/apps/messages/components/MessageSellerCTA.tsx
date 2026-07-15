@@ -16,12 +16,12 @@
 import Link from "next/link";
 import { MessageCircle, MessageSquare } from "lucide-react";
 import { whatsappLinkFor } from "../data/threads";
-import type { MarketplaceMerchant } from "@/apps/marketplace/data/merchants";
-import type { MarketplaceProduct } from "@/apps/marketplace/types";
+import type { TradeCenterMerchant } from "@/apps/tradecenter/data/merchants";
+import type { TradeCenterProduct } from "@/apps/tradecenter/types";
 
 type Props = {
-  merchant: MarketplaceMerchant;
-  product?: MarketplaceProduct;
+  merchant: TradeCenterMerchant;
+  product?: TradeCenterProduct;
   variant?: "hero-light" | "hero-dark" | "pdp";
 };
 
@@ -52,7 +52,7 @@ export function MessageSellerCTA({ merchant, product, variant = "pdp" }: Props) 
   const waE164 = merchant.homeCity ? merchant.slug : undefined; // placeholder gate
   // Merchant WhatsApp is opt-in per merchant. For fixtures, we expose
   // WhatsApp only when the fixture explicitly lists a number. Rather
-  // than extend MarketplaceMerchant here, we probe the message threads
+  // than extend TradeCenterMerchant here, we probe the message threads
   // to detect exposure — production uses a merchant.whatsappE164 field.
   const waE164Real = merchantWhatsAppE164For(merchant.slug);
   const showWhatsApp = Boolean(waE164Real);

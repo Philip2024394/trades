@@ -1,7 +1,7 @@
 // /tc/trade-center/[category] — Marketplace landing per mock.
 //
 // Composition (matches the ImageKit mock):
-//   MarketplaceHeader   (top bar — burger + wordmark + search + icons)
+//   TradeCenterHeader   (top bar — burger + wordmark + search + icons)
 //   CategoryRail        (17-cat rail + Filters block on the left)
 //   CategoryPageBody    (header + sub-chip row + 4-col product grid)
 //
@@ -10,15 +10,15 @@
 
 import { notFound } from "next/navigation";
 import { bootstrapPlatform } from "@/platform/bootstrap";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { CategoryRail } from "@/apps/marketplace/components/CategoryRail";
-import { CategoryPageBody } from "@/apps/marketplace/components/CategoryPageBody";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { CategoryRail } from "@/apps/tradecenter/components/CategoryRail";
+import { CategoryPageBody } from "@/apps/tradecenter/components/CategoryPageBody";
 import {
   RAIL_CATEGORIES,
   SUB_CATEGORIES,
   productsForRailCategory,
   type RailCategorySlug
-} from "@/apps/marketplace/data/categoryTaxonomy";
+} from "@/apps/tradecenter/data/categoryTaxonomy";
 
 bootstrapPlatform();
 
@@ -58,7 +58,7 @@ export default async function CategoryLandingPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={slug}/>
+      <TradeCenterHeader activeCategorySlug={slug}/>
       <div className="flex w-full flex-1">
         <CategoryRail activeSlug={slug}/>
         <CategoryPageBody

@@ -35,16 +35,16 @@ import {
   ChevronDown,
   CheckCircle2
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { useGuestBasket, type GuestBasketItem } from "@/apps/marketplace/lib/useGuestBasket";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { useGuestBasket, type GuestBasketItem } from "@/apps/tradecenter/lib/useGuestBasket";
 import {
   findMerchant,
   deliveryFor,
-  type MarketplaceMerchant
-} from "@/apps/marketplace/data/merchants";
+  type TradeCenterMerchant
+} from "@/apps/tradecenter/data/merchants";
 
 type MerchantGroup = {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
   items: GuestBasketItem[];
 };
 
@@ -135,7 +135,7 @@ export default function CartPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-5 pb-40 md:px-6 md:py-8 md:pb-8">
         <Link
           href="/tc/trade-center"

@@ -18,7 +18,7 @@ import {
   Briefcase,
   MessageCircle as MC
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { MessageBubble } from "@/apps/messages/components/MessageBubble";
 import { ComposeForm } from "@/apps/messages/components/ComposeForm";
 import {
@@ -54,7 +54,7 @@ export default function ThreadPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
 
       <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col px-3 py-4 md:px-4 md:py-6">
         {/* Back link */}

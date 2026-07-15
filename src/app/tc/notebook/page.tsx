@@ -27,7 +27,7 @@ import {
   ChevronLeft,
   HelpCircle
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { NotebookToolbar, type NotebookSortMode, type NotebookViewMode } from "@/apps/notebook/components/NotebookToolbar";
 import { NotebookCompactCard } from "@/apps/notebook/components/NotebookCompactCard";
 import { QuickViewModal } from "@/apps/notebook/components/QuickViewModal";
@@ -49,7 +49,7 @@ import {
   summariseNotebookMatches
 } from "@/apps/notebook/lib/findNearestMerchant";
 import { currentViewerTrade } from "@/apps/identity/data/tradeIdentities";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import { ORDER_FIXTURES } from "@/apps/orders/data/orders";
 import type { NotebookItem } from "@/apps/notebook/data/notebook";
 import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
@@ -173,7 +173,7 @@ export default function TradeNotebookPage() {
         persona={isTrade ? "trade" : "trade"}
         label={isTrade ? "Notebook · Trade" : "Projects · DIY"}
       />
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-6xl flex-1 px-3 py-4 md:px-6 md:py-8">
         {/* Decluttered header — mobile-first, one line. Framing adapts
             to viewer role: trades see "Notebook Trade Center Prices"

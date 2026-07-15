@@ -15,7 +15,7 @@ import {
   Trash2,
   ArrowRight
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import {
   loadWithSeed,
   loadFavourites,
@@ -23,8 +23,8 @@ import {
   type Favourite,
   type FavouriteKind
 } from "@/apps/favourites/data/favourites";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import { findTradeIdentity } from "@/apps/identity/data/tradeIdentities";
 import { findJobPosting } from "@/apps/jobBoard/data/jobPostings";
 
@@ -52,7 +52,7 @@ export default function FavouritesPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-6 md:py-8">
         <header className="mb-6 md:mb-8">
           <div className="text-[10px] font-black uppercase tracking-[0.15em] text-neutral-500">

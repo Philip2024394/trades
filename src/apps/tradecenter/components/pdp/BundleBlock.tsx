@@ -6,11 +6,11 @@
 import { useState } from "react";
 import { ChevronDown, Package, Plus, ShoppingCart } from "lucide-react";
 import { PRODUCT_FIXTURES } from "../../data/products";
-import type { MarketplaceProduct } from "../../types";
+import type { TradeCenterProduct } from "../../types";
 import type { ProductBundle } from "../../data/productDetails";
 
 type Props = {
-  anchor: MarketplaceProduct;
+  anchor: TradeCenterProduct;
   bundle: ProductBundle;
 };
 
@@ -21,7 +21,7 @@ export function BundleBlock({ anchor, bundle }: Props) {
     { p: anchor, qty: 1 },
     ...bundle.items
       .map((it) => ({ p: PRODUCT_FIXTURES.find((x) => x.slug === it.productSlug), qty: it.qty }))
-      .filter((x): x is { p: MarketplaceProduct; qty: number } => Boolean(x.p))
+      .filter((x): x is { p: TradeCenterProduct; qty: number } => Boolean(x.p))
   ];
 
   const listTotal = bundleProducts.reduce((sum, x) => sum + x.p.priceGbp * x.qty, 0);

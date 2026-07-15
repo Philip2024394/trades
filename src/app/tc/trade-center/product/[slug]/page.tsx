@@ -21,22 +21,22 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { ProductGallery } from "@/apps/marketplace/components/pdp/ProductGallery";
-import { BuyColumn } from "@/apps/marketplace/components/pdp/BuyColumn";
-import { BundleBlock } from "@/apps/marketplace/components/pdp/BundleBlock";
-import { PairsWithBlock } from "@/apps/marketplace/components/pdp/PairsWithBlock";
-import { KeyFeaturesAndSpecs } from "@/apps/marketplace/components/pdp/KeyFeaturesAndSpecs";
-import { CompareBlock } from "@/apps/marketplace/components/pdp/CompareBlock";
-import { ReviewsBlock } from "@/apps/marketplace/components/pdp/ReviewsBlock";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { ProductGallery } from "@/apps/tradecenter/components/pdp/ProductGallery";
+import { BuyColumn } from "@/apps/tradecenter/components/pdp/BuyColumn";
+import { BundleBlock } from "@/apps/tradecenter/components/pdp/BundleBlock";
+import { PairsWithBlock } from "@/apps/tradecenter/components/pdp/PairsWithBlock";
+import { KeyFeaturesAndSpecs } from "@/apps/tradecenter/components/pdp/KeyFeaturesAndSpecs";
+import { CompareBlock } from "@/apps/tradecenter/components/pdp/CompareBlock";
+import { ReviewsBlock } from "@/apps/tradecenter/components/pdp/ReviewsBlock";
 import {
   ProductFaqBlock,
   ShippingReturnsBlock
-} from "@/apps/marketplace/components/pdp/ProductFaqAndShipping";
-import { StickyBuyBar } from "@/apps/marketplace/components/pdp/StickyBuyBar";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
-import { findProductDetails } from "@/apps/marketplace/data/productDetails";
+} from "@/apps/tradecenter/components/pdp/ProductFaqAndShipping";
+import { StickyBuyBar } from "@/apps/tradecenter/components/pdp/StickyBuyBar";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
+import { findProductDetails } from "@/apps/tradecenter/data/productDetails";
 
 export const dynamic = "force-dynamic";
 
@@ -70,7 +70,7 @@ export default async function ProductDetailPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC] pb-[calc(72px+env(safe-area-inset-bottom,0px))] md:pb-0">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
 
       {/* Breadcrumb */}
       <nav

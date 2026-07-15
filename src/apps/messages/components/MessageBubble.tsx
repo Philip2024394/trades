@@ -7,8 +7,8 @@
 
 import Link from "next/link";
 import { CheckCircle2, Package, Building2, Briefcase, Receipt } from "lucide-react";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 import { findJob } from "@/apps/jobs/data/jobs";
 import type { Message, MessageAttachment } from "../data/threads";
 

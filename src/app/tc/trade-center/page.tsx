@@ -13,14 +13,14 @@
 // Trade Center design constitution.
 
 import { bootstrapPlatform } from "@/platform/bootstrap";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { CategoryRail } from "@/apps/marketplace/components/CategoryRail";
-import { CategoryPageBody } from "@/apps/marketplace/components/CategoryPageBody";
-import { BlockedFeatureToast } from "@/apps/marketplace/components/BlockedFeatureToast";
-import { DiyWelcomeBanner } from "@/apps/marketplace/components/DiyWelcomeBanner";
-import { FreshSignupWelcome } from "@/apps/marketplace/components/FreshSignupWelcome";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { CategoryRail } from "@/apps/tradecenter/components/CategoryRail";
+import { CategoryPageBody } from "@/apps/tradecenter/components/CategoryPageBody";
+import { BlockedFeatureToast } from "@/apps/tradecenter/components/BlockedFeatureToast";
+import { DiyWelcomeBanner } from "@/apps/tradecenter/components/DiyWelcomeBanner";
+import { FreshSignupWelcome } from "@/apps/tradecenter/components/FreshSignupWelcome";
 import { ViewScopeBadge } from "@/apps/hub/components/ViewScopeBadge";
-import { PRODUCT_FIXTURES, searchProductsFixture } from "@/apps/marketplace/data/products";
+import { PRODUCT_FIXTURES, searchProductsFixture } from "@/apps/tradecenter/data/products";
 
 bootstrapPlatform();
 
@@ -38,7 +38,7 @@ export default async function TradeCenterLanding({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <BlockedFeatureToast/>
       <DiyWelcomeBanner/>
       <FreshSignupWelcome/>

@@ -1,7 +1,7 @@
 // Product detail data — the "rich" data set the PDP consumes.
 //
 // Ported from the Hammerex PDP contract (see hammer/src/app/product/[slug]).
-// Extended tables kept OFF the base MarketplaceProduct fixture so existing
+// Extended tables kept OFF the base TradeCenterProduct fixture so existing
 // consumers (product card, category grid) stay unaffected.
 //
 // SKIPPED per Philip's directive 2026-07-11: "In the box" section.

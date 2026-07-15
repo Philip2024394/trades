@@ -1,7 +1,7 @@
 // /tc/trade-center/merchant/[slug] — Merchant storefront page.
 //
 // Composition (matches the merchant mock):
-//   MarketplaceHeader
+//   TradeCenterHeader
 //     Left: CategoryRail (same 17 categories, matches marketplace)
 //     Right of rail:
 //       MerchantHero
@@ -16,15 +16,15 @@
 
 import { notFound } from "next/navigation";
 import { bootstrapPlatform } from "@/platform/bootstrap";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { CategoryRail } from "@/apps/marketplace/components/CategoryRail";
-import { MerchantHero } from "@/apps/marketplace/components/MerchantHero";
-import { MerchantTabs } from "@/apps/marketplace/components/MerchantTabs";
-import { MerchantProductGrid } from "@/apps/marketplace/components/MerchantProductGrid";
-import { MerchantSidebar } from "@/apps/marketplace/components/MerchantSidebar";
-import { MerchantTrustBand } from "@/apps/marketplace/components/MerchantTrustBand";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { CategoryRail } from "@/apps/tradecenter/components/CategoryRail";
+import { MerchantHero } from "@/apps/tradecenter/components/MerchantHero";
+import { MerchantTabs } from "@/apps/tradecenter/components/MerchantTabs";
+import { MerchantProductGrid } from "@/apps/tradecenter/components/MerchantProductGrid";
+import { MerchantSidebar } from "@/apps/tradecenter/components/MerchantSidebar";
+import { MerchantTrustBand } from "@/apps/tradecenter/components/MerchantTrustBand";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
 
 bootstrapPlatform();
 
@@ -42,7 +42,7 @@ export default async function MerchantStorefrontPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader/>
+      <TradeCenterHeader/>
       <div className="flex w-full flex-1">
         {/* Left category rail — no active category selected on merchant
             pages (the rail's active state is a marketplace concept). */}

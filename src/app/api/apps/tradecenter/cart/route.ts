@@ -1,6 +1,6 @@
-// GET  /api/apps/marketplace/cart — read the caller's server-backed cart.
-// POST /api/apps/marketplace/cart — upsert a single item (add / increment).
-// PUT  /api/apps/marketplace/cart — bulk-replace with a full item list
+// GET  /api/apps/tradecenter/cart — read the caller's server-backed cart.
+// POST /api/apps/tradecenter/cart — upsert a single item (add / increment).
+// PUT  /api/apps/tradecenter/cart — bulk-replace with a full item list
 //   (used by the localStorage-drain merge on sign-up).
 //
 // The client mirrors this store into localStorage for offline resilience
@@ -77,7 +77,7 @@ export async function GET() {
   if (!user) return NextResponse.json({ items: [] });
 
   const { data, error } = await supabaseAdmin
-    .from("app_marketplace_cart_items")
+    .from("app_tradecenter_cart_items")
     .select("product_id, product_slug, product_name, image_url, qty, unit, unit_price_gbp, merchant_slug, merchant_name, added_at")
     .eq("trade_id", user.id)
     .order("added_at", { ascending: true });
@@ -105,7 +105,7 @@ export async function POST(req: Request) {
   // the incoming amount rather than replace. Matches client-side
   // useGuestBasket.add() behaviour so both stores stay in step.
   const { data: existing } = await supabaseAdmin
-    .from("app_marketplace_cart_items")
+    .from("app_tradecenter_cart_items")
     .select("qty")
     .eq("trade_id", user.id)
     .eq("product_id", row.product_id)
@@ -113,7 +113,7 @@ export async function POST(req: Request) {
 
   const newQty = existing ? Number(existing.qty) + row.qty : row.qty;
   const { error } = await supabaseAdmin
-    .from("app_marketplace_cart_items")
+    .from("app_tradecenter_cart_items")
     .upsert(
       { ...row, qty: newQty, updated_at: new Date().toISOString() },
       { onConflict: "trade_id,product_id" }
@@ -148,14 +148,14 @@ export async function PUT(req: Request) {
   // rather than replace. Small N so a per-row upsert loop is fine.
   for (const row of rows) {
     const { data: existing } = await supabaseAdmin
-      .from("app_marketplace_cart_items")
+      .from("app_tradecenter_cart_items")
       .select("qty")
       .eq("trade_id", user.id)
       .eq("product_id", row.product_id)
       .maybeSingle();
     const newQty = existing ? Number(existing.qty) + row.qty : row.qty;
     await supabaseAdmin
-      .from("app_marketplace_cart_items")
+      .from("app_tradecenter_cart_items")
       .upsert(
         { ...row, qty: newQty, updated_at: new Date().toISOString() },
         { onConflict: "trade_id,product_id" }
@@ -174,7 +174,7 @@ export async function DELETE(req: Request) {
   if (productId) {
     // Delete a single item.
     const { error } = await supabaseAdmin
-      .from("app_marketplace_cart_items")
+      .from("app_tradecenter_cart_items")
       .delete()
       .eq("trade_id", user.id)
       .eq("product_id", productId);
@@ -187,7 +187,7 @@ export async function DELETE(req: Request) {
   const merchantSlug = url.searchParams.get("merchantSlug");
   if (merchantSlug) {
     const { error } = await supabaseAdmin
-      .from("app_marketplace_cart_items")
+      .from("app_tradecenter_cart_items")
       .delete()
       .eq("trade_id", user.id)
       .eq("merchant_slug", merchantSlug);
@@ -196,7 +196,7 @@ export async function DELETE(req: Request) {
   }
 
   const { error } = await supabaseAdmin
-    .from("app_marketplace_cart_items")
+    .from("app_tradecenter_cart_items")
     .delete()
     .eq("trade_id", user.id);
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });

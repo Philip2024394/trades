@@ -5,7 +5,7 @@
 
 import { useMemo, useState } from "react";
 import { Search, Filter, ShieldCheck, MapPin } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { TradeDirectoryCard } from "@/apps/trades/components/TradeDirectoryCard";
 import { allTradeProfiles } from "@/apps/trades/data/tradeProfiles";
 import { findTradeIdentity } from "@/apps/identity/data/tradeIdentities";
@@ -39,7 +39,7 @@ export default function TradesDirectoryPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-6 md:py-8">
         {/* Header */}
         <header className="mb-6 md:mb-8">

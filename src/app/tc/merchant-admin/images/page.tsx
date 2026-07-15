@@ -9,10 +9,10 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Search, Package, ImageIcon } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { PrimaryImageUploader } from "@/apps/marketplace/components/PrimaryImageUploader";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { PrimaryImageUploader } from "@/apps/tradecenter/components/PrimaryImageUploader";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 
 const MERCHANT_SLUG = "manchester-tools-direct";
 
@@ -34,7 +34,7 @@ export default function MerchantImageAdminPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         {/* Header */}
         <header className="mb-6 flex flex-col gap-3 md:mb-8 md:flex-row md:items-end md:justify-between">

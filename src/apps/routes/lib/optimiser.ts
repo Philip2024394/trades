@@ -11,7 +11,7 @@
 //      (typically 3-8 stops), NN is within a few % of the optimal TSP
 //      solution and completes in ms — no need for a heavier solver.
 
-import { cityToLatLng, haversineMiles } from "@/apps/marketplace/lib/distance";
+import { cityToLatLng, haversineMiles } from "@/apps/tradecenter/lib/distance";
 import type { RouteStopMode } from "../data/routes";
 
 /** Miles below which we prefer pickup, and above which we recommend

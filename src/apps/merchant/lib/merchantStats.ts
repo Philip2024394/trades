@@ -6,9 +6,9 @@
 // vanity metrics.
 
 import { ORDER_FIXTURES } from "@/apps/orders/data/orders";
-import { PRODUCT_FIXTURES } from "@/apps/marketplace/data/products";
+import { PRODUCT_FIXTURES } from "@/apps/tradecenter/data/products";
 import { MESSAGE_THREAD_FIXTURES } from "@/apps/messages/data/threads";
-import { PRODUCT_SOCIAL_PROOF_FIXTURES } from "@/apps/marketplace/data/socialProof";
+import { PRODUCT_SOCIAL_PROOF_FIXTURES } from "@/apps/tradecenter/data/socialProof";
 import { BASE_FOLLOWER_COUNTS } from "@/apps/social/data/socialGraph";
 
 export type MerchantStats = {

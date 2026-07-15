@@ -7,7 +7,7 @@
 
 import type { LayeredTrustScore } from "../types";
 
-export type MarketplaceMerchant = {
+export type TradeCenterMerchant = {
   slug: string;
   displayName: string;
   legalName: string;
@@ -65,7 +65,7 @@ export type CheckoutOptions = {
   whatsappNumberE164?: string;
 };
 
-export function checkoutOptionsFor(m: MarketplaceMerchant): CheckoutOptions {
+export function checkoutOptionsFor(m: TradeCenterMerchant): CheckoutOptions {
   const gateways = m.paymentGateways ?? [];
   return {
     safeTradeAvailable: gateways.length > 0,
@@ -76,7 +76,7 @@ export function checkoutOptionsFor(m: MarketplaceMerchant): CheckoutOptions {
 }
 
 export function deliveryFor(
-  m: MarketplaceMerchant,
+  m: TradeCenterMerchant,
   subtotalGbp: number
 ): { chargeGbp: number; free: boolean } {
   const flat = m.deliveryFlatRateGbp ?? 0;
@@ -90,7 +90,7 @@ export function deliveryFor(
 const now = Date.now();
 const yearsAgo = (n: number) => now - n * 365 * 24 * 60 * 60 * 1000;
 
-export const MERCHANT_FIXTURES: MarketplaceMerchant[] = [
+export const MERCHANT_FIXTURES: TradeCenterMerchant[] = [
   {
     slug: "manchester-tools-direct",
     displayName: "Manchester Tools Direct",
@@ -218,6 +218,6 @@ export const MERCHANT_FIXTURES: MarketplaceMerchant[] = [
   }
 ];
 
-export function findMerchant(slug: string): MarketplaceMerchant | undefined {
+export function findMerchant(slug: string): TradeCenterMerchant | undefined {
   return MERCHANT_FIXTURES.find((m) => m.slug === slug);
 }

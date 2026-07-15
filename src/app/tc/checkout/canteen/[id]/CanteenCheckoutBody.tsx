@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { ArrowLeft, MessageCircle, Minus, Plus, Store, Truck, Info } from "lucide-react";
 import type { CanteenProduct } from "@/lib/canteens";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_GREEN_DARK = "#166534";
@@ -100,7 +100,7 @@ export function CanteenCheckoutBody({
       {/* Persistent Trade Center header — burger + identity chip +
           basket, same as the PDP so buyers see one consistent nav
           across the buy flow. */}
-      <MarketplaceHeader/>
+      <TradeCenterHeader/>
 
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-3 pt-4 md:px-6 md:pt-6">
         <Link

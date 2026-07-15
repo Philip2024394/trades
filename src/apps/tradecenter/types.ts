@@ -27,7 +27,7 @@ export type ProductCategorySlug =
   | "site-materials"
   | "safety-ppe";
 
-export type MarketplaceProduct = {
+export type TradeCenterProduct = {
   id: string;
   slug: string;
   name: string;

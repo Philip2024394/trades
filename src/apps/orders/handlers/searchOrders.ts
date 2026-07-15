@@ -1,7 +1,7 @@
 // Orders — Universal Search provider handler.
 
 import { searchOrdersFixture } from "../data/orders";
-import { MERCHANT_FIXTURES } from "@/apps/marketplace/data/merchants";
+import { MERCHANT_FIXTURES } from "@/apps/tradecenter/data/merchants";
 import type { SearchResult } from "@/platform/search/orchestrator";
 
 export async function searchOrders(query: string): Promise<SearchResult[]> {

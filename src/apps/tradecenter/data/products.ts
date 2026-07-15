@@ -5,9 +5,9 @@
 // pence-free GBP integers; trade + business pricing populated where it
 // makes sense to demonstrate the tier surfacing.
 
-import type { MarketplaceProduct } from "../types";
+import type { TradeCenterProduct } from "../types";
 
-export const PRODUCT_FIXTURES: MarketplaceProduct[] = [
+export const PRODUCT_FIXTURES: TradeCenterProduct[] = [
   // ─── Hand tools ───────────────────────────────────────────
   {
     id: "p-marshalltown-trowel-14",
@@ -272,17 +272,17 @@ export const PRODUCT_FIXTURES: MarketplaceProduct[] = [
   }
 ];
 
-export function productsByCategory(cat: string): MarketplaceProduct[] {
+export function productsByCategory(cat: string): TradeCenterProduct[] {
   return PRODUCT_FIXTURES.filter((p) => p.category === cat);
 }
 
-export function findProduct(id: string): MarketplaceProduct | undefined {
+export function findProduct(id: string): TradeCenterProduct | undefined {
   return PRODUCT_FIXTURES.find((p) => p.id === id);
 }
 
 /** Simple search — substring match on name + spec + subCategory.
  *  Real search comes through pgvector + tsvector in Wave 2. */
-export function searchProductsFixture(q: string): MarketplaceProduct[] {
+export function searchProductsFixture(q: string): TradeCenterProduct[] {
   const query = q.toLowerCase().trim();
   if (!query) return [];
   return PRODUCT_FIXTURES.filter(

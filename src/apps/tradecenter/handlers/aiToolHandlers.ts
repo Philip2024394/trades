@@ -6,9 +6,9 @@
 
 import { PRODUCT_FIXTURES, findProduct, searchProductsFixture } from "../data/products";
 import { findMerchant } from "../data/merchants";
-import type { MarketplaceProduct } from "../types";
+import type { TradeCenterProduct } from "../types";
 
-function decorateWithMerchant(p: MarketplaceProduct) {
+function decorateWithMerchant(p: TradeCenterProduct) {
   const m = findMerchant(p.merchantSlug);
   return {
     id: p.id,
@@ -59,7 +59,7 @@ export function compareProductsTool(args: unknown): unknown {
     typeof args === "object" && args && "productIds" in args
       ? ((args as Record<string, unknown>).productIds as string[] | undefined) ?? []
       : [];
-  const rows = ids.map(findProduct).filter((p): p is MarketplaceProduct => Boolean(p));
+  const rows = ids.map(findProduct).filter((p): p is TradeCenterProduct => Boolean(p));
   return {
     products: rows.map(decorateWithMerchant),
     missing: ids.filter((id) => !findProduct(id))

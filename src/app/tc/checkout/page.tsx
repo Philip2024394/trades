@@ -30,18 +30,18 @@ import {
   CreditCard,
   Info
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { useGuestBasket, type GuestBasketItem } from "@/apps/marketplace/lib/useGuestBasket";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { useGuestBasket, type GuestBasketItem } from "@/apps/tradecenter/lib/useGuestBasket";
 import {
   findMerchant,
   checkoutOptionsFor,
   deliveryFor,
-  type MarketplaceMerchant
-} from "@/apps/marketplace/data/merchants";
-import { buildWhatsAppCartUrl } from "@/apps/marketplace/lib/whatsapp";
+  type TradeCenterMerchant
+} from "@/apps/tradecenter/data/merchants";
+import { buildWhatsAppCartUrl } from "@/apps/tradecenter/lib/whatsapp";
 
 type StepGroup = {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
   items: GuestBasketItem[];
 };
 
@@ -85,7 +85,7 @@ export default function CheckoutWizardPage() {
   if (cart.count === 0 && completedSlugs.length === 0) {
     return (
       <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-        <MarketplaceHeader activeCategorySlug={null}/>
+        <TradeCenterHeader activeCategorySlug={null}/>
         <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center px-4 py-12 text-center">
           <Package size={40} strokeWidth={1.2} className="mb-3 text-neutral-300"/>
           <h1 className="text-[18px] font-black text-neutral-900">Your cart is empty</h1>
@@ -126,7 +126,7 @@ export default function CheckoutWizardPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-5 md:px-6 md:py-8">
         <Link
           href="/tc/cart"

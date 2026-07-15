@@ -8,14 +8,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { MarketplaceProduct, ProductCategorySlug } from "./types";
+import type { TradeCenterProduct, ProductCategorySlug } from "./types";
 import { findMerchant } from "./data/merchants";
 import { ProductCard, type ViewerTier } from "./components/ProductCard";
 import { askAI } from "@/platform/shell/WorkspaceShell";
 
 type Props = {
   categorySlug: ProductCategorySlug;
-  products: MarketplaceProduct[];
+  products: TradeCenterProduct[];
   viewerTier?: ViewerTier;
   viewerHasBusinessAccount?: boolean;
 };

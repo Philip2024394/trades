@@ -24,13 +24,13 @@ import {
   Package,
   Info
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
-import { useGuestBasket, type GuestBasketItem } from "@/apps/marketplace/lib/useGuestBasket";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
+import { useGuestBasket, type GuestBasketItem } from "@/apps/tradecenter/lib/useGuestBasket";
 import {
   findMerchant,
   checkoutOptionsFor,
   deliveryFor
-} from "@/apps/marketplace/data/merchants";
+} from "@/apps/tradecenter/data/merchants";
 
 export default function MerchantCheckoutPage() {
   const params = useParams<{ merchantSlug: string }>();
@@ -55,7 +55,7 @@ export default function MerchantCheckoutPage() {
   if (items.length === 0) {
     return (
       <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-        <MarketplaceHeader activeCategorySlug={null}/>
+        <TradeCenterHeader activeCategorySlug={null}/>
         <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center px-4 py-12 text-center">
           <Package size={36} strokeWidth={1.2} className="mb-3 text-neutral-300"/>
           <h1 className="text-[16px] font-black text-neutral-900">
@@ -79,7 +79,7 @@ export default function MerchantCheckoutPage() {
   if (!options.safeTradeAvailable) {
     return (
       <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-        <MarketplaceHeader activeCategorySlug={null}/>
+        <TradeCenterHeader activeCategorySlug={null}/>
         <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col items-center px-4 py-12 text-center">
           <Info size={36} strokeWidth={1.2} className="mb-3 text-neutral-300"/>
           <h1 className="text-[16px] font-black text-neutral-900">
@@ -102,7 +102,7 @@ export default function MerchantCheckoutPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto flex w-full max-w-4xl flex-1 flex-col px-4 py-6 md:px-6 md:py-8">
         <Link
           href="/tc/cart"

@@ -7,7 +7,7 @@
 
 import Link from "next/link";
 import { MessageSquare, Search } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { ThreadRow } from "@/apps/messages/components/ThreadRow";
 import {
   threadsForViewer,
@@ -23,7 +23,7 @@ export default function MessagesInboxPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="flex-1 px-4 py-6 md:px-8 md:py-8">
         {/* Header */}
         <header className="mb-6 md:mb-8">

@@ -26,11 +26,11 @@ import {
   Heart,
   MessageCircle
 } from "lucide-react";
-import type { MarketplaceMerchant } from "../data/merchants";
+import type { TradeCenterMerchant } from "../data/merchants";
 import { MessageSellerCTA } from "@/apps/messages/components/MessageSellerCTA";
 
 type Props = {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
 };
 
 function formatDate(iso: string): string {
@@ -275,7 +275,7 @@ export function MerchantHero({ merchant }: Props) {
 
 // ─── Sub-components ───────────────────────────────────────────────────
 
-function Logo({ merchant }: { merchant: MarketplaceMerchant }) {
+function Logo({ merchant }: { merchant: TradeCenterMerchant }) {
   return (
     <div
       className="relative flex h-24 w-24 items-center justify-center overflow-hidden rounded-full shadow-lg ring-2 ring-white/40"
@@ -314,7 +314,7 @@ function IdentityCard({
   positiveFeedbackPct,
   memberSince
 }: {
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
   positiveFeedbackPct: number;
   memberSince: string;
 }) {

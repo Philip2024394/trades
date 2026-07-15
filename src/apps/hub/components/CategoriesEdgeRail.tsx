@@ -19,7 +19,7 @@ import {
   X,
   ChevronRight
 } from "lucide-react";
-import { RAIL_CATEGORIES, type RailCategorySlug } from "@/apps/marketplace/data/categoryTaxonomy";
+import { RAIL_CATEGORIES, type RailCategorySlug } from "@/apps/tradecenter/data/categoryTaxonomy";
 
 export function CategoriesEdgeRail() {
   const [open, setOpen] = useState(false);

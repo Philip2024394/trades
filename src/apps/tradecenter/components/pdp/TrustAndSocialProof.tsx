@@ -24,12 +24,12 @@ import {
   Sparkles
 } from "lucide-react";
 import type { ProductSocialProof, TrustConfirmations } from "../../data/socialProof";
-import type { MarketplaceMerchant } from "../../data/merchants";
+import type { TradeCenterMerchant } from "../../data/merchants";
 
 type Props = {
   socialProof?: ProductSocialProof;
   trust: TrustConfirmations;
-  merchant: MarketplaceMerchant;
+  merchant: TradeCenterMerchant;
 };
 
 export function TrustAndSocialProof({ socialProof, trust, merchant }: Props) {

@@ -16,9 +16,9 @@ import {
   Sparkles,
   ArrowRight
 } from "lucide-react";
-import { MarketplaceHeader } from "@/apps/marketplace/components/MarketplaceHeader";
+import { TradeCenterHeader } from "@/apps/tradecenter/components/TradeCenterHeader";
 import { allDeals, type Deal, type DealKind } from "@/apps/deals/data/deals";
-import { findMerchant } from "@/apps/marketplace/data/merchants";
+import { findMerchant } from "@/apps/tradecenter/data/merchants";
 
 const CATEGORY_OPTIONS = ["all", "plastering", "materials", "tools", "electrical", "scaffolding"];
 
@@ -52,7 +52,7 @@ export default function DealsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
-      <MarketplaceHeader activeCategorySlug={null}/>
+      <TradeCenterHeader activeCategorySlug={null}/>
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6 md:px-6 md:py-8">
         {/* Header */}
         <header className="mb-6 md:mb-8">

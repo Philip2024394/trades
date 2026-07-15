@@ -37,7 +37,7 @@ function assert(cond: unknown, msg: string): asserts cond {
 }
 
 async function main(): Promise<void> {
-  const { registerMarketplaceApp } = await import("@/apps/marketplace/register");
+  const { registerMarketplaceApp } = await import("@/apps/tradecenter/register");
   const { appRegistry } = await import("@/platform/registry");
   const { discoverAITools, findAITool } = await import("@/platform/aiTools/discovery");
   const { discoverFeatureFlags } = await import("@/platform/featureFlags/discovery");
@@ -51,9 +51,9 @@ async function main(): Promise<void> {
   const { discoverNotificationKinds } = await import(
     "@/platform/notifications/discovery"
   );
-  const { PRODUCT_FIXTURES } = await import("@/apps/marketplace/data/products");
+  const { PRODUCT_FIXTURES } = await import("@/apps/tradecenter/data/products");
   const { MERCHANT_FIXTURES, findMerchant } = await import(
-    "@/apps/marketplace/data/merchants"
+    "@/apps/tradecenter/data/merchants"
   );
 
   registerMarketplaceApp();
