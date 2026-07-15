@@ -49,7 +49,8 @@
     "small-garden-houses-showcase": "Small two-storey garden houses / annexes / cabins — carpenter + small-home-builder + timber-frame market.",
     "garden-sheds-timber": "Timber garden sheds + storage sheds — shed suppliers + carpenters offering builds + timber merchants.",
     "garden-sunrooms-timber": "Timber garden sunrooms + summerhouses — cabin builders + carpenter fits + cedar-clad structures.",
-    "timber-garden-accessories": "Beehives + dog houses + chicken coops in timber — smallholder + hobbyist market for bespoke carpenters."
+    "timber-garden-accessories": "Beehives + dog houses + chicken coops in timber — smallholder + hobbyist market for bespoke carpenters.",
+    "bricklayer-craft-showcase": "Bricklayer canteen imagery — hands-on trowel + wall builds + feature walls + chimney + extension work."
   },
   "entries": [
     {
@@ -10385,6 +10386,725 @@
       "hero_use_case": "Site Interest hero for chicken coop suppliers + carpenter poultry-housing builds.",
       "burned_in_text": false,
       "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-f2846637e4f8",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/f2846637e4f89a3057374cc758a0a0a2.jpg",
+      "subject": "Bricklayer's toolset staged on red brick stack — orange hard hat, spirit level, trowel, rebar and Portland cement sacks, construction backdrop",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-98dd72b483f7",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/98dd72b483f71ef9f9007ed8412e9572.jpg",
+      "subject": "Close-up hands laying mortar with trowel on red brick wall — craftsmanship shot, classic UK bond",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-91c371b6931b",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/91c371b6931b26892a94bae82fc510a1.jpg",
+      "subject": "Foreman with tablet checking bricklayer's course on site — teamwork + planning + fresh red brick corner",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-ebce049dff08",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ebce049dff086f8fa105dcbf45831a25.jpg",
+      "subject": "Red brick coursing with fresh mortar joints — clean flush pointing, uniform bond",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "repointing service",
+        "brick restoration",
+        "heritage stone mason"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-b3d599ff40bf",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/b3d599ff40bfa00696e930e0131e7925.jpg",
+      "subject": "Bricklayer working on a wall — trowel-and-brick action, work-site photograph",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-59149c03bb7a",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/59149c03bb7ac2a49d5013c39657e600.jpg",
+      "subject": "Fresh brick wall close-up — mortar bed and perp joints, tool marks visible",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-f2835419b97d",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/f2835419b97de1bf24d3cbb2d18604f2.jpg",
+      "subject": "Brick corner detail — plumb lines and level cross-check, structural bond",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-6a381c66d311",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/6a381c66d31188ae70f13abbe5e05622.jpg",
+      "subject": "Interior exposed brick feature wall with warm pendant lighting — bricklayer aesthetic finish for renovation clients",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "interior brick feature",
+        "exposed brick renovation"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "renovation showcase / interior craft",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-c30fa69bb427",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/c30fa69bb4278b93d9029e6bda583c51.jpg",
+      "subject": "Brick extension mid-build — cavity wall visible, scaffolding around the workspace",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "home extension builder",
+        "cavity wall specialist"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-71316059d0bc",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/71316059d0bca8047fa4dc077e44df9a.jpg",
+      "subject": "Brickwork chimney stack — pitched roof context, weather flashing detail",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "chimney stack builder",
+        "roofer chimney"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-6dfaec08d5c7",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/6dfaec08d5c779822408aea75d83bfdc.jpg",
+      "subject": "Garden retaining brick wall with capping course — landscape context",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "landscaper brickwork",
+        "garden wall installer"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-413fb75faeb6",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/413fb75faeb685cebcafcc5ac3059b81.jpg",
+      "subject": "Brick arch or lintel detail — decorative bond over a doorway or window",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "brick arch",
+        "decorative brickwork",
+        "stonemason"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-16"
+    },
+    {
+      "id": "bricklayer-aa07ed81dda7",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/aa07ed81dda711b572b58d4e3a5c4f71.jpg",
+      "subject": "Bricklayer repointing an older wall — mortar renewal on weathered brick",
+      "keywords_strict": [
+        "bricklayer",
+        "bricklaying",
+        "brick work",
+        "brick mason",
+        "brickie",
+        "brick wall",
+        "brickwork installation",
+        "brick extension",
+        "brick repointing",
+        "brick pointing",
+        "brick chimney",
+        "garden brick wall",
+        "cavity brick wall",
+        "brick coursing",
+        "carpenter brick",
+        "builder brickwork",
+        "repointing service",
+        "brick restoration",
+        "heritage stone mason"
+      ],
+      "excluded_trades": [
+        "kitchen fitter",
+        "plasterer",
+        "electrician indoor",
+        "loft ladders",
+        "pool builder"
+      ],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "bottom-left",
+        "container_required": true,
+        "container_style": "solid-warm-card"
+      },
+      "theme_palette": {
+        "primary": "#7A3A24",
+        "secondary": "#EFE4CF",
+        "surface_warm": "#F5E9D3",
+        "surface_deep": "#3D2914",
+        "accent": "#B87333"
+      },
+      "aspect_variants": {
+        "16:9": "letterbox — subject centred",
+        "1:1": "centre crop",
+        "3:4": "native"
+      },
+      "sibling_group_id": "bricklayer-craft-showcase",
+      "hero_use_case": "Bricklayer canteen live-feed material + Site Interest hero for brick-related trades (bricklayer, mason, chimney builder, extension specialist).",
+      "burned_in_text": false,
+      "worker_visible": true,
       "recommended_use": "hero",
       "$posted_by": "Philip 2026-07-16"
     }
