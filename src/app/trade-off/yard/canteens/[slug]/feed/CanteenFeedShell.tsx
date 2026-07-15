@@ -15,10 +15,12 @@ import {
   MessageSquare,
   Send,
   Bookmark,
-  BookmarkCheck
+  BookmarkCheck,
+  Flag
 } from "lucide-react";
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { CanteenBottomNav } from "@/components/xrated/yard/CanteenBottomNav";
+import { ReportContentModal } from "@/components/forms/ReportContentButton";
 
 // Shape returned by /api/canteens/posts/[id]/replies. Keep in sync
 // with route handler at src/app/api/canteens/posts/[id]/replies/route.ts.
@@ -372,6 +374,10 @@ function FeedCard({
   onToggleSaved: (postId: string) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Report-content modal state — opened from the 3-dots menu.
+  // Lifted here so the menu can close before the modal opens
+  // (avoids stacking two layers of overlay awkwardly).
+  const [reportOpen, setReportOpen] = useState(false);
   // Inline comments panel — expands directly under the reactions row
   // when the viewer taps the "N comments" chip. Fetches replies lazily
   // on first open from /api/canteens/posts/[id]/replies. Second click
@@ -575,6 +581,15 @@ function FeedCard({
                     </>
                   )}
                 </button>
+                <button
+                  type="button"
+                  onClick={() => { setMenuOpen(false); setReportOpen(true); }}
+                  className="flex w-full items-center gap-2 border-t px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
+                  style={{ borderColor: "rgba(139,69,19,0.10)" }}
+                >
+                  <Flag size={13} strokeWidth={2.4}/>
+                  Report post
+                </button>
                 {canDelete && (
                   <button
                     type="button"
@@ -751,6 +766,22 @@ function FeedCard({
             </div>
           )}
         </div>
+      )}
+
+      {/* Report modal — CSAM/sexual reports auto-hide the post via
+          moderation_hidden_at column set by /api/support/tickets. */}
+      {reportOpen && (
+        <ReportContentModal
+          context={{
+            targetKind:  "canteen_post",
+            targetId:    post.id,
+            targetUrl:   typeof window !== "undefined"
+              ? `${window.location.origin}/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(post.id)}`
+              : `/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(post.id)}`,
+            targetLabel: `${post.authorDisplayName}'s post in ${tradeLabel}`
+          }}
+          onClose={() => setReportOpen(false)}
+        />
       )}
     </article>
   );

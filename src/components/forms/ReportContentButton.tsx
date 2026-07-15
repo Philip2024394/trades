@@ -77,12 +77,16 @@ export function ReportContentButton({
         <Flag size={variant === "text" ? 11 : 12} strokeWidth={2.4}/>
         {variant === "text" && "Report"}
       </button>
-      {open && <ReportModal context={context} onClose={() => setOpen(false)}/>}
+      {open && <ReportContentModal context={context} onClose={() => setOpen(false)}/>}
     </>
   );
 }
 
-function ReportModal({
+/** Exported so consumers with their own trigger (e.g. a menu item
+ *  inside a card's 3-dots dropdown) can render the modal directly
+ *  and manage open/close themselves. Same behaviour as the icon
+ *  button's internal modal. */
+export function ReportContentModal({
   context,
   onClose
 }: {
