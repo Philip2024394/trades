@@ -14,7 +14,7 @@
 --   • Rate limit at endpoint level (owner_key + IP), not table
 --     constraint.
 
-create table if not exists public.hammerex_visualise_requests (
+create table if not exists public.networkers_visualise_requests (
   id                  uuid        primary key default gen_random_uuid(),
   owner_key           text        not null,   -- "cookie:<uuid>" or "homeowner:<slug>"
   source_image_url    text        not null,   -- the Site Interest image the user wanted to visualise
@@ -35,13 +35,13 @@ create table if not exists public.hammerex_visualise_requests (
   completed_at        timestamptz
 );
 
-create index if not exists hammerex_visualise_requests_owner
-  on public.hammerex_visualise_requests (owner_key, created_at desc);
-create index if not exists hammerex_visualise_requests_queue
-  on public.hammerex_visualise_requests (status, created_at)
+create index if not exists networkers_visualise_requests_owner
+  on public.networkers_visualise_requests (owner_key, created_at desc);
+create index if not exists networkers_visualise_requests_queue
+  on public.networkers_visualise_requests (status, created_at)
   where status in ('queued', 'processing');
-create index if not exists hammerex_visualise_requests_rate_ip
-  on public.hammerex_visualise_requests (ip_address, created_at desc);
+create index if not exists networkers_visualise_requests_rate_ip
+  on public.networkers_visualise_requests (ip_address, created_at desc);
 
 -- Storage bucket for room photos + rendered outputs. Public read
 -- (URLs shared back to the user), service-role writes only.
@@ -50,7 +50,7 @@ values ('visualise-photos', 'visualise-photos', true)
 on conflict (id) do nothing;
 
 -- Auto-touch updated_at
-create or replace function public.hammerex_visualise_requests_touch()
+create or replace function public.networkers_visualise_requests_touch()
 returns trigger
 language plpgsql
 as $$
@@ -60,7 +60,7 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_hammerex_visualise_requests_touch on public.hammerex_visualise_requests;
-create trigger trg_hammerex_visualise_requests_touch
-  before update on public.hammerex_visualise_requests
-  for each row execute function public.hammerex_visualise_requests_touch();
+drop trigger if exists trg_networkers_visualise_requests_touch on public.networkers_visualise_requests;
+create trigger trg_networkers_visualise_requests_touch
+  before update on public.networkers_visualise_requests
+  for each row execute function public.networkers_visualise_requests_touch();

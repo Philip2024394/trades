@@ -44,7 +44,7 @@ export async function POST(
   // Upsert against the unique (post_id, saver_slug) index — a repeat
   // POST is idempotent, returns the same row.
   const insert = await supabaseAdmin
-    .from("hammerex_canteen_saved_posts")
+    .from("networkers_canteen_saved_posts")
     .upsert(
       {
         post_id: postId,
@@ -82,7 +82,7 @@ export async function DELETE(
   }
 
   const del = await supabaseAdmin
-    .from("hammerex_canteen_saved_posts")
+    .from("networkers_canteen_saved_posts")
     .delete()
     .eq("post_id", postId)
     .eq("saver_slug", identity.slug);

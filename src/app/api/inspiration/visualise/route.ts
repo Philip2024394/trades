@@ -41,7 +41,7 @@ async function isRateLimited(ip: string | null): Promise<boolean> {
   if (!ip) return false;
   const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const res = await supabaseAdmin
-    .from("hammerex_visualise_requests")
+    .from("networkers_visualise_requests")
     .select("id", { count: "exact", head: true })
     .eq("ip_address", ip)
     .gte("created_at", hourAgo);
@@ -105,14 +105,17 @@ export async function POST(req: Request) {
   if (up.error) {
     // eslint-disable-next-line no-console
     console.error("[api/inspiration/visualise] upload failed", up.error);
-    return NextResponse.json({ ok: false, error: "upload-failed" }, { status: 500 });
+    return NextResponse.json(
+      { ok: false, error: "upload-failed", detail: up.error.message },
+      { status: 500 }
+    );
   }
   const roomPhotoUrl = supabaseAdmin.storage
     .from("visualise-photos")
     .getPublicUrl(up.data.path).data.publicUrl;
 
   const insert = await supabaseAdmin
-    .from("hammerex_visualise_requests")
+    .from("networkers_visualise_requests")
     .insert({
       owner_key:         ownerKey,
       source_image_url:  sourceImageUrl,

@@ -111,6 +111,15 @@ export function VisualiseModal({
       const data = await res.json().catch(() => ({}));
       if (!res.ok || !data.ok) {
         setErrorKey(typeof data.error === "string" ? data.error : "network-error");
+        // Surface detail line if the API sent one (e.g. Supabase upload
+        // error message) so we can see what actually broke instead of
+        // just "upload-failed". Attach as prop-of-error message via
+        // window console for now — full-blown UI slot would be too
+        // much noise on the happy path.
+        if (typeof data.detail === "string" && data.detail) {
+          // eslint-disable-next-line no-console
+          console.warn("[visualise]", data.error, "—", data.detail);
+        }
         return;
       }
       setQueuedId(data.id ?? null);
@@ -132,16 +141,37 @@ export function VisualiseModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-lg rounded-t-3xl bg-white p-5 shadow-2xl sm:rounded-3xl sm:p-6"
+        className="relative w-full max-w-lg overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100"
+        {/* Yellow accent strip at top — reads as brand + gives the
+            container a fresh, product-y feel. Sparkles glyph on the
+            left ties it to the "AI" concept the modal is about. */}
+        <div
+          className="flex items-center justify-between px-5 py-2.5 sm:px-6"
+          style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
         >
-          <X size={16} strokeWidth={2.4}/>
-        </button>
+          <div className="flex items-center gap-2">
+            <span
+              className="flex h-6 w-6 items-center justify-center rounded-full"
+              style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+              aria-hidden
+            >
+              <Sparkles size={12} strokeWidth={2.6}/>
+            </span>
+            <span className="text-[11px] font-black uppercase tracking-[0.18em]">
+              AI Visualiser
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-black/10"
+          >
+            <X size={15} strokeWidth={2.6}/>
+          </button>
+        </div>
+        <div className="p-5 sm:p-6">
 
         {step === "expectations" && (
           <ExpectationsScreen
@@ -171,6 +201,7 @@ export function VisualiseModal({
         {step === "queued" && (
           <QueuedScreen queuedId={queuedId} onClose={onClose}/>
         )}
+        </div>
       </div>
     </div>
   );

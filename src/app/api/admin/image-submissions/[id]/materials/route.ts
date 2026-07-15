@@ -51,7 +51,7 @@ export async function PUT(
   }
 
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .update({ materials: cleaned })
     .eq("id", id)
     .select("id, materials")

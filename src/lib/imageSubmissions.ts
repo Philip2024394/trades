@@ -1,7 +1,7 @@
 // Trade image submissions — server-side helpers.
 //
 // Runs the auto-quality gate on incoming image URLs, then
-// reads/writes the hammerex_image_submissions table. Public search
+// reads/writes the networkers_image_submissions table. Public search
 // helper here unions with the curated hero library on the caller
 // side so /trade-off/search Inspiration can render both without
 // caring which source produced each image.
@@ -207,7 +207,7 @@ function shapeSubmission(r: any): ImageSubmission {
  *  through. */
 export async function imageSubmissionsQueue(limit = 60): Promise<ImageSubmission[]> {
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .select("*")
     .in("status", ["pending", "auto_approved"])
     .order("created_at", { ascending: true })
@@ -230,7 +230,7 @@ export async function approvedSubmissionsForQuery(query: string, limit = 60): Pr
   // Postgres `&&` (overlap) on the keywords array is index-hit via
   // the GIN index defined in the migration.
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .select("*")
     .in("status", ["approved", "auto_approved"])
     .overlaps("keywords", tokens)
@@ -303,7 +303,7 @@ export async function enrichSubmissionSources(params: {
 /** Single-row read for the moderation detail view (future). */
 export async function imageSubmissionById(id: string): Promise<ImageSubmission | null> {
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .select("*")
     .eq("id", id)
     .maybeSingle();
@@ -331,7 +331,7 @@ export async function insertImageSubmission(params: {
   initialStatus: "auto_approved" | "pending";
 }): Promise<ImageSubmission | null> {
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .upsert(
       {
         submitter_slug:       params.submitterSlug,
@@ -368,7 +368,7 @@ export async function moderateSubmission(params: {
   note?: string | null;
 }): Promise<ImageSubmission | null> {
   const res = await supabaseAdmin
-    .from("hammerex_image_submissions")
+    .from("networkers_image_submissions")
     .update({
       status:          params.decision === "approve" ? "approved" : "rejected",
       moderated_by:    params.moderatorSlug,

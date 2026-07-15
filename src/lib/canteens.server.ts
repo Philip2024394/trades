@@ -355,7 +355,7 @@ export async function canteenSavedPostIdsFromDb(
 ): Promise<string[]> {
   if (!saverSlug || !isUuid(canteenId)) return [];
   const res = await supabaseAdmin
-    .from("hammerex_canteen_saved_posts")
+    .from("networkers_canteen_saved_posts")
     .select("post_id")
     .eq("canteen_id", canteenId)
     .eq("saver_slug", saverSlug);

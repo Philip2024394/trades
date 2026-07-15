@@ -53,7 +53,7 @@ export default async function SearchPage({
 
   // Load both tabs concurrently. Trades = MOCK_CANTEENS for now;
   // Inspiration = union of curated hero-library.json entries +
-  // approved trade submissions from hammerex_image_submissions. Union
+  // approved trade submissions from networkers_image_submissions. Union
   // is deduped by image_url so a trade re-submitting an image already
   // in the curated pool doesn't render twice.
   // With no query, render a shuffled browse-all feed of the full

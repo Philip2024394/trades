@@ -13,7 +13,7 @@
 -- Public boards get a shareable URL — friends see the board but
 -- can't add/remove items. Owner-only writes; anon reads on public.
 
-create table if not exists public.hammerex_site_boards (
+create table if not exists public.networkers_site_boards (
   id           uuid        primary key default gen_random_uuid(),
   owner_key    text        not null,   -- "cookie:<uuid>" or later "homeowner:<slug>"
   name         text        not null,
@@ -26,12 +26,12 @@ create table if not exists public.hammerex_site_boards (
   updated_at   timestamptz not null default now()
 );
 
-create unique index if not exists hammerex_site_boards_slug on public.hammerex_site_boards (slug);
-create index if not exists hammerex_site_boards_owner on public.hammerex_site_boards (owner_key, created_at desc);
+create unique index if not exists networkers_site_boards_slug on public.networkers_site_boards (slug);
+create index if not exists networkers_site_boards_owner on public.networkers_site_boards (owner_key, created_at desc);
 
-create table if not exists public.hammerex_site_board_items (
+create table if not exists public.networkers_site_board_items (
   id            uuid        primary key default gen_random_uuid(),
-  board_id      uuid        not null references public.hammerex_site_boards(id) on delete cascade,
+  board_id      uuid        not null references public.networkers_site_boards(id) on delete cascade,
   image_url     text        not null,
   subject       text,
   -- Full snapshot of the InspirationImage at save-time so the
@@ -44,29 +44,29 @@ create table if not exists public.hammerex_site_board_items (
 );
 
 -- Prevent duplicate saves of the same image to the same board.
-create unique index if not exists hammerex_site_board_items_unique
-  on public.hammerex_site_board_items (board_id, image_url);
+create unique index if not exists networkers_site_board_items_unique
+  on public.networkers_site_board_items (board_id, image_url);
 
-create index if not exists hammerex_site_board_items_board
-  on public.hammerex_site_board_items (board_id, added_at desc);
+create index if not exists networkers_site_board_items_board
+  on public.networkers_site_board_items (board_id, added_at desc);
 
 -- Auto-touch board.updated_at + bump item_count on insert/delete
 -- so the board list can sort by "recently added to" and show
 -- accurate counts without a runtime aggregate.
-create or replace function public.hammerex_site_boards_bump()
+create or replace function public.networkers_site_boards_bump()
 returns trigger
 language plpgsql
 as $$
 begin
   if tg_op = 'INSERT' then
-    update public.hammerex_site_boards
+    update public.networkers_site_boards
       set item_count = item_count + 1,
           updated_at = now(),
           cover_image_url = coalesce(cover_image_url, new.image_url)
       where id = new.board_id;
     return new;
   elsif tg_op = 'DELETE' then
-    update public.hammerex_site_boards
+    update public.networkers_site_boards
       set item_count = greatest(item_count - 1, 0),
           updated_at = now()
       where id = old.board_id;
@@ -76,7 +76,7 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_hammerex_site_board_items_bump on public.hammerex_site_board_items;
-create trigger trg_hammerex_site_board_items_bump
-  after insert or delete on public.hammerex_site_board_items
-  for each row execute function public.hammerex_site_boards_bump();
+drop trigger if exists trg_networkers_site_board_items_bump on public.networkers_site_board_items;
+create trigger trg_networkers_site_board_items_bump
+  after insert or delete on public.networkers_site_board_items
+  for each row execute function public.networkers_site_boards_bump();

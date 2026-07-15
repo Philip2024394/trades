@@ -469,20 +469,39 @@ export function SearchShell({
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-lg rounded-t-3xl bg-white p-5 shadow-2xl sm:rounded-3xl sm:p-6"
+            className="relative w-full max-w-lg overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl"
           >
-            <button
-              type="button"
-              onClick={() => setContactContext(null)}
-              aria-label="Close"
-              className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100"
+            <div
+              className="flex items-center justify-between px-5 py-2.5 sm:px-6"
+              style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
             >
-              <X size={16} strokeWidth={2.4}/>
-            </button>
-            <QuickContactForm
-              context={contactContext}
-              onCancel={() => setContactContext(null)}
-            />
+              <div className="flex items-center gap-2">
+                <span
+                  className="flex h-6 w-6 items-center justify-center rounded-full"
+                  style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+                  aria-hidden
+                >
+                  <Heart size={12} strokeWidth={2.6}/>
+                </span>
+                <span className="text-[11px] font-black uppercase tracking-[0.18em]">
+                  Get a quote
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setContactContext(null)}
+                aria-label="Close"
+                className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-black/10"
+              >
+                <X size={15} strokeWidth={2.6}/>
+              </button>
+            </div>
+            <div className="p-5 sm:p-6">
+              <QuickContactForm
+                context={contactContext}
+                onCancel={() => setContactContext(null)}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -1305,16 +1324,34 @@ function SiteBoardPickerModal({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-md rounded-t-3xl bg-white p-5 shadow-2xl sm:rounded-3xl sm:p-6"
+        className="relative w-full max-w-md overflow-hidden rounded-t-3xl bg-white shadow-2xl sm:rounded-3xl"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close"
-          className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100"
+        <div
+          className="flex items-center justify-between px-5 py-2.5 sm:px-6"
+          style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
         >
-          <X size={16} strokeWidth={2.4}/>
-        </button>
+          <div className="flex items-center gap-2">
+            <span
+              className="flex h-6 w-6 items-center justify-center rounded-full"
+              style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+              aria-hidden
+            >
+              <Bookmark size={12} strokeWidth={2.6}/>
+            </span>
+            <span className="text-[11px] font-black uppercase tracking-[0.18em]">
+              Site Board
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close"
+            className="flex h-8 w-8 items-center justify-center rounded-full transition hover:bg-black/10"
+          >
+            <X size={15} strokeWidth={2.6}/>
+          </button>
+        </div>
+        <div className="p-5 sm:p-6">
 
         {saved ? (
           <div className="text-center">
@@ -1432,6 +1469,7 @@ function SiteBoardPickerModal({
             )}
           </>
         )}
+        </div>
       </div>
     </div>
   );

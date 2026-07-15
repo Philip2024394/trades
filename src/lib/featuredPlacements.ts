@@ -59,7 +59,7 @@ export async function featuredTradesForCategory(category: string): Promise<Featu
   const cleaned = (category ?? "").toLowerCase().trim();
   if (!cleaned) return [];
   const res = await supabaseAdmin
-    .from("hammerex_featured_placements")
+    .from("networkers_featured_placements")
     .select("*")
     .eq("status", "active")
     .eq("category", cleaned)
@@ -73,7 +73,7 @@ export async function featuredTradesForCategory(category: string): Promise<Featu
 /** Full active placement list — powers admin dashboard. */
 export async function allActivePlacements(): Promise<FeaturedPlacement[]> {
   const res = await supabaseAdmin
-    .from("hammerex_featured_placements")
+    .from("networkers_featured_placements")
     .select("*")
     .eq("status", "active")
     .gt("expires_at", new Date().toISOString())
@@ -85,7 +85,7 @@ export async function allActivePlacements(): Promise<FeaturedPlacement[]> {
 /** Full recent placement list — admin, all statuses. */
 export async function recentPlacements(limit = 60): Promise<FeaturedPlacement[]> {
   const res = await supabaseAdmin
-    .from("hammerex_featured_placements")
+    .from("networkers_featured_placements")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -124,7 +124,7 @@ export async function createPlacement(params: {
   const expiresAt = new Date(startsAt.getTime() + days * 24 * 60 * 60 * 1000);
 
   const insert = await supabaseAdmin
-    .from("hammerex_featured_placements")
+    .from("networkers_featured_placements")
     .insert({
       trade_slug:     tradeSlug,
       category,
@@ -147,7 +147,7 @@ export async function createPlacement(params: {
 /** Admin cancel — flips status to cancelled + shortens expiry. */
 export async function cancelPlacement(id: string, adminNote?: string): Promise<boolean> {
   const res = await supabaseAdmin
-    .from("hammerex_featured_placements")
+    .from("networkers_featured_placements")
     .update({
       status:     "cancelled",
       expires_at: new Date().toISOString(),

@@ -81,7 +81,7 @@ export async function boardsForOwner(): Promise<SiteBoard[]> {
   const ownerKey = await readSiteBoardOwnerKey();
   if (!ownerKey) return [];
   const res = await supabaseAdmin
-    .from("hammerex_site_boards")
+    .from("networkers_site_boards")
     .select("*")
     .eq("owner_key", ownerKey)
     .order("updated_at", { ascending: false });
@@ -94,7 +94,7 @@ export async function boardsForOwner(): Promise<SiteBoard[]> {
  *  doesn't own it. */
 export async function boardBySlug(slug: string): Promise<{ board: SiteBoard; items: SiteBoardItem[] } | null> {
   const boardRes = await supabaseAdmin
-    .from("hammerex_site_boards")
+    .from("networkers_site_boards")
     .select("*")
     .eq("slug", slug)
     .maybeSingle();
@@ -107,7 +107,7 @@ export async function boardBySlug(slug: string): Promise<{ board: SiteBoard; ite
   }
 
   const itemsRes = await supabaseAdmin
-    .from("hammerex_site_board_items")
+    .from("networkers_site_board_items")
     .select("*")
     .eq("board_id", board.id)
     .order("added_at", { ascending: false });
@@ -131,7 +131,7 @@ export async function createBoard(params: {
   for (let attempt = 0; attempt < 4; attempt++) {
     const slug = generateBoardSlug();
     const res = await supabaseAdmin
-      .from("hammerex_site_boards")
+      .from("networkers_site_boards")
       .insert({
         owner_key:   ownerKey,
         name,
@@ -158,14 +158,14 @@ export async function addBoardItem(params: {
   // Ownership check — never let cookie A add items to cookie B's
   // board even if they know the id.
   const own = await supabaseAdmin
-    .from("hammerex_site_boards")
+    .from("networkers_site_boards")
     .select("id, owner_key")
     .eq("id", params.boardId)
     .maybeSingle();
   if (own.error || !own.data || own.data.owner_key !== ownerKey) return null;
 
   const res = await supabaseAdmin
-    .from("hammerex_site_board_items")
+    .from("networkers_site_board_items")
     .insert({
       board_id:    params.boardId,
       image_url:   params.imageUrl,
@@ -186,13 +186,13 @@ export async function removeBoardItem(params: {
   const ownerKey = await readSiteBoardOwnerKey();
   if (!ownerKey) return false;
   const own = await supabaseAdmin
-    .from("hammerex_site_boards")
+    .from("networkers_site_boards")
     .select("id, owner_key")
     .eq("id", params.boardId)
     .maybeSingle();
   if (own.error || !own.data || own.data.owner_key !== ownerKey) return false;
   const res = await supabaseAdmin
-    .from("hammerex_site_board_items")
+    .from("networkers_site_board_items")
     .delete()
     .eq("id", params.itemId)
     .eq("board_id", params.boardId);

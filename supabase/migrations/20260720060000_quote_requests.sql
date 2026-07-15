@@ -28,7 +28,7 @@
 -- client → PostgREST inserts are blocked by service-role usage in
 -- the endpoint.
 
-create table if not exists public.hammerex_lead_requests (
+create table if not exists public.networkers_lead_requests (
   id                    uuid        primary key default gen_random_uuid(),
   -- Requester identity — collected up-front, phone OR email required
   -- (validated at the endpoint). Name always required.
@@ -69,29 +69,29 @@ create table if not exists public.hammerex_lead_requests (
 
 -- Trade inbox lookup — "show me my new leads, newest first". Only
 -- non-closed rows are relevant to the trade's active inbox.
-create index if not exists hammerex_lead_requests_trade_inbox
-  on public.hammerex_lead_requests (target_trade_slug, created_at desc)
+create index if not exists networkers_lead_requests_trade_inbox
+  on public.networkers_lead_requests (target_trade_slug, created_at desc)
   where status in ('submitted', 'delivered', 'replied');
 
 -- Admin queue — freshest submissions across every trade.
-create index if not exists hammerex_lead_requests_admin_recent
-  on public.hammerex_lead_requests (status, created_at desc);
+create index if not exists networkers_lead_requests_admin_recent
+  on public.networkers_lead_requests (status, created_at desc);
 
 -- Rate limit lookup — "how many requests has this IP made in the
 -- last hour?" Partial index keeps the working set small.
-create index if not exists hammerex_lead_requests_rate_ip
-  on public.hammerex_lead_requests (ip_address, created_at desc);
+create index if not exists networkers_lead_requests_rate_ip
+  on public.networkers_lead_requests (ip_address, created_at desc);
 
 -- Sanity: require at least one contact method.
-alter table public.hammerex_lead_requests
-  add constraint hammerex_lead_requests_contact_required
+alter table public.networkers_lead_requests
+  add constraint networkers_lead_requests_contact_required
   check (
     (requester_email is not null and length(trim(requester_email)) > 0)
     or (requester_phone is not null and length(trim(requester_phone)) > 0)
   );
 
 -- Auto-touch updated_at.
-create or replace function public.hammerex_lead_requests_touch_updated_at()
+create or replace function public.networkers_lead_requests_touch_updated_at()
 returns trigger
 language plpgsql
 as $$
@@ -101,10 +101,10 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_hammerex_lead_requests_touch on public.hammerex_lead_requests;
-create trigger trg_hammerex_lead_requests_touch
-  before update on public.hammerex_lead_requests
-  for each row execute function public.hammerex_lead_requests_touch_updated_at();
+drop trigger if exists trg_networkers_lead_requests_touch on public.networkers_lead_requests;
+create trigger trg_networkers_lead_requests_touch
+  before update on public.networkers_lead_requests
+  for each row execute function public.networkers_lead_requests_touch_updated_at();
 
 -- Storage bucket for site photos uploaded with quote requests. Public
 -- read (URLs are shared with the trade + admin) but writes gated to

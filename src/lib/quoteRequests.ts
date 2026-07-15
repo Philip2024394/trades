@@ -85,7 +85,7 @@ export async function isQuoteRequestRateLimited(ip: string | null): Promise<bool
   if (!ip) return false; // Cannot rate-limit unknown IPs; endpoint decision.
   const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const res = await supabaseAdmin
-    .from("hammerex_lead_requests")
+    .from("networkers_lead_requests")
     .select("id", { count: "exact", head: true })
     .eq("ip_address", ip)
     .gte("created_at", hourAgo);
@@ -109,7 +109,7 @@ export async function insertQuoteRequest(params: {
   userAgent:          string | null;
 }): Promise<QuoteRequest | null> {
   const res = await supabaseAdmin
-    .from("hammerex_lead_requests")
+    .from("networkers_lead_requests")
     .insert({
       requester_name:      params.requesterName,
       requester_email:     params.requesterEmail,

@@ -16,10 +16,10 @@
 -- future external product refs (Screwfix links, etc.) without new
 -- columns per product source.
 
-alter table public.hammerex_image_submissions
+alter table public.networkers_image_submissions
   add column if not exists materials jsonb not null default '[]'::jsonb;
 
-comment on column public.hammerex_image_submissions.materials is
+comment on column public.networkers_image_submissions.materials is
   $$Array of { kind: "hammerex" | "trade_center" | "external",
      ref: string, label: string, url: string } tuples. Human-
      tagged only — never populated by AI vision inference.
@@ -29,5 +29,5 @@ comment on column public.hammerex_image_submissions.materials is
 
 -- GIN index on the JSONB so admin can search "images tagged with
 -- product X" and Site Interest can filter by material class.
-create index if not exists hammerex_image_submissions_materials_gin
-  on public.hammerex_image_submissions using gin (materials);
+create index if not exists networkers_image_submissions_materials_gin
+  on public.networkers_image_submissions using gin (materials);

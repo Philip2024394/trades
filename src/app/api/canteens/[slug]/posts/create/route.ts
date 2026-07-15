@@ -37,7 +37,7 @@ const MAX_PHOTOS = 8;
 // Rolling cap on top-level live posts per canteen. When a fresh post
 // pushes the count above this ceiling, the oldest UNSAVED posts are
 // soft-deleted (status='rotated') until the count is back at the cap.
-// Saved posts (any row in hammerex_canteen_saved_posts) are exempt —
+// Saved posts (any row in networkers_canteen_saved_posts) are exempt —
 // they persist until the last saver un-saves. Replies (parent_id set)
 // are not counted here; deleting the parent cascades.
 const FEED_ROTATION_CAP = 30;
@@ -166,7 +166,7 @@ export async function POST(
   // rails (they expire on `expires_at`, not the feed cap).
   //
   // Prune order: oldest first, skipping any post that has at least
-  // one bookmark in hammerex_canteen_saved_posts. Best-effort;
+  // one bookmark in networkers_canteen_saved_posts. Best-effort;
   // failures here must not fail the primary post-create. Uses a soft
   // delete (status='rotated') so the row survives for audit /
   // recovery — the read query already filters by status='live'.
@@ -249,7 +249,7 @@ async function rotateFeedPosts(canteenId: string): Promise<void> {
   // posts) — the extra rows are cheap and the alternative (per-post
   // sub-queries) would fan out.
   const saved = await supabaseAdmin
-    .from("hammerex_canteen_saved_posts")
+    .from("networkers_canteen_saved_posts")
     .select("post_id")
     .eq("canteen_id", canteenId);
   const savedIds = new Set<string>(

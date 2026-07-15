@@ -22,7 +22,7 @@
 --     is actually four consecutive weekly slots that auto-refresh
 --     via Stripe subscription later.
 
-create table if not exists public.hammerex_featured_placements (
+create table if not exists public.networkers_featured_placements (
   id                uuid        primary key default gen_random_uuid(),
   trade_slug        text        not null,   -- the merchant slug being featured
   category          text        not null,   -- keyword the boost applies to (e.g. "loft ladders")
@@ -39,20 +39,20 @@ create table if not exists public.hammerex_featured_placements (
 );
 
 -- Fast public lookup — "what's featured on category X right now?"
-create index if not exists hammerex_featured_placements_active_category
-  on public.hammerex_featured_placements (category, expires_at)
+create index if not exists networkers_featured_placements_active_category
+  on public.networkers_featured_placements (category, expires_at)
   where status = 'active';
 
 -- Trade inbox — "am I featured anywhere right now?"
-create index if not exists hammerex_featured_placements_trade_active
-  on public.hammerex_featured_placements (trade_slug, expires_at desc)
+create index if not exists networkers_featured_placements_trade_active
+  on public.networkers_featured_placements (trade_slug, expires_at desc)
   where status = 'active';
 
-create index if not exists hammerex_featured_placements_admin_recent
-  on public.hammerex_featured_placements (status, created_at desc);
+create index if not exists networkers_featured_placements_admin_recent
+  on public.networkers_featured_placements (status, created_at desc);
 
 -- Auto-touch updated_at
-create or replace function public.hammerex_featured_placements_touch()
+create or replace function public.networkers_featured_placements_touch()
 returns trigger
 language plpgsql
 as $$
@@ -62,7 +62,7 @@ begin
 end;
 $$;
 
-drop trigger if exists trg_hammerex_featured_placements_touch on public.hammerex_featured_placements;
-create trigger trg_hammerex_featured_placements_touch
-  before update on public.hammerex_featured_placements
-  for each row execute function public.hammerex_featured_placements_touch();
+drop trigger if exists trg_networkers_featured_placements_touch on public.networkers_featured_placements;
+create trigger trg_networkers_featured_placements_touch
+  before update on public.networkers_featured_placements
+  for each row execute function public.networkers_featured_placements_touch();
