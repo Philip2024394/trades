@@ -12,7 +12,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   canteenBySlugFromDb,
-  canteenPostsFromDb
+  canteenPostsFromDb,
+  canteenSavedPostIdsFromDb
 } from "@/lib/canteens.server";
 import { getCurrentTrade } from "@/lib/tradeAuth";
 import { BRAND } from "@/lib/seo";
@@ -48,7 +49,10 @@ export default async function CanteenFeedPage({
   if (!canteen) notFound();
   const viewer = await getCurrentTrade();
   const isHost = viewer?.slug === canteen.hostSlug;
-  const posts = await canteenPostsFromDb(canteen.id);
+  const [posts, initialSavedIds] = await Promise.all([
+    canteenPostsFromDb(canteen.id),
+    canteenSavedPostIdsFromDb(canteen.id, viewer?.slug ?? null)
+  ]);
 
   return (
     <CanteenFeedShell
@@ -61,6 +65,7 @@ export default async function CanteenFeedPage({
       isHost={isHost}
       posts={posts}
       filter={filter ?? "all"}
+      initialSavedIds={initialSavedIds}
     />
   );
 }

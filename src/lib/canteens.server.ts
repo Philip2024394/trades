@@ -344,6 +344,25 @@ export async function canteenPostsFromDb(canteenId: string, limit: number = 30):
   return (res.data ?? []).map((r) => shapePost(r));
 }
 
+/** Which top-level posts in a canteen has this saver bookmarked?
+ *  Powers the initial saved-state hydration on the feed shell so the
+ *  "Saved" pill + BookmarkCheck menu label render correctly on first
+ *  paint, without a client round-trip. Empty set for guests or when
+ *  the saver has no bookmarks. */
+export async function canteenSavedPostIdsFromDb(
+  canteenId: string,
+  saverSlug: string | null
+): Promise<string[]> {
+  if (!saverSlug || !isUuid(canteenId)) return [];
+  const res = await supabaseAdmin
+    .from("hammerex_canteen_saved_posts")
+    .select("post_id")
+    .eq("canteen_id", canteenId)
+    .eq("saver_slug", saverSlug);
+  if (res.error || !res.data) return [];
+  return res.data.map((r) => r.post_id as string).filter(Boolean);
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function shapePost(r: any): CanteenChatPost {
   const reactions = (r.reactions ?? {}) as { like?: number; agree?: number; question?: number };

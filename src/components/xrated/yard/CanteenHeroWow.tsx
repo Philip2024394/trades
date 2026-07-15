@@ -176,7 +176,7 @@ export function CanteenHeroWow({
           {/* LEFT — copy + CTA (over the opaque cream veil zone) */}
           <div className="min-w-0">
             <h1
-              className="text-[32px] font-black leading-[1.05] tracking-tight sm:text-[40px] md:text-[48px]"
+              className="text-[28px] font-black leading-tight sm:text-[34px] md:text-[40px]"
               style={{
                 fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
                 color: HEADLINE_INK,

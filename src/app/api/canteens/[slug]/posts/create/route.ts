@@ -34,6 +34,13 @@ const VALID_KINDS = new Set<PostPayload["kind"]>([
 
 const MAX_BODY = 4000;
 const MAX_PHOTOS = 8;
+// Rolling cap on top-level live posts per canteen. When a fresh post
+// pushes the count above this ceiling, the oldest UNSAVED posts are
+// soft-deleted (status='rotated') until the count is back at the cap.
+// Saved posts (any row in hammerex_canteen_saved_posts) are exempt —
+// they persist until the last saver un-saves. Replies (parent_id set)
+// are not counted here; deleting the parent cascades.
+const FEED_ROTATION_CAP = 30;
 
 export async function POST(
   req: Request,
@@ -152,6 +159,24 @@ export async function POST(
       .eq("id", canteenId);
   }
 
+  // Feed rotation — enforce the FEED_ROTATION_CAP (30) top-level
+  // live posts per canteen. Only chat/question/showcase/announcement
+  // count toward the cap (they are what the feed actually shows).
+  // Counter + make-offer are marketplace kinds and live on their own
+  // rails (they expire on `expires_at`, not the feed cap).
+  //
+  // Prune order: oldest first, skipping any post that has at least
+  // one bookmark in hammerex_canteen_saved_posts. Best-effort;
+  // failures here must not fail the primary post-create. Uses a soft
+  // delete (status='rotated') so the row survives for audit /
+  // recovery — the read query already filters by status='live'.
+  try {
+    await rotateFeedPosts(canteenId);
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.error("[canteens.posts.create] rotation failed (non-fatal)", err);
+  }
+
   // Emit a public activity event so the canteen post surfaces on the
   // landing page's live feed (/api/activity/public → os_activity_events).
   // Fire-and-forget — activity emission failing must not fail the post.
@@ -180,4 +205,75 @@ export async function POST(
   }
 
   return NextResponse.json({ ok: true, id: insert.data.id });
+}
+
+// ─── Feed rotation helper ─────────────────────────────────────
+//
+// Called after a fresh post lands. Reads every top-level live feed
+// post in the canteen (oldest → newest), skips those the community
+// has bookmarked, and soft-deletes the oldest until the count drops
+// back to FEED_ROTATION_CAP.
+//
+// "Soft-delete" = status transitions to 'rotated'. The row survives
+// for the recalc-metrics job + audit; the read query at
+// canteenPostsFromDb already gates on status='live' so rotated rows
+// disappear from every surface.
+
+const FEED_ROTATION_KINDS = ["chat", "question", "showcase", "announcement"] as const;
+
+async function rotateFeedPosts(canteenId: string): Promise<void> {
+  // Fetch live top-level posts, oldest first — that's the deletion
+  // candidate list. Limit is a defensive ceiling: we should not have
+  // more than a couple hundred live rows even in the busiest canteen
+  // because the cap keeps them capped. `parent_id` null filter is
+  // critical — replies are children, they should NOT count toward
+  // the top-level cap and they will cascade if their parent is
+  // deleted (though we're only soft-deleting, so replies survive).
+  const live = await supabaseAdmin
+    .from("hammerex_canteen_posts")
+    .select("id, created_at")
+    .eq("canteen_id", canteenId)
+    .eq("status", "live")
+    .is("parent_id", null)
+    .in("kind", FEED_ROTATION_KINDS as unknown as string[])
+    .order("created_at", { ascending: true })
+    .limit(500);
+  if (live.error || !live.data) return;
+  if (live.data.length <= FEED_ROTATION_CAP) return;
+
+  const overBy = live.data.length - FEED_ROTATION_CAP;
+
+  // Look up which of those posts are bookmarked. One row per
+  // (post, saver); we only need distinct post ids for the exemption
+  // set. Pull ALL saved posts in this canteen (bounded by users x
+  // posts) — the extra rows are cheap and the alternative (per-post
+  // sub-queries) would fan out.
+  const saved = await supabaseAdmin
+    .from("hammerex_canteen_saved_posts")
+    .select("post_id")
+    .eq("canteen_id", canteenId);
+  const savedIds = new Set<string>(
+    (saved.data ?? []).map((r) => r.post_id as string).filter(Boolean)
+  );
+
+  // Walk from oldest forward, collect ids until we've picked `overBy`
+  // non-saved posts. Saved posts are skipped over — they don't count
+  // against the cap for the purposes of THIS trim, but they DO count
+  // against the visible post count that triggered the trim. That's a
+  // deliberate choice: a canteen with 30 saved posts + 10 fresh posts
+  // will keep growing until the savers un-save. Matches Philip's
+  // spec: "save will remain until user selects delete this post or
+  // unsave."
+  const toRotate: string[] = [];
+  for (const row of live.data) {
+    if (toRotate.length >= overBy) break;
+    if (savedIds.has(row.id as string)) continue;
+    toRotate.push(row.id as string);
+  }
+  if (toRotate.length === 0) return;
+
+  await supabaseAdmin
+    .from("hammerex_canteen_posts")
+    .update({ status: "rotated" })
+    .in("id", toRotate);
 }

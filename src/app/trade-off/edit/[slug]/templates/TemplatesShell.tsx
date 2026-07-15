@@ -20,6 +20,7 @@ import {
   type PaletteSlug,
   type PaletteTokens
 } from "@/lib/paletteTokens";
+import { MOCK_CANTEENS, type Canteen } from "@/lib/canteens";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
@@ -182,11 +183,27 @@ const PREVIEW_CANTEEN_PATH: Partial<Record<PaletteSlug, string>> = {
 };
 const PREVIEW_CANTEEN_FALLBACK = "/trade-off/yard/canteens/uk-kitchen-fitters";
 
-function livePreviewUrl(pSlug: PaletteSlug, overrideAccent?: string | null, heroShade?: number | null): string {
-  const path = PREVIEW_CANTEEN_PATH[pSlug];
-  let url = path
-    ? (pSlug === "chalk" ? path : `${path}?preview_palette=${pSlug}`)
-    : `${PREVIEW_CANTEEN_FALLBACK}?preview_palette=${pSlug}`;
+function livePreviewUrl(
+  pSlug: PaletteSlug,
+  overrideAccent?: string | null,
+  heroShade?: number | null,
+  canteenPath?: string,
+  themeMode?: "light" | "dark" | null
+): string {
+  // When a canteen path is supplied (canteen-driven cards), always
+  // append ?preview_palette so the target canteen renders in the card's
+  // palette regardless of its own persisted paletteSlug. The chalk
+  // special-case (skip preview_palette when it matches the app default)
+  // only applies to the legacy palette-driven fallback path.
+  const path = canteenPath ?? PREVIEW_CANTEEN_PATH[pSlug];
+  let url: string;
+  if (canteenPath) {
+    url = `${canteenPath}?preview_palette=${pSlug}`;
+  } else {
+    url = path
+      ? (pSlug === "chalk" ? path : `${path}?preview_palette=${pSlug}`)
+      : `${PREVIEW_CANTEEN_FALLBACK}?preview_palette=${pSlug}`;
+  }
   // [DEV BUTTON] Append override_accent + hero_shade when tuner set.
   if (overrideAccent && /^#[0-9A-Fa-f]{6}$/.test(overrideAccent)) {
     const sep = url.includes("?") ? "&" : "?";
@@ -196,16 +213,72 @@ function livePreviewUrl(pSlug: PaletteSlug, overrideAccent?: string | null, hero
     const sep = url.includes("?") ? "&" : "?";
     url = `${url}${sep}hero_shade=${heroShade}`;
   }
+  if (themeMode === "dark") {
+    const sep = url.includes("?") ? "&" : "?";
+    url = `${url}${sep}theme_mode=dark`;
+  }
   // [/DEV BUTTON]
   return url;
 }
 
+// Every canteen with a palette becomes one card in the picker. Multiple
+// canteens can share a palette (Oak has 5 reference trades — carpenters,
+// furniture makers, wood restorers, tree house builders, canopy specs;
+// Timber has 3; Copper has 2; Mortar has 3; Aqua has 2). Installing any
+// card writes that card's palette to the merchant — cards sharing a
+// palette all resolve to the same install action but differ in trade
+// name, host, and hero preview. Ordering follows MOCK_CANTEENS so
+// palette families stay grouped visually.
+function derivePickerCanteens(): Canteen[] {
+  const paletteSet = new Set<string>(PALETTE_ORDER as readonly string[]);
+  return MOCK_CANTEENS.filter(
+    (c) => typeof c.paletteSlug === "string" && paletteSet.has(c.paletteSlug)
+  );
+}
+const PICKER_CANTEENS: Canteen[] = derivePickerCanteens();
+
+// Template → reference canteen slug map. Each DB template row in
+// hammerex_app_templates corresponds to one demo canteen; the card
+// links to that canteen for the live preview iframe. Add new entries
+// here in lockstep with the migration that inserts the DB row.
+const TEMPLATE_REFERENCE_CANTEEN: Record<string, string> = {
+  "template-1":  "uk-kitchen-fitters",
+  "template-2":  "uk-rated-electricians",
+  "template-3":  "uk-plasterers",
+  "template-4":  "uk-furniture-makers",
+  "template-5":  "uk-wood-carvers",
+  "template-6":  "uk-wood-restorers",
+  "template-7":  "uk-wood-stainers",
+  "template-8":  "uk-tree-house-builders",
+  "template-9":  "uk-water-feature-specialists",
+  "template-10": "uk-guttering-downpipes",
+  "template-11": "uk-copper-flashing-specialists",
+  "template-12": "uk-canopy-specialists"
+};
+
+type AppTemplateCard = {
+  slug:             string;
+  name:             string;
+  themeName:        string;
+  themeBgColor:     string;
+  themeAccentColor: string;
+  themeInkColor:    string;
+  previewImageUrl:  string | null;
+  description:      string | null;
+};
+
 export function TemplatesShell({
   slug,
-  appliedPaletteSlug
+  appliedPaletteSlug,
+  templates = []
 }: {
   slug: string;
   appliedPaletteSlug: PaletteSlug;
+  /** Full template catalogue from `hammerex_app_templates`. Rendered
+   *  as the "Featured Templates" strip above the palette grid so
+   *  merchants see every shipped template, not just the 20 palette
+   *  variations. */
+  templates?: AppTemplateCard[];
 }) {
   const [palette, setPalette] = useState<PaletteSlug>(appliedPaletteSlug);
   const [submitting, setSubmitting] = useState<string | null>(null);
@@ -223,19 +296,30 @@ export function TemplatesShell({
   // fully applied, 0 = neutral cream (palette tint disappears from
   // the hero entirely). Absence in the map means 100 (default).
   const [devHeroShade, setDevHeroShade] = useState<Partial<Record<PaletteSlug, number>>>({});
+  // Dark-mode toggle — per palette. When "dark", the iframe canteen
+  // renders with page bg swapped from cream (#FBF6EC) to near-black
+  // and the hero cream veil swapped to a black veil. The unshaded
+  // portion of the hero photo stays clear (no overlay). Absence =
+  // light (cream) mode. Per Philip 2026-07-15: gives every palette a
+  // one-click dark variant preview without a whole second palette.
+  const [devThemeMode, setDevThemeMode] = useState<Partial<Record<PaletteSlug, "light" | "dark">>>({});
   const [devToast, setDevToast] = useState<string | null>(null);
   // [/DEV BUTTON]
-  // Live-preview modal state. `livePreviewPalette` = which palette is
-  // currently open in the fullscreen modal (null = closed). This is
-  // the "App Store screenshot preview" pattern — tapping Live on a
-  // card zooms the iPhone frame into a fullscreen iframe so the
-  // merchant can scroll / tap / experience the palette on real data
-  // BEFORE tapping Install. Escape key + backdrop tap both close.
-  const [livePreviewPalette, setLivePreviewPalette] = useState<PaletteSlug | null>(null);
+  // Live-preview modal state. Carries BOTH the palette (drives Install)
+  // and the canteen slug (drives iframe URL) so the modal previews the
+  // specific canteen the merchant tapped — not a generic per-palette
+  // canteen. Null = closed. This is the "App Store screenshot preview"
+  // pattern — tapping Live on a card zooms the iPhone frame into a
+  // fullscreen iframe so the merchant can scroll / tap / experience the
+  // palette on real data BEFORE tapping Install. Escape key + backdrop
+  // tap both close.
+  const [livePreviewEntry, setLivePreviewEntry] = useState<
+    { palette: PaletteSlug; canteenSlug: string } | null
+  >(null);
   useEffect(() => {
-    if (!livePreviewPalette) return;
+    if (!livePreviewEntry) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLivePreviewPalette(null);
+      if (e.key === "Escape") setLivePreviewEntry(null);
     };
     window.addEventListener("keydown", onKey);
     // Prevent scroll on body while modal is open so the iframe scroll
@@ -246,7 +330,7 @@ export function TemplatesShell({
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = previousOverflow;
     };
-  }, [livePreviewPalette]);
+  }, [livePreviewEntry]);
 
   async function applyPalette(next: PaletteSlug) {
     if (next === palette || submitting) return;
@@ -305,7 +389,7 @@ export function TemplatesShell({
             Choose your palette
           </h1>
           <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-neutral-600">
-            20 palettes, one layout. Every palette gives you a matching <b>mobile app</b> AND <b>canteen page</b> — same colours, both surfaces. Tap <b>Live</b> to zoom into the app, <b>Canteen page</b> to see the full-width version in a new tab, then <b>Install</b> when one feels right. Reversible any time; your content (products, services, posts, projects) never changes.
+            {PICKER_CANTEENS.length} trade demos, {PALETTE_ORDER.length} palettes, one layout. Every card is a real canteen you can preview live in your <b>mobile app</b> AND on the <b>canteen page</b> — same colours, both surfaces. Tap <b>Live</b> to zoom in, <b>Canteen page</b> to open the full-width version in a new tab, then <b>Install</b> the palette that fits your trade. Reversible any time; your content (products, services, posts, projects) never changes.
           </p>
 
           {/* Designer credit — Brian Talton is the layout + palette
@@ -330,15 +414,116 @@ export function TemplatesShell({
         </div>
       )}
 
-      {/* Palettes grid — one card per palette in PALETTE_ORDER. Cards
-          for palettes without a demo canteen (image + liveUrl still
-          null in PALETTE_REFERENCES) render as "Coming soon" so the
-          merchant can see what's in the pipeline without picking a
-          broken surface. */}
+      {/* ── Featured Templates strip ─────────────────────────────
+          Renders one card per row in hammerex_app_templates so every
+          shipped template shows in the App Store, not just the 20
+          palette variations below. Horizontal scrollable strip mirrors
+          the App Store featured pattern. Each card links to the
+          template's reference canteen (from TEMPLATE_REFERENCE_CANTEEN
+          map) for the live iframe preview and quick-apply. */}
+      {templates.length > 0 && (
+        <section className="mb-10">
+          <div className="mb-3 flex items-baseline justify-between gap-3">
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
+                App Store
+              </div>
+              <h2 className="mt-0.5 text-[18px] font-black leading-tight text-neutral-900 md:text-[20px]">
+                All Templates ({templates.length})
+              </h2>
+            </div>
+            <div className="text-[10px] font-bold text-neutral-500">
+              Live template library
+            </div>
+          </div>
+          <div className="scrollbar-none -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 md:-mx-6 md:px-6">
+            {templates.map((tpl) => {
+              const canteenSlug = TEMPLATE_REFERENCE_CANTEEN[tpl.slug];
+              const previewHref = canteenSlug
+                ? `/trade-off/yard/canteens/${canteenSlug}`
+                : `/trade-off/edit/${slug}/templates`;
+              return (
+                <Link
+                  key={tpl.slug}
+                  href={previewHref}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="group flex-shrink-0 snap-start overflow-hidden rounded-2xl border bg-white shadow-md transition hover:shadow-lg"
+                  style={{
+                    width: "180px",
+                    borderColor: "rgba(139,69,19,0.15)"
+                  }}
+                >
+                  {/* Preview thumbnail */}
+                  <div
+                    className="relative w-full overflow-hidden"
+                    style={{
+                      aspectRatio: "4 / 5",
+                      backgroundColor: tpl.themeBgColor
+                    }}
+                  >
+                    {tpl.previewImageUrl ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={tpl.previewImageUrl}
+                        alt=""
+                        aria-hidden
+                        loading="lazy"
+                        className="block h-full w-full object-cover transition group-hover:scale-105"
+                      />
+                    ) : null}
+                    {/* Palette-accent bottom stripe so the theme colour
+                        reads at a glance even on abstract preview shots. */}
+                    <div
+                      aria-hidden
+                      className="absolute bottom-0 left-0 right-0 h-1.5"
+                      style={{ backgroundColor: tpl.themeAccentColor }}
+                    />
+                  </div>
+                  {/* Meta strip */}
+                  <div className="flex items-center gap-2 px-3 py-2">
+                    <span
+                      className="h-3 w-3 flex-shrink-0 rounded-full shadow-sm"
+                      style={{ backgroundColor: tpl.themeAccentColor }}
+                      aria-hidden
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-[11px] font-black uppercase tracking-wider text-neutral-500">
+                        {tpl.slug}
+                      </div>
+                      <div className="truncate text-[13px] font-black text-neutral-900">
+                        {tpl.name}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {/* Canteens grid — one card per canteen in PICKER_CANTEENS.
+          Multiple canteens can share a palette (Oak x 5, Timber x 3, etc.)
+          so the merchant sees every trade demo we've shipped, not just
+          one representative per palette. Cards for palettes still marked
+          Coming Soon in READY_PALETTES render the Install button as
+          "Soon" so the merchant can see what's in the pipeline without
+          picking a broken surface. */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {PALETTE_ORDER.map((pSlug, idx) => {
+        {PICKER_CANTEENS.map((canteen, idx) => {
+          const pSlug = canteen.paletteSlug as PaletteSlug;
           const p = PALETTES[pSlug];
           const ref = PALETTE_REFERENCES[pSlug];
+          const canteenPath = `/trade-off/yard/canteens/${canteen.slug}`;
+          // Only the "primary" canteen for a palette (the one wired into
+          // PREVIEW_CANTEEN_PATH) uses the hand-drawn ChatGPT mockup
+          // (Chalk kitchen fitters / Iron rated electricians). Secondary
+          // canteens that share the palette always render the live
+          // iframe so they show their own hero + host, not the primary
+          // canteen's mockup.
+          const isPrimaryForPalette = PREVIEW_CANTEEN_PATH[pSlug] === canteenPath;
+          const staticImage = isPrimaryForPalette ? ref.image : null;
           const isReady = READY_PALETTES.includes(pSlug);
           const isSelected = pSlug === palette;
           const isPending = submitting === `palette:${pSlug}`;
@@ -386,16 +571,22 @@ export function TemplatesShell({
                     : null;
                   const shadeVal = devHeroShade[pSlug];
                   const shadeActive = shadeVal != null && shadeVal !== 100;
-                  const useIframe = Boolean(tuning) || shadeActive || !ref.image;
+                  const modeVal = devThemeMode[pSlug] ?? "light";
+                  const modeActive = modeVal === "dark";
+                  const useIframe = Boolean(tuning) || shadeActive || modeActive || !staticImage;
                   return (
                     <IphoneFrame
-                      previewImageUrl={useIframe ? undefined : (ref.image ?? undefined)}
+                      previewImageUrl={useIframe ? undefined : (staticImage ?? undefined)}
                       wrapInPhoneChassis={ref.wrapInPhoneChassis || useIframe}
-                      livePreviewUrl={useIframe ? livePreviewUrl(pSlug, tunedHex, shadeVal ?? null) : undefined}
+                      livePreviewUrl={
+                        useIframe
+                          ? livePreviewUrl(pSlug, tunedHex, shadeVal ?? null, canteenPath, modeVal)
+                          : undefined
+                      }
                     />
                   );
                 })()}
-                {!ref.image && (
+                {!staticImage && (
                   /* Subtle "Live" pip in the corner so merchants know
                      the phone is running the actual app, not a mockup. */
                   <span
@@ -410,7 +601,7 @@ export function TemplatesShell({
                     Live
                   </span>
                 )}
-                {pSlug === "chalk" && !isSelected && (
+                {pSlug === "chalk" && isPrimaryForPalette && !isSelected && (
                   <span
                     className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] shadow-md"
                     style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
@@ -568,6 +759,61 @@ export function TemplatesShell({
                   </div>
                 );
               })()}
+              {/* Dark-mode toggle — sits directly under the colour
+                  picker, per Philip 2026-07-15. Flips the iframe canteen
+                  from cream page bg + cream hero veil to near-black
+                  equivalents. The hero photo itself stays unshaded
+                  (no overlay) where the palette veil isn't drawn. Uses
+                  ?theme_mode=dark on the iframe URL — canteen page.tsx
+                  reads the flag and threads a dark background through
+                  to CanteenPageShell. Reversible per-card; other cards
+                  keep their own mode. */}
+              {(() => {
+                const modeVal = devThemeMode[pSlug] ?? "light";
+                const isDark = modeVal === "dark";
+                return (
+                  <div
+                    className="flex items-center gap-1.5 border-b bg-yellow-50/70 px-3 py-1.5 text-[10px]"
+                    style={{ borderColor: "rgba(184,134,11,0.30)" }}
+                  >
+                    <span className="text-[8.5px] font-black uppercase tracking-[0.14em] text-neutral-500">MODE</span>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setDevThemeMode((prev) => ({
+                          ...prev,
+                          [pSlug]: isDark ? "light" : "dark"
+                        }))
+                      }
+                      className="inline-flex h-6 flex-1 items-center justify-center gap-1 rounded-full border px-2 text-[9.5px] font-black uppercase tracking-wider shadow-sm active:scale-[0.97]"
+                      style={{
+                        backgroundColor: isDark ? BRAND_BLACK : "#FFFFFF",
+                        color: isDark ? BRAND_YELLOW : BRAND_BLACK,
+                        borderColor: isDark ? BRAND_BLACK : "rgba(0,0,0,0.20)"
+                      }}
+                      title={isDark ? "Switch back to cream (light) background" : "Switch page + hero veil to black"}
+                    >
+                      {isDark ? "Dark ON" : "Dark OFF"}
+                    </button>
+                    {isDark && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setDevThemeMode((prev) => {
+                            const next = { ...prev };
+                            delete next[pSlug];
+                            return next;
+                          })
+                        }
+                        className="text-[9px] font-black uppercase tracking-wider text-neutral-500 hover:text-neutral-900"
+                        title="Reset to light mode"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
               {/* Hero shade slider — 100 = full palette bg on hero,
                   0 = neutral cream (palette tint fades out entirely).
                   Sits directly under the accent tuner row so both
@@ -622,10 +868,10 @@ export function TemplatesShell({
               <div className="flex flex-1 flex-col gap-3 border-t p-4" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
                 <div>
                   <div className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
-                    Palette · {cardNumber}
+                    Trade · {cardNumber}
                   </div>
                   <h3 className="mt-1 text-[17px] font-black leading-tight text-neutral-900">
-                    {p.displayName}
+                    {canteen.name}
                   </h3>
                   <div className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-neutral-500">
                     <span
@@ -633,12 +879,12 @@ export function TemplatesShell({
                       className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-300"
                       style={{ backgroundColor: p.chip }}
                     />
-                    Reference trade · {ref.tradeLabel}
+                    {p.displayName} palette · Hosted by {canteen.hostDisplayName}
                   </div>
                 </div>
 
                 <p className="line-clamp-3 flex-1 text-[12.5px] leading-relaxed text-neutral-700">
-                  Same layout as every other palette — page background, headline accent, and secondary CTAs render in the {p.displayName} colours. Your content stays put; only the paint changes.
+                  {canteen.tagline}
                 </p>
 
                 {/* Button row — App Store pattern.
@@ -654,7 +900,7 @@ export function TemplatesShell({
                 <div className="flex items-stretch gap-2">
                   <button
                     type="button"
-                    onClick={() => setLivePreviewPalette(pSlug)}
+                    onClick={() => setLivePreviewEntry({ palette: pSlug, canteenSlug: canteen.slug })}
                     className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full border px-3 text-[11.5px] font-black uppercase tracking-wider text-neutral-800 transition hover:bg-neutral-50 active:scale-[0.97]"
                     style={{ borderColor: "rgba(139,69,19,0.30)" }}
                   >
@@ -707,7 +953,7 @@ export function TemplatesShell({
                     browser renders the desktop breakpoint at real
                     viewport width (iframe would force mobile). */}
                 <a
-                  href={livePreviewUrl(pSlug)}
+                  href={livePreviewUrl(pSlug, null, null, canteenPath, devThemeMode[pSlug] ?? "light")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border px-3 text-[11.5px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50 active:scale-[0.97]"
@@ -779,20 +1025,26 @@ export function TemplatesShell({
           Install button at the bottom commits the palette; Close (X or
           backdrop tap or Escape key) dismisses without committing.
           Pattern mirrors the Apple App Store screenshot zoom. */}
-      {livePreviewPalette && (
+      {livePreviewEntry && (
         <LivePreviewModal
-          palette={PALETTES[livePreviewPalette]}
-          previewUrl={livePreviewUrl(livePreviewPalette)}
-          isSelected={livePreviewPalette === palette}
-          isReady={READY_PALETTES.includes(livePreviewPalette)}
-          isPending={submitting === `palette:${livePreviewPalette}`}
+          palette={PALETTES[livePreviewEntry.palette]}
+          previewUrl={livePreviewUrl(
+            livePreviewEntry.palette,
+            null,
+            null,
+            `/trade-off/yard/canteens/${livePreviewEntry.canteenSlug}`,
+            devThemeMode[livePreviewEntry.palette] ?? "light"
+          )}
+          isSelected={livePreviewEntry.palette === palette}
+          isReady={READY_PALETTES.includes(livePreviewEntry.palette)}
+          isPending={submitting === `palette:${livePreviewEntry.palette}`}
           onInstall={() => {
-            applyPalette(livePreviewPalette);
+            applyPalette(livePreviewEntry.palette);
             // Modal stays open so merchant sees the "Installed" state
             // land — closes automatically on next render if selected
             // matches (handled by effect below).
           }}
-          onClose={() => setLivePreviewPalette(null)}
+          onClose={() => setLivePreviewEntry(null)}
         />
       )}
     </main>
@@ -949,6 +1201,15 @@ function IphoneFrame({
                 title="Live app preview"
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
                 loading="lazy"
+                onLoad={(e) => {
+                  // Force scroll-to-top on load. Iframes remember their
+                  // scrollY across re-renders (React key changes) and
+                  // Chromium restores scroll on same-origin nav; without
+                  // this the preview can show a half-scrolled canteen.
+                  try {
+                    e.currentTarget.contentWindow?.scrollTo(0, 0);
+                  } catch { /* cross-origin safety */ }
+                }}
                 className="block border-0"
                 style={{ width: "calc(100% + 17px)", height: "100%" }}
               />

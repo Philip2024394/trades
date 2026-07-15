@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { X, Send } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { CANTEEN_CONTENT_SAVED_EVENT } from "@/components/xrated/yard/CanteenMobileAppShowcase";
 
 const MAX_BODY = 4000;
 
@@ -61,7 +62,10 @@ export function CanteenComposeOverlay({
         return;
       }
       // Success — canteen page will re-fetch the feed via router.refresh()
-      // on landing so the rotator picks up the new post.
+      // on landing so the rotator picks up the new post. Also fires the
+      // save event so any open CanteenMobileAppShowcase in edit mode
+      // remounts its iframe and shows the new post in the phone preview.
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
       router.push(backHref);
       router.refresh();
     } catch {

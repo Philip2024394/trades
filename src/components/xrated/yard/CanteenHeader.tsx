@@ -146,6 +146,30 @@ export function CanteenHeader({
       </button>
 
       <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8">
+        {/* ── Top-nav strip ────────────────────────────────────
+            Two text links: browse other canteens (/trade-off/yard/
+            canteens) + jump to the Trade Center market with its
+            category-rail catalogue (/tc/trade-center). Small caps
+            eyebrow style so they sit above the hero copy without
+            competing. Right-pad reserves room for the mobile burger. */}
+        <nav
+          aria-label="Canteen navigation"
+          className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 pr-14 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700 md:pr-0 md:text-[11px]"
+        >
+          <Link
+            href="/trade-off/yard/canteens"
+            className="transition hover:text-neutral-900 hover:underline"
+          >
+            ← Canteens directory
+          </Link>
+          <span aria-hidden className="text-neutral-400">·</span>
+          <Link
+            href="/tc/trade-center"
+            className="transition hover:text-neutral-900 hover:underline"
+          >
+            Trade Center →
+          </Link>
+        </nav>
         {/* Owner greeting strip — top row, mimics the design mockup:
             avatar + "Hi {name}" + role + verified. Non-owners see the
             trade tag row instead so guests get context, not personal
@@ -663,29 +687,33 @@ function KpiCard({
   accent?: boolean;
   iconGold?: boolean;
   muted?: boolean;
-  /** Dark palette flag — flips card bg + text so KPI reads on Iron. */
+  /** Dark palette flag — kept in the signature for API stability. Card
+   *  is now UNCONDITIONALLY black across every palette per Philip
+   *  2026-07-15: "all these containers on hero image cateen and mobile
+   *  should be black color". Value / label / sublabel + icon backing
+   *  fixed to a black-native scheme regardless of theme. */
   dark?: boolean;
 }) {
+  // Silence unused-var TS while we keep `dark` in the API surface.
+  void dark;
   // Icon colour: brand yellow across every card so the KPI stack
   // reads as a single yellow-highlight system (Projects + Rating both
   // pop the same). Muted "New" placeholder stays grey.
-  const iconTextClass = muted
-    ? (dark ? "text-neutral-500" : "text-neutral-400")
-    : "text-[#FFB300]";
+  const iconTextClass = muted ? "text-neutral-500" : "text-[#FFB300]";
   return (
     <div
       className="flex flex-1 items-center gap-2 rounded-xl border px-3 py-2 shadow-lg md:flex-none md:flex-col md:items-start md:px-4 md:py-3"
       style={{
-        backgroundColor: dark ? "#141414" : "#FFFFFF",
-        borderColor:     dark ? "rgba(255,255,255,0.10)" : "rgba(139,69,19,0.10)"
+        backgroundColor: "#0A0A0A",
+        borderColor:     "rgba(255,255,255,0.10)"
       }}
     >
       <div
         className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg md:h-9 md:w-9 ${iconTextClass}`}
         style={{
           backgroundColor: muted
-            ? (dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)")
-            : (dark ? "rgba(255,179,0,0.18)" : "rgba(184,134,11,0.10)")
+            ? "rgba(255,255,255,0.06)"
+            : "rgba(255,179,0,0.18)"
         }}
         aria-hidden
       >
@@ -694,23 +722,19 @@ function KpiCard({
       <div className="min-w-0 flex-1 md:flex-none">
         <div
           className="text-[9px] font-black uppercase tracking-[0.16em] md:text-[10px]"
-          style={{ color: dark ? "#9CA3AF" : "#737373" }}
+          style={{ color: "#A3A3A3" }}
         >
           {label}
         </div>
         <div
           className="text-[16px] font-black leading-none md:text-[22px]"
-          style={{
-            color: muted
-              ? (dark ? "#A3A3A3" : "#737373")
-              : (dark ? "#FFFFFF" : "#171717")
-          }}
+          style={{ color: muted ? "#A3A3A3" : "#FFFFFF" }}
         >
           {value}
         </div>
         <div
           className="text-[9px] font-black md:text-[10px]"
-          style={{ color: dark ? "#9CA3AF" : "#737373" }}
+          style={{ color: "#A3A3A3" }}
         >
           {subLabel}
         </div>

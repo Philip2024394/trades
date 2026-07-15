@@ -21,9 +21,7 @@ import {
   Package,
   Clock,
   Sparkles,
-  Info,
-  ChevronUp,
-  ChevronDown
+  Info
 } from "lucide-react";
 import type { SideLanePost } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
@@ -38,12 +36,6 @@ const BANNER_SOLD       = "https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfdfsdf-r
 // enough to read a card's headline in one pass; matches the merchant
 // feedback that the old 240s CSS marquee felt too fast.
 const DRIFT_PX_PER_SEC = 30;
-// How long the auto-drift stays paused after a Back / Forward chip
-// interaction. Merchant gets time to read; then the flow resumes.
-const RESUME_DELAY_MS = 4000;
-// Fallback card height when we haven't measured yet (first render).
-// The real value is measured on mount and after the posts list changes.
-const FALLBACK_CARD_HEIGHT_PX = 180;
 
 function timeLeftLabel(expiresAt: string): string {
   const diffMs = new Date(expiresAt).getTime() - Date.now();
@@ -81,24 +73,10 @@ export function CanteenSideLane({
 }) {
   const listRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
-  const [cardHeightPx, setCardHeightPx] = useState<number>(FALLBACK_CARD_HEIGHT_PX);
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Duplicate the list so scrollTop wrap-around loops seamlessly.
   const looped = [...posts, ...posts];
-
-  // Measure the first card's rendered height so ±3-card scrolling
-  // uses the correct pixel delta. Also re-measures if the posts list
-  // changes (e.g. filter applied).
-  useEffect(() => {
-    if (!listRef.current) return;
-    const firstItem = listRef.current.querySelector<HTMLLIElement>("li");
-    if (firstItem) {
-      const rect = firstItem.getBoundingClientRect();
-      // 8px = the gap-2 between cards
-      setCardHeightPx(rect.height + 8);
-    }
-  }, [posts.length]);
 
   // Slow auto-drift. Uses requestAnimationFrame for smooth 60fps
   // increments. Wraps the scrollTop at half-height so the seam between
@@ -124,17 +102,6 @@ export function CanteenSideLane({
     return () => cancelAnimationFrame(raf);
   }, [paused]);
 
-  // Manual ±3-card scroll. Pauses the drift temporarily so the
-  // merchant has time to read what they scrolled back to; resumes
-  // after RESUME_DELAY_MS.
-  function scrollByCards(cards: number) {
-    if (!listRef.current) return;
-    setPaused(true);
-    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    listRef.current.scrollBy({ top: cards * cardHeightPx, behavior: "smooth" });
-    resumeTimerRef.current = setTimeout(() => setPaused(false), RESUME_DELAY_MS);
-  }
-
   // Cleanup pending resume timer on unmount.
   useEffect(() => {
     return () => {
@@ -143,42 +110,16 @@ export function CanteenSideLane({
   }, []);
 
   return (
-    <aside className="w-full">
-      <div className="mb-3 flex items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
-          <span
-            className="h-1.5 w-1.5 animate-pulse rounded-full"
-            style={{ backgroundColor: BRAND_YELLOW }}
-            aria-hidden="true"
-          />
-          <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
-            Live listings
-          </div>
+    <aside className="mt-6 w-full">
+      <div className="mb-2 flex items-center gap-1.5">
+        <span
+          className="h-1 w-1 animate-pulse rounded-full"
+          style={{ backgroundColor: BRAND_YELLOW }}
+          aria-hidden="true"
+        />
+        <div className="text-[8px] font-black uppercase tracking-[0.22em] text-neutral-500">
+          Live listings
         </div>
-        {/* ±3-card scroll chips — only render when there are enough
-            posts that a merchant could reasonably miss one. */}
-        {posts.length > 3 && (
-          <div className="flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => scrollByCards(-3)}
-              aria-label="Scroll back 3 listings"
-              className="inline-flex h-6 items-center gap-0.5 rounded-full border border-neutral-200 bg-white px-2 text-[9px] font-black uppercase tracking-wider text-neutral-700 shadow-sm transition hover:bg-neutral-50 active:scale-95"
-            >
-              <ChevronUp size={10} strokeWidth={2.6}/>
-              Back 3
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCards(3)}
-              aria-label="Scroll forward 3 listings"
-              className="inline-flex h-6 items-center gap-0.5 rounded-full border border-neutral-200 bg-white px-2 text-[9px] font-black uppercase tracking-wider text-neutral-700 shadow-sm transition hover:bg-neutral-50 active:scale-95"
-            >
-              Forward 3
-              <ChevronDown size={10} strokeWidth={2.6}/>
-            </button>
-          </div>
-        )}
       </div>
 
       {posts.length === 0 ? (

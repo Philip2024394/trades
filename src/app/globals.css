@@ -104,6 +104,34 @@ body {
 .scrollbar-none::-webkit-scrollbar { display: none; }
 .scrollbar-none { scrollbar-width: none; }
 
+/* Golden rule (2026-07-15): never show default browser scrollbars.
+   Every scrollable region app-wide gets a slim (4px) themed scrollbar
+   that reads as a hint ("pull / push") rather than a native OS widget.
+   Colour uses the platform warm-tan accent so it blends with the
+   #FBF6EC surface; goes transparent on dark palettes via inheritance
+   from the current colour scheme. Applies globally to <html>, <body>
+   and every inner element via `*`, including same-origin iframes
+   (canteen embed=1 preview). Add `.scrollbar-none` when you want a
+   region to hide the scrollbar entirely (horizontal carousels). */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(184, 134, 11, 0.55) transparent;
+}
+*::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(184, 134, 11, 0.55);
+  border-radius: 1px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(184, 134, 11, 0.85);
+}
+
 /* Right-to-left marquee that fades into the left edge of its container */
 @keyframes hammerex-marquee {
   from { transform: translateX(100%); }

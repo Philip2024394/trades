@@ -153,6 +153,7 @@ export function CanteenQuickActions({ canteenSlug, tradeSlug, inline = false }: 
 export function CanteenTradeDeals({
   canteenSlug,
   tradeLabel: _tradeLabel,
+  tradeSlug = null,
   hostSlug,
   hostFirstName,
   reviews = null,
@@ -160,12 +161,29 @@ export function CanteenTradeDeals({
 }: {
   canteenSlug: string;
   tradeLabel: string;
+  /** Trade slug — drives the container tone. Landscape family
+   *  (landscaper / garden-designer / luxury-garden-designer) uses
+   *  an earthy topsoil brown instead of the default amber yellow,
+   *  per Philip's brief: brown reads as garden soil, aligns with
+   *  the tactile outdoor trade. */
+  tradeSlug?: string | null;
   hostSlug?: string;
   hostFirstName?: string;
   /** Host review aggregate — sub-copy adapts based on count. */
   reviews?: { avg: number; count: number } | null;
   inline?: boolean;
 }) {
+  const isLandscapeFamily =
+    tradeSlug === "landscaper" ||
+    tradeSlug === "garden-designer" ||
+    tradeSlug === "luxury-garden-designer";
+  const containerBg = isLandscapeFamily ? "#7A4E2A" : "#FFB300";
+  const containerBorder = isLandscapeFamily
+    ? "rgba(58,32,12,0.35)"
+    : "rgba(184,134,11,0.30)";
+  const titleClass = isLandscapeFamily ? "text-white" : "text-neutral-900";
+  const subCopyClass = isLandscapeFamily ? "text-amber-50/85" : "text-neutral-700";
+  const starFill = isLandscapeFamily ? "#F5D66A" : TAN;
   // Opens the Reviews tab of the in-page tabbed section (same bridge
   // pattern as Quick Actions). Falls back to the canteen's about page
   // on the (rare) desktop-only surfaces that don't mount the tabbed
@@ -191,8 +209,8 @@ export function CanteenTradeDeals({
       }}
       className="flex items-center gap-2 overflow-hidden rounded-2xl border py-1 pl-0 pr-3 shadow-md transition hover:brightness-105 active:scale-[0.99] md:py-1.5 md:pr-4"
       style={{
-        backgroundColor: "#FFB300",
-        borderColor: "rgba(184,134,11,0.30)"
+        backgroundColor: containerBg,
+        borderColor: containerBorder
       }}
     >
       {/* Illustrated graphic — customers-say-it-best. Flush to the
@@ -207,11 +225,11 @@ export function CanteenTradeDeals({
         className="-ml-2 h-20 w-20 flex-shrink-0 object-contain md:h-24 md:w-24"
       />
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1.5 text-[20px] font-black leading-tight tracking-tight text-neutral-900 md:text-[24px]">
+        <div className={`flex items-center gap-1.5 text-[20px] font-black leading-tight tracking-tight md:text-[24px] ${titleClass}`}>
           Customers say it best
-          <Star size={14} strokeWidth={0} fill={TAN} style={{ color: TAN }}/>
+          <Star size={14} strokeWidth={0} fill={starFill} style={{ color: starFill }}/>
         </div>
-        <p className="mt-1 line-clamp-1 text-[11px] leading-snug text-neutral-700 md:text-[12px]">
+        <p className={`mt-1 line-clamp-1 text-[11px] leading-snug md:text-[12px] ${subCopyClass}`}>
           {subCopy}
         </p>
       </div>
@@ -276,7 +294,8 @@ const TRENDING_HEADING_BY_TRADE: Record<string, string> = {
   "bricklayer":      "Trending Brickwork",
   "scaffolder":      "Trending Scaffolding Setups",
   "roofer":          "Trending Roofing Jobs",
-  "landscaper":      "Trending Landscape Designs",
+  "landscaper":            "Trending Landscape Designs",
+  "luxury-garden-designer": "Trending Landscape Designs",
   "carpenter":       "Trending Carpentry Builds",
   "painter-decorator": "Trending Paint & Decor",
   "tiler":           "Trending Tile Work",
@@ -326,6 +345,27 @@ const TRENDING_BY_TRADE: Record<string, TrendingItem[]> = {
     { slug: "wardrobes",   label: "Wardrobes",   keywords: ["wardrobe", "cupboard", "fit"],  fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_09_30%20AM.png` },
     { slug: "worktops",    label: "Worktops",    keywords: ["worktop", "oak", "surface"],    fallback: `${HL}/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png` },
     { slug: "trim",        label: "Trim",        keywords: ["skirting", "trim", "moulding"], fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2012_15_38%20AM.png` }
+  ],
+  "landscaper": [
+    { slug: "modern-curves",   label: "Modern Curves",   keywords: ["modern", "curves", "topiary", "front garden"], fallback: `${HL}/d3dc4fdf62da6e575ccea46862b68527d.jpg`,             description: "Sweeping curved lawn, boxwood topiary balls, black-mulch beds and grey paver walkway. Contemporary front or back garden with strong lines and low-maintenance planting.",           priceFromGbp: 8500,  priceToGbp: 18000 },
+    { slug: "lit-cobble-path", label: "Lit Cobble Path", keywords: ["lit path", "cobblestone", "lighting", "walkway"], fallback: `${HL}/9171141622dfafc52f0217ecc79a5157d.jpg`,           description: "S-curved cobblestone path with warm-white LED strip edging, flanked by rose and hydrangea borders. Transforms an existing garden with an evening ambience upgrade.",                priceFromGbp: 4200,  priceToGbp: 9500 },
+    { slug: "hillside-stairs", label: "Hillside Stairs", keywords: ["hillside", "sloped", "steps", "stairs", "retaining"], fallback: `${HL}/0ae6e49699c2601f34bc0d58a699e767.jpg`,       description: "Sloped-site solution — curved stone-slab stairs with LED underlighting, dry-stone retaining wall, ornamental grass + boulder planting. Structural + lighting + planting integrated.", priceFromGbp: 12000, priceToGbp: 28000 },
+    { slug: "deck-and-lounge", label: "Deck & Lounge",   keywords: ["deck", "lounge", "outdoor living", "composite decking"], fallback: `${HL}/feac4e23c6247b09fbda160e3f6230e2.jpg`,   description: "Curved composite deck with LED skirt lighting flowing past a raised outdoor lounge platform. Sells the finished garden room — deck, sofa, planting and lighting as one build.",     priceFromGbp: 9500,  priceToGbp: 22000 },
+    { slug: "luxury-pebbled",  label: "Luxury Pebbled",  keywords: ["luxury", "pebble", "rill", "water feature", "flagship"], fallback: `${HL}/7edc29b91ecb6c8ddd2b855e73a77b60.jpg`,  description: "Signature nighttime garden — contrasting white + black pebble beds, boxwood topiary, steel water rill, bronze orb feature. Flagship project for luxury landscape designers.",       priceFromGbp: 25000, priceToGbp: 65000 },
+    { slug: "water-ring",      label: "Water Ring",      keywords: ["water feature", "corten", "rain curtain", "sculpture"], fallback: `${HL}/8b3797f4409966845e872b6dee2c879a.jpg`,   description: "Bespoke circular Corten-steel rain curtain on a hardwood deck. One-piece sculptural water feature — pairs with tropical planting and evening lighting for a statement centrepiece.",   priceFromGbp: 4500,  priceToGbp: 12500 },
+    { slug: "waterfall-wall",  label: "Waterfall Wall",  keywords: ["waterfall", "wall feature", "hardscape", "slate wall"], fallback: `${HL}/9be8dabe58dd9281570518c7b8f0be41.jpg`,    description: "Slate waterfall wall mounted between stacked-stone piers, spilling onto LED-lit paver landings with black planters. Hardscape + water + lighting bundled as one installation.",       priceFromGbp: 6500,  priceToGbp: 15000 }
+  ],
+  // Luxury garden designer uses the same trending set as landscaper —
+  // shared landscape-design portfolio. Aliased below the landscaper
+  // entry so both trades render the trending-landscape-designs images.
+  "luxury-garden-designer": [
+    { slug: "luxury-pebbled",  label: "Luxury Pebbled",  keywords: ["luxury", "pebble", "rill", "water feature", "flagship"], fallback: `${HL}/7edc29b91ecb6c8ddd2b855e73a77b60.jpg`,  description: "Signature nighttime garden — contrasting white + black pebble beds, boxwood topiary, steel water rill, bronze orb feature. Flagship project.",                    priceFromGbp: 35000, priceToGbp: 85000 },
+    { slug: "water-ring",      label: "Water Ring",      keywords: ["water feature", "corten", "rain curtain", "sculpture"], fallback: `${HL}/8b3797f4409966845e872b6dee2c879a.jpg`,   description: "Bespoke circular Corten-steel rain curtain on hardwood deck. One-piece sculptural centrepiece paired with tropical planting and evening lighting.",              priceFromGbp: 6500,  priceToGbp: 18000 },
+    { slug: "waterfall-wall",  label: "Waterfall Wall",  keywords: ["waterfall", "wall feature", "hardscape", "slate wall"], fallback: `${HL}/9be8dabe58dd9281570518c7b8f0be41.jpg`,    description: "Slate waterfall wall between stacked-stone piers, spilling onto LED-lit paver landings. Hardscape + water + lighting bundled as one installation.",                priceFromGbp: 9500,  priceToGbp: 22000 },
+    { slug: "deck-and-lounge", label: "Deck & Lounge",   keywords: ["deck", "lounge", "outdoor living", "composite decking"], fallback: `${HL}/feac4e23c6247b09fbda160e3f6230e2.jpg`,  description: "Curved composite deck with LED skirt lighting past a raised lounge platform. Complete garden-room build — deck, sofa area, planting and lighting as one.",           priceFromGbp: 14000, priceToGbp: 32000 },
+    { slug: "hillside-stairs", label: "Hillside Stairs", keywords: ["hillside", "sloped", "steps", "stairs", "retaining"], fallback: `${HL}/0ae6e49699c2601f34bc0d58a699e767.jpg`,      description: "Sloped-site engineering — curved stone-slab stairs, LED underlighting, dry-stone retaining walls, ornamental grass + boulder planting.",                          priceFromGbp: 18000, priceToGbp: 45000 },
+    { slug: "lit-cobble-path", label: "Lit Cobble Path", keywords: ["lit path", "cobblestone", "lighting", "walkway"], fallback: `${HL}/9171141622dfafc52f0217ecc79a5157d.jpg`,          description: "S-curved cobblestone path with warm-white LED strip edging, flanked by rose and hydrangea borders. Evening ambience upgrade for premium gardens.",                 priceFromGbp: 6500,  priceToGbp: 14000 },
+    { slug: "modern-curves",   label: "Modern Curves",   keywords: ["modern", "curves", "topiary", "front garden"], fallback: `${HL}/d3dc4fdf62da6e575ccea46862b68527d.jpg`,            description: "Sweeping curved lawn, boxwood topiary balls, black-mulch beds and grey paver walkway. Contemporary architectural garden with strong lines.",                       priceFromGbp: 12000, priceToGbp: 28000 }
   ],
   "roofer": [
     { slug: "slate",     label: "Slate",     keywords: ["slate"],                            fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png` },

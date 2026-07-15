@@ -15,6 +15,7 @@
 //     accidental taps don't trigger a drag on mobile.
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { CANTEEN_CONTENT_SAVED_EVENT } from "@/components/xrated/yard/CanteenMobileAppShowcase";
 import type {
   HammerexXratedProduct,
   RetailShippingArea,
@@ -662,6 +663,9 @@ export function ShopModeEditor({
       setMsg(form.id ? "Updated." : "Added.");
       setForm(EMPTY_FORM);
       setMode("list");
+      // Ping any open canteen preview iframe to refresh so the merchant
+      // sees their new / updated product land in the phone preview.
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
     } catch {
       setErr("Network error — try again.");
     } finally {
@@ -686,6 +690,7 @@ export function ShopModeEditor({
       setProducts((prev) =>
         prev.map((x) => (x.id === p.id ? { ...x, status: "archived" } : x))
       );
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
     } catch {
       setErr("Network error — try again.");
     }
@@ -728,6 +733,7 @@ export function ShopModeEditor({
             return o ? { ...p, sort_order: o.sort_order } : p;
           })
         );
+        window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
       } catch {
         setProducts(snapshot);
         setErr("Network error — restored previous order.");
@@ -2838,6 +2844,7 @@ function FeaturedProductsEditor({
       }
       onSaved(saved);
       setMsg(`Saved — ${saved.length} update${saved.length === 1 ? "" : "s"}.`);
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
     } catch {
       setErr("Network error — try again.");
     } finally {

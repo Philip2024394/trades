@@ -57,10 +57,10 @@ export default async function CanteenDetailPage({
    *   - `from={slug}` sets the "Back to X" sticky pill in
    *     product-focus so buyers return to whichever surface routed
    *     them here (Trade Center, Yard, Warehouse, etc.). */
-  searchParams: Promise<{ focus?: string; from?: string; preview_palette?: string; override_accent?: string; hero_shade?: string }>;
+  searchParams: Promise<{ focus?: string; from?: string; preview_palette?: string; override_accent?: string; hero_shade?: string; theme_mode?: string }>;
 }) {
   const { slug } = await params;
-  const { focus, from, preview_palette, override_accent, hero_shade } = await searchParams;
+  const { focus, from, preview_palette, override_accent, hero_shade, theme_mode } = await searchParams;
   const canteen = await canteenBySlugFromDb(slug);
   if (!canteen) notFound();
   // Platform-wide feed + members + admin + products — 5 concurrent
@@ -113,6 +113,12 @@ export default async function CanteenDetailPage({
     Number.isFinite(shadeNum) && shadeNum >= 0 && shadeNum <= 100
       ? shadeNum / 100
       : 1;
+  // [DEV BUTTON] theme_mode — "dark" swaps the page bg from cream
+  // (#FBF6EC) to near-black and switches the hero veil to a black
+  // veil so every palette gets a one-click dark preview from the
+  // templates picker. The hero photo itself renders clear where the
+  // veil isn't drawn — no black overlay on the unshaded portion.
+  const darkMode = theme_mode === "dark";
   // [/DEV BUTTON]
 
   // Validate `?focus=` — only pass through if the product actually
@@ -141,6 +147,7 @@ export default async function CanteenDetailPage({
       returnLabel={returnOrigin?.label}
       palette={palette}
       heroVeilOpacity={heroVeilOpacity}
+      darkMode={darkMode}
     />
   );
 }

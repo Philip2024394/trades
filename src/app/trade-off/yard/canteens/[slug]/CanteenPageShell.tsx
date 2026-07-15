@@ -66,6 +66,20 @@ import { requiresProUpload, type MembershipTier } from "@/lib/tierGates";
 
 const CREAM = "#FBF6EC";
 
+// Trade-family footer art on the mobile app view. Rendered behind the
+// canteen content, anchored to bottom-center at 100% width. Same
+// artwork is also used as the CanteenMobileAppShowcase container
+// backdrop (see CONTAINER_BG_BY_TRADE in CanteenMobileAppShowcase.tsx).
+// Add new entries as trade-family art is generated.
+const CANTEEN_FOOTER_ART_BY_TRADE: Record<string, string> = {
+  landscaper:               "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_16_10%20PM.png",
+  "garden-designer":        "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_16_10%20PM.png",
+  "luxury-garden-designer": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_16_10%20PM.png",
+  electrician:              "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_41_25%20PM.png",
+  plasterer:                "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_52_37%20PM.png",
+  bricklayer:               "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_56_50%20PM.png"
+};
+
 // Fallback thumbnails for canteen post cards that have no photoUrls
 // yet. Deterministic pick by author-slug + card index so the same post
 // always resolves to the same fallback tile — matches the pattern the
@@ -94,7 +108,8 @@ export function CanteenPageShell({
   returnHref,
   returnLabel,
   palette,
-  heroVeilOpacity
+  heroVeilOpacity,
+  darkMode = false
 }: {
   canteen: Canteen;
   sideLane: SideLanePost[];
@@ -129,10 +144,21 @@ export function CanteenPageShell({
    *  100% clear. Driven by `?hero_shade=` dev-tuner query param on
    *  the canteen page. Strip on "remove dev buttons". */
   heroVeilOpacity?: number;
+  /** [DEV BUTTON] Dark-mode override. When true, the page background
+   *  swaps from cream (#FBF6EC) to near-black and the hero veil (if
+   *  any) flips to a black veil — the hero photo itself stays clear
+   *  where the veil isn't drawn. Driven by `?theme_mode=dark` on the
+   *  canteen page, wired from the templates picker "Dark ON" toggle.
+   *  Strip on "remove dev buttons". */
+  darkMode?: boolean;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const arrivedViaInvite = searchParams?.get("invite") === "1";
+  // `?embed=1` is set by the CanteenMobileAppShowcase iframe so the
+  // canteen page inside the iframe suppresses the same showcase
+  // (would otherwise iframe itself and recurse forever).
+  const isEmbedded = searchParams?.get("embed") === "1";
   const [inviteOpen, setInviteOpen] = useState(false);
   const [videoUpsellOpen, setVideoUpsellOpen] = useState(false);
   const [privateViewPostId, setPrivateViewPostId] = useState<string | null>(null);
@@ -364,6 +390,33 @@ export function CanteenPageShell({
   const viewerTier: MembershipTier = "free";
   const canPostImage = !requiresProUpload("canteen-image", viewerTier);
   const canPostVideo = !requiresProUpload("canteen-video", viewerTier);
+  // [DEV BUTTON] Dark-mode palette override — swaps the palette
+  // tokens that would otherwise render dark-on-dark. Overridden:
+  //   • bg           → near-black so the mobile wrapper + hero cream
+  //                    veil (CanteenHeroWow reads palette.bg) flip
+  //                    dark. Hero photo stays clear where the veil
+  //                    isn't drawn.
+  //   • text         → cream so host name, H1, meta strip stay
+  //                    legible. Without this, Gary Hughes / any
+  //                    HEADLINE_INK text disappears on light
+  //                    palettes (their `text` token is near-black).
+  //   • mutedText    → warm mid-grey so the "Trade · Specialist"
+  //                    row + KPI labels still read.
+  //   • dark         → true so CanteenHeroWow picks the "dark
+  //                    palette" text-shadow branch (bright glow
+  //                    against the dark hero veil) instead of the
+  //                    white-outline branch (invisible on black).
+  // Accent + heroLastWord stay intact — the palette's identity
+  // survives, only bg/text swap. Strip on "remove dev buttons".
+  const effectivePalette = darkMode && palette
+    ? {
+        ...palette,
+        bg:         "#0A0A0A",
+        text:       "#F5F0E4",
+        mutedText:  "#B8B0A0",
+        dark:       true
+      }
+    : palette;
 
   return (
     <main
@@ -377,7 +430,13 @@ export function CanteenPageShell({
         // ("why did my page turn black?"). The palette-driven "hero
         // fade matches page bg" experiment was reverted here: off-
         // white is universal, palette is contained.
-        backgroundColor: "#FBF6EC",
+        //
+        // [DEV BUTTON] darkMode escape hatch — when the templates-picker
+        // "Dark ON" toggle sets ?theme_mode=dark, swap the outer page
+        // bg to near-black so merchants can preview a dark variant of
+        // any palette. Reversible per URL param; strip on
+        // "remove dev buttons".
+        backgroundColor: darkMode ? "#0A0A0A" : "#FBF6EC",
         // Inset yellow ring when Edit mode is on. 3px so it reads
         // clearly at any viewport without feeling loud. Uses inset
         // box-shadow so it doesn't shift page layout on toggle.
@@ -390,10 +449,32 @@ export function CanteenPageShell({
           native dark chrome back — black for Iron, brown for Oak, etc.
           The outer <main> stays at #FBF6EC (golden rule for the canteen
           page area). This wrapper isolates the app view's bg from the
-          canteen page bg — two surfaces, two colours. */}
+          canteen page bg — two surfaces, two colours.
+
+          Certain trades also carry a trade-family footer artwork behind
+          the app scroll, anchored to the bottom-center so it reads as
+          the trade's "ground" under the content:
+            • landscaper / garden-designer / luxury-garden-designer →
+              wheelbarrow + plants + path
+            • electrician → tool bag + sockets + consumer unit + hard hat
+            • plasterer   → plaster sacks + buckets + ladder + drill
+            • bricklayer  → bricks + wheelbarrow + cement sacks + mesh
+          Trades without a mapped image stay clean. Add new entries by
+          extending `CANTEEN_FOOTER_ART_BY_TRADE`. */}
       <div
         className="lg:hidden"
-        style={{ backgroundColor: palette?.bg ?? "#FBF6EC" }}
+        style={{
+          backgroundColor: effectivePalette?.bg ?? (darkMode ? "#0A0A0A" : "#FBF6EC"),
+          ...(canteen.tradeSlug && CANTEEN_FOOTER_ART_BY_TRADE[canteen.tradeSlug]
+            ? {
+                backgroundImage:      `url('${CANTEEN_FOOTER_ART_BY_TRADE[canteen.tradeSlug]}')`,
+                backgroundPosition:   "bottom center",
+                backgroundRepeat:     "no-repeat",
+                backgroundSize:       "100% auto",
+                backgroundAttachment: "local"
+              }
+            : {})
+        }}
       >
         <CanteenHeroWow
           canteen={canteen}
@@ -403,7 +484,7 @@ export function CanteenPageShell({
           addressLine={admin?.showroom?.addressLine ?? null}
           postcode={admin?.showroom?.postcode ?? null}
           city={admin?.city ?? null}
-          palette={palette ?? DEFAULT_PALETTE}
+          palette={effectivePalette ?? DEFAULT_PALETTE}
           veilOpacity={heroVeilOpacity}
         />
         {/* Outer sheet container with three inner cards nested inside.
@@ -487,6 +568,7 @@ export function CanteenPageShell({
               <CanteenTradeDeals
                 canteenSlug={canteen.slug}
                 tradeLabel={canteen.tradeLabel}
+                tradeSlug={canteen.tradeSlug ?? null}
                 hostSlug={canteen.hostSlug}
                 hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
                 reviews={admin?.reviews ?? null}
@@ -982,16 +1064,23 @@ export function CanteenPageShell({
                 {/* Mobile app showcase — sits directly under the admin
                     "View profile" card in the desktop right column.
                     Dual-purpose: QR handoff for Mick's customers +
-                    silent sales pitch to future canteen owners. */}
-                <div className="mt-3">
-                  <CanteenMobileAppShowcase
-                    hostSlug={canteen.hostSlug}
-                    hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
-                    tradeLabel={canteen.tradeLabel}
-                    heroImageUrl={canteen.headerBgUrl}
-                    heroTitle={canteen.name}
-                  />
-                </div>
+                    silent sales pitch to future canteen owners. Hidden
+                    when the canteen page is itself embedded inside the
+                    showcase's iframe (`?embed=1`) to prevent recursion. */}
+                {!isEmbedded && (
+                  <div className="mt-3">
+                    <CanteenMobileAppShowcase
+                      hostSlug={canteen.hostSlug}
+                      hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+                      tradeLabel={canteen.tradeLabel}
+                      tradeSlug={canteen.tradeSlug ?? null}
+                      heroImageUrl={canteen.headerBgUrl}
+                      heroTitle={canteen.name}
+                      canteenSlug={canteen.slug}
+                      editMode={isHost && editMode}
+                    />
+                  </div>
+                )}
               </div>
             )}
             <CanteenSideLane
@@ -1250,9 +1339,105 @@ const CANTEEN_MOCK_POSTS_PLUMBER: CanteenPost[] = [
 const IK = "https://ik.imagekit.io/9mrgsv2rp";
 const P = (rel: string) => `${IK}/${rel}`;
 const CANTEEN_MOCK_POSTS_CARPENTER: CanteenPost[] = [
-  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "2h", body: "1st fix on the Bishopston extension today. Steel beam bearer in, joists spanning 4.2m. Sub-floor tomorrow if the weather holds.", reactions: 12, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2010_56_22%20PM.png")] },
-  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "6h", body: "Bespoke oak shelving install in a Clifton study. Client wanted floating look — hidden brackets set into the stud wall. Satisfying job.", reactions: 8, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png")] },
-  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "1d", body: "Anyone in the SW got a good source for kiln-dried structural pine? My usual timber merchant is 3 weeks behind.", reactions: 6, replies: 9, avatarUrl: null }
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "10m", body: "Subbed on an oak-frame porch build for @aidan-frost's crew in Solihull today — truss up, rafters going on, stone pier below. Same joinery rules as any timber frame: sole plate first, plumb everything twice.", reactions: 24, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/4cbfbc8a67a7512e6742574e38537fca.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "12m", body: "Big veranda canopy framing in progress on a garage retrofit — 6m run, curved sole plate laminated from four boards, cut in the workshop, dry-fitted on-site. Aidan's crew's second job like this on my patch this month.", reactions: 20, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/1be0fdf473712c28ec30059c9c1530ef.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "15m", body: "New-build roof truss + OSB decking install today in Chippenham. Two-storey timber frame, roof carpentry laying out. Hi-vis on and roped in — the wind was strong up there.", reactions: 23, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/b5938354c2fde868067bd2be981dc2f6.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "20m", body: "Bit of a departure — subbing on a treehouse build for @rowan-ashcroft's crew. Cedar-shingle roof going on around a mature oak, ladders each side, cobble base laid for the tree collar. Same jointing rules apply as any timber frame.", reactions: 29, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/2f456eb541f26dfedcd3ff0bf9c0abad.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "40m", body: "Structural timber-frame raise in Wiltshire today. Team on the ridge, oak-peg mortise joints going in by hand. Weather held for the whole set.", reactions: 34, replies: 8, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/084f21873251f02e29e609e1e77b26f9.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "2h", body: "Rip cuts on the DeWalt bench saw at 6am. New-build joist stock going in tomorrow — better to prep before the site's live.", reactions: 22, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfafddffsd.png"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "5h", body: "Nail-gun through 4x2 studs on the new-build in Whitby. Two-storey timber frame, tomorrow we sheet with OSB. Good day on site.", reactions: 28, replies: 7, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfzzdsfsdff.png"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "8h", body: "Roof trusses going up in Redland. Prefab from the yard, nail-gun on the ridge, three lads on the deck. Should be watertight by Friday.", reactions: 31, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfzzdsfsdffsd.png"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "1d", body: "Formwork carpentry on a Southmead basement dig. Ply forms braced against the rebar cage — concrete pour Thursday. Slow, careful work.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfzzdsfsdffsddsd.png"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "1d", body: "First-fix flooring on a Portishead conversion — engineered oak, 220mm boards, glued + secret-nailed to the joists. Client loves how it looks in the morning light.", reactions: 26, replies: 3, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/b5757afffcd7671db9c5657356dec79e.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "2d", body: "Plywood delivery just landed in the workshop. 18mm birch for a run of kitchen carcasses next week. Best sheet ply I've had in 12 months.", reactions: 14, replies: 2, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/369b0923175db2ea84dd4caf884d14f9.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "2d", body: "Bench full of veneer samples + timber offcuts + blueprints for a new-build console. Client's picking finish tomorrow — six oaks and a walnut on the tape.", reactions: 11, replies: 3, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ee4093d9ce6198bb9e1f36806790e08c.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "3d", body: "End-of-day toolbox — hammer, jack plane, nails, offcuts. Every joint on today's stud wall by hand. Not glamorous, but stays true 30 years.", reactions: 19, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/aaa55d3fe3b00c44b79593d8d54ed11c.jpg"] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "4d", body: "1st fix on the Bishopston extension today. Steel beam bearer in, joists spanning 4.2m. Sub-floor tomorrow if the weather holds.", reactions: 12, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2010_56_22%20PM.png")] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "5d", body: "Anyone in the SW got a good source for kiln-dried structural pine? My usual timber merchant is 3 weeks behind.", reactions: 6, replies: 9, avatarUrl: null }
+];
+// Joinery posts — Edward Halliwell workshop content matched to
+// bench + hand-tool photography. Kept separate from carpenter feed
+// so each surface reads as its own trade community.
+const CANTEEN_MOCK_POSTS_JOINER_WOOD: CanteenPost[] = [
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "1h", body: "Morning at the bench — light through the workshop windows, hand tools laid out, ready for a run of sash frames. Best hour of the day.", reactions: 26, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/c804a7f8aaa537b6f922d52cf615939b.jpg"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "3h", body: "Frame assembly on a bespoke set of interior doors — mortise-and-tenon, hand-cut, glued and cramped up overnight. No dowels, no biscuits.", reactions: 22, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/983529fb46cacb257b43dafbe877f4d9.jpg"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "7h", body: "Design study for a bespoke library door — hand-drawn on the bench, cast-iron hardware to spec. Client's finalising the panel bead this week.", reactions: 18, replies: 3, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/5aaec8a06fa19110674118f2aa2924ea.jpg"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "1d", body: "Sharpening the bench chisels between commissions — 10-degree hollow-ground, honed on Japanese waterstones. Ready for a run of walnut dovetails tomorrow.", reactions: 15, replies: 2, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/7b4128799dc4d74c74f4a1e69d3435ba.jpg"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "2d", body: "Vintage No. 4 Stanley plane back in service after a full restore. Blade lapped, sole flattened, cap iron polished — cuts silk-smooth on curly maple.", reactions: 21, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfafddffs.png"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "3d", body: "Planing walnut stiles for a corner cabinet. Old-style bench, morning light, single-blade plane. This kind of work keeps the trade alive.", reactions: 24, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfzzdsfsdf.png"] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "4d", body: "Sash window restoration in Harrogate. Draught-proofing seals + weight rebalance — client can hear the difference already.", reactions: 16, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png")] }
+];
+const CANTEEN_MOCK_POSTS_FURNITURE: CanteenPost[] = [
+  { who: "Harriet Blake", handle: "harriet-blake", postedAgo: "2h", body: "Bandsaw milling a slab of English elm for a farmhouse table. 3m long, single board, book-matched leaves. Waiting six months for this timber to season was worth it.", reactions: 32, replies: 7, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/fdfb32014411b6719f4d60a09b4f5292.jpg"] },
+  { who: "Harriet Blake", handle: "harriet-blake", postedAgo: "6h", body: "Design sketch of a new refectory table — 1500mm x 800mm, English walnut, hand-cut through-tenons on the trestles. Client signing off tomorrow.", reactions: 21, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/dbf7cbb6e6d5bf7687010dac50e95e09.jpg"] },
+  { who: "Harriet Blake", handle: "harriet-blake", postedAgo: "1d", body: "CNC precision setup on the new commission — hand-drawn curve traced with the router bit before the first cut. Marries hand-work and machine.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg"] },
+  { who: "Harriet Blake", handle: "harriet-blake", postedAgo: "3d", body: "Loading live-edge oak into the workshop — going to be a wall-mount console for a Cotswolds client. Character grain, natural bark inclusion left in.", reactions: 27, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/6b868b252c0a43aa5d826da447c349a7.jpg"] }
+];
+const CANTEEN_MOCK_POSTS_WOOD_CARVER: CanteenPost[] = [
+  { who: "Callum Ford", handle: "callum-ford", postedAgo: "3h", body: "Chisel-and-mallet portrait commission — eagle, one-piece basswood, four weeks of shaping and detailing. Client picks it up on Saturday.", reactions: 38, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/a533c1bd9280ab9696f6c4dced041a6f.jpg"] },
+  { who: "Callum Ford", handle: "callum-ford", postedAgo: "1d", body: "Floral relief panel underway on the workbench — acanthus scrollwork, all hand-cut with a single skew knife. Slow, meditative work.", reactions: 41, replies: 11, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/93bf4c7289b643b54c98fec085a28aa2.jpg"] },
+  { who: "Callum Ford", handle: "callum-ford", postedAgo: "3d", body: "New engraved chisel arrived from a bench-mate in Devon — my name on the handle. It's the small things that make the workshop feel like home.", reactions: 19, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/Untitleddfafddffsddd.png"] }
+];
+const CANTEEN_MOCK_POSTS_WOOD_RESTORER: CanteenPost[] = [
+  { who: "Miles Warrington", handle: "miles-warrington", postedAgo: "2h", body: "Refectory table restoration signed off today — split joinery cleaned out, ebony patches let in, French-polished. Client couldn't tell where the repairs are.", reactions: 44, replies: 8, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/3137f2abf8096eed67335bda1d2b047b.jpg"] },
+  { who: "Miles Warrington", handle: "miles-warrington", postedAgo: "1d", body: "Georgian sideboard came in filthy — 40 years in a garage. Stripped, joints reglued with hide, doors re-veneered, hand-rubbed shellac finish. Different piece entirely.", reactions: 37, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/6aec7c93dabe2b38806b2370ed223148.jpg"] },
+  { who: "Miles Warrington", handle: "miles-warrington", postedAgo: "3d", body: "Reclaimed oak beams stacked in the workshop — 200-year-old barn frame. Being cut down for a client's kitchen island. History goes into the next generation.", reactions: 28, replies: 5, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/fdfb32014411b6719f4d60a09b4f5292.jpg"] }
+];
+const CANTEEN_MOCK_POSTS_WOOD_STAINER: CanteenPost[] = [
+  { who: "Ryan Hollis", handle: "ryan-hollis", postedAgo: "4h", body: "Spray-finish day on a run of teak garden tables. Osmo UV Protection Oil, three thin coats, 20-minute flash between each. Bench looks glass-smooth already.", reactions: 26, replies: 4, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/f6906127ca6b272c347366e0ec1049f9.jpg"] }
+];
+// Tree House Builders — bespoke canopy builds. 20 posts, each anchored
+// to a photographed project. Watermarked source images (t03 Happy Happy
+// Nester, t07 zenviora.xyz, t13 veo) are cropped from the top via
+// ImageKit URL transform `?tr=cm-extract,fo-top,ar-4-5` so the bottom
+// watermark strip is trimmed off before the image ever renders.
+const IK_TH = "https://ik.imagekit.io/9mrgsv2rp";
+const CROP_TOP = "?tr=cm-extract,fo-top,ar-4-5";
+const CANTEEN_MOCK_POSTS_TREE_HOUSE: CanteenPost[] = [
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "35m", body: "Green-roofed A-frame handed over in Totnes today. Spiral stair on live oak trunks, raised veg bed borders, stone path in. Client's kids already claimed it.", reactions: 42, replies: 9, avatarUrl: null, photoUrls: [`${IK_TH}/2a103a44bcbcea865e53a0eb865667c7.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "1h", body: "Timber-framed loft build with steel roof, wrap-around balcony, cottage-garden planters. Reclaimed oak beams from a Devon barn — dead sound after 200 years.", reactions: 36, replies: 6, avatarUrl: null, photoUrls: [`${IK_TH}/59e0990ee7c6107d6ceb8c25c4960109.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "3h", body: "Snow-day cabin in the oak — commissioned Christmas surprise, lit up with 400 warm-whites. Clients said their kids opened the door and just went quiet.", reactions: 48, replies: 11, avatarUrl: null, photoUrls: [`${IK_TH}/cb31e56e74c9df7eac5f4d9f2265048c.jpg${CROP_TOP}`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "5h", body: "Cottage-style build on a mature oak — string lights, curtains, hydrangea border, swing bench alongside. This one photographs like a fairy tale but the joinery is dead serious.", reactions: 39, replies: 7, avatarUrl: null, photoUrls: [`${IK_TH}/2dcf60100d1a3969a1a5f4dfeef7028a.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "7h", body: "Rope-hammock retreat wrapped in ivy — jungle-style build in a Bristol back garden. Full loft-bed inside, dropped hammock nook underneath. Small footprint, huge personality.", reactions: 33, replies: 5, avatarUrl: null, photoUrls: [`${IK_TH}/0ffafef83d8d04d673dba61e9b5c8121.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "9h", body: "Pallet-deck platform build in an urban Manchester garden — 'M' monogram on the gable at the client's request. Whitewashed cladding, floral sofa underneath. Family movie-nights sorted.", reactions: 27, replies: 4, avatarUrl: null, photoUrls: [`${IK_TH}/b979d305cebd199ade4026df75e000f8.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "11h", body: "Zen-cabin lit by outdoor chandeliers in a Somerset arboretum — arched windows, dark metal roof, hammock underneath, rock border. Feels like a retreat by dinner time.", reactions: 44, replies: 8, avatarUrl: null, photoUrls: [`${IK_TH}/808124ca6d268e78601351d4b57c2c3a.jpg${CROP_TOP}`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "14h", body: "Victorian turret build in Exeter — spiral stair, lavender window boxes, formal-planted approach. Client wanted 'the treehouse from a storybook'. Two kids, one adult retreat.", reactions: 37, replies: 6, avatarUrl: null, photoUrls: [`${IK_TH}/6868518e336d047905b9f09d1a14f3e7.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "18h", body: "Blossom-canopy multi-cabin estate — 3 individual cabins around a central spiral stair, koi pond and bridge below. Six-month build. Biggest job we've delivered this year.", reactions: 61, replies: 15, avatarUrl: null, photoUrls: [`${IK_TH}/52b67046677b74b10af91069b341617b.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "21h", body: "Twin spiral stairs up a mature oak, dusk lighting, pallet-deck lounge below. Manor-house garden in Wiltshire — sits well with the formal parterre next door.", reactions: 41, replies: 7, avatarUrl: null, photoUrls: [`${IK_TH}/8d1a41993f83bcd2f2e3e33275a3dabc.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "1d", body: "Mid-build in a Toronto suburb — cedar-shingle roof going on, ladders each side, cobble base for the tree collar. Team's dry-fitting the balustrade before we lock the joints.", reactions: 34, replies: 5, avatarUrl: null, photoUrls: [`${IK_TH}/2f456eb541f26dfedcd3ff0bf9c0abad.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "1d", body: "In-progress build with the pond forms in — 'moat' around the tree, spiral stair going up. Client's a landscape architect so every detail's spec'd tight. Great to work to a brief this precise.", reactions: 29, replies: 6, avatarUrl: null, photoUrls: [`${IK_TH}/36fb3309a8ed8158b291634f07b2ebe6.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "1d", body: "Framing day on the Utah gazebo build. Mountain backdrop, curved deck going down to the pool. Started at 6am so we could do the ridge joinery before it got hot.", reactions: 32, replies: 4, avatarUrl: null, photoUrls: [`${IK_TH}/f075226192984c2bd912faeaa9f25461.jpg${CROP_TOP}`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "2d", body: "Grown-up build in a New England garden — cedar decking, black steel balustrade, park-bench-and-pergola pad below. Doubles as a bar for outdoor entertaining. First proper adult-only build we've delivered.", reactions: 38, replies: 8, avatarUrl: null, photoUrls: [`${IK_TH}/ad4a8b97d5a436080ca2575a22b7cf39.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "2d", body: "Cedar cottage on a mature oak in Dorset — grey shingle roof, iron balustrade, kids' desk inside. Woodland planting around the trunk hides the platform legs beautifully.", reactions: 35, replies: 6, avatarUrl: null, photoUrls: [`${IK_TH}/9e554d7dbd1d3d172a8e22af46ad6fbb.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "3d", body: "Cedar + glass build in a Pacific Northwest redwood — full-height windows on both gable ends, chandelier inside, spiral stair down the trunk. Owner wanted it to disappear into the canopy. Reckon it does.", reactions: 52, replies: 11, avatarUrl: null, photoUrls: [`${IK_TH}/2a02f34f8e67fb69671c95d64ab4c7fb.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "3d", body: "Bali-inspired luxury build overlooking a rice paddy — bedroom loft above, sunset lounge deck below with hanging lantern trees. Six weeks of design + eight weeks on-site.", reactions: 58, replies: 12, avatarUrl: null, photoUrls: [`${IK_TH}/948bdf8e6ffae8d932767f763f78695c.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "4d", body: "Backyard build with a slide + plunge pool underneath. Sedum green roof so the local birds still nest above. Client's twin boys have opinions about the slide radius — they were right, we made it steeper.", reactions: 46, replies: 9, avatarUrl: null, photoUrls: [`${IK_TH}/08b8bbd8d451562ede3e1fa99c24dc0c.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "5d", body: "Cottage build under a mature oak in a Cotswolds meadow. String-lit gable, curtain-drawn window, hanging bench, stone-edged flower border. Photographed at last light — nothing filter-fixed, that's the real lantern glow.", reactions: 43, replies: 8, avatarUrl: null, photoUrls: [`${IK_TH}/a926505f830aca6899b57a9a9c9df5bc.jpg`] },
+  { who: "Rowan Ashcroft", handle: "rowan-ashcroft", postedAgo: "6d", body: "Painted cottage on a Sussex oak, hanging macramé chair + purple papasan below on the crazy-paved patio. Small footprint, lantern-lit path. Client's daughter's reading nook.", reactions: 37, replies: 5, avatarUrl: null, photoUrls: [`${IK_TH}/0a482767e77f4d3307d91bccdea1a6c3.jpg`] }
+];
+// Water Feature Specialists — bespoke fountains + waterfall walls +
+// lagoon pools. Small feed because it's a niche trade; both posts
+// carry hero-scale project photos rather than progress shots.
+// Canopy Specialists — bespoke oak-frame door canopies, verandas,
+// car canopies. All 11 posts photo-anchored to real projects: shop-
+// made or in-progress builds plus finished installs.
+const IK_CAN = "https://ik.imagekit.io/9mrgsv2rp";
+const CANTEEN_MOCK_POSTS_CANOPIES: CanteenPost[] = [
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "1h", body: "Timber-frame car canopy signed off yesterday alongside a stone cottage in Prestbury. Green-oak posts, matching slate roof to the main house, cobble drive under. Doubled as a covered walkway to the front door.", reactions: 34, replies: 7, avatarUrl: null, photoUrls: [`${IK_CAN}/15b7014afd1bcaeff30d0013a0fe95d8.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "3h", body: "Detail from a covered walkway install in Cheshire — 8m run of oak trusses, hand-cut mortise-and-tenon, wrought-iron lanterns dropped between the beams. Owner walked me the length of it three times before signing off, said it read as \"lived-in from day one\".", reactions: 41, replies: 9, avatarUrl: null, photoUrls: [`${IK_CAN}/25e09fee653b406acec6fb6e73d3e7c9.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "5h", body: "Dark-oak gable canopy on a shingle-clad porch — sunset handover in Alderley Edge. Curved-arch bracket detail hand-carved in the workshop over three days. Client's second commission with us.", reactions: 37, replies: 6, avatarUrl: null, photoUrls: [`${IK_CAN}/7111c22e1cf71822731684fdd8873c3f.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "8h", body: "Full oak-frame porch canopy over a raised timber-deck entry. Truss detail visible from below, stone-clad columns, downlighters in the beam pockets. Landing shot at the end of a two-week install.", reactions: 32, replies: 5, avatarUrl: null, photoUrls: [`${IK_CAN}/79defdd2ce4fca1a120c923d4906ff50.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "10h", body: "Simple pitched canopy over a stained-oak front door — modest scale, big impact. Stone-corbel end supports, cedar-shingle roof to match the surrounding cladding. Two-day install, minimal fixings into the render.", reactions: 26, replies: 4, avatarUrl: null, photoUrls: [`${IK_CAN}/dd0c52977959e32de1bf7c183d308bd2.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "13h", body: "Cotswold-stone cottage got a proper oak canopy today — hand-planed corbel supports, seasoned oak boards on the underside, welded steel gutter running the pitch. Owner's spent 15 years without one — job done.", reactions: 44, replies: 10, avatarUrl: null, photoUrls: [`${IK_CAN}/93efa274ab0db39481e4f60400500771.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "1d", body: "Modern oak-frame canopy dropped onto a 1930s red-brick semi. Cambered rafters, slate ridge cap, iron ties into the brickwork with resin-bonded studs. Client had scaffolding removed by lunchtime — cleanest handover we've had this year.", reactions: 39, replies: 8, avatarUrl: null, photoUrls: [`${IK_CAN}/890c1e9c30ac381fb9ac163a0e6dad9f.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "1d", body: "Pitched oak-frame canopy over a leaded-glass front door — Cotswold-stone wall behind. Traditional bracket detail, welded lead ridge, deep overhang so rain sits clear of the sill. Number '11' plate installed same day.", reactions: 31, replies: 6, avatarUrl: null, photoUrls: [`${IK_CAN}/b62455d9a55667db2aac3ddb81699b17.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "2d", body: "Rustic log-and-timber canopy install on a stone-clad house — decorative wrought-iron ornaments installed either side. Signature build for a client who wanted a lodge feel. Signed off last week, photographing today for the portfolio.", reactions: 47, replies: 12, avatarUrl: null, photoUrls: [`${IK_CAN}/5a1894751925a82870e8bda002d47c94.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "3d", body: "Oak-frame porch install in progress on a Solihull semi. Truss up, roof rafters going on, stone pier below. Client's watching every step — first frame of oak they've seen up close, apparently.", reactions: 28, replies: 5, avatarUrl: null, photoUrls: [`${IK_CAN}/4cbfbc8a67a7512e6742574e38537fca.jpg`] },
+  { who: "Aidan Frost", handle: "aidan-frost", postedAgo: "4d", body: "Rafter framing for a large veranda canopy over a double-garage — captured mid-build. Full 6m run, curved sole plate cut from a single laminated blank. Waiting on the felt roll before we sheath.", reactions: 35, replies: 7, avatarUrl: null, photoUrls: [`${IK_CAN}/1be0fdf473712c28ec30059c9c1530ef.jpg`] }
+];
+const CANTEEN_MOCK_POSTS_WATER_FEATURE: CanteenPost[] = [
+  { who: "Tobias Marlow", handle: "tobias-marlow", postedAgo: "3h", body: "Mediterranean courtyard water feature signed off in a Cotswolds manor today. Wall-mounted stone fountain feeding a turquoise plunge pool, sunken stair entry, iron footbridge above. Six months of design and build.", reactions: 47, replies: 12, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/9b08d4bb58890f657a357d12d48e5f6a.jpg"] },
+  { who: "Tobias Marlow", handle: "tobias-marlow", postedAgo: "2d", body: "Rock-waterfall lagoon-pool commission handed over yesterday. Multi-tier fall dropping 3.5m into a natural-edge pool, integrated poolside bar behind, tropical planting on both banks. Full plumbing routed through the retaining wall — no visible pipework.", reactions: 61, replies: 18, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/42f47d2611b1e31f45cd0780022a7010.jpg?tr=cm-extract,fo-bottom,ar-4-5"] }
 ];
 const CANTEEN_MOCK_POSTS_INTERIOR: CanteenPost[] = [
   { who: "Rebecca Ashworth", handle: "rebecca-ashworth", postedAgo: "1h", body: "Colour scheme approved on the Marylebone flat — Farrow & Ball De Nimes on cabinetry, warm brass hardware. Install starts Monday.", reactions: 14, replies: 5, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_45_28%20AM.png")] },
@@ -1264,10 +1449,60 @@ const CANTEEN_MOCK_POSTS_STONE: CanteenPost[] = [
   { who: "David Whitmore", handle: "david-whitmore", postedAgo: "1d", body: "Bath stone quoin replacement on a Georgian terrace. Sourced matching stone from Corsham quarry — the old and new blend perfectly.", reactions: 15, replies: 2, avatarUrl: null },
   { who: "David Whitmore", handle: "david-whitmore", postedAgo: "3d", body: "SPAB approval landed for the manor house lime plastering. Six-month job. Absolute privilege.", reactions: 22, replies: 6, avatarUrl: null }
 ];
+const IK_R = "https://ik.imagekit.io/9mrgsv2rp";
+const CROP_TOP_R = "?tr=cm-extract,fo-top,ar-3-4";
 const CANTEEN_MOCK_POSTS_ROOFER: CanteenPost[] = [
-  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "2h", body: "Full re-roof on a Peak District farmhouse — natural Welsh slate to match the original. Two-week job with the scaffold sequence.", reactions: 16, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png")] },
-  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "8h", body: "Storm damage callout in Sheffield today. Three tiles displaced, valley leadwork torn. Sorted before the rain returned.", reactions: 19, replies: 5, avatarUrl: null },
-  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "2d", body: "Anyone selling second-hand handmade clay tiles? Doing a heritage repair and the merchant wants £4.50 a tile.", reactions: 8, replies: 14, avatarUrl: null }
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "5m", body: "Cedar shake install on a summerhouse in Bakewell — worker up the pitch with the drill, hand-splitting shakes to fit the gable trim. Slower than composite tile but the sound as the client's kids play under it is unbeatable.", reactions: 27, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/106a1d315869aacc2add07606cb89750.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "8m", body: "Cedar shake gable finished this morning. Diminishing courses, tight overlap, stainless nails only — will silver in about 3 years to the classic weathered look.", reactions: 22, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/22794f87e9cefcecd010a05bb8d5424c.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "12m", body: "Full aerial handover of a modern hip-roof new-build in Cheshire — dark grey interlocking tiles, twin ventilation stacks, kickers on every corner. Drone shot at zenith. Clean geometry.", reactions: 31, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/be6189c4672ed2a2dc667a6ac1e40ec3.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "14m", body: "Lead-cap ridge going down on a cedar-clad gable in the Peaks. Traditional standing-seam finish, welded corners, breather membrane behind. Nothing beats hot-lead work for a heritage build.", reactions: 26, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/aed24e6ffaf1232a2dba76d655cd6ad3.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "16m", body: "Slate install in progress on a Yorkshire new-build. Scaffolding up, roll of felt at the ridge, first courses down. Cold morning but the work goes fast when the pitch is generous.", reactions: 20, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/7ef74a472c67a3f16bd9fac17449d281.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "18m", body: "Red pantile detail on a client's chimney dormer today. Fresh-hip-cap flashing kit set into the lead — old-school flashing bond, no mastic. Should last 60 years on a good tile.", reactions: 24, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/60cdf695d0715dadf17e80d4311c7a94.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "20m", body: "Scalloped clay tile close-up on a heritage dormer. Half-hipped end detail with dark-lead trim standing seam. Two days on the dormer alone — the little details are what makes it worth doing.", reactions: 29, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/6cabbd4a2fd80b1642f40c2d1892e426.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "15m", body: "Slate strip in progress today — old slates lifting cleanly on the ripper tool, roof jacks holding the row while we work down the pitch. Watch the tin, one of the lads got a splinter in a knuckle this morning.", reactions: 21, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/28d0bd6c24e8dd3e9eb074038930bfcb.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "25m", body: "Slate laying on a Scottish rain-lash today — Sika stickers on the batten, skew knife trimming, patting them down with a gloved hand. Slow methodical work but the finish will outlive us.", reactions: 25, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/e911685f6fc77742d93489b633ccf72f.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "35m", body: "Standing-seam metal panel install today — drill through the pre-formed rib into the batten, no fixings through the flat pan. Watertight before we're off the roof.", reactions: 17, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/5147f1574217b1d7a476db5aa9efa8f8.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "40m", body: "Clay pantile install at sunset in Bakewell — south-facing pitch, harness on, dry ridge system going in. Two days ahead of schedule.", reactions: 32, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/70d2eaa0f786429b723d6852652eaff2.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "55m", body: "Full-terrace re-roof underway on a row of red-brick semis in Chesterfield. Scaffolding up the front, tiles stacked in triangular piles waiting for the fitters. Best day of weather we're going to get all week.", reactions: 34, replies: 8, avatarUrl: null, photoUrls: [`${IK_R}/1bffdb65d9127a2055ccc6fc835bb9f9.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1h", body: "Terracotta pantile new-build in Doncaster today — two lads flying up the hip, ridge tiles landing at the peak. Nice symmetrical roof to work on, no chimneys, no valleys.", reactions: 28, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/a7f573c98f97e84a66cb81354bddf4f1.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "3h", body: "Interlocking pantile going down on a mansard restoration. Skylight kit prepped, batten spacing checked twice — one wrong course and the whole thing has to come off.", reactions: 19, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/bd422e5b93e73203340d90cc928307fb.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "6h", body: "Handmade terracotta pantile setting-out shot. Batten spacing tight to the gauge, small piles waiting to feed the run. Sound of tiles clacking together is the best background noise on any job.", reactions: 22, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/c446cddae7c6808abdfe7b25ecaf085b.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "9h", body: "Modern black shingle new-build in the Peaks — hip roof design, matching stone cladding, panelled soffits. Handed over yesterday, drone shot at first light.", reactions: 31, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/a8d1933df402ed6051537e36732f7a2f.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "12h", body: "Forest-green standing-seam metal on a cedar-clad chalet build in the Lakes. Zinc coping, hidden rainwater goods, standing seam every 400mm. Modern roofing done well.", reactions: 37, replies: 7, avatarUrl: null, photoUrls: [`${IK_R}/ecaa94ef1856638cd3e9d01e045ed9ab.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1d", body: "Navy metal-panel roof on a modern gable in Cumbria. Complex hip + intersection geometry — pre-cut ridge caps and step-flashing kept the day tidy. Client sent the sunset shot back — that's a keeper.", reactions: 33, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/198cdded60cb7434aae5a0c0cae0bfef.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1d", body: "Stripping a hip ridge on a 1990s tile roof today. Two courses off already, batten stripes showing, hip iron laid ready. Rain forecast tomorrow so we're chasing the dry.", reactions: 26, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/3e29d475f53d95a6e270c6bae2f552c9.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1h", body: "Coil-nailer on a shed re-roof in Chesterfield. Standard 3-in-1 asphalt shingle, quick turnaround for the homeowner — one afternoon, done.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/1d0108027f0750efe71f93bc0ae52d74.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "3h", body: "Slate survey on a Peak District farmhouse today — 20% of the tops delaminated. Full strip + relay quoted with matching Welsh slate. 3-week job.", reactions: 21, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/612dd521c884f1a84b80038b375f1325.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "5h", body: "Team strip-and-relay in progress on a two-storey semi. Ridge board exposed, new battens going in, felt roll ready for the underlay. Cold day but the crew's flying.", reactions: 24, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/b3785840d16b30030c7caea90d062172.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "7h", body: "Slate strip on a Welsh farmhouse — 100+ year old graduated slates, careful handling to sort re-usable vs skip. Chimney flashing to remake at the same time.", reactions: 26, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/d293d79ac4cb0cc9a23434979344b557.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "10h", body: "New-build slate roof in the Peaks — 500mm x 250mm Spanish slate, staggered laying, copper nails. Client's a stone mason, keeping the standard high.", reactions: 29, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/9711c22eb619f2d31dfd55c5f4b7a48b.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "12h", body: "Aerial drone shot of yesterday's sign-off — full house re-roof with graduated stone-slate blend on a Derbyshire manor. Golden hour, no filter, worth the two weeks on scaffold.", reactions: 41, replies: 9, avatarUrl: null, photoUrls: [`${IK_R}/93a8da9188b19aaf799a8e600b122f3b.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1d", body: "Handmade clay pantile install underway — traditional over-under lay, battens spaced to the tile gauge. Slower than modern interlocking but the finish is worth it.", reactions: 22, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/aabfebaa847430bc6c7f24e103fc3e6f.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1d", body: "Cedar shingle install on a Cotswold outbuilding — Western Red cedar, breather membrane behind, stainless nails only. Ages to silver in 3 years.", reactions: 27, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/c8c3e87e832d9d4bcec47b7fed212873.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1d", body: "Scalloped clay tile ridge going down on a mansard restoration in Whitby. Old boys used to lay these in a day; we're two lads and it's taken us three. Different pace now.", reactions: 19, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/cf0d14558c9588e443e6a46c3be521e4.jpg${CROP_TOP_R}`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "2d", body: "Zinc valley lining welded up between two thatch pitches — this one's a Grade II job in North Yorkshire. Sealed the last standing seam yesterday, waiting for the thatcher to finish either side.", reactions: 17, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/b6b7a1bc81d757d02bbf991683a5792d.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "3d", body: "Detailed slate progression photo from the Sheffield semi — 20-course lift over the eaves showing the graduation from smaller heads to larger tails. Client wanted the pattern on record for insurance.", reactions: 15, replies: 2, avatarUrl: null, photoUrls: [`${IK_R}/54b484804168f69430b10852534594aa.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "4d", body: "Anthracite interlocking tile with roof-window install on a Barnsley new-build. Flashing kit fitted, all sealed to the underlay. Never had a leak on one of these units.", reactions: 20, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/fa3502eeae57ff5733ae9e52898e6e27.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "5d", body: "Weathered slate close-up from a heritage repair in the Dales — 150 years old, still watertight. Never underestimate what a well-laid slate roof will do if the fixings are right.", reactions: 24, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/81b79c889ce66919303f627a7aaea3bb.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "6d", body: "Slate texture up close on a rustic Cumbrian farmhouse roof — random-width, mixed colour, laid tight. This is what \"looks like it's always been there\" costs on a heritage job.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/bf8eb7814733d64f049ada483ffbd4b6.jpg`] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "1w", body: "Anyone selling second-hand handmade clay tiles? Doing a heritage repair and the merchant wants £4.50 a tile.", reactions: 8, replies: 14, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_GUTTERING: CanteenPost[] = [
+  { who: "Dylan Reid", handle: "dylan-reid", postedAgo: "1h", body: "Anthracite half-round install signed off in Fulwood — matched the tile roof colour perfectly, brick-mounted downpipe with swan-neck offset around the eaves. Nice clean line.", reactions: 22, replies: 4, avatarUrl: null, photoUrls: [`${IK_R}/559d24dd273f4ac60396c1d819997f03.jpg`] },
+  { who: "Dylan Reid", handle: "dylan-reid", postedAgo: "5h", body: "First rain after yesterday's install — captured this on a callback visit. Two-inch overflow rate, gutter's clearing perfectly, downpipe running fast. Homeowner sent me the video first thing.", reactions: 29, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/840969aba49a2cd496f6872e6c672520.jpg`] },
+  { who: "Dylan Reid", handle: "dylan-reid", postedAgo: "1d", body: "Modern square-line black system going onto a new-build. Full mitred corner cut on-site — 45° angles, sealed with butyl tape, no external brackets showing. Looks factory-finished.", reactions: 25, replies: 5, avatarUrl: null, photoUrls: [`${IK_R}/85cbf19d75ffa14ffde727e9821f4616.jpg`] },
+  { who: "Dylan Reid", handle: "dylan-reid", postedAgo: "2d", body: "Brown ogee replacement on a 1970s semi — old cast-iron was rotting through, replaced with polyester-coated aluminium that colour-matches the fascia. 25-year guarantee.", reactions: 18, replies: 3, avatarUrl: null, photoUrls: [`${IK_R}/224d95517b4d22fafdef198aa5439826.jpg`] },
+  { who: "Dylan Reid", handle: "dylan-reid", postedAgo: "3d", body: "Traditional white uPVC replacement on a Victorian villa — ogee profile matching the original, fascia + soffit refurbed at the same time. Full board vented for the loft insulation.", reactions: 14, replies: 2, avatarUrl: null, photoUrls: [`${IK_R}/0a4b31d6f64c478a5dced783845f7dc0.jpg`] }
+];
+const CANTEEN_MOCK_POSTS_COPPER_FLASHING: CanteenPost[] = [
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "30m", body: "Fresh copper gutter + downpipe run signed off today on a stone-clad house in Ripon. Full ogee profile, standing-seam joins, no visible bracket work. Sun catching the freshly-formed sheet — this is why we bench-work every joint.", reactions: 38, replies: 8, avatarUrl: null, photoUrls: [`${IK_R}/e6cd0946a9be5d805afbe740d5a1b8eb.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "1h", body: "Bright copper gutter + downpipe with elbow bend on a cedar-shingle dormer — new fit yesterday. Bright polish now, will patina to a deep bronze in 5 years, then verdigris green another decade after. Only material that gets better with age.", reactions: 44, replies: 10, avatarUrl: null, photoUrls: [`${IK_R}/0819e487596e35d181567184f39acf2e.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "3h", body: "Copper eaves + downpipe run on a Cape Cod-style client's back porch. Two 90° bends around the cornice + a step-flashing detail into the wall. Clean lines and no leaks — that's the whole job.", reactions: 31, replies: 6, avatarUrl: null, photoUrls: [`${IK_R}/1778528aca641ad363c2ac53d3dcae44.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "6h", body: "Detail shot from this morning — copper gutter with matching copper leaf-guard mesh, brass-plated retainer clips, on a heritage slate roof. Client wanted zero-maintenance for the next 40 years. Job done.", reactions: 41, replies: 9, avatarUrl: null, photoUrls: [`${IK_R}/acebef325927ec340441f41e14f33033.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "1d", body: "Copper downpipe with cast decorative hopper installed today on a Sussex hacienda — bench-formed by hand, brass swan-neck fittings, patina left natural. Six weeks lead-time on the hopper alone.", reactions: 34, replies: 8, avatarUrl: null, photoUrls: [`${IK_R}/b407959abbcf3566a3ded9ee7a8ca0d6.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "1d", body: "Copper valley + dormer flashings on a Cologne-style scalloped-tile roof in Harrogate — bench-formed sheet copper, 0.7mm gauge, standing-seam joints. This one'll patina in about 5 years.", reactions: 41, replies: 11, avatarUrl: null, photoUrls: [`${IK_R}/9d4e999cc7a04a90e1aefcc8801009f2.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "3d", body: "In-progress copper dormer install on a Ripon manor. Twin pyramid caps, standing-seam ridge, matching decorative wrought railings between. Weeks of setup work — install itself is the fast part.", reactions: 38, replies: 7, avatarUrl: null, photoUrls: [`${IK_R}/b6ff3b094b161b7cce2db22b69bb232a.jpg`] },
+  { who: "Wilf Adair", handle: "wilf-adair", postedAgo: "5d", body: "Detail shot of the finished copper dormer on the Ripon job — signed-off panel joinery, mansard curve caught in profile against the slate. Client held the ladder while I shot this. Best kind of client.", reactions: 45, replies: 12, avatarUrl: null, photoUrls: [`${IK_R}/9983490cfcca854cb008110704501b6f.jpg`] }
 ];
 const CANTEEN_MOCK_POSTS_COPPER: CanteenPost[] = [
   { who: "Nathan Barrett", handle: "nathan-barrett", postedAgo: "4h", body: "New copper sheet delivery in from Bristol — 1.5mm for the gutter runs on the Sedgeley job. Ready to press-form next week.", reactions: 8, replies: 1, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png")] },
@@ -1280,14 +1515,26 @@ const CANTEEN_MOCK_POSTS_POOL: CanteenPost[] = [
   { who: "Ben Callaghan", handle: "ben-callaghan", postedAgo: "4d", body: "Anyone got experience with saltwater conversions on gunite pools? Client's asking and I want to be honest about the maintenance shift.", reactions: 6, replies: 8, avatarUrl: null }
 ];
 const CANTEEN_MOCK_POSTS_LANDSCAPER: CanteenPost[] = [
-  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "1h", body: "Estate lawn regeneration in Cambridge — soil aeration + spring seed. Green as anything in three weeks.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2007_21_23%20AM.png")] },
-  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "6h", body: "Bespoke garden design install today. Reclaimed York stone paths, box hedges going in Monday. Client's over the moon.", reactions: 22, replies: 5, avatarUrl: null },
-  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "2d", body: "Anyone in the East Anglia area got a source for mature specimen trees? Client wants 4m holly hedge on a fast turnaround.", reactions: 9, replies: 12, avatarUrl: null }
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "10m", body: "Lakeside cottage garden sign-off in the Lake District today — mixed cottage borders around the stone terrace, cascade planting spilling down the retaining wall, hydrangeas at the water's edge. The house sells the shot, but the garden earns the sale.", reactions: 41, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/523b1f1ecc7751b29ab0274d332b4884.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "20m", body: "Curved raised planter finished tonight in a Newnham back garden. Warm LED strip under the skirt, wildflower mix on top — cornflower, ox-eye, red campion. Client asked for meadow-in-a-box and this is close.", reactions: 27, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/4cac1b021929821a65d2a34a41c88b3d.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "35m", body: "Zen courtyard install signed off in Grantchester. White pebble beds, silver lantern trio, mirror pool, stone-clad fire pit as the anchor. Slower to build than it looks — every pebble laid by hand.", reactions: 33, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/15cdce4e24050c4f2f426dd8fceb1d86.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "1h", body: "Curved lawn medallion cut into the Trumpington courtyard today. Pea-shingle margin around the circle, sofa lounge under the porch overhang. Homeowners wanted something that reads different from every window.", reactions: 31, replies: 8, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/e9e801591f7930c0eb79c126e026311d.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "3h", body: "Pergola with built-in bench seat finished in Waterbeach. White painted timber, slatted side screen for the afternoon shade, cushions dropped in. 3 days start to finish. Great little garden-room upgrade under £4k.", reactions: 26, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/id-11134207-7ra0j-mcw7hzy0ks6wbe@resize_w900_nl.webp"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "1d", body: "Sloped garden in South Cambridge signed off yesterday. Charcoal block retaining walls with LED strip underlighting, integrated planters running down each level, firepit lounge on the top terrace. Sun trap in the afternoon.", reactions: 34, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/e4f5f64409accc428e37b825ee1bbd21.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "2d", body: "Estate lawn regeneration in Cambridge — soil aeration + spring seed. Green as anything in three weeks.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2007_21_23%20AM.png")] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "3d", body: "Full garden overhaul signed off in Chesterton. Reclaimed timber deck for the dining spot, stepping-stone path down to a fire pit lounge, hammock on the shady side, raised veg beds at the back. Drone shot at dusk with the low-voltage lighting on — pretty happy with the layering.", reactions: 27, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/6415b0ad6f5081ff2d0fde336e9ec6b5.jpg"] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "5d", body: "Sunken firepit lounge finished last night in Girton. Curved timber-deck seating ring with LED underlighting on every riser, waterfall wall to the right, pergola-kitchen at the back. This one took 6 weeks — most involved build we've done all year.", reactions: 38, replies: 11, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/56ad64cd28de8be8b223d9a93dfe44eb.jpg"] }
 ];
 const CANTEEN_MOCK_POSTS_GARDEN: CanteenPost[] = [
-  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "5h", body: "Formal parterre design signed off for a Cotswolds manor house. Box, lavender, standard bay. Install begins March.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2006_41_30%20AM.png")] },
-  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "1d", body: "Orangery landscaping meeting today — client wants year-round colour with structured hedging. Sketching options this week.", reactions: 11, replies: 2, avatarUrl: null },
-  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "3d", body: "SGD conference next month in Bath — anyone else attending? Would love to swap notes on winter garden schemes.", reactions: 7, replies: 8, avatarUrl: null }
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "20m", body: "Wisteria climb + rose garden install signed off yesterday on a Gothic stone cottage — pink alliums on the steps, wrought balcony baskets already in bloom. The stonework does most of the work; my job is to frame it.", reactions: 44, replies: 11, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/9b5d4672f02bcea7b51a74450587f25c.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "40m", body: "Evening handover of an arched-facade residence in Marlow — lantern-lit approach path with stepped stone treads, box hedging, hanging brackets and dining terrace with outdoor lanterns. The lighting brief was as detailed as the planting.", reactions: 39, replies: 8, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/3a8ae2822f2ecb335143e6040ea00942.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "45m", body: "Site visit to a client's blossom-canopy garden — three linked treehouses on cherry trunks, koi pond and bridge below, formal beds framing. Working with @rowan-ashcroft's team on the landscape integration. Six-month build, coming together beautifully.", reactions: 37, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/52b67046677b74b10af91069b341617b.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "2h", body: "Client hangout centrepiece finished this week. Stone-clad waterfall wall with a circular fire pit at the base, tropical planting each side, LED underlighting to the seating ring. Best photo I've taken all year.", reactions: 41, replies: 12, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/3a7df85defc86bd33d27c2dea1c6f421.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "9h", body: "Signature curved raised planter installed tonight in Chipping Norton. Warm white LED strip along the underskirt, mixed wildflower planting to reflect the meadow behind. Photo taken 20 mins after the electrician's final test.", reactions: 28, replies: 7, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/4cac1b021929821a65d2a34a41c88b3d.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "1d", body: "Modern zen courtyard install completed in the Cotswolds. White pebble beds, silver lantern trio, mirror pool with reflection. Stone-clad fire pit as the centrepiece. Client's brief was 'calm and dramatic in the same breath' — think we hit it.", reactions: 33, replies: 10, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/15cdce4e24050c4f2f426dd8fceb1d86.jpg"] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "2d", body: "Formal parterre design signed off for a Cotswolds manor house. Box, lavender, standard bay. Install begins March.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2006_41_30%20AM.png")] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "4d", body: "Orangery landscaping meeting today. Client wants year-round colour with structured hedging. Sketching options this week.", reactions: 11, replies: 2, avatarUrl: null },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "5d", body: "SGD conference next month in Bath — anyone else attending? Would love to swap notes on winter garden schemes.", reactions: 7, replies: 8, avatarUrl: null }
 ];
 const CANTEEN_MOCK_POSTS_WELDER: CanteenPost[] = [
   { who: "Wayne Hartley", handle: "wayne-hartley", postedAgo: "2h", body: "Structural steel beam fabricated + coated today for a Sheffield warehouse conversion. Coded weld inspection Friday.", reactions: 13, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png")] },
@@ -1309,13 +1556,20 @@ const CANTEEN_MOCK_POSTS_BRICKLAYER: CanteenPost[] = [
   { who: "Kevin Doherty", handle: "kevin-doherty", postedAgo: "7h", body: "Cavity insulation top-up on a 1950s semi. Full-fill mineral wool, snug fit around the wall ties. Nice quiet job.", reactions: 9, replies: 2, avatarUrl: null },
   { who: "Kevin Doherty", handle: "kevin-doherty", postedAgo: "3d", body: "Anyone using the new self-levelling mortars for wall bedding? Trade rep was flogging me some, curious if they hold up.", reactions: 7, replies: 13, avatarUrl: null }
 ];
-const CANTEEN_MOCK_POSTS_JOINER: CanteenPost[] = [
-  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "4h", body: "Sash window restoration in Harrogate. Draught-proofing seals + weight rebalance — client can hear the difference already.", reactions: 16, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png")] },
-  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "1d", body: "Bespoke oak staircase templating today. Winder treads with hand-turned newel post. Six weeks of workshop work ahead.", reactions: 21, replies: 5, avatarUrl: null },
-  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "4d", body: "Anyone got a source for reclaimed Georgian pine? Restoring a set of shutters and modern timber just doesn't age the same.", reactions: 10, replies: 15, avatarUrl: null }
+const CANTEEN_MOCK_POSTS_PLASTERER: CanteenPost[] = [
+  { who: "Lucas Hensley", handle: "lucas-hensley", postedAgo: "3h", body: "Skim coat on a full lounge + hall today in Bishopston — 78m² one-coat with Multi-Finish. Two lads on the trowel, sweet finish across every wall.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2002_18_53%20AM.png")] },
+  { who: "Lucas Hensley", handle: "lucas-hensley", postedAgo: "1d", body: "External K-Rend on a new-build in Clifton. Base coat down yesterday, top-coat this morning. Weather held long enough for a full 24-hour cure.", reactions: 11, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_47_47%20PM.png")] },
+  { who: "Lucas Hensley", handle: "lucas-hensley", postedAgo: "3d", body: "Anyone in Bristol got a source for hair-lime plaster? Restoring a Grade II ceiling and Mike Wye is 3 weeks out on stock.", reactions: 6, replies: 11, avatarUrl: null }
 ];
 const CANTEEN_MOCK_POSTS_PRESTIGE: CanteenPost[] = [
-  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "5h", body: "Basement dig sign-off on the Belgravia project — full underpinning + 4m depth. Structural engineer signed off yesterday, clear to break through.", reactions: 19, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_26_58%20AM.png")] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "30m", body: "Handover shot of the Windermere villa — colonial-style veranda, terracotta pantile roof, formal planted approach, mountain backdrop. 14 months from planning to keys.", reactions: 41, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/d6401a8646cdba6db3d1fe46f665c8fd.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "1h", body: "Timber-frame Alpine-inspired build we signed off in Cumbria this week. Deep balconies, tile mansard, exposed rafter tails, wet garden below. Client wanted \"chalet warmth\", we think we delivered.", reactions: 36, replies: 7, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/786994edb913f9467e5ecace2bfdfd8d.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "3h", body: "French chateau conversion in Kensington — slate mansard, dormer sculptures, iron balconies, coach-house garage. 22-month build, seven trades on site at peak. Client's second commission with us.", reactions: 54, replies: 12, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/6c0b1052a97ccff35b257d8994481b4a.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "6h", body: "Palazzo-style new-build in Surrey handed over yesterday. Formal wrought-iron gates, dark tile hip roof, ornamental flower borders. Marble driveway inlay was the fiddliest detail of the whole job.", reactions: 47, replies: 10, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/565fee3a8296e6aa74d8d72f1bbf8c9c.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "1d", body: "Golden-hour handover of a Cotswolds villa — cream stone, blue-grey slate hip roof, sculpted parterre with wrought entrance gates. The kind of light photographers can't fake.", reactions: 51, replies: 11, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/574a2becedc31909bf7de9eeacf87300.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "2d", body: "Neo-classical new-build in Sunningdale — column entrance, gilt balustrade, blue-tile mansard with dormer detail. Landscape design by @charlotte-grantham finishing this week.", reactions: 43, replies: 9, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/51d074776503d28d85e32e12885b3054.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "3d", body: "Mediterranean-style villa handover in Bournemouth — palm-lined approach, black-tile mansard turret, wrap-around veranda with dining terrace. Ten-month build, second time working with this designer.", reactions: 38, replies: 6, avatarUrl: null, photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/c5ea7a87b58c7f572ab4c01b9e8d4a49.jpg"] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "5d", body: "Basement dig sign-off on the Belgravia project — full underpinning + 4m depth. Structural engineer signed off yesterday, clear to break through.", reactions: 19, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_26_58%20AM.png")] },
   { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "1d", body: "Kitchen commissioning day on the Surrey renovation. Handmade in-frame cabinetry, Miele appliances, natural stone from Verona. Client's speechless.", reactions: 27, replies: 6, avatarUrl: null },
   { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "3d", body: "Party wall notice served on the Kensington remodel. 12-week countdown starts now — planning coordination begins Tuesday.", reactions: 8, replies: 3, avatarUrl: null }
 ];
@@ -1352,7 +1606,17 @@ function mockPostsForCanteen(canteenSlug: string): CanteenPost[] {
   if (canteenSlug === "uk-architects")            return CANTEEN_MOCK_POSTS_ARCHITECT;
   if (canteenSlug === "uk-concrete-specialists")  return CANTEEN_MOCK_POSTS_CONCRETE;
   if (canteenSlug === "uk-bricklayers")           return CANTEEN_MOCK_POSTS_BRICKLAYER;
-  if (canteenSlug === "uk-bespoke-joiners")       return CANTEEN_MOCK_POSTS_JOINER;
+  if (canteenSlug === "uk-plasterers")            return CANTEEN_MOCK_POSTS_PLASTERER;
+  if (canteenSlug === "uk-bespoke-joiners")       return CANTEEN_MOCK_POSTS_JOINER_WOOD;
+  if (canteenSlug === "uk-furniture-makers")      return CANTEEN_MOCK_POSTS_FURNITURE;
+  if (canteenSlug === "uk-wood-carvers")          return CANTEEN_MOCK_POSTS_WOOD_CARVER;
+  if (canteenSlug === "uk-wood-restorers")        return CANTEEN_MOCK_POSTS_WOOD_RESTORER;
+  if (canteenSlug === "uk-wood-stainers")         return CANTEEN_MOCK_POSTS_WOOD_STAINER;
+  if (canteenSlug === "uk-tree-house-builders")   return CANTEEN_MOCK_POSTS_TREE_HOUSE;
+  if (canteenSlug === "uk-water-feature-specialists") return CANTEEN_MOCK_POSTS_WATER_FEATURE;
+  if (canteenSlug === "uk-guttering-downpipes")   return CANTEEN_MOCK_POSTS_GUTTERING;
+  if (canteenSlug === "uk-copper-flashing-specialists") return CANTEEN_MOCK_POSTS_COPPER_FLASHING;
+  if (canteenSlug === "uk-canopy-specialists")    return CANTEEN_MOCK_POSTS_CANOPIES;
   if (canteenSlug === "uk-prestige-builders")     return CANTEEN_MOCK_POSTS_PRESTIGE;
   if (canteenSlug === "uk-marina-builders")       return CANTEEN_MOCK_POSTS_MARINA;
   if (canteenSlug === "uk-emergency-repairs")     return CANTEEN_MOCK_POSTS_EMERGENCY;
@@ -1967,6 +2231,7 @@ function CanteenPostCard({
             canteenSlug={canteenSlug}
             canteenName={canteenName}
             hostFirstName={hostFirstName}
+            viewerSlug={viewerSlug ?? null}
           />
         </div>
       </div>
@@ -2375,8 +2640,9 @@ function ReactionRow({
   initialQuestion,
   initialReplies,
   canteenSlug,
-  canteenName,
-  hostFirstName
+  canteenName: _canteenName,
+  hostFirstName: _hostFirstName,
+  viewerSlug
 }: {
   postId: string | null;
   initialCount: number;
@@ -2384,11 +2650,19 @@ function ReactionRow({
   initialQuestion: number;
   initialReplies: number;
   canteenSlug?: string;
-  /** Canteen display name — used in the confirmation copy. */
+  /** Canteen display name — retained for compatibility with legacy
+   *  callers; no longer surfaced now that the guest-review flow is
+   *  gone. Marked `_canteenName` to keep TS quiet. */
   canteenName?: string;
-  /** Canteen host first name — used in the terms line under the
-   *  guest reply form. */
+  /** Canteen host first name — legacy prop from the removed guest
+   *  reply terms line. Retained for callers; unused now. */
   hostFirstName?: string;
+  /** Viewer's merchant slug when signed in; null for guests. Drives
+   *  the auth gate on the reply composer. Per Philip 2026-07-15 the
+   *  old name+WhatsApp guest reply form was killing conversions — the
+   *  composer is now auth-only and guests see a "Sign in to comment"
+   *  CTA instead. */
+  viewerSlug: string | null;
 }) {
   const [count, setCount] = useState(initialCount);
   const [agreeCount, setAgreeCount] = useState(initialAgree);
@@ -2398,23 +2672,16 @@ function ReactionRow({
   const [questioned, setQuestioned] = useState(false);
   const [pending, setPending] = useState(false);
   const [threadOpen, setThreadOpen] = useState(false);
-  const [replyCount] = useState(initialReplies);
+  const [replyCount, setReplyCount] = useState(initialReplies);
   const [replies, setReplies] = useState<Reply[] | null>(null);
   const [loadingReplies, setLoadingReplies] = useState(false);
-  // Guest reply state — name/WhatsApp/comment, submit flow, and the
-  // localStorage-backed "awaiting review" record so returning visitors
-  // still see their own pending reply until the host approves it.
-  const [guestName, setGuestName] = useState("");
-  const [guestWhatsapp, setGuestWhatsapp] = useState("");
-  const [guestBody, setGuestBody] = useState("");
-  const [guestSubmitting, setGuestSubmitting] = useState(false);
-  const [guestSubmitError, setGuestSubmitError] = useState<string | null>(null);
-  const [guestJustSubmitted, setGuestJustSubmitted] = useState(false);
-  const [guestPending, setGuestPending] = useState<{
-    name: string;
-    body: string;
-    submittedAt: string;
-  } | null>(null);
+  // Auth-gated reply composer state. Guests can read the whole thread
+  // but cannot post — see the sign-in CTA below the list. No more
+  // name/WhatsApp collection. Posts go live immediately with no
+  // moderation queue.
+  const [replyBody, setReplyBody] = useState("");
+  const [replySubmitting, setReplySubmitting] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
 
   async function toggleReaction(kind: "like" | "agree" | "question") {
     if (pending) return;
@@ -2476,70 +2743,62 @@ function ReactionRow({
     }
   }
 
-  // Read any pending guest reply for this post from localStorage on
-  // mount so a returning visitor sees their own "awaiting review"
-  // entry until the host approves it. Cookie-equivalent, no server
-  // round-trip needed.
-  useEffect(() => {
-    if (typeof window === "undefined" || !postId) return;
-    try {
-      const raw = window.localStorage.getItem(`canteen_guest_pending_${postId}`);
-      if (raw) setGuestPending(JSON.parse(raw));
-    } catch {
-      // ignore parse errors — treat as no pending
-    }
-  }, [postId]);
-
-  async function submitGuestReply() {
-    const name = guestName.trim();
-    const whatsapp = guestWhatsapp.trim();
-    const body = guestBody.trim();
-    if (name.length < 2) {
-      setGuestSubmitError("Please add your name.");
+  async function submitReply() {
+    const body = replyBody.trim();
+    if (!body || replySubmitting) return;
+    if (!viewerSlug) {
+      setReplyError("Sign in to comment.");
       return;
     }
-    if (whatsapp.replace(/[^0-9]/g, "").length < 7) {
-      setGuestSubmitError("Please add a valid WhatsApp number.");
-      return;
-    }
-    if (body.length < 4) {
-      setGuestSubmitError("Please write a longer reply.");
-      return;
-    }
-    setGuestSubmitError(null);
-    setGuestSubmitting(true);
-    // TODO(backend): POST to /api/canteens/posts/[id]/guest-reply which
-    // (a) stores the pending row, (b) fires a WhatsApp notification to
-    // the canteen host with Approve/Reject links. Endpoint is not wired
-    // yet — we optimistically record the submission client-side so the
-    // UX preview reads end-to-end.
-    try {
-      const submittedAt = new Date().toISOString();
-      if (postId) {
-        try {
-          await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/guest-reply`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name, whatsapp, body })
-          });
-        } catch {
-          // Endpoint may not exist yet — swallow so the UI preview flows.
+    if (!postId) {
+      // Mock post — optimistic append only, no server round trip.
+      setReplies((prev) => [
+        ...(prev ?? []),
+        {
+          id: `local-${Date.now()}`,
+          authorSlug: viewerSlug,
+          authorDisplayName: viewerSlug,
+          authorAvatarUrl: null,
+          body,
+          createdAt: new Date().toISOString(),
+          likeCount: 0
         }
+      ]);
+      setReplyCount((n) => n + 1);
+      setReplyBody("");
+      return;
+    }
+    setReplySubmitting(true);
+    setReplyError(null);
+    try {
+      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        if (data.error === "not-authenticated") setReplyError("Sign in to comment.");
+        else if (data.error === "not-a-member") setReplyError("Join the canteen to comment.");
+        else if (data.error === "body-too-short") setReplyError("Write a bit more.");
+        else setReplyError("Comment failed. Try again.");
+        return;
       }
-      const record = { name, body, submittedAt };
-      if (typeof window !== "undefined" && postId) {
-        window.localStorage.setItem(
-          `canteen_guest_pending_${postId}`,
-          JSON.stringify(record)
-        );
+      setReplyBody("");
+      setReplyCount((n) => n + 1);
+      // Refetch to pick up the row with its real timestamp + author
+      // display name resolved from the members table.
+      try {
+        const refetch = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/replies`);
+        const refetchData = await refetch.json().catch(() => ({}));
+        if (refetch.ok && refetchData.ok && Array.isArray(refetchData.replies)) {
+          setReplies(refetchData.replies as Reply[]);
+        }
+      } catch {
+        // Silent — count already bumped.
       }
-      setGuestPending(record);
-      setGuestJustSubmitted(true);
-      setGuestName("");
-      setGuestWhatsapp("");
-      setGuestBody("");
     } finally {
-      setGuestSubmitting(false);
+      setReplySubmitting(false);
     }
   }
 
@@ -2599,12 +2858,17 @@ function ReactionRow({
 
       {threadOpen && (
         <div className="mt-2 rounded-lg border bg-neutral-50 p-3" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
-          {/* Existing (approved) replies loaded from the DB. Guest replies
-              that are still pending appear separately below. */}
+          {/* Approved replies from the DB. All comments are live the
+              moment they're posted — no moderation queue. */}
           {postId && loadingReplies && (
             <div className="text-[11px] font-black uppercase tracking-wider text-neutral-500">Loading…</div>
           )}
-          {postId && replies && replies.length > 0 && (
+          {postId && replies && replies.length === 0 && !loadingReplies && (
+            <div className="text-[11.5px] text-neutral-500">
+              No comments yet — be the first.
+            </div>
+          )}
+          {replies && replies.length > 0 && (
             <ul className="flex flex-col gap-2">
               {replies.map((r) => (
                 <li key={r.id} className="rounded-lg bg-white p-2 shadow-sm" style={{ border: "1px solid rgba(139,69,19,0.08)" }}>
@@ -2622,104 +2886,57 @@ function ReactionRow({
             </ul>
           )}
 
-          {/* Guest's own pending reply — only visible to the guest via
-              localStorage, invisible to other viewers until the host
-              approves. Shows an "Awaiting review" tag so the guest
-              doesn't wonder if their reply vanished. */}
-          {guestPending && (
-            <div
-              className="mt-2 rounded-lg border bg-white p-2 shadow-sm"
-              style={{ borderColor: "rgba(255,179,0,0.55)" }}
-            >
-              <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
-                <span className="text-neutral-900">{guestPending.name}</span>
-                <span
-                  className="rounded-sm px-1.5 py-0.5"
-                  style={{ backgroundColor: `${BRAND_YELLOW}33`, color: "#7A5B00" }}
-                >
-                  Awaiting review
-                </span>
-              </div>
-              <p className="mt-1 text-[12.5px] leading-snug text-neutral-800">
-                {guestPending.body}
-              </p>
-            </div>
-          )}
-
-          {/* Guest reply composer OR confirmation panel */}
-          {guestJustSubmitted ? (
-            <div
-              className="mt-3 rounded-lg border bg-white p-3 shadow-sm"
-              style={{ borderColor: "rgba(139,69,19,0.15)" }}
-            >
-              <div className="text-[12px] font-black text-neutral-900">
-                Reply received.
-              </div>
-              <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-700">
-                Your comment has been sent to Team {canteenName ?? "the canteen"} for review and will go live on this post once approved. Please check back within 24 hours.
-              </p>
-              <div className="mt-2 text-[10px] font-black uppercase tracking-[0.14em] text-neutral-500">
-                — Team {canteenName ?? "the canteen"}
-              </div>
-            </div>
-          ) : (
+          {/* Composer OR sign-in CTA — the read/write split. Anyone can
+              read every comment above; posting requires an account. The
+              old name+WhatsApp guest form was killed 2026-07-15 per
+              Philip — friction was suppressing engagement. */}
+          {viewerSlug ? (
             <div className="mt-3 flex flex-col gap-2">
-              <input
-                type="text"
-                value={guestName}
-                onChange={(e) => setGuestName(e.target.value.slice(0, 60))}
-                placeholder="Your name"
-                className="rounded-lg border bg-white px-3 py-2 text-[12px] text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
-                style={{ borderColor: "rgba(139,69,19,0.15)" }}
-              />
-              <input
-                type="tel"
-                inputMode="tel"
-                value={guestWhatsapp}
-                onChange={(e) => setGuestWhatsapp(e.target.value.slice(0, 24))}
-                placeholder="WhatsApp number (e.g. 07700 900101)"
-                className="rounded-lg border bg-white px-3 py-2 text-[12px] text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
-                style={{ borderColor: "rgba(139,69,19,0.15)" }}
-              />
               <textarea
-                value={guestBody}
-                onChange={(e) => setGuestBody(e.target.value.slice(0, 4000))}
-                placeholder="Write your reply…"
-                rows={3}
-                className="rounded-lg border bg-white px-3 py-2 text-[12px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+                value={replyBody}
+                onChange={(e) => setReplyBody(e.target.value.slice(0, 4000))}
+                placeholder="Write a comment…"
+                rows={2}
+                className="rounded-lg border bg-white px-3 py-2 text-[12.5px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
                 style={{ borderColor: "rgba(139,69,19,0.15)" }}
               />
               <div className="flex items-center justify-between gap-2">
-                <div className="text-[9.5px] leading-snug text-neutral-500">
-                  By replying you agree to{" "}
-                  {canteenSlug ? (
-                    <Link
-                      href={`/trade-off/yard/canteens/${canteenSlug}/legal`}
-                      className="underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-900"
-                    >
-                      {hostFirstName ? `${hostFirstName}'s terms & privacy` : "the terms & privacy"}
-                    </Link>
-                  ) : (
-                    <>{hostFirstName ? `${hostFirstName}'s terms & privacy` : "the terms & privacy"}</>
-                  )}
-                  .
-                </div>
+                {replyError ? (
+                  <span className="text-[10px] font-black uppercase tracking-wider text-red-600">
+                    {replyError}
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-neutral-400">
+                    Comments go live immediately.
+                  </span>
+                )}
                 <button
                   type="button"
-                  onClick={submitGuestReply}
-                  disabled={guestSubmitting}
+                  onClick={submitReply}
+                  disabled={replySubmitting || replyBody.trim().length === 0}
                   className="inline-flex h-9 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-neutral-900 shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
                   style={{ backgroundColor: BRAND_YELLOW }}
                 >
                   <Send size={11} strokeWidth={2.5}/>
-                  {guestSubmitting ? "Sending…" : "Submit for review"}
+                  {replySubmitting ? "Posting…" : "Comment"}
                 </button>
               </div>
-              {guestSubmitError && (
-                <div className="text-[10px] font-black uppercase tracking-wider text-red-600">
-                  {guestSubmitError}
-                </div>
-              )}
+            </div>
+          ) : (
+            <div
+              className="mt-3 flex items-center justify-between gap-3 rounded-lg border bg-white p-2.5"
+              style={{ borderColor: "rgba(139,69,19,0.15)" }}
+            >
+              <span className="text-[11.5px] leading-snug text-neutral-700">
+                Free to read every comment. Create an account to reply.
+              </span>
+              <Link
+                href={`/sign-in${canteenSlug ? `?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}`)}` : ""}`}
+                className="inline-flex h-9 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
+                style={{ backgroundColor: BRAND_BLACK }}
+              >
+                Sign in
+              </Link>
             </div>
           )}
         </div>

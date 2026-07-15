@@ -493,6 +493,26 @@ export const MOCK_CANTEENS: Canteen[] = [
     isFounding100: true,
     paletteSlug: "mortar"
   },
+  // Mortar (TP-70 plasterer — added 2026-07-15 alongside the footer
+  // background art rollout so this trade has a live demo to attach
+  // the plaster-sacks-+-ladder artwork to).
+  {
+    id: "cant_plasterers_uk",
+    slug: "uk-plasterers",
+    name: "Plasterers",
+    tagline: "Skim finish, feathered joints, external render. From listed cottages to new-build extensions.",
+    tradeSlug: "plasterer",
+    tradeLabel: "Plasterers",
+    hostSlug: "demo-lucas-hensley-plasterer-bristol",
+    hostDisplayName: "Lucas Hensley",
+    memberCount: 42,
+    postsLast30d: 19,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_18_53%20AM.png",
+    createdAt: "2026-07-15T20:00:00Z",
+    isFounding100: true,
+    paletteSlug: "mortar"
+  },
   // Timber (TP-91 bespoke joiner)
   {
     id: "cant_bespoke_joiners_uk",
@@ -510,6 +530,179 @@ export const MOCK_CANTEENS: Canteen[] = [
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "timber"
+  },
+  // Oak (wood-family — bespoke furniture makers).
+  {
+    id: "cant_furniture_makers_uk",
+    slug: "uk-furniture-makers",
+    name: "Furniture Makers",
+    tagline: "Bespoke tables, sideboards, and heirloom pieces — commissioned to spec, made to last a century.",
+    tradeSlug: "furniture-maker",
+    tradeLabel: "Furniture Makers",
+    hostSlug: "demo-harriet-blake-furniture-cotswolds",
+    hostDisplayName: "Harriet Blake",
+    memberCount: 34,
+    postsLast30d: 15,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/6b868b252c0a43aa5d826da447c349a7.jpg",
+    createdAt: "2026-07-15T21:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Timber (wood-family — hand carvers, decorative + sculptural).
+  {
+    id: "cant_wood_carvers_uk",
+    slug: "uk-wood-carvers",
+    name: "Wood Carvers",
+    tagline: "Chisel to timber — decorative panels, relief carving, sculptural commissions.",
+    tradeSlug: "wood-carver",
+    tradeLabel: "Wood Carvers",
+    hostSlug: "demo-callum-ford-carver-cornwall",
+    hostDisplayName: "Callum Ford",
+    memberCount: 19,
+    postsLast30d: 9,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/93bf4c7289b643b54c98fec085a28aa2.jpg",
+    createdAt: "2026-07-15T21:15:00Z",
+    isFounding100: true,
+    paletteSlug: "timber"
+  },
+  // Oak (wood-family — antique + heritage timber restoration).
+  {
+    id: "cant_wood_restorers_uk",
+    slug: "uk-wood-restorers",
+    name: "Wood Restorers",
+    tagline: "Antique furniture repair, timber-frame restoration, reclaimed beam re-use.",
+    tradeSlug: "wood-restorer",
+    tradeLabel: "Wood Restorers",
+    hostSlug: "demo-miles-warrington-restorer-bath",
+    hostDisplayName: "Miles Warrington",
+    memberCount: 22,
+    postsLast30d: 11,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/fdfb32014411b6719f4d60a09b4f5292.jpg",
+    createdAt: "2026-07-15T21:30:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Timber (wood-family — finishing craft, spray + hand-rubbed stain).
+  {
+    id: "cant_wood_stainers_uk",
+    slug: "uk-wood-stainers",
+    name: "Wood Stainers",
+    tagline: "Spray booths, hand-rubbed oils, French-polish revivals. Making raw timber look right.",
+    tradeSlug: "wood-stainer",
+    tradeLabel: "Wood Stainers",
+    hostSlug: "demo-ryan-hollis-stainer-manchester",
+    hostDisplayName: "Ryan Hollis",
+    memberCount: 16,
+    postsLast30d: 7,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/f6906127ca6b272c347366e0ec1049f9.jpg",
+    createdAt: "2026-07-15T21:45:00Z",
+    isFounding100: true,
+    paletteSlug: "timber"
+  },
+  // Oak (wood-family — bespoke treehouse builders. Niche but photogenic
+  // trade with genuine walking-billboard potential for the platform).
+  {
+    id: "cant_tree_houses_uk",
+    slug: "uk-tree-house-builders",
+    name: "Tree House Builders",
+    tagline: "Kids' hideaways to grown-up cabins in the canopy — engineered platforms, timber joinery, garden-integrated builds.",
+    tradeSlug: "tree-house-builder",
+    tradeLabel: "Tree House Builders",
+    hostSlug: "demo-rowan-ashcroft-tree-houses-devon",
+    hostDisplayName: "Rowan Ashcroft",
+    memberCount: 24,
+    postsLast30d: 20,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/2a103a44bcbcea865e53a0eb865667c7.jpg",
+    createdAt: "2026-07-15T22:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Aqua (water-family — bespoke water features / fountains /
+  // waterfall walls / lagoon-style plunge pools. Niche off pool
+  // building; different design + install skill set).
+  {
+    id: "cant_water_features_uk",
+    slug: "uk-water-feature-specialists",
+    name: "Water Feature Specialists",
+    tagline: "Fountains, waterfall walls, lagoon-style pools. Engineered from the plumbing up, integrated into the garden design.",
+    tradeSlug: "water-feature-specialist",
+    tradeLabel: "Water Feature Specialists",
+    hostSlug: "demo-tobias-marlow-water-features-bath",
+    hostDisplayName: "Tobias Marlow",
+    memberCount: 14,
+    postsLast30d: 6,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/9b08d4bb58890f657a357d12d48e5f6a.jpg",
+    createdAt: "2026-07-15T22:15:00Z",
+    isFounding100: true,
+    paletteSlug: "aqua"
+  },
+  // Mortar (structural — gutter + downpipe specialists, distinct
+  // from general roofing. Fascia/soffit maintenance and rainwater
+  // goods sold as its own trade to homeowners).
+  {
+    id: "cant_guttering_downpipes_uk",
+    slug: "uk-guttering-downpipes",
+    name: "Guttering + Downpipes",
+    tagline: "Cast-iron replicas, modern uPVC, seamless aluminium. Fascia + soffit maintenance and rainwater goods across the UK.",
+    tradeSlug: "guttering-specialist",
+    tradeLabel: "Guttering Specialists",
+    hostSlug: "demo-dylan-reid-guttering-sheffield",
+    hostDisplayName: "Dylan Reid",
+    memberCount: 26,
+    postsLast30d: 12,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/85cbf19d75ffa14ffde727e9821f4616.jpg",
+    createdAt: "2026-07-15T22:30:00Z",
+    isFounding100: true,
+    paletteSlug: "mortar"
+  },
+  // Copper (heritage-metal roof detailing — flashings, dormers,
+  // finials, decorative hoppers. Sub-trade off general coppersmith
+  // work, specifically roof-focused. Different demo host from
+  // Nathan Barrett's coppersmith canteen so both surfaces read as
+  // independent trade communities).
+  {
+    id: "cant_copper_flashing_uk",
+    slug: "uk-copper-flashing-specialists",
+    name: "Copper Flashing Specialists",
+    tagline: "Roof flashings, copper dormers, decorative hoppers. Heritage-grade metalwork for listed and prestige properties.",
+    tradeSlug: "copper-flashing-specialist",
+    tradeLabel: "Copper Flashing Specialists",
+    hostSlug: "demo-wilf-adair-copper-flashing-york",
+    hostDisplayName: "Wilf Adair",
+    memberCount: 17,
+    postsLast30d: 8,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/b3785840d16b30030c7caea90d062172.jpg",
+    createdAt: "2026-07-15T22:45:00Z",
+    isFounding100: true,
+    paletteSlug: "copper"
+  },
+  // Oak (timber-frame family — bespoke canopy specialists. Oak-
+  // frame porch canopies, veranda canopies, car canopies. Built
+  // in the workshop, hoisted + fitted on-site).
+  {
+    id: "cant_canopies_uk",
+    slug: "uk-canopy-specialists",
+    name: "Canopy Specialists",
+    tagline: "Oak-frame door canopies, verandas, and car canopies — shop-made, delivered, and installed. From cottage porches to full covered courtyards.",
+    tradeSlug: "canopy-specialist",
+    tradeLabel: "Canopy Specialists",
+    hostSlug: "demo-aidan-frost-canopy-cheshire",
+    hostDisplayName: "Aidan Frost",
+    memberCount: 21,
+    postsLast30d: 11,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/15b7014afd1bcaeff30d0013a0fe95d8.jpg",
+    createdAt: "2026-07-15T23:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
   },
   // Charcoal (TP-88 prestige builder)
   {
@@ -582,8 +775,199 @@ export const MOCK_CANTEENS: Canteen[] = [
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "hi-vis"
+  },
+  // Oak (TP — garden sheds / storage sheds / timber outbuildings).
+  // Massive market — every homeowner in the UK either has one or
+  // wants one. Cross-trade: shed suppliers, carpenters, timber
+  // merchants, garden landscapers who fit them.
+  {
+    id: "cant_garden_sheds_uk",
+    slug: "uk-garden-sheds",
+    name: "Garden Sheds",
+    tagline: "Timber garden sheds, storage sheds, workshop sheds. Delivered flat-pack, on-site assembly, or carpenter-built to spec.",
+    tradeSlug: "garden-shed-supplier",
+    tradeLabel: "Garden Shed Suppliers",
+    hostSlug: "demo-graham-oakley-shed-supplier-yorkshire",
+    hostDisplayName: "Graham Oakley",
+    memberCount: 31,
+    postsLast30d: 14,
+    activityStreakMonths: 3,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/d98c46e29d17a06b4a4a8c081984fc21.jpg",
+    createdAt: "2026-07-16T10:15:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Oak (TP — garden sunrooms / summerhouses).
+  // Adjacent to garden houses but distinct product — single-storey,
+  // glass-heavy, purpose-built for garden lounging. Sold by cabin
+  // manufacturers and fitted by carpenters.
+  {
+    id: "cant_garden_sunrooms_uk",
+    slug: "uk-garden-sunrooms",
+    name: "Garden Sunrooms",
+    tagline: "Timber garden sunrooms + summerhouses. Warm honey cedar or oak-frame, glass-front — the reading room you always wanted, in the garden.",
+    tradeSlug: "garden-sunroom-builder",
+    tradeLabel: "Garden Sunroom Builders",
+    hostSlug: "demo-imogen-fielding-sunrooms-sussex",
+    hostDisplayName: "Imogen Fielding",
+    memberCount: 16,
+    postsLast30d: 7,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2011_29_34%20PM.png",
+    createdAt: "2026-07-16T10:30:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Oak (TP — small garden houses / studios / annexes).
+  // Cross-trade category — Philip 2026-07-16: "small houses mainly
+  // for end of garden for workshop, family at retirement, or ordinary
+  // people looking for less expensive options with same level of
+  // living space in smaller space." Timber-frame construction with
+  // stone / dark-clad finishes. Suppliers + carpenters + small-home
+  // builders all read this canteen.
+  {
+    id: "cant_garden_houses_uk",
+    slug: "uk-garden-houses",
+    name: "Garden Houses",
+    tagline: "Two-storey garden studios, backyard annexes, workshop cabins. Full living space in a fraction of the footprint — carpenter-built, planning-friendly.",
+    tradeSlug: "garden-house-builder",
+    tradeLabel: "Garden House Builders",
+    hostSlug: "demo-natalie-kingswood-garden-houses-oxfordshire",
+    hostDisplayName: "Natalie Kingswood",
+    memberCount: 19,
+    postsLast30d: 8,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/f92e621a49adef4d30a5665af86a447a.jpg",
+    createdAt: "2026-07-16T10:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Oak (TP — loft ladder specialists / suppliers). Cross-trade
+  // category — Philip's clarification 2026-07-16: "loft ladder is
+  // building supplies but there are shops that sell only loft ladders,
+  // with carpenters offering supply-and-fit as a service." The canteen
+  // sits in the timber-supply family (Oak palette) because loft
+  // ladders are majority-timber product and are typically sold beside
+  // sawn timber + door supplies at the merchant. Carpenters fitting
+  // loft ladders as 2nd-fix work also read this canteen for supply
+  // updates. Host demo persona = specialist retailer/installer.
+  {
+    id: "cant_loft_ladders_uk",
+    slug: "uk-loft-ladders",
+    name: "Loft Ladders",
+    tagline: "Timber, aluminium, scissor, sliding. Supply-only, or supply-and-fit through a carpenter on the crew.",
+    tradeSlug: "loft-ladder-specialist",
+    tradeLabel: "Loft Ladder Specialists",
+    hostSlug: "demo-gareth-tomlinson-loft-ladders-birmingham",
+    hostDisplayName: "Gareth Tomlinson",
+    memberCount: 24,
+    postsLast30d: 11,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/9ba3ebd3eb6ff899596cd7155ca83752.jpg",
+    createdAt: "2026-07-16T09:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
   }
 ];
+
+// ─── Search helpers (powers /trade-off/search Trades tab) ────────
+//
+// Free-text search over the mock demo canteens. Real DB search will
+// follow once we're happy with the surface — this MVP intentionally
+// works off MOCK_CANTEENS so the UX can iterate without migrations.
+//
+// Match target: name, tradeLabel, tradeSlug, tagline, hostDisplayName.
+// City proxy: demo hostSlugs embed city as the last dash-token
+// (`demo-gary-hughes-roofer-sheffield` → `sheffield`) — good enough
+// for the demo. Real merchants read from hammerex_trade_off_listings.
+//
+// Scoring is intentionally simple: substring hit on any field = point.
+// Better matches (name/tradeLabel) score higher than tagline hits so
+// the sort surfaces the most relevant canteen first.
+
+/** Derive a city hint from the demo hostSlug. Returns empty string
+ *  when the slug doesn't match the demo `demo-first-last-trade-city`
+ *  shape. */
+export function canteenCityHint(canteen: Canteen): string {
+  const parts = canteen.hostSlug.split("-");
+  if (parts.length < 3 || parts[0] !== "demo") return "";
+  return parts[parts.length - 1];
+}
+
+function normaliseSearchText(s: string): string {
+  return (s ?? "").toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim();
+}
+
+/** Score a canteen against a free-text query. Higher = better match. */
+function scoreCanteenForQuery(canteen: Canteen, tokens: string[]): number {
+  if (tokens.length === 0) return 0;
+  const name = normaliseSearchText(canteen.name);
+  const tradeLabel = normaliseSearchText(canteen.tradeLabel);
+  const tradeSlug = normaliseSearchText(canteen.tradeSlug.replace(/-/g, " "));
+  const tagline = normaliseSearchText(canteen.tagline);
+  const host = normaliseSearchText(canteen.hostDisplayName);
+  let score = 0;
+  for (const q of tokens) {
+    if (name.includes(q)) score += 12;
+    if (tradeLabel.includes(q)) score += 10;
+    if (tradeSlug.includes(q)) score += 8;
+    if (tagline.includes(q)) score += 4;
+    if (host.includes(q)) score += 3;
+  }
+  return score;
+}
+
+/** Full-text search across the demo canteens. Filters by query then
+ *  boosts entries whose city hint matches the supplied city (for
+ *  "3 nearest trades" chip + Trades tab city sort). Returns [] on
+ *  empty query — caller decides whether to show all or an empty
+ *  state. */
+export function searchCanteens(query: string, city?: string, limit = 40): Canteen[] {
+  const cleaned = normaliseSearchText(query);
+  if (!cleaned) return [];
+  const tokens = cleaned.split(/\s+/).filter((t) => t.length >= 2);
+  if (tokens.length === 0) return [];
+  const cityNorm = normaliseSearchText(city ?? "");
+  const scored: Array<{ c: Canteen; score: number }> = [];
+  for (const c of MOCK_CANTEENS) {
+    const base = scoreCanteenForQuery(c, tokens);
+    if (base <= 0) continue;
+    const cityBoost = cityNorm && canteenCityHint(c) === cityNorm ? 15 : 0;
+    scored.push({ c, score: base + cityBoost });
+  }
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit).map((s) => s.c);
+}
+
+/** Given a trade slug (or slugs — comma-separated), return the top N
+ *  canteens for that trade. Used by the "3 nearest trades" chip
+ *  under each Inspiration image — we match the image's implied trade
+ *  against real canteens so the chip shows real hosts, not
+ *  placeholder text. Prefers exact tradeSlug match; falls back to
+ *  keyword contains on tradeSlug or name. */
+export function canteensForTradeQuery(query: string, city?: string, limit = 3): Canteen[] {
+  const q = normaliseSearchText(query);
+  if (!q) return [];
+  const tokens = q.split(/\s+/).filter((t) => t.length >= 2);
+  if (tokens.length === 0) return [];
+  const cityNorm = normaliseSearchText(city ?? "");
+  const scored: Array<{ c: Canteen; score: number }> = [];
+  for (const c of MOCK_CANTEENS) {
+    const tradeSlug = c.tradeSlug.replace(/-/g, " ");
+    const label = c.tradeLabel.toLowerCase();
+    let s = 0;
+    for (const t of tokens) {
+      if (tradeSlug === t) s += 30;
+      else if (tradeSlug.includes(t)) s += 12;
+      if (label.includes(t)) s += 8;
+    }
+    if (s === 0) continue;
+    if (cityNorm && canteenCityHint(c) === cityNorm) s += 20;
+    scored.push({ c, score: s });
+  }
+  scored.sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit).map((s) => s.c);
+}
 
 // The Counter seed images — 12 ChatGPT-generated construction-trade
 // banners hosted on ImageKit. Every one of these ships as a live-card
@@ -991,6 +1375,36 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
   ],
   cant_bricklayers_uk: [
     { slug: "demo-kevin-doherty-bricklayer-belfast", displayName: "Kevin Doherty", tradeLabel: "Bricklayer", city: "Belfast", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900212", bioShort: "Coursed bond, cavity work, extensions + garden walls. 22 years across Belfast + Antrim. FMB member. Direct-quote, no franchise pricing.", memberOfCanteenSlugs: ["uk-bricklayers"], reviews: { avg: 4.8, count: 67 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 83 }, phone: "028 9555 0212", email: "kevin@doherty-brickwork.co.uk", showroom: { addressLine: "Sydenham Trade Yard", postcode: "BT3 9EJ" } }
+  ],
+  cant_plasterers_uk: [
+    { slug: "demo-lucas-hensley-plasterer-bristol", displayName: "Lucas Hensley", tradeLabel: "Plasterer", city: "Bristol", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900218", bioShort: "Skim + float finish, external K-Rend, lime restoration on listed jobs. 15 years across Bristol + Bath. Small crew, no subbies.", memberOfCanteenSlugs: ["uk-plasterers"], reviews: { avg: 4.8, count: 44 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 82 }, phone: "0117 555 0218", email: "lucas@hensley-plastering.co.uk", showroom: { addressLine: "St Philips Trade Yard", postcode: "BS2 0RA" } }
+  ],
+  cant_furniture_makers_uk: [
+    { slug: "demo-harriet-blake-furniture-cotswolds", displayName: "Harriet Blake", tradeLabel: "Furniture Maker", city: "Cotswolds", avatarUrl: AV.m3, role: "admin", whatsapp: "447700900219", bioShort: "Commissioned tables, sideboards, and heirloom cabinetry. Cotswold workshop, English hardwood only, no MDF. Delivery UK-wide.", memberOfCanteenSlugs: ["uk-furniture-makers"], reviews: { avg: 4.9, count: 31 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 88 }, phone: "01608 555 219", email: "harriet@blake-furniture.co.uk", showroom: { addressLine: "Stow-on-the-Wold Workshop", postcode: "GL54 1AJ" } }
+  ],
+  cant_wood_carvers_uk: [
+    { slug: "demo-callum-ford-carver-cornwall", displayName: "Callum Ford", tradeLabel: "Wood Carver", city: "Cornwall", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900220", bioShort: "Relief panels, church restoration, sculptural commissions in native oak + walnut. Trained in Bavaria, based in Truro.", memberOfCanteenSlugs: ["uk-wood-carvers"], reviews: { avg: 4.9, count: 18 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 86 }, phone: "01872 555 220", email: "callum@fordcarving.co.uk", showroom: { addressLine: "Truro Studio", postcode: "TR1 3JQ" } }
+  ],
+  cant_wood_restorers_uk: [
+    { slug: "demo-miles-warrington-restorer-bath", displayName: "Miles Warrington", tradeLabel: "Wood Restorer", city: "Bath", avatarUrl: AV.m12, role: "admin", whatsapp: "447700900221", bioShort: "Antique furniture repair, timber-frame conservation, reclaimed oak salvage. BAFRA-accredited. Bath + West Country listed-property specialist.", memberOfCanteenSlugs: ["uk-wood-restorers"], reviews: { avg: 4.9, count: 27 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 89 }, phone: "01225 555 221", email: "miles@warrington-restoration.co.uk", showroom: { addressLine: "Widcombe Workshop", postcode: "BA2 4DL" } }
+  ],
+  cant_wood_stainers_uk: [
+    { slug: "demo-ryan-hollis-stainer-manchester", displayName: "Ryan Hollis", tradeLabel: "Wood Stainer", city: "Manchester", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900222", bioShort: "Spray-booth finishing, hand-rubbed oils, French-polish revivals. Kitchen doors, furniture, floors. 12 years in Manchester.", memberOfCanteenSlugs: ["uk-wood-stainers"], reviews: { avg: 4.8, count: 23 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 84 }, phone: "0161 555 0222", email: "ryan@hollis-finishing.co.uk", showroom: { addressLine: "Ancoats Trade Estate", postcode: "M4 5HR" } }
+  ],
+  cant_tree_houses_uk: [
+    { slug: "demo-rowan-ashcroft-tree-houses-devon", displayName: "Rowan Ashcroft", tradeLabel: "Tree House Builder", city: "Devon", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900223", bioShort: "Bespoke treehouses — kids' hideaways to canopy cabins. Engineered on live-tree platforms with slings + limb-safe fasteners. Devon, Somerset, Dorset.", memberOfCanteenSlugs: ["uk-tree-house-builders"], reviews: { avg: 4.9, count: 29 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 89 }, phone: "01392 555 223", email: "rowan@ashcroft-treehouses.co.uk", showroom: { addressLine: "Dartmoor Workshop", postcode: "EX20 1PW" } }
+  ],
+  cant_water_features_uk: [
+    { slug: "demo-tobias-marlow-water-features-bath", displayName: "Tobias Marlow", tradeLabel: "Water Feature Specialist", city: "Bath", avatarUrl: AV.m12, role: "admin", whatsapp: "447700900224", bioShort: "Bespoke water features — fountains, waterfall walls, natural-rock lagoon pools. Full design, plumb + fit. Bath, Cotswolds, Home Counties private estates.", memberOfCanteenSlugs: ["uk-water-feature-specialists"], reviews: { avg: 4.9, count: 21 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 88 }, phone: "01225 555 224", email: "tobias@marlow-water.co.uk", showroom: { addressLine: "Bathwick Studio", postcode: "BA2 4EL" } }
+  ],
+  cant_guttering_downpipes_uk: [
+    { slug: "demo-dylan-reid-guttering-sheffield", displayName: "Dylan Reid", tradeLabel: "Guttering Specialist", city: "Sheffield", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900225", bioShort: "Fascia + soffit + rainwater goods. Cast-iron replicas, modern uPVC, seamless aluminium. 14 years across Sheffield + South Yorkshire. Insurance-approved.", memberOfCanteenSlugs: ["uk-guttering-downpipes"], reviews: { avg: 4.8, count: 51 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 84 }, phone: "0114 555 0225", email: "dylan@reid-guttering.co.uk", showroom: { addressLine: "Attercliffe Trade Yard", postcode: "S9 3HG" } }
+  ],
+  cant_copper_flashing_uk: [
+    { slug: "demo-wilf-adair-copper-flashing-york", displayName: "Wilf Adair", tradeLabel: "Copper Flashing Specialist", city: "York", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900226", bioShort: "Copper flashings, dormers, decorative hoppers. Listed-building + prestige property specialist. Yorkshire + North of England, 20 years bench-formed sheet copper.", memberOfCanteenSlugs: ["uk-copper-flashing-specialists"], reviews: { avg: 4.9, count: 34 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 90 }, phone: "01904 555 226", email: "wilf@adair-copperwork.co.uk", showroom: { addressLine: "Layerthorpe Workshop", postcode: "YO31 7UW" } }
+  ],
+  cant_canopies_uk: [
+    { slug: "demo-aidan-frost-canopy-cheshire", displayName: "Aidan Frost", tradeLabel: "Canopy Specialist", city: "Cheshire", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900227", bioShort: "Bespoke oak-frame canopies — door porches, verandas, car canopies. Shop-made in Cheshire, delivered + installed UK-wide. Green-oak, air-dried, hand-cut mortise-and-tenon joinery.", memberOfCanteenSlugs: ["uk-canopy-specialists"], reviews: { avg: 4.9, count: 26 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 87 }, phone: "01565 555 227", email: "aidan@frost-canopies.co.uk", showroom: { addressLine: "Knutsford Workshop", postcode: "WA16 9AR" } }
   ],
   cant_bespoke_joiners_uk: [
     { slug: "demo-edward-halliwell-joiner-yorkshire", displayName: "Edward Halliwell", tradeLabel: "Bespoke Joiner", city: "Yorkshire", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900213", bioShort: "Workshop-made staircases, sash windows, bespoke doors. 30 years bench joinery in North Yorkshire. Heritage + modern work.", memberOfCanteenSlugs: ["uk-bespoke-joiners"], reviews: { avg: 4.9, count: 51 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 88 }, phone: "01423 555 213", email: "edward@halliwell-joinery.co.uk", showroom: { addressLine: "Harrogate Workshop", postcode: "HG3 1PY" } }

@@ -8,6 +8,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { CANTEEN_CONTENT_SAVED_EVENT } from "@/components/xrated/yard/CanteenMobileAppShowcase";
 import {
   ArrowLeft,
   Image as ImageIcon,
@@ -505,6 +506,7 @@ function ProductsSection({
         return;
       }
       onSaved(`Live on The Counter · ${p.name}`);
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
     } catch {
       onSaved("Promote failed — network error");
     }
@@ -604,6 +606,7 @@ function ProductsSection({
       }
       onChange(products.map((p) => p.id === productId ? { ...p, boost: undefined } : p));
       onSaved("Boost cancelled");
+      window.dispatchEvent(new CustomEvent(CANTEEN_CONTENT_SAVED_EVENT));
     } catch {
       onSaved("Cancel failed — network error");
     }

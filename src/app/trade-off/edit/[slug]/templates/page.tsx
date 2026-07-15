@@ -8,6 +8,7 @@
 import type { Metadata } from "next";
 import { TemplatesShell } from "./TemplatesShell";
 import { loadMerchantPalette } from "@/lib/paletteTokens.server";
+import { listAppTemplates } from "@/lib/appTemplates";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -21,11 +22,15 @@ export default async function TemplatesPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const palette = await loadMerchantPalette(slug);
+  const [palette, templates] = await Promise.all([
+    loadMerchantPalette(slug),
+    listAppTemplates()
+  ]);
   return (
     <TemplatesShell
       slug={slug}
       appliedPaletteSlug={palette.slug}
+      templates={templates}
     />
   );
 }

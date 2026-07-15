@@ -4,7 +4,7 @@
 // badge + owner delete menu on own posts. Same visual language as the
 // canteen mobile dashboard (cream + tan + serif H1 + rounded cards).
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
@@ -13,10 +13,25 @@ import {
   Trash2,
   Heart,
   MessageSquare,
-  Send
+  Send,
+  Bookmark,
+  BookmarkCheck
 } from "lucide-react";
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { CanteenBottomNav } from "@/components/xrated/yard/CanteenBottomNav";
+
+// Shape returned by /api/canteens/posts/[id]/replies. Keep in sync
+// with route handler at src/app/api/canteens/posts/[id]/replies/route.ts.
+type FeedReply = {
+  id: string;
+  authorSlug: string;
+  authorDisplayName: string;
+  authorAvatarUrl: string | null;
+  body: string;
+  photoUrls: string[];
+  createdAt: string;
+  likeCount: number;
+};
 
 const CREAM = "#FBF6EC";
 const TAN = "#B8860B";
@@ -25,6 +40,12 @@ const BRAND_BLACK = "#0A0A0A";
 
 // Fallback mock feed for empty demo canteens — same voices as the
 // mobile rotator mock so the page always renders content.
+//
+// Post spacing rule (per Philip 2026-07-15): consecutive mock posts
+// should sit 1–3 days apart, not clustered in hours. Reads as a
+// slow-burn trade group where the crew stops in daily, not a
+// firehose. `DAY_MS` shorthand keeps the math readable.
+const DAY_MS = 24 * 60 * 60 * 1000;
 const MOCK_POSTS: CanteenChatPost[] = [
   {
     id: "mock-fd-1",
@@ -38,7 +59,7 @@ const MOCK_POSTS: CanteenChatPost[] = [
     reactionsAgree: 2,
     reactionsQuestion: 0,
     replyCount: 4,
-    createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 0 * DAY_MS).toISOString()
   },
   {
     id: "mock-fd-2",
@@ -52,7 +73,7 @@ const MOCK_POSTS: CanteenChatPost[] = [
     reactionsAgree: 0,
     reactionsQuestion: 3,
     replyCount: 8,
-    createdAt: new Date(Date.now() - 4 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 1 * DAY_MS).toISOString()
   },
   {
     id: "mock-fd-3",
@@ -66,7 +87,7 @@ const MOCK_POSTS: CanteenChatPost[] = [
     reactionsAgree: 5,
     reactionsQuestion: 0,
     replyCount: 6,
-    createdAt: new Date(Date.now() - 7 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 3 * DAY_MS).toISOString()
   },
   {
     id: "mock-fd-4",
@@ -80,7 +101,7 @@ const MOCK_POSTS: CanteenChatPost[] = [
     reactionsAgree: 8,
     reactionsQuestion: 0,
     replyCount: 4,
-    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString()
+    createdAt: new Date(Date.now() - 6 * DAY_MS).toISOString()
   }
 ];
 
@@ -113,7 +134,8 @@ export function CanteenFeedShell({
   viewerSlug,
   isHost,
   posts,
-  filter
+  filter,
+  initialSavedIds = []
 }: {
   canteenSlug: string;
   canteenName: string;
@@ -124,9 +146,90 @@ export function CanteenFeedShell({
   isHost: boolean;
   posts: CanteenChatPost[];
   filter: string;
+  /** Post ids the signed-in viewer has already server-side saved.
+   *  Hydrates the UI so the Saved pill + Unsave menu label render on
+   *  first paint. Empty for guests. Union'd with localStorage for
+   *  per-device guest bookmarks. */
+  initialSavedIds?: string[];
 }) {
   const router = useRouter();
   const [removed, setRemoved] = useState<Set<string>>(new Set());
+  // Saved-posts set. Two sources merged:
+  //   1. `initialSavedIds` from the server (authed viewer's DB rows)
+  //   2. localStorage (per-device convenience, guests included)
+  // The DB save is what actually exempts a post from the 30-post
+  // feed rotation. The localStorage set is a guest-friendly UX layer
+  // that survives a refresh but does not protect the post server-side.
+  // When an authed viewer saves, we hit the API AND write localStorage;
+  // when they un-save we do the same in reverse. Failures on the API
+  // roll back the local state so the UI stays honest.
+  const savedStorageKey = `canteen_saved_posts_${canteenSlug}`;
+  const [savedIds, setSavedIds] = useState<Set<string>>(() => new Set(initialSavedIds));
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const raw = window.localStorage.getItem(savedStorageKey);
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as unknown;
+      if (!Array.isArray(parsed)) return;
+      const localIds = parsed.filter((v): v is string => typeof v === "string");
+      // Merge with server-hydrated ids — server is source of truth for
+      // authed viewers, localStorage adds guest / per-device saves that
+      // haven't been server-persisted.
+      setSavedIds((prev) => {
+        const next = new Set(prev);
+        for (const id of localIds) next.add(id);
+        return next;
+      });
+    } catch {
+      // Corrupt entry — leave the server-hydrated set as-is.
+    }
+  }, [savedStorageKey]);
+  const persistLocal = useCallback(
+    (next: Set<string>) => {
+      if (typeof window === "undefined") return;
+      try {
+        window.localStorage.setItem(savedStorageKey, JSON.stringify(Array.from(next)));
+      } catch {
+        // Storage quota / disabled — silently ignore.
+      }
+    },
+    [savedStorageKey]
+  );
+  const toggleSaved = useCallback(
+    async (postId: string) => {
+      const wasSaved = savedIds.has(postId);
+      // Optimistic swap so the menu label + Saved pill flip instantly.
+      setSavedIds((prev) => {
+        const next = new Set(prev);
+        if (wasSaved) next.delete(postId);
+        else next.add(postId);
+        persistLocal(next);
+        return next;
+      });
+      // Only hit the server when the viewer is signed in — the DB row
+      // is what protects the post from rotation. Guests keep the
+      // localStorage save as a per-device convenience only.
+      if (!viewerSlug) return;
+      try {
+        const res = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/save`, {
+          method: wasSaved ? "DELETE" : "POST"
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) throw new Error(data.error ?? "save-failed");
+      } catch {
+        // Roll back on failure so the UI matches server truth.
+        setSavedIds((prev) => {
+          const next = new Set(prev);
+          if (wasSaved) next.add(postId);
+          else next.delete(postId);
+          persistLocal(next);
+          return next;
+        });
+      }
+    },
+    [persistLocal, savedIds, viewerSlug]
+  );
 
   const source = posts.length > 0 ? posts : MOCK_POSTS;
   const filtered = useMemo(() => {
@@ -228,6 +331,8 @@ export function CanteenFeedShell({
                   onDelete={deletePost}
                   canteenSlug={canteenSlug}
                   tradeLabel={tradeLabel}
+                  isSaved={savedIds.has(p.id)}
+                  onToggleSaved={toggleSaved}
                 />
               </li>
             ))}
@@ -251,7 +356,9 @@ function FeedCard({
   isHost,
   onDelete,
   canteenSlug,
-  tradeLabel
+  tradeLabel,
+  isSaved,
+  onToggleSaved
 }: {
   post: CanteenChatPost;
   hostSlug: string;
@@ -261,15 +368,99 @@ function FeedCard({
   onDelete: (id: string) => void;
   canteenSlug: string;
   tradeLabel: string;
+  isSaved: boolean;
+  onToggleSaved: (postId: string) => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Inline comments panel — expands directly under the reactions row
+  // when the viewer taps the "N comments" chip. Fetches replies lazily
+  // on first open from /api/canteens/posts/[id]/replies. Second click
+  // collapses without re-fetching (cached in `replies`).
+  const [threadOpen, setThreadOpen] = useState(false);
+  const [replies, setReplies] = useState<FeedReply[] | null>(null);
+  const [loadingReplies, setLoadingReplies] = useState(false);
+  const [replyBody, setReplyBody] = useState("");
+  const [replySubmitting, setReplySubmitting] = useState(false);
+  const [replyError, setReplyError] = useState<string | null>(null);
   // Owner controls: viewer is host OR viewer is the post's author.
   const canDelete = isHost || (viewerSlug !== null && viewerSlug === post.authorSlug);
+  // Save is open to everyone (including guests) — the flag lives in the
+  // viewer's own localStorage so no auth required to bookmark.
   const isHostPost = post.authorSlug === hostSlug;
   const isQuestion = post.moodSlug === "question";
   const isShowcase = post.moodSlug === "showcase";
   const isAnnouncement = post.moodSlug === "announcement";
   const live = isLive(post.createdAt);
+  const isAuthed = viewerSlug !== null;
+  // Live "N comments" chip count. Mirrors `replyCount` from the DB
+  // until the viewer expands the thread and posts a fresh reply —
+  // then bumps the count optimistically so the chip stays in sync
+  // without a router.refresh() round-trip.
+  const [localReplyCount, setLocalReplyCount] = useState<number>(post.replyCount);
+  useEffect(() => {
+    setLocalReplyCount(post.replyCount);
+  }, [post.replyCount]);
+
+  const openThread = useCallback(async () => {
+    setThreadOpen(true);
+    if (replies !== null || post.id.startsWith("mock-")) return;
+    setLoadingReplies(true);
+    try {
+      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/replies`);
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok && Array.isArray(data.replies)) {
+        setReplies(data.replies as FeedReply[]);
+      } else {
+        setReplies([]);
+      }
+    } catch {
+      setReplies([]);
+    } finally {
+      setLoadingReplies(false);
+    }
+  }, [post.id, replies]);
+
+  async function submitReply() {
+    const trimmed = replyBody.trim();
+    if (!trimmed || replySubmitting) return;
+    if (!isAuthed) {
+      setReplyError("Log in to reply.");
+      return;
+    }
+    setReplySubmitting(true);
+    setReplyError(null);
+    try {
+      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/reply`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ body: trimmed })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.ok) {
+        if (data.error === "not-authenticated") setReplyError("Log in to reply.");
+        else if (data.error === "not-a-member") setReplyError("Join the canteen to reply.");
+        else if (data.error === "body-too-short") setReplyError("Write a bit more.");
+        else setReplyError("Reply failed. Try again.");
+        return;
+      }
+      // Refetch the thread so the new comment appears with its real
+      // server timestamp + id. Also bump the local count so the chip
+      // updates without waiting for router.refresh().
+      setReplyBody("");
+      setLocalReplyCount((n) => n + 1);
+      try {
+        const refetch = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/replies`);
+        const refetchData = await refetch.json().catch(() => ({}));
+        if (refetch.ok && refetchData.ok && Array.isArray(refetchData.replies)) {
+          setReplies(refetchData.replies as FeedReply[]);
+        }
+      } catch {
+        // Non-fatal — the count already bumped, viewer can refresh.
+      }
+    } finally {
+      setReplySubmitting(false);
+    }
+  }
 
   return (
     <article
@@ -343,36 +534,62 @@ function FeedCard({
             Notice
           </span>
         )}
-        {canDelete && (
-          <div className="relative">
-            <button
-              type="button"
-              aria-label="Post actions"
-              onClick={() => setMenuOpen((v) => !v)}
-              className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100"
-            >
-              <MoreHorizontal size={16}/>
-            </button>
-            {menuOpen && (
-              <>
-                <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)}/>
-                <div
-                  className="absolute right-0 top-full z-20 mt-1 min-w-[160px] overflow-hidden rounded-lg border bg-white shadow-lg"
-                  style={{ borderColor: "rgba(139,69,19,0.15)" }}
+        {/* 3-dots menu — always visible so ANYONE can save the post.
+            Save/Unsave shown to every viewer (localStorage-backed, no
+            auth required). Delete shown only when the viewer owns the
+            post (host or post author). This is the only way to delete
+            content: per-comment delete is intentionally not exposed —
+            an owner who wants a comment gone must delete the whole
+            parent post. Saved bookmarks are exempt from the future
+            30-post rotation cap (server side, next pass). */}
+        <div className="relative">
+          <button
+            type="button"
+            aria-label="Post actions"
+            onClick={() => setMenuOpen((v) => !v)}
+            className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100"
+          >
+            <MoreHorizontal size={16}/>
+          </button>
+          {menuOpen && (
+            <>
+              <div className="fixed inset-0 z-10" onClick={() => setMenuOpen(false)}/>
+              <div
+                className="absolute right-0 top-full z-20 mt-1 min-w-[180px] overflow-hidden rounded-lg border bg-white shadow-lg"
+                style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              >
+                <button
+                  type="button"
+                  onClick={() => { setMenuOpen(false); onToggleSaved(post.id); }}
+                  className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
                 >
+                  {isSaved ? (
+                    <>
+                      <BookmarkCheck size={13} strokeWidth={2.4}/>
+                      Unsave post
+                    </>
+                  ) : (
+                    <>
+                      <Bookmark size={13} strokeWidth={2.4}/>
+                      Save post
+                    </>
+                  )}
+                </button>
+                {canDelete && (
                   <button
                     type="button"
                     onClick={() => { setMenuOpen(false); onDelete(post.id); }}
-                    className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-red-600 hover:bg-red-50"
+                    className="flex w-full items-center gap-2 border-t px-3 py-2 text-left text-[12px] font-bold text-red-600 hover:bg-red-50"
+                    style={{ borderColor: "rgba(139,69,19,0.10)" }}
                   >
                     <Trash2 size={13}/>
                     Delete post
                   </button>
-                </div>
-              </>
-            )}
-          </div>
-        )}
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Body */}
@@ -406,23 +623,135 @@ function FeedCard({
             <Heart size={13} strokeWidth={2.2}/>
             {post.reactionsLike}
           </span>
-          <Link
-            href={`/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(post.id)}`}
-            className="inline-flex items-center gap-1"
+          {/* Comments chip — toggles the inline dropdown BELOW instead
+              of navigating away. If it says "4 comments", tapping it
+              expands the panel and shows all 4 (fetched lazily from
+              /api/canteens/posts/[id]/replies on first open). */}
+          <button
+            type="button"
+            onClick={() => (threadOpen ? setThreadOpen(false) : openThread())}
+            className="inline-flex items-center gap-1 transition hover:text-neutral-900"
+            style={{ color: threadOpen ? BRAND_BLACK : undefined }}
           >
             <MessageSquare size={13} strokeWidth={2.2}/>
-            {post.replyCount} <span className="text-neutral-400">comments</span>
-          </Link>
+            {localReplyCount} <span className="text-neutral-400">comments</span>
+          </button>
+          {isSaved && (
+            <span
+              className="inline-flex items-center gap-1 text-[10px] uppercase tracking-wider"
+              style={{ color: TAN }}
+              title="Saved — exempt from feed rotation once server-side cap ships"
+            >
+              <BookmarkCheck size={12} strokeWidth={2.4}/>
+              Saved
+            </span>
+          )}
         </div>
-        <Link
-          href={`/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(post.id)}`}
-          className="inline-flex h-8 items-center gap-1 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider shadow-sm"
+        <button
+          type="button"
+          onClick={() => (threadOpen ? setThreadOpen(false) : openThread())}
+          className="inline-flex h-8 items-center gap-1 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider shadow-sm transition active:scale-[0.97]"
           style={{ backgroundColor: TAN, color: "#FFFFFF" }}
         >
           <Send size={11} strokeWidth={2.5}/>
-          Reply
-        </Link>
+          {threadOpen ? "Hide" : "Reply"}
+        </button>
       </div>
+
+      {/* Inline comments dropdown — expands under the reactions row on
+          the same card. Shows the full comment list (matches the
+          replyCount chip above) plus an inline reply composer. Guest
+          viewers see a "Log in to reply" CTA rather than a name+phone
+          gate (per Philip 2026-07-15 — the gate was killing posts). */}
+      {threadOpen && (
+        <div
+          className="mt-3 rounded-lg border bg-neutral-50 p-3"
+          style={{ borderColor: "rgba(139,69,19,0.10)" }}
+        >
+          {loadingReplies && (
+            <div className="text-[11px] font-black uppercase tracking-wider text-neutral-500">
+              Loading comments…
+            </div>
+          )}
+          {!loadingReplies && replies && replies.length === 0 && (
+            <div className="text-[11.5px] text-neutral-500">
+              No comments yet — be the first.
+            </div>
+          )}
+          {replies && replies.length > 0 && (
+            <ul className="flex flex-col gap-2">
+              {replies.map((r) => (
+                <li
+                  key={r.id}
+                  className="rounded-lg bg-white p-2 shadow-sm"
+                  style={{ border: "1px solid rgba(139,69,19,0.08)" }}
+                >
+                  <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
+                    <Link
+                      href={`/trade/${r.authorSlug}`}
+                      className="text-neutral-900 hover:underline"
+                    >
+                      {r.authorDisplayName}
+                    </Link>
+                    <span className="text-neutral-400">{timeAgo(r.createdAt)}</span>
+                  </div>
+                  <p className="mt-1 whitespace-pre-wrap text-[12.5px] leading-snug text-neutral-800">
+                    {r.body}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Composer or auth CTA */}
+          {isAuthed ? (
+            <div className="mt-3 flex flex-col gap-2">
+              <textarea
+                value={replyBody}
+                onChange={(e) => setReplyBody(e.target.value.slice(0, 4000))}
+                placeholder="Write a comment…"
+                rows={2}
+                className="w-full resize-none rounded-lg border bg-white px-3 py-2 text-[12.5px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
+                style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              />
+              <div className="flex items-center justify-between gap-2">
+                {replyError ? (
+                  <span className="text-[10px] font-black uppercase tracking-wider text-red-600">
+                    {replyError}
+                  </span>
+                ) : (
+                  <span className="text-[10px] text-neutral-400">
+                    Posts go live immediately.
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={submitReply}
+                  disabled={replySubmitting || replyBody.trim().length === 0}
+                  className="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
+                  style={{ backgroundColor: TAN }}
+                >
+                  <Send size={11} strokeWidth={2.5}/>
+                  {replySubmitting ? "Posting…" : "Comment"}
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border bg-white p-2.5" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
+              <span className="text-[11.5px] leading-snug text-neutral-700">
+                Free to read. Create an account to comment.
+              </span>
+              <Link
+                href={`/sign-in?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}/feed`)}`}
+                className="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
+                style={{ backgroundColor: BRAND_BLACK }}
+              >
+                Sign in
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
     </article>
   );
 }
