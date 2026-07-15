@@ -6,7 +6,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Sparkles, Plus } from "lucide-react";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { MOCK_CANTEENS } from "@/lib/canteens";
 import { canteensAllFromDb } from "@/lib/canteens.server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -33,55 +32,36 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function CanteensIndexPage({
-  searchParams
-}: {
-  searchParams?: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  // Signed-in-merchant fast path: if the viewer is a signed-in merchant,
-  // route them straight to their own canteen instead of the discovery
-  // listing — no hunt for their own card among hundreds. Opt-out with
-  // ?browse=1 for merchants who explicitly want the listing (e.g.
-  // discovery browsing to join another trade's canteen).
-  const sp = (await searchParams) ?? {};
-  const wantsBrowse = sp.browse === "1" || sp.browse === "true";
-  if (!wantsBrowse) {
-    const jar = await cookies();
-    const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
-    const merchantSession = verifyTradeSession(sessionRaw);
-    if (merchantSession?.slug) {
-      // Canonical fixture shortcut. If this merchant is a known host
-      // in MOCK_CANTEENS (e.g. Mike Watson → uk-kitchen-fitters,
-      // Craig McDermott → north-uk-sparks, Jason Hardy → uk-scaffolders),
-      // route straight to the fixture-defined canteen. Bypasses the DB
-      // lookup entirely so drift can't send us to a wrongly-named
-      // auto-seed. Applies to demos + any real merchant later added
-      // to the fixture roster.
-      const fixtureCanteen = MOCK_CANTEENS.find((c) => c.hostSlug === merchantSession.slug);
-      if (fixtureCanteen) {
-        redirect(`/trade-off/yard/canteens/${fixtureCanteen.slug}`);
-      }
+export default async function CanteensIndexPage() {
+  // Directory-first flow (Philip 2026-07-16): every visitor — signed-in
+  // merchant, DIY homeowner, anonymous — lands on the discovery listing.
+  // Signed-in merchants get an "Enter my canteen" pill in the shell so
+  // getting home is still 1 tap, but the DEFAULT is browse. Old
+  // fast-path redirect (with ?browse=1 escape) removed — Networkers
+  // brand is about seeing each other's work, not tunnelling straight to
+  // your own room.
+  const jar = await cookies();
+  const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
+  const merchantSession = verifyTradeSession(sessionRaw);
 
-      // Otherwise ask the DB. `.limit(1)` + `.order` beats `.maybeSingle()`
-      // which errors when 2+ rows exist for this host (which shouldn't
-      // happen, but did during the demo-canteen naming drift). Newest
-      // canteen wins on a tie so a merchant who spun up a fresh one
-      // lands on the fresh one.
+  let ownCanteenSlug: string | null = null;
+  if (merchantSession?.slug) {
+    // Fixture shortcut first — bypasses the DB lookup so demo/fixture
+    // hosts always resolve to the fixture canteen even if the DB has
+    // an auto-seed drift.
+    const fixtureCanteen = MOCK_CANTEENS.find((c) => c.hostSlug === merchantSession.slug);
+    if (fixtureCanteen) {
+      ownCanteenSlug = fixtureCanteen.slug;
+    } else {
       const { data: dbCanteens } = await supabaseAdmin
         .from("hammerex_canteens")
         .select("slug, created_at")
         .eq("host_slug", merchantSession.slug)
         .order("created_at", { ascending: false })
         .limit(1);
-      const ownCanteen = dbCanteens?.[0];
-      if (ownCanteen?.slug) {
-        redirect(`/trade-off/yard/canteens/${ownCanteen.slug}`);
+      if (dbCanteens?.[0]?.slug) {
+        ownCanteenSlug = dbCanteens[0].slug;
       }
-      // Signed-in merchant without a canteen yet → the create flow is
-      // the correct destination (no reason to browse a listing to
-      // realise they don't have one). They can still hit ?browse=1 to
-      // see the discovery listing.
-      redirect(`/trade-off/yard/canteens/new`);
     }
   }
 
@@ -90,6 +70,7 @@ export default async function CanteensIndexPage({
   const dbCanteens = await canteensAllFromDb();
   const canteens = dbCanteens.length > 0 ? dbCanteens : MOCK_CANTEENS;
   const founding100 = canteens.filter((c) => c.isFounding100);
+  const viewerIsSignedInMerchant = Boolean(merchantSession?.slug);
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: CREAM }}>
@@ -159,7 +140,11 @@ export default async function CanteensIndexPage({
 
       {/* Canteens grid — search + trade filter live in the client
           shell so the server component stays cacheable. */}
-      <CanteensIndexShell canteens={canteens}/>
+      <CanteensIndexShell
+        canteens={canteens}
+        ownCanteenSlug={ownCanteenSlug}
+        viewerIsSignedInMerchant={viewerIsSignedInMerchant}
+      />
     </main>
   );
 }

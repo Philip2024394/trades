@@ -11,7 +11,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Users, Sparkles, ChevronRight, Search, X, ArrowUpDown } from "lucide-react";
+import { Users, Sparkles, ChevronRight, Search, X, ArrowUpDown, Home, Plus } from "lucide-react";
 import type { Canteen } from "@/lib/canteens";
 
 type SortKey = "active" | "newest" | "founding";
@@ -24,7 +24,21 @@ const SORT_LABEL: Record<SortKey, string> = {
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
 
-export function CanteensIndexShell({ canteens }: { canteens: Canteen[] }) {
+export function CanteensIndexShell({
+  canteens,
+  ownCanteenSlug = null,
+  viewerIsSignedInMerchant = false
+}: {
+  canteens: Canteen[];
+  /** Signed-in merchant's own canteen slug (if they host one).
+   *  Drives the "Enter my canteen" pill at the top of the directory
+   *  so owners can jump home in one tap without hunting the grid. */
+  ownCanteenSlug?: string | null;
+  /** True when the viewer is a signed-in merchant. Merchants without
+   *  a canteen yet get a "Create your canteen" pill instead of
+   *  "Enter my canteen". Anonymous / DIY visitors see no pill. */
+  viewerIsSignedInMerchant?: boolean;
+}) {
   const [query, setQuery] = useState("");
   const [tradeFilter, setTradeFilter] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("active");
@@ -76,6 +90,35 @@ export function CanteensIndexShell({ canteens }: { canteens: Canteen[] }) {
 
   return (
     <section className="mx-auto max-w-6xl px-3 pb-16 pt-6 md:px-6">
+      {/* Signed-in merchant fast-path pill — "Enter my canteen" for
+          owners, "Create your canteen" for merchants without one yet.
+          Anonymous + DIY visitors see nothing here. Sits above the
+          search so getting home is one tap even after the
+          directory-first flow lands the merchant on this page. */}
+      {viewerIsSignedInMerchant && (
+        <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-white p-3 shadow-sm md:p-4" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-neutral-500">
+              Your canteen
+            </div>
+            <div className="mt-0.5 text-[12.5px] leading-snug text-neutral-700">
+              {ownCanteenSlug
+                ? "Jump straight home, or browse below to see what other trades are running."
+                : "You don't have a canteen yet — set one up in 60 seconds and it'll appear in this directory."}
+            </div>
+          </div>
+          <Link
+            href={ownCanteenSlug ? `/trade-off/yard/canteens/${ownCanteenSlug}` : "/trade-off/yard/canteens/new"}
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-[11.5px] font-black uppercase tracking-wider shadow-md transition active:scale-[0.97]"
+            style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+          >
+            {ownCanteenSlug
+              ? <><Home size={13} strokeWidth={2.6}/>Enter my canteen</>
+              : <><Plus size={13} strokeWidth={2.6}/>Create your canteen</>}
+          </Link>
+        </div>
+      )}
+
       {/* Search + trade chips */}
       <div className="mb-4 flex flex-col gap-3">
         <div className="flex items-center gap-2">

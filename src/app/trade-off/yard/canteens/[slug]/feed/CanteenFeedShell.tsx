@@ -30,7 +30,10 @@ type FeedReply = {
   authorDisplayName: string;
   authorAvatarUrl: string | null;
   body: string;
-  photoUrls: string[];
+  /** Optional — replies with attached photos are rare, and the mock
+   *  replies dict omits it entirely. API responses may or may not
+   *  include the field depending on the row's photo_urls column. */
+  photoUrls?: string[];
   createdAt: string;
   likeCount: number;
 };
@@ -39,6 +42,34 @@ const CREAM = "#FBF6EC";
 const TAN = "#B8860B";
 const TAN_SOFT = "#F5E9D3";
 const BRAND_BLACK = "#0A0A0A";
+
+// Canned replies for MOCK_POSTS so the "N comments" chip on the
+// demo feed opens onto real-looking conversation instead of a
+// blank list. Real DB posts fetch from /api/canteens/posts/[id]/
+// replies as normal. Reply counts here should roughly match the
+// replyCount on MOCK_POSTS below so the numbers feel honest.
+const MOCK_REPLIES_BY_POST: Record<string, FeedReply[]> = {
+  "mock-fd-1": [
+    { id: "r1a", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Beautiful job. Whose worktop are you using?", createdAt: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(), likeCount: 3 },
+    { id: "r1b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Bosch dishwasher fits the standard 60cm carcass, no headaches.",                                                             createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
+    { id: "r1c", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Silestone Calacatta from Nu-Marbles. Ex-display so we got a decent price.",                                                    createdAt: new Date(Date.now() - 17 * 60 * 60 * 1000).toISOString(), likeCount: 4 },
+    { id: "r1d", authorSlug: "craig-mcdermott",authorDisplayName: "Craig McDermott",authorAvatarUrl: null, body: "Nice one. Send us the client — I need work in that postcode.",                                                                   createdAt: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(), likeCount: 1 }
+  ],
+  "mock-fd-2": [
+    { id: "r2a", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Nu-Marbles run 24h templating out of Wigan. £30 extra but reliable.", createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), likeCount: 5 },
+    { id: "r2b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Same. Ask for Kirsty on their trade line.",                              createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
+    { id: "r2c", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Cheers both, will try them next week.",                                  createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), likeCount: 1 }
+  ],
+  "mock-fd-3": [
+    { id: "r3a", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Whittington's a nice pocket for high-spec work. Well played.", createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), likeCount: 3 },
+    { id: "r3b", authorSlug: "craig-mcdermott",authorDisplayName: "Craig McDermott",authorAvatarUrl: null, body: "3-day install into a new-build? Impressive.",                    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), likeCount: 2 }
+  ],
+  "mock-fd-4": [
+    { id: "r4a", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Ta for the heads-up.",                                                              createdAt: new Date(Date.now() - 22 * 60 * 60 * 1000).toISOString(), likeCount: 4 },
+    { id: "r4b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Second — north gate's a squeeze but doable.",                                        createdAt: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
+    { id: "r4c", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Someone please tell the site manager they need to sign that in the induction pack.", createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), likeCount: 6 }
+  ]
+};
 
 // Fallback mock feed for empty demo canteens — same voices as the
 // mobile rotator mock so the page always renders content.
@@ -409,7 +440,16 @@ function FeedCard({
 
   const openThread = useCallback(async () => {
     setThreadOpen(true);
-    if (replies !== null || post.id.startsWith("mock-")) return;
+    if (replies !== null) return;
+    // Mock posts (fallback demo content, ids prefixed "mock-") have
+    // no DB row so the /replies endpoint would 404. Seed from the
+    // canned MOCK_REPLIES_BY_POST dict instead so the "N comments"
+    // chip opens onto real-looking conversation. Real DB posts fall
+    // through to the fetch.
+    if (post.id.startsWith("mock-")) {
+      setReplies(MOCK_REPLIES_BY_POST[post.id] ?? []);
+      return;
+    }
     setLoadingReplies(true);
     try {
       const res = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/replies`);
@@ -688,7 +728,7 @@ function FeedCard({
               Loading comments…
             </div>
           )}
-          {!loadingReplies && replies && replies.length === 0 && (
+          {!loadingReplies && (replies === null || replies.length === 0) && (
             <div className="text-[11.5px] text-neutral-500">
               No comments yet — be the first.
             </div>
