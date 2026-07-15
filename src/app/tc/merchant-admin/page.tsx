@@ -38,7 +38,7 @@ const QUICK_LINKS = [
   { href: "/tc/orders",                                            label: "Orders",       Icon: ShoppingBag,   colour: "#F59E0B" },
   { href: "/tc/merchant-admin/images",                             label: "Product images", Icon: ImageIcon,   colour: "#B45309" },
   { href: `/tc/trade-center/merchant/${DEMO_MERCHANT_SLUG}`,        label: "Store front",   Icon: Store,       colour: "#166534" },
-  { href: `/tc/trade-center/plastering`,                            label: "Marketplace",   Icon: Package,     colour: "#0A0A0A" }
+  { href: `/tc/trade-center/plastering`,                            label: "Trade Center", Icon: Package,     colour: "#0A0A0A" }
 ];
 
 export default function MerchantAdminPage() {

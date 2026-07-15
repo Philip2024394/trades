@@ -189,7 +189,12 @@ const TIERS: Tier[] = [
     id: "marketplace",
     stars: 3,
     heroImage: "https://ik.imagekit.io/9mrgsv2rp/Untitledsdsvvvvffsdsddsdsdsddd.png",
-    name: "Marketplace",
+    // User-facing name is "Trade Center" (Philip 2026-07-16 — the
+    // £11.99/mo tier that unlocks Trade Center features). The
+    // internal id stays "marketplace" for now to avoid churning
+    // signup URLs, Stripe products, DB rows, and feature gates —
+    // a coordinated id rename is a separate pass.
+    name: "Trade Center",
     positioning: "Load up. Get selling.",
     audience: "Product sellers — timber merchants, quartz, tools, kitchens",
     ctaLabel: "Start selling",

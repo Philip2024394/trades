@@ -24,7 +24,7 @@ Thenetworkers — a UK trades platform. Merchant canteen pages (`thenetworkers.a
 
 - **Free** — £0/mo (push bike)
 - **Canteen** — £7.99/mo · £72/yr (motor bike)
-- **Marketplace** — £11.99/mo · £120/yr (van)
+- **Trade Center** — £11.99/mo · £120/yr (van) — renamed from "Marketplace" 2026-07-16. Internal tier id `"marketplace"` unchanged for now (URL params, Stripe products, feature gates); user-facing name only.
 - **The Works** — £15.99/mo · £175/yr (jeep — everything unlocked)
 
 Vehicle metaphor is intentional; see ADR-0006.

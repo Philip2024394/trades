@@ -42,7 +42,10 @@ const CONTAINER_BG_BY_TRADE: Record<string, string> = {
   "luxury-garden-designer": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_16_10%20PM.png",
   electrician:              "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_41_25%20PM.png",
   plasterer:                "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_52_37%20PM.png",
-  bricklayer:               "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_56_50%20PM.png"
+  bricklayer:               "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_56_50%20PM.png",
+  "pool-builder":           "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2016,%202026,%2005_05_20%20AM.png",
+  "wood-carver":            "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2016,%202026,%2005_08_02%20AM.png",
+  "loft-ladder-specialist": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2016,%202026,%2005_11_55%20AM.png"
 };
 
 export function CanteenMobileAppShowcase({

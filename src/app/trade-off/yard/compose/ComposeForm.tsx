@@ -67,7 +67,7 @@ const KIND_META: Record<
   },
   "tools-sell": {
     label: "Tools for sale",
-    sublabel: "Marketplace",
+    sublabel: "Trade Center",
     icon: Wrench,
     needsPrice: true,
     isMarketplace: true
