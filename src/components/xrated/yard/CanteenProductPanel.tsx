@@ -120,7 +120,8 @@ export function CanteenProductPanel({
           row and a native touch-swipe carousel. Snap-x mandatory
           makes cards settle into place; scrollbar hidden for a
           polished look. */}
-      <div className="mb-4 md:hidden">
+      <div className="canteen-shop-shell mb-4 md:hidden">
+        <style>{CAROUSEL_CSS}</style>
         <div className="mb-2 flex items-center justify-between px-0.5">
           <div className="flex items-center gap-1.5">
             <span
@@ -141,22 +142,38 @@ export function CanteenProductPanel({
             </Link>
           )}
         </div>
+        {/* Mobile marquee — continuous loop of the product library.
+            Uses the same `looped` (products + products) duplication as
+            the desktop marquee so translateX(-50%) restarts seamlessly
+            with no visible gap. Auto-scrolls left; taps still open the
+            product-focus view. Marquee pauses when the user touches the
+            shell (canteen-shop-shell:hover rule) so they can inspect a
+            card without it sliding off. */}
         <div
-          className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-3 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="-mx-3 overflow-hidden px-3 pb-2"
+          style={{
+            maskImage: "linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%)"
+          }}
         >
-          {products.map((p) => (
+          <div className="canteen-shop-carousel flex w-max gap-3">
+          {looped.map((p, i) => (
             <button
-              key={p.id}
+              key={`${p.id}-${i}`}
               onClick={() => onSelect(p.id)}
-              className="group relative aspect-[4/5] w-[160px] flex-shrink-0 snap-start overflow-hidden rounded-xl border text-left shadow-md transition active:scale-[0.98]"
-              style={{
-                borderColor: "rgba(139,69,19,0.12)",
-                backgroundImage: `url('${p.imageUrl}')`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundColor: "#F3F4F6"
-              }}
+              className="group relative aspect-[4/5] w-[160px] flex-shrink-0 overflow-hidden rounded-xl border bg-neutral-100 text-left shadow-md transition active:scale-[0.98]"
+              style={{ borderColor: "rgba(139,69,19,0.12)" }}
             >
+              {/* Image as <img> (not background-image) so rounded-xl
+                  clips cleanly against the border. Fixes the glittery
+                  sub-pixel edge on rounded tiles. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={p.imageUrl}
+                alt={p.name}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
               {/* Bottom gradient — makes the overlaid name readable
                   against any image. */}
               <div
@@ -165,8 +182,17 @@ export function CanteenProductPanel({
                 style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0.35) 60%, transparent 100%)" }}
               />
 
-              {/* Top-left chip stack: Featured / Bulk-buy */}
+              {/* Top-left chip stack: Item ref / Featured / Bulk-buy */}
               <div className="absolute left-1.5 top-1.5 flex flex-col gap-1">
+                {p.ref && (
+                  <span
+                    className="inline-flex items-center rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.14em] shadow-md"
+                    style={{ backgroundColor: "#0A0A0A", color: BRAND_YELLOW }}
+                    title="Product reference — quote when contacting the merchant"
+                  >
+                    Item · {p.ref}
+                  </span>
+                )}
                 {p.featured && (
                   <span
                     className="inline-flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider shadow-md"
@@ -215,18 +241,10 @@ export function CanteenProductPanel({
               </div>
             </button>
           ))}
-          {/* Sentinel end card — nudges users to the full list without
-              needing them to find the header link. */}
-          {canteenSlug && totalCount > products.length && (
-            <Link
-              href={`/trade-off/yard/canteens/${canteenSlug}/products`}
-              className="flex w-[120px] flex-shrink-0 snap-start flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed p-3 text-center text-[10px] font-black uppercase tracking-wider text-neutral-600 transition active:scale-[0.98]"
-              style={{ borderColor: "rgba(139,69,19,0.20)" }}
-            >
-              <ShoppingBag size={16} className="text-neutral-500"/>
-              View all {totalCount}
-            </Link>
-          )}
+          </div>
+          {/* Marquee-friendly note: the previous sentinel "View all N"
+              end-card was removed — it would repeat every loop cycle
+              which reads as a bug. The header "View all →" link stays. */}
         </div>
       </div>
 
@@ -270,15 +288,18 @@ export function CanteenProductPanel({
           <button
             key={`${p.id}-${i}`}
             onClick={() => onSelect(p.id)}
-            className="group relative aspect-[4/5] w-[140px] flex-shrink-0 overflow-hidden rounded-lg border text-left shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
-            style={{
-              borderColor: "rgba(139,69,19,0.12)",
-              backgroundImage: `url('${p.imageUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: "#F3F4F6"
-            }}
+            className="group relative aspect-[4/5] w-[140px] flex-shrink-0 overflow-hidden rounded-lg border bg-neutral-100 text-left shadow-md transition hover:-translate-y-0.5 hover:shadow-lg"
+            style={{ borderColor: "rgba(139,69,19,0.12)" }}
           >
+            {/* Image as <img> (not background-image) so rounded-lg
+                clips cleanly against the border — no glittery edge. */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={p.imageUrl}
+              alt={p.name}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
             {/* Bottom gradient — makes overlaid name legible */}
             <div
               aria-hidden
@@ -286,8 +307,17 @@ export function CanteenProductPanel({
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.85) 10%, rgba(0,0,0,0.35) 60%, transparent 100%)" }}
             />
 
-            {/* Top-left chip stack */}
+            {/* Top-left chip stack: Item ref / Featured / Bulk-buy */}
             <div className="absolute left-1.5 top-1.5 flex flex-col gap-1">
+              {p.ref && (
+                <span
+                  className="inline-flex items-center rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-[0.14em] shadow-md"
+                  style={{ backgroundColor: "#0A0A0A", color: BRAND_YELLOW }}
+                  title="Product reference — quote when contacting the merchant"
+                >
+                  Item · {p.ref}
+                </span>
+              )}
               {p.featured && (
                 <span
                   className="inline-flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider shadow-md"

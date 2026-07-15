@@ -46,6 +46,15 @@ export type Canteen = {
   /** Founding-100 badge — true for the first 100 canteens (first-100
    *  perk pipeline attaches here). */
   isFounding100: boolean;
+  /** Native palette for demo canteens — set when the canteen exists
+   *  primarily to showcase a specific palette in the templates picker
+   *  (e.g. uk-master-carpenters = Oak). Used as fallback when the
+   *  merchant's hammerex_trade_off_listings row has no palette_slug
+   *  and no `?preview_palette=` query override is present. Real
+   *  merchant canteens leave this undefined — their palette comes
+   *  from their listing row. Slug is a string here (not PaletteSlug)
+   *  to avoid a client-side type import loop; validated at read time. */
+  paletteSlug?: string | null;
 };
 
 /** Live offer on a make-me-an-offer listing. Displayed inline on the
@@ -122,6 +131,14 @@ export type SideLanePost = {
     targetTradeSlugs?: readonly string[];
     paidGbp: number;
   };
+  /** Service-inquiry listing — no fixed price, no offers, buyer needs
+   *  to contact the poster for details. Renders a "More Information"
+   *  chip top-right instead of a Make-Offer banner / Hot chip. Used
+   *  for distribution-partner calls (DeWalt agent), recruitment ads,
+   *  and other listings that don't fit the product / product-hire /
+   *  offer model. Takes priority over the Hot chip but not the sold
+   *  banner or make-me-offer mood. */
+  serviceInquiry?: boolean;
 };
 
 /** Minimum live window on a make-me-offer listing. Seller cannot cancel
@@ -158,7 +175,7 @@ export const MOCK_CANTEENS: Canteen[] = [
   {
     id: "cant_kitchen_uk",
     slug: "uk-kitchen-fitters",
-    name: "UK Kitchen Fitters",
+    name: "Kitchen Fitters",
     tagline: "Where kitchen chippies talk carcasses, worktops and horror-story customers.",
     tradeSlug: "kitchen-fitter",
     tradeLabel: "Kitchen Fitters",
@@ -169,12 +186,37 @@ export const MOCK_CANTEENS: Canteen[] = [
     activityStreakMonths: 2,
     headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2010,%202026,%2006_18_07%20AM.png",
     createdAt: "2026-05-14T12:00:00Z",
-    isFounding100: true
+    isFounding100: true,
+    paletteSlug: "chalk"
+  },
+  {
+    // Iron-palette reference canteen. Same layout as Mike Watson's,
+    // rendered in dark theme via `?preview_palette=iron` (or via the
+    // merchant's persisted palette_slug once demo listing lands in
+    // hammerex_trade_off_listings). Hero image added 2026-07-14.
+    // Ordered BEFORE north-uk-sparks so canteenHostedByMerchant()
+    // returns this one as Craig's primary hosted canteen — sign-in
+    // routes and "your canteen" links land here.
+    id: "cant_electrician_rated",
+    slug: "uk-rated-electricians",
+    name: "Rated Electricians",
+    tagline: "Verified sparks. NICEIC + Certsure certificates on file. Domestic + commercial callouts.",
+    tradeSlug: "electrician",
+    tradeLabel: "Electricians",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    hostDisplayName: "Craig McDermott",
+    memberCount: 42,
+    postsLast30d: 22,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2010_51_51%20PM.png",
+    createdAt: "2026-07-14T22:00:00Z",
+    isFounding100: true,
+    paletteSlug: "iron"
   },
   {
     id: "cant_sparks_north",
     slug: "north-uk-sparks",
-    name: "North UK Sparks",
+    name: "North Sparks",
     tagline: "Sparks Yorkshire → Highlands. Consumer units, EICRs, and Certsure gossip.",
     tradeSlug: "electrician",
     tradeLabel: "Electricians",
@@ -188,9 +230,31 @@ export const MOCK_CANTEENS: Canteen[] = [
     isFounding100: true
   },
   {
+    // Slate-palette reference canteen. Same layout as every other,
+    // rendered in navy blue via `?preview_palette=slate` (or via the
+    // merchant's persisted palette_slug once demo listing lands in
+    // hammerex_trade_off_listings). Hero image placeholder — Philip
+    // to swap when ChatGPT mockup lands.
+    id: "cant_plumbers_verified",
+    slug: "uk-verified-plumbers",
+    name: "Verified Plumbers",
+    tagline: "Gas Safe registered. Domestic + commercial. Same-day emergency callouts.",
+    tradeSlug: "plumber",
+    tradeLabel: "Plumbers",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    hostDisplayName: "James Holt",
+    memberCount: 38,
+    postsLast30d: 19,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    createdAt: "2026-07-15T09:00:00Z",
+    isFounding100: true,
+    paletteSlug: "slate"
+  },
+  {
     id: "cant_scaffolders",
     slug: "uk-scaffolders",
-    name: "UK Scaffolders",
+    name: "Scaffolders",
     tagline: "Tube-and-fitting to system scaff — everything after 'send a lift'.",
     tradeSlug: "scaffolder",
     tradeLabel: "Scaffolders",
@@ -202,76 +266,417 @@ export const MOCK_CANTEENS: Canteen[] = [
     headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2010_38_31%20PM.png",
     createdAt: "2026-06-20T15:00:00Z",
     isFounding100: true
+  },
+  // ─── Phase 3 palette demo canteens (2026-07-15) ─────────────────
+  // One canteen per palette without an existing demo, so the picker
+  // shows 17 distinct app previews (different hero, different name,
+  // different trade) instead of one canteen re-coloured 17 times.
+  // Hero images sourced from scripts/hero-library.json (2026 ImageKit
+  // ChatGPT-generated) where a trade match exists; the remaining 7
+  // trades have `headerBgUrl: null` awaiting Philip's ChatGPT mockups.
+  // Products / posts / members will be seeded per-canteen as real
+  // merchants sign up for each trade — MVP shows canteen + host only.
+
+  // Oak (TP-04+ carpenter family)
+  {
+    id: "cant_carpenters_uk",
+    slug: "uk-master-carpenters",
+    name: "Master Carpenters",
+    tagline: "1st fix, 2nd fix, and everything the brief forgot.",
+    tradeSlug: "carpenter",
+    tradeLabel: "Carpenters",
+    hostSlug: "demo-owen-thompson-carpenter-bristol",
+    hostDisplayName: "Owen Thompson",
+    memberCount: 47,
+    postsLast30d: 21,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2010_56_22%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "oak"
+  },
+  // Blush (TP-15 interior designer)
+  {
+    id: "cant_interior_designers_uk",
+    slug: "uk-interior-designers",
+    name: "Interior Designers",
+    tagline: "Boutique styling, colour boards, and clients with impossible timelines.",
+    tradeSlug: "interior-designer",
+    tradeLabel: "Interior Designers",
+    hostSlug: "demo-rebecca-ashworth-interior-designer-london",
+    hostDisplayName: "Rebecca Ashworth",
+    memberCount: 31,
+    postsLast30d: 17,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_45_28%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "blush"
+  },
+  // Sandstone (TP-18 heritage stone)
+  {
+    id: "cant_heritage_stone_uk",
+    slug: "uk-heritage-stone",
+    name: "Heritage Stone",
+    tagline: "Lime mortar, listed-building consents, and 200-year-old walls.",
+    tradeSlug: "heritage-stone-mason",
+    tradeLabel: "Heritage Stone Masons",
+    hostSlug: "demo-david-whitmore-heritage-stone-bath",
+    hostDisplayName: "David Whitmore",
+    memberCount: 22,
+    postsLast30d: 9,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "sandstone"
+  },
+  // Brick (TP-22 tile roofer)
+  {
+    id: "cant_tile_roofers_uk",
+    slug: "uk-tile-roofers",
+    name: "Tile Roofers",
+    tagline: "Clay, concrete, slate. Full re-roofs and heritage tile matching.",
+    tradeSlug: "roofer-tile",
+    tradeLabel: "Tile Roofers",
+    hostSlug: "demo-gary-hughes-roofer-sheffield",
+    hostDisplayName: "Gary Hughes",
+    memberCount: 63,
+    postsLast30d: 28,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "brick"
+  },
+  // Copper (TP-31 coppersmith)
+  {
+    id: "cant_coppersmiths_uk",
+    slug: "uk-coppersmiths",
+    name: "Coppersmiths",
+    tagline: "Copper roofing, lead flashing, and the sound of a hammer on sheet.",
+    tradeSlug: "coppersmith",
+    tradeLabel: "Coppersmiths",
+    hostSlug: "demo-nathan-barrett-coppersmith-birmingham",
+    hostDisplayName: "Nathan Barrett",
+    memberCount: 18,
+    postsLast30d: 6,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "copper"
+  },
+  // Aqua (TP-42 pool builder)
+  {
+    id: "cant_pool_builders_uk",
+    slug: "uk-pool-builders",
+    name: "Pool Builders",
+    tagline: "Fibreglass, gunite, plunge pools. Coastal spec + inland retrofits.",
+    tradeSlug: "pool-builder",
+    tradeLabel: "Pool Builders",
+    hostSlug: "demo-ben-callaghan-pool-builder-bournemouth",
+    hostDisplayName: "Ben Callaghan",
+    memberCount: 26,
+    postsLast30d: 11,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_30_54%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "aqua"
+  },
+  // Moss (TP-46 landscaper)
+  {
+    id: "cant_landscapers_uk",
+    slug: "uk-landscapers",
+    name: "Landscapers",
+    tagline: "Turf, decking, boundaries, planting. Domestic gardens to estate grounds.",
+    tradeSlug: "landscaper",
+    tradeLabel: "Landscapers",
+    hostSlug: "demo-tom-ashfield-landscaper-cambridge",
+    hostDisplayName: "Tom Ashfield",
+    memberCount: 71,
+    postsLast30d: 34,
+    activityStreakMonths: 3,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2007_21_23%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "moss"
+  },
+  // Emerald (TP-52 luxury garden designer)
+  {
+    id: "cant_garden_designers_uk",
+    slug: "uk-garden-designers",
+    name: "Garden Designers",
+    tagline: "Formal gardens, orangeries, sculpted hedges. Cotswolds to Cornwall.",
+    tradeSlug: "luxury-garden-designer",
+    tradeLabel: "Garden Designers",
+    hostSlug: "demo-charlotte-grantham-garden-designer-cotswolds",
+    hostDisplayName: "Charlotte Grantham",
+    memberCount: 19,
+    postsLast30d: 8,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2006_41_30%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "emerald"
+  },
+  // Steel (TP-55 welder / fabricator)
+  {
+    id: "cant_metal_fabricators_uk",
+    slug: "uk-metal-fabricators",
+    name: "Metal Fabricators",
+    tagline: "MIG, TIG, arc. Structural steel, bespoke gates, balustrades.",
+    tradeSlug: "welder-fabricator",
+    tradeLabel: "Metal Fabricators",
+    hostSlug: "demo-wayne-hartley-welder-sheffield",
+    hostDisplayName: "Wayne Hartley",
+    memberCount: 44,
+    postsLast30d: 19,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "steel"
+  },
+  // Ink (TP-59 architect)
+  {
+    id: "cant_architects_uk",
+    slug: "uk-architects",
+    name: "Architects",
+    tagline: "RIBA members. Planning, building regs, and the drawings the builder wanted yesterday.",
+    tradeSlug: "architect",
+    tradeLabel: "Architects",
+    hostSlug: "demo-sarah-fenton-architect-london",
+    hostDisplayName: "Sarah Fenton",
+    memberCount: 38,
+    postsLast30d: 15,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_38_50%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "ink"
+  },
+  // Concrete (TP-65 concrete specialist)
+  {
+    id: "cant_concrete_specialists_uk",
+    slug: "uk-concrete-specialists",
+    name: "Concrete Specialists",
+    tagline: "Foundations, formwork, polished floors. Domestic to industrial.",
+    tradeSlug: "concrete-specialist",
+    tradeLabel: "Concrete Specialists",
+    hostSlug: "demo-marcus-reeves-concrete-manchester",
+    hostDisplayName: "Marcus Reeves",
+    memberCount: 33,
+    postsLast30d: 14,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "concrete"
+  },
+  // Mortar (TP-69 bricklayer)
+  {
+    id: "cant_bricklayers_uk",
+    slug: "uk-bricklayers",
+    name: "Bricklayers",
+    tagline: "Coursed bond, cavity work, extensions. Belfast lads to south coast crews.",
+    tradeSlug: "bricklayer",
+    tradeLabel: "Bricklayers",
+    hostSlug: "demo-kevin-doherty-bricklayer-belfast",
+    hostDisplayName: "Kevin Doherty",
+    memberCount: 58,
+    postsLast30d: 24,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "mortar"
+  },
+  // Timber (TP-91 bespoke joiner)
+  {
+    id: "cant_bespoke_joiners_uk",
+    slug: "uk-bespoke-joiners",
+    name: "Bespoke Joiners",
+    tagline: "Workshop-made staircases, sash windows, and doors the merchant can't buy off the shelf.",
+    tradeSlug: "bespoke-joiner",
+    tradeLabel: "Bespoke Joiners",
+    hostSlug: "demo-edward-halliwell-joiner-yorkshire",
+    hostDisplayName: "Edward Halliwell",
+    memberCount: 27,
+    postsLast30d: 12,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "timber"
+  },
+  // Charcoal (TP-88 prestige builder)
+  {
+    id: "cant_prestige_builders_uk",
+    slug: "uk-prestige-builders",
+    name: "Prestige Builders",
+    tagline: "Full-house refurbs, basement digs, heritage conversions. Surrey to Kensington.",
+    tradeSlug: "prestige-builder",
+    tradeLabel: "Prestige Builders",
+    hostSlug: "demo-julian-hartley-prestige-builder-surrey",
+    hostDisplayName: "Julian Hartley",
+    memberCount: 14,
+    postsLast30d: 6,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_26_58%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "charcoal"
+  },
+  // Marine (TP-97 marina builder)
+  {
+    id: "cant_marina_builders_uk",
+    slug: "uk-marina-builders",
+    name: "Marina Builders",
+    tagline: "Pontoons, decking, sea walls. Southampton, Poole, Portsmouth marinas.",
+    tradeSlug: "marina-builder",
+    tradeLabel: "Marina Builders",
+    hostSlug: "demo-alistair-ferguson-marina-southampton",
+    hostDisplayName: "Alistair Ferguson",
+    memberCount: 11,
+    postsLast30d: 4,
+    activityStreakMonths: 1,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_59_22%20AM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "marine"
+  },
+  // Storm (TP-100 emergency repair)
+  {
+    id: "cant_emergency_repairs_uk",
+    slug: "uk-emergency-repairs",
+    name: "Emergency Repairs",
+    tagline: "Storm damage. Burst pipes. Fallen trees. 24-hour insurance-approved response.",
+    tradeSlug: "emergency-repair",
+    tradeLabel: "Emergency Repairs",
+    hostSlug: "demo-frank-delaney-emergency-newcastle",
+    hostDisplayName: "Frank Delaney",
+    memberCount: 29,
+    postsLast30d: 13,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "storm"
+  },
+  // Hi-Vis (TP-104 groundworker)
+  {
+    id: "cant_groundworkers_uk",
+    slug: "uk-groundworkers",
+    name: "Groundworkers",
+    tagline: "Digs, drainage, foundations. Everything under the ground floor slab.",
+    tradeSlug: "groundworker",
+    tradeLabel: "Groundworkers",
+    hostSlug: "demo-barry-rollins-groundworker-liverpool",
+    hostDisplayName: "Barry Rollins",
+    memberCount: 52,
+    postsLast30d: 22,
+    activityStreakMonths: 2,
+    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%203,%202026,%2002_25_52%20PM.png",
+    createdAt: "2026-07-15T14:00:00Z",
+    isFounding100: true,
+    paletteSlug: "hi-vis"
   }
 ];
 
-// Placeholder product photos — reused across the seed. Real listings
-// carry their own image on the DB record.
+// The Counter seed images — 12 ChatGPT-generated construction-trade
+// banners hosted on ImageKit. Every one of these ships as a live-card
+// on the demo canteen. Real listings carry their own image on the DB
+// record; these are the design-preview photography only. Refreshed
+// 2026-07-14 (Philip's shoot). Old Unsplash IMG lookup deleted with
+// this rewrite — nothing else in the app referenced it.
 const IMG = {
-  worktop:   "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
-  kitchen:   "https://images.unsplash.com/photo-1556909013-2ea78b906f60?w=400&h=400&fit=crop",
-  tools:     "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400&h=400&fit=crop",
-  paint:     "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400&h=400&fit=crop",
-  bricks:    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&h=400&fit=crop",
-  cabinets:  "https://images.unsplash.com/photo-1600607686527-6fb886090705?w=400&h=400&fit=crop",
-  drill:     "https://images.unsplash.com/photo-1504148455328-c376907d081c?w=400&h=400&fit=crop",
-  timber:    "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=400&fit=crop",
-  copper:    "https://images.unsplash.com/photo-1621600411688-4be93c2c1208?w=400&h=400&fit=crop",
-  scaff:     "https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=400&h=400&fit=crop",
-  fuse:      "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=400&fit=crop",
-  cable:     "https://images.unsplash.com/photo-1620788373811-eee62a68ffb9?w=400&h=400&fit=crop",
-  tile:      "https://images.unsplash.com/photo-1615874959474-d609969a20ed?w=400&h=400&fit=crop",
-  ply:       "https://images.unsplash.com/photo-1616627052131-9d3f6f0f7d1c?w=400&h=400&fit=crop",
-  ladder:    "https://images.unsplash.com/photo-1585909695284-32d2985ac9c0?w=400&h=400&fit=crop",
-  van:       "https://images.unsplash.com/photo-1519666336592-e225a99dcd2f?w=400&h=400&fit=crop",
-  screws:    "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?w=400&h=400&fit=crop",
-  concrete:  "https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=400&h=400&fit=crop",
-  saw:       "https://images.unsplash.com/photo-1608222351212-18fe0ec7b13b?w=400&h=400&fit=crop",
-  handle:    "https://images.unsplash.com/photo-1615873968403-89e068629265?w=400&h=400&fit=crop"
+  workwear:  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2005_33_48%20AM.png",
+  screws:    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2005_19_34%20AM.png",
+  dewalt:    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_40_36%20AM.png",
+  staircase: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_27_33%20AM.png",
+  aggregate: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_24_19%20AM.png",
+  cementSilo:"https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_23_01%20AM.png",
+  scaff:     "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_19_32%20AM.png",
+  mixDrill:  "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_17_18%20AM.png",
+  fuseboard: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_10_00%20AM.png",
+  mixerHire: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2012_03_42%20AM.png",
+  handTools: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2011_59_27%20PM.png",
+  plywood:   "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2011_56_11%20PM.png"
 } as const;
 
+// The Counter seed — 12 posts total, one per ChatGPT-generated banner.
+// Refreshed 2026-07-14 (Philip's shoot) and priced against typical UK
+// trade wholesale rates. Kind split: 3 member-listings with make-me-
+// offer banner (items 6, 8, 11) · 2 trade-center-products (items 9,
+// 12) · 7 merchant-marketing supplier ads. One boost active on item
+// 4 (StairMasters). Hot chip auto-fires for entries with
+// clicksTrailing7d > 20.
+//
+// Prices researched 2026-07-14 against Screwfix / Toolstation / Buildbase
+// trade rates and typical UK depot pricing — starting-point figures,
+// merchants set their own final prices.
 export const MOCK_SIDE_LANE_POSTS: SideLanePost[] = [
-  // Kitchen Fitters — the seeded canteen with the most side-lane volume
-  { id: "sl_1",  canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Solid oak 40mm worktops — cut to size",       imageUrl: IMG.worktop,  priceGbp: 120, clicksTrailing7d: 42, state: "live", postedAt: "2026-07-04T09:00:00Z", expiresAt: "2026-08-03T09:00:00Z", tradeCenterListingId: "prod_oak_worktop_40mm" },
-  { id: "sl_2",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "demo-nick-brown-quartz-fitter-manchester",     posterDisplayName: "Nick Brown Quartz",  headline: "Trade-only quartz templating · 48h NW",       imageUrl: IMG.kitchen,                clicksTrailing7d: 34, state: "live", postedAt: "2026-07-06T14:30:00Z", expiresAt: "2026-08-05T14:30:00Z",
-    // Sponsored — Nick paid to float this above organic Counter posts
-    // when the viewer is on kitchen-fitter, joiner, or carpenter canteens.
+  // 1. Work wear bundle — steel toe + PPE starter kit for site work
+  { id: "sl_1",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "trade-wear-direct",           posterDisplayName: "Trade Wear Direct",     headline: "Full site PPE bundle — steel-toe boots, hi-vis, hard hat, trousers", imageUrl: IMG.workwear,  priceGbp: 85,  clicksTrailing7d: 38, state: "live", postedAt: "2026-07-10T09:00:00Z", expiresAt: "2026-08-09T09:00:00Z" },
+
+  // 2. Trade fastener supplier — mixed wood + self-tap box discount
+  { id: "sl_2",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "tradefix-fasteners-uk",       posterDisplayName: "TradeFix Fasteners UK", headline: "Wood + metal self-tap screws — trade discount on bulk boxes",         imageUrl: IMG.screws,    priceGbp: 45,  clicksTrailing7d: 16, state: "live", postedAt: "2026-07-11T11:30:00Z", expiresAt: "2026-08-10T11:30:00Z" },
+
+  // 3. DeWalt partner recruitment — service inquiry (no price, no
+  //    offers). "More Information" chip signals contact-for-details.
+  { id: "sl_3",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "dewalt-uk-distribution",       posterDisplayName: "DeWalt UK Distribution", headline: "Regional distribution partner call — apply your trade area",         imageUrl: IMG.dewalt,                    clicksTrailing7d: 24, state: "live", postedAt: "2026-07-08T15:00:00Z", expiresAt: "2026-08-07T15:00:00Z", serviceInquiry: true },
+
+  // 4. Staircase refacing service — sponsored (paid boost active)
+  { id: "sl_4",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "stairmasters-uk",              posterDisplayName: "StairMasters UK",       headline: "Staircase refacing — timber & concrete cover, nationwide (from £395)", imageUrl: IMG.staircase, priceGbp: 395, clicksTrailing7d: 12, state: "live", postedAt: "2026-07-09T13:00:00Z", expiresAt: "2026-08-08T13:00:00Z",
     boost: {
-      expiresAt: "2026-07-20T14:30:00Z",
-      targetTradeSlugs: ["kitchen-fitter", "joiner", "carpenter"],
+      expiresAt: "2026-07-25T13:00:00Z",
+      targetTradeSlugs: ["kitchen-fitter", "joiner", "carpenter", "builder"],
       paidGbp: 60
     }
   },
-  { id: "sl_3",  canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-tom-fisher-kitchen-fitter-leeds",         posterDisplayName: "Tom Fisher",         headline: "Festool TS55 track saw + rail — barely used", imageUrl: IMG.saw,      priceGbp: 280, clicksTrailing7d: 28, state: "live", postedAt: "2026-07-08T10:15:00Z", expiresAt: "2026-08-07T10:15:00Z",
+
+  // 5. West London aggregate depot — sand / gravel / ballast per tonne
+  { id: "sl_5",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "west-london-aggregates",       posterDisplayName: "West London Aggregates", headline: "Sand · gravel · ballast — West London depot · same-day drops",       imageUrl: IMG.aggregate, priceGbp: 55,  clicksTrailing7d: 29, state: "live", postedAt: "2026-07-10T08:00:00Z", expiresAt: "2026-08-09T08:00:00Z" },
+
+  // 6. Used cement silo — make-me-offer (collection only)
+  { id: "sl_6",  canteenId: "cant_kitchen_uk", kind: "member-listing",       posterSlug: "demo-paul-webb-builder-bolton", posterDisplayName: "Paul Webb",             headline: "Used cement silo · good working order · collection only, Bolton",    imageUrl: IMG.cementSilo,                clicksTrailing7d: 18, state: "live", postedAt: "2026-07-09T10:00:00Z", expiresAt: "2026-08-08T10:00:00Z",
     mood: "make-me-offer",
     offers: [
-      { id: "of_1", buyerSlug: "demo-mike-watson-drywall-manchester",        buyerDisplayName: "Mike W.",   buyerAvatarUrl: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces", amountGbp: 240, postedAt: "2026-07-09T15:22:00Z" },
-      { id: "of_2", buyerSlug: "demo-rachel-simms-kitchen-fitter-liverpool",  buyerDisplayName: "Rachel S.", buyerAvatarUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces", amountGbp: 260, postedAt: "2026-07-09T18:04:00Z" },
-      { id: "of_3", buyerSlug: "demo-craig-mcdermott-electrician-leeds",     buyerDisplayName: "Craig M.",  buyerAvatarUrl: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=faces", amountGbp: 270, postedAt: "2026-07-10T09:41:00Z" }
+      { id: "of_sl6_1", buyerSlug: "demo-jason-hardy-scaffolder-glasgow",             buyerDisplayName: "Jason H.", buyerAvatarUrl: "https://images.unsplash.com/photo-1548544149-4835e62ee5b3?w=200&h=200&fit=crop&crop=faces", amountGbp: 850, postedAt: "2026-07-11T09:30:00Z" },
+      { id: "of_sl6_2", buyerSlug: "demo-alan-walsh-timber-merchant-birmingham",       buyerDisplayName: "Alan W.",  buyerAvatarUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces", amountGbp: 900, postedAt: "2026-07-12T14:15:00Z" }
     ]
   },
-  { id: "sl_4",  canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Prefab pantry carcasses · pack of 3",          imageUrl: IMG.cabinets, priceGbp: 199, clicksTrailing7d: 21, state: "live", postedAt: "2026-06-28T11:00:00Z", expiresAt: "2026-07-28T11:00:00Z" },
-  { id: "sl_5",  canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-craig-mcdermott-electrician-leeds",       posterDisplayName: "Craig McDermott",     headline: "Blum soft-close hinges · box of 100 spare",   imageUrl: IMG.handle,   priceGbp: 45,  clicksTrailing7d: 18, state: "live", postedAt: "2026-07-01T13:00:00Z", expiresAt: "2026-07-31T13:00:00Z" },
-  { id: "sl_6",  canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Birch ply 18mm 8×4 — pallet of 12",             imageUrl: IMG.ply,      priceGbp: 480, clicksTrailing7d: 14, state: "live", postedAt: "2026-07-05T08:00:00Z", expiresAt: "2026-08-04T08:00:00Z" },
-  { id: "sl_7",  canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-mike-watson-drywall-manchester",           posterDisplayName: "Mike Watson",         headline: "Karcher steam cleaner · barely used",         imageUrl: IMG.tools,    priceGbp: 90,  clicksTrailing7d: 12, state: "live", postedAt: "2026-07-07T09:30:00Z", expiresAt: "2026-08-06T09:30:00Z" },
-  { id: "sl_8",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "demo-lucy-mahon-tree-surgeon-glasgow",         posterDisplayName: "Fittipro Handles",   headline: "Brushed brass handles · from £6 trade",       imageUrl: IMG.handle,                 clicksTrailing7d: 10, state: "live", postedAt: "2026-07-03T15:45:00Z", expiresAt: "2026-08-02T15:45:00Z" },
-  { id: "sl_9",  canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "3-pack shaker cabinet doors · white",         imageUrl: IMG.cabinets, priceGbp: 120, clicksTrailing7d: 7,  state: "live", postedAt: "2026-07-02T12:00:00Z", expiresAt: "2026-08-01T12:00:00Z" },
-  { id: "sl_10", canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-tom-fisher-kitchen-fitter-leeds",         posterDisplayName: "Tom Fisher",         headline: "Makita 18v combo drill + impact · with 4 batteries", imageUrl: IMG.drill, priceGbp: 220, clicksTrailing7d: 6, state: "live", postedAt: "2026-07-08T15:00:00Z", expiresAt: "2026-08-07T15:00:00Z" },
-  { id: "sl_11", canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Countryside cream tiles · 30 boxes",           imageUrl: IMG.tile,     priceGbp: 340, clicksTrailing7d: 5,  state: "live", postedAt: "2026-06-30T10:00:00Z", expiresAt: "2026-07-30T10:00:00Z" },
-  { id: "sl_12", canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "demo-nick-brown-quartz-fitter-manchester",     posterDisplayName: "Nick Brown Quartz",  headline: "Free A0 quartz swatch pack · trade only",     imageUrl: IMG.kitchen,                clicksTrailing7d: 4,  state: "live", postedAt: "2026-07-06T16:00:00Z", expiresAt: "2026-08-05T16:00:00Z" },
-  { id: "sl_13", canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-mike-watson-drywall-manchester",           posterDisplayName: "Mike Watson",         headline: "Kreg pocket-hole jig · complete kit",         imageUrl: IMG.saw,      priceGbp: 65,  clicksTrailing7d: 3,  state: "live", postedAt: "2026-07-07T11:00:00Z", expiresAt: "2026-08-06T11:00:00Z" },
-  { id: "sl_14", canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Bulk 100mm decking screws · box of 500",       imageUrl: IMG.screws,   priceGbp: 22,  clicksTrailing7d: 3,  state: "live", postedAt: "2026-07-05T13:30:00Z", expiresAt: "2026-08-04T13:30:00Z" },
-  { id: "sl_15", canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Ready-mix concrete · 20 bags · click & collect", imageUrl: IMG.concrete, priceGbp: 60,  clicksTrailing7d: 2, state: "live", postedAt: "2026-07-06T09:00:00Z", expiresAt: "2026-08-05T09:00:00Z" },
-  { id: "sl_16", canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-tom-fisher-kitchen-fitter-leeds",         posterDisplayName: "Tom Fisher",         headline: "Multitool oscillating blades · 50 spare",     imageUrl: IMG.tools,    priceGbp: 15,  clicksTrailing7d: 2,  state: "live", postedAt: "2026-07-08T09:00:00Z", expiresAt: "2026-08-07T09:00:00Z" },
-  { id: "sl_17", canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "demo-nick-brown-quartz-fitter-manchester",     posterDisplayName: "Nick Brown Quartz",  headline: "£50 off first quartz install · trade referral", imageUrl: IMG.kitchen,               clicksTrailing7d: 2,  state: "live", postedAt: "2026-07-04T18:00:00Z", expiresAt: "2026-08-03T18:00:00Z" },
-  { id: "sl_18", canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-craig-mcdermott-electrician-leeds",       posterDisplayName: "Craig McDermott",     headline: "Copper pipe offcuts · 15mm mix · £15",         imageUrl: IMG.copper,   priceGbp: 15,  clicksTrailing7d: 1,  state: "live", postedAt: "2026-07-03T09:00:00Z", expiresAt: "2026-08-02T09:00:00Z" },
-  { id: "sl_19", canteenId: "cant_kitchen_uk", kind: "member-listing",        posterSlug: "demo-jason-hardy-scaffolder-glasgow",           posterDisplayName: "Jason Hardy",         headline: "Alu triple ladder · 10 tread · fully serviced", imageUrl: IMG.ladder,  priceGbp: 140, clicksTrailing7d: 1,  state: "live", postedAt: "2026-07-01T09:00:00Z", expiresAt: "2026-07-31T09:00:00Z" },
-  { id: "sl_20", canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber",   headline: "Reclaimed victorian brick pallet · London stock", imageUrl: IMG.bricks, priceGbp: 380, clicksTrailing7d: 0, state: "sold", postedAt: "2026-06-25T09:00:00Z", expiresAt: "2026-07-25T09:00:00Z" },
 
-  // Sparks + Scaffolders canteens — a few each so those pages don't look empty
-  { id: "sl_s1", canteenId: "cant_sparks_north", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Trade",    headline: "6mm T&E twin+earth · 100m drum",              imageUrl: IMG.cable,    priceGbp: 165, clicksTrailing7d: 22, state: "live", postedAt: "2026-07-05T10:00:00Z", expiresAt: "2026-08-04T10:00:00Z" },
-  { id: "sl_s2", canteenId: "cant_sparks_north", kind: "member-listing",        posterSlug: "demo-craig-mcdermott-electrician-leeds",       posterDisplayName: "Craig McDermott",     headline: "Wiska 407 boxes · 20 spare",                    imageUrl: IMG.fuse,     priceGbp: 25,  clicksTrailing7d: 9,  state: "live", postedAt: "2026-07-08T13:00:00Z", expiresAt: "2026-08-07T13:00:00Z" },
-  { id: "sl_c1", canteenId: "cant_scaffolders",  kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Trade",    headline: "Kwikstage standards · 10ft · pack of 20",     imageUrl: IMG.scaff,    priceGbp: 320, clicksTrailing7d: 15, state: "live", postedAt: "2026-07-06T08:00:00Z", expiresAt: "2026-08-05T08:00:00Z" }
+  // 7. Scaffolding supplier — Kwikstage standards + fittings nationwide
+  { id: "sl_7",  canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "nationwide-scaff-supply",      posterDisplayName: "Nationwide Scaff Supply", headline: "Kwikstage standards + fittings — nationwide next-day delivery",       imageUrl: IMG.scaff,     priceGbp: 28,  clicksTrailing7d: 14, state: "live", postedAt: "2026-07-11T10:00:00Z", expiresAt: "2026-08-10T10:00:00Z" },
+
+  // 8. Used paddle mixer drill — make-me-offer
+  { id: "sl_8",  canteenId: "cant_kitchen_uk", kind: "member-listing",       posterSlug: "demo-mike-watson-drywall-manchester", posterDisplayName: "Mike Watson",     headline: "Used paddle mixer drill · good working order · offers welcome",      imageUrl: IMG.mixDrill,                  clicksTrailing7d: 11, state: "live", postedAt: "2026-07-12T09:00:00Z", expiresAt: "2026-08-11T09:00:00Z",
+    mood: "make-me-offer",
+    offers: [
+      { id: "of_sl8_1", buyerSlug: "demo-kate-morris-plasterer-warrington",            buyerDisplayName: "Kate M.", buyerAvatarUrl: "https://images.unsplash.com/photo-1601456108021-fbdba97b9d47?w=200&h=200&fit=crop&crop=faces", amountGbp: 45,  postedAt: "2026-07-12T14:00:00Z" },
+      { id: "of_sl8_2", buyerSlug: "demo-danny-lawson-joiner-hull",                    buyerDisplayName: "Danny L.", buyerAvatarUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=200&h=200&fit=crop&crop=faces", amountGbp: 55,  postedAt: "2026-07-13T09:30:00Z" }
+    ]
+  },
+
+  // 9. Fuse boards — domestic + industrial (Trade Center product)
+  { id: "sl_9",  canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Trade", headline: "Fuse boards — domestic 10-way + 3-phase industrial units",           imageUrl: IMG.fuseboard, priceGbp: 120, clicksTrailing7d: 27, state: "live", postedAt: "2026-07-10T14:00:00Z", expiresAt: "2026-08-09T14:00:00Z", tradeCenterListingId: "prod_fuseboards" },
+
+  // 10. Cement mixer hire — Manchester + Sheffield depots
+  { id: "sl_10", canteenId: "cant_kitchen_uk", kind: "merchant-marketing",   posterSlug: "northern-plant-hire",          posterDisplayName: "Northern Plant Hire",    headline: "Cement mixer hire — Manchester + Sheffield depots (from £15/day)",  imageUrl: IMG.mixerHire, priceGbp: 15,  clicksTrailing7d: 31, state: "live", postedAt: "2026-07-11T08:30:00Z", expiresAt: "2026-08-10T08:30:00Z" },
+
+  // 11. Hand tool job lot — make-me-offer
+  { id: "sl_11", canteenId: "cant_kitchen_uk", kind: "member-listing",       posterSlug: "demo-jason-hardy-scaffolder-glasgow", posterDisplayName: "Jason Hardy",       headline: "Hand tool job lot — mixed selection, contact for full list",         imageUrl: IMG.handTools,                 clicksTrailing7d: 9,  state: "live", postedAt: "2026-07-12T15:00:00Z", expiresAt: "2026-08-11T15:00:00Z",
+    mood: "make-me-offer",
+    offers: [
+      { id: "of_sl11_1", buyerSlug: "demo-anna-forde-decorator-preston",               buyerDisplayName: "Anna F.", buyerAvatarUrl: "https://images.unsplash.com/photo-1583864697784-a0efc8379f70?w=200&h=200&fit=crop&crop=faces", amountGbp: 80,  postedAt: "2026-07-13T10:00:00Z" }
+    ]
+  },
+
+  // 12. Plywood shuttering panels — 12mm-25mm (Trade Center product)
+  { id: "sl_12", canteenId: "cant_kitchen_uk", kind: "trade-center-product", posterSlug: "demo-alan-walsh-timber-merchant-birmingham", posterDisplayName: "Alan Walsh Timber", headline: "Plywood shuttering panels — 12-25mm, weather-protected · trade discount", imageUrl: IMG.plywood, priceGbp: 42,  clicksTrailing7d: 19, state: "live", postedAt: "2026-07-10T11:00:00Z", expiresAt: "2026-08-09T11:00:00Z", tradeCenterListingId: "prod_shuttering_ply" }
 ];
 
 // ─── Members ──────────────────────────────────────────────
@@ -337,6 +742,11 @@ export type CanteenMember = {
   };
   /** Number of portfolio jobs — used for the chevron link. */
   portfolioCount?: number;
+  /** Discrete services the merchant offers. Rendered as yellow-dot
+   *  chips below the About Us bio on the profile focus. Free-text
+   *  labels — kitchen-fitter examples: "Design", "Fitting service",
+   *  "Refacing", "Kitchen spraying", "Worktop replacement". */
+  servicesOffered?: string[];
   /** Merchant preference — when true, product quick-view + trending
    *  swipe sheet show a "Buy on Trade Center" button alongside the
    *  WhatsApp button (for products that have a tradeCenterListingId).
@@ -349,10 +759,10 @@ export type CanteenMember = {
 
 // Small stable avatar pool (Unsplash portraits, cropped square).
 const AV = {
-  m1: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces",
+  m1: "https://ik.imagekit.io/9mrgsv2rp/Untitleddasdaasbbbb.png",
   m2: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=faces",
   m3: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
-  m4: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=faces",
+  m4: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2010_58_56%20PM.png",
   m5: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=200&h=200&fit=crop&crop=faces",
   m6: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
   m7: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=200&h=200&fit=crop&crop=faces",
@@ -373,7 +783,7 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
       avatarUrl: AV.m1,
       role: "admin",
       whatsapp: "447700900101",
-      bioShort: "20 years fitting kitchens across NW. Full-height carcass specialist. £45/hr day rate.",
+      bioShort: "20 years fitting kitchens across the North West. Full-height carcass and handleless door specialist — Manchester based, covering all NW postcode areas. £45/hr day rate for trade, transparent fixed quotes for homeowners on request. Small dedicated team of two fitters plus one carpenter; every project has a named lead so you always know who's on site. Companies House registered with £5m Public Liability. 4.9 rating across 128 reviews. Available next week — usually reply within 2 hours during working hours.",
       memberOfCanteenSlugs: ["uk-kitchen-fitters", "north-uk-sparks"],
       postcodeArea: "M14",
       officeHours: "Mon–Fri · 8:00–17:00\nSat · 9:00–13:00\nSun · closed",
@@ -401,6 +811,15 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
       },
       reviews: { avg: 4.9, count: 128 },
       portfolioCount: 48,
+      servicesOffered: [
+        "Design",
+        "Fitting service",
+        "Refacing",
+        "Kitchen spraying",
+        "Worktop replacement",
+        "Splashback fit",
+        "Appliance install"
+      ],
       // Mike Watson opted in to Trade Center routing — his product
       // quick-view + trending sheets show "Buy on Trade Center"
       // alongside WhatsApp for products that have a tradeCenterListingId.
@@ -408,7 +827,7 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
     },
     { slug: "demo-tom-fisher-kitchen-fitter-leeds", displayName: "Tom Fisher", tradeLabel: "Kitchen Fitter", city: "Leeds", avatarUrl: AV.m2, role: "moderator", whatsapp: "447700900102", bioShort: "Bespoke oak + walnut jobs. Full showroom fit-outs. West Yorks only.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
     { slug: "demo-rachel-simms-kitchen-fitter-liverpool", displayName: "Rachel Simms", tradeLabel: "Kitchen Fitter", city: "Liverpool", avatarUrl: AV.m3, role: "member", whatsapp: "447700900103", bioShort: "Insurance jobs + landlord fit-outs. 3-day full-fit turnaround.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
-    { slug: "demo-craig-mcdermott-electrician-leeds", displayName: "Craig McDermott", tradeLabel: "Electrician", city: "Leeds", avatarUrl: AV.m4, role: "member", whatsapp: "447700900104", bioShort: "18th edition sparks. Kitchen circuit + island power specialist.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "north-uk-sparks"] },
+    { slug: "demo-craig-mcdermott-electrician-leeds", displayName: "Craig McDermott", tradeLabel: "Electrician", city: "Leeds", avatarUrl: AV.m4, role: "member", whatsapp: "447700900104", bioShort: "18th edition sparks. Kitchen circuit + island power specialist.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "north-uk-sparks", "uk-rated-electricians"] },
     { slug: "demo-nick-brown-quartz-fitter-manchester", displayName: "Nick Brown", tradeLabel: "Quartz Fitter", city: "Manchester", avatarUrl: AV.m5, role: "member", whatsapp: "447700900105", bioShort: "48-hour quartz templating + fit. Trade-only pricing.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
     { slug: "demo-alan-walsh-timber-merchant-birmingham", displayName: "Alan Walsh", tradeLabel: "Timber Merchant", city: "Birmingham", avatarUrl: AV.m6, role: "member", whatsapp: "447700900106", bioShort: "40 years selling worktops + carcass ply to fitters. Cut-to-size.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
     { slug: "demo-james-holt-plumber-nottingham", displayName: "James Holt", tradeLabel: "Plumber", city: "Nottingham", avatarUrl: AV.m7, role: "member", whatsapp: null, bioShort: "Kitchen plumbing + boiler moves. Gas Safe #451189.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] },
@@ -419,11 +838,174 @@ export const MOCK_CANTEEN_MEMBERS: Record<string, CanteenMember[]> = {
     { slug: "demo-paul-webb-builder-bolton", displayName: "Paul Webb", tradeLabel: "Builder", city: "Bolton", avatarUrl: AV.m12, role: "member", whatsapp: null, bioShort: "Structural work + open-plan knock-throughs. RSJ specialist.", memberOfCanteenSlugs: ["uk-kitchen-fitters"] }
   ],
   cant_sparks_north: [
-    { slug: "demo-craig-mcdermott-electrician-leeds", displayName: "Craig McDermott", tradeLabel: "Electrician", city: "Leeds", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900104", bioShort: "18th edition sparks. Domestic + light commercial. NICEIC.", memberOfCanteenSlugs: ["north-uk-sparks", "uk-kitchen-fitters"] },
+    { slug: "demo-craig-mcdermott-electrician-leeds", displayName: "Craig McDermott", tradeLabel: "Electrician", city: "Leeds", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900104", bioShort: "18th edition sparks. Domestic + light commercial. NICEIC.", memberOfCanteenSlugs: ["north-uk-sparks", "uk-kitchen-fitters", "uk-rated-electricians"] },
     { slug: "demo-mike-watson-drywall-manchester", displayName: "Mike Watson", tradeLabel: "Electrician", city: "Manchester", avatarUrl: AV.m1, role: "member", whatsapp: "447700900101", bioShort: "Board changes + rewires. NW callouts.", memberOfCanteenSlugs: ["north-uk-sparks", "uk-kitchen-fitters"] }
+  ],
+  cant_electrician_rated: [
+    {
+      slug: "demo-craig-mcdermott-electrician-leeds",
+      displayName: "Craig McDermott",
+      tradeLabel: "Electrician",
+      city: "Leeds",
+      avatarUrl: AV.m4,
+      role: "admin",
+      whatsapp: "447700900104",
+      bioShort: "18 years wiring homes and light-commercial units across Yorkshire. NICEIC + Certsure certified — every job leaves with a signed EIC or MWC. Domestic full rewires, EV charger installs, consumer-unit swaps, EICRs and fault-finding. £55/hr day rate for trade, transparent fixed quotes for homeowners. Two-man team plus one apprentice; every job has a named lead so you always know who's holding the meter. Companies House registered with £5m Public Liability. 4.8 rating across 96 verified reviews. Available this month — usually reply within 90 minutes during working hours.",
+      memberOfCanteenSlugs: ["uk-rated-electricians", "north-uk-sparks", "uk-kitchen-fitters"],
+      postcodeArea: "LS12",
+      officeHours: "Mon–Fri · 7:30–17:30\nSat · 9:00–13:00\nSun · emergency callouts only",
+      showroom: {
+        addressLine: "18 Kirkstall Industrial Park",
+        postcode: "LS12 4RD"
+      },
+      verified: {
+        companiesHouse: true,
+        insuranceGbp: 5_000_000,
+        trustScore: 84
+      },
+      availability: "Available this month",
+      responseTime: "Usually replies in 90m",
+      phone: "0113 555 0104",
+      email: "craig@mcdermott-electrical.co.uk",
+      socials: {
+        instagram: "mcdermott.sparks",
+        facebook: "mcdermottelectrical",
+        tiktok: "mcdermottsparks",
+        youtube: "@mcdermottelectrical",
+        x: "mcdermottsparks",
+        website: "mcdermott-electrical.co.uk"
+      },
+      reviews: { avg: 4.8, count: 96 },
+      portfolioCount: 34,
+      servicesOffered: [
+        "Full rewires",
+        "EV charger install",
+        "Consumer unit swap",
+        "EICR + testing",
+        "Fault-finding",
+        "Kitchen circuits",
+        "Outdoor lighting"
+      ],
+      sendToTradeCenter: true
+    },
+    { slug: "demo-terry-nolan-electrician-manchester", displayName: "Terry Nolan", tradeLabel: "Electrician", city: "Manchester", avatarUrl: AV.m7, role: "moderator", whatsapp: "447700900204", bioShort: "Industrial + commercial control panels. Machine wiring specialist.", memberOfCanteenSlugs: ["uk-rated-electricians"] },
+    { slug: "demo-anna-forde-decorator-preston", displayName: "Anna Forde", tradeLabel: "Decorator", city: "Preston", avatarUrl: AV.m10, role: "member", whatsapp: null, bioShort: "Snag-list finishes after sparks jobs — patch, skim, repaint.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-rated-electricians"] },
+    { slug: "demo-james-holt-plumber-nottingham", displayName: "James Holt", tradeLabel: "Plumber", city: "Nottingham", avatarUrl: AV.m7, role: "member", whatsapp: "447700900107", bioShort: "Wet-side installs paired with sparks work. Gas Safe #451189.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-rated-electricians", "uk-verified-plumbers"] },
+    { slug: "demo-paul-webb-builder-bolton", displayName: "Paul Webb", tradeLabel: "Builder", city: "Bolton", avatarUrl: AV.m12, role: "member", whatsapp: null, bioShort: "Extension work — cuts chases + first-fixes for sparks partners.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-rated-electricians"] }
   ],
   cant_scaffolders: [
     { slug: "demo-jason-hardy-scaffolder-glasgow", displayName: "Jason Hardy", tradeLabel: "Scaffolder", city: "Glasgow", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900109", bioShort: "System scaff + tube-and-fitting. Central belt.", memberOfCanteenSlugs: ["uk-scaffolders"] }
+  ],
+  cant_plumbers_verified: [
+    {
+      slug: "demo-james-holt-plumber-nottingham",
+      displayName: "James Holt",
+      tradeLabel: "Plumber",
+      city: "Nottingham",
+      avatarUrl: AV.m7,
+      role: "admin",
+      whatsapp: "447700900107",
+      bioShort: "22 years plumbing + heating across the East Midlands. Gas Safe registered (#451189) — domestic + light commercial. Full bathroom refurbs, boiler installs (Worcester Bosch + Vaillant accredited), central heating design, powerflush, emergency callouts. £65/hr day rate for trade, transparent fixed quotes for homeowners. Three-man team plus one apprentice; every job has a named lead so you always know who's holding the spanners. Companies House registered with £5m Public Liability. 4.9 rating across 74 verified reviews. Available this month — usually reply within 60 minutes during working hours. Same-day emergency callouts within a 20-mile radius of Nottingham.",
+      memberOfCanteenSlugs: ["uk-verified-plumbers", "uk-kitchen-fitters", "uk-rated-electricians"],
+      postcodeArea: "NG7",
+      officeHours: "Mon–Fri · 7:00–18:00\nSat · 8:00–14:00\nSun · emergency callouts only",
+      showroom: {
+        addressLine: "24 Beeston Trade Park",
+        postcode: "NG9 2LH"
+      },
+      verified: {
+        companiesHouse: true,
+        insuranceGbp: 5_000_000,
+        trustScore: 89
+      },
+      availability: "Available this month",
+      responseTime: "Usually replies in 60m",
+      phone: "0115 555 0107",
+      email: "james@holt-plumbing.co.uk",
+      socials: {
+        instagram: "holtplumbing",
+        facebook: "holtplumbingheating",
+        tiktok: "holtplumbing",
+        youtube: "@holtplumbingheating",
+        x: "holtplumbing",
+        website: "holt-plumbing.co.uk"
+      },
+      reviews: { avg: 4.9, count: 74 },
+      portfolioCount: 42,
+      servicesOffered: [
+        "Boiler install",
+        "Full bathroom refurb",
+        "Central heating design",
+        "Powerflush",
+        "Radiator swap",
+        "Leak repair",
+        "Emergency callout"
+      ],
+      sendToTradeCenter: true
+    },
+    { slug: "demo-craig-mcdermott-electrician-leeds", displayName: "Craig McDermott", tradeLabel: "Electrician", city: "Leeds", avatarUrl: AV.m4, role: "moderator", whatsapp: "447700900104", bioShort: "Sparks + gas combo jobs. Kitchen circuits + first-fix rewires.", memberOfCanteenSlugs: ["uk-rated-electricians", "uk-verified-plumbers"] },
+    { slug: "demo-sarah-yates-tiler-sheffield", displayName: "Sarah Yates", tradeLabel: "Tiler", city: "Sheffield", avatarUrl: AV.m8, role: "member", whatsapp: null, bioShort: "Bathroom + wet room tiling. Porcelain + natural stone.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-verified-plumbers"] },
+    { slug: "demo-kate-morris-plasterer-warrington", displayName: "Kate Morris", tradeLabel: "Plasterer", city: "Warrington", avatarUrl: AV.m11, role: "member", whatsapp: null, bioShort: "Skim + boarding for bathroom refurbs + boiler moves.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-verified-plumbers"] },
+    { slug: "demo-paul-webb-builder-bolton", displayName: "Paul Webb", tradeLabel: "Builder", city: "Bolton", avatarUrl: AV.m12, role: "member", whatsapp: null, bioShort: "Extensions + wet room builds. Coordinates with plumbing lead.", memberOfCanteenSlugs: ["uk-kitchen-fitters", "uk-rated-electricians", "uk-verified-plumbers"] }
+  ],
+
+  // ─── Phase 3 palette demo admin members (2026-07-15) ─────────
+  // One admin per demo canteen so hostWhatsapp is truthy → Business
+  // Card button + Enquire Now (Designs footer) + Contact us fallbacks
+  // all render correctly. Mock whatsapp numbers are auto-substituted
+  // with adminWhatsapp() at load time by demoSafeMember() in
+  // canteens.server.ts — merchants never see the fake number.
+
+  cant_carpenters_uk: [
+    { slug: "demo-owen-thompson-carpenter-bristol", displayName: "Owen Thompson", tradeLabel: "Carpenter", city: "Bristol", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900201", bioShort: "1st + 2nd fix carpenter across Bristol + Bath. Studs, joists, roof carcassing to skirting + architrave. Small team, direct-quote, no middlemen.", memberOfCanteenSlugs: ["uk-master-carpenters"], reviews: { avg: 4.8, count: 62 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 82 }, phone: "0117 555 0201", email: "owen@thompson-carpentry.co.uk", showroom: { addressLine: "12 Ashley Trade Yard", postcode: "BS5 6EE" } }
+  ],
+  cant_interior_designers_uk: [
+    { slug: "demo-rebecca-ashworth-interior-designer-london", displayName: "Rebecca Ashworth", tradeLabel: "Interior Designer", city: "London", avatarUrl: AV.m3, role: "admin", whatsapp: "447700900202", bioShort: "Boutique residential interior design across London zones 1-4. Full colour schemes, sourcing, project management. Farrow & Ball colourist + BIID member.", memberOfCanteenSlugs: ["uk-interior-designers"], reviews: { avg: 4.9, count: 41 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 88 }, phone: "020 7555 0202", email: "rebecca@ashworth-interiors.co.uk", showroom: { addressLine: "8 Clerkenwell Studios", postcode: "EC1M 5RJ" } }
+  ],
+  cant_heritage_stone_uk: [
+    { slug: "demo-david-whitmore-heritage-stone-bath", displayName: "David Whitmore", tradeLabel: "Heritage Stone Mason", city: "Bath", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900203", bioShort: "Lime mortar + Bath stone restoration on Grade I/II listed buildings. NHTG-registered. 30 years across Cotswolds + South West heritage estates.", memberOfCanteenSlugs: ["uk-heritage-stone"], reviews: { avg: 4.9, count: 38 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 91 }, phone: "01225 555 203", email: "david@whitmore-heritage.co.uk", showroom: { addressLine: "Widcombe Yard", postcode: "BA2 4DL" } }
+  ],
+  cant_tile_roofers_uk: [
+    { slug: "demo-gary-hughes-roofer-sheffield", displayName: "Gary Hughes", tradeLabel: "Roofer", city: "Sheffield", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900204", bioShort: "Full re-roofs + heritage tile matching. Clay, concrete, natural slate. NFRC accredited. South Yorkshire + Peak District coverage.", memberOfCanteenSlugs: ["uk-tile-roofers"], reviews: { avg: 4.7, count: 89 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 85 }, phone: "0114 555 0204", email: "gary@hughes-roofing.co.uk", showroom: { addressLine: "Attercliffe Trade Estate", postcode: "S9 3EQ" } }
+  ],
+  cant_coppersmiths_uk: [
+    { slug: "demo-nathan-barrett-coppersmith-birmingham", displayName: "Nathan Barrett", tradeLabel: "Coppersmith", city: "Birmingham", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900205", bioShort: "Handmade copper + lead work. Roof covering, guttering, decorative flashings. Small workshop, direct-quote — no franchise pricing.", memberOfCanteenSlugs: ["uk-coppersmiths"], reviews: { avg: 4.8, count: 22 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 79 }, phone: "0121 555 0205", email: "nathan@barrett-coppersmith.co.uk", showroom: { addressLine: "Jewellery Quarter Workshop", postcode: "B18 6HH" } }
+  ],
+  cant_pool_builders_uk: [
+    { slug: "demo-ben-callaghan-pool-builder-bournemouth", displayName: "Ben Callaghan", tradeLabel: "Pool Builder", city: "Bournemouth", avatarUrl: AV.m5, role: "admin", whatsapp: "447700900206", bioShort: "Fibreglass, gunite + plunge pools. Coastal spec + inland retrofits. SPATA member. South coast + New Forest coverage.", memberOfCanteenSlugs: ["uk-pool-builders"], reviews: { avg: 4.9, count: 34 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 87 }, phone: "01202 555 206", email: "ben@callaghan-pools.co.uk", showroom: { addressLine: "Poole Trade Park", postcode: "BH15 4AL" } }
+  ],
+  cant_landscapers_uk: [
+    { slug: "demo-tom-ashfield-landscaper-cambridge", displayName: "Tom Ashfield", tradeLabel: "Landscaper", city: "Cambridge", avatarUrl: AV.m2, role: "admin", whatsapp: "447700900207", bioShort: "Turf, decking, boundaries, planting. Domestic gardens to estate grounds. APL member. Cambridgeshire + surrounding villages.", memberOfCanteenSlugs: ["uk-landscapers"], reviews: { avg: 4.8, count: 71 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 84 }, phone: "01223 555 207", email: "tom@ashfield-landscapes.co.uk", showroom: { addressLine: "Waterbeach Yard", postcode: "CB25 9NW" } }
+  ],
+  cant_garden_designers_uk: [
+    { slug: "demo-charlotte-grantham-garden-designer-cotswolds", displayName: "Charlotte Grantham", tradeLabel: "Garden Designer", city: "Cotswolds", avatarUrl: AV.m3, role: "admin", whatsapp: "447700900208", bioShort: "Formal gardens, orangeries, sculpted hedges. SGD-registered. Cotswolds, Chilterns + Home Counties private estates.", memberOfCanteenSlugs: ["uk-garden-designers"], reviews: { avg: 4.9, count: 27 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 90 }, phone: "01608 555 208", email: "charlotte@grantham-gardens.co.uk", showroom: { addressLine: "Chipping Norton Studio", postcode: "OX7 5NN" } }
+  ],
+  cant_metal_fabricators_uk: [
+    { slug: "demo-wayne-hartley-welder-sheffield", displayName: "Wayne Hartley", tradeLabel: "Welder / Fabricator", city: "Sheffield", avatarUrl: AV.m12, role: "admin", whatsapp: "447700900209", bioShort: "MIG, TIG, arc. Structural steel, bespoke gates, balustrades. Coded welder. Small workshop, quick turnaround.", memberOfCanteenSlugs: ["uk-metal-fabricators"], reviews: { avg: 4.7, count: 53 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 81 }, phone: "0114 555 0209", email: "wayne@hartley-fabrication.co.uk", showroom: { addressLine: "Neepsend Works", postcode: "S3 8QE" } }
+  ],
+  cant_architects_uk: [
+    { slug: "demo-sarah-fenton-architect-london", displayName: "Sarah Fenton", tradeLabel: "Architect", city: "London", avatarUrl: AV.m3, role: "admin", whatsapp: "447700900210", bioShort: "RIBA-chartered. Planning, building regs, sensitive extensions + new-build. Residential focus, small practice, direct-lead architect on every job.", memberOfCanteenSlugs: ["uk-architects"], reviews: { avg: 4.9, count: 46 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 92 }, phone: "020 7555 0210", email: "sarah@fenton-architects.co.uk", showroom: { addressLine: "Old Street Studio", postcode: "EC1V 9BW" } }
+  ],
+  cant_concrete_specialists_uk: [
+    { slug: "demo-marcus-reeves-concrete-manchester", displayName: "Marcus Reeves", tradeLabel: "Concrete Specialist", city: "Manchester", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900211", bioShort: "Foundations, formwork, polished floors. Domestic to industrial concrete. CIOB member. Greater Manchester + North West.", memberOfCanteenSlugs: ["uk-concrete-specialists"], reviews: { avg: 4.7, count: 44 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 84 }, phone: "0161 555 0211", email: "marcus@reeves-concrete.co.uk", showroom: { addressLine: "Trafford Trade Park", postcode: "M17 1PA" } }
+  ],
+  cant_bricklayers_uk: [
+    { slug: "demo-kevin-doherty-bricklayer-belfast", displayName: "Kevin Doherty", tradeLabel: "Bricklayer", city: "Belfast", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900212", bioShort: "Coursed bond, cavity work, extensions + garden walls. 22 years across Belfast + Antrim. FMB member. Direct-quote, no franchise pricing.", memberOfCanteenSlugs: ["uk-bricklayers"], reviews: { avg: 4.8, count: 67 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 83 }, phone: "028 9555 0212", email: "kevin@doherty-brickwork.co.uk", showroom: { addressLine: "Sydenham Trade Yard", postcode: "BT3 9EJ" } }
+  ],
+  cant_bespoke_joiners_uk: [
+    { slug: "demo-edward-halliwell-joiner-yorkshire", displayName: "Edward Halliwell", tradeLabel: "Bespoke Joiner", city: "Yorkshire", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900213", bioShort: "Workshop-made staircases, sash windows, bespoke doors. 30 years bench joinery in North Yorkshire. Heritage + modern work.", memberOfCanteenSlugs: ["uk-bespoke-joiners"], reviews: { avg: 4.9, count: 51 }, verified: { companiesHouse: true, insuranceGbp: 2_000_000, trustScore: 88 }, phone: "01423 555 213", email: "edward@halliwell-joinery.co.uk", showroom: { addressLine: "Harrogate Workshop", postcode: "HG3 1PY" } }
+  ],
+  cant_prestige_builders_uk: [
+    { slug: "demo-julian-hartley-prestige-builder-surrey", displayName: "Julian Hartley", tradeLabel: "Prestige Builder", city: "Surrey", avatarUrl: AV.m12, role: "admin", whatsapp: "447700900214", bioShort: "Full-house refurbs, basement digs, heritage conversions. Surrey → Kensington. £500k+ projects, single point of contact throughout.", memberOfCanteenSlugs: ["uk-prestige-builders"], reviews: { avg: 4.9, count: 19 }, verified: { companiesHouse: true, insuranceGbp: 10_000_000, trustScore: 94 }, phone: "01483 555 214", email: "julian@hartley-prestige.co.uk", showroom: { addressLine: "Guildford Trade Centre", postcode: "GU1 3JB" } }
+  ],
+  cant_marina_builders_uk: [
+    { slug: "demo-alistair-ferguson-marina-southampton", displayName: "Alistair Ferguson", tradeLabel: "Marina Builder", city: "Southampton", avatarUrl: AV.m9, role: "admin", whatsapp: "447700900215", bioShort: "Pontoons, sea walls, decking. Southampton, Poole, Portsmouth marinas. Marine-grade materials, tide-window scheduling.", memberOfCanteenSlugs: ["uk-marina-builders"], reviews: { avg: 4.8, count: 14 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 86 }, phone: "023 8055 0215", email: "alistair@ferguson-marine.co.uk", showroom: { addressLine: "Ocean Village Workshop", postcode: "SO14 3TL" } }
+  ],
+  cant_emergency_repairs_uk: [
+    { slug: "demo-frank-delaney-emergency-newcastle", displayName: "Frank Delaney", tradeLabel: "Emergency Repair", city: "Newcastle", avatarUrl: AV.m4, role: "admin", whatsapp: "447700900216", bioShort: "Storm damage, burst pipes, fallen trees. 24-hour insurance-approved response across Newcastle + Tyneside. Coded roofer + plumber on call.", memberOfCanteenSlugs: ["uk-emergency-repairs"], reviews: { avg: 4.8, count: 36 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 83 }, phone: "0191 555 0216", email: "frank@delaney-emergency.co.uk", showroom: { addressLine: "Team Valley Yard", postcode: "NE11 0PZ" } }
+  ],
+  cant_groundworkers_uk: [
+    { slug: "demo-barry-rollins-groundworker-liverpool", displayName: "Barry Rollins", tradeLabel: "Groundworker", city: "Liverpool", avatarUrl: AV.m6, role: "admin", whatsapp: "447700900217", bioShort: "Digs, drainage, foundations. Everything under the ground floor slab. 18 years across Merseyside + Cheshire. Domestic to light commercial.", memberOfCanteenSlugs: ["uk-groundworkers"], reviews: { avg: 4.7, count: 58 }, verified: { companiesHouse: true, insuranceGbp: 5_000_000, trustScore: 82 }, phone: "0151 555 0217", email: "barry@rollins-groundworks.co.uk", showroom: { addressLine: "Speke Trade Estate", postcode: "L24 8QB" } }
   ]
 };
 
@@ -485,6 +1067,13 @@ export type CanteenProduct = {
   canteenId: string;
   /** The listing slug of the seller (the canteen host). */
   hostSlug: string;
+  /** Customer-facing reference code — e.g. "K527" for Mike Watson's
+   *  kitchen product #527. Same purpose as CanteenDesign.ref: lets
+   *  the merchant instantly know which product a buyer is asking
+   *  about ("we have your K527 pulled up"). Shown in the product
+   *  card top-left and in the panel header when the product is
+   *  focused. Optional so legacy rows keep rendering. */
+  ref?: string;
   name: string;
   imageUrl: string;
   /** Extra shots for the product-focus view gallery. */
@@ -738,6 +1327,7 @@ export const CANTEEN_BOOST_PLANS: ReadonlyArray<{
 export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   {
     id: "prod_oak_worktop_40mm",
+    ref: "K101",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Solid Oak Worktop 40mm",
@@ -757,6 +1347,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_shaker_doors",
+    ref: "K102",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Shaker Cabinet Doors · Pack of 3",
@@ -776,6 +1367,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_pantry_carcasses",
+    ref: "K103",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Prefab Pantry Carcasses",
@@ -800,6 +1392,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_brass_handles",
+    ref: "K104",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Brushed Brass Handles",
@@ -817,6 +1410,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_quartz_offcuts",
+    ref: "K105",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Quartz Offcuts · Assorted",
@@ -828,6 +1422,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_undermount_sink",
+    ref: "K106",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Undermount Stainless Sink 1.5 bowl",
@@ -835,10 +1430,11 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     priceGbp: 165,
     blurb: "3mm deck · pre-drilled overflow",
     description: "1.5-bowl undermount stainless with sound-deadening. 3mm deck, pre-drilled overflow, all-in fixings included. Fits standard 800mm cabinets.",
-    featured: true
+    featured: false
   },
   {
     id: "prod_extractor_hood",
+    ref: "K107",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Angled Chimney Extractor 90cm",
@@ -846,10 +1442,11 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     priceGbp: 249,
     blurb: "780m³/h · touch controls",
     description: "Modern angled glass extractor, 780m³/h airflow, 3-speed touch controls, LED, carbon filters swappable. Class-A energy.",
-    featured: true
+    featured: false
   },
   {
     id: "prod_belfast_sink",
+    ref: "K108",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Belfast Ceramic Sink 600mm",
@@ -861,6 +1458,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_brass_taps",
+    ref: "K109",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Solid Brass Bridge Mixer Tap",
@@ -872,6 +1470,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_soft_close_bin",
+    ref: "K110",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Pull-out Soft-close Bin · Twin",
@@ -883,6 +1482,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_island_lights",
+    ref: "K111",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "Kitchen Island Pendant · Pack of 3",
@@ -894,6 +1494,7 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
   },
   {
     id: "prod_cutting_boards",
+    ref: "K112",
     canteenId: "cant_kitchen_uk",
     hostSlug: "demo-mike-watson-drywall-manchester",
     name: "End-grain Oak Cutting Board",
@@ -901,6 +1502,623 @@ export const MOCK_CANTEEN_PRODUCTS: CanteenProduct[] = [
     priceGbp: 55,
     blurb: "Handmade · Osmo oiled",
     description: "End-grain oak block cutting board, 40 × 30 × 4cm. Osmo-oiled and finished by hand. Every board unique. Local NW milled oak.",
+    featured: false
+  },
+
+  // ─── Craig McDermott · UK Rated Electricians · 15 services ───
+  //
+  // Electrician trade doesn't sell physical products the same way a
+  // kitchen fitter does — his "shop" is his services. Modelled as
+  // CanteenProduct so both surfaces (canteen product panel + Trade
+  // Center browse) pick them up automatically via browseAllProducts()
+  // and productsForCanteen(). UK 2026 typical trade rates. Images are
+  // interim placeholders reused from the trending map + feed post
+  // library; Philip will provide dedicated per-service artwork.
+  {
+    id: "svc_elec_eicr",
+    ref: "E01",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "EICR · Electrical Installation Condition Report",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png",
+    priceGbp: 180,
+    currency: "GBP",
+    blurb: "Up to 3-bed · certificate issued same day · £180 fixed",
+    description: "Full periodic Electrical Installation Condition Report to BS 7671:2018 Amendment 2. Covers every accessible circuit, RCD test, insulation resistance, earth continuity. Landlord-ready with signed EIC + schedule of results emailed same day. Fixed price for properties up to 3 bedrooms; larger properties quoted on request.",
+    specs: [
+      "BS 7671:2018 Amendment 2 compliant",
+      "Same-day signed certificate + schedule",
+      "Landlord + mortgage lender accepted",
+      "1 remedial retest included free within 30 days",
+      "Fixed price for up to 3 bedrooms"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_elec_consumer_unit",
+    ref: "E02",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Consumer Unit (Fuse Box) Replacement",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 550,
+    currency: "GBP",
+    blurb: "Supply & fit · Wylex/Hager/Fusebox · from £550",
+    description: "Full replacement of old fuse board / consumer unit with modern 18th-edition compliant board. Includes 10-way RCBO board (Wylex, Hager or Fusebox brand), main switch, SPD, all labour, testing, EIC certificate and BC notification. 2-year workmanship warranty.",
+    specs: [
+      "10-way RCBO consumer unit (SPD included)",
+      "Main switch + surge protection",
+      "All 3rd-party BC notification handled",
+      "Signed EIC + minor works cert",
+      "2-year workmanship warranty"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_elec_rewire",
+    ref: "E03",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Full House Rewire · 3-bed semi",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 4200,
+    currency: "GBP",
+    blurb: "First + second fix · from £4,200",
+    description: "Complete rewire — first fix (chasing, cabling, back boxes) + second fix (accessories, testing, sign-off). Includes new consumer unit, all sockets and lighting circuits, smoke alarms Grade D2, and full BC notification. 3-bed semi baseline; larger properties quoted on visit.",
+    specs: [
+      "Baseline covers 3-bed semi (approx 90-110sqm)",
+      "New consumer unit + smoke alarms included",
+      "Chases + patch to make-good (not skim)",
+      "Full BS 7671 test + EIC certificate",
+      "Typical duration: 5-7 working days"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_elec_ev_charger",
+    ref: "E04",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "EV Charger Install · 7kW",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_29_45%20PM.png",
+    priceGbp: 950,
+    currency: "GBP",
+    blurb: "Zappi or Ohme · £950 supply & fit",
+    description: "7kW smart EV charger installation. Choose Zappi 2.1 (tethered or untethered) or Ohme Home Pro. Includes DNO notification, RCD Type A + earth rod (if required), 5m cable run standard, and OZEV grant paperwork if eligible. Longer cable runs quoted on visit.",
+    specs: [
+      "Choice of Zappi 2.1 or Ohme Home Pro",
+      "DNO application handled end-to-end",
+      "5m cable run included (extra @ £8/m)",
+      "Earth rod install if TT required (no extra)",
+      "3-year warranty on parts + labour"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_elec_socket_extra",
+    ref: "E05",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Additional Socket Installation",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_08_09%20AM.png",
+    priceGbp: 85,
+    currency: "GBP",
+    blurb: "Labour + accessory · £85 per socket",
+    description: "Add a single or double socket spurred off an existing ring. Includes surface or flush box, MK Logic Plus or LAP branded accessory (choose finish), chase + patch, testing. Price per socket; multi-socket jobs quoted at discount on visit.",
+    specs: [
+      "Choice of white/chrome/brushed steel finish",
+      "MK Logic Plus or LAP branded accessory",
+      "Chase + patch (not decorative make-good)",
+      "MWC (Minor Works Cert) issued on completion",
+      "USB-C variant +£20"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_led_downlights",
+    ref: "E06",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "LED Downlight Installation",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_14_15%20AM.png",
+    priceGbp: 75,
+    currency: "GBP",
+    blurb: "Supply & fit · £75 per fire-rated downlight",
+    description: "Fire-rated (60/90 min) IP65 LED downlights, 6W dimmable, in white / brushed steel / chrome. Includes labour, testing, and safe disposal of old halogen fittings. Chandelier and pendant swaps quoted separately.",
+    specs: [
+      "Aurora / Ansell / Kosnic brand",
+      "Fire-rated 60/90 min + IP65",
+      "6W dimmable · 3000K warm white",
+      "Choice of white / brushed steel / chrome",
+      "Compatible with LED trailing-edge dimmers"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_extractor_fan",
+    ref: "E07",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Bathroom Extractor Fan · Supply & Fit",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_08_09%20AM.png",
+    priceGbp: 180,
+    currency: "GBP",
+    blurb: "Manrose Quiet Fan · £180 supply & fit",
+    description: "Manrose Quiet 100T timer-controlled extractor fan (or equivalent Silavent / Xpelair). Includes core drill through external wall, cabling from lighting circuit with fused spur, and test. Humidistat option +£40.",
+    specs: [
+      "Manrose Quiet 100T (26 dB)",
+      "Core drill through external wall included",
+      "Timer overrun standard (humidistat +£40)",
+      "External louvre grille supplied",
+      "Certificate issued on completion"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_outdoor_socket",
+    ref: "E08",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Outdoor Socket · IP66 + RCD",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 180,
+    currency: "GBP",
+    blurb: "Weatherproof · RCD-protected · £180 supply & fit",
+    description: "IP66 weatherproof outdoor socket with integrated 30mA RCD, mounted on a garage/exterior wall and spurred from an internal circuit. Includes drilling, brick sealing, and full test. Twin socket variant +£30.",
+    specs: [
+      "IP66 rated (rain, snow, dust)",
+      "Integrated 30mA RCD (Type A)",
+      "Metal-clad or plastic finish choice",
+      "Twin socket variant +£30",
+      "MWC issued"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_kitchen_circuit",
+    ref: "E09",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Kitchen Circuit Installation",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 320,
+    currency: "GBP",
+    blurb: "Dedicated ring + spurs · labour only · £320",
+    description: "New dedicated 32A kitchen ring main + fused spurs for oven, hob and hood. Labour + testing only — you or your kitchen fitter supplies accessories. Ideal for kitchen renovations. Cooker isolator +£45 if required.",
+    specs: [
+      "32A dedicated ring main",
+      "Fused spurs for oven/hob/hood",
+      "Labour + test only (accessories BYO)",
+      "Cooker isolator +£45",
+      "Coordinates with kitchen fitter timeline"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_shower",
+    ref: "E10",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Electric Shower Installation · 9.5kW",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 420,
+    currency: "GBP",
+    blurb: "Mira / Triton · supply & fit · £420",
+    description: "9.5kW electric shower supply & fit — Mira Sprint Multi-fit or Triton T80 Easi-fit. Includes dedicated 40A circuit from consumer unit, pull-cord isolator, and pipework connection. 8.5kW variant available for weaker supplies (from £380).",
+    specs: [
+      "Mira Sprint or Triton T80",
+      "Dedicated 40A shower circuit",
+      "Ceiling-mount pull-cord isolator",
+      "8.5kW variant -£40",
+      "MWC + product warranty"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_fault_finding",
+    ref: "E11",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Fault Finding & Repair",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_33_31%20PM.png",
+    priceGbp: 75,
+    currency: "GBP",
+    blurb: "Tripping RCDs, dead circuits, buzzing sockets · £75/hr",
+    description: "Diagnose and repair intermittent faults, tripping RCDs, dead circuits, buzzing accessories. £75 per hour, 1-hour minimum. Most faults resolved in the first hour. Full test + certificate issued if a circuit is worked on.",
+    specs: [
+      "£75/hr · 1-hour minimum",
+      "Insulation resistance + earth continuity tests",
+      "MWC issued if a circuit is altered",
+      "Same-day callout in Leeds/Bradford (Mon-Fri)",
+      "Written report on complex faults"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_smoke_alarm",
+    ref: "E12",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Smoke Alarm · Grade D2 hardwired",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png",
+    priceGbp: 75,
+    currency: "GBP",
+    blurb: "Aico Ei3016 · interlinked · £75 per alarm supply & fit",
+    description: "Aico Ei3016 (or equivalent) BS 5839-6 Grade D2 hardwired smoke alarm with 10-year rechargeable back-up. Wireless interlink between alarms included. Landlord-compliant install. Heat alarm variant for kitchens same price.",
+    specs: [
+      "Aico Ei3016 Grade D2 hardwired",
+      "10-year sealed lithium back-up",
+      "Wireless interlink (SmartLINK) included",
+      "Heat alarm variant available for kitchens",
+      "Landlord + Building Reg compliant"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_cctv",
+    ref: "E13",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "CCTV System · 4 Camera HD",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png",
+    priceGbp: 850,
+    currency: "GBP",
+    blurb: "Hikvision / Reolink · 4-camera · £850 supply & fit",
+    description: "4-camera HD CCTV system — Hikvision ColorVu or Reolink RLC-810A cameras, 4-channel NVR with 2TB storage, remote app viewing, and PoE cabling. Covers driveway, front door, side and rear. Additional cameras +£140 each.",
+    specs: [
+      "Hikvision ColorVu or Reolink 8MP cameras",
+      "4-channel NVR + 2TB HDD",
+      "Free remote viewing app (iOS + Android)",
+      "PoE single-cable install",
+      "Additional cameras +£140 each"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_elec_intruder_alarm",
+    ref: "E14",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Intruder Alarm · Wireless 6-zone",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 480,
+    currency: "GBP",
+    blurb: "Yale / Texecom · wireless · £480 supply & fit",
+    description: "Wireless 6-zone intruder alarm — Yale Sync or Texecom Ricochet. Includes external sounder, keypad, 4 PIR sensors, 2 door contacts, and app control. Grade 2 rated for insurance discount eligibility. Cellular signalling module +£120.",
+    specs: [
+      "Yale Sync Smart or Texecom Ricochet",
+      "External sounder + tamper-proof siren",
+      "4 PIR sensors + 2 door contacts",
+      "Smartphone app arm/disarm",
+      "Cellular signalling module +£120"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_elec_powered_gate",
+    ref: "E15",
+    canteenId: "cant_electrician_rated",
+    hostSlug: "demo-craig-mcdermott-electrician-leeds",
+    name: "Powered Gate · Single leaf",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_29_45%20PM.png",
+    priceGbp: 2800,
+    currency: "GBP",
+    blurb: "Sliding or swing · £2,800 supply & fit",
+    description: "Single-leaf powered driveway gate — sliding or swing, up to 4m width. Includes motor + control board (BFT / Came / Nice), photocells, remote fobs, and mains supply from consumer unit. Safety edge required for BS EN 12453 compliance (+£180). Larger / double-leaf gates quoted on visit.",
+    specs: [
+      "BFT / Came / Nice motor",
+      "2 remote fobs + wall-mount keypad",
+      "Photocells (obstruction detection)",
+      "Safety edge for BS EN 12453 compliance +£180",
+      "12-month warranty on parts + labour"
+    ],
+    featured: false
+  },
+
+  // ─── James Holt · UK Verified Plumbers · 15 services ───
+  //
+  // Slate-palette reference canteen. UK 2026 typical plumber trade
+  // rates. Images are interim placeholders reused from the trending
+  // map + hero library; Philip will provide dedicated per-service
+  // artwork. First 5 marked featured (cap = 5 per canteen).
+  {
+    id: "svc_plumb_boiler_combi",
+    ref: "P01",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Boiler Install · 30kW Combi",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    priceGbp: 2200,
+    currency: "GBP",
+    blurb: "Worcester or Vaillant · supply & fit · from £2,200",
+    description: "30kW combi boiler installation — Worcester Bosch 4000 or Vaillant ecoTec Plus. Includes flue, filter, magnetic system filter, thermostat (Nest or Hive compatible), all pipework, powerflush if required, and full Gas Safe commissioning. 10-year manufacturer warranty. Suits 3-4 bed homes with 1-2 bathrooms. Larger homes / system boilers quoted on visit.",
+    specs: [
+      "Worcester 4000 or Vaillant ecoTec Plus",
+      "Magnetic system filter included",
+      "Nest / Hive thermostat compatible",
+      "10-year manufacturer warranty",
+      "Gas Safe commissioning + Benchmark cert"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_plumb_bathroom_refurb",
+    ref: "P02",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Full Bathroom Refurb",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 3500,
+    currency: "GBP",
+    blurb: "Strip out, plumb in, tile · from £3,500 labour",
+    description: "Full bathroom strip and refit — remove old suite, rework plumbing, install new bath / shower / toilet / basin / vanity, tile walls + floor (materials extra), fit accessories. Labour + plumbing consumables included. Suite + tiles supplied by you or ordered on your behalf at trade rates. Typical duration 5-8 working days. Wet-room and ensuite conversions quoted on visit.",
+    specs: [
+      "Strip out + waste removal included",
+      "Full re-pipe if needed (copper or plastic)",
+      "Bath + shower + toilet + basin fit",
+      "Wall + floor tiling (materials extra)",
+      "5-8 working days typical"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_plumb_central_heating",
+    ref: "P03",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Central Heating Install · Full System",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png",
+    priceGbp: 4800,
+    currency: "GBP",
+    blurb: "New boiler + rads + pipework · from £4,800",
+    description: "Complete central heating installation — boiler (combi or system), radiators sized to each room, all pipework in copper or plastic, thermostatic valves, programmer, magnetic filter, and full commissioning. Suits new builds, extensions, or homes converting from electric to gas. 3-bed baseline; larger properties quoted on visit. Includes Building Control notification + 10-year warranty.",
+    specs: [
+      "Boiler + up to 10 radiators (baseline)",
+      "TRVs on every rad",
+      "Nest / Hive smart programmer",
+      "Building Control notification handled",
+      "10-year system warranty"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_plumb_powerflush",
+    ref: "P04",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Powerflush · Central Heating",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 450,
+    currency: "GBP",
+    blurb: "Full system flush · £450 fixed",
+    description: "Powerflush removes years of black sludge, rust, and limescale build-up from your central heating system. Restores boiler efficiency, fixes cold-spot radiators, and cuts running costs. Uses Kamco CF90 pump + Fernox chemical. Includes X100 inhibitor top-up after flush. Fixed price for up to 10 radiators; larger systems +£30 per additional radiator.",
+    specs: [
+      "Kamco CF90 industrial powerflush pump",
+      "Fernox DS-40 restorer + X100 inhibitor",
+      "Up to 10 radiators included",
+      "Additional rads +£30 each",
+      "Boiler warranty preserved"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_plumb_leak_repair",
+    ref: "P05",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Leak Repair · Domestic",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 120,
+    currency: "GBP",
+    blurb: "Detect + fix · £120 labour · 1hr min",
+    description: "Diagnose and repair water leaks — pipework, radiator valves, toilet cisterns, tap connections, waste seals. £120 per hour with 1-hour minimum. Most straightforward leaks resolved in the first hour. If leak requires wall / floor access, quoted separately based on scope.",
+    specs: [
+      "£120/hr with 1-hour minimum",
+      "Same-day callout in Nottingham (Mon-Fri)",
+      "Insurance-ready written report if requested",
+      "Wall access work quoted separately",
+      "All standard consumables included"
+    ],
+    featured: true
+  },
+  {
+    id: "svc_plumb_radiator_swap",
+    ref: "P06",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Radiator Swap",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 180,
+    currency: "GBP",
+    blurb: "Old out, new in · £180 labour per rad",
+    description: "Direct-swap radiator replacement — remove old, install new, refit valves (or upgrade to TRVs +£25 per pair), balance, and refill. Labour per radiator; you supply the radiator or we source at trade prices. Ideal for updating single rooms, kitchen refurbs, or replacing corroded units.",
+    specs: [
+      "Labour per radiator (BYO or trade-source)",
+      "TRV upgrade +£25 per pair",
+      "System balance + inhibitor top-up included",
+      "Sludge check + flush recommendation",
+      "Old radiator disposed of at no extra"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_toilet_install",
+    ref: "P07",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Toilet Installation",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    priceGbp: 250,
+    currency: "GBP",
+    blurb: "Supply & fit · from £250",
+    description: "New WC install — close-coupled or back-to-wall unit. Includes labour, isolator valve, flexi connectors, wax seal, silicone finish, and disposal of old. Choose Roca / Ideal Standard / Vitra at trade rates or supply your own. Concealed cistern install (into wall / behind panel) quoted on visit.",
+    specs: [
+      "Close-coupled or back-to-wall",
+      "Roca / Ideal Standard / Vitra trade rate",
+      "Isolator + flexi connectors included",
+      "Old WC disposal included",
+      "Concealed cistern +£150"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_kitchen_tap",
+    ref: "P08",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Kitchen Tap Install",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png",
+    priceGbp: 120,
+    currency: "GBP",
+    blurb: "Supply & fit · £120",
+    description: "Kitchen mixer tap install — labour, isolator valves, flexi connectors, silicone finish, and old tap removal. Fits standard 35mm sink holes. Boiling water taps (Quooker / Fohën) install +£120 due to under-sink tank + power feed. Undermount tap in stone worktops quoted on visit.",
+    specs: [
+      "Mono block or twin-lever mixer",
+      "Isolator + flexi connectors",
+      "Boiling water tap +£120",
+      "Undermount stone install quoted separately",
+      "12-month workmanship warranty"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_water_softener",
+    ref: "P09",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Water Softener Install",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 550,
+    currency: "GBP",
+    blurb: "Harvey / Kinetico · supply & fit · £550",
+    description: "Whole-house water softener — Harvey HV3 or Kinetico Premier compact. Includes bypass valve, all fittings, salt starter pack, and commissioning. Ideal for hard-water areas (Midlands + South England). Reduces limescale in kettles / showers / boilers by 90%+. Retrofit-friendly — fits under most kitchen sinks.",
+    specs: [
+      "Harvey HV3 or Kinetico Premier",
+      "Bypass valve (retain hard tap for drinking)",
+      "Salt starter pack included",
+      "Reduces limescale ~90%",
+      "5-year manufacturer warranty"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_boiler_service",
+    ref: "P10",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Boiler Service · Annual",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    priceGbp: 95,
+    currency: "GBP",
+    blurb: "Full service + Gas Safe cert · £95 fixed",
+    description: "Annual boiler service to Gas Safe standard. Includes flue-gas analysis, combustion check, seal inspection, safety-shut-off test, and written report. Keeps manufacturer warranty valid. Landlord Gas Safety Record (CP12) same visit +£40.",
+    specs: [
+      "Gas Safe accredited engineer",
+      "Flue-gas analyser check",
+      "Written service report",
+      "Warranty preservation",
+      "Landlord CP12 +£40"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_immersion",
+    ref: "P11",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Immersion Heater Replace",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png",
+    priceGbp: 280,
+    currency: "GBP",
+    blurb: "Element swap · supply & fit · £280",
+    description: "Immersion heater element replacement — drain cylinder, remove old element, fit new (3kW standard, dual-element available), refill and test. Includes new gasket + thermostat. Suits copper cylinders (unvented systems quoted separately). Same-day callout available.",
+    specs: [
+      "3kW standard element (dual +£40)",
+      "New thermostat + gasket included",
+      "Cylinder drain + refill",
+      "Suits copper vented cylinders",
+      "Unvented systems quoted separately"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_drain_unblock",
+    ref: "P12",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Drain Unblock",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 150,
+    currency: "GBP",
+    blurb: "Rod + jet · £150 fixed",
+    description: "Blocked drain clearance — internal (sink / shower / toilet) or external (gully / manhole). Uses drain rods + high-pressure jetting where needed. Fixed price for straightforward blockages; camera survey +£75 if root ingress or collapsed pipe suspected. Emergency callouts within 60 minutes in Nottingham.",
+    specs: [
+      "Drain rods + jetting",
+      "Internal or external blockages",
+      "Camera survey +£75",
+      "Emergency response 60 min",
+      "No-clear-no-fee policy"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_outdoor_tap",
+    ref: "P13",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Outdoor Tap · Frost-proof",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png",
+    priceGbp: 180,
+    currency: "GBP",
+    blurb: "Frost-proof · supply & fit · £180",
+    description: "Outdoor garden tap install — frost-proof (double-check valve required by Water Regs) with dedicated internal isolator. Includes core-drill through external wall, silicone seal, and test. Perfect for gardens, car washing, garden offices with kitchen. Standpipe / long-run installs +£40.",
+    specs: [
+      "Frost-proof outdoor tap",
+      "Double-check valve (Water Regs)",
+      "Internal isolator for winter shut-off",
+      "Core-drill through cavity wall included",
+      "Long-run install +£40"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_ensuite",
+    ref: "P14",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Ensuite Install",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 5800,
+    currency: "GBP",
+    blurb: "Full build + fit · from £5,800",
+    description: "New ensuite install into a bedroom — bathroom pod build, waste + supply pipework routing, shower cubicle (1000×800mm), WC, basin + vanity, floor drain, extractor, and tile finish. Coordinates with builder for stud walls + door. Baseline price for a 4-6m² pod; larger or bespoke layouts quoted on visit.",
+    specs: [
+      "1000×800 shower cubicle",
+      "WC + basin + vanity",
+      "Extractor fan (100mm ducted)",
+      "Tiled walls + floor",
+      "5-10 working days typical"
+    ],
+    featured: false
+  },
+  {
+    id: "svc_plumb_emergency",
+    ref: "P15",
+    canteenId: "cant_plumbers_verified",
+    hostSlug: "demo-james-holt-plumber-nottingham",
+    name: "Emergency Callout",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    priceGbp: 95,
+    currency: "GBP",
+    blurb: "24/7 within 20mi of Nottingham · £95 callout",
+    description: "24/7 emergency plumbing callout within 20 miles of Nottingham. Burst pipe, no heating, no hot water, uncontained leak, gas smell (gas leaks: call National Gas Emergency Service on 0800 111 999 FIRST, then us). £95 callout fee + £75/hr labour (1hr minimum). Out-of-hours (10pm-6am, weekends, bank holidays) +£40 callout surcharge.",
+    specs: [
+      "£95 callout + £75/hr labour (1hr min)",
+      "24/7 response within 20 mi of Nottingham",
+      "Out-of-hours +£40 surcharge",
+      "Common parts van-stocked",
+      "Follow-up quote for permanent fix"
+    ],
     featured: false
   }
 ];

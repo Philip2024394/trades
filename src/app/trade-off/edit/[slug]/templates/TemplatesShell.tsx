@@ -1,61 +1,278 @@
 "use client";
 
-// Merchant mobile app template picker. Each template renders inside a
-// CSS iPhone frame with a static reference screenshot. Applying a
-// template writes the slug onto
-// hammerex_trade_off_listings.mobile_app_template_slug for the signed-
-// in merchant. Live-preview iframe was replaced by the screenshot
-// approach because fixed-position modals/nav inside the scaled iframe
-// clipped past the phone's rounded corners.
+// Merchant mobile app palette picker. Renders one card per palette
+// (Chalk, Iron, Oak, ...) — each is the same layout in a different
+// colour pack. Tapping "Apply" writes the palette slug onto
+// hammerex_trade_off_listings.palette_slug for the signed-in merchant.
+//
+// The `hammerex_app_templates` catalogue + apply-template endpoint
+// still exist but are dormant — layout is currently fixed at one
+// design and only the palette varies. Reactivate them if a second
+// layout ever ships.
 
 import Link from "next/link";
-import { useState } from "react";
-import { ArrowLeft, Check, ExternalLink, Sparkles } from "lucide-react";
-import type { AppTemplate } from "@/lib/appTemplates";
+import { useEffect, useState } from "react";
+import { ArrowLeft, Check, ExternalLink, Eye, Lock, Monitor, Sparkles, X } from "lucide-react";
+import {
+  PALETTES,
+  PALETTE_ORDER,
+  READY_PALETTES,
+  type PaletteSlug,
+  type PaletteTokens
+} from "@/lib/paletteTokens";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
-const BRAND_GREEN_DARK = "#166534";
 
-// One entry per template — image is the static screenshot rendered
-// inside the phone frame; liveUrl is the "View live app" deep-link.
-const PREVIEWS: Record<string, { image: string; liveUrl: string }> = {
-  "template-1": {
-    image:   "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_45_57%20PM.png",
-    liveUrl: "/trade-off/yard/canteens/uk-kitchen-fitters"
+// ─── [DEV BUTTON] Colour tuning helpers ─────────────────────────
+//
+// Live palette-accent tuner overlay on each template card. Lets
+// Philip iterate on hex values without editing paletteTokens.ts by
+// hand. Ships wrapped in [DEV BUTTON] markers so `grep DEV BUTTON`
+// finds every insertion when the tuning phase completes and we
+// strip the feature. Do NOT rely on this in production — the
+// override_accent query param on canteen pages is also gated by
+// the same [DEV BUTTON] marker in page.tsx.
+function hexToRgb(hex: string): { r: number; g: number; b: number } | null {
+  const clean = hex.trim();
+  if (!/^#[0-9A-Fa-f]{6}$/.test(clean)) return null;
+  return {
+    r: parseInt(clean.slice(1, 3), 16),
+    g: parseInt(clean.slice(3, 5), 16),
+    b: parseInt(clean.slice(5, 7), 16)
+  };
+}
+function rgbToHex(r: number, g: number, b: number): string {
+  const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v)));
+  const h = (v: number) => clamp(v).toString(16).padStart(2, "0").toUpperCase();
+  return `#${h(r)}${h(g)}${h(b)}`;
+}
+/** Shift a hex colour lighter/darker by `amount` in the range -1..1.
+ *  Positive = mix with white, negative = mix with black. Simple linear
+ *  blend — good enough for eyeball tuning, not perceptually uniform. */
+function shiftLightness(hex: string, amount: number): string {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return hex;
+  if (amount >= 0) {
+    return rgbToHex(
+      rgb.r + (255 - rgb.r) * amount,
+      rgb.g + (255 - rgb.g) * amount,
+      rgb.b + (255 - rgb.b) * amount
+    );
   }
+  const t = -amount;
+  return rgbToHex(rgb.r * (1 - t), rgb.g * (1 - t), rgb.b * (1 - t));
+}
+// ─── [/DEV BUTTON] ──────────────────────────────────────────────
+
+// One entry per palette — each is the same layout tuned to a
+// different trade. When its demo canteen ships, drop the image URL
+// in and update PREVIEW_CANTEEN_SLUG for that palette; until then the
+// card renders a "Screenshot on the way" placeholder AND still links
+// "View live app" back to Mike Watson's canteen with the palette
+// overridden via `?preview_palette=<slug>`. Layout inheritance means
+// editing CanteenHeroWow.tsx / CanteenLiveFeedWow.tsx updates EVERY
+// palette's canteen — no per-palette layout code.
+type PaletteReference = {
+  /** Trade the palette is designed with in mind — shown on the card
+   *  as "Reference trade · X". Aspirational until that trade's demo
+   *  canteen ships. */
+  tradeLabel: string;
+  /** Static screenshot inside the phone frame. Null while the palette's
+   *  own hand-drawn mockup hasn't been generated yet — card falls
+   *  back to a "Screenshot on the way" dashed placeholder. */
+  image:      string | null;
+  /** When true, wrap the image in a CSS iPhone chassis (dynamic island,
+   *  home indicator, bezel). Use for raw photos or screenshots without
+   *  a baked-in phone frame. Skip for ChatGPT-generated mockups that
+   *  already include a phone drawn inside the image (Chalk). */
+  wrapInPhoneChassis?: boolean;
+  /** Live iframe URL — when set, renders the actual live canteen page
+   *  inside the CSS phone chassis instead of a static image. Overrides
+   *  `image`. Use for palettes where a real demo canteen exists and
+   *  we want to show the ACTUAL running app. */
+  livePreviewUrl?: string;
 };
+
+// Reference trade per palette, drawn from the canonical catalog at
+// docs/trade-palette-catalog.md — each palette shows ONE representative
+// trade on its card ("Reference trade · X"). Full 20-palette set locked
+// in 2026-07-15. Images are optional; every card falls back to a live
+// iframe of the reference canteen with `?preview_palette=<slug>` so
+// merchants see the ACTUAL running app in that palette without waiting
+// for a static screenshot.
+const PALETTE_REFERENCES: Record<PaletteSlug, PaletteReference> = {
+  // — Light warm (6) —
+  chalk: {
+    tradeLabel: "Kitchen Fitter",
+    image:      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_45_57%20PM.png"
+  },
+  oak:       { tradeLabel: "Carpenter",              image: null },
+  blush:     { tradeLabel: "Interior Designer",      image: null },
+  sandstone: { tradeLabel: "Heritage Stone Mason",   image: null },
+  brick:     { tradeLabel: "Roofer",                 image: null },
+  copper:    { tradeLabel: "Coppersmith",            image: null },
+
+  // — Light cool (5) —
+  slate: {
+    // Slate uses live iframe (not static image). Renders James Holt's
+    // plumber canteen (a real Slate-native demo) inside the phone
+    // chassis so merchants see Slate on actual working plumber data
+    // rather than a static hero photo screenshot.
+    tradeLabel: "Plumber",
+    image: null
+  },
+  aqua:    { tradeLabel: "Pool Builder",        image: null },
+  moss:    { tradeLabel: "Landscaper",          image: null },
+  emerald: { tradeLabel: "Luxury Landscaper",   image: null },
+  steel:   { tradeLabel: "Welder / Fabricator", image: null },
+
+  // — Light neutral (3) —
+  ink:      { tradeLabel: "Architect",           image: null },
+  concrete: { tradeLabel: "Concrete Specialist", image: null },
+  mortar:   { tradeLabel: "Bricklayer",          image: null },
+
+  // — Dark (5) —
+  iron: {
+    tradeLabel: "Electrician",
+    image:      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2003_19_54%20AM.png"
+  },
+  charcoal: { tradeLabel: "Prestige Builder",    image: null },
+  timber:   { tradeLabel: "Bespoke Joiner",      image: null },
+  marine:   { tradeLabel: "Marina Builder",      image: null },
+  storm:    { tradeLabel: "Emergency Repair",    image: null },
+
+  // — Signal (1) —
+  "hi-vis": { tradeLabel: "Groundworker", image: null }
+};
+
+/** Per-palette reference canteen path. Every one of the 20 palettes
+ *  has its own dedicated demo canteen (2026-07-15 Phase 3 seeding)
+ *  so the picker shows 20 distinct app previews — different hero,
+ *  different merchant name, different trade — not one canteen re-
+ *  coloured 20 times. When a merchant clicks Live on the Timber card,
+ *  they see Edward Halliwell's bespoke joinery canteen; on Blush they
+ *  see Rebecca Ashworth's interior design canteen; etc. */
+const PREVIEW_CANTEEN_PATH: Partial<Record<PaletteSlug, string>> = {
+  // — Light warm —
+  chalk:     "/trade-off/yard/canteens/uk-kitchen-fitters",
+  oak:       "/trade-off/yard/canteens/uk-master-carpenters",
+  blush:     "/trade-off/yard/canteens/uk-interior-designers",
+  sandstone: "/trade-off/yard/canteens/uk-heritage-stone",
+  brick:     "/trade-off/yard/canteens/uk-tile-roofers",
+  copper:    "/trade-off/yard/canteens/uk-coppersmiths",
+  // — Light cool —
+  slate:     "/trade-off/yard/canteens/uk-verified-plumbers",
+  aqua:      "/trade-off/yard/canteens/uk-pool-builders",
+  moss:      "/trade-off/yard/canteens/uk-landscapers",
+  emerald:   "/trade-off/yard/canteens/uk-garden-designers",
+  steel:     "/trade-off/yard/canteens/uk-metal-fabricators",
+  // — Light neutral —
+  ink:       "/trade-off/yard/canteens/uk-architects",
+  concrete:  "/trade-off/yard/canteens/uk-concrete-specialists",
+  mortar:    "/trade-off/yard/canteens/uk-bricklayers",
+  // — Dark —
+  iron:      "/trade-off/yard/canteens/uk-rated-electricians",
+  charcoal:  "/trade-off/yard/canteens/uk-prestige-builders",
+  timber:    "/trade-off/yard/canteens/uk-bespoke-joiners",
+  marine:    "/trade-off/yard/canteens/uk-marina-builders",
+  storm:     "/trade-off/yard/canteens/uk-emergency-repairs",
+  // — Signal —
+  "hi-vis":  "/trade-off/yard/canteens/uk-groundworkers"
+};
+const PREVIEW_CANTEEN_FALLBACK = "/trade-off/yard/canteens/uk-kitchen-fitters";
+
+function livePreviewUrl(pSlug: PaletteSlug, overrideAccent?: string | null, heroShade?: number | null): string {
+  const path = PREVIEW_CANTEEN_PATH[pSlug];
+  let url = path
+    ? (pSlug === "chalk" ? path : `${path}?preview_palette=${pSlug}`)
+    : `${PREVIEW_CANTEEN_FALLBACK}?preview_palette=${pSlug}`;
+  // [DEV BUTTON] Append override_accent + hero_shade when tuner set.
+  if (overrideAccent && /^#[0-9A-Fa-f]{6}$/.test(overrideAccent)) {
+    const sep = url.includes("?") ? "&" : "?";
+    url = `${url}${sep}override_accent=${encodeURIComponent(overrideAccent)}`;
+  }
+  if (heroShade != null && Number.isFinite(heroShade) && heroShade >= 0 && heroShade <= 100 && heroShade !== 100) {
+    const sep = url.includes("?") ? "&" : "?";
+    url = `${url}${sep}hero_shade=${heroShade}`;
+  }
+  // [/DEV BUTTON]
+  return url;
+}
 
 export function TemplatesShell({
   slug,
-  templates,
-  appliedSlug
+  appliedPaletteSlug
 }: {
   slug: string;
-  templates: AppTemplate[];
-  appliedSlug: string;
+  appliedPaletteSlug: PaletteSlug;
 }) {
-  const [applied, setApplied] = useState(appliedSlug);
+  const [palette, setPalette] = useState<PaletteSlug>(appliedPaletteSlug);
   const [submitting, setSubmitting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // [DEV BUTTON] Per-palette accent overrides for the dev colour tuner.
+  // Map palette slug → { picked hex, lightness shift -1..1 }. When the
+  // merchant tunes a slider or picker on a card, its live iframe re-
+  // renders via ?override_accent=<computed hex>. Empty map = no tuning
+  // = original palette hex from paletteTokens.ts. Clear by pressing
+  // Reset. Save copies the computed hex to clipboard.
+  const [devAccent, setDevAccent] = useState<
+    Partial<Record<PaletteSlug, { base: string; shift: number }>>
+  >({});
+  // Hero shade tuner — 0-100 per palette. 100 = current palette bg
+  // fully applied, 0 = neutral cream (palette tint disappears from
+  // the hero entirely). Absence in the map means 100 (default).
+  const [devHeroShade, setDevHeroShade] = useState<Partial<Record<PaletteSlug, number>>>({});
+  const [devToast, setDevToast] = useState<string | null>(null);
+  // [/DEV BUTTON]
+  // Live-preview modal state. `livePreviewPalette` = which palette is
+  // currently open in the fullscreen modal (null = closed). This is
+  // the "App Store screenshot preview" pattern — tapping Live on a
+  // card zooms the iPhone frame into a fullscreen iframe so the
+  // merchant can scroll / tap / experience the palette on real data
+  // BEFORE tapping Install. Escape key + backdrop tap both close.
+  const [livePreviewPalette, setLivePreviewPalette] = useState<PaletteSlug | null>(null);
+  useEffect(() => {
+    if (!livePreviewPalette) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLivePreviewPalette(null);
+    };
+    window.addEventListener("keydown", onKey);
+    // Prevent scroll on body while modal is open so the iframe scroll
+    // doesn't compete with page scroll on mobile.
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [livePreviewPalette]);
 
-  async function applyTemplate(templateSlug: string) {
-    if (templateSlug === applied || submitting) return;
-    setSubmitting(templateSlug);
+  async function applyPalette(next: PaletteSlug) {
+    if (next === palette || submitting) return;
+    if (!READY_PALETTES.includes(next)) return;   // Chip disabled — no-op
+    setSubmitting(`palette:${next}`);
     setError(null);
+    // Optimistic swap so the chip lights up immediately; revert on error.
+    const previous = palette;
+    setPalette(next);
     try {
-      const res = await fetch(`/api/merchant/${encodeURIComponent(slug)}/apply-template`, {
+      const res = await fetch(`/api/merchant/${encodeURIComponent(slug)}/apply-palette`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ templateSlug })
+        body: JSON.stringify({ paletteSlug: next })
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {
-        setError(data.error === "not-signed-in" ? "Please sign in as this merchant." : "Apply failed — please try again.");
-        return;
+        setPalette(previous);
+        setError(
+          data.error === "not-signed-in"
+            ? "Please sign in as this merchant."
+            : "Palette change failed — please try again."
+        );
       }
-      setApplied(templateSlug);
     } catch {
+      setPalette(previous);
       setError("Network error — please try again.");
     } finally {
       setSubmitting(null);
@@ -85,11 +302,25 @@ export function TemplatesShell({
             className="mt-1 text-[28px] font-black leading-tight text-neutral-900 md:text-[34px]"
             style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}
           >
-            Choose your app template
+            Choose your palette
           </h1>
           <p className="mt-2 max-w-2xl text-[13px] leading-relaxed text-neutral-600">
-            Pick the visual style your customers see when they open your business on a phone. You can switch anytime — your content (products, services, posts, kitchen designs) stays the same, only the theme changes.
+            20 palettes, one layout. Every palette gives you a matching <b>mobile app</b> AND <b>canteen page</b> — same colours, both surfaces. Tap <b>Live</b> to zoom into the app, <b>Canteen page</b> to see the full-width version in a new tab, then <b>Install</b> when one feels right. Reversible any time; your content (products, services, posts, projects) never changes.
           </p>
+
+          {/* Designer credit — Brian Talton is the layout + palette
+              author. Shown under the intro copy as a trust signal:
+              the design is authored by a real engineer, not a stock
+              template. `designerNote` string is left empty until the
+              user provides copy — an empty note is silent so the row
+              stays clean rather than showing filler. */}
+          <DesignerCredit
+            avatarUrl="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_18_25%20PM.png"
+            name="Brian Talton"
+            role="Design Engineer"
+            organisation="The Networkers"
+            designerNote=""
+          />
         </div>
       </header>
 
@@ -99,32 +330,87 @@ export function TemplatesShell({
         </div>
       )}
 
-      {/* Templates grid */}
+      {/* Palettes grid — one card per palette in PALETTE_ORDER. Cards
+          for palettes without a demo canteen (image + liveUrl still
+          null in PALETTE_REFERENCES) render as "Coming soon" so the
+          merchant can see what's in the pipeline without picking a
+          broken surface. */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {templates.map((t) => {
-          const isApplied = t.slug === applied;
-          const isSubmitting = submitting === t.slug;
-          const preview = PREVIEWS[t.slug];
+        {PALETTE_ORDER.map((pSlug, idx) => {
+          const p = PALETTES[pSlug];
+          const ref = PALETTE_REFERENCES[pSlug];
+          const isReady = READY_PALETTES.includes(pSlug);
+          const isSelected = pSlug === palette;
+          const isPending = submitting === `palette:${pSlug}`;
+          const cardNumber = String(idx + 1).padStart(2, "0");
           return (
             <article
-              key={t.slug}
+              key={pSlug}
               className="flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition"
               style={{
-                borderColor: isApplied ? BRAND_YELLOW : "rgba(139,69,19,0.15)",
-                boxShadow: isApplied ? `0 0 0 2px ${BRAND_YELLOW}55` : undefined
+                borderColor: isSelected ? BRAND_YELLOW : "rgba(139,69,19,0.15)",
+                boxShadow: isSelected ? `0 0 0 2px ${BRAND_YELLOW}55` : undefined
               }}
             >
-              {/* iPhone preview — tightened padding so the enlarged
-                  300px frame doesn't push the card too tall in the
-                  grid. Gradient still gives depth around the phone. */}
+              {/* Preview area — full-bleed palette-coloured gradient
+                  behind the screenshot (or the placeholder). Gradient
+                  uses the palette's own bg so the card FEELS like the
+                  theme even before its screenshot lands. */}
               <div
-                className="relative flex items-center justify-center px-4 py-5"
+                className="relative flex items-center justify-center p-2"
                 style={{
-                  background: `linear-gradient(140deg, ${t.themeBgColor} 0%, #EDE4CD 100%)`
+                  // Preview area background — always offwhite (Chalk
+                  // cream). Every palette's phone frame sits on the
+                  // same neutral backdrop so the phone chassis + its
+                  // screen colour do the differentiation, not a
+                  // themed card gradient. Padding trimmed to p-2 so
+                  // the card wraps tighter around the phone image.
+                  background: "#FBF6EC"
                 }}
               >
-                <IphoneFrame previewImageUrl={preview?.image}/>
-                {t.isDefault && !isApplied && (
+                {/* Every card renders a LIVE iframe by default. Static
+                    `ref.image` (Chalk + Iron ChatGPT mockups) still
+                    render as images when available — they're higher
+                    fidelity than iframe. Every other palette gets the
+                    actual running canteen with `?preview_palette=<slug>`
+                    injected, scaled inside the CSS iPhone chassis. Zero
+                    per-palette work needed for new palettes.
+                    [DEV BUTTON] When the colour tuner is active on this
+                    palette (devAccent[pSlug] set), we FORCE iframe mode
+                    so the tuned accent renders live — the static image
+                    can't reflect palette changes. */}
+                {(() => {
+                  const tuning = devAccent[pSlug];
+                  const tunedHex = tuning
+                    ? shiftLightness(tuning.base, tuning.shift)
+                    : null;
+                  const shadeVal = devHeroShade[pSlug];
+                  const shadeActive = shadeVal != null && shadeVal !== 100;
+                  const useIframe = Boolean(tuning) || shadeActive || !ref.image;
+                  return (
+                    <IphoneFrame
+                      previewImageUrl={useIframe ? undefined : (ref.image ?? undefined)}
+                      wrapInPhoneChassis={ref.wrapInPhoneChassis || useIframe}
+                      livePreviewUrl={useIframe ? livePreviewUrl(pSlug, tunedHex, shadeVal ?? null) : undefined}
+                    />
+                  );
+                })()}
+                {!ref.image && (
+                  /* Subtle "Live" pip in the corner so merchants know
+                     the phone is running the actual app, not a mockup. */
+                  <span
+                    className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[8.5px] font-black uppercase tracking-[0.14em] shadow-sm"
+                    style={{ backgroundColor: "rgba(0,0,0,0.65)", color: "#FFFFFF", backdropFilter: "blur(4px)" }}
+                  >
+                    <span
+                      aria-hidden
+                      className="inline-block h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: "#10B981" }}
+                    />
+                    Live
+                  </span>
+                )}
+                {pSlug === "chalk" && !isSelected && (
                   <span
                     className="absolute left-3 top-3 inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.14em] shadow-md"
                     style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
@@ -135,73 +421,310 @@ export function TemplatesShell({
                 )}
               </div>
 
+              {/* [DEV BUTTON] Vibe-preset preview — palette 14 (Poppy)
+                  only, so Philip can see the concept live before we
+                  commit to a merchant-facing "Vibe" feature. Three
+                  chips: Subtle / Standard / Bold. Each applies a
+                  preset combo of accent shift + hero shade via the
+                  same devAccent + devHeroShade state the DEV tuner
+                  uses, so the live iframe re-renders instantly. */}
+              {pSlug === "mortar" && (
+                <div
+                  className="flex items-center gap-1.5 border-t bg-neutral-900 px-3 py-2 text-[10px]"
+                  style={{ borderColor: "rgba(0,0,0,0.20)" }}
+                >
+                  <span className="text-[8.5px] font-black uppercase tracking-[0.14em] text-white/60">
+                    Vibe
+                  </span>
+                  {(() => {
+                    const presets: Array<{
+                      label: string;
+                      shade: number;
+                      shift: number;
+                      description: string;
+                    }> = [
+                      // Subtle = colour only, hero stays untouched at
+                      // 100% shade. Just softens the accent — light red
+                      // instead of deep red. Per Philip 2026-07-15:
+                      // "subtle we need without the hero edit — just
+                      // concentrate on the color."
+                      { label: "Subtle",   shade: 100, shift: 0.30,  description: "Softer pink accent, hero untouched" },
+                      { label: "Standard", shade: 100, shift: 0.00,  description: "Default — full red hero + Poppy #DC2626" },
+                      { label: "Bold",     shade: 100, shift: -0.20, description: "Deep red hero + darker accent — maximum brand" }
+                    ];
+                    return presets.map((preset) => (
+                      <button
+                        key={preset.label}
+                        type="button"
+                        onClick={() => {
+                          // Defensive: always start from the palette's
+                          // ORIGINAL accent, not any DEV-picker override
+                          // the user may have set earlier. Prevents
+                          // compound shifts (e.g. Bold applied to an
+                          // already-darkened accent produces mud).
+                          const originalAccent =
+                            PALETTES[pSlug]?.accent ?? p.accent;
+                          setDevAccent((prev) => ({
+                            ...prev,
+                            [pSlug]: { base: originalAccent, shift: preset.shift }
+                          }));
+                          setDevHeroShade((prev) => ({
+                            ...prev,
+                            [pSlug]: preset.shade
+                          }));
+                        }}
+                        className="flex-1 rounded-full border px-2 py-1 text-[10px] font-black uppercase tracking-wider text-white transition hover:bg-white/10 active:scale-[0.97]"
+                        style={{ borderColor: "rgba(255,255,255,0.30)" }}
+                        title={preset.description}
+                      >
+                        {preset.label}
+                      </button>
+                    ));
+                  })()}
+                </div>
+              )}
+              {/* [/DEV BUTTON] */}
+
+              {/* [DEV BUTTON] Colour tuner strip — lets Philip pick a
+                  base colour + shift its lightness, live-previews on
+                  the iframe above, Save copies the final hex to the
+                  clipboard so he can paste it into paletteTokens.ts.
+                  Reset clears the override for this palette. Marked
+                  with [DEV BUTTON] comment for one-command removal
+                  when tuning is complete. */}
+              {(() => {
+                const tuning = devAccent[pSlug] ?? { base: p.accent, shift: 0 };
+                const finalHex = shiftLightness(tuning.base, tuning.shift);
+                const shiftPct = Math.round(tuning.shift * 100);
+                const isTuning = Boolean(devAccent[pSlug]);
+                return (
+                  <div
+                    className="flex items-center gap-1.5 border-y bg-yellow-50/70 px-3 py-1.5 text-[10px]"
+                    style={{ borderColor: "rgba(184,134,11,0.30)" }}
+                  >
+                    <span className="text-[8.5px] font-black uppercase tracking-[0.14em] text-neutral-500">DEV</span>
+                    <input
+                      type="color"
+                      value={tuning.base}
+                      onChange={(e) =>
+                        setDevAccent((prev) => ({
+                          ...prev,
+                          [pSlug]: { base: e.target.value.toUpperCase(), shift: tuning.shift }
+                        }))
+                      }
+                      className="h-6 w-8 cursor-pointer rounded border-0 bg-transparent p-0"
+                      title="Pick base hex"
+                    />
+                    <input
+                      type="range"
+                      min={-50}
+                      max={50}
+                      step={1}
+                      value={shiftPct}
+                      onChange={(e) =>
+                        setDevAccent((prev) => ({
+                          ...prev,
+                          [pSlug]: { base: (prev[pSlug]?.base ?? p.accent), shift: Number(e.target.value) / 100 }
+                        }))
+                      }
+                      className="h-1 flex-1 cursor-pointer accent-neutral-700"
+                      title={`Lightness ${shiftPct > 0 ? "+" : ""}${shiftPct}%`}
+                    />
+                    <span className="font-mono text-[10px] text-neutral-800">{finalHex}</span>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        try {
+                          await navigator.clipboard.writeText(finalHex);
+                          setDevToast(`Copied ${finalHex} to clipboard — paste into paletteTokens.ts`);
+                          window.setTimeout(() => setDevToast(null), 3200);
+                        } catch {
+                          setDevToast(`Copy failed — hex is ${finalHex}`);
+                          window.setTimeout(() => setDevToast(null), 4000);
+                        }
+                      }}
+                      className="inline-flex h-6 items-center rounded px-2 text-[9px] font-black uppercase tracking-wider shadow-sm active:scale-95"
+                      style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+                      title="Copy final hex to clipboard"
+                    >
+                      Save
+                    </button>
+                    {isTuning && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setDevAccent((prev) => {
+                            const next = { ...prev };
+                            delete next[pSlug];
+                            return next;
+                          })
+                        }
+                        className="text-[9px] font-black uppercase tracking-wider text-neutral-500 hover:text-neutral-900"
+                        title="Reset to original palette hex"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
+              {/* Hero shade slider — 100 = full palette bg on hero,
+                  0 = neutral cream (palette tint fades out entirely).
+                  Sits directly under the accent tuner row so both
+                  controls read as one dev panel. */}
+              {(() => {
+                const shadeVal = devHeroShade[pSlug] ?? 100;
+                const isTuningShade = devHeroShade[pSlug] != null && shadeVal !== 100;
+                return (
+                  <div
+                    className="flex items-center gap-1.5 border-b bg-yellow-50/70 px-3 py-1.5 text-[10px]"
+                    style={{ borderColor: "rgba(184,134,11,0.30)" }}
+                  >
+                    <span className="text-[8.5px] font-black uppercase tracking-[0.14em] text-neutral-500">SHADE</span>
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      step={1}
+                      value={shadeVal}
+                      onChange={(e) =>
+                        setDevHeroShade((prev) => ({
+                          ...prev,
+                          [pSlug]: Number(e.target.value)
+                        }))
+                      }
+                      className="h-1 flex-1 cursor-pointer accent-neutral-700"
+                      title={`Hero shade intensity ${shadeVal}%`}
+                    />
+                    <span className="font-mono text-[10px] tabular-nums text-neutral-800">{shadeVal}%</span>
+                    {isTuningShade && (
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setDevHeroShade((prev) => {
+                            const next = { ...prev };
+                            delete next[pSlug];
+                            return next;
+                          })
+                        }
+                        className="text-[9px] font-black uppercase tracking-wider text-neutral-500 hover:text-neutral-900"
+                        title="Reset hero shade to 100%"
+                      >
+                        Reset
+                      </button>
+                    )}
+                  </div>
+                );
+              })()}
+              {/* [/DEV BUTTON] */}
+
               {/* Card body */}
               <div className="flex flex-1 flex-col gap-3 border-t p-4" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
                 <div>
                   <div className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
-                    Template · {t.slug.replace("template-", "")}
+                    Palette · {cardNumber}
                   </div>
                   <h3 className="mt-1 text-[17px] font-black leading-tight text-neutral-900">
-                    {t.name}
+                    {p.displayName}
                   </h3>
                   <div className="mt-1 flex items-center gap-1.5 text-[11px] font-bold text-neutral-500">
-                    Theme
                     <span
                       aria-hidden
                       className="inline-block h-2.5 w-2.5 rounded-full border border-neutral-300"
-                      style={{ backgroundColor: t.themeBgColor }}
+                      style={{ backgroundColor: p.chip }}
                     />
-                    {t.themeName}
+                    Reference trade · {ref.tradeLabel}
                   </div>
                 </div>
 
-                {t.description && (
-                  <p className="line-clamp-4 flex-1 text-[12.5px] leading-relaxed text-neutral-700">
-                    {t.description}
-                  </p>
-                )}
+                <p className="line-clamp-3 flex-1 text-[12.5px] leading-relaxed text-neutral-700">
+                  Same layout as every other palette — page background, headline accent, and secondary CTAs render in the {p.displayName} colours. Your content stays put; only the paint changes.
+                </p>
 
-                <button
-                  type="button"
-                  onClick={() => applyTemplate(t.slug)}
-                  disabled={isApplied || isSubmitting}
-                  className="mt-1 inline-flex h-11 items-center justify-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97] disabled:cursor-not-allowed"
-                  style={{
-                    backgroundColor: isApplied ? "#E5E7EB" : BRAND_YELLOW,
-                    color: isApplied ? "#6B7280" : BRAND_BLACK
-                  }}
-                >
-                  {isApplied ? (
-                    <>
-                      <Check size={13} strokeWidth={2.6}/>
-                      Applied
-                    </>
-                  ) : isSubmitting ? (
-                    "Applying…"
-                  ) : (
-                    "Apply this template"
-                  )}
-                </button>
-
-                {preview?.liveUrl && (
-                  <a
-                    href={preview.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border px-4 text-[11.5px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50 active:scale-[0.97]"
-                    style={{ borderColor: "rgba(139,69,19,0.20)" }}
+                {/* Button row — App Store pattern.
+                    "Live" (left): opens fullscreen modal preview so the
+                      merchant can scroll / tap / experience the palette
+                      on real canteen data before committing.
+                    "Install" (right): commits — writes palette to the
+                      merchant's listing row. Reversible from this page
+                      any time by installing a different one.
+                    "View live" (below): opens the full preview in a new
+                      tab as an escape hatch for merchants who want a
+                      real browser tab (deep-link, share). */}
+                <div className="flex items-stretch gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setLivePreviewPalette(pSlug)}
+                    className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full border px-3 text-[11.5px] font-black uppercase tracking-wider text-neutral-800 transition hover:bg-neutral-50 active:scale-[0.97]"
+                    style={{ borderColor: "rgba(139,69,19,0.30)" }}
                   >
-                    View live app
-                    <ExternalLink size={12} strokeWidth={2.5}/>
-                  </a>
-                )}
+                    <Eye size={13} strokeWidth={2.6}/>
+                    Live
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => applyPalette(pSlug)}
+                    disabled={!isReady || isSelected || isPending}
+                    className="inline-flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full px-3 text-[11.5px] font-black uppercase tracking-wider shadow-md transition active:scale-[0.97] disabled:cursor-not-allowed"
+                    style={{
+                      backgroundColor: !isReady
+                        ? "#E5E7EB"
+                        : isSelected
+                          ? "#E5E7EB"
+                          : BRAND_YELLOW,
+                      color: !isReady || isSelected ? "#6B7280" : BRAND_BLACK
+                    }}
+                  >
+                    {!isReady ? (
+                      <>
+                        <Lock size={12} strokeWidth={2.6}/>
+                        Soon
+                      </>
+                    ) : isSelected ? (
+                      <>
+                        <Check size={12} strokeWidth={2.6}/>
+                        Installed
+                      </>
+                    ) : isPending ? (
+                      "Installing…"
+                    ) : (
+                      <>
+                        Install
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* Canteen page button — promotes the merchant's OTHER
+                    surface (the desktop-friendly public canteen at
+                    thenetworkers.app/<slug>). The Live modal above
+                    shows the phone app; this button opens the full
+                    canteen page in a new tab. Merchants get BOTH
+                    surfaces when they install a palette — the card
+                    needs to communicate that so they understand what
+                    they're buying. Added 2026-07-15 per Philip.
+                    Uses <a target="_blank"> not the modal so the
+                    browser renders the desktop breakpoint at real
+                    viewport width (iframe would force mobile). */}
+                <a
+                  href={livePreviewUrl(pSlug)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex h-11 items-center justify-center gap-1.5 rounded-full border px-3 text-[11.5px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50 active:scale-[0.97]"
+                  style={{ borderColor: "rgba(139,69,19,0.30)" }}
+                  title="Open the full-width canteen page in a new tab"
+                >
+                  <Monitor size={13} strokeWidth={2.6}/>
+                  Canteen page
+                  <ExternalLink size={11} strokeWidth={2.5} className="opacity-60"/>
+                </a>
               </div>
             </article>
           );
         })}
 
-        {/* Coming-soon slot — signals more templates are on the way
-            without pretending they already exist. */}
+        {/* Legacy sparkles slot — kept for the "have a palette idea?"
+            outreach hook. Encourages merchants to email suggestions. */}
         <article
           className="flex flex-col overflow-hidden rounded-2xl border-2 border-dashed p-6 text-center"
           style={{ borderColor: "rgba(139,69,19,0.20)" }}
@@ -214,10 +737,10 @@ export function TemplatesShell({
               <Sparkles size={20} strokeWidth={2.2} style={{ color: BRAND_YELLOW }}/>
             </div>
             <div className="text-[13px] font-black text-neutral-900">
-              More templates coming soon
+              Got a palette in mind?
             </div>
             <p className="max-w-xs text-[11.5px] leading-relaxed text-neutral-500">
-              We&apos;re working on Dark Mode, Merchant-Pro Portfolio, and a full-photo Hero Focus template. Suggest a style at{" "}
+              Suggest a colour pack you&apos;d want for your trade at{" "}
               <a
                 href="mailto:thenetworkers.app@gmail.com"
                 className="font-black text-neutral-800 underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-900"
@@ -235,19 +758,134 @@ export function TemplatesShell({
       >
         <strong>Your content stays with you.</strong> Switching a template only changes theme + layout — your products, services, kitchen designs, posts, jobs, and reviews are unchanged. Your URL <span className="font-mono text-[11px] text-neutral-900">thenetworkers.app/{slug}</span> stays the same forever.
       </footer>
+
+      {/* [DEV BUTTON] Colour-tuner toast — floats bottom-centre with the
+          "Copied #XXXXXX to clipboard" confirmation after Save. */}
+      {devToast && (
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed bottom-6 left-1/2 z-[200] -translate-x-1/2 rounded-full px-4 py-2 text-[11.5px] font-black shadow-2xl"
+          style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+        >
+          {devToast}
+        </div>
+      )}
+      {/* [/DEV BUTTON] */}
+
+      {/* Fullscreen live-preview modal — opens when merchant taps
+          "Live" on a card. Renders the actual canteen inside an iPhone
+          chassis with the palette applied via `?preview_palette=<slug>`.
+          Install button at the bottom commits the palette; Close (X or
+          backdrop tap or Escape key) dismisses without committing.
+          Pattern mirrors the Apple App Store screenshot zoom. */}
+      {livePreviewPalette && (
+        <LivePreviewModal
+          palette={PALETTES[livePreviewPalette]}
+          previewUrl={livePreviewUrl(livePreviewPalette)}
+          isSelected={livePreviewPalette === palette}
+          isReady={READY_PALETTES.includes(livePreviewPalette)}
+          isPending={submitting === `palette:${livePreviewPalette}`}
+          onInstall={() => {
+            applyPalette(livePreviewPalette);
+            // Modal stays open so merchant sees the "Installed" state
+            // land — closes automatically on next render if selected
+            // matches (handled by effect below).
+          }}
+          onClose={() => setLivePreviewPalette(null)}
+        />
+      )}
     </main>
   );
 }
 
-// ─── Template preview (plain image, no CSS phone frame) ─────
+// ─── Designer credit chip ────────────────────────────────────
 //
-// Renders the template's reference PNG directly. The screenshot itself
-// already includes a phone-shaped mockup, so a CSS iPhone chassis
-// around it creates a phone-inside-a-phone. Object-contain preserves
-// the mockup's shape end-to-end.
+// Circular avatar + author + role + org, optionally followed by a
+// short designer note. Shown under the "Choose your palette" intro
+// so merchants see the human behind the design. Falls back to an
+// initial letter chip when no avatar URL is supplied.
 
-function IphoneFrame({ previewImageUrl }: { previewImageUrl: string | undefined }) {
-  if (!previewImageUrl) {
+function DesignerCredit({
+  avatarUrl,
+  name,
+  role,
+  organisation,
+  designerNote
+}: {
+  avatarUrl:     string | null;
+  name:          string;
+  role:          string;
+  organisation:  string;
+  designerNote:  string;
+}) {
+  const initial = name.trim().charAt(0).toUpperCase() || "?";
+  return (
+    <div className="mt-5 flex max-w-2xl items-start gap-3">
+      <div
+        className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full shadow-sm"
+        style={{ backgroundColor: "#F5E9D3" }}
+        aria-hidden
+      >
+        {avatarUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={avatarUrl}
+            alt={name}
+            className="h-full w-full object-cover"
+            loading="lazy"
+          />
+        ) : (
+          <span
+            className="text-[16px] font-black"
+            style={{ color: "#B8860B" }}
+          >
+            {initial}
+          </span>
+        )}
+      </div>
+      <div className="min-w-0 flex-1 leading-tight">
+        <div className="text-[13px] font-black text-neutral-900">
+          Designed by {name}
+        </div>
+        <div className="text-[10.5px] font-bold uppercase tracking-[0.14em] text-neutral-500">
+          {role} · {organisation}
+        </div>
+        {designerNote && (
+          <p className="mt-1.5 text-[12px] leading-relaxed text-neutral-700">
+            {designerNote}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── Template preview ────────────────────────────────────────
+//
+// Two rendering modes, chosen per palette via `wrapInPhoneChassis`:
+//
+//   1. Plain image (default) — for ChatGPT-generated mockups that
+//      already have a phone frame drawn INSIDE the artwork (Chalk /
+//      Template 1). Adding a CSS chassis around them creates phone-
+//      inside-a-phone which reads as a bug.
+//
+//   2. CSS iPhone chassis wrapping the image — for raw photos /
+//      screenshots that need the phone frame added around them (Iron /
+//      Template 2 uses the canteen hero photo). Draws a black bezel,
+//      dynamic island, and home indicator around the image so the
+//      card reads as "app on a phone" rather than "photo on a card".
+
+function IphoneFrame({
+  previewImageUrl,
+  wrapInPhoneChassis = false,
+  livePreviewUrl
+}: {
+  previewImageUrl: string | undefined;
+  wrapInPhoneChassis?: boolean;
+  livePreviewUrl?: string;
+}) {
+  if (!previewImageUrl && !livePreviewUrl) {
     return (
       <div
         className="mx-auto flex items-center justify-center text-center text-[10px] font-black uppercase tracking-wider text-neutral-500"
@@ -257,13 +895,262 @@ function IphoneFrame({ previewImageUrl }: { previewImageUrl: string | undefined 
       </div>
     );
   }
+  if (wrapInPhoneChassis || livePreviewUrl) {
+    return (
+      <div
+        className="relative mx-auto overflow-hidden bg-neutral-950 shadow-2xl"
+        style={{
+          aspectRatio: "9 / 19.5",
+          width: "300px",
+          borderRadius: "42px",
+          border: "7px solid #0A0A0A",
+          boxShadow:
+            "0 30px 60px -20px rgba(0,0,0,0.55), 0 0 0 1.5px rgba(255,255,255,0.06) inset"
+        }}
+      >
+        {/* Dynamic Island */}
+        <div
+          aria-hidden
+          className="absolute left-1/2 top-2 z-30 h-4 w-20 -translate-x-1/2 rounded-full bg-black"
+        />
+        {/* Home indicator */}
+        <div
+          aria-hidden
+          className="absolute bottom-2 left-1/2 z-30 h-1 w-20 -translate-x-1/2 rounded-full bg-white/40"
+        />
+        {/* Screen — inner curve (~35px) clips content cleanly. */}
+        <div
+          className="absolute bg-black"
+          style={{
+            inset: "0",
+            borderRadius: "35px",
+            overflow: "hidden",
+            isolation: "isolate"
+          }}
+        >
+          {livePreviewUrl ? (
+            // Live iframe — renders the actual canteen mobile view
+            // scaled down to fit the phone screen. iframe viewport
+            // is 390px wide (real iPhone 12-14 width) so mobile CSS
+            // breakpoints fire correctly, then scaled to fit the
+            // ~286px screen inside the chassis via scale(0.73).
+            <div
+              style={{
+                transform: "scale(0.73)",
+                transformOrigin: "top left",
+                width:  "137%",   // 100 / 0.73
+                height: "137%",
+                overflow: "hidden",
+                willChange: "transform"
+              }}
+            >
+              <iframe
+                src={livePreviewUrl}
+                title="Live app preview"
+                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                loading="lazy"
+                className="block border-0"
+                style={{ width: "calc(100% + 17px)", height: "100%" }}
+              />
+            </div>
+          ) : previewImageUrl ? (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={previewImageUrl}
+              alt="Template preview"
+              loading="lazy"
+              className="block h-full w-full object-contain"
+            />
+          ) : null}
+        </div>
+      </div>
+    );
+  }
+  // Fixed box so every template card renders at identical
+  // dimensions regardless of the source image's exact aspect ratio.
+  // Object-contain fits the mockup inside without stretching; small
+  // aspect differences show as thin letterbox bars on the cream
+  // backdrop rather than as different card heights across the grid.
+  //
+  // The `?tr=w-600` ImageKit transform serves a 600px-wide image (2×
+  // the 300px display width) so retina displays render crisp instead
+  // of soft. Ignored gracefully for URLs that already include a
+  // `?updatedAt=...` cache-buster (ImageKit accepts both).
+  const src = previewImageUrl.includes("?")
+    ? previewImageUrl
+    : `${previewImageUrl}?tr=w-600`;
   return (
-    /* eslint-disable-next-line @next/next/no-img-element */
-    <img
-      src={previewImageUrl}
-      alt="Template preview"
-      loading="lazy"
-      className="mx-auto block h-auto w-full max-w-[300px] object-contain"
-    />
+    <div
+      className="mx-auto"
+      style={{ width: "220px", aspectRatio: "9 / 19.5" }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt="Template preview"
+        loading="lazy"
+        className="block h-full w-full object-contain"
+      />
+    </div>
+  );
+}
+
+// ─── Live preview modal ─────────────────────────────────────────
+//
+// Fullscreen zoomed preview. Rendered as a fixed overlay that darkens
+// the page and centres a larger iPhone chassis running the actual
+// canteen with the palette applied. Design intent = the moment where
+// the merchant thinks "yes, this is my brand." Big, uncluttered,
+// interactive.
+//
+// Layout:
+//   ┌─────────────────────────────────────────┐
+//   │  [×]                                     │  ← close (top-right)
+//   │                                          │
+//   │            ┌────────────┐                │
+//   │            │ [ iPhone ] │  ← live app    │
+//   │            │            │    scrollable  │
+//   │            │            │    tappable    │
+//   │            └────────────┘                │
+//   │                                          │
+//   │       Palette · Trade                    │
+//   │       [ Install this palette ]           │
+//   └─────────────────────────────────────────┘
+//
+// Backdrop tap outside the phone frame closes the modal (matches iOS
+// dismissal expectations). Escape key also closes (wired at parent).
+
+function LivePreviewModal({
+  palette,
+  previewUrl,
+  isSelected,
+  isReady,
+  isPending,
+  onInstall,
+  onClose
+}: {
+  palette:     PaletteTokens;
+  previewUrl:  string;
+  isSelected:  boolean;
+  isReady:     boolean;
+  isPending:   boolean;
+  onInstall:   () => void;
+  onClose:     () => void;
+}) {
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-between overflow-y-auto"
+      style={{ backgroundColor: "rgba(10,10,10,0.85)", backdropFilter: "blur(8px)" }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      {/* Top bar — close button on the right so it's thumb-reachable */}
+      <div className="flex w-full items-center justify-between p-4">
+        <div className="flex items-center gap-2">
+          <span
+            aria-hidden
+            className="inline-block h-2.5 w-2.5 rounded-full border border-white/40"
+            style={{ backgroundColor: palette.chip }}
+          />
+          <span className="text-[11px] font-black uppercase tracking-[0.16em] text-white/70">
+            Live preview · {palette.displayName}
+          </span>
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className="flex h-10 w-10 items-center justify-center rounded-full text-white transition hover:bg-white/10"
+          aria-label="Close preview"
+        >
+          <X size={20} strokeWidth={2.4}/>
+        </button>
+      </div>
+
+      {/* Phone frame — larger than the card thumbnails, ~340px wide.
+          Stop propagation so clicking the phone doesn't close the
+          modal (only the surrounding dark backdrop closes). */}
+      <div
+        className="my-2 flex-1 flex items-center justify-center px-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div
+          className="relative overflow-hidden bg-neutral-950 shadow-2xl"
+          style={{
+            aspectRatio: "9 / 19.5",
+            width:       "min(340px, 82vw)",
+            borderRadius: "48px",
+            border:       "8px solid #0A0A0A",
+            boxShadow:    "0 30px 60px -20px rgba(0,0,0,0.65), 0 0 0 1.5px rgba(255,255,255,0.06) inset"
+          }}
+        >
+          {/* Dynamic Island */}
+          <div
+            aria-hidden
+            className="absolute left-1/2 top-2 z-30 h-4 w-24 -translate-x-1/2 rounded-full bg-black"
+          />
+          {/* Home indicator */}
+          <div
+            aria-hidden
+            className="absolute bottom-2 left-1/2 z-30 h-1 w-24 -translate-x-1/2 rounded-full bg-white/40"
+          />
+          {/* Screen — inner rounded clip for the iframe */}
+          <div
+            className="absolute bg-black"
+            style={{
+              inset:        "0",
+              borderRadius: "40px",
+              overflow:     "hidden",
+              isolation:    "isolate"
+            }}
+          >
+            <iframe
+              src={previewUrl}
+              title={`Live preview · ${palette.displayName}`}
+              sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+              className="block h-full w-full border-0"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar — Install CTA. Stop propagation so tapping the
+          button doesn't also close the modal via backdrop click. */}
+      <div
+        className="flex w-full items-center justify-center p-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={onInstall}
+          disabled={!isReady || isSelected || isPending}
+          className="inline-flex h-14 min-w-[240px] items-center justify-center gap-2 rounded-full px-6 text-[13px] font-black uppercase tracking-wider shadow-2xl transition active:scale-[0.97] disabled:cursor-not-allowed"
+          style={{
+            backgroundColor: !isReady
+              ? "#525252"
+              : isSelected
+                ? "#10B981"
+                : BRAND_YELLOW,
+            color: !isReady ? "#A3A3A3" : isSelected ? "#FFFFFF" : BRAND_BLACK
+          }}
+        >
+          {!isReady ? (
+            <>
+              <Lock size={14} strokeWidth={2.6}/>
+              Coming soon
+            </>
+          ) : isSelected ? (
+            <>
+              <Check size={14} strokeWidth={2.6}/>
+              Installed
+            </>
+          ) : isPending ? (
+            "Installing…"
+          ) : (
+            <>Install {palette.displayName}</>
+          )}
+        </button>
+      </div>
+    </div>
   );
 }

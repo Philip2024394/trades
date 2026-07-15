@@ -14,7 +14,8 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const dynamic = "force-dynamic";
 
-const NAV_ITEMS: { href: string; label: string; live: boolean }[] = [
+const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean }[] = [
+  { href: "/admin/red-zone", label: "🔴 Red Zone", live: true, redZone: true },
   { href: "/admin/listings", label: "Listings", live: false },
   { href: "/admin/payments", label: "Payments", live: true },
   { href: "/admin/reviews", label: "Reviews", live: true },
@@ -136,7 +137,11 @@ export default async function AdminAuthedLayout({
                     <Link
                       key={item.href}
                       href={item.href}
-                      className="inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-brand-text hover:bg-brand-line"
+                      className={
+                        item.redZone
+                          ? "inline-flex items-center gap-1 rounded border border-red-600 bg-red-50 px-2 py-1 text-xs font-black text-red-700 hover:bg-red-100"
+                          : "inline-flex items-center gap-1 rounded px-2 py-1 text-xs text-brand-text hover:bg-brand-line"
+                      }
                     >
                       {item.label}
                       {showBadge && (

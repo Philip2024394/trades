@@ -13,3 +13,6 @@ scripts/.pexels-query-cache.json
 .vercel
 
 .env.tools.local
+
+# Runtime log — not source of truth
+dev.log

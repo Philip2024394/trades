@@ -7,11 +7,11 @@
 
 import type { Metadata } from "next";
 import { TemplatesShell } from "./TemplatesShell";
-import { listAppTemplates, loadMerchantTemplate } from "@/lib/appTemplates";
+import { loadMerchantPalette } from "@/lib/paletteTokens.server";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Choose your app template | Thenetworkers",
+  title: "Choose your palette | Thenetworkers",
   robots: { index: false, follow: false }
 };
 
@@ -21,15 +21,11 @@ export default async function TemplatesPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [templates, applied] = await Promise.all([
-    listAppTemplates(),
-    loadMerchantTemplate(slug)
-  ]);
+  const palette = await loadMerchantPalette(slug);
   return (
     <TemplatesShell
       slug={slug}
-      templates={templates}
-      appliedSlug={applied.slug}
+      appliedPaletteSlug={palette.slug}
     />
   );
 }

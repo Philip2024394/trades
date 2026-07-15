@@ -105,6 +105,14 @@ export function CanteenProductFocus({
         </div>
 
         <div className="p-4">
+          {product.ref && (
+            <div className="mb-1 inline-flex items-center rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em]"
+              style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+              title="Product reference — quote when contacting the merchant"
+            >
+              Item · {product.ref}
+            </div>
+          )}
           <h2 className="text-[18px] font-black leading-tight text-neutral-900 sm:text-[20px]">
             {product.name}
           </h2>

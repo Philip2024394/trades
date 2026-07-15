@@ -67,6 +67,7 @@ export default async function CanteenContactPage({
       addressLine={addressLine}
       postcode={postcode}
       city={city}
+      hostWhatsapp={admin?.whatsapp ?? null}
     />
   );
 }

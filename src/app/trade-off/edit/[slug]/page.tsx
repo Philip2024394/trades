@@ -17,6 +17,7 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { adminWhatsapp } from "@/lib/whatsapp";
 import { isMerchantGradeTrade, tradeLabel, whatsappDigits } from "@/lib/tradeOff";
 import { effectiveTier, trialDaysRemaining, XRATED_PRICING } from "@/lib/xratedTrades";
+import { loadWasherBag } from "@/lib/washers";
 import { maybeExpireListingTier } from "@/lib/xratedTier";
 import {
   TRADE_SESSION_COOKIE_NAME,
@@ -115,6 +116,17 @@ export default async function TradeOffEditPage({
     tier: row.data.tier ?? "standard",
     trial_expires_at: row.data.trial_expires_at ?? null
   });
+
+  // Load washer bag balance for the compact widget. Gracefully degrades
+  // when the washer tables aren't yet applied — widget then shows a
+  // dash instead of a hard-coded 47.
+  let washerBalance: number | null = null;
+  try {
+    const bag = await loadWasherBag(slug);
+    washerBalance = bag?.balance ?? null;
+  } catch {
+    washerBalance = null;
+  }
 
   // Welcome Knife voucher — best-effort fetch. Tradies who signed up
   // before the voucher feature shipped (or whose listing went 'live' via
@@ -324,6 +336,47 @@ export default async function TradeOffEditPage({
           basics (bio, avatar, ≥1 service or product, ≥1 day of hours)
           to count as "past day one". Power users see everything by
           default; first-timers get a calm view. */}
+      {/* Washer bag widget — verified WA leads balance. Reads real
+          balance from the DB via loadWasherBag(); falls back to a
+          dash when the washer tables aren't yet applied. */}
+      <section className="mx-auto max-w-3xl px-4 pb-6">
+        <a
+          href={`/trade-off/edit/${slug}/washers`}
+          className="group flex items-center gap-3 rounded-2xl border p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+          style={{ borderColor: "#FFB300", backgroundColor: "#0A0A0A", color: "#FFFFFF" }}
+        >
+          <span
+            aria-hidden
+            className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-full"
+            style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </span>
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-black uppercase tracking-[0.16em] text-white/60">
+              Washer bag · verified WA leads
+            </div>
+            <div className="mt-0.5 flex items-baseline gap-1.5">
+              <span
+                className="text-[24px] font-black leading-none tabular-nums"
+                style={{ color: "#FFB300" }}
+              >
+                {washerBalance !== null ? washerBalance : "—"}
+              </span>
+              <span className="text-[10px] font-black uppercase tracking-wider text-white/60">
+                {washerBalance !== null ? "washers left" : "not yet enabled"}
+              </span>
+            </div>
+          </div>
+          <span className="flex-shrink-0 text-[10px] font-black uppercase tracking-[0.14em] text-white/70 group-hover:text-white">
+            Manage →
+          </span>
+        </a>
+      </section>
+
       {/* Manage subscription — only renders when Stripe has stamped a
           customer ID on this listing (i.e. the tradesperson has paid via
           Checkout at least once). For free / standby / WhatsApp-billed

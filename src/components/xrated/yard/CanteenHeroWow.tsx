@@ -23,10 +23,10 @@ import { Check, Package, Star, IdCard, Mail, User } from "lucide-react";
 import type { Canteen } from "@/lib/canteens";
 import { BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
 import { CanteenBusinessCardModal } from "@/components/xrated/yard/CanteenBusinessCardModal";
+import { DEFAULT_PALETTE, type PaletteTokens } from "@/lib/paletteTokens";
 
-const CREAM = "#FBF6EC";
-const TAN = "#B8860B";        // Warm gold — headline accent + CTA
-const TAN_SOFT = "#F5E9D3";   // KPI icon backgrounds
+const TAN_SOFT = "#F5E9D3";   // KPI icon backgrounds (Chalk-fixed —
+                              // palettes don't override the KPI tint yet)
 
 export function CanteenHeroWow({
   canteen,
@@ -35,7 +35,9 @@ export function CanteenHeroWow({
   hostAvatarUrl = null,
   addressLine = null,
   postcode = null,
-  city = null
+  city = null,
+  palette = DEFAULT_PALETTE,
+  veilOpacity = 1
 }: {
   canteen: Canteen;
   hostWhatsapp: string | null;
@@ -48,12 +50,25 @@ export function CanteenHeroWow({
   addressLine?: string | null;
   postcode?: string | null;
   city?: string | null;
+  /** Merchant's palette — drives hero bg, primary text colour, hero
+   *  last-word accent, and the two secondary CTAs (Profile / Card). */
+  palette?: PaletteTokens;
+  /** [DEV BUTTON] Opacity multiplier for the two cream-veil overlays
+   *  on top of the hero photo. 1 = full veil (default), 0 = veils
+   *  invisible so the hero photo shows 100% clear. Driven by the
+   *  templates picker's dev SHADE slider via `?hero_shade=` query. */
+  veilOpacity?: number;
 }) {
   const [cardOpen, setCardOpen] = useState(false);
   const firstName = canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName;
   const words = canteen.name.trim().split(/\s+/);
   const lastWord = words.pop() ?? canteen.name;
   const restOfName = words.join(" ");
+  const CREAM = palette.bg;
+  const TAN = palette.accent;
+  const HEADLINE_INK = palette.text;
+  const MUTED_INK = palette.mutedText;
+  const HERO_LAST_WORD = palette.heroLastWord;
 
   return (
     <section className="relative overflow-hidden" style={{ backgroundColor: CREAM }}>
@@ -82,22 +97,26 @@ export function CanteenHeroWow({
       )}
       {/* Left-to-right cream veil — opaque on the left where the text
           sits, aggressively transparent on the right so the photo
-          reads sharp. */}
+          reads sharp. [DEV BUTTON] Multiplied by `veilOpacity` so the
+          templates-picker SHADE slider can fade the veil out — 0
+          reveals the hero photo 100% clear, 1 = default veil. */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(90deg, ${CREAM} 0%, ${CREAM} 25%, ${CREAM}AA 42%, ${CREAM}44 60%, ${CREAM}00 78%, ${CREAM}00 100%)`
+          background: `linear-gradient(90deg, ${CREAM} 0%, ${CREAM} 25%, ${CREAM}AA 42%, ${CREAM}44 60%, ${CREAM}00 78%, ${CREAM}00 100%)`,
+          opacity: veilOpacity
         }}
       />
       {/* Bottom-to-cream fade — kicks in later so the middle of the
           photo stays crisp; only the last 20% dissolves into the page
-          colour to hide the hero edge. */}
+          colour to hide the hero edge. Same veilOpacity multiplier. */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
-          background: `linear-gradient(180deg, transparent 0%, transparent 70%, ${CREAM}66 85%, ${CREAM} 100%)`
+          background: `linear-gradient(180deg, transparent 0%, transparent 70%, ${CREAM}66 85%, ${CREAM} 100%)`,
+          opacity: veilOpacity
         }}
       />
 
@@ -134,10 +153,16 @@ export function CanteenHeroWow({
             />
           </div>
           <div className="min-w-0 flex-1">
-            <div className="truncate text-[15px] font-black leading-tight text-neutral-900 sm:text-[17px]">
+            <div
+              className="truncate text-[15px] font-black leading-tight sm:text-[17px]"
+              style={{ color: HEADLINE_INK }}
+            >
               {canteen.hostDisplayName}
             </div>
-            <div className="flex min-w-0 items-center gap-1 text-[12px] font-bold text-neutral-500 sm:text-[12.5px]">
+            <div
+              className="flex min-w-0 items-center gap-1 text-[13px] font-bold sm:text-[13.5px]"
+              style={{ color: MUTED_INK }}
+            >
               <span className="truncate">{canteen.tradeLabel} Specialist</span>
               <Check size={12} strokeWidth={3} className="flex-shrink-0" style={{ color: TAN }}/>
             </div>
@@ -151,8 +176,23 @@ export function CanteenHeroWow({
           {/* LEFT — copy + CTA (over the opaque cream veil zone) */}
           <div className="min-w-0">
             <h1
-              className="text-[32px] font-black leading-[1.05] tracking-tight text-neutral-900 sm:text-[40px] md:text-[48px]"
-              style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}
+              className="text-[32px] font-black leading-[1.05] tracking-tight sm:text-[40px] md:text-[48px]"
+              style={{
+                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                color: HEADLINE_INK,
+                // Palette-driven text-shadow so the H1 stays punchy over
+                // busy hero images regardless of what colours the photo
+                // has behind the text position.
+                //  · Dark palettes (Iron): dark shadow for depth against
+                //    light image content.
+                //  · Light palettes (Chalk, Slate, Oak, etc): white
+                //    outline effect via 4-direction 1px shadows so the
+                //    dark text pops against ANY image patch — dark or
+                //    light. Plus a soft dark drop shadow for depth.
+                textShadow: palette.dark
+                  ? "0 2px 8px rgba(0,0,0,0.65), 0 0 2px rgba(0,0,0,0.4)"
+                  : "1px 1px 0 rgba(255,255,255,0.85), -1px -1px 0 rgba(255,255,255,0.85), 1px -1px 0 rgba(255,255,255,0.85), -1px 1px 0 rgba(255,255,255,0.85), 0 2px 6px rgba(0,0,0,0.20)"
+              }}
             >
               {restOfName && (
                 <>
@@ -160,9 +200,12 @@ export function CanteenHeroWow({
                   <br/>
                 </>
               )}
-              <span style={{ color: TAN }}>{lastWord}.</span>
+              <span style={{ color: HERO_LAST_WORD }}>{lastWord}.</span>
             </h1>
-            <p className="mt-2 text-[12px] font-bold text-neutral-600 sm:text-[13px]">
+            <p
+              className="mt-2 text-[13px] font-bold sm:text-[14px]"
+              style={{ color: MUTED_INK }}
+            >
               Connect. Share. Grow.
             </p>
             <div className="mt-4 flex items-center gap-2 pr-3">
@@ -226,6 +269,8 @@ export function CanteenHeroWow({
               label="Projects"
               value={String(canteen.postsLast30d || 28)}
               subLabel="Active"
+              dark={palette.dark}
+              accent={TAN}
             />
             <KpiCard
               icon={
@@ -242,6 +287,8 @@ export function CanteenHeroWow({
                   ? hostReviews.avg >= 4.5 ? "Excellent" : hostReviews.avg >= 4 ? "Very good" : "Good"
                   : "Building"
               }
+              dark={palette.dark}
+              accent={TAN}
             />
           </div>
         </div>
@@ -270,28 +317,56 @@ function KpiCard({
   icon,
   label,
   value,
-  subLabel
+  subLabel,
+  dark = false,
+  accent
 }: {
   icon: React.ReactNode;
   label: string;
   value: string;
   subLabel: string;
+  /** Dark-palette flag — retained for prop compatibility. Card bg is
+   *  now UNCONDITIONALLY black across every palette (Philip 2026-07-15:
+   *  "the 2 container on the right side on the hero should be black
+   *  color - projects - rating"). Value + label + sublabel colours
+   *  fixed to a black-native scheme regardless of palette theme. */
+  dark?:   boolean;
+  /** Palette accent — currently unused inside the card but forwarded
+   *  so future accent-highlighted variants can pick it up. */
+  accent?: string;
 }) {
   return (
     <div
-      className="flex h-[68px] w-[86px] flex-col items-center justify-center gap-0.5 rounded-xl border bg-white p-2 shadow-lg sm:h-[76px] sm:w-[96px]"
-      style={{ borderColor: "rgba(139,69,19,0.08)" }}
+      className="flex h-[68px] w-[86px] flex-col items-center justify-center gap-0.5 rounded-xl border p-2 shadow-lg sm:h-[76px] sm:w-[96px]"
+      style={{
+        backgroundColor: "#0A0A0A",
+        borderColor:     "rgba(255,255,255,0.10)"
+      }}
     >
       <div className="flex items-center gap-1">
         <span aria-hidden>{icon}</span>
-        <span className="text-[9px] font-bold text-neutral-500">{label}</span>
+        <span
+          className="text-[11px] font-bold"
+          style={{ color: "#A3A3A3" }}
+        >
+          {label}
+        </span>
       </div>
-      <div className="text-[22px] font-black leading-none text-neutral-900 sm:text-[24px]">
+      <div
+        className="text-[22px] font-black leading-none sm:text-[24px]"
+        style={{ color: "#FFFFFF" }}
+      >
         {value}
       </div>
-      <div className="text-[9px] font-bold text-neutral-500">
+      <div
+        className="text-[11px] font-bold"
+        style={{ color: "#A3A3A3" }}
+      >
         {subLabel}
       </div>
+      {/* Suppress unused-var warning while accent prop is reserved for
+          future use — remove `void accent` when a variant consumes it. */}
+      {accent ? null : null}
     </div>
   );
 }

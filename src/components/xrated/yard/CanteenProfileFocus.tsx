@@ -19,6 +19,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { VerifiedContactModal } from "@/components/xrated/VerifiedContactModal";
 import {
   ArrowLeft,
   MessageCircle,
@@ -114,6 +115,11 @@ export function CanteenProfileFocus({
   // tapping "Show all N reviews" expands the full TradeReviewCard
   // list in-page (no navigation away — buyer stays in profile focus).
   const [reviewsExpanded, setReviewsExpanded] = useState(false);
+  // Verified contact modal state — every WhatsApp CTA on this profile
+  // routes through the same modal so the merchant only burns a washer
+  // on a genuine send.
+  const [contactOpen, setContactOpen] = useState(false);
+  const firstName = admin.displayName.split(/\s+/)[0] ?? admin.displayName;
   const hasShowroom = !!admin.showroom;
   const showroomAddress = admin.showroom
     ? `${admin.showroom.addressLine}, ${admin.showroom.postcode}`
@@ -255,16 +261,15 @@ export function CanteenProfileFocus({
           {/* Right cluster — CTA stack */}
           <div className="flex flex-col gap-2 md:ml-auto md:min-w-[220px]">
             {admin.whatsapp && (
-              <a
-                href={`https://wa.me/${admin.whatsapp}`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="flex h-11 items-center justify-center gap-1.5 rounded-full text-[13px] font-black uppercase tracking-wider text-white shadow-md"
+              <button
+                type="button"
+                onClick={() => setContactOpen(true)}
+                className="flex h-11 items-center justify-center gap-1.5 rounded-full text-[13px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
                 style={{ backgroundColor: BRAND_GREEN_DARK }}
               >
                 <MessageCircle size={13} strokeWidth={2.5}/>
                 Message on WhatsApp
-              </a>
+              </button>
             )}
             {primaryDirectionsUrl && (
               <a
@@ -281,10 +286,45 @@ export function CanteenProfileFocus({
           </div>
         </div>
 
-        {/* Bio strip */}
-        {admin.bioShort && (
+        {/* About Us — headline label, bio (max 8 lines) + services
+            chips. Renders whenever we have a bio OR services to show,
+            so a merchant with just the chip list still gets a real
+            section rather than an empty rule. */}
+        {(admin.bioShort || (admin.servicesOffered && admin.servicesOffered.length > 0)) && (
           <div className="border-t bg-white px-5 py-4 md:px-7" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
-            <p className="text-[13px] leading-relaxed text-neutral-700">{admin.bioShort}</p>
+            <div className="mb-2 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
+              About Us
+            </div>
+            {admin.bioShort && (
+              <p className="line-clamp-8 text-[13px] leading-relaxed text-neutral-700">
+                {admin.bioShort}
+              </p>
+            )}
+            {admin.servicesOffered && admin.servicesOffered.length > 0 && (
+              <div className="mt-3">
+                <div className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
+                  What we do best..
+                </div>
+                {/* Mobile: 2-col grid so items pair up neatly.
+                    Desktop (md+): flex-wrap row so the whole list reads
+                    as one horizontal line. Yellow-dot marker on each. */}
+                <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 md:flex md:flex-wrap md:items-center md:gap-x-5 md:gap-y-1.5">
+                  {admin.servicesOffered.map((service) => (
+                    <li
+                      key={service}
+                      className="flex items-center gap-2 text-[12.5px] font-bold text-neutral-800"
+                    >
+                      <span
+                        aria-hidden
+                        className="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                        style={{ backgroundColor: BRAND_YELLOW }}
+                      />
+                      {service}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         )}
       </section>
@@ -410,13 +450,19 @@ export function CanteenProfileFocus({
           <InfoCard icon={Phone} title="Contact">
             <div className="flex flex-wrap gap-1.5">
               {admin.whatsapp && (
-                <ContactPill
-                  href={`https://wa.me/${admin.whatsapp}`}
-                  icon={MessageCircle}
-                  label="WhatsApp"
-                  bg={BRAND_GREEN_DARK}
-                  fg="#FFFFFF"
-                />
+                <button
+                  type="button"
+                  onClick={() => setContactOpen(true)}
+                  className="inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[11px] font-black uppercase tracking-wider shadow-sm transition hover:-translate-y-0.5"
+                  style={{
+                    backgroundColor: BRAND_GREEN_DARK,
+                    color: "#FFFFFF",
+                    borderColor: BRAND_GREEN_DARK
+                  }}
+                >
+                  <MessageCircle size={11} color="#FFFFFF" strokeWidth={2.5}/>
+                  WhatsApp
+                </button>
               )}
               {admin.phone && (
                 <ContactPill
@@ -673,6 +719,25 @@ export function CanteenProfileFocus({
             </Link>
           ))}
         </section>
+      )}
+
+      {/* Verified contact modal — mounts at the profile-focus root so
+          the hero WA button and the Contact card WhatsApp pill both
+          trigger the same flow. Deducts 1 washer on Send. */}
+      {admin.whatsapp && (
+        <VerifiedContactModal
+          open={contactOpen}
+          onClose={() => setContactOpen(false)}
+          merchantSlug={admin.slug}
+          merchantDisplayName={admin.displayName}
+          merchantFirstName={firstName}
+          merchantWhatsapp={admin.whatsapp}
+          tradeLabel={admin.tradeLabel}
+          city={admin.city}
+          source="canteen-hero"
+          sourceLabel={`${firstName}'s profile on Thenetworkers.app`}
+          canteenSlug={admin.slug}
+        />
       )}
     </div>
   );

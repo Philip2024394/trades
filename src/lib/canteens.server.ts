@@ -8,6 +8,7 @@
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import type { Canteen, CanteenMember, CanteenProduct, CanteenDesign, SideLanePost, BrowseProductRow, BrowseSort } from "@/lib/canteens";
+import { adminWhatsapp } from "@/lib/whatsapp";
 import {
   canteenBySlug as canteenBySlugMock,
   membersForCanteen as membersForCanteenMock,
@@ -21,6 +22,29 @@ import {
   browseAllProducts as browseAllProductsMock,
   browseTradeFacets as browseTradeFacetsMock
 } from "@/lib/canteens";
+
+// ─── Demo-safe WhatsApp substitution ───────────────────────
+//
+// When a user clicks the WhatsApp button on a DEMO canteen (host slug
+// starts with `demo-`), we route the click to the Networkers support
+// WhatsApp instead of the fake per-demo number. Users never see a
+// mock number and clicks reach a real inbox that can respond with
+// "you're previewing a demo — set up your own canteen at ...".
+//
+// Applied at the loader boundary so every consumer (admin card,
+// WhatsApp button, business card modal, contact page) automatically
+// gets the substitution — no per-component logic needed.
+function demoSafeMember(member: CanteenMember | null): CanteenMember | null {
+  if (!member) return member;
+  if (member.slug?.startsWith("demo-")) {
+    return { ...member, whatsapp: adminWhatsapp() };
+  }
+  return member;
+}
+
+function demoSafeMembers(members: CanteenMember[]): CanteenMember[] {
+  return members.map((m) => demoSafeMember(m)!).filter(Boolean);
+}
 
 // Mock canteens use non-UUID ids like "cant_kitchen_uk". Passing one
 // through to Postgres blows up with a uuid-parse error and returns an
@@ -49,6 +73,17 @@ export async function canteensAllFromDb(limit: number = 200): Promise<Canteen[]>
 }
 
 export async function canteenBySlugFromDb(slug: string): Promise<Canteen | null> {
+  // Fixture demo canteens (uk-kitchen-fitters, uk-rated-electricians,
+  // north-uk-sparks, uk-scaffolders, etc.) own their content in
+  // MOCK_CANTEENS + MOCK_CANTEEN_MEMBERS. Any DB row for these slugs is
+  // a stale leftover from an earlier impersonate auto-seed and MUST be
+  // ignored — DB row would return a UUID id that downstream lookups
+  // (adminForCanteenFromDb, membersForCanteenFromDb) then can't map to
+  // the fixture data, giving an empty canteen. Prefer mock for fixture
+  // slugs; real merchant canteens still go through the DB.
+  const mock = canteenBySlugMock(slug);
+  if (mock && mock.hostSlug.startsWith("demo-")) return mock;
+
   const res = await supabaseAdmin
     .from("hammerex_canteens")
     .select("id, slug, name, tagline, trade_slug, trade_label, host_slug, host_display_name, member_count, posts_last_30d, activity_streak_months, header_bg_url, created_at, is_founding_100")
@@ -66,7 +101,7 @@ export async function canteenBySlugFromDb(slug: string): Promise<Canteen | null>
 // ─── Members ──────────────────────────────────────────────
 
 export async function membersForCanteenFromDb(canteenId: string): Promise<CanteenMember[]> {
-  if (!isUuid(canteenId)) return membersForCanteenMock(canteenId);
+  if (!isUuid(canteenId)) return demoSafeMembers(membersForCanteenMock(canteenId));
   const res = await supabaseAdmin
     .from("hammerex_canteen_members")
     .select("*")
@@ -74,15 +109,15 @@ export async function membersForCanteenFromDb(canteenId: string): Promise<Cantee
   if (res.error) {
     // eslint-disable-next-line no-console
     console.error("[canteens.server] members", res.error);
-    return membersForCanteenMock(canteenId);
+    return demoSafeMembers(membersForCanteenMock(canteenId));
   }
   const rows = res.data ?? [];
-  if (rows.length === 0) return membersForCanteenMock(canteenId);
-  return rows.map((r) => shapeMember(r));
+  if (rows.length === 0) return demoSafeMembers(membersForCanteenMock(canteenId));
+  return demoSafeMembers(rows.map((r) => shapeMember(r)));
 }
 
 export async function adminForCanteenFromDb(canteenId: string): Promise<CanteenMember | null> {
-  if (!isUuid(canteenId)) return adminForCanteenMock(canteenId);
+  if (!isUuid(canteenId)) return demoSafeMember(adminForCanteenMock(canteenId));
   const res = await supabaseAdmin
     .from("hammerex_canteen_members")
     .select("*")
@@ -92,10 +127,10 @@ export async function adminForCanteenFromDb(canteenId: string): Promise<CanteenM
   if (res.error) {
     // eslint-disable-next-line no-console
     console.error("[canteens.server] admin", res.error);
-    return adminForCanteenMock(canteenId);
+    return demoSafeMember(adminForCanteenMock(canteenId));
   }
-  if (!res.data) return adminForCanteenMock(canteenId);
-  return shapeMember(res.data);
+  if (!res.data) return demoSafeMember(adminForCanteenMock(canteenId));
+  return demoSafeMember(shapeMember(res.data));
 }
 
 // ─── Products ─────────────────────────────────────────────

@@ -20,6 +20,7 @@ import {
   Heart,
   MessageSquare,
   ChevronRight,
+  ChevronLeft,
   ChevronDown,
   Star,
   Sparkles,
@@ -35,21 +36,36 @@ import type { RotatorPost } from "@/components/xrated/yard/CanteenMobilePostsRot
 import { competitorSlugsFor, tradeLabel as lookupTradeLabel } from "@/lib/tradeOff";
 import { reviewsForMerchant, overallForReview } from "@/lib/reviews";
 import { CanteenVariantPicker, type VariantSelectionState } from "@/components/xrated/yard/CanteenVariantPicker";
+import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
 
 const TAN = "#B8860B";
 const TAN_SOFT = "#F5E9D3";
 const BRAND_BLACK = "#0A0A0A";
 
-type TabSlug = "feed" | "products" | "jobs" | "contact" | "trades" | "reviews" | "designs";
+type TabSlug = "feed" | "products" | "jobs" | "contact" | "trades" | "reviews" | "designs" | "about";
 const TABS: { slug: TabSlug; label: string }[] = [
   { slug: "feed",     label: "Feed" },
+  { slug: "about",    label: "About" },
   { slug: "products", label: "Products" },
-  { slug: "designs",  label: "Designs" },
+  { slug: "designs",  label: "Projects" },
   { slug: "jobs",     label: "Jobs" },
   { slug: "contact",  label: "Contact" },
   { slug: "trades",   label: "Trades" },
   { slug: "reviews",  label: "Reviews" }
 ];
+
+// Trade-aware label for the Designs tab. Kitchen fitters call their
+// work "Kitchens" — leave that. Every other trade sees "Projects".
+// Extend the map when a trade wants a specific noun (e.g. bathroom-
+// fitter → "Bathrooms", tiler → "Rooms", scaffolder → "Sites").
+const DESIGNS_LABEL_BY_TRADE: Record<string, { title: string; lower: string }> = {
+  "kitchen-fitter":  { title: "Kitchens",   lower: "kitchens" },
+  "bathroom-fitter": { title: "Bathrooms",  lower: "bathrooms" }
+};
+function designsLabelFor(tradeSlug: string | undefined): { title: string; lower: string } {
+  return (tradeSlug && DESIGNS_LABEL_BY_TRADE[tradeSlug])
+    ?? { title: "Projects", lower: "projects" };
+}
 
 // Demo designs — landscape image cards with header + text overlay. Real
 // design data will land when the design gallery editor ships. Format
@@ -72,6 +88,113 @@ type DemoDesign = {
   description: string;
   style: string;
 };
+
+// Electrician projects — surfaced on Craig's canteen (uk-rated-
+// electricians / any trade === "electrician") via demoDesignsForTrade
+// below. Every image belongs to ONE project (twin-board + solar
+// workshop install); more projects added as EP-102, EP-103 etc. when
+// Philip sends more.
+const DEMO_DESIGNS_ELECTRICIAN: DemoDesign[] = [
+  {
+    id: "ep1",
+    ref: "EP-101",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_53_59%20AM.png",
+    // galleryUrls holds the EXTRA gallery shots — do NOT repeat
+    // imageUrl here or the popup shows the hero image twice.
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_58_47%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_59_51%20AM.png"
+    ],
+    name: "Workshop Power + Solar Hybrid",
+    tagline: "Twin-board install, solar-linked heat + power",
+    description: "Workshop power system with a twin-board setup — one board dedicated to the workshop machinery circuit, the second board isolating the house supply so nothing on the workshop side can trip the domestic circuits. Solar array integrated at the tie-in so the workshop's heat + electric load pulls from renewable first, grid second. Full first-fix + second-fix, SPD protection, EIC certificate and DNO notification handled end-to-end. Suits detached properties with garage or workshop separation. From £3,800 supply + fit; solar tie-in quoted per array size.",
+    style: "Twin-Board Industrial"
+  },
+  {
+    id: "ep2",
+    ref: "EP-102",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_08_40%20AM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_15_42%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_10_15%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_22_55%20AM.png"
+    ],
+    name: "Electric Gate Installation",
+    tagline: "Powered driveway gate — motor, controls, safety",
+    description: "Full electric gate install for a residential driveway. Wired in the BFT motor + control board, photocells for obstruction detection, safety edge for BS EN 12453 compliance, keypad entry, and remote fobs. Fed from a dedicated circuit off the consumer unit with weatherproof isolator. Coordinated with the ironwork installer to time the electric work around the gate leaf delivery. From £2,800 supply + fit for a single-leaf setup; double-leaf and sliding variants quoted on visit.",
+    style: "Powered Gate Automation"
+  },
+  {
+    id: "ep3",
+    ref: "EP-103",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_44_54%20AM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_37_59%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_45_23%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2001_47_34%20AM.png"
+    ],
+    name: "First + Second Fix · Dwellings & Offices",
+    tagline: "Full-scope electrical fit, private + commercial",
+    description: "Complete first-fix and second-fix electrical for private house dwellings and office fit-outs. First fix covers chases, back boxes, cable runs to the consumer unit, and pre-plaster testing — ready for the plasterer to skim. Second fix covers accessory install (sockets, switches, lighting, isolators), consumer unit tie-in, full BS 7671 testing, and EIC certificate. Coordinated with builder, plasterer, plumber and gas engineer to keep the site rolling. Typical duration 3-7 working days depending on scope. Domestic and small-commercial baseline; larger commercial units quoted on visit.",
+    style: "First + Second Fix"
+  },
+  {
+    id: "ep4",
+    ref: "EP-104",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2002_18_13%20AM.png",
+    galleryUrls: [
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2002_18_58%20AM.png",
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2002_44_10%20AM.png"
+    ],
+    name: "Industrial Wire + Pipe Installation",
+    tagline: "Commercial cable containment, conduit + tray",
+    description: "Industrial-grade wire and pipe (conduit) installation for a commercial unit. SWA cabling on cable tray, galvanised steel conduit for surface containment, TP&N sub-boards, motor circuits and control-panel feeds. Full labour, IET Wiring Regs BS 7671 testing, EIC certificate and building-control notification included. Suits factories, workshops, warehouses, garages and any commercial fit-out where the fabric of the building can't be chased. Typical duration 5-10 working days depending on unit size.",
+    style: "Industrial Containment"
+  }
+];
+
+// Plumber projects — surfaced on James Holt's canteen (uk-verified-
+// plumbers / any trade === "plumber") via demoDesignsForTrade below.
+// Image placeholders reused from the trending library until Philip
+// provides real project artwork.
+const DEMO_DESIGNS_PLUMBER: DemoDesign[] = [
+  {
+    id: "pp1",
+    ref: "PP-101",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png",
+    galleryUrls: [],
+    name: "Master Bathroom Refurb + Walk-in Shower",
+    tagline: "Full strip-out + wet room conversion",
+    description: "Master bathroom transformed into a modern wet room. Old suite stripped, walls re-boarded and tanked, drainage rerouted to gulley, thermostatic shower valve fitted with rainhead + handset, back-to-wall WC + wall-hung vanity + LED mirror. Underfloor heating manifold tied into the existing central heating. Coordinated with a tiler for large-format porcelain walls + slip-resistant floor tile. Duration 8 working days. From £6,800 supply + fit (fixtures + tiles supplied separately).",
+    style: "Wet Room Refurb"
+  },
+  {
+    id: "pp2",
+    ref: "PP-102",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png",
+    galleryUrls: [],
+    name: "Full System Central Heating + Combi",
+    tagline: "New Worcester boiler + 8-radiator rebuild",
+    description: "Complete central heating replacement in a 4-bed detached. Old back-boiler removed, Worcester Bosch 4000 30kW combi installed in the utility, all pipework re-run in copper, 8 radiators sized to each room with TRVs, Nest smart thermostat, magnetic filter, powerflush of the flow-and-return before fill. Building Control notification handled end-to-end. 10-year manufacturer + 2-year workmanship warranty. From £5,400 supply + fit.",
+    style: "Central Heating Install"
+  },
+  {
+    id: "pp3",
+    ref: "PP-103",
+    imageUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png",
+    galleryUrls: [],
+    name: "Kitchen Plumbing · Island + Boiling Tap",
+    tagline: "Full kitchen plumbing coordination",
+    description: "Kitchen fit plumbing — routing water + waste to a central island for prep sink, main run to Belfast under-window sink with Quooker boiling water tap, waste-disposal unit tied to trap, dishwasher and washing-machine supply/waste, isolators on every appliance. Coordinated with kitchen fitter's install week so first-fix landed before carcasses went in. Duration 3 working days. From £1,850 labour (tap + WD unit supplied separately).",
+    style: "Kitchen Plumbing"
+  }
+];
+
+function demoDesignsForTrade(tradeSlug: string | undefined | null): DemoDesign[] {
+  if (tradeSlug === "electrician") return DEMO_DESIGNS_ELECTRICIAN;
+  if (tradeSlug === "plumber")     return DEMO_DESIGNS_PLUMBER;
+  return DEMO_DESIGNS;
+}
 
 const DEMO_DESIGNS: DemoDesign[] = [
   {
@@ -268,7 +391,9 @@ export function CanteenTabbedSection({
   postcode,
   city,
   postcodeArea,
-  openingHours
+  openingHours,
+  bioShort,
+  servicesOffered
 }: {
   canteenSlug: string;
   isHost: boolean;
@@ -301,6 +426,13 @@ export function CanteenTabbedSection({
   city?: string | null;
   postcodeArea?: string | null;
   openingHours?: string | null;
+  /** Short "About Us" line pulled from the merchant admin record.
+   *  Used by the About tab. When empty, the About tab still renders
+   *  the location + trade summary + legal footer. */
+  bioShort?: string | null;
+  /** Discrete services the merchant offers — rendered as yellow-dot
+   *  rows in the About tab under the "What we do best" header. */
+  servicesOffered?: string[] | null;
 }) {
   const [activeTab, setActiveTab] = useState<TabSlug>("feed");
   // Product detail lightbox — when set, the Products tab renders the
@@ -313,6 +445,7 @@ export function CanteenTabbedSection({
   // all" state across sections.
   const [expanded, setExpanded] = useState<Record<TabSlug, boolean>>({
     feed:     false,
+    about:    false,
     products: false,
     jobs:     false,
     contact:  false,
@@ -336,20 +469,20 @@ export function CanteenTabbedSection({
     // Read hash on mount so a shared URL like /uk-kitchen-fitters#tab-jobs
     // opens on the right tab.
     const initial = window.location.hash.replace(/^#tab-/, "");
-    if (initial === "products" || initial === "jobs" || initial === "feed" || initial === "contact" || initial === "trades" || initial === "reviews" || initial === "designs") {
+    if (initial === "products" || initial === "jobs" || initial === "feed" || initial === "about" || initial === "contact" || initial === "trades" || initial === "reviews" || initial === "designs") {
       setActiveTab(initial as TabSlug);
     }
     function handleSetTab(e: Event) {
       const detail = (e as CustomEvent).detail;
       if (!detail) return;
       const t = detail.tab;
-      if (t === "products" || t === "jobs" || t === "feed" || t === "contact" || t === "trades" || t === "reviews" || t === "designs") {
+      if (t === "products" || t === "jobs" || t === "feed" || t === "about" || t === "contact" || t === "trades" || t === "reviews" || t === "designs") {
         setActiveTab(t);
       }
     }
     function handleHashChange() {
       const h = window.location.hash.replace(/^#tab-/, "");
-      if (h === "products" || h === "jobs" || h === "feed" || h === "contact" || h === "trades" || h === "reviews" || h === "designs") {
+      if (h === "products" || h === "jobs" || h === "feed" || h === "about" || h === "contact" || h === "trades" || h === "reviews" || h === "designs") {
         setActiveTab(h as TabSlug);
       }
     }
@@ -392,7 +525,7 @@ export function CanteenTabbedSection({
   // full during onboarding. The moment merchant adds their first real
   // design, real data takes over — no code change required.
   const activeDesigns = useMemo<DemoDesign[]>(() => {
-    if (!designs || designs.length === 0) return DEMO_DESIGNS;
+    if (!designs || designs.length === 0) return demoDesignsForTrade(tradeSlug);
     return designs.map((d) => ({
       id:          d.id,
       ref:         d.ref,
@@ -426,12 +559,26 @@ export function CanteenTabbedSection({
     }));
   }, [hostSlug]);
 
+  // When the Products tab is focused on a specific product, swap the
+  // header from the generic "Products" to that product's customer-
+  // facing reference ("Item: K527"). Lets the merchant instantly know
+  // which product a buyer is asking about ("we have your K527 up").
+  const focusedProduct = viewingProductId
+    ? products.find((p) => p.id === viewingProductId) ?? null
+    : null;
+  const productsLabel = focusedProduct?.ref
+    ? `Item: ${focusedProduct.ref}`
+    : focusedProduct
+      ? `Item · ${focusedProduct.name.slice(0, 24)}${focusedProduct.name.length > 24 ? "…" : ""}`
+      : "Products";
+
   const sectionLabel = activeTab === "feed" ? "Live Feed"
-    : activeTab === "products" ? "Products"
+    : activeTab === "about" ? "About Us"
+    : activeTab === "products" ? productsLabel
     : activeTab === "jobs" ? "Jobs"
     : activeTab === "trades" ? "Trades"
     : activeTab === "reviews" ? "Reviews"
-    : activeTab === "designs" ? "Design Service"
+    : activeTab === "designs" ? designsLabelFor(tradeSlug).title
     : "Contact";
 
   // Total items in the active list — powers the "N more" badge on
@@ -451,7 +598,7 @@ export function CanteenTabbedSection({
     : activeTab === "jobs" ? "jobs"
     : activeTab === "trades" ? "trades"
     : activeTab === "reviews" ? "reviews"
-    : activeTab === "designs" ? "designs"
+    : activeTab === "designs" ? designsLabelFor(tradeSlug).lower
     : "";
 
   const viewingDesign = viewingDesignId
@@ -465,29 +612,54 @@ export function CanteenTabbedSection({
           switches based on Quick Action button hash (#tab-products /
           #tab-jobs / #tab-contact / #tab-trades) since the 5 quick
           actions are the ONLY controls for this section. */}
-      <div className="mb-1 flex items-center gap-1.5">
-        <span className="text-[15px] font-black text-neutral-900">
-          {sectionLabel}
-        </span>
-        {activeTab === "feed" && (
+      {/* Section label — hidden on the About tab per Philip: the About
+          panel already has the company name as its own header, so an
+          extra "About Us" label reads as redundant chrome. */}
+      {activeTab !== "about" && (
+        <div className="mb-1 flex items-center gap-1.5">
+          <span className="text-[15px] font-black text-neutral-900">
+            {sectionLabel}
+          </span>
+          {activeTab === "feed" && (
+            <span
+              aria-hidden
+              className="inline-block h-1.5 w-1.5 rounded-full"
+              style={{ backgroundColor: "#FFB300" }}
+            />
+          )}
+          {/* Country flag — pushed right (ml-auto). Signals which
+              country the merchant operates from now that "UK" is no
+              longer in the canteen name (2026-07-15 international
+              rebrand). Hardcoded to UK 🇬🇧 for demos; will read
+              canteen.country when the field ships. Rendered as a
+              round chip so the flag reads as an identity badge rather
+              than raw emoji. */}
           <span
-            aria-hidden
-            className="inline-block h-1.5 w-1.5 animate-pulse rounded-full"
-            style={{ backgroundColor: TAN }}
-          />
-        )}
-      </div>
+            aria-label="United Kingdom"
+            title="United Kingdom"
+            className="ml-auto flex h-5 w-5 flex-shrink-0 items-center justify-center overflow-hidden rounded-full border shadow-sm"
+            style={{
+              borderColor:     "rgba(0,0,0,0.10)",
+              backgroundColor: "#F5F5F5",
+              fontSize:        "13px",
+              lineHeight:      "1"
+            }}
+          >
+            🇬🇧
+          </span>
+        </div>
+      )}
 
       {/* Trades tab disclaimer — honest positioning: platform helps
           the customer find, never vets the trades. Legal protection +
           fair-standing brand mark for Thenetworkers. */}
       {activeTab === "trades" && (
-        <p className="mb-2 text-[10.5px] leading-snug text-neutral-500">
+        <p className="mb-2 text-[11px] leading-snug text-neutral-500">
           Trades listed to help you find a tradesperson in your area — <span className="font-black text-neutral-700">we don&apos;t verify any trade.</span> Always do your own checks.
         </p>
       )}
       {activeTab === "reviews" && (
-        <p className="mb-2 text-[10.5px] leading-snug text-neutral-500">
+        <p className="mb-2 text-[11px] leading-snug text-neutral-500">
           Reviews left by customers on Thenetworkers — <span className="font-black text-neutral-700">unverified.</span> Treat them as guidance, not proof.
         </p>
       )}
@@ -507,14 +679,29 @@ export function CanteenTabbedSection({
             tradeLabel={tradeLabel}
           />
         )}
+        {activeTab === "about" && (
+          <AboutPanel
+            canteenSlug={canteenSlug}
+            hostDisplayName={hostDisplayName ?? hostFirstName}
+            hostFirstName={hostFirstName}
+            tradeLabel={tradeLabel}
+            city={city ?? null}
+            bioShort={bioShort ?? null}
+            servicesOffered={servicesOffered ?? null}
+          />
+        )}
         {activeTab === "products" && (
           viewingProductId
             ? <ProductQuickView
                 product={products.find((p) => p.id === viewingProductId) ?? null}
                 canteenSlug={canteenSlug}
+                hostSlug={hostSlug ?? canteenSlug}
                 hostFirstName={hostFirstName}
+                hostDisplayName={hostDisplayName ?? hostFirstName}
                 hostWhatsapp={hostWhatsapp}
                 hostRating={hostRating}
+                tradeLabel={tradeLabel}
+                city={city ?? null}
                 sendToTradeCenter={sendToTradeCenter}
                 onClose={() => setViewingProductId(null)}
               />
@@ -529,9 +716,12 @@ export function CanteenTabbedSection({
           <JobsList
             jobs={jobs.slice(0, limit)}
             canteenSlug={canteenSlug}
+            hostSlug={hostSlug ?? canteenSlug}
             hostFirstName={hostFirstName}
+            hostDisplayName={hostDisplayName ?? hostFirstName}
             hostWhatsapp={hostWhatsapp}
             tradeLabel={tradeLabel}
+            city={city ?? null}
           />
         )}
         {activeTab === "trades" && (
@@ -549,6 +739,7 @@ export function CanteenTabbedSection({
         {activeTab === "contact" && (
           <ContactCard
             canteenSlug={canteenSlug}
+            hostSlug={hostSlug ?? canteenSlug}
             hostDisplayName={hostDisplayName ?? hostFirstName}
             hostFirstName={hostFirstName}
             hostWhatsapp={hostWhatsapp}
@@ -566,18 +757,26 @@ export function CanteenTabbedSection({
           section. Reveals up to REVEAL_MORE more rows in-place, then
           the same button turns into a "Close" affordance. Only
           renders when there's more to show OR the section is
-          already expanded. Hidden on the Contact tab (single card). */}
-      {!isContact && (hiddenCount > 0 || isExpanded) && (
+          already expanded. Hidden on the Contact tab (single card).
+          Also hidden when a specific product is being viewed (the
+          in-tab product detail has its own "View all products"
+          exit affordance — showing the See all/Close toggle on top
+          confuses the two navigation flows). */}
+      {!isContact && !viewingProductId && (hiddenCount > 0 || isExpanded) && (
         <div className="mt-3 flex justify-center">
           <button
             type="button"
             onClick={toggleExpanded}
             aria-expanded={isExpanded}
-            className="inline-flex h-9 items-center gap-1.5 rounded-full border px-4 text-[11px] font-black uppercase tracking-wider transition active:scale-[0.97]"
+            className={`inline-flex items-center gap-1.5 border font-black uppercase tracking-wider transition active:scale-[0.97] ${
+              isExpanded
+                ? "h-7 rounded-md px-3 text-[11px]"
+                : "h-9 rounded-full px-4 text-[11px]"
+            }`}
             style={{
-              backgroundColor: isExpanded ? "#FFFFFF" : TAN,
-              color:           isExpanded ? "#1F2937"  : "#FFFFFF",
-              borderColor:     isExpanded ? "rgba(139,69,19,0.20)" : TAN
+              backgroundColor: isExpanded ? "#991B1B" : "#FFB300",
+              color:           isExpanded ? "#FFFFFF" : "#0A0A0A",
+              borderColor:     isExpanded ? "#7F1D1D" : "#FFB300"
             }}
           >
             {isExpanded ? (
@@ -589,13 +788,6 @@ export function CanteenTabbedSection({
               <>
                 <ChevronDown size={12} strokeWidth={2.6}/>
                 See all {seeAllLabel}
-                {hiddenCount > 0 && (
-                  <span
-                    className="ml-1 rounded-full bg-white/25 px-1.5 py-0.5 text-[9px]"
-                  >
-                    +{Math.min(hiddenCount, REVEAL_MORE)}
-                  </span>
-                )}
               </>
             )}
           </button>
@@ -613,7 +805,7 @@ export function CanteenTabbedSection({
               : activeTab === "products"
                 ? `/trade-off/yard/canteens/${canteenSlug}/products`
                 : `/trade-off/yard/canteens/${canteenSlug}/jobs`}
-            className="inline-flex items-center gap-0.5 text-[10.5px] font-black uppercase tracking-wider"
+            className="inline-flex items-center gap-0.5 text-[11px] font-black uppercase tracking-wider"
             style={{ color: TAN }}
           >
             Open full page
@@ -628,8 +820,14 @@ export function CanteenTabbedSection({
     {viewingDesign && (
       <DesignModal
         design={viewingDesign}
+        hostSlug={hostSlug ?? canteenSlug}
         hostFirstName={hostFirstName}
+        hostDisplayName={hostDisplayName ?? hostFirstName}
         hostWhatsapp={hostWhatsapp}
+        tradeLabel={tradeLabel}
+        tradeSlug={tradeSlug}
+        city={city ?? null}
+        canteenSlug={canteenSlug}
         onClose={() => setViewingDesignId(null)}
       />
     )}
@@ -696,35 +894,72 @@ function FeedList({
             : undefined
         }
       >
-    <ul className={`flex flex-col gap-2 ${shouldMarquee ? "canteen-feed-marquee" : ""}`}>
+    <ul className={`flex flex-col ${shouldMarquee ? "canteen-feed-marquee" : ""}`}>
       {rows.map((p, i) => {
         const thumb = p.imageUrl || DEMO_THUMBS[
           (p.authorSlug.charCodeAt(0) + i) % DEMO_THUMBS.length
         ];
         return (
           <li key={`${p.id}-${i}`}>
+            {i > 0 && (
+              /* Dashed divider between posts. Inset 16px on each end.
+                 Rendered as a `background-image` repeating linear-
+                 gradient (not `border: dashed`) because the parent
+                 `.canteen-feed-marquee` scrolls via `translateY` over
+                 180s — browser-native dashed borders subpixel-shift
+                 on every frame during transforms, which reads as a
+                 flashing shimmer. A background gradient composites as
+                 a single GPU layer that translates cleanly without
+                 per-frame re-rasterisation. `translateZ(0)` promotes
+                 the line to its own layer for extra stability. */
+              <div
+                aria-hidden
+                style={{
+                  height:          "1.5px",
+                  marginLeft:      "16px",
+                  marginRight:     "16px",
+                  marginTop:       "10px",
+                  marginBottom:    "10px",
+                  backgroundImage: "repeating-linear-gradient(to right, #FFFFFF 0 6px, transparent 6px 12px)",
+                  backgroundSize:  "12px 1.5px",
+                  transform:       "translateZ(0)"
+                }}
+              />
+            )}
             <Link
               href={`/trade-off/yard/canteens/${canteenSlug}/post?reply=${encodeURIComponent(p.id)}`}
               className="flex items-center gap-3 rounded-xl p-2 transition active:bg-neutral-900/[0.03]"
             >
               <div className="min-w-0 flex-1">
                 <div className="mb-1 flex items-center gap-1.5">
-                  <span
-                    aria-hidden
-                    className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-black text-white"
-                    style={{ backgroundColor: TAN }}
-                  >
-                    {p.authorDisplayName.charAt(0)}
-                  </span>
+                  {p.authorAvatarUrl ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={p.authorAvatarUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-7 w-7 flex-shrink-0 rounded-full object-cover ring-[1.5px] ring-white"
+                      style={{ boxShadow: "0 1px 2px rgba(0,0,0,0.20)" }}
+                      aria-hidden
+                    />
+                  ) : (
+                    <span
+                      aria-hidden
+                      className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[11px] font-black text-white ring-[1.5px] ring-white"
+                      style={{ backgroundColor: TAN, boxShadow: "0 1px 2px rgba(0,0,0,0.20)" }}
+                    >
+                      {p.authorDisplayName.charAt(0)}
+                    </span>
+                  )}
                   <span className="truncate text-[12px] font-black text-neutral-900">
                     {p.authorDisplayName}
                   </span>
-                  <span className="text-[10px] font-bold text-neutral-500">
+                  <span className="text-[11px] font-bold text-neutral-500">
                     · {timeAgoShort(p.createdAt)}
                   </span>
                   {isLive(p.createdAt) && (
                     <span
-                      className="ml-auto rounded-md px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.14em]"
+                      className="ml-auto rounded-md px-1.5 py-0.5 text-[11px] font-black uppercase tracking-[0.14em]"
                       style={{ backgroundColor: "rgba(184,134,11,0.15)", color: TAN }}
                     >
                       LIVE
@@ -734,7 +969,7 @@ function FeedList({
                 <p className="line-clamp-2 text-[11.5px] leading-snug text-neutral-800">
                   {p.body}
                 </p>
-                <div className="mt-1 flex items-center gap-3 text-[10px] font-black text-neutral-500">
+                <div className="mt-1 flex items-center gap-3 text-[11px] font-black text-neutral-500">
                   <span className="inline-flex items-center gap-0.5">
                     <Heart size={11} strokeWidth={2.3}/>
                     {p.reactionsLike ?? 0}
@@ -746,16 +981,23 @@ function FeedList({
                   <span className="text-neutral-400">· {tradeLabel}</span>
                 </div>
               </div>
+              {/* Thumbnail — fills the tile so there's no cream/white
+                  frame around the photo. Feed thumbnails are decorative
+                  (not product spec shots) so cover-crop is acceptable
+                  here — the trade-off memo about object-contain applies
+                  to merchant / product / service / machine imagery. */}
               <div
-                className="h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl shadow-sm sm:h-20 sm:w-20"
-                style={{
-                  backgroundImage: `url('${thumb}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundColor: "#F3F4F6"
-                }}
+                className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-xl shadow-sm sm:h-28 sm:w-28"
                 aria-hidden
-              />
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={thumb}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  loading="lazy"
+                />
+              </div>
             </Link>
           </li>
         );
@@ -792,34 +1034,31 @@ function ProductsList({
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
             >
               <div className="min-w-0 flex-1">
-                <div className="mb-0.5 flex items-center gap-1.5">
-                  {p.featured && (
+                {/* Item ref chip + Featured badge removed from the row
+                    card 2026-07-15 — Ref lives on the product-focus
+                    main image; row featured indicator was too noisy on
+                    landscape list. Bulk-buy indicator stays because
+                    it's data (progress toward group discount), not
+                    decoration. */}
+                {p.bulkBuy && (
+                  <div className="mb-0.5">
                     <span
-                      className="inline-flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider"
-                      style={{ backgroundColor: TAN_SOFT, color: TAN }}
-                    >
-                      <Sparkles size={8} strokeWidth={3}/>
-                      Featured
-                    </span>
-                  )}
-                  {p.bulkBuy && (
-                    <span
-                      className="rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider text-white"
+                      className="rounded-sm px-1 py-0.5 text-[11px] font-black uppercase tracking-wider text-white"
                       style={{ backgroundColor: "#166534" }}
                     >
                       Bulk · {p.bulkBuy.committedCount}/{p.bulkBuy.targetCount}
                     </span>
-                  )}
-                </div>
+                  </div>
+                )}
                 <div className="line-clamp-2 text-[12.5px] font-black leading-tight text-neutral-900">
                   {p.name}
                 </div>
                 {p.blurb && (
-                  <p className="mt-0.5 line-clamp-1 text-[10.5px] leading-snug text-neutral-600">
+                  <p className="mt-0.5 line-clamp-1 text-[11px] leading-snug text-neutral-600">
                     {p.blurb}
                   </p>
                 )}
-                <div className="mt-1 flex items-center gap-2 text-[10.5px] font-black text-neutral-700">
+                <div className="mt-1 flex items-center gap-2 text-[11px] font-black text-neutral-700">
                   <span
                     className="rounded-md px-1.5 py-0.5 text-[11px] shadow-sm"
                     style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
@@ -837,8 +1076,8 @@ function ProductsList({
                       still tappable; this pill just makes the action
                       obvious. */}
                   <span
-                    className="ml-auto inline-flex h-6 items-center gap-0.5 rounded-full px-2 text-[9.5px] font-black uppercase tracking-wider shadow-sm"
-                    style={{ backgroundColor: TAN, color: "#FFFFFF" }}
+                    className="ml-auto inline-flex h-6 items-center gap-0.5 rounded-full px-2 text-[11px] font-black uppercase tracking-wider shadow-sm"
+                    style={{ backgroundColor: "#166534", color: "#FFFFFF" }}
                   >
                     View
                     <ChevronRight size={10} strokeWidth={2.6}/>
@@ -846,15 +1085,17 @@ function ProductsList({
                 </div>
               </div>
               <div
-                className="h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl shadow-sm sm:h-20 sm:w-20"
-                style={{
-                  backgroundImage: `url('${p.imageUrl}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundColor: "#F3F4F6"
-                }}
+                className="relative h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 shadow-sm sm:h-20 sm:w-20"
                 aria-hidden
-              />
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.imageUrl}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
             </button>
           </li>
         );
@@ -872,17 +1113,25 @@ function ProductsList({
 function ProductQuickView({
   product,
   canteenSlug,
+  hostSlug,
   hostFirstName,
+  hostDisplayName,
   hostWhatsapp,
   hostRating,
+  tradeLabel,
+  city,
   sendToTradeCenter = false,
   onClose
 }: {
   product: CanteenProduct | null;
   canteenSlug: string;
+  hostSlug: string;
   hostFirstName: string;
+  hostDisplayName: string;
   hostWhatsapp: string | null;
   hostRating: { avg: number; count: number } | null;
+  tradeLabel: string;
+  city?: string | null;
   /** Merchant preference — when true AND the product has a
    *  tradeCenterListingId, we render a "Buy on Trade Center" button
    *  alongside "Ask on WhatsApp". */
@@ -898,7 +1147,7 @@ function ProductQuickView({
         <button
           type="button"
           onClick={onClose}
-          className="ml-2 rounded-full px-2 py-0.5 text-[10px] font-black text-white"
+          className="ml-2 rounded-full px-2 py-0.5 text-[11px] font-black text-white"
           style={{ backgroundColor: BRAND_BLACK }}
         >
           Back
@@ -937,15 +1186,19 @@ function ProductQuickView({
 
   return (
     <div className="relative">
-      {/* Close X — top-right, always visible */}
+      {/* View all products — top-right pill. This is the ONLY back-to-list
+          affordance in the product detail view. Replaces the yellow X
+          close because "View all products" better signals what happens
+          on tap (return to the products list, not "dismiss"). */}
       <button
         type="button"
         onClick={onClose}
-        aria-label="Close product detail"
-        className="absolute right-2 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full shadow-md active:scale-[0.95]"
+        aria-label="Back to all products"
+        className="absolute right-2 top-2 z-10 inline-flex h-8 items-center gap-1 rounded-full px-3 text-[11px] font-black uppercase tracking-wider shadow-md active:scale-[0.95]"
         style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
       >
-        <X size={14} strokeWidth={2.8}/>
+        <ChevronLeft size={12} strokeWidth={2.8}/>
+        View all products
       </button>
 
       {/* Hero + thumb gallery — shared ImageGallery renders main
@@ -959,7 +1212,7 @@ function ProductQuickView({
           overlay={
             product.bulkBuy ? (
               <span
-                className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
+                className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-white shadow-md"
                 style={{ backgroundColor: "#166534" }}
               >
                 Bulk · {product.bulkBuy.committedCount}/{product.bulkBuy.targetCount}
@@ -987,7 +1240,7 @@ function ProductQuickView({
           </p>
         )}
         {hostRating && (
-          <div className="mt-1 inline-flex items-center gap-0.5 text-[10.5px] font-bold text-neutral-500">
+          <div className="mt-1 inline-flex items-center gap-0.5 text-[11px] font-bold text-neutral-500">
             <Star size={10} fill="currentColor" strokeWidth={0} style={{ color: "#F59E0B" }}/>
             {hostRating.avg.toFixed(1)}
             <span className="text-neutral-400">· {hostRating.count} reviews</span>
@@ -1036,17 +1289,23 @@ function ProductQuickView({
             always primary; dark green "Buy on Trade Center" secondary. */}
         {(waUrl || (sendToTradeCenter && tcHref)) && (
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
-            {waUrl && (
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-neutral-900 shadow-md active:scale-[0.98]"
-                style={{ backgroundColor: "#FFB300" }}
+            {hostWhatsapp && (
+              <VerifiedContactButton
+                merchantSlug={hostSlug}
+                merchantDisplayName={hostDisplayName}
+                merchantFirstName={hostFirstName}
+                merchantWhatsapp={hostWhatsapp}
+                tradeLabel={tradeLabel}
+                city={city}
+                source="product-carousel"
+                sourceLabel={`${hostFirstName}'s ${product.name}${variantSuffix} listing on Thenetworkers.app`}
+                canteenSlug={canteenSlug}
+                className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-white shadow-md active:scale-[0.98]"
+                style={{ backgroundColor: "#166534" }}
               >
                 <MessageCircle size={13} strokeWidth={2.6}/>
                 Ask on WhatsApp
-              </a>
+              </VerifiedContactButton>
             )}
             {sendToTradeCenter && tcHref && (
               <Link
@@ -1057,7 +1316,7 @@ function ProductQuickView({
                 <ShoppingBag size={13} strokeWidth={2.6}/>
                 Buy on Trade Center
                 {effectivePriceGbp > 0 && (
-                  <span className="ml-0.5 rounded-full bg-white/15 px-1.5 py-0.5 text-[10px]">
+                  <span className="ml-0.5 rounded-full bg-white/15 px-1.5 py-0.5 text-[11px]">
                     £{effectivePriceGbp}
                   </span>
                 )}
@@ -1075,15 +1334,21 @@ function ProductQuickView({
 function JobsList({
   jobs,
   canteenSlug,
+  hostSlug,
   hostFirstName,
+  hostDisplayName,
   hostWhatsapp,
-  tradeLabel
+  tradeLabel,
+  city
 }: {
   jobs: RotatorPost[];
   canteenSlug: string;
+  hostSlug: string;
   hostFirstName: string;
+  hostDisplayName: string;
   hostWhatsapp: string | null;
   tradeLabel: string;
+  city?: string | null;
 }) {
   if (jobs.length === 0) return <EmptyRow label="No jobs uploaded yet"/>;
   return (
@@ -1093,16 +1358,11 @@ function JobsList({
           (j.authorSlug.charCodeAt(0) + i) % DEMO_THUMBS.length
         ];
         const jobsHref = `/trade-off/yard/canteens/${canteenSlug}/jobs`;
-        const waUrl = hostWhatsapp
-          ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-              `Hi ${hostFirstName}, I saw one of your jobs on Thenetworkers — I'd like to book similar ${tradeLabel.toLowerCase()} work.`
-            )}`
-          : null;
         return (
           <li key={j.id}>
             <div className="flex items-center gap-3 rounded-xl p-2 transition">
               <div className="min-w-0 flex-1">
-                <div className="mb-0.5 text-[9px] font-black uppercase tracking-[0.16em] text-neutral-500">
+                <div className="mb-0.5 text-[11px] font-black uppercase tracking-[0.16em] text-neutral-500">
                   {tradeLabel} · {timeAgoShort(j.createdAt)}
                 </div>
                 <p className="line-clamp-2 text-[12px] font-black leading-tight text-neutral-900">
@@ -1111,37 +1371,45 @@ function JobsList({
                 <div className="mt-1.5 flex items-center gap-2">
                   <Link
                     href={jobsHref}
-                    className="inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
+                    className="inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-white shadow-sm"
                     style={{ backgroundColor: BRAND_BLACK }}
                   >
                     See
                     <ChevronRight size={10} strokeWidth={2.6}/>
                   </Link>
-                  {waUrl && (
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
+                  {hostWhatsapp && (
+                    <VerifiedContactButton
+                      merchantSlug={hostSlug}
+                      merchantDisplayName={hostDisplayName}
+                      merchantFirstName={hostFirstName}
+                      merchantWhatsapp={hostWhatsapp}
+                      tradeLabel={tradeLabel}
+                      city={city}
+                      source="canteen-hero"
+                      sourceLabel={`one of ${hostFirstName}'s recent jobs on Thenetworkers.app`}
+                      canteenSlug={canteenSlug}
+                      className="inline-flex h-7 items-center gap-1 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-white shadow-sm"
                       style={{ backgroundColor: "#166534" }}
                     >
                       <MessageCircle size={10} strokeWidth={2.5}/>
                       Book
-                    </a>
+                    </VerifiedContactButton>
                   )}
                 </div>
               </div>
               <Link
                 href={jobsHref}
                 aria-label="See job details"
-                className="h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl shadow-sm sm:h-20 sm:w-20"
-                style={{
-                  backgroundImage: `url('${thumb}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundColor: "#F3F4F6"
-                }}
-              />
+                className="relative block h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 shadow-sm sm:h-20 sm:w-20"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={thumb}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </Link>
             </div>
           </li>
         );
@@ -1157,6 +1425,93 @@ function EmptyRow({ label }: { label: string }) {
       style={{ borderColor: "rgba(139,69,19,0.20)" }}
     >
       {label}
+    </div>
+  );
+}
+
+// ─── About panel (in-tab About Us) ──────────────────────────
+//
+// Sourced from the canteen's admin record (`bioShort`, address, city).
+// Fallback copy composes a short "trade + location" summary so a fresh
+// canteen with no bio still reads full. Ends with a small legal-links
+// row (Privacy · Terms · Cookie policy · © YEAR Thenetworkers.app).
+
+function AboutPanel({
+  canteenSlug,
+  hostDisplayName,
+  hostFirstName,
+  tradeLabel,
+  city,
+  bioShort,
+  servicesOffered
+}: {
+  canteenSlug: string;
+  hostDisplayName: string;
+  hostFirstName: string;
+  tradeLabel: string;
+  city: string | null;
+  bioShort: string | null;
+  servicesOffered: string[] | null;
+}) {
+  const bio = bioShort && bioShort.trim().length > 0
+    ? bioShort
+    : `${hostFirstName} is a ${tradeLabel}${city ? ` based in ${city}` : ""}. Get in touch via the Card action above to see full contact details and start a conversation.`;
+  const year = new Date().getFullYear();
+  return (
+    <div className="flex flex-col gap-4 px-1">
+      {/* Bio — no container. Sits directly on the section's cream so
+          it reads as the merchant speaking, not a walled-off card. */}
+      <div>
+        <div className="text-[16px] font-black leading-tight text-neutral-900">
+          {hostDisplayName}
+        </div>
+        <p className="mt-1.5 line-clamp-8 text-[13px] leading-relaxed text-neutral-700">
+          {bio}
+        </p>
+      </div>
+
+      {/* What we do best — same on-cream treatment as the bio. */}
+      {servicesOffered && servicesOffered.length > 0 && (
+        <div>
+          <div className="mb-2 text-[11px] font-black uppercase tracking-[0.18em] text-neutral-500">
+            What we do best..
+          </div>
+          <ul className="grid grid-cols-2 gap-x-3 gap-y-1.5 md:flex md:flex-wrap md:items-center md:gap-x-5 md:gap-y-1.5">
+            {servicesOffered.map((service) => (
+              <li
+                key={service}
+                className="flex items-center gap-2 text-[12.5px] font-bold text-neutral-800"
+              >
+                <span
+                  aria-hidden
+                  className="inline-block h-1.5 w-1.5 flex-shrink-0 rounded-full"
+                  style={{ backgroundColor: "#FFB300" }}
+                />
+                {service}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Legal + copyright — one combined link into the merchant's
+          full legal notice page (which covers terms, privacy, and the
+          under-18 reporting route). Powered-by copyright sits below. */}
+      <div className="mt-2 flex flex-col items-center gap-1 pt-1 text-center">
+        <Link
+          href={`/trade-off/yard/canteens/${canteenSlug}/legal`}
+          className="text-[12px] font-black uppercase tracking-[0.14em] text-neutral-500 hover:text-neutral-800"
+        >
+          {hostDisplayName}&apos;s terms &amp; privacy
+        </Link>
+        <div className="text-[12px] font-black uppercase tracking-[0.14em] text-neutral-400">
+          Powered by{" "}
+          <Link href="/" className="text-neutral-700 hover:text-neutral-900">
+            Thenetworkers.app
+          </Link>{" "}
+          · © {year}
+        </div>
+      </div>
     </div>
   );
 }
@@ -1208,7 +1563,7 @@ function ImageGallery({
         {overlay}
         {showThumbs && (
           <span
-            className="absolute left-3 bottom-3 rounded-full bg-black/70 px-2 py-0.5 text-[9px] font-black tracking-wider text-white backdrop-blur"
+            className="absolute left-3 bottom-3 rounded-full bg-black/70 px-2 py-0.5 text-[11px] font-black tracking-wider text-white backdrop-blur"
           >
             {activeIndex + 1} / {clean.length}
           </span>
@@ -1269,7 +1624,8 @@ function ImageGallery({
 //      tappable to open the Google Maps directions app.
 
 function ContactCard({
-  canteenSlug: _canteenSlug,
+  canteenSlug,
+  hostSlug,
   hostDisplayName,
   hostFirstName,
   hostWhatsapp,
@@ -1281,6 +1637,7 @@ function ContactCard({
   openingHours
 }: {
   canteenSlug: string;
+  hostSlug: string;
   hostDisplayName: string;
   hostFirstName: string;
   hostWhatsapp: string | null;
@@ -1327,7 +1684,7 @@ function ContactCard({
     return lines.join("\n");
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim() || !message.trim()) {
       setError("Please add your name and a short message.");
@@ -1336,13 +1693,32 @@ function ContactCard({
     setError(null);
     const text = buildEnquiryText();
     if (hostWhatsapp) {
-      // WhatsApp deep-link with full form pre-filled as a clean text.
+      // Contact form already collected the customer's details in a
+      // structured way — record the deduction intent on the platform,
+      // then open WhatsApp with the pre-filled enquiry. Failures on the
+      // deduct endpoint are swallowed so a slow/absent backend never
+      // stalls the visitor's handoff to WhatsApp.
+      try {
+        await fetch(`/api/washers/deduct`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            merchantSlug: hostSlug,
+            source: "canteen-contact-page",
+            sourceLabel: `${hostFirstName}'s contact page on Thenetworkers.app`,
+            guestName: name.trim(),
+            guestWhatsapp: phone.trim() || email.trim() || "unknown",
+            guestComment: message.trim()
+          })
+        });
+      } catch {
+        // ignore — proceed to WA handoff
+      }
       const digits = hostWhatsapp.replace(/[^0-9]/g, "");
       window.open(`https://wa.me/${digits}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
     } else {
-      // Fallback: mailto with the form contents. When the host has
-      // no published email either, prefix uses `contact@` at the
-      // canteen domain — the shell can wire a real address later.
+      // Fallback: mailto with the form contents. Email path skips the
+      // washer deduct (no WhatsApp lead landed on the merchant).
       const subject = `Enquiry from ${name || "Thenetworkers"} · ${tradeLabel}`;
       window.location.href = `mailto:hello@thenetworkers.app?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
     }
@@ -1360,7 +1736,7 @@ function ContactCard({
           sits directly on the feed section background as a header
           strip. */}
       <div className="px-1">
-        <div className="text-[9px] font-black uppercase tracking-[0.18em] text-neutral-500">
+        <div className="text-[11px] font-black uppercase tracking-[0.18em] text-neutral-500">
           {tradeLabel}
         </div>
         <div className="mt-0.5 text-[14px] font-black leading-tight text-neutral-900">
@@ -1382,7 +1758,7 @@ function ContactCard({
             </a>
           )}
           {openingHours && (
-            <div className="inline-flex items-center gap-1 text-[10.5px] font-bold text-neutral-600">
+            <div className="inline-flex items-center gap-1 text-[11px] font-bold text-neutral-600">
               <Clock size={10} strokeWidth={2.3}/>
               {openingHours}
             </div>
@@ -1408,7 +1784,7 @@ function ContactCard({
           <button
             type="button"
             onClick={() => setSent(false)}
-            className="mt-1 inline-flex h-9 items-center gap-1 rounded-full border px-4 text-[10.5px] font-black uppercase tracking-wider text-neutral-800"
+            className="mt-1 inline-flex h-9 items-center gap-1 rounded-full border px-4 text-[11px] font-black uppercase tracking-wider text-neutral-800"
             style={{ borderColor: "rgba(139,69,19,0.15)" }}
           >
             Send another
@@ -1484,7 +1860,7 @@ function ContactCard({
           </FormField>
 
           {error && (
-            <div className="text-[10.5px] font-black uppercase tracking-wider text-red-600">
+            <div className="text-[11px] font-black uppercase tracking-wider text-red-600">
               {error}
             </div>
           )}
@@ -1539,9 +1915,7 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
     <ul className="flex flex-col gap-2">
       {trades.map((t) => {
         const label = lookupTradeLabel(t.tradeSlug);
-        const waUrl = `https://wa.me/${t.whatsapp}?text=${encodeURIComponent(
-          `Hi ${t.displayName.split(" ")[0]}, I found you on Thenetworkers — I'd like to get in touch about ${label.toLowerCase()}.`
-        )}`;
+        const tradeFirstName = t.displayName.split(" ")[0] ?? t.displayName;
         return (
           <li key={t.slug}>
             <div
@@ -1549,49 +1923,56 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
             >
               <div className="min-w-0 flex-1">
-                <div className="text-[9px] font-black uppercase tracking-[0.16em] text-neutral-500">
+                <div className="text-[11px] font-black uppercase tracking-[0.16em] text-neutral-500">
                   {label} · {t.city}
                 </div>
                 <div className="mt-0.5 line-clamp-1 text-[13px] font-black leading-tight text-neutral-900">
                   {t.displayName}
                 </div>
-                <p className="mt-0.5 line-clamp-1 text-[10.5px] leading-snug text-neutral-600">
+                <p className="mt-0.5 line-clamp-1 text-[11px] leading-snug text-neutral-600">
                   {t.bio}
                 </p>
                 <div className="mt-1.5 flex items-center gap-2">
                   <span
-                    className="inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-black shadow-sm"
+                    className="inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-black shadow-sm"
                     style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
                   >
                     <Star size={9} fill="currentColor" strokeWidth={0} style={{ color: "#0A0A0A" }}/>
                     {t.rating.toFixed(1)}
                   </span>
-                  <span className="text-[10px] font-bold text-neutral-500">
+                  <span className="text-[11px] font-bold text-neutral-500">
                     {t.reviewCount} reviews
                   </span>
-                  <a
-                    href={waUrl}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    aria-label={`WhatsApp ${t.displayName}`}
-                    className="ml-auto inline-flex h-8 items-center gap-1 rounded-full px-2.5 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
+                  <VerifiedContactButton
+                    merchantSlug={t.slug}
+                    merchantDisplayName={t.displayName}
+                    merchantFirstName={tradeFirstName}
+                    merchantWhatsapp={t.whatsapp}
+                    tradeLabel={label}
+                    city={t.city}
+                    source="canteen-hero"
+                    sourceLabel={`${tradeFirstName}'s ${label} profile on Thenetworkers.app`}
+                    ariaLabel={`WhatsApp ${t.displayName}`}
+                    className="ml-auto inline-flex h-8 items-center gap-1 rounded-full px-2.5 text-[11px] font-black uppercase tracking-wider text-white shadow-sm"
                     style={{ backgroundColor: "#166534" }}
                   >
                     <MessageCircle size={10} strokeWidth={2.5}/>
                     Message
-                  </a>
+                  </VerifiedContactButton>
                 </div>
               </div>
               <div
-                className="h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl shadow-sm sm:h-20 sm:w-20"
-                style={{
-                  backgroundImage: `url('${t.imageUrl}')`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundColor: "#F3F4F6"
-                }}
+                className="relative h-[68px] w-[68px] flex-shrink-0 overflow-hidden rounded-xl bg-neutral-100 shadow-sm sm:h-20 sm:w-20"
                 aria-hidden
-              />
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={t.imageUrl}
+                  alt=""
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
             </div>
           </li>
         );
@@ -1666,12 +2047,12 @@ function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
             >
               <div className="min-w-0 flex-1">
-                <div className="text-[9px] font-black uppercase tracking-[0.16em] text-neutral-500">
+                <div className="text-[11px] font-black uppercase tracking-[0.16em] text-neutral-500">
                   {r.jobType} · {r.reviewerCity}
                 </div>
                 <div className="mt-0.5 flex items-center gap-1.5">
                   <span
-                    className="inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-black shadow-sm"
+                    className="inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[11px] font-black shadow-sm"
                     style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
                   >
                     {Array.from({ length: 5 }).map((_, i) => (
@@ -1684,14 +2065,14 @@ function ReviewsList({ reviews }: { reviews: DemoReview[] }) {
                       />
                     ))}
                   </span>
-                  <span className="text-[10.5px] font-black text-neutral-900">
+                  <span className="text-[11px] font-black text-neutral-900">
                     {r.reviewerName}
                   </span>
                 </div>
                 <p className="mt-1 line-clamp-2 text-[11px] leading-snug text-neutral-700">
                   {r.body}
                 </p>
-                <div className="mt-1 text-[9.5px] font-bold text-neutral-500">
+                <div className="mt-1 text-[11px] font-bold text-neutral-500">
                   {timeLabel}
                 </div>
               </div>
@@ -1741,15 +2122,16 @@ function DesignsList({
             type="button"
             onClick={() => onOpen(d.id)}
             aria-label={`View ${d.name} design`}
-            className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.99]"
-            style={{
-              borderColor: "rgba(139,69,19,0.15)",
-              backgroundImage: `url('${d.imageUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundColor: "#F3F4F6"
-            }}
+            className="group relative block aspect-[4/3] w-full overflow-hidden rounded-xl border bg-neutral-100 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md active:scale-[0.99]"
+            style={{ borderColor: "rgba(139,69,19,0.15)" }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={d.imageUrl}
+              alt={d.name}
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
             {/* Bottom-up gradient for text legibility */}
             <div
               aria-hidden
@@ -1761,7 +2143,7 @@ function DesignsList({
             />
             {/* Style chip top-left */}
             <span
-              className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider shadow-md"
+              className="absolute left-2 top-2 rounded-sm px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wider shadow-md"
               style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
             >
               {d.style}
@@ -1770,7 +2152,7 @@ function DesignsList({
                 message the merchant. Dark chip for high contrast on
                 the light-image top corner. */}
             <span
-              className="absolute right-2 top-2 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white shadow-md"
+              className="absolute right-2 top-2 rounded-sm px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wider text-white shadow-md"
               style={{ backgroundColor: "rgba(10,10,10,0.85)", backdropFilter: "blur(4px)" }}
             >
               Ref {d.ref}
@@ -1780,7 +2162,7 @@ function DesignsList({
               <div className="text-[13px] font-black leading-tight text-white drop-shadow-md">
                 {d.name}
               </div>
-              <div className="mt-0.5 text-[10.5px] font-bold text-white/85 drop-shadow-sm">
+              <div className="mt-0.5 text-[11px] font-bold text-white/85 drop-shadow-sm">
                 {d.tagline}
               </div>
             </div>
@@ -1793,20 +2175,44 @@ function DesignsList({
 
 function DesignModal({
   design,
+  hostSlug,
   hostFirstName,
+  hostDisplayName,
   hostWhatsapp,
+  tradeLabel,
+  tradeSlug,
+  city,
+  canteenSlug,
   onClose
 }: {
   design: DemoDesign;
+  hostSlug: string;
   hostFirstName: string;
+  hostDisplayName: string;
   hostWhatsapp: string | null;
+  tradeLabel: string;
+  /** Trade slug drives the noun for this design surface — kitchen
+   *  fitter → "Kitchen Design", bathroom fitter → "Bathroom Design",
+   *  everyone else → "Project". Keeps copy trade-natural without
+   *  cluttering per-design mock data. */
+  tradeSlug?: string;
+  city?: string | null;
+  canteenSlug: string;
   onClose: () => void;
 }) {
+  // Trade-aware singular noun for THIS surface. Matches the plural
+  // noun in designsLabelFor (Kitchens / Bathrooms / Projects).
+  const singularNoun = tradeSlug === "kitchen-fitter"
+    ? "Kitchen Design"
+    : tradeSlug === "bathroom-fitter"
+      ? "Bathroom Design"
+      : "Project";
+  const singularNounLower = singularNoun.toLowerCase();
   // Pre-filled WhatsApp deep link that includes the design ref so the
-  // merchant instantly knows which kitchen the customer is asking about.
+  // merchant instantly knows which project the customer is asking about.
   const waUrl = hostWhatsapp
     ? `https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-        `Hi ${hostFirstName}, I'm interested in the ${design.name} kitchen design (Ref ${design.ref}). Can you tell me more?`
+        `Hi ${hostFirstName}, I'm interested in the ${design.name} ${singularNounLower} (Ref ${design.ref}). Can you tell me more?`
       )}`
     : null;
   useEffect(() => {
@@ -1854,17 +2260,17 @@ function DesignModal({
             below. Chips overlay on the main image. */}
         <ImageGallery
           images={[design.imageUrl, ...(design.galleryUrls ?? [])]}
-          altBase={`${design.name} kitchen design`}
+          altBase={`${design.name} ${singularNounLower}`}
           overlay={
             <>
               <span
-                className="absolute left-3 top-3 rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-wider shadow-md"
+                className="absolute left-3 top-3 rounded-sm px-1.5 py-0.5 text-[11px] font-black uppercase tracking-wider shadow-md"
                 style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
               >
                 {design.style}
               </span>
               <span
-                className="absolute right-3 bottom-3 rounded-sm px-2 py-0.5 text-[10px] font-black uppercase tracking-wider text-white shadow-md"
+                className="absolute right-3 bottom-3 rounded-sm px-2 py-0.5 text-[11px] font-black uppercase tracking-wider text-white shadow-md"
                 style={{ backgroundColor: "rgba(10,10,10,0.85)", backdropFilter: "blur(4px)" }}
               >
                 Ref {design.ref}
@@ -1876,8 +2282,8 @@ function DesignModal({
         {/* Details */}
         <div className="overflow-y-auto p-4">
           <div className="flex items-center justify-between gap-2">
-            <div className="text-[9px] font-black uppercase tracking-[0.22em] text-neutral-500">
-              Kitchen Design · Ref {design.ref}
+            <div className="text-[11px] font-black uppercase tracking-[0.22em] text-neutral-500">
+              {singularNoun} · Ref {design.ref}
             </div>
           </div>
           <h2 className="mt-0.5 text-[18px] font-black leading-tight text-neutral-900 md:text-[20px]">
@@ -1889,8 +2295,8 @@ function DesignModal({
           <p className="mt-3 text-[12px] leading-relaxed text-neutral-700 md:text-[13px]">
             {design.description}
           </p>
-          <p className="mt-3 rounded-lg border p-2.5 text-[11px] leading-relaxed text-neutral-700 md:text-[12px]"
-             style={{ borderColor: "rgba(184,134,11,0.20)", backgroundColor: "#FBF6EC" }}>
+          <p className="mt-3 rounded-lg border p-2.5 text-[11px] leading-relaxed text-neutral-900 md:text-[12px]"
+             style={{ borderColor: "rgba(184,134,11,0.35)", backgroundColor: "#FFB300" }}>
             <span className="font-black text-neutral-900">Quote Ref {design.ref}</span> when you enquire — we&apos;ll pull the design straight up and can price it for your space.
           </p>
 
@@ -1899,17 +2305,23 @@ function DesignModal({
               customer means. Falls back to a disabled placeholder when
               the merchant hasn't published a WhatsApp number. */}
           <div className="mt-4">
-            {waUrl ? (
-              <a
-                href={waUrl}
-                target="_blank"
-                rel="noreferrer noopener"
+            {hostWhatsapp ? (
+              <VerifiedContactButton
+                merchantSlug={hostSlug}
+                merchantDisplayName={hostDisplayName}
+                merchantFirstName={hostFirstName}
+                merchantWhatsapp={hostWhatsapp}
+                tradeLabel={tradeLabel}
+                city={city}
+                source="canteen-hero"
+                sourceLabel={`${hostFirstName}'s ${design.name} ${singularNounLower} (Ref ${design.ref}) on Thenetworkers.app`}
+                canteenSlug={canteenSlug}
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-full text-[13px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.98]"
                 style={{ backgroundColor: "#166534" }}
               >
                 <MessageCircle size={14} strokeWidth={2.6}/>
                 Enquire Now
-              </a>
+              </VerifiedContactButton>
             ) : (
               <span
                 className="flex h-11 w-full items-center justify-center gap-2 rounded-full border text-[13px] font-black uppercase tracking-wider text-neutral-500"
@@ -1937,7 +2349,7 @@ function FormField({
 }) {
   return (
     <label className="block">
-      <span className="mb-0.5 block text-[9.5px] font-black uppercase tracking-[0.14em] text-neutral-600">
+      <span className="mb-0.5 block text-[11px] font-black uppercase tracking-[0.14em] text-neutral-600">
         {label}{required && <span style={{ color: TAN }}> *</span>}
       </span>
       {children}

@@ -2688,7 +2688,11 @@ function CompareWithPicker({
     </div>
   );
 }
-const FEATURED_SLOTS = 6;
+// Platform standard 2026-07-15: max 5 featured products per canteen.
+// See memory: project_canteen_featured_cap_5.md. Editor enforces this
+// as a hard cap — merchant can't feature a 6th until they un-features
+// one. Applies to every trade + every canteen.
+const FEATURED_SLOTS = 5;
 
 function FeaturedProductsEditor({
   products,

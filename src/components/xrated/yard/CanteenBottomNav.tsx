@@ -13,6 +13,7 @@ import { useState } from "react";
 import { MessageCircle, Star } from "lucide-react";
 import { whatsappDigits } from "@/lib/tradeOff";
 import { VerifiedContactModal } from "@/components/xrated/VerifiedContactModal";
+import { DEFAULT_PALETTE, type PaletteTokens } from "@/lib/paletteTokens";
 
 const BRAND_GREEN_DARK = "#166534";
 const BRAND_YELLOW = "#FFB300";
@@ -25,7 +26,8 @@ export function CanteenBottomNav({
   hostWhatsapp,
   hostReviews,
   tradeLabel,
-  hostCity
+  hostCity,
+  palette = DEFAULT_PALETTE
 }: {
   canteenSlug?: string;
   hostSlug?: string;
@@ -35,6 +37,9 @@ export function CanteenBottomNav({
   hostReviews?: { avg: number; count: number } | null;
   tradeLabel?: string;
   hostCity?: string | null;
+  /** Palette tokens — drives the pill bg + text colours. WhatsApp
+   *  button stays WhatsApp-brand green across every palette. */
+  palette?: PaletteTokens;
 }) {
   const [contactOpen, setContactOpen] = useState(false);
   const showRating = hostReviews && hostReviews.count >= 5;
@@ -56,24 +61,35 @@ export function CanteenBottomNav({
         aria-label="Canteen contact bar"
         className="pointer-events-auto flex w-full max-w-sm items-center justify-between gap-2 rounded-full border py-1 pl-4 pr-1 shadow-lg backdrop-blur-md"
         style={{
-          backgroundColor: "rgba(251,246,236,0.96)",
-          borderColor:     "rgba(139,69,19,0.14)"
+          backgroundColor: "#FFFFFF",
+          borderColor: palette.dark
+            ? "rgba(0,0,0,0.15)"
+            : "rgba(139,69,19,0.14)"
         }}
       >
         {showRating ? (
-          <span className="inline-flex items-center gap-1 text-[13px] font-black text-neutral-900">
+          <span
+            className="inline-flex items-center gap-1 text-[13px] font-black"
+            style={{ color: "#171717" }}
+          >
             <Star size={14} fill={BRAND_YELLOW} strokeWidth={0} style={{ color: BRAND_YELLOW }}/>
             {hostReviews!.avg.toFixed(1)}
-            <span className="text-[11px] font-bold text-neutral-500">
+            <span className="text-[11px] font-bold" style={{ color: "#737373" }}>
               · {hostReviews!.count} reviews
             </span>
           </span>
         ) : (
           hostFirstName && (
-            <span className="inline-flex min-w-0 items-center gap-1 text-[12px] font-black text-neutral-900">
+            <span
+              className="inline-flex min-w-0 items-center gap-1 text-[12px] font-black"
+              style={{ color: "#171717" }}
+            >
               <span className="truncate">{hostFirstName}</span>
               {tradeLabel && (
-                <span className="truncate text-[10px] font-bold uppercase tracking-widest text-neutral-500">
+                <span
+                  className="truncate text-[11px] font-bold uppercase tracking-widest"
+                  style={{ color: "#737373" }}
+                >
                   · {tradeLabel}
                 </span>
               )}

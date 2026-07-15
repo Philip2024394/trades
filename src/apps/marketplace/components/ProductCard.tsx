@@ -17,6 +17,7 @@ import { ShoppingCart, Check, Star, Package, Eye, ShieldCheck } from "lucide-rea
 import type { MarketplaceProduct } from "../types";
 import type { MarketplaceMerchant } from "../data/merchants";
 import { useGuestBasket } from "../lib/useGuestBasket";
+import { useIsTrade } from "@/apps/hub/lib/useIsTrade";
 
 export type ViewerTier = "free" | "paid" | "verified" | "merchant-pro";
 
@@ -51,9 +52,15 @@ export function ProductCard({
   merchant,
   viewerTier
 }: Props) {
+  // Trade price gate — 2026-07-14 update:
+  //   - homeowners see retail only
+  //   - every signed-in trade sees the trade price, regardless of tier
+  // Older tier-based check kept as a fall-back for accounts that
+  // haven't yet migrated to the viewer_role model.
+  const isTrade = useIsTrade();
   const showTradePrice =
     product.tradePriceGbp !== undefined &&
-    (viewerTier === "paid" || viewerTier === "verified" || viewerTier === "merchant-pro");
+    (isTrade || viewerTier === "paid" || viewerTier === "verified" || viewerTier === "merchant-pro");
   const displayPrice = showTradePrice ? product.tradePriceGbp! : product.priceGbp;
   const wasPrice = showTradePrice ? product.priceGbp : null;
   const badge = topBadge(product);
@@ -217,17 +224,19 @@ export function ProductCard({
           )}
         </div>
 
-        {/* Trade-price unlock nudge — only when the merchant offers a
-            trade price but the viewer isn't verified. Sits inline as a
-            small pill, not competing with the primary action. */}
+        {/* Trade-price gate — trade prices are hidden from homeowners
+            per the 2026-07-14 policy. Signed-in trades see the trade
+            price inline; everyone else sees this pill pointing to the
+            trade sign-in flow. */}
         {product.tradePriceGbp && !showTradePrice && (
           <Link
-            href="/tc/identity"
+            href="/sign-in?role=trade"
             className="inline-flex items-center gap-1 self-start rounded-full px-2 py-0.5 text-[9.5px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-100"
             style={{ backgroundColor: "#F5F0E4" }}
+            title="Trade prices are visible to signed-in trades only"
           >
             <ShieldCheck size={10}/>
-            Trade price · Verify
+            Trade price · Sign in
           </Link>
         )}
 

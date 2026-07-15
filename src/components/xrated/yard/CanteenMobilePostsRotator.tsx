@@ -28,6 +28,9 @@ export type RotatorPost = {
   /** First uploaded photo URL if the post has one — used by the Live
    *  Feed cards as the right-side thumbnail. */
   imageUrl?: string | null;
+  /** Poster's avatar image URL. When null the feed renders the yellow
+   *  initial chip; when set the card shows a real face. */
+  authorAvatarUrl?: string | null;
   /** Live reaction + reply counts so the rotator card mirrors the
    *  full CanteenPostCard's engagement bar. Defaults to 0 when the
    *  underlying post doesn't have them. */
@@ -91,10 +94,10 @@ export function CanteenMobilePostsRotator({
         <div className="flex items-center gap-1.5">
           <span
             aria-hidden
-            className="h-1.5 w-1.5 animate-pulse rounded-full"
+            className="h-1.5 w-1.5 rounded-full"
             style={{ backgroundColor: BRAND_YELLOW }}
           />
-          <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
+          <div className="text-[11px] font-black uppercase tracking-[0.22em] text-neutral-500">
             Live from the canteen
           </div>
         </div>
@@ -129,9 +132,24 @@ export function CanteenMobilePostsRotator({
         </div>
       </div>
 
-      <ul className="flex flex-col gap-2">
+      <ul className="flex flex-col">
         {visible.map((p, i) => (
           <li key={`${p.id}-${i}`}>
+            {i > 0 && (
+              /* Dashed divider between posts — inset 16px on each end
+                 so the line doesn't run edge-to-edge. Matches the
+                 FeedList tabbed-section separator styling exactly. */
+              <div
+                aria-hidden
+                style={{
+                  borderTop:    "1.5px dashed rgba(0,0,0,0.15)",
+                  marginLeft:   "16px",
+                  marginRight:  "16px",
+                  marginTop:    "10px",
+                  marginBottom: "10px"
+                }}
+              />
+            )}
             <RotatorCard
               post={p}
               canteenSlug={canteenSlug}
@@ -201,18 +219,18 @@ function RotatorCard({
           <div className="truncate text-[13px] font-black text-neutral-900">
             {post.authorDisplayName}
           </div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+          <div className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
             {timeAgoShort(post.createdAt)}
           </div>
         </div>
         {isLive(post.createdAt) && (
           <span
-            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.16em] shadow-sm"
+            className="inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[11px] font-black uppercase tracking-[0.16em] shadow-sm"
             style={{ backgroundColor: "rgba(184,134,11,0.15)", color: "#B8860B" }}
           >
             <span
               aria-hidden
-              className="inline-block h-1.5 w-1.5 animate-pulse rounded-full"
+              className="inline-block h-1.5 w-1.5 rounded-full"
               style={{ backgroundColor: "#B8860B" }}
             />
             LIVE
@@ -308,7 +326,7 @@ function RotatorReactionRow({
           className="inline-flex items-center gap-1 text-[11px] font-black text-neutral-600 transition active:scale-[0.95]"
           aria-label={`${comments} comments`}
         >
-          <MessageSquare size={14} strokeWidth={2.2}/>
+          <MessageSquare size={14} strokeWidth={2.2} fill={BRAND_YELLOW} style={{ color: BRAND_YELLOW }}/>
           <span>{comments}</span>
           <span className="text-neutral-400">
             comment{comments === 1 ? "" : "s"}
@@ -317,7 +335,7 @@ function RotatorReactionRow({
       </div>
       <Link
         href={replyHref}
-        className="inline-flex h-8 items-center gap-1 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider shadow-sm active:scale-[0.97]"
+        className="inline-flex h-8 items-center gap-1 rounded-full px-3 text-[11px] font-black uppercase tracking-wider shadow-sm active:scale-[0.97]"
         style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
       >
         <MessageCircle size={11} strokeWidth={2.5}/>

@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import type { CanteenMember } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
 
 const AVATAR_ROW_LIMIT = 8;
 
@@ -105,16 +106,22 @@ export function CanteenAdminCard({
 
               <div className="mt-3 flex flex-col gap-1.5">
                 {admin.whatsapp && (
-                  <a
-                    href={`https://wa.me/${admin.whatsapp}`}
-                    target="_blank"
-                    rel="noreferrer noopener"
+                  <VerifiedContactButton
+                    merchantSlug={admin.slug}
+                    merchantDisplayName={admin.displayName}
+                    merchantFirstName={admin.displayName.split(/\s+/)[0] ?? admin.displayName}
+                    merchantWhatsapp={admin.whatsapp}
+                    tradeLabel={admin.tradeLabel}
+                    city={admin.city}
+                    source="canteen-hero"
+                    sourceLabel={`${admin.displayName.split(/\s+/)[0] ?? admin.displayName}'s canteen admin card on Thenetworkers.app`}
+                    canteenSlug={admin.slug}
                     className="inline-flex h-9 items-center justify-center gap-1.5 rounded-full text-[11px] font-black uppercase tracking-wider text-white shadow-sm"
                     style={{ backgroundColor: BRAND_GREEN_DARK }}
                   >
                     <MessageCircle size={12} strokeWidth={2.5} />
                     Message on WhatsApp
-                  </a>
+                  </VerifiedContactButton>
                 )}
                 <button
                   onClick={onOpenProfileFocus}
@@ -250,17 +257,23 @@ function MemberLandscapeCard({
       </div>
 
       {isPaid && member.whatsapp ? (
-        <a
-          href={`https://wa.me/${member.whatsapp}`}
-          target="_blank"
-          rel="noreferrer noopener"
+        <VerifiedContactButton
+          merchantSlug={member.slug}
+          merchantDisplayName={member.displayName}
+          merchantFirstName={member.displayName.split(/\s+/)[0] ?? member.displayName}
+          merchantWhatsapp={member.whatsapp}
+          tradeLabel={member.tradeLabel}
+          city={member.city}
+          source="canteen-hero"
+          sourceLabel={`${member.displayName.split(/\s+/)[0] ?? member.displayName}'s member profile on Thenetworkers.app`}
+          canteenSlug={member.slug}
+          ariaLabel={`WhatsApp ${member.displayName}`}
           className="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
           style={{ backgroundColor: BRAND_GREEN_DARK }}
-          title={`WhatsApp ${member.displayName}`}
         >
           <MessageCircle size={11} strokeWidth={2.5} />
           WhatsApp
-        </a>
+        </VerifiedContactButton>
       ) : (
         <Link
           href={`/trade/${member.slug}`}

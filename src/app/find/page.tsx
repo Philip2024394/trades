@@ -302,6 +302,29 @@ export default async function FindPortalPage({
             Or push your project to the 3 nearest
             <span aria-hidden="true">&rarr;</span>
           </a>
+
+          {/* City quick-links — clean SEO-friendly local landing pages.
+              Each links to /find/{city} which loads a dedicated
+              city-specific page with rich metadata + LocalBusiness
+              JSON-LD structured data. Search engines rank path-based
+              URLs far better than the ?city= query params. */}
+          {countryLabel === "UK" && (
+            <div className="mt-5 flex flex-wrap items-center gap-2">
+              <span className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
+                Popular UK cities:
+              </span>
+              {["manchester", "london", "birmingham", "leeds", "liverpool", "glasgow"].map((c) => (
+                <a
+                  key={c}
+                  href={`/find/${c}`}
+                  className="inline-flex h-7 items-center rounded-full border px-3 text-[10.5px] font-black uppercase tracking-wider text-white/90 transition hover:bg-white/10"
+                  style={{ borderColor: "rgba(255,255,255,0.25)" }}
+                >
+                  {c[0].toUpperCase() + c.slice(1)}
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

@@ -2,19 +2,28 @@
 
 // The Counter — the marketing river. Renders on the right column of a
 // canteen page (desktop) and as a horizontal-scroll strip on mobile.
-// Merchant / Trade-Center-product / member-listing posts flow through
-// here; click-to-open opens the post privately for the viewer
-// (private-view feature — schema wired in a follow-up).
+// Merchant / Trade-Center-product / member-listing / service-inquiry
+// posts flow through here; click-to-open opens the post privately for
+// the viewer (private-view feature — schema wired in a follow-up).
 //
 // Never longer than 90 days per post; 30-day baseline with engagement-
 // based +15-day extension.
+//
+// Scroll model (2026-07-14): switched from CSS marquee to JS-controlled
+// scroll so the merchant can nudge ±3 cards with the Back / Forward
+// chips if they miss a banner. Auto-drift is slow (~30 px/sec), pauses
+// on hover, and resumes after any button interaction times out.
 
+import { useEffect, useRef, useState } from "react";
 import {
   Store,
   Tag,
   Package,
   Clock,
-  Sparkles
+  Sparkles,
+  Info,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
 import type { SideLanePost } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
@@ -24,6 +33,17 @@ import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens"
 // it during the 7-day sold-visibility tail after the sale is agreed.
 const BANNER_MAKE_OFFER = "https://ik.imagekit.io/9mrgsv2rp/Untitledfdfsdfsdffdfd-removebg-preview.png";
 const BANNER_SOLD       = "https://ik.imagekit.io/9mrgsv2rp/Untitleddfsdfdfsdf-removebg-preview.png";
+
+// Drift speed for the auto-scroll (pixels per second). ~30 = slow
+// enough to read a card's headline in one pass; matches the merchant
+// feedback that the old 240s CSS marquee felt too fast.
+const DRIFT_PX_PER_SEC = 30;
+// How long the auto-drift stays paused after a Back / Forward chip
+// interaction. Merchant gets time to read; then the flow resumes.
+const RESUME_DELAY_MS = 4000;
+// Fallback card height when we haven't measured yet (first render).
+// The real value is measured on mount and after the posts list changes.
+const FALLBACK_CARD_HEIGHT_PX = 180;
 
 function timeLeftLabel(expiresAt: string): string {
   const diffMs = new Date(expiresAt).getTime() - Date.now();
@@ -45,28 +65,10 @@ function kindMeta(kind: SideLanePost["kind"]) {
   }
 }
 
-// Continuous vertical scroll marquee. Duplicates the post list so the
-// translateY(-50%) keyframe loops seamlessly. Hover on the strip pauses
-// so the user can actually read a card they're interested in.
-const MARQUEE_CSS = `
-@keyframes canteen-lane-scroll-up {
-  0%   { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-.canteen-lane-marquee {
-  animation: canteen-lane-scroll-up 240s linear infinite;
-  will-change: transform;
-}
-.canteen-lane-shell:hover .canteen-lane-marquee { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .canteen-lane-marquee { animation: none; }
-}
-`;
-
 export function CanteenSideLane({
   posts,
   onOpenPost,
-  onKnowTheFlow
+  onKnowTheFlow: _onKnowTheFlow
 }: {
   posts: SideLanePost[];
   /** Fires when a live card is clicked. The parent is responsible for
@@ -77,13 +79,73 @@ export function CanteenSideLane({
    *  the main canteen feed with the in-place explainer. */
   onKnowTheFlow: () => void;
 }) {
-  // Duplicate the list so the -50% keyframe loops smoothly.
+  const listRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [cardHeightPx, setCardHeightPx] = useState<number>(FALLBACK_CARD_HEIGHT_PX);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Duplicate the list so scrollTop wrap-around loops seamlessly.
   const looped = [...posts, ...posts];
+
+  // Measure the first card's rendered height so ±3-card scrolling
+  // uses the correct pixel delta. Also re-measures if the posts list
+  // changes (e.g. filter applied).
+  useEffect(() => {
+    if (!listRef.current) return;
+    const firstItem = listRef.current.querySelector<HTMLLIElement>("li");
+    if (firstItem) {
+      const rect = firstItem.getBoundingClientRect();
+      // 8px = the gap-2 between cards
+      setCardHeightPx(rect.height + 8);
+    }
+  }, [posts.length]);
+
+  // Slow auto-drift. Uses requestAnimationFrame for smooth 60fps
+  // increments. Wraps the scrollTop at half-height so the seam between
+  // the two copies is invisible.
+  useEffect(() => {
+    if (paused) return;
+    let raf = 0;
+    let lastTs = performance.now();
+    const step = (ts: number) => {
+      const dt = (ts - lastTs) / 1000;
+      lastTs = ts;
+      const el = listRef.current;
+      if (el) {
+        const half = el.scrollHeight / 2;
+        if (half > 0) {
+          if (el.scrollTop >= half) el.scrollTop -= half;
+          else el.scrollTop += DRIFT_PX_PER_SEC * dt;
+        }
+      }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [paused]);
+
+  // Manual ±3-card scroll. Pauses the drift temporarily so the
+  // merchant has time to read what they scrolled back to; resumes
+  // after RESUME_DELAY_MS.
+  function scrollByCards(cards: number) {
+    if (!listRef.current) return;
+    setPaused(true);
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    listRef.current.scrollBy({ top: cards * cardHeightPx, behavior: "smooth" });
+    resumeTimerRef.current = setTimeout(() => setPaused(false), RESUME_DELAY_MS);
+  }
+
+  // Cleanup pending resume timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    };
+  }, []);
+
   return (
-    <>
-      <style>{MARQUEE_CSS}</style>
-      <aside className="w-full">
-        <div className="mb-3 flex items-center gap-1.5">
+    <aside className="w-full">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-1.5">
           <span
             className="h-1.5 w-1.5 animate-pulse rounded-full"
             style={{ backgroundColor: BRAND_YELLOW }}
@@ -93,33 +155,64 @@ export function CanteenSideLane({
             Live listings
           </div>
         </div>
-
-        {posts.length === 0 ? (
-          <div
-            className="rounded-xl border border-dashed p-4 text-center text-[11px] text-neutral-500"
-            style={{ borderColor: "rgba(139,69,19,0.2)" }}
-          >
-            No live listings yet.
-          </div>
-        ) : (
-          <div
-            className="canteen-lane-shell relative overflow-hidden rounded-xl h-[min(38vh,320px)] lg:h-[min(70vh,620px)]"
-            style={{
-              maskImage: "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
-              WebkitMaskImage: "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)"
-            }}
-          >
-            <ul className="canteen-lane-marquee flex flex-col gap-2">
-              {looped.map((p, i) => (
-                <li key={`${p.id}-${i}`}>
-                  <SideLaneCard post={p} onOpen={() => onOpenPost(p.id)} />
-                </li>
-              ))}
-            </ul>
+        {/* ±3-card scroll chips — only render when there are enough
+            posts that a merchant could reasonably miss one. */}
+        {posts.length > 3 && (
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => scrollByCards(-3)}
+              aria-label="Scroll back 3 listings"
+              className="inline-flex h-6 items-center gap-0.5 rounded-full border border-neutral-200 bg-white px-2 text-[9px] font-black uppercase tracking-wider text-neutral-700 shadow-sm transition hover:bg-neutral-50 active:scale-95"
+            >
+              <ChevronUp size={10} strokeWidth={2.6}/>
+              Back 3
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCards(3)}
+              aria-label="Scroll forward 3 listings"
+              className="inline-flex h-6 items-center gap-0.5 rounded-full border border-neutral-200 bg-white px-2 text-[9px] font-black uppercase tracking-wider text-neutral-700 shadow-sm transition hover:bg-neutral-50 active:scale-95"
+            >
+              Forward 3
+              <ChevronDown size={10} strokeWidth={2.6}/>
+            </button>
           </div>
         )}
-      </aside>
-    </>
+      </div>
+
+      {posts.length === 0 ? (
+        <div
+          className="rounded-xl border border-dashed p-4 text-center text-[11px] text-neutral-500"
+          style={{ borderColor: "rgba(139,69,19,0.2)" }}
+        >
+          No live listings yet.
+        </div>
+      ) : (
+        <div
+          ref={listRef}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => {
+            // Only unpause if there isn't a manual-scroll timer running
+            if (!resumeTimerRef.current) setPaused(false);
+          }}
+          className="relative overflow-y-scroll rounded-xl h-[min(38vh,320px)] lg:h-[min(70vh,620px)] [&::-webkit-scrollbar]:hidden"
+          style={{
+            maskImage: "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
+            scrollbarWidth: "none"
+          }}
+        >
+          <ul className="flex flex-col gap-2">
+            {looped.map((p, i) => (
+              <li key={`${p.id}-${i}`}>
+                <SideLaneCard post={p} onOpen={() => onOpenPost(p.id)} />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </aside>
   );
 }
 
@@ -135,13 +228,19 @@ function SideLaneCard({ post: p, onOpen }: { post: SideLanePost; onOpen: () => v
       disabled={sold}
       className="group relative block aspect-[16/9] w-full overflow-hidden rounded-xl border shadow-sm transition hover:-translate-y-0.5 hover:shadow-md disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-sm"
       style={{
-        backgroundImage: p.imageUrl ? `url('${p.imageUrl}')` : undefined,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         backgroundColor: p.imageUrl ? undefined : BRAND_BLACK,
         borderColor: sold ? "rgba(0,0,0,0.08)" : "rgba(139,69,19,0.15)"
       }}
     >
+      {p.imageUrl && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img
+          src={p.imageUrl}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
       {/* Bottom-up dark gradient for text legibility */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -170,7 +269,9 @@ function SideLaneCard({ post: p, onOpen }: { post: SideLanePost; onOpen: () => v
         </span>
       )}
 
-      {/* Top-right banner — Sold / Make-me-offer / Hot */}
+      {/* Top-right banner — priority: Sold > Make-me-offer > More Info
+          (service inquiry) > Hot chip. Sold and Make-me-offer are
+          transactional signals so they beat the informational chips. */}
       {sold ? (
         <img
           src={BANNER_SOLD}
@@ -185,6 +286,14 @@ function SideLaneCard({ post: p, onOpen }: { post: SideLanePost; onOpen: () => v
           className="absolute right-0 top-0 h-16 w-auto"
           style={{ pointerEvents: "none" }}
         />
+      ) : p.serviceInquiry ? (
+        <span
+          className="absolute right-1.5 top-1.5 flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider shadow-md"
+          style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+        >
+          <Info size={7} strokeWidth={2.6}/>
+          More Info
+        </span>
       ) : p.clicksTrailing7d > 20 ? (
         <span
           className="absolute right-1.5 top-1.5 flex items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8px] font-black uppercase tracking-wider text-white shadow-md"

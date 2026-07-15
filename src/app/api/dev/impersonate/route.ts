@@ -56,8 +56,10 @@ const DEMO_MERCHANT_STUBS: Record<string, {
     whatsapp: "447700900101",
     email: "mike.watson@thenetworkers.demo",
     bio: "Demo kitchen fitter for development.",
-    // Same avatar Mike uses on the demo canteen members list.
-    avatar_url: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces",
+    // Same avatar Mike uses on the demo canteen members list (AV.m1
+    // in src/lib/canteens.ts). Force-sync target for the signed-in
+    // header when someone impersonates Mike.
+    avatar_url: "https://ik.imagekit.io/9mrgsv2rp/Untitleddasdaasbbbb.png",
     // Mike hosts UK Kitchen Fitters — the canonical demo canteen with
     // all the mock members, products and posts (see MOCK_CANTEENS
     // cant_kitchen_uk in src/lib/canteens.ts).
@@ -82,13 +84,37 @@ const DEMO_MERCHANT_STUBS: Record<string, {
     whatsapp: "447700900104",
     email: "craig.mcdermott@thenetworkers.demo",
     bio: "Demo electrician for development.",
-    avatar_url: "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=faces",
-    // Craig hosts North UK Sparks — canonical demo canteen for
-    // electricians (see MOCK_CANTEENS cant_sparks_north).
-    canteen_slug: "north-uk-sparks",
-    canteen_name: "North UK Sparks",
+    // Same avatar Craig uses on the demo canteen members list (AV.m4
+    // in src/lib/canteens.ts). Force-sync target for the signed-in
+    // header when someone impersonates Craig.
+    avatar_url: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2010_58_56%20PM.png",
+    // Craig hosts UK Rated Electricians — the Iron reference canteen
+    // (see MOCK_CANTEENS cant_electrician_rated). Landing here after
+    // sign-in shows the Iron demo. He also hosts north-uk-sparks but
+    // uk-rated-electricians is the primary Iron template surface.
+    canteen_slug: "uk-rated-electricians",
+    canteen_name: "UK Rated Electricians",
     canteen_trade_slug: "electrician",
-    canteen_trade_label: "Electrician"
+    canteen_trade_label: "Electricians"
+  },
+  "demo-james-holt-plumber-nottingham": {
+    display_name: "James Holt",
+    primary_trade: "plumber",
+    city: "Nottingham",
+    whatsapp: "447700900107",
+    email: "james.holt@thenetworkers.demo",
+    bio: "Demo plumber for development.",
+    // Same avatar James uses on the demo canteen members list (AV.m7
+    // in src/lib/canteens.ts). Force-sync target for the signed-in
+    // header when someone impersonates James.
+    avatar_url: "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=200&h=200&fit=crop&crop=faces",
+    // James hosts UK Verified Plumbers — the Slate reference canteen
+    // (see MOCK_CANTEENS cant_plumbers_verified). Landing here after
+    // sign-in shows the Slate demo.
+    canteen_slug: "uk-verified-plumbers",
+    canteen_name: "UK Verified Plumbers",
+    canteen_trade_slug: "plumber",
+    canteen_trade_label: "Plumbers"
   },
   "demo-jason-hardy-scaffolder-glasgow": {
     display_name: "Jason Hardy",

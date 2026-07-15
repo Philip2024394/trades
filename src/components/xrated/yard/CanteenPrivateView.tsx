@@ -129,14 +129,16 @@ export function CanteenPrivateView({
 
       {/* Image + core info */}
       <div className="flex gap-3 p-4">
-        <div
-          className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100"
-          style={{
-            backgroundImage: post.imageUrl ? `url('${post.imageUrl}')` : undefined,
-            backgroundSize: "cover",
-            backgroundPosition: "center"
-          }}
-        >
+        <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg bg-neutral-100">
+          {post.imageUrl && (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              src={post.imageUrl}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
           {!post.imageUrl && (
             <div className="flex h-full w-full items-center justify-center">
               <Package size={22} className="text-neutral-400" />

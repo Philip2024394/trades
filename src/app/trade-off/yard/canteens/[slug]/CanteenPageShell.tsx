@@ -58,6 +58,7 @@ import { CanteenCounterExplainer } from "@/components/xrated/yard/CanteenCounter
 import { canteenProductById } from "@/lib/canteens";
 import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
+import { DEFAULT_PALETTE, type PaletteTokens } from "@/lib/paletteTokens";
 import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles, Pencil, Pin, Flag } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
 import { MOOD_LIBRARY, suggestMood, type MoodSlug } from "@/lib/yardMoods";
@@ -91,7 +92,9 @@ export function CanteenPageShell({
   designs,
   initialFocusProductId,
   returnHref,
-  returnLabel
+  returnLabel,
+  palette,
+  heroVeilOpacity
 }: {
   canteen: Canteen;
   sideLane: SideLanePost[];
@@ -116,6 +119,16 @@ export function CanteenPageShell({
    *  from Trade Center return to Trade Center, not to canteen chat. */
   returnHref?: string;
   returnLabel?: string;
+  /** Merchant's palette color pack. Resolved server-side from
+   *  hammerex_trade_off_listings.palette_slug. Passed to CanteenHeroWow
+   *  and CanteenBottomNav so the merchant's colour choice drives the
+   *  visible surface. */
+  palette?: PaletteTokens;
+  /** [DEV BUTTON] Hero cream-veil opacity multiplier (0-1). 1 = full
+   *  veil (default), 0 = veil transparent so the hero photo shows
+   *  100% clear. Driven by `?hero_shade=` dev-tuner query param on
+   *  the canteen page. Strip on "remove dev buttons". */
+  heroVeilOpacity?: number;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -356,7 +369,15 @@ export function CanteenPageShell({
     <main
       className="relative min-h-screen overflow-x-hidden"
       style={{
-        backgroundColor: CREAM,
+        // GOLDEN RULE: every canteen page under the header uses the
+        // platform theme off-white #FBF6EC — regardless of palette.
+        // Palette colours belong on the hero, buttons, accents, and
+        // feed tiles ONLY. They must NEVER bleed into the outer page
+        // bg, because a black or dark page surprises the merchant
+        // ("why did my page turn black?"). The palette-driven "hero
+        // fade matches page bg" experiment was reverted here: off-
+        // white is universal, palette is contained.
+        backgroundColor: "#FBF6EC",
         // Inset yellow ring when Edit mode is on. 3px so it reads
         // clearly at any viewport without feeling loud. Uses inset
         // box-shadow so it doesn't shift page layout on toggle.
@@ -364,12 +385,16 @@ export function CanteenPageShell({
       }}
     >
       {/* ── Mobile view — pixel-mirror of the mockup dashboard.
-          Only 5 elements: Hero (avatar+greeting+bell / split copy+photo
-          with KPI overlay), Quick Actions row, Live Feed, Trade Deals,
-          Trending. Everything else (product carousel, editorial quote,
-          hero stats, rotator, Counter side-lane, composer, full feed)
-          is hidden until lg:. */}
-      <div className="lg:hidden">
+          This section IS "the app" — the phone-native surface. It has
+          its OWN bg = palette.bg so dark palettes (Iron, Oak) get their
+          native dark chrome back — black for Iron, brown for Oak, etc.
+          The outer <main> stays at #FBF6EC (golden rule for the canteen
+          page area). This wrapper isolates the app view's bg from the
+          canteen page bg — two surfaces, two colours. */}
+      <div
+        className="lg:hidden"
+        style={{ backgroundColor: palette?.bg ?? "#FBF6EC" }}
+      >
         <CanteenHeroWow
           canteen={canteen}
           hostWhatsapp={admin?.whatsapp ?? null}
@@ -378,14 +403,18 @@ export function CanteenPageShell({
           addressLine={admin?.showroom?.addressLine ?? null}
           postcode={admin?.showroom?.postcode ?? null}
           city={admin?.city ?? null}
+          palette={palette ?? DEFAULT_PALETTE}
+          veilOpacity={heroVeilOpacity}
         />
         {/* Outer sheet container with three inner cards nested inside.
             The outer white sheet reads as one designed surface; each
             inner tile has its own rounded card so the sections stay
-            visually distinct. */}
+            visually distinct. Sheet stays WHITE under every palette
+            (including Iron) — dark rendering is scoped to specific
+            inner tiles (Live Feed) per the mockup. */}
         <div className="relative z-10 mx-auto -mt-10 max-w-6xl px-3 md:px-6">
           <div
-            className="rounded-t-[28px] border bg-white p-3 shadow-lg md:p-4"
+            className="rounded-[28px] border bg-white p-3 shadow-lg md:p-4"
             style={{ borderColor: "#FBF6EC" }}
           >
             <div className="flex flex-col gap-3 md:gap-4">
@@ -396,15 +425,44 @@ export function CanteenPageShell({
                   Same visual card as Live Feed had, but content
                   switches based on the active tab. Products and Jobs
                   tabs reveal via URL hash from Quick Actions or
-                  direct link (#tab-products / #tab-jobs). */}
+                  direct link (#tab-products / #tab-jobs).
+                  Background = palette.accent (matches the hero CTA
+                  buttons — Profile/Card use the same colour). Text
+                  inside recoloured to white/light so it reads against
+                  any accent colour (navy, warm gold, amber, brown). */}
               <div
-                className="rounded-xl p-3 md:p-4"
-                style={{ backgroundColor: "#FBF6EC", border: "1px solid rgba(139,69,19,0.08)" }}
+                className="canteen-feed-tile-styled rounded-xl p-3 md:p-4"
+                style={{
+                  // Live Feed tile bg:
+                  //   Dark palettes (Iron, Oak) → palette.bg (near-black
+                  //     / deep brown) so the tile matches the palette's
+                  //     native dark chrome — Template 2 (Iron) reads as
+                  //     a black live feed on a black app surface, per
+                  //     Philip 2026-07-15.
+                  //   Light palettes → palette.accent (warm gold /
+                  //     navy / etc.) — the accent-CTA-coloured tile the
+                  //     mobile mockup ships with.
+                  backgroundColor: palette?.dark
+                    ? (palette?.bg ?? "#0A0A0A")
+                    : (palette?.accent ?? "#FBF6EC"),
+                  border: "1px solid rgba(0,0,0,0.10)"
+                }}
               >
+                <style>{`
+                  .canteen-feed-tile-styled .text-neutral-900 { color: #FFFFFF !important; }
+                  .canteen-feed-tile-styled .text-neutral-800 { color: #FFFFFF !important; }
+                  .canteen-feed-tile-styled .text-neutral-700 { color: #F5F5F5 !important; }
+                  .canteen-feed-tile-styled .text-neutral-600 { color: #E5E5E5 !important; }
+                  .canteen-feed-tile-styled .text-neutral-500 { color: rgba(255,255,255,0.75) !important; }
+                  .canteen-feed-tile-styled .text-neutral-400 { color: rgba(255,255,255,0.55) !important; }
+                  .canteen-feed-tile-styled [class*="bg-white"] { background-color: rgba(255,255,255,0.10) !important; }
+                  .canteen-feed-tile-styled [class*="bg-neutral-100"] { background-color: rgba(255,255,255,0.06) !important; }
+                  .canteen-feed-tile-styled [class*="bg-neutral-50"] { background-color: rgba(255,255,255,0.08) !important; }
+                `}</style>
                 <CanteenTabbedSection
                   canteenSlug={canteen.slug}
                   isHost={isHost}
-                  posts={pickRotatorPosts(initialChatPosts)}
+                  posts={pickRotatorPosts(initialChatPosts, canteen.slug)}
                   products={publicProducts}
                   designs={designs ?? []}
                   hostDisplayName={canteen.hostDisplayName}
@@ -468,6 +526,7 @@ export function CanteenPageShell({
               variants:              p.variants
             }))}
           compact
+          paletteDark={palette?.dark ?? false}
           canteenSlug={canteen.slug}
           hostSlug={canteen.hostSlug}
           hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
@@ -511,6 +570,7 @@ export function CanteenPageShell({
         hostReviews={admin?.reviews ?? null}
         tradeLabel={canteen.tradeLabel}
         hostCity={admin?.city ?? null}
+        palette={palette ?? DEFAULT_PALETTE}
       />
 
       {/* Edit mode sticky strip — shown at the very top of the
@@ -569,8 +629,10 @@ export function CanteenPageShell({
         hostHasProducts={totalProducts > 0}
         hostWhatsapp={admin?.whatsapp ?? null}
         hostReviews={admin?.reviews ?? null}
+        hostAvatarUrl={admin?.avatarUrl ?? null}
         editMode={editMode}
         onToggleEditMode={() => setEditMode((v) => !v)}
+        paletteDark={palette?.dark ?? false}
       />
 
       {/* Hero stats card — floats at the bottom of the hero, overlapping
@@ -692,7 +754,7 @@ export function CanteenPageShell({
       {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && !addProductPanelOpen && (
         <div className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6 lg:hidden">
           <CanteenMobilePostsRotator
-            posts={pickRotatorPosts(initialChatPosts)}
+            posts={pickRotatorPosts(initialChatPosts, canteen.slug)}
             canteenSlug={canteen.slug}
           />
           {/* Big yellow post CTA — routes to the compose overlay page.
@@ -884,7 +946,7 @@ export function CanteenPageShell({
                     />
                   ));
                 }
-                return CANTEEN_MOCK_POSTS.map((p, i) => (
+                return mockPostsForCanteen(canteen.slug).map((p, i) => (
                   <CanteenPostCard
                     key={i}
                     post={p}
@@ -961,8 +1023,13 @@ export function CanteenPageShell({
 
 /** Pick up to 6 recent posts from either the DB feed or the fallback
  *  mock so the mobile 3-slot rotator has something to cycle through
- *  even on a fresh canteen. Returns the shape RotatorPost expects. */
-function pickRotatorPosts(dbPosts: CanteenChatPost[] | undefined): RotatorPost[] {
+ *  even on a fresh canteen. Returns the shape RotatorPost expects.
+ *  Fallback is slug-aware so the Iron reference canteen
+ *  (uk-rated-electricians) shows electrician posts, not kitchen ones. */
+function pickRotatorPosts(
+  dbPosts: CanteenChatPost[] | undefined,
+  canteenSlug: string
+): RotatorPost[] {
   if (dbPosts && dbPosts.length > 0) {
     return dbPosts.slice(0, 6).map((p) => ({
       id:                p.id,
@@ -978,7 +1045,7 @@ function pickRotatorPosts(dbPosts: CanteenChatPost[] | undefined): RotatorPost[]
   }
   // Fall back to the shell's mock feed so demo canteens still show
   // a live pulse before real posts land.
-  return CANTEEN_MOCK_POSTS.slice(0, 6).map((p, i) => ({
+  return mockPostsForCanteen(canteenSlug).slice(0, 6).map((p, i) => ({
     id:                `mock-${i}`,
     authorDisplayName: p.who,
     authorSlug:        p.handle,
@@ -1037,13 +1104,19 @@ type CanteenPost = {
 // so the poster's face on the feed card matches their face in the
 // "Members" popover / trade profile / directory.
 const CANTEEN_MEMBER_AVATARS: Record<string, string> = {
-  "mike-watson":     "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=200&h=200&fit=crop&crop=faces",
+  "mike-watson":     "https://ik.imagekit.io/9mrgsv2rp/Untitleddasdaasbbbb.png",
   "tom-fisher":      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=200&h=200&fit=crop&crop=faces",
   "rachel-simms":    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=faces",
-  "craig-mcdermott": "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=200&h=200&fit=crop&crop=faces"
+  "craig-mcdermott": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2010_58_56%20PM.png",
+  "terry-nolan":     "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&crop=faces",
+  "james-holt":      "https://images.unsplash.com/photo-1552058544-f2b08422138a?w=200&h=200&fit=crop&crop=faces",
+  "kate-morris":     "https://images.unsplash.com/photo-1601456108021-fbdba97b9d47?w=200&h=200&fit=crop&crop=faces",
+  "paul-webb":       "https://images.unsplash.com/photo-1622555094100-5ae7bfe4a3b5?w=200&h=200&fit=crop&crop=faces"
 };
 
-const CANTEEN_MOCK_POSTS: CanteenPost[] = [
+// Default (kitchen-fitter) mock post feed — used on Mike Watson's
+// canteen and any canteen without a slug-specific override below.
+const CANTEEN_MOCK_POSTS_KITCHEN: CanteenPost[] = [
   {
     who: "Mike Watson",
     handle: "mike-watson",
@@ -1081,6 +1154,215 @@ const CANTEEN_MOCK_POSTS: CanteenPost[] = [
     photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2009_05_53%20PM.png"]
   }
 ];
+
+// Electrician mock post feed — used on the Iron reference canteen
+// (uk-rated-electricians). Same shape as kitchen posts, different
+// trade context so the Iron demo reads as a real sparks community.
+const CANTEEN_MOCK_POSTS_ELECTRICIAN: CanteenPost[] = [
+  {
+    who: "Craig McDermott",
+    handle: "craig-mcdermott",
+    postedAgo: "2h",
+    body: "Wired up an 11kW EV charger into a 100A supply today — head-end had 78A already loaded. DNO notification going in tomorrow. Anyone recently had a DNO refuse an EVSE install on a pre-existing rewire?",
+    reactions: 11, replies: 5,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["craig-mcdermott"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_29_45%20PM.png"]
+  },
+  {
+    who: "Terry Nolan",
+    handle: "terry-nolan",
+    postedAgo: "5h",
+    body: "New Amendment 2 EICR code changes are catching people out on old fuseboards. Just red-carded a Wylex plug-in RCBO board because the DP isolation was undersized. If you're still using pre-2011 Wylex NB, worth checking your books.",
+    reactions: 17, replies: 8,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["terry-nolan"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_33_31%20PM.png"]
+  },
+  {
+    who: "Mike Watson",
+    handle: "mike-watson",
+    postedAgo: "1d",
+    body: "Consumer unit swap this morning on a 1930s semi. Old rewireables + no bonding to the incoming water. Two hours of extra 10mm² and now she's happy. Sparks jobs on kitchen fit-outs paying more than the joinery some weeks.",
+    reactions: 22, replies: 6,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["mike-watson"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png"]
+  },
+  {
+    who: "James Holt",
+    handle: "james-holt",
+    postedAgo: "2d",
+    body: "Sparks + gas combo job on a new build in Nottingham. Full first-fix rewire + boiler install in 5 days. Any Yorkshire sparks up for a similar sub next month? I'm booked but the site foreman wants a preferred trade list.",
+    reactions: 9, replies: 4,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["james-holt"],
+    photoUrls: ["https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_08_09%20AM.png"]
+  }
+];
+
+// Plumber mock post feed — used on the Slate reference canteen
+// (uk-verified-plumbers). Same shape as the other feeds, plumber-
+// specific content so the Slate demo reads as a real plumbing
+// community.
+const CANTEEN_MOCK_POSTS_PLUMBER: CanteenPost[] = [
+  {
+    who: "James Holt",
+    handle: "james-holt",
+    postedAgo: "1h",
+    body: "Just finished a Worcester 4000 combi swap on a 1950s semi. Old back-boiler out, new combi in the loft with SPD, 10-year warranty registered. Homeowner said hot water is unrecognisable. Anyone else finding Worcester 4000 lead times slipping to 5+ weeks direct?",
+    reactions: 14, replies: 6,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["james-holt"],
+    photoUrls: null
+  },
+  {
+    who: "Kate Morris",
+    handle: "kate-morris",
+    postedAgo: "4h",
+    body: "Skimmed a bathroom last week after a full re-pipe. Fitter left the pipework in the wall proud by 2mm — had to feather-skim across a metre to hide the ridge. Sparks + plumbers: please dot-and-dab the pipework FLUSH before you tape up. It matters.",
+    reactions: 22, replies: 11,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["kate-morris"],
+    photoUrls: null
+  },
+  {
+    who: "Craig McDermott",
+    handle: "craig-mcdermott",
+    postedAgo: "1d",
+    body: "Sparks + gas combo job today. First-fix electrics for a kitchen refurb — 32A ring, cooker circuit, isolators. Plumber timeline slipping means I'm back Thursday for second fix instead of Wednesday. Anyone else finding gas engineer availability worse this month?",
+    reactions: 9, replies: 5,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["craig-mcdermott"],
+    photoUrls: null
+  },
+  {
+    who: "Paul Webb",
+    handle: "paul-webb",
+    postedAgo: "2d",
+    body: "Wet-room build in a loft conversion. Trays fitted, gulley in, drainage tied to soil stack. Waiting on plumber to first-fix the shower + basin before we tile. If anyone has an under-tray waterproofing membrane brand they swear by, drop a name — trying to avoid callbacks.",
+    reactions: 11, replies: 7,
+    avatarUrl: CANTEEN_MEMBER_AVATARS["paul-webb"],
+    photoUrls: null
+  }
+];
+
+// ─── Phase 3 trade-themed feeds (2026-07-15) ─────────────────
+// One post-set per palette demo canteen so each iPhone preview in
+// the templates picker shows on-theme feed content — not kitchen
+// posts everywhere. Admin authors their own posts (single-hand feed
+// per demo; multi-member depth added when real merchants sign up).
+// Feed post image URLs reuse 2026 ImageKit library entries matched
+// to the trade — same convention as canteen hero images.
+const IK = "https://ik.imagekit.io/9mrgsv2rp";
+const P = (rel: string) => `${IK}/${rel}`;
+const CANTEEN_MOCK_POSTS_CARPENTER: CanteenPost[] = [
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "2h", body: "1st fix on the Bishopston extension today. Steel beam bearer in, joists spanning 4.2m. Sub-floor tomorrow if the weather holds.", reactions: 12, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2010_56_22%20PM.png")] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "6h", body: "Bespoke oak shelving install in a Clifton study. Client wanted floating look — hidden brackets set into the stud wall. Satisfying job.", reactions: 8, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png")] },
+  { who: "Owen Thompson", handle: "owen-thompson", postedAgo: "1d", body: "Anyone in the SW got a good source for kiln-dried structural pine? My usual timber merchant is 3 weeks behind.", reactions: 6, replies: 9, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_INTERIOR: CanteenPost[] = [
+  { who: "Rebecca Ashworth", handle: "rebecca-ashworth", postedAgo: "1h", body: "Colour scheme approved on the Marylebone flat — Farrow & Ball De Nimes on cabinetry, warm brass hardware. Install starts Monday.", reactions: 14, replies: 5, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_45_28%20AM.png")] },
+  { who: "Rebecca Ashworth", handle: "rebecca-ashworth", postedAgo: "5h", body: "Meeting with a fabric mill in Somerset next week — bespoke curtain weave for a Kensington drawing room. Slow luxury.", reactions: 9, replies: 3, avatarUrl: null },
+  { who: "Rebecca Ashworth", handle: "rebecca-ashworth", postedAgo: "2d", body: "Anyone recommend a wallpaper hanger in central London who's OK with hand-blocked papers? My usual has retired.", reactions: 7, replies: 11, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_STONE: CanteenPost[] = [
+  { who: "David Whitmore", handle: "david-whitmore", postedAgo: "3h", body: "Lime mortar rebuild on the west wall of a Grade II listed church. Slow set — 3-week cure before we can move to the tower repointing.", reactions: 11, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png")] },
+  { who: "David Whitmore", handle: "david-whitmore", postedAgo: "1d", body: "Bath stone quoin replacement on a Georgian terrace. Sourced matching stone from Corsham quarry — the old and new blend perfectly.", reactions: 15, replies: 2, avatarUrl: null },
+  { who: "David Whitmore", handle: "david-whitmore", postedAgo: "3d", body: "SPAB approval landed for the manor house lime plastering. Six-month job. Absolute privilege.", reactions: 22, replies: 6, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_ROOFER: CanteenPost[] = [
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "2h", body: "Full re-roof on a Peak District farmhouse — natural Welsh slate to match the original. Two-week job with the scaffold sequence.", reactions: 16, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png")] },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "8h", body: "Storm damage callout in Sheffield today. Three tiles displaced, valley leadwork torn. Sorted before the rain returned.", reactions: 19, replies: 5, avatarUrl: null },
+  { who: "Gary Hughes", handle: "gary-hughes", postedAgo: "2d", body: "Anyone selling second-hand handmade clay tiles? Doing a heritage repair and the merchant wants £4.50 a tile.", reactions: 8, replies: 14, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_COPPER: CanteenPost[] = [
+  { who: "Nathan Barrett", handle: "nathan-barrett", postedAgo: "4h", body: "New copper sheet delivery in from Bristol — 1.5mm for the gutter runs on the Sedgeley job. Ready to press-form next week.", reactions: 8, replies: 1, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png")] },
+  { who: "Nathan Barrett", handle: "nathan-barrett", postedAgo: "1d", body: "Weld-repair on a Victorian conservatory downpipe. Original owners kept the lead flashing — saved them £900 vs full replacement.", reactions: 12, replies: 2, avatarUrl: null },
+  { who: "Nathan Barrett", handle: "nathan-barrett", postedAgo: "3d", body: "Tender in for a Grade II church roof — copper cladding to replace stolen lead. Slow process, satisfying work.", reactions: 17, replies: 5, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_POOL: CanteenPost[] = [
+  { who: "Ben Callaghan", handle: "ben-callaghan", postedAgo: "3h", body: "Fibreglass pool shell dropped into the excavation this morning. Perfect fit — surveyor's laser was worth every penny.", reactions: 14, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2007_30_54%20AM.png")] },
+  { who: "Ben Callaghan", handle: "ben-callaghan", postedAgo: "1d", body: "Retrofit heat pump upgrade on a Poole client's pool — swapped their gas boiler for a Vaillant AroTHERM. Half the running cost.", reactions: 11, replies: 3, avatarUrl: null },
+  { who: "Ben Callaghan", handle: "ben-callaghan", postedAgo: "4d", body: "Anyone got experience with saltwater conversions on gunite pools? Client's asking and I want to be honest about the maintenance shift.", reactions: 6, replies: 8, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_LANDSCAPER: CanteenPost[] = [
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "1h", body: "Estate lawn regeneration in Cambridge — soil aeration + spring seed. Green as anything in three weeks.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2007_21_23%20AM.png")] },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "6h", body: "Bespoke garden design install today. Reclaimed York stone paths, box hedges going in Monday. Client's over the moon.", reactions: 22, replies: 5, avatarUrl: null },
+  { who: "Tom Ashfield", handle: "tom-ashfield", postedAgo: "2d", body: "Anyone in the East Anglia area got a source for mature specimen trees? Client wants 4m holly hedge on a fast turnaround.", reactions: 9, replies: 12, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_GARDEN: CanteenPost[] = [
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "5h", body: "Formal parterre design signed off for a Cotswolds manor house. Box, lavender, standard bay. Install begins March.", reactions: 14, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%2015,%202026,%2006_41_30%20AM.png")] },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "1d", body: "Orangery landscaping meeting today — client wants year-round colour with structured hedging. Sketching options this week.", reactions: 11, replies: 2, avatarUrl: null },
+  { who: "Charlotte Grantham", handle: "charlotte-grantham", postedAgo: "3d", body: "SGD conference next month in Bath — anyone else attending? Would love to swap notes on winter garden schemes.", reactions: 7, replies: 8, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_WELDER: CanteenPost[] = [
+  { who: "Wayne Hartley", handle: "wayne-hartley", postedAgo: "2h", body: "Structural steel beam fabricated + coated today for a Sheffield warehouse conversion. Coded weld inspection Friday.", reactions: 13, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png")] },
+  { who: "Wayne Hartley", handle: "wayne-hartley", postedAgo: "9h", body: "Bespoke gate install in Chesterfield. 4m span with drop bolts, decorative scrollwork. Client's a repeat — third gate in two years.", reactions: 15, replies: 2, avatarUrl: null },
+  { who: "Wayne Hartley", handle: "wayne-hartley", postedAgo: "2d", body: "Anyone in the North selling used MIG welding rigs? Looking to expand the workshop with a second machine.", reactions: 8, replies: 11, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_ARCHITECT: CanteenPost[] = [
+  { who: "Sarah Fenton", handle: "sarah-fenton", postedAgo: "1h", body: "Planning permission granted on the Islington rear extension. Client's been waiting 18 months — massive relief for them.", reactions: 24, replies: 6, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%203,%202026,%2008_38_50%20AM.png")] },
+  { who: "Sarah Fenton", handle: "sarah-fenton", postedAgo: "8h", body: "Building regs submission today for a barn conversion in Suffolk. Passivhaus principles, GSHP, MVHR. Ambitious build.", reactions: 12, replies: 3, avatarUrl: null },
+  { who: "Sarah Fenton", handle: "sarah-fenton", postedAgo: "2d", body: "RIBA panel review of my Peckham studio scheme tomorrow. Fingers crossed the material palette lands.", reactions: 9, replies: 4, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_CONCRETE: CanteenPost[] = [
+  { who: "Marcus Reeves", handle: "marcus-reeves", postedAgo: "3h", body: "Polished concrete floor pour in a Manchester warehouse conversion — 300m². Diamond-grinding + sealing next week.", reactions: 11, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png")] },
+  { who: "Marcus Reeves", handle: "marcus-reeves", postedAgo: "10h", body: "Formwork setup for a raft foundation on a Cheshire new-build. Rebar mat inspection Thursday, pour Monday.", reactions: 8, replies: 3, avatarUrl: null },
+  { who: "Marcus Reeves", handle: "marcus-reeves", postedAgo: "2d", body: "Anyone got a source for micro-cement in the North West? Client wants seamless bathroom finish and my usual supplier is short.", reactions: 6, replies: 9, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_BRICKLAYER: CanteenPost[] = [
+  { who: "Kevin Doherty", handle: "kevin-doherty", postedAgo: "2h", body: "Extension gable wall going up in Belfast today — Flemish bond, dark facing brick. Fiddly on the corner detail but satisfying.", reactions: 17, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png")] },
+  { who: "Kevin Doherty", handle: "kevin-doherty", postedAgo: "7h", body: "Cavity insulation top-up on a 1950s semi. Full-fill mineral wool, snug fit around the wall ties. Nice quiet job.", reactions: 9, replies: 2, avatarUrl: null },
+  { who: "Kevin Doherty", handle: "kevin-doherty", postedAgo: "3d", body: "Anyone using the new self-levelling mortars for wall bedding? Trade rep was flogging me some, curious if they hold up.", reactions: 7, replies: 13, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_JOINER: CanteenPost[] = [
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "4h", body: "Sash window restoration in Harrogate. Draught-proofing seals + weight rebalance — client can hear the difference already.", reactions: 16, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%205,%202026,%2012_06_42%20AM.png")] },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "1d", body: "Bespoke oak staircase templating today. Winder treads with hand-turned newel post. Six weeks of workshop work ahead.", reactions: 21, replies: 5, avatarUrl: null },
+  { who: "Edward Halliwell", handle: "edward-halliwell", postedAgo: "4d", body: "Anyone got a source for reclaimed Georgian pine? Restoring a set of shutters and modern timber just doesn't age the same.", reactions: 10, replies: 15, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_PRESTIGE: CanteenPost[] = [
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "5h", body: "Basement dig sign-off on the Belgravia project — full underpinning + 4m depth. Structural engineer signed off yesterday, clear to break through.", reactions: 19, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2003_26_58%20AM.png")] },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "1d", body: "Kitchen commissioning day on the Surrey renovation. Handmade in-frame cabinetry, Miele appliances, natural stone from Verona. Client's speechless.", reactions: 27, replies: 6, avatarUrl: null },
+  { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "3d", body: "Party wall notice served on the Kensington remodel. 12-week countdown starts now — planning coordination begins Tuesday.", reactions: 8, replies: 3, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_MARINA: CanteenPost[] = [
+  { who: "Alistair Ferguson", handle: "alistair-ferguson", postedAgo: "6h", body: "New pontoon set installed at Ocean Village today — 20 berths, timber decking on aluminium float sections. Tide window was tight.", reactions: 13, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2002_59_22%20AM.png")] },
+  { who: "Alistair Ferguson", handle: "alistair-ferguson", postedAgo: "2d", body: "Refurb inspection on a 40-year-old timber jetty. Structural rot on 3 posts, sistering + partial rebuild scheduled for October slack.", reactions: 9, replies: 1, avatarUrl: null },
+  { who: "Alistair Ferguson", handle: "alistair-ferguson", postedAgo: "5d", body: "Anyone marine-fabricating stainless cleats? Portsmouth marina wants an upgrade and my usual chandler is 8 weeks out.", reactions: 5, replies: 7, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_EMERGENCY: CanteenPost[] = [
+  { who: "Frank Delaney", handle: "frank-delaney", postedAgo: "3h", body: "Storm damage callout at 3am — roof tile displacement + saturated ceiling. Temporary tarp up, insurance-approved repair scheduled for Monday.", reactions: 18, replies: 4, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png")] },
+  { who: "Frank Delaney", handle: "frank-delaney", postedAgo: "1d", body: "Burst pipe emergency in Jesmond overnight. Isolated within 20 mins, dried down + repair scoped. Insurer covering full remediation.", reactions: 14, replies: 2, avatarUrl: null },
+  { who: "Frank Delaney", handle: "frank-delaney", postedAgo: "3d", body: "Fallen tree took out a garage roof this morning. Chainsaw + tarp — full rebuild quote landed with the client's underwriter same day.", reactions: 11, replies: 5, avatarUrl: null }
+];
+const CANTEEN_MOCK_POSTS_GROUNDWORKER: CanteenPost[] = [
+  { who: "Barry Rollins", handle: "barry-rollins", postedAgo: "2h", body: "New-build foundation dig in Bootle today — 4m trenches, waterlogged as always. Concrete pour scheduled for Thursday.", reactions: 15, replies: 3, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%203,%202026,%2002_25_52%20PM.png")] },
+  { who: "Barry Rollins", handle: "barry-rollins", postedAgo: "1d", body: "Full drainage rework on a Wirral extension. Foul + surface split, gully connections, tested + signed off with Building Control.", reactions: 11, replies: 2, avatarUrl: null },
+  { who: "Barry Rollins", handle: "barry-rollins", postedAgo: "3d", body: "Anyone hiring a 5-ton excavator this month around Speke? Mine's in for service, need a bridge while my main machine is out.", reactions: 8, replies: 9, avatarUrl: null }
+];
+
+function mockPostsForCanteen(canteenSlug: string): CanteenPost[] {
+  // Existing three (Chalk/Iron/Slate) — preserved as before.
+  if (canteenSlug === "uk-rated-electricians")   return CANTEEN_MOCK_POSTS_ELECTRICIAN;
+  if (canteenSlug === "uk-verified-plumbers")    return CANTEEN_MOCK_POSTS_PLUMBER;
+  // Phase 3 palette demos — 17 trade-themed feeds.
+  if (canteenSlug === "uk-master-carpenters")     return CANTEEN_MOCK_POSTS_CARPENTER;
+  if (canteenSlug === "uk-interior-designers")    return CANTEEN_MOCK_POSTS_INTERIOR;
+  if (canteenSlug === "uk-heritage-stone")        return CANTEEN_MOCK_POSTS_STONE;
+  if (canteenSlug === "uk-tile-roofers")          return CANTEEN_MOCK_POSTS_ROOFER;
+  if (canteenSlug === "uk-coppersmiths")          return CANTEEN_MOCK_POSTS_COPPER;
+  if (canteenSlug === "uk-pool-builders")         return CANTEEN_MOCK_POSTS_POOL;
+  if (canteenSlug === "uk-landscapers")           return CANTEEN_MOCK_POSTS_LANDSCAPER;
+  if (canteenSlug === "uk-garden-designers")      return CANTEEN_MOCK_POSTS_GARDEN;
+  if (canteenSlug === "uk-metal-fabricators")     return CANTEEN_MOCK_POSTS_WELDER;
+  if (canteenSlug === "uk-architects")            return CANTEEN_MOCK_POSTS_ARCHITECT;
+  if (canteenSlug === "uk-concrete-specialists")  return CANTEEN_MOCK_POSTS_CONCRETE;
+  if (canteenSlug === "uk-bricklayers")           return CANTEEN_MOCK_POSTS_BRICKLAYER;
+  if (canteenSlug === "uk-bespoke-joiners")       return CANTEEN_MOCK_POSTS_JOINER;
+  if (canteenSlug === "uk-prestige-builders")     return CANTEEN_MOCK_POSTS_PRESTIGE;
+  if (canteenSlug === "uk-marina-builders")       return CANTEEN_MOCK_POSTS_MARINA;
+  if (canteenSlug === "uk-emergency-repairs")     return CANTEEN_MOCK_POSTS_EMERGENCY;
+  if (canteenSlug === "uk-groundworkers")         return CANTEEN_MOCK_POSTS_GROUNDWORKER;
+  return CANTEEN_MOCK_POSTS_KITCHEN;
+}
+
+// Back-compat alias — call sites that don't yet pass the slug fall
+// back to the kitchen feed (Mike Watson's original canteen).
+const CANTEEN_MOCK_POSTS = CANTEEN_MOCK_POSTS_KITCHEN;
 
 // Marketplace-flavoured slugs route to The Counter, not the canteen
 // feed — never surface these characters on a feed post card.

@@ -15,6 +15,7 @@ import Link from "next/link";
 import { X, MessageCircle, ShoppingBag } from "lucide-react";
 import type { CanteenProductVariants } from "@/lib/canteens";
 import { CanteenVariantPicker, type VariantSelectionState } from "./CanteenVariantPicker";
+import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
 
 const TAN = "#B8860B";
 
@@ -42,8 +43,12 @@ export function CanteenTrendingSwipeSheet({
   items,
   categoryLabel,
   canteenSlug,
+  hostSlug,
   hostFirstName,
+  hostDisplayName,
   hostWhatsapp,
+  tradeLabel,
+  hostCity,
   sendToTradeCenter = false
 }: {
   open: boolean;
@@ -51,8 +56,12 @@ export function CanteenTrendingSwipeSheet({
   items: TrendingSwipeItem[];
   categoryLabel: string;
   canteenSlug: string;
+  hostSlug: string;
   hostFirstName: string;
+  hostDisplayName: string;
   hostWhatsapp: string | null;
+  tradeLabel: string;
+  hostCity?: string | null;
   sendToTradeCenter?: boolean;
 }) {
   const [idx, setIdx] = useState(0);
@@ -169,12 +178,16 @@ export function CanteenTrendingSwipeSheet({
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
       />
 
-      {/* Sheet — mobile: full-viewport slide-up, desktop: 480px card */}
+      {/* Sheet — mobile: TRUE fullscreen (h-full so the sheet fills the
+          entire viewport, not 92vh which was leaving an 8vh strip of
+          backdrop at the top). Desktop: 90vh card that's roomier than
+          the old 448px max — reads as a proper preview at desktop
+          size, matching the "6 images open full screen" ask 2026-07-15. */}
       <div
         onClick={(e) => e.stopPropagation()}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
-        className="relative z-10 flex h-[92vh] w-full max-w-md flex-col overflow-hidden rounded-t-2xl bg-white shadow-2xl md:h-[86vh] md:rounded-2xl"
+        className="relative z-10 flex h-full w-full flex-col overflow-hidden bg-white shadow-2xl md:h-[90vh] md:max-w-2xl md:rounded-2xl"
       >
         {/* Position dots — Instagram Stories pattern. One thin bar per
             item, filled up to and including the current index. */}
@@ -198,15 +211,25 @@ export function CanteenTrendingSwipeSheet({
           ))}
         </div>
 
-        {/* Close X — top-right, above the position dots */}
+        {/* Close X — top-right. Bumped from right-3 (12px) to right-5
+            (20px) and top-4 → top-5 so the button sits comfortably in
+            from the screen edge on curved iPhone corners (2026-07-15
+            fix — the close X was being clipped by rounded viewport
+            corners on some devices). Also bumped hit area from 8×8 to
+            10×10 for a WCAG-safer tap target. */}
         <button
           type="button"
           onClick={onClose}
           aria-label="Close trending sheet"
-          className="absolute right-3 top-4 z-30 flex h-8 w-8 items-center justify-center rounded-full shadow-md active:scale-[0.95]"
-          style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+          className="absolute right-5 top-5 z-30 flex h-10 w-10 items-center justify-center rounded-full shadow-md active:scale-[0.95]"
+          style={{
+            backgroundColor: "#FFB300",
+            color: "#0A0A0A",
+            right: "max(20px, env(safe-area-inset-right, 0))",
+            top:   "max(20px, env(safe-area-inset-top, 0))"
+          }}
         >
-          <X size={14} strokeWidth={2.8}/>
+          <X size={16} strokeWidth={2.8}/>
         </button>
 
         {/* Category label — thin uppercase strip so the user always
@@ -296,19 +319,25 @@ export function CanteenTrendingSwipeSheet({
                   Yellow "Ask on WhatsApp" primary; dark green "Buy on
                   Trade Center" secondary. Only rendered when the merchant
                   has opted in AND the product has a TC listing. */}
-              {(waUrl || (sendToTradeCenter && tcHref)) && (
+              {(hostWhatsapp || (sendToTradeCenter && tcHref)) && (
                 <div className="mt-3 flex flex-wrap items-center justify-center gap-2 px-4">
-                  {waUrl && (
-                    <a
-                      href={waUrl}
-                      target="_blank"
-                      rel="noreferrer noopener"
+                  {current && hostWhatsapp && (
+                    <VerifiedContactButton
+                      merchantSlug={hostSlug}
+                      merchantDisplayName={hostDisplayName}
+                      merchantFirstName={hostFirstName}
+                      merchantWhatsapp={hostWhatsapp}
+                      tradeLabel={tradeLabel}
+                      city={hostCity}
+                      source="canteen-hero"
+                      sourceLabel={`${hostFirstName}'s ${current.name}${variantSuffix} in ${categoryLabel} trending on Thenetworkers.app`}
+                      canteenSlug={canteenSlug}
                       className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full px-5 text-[11.5px] font-black uppercase tracking-wider text-neutral-900 shadow-md active:scale-[0.98]"
                       style={{ backgroundColor: "#FFB300" }}
                     >
                       <MessageCircle size={13} strokeWidth={2.6}/>
                       Ask on WhatsApp
-                    </a>
+                    </VerifiedContactButton>
                   )}
                   {sendToTradeCenter && tcHref && (
                     <Link

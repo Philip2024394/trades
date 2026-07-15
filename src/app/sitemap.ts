@@ -174,10 +174,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("[sitemap] yard posts load failed:", err);
   }
 
+  // Local UK city landing pages — SEO-friendly path-based URLs at
+  // /find/{city}. Kept in sync with SUPPORTED_CITIES in
+  // src/app/find/[city]/page.tsx. Adding a city here + there ships a
+  // new indexable local surface.
+  const cityLandings: Entry[] = [
+    "manchester",
+    "london",
+    "birmingham",
+    "leeds",
+    "liverpool",
+    "glasgow"
+  ].map((slug) => ({
+    url: url(`/find/${slug}`),
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.75
+  }));
+
   return [
     root,
     ...main,
     ...tradeLandings,
+    ...cityLandings,
     ...demoProfiles,
     ...liveListings,
     ...yardPosts,

@@ -168,6 +168,22 @@ export function TradeLoginForm({ next }: { next?: string | null }) {
             Stuart Kingsley
           </a>
           <a
+            href={`/api/dev/impersonate?slug=demo-craig-mcdermott-electrician-leeds&next=${encodeURIComponent(next ?? "/trade-off/yard/canteens/uk-rated-electricians?preview_palette=iron")}`}
+            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: "#0A0A0A", color: "#FFB300" }}
+            title="Dev-only bypass — sign in as Craig McDermott and land on the UK Rated Electricians canteen with Iron palette"
+          >
+            Craig McDermott
+          </a>
+          <a
+            href={`/api/dev/impersonate?slug=demo-james-holt-plumber-nottingham&next=${encodeURIComponent(next ?? "/trade-off/yard/canteens/uk-verified-plumbers?preview_palette=slate")}`}
+            className="inline-flex items-center gap-1 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider shadow-sm"
+            style={{ backgroundColor: "#1E3A8A", color: "#FFFFFF" }}
+            title="Dev-only bypass — sign in as James Holt and land on the UK Verified Plumbers canteen with Slate palette"
+          >
+            James Holt
+          </a>
+          <a
             href={`/api/dev/impersonate?next=${encodeURIComponent(next ?? "/trade-off/yard")}`}
             className="inline-flex items-center gap-1 rounded-full border border-neutral-300 bg-white px-3 py-1 text-[10px] font-black uppercase tracking-wider text-neutral-800 shadow-sm"
             title="Dev-only bypass — default demo merchant"

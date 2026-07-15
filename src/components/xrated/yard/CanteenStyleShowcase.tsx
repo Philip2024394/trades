@@ -125,7 +125,7 @@ export function CanteenStyleShowcase({
       }}
     >
       <div
-        className="relative flex h-full w-full max-w-md flex-col overflow-hidden bg-neutral-950 md:h-[90vh] md:rounded-2xl"
+        className="relative flex h-full w-full flex-col overflow-hidden bg-neutral-950 md:h-[90vh] md:max-w-2xl md:rounded-2xl"
         onTouchStart={(e) => {
           touchStartX.current = e.touches[0].clientX;
           touchStartY.current = e.touches[0].clientY;
@@ -171,8 +171,11 @@ export function CanteenStyleShowcase({
           style={{
             backgroundColor: "#FFB300",
             color: "#0A0A0A",
-            top:   "max(16px, env(safe-area-inset-top, 0))",
-            right: "max(16px, env(safe-area-inset-right, 0))"
+            // Bumped from 16px → 20px so the close button doesn't sit
+            // on the curved-iPhone screen edge — was getting clipped
+            // by rounded corners per Philip 2026-07-15.
+            top:   "max(20px, env(safe-area-inset-top, 0))",
+            right: "max(20px, env(safe-area-inset-right, 0))"
           }}
         >
           <X size={20} strokeWidth={2.6}/>

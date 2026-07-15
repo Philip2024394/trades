@@ -75,9 +75,14 @@ export function BuyColumn({ product, merchant, details, viewerTier = "free" }: P
   const unitPriceDisplayed = activeTier ? activeTier.totalPriceGbp / activeTier.qty : baseUnit;
   const positivePct = Math.round((product.starRating / 5) * 100);
 
+  // Trade price gate — 2026-07-14 update:
+  //   - homeowners see retail only (trade price hidden entirely)
+  //   - every signed-in trade sees the trade price, regardless of tier
+  // Older tier-based gate is retained as a fall-back for accounts that
+  // haven't yet migrated to the viewer_role model.
   const showTradePrice =
-    product.tradePriceGbp &&
-    (viewerTier === "paid" || viewerTier === "verified" || viewerTier === "merchant-pro");
+    !!product.tradePriceGbp &&
+    (isTrade || viewerTier === "paid" || viewerTier === "verified" || viewerTier === "merchant-pro");
 
   const stockLabel =
     activeVariant
@@ -203,12 +208,13 @@ export function BuyColumn({ product, merchant, details, viewerTier = "free" }: P
         </div>
         {product.tradePriceGbp && !showTradePrice && (
           <Link
-            href="/tc/identity"
+            href="/sign-in?role=trade"
             className="inline-flex items-center gap-1 self-start rounded-sm px-2 py-1 text-[10px] font-black uppercase tracking-wider text-neutral-700"
             style={{ backgroundColor: "#F5F0E4" }}
+            title="Trade prices are visible to signed-in trades only"
           >
             <ShieldCheck size={10}/>
-            Trade price · Verify to see
+            Trade price · Sign in as a trade
           </Link>
         )}
       </div>

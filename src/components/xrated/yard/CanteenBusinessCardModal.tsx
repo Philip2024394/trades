@@ -3,15 +3,19 @@
 // CanteenBusinessCardModal — full-screen popup that reads as a real
 // trade business card. Full-bleed background image of the merchant's
 // hero + overlaid: name, address, phone, small QR (opens canteen on
-// scan), share-to-WhatsApp button, and close.
+// scan), Share-to-WhatsApp button, and close.
 //
-// Triggered from the hero "Business card" button (replacing the old
-// direct WhatsApp CTA). Feels like flipping open the merchant's card.
+// Share model (2026-07-15): the modal is SHARE-ONLY — no direct
+// "Message merchant" affordance. Tapping Share Business Card pre-fills
+// a WhatsApp message with the merchant's contact card + canteen link
+// and opens WhatsApp's contact picker so the user forwards to anyone.
+// The share burns 1 washer per successful share (same lead-gen model
+// as verified contacts — a shared card is a spread-lead surface). See
+// project_washers_lead_gen_model.md.
 
 import { useEffect, useState } from "react";
-import { X, MessageCircle, MapPin, Phone } from "lucide-react";
-import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
-import { VerifiedContactModal } from "@/components/xrated/VerifiedContactModal";
+import { X, Share2, MapPin, Phone } from "lucide-react";
+import { BRAND_YELLOW, BRAND_BLACK } from "@/lib/brand/tokens";
 
 const TAN = "#B8860B";
 
@@ -55,12 +59,9 @@ export function CanteenBusinessCardModal({
     };
   }, [open, onClose]);
 
-  // Verified contact modal state — the "Message on WhatsApp" button
-  // no longer opens WhatsApp directly. It opens the VerifiedContactModal
-  // which collects name/WA/comment and burns a washer on Send.
-  // Hook is placed BEFORE the early return so React sees a stable
-  // hook order across renders.
-  const [contactOpen, setContactOpen] = useState(false);
+  // Sharing state — tracked so the Share button can show "Sharing…"
+  // while the washer deduction fires + the wa.me handoff opens.
+  const [sharing, setSharing] = useState(false);
 
   if (!open) return null;
 
@@ -200,9 +201,12 @@ export function CanteenBusinessCardModal({
                   </div>
                 )}
                 {digits && (
-                  <div className="flex items-center gap-1.5 text-white/90">
-                    <Phone size={12} strokeWidth={2.5}/>
-                    <span className="text-[12px] font-bold drop-shadow-sm sm:text-[12.5px]">
+                  <div className="flex items-center gap-1.5">
+                    <Phone size={12} strokeWidth={2.5} className="text-white"/>
+                    <span
+                      className="text-[12px] font-bold drop-shadow-sm sm:text-[12.5px]"
+                      style={{ color: "#FFFFFF" }}
+                    >
                       {hostWhatsapp}
                     </span>
                   </div>
@@ -236,44 +240,64 @@ export function CanteenBusinessCardModal({
           </div>
         </div>
 
-        {/* Action buttons — outside the card so the card reads as a
-            card, not a form. Message routes through VerifiedContactModal
-            so we burn a washer only on a genuine send. */}
+        {/* Action button — Share Business Card. Fires a washer deduct
+            call (spread-lead is counted as a lead surface per the
+            lead-gen model) then opens WhatsApp's contact picker with
+            a pre-formed card message. NO direct "message merchant"
+            button here — the card is a share surface, not a contact
+            form. Verified-contact flow lives on the hero WhatsApp CTA. */}
         {digits && (
           <div className="flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
-              onClick={() => setContactOpen(true)}
-              className="inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-              style={{ backgroundColor: BRAND_GREEN_DARK }}
+              disabled={sharing}
+              onClick={async () => {
+                if (sharing) return;
+                setSharing(true);
+                // Best-effort washer deduct — proceed to share even if
+                // the endpoint fails so the visitor flow never stalls.
+                try {
+                  await fetch(`/api/washers/deduct`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      merchantSlug: hostSlug,
+                      source: "canteen-business-card-share",
+                      sourceLabel: `${hostFirstName}'s business card share on Thenetworkers.app`
+                    })
+                  });
+                } catch { /* stub or offline — swallow */ }
+
+                // Compose the shareable card. Recipient sees the
+                // merchant's trade, city, WhatsApp number, and canteen
+                // link. Uses wa.me/?text (no phone) so WhatsApp opens
+                // its contact picker instead of a specific chat.
+                const canteenUrl = `https://thenetworkers.app/trade-off/yard/canteens/${hostSlug}`;
+                const addrLine = [addressLine, city, postcode].filter(Boolean).join(", ");
+                const shareText =
+                  `📇 ${hostDisplayName}` +
+                  `\n${tradeLabel}${city ? ` · ${city}` : ""}` +
+                  (addrLine ? `\n📍 ${addrLine}` : "") +
+                  `\n📱 WhatsApp: +${digits}` +
+                  `\n\n👇 Full profile + reviews` +
+                  `\n${canteenUrl}` +
+                  `\n\n— Shared via ${hostFirstName}'s Tradesite on Thenetworkers.app`;
+                const shareUrl = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+                if (typeof window !== "undefined") {
+                  window.open(shareUrl, "_blank", "noopener,noreferrer");
+                }
+                setSharing(false);
+                onClose();
+              }}
+              className="inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-70"
+              style={{ backgroundColor: "#166534" }}
             >
-              <MessageCircle size={14} strokeWidth={2.5}/>
-              Message {hostFirstName}
+              <Share2 size={14} strokeWidth={2.5}/>
+              {sharing ? "Sharing…" : "Share Business Card"}
             </button>
           </div>
         )}
       </div>
-
-      {/* Verified contact modal — collects name/WA/comment before
-          opening WhatsApp. Fires the washer deduction on Send. */}
-      {digits && (
-        <VerifiedContactModal
-          open={contactOpen}
-          onClose={() => {
-            setContactOpen(false);
-            onClose();
-          }}
-          merchantSlug={hostSlug}
-          merchantDisplayName={hostDisplayName}
-          merchantFirstName={hostFirstName}
-          merchantWhatsapp={digits}
-          tradeLabel={tradeLabel}
-          city={city}
-          source="canteen-business-card"
-          sourceLabel={`${hostFirstName}'s business card on Thenetworkers.app`}
-          canteenSlug={hostSlug}
-        />
-      )}
     </div>
   );
 }

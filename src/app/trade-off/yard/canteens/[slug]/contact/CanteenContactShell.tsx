@@ -11,7 +11,8 @@ import {
   MapPin,
   Send,
   CheckCircle2,
-  Home
+  Home,
+  Phone
 } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
 
@@ -25,7 +26,8 @@ export function CanteenContactShell({
   headerBgUrl,
   addressLine,
   postcode,
-  city
+  city,
+  hostWhatsapp
 }: {
   canteenSlug: string;
   canteenName: string;
@@ -35,6 +37,9 @@ export function CanteenContactShell({
   addressLine: string | null;
   postcode: string | null;
   city: string | null;
+  /** Host's WhatsApp/phone number. Rendered on the dark hero in white
+   *  text + as a tap-to-call chip on the address card. */
+  hostWhatsapp: string | null;
 }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -131,6 +136,30 @@ export function CanteenContactShell({
           <p className="mt-2 max-w-2xl text-[13px] leading-snug text-white/85 sm:text-[14px]">
             Drop a message below — {hostDisplayName.split(/\s+/)[0]} will reply directly by email. Usually within 24 hours.
           </p>
+          {hostWhatsapp && (
+            <div className="mt-3 inline-flex items-center gap-2">
+              <Phone size={16} strokeWidth={2.4} style={{ color: "#FFFFFF" }}/>
+              <a
+                href={`tel:+${hostWhatsapp.replace(/[^0-9]/g, "")}`}
+                className="text-[15px] font-black drop-shadow-md hover:underline sm:text-[17px]"
+                style={{ color: "#FFFFFF" }}
+              >
+                {/* Inner span forces pure white regardless of any
+                    visited / hover / active pseudo-class the browser
+                    might apply to the anchor. Inline color on the span
+                    beats browser default link colours. */}
+                <span style={{ color: "#FFFFFF" }}>
+                  +{hostWhatsapp.replace(/[^0-9]/g, "")}
+                </span>
+              </a>
+              <span
+                className="rounded-full bg-white/15 px-2 py-0.5 text-[9px] font-black uppercase tracking-widest backdrop-blur"
+                style={{ color: "#FFFFFF" }}
+              >
+                Call or WhatsApp
+              </span>
+            </div>
+          )}
         </div>
       </section>
 

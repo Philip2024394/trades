@@ -6,10 +6,12 @@
 // logo. Mobile-first.
 
 import Link from "next/link";
-import { Users, Send, Info, Check, LogOut, Menu, X, Home, ShoppingBag, Store, Settings, MessageCircle, Mail, Star, Bell, Package, Plus, BookOpen } from "lucide-react";
+import { Users, Send, Info, Check, LogOut, Menu, X, Home, ShoppingBag, Store, Settings, MessageCircle, Mail, Star, Bell, Package, Plus, BookOpen, IdCard } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { Canteen } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
+import { CanteenBusinessCardModal } from "@/components/xrated/yard/CanteenBusinessCardModal";
 
 const CREAM = "#FBF6EC";
 
@@ -24,8 +26,10 @@ export function CanteenHeader({
   hostHasProducts = false,
   hostWhatsapp = null,
   hostReviews = null,
+  hostAvatarUrl = null,
   editMode = false,
-  onToggleEditMode
+  onToggleEditMode,
+  paletteDark = false
 }: {
   canteen: Canteen;
   onInvite: () => void;
@@ -43,16 +47,31 @@ export function CanteenHeader({
   /** Host review aggregate — powers the floating "Rating" KPI card.
    *   Only rendered when count>=5 to preserve the honest-signal rule. */
   hostReviews?: { avg: number; count: number } | null;
+  /** Host's profile image. When present, the owner-greeting avatar
+   *  renders the photo instead of the initial-letter fallback. Same
+   *  source as CanteenHeroWow's hostAvatarUrl so the two hero surfaces
+   *  stay in sync. */
+  hostAvatarUrl?: string | null;
   /** Host-only Edit mode. When true, the canteen page shows editable
    *  affordances (yellow ring, "you're editing" strip, in-place editor
    *  panels). Ignored when isHost is false. */
   editMode?: boolean;
   onToggleEditMode?: () => void;
+  /** Dark palette flag — flips the floating KPI stack cards to
+   *  near-black so they read correctly on Iron / other dark palettes.
+   *  Boolean rather than the full palette object because CanteenHeader
+   *  only needs the dark/light distinction for KPI card styling. */
+  paletteDark?: boolean;
 }) {
   const [joining, setJoining] = useState(false);
   const [leaveMenuOpen, setLeaveMenuOpen] = useState(false);
   const [leaving, setLeaving] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  // Business card modal — matches CanteenHeroWow's mobile pattern so
+  // every canteen hero (mobile + desktop, every trade) exposes the
+  // same Card affordance. See feedback_canteen_business_card_button.md
+  // for the platform-standard rule.
+  const [cardOpen, setCardOpen] = useState(false);
 
   // Lock body scroll while the drawer is open so the underlying page
   // doesn't scroll behind the overlay. Cleaned up on close.
@@ -134,11 +153,21 @@ export function CanteenHeader({
         {isHost ? (
           <div className="mb-4 flex items-center gap-3 pr-14">
             <div
-              className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full text-[16px] font-black shadow-sm sm:h-14 sm:w-14 sm:text-[18px]"
+              className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full text-[16px] font-black shadow-sm sm:h-14 sm:w-14 sm:text-[18px]"
               style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
               aria-hidden
             >
-              {canteen.hostDisplayName.charAt(0)}
+              {hostAvatarUrl ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={hostAvatarUrl}
+                  alt=""
+                  className="h-full w-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                canteen.hostDisplayName.charAt(0)
+              )}
               {/* Online status dot */}
               <span
                 aria-hidden
@@ -223,6 +252,7 @@ export function CanteenHeader({
           <FloatingKpiStack
             projectsActive={canteen.postsLast30d}
             rating={hostReviews && hostReviews.count >= 5 ? hostReviews : null}
+            dark={paletteDark}
           />
         </div>
 
@@ -247,21 +277,52 @@ export function CanteenHeader({
                 <BookOpen size={14} strokeWidth={2.6}/>
                 Button Features
               </button>
-            ) : isHost ? null : !isMember ? (
+            ) : isHost ? (
               hostWhatsapp ? (
-                <a
-                  href={`https://wa.me/${hostWhatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                    `Hi ${canteen.hostDisplayName.split(/\s+/)[0]}, I found your canteen "${canteen.name}" on Thenetworkers — I'd like to get in touch about ${canteen.tradeLabel.toLowerCase()}.`
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
+                <button
+                  type="button"
+                  onClick={() => setCardOpen(true)}
+                  aria-label={`Open ${canteen.hostDisplayName}'s business card`}
                   className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-                  style={{ backgroundColor: "#25D366" }}
-                  aria-label={`WhatsApp ${canteen.hostDisplayName}`}
+                  style={{ backgroundColor: "#B8860B" }}
                 >
-                  <MessageCircle size={13} strokeWidth={2.6}/>
-                  WhatsApp us
-                </a>
+                  <IdCard size={13} strokeWidth={2.6}/>
+                  Business Card
+                </button>
+              ) : null
+            ) : !isMember ? (
+              hostWhatsapp ? (
+                <div className="flex flex-wrap items-center gap-2">
+                  <VerifiedContactButton
+                    merchantSlug={canteen.hostSlug}
+                    merchantDisplayName={canteen.hostDisplayName}
+                    merchantFirstName={canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName}
+                    merchantWhatsapp={hostWhatsapp}
+                    tradeLabel={canteen.tradeLabel}
+                    source="canteen-hero"
+                    sourceLabel={`${canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName}'s canteen "${canteen.name}" on Thenetworkers.app`}
+                    canteenSlug={canteen.slug}
+                    ariaLabel={`WhatsApp ${canteen.hostDisplayName}`}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                    style={{ backgroundColor: "#25D366" }}
+                  >
+                    <MessageCircle size={13} strokeWidth={2.6}/>
+                    WhatsApp us
+                  </VerifiedContactButton>
+                  {/* Business Card companion — same modal + WhatsApp
+                      share as the mobile app view. Platform-standard
+                      button on every trade's hero. */}
+                  <button
+                    type="button"
+                    onClick={() => setCardOpen(true)}
+                    aria-label={`Open ${canteen.hostDisplayName}'s business card`}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                    style={{ backgroundColor: "#B8860B" }}
+                  >
+                    <IdCard size={13} strokeWidth={2.6}/>
+                    Business Card
+                  </button>
+                </div>
               ) : (
                 <Link
                   href={`/trade-off/yard/canteens/${canteen.slug}/contact`}
@@ -482,6 +543,24 @@ export function CanteenHeader({
           `}</style>
         </div>
       )}
+
+      {/* Business Card modal — mirrors CanteenHeroWow.tsx on mobile so
+          every canteen hero (both surfaces, every trade) shares one
+          Card + WhatsApp-share affordance. Only mounted when a
+          whatsapp number is present since the modal's Send action
+          needs it. */}
+      {hostWhatsapp && (
+        <CanteenBusinessCardModal
+          open={cardOpen}
+          onClose={() => setCardOpen(false)}
+          hostSlug={canteen.hostSlug}
+          hostDisplayName={canteen.hostDisplayName}
+          hostFirstName={canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName}
+          tradeLabel={canteen.tradeLabel}
+          hostWhatsapp={hostWhatsapp}
+          backgroundImageUrl={canteen.headerBgUrl}
+        />
+      )}
     </section>
   );
 }
@@ -526,10 +605,13 @@ function DrawerLink({
 
 function FloatingKpiStack({
   projectsActive,
-  rating
+  rating,
+  dark = false
 }: {
   projectsActive: number;
   rating: { avg: number; count: number } | null;
+  /** Dark palette flag — flips cards to near-black bg + white text. */
+  dark?: boolean;
 }) {
   return (
     <div className="flex flex-row gap-2 md:min-w-[240px] md:flex-col md:gap-3">
@@ -539,6 +621,7 @@ function FloatingKpiStack({
         value={String(projectsActive)}
         subLabel="Active"
         accent
+        dark={dark}
       />
       {rating ? (
         <KpiCard
@@ -547,6 +630,7 @@ function FloatingKpiStack({
           value={rating.avg.toFixed(1)}
           subLabel={rating.avg >= 4.5 ? "Excellent" : rating.avg >= 4 ? "Very good" : rating.avg >= 3.5 ? "Good" : "Fair"}
           iconGold
+          dark={dark}
         />
       ) : (
         <KpiCard
@@ -555,6 +639,7 @@ function FloatingKpiStack({
           value="New"
           subLabel="Building"
           muted
+          dark={dark}
         />
       )}
     </div>
@@ -568,7 +653,8 @@ function KpiCard({
   subLabel,
   accent,
   iconGold,
-  muted
+  muted,
+  dark = false
 }: {
   icon: React.ReactNode;
   label: string;
@@ -577,29 +663,55 @@ function KpiCard({
   accent?: boolean;
   iconGold?: boolean;
   muted?: boolean;
+  /** Dark palette flag — flips card bg + text so KPI reads on Iron. */
+  dark?: boolean;
 }) {
-  const iconColor = muted ? "text-neutral-400" : iconGold ? "text-amber-500" : accent ? "text-neutral-700" : "text-neutral-700";
-  const valueColor = muted ? "text-neutral-500" : "text-neutral-900";
+  // Icon colour: brand yellow across every card so the KPI stack
+  // reads as a single yellow-highlight system (Projects + Rating both
+  // pop the same). Muted "New" placeholder stays grey.
+  const iconTextClass = muted
+    ? (dark ? "text-neutral-500" : "text-neutral-400")
+    : "text-[#FFB300]";
   return (
     <div
-      className="flex flex-1 items-center gap-2 rounded-xl border bg-white px-3 py-2 shadow-lg md:flex-none md:flex-col md:items-start md:px-4 md:py-3"
-      style={{ borderColor: "rgba(139,69,19,0.10)" }}
+      className="flex flex-1 items-center gap-2 rounded-xl border px-3 py-2 shadow-lg md:flex-none md:flex-col md:items-start md:px-4 md:py-3"
+      style={{
+        backgroundColor: dark ? "#141414" : "#FFFFFF",
+        borderColor:     dark ? "rgba(255,255,255,0.10)" : "rgba(139,69,19,0.10)"
+      }}
     >
       <div
-        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg md:h-9 md:w-9 ${iconColor}`}
-        style={{ backgroundColor: muted ? "rgba(0,0,0,0.04)" : "rgba(184,134,11,0.10)" }}
+        className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg md:h-9 md:w-9 ${iconTextClass}`}
+        style={{
+          backgroundColor: muted
+            ? (dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)")
+            : (dark ? "rgba(255,179,0,0.18)" : "rgba(184,134,11,0.10)")
+        }}
         aria-hidden
       >
         {icon}
       </div>
       <div className="min-w-0 flex-1 md:flex-none">
-        <div className="text-[9px] font-black uppercase tracking-[0.16em] text-neutral-500 md:text-[10px]">
+        <div
+          className="text-[9px] font-black uppercase tracking-[0.16em] md:text-[10px]"
+          style={{ color: dark ? "#9CA3AF" : "#737373" }}
+        >
           {label}
         </div>
-        <div className={`text-[16px] font-black leading-none md:text-[22px] ${valueColor}`}>
+        <div
+          className="text-[16px] font-black leading-none md:text-[22px]"
+          style={{
+            color: muted
+              ? (dark ? "#A3A3A3" : "#737373")
+              : (dark ? "#FFFFFF" : "#171717")
+          }}
+        >
           {value}
         </div>
-        <div className="text-[9px] font-black text-neutral-500 md:text-[10px]">
+        <div
+          className="text-[9px] font-black md:text-[10px]"
+          style={{ color: dark ? "#9CA3AF" : "#737373" }}
+        >
           {subLabel}
         </div>
       </div>

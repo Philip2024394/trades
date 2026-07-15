@@ -25,7 +25,6 @@ import {
   Tag,
   ChevronRight,
   Flame,
-  Quote,
   Star
 } from "lucide-react";
 import { BRAND_BLACK } from "@/lib/brand/tokens";
@@ -33,6 +32,10 @@ import {
   CanteenTrendingSwipeSheet,
   type TrendingSwipeItem
 } from "./CanteenTrendingSwipeSheet";
+import {
+  CanteenStyleShowcase,
+  type StyleShowcaseItem
+} from "./CanteenStyleShowcase";
 import type { CanteenProductVariants } from "@/lib/canteens";
 
 const TAN = "#B8860B";       // Warm gold, matches "Thenetworkers" wordmark
@@ -53,11 +56,20 @@ export function CanteenQuickActions({ canteenSlug, tradeSlug, inline = false }: 
   // resets the tabbed section to "feed" and scrolls the page to top.
   // Previously it was a Link to the canteen URL, which did nothing
   // visible because the user is already on that URL.
+  // Trade-aware label for the designs quick-action tile. Matches the
+  // same trade-aware label on the Designs tab in CanteenTabbedSection.
+  // Kitchen fitter sees "Kitchens", bathroom fitter "Bathrooms", every
+  // other trade "Projects".
+  const designsLabel = tradeSlug === "kitchen-fitter"
+    ? "Kitchens"
+    : tradeSlug === "bathroom-fitter"
+      ? "Bathrooms"
+      : "Projects";
   const items = [
     { icon: <Home size={18} strokeWidth={2.3}/>,           label: "Home",        href: `#tab-feed` },
     { icon: <Mail size={18} strokeWidth={2.3}/>,           label: "Contact us",  href: `#tab-contact` },
     { icon: <Users size={18} strokeWidth={2.3}/>,          label: "Find Trades", href: `#tab-trades` },
-    { icon: <Palette size={18} strokeWidth={2.3}/>,        label: "Designs",     href: `#tab-designs` },
+    { icon: <Palette size={18} strokeWidth={2.3}/>,        label: designsLabel,  href: `#tab-designs` },
     { icon: <ShoppingCart size={18} strokeWidth={2.3}/>,   label: "Products",    href: `#tab-products` }
   ];
   const grid = (
@@ -72,7 +84,7 @@ export function CanteenQuickActions({ canteenSlug, tradeSlug, inline = false }: 
             >
               {item.icon}
             </div>
-            <div className="text-[10px] font-bold leading-tight text-neutral-700 md:text-[11px]">
+            <div className="text-[11px] font-bold leading-tight text-neutral-700 md:text-[11px]">
               {item.label}
             </div>
           </>
@@ -177,33 +189,35 @@ export function CanteenTradeDeals({
         // Suppress the unused-var warning without exposing hostSlug leak.
         void hostSlug;
       }}
-      className="flex items-center gap-3 overflow-hidden rounded-2xl border p-3 shadow-md transition hover:brightness-105 active:scale-[0.99] md:p-4"
+      className="flex items-center gap-2 overflow-hidden rounded-2xl border py-1 pl-0 pr-3 shadow-md transition hover:brightness-105 active:scale-[0.99] md:py-1.5 md:pr-4"
       style={{
-        backgroundImage: `linear-gradient(90deg, ${TAN_SOFT} 0%, #FDF3E0 100%)`,
-        borderColor: "rgba(184,134,11,0.20)"
+        backgroundColor: "#FFB300",
+        borderColor: "rgba(184,134,11,0.30)"
       }}
     >
-      {/* Big serif quotation-mark tile — matches the editorial pull
-          quote language used elsewhere on the page. */}
-      <div
-        className="flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-2xl shadow-md md:h-20 md:w-20"
-        style={{ backgroundColor: "#FFFFFF", color: TAN }}
+      {/* Illustrated graphic — customers-say-it-best. Flush to the
+          left edge (no left padding, negative margin for extra pull)
+          so the character reads as breaking out of the container. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="https://ik.imagekit.io/9mrgsv2rp/Untitledsdadaaa-removebg-preview.png"
+        alt=""
         aria-hidden
-      >
-        <Quote size={30} strokeWidth={2.2}/>
-      </div>
+        loading="lazy"
+        className="-ml-2 h-20 w-20 flex-shrink-0 object-contain md:h-24 md:w-24"
+      />
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-1 text-[13px] font-black text-neutral-900 md:text-[14px]">
+        <div className="flex items-center gap-1.5 text-[20px] font-black leading-tight tracking-tight text-neutral-900 md:text-[24px]">
           Customers say it best
-          <Star size={11} strokeWidth={0} fill={TAN} style={{ color: TAN }}/>
+          <Star size={14} strokeWidth={0} fill={TAN} style={{ color: TAN }}/>
         </div>
-        <p className="mt-0.5 line-clamp-2 text-[10.5px] leading-snug text-neutral-600 md:text-[11px]">
+        <p className="mt-1 line-clamp-1 text-[11px] leading-snug text-neutral-700 md:text-[12px]">
           {subCopy}
         </p>
       </div>
       <span
         className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-white shadow-md"
-        style={{ backgroundColor: TAN }}
+        style={{ backgroundColor: "#0A0A0A" }}
         aria-hidden
       >
         <ChevronRight size={16} strokeWidth={2.5}/>
@@ -236,6 +250,17 @@ type TrendingItem = {
   label: string;
   keywords: string[];
   fallback: string;
+  /** Optional short description shown in the full-screen showcase
+   *  view when the merchant is running the style-showcase (rather
+   *  than product-match) trending flow. 2-3 lines max. */
+  description?: string;
+  /** Optional starting price shown on the showcase card. Merchants
+   *  can leave both from/to blank; showcase then shows only the
+   *  Enquire Now CTA with no price. */
+  priceFromGbp?: number;
+  /** Optional ceiling price. When both from + to are set the card
+   *  reads "£X – £Y"; from-only reads "from £X"; neither = no price. */
+  priceToGbp?: number;
 };
 
 const HL = "https://ik.imagekit.io/9mrgsv2rp"; // hero library base
@@ -246,8 +271,8 @@ const HL = "https://ik.imagekit.io/9mrgsv2rp"; // hero library base
 const TRENDING_HEADING_BY_TRADE: Record<string, string> = {
   "kitchen-fitter":  "Trending Kitchen Style",
   "bathroom-fitter": "Trending Bathroom Designs",
-  "electrician":     "Trending Electrical Work",
-  "plumber":         "Trending Plumbing Jobs",
+  "electrician":     "Example of Services",
+  "plumber":         "Example of Services",
   "bricklayer":      "Trending Brickwork",
   "scaffolder":      "Trending Scaffolding Setups",
   "roofer":          "Trending Roofing Jobs",
@@ -259,26 +284,41 @@ const TRENDING_HEADING_BY_TRADE: Record<string, string> = {
 };
 
 const TRENDING_BY_TRADE: Record<string, TrendingItem[]> = {
+  // Kitchen fitter trending — refreshed 2026-07-14 to 6 kitchen STYLE
+  // categories with cache-busted ImageKit URLs (the plain-URL variants
+  // were missing on some CDN edges). Style-led browsing matches how
+  // homeowners actually pick a kitchen. Prices are indicative supply
+  // + install ranges — merchants can override to any range or leave
+  // both blank for enquire-only.
   "kitchen-fitter": [
-    { slug: "cabinets",  label: "Cabinets",  keywords: ["cabinet", "carcass", "unit"],       fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2011_04_56%20PM.png` },
-    { slug: "worktops",  label: "Worktops",  keywords: ["worktop", "counter", "surface"],    fallback: `${HL}/ChatGPT%20Image%20Jun%2030,%202026,%2006_38_39%20PM.png` },
-    { slug: "tiling",    label: "Tiling",    keywords: ["tile", "splashback", "ceramic"],    fallback: `${HL}/ChatGPT%20Image%20Jul%203,%202026,%2008_44_32%20AM.png` },
-    { slug: "sinks",     label: "Sinks",     keywords: ["sink", "tap", "basin"],             fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png` },
-    { slug: "lighting",  label: "Lighting",  keywords: ["light", "pendant", "lamp"],         fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_00_58%20AM.png` }
+    { slug: "african-walnut", label: "African Walnut", keywords: ["walnut", "dark", "black wood"],       fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2010_41_55%20PM.png?updatedAt=1783957337092", description: "Dark African walnut cabinets with deep-grain figure. Bespoke doors, soft-close, waterfall island option.", priceFromGbp: 8500, priceToGbp: 14500 },
+    { slug: "brushed-steel",  label: "Brushed Steel",  keywords: ["steel", "stainless", "industrial"],   fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2011_11_45%20PM.png?updatedAt=1783959123974", description: "Full brushed-stainless cabinets and worktop. Commercial-grade, hygienic. Ideal for open-plan loft kitchens.",   priceFromGbp: 12000, priceToGbp: 22000 },
+    { slug: "mahogany",       label: "Mahogany",       keywords: ["mahogany", "red wood", "rich"],       fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2011_23_27%20PM.png?updatedAt=1783959824125", description: "Rich mahogany with brass hardware. Traditional stiles and rails. Ideal for period and Georgian homes.",     priceFromGbp: 9500,  priceToGbp: 16000 },
+    { slug: "blue-shaker",    label: "Blue Shaker",    keywords: ["shaker", "blue", "navy", "handleless"], fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2011_06_40%20PM.png?updatedAt=1783958815981", description: "Deep navy shaker doors, brass or nickel handles, quartz worktops. Modern-classic — the most-requested style right now.", priceFromGbp: 7500, priceToGbp: 13000 },
+    { slug: "cottage-cream",  label: "Cottage Cream",  keywords: ["cream", "cottage", "farmhouse"],      fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2010_53_37%20PM.png?updatedAt=1783958037322", description: "Soft cream farmhouse look, painted timber, butler sink option. Warm feel for cottages and traditional builds.", priceFromGbp: 6500, priceToGbp: 11500 },
+    { slug: "walnut",         label: "Walnut",         keywords: ["walnut", "light wood", "traditional"], fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2013,%202026,%2010_47_54%20PM.png?updatedAt=1783957696517", description: "Classic mid-tone walnut with clean lines. Warm grain, timeless. Works with quartz, granite, or timber worktop.",   priceFromGbp: 7500, priceToGbp: 13500 }
   ],
   "plumber": [
-    { slug: "boilers",   label: "Boilers",   keywords: ["boiler", "combi", "worcester"],     fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png` },
-    { slug: "radiators", label: "Radiators", keywords: ["radiator", "rad"],                  fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png` },
-    { slug: "bathrooms", label: "Bathrooms", keywords: ["bathroom", "shower", "bath"],       fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_04_52%20PM.png` },
-    { slug: "sinks",     label: "Sinks",     keywords: ["sink", "tap", "basin"],             fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png` },
-    { slug: "leaks",     label: "Leaks",     keywords: ["leak", "burst", "drip"],            fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png` }
+    { slug: "boilers",     label: "Boilers",     keywords: ["boiler", "combi", "worcester"],        fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png`,                                        description: "Boiler installs — Worcester Bosch 4000 or Vaillant ecoTec Plus combi/system boilers. Includes flue, magnetic filter, thermostat, powerflush if needed, Gas Safe commissioning. 10-year manufacturer warranty.", priceFromGbp: 2200,  priceToGbp: 3800 },
+    { slug: "bathrooms",   label: "Bathrooms",   keywords: ["bathroom", "shower", "bath"],          fallback: `${HL}/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png`,                                       description: "Full bathroom refurb — strip out, re-plumb, install new bath / shower / toilet / basin / vanity, tile walls + floor. Coordinates with tiler, plasterer, and electrician. Typical duration 5-8 working days.",   priceFromGbp: 3500,  priceToGbp: 8500 },
+    { slug: "heating",     label: "Heating",     keywords: ["central heating", "rad", "radiator"],  fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png`,                                        description: "Full central heating install — boiler + radiators sized per room, all pipework, TRVs, programmer, magnetic filter. Suits new builds, extensions, or conversions from electric. Building Control notification handled.", priceFromGbp: 4800,  priceToGbp: 8200 },
+    { slug: "powerflush",  label: "Powerflush",  keywords: ["powerflush", "flush", "sludge"],       fallback: `${HL}/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png`,                                       description: "Powerflush removes sludge, rust, and limescale from your central heating. Restores efficiency, fixes cold-spot radiators, cuts running costs. Kamco pump + Fernox chemical + X100 inhibitor top-up.",       priceFromGbp: 450,   priceToGbp: 650 },
+    { slug: "leaks",       label: "Leaks",       keywords: ["leak", "burst", "drip"],               fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_03_04%20PM.png`,                                        description: "Leak detection + repair — pipework, radiator valves, toilet cisterns, tap connections, waste seals. Same-day callout in Nottingham. Insurance-ready written reports on request. £120/hr with 1-hour minimum.", priceFromGbp: 120,   priceToGbp: 380 },
+    { slug: "taps",        label: "Taps",        keywords: ["tap", "kitchen tap", "mixer"],         fallback: `${HL}/ChatGPT%20Image%20Jul%206,%202026,%2002_01_34%20PM.png`,                                        description: "Kitchen + bathroom tap install — mixer, mono-block, or boiling water tap (Quooker / Fohën). Includes isolators, flexi connectors, and old tap removal. Undermount stone-worktop installs quoted on visit.",  priceFromGbp: 120,   priceToGbp: 320 },
+    { slug: "emergency",   label: "Emergency",   keywords: ["emergency", "callout", "24/7"],        fallback: `${HL}/ChatGPT%20Image%20Jul%2015,%202026,%2012_05_53%20AM.png`,                                       description: "24/7 emergency callout within 20 miles of Nottingham. Burst pipe, no heating, no hot water, uncontained leak. £95 callout + £75/hr (1hr min). Out-of-hours surcharge on weekends and bank holidays.",       priceFromGbp: 95,    priceToGbp: 350 }
   ],
   "electrician": [
-    { slug: "rewires",   label: "Rewires",   keywords: ["rewire", "wiring", "cable"],        fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png` },
-    { slug: "ev",        label: "EV",        keywords: ["ev", "charger", "zappi"],           fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_26_18%20AM.png` },
-    { slug: "boards",    label: "Boards",    keywords: ["board", "fuse", "consumer unit"],   fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_41_39%20AM.png` },
-    { slug: "lighting",  label: "Lighting",  keywords: ["light", "spot", "pendant"],         fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_00_58%20AM.png` },
-    { slug: "sockets",   label: "Sockets",   keywords: ["socket", "usb", "outlet"],          fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png` }
+    { slug: "rewires",       label: "Surround Sound", keywords: ["sound", "speaker", "surround", "audio"],       fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_42_53%20AM.png",           description: "Surround sound installation — in-ceiling or wall-mounted speakers, multi-room streaming, home cinema wiring, and AV rack setup. Sonos, Denon, Yamaha compatible. First-fix cabling during a rewire or retrofit after plaster.", priceFromGbp: 950,   priceToGbp: 3800 },
+    { slug: "ev",            label: "Alarms",       keywords: ["alarm", "intruder", "security", "burglar"],      fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_22_23%20AM.png",           description: "Installation of alarm systems — wireless intruder alarm supply + fit. Yale Sync or Texecom Ricochet. External sounder, keypad, PIR sensors, door contacts, and smartphone control. Grade 2 rated for insurance discount.", priceFromGbp: 480,   priceToGbp: 1500 },
+    { slug: "boards",        label: "Fuse Board",   keywords: ["board", "fuse", "consumer unit"],                fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_24_56%20AM.png",           description: "Fuse board upgrade + supply — 18th-edition compliant consumer unit with 10-way RCBO, SPD, main switch. All labour, testing, EIC certificate, and building control notification included.",           priceFromGbp: 550,   priceToGbp: 850 },
+    { slug: "lighting",      label: "Lighting",     keywords: ["light", "spot", "pendant"],                      fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_14_15%20AM.png",           description: "Lighting install + upgrades — internal downlights, pendant swaps, outdoor security floods, garden bollards. Fire-rated IP65 LEDs standard, dimmer-compatible. Chandelier and feature-piece install quoted on visit.", priceFromGbp: 75,    priceToGbp: 900 },
+    { slug: "sockets",       label: "Sockets",      keywords: ["socket", "usb", "outlet"],                       fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_33_44%20AM.png",           description: "Add single or double sockets on existing rings. MK Logic Plus / LAP branded accessories in white, chrome or brushed steel. USB-C variants available. Multi-socket jobs discounted on visit.",       priceFromGbp: 85,    priceToGbp: 220 },
+    { slug: "gates",         label: "Gates",        keywords: ["gate", "gates", "driveway", "entrance"],         fallback: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2015,%202026,%2012_43_50%20AM.png",           description: "Wire in and install powered driveway or entrance gates — motor, control board, photocells, safety edge, and remote fobs. Single-leaf or double, sliding or swing. BFT, Came or Nice motors, safety-edge compliant.", priceFromGbp: 2800,  priceToGbp: 5500 },
+    // Everything below shows ONLY in the swipe sheet (index > 5).
+    // The trending home-page grid caps at 6 tiles (see .slice(0, 6)
+    // in the render). Merchants can add more services without cluttering
+    // the home grid — extras become browsable via swipe.
+    { slug: "first-fix",     label: "First Fix",    keywords: ["first fix", "first-fix", "chase", "back box"],   fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2001_23_54%20AM.png`,                                        description: "First-fix electrical for house extensions, garages and new builds — chases, back boxes, cable runs to consumer unit, and pre-plaster testing. Ready for the plasterer. Coordinates with your builder timeline.",   priceFromGbp: 750,   priceToGbp: 2800 }
   ],
   "carpenter": [
     { slug: "doors",       label: "Doors",       keywords: ["door", "hinge"],                fallback: `${HL}/ChatGPT%20Image%20Jul%205,%202026,%2010_48_25%20PM.png` },
@@ -369,9 +409,13 @@ export function CanteenTrendingRibbon({
   products = [],
   compact = false,
   canteenSlug,
+  hostSlug,
   hostFirstName,
+  hostDisplayName,
   hostWhatsapp = null,
-  sendToTradeCenter = false
+  hostCity,
+  sendToTradeCenter = false,
+  paletteDark = false
 }: {
   tradeLabel: string;
   tradeSlug?: string;
@@ -391,9 +435,16 @@ export function CanteenTrendingRibbon({
    *  back to the plain-Link behavior (used on standalone pages that
    *  don't have host context). */
   canteenSlug?: string;
+  hostSlug?: string;
   hostFirstName?: string;
+  hostDisplayName?: string;
   hostWhatsapp?: string | null;
+  hostCity?: string | null;
   sendToTradeCenter?: boolean;
+  /** Dark palette flag — flips the section heading to white so it
+   *  reads on Iron / other dark palettes where the ribbon sits
+   *  directly on the page's black background. */
+  paletteDark?: boolean;
 }) {
   const categories = (tradeSlug && TRENDING_BY_TRADE[tradeSlug]) || FALLBACK_TRENDING;
   // Per-trade heading noun. Falls back to the generic "in {trade}"
@@ -413,35 +464,54 @@ export function CanteenTrendingRibbon({
 
   return (
     <section className={`mx-auto max-w-6xl px-3 md:px-6 ${compact ? "pt-3" : "pt-4 md:pt-6"}`}>
-      <div className="mb-2 px-1">
-        <span className={`font-black text-neutral-900 ${compact ? "text-[11px] uppercase tracking-[0.14em]" : "text-[14px] md:text-[15px]"}`}>
+      <div className="mb-3 px-1">
+        <h2
+          className={`font-black leading-tight tracking-tight ${compact ? "text-[20px] md:text-[22px]" : "text-[22px] md:text-[26px]"}`}
+          style={{ color: paletteDark ? "#F5F5F5" : "#171717" }}
+        >
           {trendingHeading}
-        </span>
+        </h2>
       </div>
-      {/* Fixed 4-col grid — larger square tiles for higher visual
-          impact. Each tile carries a category image bg and a single
-          word label overlaid at the bottom. */}
-      <div className={`grid grid-cols-4 ${compact ? "gap-1.5 md:gap-2 max-w-md" : "gap-2 md:gap-3"}`}>
-        {categories.slice(0, 4).map((cat, i) => {
-          const match = matchProductForCategory(cat, products);
+      {/* 3-col grid, 6 portrait tiles — showcase kitchen STYLES (not
+          utility categories). aspect-[4/5] gives the "slightly taller
+          than wide" shape merchants asked for so the style photography
+          breathes. Each tile carries the style image bg + label. */}
+      <div className={`grid grid-cols-3 ${compact ? "gap-1.5 md:gap-2 max-w-md" : "gap-2 md:gap-3"}`}>
+        {categories.slice(0, 6).map((cat, i) => {
+          // Style categories (those carrying `description` — the flag
+          // that also drives CanteenStyleShowcase) must always show the
+          // category's own style photograph, never a keyword-matched
+          // product image. Otherwise the tile drifts from the image
+          // the user sees after tapping in.
+          const match = cat.description
+            ? { imageUrl: cat.fallback, hrefPath: null as string | null }
+            : matchProductForCategory(cat, products);
           const commonProps = {
             className:
-              "relative flex aspect-square w-full overflow-hidden rounded-xl border shadow-sm transition active:scale-[0.97]",
+              "relative flex aspect-[4/5] w-full overflow-hidden rounded-xl border bg-neutral-100 shadow-sm transition active:scale-[0.97]",
             style: {
-              borderColor: i === 0 ? TAN : "rgba(139,69,19,0.12)",
-              backgroundImage: `url('${match.imageUrl}')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center"
+              borderColor: i === 0 ? TAN : "rgba(139,69,19,0.12)"
             } as React.CSSProperties
           };
+          // <img> instead of background-image so rounded-xl clips
+          // cleanly against the border. Background-image blurred sub-
+          // pixel at the corners producing a "glittery" edge on both
+          // mobile + desktop; img+object-cover renders sharp.
           const content = (
             <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={match.imageUrl}
+                alt={cat.label}
+                loading="lazy"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
               <div
                 aria-hidden
                 className="absolute inset-x-0 bottom-0 h-3/5"
                 style={{ background: "linear-gradient(to top, rgba(0,0,0,0.80) 15%, rgba(0,0,0,0.30) 60%, transparent 100%)" }}
               />
-              <span className={`relative z-10 mt-auto w-full text-center font-black leading-none text-white drop-shadow-md ${compact ? "px-1 pb-1 text-[9px] md:text-[10px]" : "px-2 pb-2 text-[12px] md:text-[14px]"}`}>
+              <span className={`relative z-10 mt-auto w-full text-center font-black leading-none text-white drop-shadow-md ${compact ? "px-1 pb-1 text-[11px] md:text-[11px]" : "px-2 pb-2 text-[12px] md:text-[14px]"}`}>
                 {cat.label}
               </span>
             </>
@@ -475,17 +545,51 @@ export function CanteenTrendingRibbon({
         })}
       </div>
 
-      {/* Swipe sheet — only mounts in swipe mode, only visible when a
-          category tile has been tapped. */}
-      {swipeMode && openCategory && (
+      {/* Style showcase — mounts when the trade's trending items are
+          STYLE cards (they carry `description` fields) rather than
+          utility categories. Full-screen Tinder-style swipe view with
+          Enquire Now CTA. Used by kitchen-fitter today; every future
+          trade that adopts style-showcase gets it automatically. */}
+      {swipeMode && openCategory && openCategory.description && (
+        <CanteenStyleShowcase
+          open={openCategoryIdx != null}
+          onClose={() => setOpenCategoryIdx(null)}
+          items={categories.map<StyleShowcaseItem>((c) => ({
+            slug: c.slug,
+            label: c.label,
+            imageUrl: c.fallback,
+            description: c.description,
+            priceFromGbp: c.priceFromGbp,
+            priceToGbp: c.priceToGbp
+          }))}
+          initialIndex={openCategoryIdx ?? 0}
+          categoryLabel={trendingHeading}
+          hostSlug={hostSlug ?? canteenSlug ?? ""}
+          hostFirstName={hostFirstName!}
+          hostDisplayName={hostDisplayName ?? hostFirstName!}
+          hostWhatsapp={hostWhatsapp}
+          tradeLabel={tradeLabel}
+          hostCity={hostCity}
+          canteenSlug={canteenSlug}
+        />
+      )}
+      {/* Product-match swipe sheet — the older flow. Only mounts when
+          NOT in style-showcase mode (i.e. the tapped category has no
+          description, so we fall back to matching against the host's
+          products). */}
+      {swipeMode && openCategory && !openCategory.description && (
         <CanteenTrendingSwipeSheet
           open={openCategoryIdx != null}
           onClose={() => setOpenCategoryIdx(null)}
           items={swipeItems}
           categoryLabel={openCategory.label}
           canteenSlug={canteenSlug!}
+          hostSlug={hostSlug ?? canteenSlug!}
           hostFirstName={hostFirstName!}
+          hostDisplayName={hostDisplayName ?? hostFirstName!}
           hostWhatsapp={hostWhatsapp}
+          tradeLabel={tradeLabel}
+          hostCity={hostCity}
           sendToTradeCenter={sendToTradeCenter}
         />
       )}
