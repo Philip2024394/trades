@@ -366,12 +366,12 @@ function AppTopBar({
           </span>
         </Link>
 
-        {/* Canteen + Marketplace — yellow-dot text links, sit inline
+        {/* Canteen + Trade Center — yellow-dot text links, sit inline
             with the brand so both are one tap from any surface. On
             mobile the wordmarks hide so the row fits the viewport;
             the dot alone acts as the tap target with the aria-label
             carrying the accessible name. */}
-        {/* Canteen + Marketplace — hidden on mobile (bottom nav +
+        {/* Canteen + Trade Center — hidden on mobile (bottom nav +
             drawer cover navigation there); yellow-dot text links
             appear at md+ as inline shortcuts alongside the brand. */}
         <Link
@@ -390,10 +390,10 @@ function AppTopBar({
           </span>
         </Link>
         <Link
-          href="/market"
+          href="/tc/trade-center"
           className="hidden shrink-0 items-center gap-1.5 rounded-full px-1.5 py-1 text-neutral-900 hover:bg-black/[0.04] md:inline-flex"
-          aria-label="Marketplace"
-          title="Marketplace"
+          aria-label="Trade Center"
+          title="Trade Center"
         >
           <span
             aria-hidden
@@ -401,7 +401,7 @@ function AppTopBar({
             style={{ backgroundColor: "#FFB300" }}
           />
           <span className="text-[12px] font-black uppercase tracking-[0.16em]">
-            Marketplace
+            Trade Center
           </span>
         </Link>
 
