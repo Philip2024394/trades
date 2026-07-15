@@ -15,7 +15,7 @@
 //     (or nearest-1 when the source image is curated with no
 //     submitter). Never broadcast to 3-nearest (ADR-0003).
 //   • Attachments upload through /lib/quoteRequests uploadQuoteAttachment
-//     which streams to the quote-attachments Supabase Storage bucket
+//     which streams to the lead-attachments Supabase Storage bucket
 //     with size + MIME caps.
 
 import { NextResponse } from "next/server";

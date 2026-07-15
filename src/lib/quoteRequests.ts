@@ -85,7 +85,7 @@ export async function isQuoteRequestRateLimited(ip: string | null): Promise<bool
   if (!ip) return false; // Cannot rate-limit unknown IPs; endpoint decision.
   const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
   const res = await supabaseAdmin
-    .from("hammerex_quote_requests")
+    .from("hammerex_lead_requests")
     .select("id", { count: "exact", head: true })
     .eq("ip_address", ip)
     .gte("created_at", hourAgo);
@@ -109,7 +109,7 @@ export async function insertQuoteRequest(params: {
   userAgent:          string | null;
 }): Promise<QuoteRequest | null> {
   const res = await supabaseAdmin
-    .from("hammerex_quote_requests")
+    .from("hammerex_lead_requests")
     .insert({
       requester_name:      params.requesterName,
       requester_email:     params.requesterEmail,
@@ -137,7 +137,7 @@ export async function insertQuoteRequest(params: {
   return shapeQuoteRequest(res.data);
 }
 
-/** Upload one attachment file to the quote-attachments bucket.
+/** Upload one attachment file to the lead-attachments bucket.
  *  Returns the public URL on success, null on failure. Caller
  *  aggregates URLs and passes them to insertQuoteRequest. */
 export async function uploadQuoteAttachment(params: {
@@ -157,7 +157,7 @@ export async function uploadQuoteAttachment(params: {
 
   const buffer = await params.file.arrayBuffer();
   const up = await supabaseAdmin.storage
-    .from("quote-attachments")
+    .from("lead-attachments")
     .upload(path, buffer, {
       contentType: params.file.type,
       upsert: false
@@ -168,7 +168,7 @@ export async function uploadQuoteAttachment(params: {
     return null;
   }
   const publicUrl = supabaseAdmin.storage
-    .from("quote-attachments")
+    .from("lead-attachments")
     .getPublicUrl(up.data.path).data.publicUrl;
   return publicUrl ?? null;
 }
