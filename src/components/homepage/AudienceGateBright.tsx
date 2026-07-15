@@ -74,6 +74,19 @@ export function AudienceGateBright() {
               The Yard
             </Link>
             <Link
+              href="/tc/trade-center"
+              className="hidden items-center gap-1.5 underline-offset-4 hover:underline sm:inline-flex"
+              style={{ color: PALETTE.ink }}
+              title="Trade Center — the only marketplace on the app"
+            >
+              <span
+                aria-hidden
+                className="inline-block h-1.5 w-1.5 rounded-full"
+                style={{ backgroundColor: PALETTE.honeyBright }}
+              />
+              Trade Center
+            </Link>
+            <Link
               href="/home/sign-in"
               className="underline-offset-4 hover:underline"
               style={{ color: PALETTE.ink }}
