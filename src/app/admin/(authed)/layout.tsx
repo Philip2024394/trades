@@ -25,6 +25,7 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/hero-library", label: "Hero Library", live: true },
   { href: "/admin/image-submissions", label: "Image Submissions", live: true },
   { href: "/admin/featured-placements", label: "Featured Placements", live: true },
+  { href: "/admin/support/tickets", label: "Support Tickets", live: true },
   { href: "/admin/reports", label: "Reports", live: false },
   { href: "/admin/password-recovery", label: "Password Reset", live: true },
   { href: "/admin/support", label: "Support", live: true }

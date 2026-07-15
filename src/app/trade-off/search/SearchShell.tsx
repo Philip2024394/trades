@@ -31,6 +31,7 @@ import { QuickContactForm, type QuickContactContext } from "@/components/forms/Q
 import { ShareButton } from "@/components/forms/ShareButton";
 import { BeforeAfterCard } from "@/components/forms/BeforeAfterCard";
 import { VisualiseModal, type VisualiseContext } from "@/components/forms/VisualiseModal";
+import { ReportContentButton } from "@/components/forms/ReportContentButton";
 import { watermarkImageUrl } from "@/lib/imageWatermark";
 import type { BeforeAfterEntry } from "@/lib/beforeAfterLibrary";
 
@@ -897,6 +898,14 @@ function InspirationCard({
           shareUrl={shareUrl}
           shareText={`${entry.subject.split(",")[0]} · Thenetworkers`}
           variant="ghost"
+        />
+        <ReportContentButton
+          context={{
+            targetKind: entry.source === "submission" ? "submission" : "image",
+            targetId:   entry.sourcePostId ?? entry.imageUrl,
+            targetUrl:  shareUrl,
+            targetLabel: entry.subject.split(",")[0].slice(0, 60)
+          }}
         />
       </div>
       <figcaption className="p-2.5">
