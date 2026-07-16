@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Hammer } from "lucide-react";
 import { ActivityFeedPanel } from "./ActivityFeedPanel";
+import { GlobalHeader } from "@/components/shell/GlobalHeader";
 
 // ImageKit URL transform:
 //   tr:w-1600  — max width the hero renders at on the largest viewport
@@ -40,61 +41,24 @@ export function AudienceGateBright() {
     >
       {/* Cream padding frame. Adjust these numbers to tune breathing space. */}
       <div className="mx-auto flex min-h-[100dvh] max-w-[1600px] flex-col px-4 pb-4 pt-4 md:px-10 md:pb-8 md:pt-6">
-        {/* Ribbon + sign-in strip */}
-        <header className="mb-3 flex items-center justify-between md:mb-5">
-          <div
-            className="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-[0.22em]"
-            style={{ color: PALETTE.honey }}
-          >
-            <span
-              aria-hidden
-              className="inline-block h-1.5 w-1.5 rounded-full"
-              style={{ backgroundColor: PALETTE.honeyBright }}
-            />
-            Thenetworkers
-          </div>
-          <div className="flex items-center gap-3 text-[13px] font-semibold">
-            <Link
-              href="/why"
-              className="hidden underline-offset-4 hover:underline sm:inline"
-              style={{ color: PALETTE.ink }}
-            >
-              Why Thenetworkers
-            </Link>
-            <Link
-              href="/trade-off/yard"
-              className="hidden items-center gap-1.5 underline-offset-4 hover:underline sm:inline-flex"
-              style={{ color: PALETTE.ink }}
-            >
-              <span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ backgroundColor: PALETTE.honeyBright }}
-              />
-              The Yard
-            </Link>
-            <Link
-              href="/tc/trade-center"
-              className="hidden items-center gap-1.5 underline-offset-4 hover:underline sm:inline-flex"
-              style={{ color: PALETTE.ink }}
-              title="Trade Center — the only marketplace on the app"
-            >
-              <span
-                aria-hidden
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ backgroundColor: PALETTE.honeyBright }}
-              />
-              Trade Center
-            </Link>
-            <Link
-              href="/home/sign-in"
-              className="underline-offset-4 hover:underline"
-              style={{ color: PALETTE.ink }}
-            >
-              Sign in
-            </Link>
-          </div>
-        </header>
+        {/* Global escape hatches — the standard 4-link strip
+            (Yard · Canteen · Site Interest · Trade Center) + brand
+            + search + sign-in that lives on every Thenetworkers
+            surface. Same strip visible on the landing so a homeowner
+            can browse to any section from the door. */}
+        <div className="-mx-4 mb-3 md:-mx-10 md:mb-5">
+          <GlobalHeader
+            variant="plain"
+            rightSlot={
+              <Link
+                href="/home/sign-in"
+                className="inline-flex shrink-0 items-center rounded-full border border-[#1B1A17]/15 px-3 py-1.5 text-[11px] font-bold text-[#1B1A17] hover:bg-black/[0.04]"
+              >
+                Sign in
+              </Link>
+            }
+          />
+        </div>
 
         {/* Image frame — grows to fill remaining height. */}
         <div

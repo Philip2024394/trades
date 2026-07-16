@@ -23,6 +23,7 @@ import {
 import { GlobalIdentityChip } from "@/apps/social/components/GlobalIdentityChip";
 import { UnifiedInboxBell } from "./UnifiedInboxBell";
 import { useCurrentTrade } from "@/lib/useCurrentTrade";
+import { GlobalHeader } from "@/components/shell/GlobalHeader";
 import type { RailCategorySlug } from "../data/categoryTaxonomy";
 
 export type TradeCenterHeaderProps = {
@@ -104,6 +105,12 @@ export function TradeCenterHeader({
   }, []);
 
   return (
+    <>
+      {/* Global escape hatches — same 4-link strip that lives on
+          every other Thenetworkers surface, sits ABOVE the TC-
+          specific header so users can always jump to Yard /
+          Canteen / Site Interest / Trade Center in one tap. */}
+      <GlobalHeader/>
     <header
       className="sticky top-0 z-30 border-b bg-[#FBF6EC]/95 backdrop-blur"
       style={{ borderColor: "rgba(139,69,19,0.15)" }}
@@ -206,6 +213,7 @@ export function TradeCenterHeader({
         </nav>
       </div>
     </header>
+    </>
   );
 }
 

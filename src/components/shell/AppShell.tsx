@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { NotificationsPopover } from "./NotificationsPopover";
+import { GlobalHeader } from "./GlobalHeader";
 import {
   Search,
   Bell,
@@ -344,81 +345,17 @@ function AppTopBar({
   onToggleEditMode: () => void;
 }) {
   const [notifsOpen, setNotifsOpen] = useState(false);
+  // AppShell delegates its header chrome to the shared GlobalHeader
+  // (brand + 4 primary nav links + search icon) and injects the
+  // auth-aware right-side content (edit pill / bell / avatar OR
+  // join/sign-in) via the rightSlot prop. This keeps AppShell and
+  // every other surface (TradeCenterHeader, landing, legal pages)
+  // rendering the same top strip so navigation is consistent.
   return (
-    <header
-      className="sticky top-0 z-40 hidden border-b md:block"
-      style={{ backgroundColor: "#FBF6EC", borderColor: "rgba(27,26,23,0.08)" }}
-    >
-      <div className="mx-auto flex max-w-[1400px] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-2.5">
-        {/* Brand */}
-        <Link
-          href="/"
-          className="inline-flex shrink-0 items-center gap-1.5"
-          aria-label="Thenetworkers"
-        >
-          <span
-            aria-hidden
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: "#FFB300" }}
-          />
-          <span className="hidden text-[12px] font-black uppercase tracking-[0.20em] text-[#B8860B] sm:inline">
-            Thenetworkers
-          </span>
-        </Link>
-
-        {/* Canteen + Trade Center — yellow-dot text links, sit inline
-            with the brand so both are one tap from any surface. On
-            mobile the wordmarks hide so the row fits the viewport;
-            the dot alone acts as the tap target with the aria-label
-            carrying the accessible name. */}
-        {/* Canteen + Trade Center — hidden on mobile (bottom nav +
-            drawer cover navigation there); yellow-dot text links
-            appear at md+ as inline shortcuts alongside the brand. */}
-        <Link
-          href="/trade-off/yard/canteens"
-          className="hidden shrink-0 items-center gap-1.5 rounded-full px-1.5 py-1 text-neutral-900 hover:bg-black/[0.04] md:inline-flex"
-          aria-label="Canteen — live feed of trade + merchant posts"
-          title="Canteen"
-        >
-          <span
-            aria-hidden
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: "#FFB300" }}
-          />
-          <span className="text-[12px] font-black uppercase tracking-[0.16em]">
-            Canteen
-          </span>
-        </Link>
-        <Link
-          href="/tc/trade-center"
-          className="hidden shrink-0 items-center gap-1.5 rounded-full px-1.5 py-1 text-neutral-900 hover:bg-black/[0.04] md:inline-flex"
-          aria-label="Trade Center"
-          title="Trade Center"
-        >
-          <span
-            aria-hidden
-            className="inline-block h-2 w-2 rounded-full"
-            style={{ backgroundColor: "#FFB300" }}
-          />
-          <span className="text-[12px] font-black uppercase tracking-[0.16em]">
-            Trade Center
-          </span>
-        </Link>
-
-        {/* Search bar removed — it was a decorative Link that only
-            routed to /trade-off/yard (no real query handling). Header
-            is now nav-only: brand + inline links + right-side actions.
-            Real search comes back when we have a search endpoint. */}
-        <div className="min-w-0 flex-1"/>
-
-        {/* Right-side actions */}
-        {auth ? (
+    <GlobalHeader
+      rightSlot={
+        auth ? (
           <>
-            {/* Edit mode pill — canteen-only, sits to the LEFT of the
-                bell per Philip's spec. Yellow when idle; flips to dark
-                green with a slow pulse-glow when Edit mode is active
-                so Mike always sees at a glance whether he's editing
-                or viewing. Small rounded corners. */}
             {showEditModeButton && (
               <button
                 type="button"
@@ -488,11 +425,12 @@ function AppTopBar({
               Sign in
             </Link>
           </>
-        )}
-      </div>
-    </header>
+        )
+      }
+    />
   );
 }
+
 
 function AppDrawer({
   open,
