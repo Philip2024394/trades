@@ -24,6 +24,7 @@ import {
 } from "@/lib/tradeSession";
 import { serviceCategoryLabel } from "@/lib/serviceCategories";
 import { LeadStatusActions } from "./LeadStatusActions";
+import { BeaconClaimsSection, type BeaconClaimRow } from "./BeaconClaimsSection";
 
 export const dynamic = "force-dynamic";
 
@@ -138,6 +139,45 @@ export default async function InstallLeadsPage({
       </main>
     );
   }
+
+  // Beacon claims — homeowner enquiries routed to THIS merchant by
+  // the 3-tier beacon fanout. Include assigned + claimed + timed_out
+  // (last 7 days for timed_out — the FOMO signal shouldn't linger
+  // forever). Joined to the beacon row for customer name/city/desc.
+  const sevenDaysAgo = new Date(Date.now() - 7 * 86_400_000).toISOString();
+  const beaconClaimsRes = await supabaseAdmin
+    .from("hammerex_beacon_claims")
+    .select(`
+      id, beacon_id, status, assigned_at, sla_expires_at, claimed_at,
+      timed_out_at, readiness_tier,
+      beacon:hammerex_xrated_project_beacons!inner (
+        customer_name, customer_city, customer_whatsapp, trade_slug, project_description
+      )
+    `)
+    .eq("merchant_slug", listing.slug)
+    .or(`status.in.(assigned,claimed),and(status.eq.timed_out,timed_out_at.gte.${sevenDaysAgo})`)
+    .order("assigned_at", { ascending: false })
+    .limit(100);
+  const beaconClaims: BeaconClaimRow[] = ((beaconClaimsRes.data ?? []) as Array<{
+    id: string; beacon_id: string; status: string; assigned_at: string;
+    sla_expires_at: string; claimed_at: string | null; timed_out_at: string | null;
+    readiness_tier: number;
+    beacon: { customer_name: string; customer_city: string | null; customer_whatsapp: string | null; trade_slug: string; project_description: string };
+  }>).map((r) => ({
+    id:              r.id,
+    beaconId:        r.beacon_id,
+    status:          (r.status ?? "assigned") as BeaconClaimRow["status"],
+    assignedAt:      r.assigned_at,
+    slaExpiresAt:    r.sla_expires_at,
+    claimedAt:       r.claimed_at,
+    timedOutAt:      r.timed_out_at,
+    readinessTier:   (r.readiness_tier ?? 1) as 1 | 2 | 3,
+    customerName:    r.beacon?.customer_name ?? "Customer",
+    customerCity:    r.beacon?.customer_city ?? null,
+    customerWhatsapp:r.beacon?.customer_whatsapp ?? null,
+    tradeSlug:       r.beacon?.trade_slug ?? "",
+    description:     r.beacon?.project_description ?? ""
+  }));
 
   // Ownership queries — two directions.
   // (a) I'm the INSTALLER: leads where installer_service is one of
@@ -272,6 +312,24 @@ export default async function InstallLeadsPage({
           inboundCount={inbound.length}
           outboundCount={outbound.length}
         />
+
+        {/* Section 0 — Community Job Requests (beacon claims). Renders
+            first because these are time-sensitive (2h SLA). Homeowners
+            posted an enquiry; the fanout routed it to this merchant. */}
+        <section className="mt-8">
+          <SectionHeader
+            title="Community job requests"
+            hint="Homeowner enquiries the beacon sent to you. Claim within 2 hours to lock the lead — costs 1 washer. Missed leads stay visible so you can see what you lost."
+            icon={<MessageCircle className="h-4 w-4" aria-hidden />}
+            count={beaconClaims.filter((c) => c.status === "assigned").length}
+          />
+          <BeaconClaimsSection
+            claims={beaconClaims}
+            merchantSlug={listing.slug}
+            editToken={listing.edit_token}
+            merchantDisplayName={listing.display_name}
+          />
+        </section>
 
         {/* Section 1 — Inbound (I'm the installer) */}
         <section className="mt-8">

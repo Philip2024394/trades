@@ -7,6 +7,7 @@
 
 import type { Metadata } from "next";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
+import { SmartVisitorHook } from "@/components/homepage/SmartVisitorHook";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
 import { BRAND, absolute } from "@/lib/seo";
@@ -14,7 +15,7 @@ import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 import { StickyMobileLandingBar } from "@/components/xrated/landing/StickyMobileLandingBar";
 import { LandingUrlClaim } from "@/components/xrated/landing/LandingUrlClaim";
-import { tradeIconFor } from "@/components/xrated/landing/tradeIcons";
+import { ComparisonStack } from "@/components/trade-off/ComparisonSection";
 
 export const revalidate = 300;
 
@@ -42,7 +43,12 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function TradeOffLandingPage() {
+export default async function TradeOffLandingPage({
+  searchParams
+}: {
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const _visitorParams = searchParams ? await searchParams : {};
   // Hero "Live tradies" stat — additive model: every URL claim bumps
   // the number by 1. We count ALL rows (draft + live + hidden) so the
   // counter ticks the moment a visitor types their slug and taps Start
@@ -100,33 +106,27 @@ export default async function TradeOffLandingPage() {
     if (fallbackSlug) featuredHref = `/trade/${fallbackSlug}`;
   }
 
-  // Curated international demo row for the "Built for every trade"
-  // social-proof strip. Five countries × five trades — UK, US, Ireland,
-  // Australia, Germany — so the landing visually signals "for every
-  // trade, anywhere". Trade illustrations (free from the in-house
-  // tradeIcons library) instead of person photos: no consent issues,
-  // no fake-stock-photo feel, scales when we add more countries.
-  // Once real international tradies sign up + consent, we can swap to
-  // a separate "Real tradies on Xrated" section with their actual
-  // photos — keeping the two messages distinct.
-  const internationalDemos = [
-    { iconSlug: "drywaller",   trade: "Drywall",     city: "Manchester", flag: "🇬🇧", targetSlug: "demo-mike-watson-drywall-manchester" },
-    { iconSlug: "roofer",      trade: "Roofing",     city: "Austin",     flag: "🇺🇸", targetSlug: SHOWCASE_SLUG },
-    { iconSlug: "electrician", trade: "Electrician", city: "Dublin",     flag: "🇮🇪", targetSlug: SHOWCASE_SLUG },
-    { iconSlug: "carpenter",   trade: "Carpentry",   city: "Sydney",     flag: "🇦🇺", targetSlug: SHOWCASE_SLUG },
-    { iconSlug: "plumber",     trade: "Plumbing",    city: "Berlin",     flag: "🇩🇪", targetSlug: SHOWCASE_SLUG }
-  ] as const;
-
+  // Main wrapper background — platform off-white per
+  // feedback_platform_offwhite_canonical.md. Refreshed 2026-07-17
+  // (was bg-white — legacy from the Xrated era). Section-level
+  // white panels (reasons 01/02/03) now sit as contrast cards on
+  // the warm off-white, improving visual hierarchy.
   return (
-    <main className="bg-white pb-24 md:pb-0">
+    <main className="pb-24 md:pb-0" style={{ backgroundColor: "#FBF6EC" }}>
+      <SmartVisitorHook searchParams={_visitorParams}/>
       <XratedViewTracker page="landing" listingId={null} />
       <XratedHeader />
 
-      {/* HERO — pivot. Was search-led; now value-prop-led. */}
-      <section className="relative w-full overflow-hidden bg-white">
+      {/* HERO — pivot. Was search-led; now value-prop-led.
+          Hero image swapped 2026-07-18 to Philip's new marketing
+          banner. Kept as a direct URL (not XRATED_BRAND.heroImageUrl)
+          because that constant is also used as a FALLBACK for
+          merchants with no cover image in FeaturedTradiesRail —
+          different intent, different image. */}
+      <section className="relative w-full overflow-hidden" style={{ backgroundColor: "#FBF6EC" }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={XRATED_BRAND.heroImageUrl}
+          src="https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2018,%202026,%2012_14_42%20AM.png"
           alt={`${XRATED_BRAND.name} — ${XRATED_BRAND.tagline}`}
           className="block h-[360px] w-full object-cover sm:h-[520px]"
         />
@@ -139,32 +139,16 @@ export default async function TradeOffLandingPage() {
               {XRATED_BRAND.name}
             </p>
             <h1 className="mt-2 text-4xl font-extrabold leading-[0.95] text-white drop-shadow-lg sm:text-6xl md:text-7xl">
-              Your business.
+              The proven trade network
               <br />
-              <span style={{ color: XRATED_BRAND.accent }}>One platform.</span>
+              <span style={{ color: XRATED_BRAND.accent }}>that works.</span>
             </h1>
 
-            {/* App Store teaser — small yellow pill linking to the
-                App Store marketing page. Above the URL-claim widget so it
-                shows up in the first eye-frame without competing with
-                the headline. */}
-            <a
-              href="/trade-off/add-ons"
-              className="mt-4 inline-flex h-9 items-center gap-1.5 rounded-full bg-white/95 px-3 text-[11px] font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition hover:bg-white sm:text-xs"
-            >
-              <span
-                aria-hidden="true"
-                className="inline-block h-1.5 w-1.5 rounded-full"
-                style={{ background: XRATED_BRAND.accent }}
-              />
-              App Store now live
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="m9 18 6-6-6-6" />
-              </svg>
-            </a>
-
             {/* URL-claim widget — the hero's only real CTA. Visitor types
-                the slug they want and lands in signup with it pre-filled. */}
+                the slug they want and lands in signup with it pre-filled.
+                Removed 2026-07-18: the "App Store now live" pill above
+                — competing chip, low click-through, subtracted from the
+                URL-claim focus. */}
             <div className="mt-6">
               <LandingUrlClaim />
             </div>
@@ -223,318 +207,186 @@ export default async function TradeOffLandingPage() {
         </div>
       </section>
 
-      {/* Built for every trade — promoted to sit directly under the hero
-          so the first thing a visitor sees after the slogan is real
-          tradies already on Xrated. International social proof leads the
-          page; the value-prop cards follow. */}
-      <section className="mx-auto max-w-6xl px-4 pt-8 sm:pt-10">
-        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          Built for every trade
-        </h2>
-        <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          Real tradies already on Thenetworkers. Tap a face to see a live profile.
-        </p>
+      {/* Networkers vs the top trade platforms — three-region stack
+          (UK · USA · Australia). Networkers is a global platform, so
+          the /trade-off proof surface is global: no visitor from any
+          market can miss that no competitor anywhere matches us on
+          these dimensions. Each region ships its own dated pricing
+          + methodology link. Lead-capture form appears ONCE at the
+          bottom of the stack (not per region). */}
+      <ComparisonStack />
 
-        <div className="mt-5 flex flex-wrap items-start justify-center gap-4 sm:gap-6 md:gap-8">
-          {internationalDemos.map((p) => {
-            const TradeIcon = tradeIconFor(p.iconSlug);
-            return (
-              <a
-                key={p.iconSlug}
-                href={`/${p.targetSlug}`}
-                className="group flex w-20 flex-col items-center text-center sm:w-24"
-              >
-                <span className="relative inline-block">
-                  <span
-                    className="relative inline-flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-white ring-2 ring-neutral-200 shadow-md transition group-hover:ring-[#FFB300] sm:h-20 sm:w-20"
-                    style={{ boxShadow: "0 6px 18px rgba(0,0,0,0.10)" }}
-                  >
-                    <span
-                      className="flex h-9 w-9 items-center justify-center text-neutral-900 sm:h-11 sm:w-11"
-                      style={{ color: "#0A0A0A" }}
-                    >
-                      <TradeIcon />
-                    </span>
-                  </span>
-                  {/* Country flag chip — anchors the trade illustration
-                      in geography so the row reads as "every trade,
-                      every country". */}
-                  <span
-                    aria-label={`Based in ${p.city}`}
-                    className="absolute -bottom-1 -right-1 inline-flex h-7 w-7 items-center justify-center rounded-full bg-white text-base shadow-md ring-1 ring-black/5 sm:h-8 sm:w-8 sm:text-lg"
-                  >
-                    {p.flag}
-                  </span>
-                </span>
-                <p className="mt-2 line-clamp-1 text-[11px] font-extrabold text-neutral-900 sm:text-xs">
-                  {p.trade}
-                </p>
-                <p className="line-clamp-1 text-[10px] text-neutral-500 sm:text-[11px]">
-                  {p.city}
-                </p>
-              </a>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Why tradies switch — story-driven alternating layout. Each
-          reason gets its own full-width section with distinct surface
-          treatment + a focal visual mockup. Image/text sides alternate
-          so the scroll has visual rhythm instead of three identical
-          cards in a row. Mobile: visual stacks on top of text. */}
+      {/* Removed 2026-07-18: "Built for every trade" flag row + the
+          3-Reason story sections (One link in every social bio /
+          Instant WhatsApp / Customers say it best). All that content
+          is now covered with stronger, data-backed treatment on
+          /trade-off/every-channel (WhatsApp lead mockup, own-branded
+          PWA showcase, ranking breakdown, FAQ). The 5-flag row is
+          also duplicative — the 3-region comparison stack proves
+          global scope with hard scores. Page now flows:
+          hero → stats strip → 3-region comparison → every-channel
+          teaser grid → mega CTA. */}
       <section className="mt-10 sm:mt-14">
-        <div className="mx-auto max-w-6xl px-4 text-center sm:px-6">
-          <p
-            className="text-xs font-bold uppercase tracking-[0.22em]"
-            style={{ color: XRATED_BRAND.accent }}
-          >
-            Why tradies switch
-          </p>
-          <h2 className="mt-2 text-3xl font-extrabold leading-tight text-neutral-900 sm:text-4xl md:text-5xl">
-            Three ways Thenetworkers{" "}
-            <span style={{ color: XRATED_BRAND.accent }}>wins you the job.</span>
-          </h2>
-        </div>
-
-        {/* Reason 01 — Social bio. White surface matching Reasons 02 & 03.
-            The visual is a real iPhone screenshot of an Instagram bio
-            with thenetworkers.app/bricklondo in the link slot — instant
-            "ah, this is what I paste in mine" recognition. A 70% stat
-            badge floats top-right as a corner sticker. */}
-        <div className="mt-10 bg-white sm:mt-14">
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:grid-cols-2 sm:gap-12 sm:px-6 sm:py-16">
-            <div className="order-1">
-              <div className="relative mx-auto max-w-xs sm:max-w-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/2b9d8cb08c0c-Untitledeqweqeqweqdsadasdasd.png"
-                  alt="iPhone showing an Instagram bio with thenetworkers.app/bricklondo as the link."
-                  className="relative mx-auto block h-auto w-full object-contain"
-                  loading="lazy"
-                />
-                {/* 70% stat — corner sticker, not competing with the
-                    phone for focal attention. Yellow brand badge with
-                    soft shadow so it feels pinned to the phone. */}
-                <div
-                  className="absolute -right-2 top-4 flex flex-col items-center rounded-2xl px-3 py-2 shadow-xl sm:-right-4 sm:top-8 sm:px-4 sm:py-3"
-                  style={{ background: XRATED_BRAND.accent }}
+        {/* Every channel grid — the full breadth. 6 categories with
+            2-4 concrete mechanisms each. Sits after the 3 hero reasons
+            so the emotional story lands first, then the volume proof.
+            Cards use the platform off-white as bg, contrast to the
+            white reason panels above. */}
+        <div className="mt-10 sm:mt-14">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            <div className="text-center">
+              <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: XRATED_BRAND.accent }}>
+                Every channel
+              </p>
+              <h3 className="mt-2 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
+                Where projects actually come from.
+              </h3>
+              <p className="mx-auto mt-2 max-w-xl text-sm text-neutral-600 sm:text-base">
+                Every mechanism is live. No coming-soon. Every one routes to your WhatsApp with the customer&rsquo;s contact pre-filled.
+              </p>
+              <a
+                href="/trade-off/every-channel"
+                className="mt-4 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[11px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition hover:brightness-95"
+                style={{ backgroundColor: XRATED_BRAND.accent }}
+              >
+                See every channel + per-lead cost →
+              </a>
+            </div>
+            <ul className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  title: "Direct discovery",
+                  desc:  "Customers find you first",
+                  bullets: [
+                    "Your own live URL — thenetworkers.app/{yourslug}",
+                    "Custom domain — point your own URL at your profile",
+                    "Subdomain — {yourslug}.thenetworkers.app auto-live",
+                    "Business Card modal + QR — one tap to WhatsApp"
+                  ]
+                },
+                {
+                  title: "Search + SEO",
+                  desc:  "Google sends you traffic",
+                  bullets: [
+                    "10,800 UK city × trade landings indexed on Google",
+                    "108 trade-category pages + 100 city pages",
+                    "LocalBusiness + Service schema on every listing",
+                    "/find directory search — trade, city, postcode"
+                  ]
+                },
+                {
+                  title: "Project beacons",
+                  desc:  "Homeowners push work to you",
+                  bullets: [
+                    "Beacon 2-hour SLA — homeowner posts, you claim",
+                    "Push notification + email the moment a claim lands",
+                    "Missed leads cascade to more trades automatically",
+                    "/find/beacon — customer pings 3 nearest trades"
+                  ]
+                },
+                {
+                  title: "Community",
+                  desc:  "Real trades talking",
+                  bullets: [
+                    "The Yard feed — post work, questions, replies",
+                    "Boosted posts — pay washers to promote your best",
+                    "Canteen page — your live community hub",
+                    "Trade Circle — cross-trade carousel (Pro tier)"
+                  ]
+                },
+                {
+                  title: "Marketplace + install leads",
+                  desc:  "Product PDPs generate fitter leads",
+                  bullets: [
+                    "Trade Center — customers browse merchant products",
+                    "Install leads inbox — shoppers pick you as fitter",
+                    "AI Visualiser — customer uploads room → your lead",
+                    "Product carousels — cross-trade discovery"
+                  ]
+                },
+                {
+                  title: "Cross-merchant referrals",
+                  desc:  "Trades hand you work",
+                  bullets: [
+                    "Materials Network — merchants refer you supply jobs",
+                    "Inspiration image detail — 3 nearest trades routed",
+                    "Featured Placements — admin-managed top slots",
+                    "Merchant-to-merchant invites — grow the network"
+                  ]
+                }
+              ].map((cat) => (
+                <li
+                  key={cat.title}
+                  className="rounded-2xl border p-5 shadow-sm"
+                  style={{ borderColor: "rgba(0,0,0,0.08)", backgroundColor: "#FFFFFF" }}
                 >
-                  <span className="text-3xl font-extrabold leading-none tracking-tight text-neutral-900 sm:text-4xl">
-                    70%
-                  </span>
-                  <span className="mt-0.5 max-w-[5.5rem] text-center text-[9px] font-bold uppercase leading-tight tracking-wider text-neutral-900 sm:text-[10px]">
-                    of trade referrals start on social
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="order-2">
-              <span
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
-                style={{ background: XRATED_BRAND.accent }}
-              >
-                Reason 01 · Lead generator
-              </span>
-              <h3 className="mt-3 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                One link in every social bio.
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-700 sm:text-base">
-                Instagram, TikTok, Facebook, WhatsApp — drop your Xrated URL in every bio. Customers tap once and land on your full profile: your work, your prices, your reviews, your contact form. From{" "}
-                <span className="font-extrabold text-neutral-900">scroll to quote</span> in one tap.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Reason 02 — Instant WhatsApp. White surface (matched to
-            Reasons 01 & 03). Copy left, visual right on desktop.
-            Phone screenshot is the focal hero — same size as Reason 01
-            so the section reads symmetrically when you scroll. */}
-        <div className="bg-white">
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:grid-cols-2 sm:gap-12 sm:px-6 sm:py-16">
-            <div className="order-2 sm:order-1">
-              <span
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
-                style={{ background: XRATED_BRAND.accent }}
-              >
-                Reason 02 · First tap wins
-              </span>
-              <h3 className="mt-3 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                Instant WhatsApp connection.
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-700 sm:text-base">
-                They see your work, your reviews, your prices — then tap WhatsApp. Conversation starts in{" "}
-                <span className="font-extrabold text-neutral-900">seconds, not days</span>. No emails written. No waiting for a reply while another tradie wins the job.{" "}
-                <span className="font-bold text-neutral-900">First tap wins.</span>
-              </p>
-            </div>
-            <div className="order-1 sm:order-2">
-              {/* Phone container scaled an extra +20% from the previous
-                  size so the WhatsApp chat copy is comfortable to read
-                  from arm's-length on a desktop. 368px → 442px (mobile);
-                  442px → 530px (desktop). Screen backdrop scales with
-                  it automatically. */}
-              <div className="relative mx-auto max-w-[442px] sm:max-w-[530px]">
-                {/* White screen backdrop — matches the Reason 01 phone
-                    treatment so the screen reads as a real lit display. */}
-                <div
-                  aria-hidden="true"
-                  className="absolute inset-x-[6%] inset-y-[3%] rounded-[2rem] bg-white"
-                />
-                {/* Real iPhone screenshot of a WhatsApp chat between
-                    bricklondon (the tradesperson) and a customer. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/077e4d693f62-ChatGPT_Image_Jun_26__2026__12_45_54_PM.png"
-                  alt="iPhone showing a WhatsApp chat between bricklondon and a customer — quote sent within the hour."
-                  className="relative mx-auto block h-auto w-full object-contain drop-shadow-2xl"
-                  loading="lazy"
-                />
-                <p className="mt-4 text-center text-[10px] font-bold uppercase tracking-widest text-neutral-500 sm:text-[11px]">
-                  First tap → quoted in one hour
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Reason 03 — Reviews. White surface matching Reasons 01 & 02
-            (per the home-page brilliant-white directive). Visual left,
-            copy right. */}
-        <div className="bg-white">
-          <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 py-12 sm:grid-cols-2 sm:gap-12 sm:px-6 sm:py-16">
-            <div className="order-1">
-              {/* Mobile: full column width — the review screenshot is
-                  the focal moment of the section and benefits from the
-                  extra real-estate on phones. Desktop: capped at max-w-md
-                  so it doesn't dominate the 50/50 grid alongside the
-                  text column. */}
-              <div className="relative mx-auto w-full sm:max-w-md">
-                {/* Real review-card screenshot — replaces the CSS-built
-                    review mockup so the visual matches Reasons 01 & 02
-                    where the imagery is real product context, not faux. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src="https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/imagekit-import/698e24d68bbe-ChatGPT_Image_Jun_26__2026__11_31_25_AM.png"
-                  alt="Customer review on an Xrated profile — five stars from Sarah K, Manchester, garden-wall job."
-                  className="relative mx-auto block h-auto w-full object-contain"
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div className="order-2">
-              <span
-                className="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-extrabold uppercase tracking-wider text-neutral-900"
-                style={{ background: XRATED_BRAND.accent }}
-              >
-                Reason 03 · Next-lead engine
-              </span>
-              <h3 className="mt-3 text-2xl font-extrabold leading-tight text-neutral-900 sm:text-3xl">
-                Customers say it best.
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-neutral-700 sm:text-base">
-                Every customer who taps <span className="font-bold">&ldquo;Leave review&rdquo;</span> on your Xrated profile becomes the proof point that wins your <span className="font-extrabold text-neutral-900">next job</span>. The next prospect scrolling your bio sees vouches from people just like them — and books before another tradie gets the call.{" "}
-                <span className="font-bold">Today&rsquo;s project builds tomorrow&rsquo;s pipeline.</span>
-              </p>
-            </div>
+                  <p className="text-[11px] font-black uppercase tracking-wider" style={{ color: XRATED_BRAND.accent }}>
+                    {cat.title}
+                  </p>
+                  <p className="mt-1 text-[15px] font-black text-neutral-900">
+                    {cat.desc}
+                  </p>
+                  <ul className="mt-3 space-y-1.5">
+                    {cat.bullets.map((b) => (
+                      <li key={b} className="flex items-start gap-2 text-[12px] leading-snug text-neutral-700">
+                        <span aria-hidden="true" className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: XRATED_BRAND.accent }}/>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+            <p className="mx-auto mt-6 max-w-2xl text-center text-xs text-neutral-500 sm:text-sm">
+              You&rsquo;re on <span className="font-black text-neutral-900">every</span> channel from day one — Free tier included. Some paid tiers unlock priority in the beacon fanout, larger fanout slots, or premium tools like the AI Visualiser.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* How it works — tradie flow, 4 steps. */}
-      <section className="mx-auto max-w-6xl px-4 pt-10">
-        <h2 className="text-xl font-extrabold text-neutral-900 sm:text-2xl">
-          How it works
-        </h2>
-        <p className="mt-1 text-xs text-neutral-500 sm:text-sm">
-          From signup to your first customer enquiry — under an hour, end to end.
-        </p>
-        <ol className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              step: 1,
-              title: "Claim your URL",
-              body:
-                "Type your name on the home page and tap Join Thenetworkers. You're in your dashboard in 5 seconds — no signup form, no card."
-            },
-            {
-              step: 2,
-              title: "Set your contacts",
-              body:
-                "From the dashboard, add your WhatsApp number, your email, and a password. That's how you log back in. 60 seconds."
-            },
-            {
-              step: 3,
-              title: "Add your work",
-              body:
-                "Bio, services, prices, photos, intro video, team, FAQ. 15 minutes total. Help text on every field — skip and come back anytime."
-            },
-            {
-              step: 4,
-              title: "Drop it in every bio",
-              body:
-                "Paste your URL across every social platform — Instagram, TikTok, Facebook, WhatsApp. Print it on your van. Let it grow as you sleep."
-            }
-          ].map((s) => (
-            <li
-              key={s.step}
-              className="relative rounded-2xl border border-neutral-200 bg-white p-5"
-            >
-              <span
-                className="absolute -top-3 left-5 inline-flex h-7 w-10 items-center justify-center rounded-md text-xs font-extrabold"
-                style={{ background: XRATED_BRAND.accent, color: "#0A0A0A" }}
-              >
-                {s.step}
-              </span>
-              <p className="mt-2 text-sm font-extrabold text-neutral-900">
-                {s.title}
-              </p>
-              <p className="mt-1.5 text-xs leading-relaxed text-neutral-600 sm:text-sm">
-                {s.body}
-              </p>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      {/* Closing CTA — gets the visitor signing up. */}
-      <section className="mx-auto mt-12 max-w-6xl px-4">
+      {/* Every-channel + cost scorecard — the single sales-answer
+          page. Absorbs the old "How it works" + closing CTA which
+          were replaced 2026-07-18 in favour of the comprehensive
+          scorecard at /trade-off/every-channel. This is now THE
+          link merchant prospects follow after seeing the charts. */}
+      <section className="mx-auto mt-14 max-w-6xl px-4">
         <div
-          className="overflow-hidden rounded-2xl px-5 py-8 text-center sm:px-10 sm:py-12"
+          className="overflow-hidden rounded-2xl px-5 py-10 text-center sm:px-10 sm:py-14"
           style={{ background: "#0A0A0A" }}
         >
           <p
             className="text-xs font-bold uppercase tracking-widest"
             style={{ color: XRATED_BRAND.accent }}
           >
-            One link. Every customer.
+            Now the two questions that matter
           </p>
           <h2 className="mt-2 text-2xl font-extrabold leading-tight text-white sm:text-4xl">
-            Join Thenetworkers today.
+            What does your system <span style={{ color: XRATED_BRAND.accent }}>do for me</span>,<br className="hidden sm:block"/>
+            and what does it <span style={{ color: XRATED_BRAND.accent }}>cost per lead?</span>
           </h2>
-          <p className="mx-auto mt-3 max-w-lg text-xs text-white/80 sm:text-sm">
-            Free for life. No card. No commission, ever. Save your progress any time.
+          <p className="mx-auto mt-3 max-w-2xl text-[13px] text-white/80 sm:text-sm">
+            One scorecard page with every channel your profile is discovered on, exactly what each lead costs, how the beacon ranks you, what a verified lead actually looks like, and blunt answers to the six questions everyone asks.
+            <span className="mt-1 block font-black text-white">£0.05–£0.10 per verified WhatsApp lead. Free tier joins every channel.</span>
           </p>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             <a
-              href="/trade-off/signup"
-              className="inline-flex h-12 items-center gap-2 rounded-lg px-6 text-xs font-extrabold uppercase tracking-wider text-neutral-900 transition active:scale-[0.98] sm:text-sm"
+              href="/trade-off/every-channel"
+              className="inline-flex h-12 items-center gap-2 rounded-full px-6 text-xs font-extrabold uppercase tracking-wider text-neutral-900 shadow-lg transition active:scale-[0.98] sm:text-sm"
               style={{
                 background: XRATED_BRAND.accent,
-                boxShadow: `0 4px 14px ${XRATED_BRAND.accent}55`
+                boxShadow: `0 4px 20px ${XRATED_BRAND.accent}66`
               }}
             >
-              Join Thenetworkers
+              Open the full scorecard
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="m9 18 6-6-6-6" />
               </svg>
             </a>
             <a
-              href={featuredHref}
-              className="inline-flex h-12 items-center gap-2 rounded-lg border border-white/30 bg-white/5 px-6 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-white/10 sm:text-sm"
+              href="/trade-off/signup"
+              className="inline-flex h-12 items-center gap-2 rounded-full border border-white/30 bg-white/5 px-6 text-xs font-bold uppercase tracking-wider text-white transition hover:bg-white/10 sm:text-sm"
             >
-              See a live profile
+              Skip — join free
             </a>
           </div>
         </div>

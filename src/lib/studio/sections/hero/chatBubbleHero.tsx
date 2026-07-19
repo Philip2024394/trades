@@ -44,7 +44,7 @@ type Config = {
   backgroundImageOpacity: number;
 };
 
-const WA_GREEN = "#25D366";
+const WA_GREEN = "#166534";
 const WA_TINT = "#DCF8C6";
 const WA_BG = "#0B141A";
 const WA_BUBBLE = "#202C33";

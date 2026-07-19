@@ -24,8 +24,11 @@ type WhatsAppButtonContent = {
   message?: string;
 };
 
-const WHATSAPP_GREEN = "#25D366";
-const WHATSAPP_GREEN_HOVER = "#1FB758";
+// Platform standard: WhatsApp CTAs render in BRAND_GREEN_DARK #166534,
+// NOT WhatsApp brand green #25D366. Philip 2026-07-17 rule
+// (feedback_whatsapp_button_dark_green.md + feedback_dark_green_only.md).
+const WHATSAPP_GREEN = "#166534";
+const WHATSAPP_GREEN_HOVER = "#14532D";
 
 function WhatsAppIcon({ size }: { size: number }) {
   return (

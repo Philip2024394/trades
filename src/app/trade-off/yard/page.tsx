@@ -37,6 +37,7 @@ import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import type { ReactionCounts } from "@/lib/yardReactions";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 import { tradeCircleContext } from "@/lib/tradeCircleContexts";
+import { platformSideLaneFromDb } from "@/lib/canteens.server";
 
 export const revalidate = 60;
 
@@ -318,7 +319,7 @@ export default async function YardFeedPage({
     }
   }
 
-  const [{ posts: allPosts, posters, reactions }, counts] = await Promise.all([
+  const [{ posts: allPosts, posters, reactions }, counts, sideLane] = await Promise.all([
     loadFeed({
       kind,
       trade,
@@ -326,7 +327,8 @@ export default async function YardFeedPage({
       contextTrades: ctx ? ctx.allowed_trades : null,
       q: searchQ
     }),
-    loadCountsForKind()
+    loadCountsForKind(),
+    platformSideLaneFromDb()
   ]);
 
   // Apply the "?mine=1" filter now that merchantSession is available.
@@ -390,6 +392,7 @@ export default async function YardFeedPage({
         posters={posters}
         reactions={reactions}
         viewerCircleIds={Array.from(viewerCircleIds)}
+        sideLane={sideLane}
       />
       {/* Legacy hero + marketing sections hidden while we bed in the
           new inbox shell. Keep the JSX below so we can A/B or revert

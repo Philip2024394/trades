@@ -87,7 +87,10 @@ export function CanteenCreateShell({ trades }: { trades: Array<{ slug: string; l
         else setError(data.error ?? "unknown-error");
         return;
       }
-      router.push(`/trade-off/yard/canteens/${encodeURIComponent(data.slug)}`);
+      // Route to the first-products step so cold-start canteens ship
+      // with at least a handful of items — this seeds Trade Center and
+      // gives the visitor something to look at on first open.
+      router.push(`/trade-off/yard/canteens/${encodeURIComponent(data.slug)}/first-products`);
     } catch {
       setError("Network error — try again.");
     } finally {
@@ -288,10 +291,7 @@ export function CanteenCreateShell({ trades }: { trades: Array<{ slug: string; l
           </Link>
         </div>
 
-        <div className="mt-2 flex items-center gap-1.5 text-[10px] font-black uppercase tracking-wider text-neutral-500">
-          <Sparkles size={11} style={{ color: BRAND_GREEN_DARK }}/>
-          First 100 canteens get the topic app free for 12 months.
-        </div>
+        {/* Founding-100 offer removed per Philip 2026-07-18. */}
       </div>
     </section>
   );

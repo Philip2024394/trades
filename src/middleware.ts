@@ -68,6 +68,14 @@ const AFFILIATE_REF_COOKIE = "xrated_affiliate_ref";
 const AFFILIATE_REF_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
 const ADMIN_PATH_PREFIXES = ["/admin", "/api/"];
 
+// Merchant-to-merchant referral cookie carries the referrer slug for
+// 30 days. Coexists with the affiliate cookie — same visitor can carry
+// both. Signup path reads this cookie to attribute new listings back
+// to the referring merchant.
+const MREF_COOKIE = "tn_mref";
+const MREF_COOKIE_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
+const MREF_SLUG_RE = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
+
 export const config = {
   // Skip Next.js internals, API routes, and favicons. Everything else
   // gets the host check.
@@ -138,6 +146,34 @@ function applyAffiliateRef(
   return response;
 }
 
+/** Merchant-to-merchant referral cookie. Distinct from the affiliate
+ *  ref above — same visitor can carry both. Slug (string) not integer.
+ *  Validation is cheap regex-only here; the signup path re-verifies
+ *  the slug matches a live listing before writing the attribution. */
+function applyMerchantRef(
+  req: NextRequest,
+  response: NextResponse
+): NextResponse {
+  const mref = req.nextUrl.searchParams.get("mref");
+  const pathname = req.nextUrl.pathname;
+
+  for (const prefix of ADMIN_PATH_PREFIXES) {
+    if (pathname.startsWith(prefix)) return response;
+  }
+  if (!mref) return response;
+  if (!MREF_SLUG_RE.test(mref)) return response;
+
+  response.cookies.set(MREF_COOKIE, mref, {
+    httpOnly: false,
+    sameSite: "lax",
+    secure:   process.env.NODE_ENV === "production",
+    path:     "/",
+    maxAge:   MREF_COOKIE_MAX_AGE
+  });
+
+  return response;
+}
+
 export async function middleware(req: NextRequest): Promise<NextResponse> {
   // Bypass for static and API paths.
   const pathname = req.nextUrl.pathname;
@@ -149,13 +185,13 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const host = rawHost.toLowerCase().replace(/:\d+$/, "");
   if (!host || SYSTEM_HOSTS.has(host)) {
     // Even on system hosts we still want to capture the ?ref= cookie.
-    return applyAffiliateRef(req, NextResponse.next());
+    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
   }
 
   // *.vercel.app preview hosts also bypass — they're system, just
   // dynamically named by Vercel.
   if (host.endsWith(".vercel.app")) {
-    return applyAffiliateRef(req, NextResponse.next());
+    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
   }
 
   // Subdomain-per-trade — bobs-plumbing.thenetworkers.app
@@ -175,7 +211,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     const rewritten = req.nextUrl.clone();
     rewritten.pathname =
       pathname === "/" ? `/trade/${sub}` : `/trade/${sub}${pathname}`;
-    return applyAffiliateRef(req, NextResponse.rewrite(rewritten));
+    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(rewritten)));
   }
 
   // Strip leading www. so the partial UNIQUE index matches either form.
@@ -205,7 +241,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     .maybeSingle();
 
   if (!data || !data.slug) {
-    return applyAffiliateRef(req, NextResponse.next());
+    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
   }
 
   // Rewrite the request to /<slug>/<rest>. The marketing site's
@@ -215,5 +251,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const url2 = req.nextUrl.clone();
   url2.pathname =
     pathname === "/" ? `/${data.slug}` : `/${data.slug}${pathname}`;
-  return applyAffiliateRef(req, NextResponse.rewrite(url2));
+  return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(url2)));
 }

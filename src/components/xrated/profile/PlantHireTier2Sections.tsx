@@ -475,7 +475,7 @@ export function PlantSubHireSection({
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex h-11 items-center rounded-xl px-4 text-[12px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95"
-          style={{ background: "#25D366" }}
+          style={{ background: "#166534" }}
         >
           Ask us to source →
         </a>

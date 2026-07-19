@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 import { supabase, type HammerexTradeOffListing } from "@/lib/supabase";
-import { BRAND, absolute, breadcrumbJsonLd, localBusinessJsonLd } from "@/lib/seo";
-import { TRADE_OFF_TRADES, tradeLabel } from "@/lib/tradeOff";
+import { BRAND, absolute, breadcrumbJsonLd, localBusinessJsonLd, itemListJsonLd, serviceJsonLd } from "@/lib/seo";
+import { TRADE_OFF_TRADES, tradeLabel, siblingTrades } from "@/lib/tradeOff";
+import { UK_CITY_BY_SLUG, nearbyCities } from "@/lib/uk-cities";
 import { XratedViewTracker } from "@/components/trade-off/XratedViewTracker";
 
 export const revalidate = 300;
@@ -88,6 +89,26 @@ export default async function TradeOffCityPage({
     { name: cityLabel, url: `/trade-off/${trade}/${city}` }
   ]);
 
+  // ItemList + Service — surface-area SEO: gets the page eligible for
+  // Google's list-carousel + service rich snippets on top of the
+  // per-listing LocalBusiness cards already emitted below.
+  const cityMeta = UK_CITY_BY_SLUG[city];
+  const itemList = itemListJsonLd(
+    listings.map((l) => ({
+      slug: l.slug,
+      name: l.trading_name ?? l.display_name,
+      image: l.avatar_url ?? l.photos[0] ?? null
+    })),
+    `/trade-off/${trade}/${city}`
+  );
+  const service = serviceJsonLd({
+    tradeLabel: label,
+    cityLabel,
+    region:     cityMeta?.regionLabel,
+    pageUrl:    `/trade-off/${trade}/${city}`,
+    offerCount: listings.length || undefined
+  });
+
   return (
     <main>
       <XratedViewTracker page="trade_city" listingId={null} />
@@ -95,6 +116,16 @@ export default async function TradeOffCityPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(service) }}
+      />
+      {listings.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList) }}
+        />
+      )}
       {listings.map((l) => (
         <script
           key={l.id}
@@ -152,8 +183,81 @@ export default async function TradeOffCityPage({
         )}
       </section>
 
+      <CrossLinkFooter trade={trade} tradeLabel={label} citySlug={city} cityLabel={cityLabel} />
+
       <XratedFooter />
     </main>
+  );
+}
+
+/** SEO cross-link footer — every trade × city page cross-links to
+ *  ~15 sibling pages (nearby cities same trade + related trades same
+ *  city). Google follows every internal link, so this multiplies the
+ *  crawled depth of the surface-area strategy. Also gives visitors a
+ *  natural next click when the current combination has zero listings. */
+function CrossLinkFooter({
+  trade,
+  tradeLabel: tLabel,
+  citySlug,
+  cityLabel
+}: {
+  trade:      string;
+  tradeLabel: string;
+  citySlug:   string;
+  cityLabel:  string;
+}) {
+  const siblings = siblingTrades(trade, 8);
+  const near     = nearbyCities(citySlug, 8);
+  const cityMeta = UK_CITY_BY_SLUG[citySlug];
+
+  if (siblings.length === 0 && near.length === 0) return null;
+
+  return (
+    <section className="border-t border-brand-line bg-brand-surface">
+      <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 md:grid-cols-2">
+        {near.length > 0 && (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
+              {tLabel}s across {cityMeta?.regionLabel ?? "nearby cities"}
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {near.map((c) => (
+                <li key={c.slug}>
+                  <a
+                    href={`/trade-off/${trade}/${c.slug}`}
+                    className="inline-flex h-10 items-center rounded-full border border-brand-line bg-brand-bg px-3.5 text-xs font-semibold text-brand-text transition hover:border-[#FFB300] hover:text-[#FFB300]"
+                    title={`${tLabel}s in ${c.displayName}`}
+                  >
+                    {tLabel}s in {c.displayName}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {siblings.length > 0 && (
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#FFB300]">
+              In {cityLabel}, homeowners also hire
+            </p>
+            <ul className="mt-3 flex flex-wrap gap-2">
+              {siblings.map((s) => (
+                <li key={s.slug}>
+                  <a
+                    href={`/trade-off/${s.slug}/${citySlug}`}
+                    className="inline-flex h-10 items-center rounded-full border border-brand-line bg-brand-bg px-3.5 text-xs font-semibold text-brand-text transition hover:border-[#FFB300] hover:text-[#FFB300]"
+                    title={`${s.label}s in ${cityLabel}`}
+                  >
+                    {s.label}s in {cityLabel}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
 

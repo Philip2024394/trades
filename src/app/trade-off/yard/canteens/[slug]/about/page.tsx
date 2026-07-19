@@ -1,9 +1,9 @@
 // /trade-off/yard/canteens/[slug]/about — read-only "About this canteen".
 //
 // Linked from the CanteenHeader's About chip. Renders canteen banner,
-// name, tagline, host card, member/activity stats, founding-100 badge,
-// and a back-to-canteen link. Falls back cleanly for mock canteens
-// (server-side reader already handles that).
+// name, tagline, host card, member/activity stats, and a back-to-
+// canteen link. Falls back cleanly for mock canteens (server-side
+// reader already handles that). Founding-100 badge removed 2026-07-18.
 //
 // Public. No auth. RLS makes canteens readable to anon so this stays
 // cacheable at the edge.

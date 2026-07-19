@@ -258,6 +258,106 @@ export async function POST(req: NextRequest) {
           console.error("[trade-off/create] referral notify failed:", err);
         }
       }
+
+      // Merchant-to-merchant referral attribution. Reads the `tn_mref`
+      // cookie set by middleware, verifies the slug matches a live
+      // listing, stamps merchant_referrer_slug on this row, queues a
+      // signup reward for both sides, and emails the referrer. Never
+      // blocks signup on error.
+      try {
+        const mrefRaw = req.cookies.get("tn_mref")?.value ?? null;
+        const mref = mrefRaw && /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/.test(mrefRaw) ? mrefRaw : null;
+        if (mref && mref !== insert.data.slug) {
+          const { attributeSignup } = await import("@/lib/merchantReferrals");
+          const attribution = await attributeSignup({ newSlug: insert.data.slug, mrefSlug: mref });
+          if (attribution.attributed) {
+            const { sendReferralJoinedEmail } = await import("@/lib/merchantReferralEmails");
+            await sendReferralJoinedEmail({
+              referrerSlug: mref,
+              referredSlug: insert.data.slug,
+              referredName: insert.data.display_name ?? null
+            });
+          }
+        }
+      } catch (err) {
+        console.error("[trade-off/create] merchant referral attribution failed:", err);
+      }
+
+      // Tier-3 beacon auto-forward. When the mref cookie starts with
+      // `beacon-<baitLinkSlug>`, the new merchant arrived via an admin
+      // acquisition bait link posted from /admin/beacon-residuals. If
+      // the underlying beacon enquiry is still fresh (<48h), auto-
+      // route the customer contact into this new merchant's inbox as
+      // their first lead + fire the standard notification email +
+      // mark the admin residual as `converted`. Closes the Tier-3
+      // acquisition loop. Never blocks signup on error.
+      try {
+        const mrefRaw = req.cookies.get("tn_mref")?.value ?? "";
+        const baitMatch = mrefRaw.match(/^beacon-([a-z0-9]{6,32})$/i);
+        if (baitMatch) {
+          const baitSlug = baitMatch[1];
+          const residual = await supabaseAdmin
+            .from("hammerex_beacon_admin_residuals")
+            .select(`
+              id, beacon_id, outreach_status,
+              beacon:hammerex_xrated_project_beacons!inner (
+                customer_name, customer_city, trade_slug, project_description, sent_at, claim_sla_hours
+              )
+            `)
+            .eq("bait_link_slug", baitSlug)
+            .maybeSingle();
+          const b = residual.data as {
+            id: string; beacon_id: string; outreach_status: string;
+            beacon: { customer_name: string; customer_city: string | null; trade_slug: string; project_description: string; sent_at: string; claim_sla_hours: number };
+          } | null;
+          if (b && b.beacon) {
+            const ageHours = (Date.now() - new Date(b.beacon.sent_at).getTime()) / 3600000;
+            if (ageHours < 48) {
+              const slaHours = b.beacon.claim_sla_hours ?? 2;
+              const slaExpires = new Date(Date.now() + slaHours * 3600 * 1000);
+              // Insert a fresh claim for the new merchant. wave_number
+              // 99 = post-escalation admin-forward marker (distinct from
+              // the natural fanout waves 1..4).
+              await supabaseAdmin.from("hammerex_beacon_claims").insert({
+                beacon_id:           b.beacon_id,
+                merchant_slug:       insert.data.slug,
+                merchant_listing_id: insert.data.id,
+                assigned_at:         new Date().toISOString(),
+                sla_expires_at:      slaExpires.toISOString(),
+                status:              "assigned",
+                readiness_tier:      1, // new signup gets full readiness assumption
+                wave_number:         99
+              });
+              // Mark the admin residual as converted + attribute
+              await supabaseAdmin
+                .from("hammerex_beacon_admin_residuals")
+                .update({
+                  outreach_status: "converted",
+                  outreach_at:     new Date().toISOString(),
+                  outreach_notes:  `Auto-forwarded to new merchant ${insert.data.slug} (${Math.round(ageHours)}h old at signup)`
+                })
+                .eq("id", b.id);
+              // Fire notification so the new merchant sees the lead
+              const { notifyBeaconAssigned } = await import("@/lib/beaconNotify");
+              await notifyBeaconAssigned({
+                merchantId:    insert.data.id,
+                merchantSlug:  insert.data.slug,
+                readinessTier: 1,
+                beaconId:      b.beacon_id,
+                customerName:  b.beacon.customer_name,
+                customerCity:  b.beacon.customer_city,
+                tradeSlug:     b.beacon.trade_slug,
+                description:   b.beacon.project_description,
+                slaHours
+              }).catch((err) => console.error("[trade-off/create] beacon auto-forward notify failed:", err));
+              console.log(`[trade-off/create] Tier-3 beacon auto-forwarded: bait=${baitSlug} → merchant=${insert.data.slug}`);
+            }
+          }
+        }
+      } catch (err) {
+        console.error("[trade-off/create] beacon auto-forward failed:", err);
+      }
+
       // Auto-start the Xrated App trial — length comes from
       // `XRATED_PRICING.trialDays` (currently 14 days). Every new tradie
       // gets the premium tier free for the trial window — after that

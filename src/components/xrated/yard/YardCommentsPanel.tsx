@@ -50,6 +50,43 @@ const PREVIEW_COUNT = 3;
 // now" — gets a small green pulse dot so the thread feels live.
 const FRESH_WINDOW_SECONDS = 30;
 
+// Procedural mock-comment generator. Rotates through a pool of
+// realistic trade-voice lines so every mock post opens onto
+// conversation matching its displayed count. Deterministic per postId
+// so the same post always reads the same across renders.
+const MOCK_COMMENT_POOL: Array<Omit<Comment, "id" | "createdAt" | "editedAt" | "parentCommentId" | "reactions">> = [
+  { author: { slug: "mike-watson",     display_name: "Mike Watson",     trading_name: null, avatar_url: null, primary_trade: "Kitchen Fitter" },   body: "Nice one. What did you end up using?" },
+  { author: { slug: "rachel-simms",    display_name: "Rachel Simms",    trading_name: null, avatar_url: null, primary_trade: "Bathroom Fitter" },  body: "This is exactly the info I needed for a job next month — cheers." },
+  { author: { slug: "tom-fisher",      display_name: "Tom Fisher",      trading_name: null, avatar_url: null, primary_trade: "Electrician" },      body: "Solid work. Any issues with the supplier?" },
+  { author: { slug: "craig-mcdermott", display_name: "Craig McDermott", trading_name: null, avatar_url: null, primary_trade: "General Builder" },  body: "Send us the postcode — I'll happily quote if you're short-handed." },
+  { author: { slug: "sarah-lee",       display_name: "Sarah Lee",       trading_name: null, avatar_url: null, primary_trade: "Interior Designer" },body: "Bookmarking this for the next similar spec." },
+  { author: { slug: "james-hall",      display_name: "James Hall",      trading_name: null, avatar_url: null, primary_trade: "Carpenter" },        body: "Nailed it — how long did it take start to finish?" },
+  { author: { slug: "paul-webb",       display_name: "Paul Webb",       trading_name: null, avatar_url: null, primary_trade: "Builder" },          body: "Been meaning to try that method. Any prep tips?" },
+  { author: { slug: "jason-hardy",     display_name: "Jason Hardy",     trading_name: null, avatar_url: null, primary_trade: "Scaffolder" },       body: "Second the recommendation on the supplier — never had a bad batch." }
+];
+
+function generateMockComments(count: number, postKey: string): Comment[] {
+  const n = Math.max(0, Math.min(count, MOCK_COMMENT_POOL.length));
+  if (n === 0) return [];
+  let hash = 0;
+  for (let i = 0; i < postKey.length; i++) {
+    hash = ((hash * 31) + postKey.charCodeAt(i)) >>> 0;
+  }
+  const offset = hash % MOCK_COMMENT_POOL.length;
+  const now = Date.now();
+  return Array.from({ length: n }, (_, i) => {
+    const base = MOCK_COMMENT_POOL[(offset + i) % MOCK_COMMENT_POOL.length];
+    return {
+      ...base,
+      id: `mockcomment-${postKey}-${i}`,
+      parentCommentId: null,
+      createdAt: new Date(now - (n - i) * 60 * 60 * 1000).toISOString(),
+      editedAt: null,
+      reactions: { like: 0, dislike: 0 }
+    };
+  });
+}
+
 export function YardCommentsPanel({
   postId,
   initialCount,
@@ -116,6 +153,16 @@ export function YardCommentsPanel({
     setLoading(true);
     setError(null);
     try {
+      // Mock post fast-path — synth IDs start with "mock-" and never
+      // hit the API. Generate a procedural comment set sized to the
+      // displayed count so "Comments (N)" opens onto N real-looking
+      // conversation lines. Same pattern as canteen ReactionRow.
+      if (!postId || postId.startsWith("mock-")) {
+        const mocks = generateMockComments(initialCount, postId ?? "mock");
+        setComments(mocks);
+        setCount(mocks.length);
+        return;
+      }
       const res = await fetch(
         `/api/trade-off/yard/posts/${encodeURIComponent(postId)}/comments`,
         { cache: "no-store" }
@@ -132,7 +179,7 @@ export function YardCommentsPanel({
     } finally {
       setLoading(false);
     }
-  }, [postId, loading]);
+  }, [postId, loading, initialCount]);
 
   useEffect(() => {
     if (open && comments === null) load();
@@ -503,7 +550,7 @@ function CommentRow({
         )}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="inline-block rounded-2xl bg-white px-3 py-1.5 shadow-sm">
+        <div className="inline-block rounded-2xl bg-neutral-100 px-3 py-1.5">
           <div className="flex items-baseline gap-1.5">
             {author ? (
               <a

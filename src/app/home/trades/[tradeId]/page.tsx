@@ -276,7 +276,7 @@ export default async function TradeFilePage({
               Projects
             </h2>
             <Link
-              href="/project/start"
+              href="/homeowners/signup?intent=create-project"
               className="inline-flex items-center gap-1 text-[12px] font-semibold text-amber-300 hover:text-amber-200"
             >
               <Plus className="h-3 w-3" aria-hidden />

@@ -440,3 +440,116 @@ html[data-site-foreman="on"] .studio-shell .bg-neutral-100 {
 .activity-quoting-chip {
   animation: activity-quoting-pulse 1.6s ease-in-out infinite;
 }
+
+/* Fade-in for the live SiteBook range grid status pills — when a
+ * card ticks to its next status the pill fades in from 0.35 opacity
+ * so the change feels smooth, not jarring. See LiveRangeGrid.tsx. */
+@keyframes fadeIn {
+  0%   { opacity: 0.35; transform: translateY(2px); }
+  100% { opacity: 1;    transform: translateY(0);   }
+}
+
+/* Utility — hide scrollbar visually while keeping scroll functionality.
+ * Used by the SiteBook showcase where sidebars + feed scroll independently
+ * inside a fixed-viewport layout. Page-level scrollbars would clutter the
+ * app-shell feel. Works in Chrome, Safari, Firefox. */
+.no-scrollbar {
+  scrollbar-width: none;              /* Firefox */
+  -ms-overflow-style: none;           /* IE + Edge (legacy) */
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;                      /* Chrome + Safari */
+}
+
+/* Auto-scrolling marquee for the LiveRangeGrid row variant. Cards
+ * duplicate 2× and translate left by 50% so the loop is seamless
+ * (when the first set exits, the duplicate set is already in view).
+ * 90-second loop — slow enough to read each card, brisk enough to
+ * feel alive. Pauses on hover. Respects prefers-reduced-motion. */
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee-scroll {
+  animation: marquee-scroll 90s linear infinite;
+}
+.animate-marquee-scroll:hover {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee-scroll {
+    animation: none;
+  }
+}
+
+/* driver.js popover — brand-aligned override. Keeps the library
+ * defaults but skins the popover in SiteBook off-white + yellow
+ * accents so the tour feels native to the platform. */
+.driver-popover.tn-guide-popover {
+  background-color: #FBF6EC;
+  border-radius: 14px;
+  border: 2px solid #FFB300;
+  box-shadow: 0 12px 32px -8px rgba(10, 10, 10, 0.35);
+  color: #0A0A0A;
+}
+.driver-popover.tn-guide-popover .driver-popover-title {
+  font-weight: 900;
+  font-size: 15px;
+  color: #0A0A0A;
+}
+.driver-popover.tn-guide-popover .driver-popover-description {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #404040;
+}
+.driver-popover.tn-guide-popover .driver-popover-progress-text {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #737373;
+}
+.driver-popover.tn-guide-popover .driver-popover-navigation-btns button {
+  background-color: #FFB300;
+  color: #0A0A0A;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 900;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border: none;
+}
+.driver-popover.tn-guide-popover .driver-popover-close-btn {
+  color: #737373;
+}
+.driver-popover.tn-guide-popover .driver-popover-arrow {
+  border-top-color: #FFB300;
+  border-bottom-color: #FFB300;
+  border-left-color: #FFB300;
+  border-right-color: #FFB300;
+}
+
+/* Networkers-column tick heartbeat — used on the /trade-off
+ * comparison chart to make our column of green ticks feel "alive"
+ * against the static red-cross competitor columns. Classic
+ * thump-thump pattern (two quick beats then rest) at 1.5s cycle.
+ * WCAG 2.3.1 compliant — no >3 flashes per second. Respects
+ * prefers-reduced-motion. */
+@keyframes networkers-tick-heartbeat {
+  0%   { transform: scale(1); }
+  14%  { transform: scale(1.18); }
+  28%  { transform: scale(1); }
+  42%  { transform: scale(1.18); }
+  70%  { transform: scale(1); }
+  100% { transform: scale(1); }
+}
+.networkers-tick-heartbeat {
+  animation: networkers-tick-heartbeat 1.5s ease-in-out infinite;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .networkers-tick-heartbeat {
+    animation: none;
+  }
+}

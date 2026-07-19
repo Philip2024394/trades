@@ -3,6 +3,7 @@ import { DEMO_TRADE_SEEDS } from "@/lib/demoTradeSeeds";
 import { TRADE_OFF_TRADES } from "@/lib/tradeOff";
 import { isLeadCaseStudy } from "@/lib/leadCaseStudies";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { UK_CITIES, allCitySlugs } from "@/lib/uk-cities";
 
 // Full sitemap for thenetworkers.app — surfaces the marketing pages, the
 // templated trade landings (108 entries), every demo profile (106
@@ -174,29 +175,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error("[sitemap] yard posts load failed:", err);
   }
 
-  // Local UK city landing pages — SEO-friendly path-based URLs at
-  // /find/{city}. Kept in sync with SUPPORTED_CITIES in
-  // src/app/find/[city]/page.tsx. Adding a city here + there ships a
-  // new indexable local surface.
-  const cityLandings: Entry[] = [
-    "manchester",
-    "london",
-    "birmingham",
-    "leeds",
-    "liverpool",
-    "glasgow"
-  ].map((slug) => ({
+  // Local UK city landing pages — /find/{city}. Reads from the shared
+  // UK_CITIES catalog (src/lib/uk-cities.ts). Adding a city there
+  // immediately ships /find/{city} + every /trade-off/{trade}/{city}
+  // permutation below.
+  const cityLandings: Entry[] = allCitySlugs().map((slug) => ({
     url: url(`/find/${slug}`),
     lastModified: now,
     changeFrequency: "weekly" as const,
     priority: 0.75
   }));
 
+  // Trade × city cross-product — this is the big SEO surface unlock.
+  // Every /trade-off/{trade}/{city} URL emitted so Google can index the
+  // full grid: "electrician manchester", "plumber leeds", etc.
+  // 108 trades × ~100 cities = ~10,800 pages. Priority is weighted:
+  //   top 20 cities × any trade → 0.7 (bigger cities = bigger search vol)
+  //   remaining              → 0.5
+  // Google's sitemap limit is 50k per file so we're comfortably within.
+  const topCitySlugs = new Set(
+    [...UK_CITIES].sort((a, b) => (b.population ?? 0) - (a.population ?? 0)).slice(0, 20).map((c) => c.slug)
+  );
+  const tradeCityCross: Entry[] = [];
+  for (const trade of TRADE_OFF_TRADES) {
+    for (const city of UK_CITIES) {
+      tradeCityCross.push({
+        url: url(`/trade-off/${trade.slug}/${city.slug}`),
+        lastModified: now,
+        changeFrequency: "weekly" as const,
+        priority: topCitySlugs.has(city.slug) ? 0.7 : 0.5
+      });
+    }
+  }
+
   return [
     root,
     ...main,
     ...tradeLandings,
     ...cityLandings,
+    ...tradeCityCross,
     ...demoProfiles,
     ...liveListings,
     ...yardPosts,

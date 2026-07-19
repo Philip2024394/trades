@@ -60,8 +60,15 @@ export function TradeCenterHeader({
   const [query, setQuery] = useState(initialQuery);
   const { trade } = useCurrentTrade();
   const pathname = usePathname() ?? "/tc/trade-center";
-  const isGuest = trade === null;
   const nextParam = encodeURIComponent(pathname);
+  // Hydration guard — useCurrentTrade() returns null on server (no
+  // cookies) but cached data on client, which used to swap
+  // <Help link> for <UnifiedInboxBell> mid-hydration and blow up
+  // React with a mismatch. Force the guest cluster on first paint,
+  // then flip to authed after mount if the cache has a trade.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => { setHydrated(true); }, []);
+  const isGuest = !hydrated || trade === null;
 
   // Keep the input in sync when the URL changes (e.g. back/forward).
   useEffect(() => {

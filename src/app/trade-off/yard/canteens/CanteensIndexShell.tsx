@@ -11,8 +11,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { Users, Sparkles, ChevronRight, Search, X, ArrowUpDown, Home, Plus } from "lucide-react";
+import { Users, Sparkles, ChevronRight, Search, X, ArrowUpDown, Home, Plus, UserPlus } from "lucide-react";
 import type { Canteen } from "@/lib/canteens";
+import { useInviteContext } from "@/components/homeowners/InviteContext";
+import { TradeCategoryTiles, AUTO_TILES_THRESHOLD } from "@/components/homeowners/TradeCategoryTiles";
 
 type SortKey = "active" | "newest" | "founding";
 const SORT_LABEL: Record<SortKey, string> = {
@@ -27,7 +29,9 @@ const BRAND_BLACK = "#0A0A0A";
 export function CanteensIndexShell({
   canteens,
   ownCanteenSlug = null,
-  viewerIsSignedInMerchant = false
+  viewerIsSignedInMerchant = false,
+  inviteMode = false,
+  previewTiles: previewTilesProp = false
 }: {
   canteens: Canteen[];
   /** Signed-in merchant's own canteen slug (if they host one).
@@ -38,11 +42,23 @@ export function CanteensIndexShell({
    *  a canteen yet get a "Create your canteen" pill instead of
    *  "Enter my canteen". Anonymous / DIY visitors see no pill. */
   viewerIsSignedInMerchant?: boolean;
+  /** True when a signed-in homeowner is browsing to invite a trade.
+   *  Hides trade-facing chrome (Your canteen pill, category badges)
+   *  and lets the parent render TradeCircleHeader in its place. */
+  inviteMode?: boolean;
+  /** Server-side preview override for the TradeCategoryTiles design
+   *  (?tiles=1). Bypasses AUTO_TILES_THRESHOLD so designers can review
+   *  the tile view at any scale. */
+  previewTiles?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [tradeFilter, setTradeFilter] = useState<string | null>(null);
   const [sort, setSort] = useState<SortKey>("active");
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
+  const invite = useInviteContext();   // active only when the invite provider wraps the page
+
+  // Server-passed preview override (?tiles=1) OR real threshold hit.
+  const showCategoryTiles = invite.active && (canteens.length >= AUTO_TILES_THRESHOLD || previewTilesProp);
 
   // Derive the trade chip row from the input list so it stays in sync.
   const tradeChips = useMemo(() => {
@@ -95,7 +111,7 @@ export function CanteensIndexShell({
           Anonymous + DIY visitors see nothing here. Sits above the
           search so getting home is one tap even after the
           directory-first flow lands the merchant on this page. */}
-      {viewerIsSignedInMerchant && (
+      {viewerIsSignedInMerchant && !inviteMode && (
         <div className="mb-4 flex items-center justify-between gap-3 rounded-2xl border bg-white p-3 shadow-sm md:p-4" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
           <div className="min-w-0 flex-1">
             <div className="text-[10px] font-black uppercase tracking-[0.16em] text-neutral-500">
@@ -193,7 +209,7 @@ export function CanteensIndexShell({
             )}
           </div>
         </div>
-        {tradeChips.length > 0 && (
+        {tradeChips.length > 0 && !inviteMode && (
           <div className="flex flex-wrap gap-1.5">
             <button
               type="button"
@@ -229,6 +245,17 @@ export function CanteensIndexShell({
         )}
       </div>
 
+      {/* Category quick-picks — auto-appears at scale (see
+          AUTO_TILES_THRESHOLD) or via ?tiles=1 preview override. */}
+      {showCategoryTiles && (
+        <TradeCategoryTiles
+          categories={tradeChips}
+          activeSlug={tradeFilter}
+          onPick={setTradeFilter}
+          totalTrades={canteens.length}
+        />
+      )}
+
       <div className="mb-3 flex items-center justify-between">
         <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
           {filtered.length === canteens.length ? "Live canteens" : `${filtered.length} matching`}
@@ -243,46 +270,41 @@ export function CanteensIndexShell({
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((c) => (
+            <div key={c.id} className="flex flex-col">
             <Link
-              key={c.id}
               href={`/trade-off/yard/canteens/${c.slug}`}
-              className="group flex flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+              className="group flex flex-1 flex-col overflow-hidden rounded-xl border bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
               style={{ borderColor: "rgba(139,69,19,0.15)" }}
             >
+              {/* Card image — clear (no dark overlay). Taller than
+                  the previous cropped strip so the merchant's photo
+                  reads at a glance. Only the trade-label chip sits
+                  on top; it has its own solid yellow bg + shadow to
+                  stay readable on any image. F100 badge removed with
+                  the founding offer. */}
               <div
-                className="relative h-24 overflow-hidden sm:h-28"
+                className="relative h-36 overflow-hidden sm:h-40"
                 style={{
-                  backgroundColor: "#0A0A0A",
+                  backgroundColor: "#F5F5F5",
                   backgroundImage: c.headerBgUrl ? `url('${c.headerBgUrl}')` : undefined,
                   backgroundSize: "cover",
                   backgroundPosition: "center"
                 }}
               >
-                <div
-                  className="absolute inset-0"
-                  style={{
-                    background: c.headerBgUrl
-                      ? "linear-gradient(160deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 100%)"
-                      : `radial-gradient(circle at 20% 30%, #FFB30022 0%, transparent 55%)`
-                  }}
-                />
+                {!c.headerBgUrl && (
+                  <div
+                    className="absolute inset-0"
+                    style={{ background: "radial-gradient(circle at 20% 30%, #FFB30022 0%, transparent 55%)" }}
+                  />
+                )}
                 <div className="relative flex h-full flex-col justify-end p-3">
                   <div className="flex items-center gap-1.5">
                     <span
-                      className="rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider"
+                      className="rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider shadow-md"
                       style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
                     >
                       {c.tradeLabel}
                     </span>
-                    {c.isFounding100 && (
-                      <span
-                        className="flex items-center gap-0.5 rounded-sm px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider text-white"
-                        style={{ backgroundColor: "#8B4513" }}
-                      >
-                        <Sparkles size={8} strokeWidth={2.5}/>
-                        F100
-                      </span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -312,6 +334,39 @@ export function CanteensIndexShell({
                 </div>
               </div>
             </Link>
+            {/* Invite-mode footer row — TWO buttons on the same line:
+                small "View" (outlined) + "Invite to project" (yellow,
+                takes remaining space). Both live OUTSIDE the Link so
+                clicks don't accidentally navigate the whole card. */}
+            {invite.active && (
+              <div className="mt-2 flex items-center gap-2">
+                <Link
+                  href={`/trade-off/yard/canteens/${c.slug}?previewInvite=1`}
+                  className="inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-xl border-2 bg-white px-3 text-[11px] font-black uppercase tracking-wider text-neutral-800 shadow-sm transition hover:bg-neutral-50"
+                  style={{ borderColor: "rgba(0,0,0,0.12)" }}
+                >
+                  View
+                  <ChevronRight size={11} strokeWidth={2.5}/>
+                </Link>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    invite.openFor({
+                      listingId: "",              // unknown at shell; API resolves via slug
+                      tradeName: c.name,
+                      slug:      c.hostSlug
+                    });
+                  }}
+                  className="inline-flex h-10 flex-1 items-center justify-center gap-1.5 rounded-xl text-[11px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition hover:brightness-95"
+                  style={{ backgroundColor: BRAND_YELLOW }}
+                >
+                  <UserPlus size={12} strokeWidth={2.5}/>
+                  Invite to project
+                </button>
+              </div>
+            )}
+            </div>
           ))}
         </div>
       )}

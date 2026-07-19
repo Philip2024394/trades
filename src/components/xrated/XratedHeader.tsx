@@ -11,46 +11,14 @@
 // merchants. Cookie is httpOnly so the JS side must go through the
 // API endpoint — no direct document.cookie access is possible.
 
-import { useEffect, useState } from "react";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BurgerMenu } from "./BurgerMenu";
 import { NotebookBell } from "./NotebookBell";
+import { UserMenuDropdownClient } from "@/components/UserMenuDropdownClient";
 import { BRAND_YELLOW, BRAND_BLACK } from "@/lib/brand/tokens";
 
 export function XratedHeader() {
   const brand = XRATED_BRAND.name;
-  const [signedIn, setSignedIn] = useState<boolean | null>(null);
-  const [signingOut, setSigningOut] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch("/api/trade-off/session", { credentials: "include" })
-      .then((res) => res.ok ? res.json() : { ok: false })
-      .then((body: { ok?: boolean }) => {
-        if (!cancelled) setSignedIn(!!body?.ok);
-      })
-      .catch(() => {
-        if (!cancelled) setSignedIn(false);
-      });
-    return () => { cancelled = true; };
-  }, []);
-
-  async function signOut() {
-    if (signingOut) return;
-    setSigningOut(true);
-    try {
-      await fetch("/api/trade-off/logout", {
-        method: "POST",
-        credentials: "include"
-      });
-      // Hard reload so every server component re-fetches with the
-      // cleared cookie — sticky nav / MerchantQuickBar / etc. all
-      // update to the signed-out state in one go.
-      window.location.href = "/";
-    } catch {
-      setSigningOut(false);
-    }
-  }
   return (
     <header
       className="sticky top-0 z-30 backdrop-blur"
@@ -105,29 +73,12 @@ export function XratedHeader() {
               events. Renders nothing at all when there's no session. */}
           <NotebookBell/>
 
-          {/* Auth CTA. Renders nothing while the session state loads
-              (avoids the "Log in" flash for signed-in visitors on
-              slow networks). Signed-out → yellow "Log in" pill.
-              Signed-in → outline "Sign out" pill. */}
-          {signedIn === false && (
-            <a
-              href="/trade-off/login"
-              className="inline-flex h-9 items-center rounded-full px-3 text-[12px] font-black uppercase tracking-wider transition active:scale-[0.97]"
-              style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-            >
-              Log in
-            </a>
-          )}
-          {signedIn === true && (
-            <button
-              type="button"
-              onClick={signOut}
-              disabled={signingOut}
-              className="inline-flex h-9 items-center rounded-full border border-neutral-300 bg-white px-3 text-[12px] font-black uppercase tracking-wider text-neutral-800 transition hover:border-neutral-500 active:scale-[0.97] disabled:opacity-60"
-            >
-              {signingOut ? "Signing out…" : "Sign out"}
-            </button>
-          )}
+          {/* Facebook-style avatar dropdown — primary auth surface.
+              Anonymous → Sign in / Sign up pills. Signed-in →
+              avatar + chevron opening a menu with home link +
+              secondary nav + Log out. Client-fetches its own
+              context via /api/user-menu-context. */}
+          <UserMenuDropdownClient/>
 
           {/* Hamburger menu — slide-down panel with priority nav
               destinations + secondary grid of all pages. */}

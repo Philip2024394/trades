@@ -817,6 +817,28 @@ export function ungroupedTradeSlugs(): string[] {
   return TRADE_OFF_TRADES.filter((t) => !grouped.has(t.slug)).map((t) => t.slug);
 }
 
+/** Sibling trades — other trades in the same TRADE_GROUP as the given
+ *  slug. Powers the "In {city}, homeowners also hire" cross-links on
+ *  /trade-off/{trade}/{city} pages. Falls back to a curated common-trade
+ *  set if the input isn't in any group. */
+export function siblingTrades(
+  tradeSlug: string,
+  limit = 8
+): Array<{ slug: string; label: string }> {
+  const group = TRADE_GROUPS.find((g) => g.tradeSlugs.includes(tradeSlug));
+  const source = group
+    ? group.tradeSlugs.filter((s) => s !== tradeSlug)
+    : ["carpenter", "electrician", "plumber", "roofer", "plasterer", "painter", "tiler", "bricklayer"].filter((s) => s !== tradeSlug);
+  const bySlug = new Map(TRADE_OFF_TRADES.map((t) => [t.slug, t]));
+  const out: Array<{ slug: string; label: string }> = [];
+  for (const slug of source) {
+    const t = bySlug.get(slug);
+    if (t) out.push({ slug: t.slug, label: t.label });
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 // Trades whose customers BUY from a catalogue rather than book labour by
 // the hour — merchants, hire firms, and product-configurable installers.
 // These auto-get Shop Mode so the profile is "complete" rather than

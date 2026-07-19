@@ -1126,7 +1126,7 @@ Honest failure modes:
 
 ## Appendix C · Superseded / rescinded rules noted
 
-- User feedback `feedback_studio_addon_wrapper_pattern` is marked SUPERSEDED — this PRD uses the current `feedback_platform_apps_manifest_first` pattern for Blueprint manifests, matching the App manifest architecture.
+- User feedback `feedback_studio_addon_wrapper_pattern` was SUPERSEDED and deleted 2026-07-17 — this PRD uses the current `feedback_platform_apps_manifest_first` pattern for Blueprint manifests, matching the App manifest architecture.
 
 ---
 

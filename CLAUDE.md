@@ -20,14 +20,18 @@ Thenetworkers — a UK trades platform. Merchant canteen pages (`thenetworkers.a
 4. **Free tier is a viral loop, not a loss leader.** Homeowners get Notebook free; free-tier merchants get their URL as long as they log in every 30 days. See ADR-0004.
 5. **Every paid feature clears Stripe margin, both directions.** No commission (rule 2) means add-ons self-fund. Min £4.99 with `.99` suffix, ≥95% net-to-us at money-in. See ADR-0010.
 
-## Pricing (as of 2026-07-13)
+## Pricing (Philip 2026-07-17 launch spec — canonical is `src/lib/tierCatalog.ts`)
 
-- **Free** — £0/mo (push bike)
-- **Canteen** — £7.99/mo · £72/yr (motor bike)
-- **Trade Center** — £11.99/mo · £120/yr (van) — renamed from "Marketplace" 2026-07-16. Internal tier id `"marketplace"` unchanged for now (URL params, Stripe products, feature gates); user-facing name only.
-- **The Works** — £15.99/mo · £175/yr (jeep — everything unlocked)
+- **Free** — £0/mo · 10 signup washers · 10 product cap · Powered-by-The-Network footer (viral loop)
+- **Starter** — £9.99/mo · £99.99/yr · 50 washers/mo · unlimited products · all 20 calculators
+- **Professional** — £14.99/mo · £140/yr · 200 washers/mo · AI Visualiser 5/mo · Analytics · 20% off Site Interest
+- **Business** — £24.99/mo · £240/yr · 1,000 washers/mo · multi-user · custom domain · 5-slot beacon · 40% off Site Interest
+- **The Works** — £39.99/mo · £399/yr · unlimited washers · Site Interest membership included · Merchant Pro bundle
 
-Vehicle metaphor is intentional; see ADR-0006.
+**Source of truth: `src/lib/tierCatalog.ts`** — never edit tier facts anywhere else. Feature bullets on the pricing page + REVENUE_MAP + this file all defer to it.
+
+Washer monthly credit replenishes on the 1st via cron `/api/cron/monthly-washer-replenish`.
+Note: the older "vehicle metaphor" tier names (Canteen / Van / Jeep per ADR-0006) are marketing legacy — the launch spec uses category names (Starter / Professional / Business / Works) matching the pricing page copy.
 
 ## Where to put things
 

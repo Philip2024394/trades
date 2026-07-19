@@ -10,13 +10,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const HIDE_ON_PREFIXES = [
-  "/tc/",             // already inside Trade Center
-  "/auth/",           // OAuth callback screens
-  "/api/",            // never on API surfaces (won't render there anyway)
-  "/hero-swap-demo",  // developer sandbox
+  "/tc/",                    // already inside Trade Center
+  "/auth/",                  // OAuth callback screens
+  "/api/",                   // never on API surfaces (won't render there anyway)
+  "/hero-swap-demo",         // developer sandbox
   "/live-edit-demo",
-  "/trade-off/yard",  // Yard has its own in-line app jumps
-  "/canteen"          // canteen pages have their own header wordmark + direct link in AppShell
+  "/trade-off/yard",         // Yard has its own in-line app jumps
+  "/canteen",                // canteen pages have their own header wordmark + direct link in AppShell
+  "/sitebook",               // SiteBook has its own UserMenuDropdown — no floating pill (Philip 2026-07-19)
+  "/sitebook-showcase",      // Mock SiteBook mirrors real SiteBook chrome
+  "/homeowners"              // Homeowners landing — Trade Center pill is off-brand for the homeowner audience
 ];
 
 export function GlobalTradeCenterLink() {

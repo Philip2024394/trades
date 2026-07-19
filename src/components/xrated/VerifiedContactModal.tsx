@@ -35,6 +35,7 @@ export type ContactSource =
   | "trade-center-category"
   | "product-carousel"
   | "portfolio"
+  | "inspiration-detail"
   | "other";
 
 export function VerifiedContactModal({

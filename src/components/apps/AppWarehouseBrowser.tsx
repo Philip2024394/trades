@@ -256,9 +256,9 @@ export function AppWarehouseBrowser({
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 gap-4 pb-16 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+          <div className="grid grid-cols-1 gap-2 pb-16 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((app) => (
-              <AppCard key={app.slug} app={app} onOpenInfo={setInfoApp} />
+              <AppCard key={app.slug} app={app} trades={trades} onOpenInfo={setInfoApp} />
             ))}
           </div>
         )}
@@ -284,78 +284,130 @@ const BADGE_STYLES: Record<string, { bg: string; fg: string; icon: typeof Award;
   "popular": { bg: "#8B4513", fg: "#FFFFFF", icon: Users, label: "Popular" }
 };
 
+/** Resolve the trade label pinned to a card. Universal apps read "All
+ *  trades", single-trade apps show the trade name, multi-trade apps
+ *  show a count. Deliberately shorter than the info modal — the card
+ *  only has room for a chip. */
+function tradeLabelFor(app: WarehouseApp, trades: readonly Trade[]): string {
+  const list = app.tradeAllowlist ?? [];
+  if (list.length === 0 || list.includes("*")) return "All trades";
+  if (list.length === 1) {
+    const match = trades.find((t) => t.slug === list[0]);
+    return match?.label ?? list[0]!;
+  }
+  return `${list.length} trades`;
+}
+
 function AppCard({
   app,
+  trades,
   onOpenInfo
 }: {
   app: WarehouseApp;
+  trades: readonly Trade[];
   onOpenInfo: (app: WarehouseApp) => void;
 }): JSX.Element {
   const Icon = ICONS[app.icon] ?? Wrench;
-  const isFree = app.tier === "free";
   const label = shortLabelFor(app);
   const badge = app.installBadge ? BADGE_STYLES[app.installBadge] : null;
+  const tradeLabel = tradeLabelFor(app, trades);
+  const isFree = app.tier === "free";
+  const priceLabel = isFree
+    ? "Free"
+    : app.price?.monthly
+      ? `£${app.price.monthly}/mo`
+      : app.price?.oneOff
+        ? `£${app.price.oneOff}`
+        : "Pro";
 
-  // Force ImageKit to serve a sharp square version so cards stay crisp.
-  const cardImage = app.bannerImage && app.bannerImage.includes("imagekit.io")
-    ? `${app.bannerImage}${app.bannerImage.includes("?") ? "&" : "?"}tr=w-800,h-800,fo-auto,c-maintain_ratio,bg-FFFFFF`
+  // Force ImageKit to serve a small sharp square for the row thumbnail.
+  const thumbUrl = app.bannerImage && app.bannerImage.includes("imagekit.io")
+    ? `${app.bannerImage}${app.bannerImage.includes("?") ? "&" : "?"}tr=w-200,h-200,fo-auto,c-maintain_ratio,bg-FFFFFF`
     : app.bannerImage;
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-lg border border-slate-200 bg-white transition hover:border-slate-400 hover:shadow-sm">
-      {/* Eye icon — small yellow chip, top-right, minimal footprint */}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          onOpenInfo(app);
-        }}
-        className="absolute right-1.5 top-1.5 z-10 flex h-7 w-7 items-center justify-center rounded-full shadow-md transition hover:brightness-95"
-        style={{ backgroundColor: YELLOW }}
-        aria-label={`What is ${app.name}?`}
-        title={`What is ${app.name}?`}
+    <div className="group relative flex items-center gap-3 rounded-lg border border-slate-200 bg-white p-2.5 transition hover:border-slate-400 hover:shadow-sm">
+      {/* Thumbnail — 64px square, rounded. Whole card is clickable
+          via a stretched-Link overlay so the tap target is the row. */}
+      <Link
+        href={`/apps/${app.slug}`}
+        className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-md"
+        aria-label={`Open ${app.name}`}
       >
-        <Eye size={12} color={BLACK} strokeWidth={2.5}/>
-      </button>
-
-      {/* Square banner slot — image if we have it, else icon on brand black.
-          Badges live below the image (in the footer) so nothing covers it. */}
-      <Link href={`/apps/${app.slug}`} className="block aspect-square w-full overflow-hidden">
-        {cardImage ? (
+        {thumbUrl ? (
           <div
             className="h-full w-full transition-transform duration-300 group-hover:scale-105"
             style={{
-              backgroundImage: `url('${cardImage}')`,
+              backgroundImage: `url('${thumbUrl}')`,
               backgroundSize: "cover",
               backgroundPosition: "center"
             }}
           />
         ) : (
-          <div
-            className="flex h-full w-full items-center justify-center"
-            style={{ backgroundColor: BLACK }}
-          >
-            <Icon size={56} color={YELLOW} strokeWidth={1.8} />
+          <div className="flex h-full w-full items-center justify-center" style={{ backgroundColor: BLACK }}>
+            <Icon size={28} color={YELLOW} strokeWidth={1.8}/>
           </div>
         )}
       </Link>
 
-      {/* Compact footer row — short name + install chip */}
-      <div className="flex items-center justify-between border-t border-slate-200 px-3 py-2">
-        <div className="min-w-0 flex-1">
-          <div
-            className="truncate text-[13px] font-bold text-slate-900"
+      {/* Middle: name + tagline + meta chips */}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-1.5">
+          <Link
+            href={`/apps/${app.slug}`}
+            className="truncate text-[13.5px] font-black text-slate-900 hover:underline"
             title={app.name}
           >
             {label}
-          </div>
-          <div className="mt-0.5 text-[10px] font-semibold uppercase tracking-wider text-slate-500">
-            {app.category}
-          </div>
+          </Link>
+          {badge && (
+            <span
+              className="inline-flex flex-shrink-0 items-center gap-0.5 rounded-sm px-1 py-0.5 text-[8.5px] font-black uppercase tracking-wider"
+              style={{ backgroundColor: badge.bg, color: badge.fg }}
+              title={badge.label}
+            >
+              <badge.icon size={8} strokeWidth={2.6}/>
+              <span className="hidden sm:inline">{badge.label}</span>
+            </span>
+          )}
         </div>
+        <p className="mt-0.5 line-clamp-1 text-[11.5px] leading-snug text-slate-600">
+          {app.tagline}
+        </p>
+        <div className="mt-1 flex items-center gap-1.5 text-[9.5px] font-black uppercase tracking-wider text-slate-500">
+          <span className="inline-flex items-center gap-0.5">
+            <Wrench size={9} strokeWidth={2.6}/>
+            <span className="truncate">{tradeLabel}</span>
+          </span>
+          <span className="text-slate-300">·</span>
+          <span className="truncate">{app.category}</span>
+          <span className="text-slate-300">·</span>
+          <span
+            className="truncate"
+            style={{ color: isFree ? BRAND_GREEN_DARK : AMBER }}
+          >
+            {priceLabel}
+          </span>
+        </div>
+      </div>
+
+      {/* Right cluster — eye (info modal) + install pill */}
+      <div className="flex flex-shrink-0 items-center gap-1.5">
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            onOpenInfo(app);
+          }}
+          className="flex h-8 w-8 items-center justify-center rounded-full text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+          aria-label={`What is ${app.name}?`}
+          title={`What is ${app.name}?`}
+        >
+          <Eye size={13} strokeWidth={2.4}/>
+        </button>
         <Link
           href={`/apps/${app.slug}`}
-          className="flex h-8 flex-shrink-0 items-center rounded-md px-2 text-[12px] font-semibold"
+          className="flex h-8 items-center rounded-md px-2.5 text-[11.5px] font-black uppercase tracking-wider"
           style={{ backgroundColor: YELLOW, color: BLACK }}
         >
           Install

@@ -186,7 +186,7 @@ export function CanteenBusinessCardModal({
                 <span style={{ color: BRAND_YELLOW }}>{nameLast}.</span>
               </h2>
               <p className="mt-1 text-[11px] font-bold text-white/85 drop-shadow-sm sm:text-[12px]">
-                Connect. Share. Grow.
+                Built for the trade.
               </p>
 
               {/* Address + phone — kept compact so the QR breathing

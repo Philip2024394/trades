@@ -344,6 +344,73 @@ export function localBusinessJsonLd(
   };
 }
 
+/** ItemList wrapping N LocalBusiness listings — Google uses this to
+ *  render list carousels in local rich results. Each item points to
+ *  the trade's profile URL so the rich result deep-links correctly.
+ *  Emit alongside per-listing localBusinessJsonLd on trade × city
+ *  pages so the page has both the list AND every member. */
+export function itemListJsonLd(items: Array<{ slug: string; name: string; image?: string | null }>, pageUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    url: absolute(pageUrl),
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem" as const,
+      position: i + 1,
+      url:  absolute(`/trade/${it.slug}`),
+      name: it.name,
+      image: it.image ?? undefined
+    }))
+  };
+}
+
+/** Service schema for a trade × city page — represents "{Trade} in
+ *  {City}" as an offered service. Helps Google's Service rich snippet
+ *  fire for "{trade} near me / {trade} in {city}" queries. */
+export function serviceJsonLd(input: {
+  tradeLabel: string;
+  cityLabel:  string;
+  region?:    string;
+  pageUrl:    string;
+  provider?:  { name: string; url: string };
+  offerCount?: number;
+}) {
+  const name = `${input.tradeLabel}s in ${input.cityLabel}`;
+  return {
+    "@context": "https://schema.org",
+    "@type":    "Service",
+    "@id":      absolute(input.pageUrl),
+    name,
+    serviceType: input.tradeLabel,
+    areaServed: {
+      "@type": "City",
+      name:    input.cityLabel,
+      ...(input.region ? { containedInPlace: { "@type": "AdministrativeArea", name: input.region } } : {})
+    },
+    provider: input.provider ?? {
+      "@type": "Organization",
+      name:    BRAND.name,
+      url:     absolute("/")
+    },
+    availableChannel: {
+      "@type": "ServiceChannel",
+      serviceUrl: absolute(input.pageUrl),
+      availableLanguage: ["en-GB"]
+    },
+    ...(input.offerCount != null
+      ? {
+          offers: {
+            "@type": "AggregateOffer",
+            offerCount: input.offerCount,
+            priceCurrency: "GBP",
+            availability: "https://schema.org/InStock"
+          }
+        }
+      : {})
+  };
+}
+
 export function escapeXml(input: string): string {
   return input.replace(/[<>&'"]/g, (c) =>
     c === "<" ? "&lt;" : c === ">" ? "&gt;" : c === "&" ? "&amp;" : c === "'" ? "&apos;" : "&quot;"

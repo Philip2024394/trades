@@ -1,6 +1,8 @@
 "use client";
 
-// WhatsApp pill — canonical #25D366, white text, WhatsApp glyph.
+// WhatsApp pill — dark green #166534 (platform standard), white text,
+// WhatsApp glyph. NOT WhatsApp brand green — per Philip 2026-07-17
+// "WhatsApp button dark green always" + feedback_dark_green_only.md.
 
 import Link from "next/link";
 import { buttonRegistry } from "../buttonRegistry";
@@ -13,7 +15,7 @@ import {
 } from "../themeAdapter";
 import type { ButtonRegistration, ButtonRendererProps } from "../types";
 
-const WA_GREEN = "#25D366";
+const WA_GREEN = "#166534";
 
 type Config = { label: string; phoneOrHref: string };
 

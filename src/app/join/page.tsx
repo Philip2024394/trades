@@ -1,53 +1,87 @@
-// /join — Trade join entry for Thenetworkers.
+// /join — audience picker.
 //
-// Landing page for tradespeople arriving via the split gate. Per the
-// master-brand decision (project_thenetwork_domain_option.md,
-// 2026-07-09) the Construction Notebook framing was retired: all
-// tradesperson-facing surfaces now push "Join Thenetworkers." The old
-// "Trade Notebook / Trade Circle" vocabulary is superseded by "your
-// business app / your canteen."
+// Three-way fork. Everyone lands here from the audience gate; the tile
+// they pick governs the framing on the next page. Backend account
+// shape is unified (viewer_role='trade' | 'diy') — trades and
+// merchants share the trade wizard, homeowners share the diy sign-in.
+//
+// Trade-specific marketing → /join/trade
+// Merchant-specific marketing → /join/merchant
+// Homeowner-specific marketing → /join/homeowner
 
-import Image from "next/image";
 import Link from "next/link";
-import { PreviewTabs } from "./PreviewTabs";
+import Image from "next/image";
 import {
   ArrowRight,
   Hammer,
-  ShieldCheck,
-  BookOpen,
-  Users,
-  CheckCircle2,
+  Package,
+  Home,
+  Factory,
   ChevronLeft
 } from "lucide-react";
 
-const STEP_IMAGES = {
-  tellUs:
-    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_47_12%20PM.png?updatedAt=1783442852639",
-  setUp:
-    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_57_35%20PM.png?updatedAt=1783443475927",
-  circle:
-    "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_55_03%20PM.png?updatedAt=1783443325500"
-};
-
 export const metadata = {
-  title: "Join Thenetworkers — Free for life",
+  title: "Join Thenetworkers — pick your path",
   description:
-    "Get your free business app, canteen, and URL live in under 5 minutes. No card, no commission, free for life."
+    "Trades, merchants, and homeowners all live on Thenetworkers. Pick the path that fits you — every one is free to start."
 };
 
-export default function JoinTradePage() {
+type Path = {
+  href: string;
+  eyebrow: string;
+  title: string;
+  body: string;
+  cta: string;
+  icon: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  image: string;
+};
+
+const PATHS: readonly Path[] = [
+  {
+    href: "/join/trade",
+    eyebrow: "For trades",
+    title: "I run a trade.",
+    body: "Plumber, sparks, joiner, kitchen fitter, bricklayer. Free business app, canteen, and URL — customers WhatsApp you direct, no commission.",
+    cta: "Join as a trade",
+    icon: Hammer,
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_57_35%20PM.png?updatedAt=1783443475927"
+  },
+  {
+    href: "/join/manufacturer",
+    eyebrow: "For manufacturers",
+    title: "I make the product.",
+    body: "Brand-direct sellers. Tool makers, timber mills, stone yards. Your canteen shows the \"direct from source\" chip so buyers know it's not resale.",
+    cta: "Join as a manufacturer",
+    icon: Factory,
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2016,%202026,%2009_25_22%20AM.png"
+  },
+  {
+    href: "/join/merchant",
+    eyebrow: "For merchants",
+    title: "I sell products to trades.",
+    body: "Builders' merchant, retailers, distributors. Free canteen, plus every product you list lands in Trade Center automatically.",
+    cta: "Join as a merchant",
+    icon: Package,
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_47_12%20PM.png?updatedAt=1783442852639"
+  },
+  {
+    href: "/join/homeowner",
+    eyebrow: "For homeowners",
+    title: "I'm a homeowner.",
+    body: "Save inspiration, keep a Notebook for each project, quote trades direct. Free forever — no card, no commission on quotes.",
+    cta: "Sign up as a homeowner",
+    icon: Home,
+    image:
+      "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%207,%202026,%2011_55_03%20PM.png?updatedAt=1783443325500"
+  }
+];
+
+export default function JoinPickerPage() {
   return (
     <main className="relative min-h-screen bg-[#FBF6EC] text-[#1B1A17]">
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            html, body { scrollbar-width: none !important; -ms-overflow-style: none !important; }
-            html::-webkit-scrollbar, body::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
-            *::-webkit-scrollbar { display: none !important; width: 0 !important; height: 0 !important; }
-          `
-        }}
-      />
-      {/* Subtle brand glow */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -56,17 +90,8 @@ export default function JoinTradePage() {
             "radial-gradient(60% 40% at 50% 0%, rgba(255,179,0,0.18) 0%, transparent 60%)"
         }}
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to bottom, transparent 39px, #ffffff 40px)",
-          backgroundSize: "100% 40px"
-        }}
-      />
 
-      <div className="relative mx-auto max-w-3xl px-6 py-10 md:px-8 md:py-16">
+      <div className="relative mx-auto max-w-5xl px-6 py-10 md:px-8 md:py-16">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#1B1A17]/60 hover:text-[#1B1A17]"
@@ -76,77 +101,22 @@ export default function JoinTradePage() {
         </Link>
 
         <h1 className="mt-8 text-[38px] font-bold leading-[1.05] tracking-tight text-[#1B1A17] md:text-[56px]">
-          Join Thenetworkers.
+          One network. Four doors.
         </h1>
-        <p className="mt-4 max-w-xl text-[16px] leading-[1.55] text-[#1B1A17]/70 md:text-[18px]">
-          Your business app. Your canteen. Your URL live. Under 5 minutes. Free for life.
+        <p className="mt-4 max-w-2xl text-[16px] leading-[1.55] text-[#1B1A17]/70 md:text-[18px]">
+          Trades, manufacturers, merchants, and homeowners all live on Thenetworkers. Pick the door that fits you — each one is free to start. You can always change later.
         </p>
 
-        <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Link
-            href="/join/start"
-            className="inline-flex min-h-[56px] items-center gap-2 rounded-full bg-amber-400 px-7 text-[15px] font-bold text-neutral-900 transition hover:bg-amber-300"
-          >
-            Get Started
-            <ArrowRight className="h-4 w-4" aria-hidden />
-          </Link>
-          <span className="text-[13px] text-[#1B1A17]/60">
-            3 minutes · No card required
-          </span>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {PATHS.map((p) => (
+            <PathCard key={p.href} path={p} />
+          ))}
         </div>
-
-        {/* See what you get — inline preview */}
-        <section className="mt-14">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.22em] text-amber-700">
-            See what you get
-          </p>
-          <h2 className="mt-3 text-[24px] font-bold leading-tight tracking-tight text-[#1B1A17] md:text-[32px]">
-            Two things live from day one.
-          </h2>
-          <div className="mt-6">
-            <PreviewTabs />
-          </div>
-        </section>
-
-        {/* Three-step flow — sets expectations before the wizard */}
-        <div className="mt-14 grid gap-5 md:grid-cols-3 md:gap-6">
-          <FlowStep
-            n="01"
-            imageUrl={STEP_IMAGES.tellUs}
-            icon={<Hammer className="h-4 w-4" aria-hidden />}
-            title="Tell us about your trade"
-            body="Business name, primary trade, city. Verified against Companies House."
-          />
-          <FlowStep
-            n="02"
-            imageUrl={STEP_IMAGES.setUp}
-            icon={<BookOpen className="h-4 w-4" aria-hidden />}
-            title="Set up your business app"
-            body="Add your services, photos, and past work. Your presence, your brand. Live in Studio."
-          />
-          <FlowStep
-            n="03"
-            imageUrl={STEP_IMAGES.circle}
-            icon={<Users className="h-4 w-4" aria-hidden />}
-            title="Join a canteen"
-            body="Your trade's private group on Thenetworkers. Recommend and get recommended. Grow together."
-          />
-        </div>
-
-        {/* Value markers */}
-        <ul className="mt-12 grid gap-3 text-[14px] text-[#1B1A17]/80 md:grid-cols-2 md:gap-x-6">
-          <ValuePoint>Your own business app — free for life</ValuePoint>
-          <ValuePoint>Verified badges (Companies House, Gas Safe, NICEIC)</ValuePoint>
-          <ValuePoint>Every job on the record — permanent</ValuePoint>
-          <ValuePoint>Peer endorsements from other trades in your canteen</ValuePoint>
-          <ValuePoint>Customers WhatsApp you direct — zero commission</ValuePoint>
-          <ValuePoint>Own your data — leave any time with it</ValuePoint>
-        </ul>
 
         <div className="mt-14 border-t border-[#1B1A17]/12 pt-6">
           <p className="text-[13px] text-[#1B1A17]/55">
             Already on Thenetworkers?{" "}
-            <Link href="/sign-in" className="text-amber-300 hover:text-amber-200">
+            <Link href="/sign-in" className="font-semibold text-amber-700 hover:text-amber-800">
               Sign in
             </Link>
           </p>
@@ -156,59 +126,48 @@ export default function JoinTradePage() {
   );
 }
 
-function FlowStep({
-  n,
-  imageUrl,
-  icon,
-  title,
-  body
-}: {
-  n: string;
-  imageUrl: string;
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-}) {
+function PathCard({ path }: { path: Path }) {
+  const Icon = path.icon;
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-[#1B1A17]/12 p-5 text-white shadow-[0_20px_40px_-24px_rgba(27,26,23,0.20)]">
-      {/* Full-card background image */}
+    <Link
+      href={path.href}
+      className="group relative flex min-h-[380px] flex-col overflow-hidden rounded-2xl border border-[#1B1A17]/12 shadow-[0_20px_40px_-24px_rgba(27,26,23,0.20)] transition hover:shadow-[0_28px_52px_-24px_rgba(27,26,23,0.30)]"
+    >
       <Image
-        src={imageUrl}
-        alt={title}
+        src={path.image}
+        alt={path.title}
         fill
         sizes="(min-width: 768px) 33vw, 100vw"
         className="object-cover"
       />
-      {/* Dark gradient so the copy is legible over any part of the image */}
       <div
         aria-hidden
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(to top, rgba(20,17,10,0.88) 0%, rgba(20,17,10,0.55) 45%, rgba(20,17,10,0.15) 100%)"
+            "linear-gradient(to top, rgba(20,17,10,0.92) 0%, rgba(20,17,10,0.65) 45%, rgba(20,17,10,0.15) 100%)"
         }}
       />
-      {/* Content */}
-      <div className="relative">
-        <div className="flex items-center gap-2 text-[13px] font-mono font-semibold text-amber-300">
-          {n}
-        </div>
-        <h3 className="mt-3 text-[16px] font-bold text-white">{title}</h3>
-        <p className="mt-2 text-[13px] leading-[1.5] text-white/80">{body}</p>
-        <div className="sr-only">{icon}</div>
+      <div className="relative flex flex-1 flex-col p-5">
+        <span
+          className="inline-flex w-fit items-center gap-1.5 rounded-full bg-amber-400/20 px-2.5 py-1 text-[10px] font-extrabold uppercase tracking-[0.18em] text-amber-200"
+        >
+          <Icon className="h-3 w-3" aria-hidden />
+          {path.eyebrow}
+        </span>
+        <h3 className="mt-auto text-[22px] font-black leading-tight text-white">
+          {path.title}
+        </h3>
+        <p className="mt-2 text-[13px] leading-[1.5] text-white/85">
+          {path.body}
+        </p>
+        <span
+          className="mt-4 inline-flex items-center gap-2 text-[12px] font-black uppercase tracking-[0.16em] text-amber-300 transition group-hover:gap-3"
+        >
+          {path.cta}
+          <ArrowRight className="h-4 w-4" aria-hidden />
+        </span>
       </div>
-    </div>
-  );
-}
-
-function ValuePoint({ children }: { children: React.ReactNode }) {
-  return (
-    <li className="inline-flex items-start gap-2">
-      <CheckCircle2
-        className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400"
-        aria-hidden
-      />
-      {children}
-    </li>
+    </Link>
   );
 }

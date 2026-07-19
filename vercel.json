@@ -31,6 +31,13 @@
     { "path": "/api/cron/yard-expire-notifications", "schedule": "0 3 * * *" },
     { "path": "/api/reviews/publish-pending", "schedule": "*/15 * * * *" },
     { "path": "/api/canteens/recalc-metrics", "schedule": "0 * * * *" },
-    { "path": "/api/cron/free-slug-expiry", "schedule": "0 3 * * *" }
+    { "path": "/api/cron/free-slug-expiry", "schedule": "0 3 * * *" },
+    { "path": "/api/cron/beacon-sla-sweep", "schedule": "*/5 * * * *" },
+    { "path": "/api/cron/monthly-washer-replenish", "schedule": "0 3 1 * *" },
+    { "path": "/api/cron/referral-reward-fulfilment", "schedule": "*/15 * * * *" },
+    { "path": "/api/cron/shadow-profile-scrape",   "schedule": "30 2 * * *" },
+    { "path": "/api/cron/shadow-profile-enrich",   "schedule": "0 * * * *" },
+    { "path": "/api/cron/shadow-profile-send",     "schedule": "*/15 * * * *" },
+    { "path": "/api/cron/shadow-profile-suppress", "schedule": "0 4 * * *" }
   ]
 }

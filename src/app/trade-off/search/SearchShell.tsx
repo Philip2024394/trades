@@ -53,6 +53,12 @@ export type InspirationMaterial = {
 };
 
 export type InspirationImage = {
+  /** Stable ID — hero-library entry.id for curated, submission UUID
+   *  for user-submitted. Powers the /trade-off/inspiration/[id]
+   *  detail page. Kept `string | null` because older search-result
+   *  payloads may pre-date this field; the card falls back to a
+   *  no-link render when id is missing. */
+  id:                   string | null;
   source:               "curated" | "submission";
   imageUrl:             string;
   subject:              string;
@@ -65,6 +71,12 @@ export type InspirationImage = {
   sourcePostId:         string | null;
   sourcePostReplyCount: number;
   materials:            InspirationMaterial[];
+  /** Natural pixel dimensions of the source image — passed to
+   *  <img width/height/> so the browser reserves the aspect-ratio
+   *  box BEFORE the image bytes arrive. Kills the jumping-while-
+   *  scrolling masonry reflow. Fallback: 800x1067 (3:4 portrait). */
+  widthPx?:             number | null;
+  heightPx?:            number | null;
 };
 
 // Shape returned by /api/canteens/posts/[id]/replies. Kept small —
@@ -153,8 +165,13 @@ export function SearchShell({
         setHasMore(false);
         return;
       }
-      const curated = (data.curated ?? []) as Array<{ imageUrl: string; subject: string; keywords: string[] }>;
+      const curated = (data.curated ?? []) as Array<{
+        id?: string;
+        imageUrl: string; subject: string; keywords: string[];
+        widthPx?: number | null; heightPx?: number | null;
+      }>;
       const submissions = (data.submissions ?? []) as Array<{
+        id?: string;
         imageUrl: string; subject: string; keywords: string[];
         submitterSlug: string | null; submitterDisplay: string | null; submitterAvatarUrl: string | null;
         sourceCanteenId: string | null; sourcePostId: string | null;
@@ -165,26 +182,32 @@ export function SearchShell({
         if (seen.has(c.imageUrl)) continue;
         seen.add(c.imageUrl);
         next.push({
+          id: c.id ?? null,
           source: "curated",
           imageUrl: c.imageUrl,
           subject: c.subject,
           keywords: c.keywords,
           submitterSlug: null, submitterDisplay: null, submitterAvatarUrl: null,
           sourceCanteenId: null, sourceCanteenSlug: null, sourcePostId: null, sourcePostReplyCount: 0,
-          materials: []
+          materials: [],
+          widthPx: c.widthPx ?? null,
+          heightPx: c.heightPx ?? null
         });
       }
       for (const s of submissions) {
         if (seen.has(s.imageUrl)) continue;
         seen.add(s.imageUrl);
         next.push({
+          id: s.id ?? null,
           source: "submission",
           imageUrl: s.imageUrl,
           subject: s.subject,
           keywords: s.keywords,
           submitterSlug: s.submitterSlug, submitterDisplay: s.submitterDisplay, submitterAvatarUrl: s.submitterAvatarUrl,
           sourceCanteenId: s.sourceCanteenId, sourceCanteenSlug: null, sourcePostId: s.sourcePostId, sourcePostReplyCount: 0,
-          materials: []
+          materials: [],
+          widthPx: null,
+          heightPx: null
         });
       }
       if (next.length === 0) {
@@ -218,7 +241,11 @@ export function SearchShell({
           }
         }
       },
-      { rootMargin: "400px 0px" }
+      // 1500px lead-time — the next batch of images is fetched +
+      // starts decoding well before the user's scroll reaches the
+      // bottom of the current render. Kills the "images appearing
+      // just-in-time with a load flash" (Philip 2026-07-17).
+      { rootMargin: "1500px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
@@ -363,6 +390,19 @@ export function SearchShell({
             label="Site Interest"
             count={inspiration.length + transformations.length}
           />
+          {/* Toggle → Store. Not a tab (routes away). Sits inline with
+              the tab pills so merchants can jump from browsing to
+              buying without hunting through the header nav. */}
+          <a
+            href="/store"
+            className="ml-auto inline-flex h-8 items-center gap-1 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50"
+            style={{ borderColor: "rgba(0,0,0,0.12)" }}
+            aria-label="Buy AI-generated trade imagery from the Site Interest Store"
+          >
+            <span aria-hidden>🛒</span>
+            Buy images
+            <span className="ml-0.5 text-neutral-400">→</span>
+          </a>
         </div>
       </section>
 
@@ -672,10 +712,11 @@ function InspirationMasonry({
         className="[column-count:2] sm:[column-count:3] lg:[column-count:4]"
         style={{ columnGap: "12px" }}
       >
-        {entries.map((entry) => (
+        {entries.map((entry, idx) => (
           <InspirationCard
             key={`${entry.source}:${entry.imageUrl}`}
             entry={entry}
+            index={idx}
             query={query}
             city={city}
             onLikeIt={onLikeIt}
@@ -688,8 +729,24 @@ function InspirationMasonry({
   );
 }
 
+/** Turn the library's verbose CLI-style subject line into a short
+ *  human-facing card caption. Subjects were written for the image
+ *  pipeline ("Working timber yard with stacked cut structural timber,
+ *  green log-grabber crane, pine forest backdrop, wet gravel ground")
+ *  which reads like conversation, not marketing copy. The first
+ *  clause is almost always the essence; we take that, trim, drop any
+ *  trailing prepositions, and cap at 80 chars. */
+function deriveCardCaption(subject: string): string {
+  if (!subject) return "";
+  const firstClause = subject.split(/[,;·—]/)[0].trim();
+  const trimmed = firstClause.replace(/\s+(with|showing|featuring|and|on|in|of|at)\s*$/i, "");
+  const capped = trimmed.length > 80 ? `${trimmed.slice(0, 77).trim()}…` : trimmed;
+  return capped.charAt(0).toUpperCase() + capped.slice(1);
+}
+
 function InspirationCard({
   entry,
+  index,
   query,
   city,
   onLikeIt,
@@ -697,6 +754,8 @@ function InspirationCard({
   onVisualise
 }: {
   entry: InspirationImage;
+  /** Position in the visible list — controls eager/lazy loading. */
+  index: number;
   query: string;
   city: string;
   onLikeIt: (ctx: QuickContactContext) => void;
@@ -770,45 +829,11 @@ function InspirationCard({
     }
   }, [comments, commentsOpen, entry.sourcePostId]);
 
-  // The submitter credit is a link when we know their canteen slug
-  // (server enriched sourceCanteenSlug). Otherwise it renders as a
-  // plain span — no dangling link that goes nowhere.
-  const creditNode = isSubmission && entry.submitterDisplay
-    ? (
-      <div className="mb-1.5 flex items-center gap-1.5">
-        {entry.submitterAvatarUrl ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={entry.submitterAvatarUrl}
-            alt=""
-            className="h-5 w-5 flex-shrink-0 rounded-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div
-            className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full"
-            style={{ backgroundColor: `${TAN}22` }}
-            aria-hidden
-          >
-            <User size={10} strokeWidth={2.6} style={{ color: TAN }}/>
-          </div>
-        )}
-        {entry.sourceCanteenSlug ? (
-          <Link
-            href={`/trade-off/yard/canteens/${entry.sourceCanteenSlug}`}
-            className="truncate text-[10.5px] font-black text-neutral-800 hover:underline"
-            title={`Open ${entry.submitterDisplay}'s canteen`}
-          >
-            By {entry.submitterDisplay}
-          </Link>
-        ) : (
-          <span className="truncate text-[10.5px] font-black text-neutral-800">
-            By {entry.submitterDisplay}
-          </span>
-        )}
-      </div>
-    )
-    : null;
+  // Credits intentionally hidden on Site Interest cards per Philip
+  // 2026-07-16 — visitors want inspiration, not attribution noise.
+  // Lead routing still happens via the "trades near you" chip strip
+  // below and the "I like it, how much?" button.
+  const creditNode = null;
 
   // Casual-copy prevention. Never bulletproof (screenshots + devtools
   // always work) but raises the bar enough that the OS share menu +
@@ -818,100 +843,133 @@ function InspirationCard({
   //   • draggable     → same, belt-and-braces
   //   • userSelect    → hides selection UI on long-press mobile
   const watermarked = watermarkImageUrl(entry.imageUrl);
-  // Absolute share URL — points at the search results (with tab flag)
-  // so the person arriving on the shared link lands on Site Interest
-  // showing the same image in context, not the raw file.
+  // Detail page URL — every clickable image points at
+  // /trade-off/inspiration/[id] where the buyer sees the big
+  // image + 3 nearest WhatsApp-opted trades + "buy this image"
+  // CTA. Falls back to a search-URL if id missing (older payload).
+  const detailHref = entry.id
+    ? `/trade-off/inspiration/${encodeURIComponent(entry.id)}${city ? `?city=${encodeURIComponent(city)}` : ""}`
+    : null;
+  // Share URL — points at the detail page when we have one, so
+  // the share lands on the specific image (not the search page).
   const shareUrl = typeof window !== "undefined"
-    ? `${window.location.origin}/trade-off/search?q=${encodeURIComponent(entry.keywords[0] ?? query)}&tab=inspiration`
-    : `/trade-off/search?q=${encodeURIComponent(entry.keywords[0] ?? query)}&tab=inspiration`;
+    ? `${window.location.origin}${detailHref ?? `/trade-off/search?q=${encodeURIComponent(entry.keywords[0] ?? query)}&tab=inspiration`}`
+    : (detailHref ?? `/trade-off/search?q=${encodeURIComponent(entry.keywords[0] ?? query)}&tab=inspiration`);
+
+  const imgElement = (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={watermarked}
+      alt={entry.subject}
+      // Explicit width + height are the PROPER fix for the
+      // scrolling-jumping issue. Modern browsers (Chrome/Safari/
+      // Firefox 2020+) use these to compute an aspect-ratio box
+      // BEFORE bytes arrive, so the card holds its slot in the
+      // column even while lazy-loading. Backfilled by
+      // scripts/backfill-image-dims.mjs; fallback 800x1067 (3:4
+      // portrait) when a hero-library entry hasn't been probed
+      // yet — still reserves a box, just approximate.
+      width={entry.widthPx  ?? 800}
+      height={entry.heightPx ?? 1067}
+      // First 40 images: eager download on page load — covers
+      // ~10 rows on a 4-column grid so nothing above the fold
+      // + first scroll-screen is lazy. Later images stay lazy
+      // (native browser lazy loading kicks in) but the sentinel
+      // above pre-fetches the next batch 1500px early, so by
+      // the time user reaches them they've already begun.
+      loading={index < 40 ? "eager" : "lazy"}
+      decoding="async"
+      // fetchPriority=high for the top 12 (~3 rows) — browser
+      // prioritises them ahead of scripts/other assets.
+      fetchPriority={index < 12 ? "high" : "auto"}
+      draggable={false}
+      onContextMenu={(e) => e.preventDefault()}
+      onDragStart={(e) => e.preventDefault()}
+      className="block h-auto w-full select-none"
+      style={{
+        userSelect: "none",
+        WebkitUserSelect: "none",
+        WebkitTouchCallout: "none",
+        contentVisibility: index < 20 ? "visible" : "auto",
+        containIntrinsicSize: "300px 400px"
+      }}
+    />
+  );
 
   return (
     <figure
       className="mb-3 overflow-hidden rounded-2xl border bg-white shadow-sm"
-      // break-inside-avoid prevents a card being split across columns.
       style={{ borderColor: "rgba(139,69,19,0.12)", breakInside: "avoid" }}
     >
       <div className="relative">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={watermarked}
-          alt={entry.subject}
-          loading="lazy"
-          draggable={false}
-          onContextMenu={(e) => e.preventDefault()}
-          onDragStart={(e) => e.preventDefault()}
-          className="block h-auto w-full select-none"
-          style={{ userSelect: "none", WebkitUserSelect: "none", WebkitTouchCallout: "none" }}
-        />
-        {/* Top-right overlay stack: Save-to-Site-Board + Share.
-            Save is a bookmark icon — tapping it opens the Site Board
-            picker modal (lifted to the shell) so the same picker
-            works from any card. Share is the OS share sheet /
-            WhatsApp/X/Facebook popover. */}
-        {/* Try AI stays as an overlay pill on the image — it's the
-            primary conversion CTA, and the on-image position keeps
-            it visible on scroll. Save + Share moved below the image
-            per Philip 2026-07-16 — utility actions belong under the
-            frame, not on top of the photo. */}
-        <div className="absolute right-2 top-2">
-          <button
-            type="button"
-            onClick={() =>
-              onVisualise({
-                sourceImageUrl:  entry.imageUrl,
-                sourceImageAlt:  entry.subject,
-                sourcePostId:    entry.sourcePostId,
-                sourceCanteenId: entry.sourceCanteenId,
-                targetTradeSlug: null,
-                projectLabel:    entry.keywords[0]
-                  ? entry.keywords[0]
-                    .split(/\s+/)
-                    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                    .join(" ")
-                  : undefined
-              })
-            }
-            className="inline-flex h-8 items-center justify-center gap-1 rounded-full bg-white/95 px-2.5 text-[10px] font-black uppercase tracking-wider text-neutral-800 shadow-md backdrop-blur transition hover:bg-white"
-            aria-label="Visualise in my room"
-            title="See this in your room (AI)"
-          >
-            <Sparkles size={11} strokeWidth={2.6}/>
-            Try AI
-          </button>
-        </div>
+        {detailHref ? (
+          <Link href={detailHref} className="block" aria-label={`View ${entry.subject}`}>
+            {imgElement}
+          </Link>
+        ) : (
+          imgElement
+        )}
       </div>
 
-      {/* Utility action row — Save + Share, right-aligned, just
-          below the image. Kept off the photo so they never obscure
-          detail and read as controls rather than decoration. */}
-      <div className="flex items-center justify-end gap-1.5 border-b px-2.5 py-1.5" style={{ borderColor: "rgba(139,69,19,0.08)" }}>
+      {/* Utility action row — Try It pill on the LEFT, Save + Share +
+          Report cluster on the right. Try It moved off the image
+          per Philip 2026-07-16 — small yellow pill under the frame,
+          tight round corners so it reads as a chip not a hero button. */}
+      <div className="flex items-center justify-between gap-1.5 border-b px-2.5 py-1.5" style={{ borderColor: "rgba(139,69,19,0.08)" }}>
         <button
           type="button"
-          onClick={() => onSave(entry)}
-          className="inline-flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
-          aria-label="Save to Site Board"
-          title="Save to Site Board"
+          onClick={() =>
+            onVisualise({
+              sourceImageUrl:  entry.imageUrl,
+              sourceImageAlt:  entry.subject,
+              sourcePostId:    entry.sourcePostId,
+              sourceCanteenId: entry.sourceCanteenId,
+              targetTradeSlug: null,
+              projectLabel:    entry.keywords[0]
+                ? entry.keywords[0]
+                  .split(/\s+/)
+                  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                  .join(" ")
+                : undefined
+            })
+          }
+          className="inline-flex h-7 items-center gap-1 rounded-md px-2 text-[10px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition hover:brightness-95"
+          style={{ backgroundColor: "#FFB300" }}
+          aria-label="Try it — visualise in my room"
+          title="Try it — see this in your room (AI)"
         >
-          <Bookmark size={13} strokeWidth={2.4}/>
+          <Sparkles size={10} strokeWidth={2.6}/>
+          Try it
         </button>
-        <ShareButton
-          shareUrl={shareUrl}
-          shareText={`${entry.subject.split(",")[0]} · Thenetworkers`}
-          variant="ghost"
-        />
-        <ReportContentButton
-          context={{
-            targetKind: entry.source === "submission" ? "submission" : "image",
-            targetId:   entry.sourcePostId ?? entry.imageUrl,
-            targetUrl:  shareUrl,
-            targetLabel: entry.subject.split(",")[0].slice(0, 60)
-          }}
-        />
+        <div className="flex items-center gap-1.5">
+          <button
+            type="button"
+            onClick={() => onSave(entry)}
+            className="inline-flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+            aria-label="Save to Site Board"
+            title="Save to Site Board"
+          >
+            <Bookmark size={13} strokeWidth={2.4}/>
+          </button>
+          <ShareButton
+            shareUrl={shareUrl}
+            shareText={`${deriveCardCaption(entry.subject)} · Thenetworkers`}
+            variant="ghost"
+          />
+          <ReportContentButton
+            context={{
+              targetKind: entry.source === "submission" ? "submission" : "image",
+              targetId:   entry.sourcePostId ?? entry.imageUrl,
+              targetUrl:  shareUrl,
+              targetLabel: deriveCardCaption(entry.subject).slice(0, 60)
+            }}
+          />
+        </div>
       </div>
       <figcaption className="p-2.5">
         {creditNode}
         <p className="line-clamp-2 text-[11.5px] leading-snug text-neutral-700">
-          {entry.subject}
+          {deriveCardCaption(entry.subject)}
         </p>
 
         {/* "3 nearest trades" chip row — real canteen names, not

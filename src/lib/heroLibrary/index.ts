@@ -42,8 +42,35 @@ export type HeroEntry = {
   hero_use_case?: string;
   burned_in_text?: boolean;
   worker_visible?: boolean;
-  recommended_use?: "hero" | "split-hero" | "product-grid" | "section-content";
+  recommended_use?: "hero" | "split-hero" | "product-grid" | "section-content" | "feed-tile";
+  /** Who added this entry — used by the store to identify AI-generated
+   *  images owned outright by Philip. Entries with $posted_by starting
+   *  with "Philip" are counted as AI-generated and eligible for the
+   *  store; older editorial entries are not sold. */
+  "$posted_by"?: string;
+  /** Natural pixel dimensions of the source image. Set by
+   *  `scripts/backfill-image-dims.mjs`. Passed to `<img width/height>`
+   *  so the browser reserves the aspect-ratio box before bytes arrive
+   *  — kills the "jumping while scrolling" masonry effect. Fallback
+   *  to a 3:4 portrait aspect (800x1067) when missing. */
+  width_px?:  number;
+  height_px?: number;
+  /** Marketing banner / burned-in-text / composite image. Tagged by
+   *  `scripts/scrub-hero-library.mjs`. Site Interest inspiration feed
+   *  filters these OUT — banners never appear on browse (Philip
+   *  2026-07-17: "there should not be banners on this site interest"). */
+  is_banner?: boolean;
 };
+
+/** AI-gen filter for the store. Only entries where $posted_by
+ *  starts with "Site Interest" are considered owned outright by
+ *  the platform and eligible for resale on Site Interest / store.
+ *  (Legacy "Philip" prefix also accepted for back-compat in case
+ *  any un-migrated entries remain in a cache somewhere.) */
+export function isAiGenerated(entry: HeroEntry): boolean {
+  const posted = entry["$posted_by"] ?? "";
+  return posted.startsWith("Site Interest") || posted.startsWith("Philip");
+}
 
 type HeroLibraryFile = {
   $schema_version: string;
@@ -75,6 +102,24 @@ function loadEntries(): HeroEntry[] {
 
 function normaliseKeyword(k: string): string {
   return k.toLowerCase().replace(/-/g, " ").trim();
+}
+
+/** Entries with `recommended_use = product-grid | section-content` are
+ *  material / product / process shots — they belong in card grids and
+ *  page sections inside a canteen, NOT in the Site Interest browse
+ *  stream where the user is looking for aspirational finished-project
+ *  imagery.
+ *
+ *  Entries tagged `is_banner: true` are marketing / composite / text-
+ *  overlay images that must NEVER surface on Site Interest — Philip
+ *  2026-07-17: "there should not be banners on this site interest".
+ *
+ *  Filter here so both browse and query paths agree. */
+function isSiteInterestEligible(entry: HeroEntry): boolean {
+  const use = entry.recommended_use;
+  if (use === "product-grid" || use === "section-content") return false;
+  if (entry.is_banner === true) return false;
+  return true;
 }
 
 /** Score an entry against a trade slug. Higher is a better match. */
@@ -150,12 +195,31 @@ export function heroLibrarySize(): number {
   return loadEntries().length;
 }
 
+/** Look up a single hero entry by its stable ID. Powers the
+ *  /trade-off/inspiration/[id] detail page for curated images. */
+export function heroById(id: string): HeroEntry | null {
+  if (!id) return null;
+  return loadEntries().find((e) => e.id === id) ?? null;
+}
+
+/** Return every other entry that shares this entry's sibling_group_id,
+ *  excluding the entry itself. Powers the "more like this" strip on
+ *  the detail page. Returns an empty array when the entry has no
+ *  sibling group set. */
+export function heroSiblings(entry: HeroEntry, limit = 8): HeroEntry[] {
+  if (!entry.sibling_group_id) return [];
+  return loadEntries()
+    .filter((e) => e.sibling_group_id === entry.sibling_group_id && e.id !== entry.id)
+    .filter(isSiteInterestEligible)
+    .slice(0, limit);
+}
+
 /** Random shuffle of the full library for the "browse-all" landing
  *  view (no query). Deterministic per-seed so pagination works
  *  without server state — same seed + offset always returns the
  *  same window, but reload picks a fresh seed. */
 export function heroesBrowseAll(seed: number, offset: number, limit = 24): HeroEntry[] {
-  const entries = loadEntries();
+  const entries = loadEntries().filter(isSiteInterestEligible);
   if (entries.length === 0) return [];
   // Fisher-Yates seeded shuffle. Cheap, in-memory, ~168 entries.
   const rng = mulberry32(seed);
@@ -194,7 +258,7 @@ export function heroesForQueryPaged(query: string, offset: number, limit: number
 
   const seen = new Set<string>();
   const scoredAll: Array<{ entry: HeroEntry; score: number; tier: number }> = [];
-  const entries = loadEntries();
+  const entries = loadEntries().filter(isSiteInterestEligible);
 
   // Tier 0: full query. Tier 1: drop the LAST token. Tier N: keep
   // dropping until we're down to a single token. Tier boost sorts
@@ -265,7 +329,7 @@ export function heroesForQuery(query: string, limit = 60): HeroEntry[] {
     .map((t) => t.replace(/[^a-z0-9]/g, ""))
     .filter((t) => t.length >= 2);
   if (tokens.length === 0) return [];
-  const entries = loadEntries();
+  const entries = loadEntries().filter(isSiteInterestEligible);
   const scored: Array<{ entry: HeroEntry; score: number }> = [];
   for (const entry of entries) {
     const score = scoreEntryForQuery(entry, tokens);
@@ -274,3 +338,10 @@ export function heroesForQuery(query: string, limit = 60): HeroEntry[] {
   scored.sort((a, b) => b.score - a.score);
   return scored.slice(0, limit).map((s) => s.entry);
 }
+
+
+// Store (Site Interest B2B) helpers moved to
+// src/lib/storeLibrary.server.ts so the store reads from the
+// hammerex_feed_tile_library DB table (curated trade_slugs), not
+// this fuzzy keyword-tagged hero library JSON. See ADR: store
+// data-source split.

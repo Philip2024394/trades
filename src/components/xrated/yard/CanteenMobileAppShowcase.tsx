@@ -54,6 +54,7 @@ const CONTAINER_BG_BY_TRADE: Record<string, string> = {
 
 export function CanteenMobileAppShowcase({
   hostSlug,
+  hostDisplayName,
   tradeLabel = "your trade",
   tradeSlug = null,
   heroImageUrl,
@@ -65,6 +66,11 @@ export function CanteenMobileAppShowcase({
   hostSlug: string;
   /** Legacy — accepted for compatibility. */
   hostFirstName?: string;
+  /** Merchant / canteen display name ("Hammerex Direct", "Mike
+   *  Watson Kitchens"). Used in the paid-tier heading in preference
+   *  to the trade label, because visitors care about the brand not
+   *  the trade category. Falls back to tradeLabel when missing. */
+  hostDisplayName?: string;
   /** Plural trade name shown in the header ("Landscapers", "Kitchen
    *  Fitters"). Comes from Canteen.tradeLabel. Defaults to a soft
    *  fallback so a missing prop never crashes copy. */
@@ -143,17 +149,25 @@ export function CanteenMobileAppShowcase({
         eyebrow:     "Live edit mode",
         heading:     "Updates land here in real time",
         buttonLabel: tier === "paid" ? "View app" : "Upgrade — only £7.99/mo",
+        // Route to the live canteen page. thenetworkers.app isn't
+        // deployed yet — relative URL points at the current origin
+        // (localhost in dev, whatever domain in prod) so the button
+        // always resolves to a real, viewable canteen.
         buttonHref:  tier === "paid"
-          ? `https://thenetworkers.app/${hostSlug}`
+          ? (canteenSlug ? `/trade-off/yard/canteens/${canteenSlug}` : `/trade/${hostSlug}`)
           : "/trade-off/packages",
         openTarget:  tier === "paid" ? "_blank" : undefined
       }
     : tier === "paid"
       ? {
           eyebrow:     "On the go",
-          heading:     `Keep updated with ${tradeLabel}`,
+          // Prefer merchant/canteen name over trade label — visitors
+          // recognise the brand, not the category (Philip 2026-07-16).
+          heading:     `Keep Track With ${hostDisplayName ?? tradeLabel}`,
           buttonLabel: "View app",
-          buttonHref:  `https://thenetworkers.app/${hostSlug}`,
+          buttonHref:  canteenSlug
+            ? `/trade-off/yard/canteens/${canteenSlug}`
+            : `/trade/${hostSlug}`,
           openTarget:  "_blank"
         }
       : isOwner

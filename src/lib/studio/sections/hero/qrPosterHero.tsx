@@ -196,8 +196,8 @@ function QrPosterHero({
             href={ctaHref || "#"}
             className="mt-8 inline-flex h-14 items-center justify-center gap-2 rounded-xl px-6 text-[13px] font-extrabold uppercase tracking-widest text-white transition hover:brightness-95 active:scale-[0.98]"
             style={{
-              background: "#25D366",
-              boxShadow: "0 8px 24px rgba(37,211,102,0.45)"
+              background: "#166534",
+              boxShadow: "0 8px 24px rgba(22,101,52,0.45)"
             }}
             {...treeAttrs(instanceId, "ctaLabel", "CTA label", "button")}
           >

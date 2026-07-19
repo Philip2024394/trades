@@ -16,7 +16,6 @@ export const dynamic = "force-dynamic";
 
 const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean }[] = [
   { href: "/admin/red-zone", label: "🔴 Red Zone", live: true, redZone: true },
-  { href: "/admin/listings", label: "Listings", live: false },
   { href: "/admin/payments", label: "Payments", live: true },
   { href: "/admin/reviews", label: "Reviews", live: true },
   { href: "/admin/yard", label: "Yard", live: true },
@@ -26,9 +25,12 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/image-submissions", label: "Image Submissions", live: true },
   { href: "/admin/featured-placements", label: "Featured Placements", live: true },
   { href: "/admin/support/tickets", label: "Support Tickets", live: true },
-  { href: "/admin/reports", label: "Reports", live: false },
   { href: "/admin/password-recovery", label: "Password Reset", live: true },
-  { href: "/admin/support", label: "Support", live: true }
+  { href: "/admin/support", label: "Support", live: true },
+  { href: "/admin/beacon-residuals", label: "Bait Leads", live: true }
+  // Removed 2026-07-17: /admin/listings + /admin/reports were
+  // placeholder-only ("Coming soon" ghost nav items). Add back when
+  // the routes actually ship.
 ];
 
 async function loadPendingRecoveryCount(): Promise<number> {

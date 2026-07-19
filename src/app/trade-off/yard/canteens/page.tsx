@@ -4,13 +4,18 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Sparkles, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { cookies } from "next/headers";
 import { MOCK_CANTEENS } from "@/lib/canteens";
 import { canteensAllFromDb } from "@/lib/canteens.server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { TRADE_SESSION_COOKIE_NAME, verifyTradeSession } from "@/lib/tradeSession";
-import { CanteensIndexShell } from "./CanteensIndexShell";
+import { CanteensIndexShell }        from "./CanteensIndexShell";
+import { InviteProviderClient }      from "@/components/homeowners/InviteProviderClient";
+import { TradeCircleHeader }         from "@/components/homeowners/TradeCircleHeader";
+import { HomeBackPill }              from "@/components/HomeBackPill";
+import { getHomeownerFromCookie }    from "@/lib/homeowners/auth";
+import { resolveHomeBackContext }    from "@/lib/homeBackContext";
 import { BRAND, absolute } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +37,19 @@ export const metadata: Metadata = {
   }
 };
 
-export default async function CanteensIndexPage() {
+export default async function CanteensIndexPage({
+  searchParams
+}: {
+  searchParams: Promise<{ previewInvite?: string; tiles?: string }>;
+}) {
+  const sp = await searchParams;
+  // ?previewInvite=1 forces the Trade Circle chrome without a real
+  // homeowner session. Used by the /sitebook-showcase mock and other
+  // preview surfaces so designers can see the invite-mode view.
+  const previewInvite = sp.previewInvite === "1";
+  // ?tiles=1 forces TradeCategoryTiles to render even when we're
+  // below AUTO_TILES_THRESHOLD. Useful for validating the design.
+  const previewTiles  = sp.tiles === "1";
   // Directory-first flow (Philip 2026-07-16): every visitor — signed-in
   // merchant, DIY homeowner, anonymous — lands on the discovery listing.
   // Signed-in merchants get an "Enter my canteen" pill in the shell so
@@ -43,6 +60,42 @@ export default async function CanteensIndexPage() {
   const jar = await cookies();
   const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
   const merchantSession = verifyTradeSession(sessionRaw);
+
+  // Homeowner-invite mode: if the visitor has a live tn_homeowner_sid
+  // cookie, they arrived to invite a trade. We render the directory
+  // with homeowner-friendly copy (Trade Circle header, plain-English
+  // sub-copy, no trade-facing chrome). Merchants + anonymous browsers
+  // see the original page unchanged.
+  const homeowner = await getHomeownerFromCookie();
+  const inviteMode = !!homeowner || previewInvite;
+  let homeownerProjects: Array<{ id: string; title: string; city: string | null; budgetMin: number | null; budgetMax: number | null }> = [];
+  // Preview-invite fixture — matches the /sitebook-showcase mock owner
+  // so the modal shows realistic projects to invite trades into.
+  const previewOwner = previewInvite && !homeowner ? {
+    first_name:     "Sarah",
+    house_nickname: "The Old Rectory"
+  } : null;
+  if (previewInvite && !homeowner) {
+    homeownerProjects = [
+      { id: "prev-ensuite",  title: "En-suite plumbing",  city: "Manchester", budgetMin: 3500,  budgetMax: 5500 },
+      { id: "prev-kitchen",  title: "Kitchen refit",      city: "Manchester", budgetMin: 25000, budgetMax: 45000 },
+      { id: "prev-boiler",   title: "Boiler service",     city: "Manchester", budgetMin: 120,   budgetMax: 180 },
+      { id: "prev-lock",     title: "Front door lock",    city: "Manchester", budgetMin: 60,    budgetMax: 120 }
+    ];
+  }
+  if (homeowner) {
+    const pr = await supabaseAdmin
+      .from("hammerex_sitebook_projects")
+      .select("id, title, address_city, budget_min_gbp, budget_max_gbp, status")
+      .eq("homeowner_id", homeowner.id)
+      .in("status", ["active", "in-progress"])
+      .order("created_at", { ascending: false });
+    type Row = { id: string; title: string; address_city: string | null; budget_min_gbp: number | null; budget_max_gbp: number | null };
+    homeownerProjects = ((pr.data as Row[]) ?? []).map((r) => ({
+      id: r.id, title: r.title, city: r.address_city,
+      budgetMin: r.budget_min_gbp, budgetMax: r.budget_max_gbp
+    }));
+  }
 
   let ownCanteenSlug: string | null = null;
   if (merchantSession?.slug) {
@@ -65,86 +118,93 @@ export default async function CanteensIndexPage() {
     }
   }
 
-  // Real DB with mock fallback. If DB returns nothing (fresh env) we
-  // fall back to mocks so the page still ships a discoverable list.
+  // Merge real DB canteens with the demo showcase list per
+  // project_xratedtrade_demos_as_showcase.md — demos stay visible
+  // even after real canteens land, so the directory always reads as
+  // populated. DB canteens win when a slug collision exists (real
+  // wins over demo with the same slug).
   const dbCanteens = await canteensAllFromDb();
-  const canteens = dbCanteens.length > 0 ? dbCanteens : MOCK_CANTEENS;
-  const founding100 = canteens.filter((c) => c.isFounding100);
+  const dbSlugs = new Set(dbCanteens.map((c) => c.slug));
+  const demosNotInDb = MOCK_CANTEENS.filter((c) => !dbSlugs.has(c.slug));
+  const canteens = [...dbCanteens, ...demosNotInDb];
   const viewerIsSignedInMerchant = Boolean(merchantSession?.slug);
+
+  const shell = (
+    <CanteensIndexShell
+      canteens={canteens}
+      ownCanteenSlug={ownCanteenSlug}
+      viewerIsSignedInMerchant={viewerIsSignedInMerchant}
+      inviteMode={inviteMode}
+      previewTiles={previewTiles}
+    />
+  );
+
+  // Home-back pill — homeowner returns to /sitebook, merchant returns
+  // to their canteen. Hidden when the viewer has no identity cookie.
+  // In preview-invite mode routes back to the /sitebook-showcase mock.
+  let backCtx = await resolveHomeBackContext("/trade-off/yard/canteens");
+  if (!backCtx && previewInvite) {
+    backCtx = {
+      label: "Back to my SiteBook",
+      href:  "/sitebook-showcase/the-old-rectory",
+      kind:  "homeowner"
+    };
+  }
 
   return (
     <main className="min-h-screen" style={{ backgroundColor: CREAM }}>
-      {/* Page title strip — Yard-style */}
-      <section style={{ borderBottom: "1px solid rgba(139,69,19,0.15)" }}>
-        <div className="mx-auto flex w-full max-w-6xl items-start gap-3 px-3 py-6 md:px-6 md:py-8">
-          <div className="min-w-0 flex-1">
-            <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700 shadow-sm">
-              <span
-                className="block h-2 w-2 rounded-full"
-                style={{ backgroundColor: "#FFB300" }}
-                aria-hidden="true"
-              />
-              Canteens · new
-            </div>
-            <h1 className="text-[24px] font-black leading-tight text-neutral-900 md:text-[32px]">
-              Trade corners of The Yard.
-            </h1>
-            <p className="mt-1 max-w-2xl text-[13px] leading-snug text-neutral-600 md:text-[14px]">
-              Open groups scoped to one trade. Talk shop, sell tools, share leads. Marketing runs in a The Counter so the feed stays clean.
-            </p>
-          </div>
-          <Link
-            href="/trade-off/yard/canteens/new"
-            className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97] md:h-12 md:px-5"
-            style={{ background: "#FFB300" }}
+      <HomeBackPill ctx={backCtx}/>
+      {inviteMode ? (
+        // ─── Homeowner-invite view — plain-English chrome ─────────
+        <>
+          <TradeCircleHeader/>
+          <InviteProviderClient
+            firstName={homeowner?.first_name    ?? previewOwner?.first_name     ?? null}
+            nickname={homeowner?.house_nickname ?? previewOwner?.house_nickname ?? null}
+            projects={homeownerProjects}
           >
-            <Plus size={14} strokeWidth={2.5}/>
-            <span className="hidden sm:inline">Start a Canteen</span>
-            <span className="sm:hidden">New</span>
-          </Link>
-        </div>
-      </section>
-
-      {/* Founding-100 strip */}
-      <section
-        className="border-b"
-        style={{
-          borderColor: "rgba(139,69,19,0.15)",
-          background: "linear-gradient(90deg, #FFB30015 0%, #FBF6EC 60%)"
-        }}
-      >
-        <div className="mx-auto max-w-6xl px-3 py-4 md:px-6">
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <span
-                className="flex h-8 w-8 items-center justify-center rounded-full"
-                style={{ backgroundColor: "#8B4513" }}
-              >
-                <Sparkles size={13} color="#FFFFFF" strokeWidth={2.5}/>
-              </span>
-              <div>
-                <div className="text-[13px] font-black text-neutral-900">
-                  First 100 Canteens — unlock the topic app free for 12 months
+            {shell}
+          </InviteProviderClient>
+        </>
+      ) : (
+        // ─── Trade / anonymous view — original chrome, unchanged ──
+        <>
+          {/* Page title strip — Yard-style */}
+          <section style={{ borderBottom: "1px solid rgba(139,69,19,0.15)" }}>
+            <div className="mx-auto flex w-full max-w-6xl items-start gap-3 px-3 py-6 md:px-6 md:py-8">
+              <div className="min-w-0 flex-1">
+                <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700 shadow-sm">
+                  <span
+                    className="block h-2 w-2 rounded-full"
+                    style={{ backgroundColor: "#FFB300" }}
+                    aria-hidden="true"
+                  />
+                  Canteens · new
                 </div>
-                <div className="text-[11px] text-neutral-600">
-                  Hit 50 posts/mo for 3 months in a row and your canteen gets the app that matches your trade — on us.
-                </div>
+                <h1 className="text-[24px] font-black leading-tight text-neutral-900 md:text-[32px]">
+                  Trade corners of The Yard.
+                </h1>
+                <p className="mt-1 max-w-2xl text-[13px] leading-snug text-neutral-600 md:text-[14px]">
+                  Open groups scoped to one trade. Talk shop, sell tools, share leads. Marketing runs in a The Counter so the feed stays clean.
+                </p>
               </div>
+              <Link
+                href="/trade-off/yard/canteens/new"
+                className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-md transition active:scale-[0.97] md:h-12 md:px-5"
+                style={{ background: "#FFB300" }}
+              >
+                <Plus size={14} strokeWidth={2.5}/>
+                <span className="hidden sm:inline">Start a Canteen</span>
+                <span className="sm:hidden">New</span>
+              </Link>
             </div>
-            <div className="text-[11px] font-black uppercase tracking-wider text-neutral-700">
-              {founding100.length} / 100 claimed
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* Canteens grid — search + trade filter live in the client
-          shell so the server component stays cacheable. */}
-      <CanteensIndexShell
-        canteens={canteens}
-        ownCanteenSlug={ownCanteenSlug}
-        viewerIsSignedInMerchant={viewerIsSignedInMerchant}
-      />
+          {/* Founding-100 offer removed per Philip 2026-07-18. */}
+
+          {shell}
+        </>
+      )}
     </main>
   );
 }

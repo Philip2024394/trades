@@ -20,8 +20,12 @@ import { GlobalHeader } from "@/components/shell/GlobalHeader";
 //                at photographic content, ~4-10× smaller than the PNG.
 // Result: LCP drops from a multi-MB PNG to a sub-500KB AVIF for
 // most visitors.
+// Homeowner-forward hero — 2026-07-18. New image emphasises the
+// "relax with a coffee, professionals come to you" comfort angle
+// that anchors the SiteBook value story. Same ImageKit transforms
+// (f-auto + q-80) → sub-500KB AVIF/WebP for fast LCP.
 const HERO_IMAGE =
-  "https://ik.imagekit.io/9mrgsv2rp/tr:w-1600,f-auto,q-80/Untitledsdsaaassdd.png";
+  "https://ik.imagekit.io/9huhxxvtr/tr:w-1920,f-auto,q-80/ChatGPT%20Image%20Jul%2018,%202026,%2009_33_33%20AM.png";
 
 // Design tokens — local until the bright test is fully rolled out.
 const PALETTE = {
@@ -101,23 +105,21 @@ export function AudienceGateBright() {
                 className="font-black leading-[0.98] tracking-tight text-white"
                 style={{ fontSize: "clamp(30px, 5.6vw, 68px)" }}
               >
-                Every project.<br />
-                Every site.<br />
-                <span style={{ color: PALETTE.honeyBright }}>On Thenetworkers.</span>
+                Got a project?<br />
+                Post it once.<br />
+                <span style={{ color: PALETTE.honeyBright }}>Connect with trades &amp; supplies.</span>
               </h1>
 
               <p
                 className="mt-5 max-w-[46ch] text-[15px] leading-[1.55] md:text-[17px]"
                 style={{ color: "rgba(255,247,229,0.85)" }}
               >
-                One network. One profile. One community — for every trade,
-                homeowner, and merchant in the UK. Buying and selling are two
-                things that happen here. Belonging is the rest.
+                From tonight&rsquo;s broken door lock to your dream home renovation years from now. Connect with trusted local trades. Every photo, quote and warranty is securely stored in one place — so you can relax with a coffee while the right professionals come to you.
               </p>
 
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
-                  href="/project/start"
+                  href="/homeowners/signup?intent=create-project"
                   className="group inline-flex min-h-[56px] items-center justify-between gap-3 rounded-full pl-6 pr-4 text-[15px] font-bold shadow-lg transition hover:shadow-xl"
                   style={{
                     backgroundColor: PALETTE.honeyBright,
@@ -131,7 +133,7 @@ export function AudienceGateBright() {
                     >
                       For project owners
                     </span>
-                    <span>Submit your project</span>
+                    <span>Post your project — free</span>
                   </span>
                   <span
                     className="inline-flex h-9 w-9 items-center justify-center rounded-full transition-transform group-hover:translate-x-0.5"

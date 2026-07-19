@@ -42,6 +42,7 @@ export async function GET(req: Request) {
   // approved trade submissions. On subsequent pages we skip them
   // because the submissions set is small — no point paging.
   let submissions: Array<{
+    id:                 string;
     imageUrl:           string;
     subject:            string;
     keywords:           string[];
@@ -54,6 +55,7 @@ export async function GET(req: Request) {
   if (query && offset === 0) {
     const rows = await approvedSubmissionsForQuery(query, 20);
     submissions = rows.map((r) => ({
+      id:                 r.id,
       imageUrl:           r.imageUrl,
       subject:            r.altText ?? r.keywords.join(", "),
       keywords:           r.keywords,
@@ -68,9 +70,15 @@ export async function GET(req: Request) {
   return NextResponse.json({
     ok: true,
     curated: source.map((e) => ({
+      id:       e.id,
       imageUrl: e.image_url,
       subject:  e.subject,
-      keywords: e.keywords_strict
+      keywords: e.keywords_strict,
+      // Dimensions travel with every response so the masonry can
+      // reserve the aspect-ratio box on each new lazy row → zero
+      // layout shift while scrolling. Set by backfill-image-dims.mjs.
+      widthPx:  e.width_px  ?? null,
+      heightPx: e.height_px ?? null
     })),
     submissions,
     // hint to the client whether more results are likely on next

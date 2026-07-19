@@ -725,7 +725,7 @@ export function CanteenTabbedSection({
           />
         )}
         {activeTab === "trades" && (
-          <TradesList trades={complementaryTrades.slice(0, limit)}/>
+          <TradesList trades={complementaryTrades}/>
         )}
         {activeTab === "reviews" && (
           <ReviewsList reviews={reviews.slice(0, limit)}/>
@@ -762,7 +762,13 @@ export function CanteenTabbedSection({
           in-tab product detail has its own "View all products"
           exit affordance — showing the See all/Close toggle on top
           confuses the two navigation flows). */}
-      {!isContact && !viewingProductId && (hiddenCount > 0 || isExpanded) && (
+      {/* "See all" hidden on the Live Feed tab (Philip 2026-07-16):
+          the feed rotates on its own, users can scan/pick without
+          needing an expand affordance. Kept for Products / Jobs
+          where the list is finite and users want to see everything.
+          Also hidden on Contact (single card) and when a product
+          is focused. */}
+      {!isContact && !viewingProductId && activeTab !== "feed" && activeTab !== "trades" && (hiddenCount > 0 || isExpanded) && (
         <div className="mt-3 flex justify-center">
           <button
             type="button"
@@ -951,31 +957,31 @@ function FeedList({
                       {p.authorDisplayName.charAt(0)}
                     </span>
                   )}
-                  <span className="truncate text-[12px] font-black text-neutral-900">
+                  <span className="truncate text-[14px] font-black text-neutral-900">
                     {p.authorDisplayName}
                   </span>
-                  <span className="text-[11px] font-bold text-neutral-500">
+                  <span className="text-[12px] font-bold text-neutral-500">
                     · {timeAgoShort(p.createdAt)}
                   </span>
                   {isLive(p.createdAt) && (
                     <span
-                      className="ml-auto rounded-md px-1.5 py-0.5 text-[11px] font-black uppercase tracking-[0.14em]"
+                      className="ml-auto rounded-md px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em]"
                       style={{ backgroundColor: "rgba(184,134,11,0.15)", color: TAN }}
                     >
                       LIVE
                     </span>
                   )}
                 </div>
-                <p className="line-clamp-2 text-[11.5px] leading-snug text-neutral-800">
+                <p className="line-clamp-2 text-[14px] leading-snug text-neutral-800">
                   {p.body}
                 </p>
-                <div className="mt-1 flex items-center gap-3 text-[11px] font-black text-neutral-500">
+                <div className="mt-1.5 flex items-center gap-3 text-[12px] font-black text-neutral-500">
                   <span className="inline-flex items-center gap-0.5">
-                    <Heart size={11} strokeWidth={2.3}/>
+                    <Heart size={12} strokeWidth={2.3}/>
                     {p.reactionsLike ?? 0}
                   </span>
                   <span className="inline-flex items-center gap-0.5">
-                    <MessageSquare size={11} strokeWidth={2.3}/>
+                    <MessageSquare size={12} strokeWidth={2.3}/>
                     {p.replyCount ?? 0}
                   </span>
                   <span className="text-neutral-400">· {tradeLabel}</span>
@@ -1908,28 +1914,71 @@ function ContactCard({
 }
 
 // ─── Trades rows (Find Trades tab) ─────────────────────────
+//
+// Same marquee treatment as the Reviews tab (Philip 2026-07-17) —
+// when ≥3 trades exist, the list scrolls upward slowly and pauses
+// on hover/tap. This replaces the yellow "See all trades" button
+// so the whole roster is browsable in-flow.
+
+const TRADES_MARQUEE_CSS = `
+@keyframes canteen-trades-scroll-up {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+.canteen-trades-marquee {
+  animation: canteen-trades-scroll-up 210s linear infinite;
+  will-change: transform;
+}
+.canteen-trades-shell:hover .canteen-trades-marquee,
+.canteen-trades-shell:active .canteen-trades-marquee {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .canteen-trades-marquee { animation: none; }
+}
+`;
 
 function TradesList({ trades }: { trades: DemoTrade[] }) {
   if (trades.length === 0) return <EmptyRow label="No matching trades yet"/>;
+  const shouldMarquee = trades.length >= 3;
+  const rows = shouldMarquee ? [...trades, ...trades] : trades;
   return (
-    <ul className="flex flex-col gap-2">
-      {trades.map((t) => {
+    <>
+      <style>{TRADES_MARQUEE_CSS}</style>
+      <div
+        className={
+          shouldMarquee
+            ? "canteen-trades-shell relative overflow-hidden h-[min(60vh,520px)]"
+            : ""
+        }
+        style={
+          shouldMarquee
+            ? {
+                maskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)",
+                WebkitMaskImage:
+                  "linear-gradient(to bottom, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)"
+              }
+            : undefined
+        }
+      >
+    <ul className={`flex flex-col gap-2 ${shouldMarquee ? "canteen-trades-marquee" : ""}`}>
+      {rows.map((t, i) => {
         const label = lookupTradeLabel(t.tradeSlug);
         const tradeFirstName = t.displayName.split(" ")[0] ?? t.displayName;
         return (
-          <li key={t.slug}>
+          <li key={`${t.slug}-${i}`}>
             <div
-              className="flex items-center gap-3 rounded-xl border bg-white p-2 shadow-sm transition"
-              style={{ borderColor: "rgba(139,69,19,0.15)" }}
+              className="flex items-center gap-3 rounded-xl bg-neutral-950 p-2 shadow-sm transition"
             >
               <div className="min-w-0 flex-1">
-                <div className="text-[11px] font-black uppercase tracking-[0.16em] text-neutral-500">
+                <div className="text-[11px] font-black uppercase tracking-[0.16em] text-neutral-400">
                   {label} · {t.city}
                 </div>
-                <div className="mt-0.5 line-clamp-1 text-[13px] font-black leading-tight text-neutral-900">
+                <div className="mt-0.5 line-clamp-1 text-[13px] font-black leading-tight text-white">
                   {t.displayName}
                 </div>
-                <p className="mt-0.5 line-clamp-1 text-[11px] leading-snug text-neutral-600">
+                <p className="mt-0.5 line-clamp-1 text-[11px] leading-snug text-neutral-300">
                   {t.bio}
                 </p>
                 <div className="mt-1.5 flex items-center gap-2">
@@ -1940,7 +1989,7 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
                     <Star size={9} fill="currentColor" strokeWidth={0} style={{ color: "#0A0A0A" }}/>
                     {t.rating.toFixed(1)}
                   </span>
-                  <span className="text-[11px] font-bold text-neutral-500">
+                  <span className="text-[11px] font-bold text-neutral-400">
                     {t.reviewCount} reviews
                   </span>
                   <VerifiedContactButton
@@ -1978,6 +2027,8 @@ function TradesList({ trades }: { trades: DemoTrade[] }) {
         );
       })}
     </ul>
+      </div>
+    </>
   );
 }
 
@@ -2323,13 +2374,17 @@ function DesignModal({
                 Enquire Now
               </VerifiedContactButton>
             ) : (
-              <span
-                className="flex h-11 w-full items-center justify-center gap-2 rounded-full border text-[13px] font-black uppercase tracking-wider text-neutral-500"
-                style={{ borderColor: "rgba(139,69,19,0.15)", backgroundColor: "#F9FAFB" }}
+              // Merchant hasn't published a WhatsApp number. Route the
+              // enquiry via the profile page rather than dead-end the
+              // user (honest fallback, not a "coming soon" fib).
+              <a
+                href={`/trade/${hostSlug}#contact`}
+                className="flex h-11 w-full items-center justify-center gap-2 rounded-full border text-[13px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50"
+                style={{ borderColor: "rgba(139,69,19,0.25)", backgroundColor: "#FFFFFF" }}
               >
                 <MessageCircle size={14} strokeWidth={2.4}/>
-                Contact details coming soon
-              </span>
+                Contact this trade
+              </a>
             )}
           </div>
         </div>

@@ -219,6 +219,40 @@ export async function imageSubmissionsQueue(limit = 60): Promise<ImageSubmission
 /** Public search — approved rows only, keyword intersection with the
  *  query tokens. Feeds the Inspiration tab alongside curated
  *  hero-library entries. */
+/** Look up a single approved submission by its UUID. Powers the
+ *  /trade-off/inspiration/[id] detail page for trade-uploaded images. */
+export async function submissionById(id: string): Promise<ImageSubmission | null> {
+  if (!id) return null;
+  const res = await supabaseAdmin
+    .from("networkers_image_submissions")
+    .select("*")
+    .eq("id", id)
+    .in("status", ["auto_approved", "approved"])
+    .maybeSingle();
+  if (res.error || !res.data) return null;
+  const r = res.data;
+  return {
+    id:                 r.id as string,
+    submitterSlug:      r.submitter_slug as string,
+    submitterDisplay:   (r.submitter_display ?? null) as string | null,
+    submitterAvatarUrl: (r.submitter_avatar_url ?? null) as string | null,
+    sourcePostId:       (r.source_post_id ?? null) as string | null,
+    sourceCanteenId:    (r.source_canteen_id ?? null) as string | null,
+    imageUrl:           r.image_url as string,
+    altText:            (r.alt_text ?? null) as string | null,
+    tradeSlug:          (r.trade_slug ?? null) as string | null,
+    keywords:           (r.keywords ?? []) as string[],
+    materials:          (r.materials ?? []) as MaterialTag[],
+    status:             r.status as SubmissionStatus,
+    qualityScore:       (r.quality_score ?? 0) as number,
+    qualityFlags:       (r.quality_flags ?? []) as string[],
+    moderatedBy:        (r.moderated_by ?? null) as string | null,
+    moderatedAt:        (r.moderated_at ?? null) as string | null,
+    moderationNote:     (r.moderation_note ?? null) as string | null,
+    createdAt:          r.created_at as string
+  };
+}
+
 export async function approvedSubmissionsForQuery(query: string, limit = 60): Promise<ImageSubmission[]> {
   const cleaned = (query ?? "").toLowerCase().trim();
   if (!cleaned) return [];

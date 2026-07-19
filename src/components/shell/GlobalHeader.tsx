@@ -18,6 +18,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Menu, Search, X } from "lucide-react";
 
 const CREAM = "#FBF6EC";
@@ -35,7 +36,9 @@ export const GLOBAL_NAV_ITEMS: ReadonlyArray<{
   { href: "/trade-off/yard",             label: "The Yard",       ariaLabel: "The Yard — community feed" },
   { href: "/trade-off/yard/canteens",    label: "Canteen",        ariaLabel: "Canteens — trade groups directory" },
   { href: "/trade-off/search?tab=inspiration", label: "Site Interest", ariaLabel: "Site Interest — image discovery" },
-  { href: "/tc/trade-center",            label: "Trade Center",   ariaLabel: "Trade Center — the marketplace" }
+  { href: "/store",                      label: "Store",          ariaLabel: "Site Interest Store — buy AI-generated trade imagery" },
+  { href: "/tc/trade-center",            label: "Trade Center",   ariaLabel: "Trade Center — the marketplace" },
+  { href: "/apps",                       label: "App Templates",  ariaLabel: "App Templates — the App Warehouse" }
 ];
 
 /** Right-side slot — parent supplies whatever avatar drawer /
@@ -54,6 +57,7 @@ export function GlobalHeader({
   variant?: "sticky" | "plain";
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const searchParams = useSearchParams();
 
   // Close mobile menu on Escape
   useEffect(() => {
@@ -64,6 +68,13 @@ export function GlobalHeader({
     document.body.style.overflow = "hidden";
     return () => { window.removeEventListener("keydown", onKey); document.body.style.overflow = prev; };
   }, [mobileOpen]);
+
+  // Suppress the entire header when the page is rendered inside the
+  // CanteenMobileAppShowcase iframe (`?embed=1`). The showcase renders
+  // the canteen as a phone mockup — a duplicate platform header
+  // inside that phone looks like a second app-store chrome and breaks
+  // the illusion. Early return AFTER hooks per Rules of Hooks.
+  if (searchParams?.get("embed") === "1") return null;
 
   const outerCls = variant === "sticky"
     ? "sticky top-0 z-40 border-b"

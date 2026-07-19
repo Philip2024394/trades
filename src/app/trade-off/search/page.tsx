@@ -102,6 +102,7 @@ export default async function SearchPage({
     if (seen.has(c.image_url)) continue;
     seen.add(c.image_url);
     inspiration.push({
+      id:                  c.id,
       source:              "curated",
       imageUrl:            c.image_url,
       subject:             c.subject,
@@ -113,7 +114,9 @@ export default async function SearchPage({
       sourceCanteenSlug:   null,
       sourcePostId:        null,
       sourcePostReplyCount:0,
-      materials:           []
+      materials:           [],
+      widthPx:             c.width_px  ?? null,
+      heightPx:            c.height_px ?? null
     });
   }
   for (const s of approvedSubmissions) {
@@ -122,6 +125,7 @@ export default async function SearchPage({
     const canteenMeta = s.sourceCanteenId ? sources.canteens[s.sourceCanteenId] : null;
     const replyCount  = s.sourcePostId ? (sources.posts[s.sourcePostId] ?? 0) : 0;
     inspiration.push({
+      id:                  s.id,
       source:              "submission",
       imageUrl:            s.imageUrl,
       subject:             s.altText ?? s.keywords.join(", "),
@@ -133,7 +137,9 @@ export default async function SearchPage({
       sourceCanteenSlug:   canteenMeta?.slug ?? null,
       sourcePostId:        s.sourcePostId,
       sourcePostReplyCount:replyCount,
-      materials:           s.materials
+      materials:           s.materials,
+      widthPx:             null,
+      heightPx:            null
     });
   }
 

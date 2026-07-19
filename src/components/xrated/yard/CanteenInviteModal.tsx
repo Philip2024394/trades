@@ -196,7 +196,7 @@ export function CanteenInviteModal({
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-black text-white shadow-sm"
-                            style={{ backgroundColor: "#25D366" }}
+                            style={{ backgroundColor: "#166534" }}
                           >
                             {w.phone}
                           </a>
@@ -261,7 +261,7 @@ export function CanteenInviteModal({
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex h-10 items-center justify-center gap-1.5 rounded-full text-[11px] font-black uppercase tracking-wider text-white"
-                  style={{ backgroundColor: "#25D366" }}
+                  style={{ backgroundColor: "#166534" }}
                 >
                   Share via WhatsApp
                 </a>

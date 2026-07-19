@@ -26,6 +26,11 @@ import {
 import { TradeOffForm, type TradeOffFormInitial } from "../../signup/TradeOffForm";
 import { PremiumCustomisationPanel } from "./PremiumCustomisationPanel";
 import { ManageSubscriptionCard } from "./ManageSubscriptionCard";
+import { ReferralShareCard } from "@/components/merchant/ReferralShareCard";
+import { referralStatsForMerchant } from "@/lib/merchantReferrals";
+import { UpgradePromptStack } from "@/components/merchant/UpgradePromptStack";
+import { getActivePromptsFor } from "@/lib/upgradePrompts";
+import { tierFromDbValue } from "@/lib/tierCatalog";
 import { LogoutButton } from "./LogoutButton";
 import { NotificationsBell } from "./NotificationsBell";
 import { supabaseAdmin as supabaseAdminForNotifs } from "@/lib/supabaseAdmin";
@@ -263,10 +268,28 @@ export default async function TradeOffEditPage({
     .eq("is_read", false)
     .gt("expires_at", new Date().toISOString());
 
+  // Behavioural upgrade nudges — up to 2 tier-appropriate prompts.
+  // Server-resolves eligibility (view counts / product cap / etc.);
+  // client presents + handles dismissal.
+  const activePrompts = await getActivePromptsFor({
+    listingId: row.data.id as string,
+    slug,
+    tier:      tierFromDbValue(row.data.tier as string | null).key
+  });
+  const promptViewModels = activePrompts.map((p) => ({
+    key:        p.key,
+    targetTier: p.targetTier,
+    title:      p.title,
+    body:       p.body,
+    ctaLabel:   p.ctaLabel,
+    ctaHref:    p.ctaHref(slug)
+  }));
+
   return (
     <main className="min-h-screen bg-brand-bg text-brand-text">
       <DashboardHeader />
       <DashboardDrawer slug={slug} token={token} current="profile" />
+      <UpgradePromptStack prompts={promptViewModels} slug={slug}/>
       <section className="mx-auto max-w-3xl px-4 pb-6 pt-10">
         <div className="flex items-start justify-between gap-3">
           <p
@@ -387,6 +410,15 @@ export default async function TradeOffEditPage({
           <ManageSubscriptionCard slug={slug} token={token} />
         </section>
       )}
+
+      {/* Merchant-to-merchant referral loop — 50 free washers per side. */}
+      <section className="mx-auto max-w-3xl px-4 pb-6">
+        <ReferralShareCard
+          slug={slug}
+          origin={process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://thenetworkers.app"}
+          stats={await referralStatsForMerchant(slug)}
+        />
+      </section>
 
       <section className="mx-auto max-w-3xl px-4 pb-10">
         {tier === "app_trial" || tier === "app_paid" || tier === "app_verified" ? (

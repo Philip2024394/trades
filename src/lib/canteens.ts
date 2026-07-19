@@ -55,6 +55,64 @@ export type Canteen = {
    *  from their listing row. Slug is a string here (not PaletteSlug)
    *  to avoid a client-side type import loop; validated at read time. */
   paletteSlug?: string | null;
+  /** Participant class — the platform-level identity distinct from
+   *  the trade category. `trade` (service provider), `manufacturer`
+   *  (makes products, e.g. Hammerex Direct), `merchant` (retails
+   *  others' products), `homeowner` (personal/DIY account). Renders
+   *  as a coloured chip on the hero so buyers can tell "direct from
+   *  source" apart from "retailer with markup". Defaults to 'trade'
+   *  for legacy rows. */
+  entityType?:
+    | "trade"
+    | "manufacturer"
+    | "building-supplies"
+    | "hire-service"
+    | "supplier"
+    | "merchant"
+    | "homeowner";
+  /** Which template file renders this canteen. See src/templates/
+   *  _registry.ts for the resolved implementation. Defaults to
+   *  "template-1-chalk" for legacy rows. Merchants change it via
+   *  the templates picker. */
+  templateSlug?: string;
+  /** Light / dark rendering. Independent of palette — flips page bg
+   *  + hero veil to a dark base without changing the palette
+   *  identity. Persisted per canteen from the templates picker. */
+  themeMode?: "light" | "dark";
+  /** Palette colour saturation. bold = full, standard = as-is,
+   *  subtle = ~50% desaturated (softer accents). Applied when the
+   *  palette is resolved for render. */
+  paletteIntensity?: "bold" | "standard" | "subtle";
+  /** Hero veil opacity 0-100. 100 = full shade (default), 0 =
+   *  completely clear hero (no veil overlay). Applied as opacity
+   *  multiplier on ChalkHeroMobile's horizontal cream veil. Bottom
+   *  fade stays at a minimum ~15% regardless so the image never
+   *  shows a hard bottom line. */
+  heroShade?: number;
+  /** Optional custom colour for the Live Feed tile background.
+   *  When set, overrides the palette-derived tile bg. NULL / omit
+   *  = fall back to palette (dark→bg, light→accent). Shell reads
+   *  this + auto-computes luminance to flip text dark/light so the
+   *  content always reads on any chosen colour. */
+  feedTileColor?: string | null;
+  /** Optional image URL used as the Live Feed tile background.
+   *  When present, image wins over feedTileColor (image + dark
+   *  scrim renders instead of solid colour). Uploaded via
+   *  /api/canteens/[slug]/feed-tile-image. */
+  feedTileImageUrl?: string | null;
+  /** HSL palette model — one of 8 base hues. When set (non-null),
+   *  the palette is generated dynamically via generatePalette()
+   *  and takes precedence over the legacy paletteSlug. */
+  baseHue?: "yellow" | "orange" | "red" | "green" | "teal" | "blue" | "purple" | "neutral" | null;
+  /** HSL lightness 0-100. Combined with baseHue to compute accent
+   *  hex live. Ignored when baseHue is null. */
+  lightness?: number | null;
+  /** Feed-tile-specific hue (same 8 as baseHue). Independent of
+   *  the main palette so merchant can pick a different feed colour. */
+  feedTileHue?: "yellow" | "orange" | "red" | "green" | "teal" | "blue" | "purple" | "neutral" | null;
+  /** Feed-tile lightness 0-100. Combined with feedTileHue at save
+   *  time to produce the feed_tile_color hex. */
+  feedTileLightness?: number | null;
 };
 
 /** Live offer on a make-me-an-offer listing. Displayed inline on the
@@ -208,7 +266,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 42,
     postsLast30d: 22,
     activityStreakMonths: 1,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2010_51_51%20PM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2001_00_12%20AM.png",
     createdAt: "2026-07-14T22:00:00Z",
     isFounding100: true,
     paletteSlug: "iron"
@@ -225,7 +283,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 87,
     postsLast30d: 41,
     activityStreakMonths: 1,
-    headerBgUrl: null,
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_37_08%20AM.png",
     createdAt: "2026-06-02T09:30:00Z",
     isFounding100: true
   },
@@ -263,7 +321,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 54,
     postsLast30d: 18,
     activityStreakMonths: 0,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%208,%202026,%2010_38_31%20PM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_36_01%20AM.png",
     createdAt: "2026-06-20T15:00:00Z",
     isFounding100: true
   },
@@ -308,7 +366,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 31,
     postsLast30d: 17,
     activityStreakMonths: 1,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_45_28%20AM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_58_31%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "blush"
@@ -317,16 +375,16 @@ export const MOCK_CANTEENS: Canteen[] = [
   {
     id: "cant_heritage_stone_uk",
     slug: "uk-heritage-stone",
-    name: "Heritage Stone",
+    name: "Stone Masons",
     tagline: "Lime mortar, listed-building consents, and 200-year-old walls.",
-    tradeSlug: "heritage-stone-mason",
-    tradeLabel: "Heritage Stone Masons",
+    tradeSlug: "stone-mason",
+    tradeLabel: "Stone Masons",
     hostSlug: "demo-david-whitmore-heritage-stone-bath",
     hostDisplayName: "David Whitmore",
     memberCount: 22,
     postsLast30d: 9,
     activityStreakMonths: 1,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_53_57%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "sandstone"
@@ -349,14 +407,14 @@ export const MOCK_CANTEENS: Canteen[] = [
     isFounding100: true,
     paletteSlug: "brick"
   },
-  // Copper (TP-31 coppersmith)
+  // TP-31 — repurposed 2026-07-19 from Coppersmiths to Woodturning
   {
     id: "cant_coppersmiths_uk",
     slug: "uk-coppersmiths",
-    name: "Coppersmiths",
-    tagline: "Copper roofing, lead flashing, and the sound of a hammer on sheet.",
-    tradeSlug: "coppersmith",
-    tradeLabel: "Coppersmiths",
+    name: "Woodturning",
+    tagline: "Turned staircase parts, spindles, bespoke lathework — from newel posts to chair legs.",
+    tradeSlug: "woodturner",
+    tradeLabel: "Woodturning",
     hostSlug: "demo-nathan-barrett-coppersmith-birmingham",
     hostDisplayName: "Nathan Barrett",
     memberCount: 18,
@@ -434,7 +492,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 44,
     postsLast30d: 19,
     activityStreakMonths: 2,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_29_09%20AM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_48_35%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "steel"
@@ -488,7 +546,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 58,
     postsLast30d: 24,
     activityStreakMonths: 2,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_46_00%20PM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_46_23%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "mortar"
@@ -679,7 +737,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 17,
     postsLast30d: 8,
     activityStreakMonths: 2,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/b3785840d16b30030c7caea90d062172.jpg",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_43_03%20AM.png",
     createdAt: "2026-07-15T22:45:00Z",
     isFounding100: true,
     paletteSlug: "copper"
@@ -717,7 +775,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 14,
     postsLast30d: 6,
     activityStreakMonths: 1,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2003_26_58%20AM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_44_02%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "charcoal"
@@ -753,7 +811,7 @@ export const MOCK_CANTEENS: Canteen[] = [
     memberCount: 29,
     postsLast30d: 13,
     activityStreakMonths: 2,
-    headerBgUrl: "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2001_44_51%20PM.png",
+    headerBgUrl: "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_39_58%20AM.png",
     createdAt: "2026-07-15T14:00:00Z",
     isFounding100: true,
     paletteSlug: "storm"
@@ -1559,6 +1617,20 @@ export type CanteenProduct = {
   /** Per-category aspect values (key → string|number). Renders as the
    *  "Item specifics" block on the buyer PDP + powers filters. */
   categoryAspects?: Record<string, string | number>;
+  /** Optional canonical price in a non-GBP base currency. Populated
+   *  for merchants (e.g. Hammerex-Direct) whose stock is priced in
+   *  IDR and shown in GBP indicatively. When present, PDP shows
+   *  both. */
+  priceIdr?: number;
+  /** Deal Breaker upsell bundle — inline "add these at a discount"
+   *  block on the PDP buy column. Each entry references another
+   *  canteen product by id and quotes a deal price. */
+  addonBundle?: ReadonlyArray<{
+    productId: string;
+    dealPriceGbp: number;
+    dealPriceIdr?: number;
+    label?: string;
+  }>;
 };
 
 /** eBay-compatible condition ladder — the extra levels (new-other,

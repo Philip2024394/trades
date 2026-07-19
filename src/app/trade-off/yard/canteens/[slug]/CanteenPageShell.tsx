@@ -44,7 +44,10 @@ import {
   CanteenTradeDeals,
   CanteenTrendingRibbon
 } from "@/components/xrated/yard/CanteenDashboardSections";
-import { CanteenHeroWow } from "@/components/xrated/yard/CanteenHeroWow";
+// CanteenHeroWow import removed — mobile hero is now owned by
+// templates (see src/templates/template-1-chalk/ChalkHeroMobile.tsx
+// + src/templates/template-2-iron/IronHero.tsx). Shell no longer
+// renders any hero.
 import { CanteenLiveFeedWow } from "@/components/xrated/yard/CanteenLiveFeedWow";
 import { CanteenTabbedSection } from "@/components/xrated/yard/CanteenTabbedSection";
 import { CanteenBottomNav } from "@/components/xrated/yard/CanteenBottomNav";
@@ -55,12 +58,15 @@ import { CanteenProductPanel } from "@/components/xrated/yard/CanteenProductPane
 import { CanteenProductFocus } from "@/components/xrated/yard/CanteenProductFocus";
 import { CanteenProfileFocus } from "@/components/xrated/yard/CanteenProfileFocus";
 import { CanteenCounterExplainer } from "@/components/xrated/yard/CanteenCounterExplainer";
+import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
+import { libraryEntryByUrlStatic as libraryEntryByUrl } from "@/lib/canteenFeedTileLibrary";
 import { canteenProductById } from "@/lib/canteens";
 import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { DEFAULT_PALETTE, type PaletteTokens } from "@/lib/paletteTokens";
 import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles, Pencil, Pin, Flag } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
+import { CommentThread, CANTEEN_COMMENT_API } from "@/components/comments/CommentThread";
 import { MOOD_LIBRARY, suggestMood, type MoodSlug } from "@/lib/yardMoods";
 import { requiresProUpload, type MembershipTier } from "@/lib/tierGates";
 
@@ -116,7 +122,9 @@ export function CanteenPageShell({
   returnLabel,
   palette,
   heroVeilOpacity,
-  darkMode = false
+  darkMode = false,
+  suppressHero = false,
+  feedTileBgImage = null
 }: {
   canteen: Canteen;
   sideLane: SideLanePost[];
@@ -158,6 +166,19 @@ export function CanteenPageShell({
    *  canteen page, wired from the templates picker "Dark ON" toggle.
    *  Strip on "remove dev buttons". */
   darkMode?: boolean;
+  /** When true, the shell renders neither the mobile hero
+   *  (CanteenHeroWow) nor the desktop hero (CanteenHeader) — the
+   *  parent template supplies its own hero above the shell body.
+   *  Template 1 (Chalk) leaves this false; Template 2 (Iron) sets it
+   *  true so its bespoke IronHero renders in place. Body below the
+   *  hero (feed, sidebar, modals) still renders normally. */
+  suppressHero?: boolean;
+  /** Template override — background image for the Live Feed tile.
+   *  When set, replaces the palette-driven backgroundColor with a
+   *  cover-fit image (kept rounded). Templates that want an image-
+   *  backed feed (e.g. Template 3 Canvas) pass this URL. Empty /
+   *  undefined leaves the palette colour behaviour intact. */
+  feedTileBgImage?: string | null;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -434,22 +455,24 @@ export function CanteenPageShell({
         // Palette colours belong on the hero, buttons, accents, and
         // feed tiles ONLY. They must NEVER bleed into the outer page
         // bg, because a black or dark page surprises the merchant
-        // ("why did my page turn black?"). The palette-driven "hero
-        // fade matches page bg" experiment was reverted here: off-
-        // white is universal, palette is contained.
-        //
-        // [DEV BUTTON] darkMode escape hatch — when the templates-picker
-        // "Dark ON" toggle sets ?theme_mode=dark, swap the outer page
-        // bg to near-black so merchants can preview a dark variant of
-        // any palette. Reversible per URL param; strip on
-        // "remove dev buttons".
-        backgroundColor: darkMode ? "#0A0A0A" : "#FBF6EC",
+        // ("why did my page turn black?"). Off-white is universal,
+        // palette is contained. Enforced in code — no picker toggle,
+        // no theme_mode value, no palette.bg can ever change this.
+        // Golden rule 2026-07-17 (Philip): the canteen page bg is
+        // ALWAYS the platform off-white #FBF6EC. If a future feature
+        // needs a dark surface, put it on a card/tile, not the page.
+        backgroundColor: "#FBF6EC",
         // Inset yellow ring when Edit mode is on. 3px so it reads
         // clearly at any viewport without feeling loud. Uses inset
         // box-shadow so it doesn't shift page layout on toggle.
         boxShadow: editMode ? "inset 0 0 0 3px #FFB300" : undefined
       }}
     >
+      {/* Mobile-app view is intentionally header-less. GlobalHeader
+          is suppressed inside the phone-mockup iframe (`?embed=1`)
+          per Philip 2026-07-16 — the hero IS the identity, matching
+          Instagram/TikTok/Airbnb content-first pattern. No mini
+          in-frame header either. */}
       {/* ── Mobile view — pixel-mirror of the mockup dashboard.
           This section IS "the app" — the phone-native surface. It has
           its OWN bg = palette.bg so dark palettes (Iron, Oak) get their
@@ -471,7 +494,14 @@ export function CanteenPageShell({
       <div
         className="lg:hidden"
         style={{
-          backgroundColor: effectivePalette?.bg ?? (darkMode ? "#0A0A0A" : "#FBF6EC"),
+          // Mobile wrapper bg:
+          //   • Canteen page (default)   → ALWAYS #FBF6EC. Golden rule.
+          //   • Mobile-app view (?embed=1) → honours themeMode. Dark
+          //     Mode flips this wrapper to #0A0A0A so the picker's
+          //     Dark Mode toggle takes effect in the phone mockup.
+          //     The canteen page is unaffected because isEmbedded is
+          //     false on that path. ADR-0015.
+          backgroundColor: (isEmbedded && darkMode) ? "#0A0A0A" : "#FBF6EC",
           ...(canteen.tradeSlug && CANTEEN_FOOTER_ART_BY_TRADE[canteen.tradeSlug]
             ? {
                 backgroundImage:      `url('${CANTEEN_FOOTER_ART_BY_TRADE[canteen.tradeSlug]}')`,
@@ -483,24 +513,23 @@ export function CanteenPageShell({
             : {})
         }}
       >
-        <CanteenHeroWow
-          canteen={canteen}
-          hostWhatsapp={admin?.whatsapp ?? null}
-          hostReviews={admin?.reviews ?? null}
-          hostAvatarUrl={admin?.avatarUrl ?? null}
-          addressLine={admin?.showroom?.addressLine ?? null}
-          postcode={admin?.showroom?.postcode ?? null}
-          city={admin?.city ?? null}
-          palette={effectivePalette ?? DEFAULT_PALETTE}
-          veilOpacity={heroVeilOpacity}
-        />
+        {/* Mobile hero + stats bar moved out of the shell 2026-07-17
+            (Philip). Both are now mounted inside Template1Chalk so
+            the stats bar can overlay the hero as siblings sharing
+            one parent. Shell body starts directly below this wrapper. */}
+
         {/* Outer sheet container with three inner cards nested inside.
             The outer white sheet reads as one designed surface; each
             inner tile has its own rounded card so the sections stay
             visually distinct. Sheet stays WHITE under every palette
             (including Iron) — dark rendering is scoped to specific
             inner tiles (Live Feed) per the mockup. */}
-        <div className="relative z-10 mx-auto -mt-10 max-w-6xl px-3 md:px-6">
+        {/* Outer sheet — mt-0 sits flush against the template hero
+            above. Previous mt-4 gap showed the wrapper's cream bg as
+            a thin strip between hero and sheet, plus the sheet's
+            shadow-lg cast up into that strip, reading as a visible
+            line across the page. Flush + shadow only below = clean. */}
+        <div className="relative z-10 mx-auto mt-0 max-w-6xl px-3 md:px-6">
           <div
             className="rounded-[28px] border bg-white p-3 shadow-lg md:p-4"
             style={{ borderColor: "#FBF6EC" }}
@@ -518,25 +547,73 @@ export function CanteenPageShell({
                   buttons — Profile/Card use the same colour). Text
                   inside recoloured to white/light so it reads against
                   any accent colour (navy, warm gold, amber, brown). */}
+              {(() => {
+                // Feed tile bg — CANTEEN vs EMBED split (Philip
+                // 2026-07-17):
+                //   • Canteen page (!isEmbedded)  → fixed platform
+                //     accent. Ignores canteen.feedTileColor and
+                //     canteen.feedTileImageUrl entirely.
+                //   • Mobile-app preview (embed)  → full precedence
+                //     chain (merchant image → merchant color →
+                //     palette fallback → template image).
+                const paletteFallback = palette?.dark
+                  ? (palette?.bg ?? "#0A0A0A")
+                  : (palette?.accent ?? "#FBF6EC");
+                // Canteen fixed feed-tile bg = near-black to match
+                // the trades-cards + KPI-tile convention. Locked at
+                // the platform level; no merchant override on canteen.
+                const bgColor = isEmbedded
+                  ? (canteen.feedTileColor ?? paletteFallback)
+                  : "#0A0A0A";
+                const effectiveImage = isEmbedded
+                  ? (canteen.feedTileImageUrl ?? feedTileBgImage)
+                  : null;
+                // YIQ luminance — > 150 = light, use dark text.
+                const hexToLum = (hex: string) => {
+                  const m = /^#?([0-9a-f]{6})$/i.exec(hex);
+                  if (!m) return 0;
+                  const n = parseInt(m[1], 16);
+                  const r = (n >> 16) & 0xff;
+                  const g = (n >> 8) & 0xff;
+                  const b = n & 0xff;
+                  return (r * 299 + g * 587 + b * 114) / 1000;
+                };
+                // Library image lookup — a Philip-curated image may
+                // request a `textTone` override (e.g. drywall is a
+                // genuinely light image and needs dark text, not
+                // the default white). Custom uploads get the default
+                // dark-scrim + white-text treatment.
+                const libraryEntry = effectiveImage ? libraryEntryByUrl(effectiveImage) : null;
+                const wantsDarkText = libraryEntry?.textTone === "black";
+                const isLightBg = wantsDarkText || (!effectiveImage && hexToLum(bgColor) > 150);
+                const tileStyle: React.CSSProperties = effectiveImage
+                  ? wantsDarkText
+                    ? {
+                        // Light image + dark text: use a WHITE tint
+                        // scrim so the image reads clearly under a
+                        // gentle wash and dark text pops on it.
+                        backgroundImage:    `linear-gradient(rgba(255,255,255,0.35), rgba(255,255,255,0.55)), url('${effectiveImage}')`,
+                        backgroundSize:     "cover",
+                        backgroundPosition: "center",
+                        border:             "1px solid rgba(0,0,0,0.10)"
+                      }
+                    : {
+                        backgroundImage:    `linear-gradient(rgba(10,10,10,0.55), rgba(10,10,10,0.35)), url('${effectiveImage}')`,
+                        backgroundSize:     "cover",
+                        backgroundPosition: "center",
+                        border:             "1px solid rgba(0,0,0,0.10)"
+                      }
+                  : {
+                      backgroundColor: bgColor,
+                      border:          "1px solid rgba(0,0,0,0.10)"
+                    };
+                return (
               <div
-                className="canteen-feed-tile-styled rounded-xl p-3 md:p-4"
-                style={{
-                  // Live Feed tile bg:
-                  //   Dark palettes (Iron, Oak) → palette.bg (near-black
-                  //     / deep brown) so the tile matches the palette's
-                  //     native dark chrome — Template 2 (Iron) reads as
-                  //     a black live feed on a black app surface, per
-                  //     Philip 2026-07-15.
-                  //   Light palettes → palette.accent (warm gold /
-                  //     navy / etc.) — the accent-CTA-coloured tile the
-                  //     mobile mockup ships with.
-                  backgroundColor: palette?.dark
-                    ? (palette?.bg ?? "#0A0A0A")
-                    : (palette?.accent ?? "#FBF6EC"),
-                  border: "1px solid rgba(0,0,0,0.10)"
-                }}
+                className={`canteen-feed-tile-styled rounded-xl p-3 md:p-4 ${isLightBg ? "canteen-feed-tile-light" : ""}`}
+                style={tileStyle}
               >
                 <style>{`
+                  /* Dark bg — text stays white. Default. */
                   .canteen-feed-tile-styled .text-neutral-900 { color: #FFFFFF !important; }
                   .canteen-feed-tile-styled .text-neutral-800 { color: #FFFFFF !important; }
                   .canteen-feed-tile-styled .text-neutral-700 { color: #F5F5F5 !important; }
@@ -546,6 +623,18 @@ export function CanteenPageShell({
                   .canteen-feed-tile-styled [class*="bg-white"] { background-color: rgba(255,255,255,0.10) !important; }
                   .canteen-feed-tile-styled [class*="bg-neutral-100"] { background-color: rgba(255,255,255,0.06) !important; }
                   .canteen-feed-tile-styled [class*="bg-neutral-50"] { background-color: rgba(255,255,255,0.08) !important; }
+                  /* LIGHT bg override — flips text back to dark
+                     because white text vanishes on cream. Wins via
+                     more-specific selector chain. */
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-900 { color: #0A0A0A !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-800 { color: #171717 !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-700 { color: #262626 !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-600 { color: #404040 !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-500 { color: rgba(0,0,0,0.65) !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light .text-neutral-400 { color: rgba(0,0,0,0.45) !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light [class*="bg-white"] { background-color: rgba(0,0,0,0.05) !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light [class*="bg-neutral-100"] { background-color: rgba(0,0,0,0.04) !important; }
+                  .canteen-feed-tile-styled.canteen-feed-tile-light [class*="bg-neutral-50"] { background-color: rgba(0,0,0,0.03) !important; }
                 `}</style>
                 <CanteenTabbedSection
                   canteenSlug={canteen.slug}
@@ -569,6 +658,8 @@ export function CanteenPageShell({
                   servicesOffered={admin?.servicesOffered ?? null}
                 />
               </div>
+                );
+              })()}
               {/* Container 3 — "Customers say it best" reviews callout.
                   Click routes to the in-page Reviews tab via the same
                   CustomEvent bridge as Quick Actions. */}
@@ -626,15 +717,24 @@ export function CanteenPageShell({
         />
 
 
-        {/* Powered by credit — sits between the last content section
-            and the floating pill footer. */}
-        <div className="mx-auto mt-5 flex max-w-6xl items-center justify-center px-3 md:px-6">
-          <span className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
-            Powered by{" "}
-            <Link href="/" style={{ color: "#B8860B" }} className="hover:underline">
-              Thenetworkers.app
-            </Link>
-          </span>
+        {/* Powered-by strip — Linktree-style viral loop. Every canteen
+            (free + paid) advertises the platform. Free CTA doubles
+            as merchant-acquisition: prospective trades hit the link,
+            land on signup with the current merchant pre-filled as
+            their referrer (mref → 50-washer reward for both sides
+            when the new merchant joins). Philip 2026-07-17. */}
+        <div className="mx-auto mt-5 max-w-6xl px-3 md:px-6">
+          <Link
+            href={`/trade-off/signup?mref=${encodeURIComponent(canteen.hostSlug)}`}
+            className="mx-auto flex max-w-xl items-center justify-center gap-2 rounded-full border px-4 py-2 text-[11px] font-black text-neutral-700 shadow-sm transition hover:border-[#B8860B] hover:text-neutral-900"
+            style={{ borderColor: "rgba(184,134,11,0.30)", backgroundColor: "#FFFFFF" }}
+          >
+            <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: "#FFB300" }}/>
+            <span className="uppercase tracking-[0.18em]">
+              Build your own — free
+            </span>
+            <span className="text-neutral-500">on The Network →</span>
+          </Link>
         </div>
         <CanteenSocialLinks
           instagram={`https://instagram.com/${canteen.hostSlug}`}
@@ -704,39 +804,31 @@ export function CanteenPageShell({
 
       {/* ── Desktop view — the richer existing shell. Hidden below lg. */}
       <div className="hidden lg:block">
-      <CanteenHeader
-        canteen={{
-          ...canteen,
-          memberCount: Math.max(0, canteen.memberCount + memberDelta)
-        }}
-        onInvite={() => setInviteOpen(true)}
-        onPost={() => { /* wired to the composer in a follow-up */ }}
-        isMember={isMember}
-        isHost={isHost}
-        onJoin={handleJoin}
-        onLeave={handleLeave}
-        hostHasProducts={totalProducts > 0}
-        hostWhatsapp={admin?.whatsapp ?? null}
-        hostReviews={admin?.reviews ?? null}
-        hostAvatarUrl={admin?.avatarUrl ?? null}
-        editMode={editMode}
-        onToggleEditMode={() => setEditMode((v) => !v)}
-        paletteDark={palette?.dark ?? false}
-      />
+      {!suppressHero && (
+        <CanteenHeader
+          canteen={{
+            ...canteen,
+            memberCount: Math.max(0, canteen.memberCount + memberDelta)
+          }}
+          onInvite={() => setInviteOpen(true)}
+          onPost={() => { /* wired to the composer in a follow-up */ }}
+          isMember={isMember}
+          isHost={isHost}
+          onJoin={handleJoin}
+          onLeave={handleLeave}
+          hostHasProducts={totalProducts > 0}
+          hostWhatsapp={admin?.whatsapp ?? null}
+          hostReviews={admin?.reviews ?? null}
+          hostAvatarUrl={admin?.avatarUrl ?? null}
+          editMode={editMode}
+          onToggleEditMode={() => setEditMode((v) => !v)}
+          paletteDark={palette?.dark ?? false}
+        />
+      )}
 
-      {/* Hero stats card — floats at the bottom of the hero, overlapping
-          into the cream page below (-mt-8) so it reads as an
-          authoritative KPI bar attached to the hero. Rating tile only
-          renders when reviews.count >= 5 — a 0.0 rating on a new
-          canteen looks worse than showing nothing. */}
-      <CanteenHeroStats
-        memberCount={Math.max(0, canteen.memberCount + memberDelta)}
-        reviews={admin?.reviews ?? null}
-        productsCount={totalProducts}
-        hostHasProducts={totalProducts > 0}
-        editMode={isHost && editMode}
-        activeStep={addItemStep}
-      />
+      {/* Desktop hero stats bar moved out of the shell 2026-07-17
+          (Philip). Now mounted inside Template1Chalk so it can
+          overlay ChalkHeroDesktop as siblings sharing one parent. */}
 
       {/* Direct-entry creation flows mounted NATIVELY on the canteen
           page (no iframe). Each tile in the stats container is a
@@ -1022,7 +1114,11 @@ export function CanteenPageShell({
                         reactionsQuestion: p.reactionsQuestion,
                         replies: p.replyCount,
                         photoUrls: p.photoUrls,
-                        avatarUrl: p.authorAvatarUrl
+                        avatarUrl: p.authorAvatarUrl,
+                        isPinned:       p.isPinned,
+                        boostActive:    p.boostActive,
+                        boostExpiresAt: p.boostExpiresAt,
+                        bodyEditedAt:   p.bodyEditedAt
                       }}
                       tradeLabel={canteen.tradeLabel}
                       viewerSlug={viewerSlug}
@@ -1038,7 +1134,10 @@ export function CanteenPageShell({
                 return mockPostsForCanteen(canteen.slug).map((p, i) => (
                   <CanteenPostCard
                     key={i}
-                    post={p}
+                    // Synthetic ID so ReactionRow can key mock replies
+                    // off it. Never touches the DB — the "mock-" prefix
+                    // in openThread() routes to the canned reply pool.
+                    post={{ ...p, id: p.id ?? `mock-post-${canteen.slug}-${i}` }}
                     tradeLabel={canteen.tradeLabel}
                     viewerSlug={viewerSlug}
                     hostSlug={canteen.hostSlug}
@@ -1079,6 +1178,7 @@ export function CanteenPageShell({
                     <CanteenMobileAppShowcase
                       hostSlug={canteen.hostSlug}
                       hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+                      hostDisplayName={canteen.hostDisplayName}
                       tradeLabel={canteen.tradeLabel}
                       tradeSlug={canteen.tradeSlug ?? null}
                       heroImageUrl={canteen.headerBgUrl}
@@ -1189,6 +1289,13 @@ type CanteenPost = {
   /** Poster's avatar image. When null we fall back to the yellow
    *  initial chip; when set the header renders an <img>. */
   avatarUrl?: string | null;
+  /** Pin/Boost/Edit signals — set by canteenPostsFromDb when the
+   *  post row carries the corresponding column. Chips render on
+   *  the card header when true. */
+  isPinned?:      boolean;
+  boostActive?:   boolean;
+  boostExpiresAt?: string | null;
+  bodyEditedAt?:  string | null;
 };
 
 // Canteen feed = chat + questions + announcements only.
@@ -1580,6 +1687,19 @@ const CANTEEN_MOCK_POSTS_PRESTIGE: CanteenPost[] = [
   { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "1d", body: "Kitchen commissioning day on the Surrey renovation. Handmade in-frame cabinetry, Miele appliances, natural stone from Verona. Client's speechless.", reactions: 27, replies: 6, avatarUrl: null },
   { who: "Julian Hartley", handle: "julian-hartley", postedAgo: "3d", body: "Party wall notice served on the Kensington remodel. 12-week countdown starts now — planning coordination begins Tuesday.", reactions: 8, replies: 3, avatarUrl: null }
 ];
+// Hammerex Direct feed — trade voice, gear-focused moments. Post
+// concepts approved by Philip 2026-07-17. photoUrls left off until
+// Philip shoots the images; posts render clean without a photo.
+const CANTEEN_MOCK_POSTS_HAMMEREX: CanteenPost[] = [
+  { who: "Danny Broughton",  handle: "danny-broughton",  postedAgo: "2h",  body: "RESOLVE belt set arrived Tuesday. Set it up for a 3-storey terrace strip in Wandsworth. Ratchet frog holder on the offside means I can pass tools without turning. First time gear's felt this right straight out of the box.",             reactions: 22, replies: 5, avatarUrl: null },
+  { who: "Marc Whitworth",   handle: "marc-whitworth",   postedAgo: "5h",  body: "Been running the 3-Trowel Roll for a month. Turns the van boot from chaos into 30-second setup. Skim, backing coat and finisher all where they should be. Ref: HX-TR3",                                                                                              reactions: 17, replies: 4, avatarUrl: null },
+  { who: "Kev Ashworth",     handle: "kev-ashworth",     postedAgo: "8h",  body: "Second Drywall Pro Kit ordered same day the first one wore out. Two years of daily use. Stitching held up longer than half the lads on site. Cost of one bag is less than a week of losing a chalk line at the bottom of the van.",                                    reactions: 31, replies: 8, avatarUrl: null },
+  { who: "Simon Corrigan",   handle: "simon-corrigan",   postedAgo: "11h", body: "Every sparks pouch I've owned was designed by someone who didn't wire houses. This one has depth for proper drivers AND a tester tucked between. No more digging a Wera out from the bottom of the van at 5pm.",                                                       reactions: 26, replies: 6, avatarUrl: null },
+  { who: "Hammerex Workshop", handle: "hammerex-workshop", postedAgo: "14h", body: "Floor closed at 4pm today. 47 belts stitched, 12 pouches assembled, 3 back-support belts finished. Every one going out with the batch number on the tag. If yours arrives wrong, we know exactly who to ask.",                                                        reactions: 44, replies: 11, avatarUrl: null },
+  { who: "Paul Hendrie",     handle: "paul-hendrie",     postedAgo: "1d",  body: "Six months on the leather scaffolding belt. Sun-bleached the top edge, sweat's darkened the underside, brass rivets haven't moved. This is what full-grain looks like at week 24, not week 1.",                                                                        reactions: 19, replies: 3, avatarUrl: null },
+  { who: "Aaron Whitely",    handle: "aaron-whitely",    postedAgo: "1d",  body: "Padded belt support worn with the loops facing up means tape and laser hang without clashing at the hip. Ran it swapped over for a week — never going back.",                                                                                                          reactions: 14, replies: 4, avatarUrl: null }
+];
+
 const CANTEEN_MOCK_POSTS_MARINA: CanteenPost[] = [
   { who: "Alistair Ferguson", handle: "alistair-ferguson", postedAgo: "6h", body: "New pontoon set installed at Ocean Village today — 20 berths, timber decking on aluminium float sections. Tide window was tight.", reactions: 13, replies: 2, avatarUrl: null, photoUrls: [P("ChatGPT%20Image%20Jul%206,%202026,%2002_59_22%20AM.png")] },
   { who: "Alistair Ferguson", handle: "alistair-ferguson", postedAgo: "2d", body: "Refurb inspection on a 40-year-old timber jetty. Structural rot on 3 posts, sistering + partial rebuild scheduled for October slack.", reactions: 9, replies: 1, avatarUrl: null },
@@ -1627,6 +1747,7 @@ function mockPostsForCanteen(canteenSlug: string): CanteenPost[] {
   if (canteenSlug === "uk-prestige-builders")     return CANTEEN_MOCK_POSTS_PRESTIGE;
   if (canteenSlug === "uk-marina-builders")       return CANTEEN_MOCK_POSTS_MARINA;
   if (canteenSlug === "uk-emergency-repairs")     return CANTEEN_MOCK_POSTS_EMERGENCY;
+  if (canteenSlug === "hammerex-direct")          return CANTEEN_MOCK_POSTS_HAMMEREX;
   if (canteenSlug === "uk-groundworkers")         return CANTEEN_MOCK_POSTS_GROUNDWORKER;
   return CANTEEN_MOCK_POSTS_KITCHEN;
 }
@@ -1652,13 +1773,21 @@ function pickCanteenMood(post: CanteenPost): MoodSlug {
 // Products (or Services). Rating tile is suppressed until reviews.count
 // ≥ 5 so a fresh canteen doesn't advertise 0.0 stars.
 
-function CanteenHeroStats({
+export function CanteenHeroStats({
   memberCount,
   reviews,
   productsCount,
   hostHasProducts,
   editMode = false,
-  activeStep = "closed"
+  activeStep = "closed",
+  hostWhatsapp = null,
+  hostSlug = "",
+  hostDisplayName = "",
+  tradeLabel = "",
+  canteenSlug = "",
+  canteenName = "",
+  isHost = false,
+  isMember = false
 }: {
   memberCount: number;
   reviews: { avg: number; count: number } | null;
@@ -1671,6 +1800,17 @@ function CanteenHeroStats({
   /** Which creation flow is currently open — used to highlight the
    *  matching tile in yellow ("you're editing this"). */
   activeStep?: "closed" | "product" | "service" | "live" | "profile" | "trending" | "reviews" | "kitchens" | "features" | "plan-storage";
+  /** WhatsApp CTA context — round button on the left of the stats
+   *  container. Only renders for non-host guests when the host has a
+   *  WhatsApp number. Moved here 2026-07-17 (was on the hero banner). */
+  hostWhatsapp?: string | null;
+  hostSlug?: string;
+  hostDisplayName?: string;
+  tradeLabel?: string;
+  canteenSlug?: string;
+  canteenName?: string;
+  isHost?: boolean;
+  isMember?: boolean;
 }) {
   const showRating = reviews && reviews.count >= 5;
 
@@ -1769,37 +1909,52 @@ function CanteenHeroStats({
     );
   }
 
+  // Round WhatsApp button — left cell of the stats container. Only
+  // renders for non-host guests when the host has a WhatsApp number.
+  // Moved here 2026-07-17 (previously floated on the hero banner).
+  const showWhatsapp = !isHost && !isMember && Boolean(hostWhatsapp);
+  // Position is controlled by the parent (Template.tsx) — this
+  // wrapper is layout-only. Ancestor mounts as absolute overlay so
+  // this component MUST NOT self-position with negative margins.
   return (
-    <div className="mx-auto -mt-8 max-w-6xl px-3 md:px-6">
+    <div className="mx-auto max-w-6xl px-3 md:px-6">
       <div
-        className="relative z-10 grid grid-cols-3 gap-2 rounded-2xl border bg-white/95 p-2.5 shadow-xl backdrop-blur md:p-3"
+        className="relative flex items-stretch gap-2 rounded-2xl border bg-white p-2.5 shadow-2xl md:p-3"
         style={{ borderColor: "rgba(139,69,19,0.15)" }}
       >
-        <StatTile
-          icon={<Users size={16} strokeWidth={2.2}/>}
-          value={String(memberCount)}
-          label="Members"
-        />
-        {showRating ? (
-          <StatTile
-            icon={<Star size={16} strokeWidth={2.2} fill="currentColor"/>}
-            value={reviews.avg.toFixed(1)}
-            label={`Rating · ${reviews.count}`}
-            accent
-          />
-        ) : (
-          <StatTile
-            icon={<Star size={16} strokeWidth={2.2}/>}
-            value="New"
-            label="No reviews yet"
-            muted
-          />
+        {showWhatsapp && (
+          <VerifiedContactButton
+            merchantSlug={hostSlug}
+            merchantDisplayName={hostDisplayName}
+            merchantFirstName={hostDisplayName.split(/\s+/)[0] ?? hostDisplayName}
+            merchantWhatsapp={hostWhatsapp}
+            tradeLabel={tradeLabel}
+            source="canteen-hero"
+            sourceLabel={`${hostDisplayName.split(/\s+/)[0] ?? hostDisplayName}'s canteen "${canteenName}" on Thenetworkers.app`}
+            canteenSlug={canteenSlug}
+            ariaLabel={`WhatsApp ${hostDisplayName}`}
+            className="flex h-12 w-12 flex-shrink-0 items-center justify-center self-center rounded-full text-white shadow-md ring-2 ring-white transition active:scale-[0.95] md:h-14 md:w-14"
+            style={{ backgroundColor: BRAND_GREEN_DARK }}
+          >
+            <MessageCircle size={20} strokeWidth={2.6}/>
+          </VerifiedContactButton>
         )}
-        <StatTile
-          icon={hostHasProducts ? <Package size={16} strokeWidth={2.2}/> : <Wrench size={16} strokeWidth={2.2}/>}
-          value={String(productsCount)}
-          label={hostHasProducts ? "Products" : "Services"}
-        />
+        {/* Rating tile removed from the stats bar 2026-07-17 (Philip).
+            Rating now lives ONLY in the small KPI card at the top of
+            the hero. Stats bar carries Members + Products/Services
+            only so it stays clean. */}
+        <div className="grid flex-1 grid-cols-2 gap-2">
+          <StatTile
+            icon={<Users size={16} strokeWidth={2.2}/>}
+            value={String(memberCount)}
+            label="Members"
+          />
+          <StatTile
+            icon={hostHasProducts ? <Package size={16} strokeWidth={2.2}/> : <Wrench size={16} strokeWidth={2.2}/>}
+            value={String(productsCount)}
+            label={hostHasProducts ? "Products" : "Services"}
+          />
+        </div>
       </div>
     </div>
   );
@@ -2076,9 +2231,34 @@ function CanteenPostCard({
                     Host
                   </span>
                 )}
+                {post.isPinned && (
+                  <span
+                    className="inline-flex flex-shrink-0 items-center gap-1 rounded-sm px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.14em]"
+                    style={{ backgroundColor: "#FFB300", color: BRAND_BLACK }}
+                    title="Pinned by host"
+                  >
+                    <Pin size={9} strokeWidth={2.8}/>
+                    Pinned
+                  </span>
+                )}
+                {post.boostActive && (
+                  <span
+                    className="inline-flex flex-shrink-0 items-center gap-1 rounded-sm px-1.5 py-0.5 text-[8px] font-black uppercase tracking-[0.14em]"
+                    style={{ backgroundColor: "#166534", color: "#FFFFFF" }}
+                    title={post.boostExpiresAt ? `Boost active until ${new Date(post.boostExpiresAt).toLocaleString()}` : "Boost active"}
+                  >
+                    <Rocket size={9} strokeWidth={2.8}/>
+                    Boosted
+                  </span>
+                )}
               </div>
               <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-500">
                 {tradeLabel} · {post.postedAgo}
+                {post.bodyEditedAt && (
+                  <span className="ml-1 italic text-neutral-400" title={`Edited ${new Date(post.bodyEditedAt).toLocaleString()}`}>
+                    · edited
+                  </span>
+                )}
               </div>
             </div>
             {/* Post actions — always shown, top-right of the row.
@@ -2106,10 +2286,7 @@ function CanteenPostCard({
                     {canRemove && (
                       <button
                         type="button"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          window.alert("Edit post — coming soon.");
-                        }}
+                        onClick={editPost}
                         className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
                       >
                         <Pencil size={13}/>
@@ -2129,10 +2306,7 @@ function CanteenPostCard({
                     {hostSlug && viewerSlug === hostSlug && (
                       <button
                         type="button"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          window.alert("Pin post — coming soon.");
-                        }}
+                        onClick={pinPost}
                         className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
                       >
                         <Pin size={13}/>
@@ -2142,10 +2316,7 @@ function CanteenPostCard({
                     {canRemove && (
                       <button
                         type="button"
-                        onClick={() => {
-                          setMenuOpen(false);
-                          window.alert("Boost post — coming soon.");
-                        }}
+                        onClick={boostPost}
                         className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] font-bold text-neutral-800 hover:bg-neutral-50"
                       >
                         <Rocket size={13}/>
@@ -2630,15 +2801,9 @@ function CanteenPostComposer({
 // call. Once the feed swaps to real DB posts every click hits the
 // endpoint.
 
-type Reply = {
-  id: string;
-  authorSlug: string;
-  authorDisplayName: string;
-  authorAvatarUrl: string | null;
-  body: string;
-  createdAt: string;
-  likeCount: number;
-};
+// Reply type + mock generator now live inside the shared CommentThread
+// component (src/components/comments/CommentThread.tsx) — one place to
+// fix comment behaviour forever.
 
 function ReactionRow({
   postId,
@@ -2678,17 +2843,12 @@ function ReactionRow({
   const [agreed, setAgreed] = useState(false);
   const [questioned, setQuestioned] = useState(false);
   const [pending, setPending] = useState(false);
+  // Comment thread — panel state (replies, likes, composer, mock/DB
+  // fetching) lives inside the shared <CommentThread> component.
+  // This row just tracks whether the panel is open + the local
+  // reply-count so the "Comment · N" chip stays in sync.
   const [threadOpen, setThreadOpen] = useState(false);
   const [replyCount, setReplyCount] = useState(initialReplies);
-  const [replies, setReplies] = useState<Reply[] | null>(null);
-  const [loadingReplies, setLoadingReplies] = useState(false);
-  // Auth-gated reply composer state. Guests can read the whole thread
-  // but cannot post — see the sign-in CTA below the list. No more
-  // name/WhatsApp collection. Posts go live immediately with no
-  // moderation queue.
-  const [replyBody, setReplyBody] = useState("");
-  const [replySubmitting, setReplySubmitting] = useState(false);
-  const [replyError, setReplyError] = useState<string | null>(null);
 
   async function toggleReaction(kind: "like" | "agree" | "question") {
     if (pending) return;
@@ -2734,81 +2894,6 @@ function ReactionRow({
     }
   }
 
-  async function openThread() {
-    setThreadOpen(true);
-    if (replies || !postId) return; // already loaded, or mock post
-    setLoadingReplies(true);
-    try {
-      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/replies`);
-      const data = await res.json();
-      if (res.ok && data.ok) setReplies(data.replies as Reply[]);
-      else setReplies([]);
-    } catch {
-      setReplies([]);
-    } finally {
-      setLoadingReplies(false);
-    }
-  }
-
-  async function submitReply() {
-    const body = replyBody.trim();
-    if (!body || replySubmitting) return;
-    if (!viewerSlug) {
-      setReplyError("Sign in to comment.");
-      return;
-    }
-    if (!postId) {
-      // Mock post — optimistic append only, no server round trip.
-      setReplies((prev) => [
-        ...(prev ?? []),
-        {
-          id: `local-${Date.now()}`,
-          authorSlug: viewerSlug,
-          authorDisplayName: viewerSlug,
-          authorAvatarUrl: null,
-          body,
-          createdAt: new Date().toISOString(),
-          likeCount: 0
-        }
-      ]);
-      setReplyCount((n) => n + 1);
-      setReplyBody("");
-      return;
-    }
-    setReplySubmitting(true);
-    setReplyError(null);
-    try {
-      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        if (data.error === "not-authenticated") setReplyError("Sign in to comment.");
-        else if (data.error === "not-a-member") setReplyError("Join the canteen to comment.");
-        else if (data.error === "body-too-short") setReplyError("Write a bit more.");
-        else setReplyError("Comment failed. Try again.");
-        return;
-      }
-      setReplyBody("");
-      setReplyCount((n) => n + 1);
-      // Refetch to pick up the row with its real timestamp + author
-      // display name resolved from the members table.
-      try {
-        const refetch = await fetch(`/api/canteens/posts/${encodeURIComponent(postId)}/replies`);
-        const refetchData = await refetch.json().catch(() => ({}));
-        if (refetch.ok && refetchData.ok && Array.isArray(refetchData.replies)) {
-          setReplies(refetchData.replies as Reply[]);
-        }
-      } catch {
-        // Silent — count already bumped.
-      }
-    } finally {
-      setReplySubmitting(false);
-    }
-  }
-
   return (
     <>
       <div className="mt-3 flex items-center gap-3 border-t border-neutral-100 pt-2.5 text-[11px] font-black uppercase tracking-wider text-neutral-500">
@@ -2839,20 +2924,7 @@ function ReactionRow({
         </button>
         <button
           type="button"
-          onClick={() => toggleReaction("question")}
-          disabled={pending}
-          className="inline-flex items-center gap-1 transition hover:text-neutral-900 disabled:opacity-60"
-          style={{ color: questioned ? BRAND_AMBER : undefined }}
-          title="Question this"
-        >
-          <HelpCircle size={13} fill={questioned ? BRAND_AMBER : "none"}/>
-          <span>Q?</span>
-          <span className="text-neutral-400">·</span>
-          <span>{questionCount}</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => (threadOpen ? setThreadOpen(false) : openThread())}
+          onClick={() => setThreadOpen((v) => !v)}
           className="inline-flex items-center gap-1 transition hover:text-neutral-900"
           style={{ color: threadOpen ? BRAND_BLACK : undefined }}
         >
@@ -2864,88 +2936,16 @@ function ReactionRow({
       </div>
 
       {threadOpen && (
-        <div className="mt-2 rounded-lg border bg-neutral-50 p-3" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
-          {/* Approved replies from the DB. All comments are live the
-              moment they're posted — no moderation queue. */}
-          {postId && loadingReplies && (
-            <div className="text-[11px] font-black uppercase tracking-wider text-neutral-500">Loading…</div>
-          )}
-          {postId && replies && replies.length === 0 && !loadingReplies && (
-            <div className="text-[11.5px] text-neutral-500">
-              No comments yet — be the first.
-            </div>
-          )}
-          {replies && replies.length > 0 && (
-            <ul className="flex flex-col gap-2">
-              {replies.map((r) => (
-                <li key={r.id} className="rounded-lg bg-white p-2 shadow-sm" style={{ border: "1px solid rgba(139,69,19,0.08)" }}>
-                  <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
-                    <Link href={`/trade/${r.authorSlug}`} className="text-neutral-900 hover:underline">
-                      {r.authorDisplayName}
-                    </Link>
-                    <span className="text-neutral-400">{formatAgoShort(r.createdAt)}</span>
-                  </div>
-                  <p className="mt-1 text-[12.5px] leading-snug text-neutral-800">
-                    {r.body}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {/* Composer OR sign-in CTA — the read/write split. Anyone can
-              read every comment above; posting requires an account. The
-              old name+WhatsApp guest form was killed 2026-07-15 per
-              Philip — friction was suppressing engagement. */}
-          {viewerSlug ? (
-            <div className="mt-3 flex flex-col gap-2">
-              <textarea
-                value={replyBody}
-                onChange={(e) => setReplyBody(e.target.value.slice(0, 4000))}
-                placeholder="Write a comment…"
-                rows={2}
-                className="rounded-lg border bg-white px-3 py-2 text-[12.5px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
-                style={{ borderColor: "rgba(139,69,19,0.15)" }}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {replyError ? (
-                  <span className="text-[10px] font-black uppercase tracking-wider text-red-600">
-                    {replyError}
-                  </span>
-                ) : (
-                  <span className="text-[10px] text-neutral-400">
-                    Comments go live immediately.
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={submitReply}
-                  disabled={replySubmitting || replyBody.trim().length === 0}
-                  className="inline-flex h-9 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-neutral-900 shadow-sm disabled:cursor-not-allowed disabled:opacity-50"
-                  style={{ backgroundColor: BRAND_YELLOW }}
-                >
-                  <Send size={11} strokeWidth={2.5}/>
-                  {replySubmitting ? "Posting…" : "Comment"}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div
-              className="mt-3 flex items-center justify-between gap-3 rounded-lg border bg-white p-2.5"
-              style={{ borderColor: "rgba(139,69,19,0.15)" }}
-            >
-              <span className="text-[11.5px] leading-snug text-neutral-700">
-                Free to read every comment. Create an account to reply.
-              </span>
-              <Link
-                href={`/sign-in${canteenSlug ? `?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}`)}` : ""}`}
-                className="inline-flex h-9 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
-                style={{ backgroundColor: BRAND_BLACK }}
-              >
-                Sign in
-              </Link>
-            </div>
-          )}
+        <div className="mt-2">
+          <CommentThread
+            postId={postId}
+            initialReplyCount={replyCount}
+            viewerSlug={viewerSlug}
+            api={CANTEEN_COMMENT_API}
+            signInHref={canteenSlug ? `/sign-in?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}`)}` : "/sign-in"}
+            alwaysOpen
+            onReplyPosted={() => setReplyCount((n) => n + 1)}
+          />
         </div>
       )}
     </>

@@ -21,55 +21,16 @@ import {
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { CanteenBottomNav } from "@/components/xrated/yard/CanteenBottomNav";
 import { ReportContentModal } from "@/components/forms/ReportContentButton";
-
-// Shape returned by /api/canteens/posts/[id]/replies. Keep in sync
-// with route handler at src/app/api/canteens/posts/[id]/replies/route.ts.
-type FeedReply = {
-  id: string;
-  authorSlug: string;
-  authorDisplayName: string;
-  authorAvatarUrl: string | null;
-  body: string;
-  /** Optional — replies with attached photos are rare, and the mock
-   *  replies dict omits it entirely. API responses may or may not
-   *  include the field depending on the row's photo_urls column. */
-  photoUrls?: string[];
-  createdAt: string;
-  likeCount: number;
-};
+import { CommentThread, CANTEEN_COMMENT_API } from "@/components/comments/CommentThread";
 
 const CREAM = "#FBF6EC";
 const TAN = "#B8860B";
 const TAN_SOFT = "#F5E9D3";
 const BRAND_BLACK = "#0A0A0A";
 
-// Canned replies for MOCK_POSTS so the "N comments" chip on the
-// demo feed opens onto real-looking conversation instead of a
-// blank list. Real DB posts fetch from /api/canteens/posts/[id]/
-// replies as normal. Reply counts here should roughly match the
-// replyCount on MOCK_POSTS below so the numbers feel honest.
-const MOCK_REPLIES_BY_POST: Record<string, FeedReply[]> = {
-  "mock-fd-1": [
-    { id: "r1a", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Beautiful job. Whose worktop are you using?", createdAt: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(), likeCount: 3 },
-    { id: "r1b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Bosch dishwasher fits the standard 60cm carcass, no headaches.",                                                             createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
-    { id: "r1c", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Silestone Calacatta from Nu-Marbles. Ex-display so we got a decent price.",                                                    createdAt: new Date(Date.now() - 17 * 60 * 60 * 1000).toISOString(), likeCount: 4 },
-    { id: "r1d", authorSlug: "craig-mcdermott",authorDisplayName: "Craig McDermott",authorAvatarUrl: null, body: "Nice one. Send us the client — I need work in that postcode.",                                                                   createdAt: new Date(Date.now() - 10 * 60 * 60 * 1000).toISOString(), likeCount: 1 }
-  ],
-  "mock-fd-2": [
-    { id: "r2a", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Nu-Marbles run 24h templating out of Wigan. £30 extra but reliable.", createdAt: new Date(Date.now() - 3 * 60 * 60 * 1000).toISOString(), likeCount: 5 },
-    { id: "r2b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Same. Ask for Kirsty on their trade line.",                              createdAt: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
-    { id: "r2c", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Cheers both, will try them next week.",                                  createdAt: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(), likeCount: 1 }
-  ],
-  "mock-fd-3": [
-    { id: "r3a", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Whittington's a nice pocket for high-spec work. Well played.", createdAt: new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString(), likeCount: 3 },
-    { id: "r3b", authorSlug: "craig-mcdermott",authorDisplayName: "Craig McDermott",authorAvatarUrl: null, body: "3-day install into a new-build? Impressive.",                    createdAt: new Date(Date.now() - 5 * 60 * 60 * 1000).toISOString(), likeCount: 2 }
-  ],
-  "mock-fd-4": [
-    { id: "r4a", authorSlug: "rachel-simms",   authorDisplayName: "Rachel Simms",   authorAvatarUrl: null, body: "Ta for the heads-up.",                                                              createdAt: new Date(Date.now() - 22 * 60 * 60 * 1000).toISOString(), likeCount: 4 },
-    { id: "r4b", authorSlug: "tom-fisher",     authorDisplayName: "Tom Fisher",     authorAvatarUrl: null, body: "Second — north gate's a squeeze but doable.",                                        createdAt: new Date(Date.now() - 20 * 60 * 60 * 1000).toISOString(), likeCount: 2 },
-    { id: "r4c", authorSlug: "mike-watson",    authorDisplayName: "Mike Watson",    authorAvatarUrl: null, body: "Someone please tell the site manager they need to sign that in the induction pack.", createdAt: new Date(Date.now() - 18 * 60 * 60 * 1000).toISOString(), likeCount: 6 }
-  ]
-};
+// Mock replies now live inside the shared CommentThread component
+// (src/components/comments/CommentThread.tsx) — that's the ONE place
+// to fix comment behaviour across the platform.
 
 // Fallback mock feed for empty demo canteens — same voices as the
 // mobile rotator mock so the page always renders content.
@@ -413,12 +374,12 @@ function FeedCard({
   // when the viewer taps the "N comments" chip. Fetches replies lazily
   // on first open from /api/canteens/posts/[id]/replies. Second click
   // collapses without re-fetching (cached in `replies`).
+  // Toggle for the CommentThread panel. Panel state (replies, likes,
+  // composer, mock/DB fetching) lives inside CommentThread — parent
+  // just decides when to mount it.
   const [threadOpen, setThreadOpen] = useState(false);
-  const [replies, setReplies] = useState<FeedReply[] | null>(null);
-  const [loadingReplies, setLoadingReplies] = useState(false);
-  const [replyBody, setReplyBody] = useState("");
-  const [replySubmitting, setReplySubmitting] = useState(false);
-  const [replyError, setReplyError] = useState<string | null>(null);
+  const openThread = useCallback(() => setThreadOpen(true), []);
+
   // Owner controls: viewer is host OR viewer is the post's author.
   const canDelete = isHost || (viewerSlug !== null && viewerSlug === post.authorSlug);
   // Save is open to everyone (including guests) — the flag lives in the
@@ -428,85 +389,12 @@ function FeedCard({
   const isShowcase = post.moodSlug === "showcase";
   const isAnnouncement = post.moodSlug === "announcement";
   const live = isLive(post.createdAt);
-  const isAuthed = viewerSlug !== null;
-  // Live "N comments" chip count. Mirrors `replyCount` from the DB
-  // until the viewer expands the thread and posts a fresh reply —
-  // then bumps the count optimistically so the chip stays in sync
-  // without a router.refresh() round-trip.
+  // Live comment chip count. Bumped optimistically by CommentThread
+  // via onReplyPosted so the chip stays in sync without a refresh.
   const [localReplyCount, setLocalReplyCount] = useState<number>(post.replyCount);
   useEffect(() => {
     setLocalReplyCount(post.replyCount);
   }, [post.replyCount]);
-
-  const openThread = useCallback(async () => {
-    setThreadOpen(true);
-    if (replies !== null) return;
-    // Mock posts (fallback demo content, ids prefixed "mock-") have
-    // no DB row so the /replies endpoint would 404. Seed from the
-    // canned MOCK_REPLIES_BY_POST dict instead so the "N comments"
-    // chip opens onto real-looking conversation. Real DB posts fall
-    // through to the fetch.
-    if (post.id.startsWith("mock-")) {
-      setReplies(MOCK_REPLIES_BY_POST[post.id] ?? []);
-      return;
-    }
-    setLoadingReplies(true);
-    try {
-      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/replies`);
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.ok && Array.isArray(data.replies)) {
-        setReplies(data.replies as FeedReply[]);
-      } else {
-        setReplies([]);
-      }
-    } catch {
-      setReplies([]);
-    } finally {
-      setLoadingReplies(false);
-    }
-  }, [post.id, replies]);
-
-  async function submitReply() {
-    const trimmed = replyBody.trim();
-    if (!trimmed || replySubmitting) return;
-    if (!isAuthed) {
-      setReplyError("Log in to reply.");
-      return;
-    }
-    setReplySubmitting(true);
-    setReplyError(null);
-    try {
-      const res = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/reply`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ body: trimmed })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok || !data.ok) {
-        if (data.error === "not-authenticated") setReplyError("Log in to reply.");
-        else if (data.error === "not-a-member") setReplyError("Join the canteen to reply.");
-        else if (data.error === "body-too-short") setReplyError("Write a bit more.");
-        else setReplyError("Reply failed. Try again.");
-        return;
-      }
-      // Refetch the thread so the new comment appears with its real
-      // server timestamp + id. Also bump the local count so the chip
-      // updates without waiting for router.refresh().
-      setReplyBody("");
-      setLocalReplyCount((n) => n + 1);
-      try {
-        const refetch = await fetch(`/api/canteens/posts/${encodeURIComponent(post.id)}/replies`);
-        const refetchData = await refetch.json().catch(() => ({}));
-        if (refetch.ok && refetchData.ok && Array.isArray(refetchData.replies)) {
-          setReplies(refetchData.replies as FeedReply[]);
-        }
-      } catch {
-        // Non-fatal — the count already bumped, viewer can refresh.
-      }
-    } finally {
-      setReplySubmitting(false);
-    }
-  }
 
   return (
     <article
@@ -713,98 +601,21 @@ function FeedCard({
         </button>
       </div>
 
-      {/* Inline comments dropdown — expands under the reactions row on
-          the same card. Shows the full comment list (matches the
-          replyCount chip above) plus an inline reply composer. Guest
-          viewers see a "Log in to reply" CTA rather than a name+phone
-          gate (per Philip 2026-07-15 — the gate was killing posts). */}
+      {/* Inline comments panel — delegated to the shared
+          <CommentThread> so bug fixes land on every surface at once.
+          Parent still owns the "Comment · N" toggle chip above; when
+          threadOpen we mount the thread in alwaysOpen mode. */}
       {threadOpen && (
-        <div
-          className="mt-3 rounded-lg border bg-neutral-50 p-3"
-          style={{ borderColor: "rgba(139,69,19,0.10)" }}
-        >
-          {loadingReplies && (
-            <div className="text-[11px] font-black uppercase tracking-wider text-neutral-500">
-              Loading comments…
-            </div>
-          )}
-          {!loadingReplies && (replies === null || replies.length === 0) && (
-            <div className="text-[11.5px] text-neutral-500">
-              No comments yet — be the first.
-            </div>
-          )}
-          {replies && replies.length > 0 && (
-            <ul className="flex flex-col gap-2">
-              {replies.map((r) => (
-                <li
-                  key={r.id}
-                  className="rounded-lg bg-white p-2 shadow-sm"
-                  style={{ border: "1px solid rgba(139,69,19,0.08)" }}
-                >
-                  <div className="flex items-baseline justify-between text-[10px] font-black uppercase tracking-wider">
-                    <Link
-                      href={`/trade/${r.authorSlug}`}
-                      className="text-neutral-900 hover:underline"
-                    >
-                      {r.authorDisplayName}
-                    </Link>
-                    <span className="text-neutral-400">{timeAgo(r.createdAt)}</span>
-                  </div>
-                  <p className="mt-1 whitespace-pre-wrap text-[12.5px] leading-snug text-neutral-800">
-                    {r.body}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          {/* Composer or auth CTA */}
-          {isAuthed ? (
-            <div className="mt-3 flex flex-col gap-2">
-              <textarea
-                value={replyBody}
-                onChange={(e) => setReplyBody(e.target.value.slice(0, 4000))}
-                placeholder="Write a comment…"
-                rows={2}
-                className="w-full resize-none rounded-lg border bg-white px-3 py-2 text-[12.5px] leading-snug text-neutral-800 placeholder:text-neutral-400 focus:outline-none focus:ring-2"
-                style={{ borderColor: "rgba(139,69,19,0.15)" }}
-              />
-              <div className="flex items-center justify-between gap-2">
-                {replyError ? (
-                  <span className="text-[10px] font-black uppercase tracking-wider text-red-600">
-                    {replyError}
-                  </span>
-                ) : (
-                  <span className="text-[10px] text-neutral-400">
-                    Posts go live immediately.
-                  </span>
-                )}
-                <button
-                  type="button"
-                  onClick={submitReply}
-                  disabled={replySubmitting || replyBody.trim().length === 0}
-                  className="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50"
-                  style={{ backgroundColor: TAN }}
-                >
-                  <Send size={11} strokeWidth={2.5}/>
-                  {replySubmitting ? "Posting…" : "Comment"}
-                </button>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border bg-white p-2.5" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
-              <span className="text-[11.5px] leading-snug text-neutral-700">
-                Free to read. Create an account to comment.
-              </span>
-              <Link
-                href={`/sign-in?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}/feed`)}`}
-                className="inline-flex h-8 flex-shrink-0 items-center gap-1 rounded-full px-3 text-[10px] font-black uppercase tracking-wider text-white shadow-sm"
-                style={{ backgroundColor: BRAND_BLACK }}
-              >
-                Sign in
-              </Link>
-            </div>
-          )}
+        <div className="mt-3">
+          <CommentThread
+            postId={post.id}
+            initialReplyCount={localReplyCount}
+            viewerSlug={viewerSlug}
+            api={CANTEEN_COMMENT_API}
+            signInHref={`/sign-in?next=${encodeURIComponent(`/trade-off/yard/canteens/${canteenSlug}/feed`)}`}
+            alwaysOpen
+            onReplyPosted={() => setLocalReplyCount((n) => n + 1)}
+          />
         </div>
       )}
 

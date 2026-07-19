@@ -179,7 +179,7 @@ function FooterMinimal({
                 <MessageCircle
                   size={14}
                   strokeWidth={2.25}
-                  style={{ color: "#25D366" }}
+                  style={{ color: "#166534" }}
                   aria-hidden="true"
                 />
                 {contactWhatsappLabel}

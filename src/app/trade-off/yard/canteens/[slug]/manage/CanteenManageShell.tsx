@@ -160,7 +160,7 @@ export function CanteenManageShell({
             and reviews without hunting through the manage sections. */}
         <NotebookEntryCard hostSlug={canteen.hostSlug} />
 
-        {/* Activity + F100 */}
+        {/* Activity */}
         <ActivitySection canteen={canteen} />
 
         {/* Storage meter — proves the tier gate + shows upgrade lever */}
@@ -236,14 +236,14 @@ function NotebookEntryCard({ hostSlug }: { hostSlug: string }) {
   );
 }
 
-// ─── Activity + F100 progress ──────────────────
+// ─── Activity — Founding-100 offer + progress bar removed 2026-07-18.
 
 function ActivitySection({ canteen }: { canteen: Canteen }) {
   const monthTargetHit = Math.min(canteen.postsLast30d, CANTEEN_ACTIVITY_TARGET.postsPerMonth);
   const pct = Math.round((monthTargetHit / CANTEEN_ACTIVITY_TARGET.postsPerMonth) * 100);
   return (
     <section className="mb-4 rounded-xl border bg-white p-4 shadow-sm" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
-      <SectionHeader icon={Sparkles} label="Activity · Founding 100 progress" />
+      <SectionHeader icon={Sparkles} label="Activity" />
       <div className="mt-3 grid grid-cols-3 gap-3">
         <Stat
           label="Members"
@@ -258,26 +258,8 @@ function ActivitySection({ canteen }: { canteen: Canteen }) {
         <Stat
           label="Streak"
           value={`${canteen.activityStreakMonths}mo`}
-          hint={`Need ${CANTEEN_ACTIVITY_TARGET.months}mo for free app`}
+          hint="Months of sustained activity"
         />
-      </div>
-      {/* Progress bar */}
-      <div className="mt-3">
-        <div className="mb-1 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
-          F100 free-topic-app unlock
-        </div>
-        <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
-          <div
-            className="h-full transition-all"
-            style={{
-              width: `${Math.min(100, (canteen.activityStreakMonths / CANTEEN_ACTIVITY_TARGET.months) * 100)}%`,
-              backgroundColor: BRAND_YELLOW
-            }}
-          />
-        </div>
-        <p className="mt-1.5 text-[11px] leading-snug text-neutral-600">
-          Hit 50 posts/month for 3 months in a row and your canteen unlocks the topic app for 12 months on us. Quality-weighted — posts with 3+ reactions count double.
-        </p>
       </div>
     </section>
   );

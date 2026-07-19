@@ -314,10 +314,10 @@ function HomeownerPanel({ fullBleed }: { fullBleed?: boolean }) {
         </p>
         <div className="mt-8">
           <Link
-            href="/project"
+            href="/homeowners/signup?intent=create-project"
             className="inline-flex min-h-[52px] items-center gap-2 rounded-full bg-white px-6 text-[15px] font-bold text-neutral-900 transition hover:bg-neutral-100"
           >
-            Submit Your Project
+            Post your project — free
             <ArrowRight className="h-4 w-4" aria-hidden />
           </Link>
           <p className="mt-3 text-[13px] text-white/60">

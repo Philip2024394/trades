@@ -200,7 +200,7 @@ export function Emergency247Hero({
                 href={whatsappHref}
                 {...treeAttrs(instanceId, "whatsappCtaLabel", "WhatsApp CTA", "button")}
               >
-                <MessageCircle strokeWidth={2.5} style={{ color: "#25D366" }} aria-hidden="true" />
+                <MessageCircle strokeWidth={2.5} style={{ color: "#166534" }} aria-hidden="true" />
                 <span>{whatsappCtaLabel}</span>
               </Link>
             </Button>

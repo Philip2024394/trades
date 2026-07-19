@@ -380,3 +380,96 @@ export function getPaletteTokens(slug: string | null | undefined): PaletteTokens
   if (!slug) return DEFAULT_PALETTE;
   return PALETTES[slug as PaletteSlug] ?? DEFAULT_PALETTE;
 }
+
+// ─── Intensity adjustment ────────────────────────────────────
+//
+// Apply the merchant's chosen intensity (bold | standard | subtle)
+// to a palette's accent-family colours. Standard = passthrough. Bold
+// pushes saturation up ~15% so accents pop harder. Subtle mixes
+// each accent toward mid-grey by ~40% so the identity softens.
+//
+// Only `accent`, `heroLastWord`, and `chip` are adjusted — bg + text
+// are left alone (adjusting them would break contrast + readability).
+
+export type PaletteIntensity = "bold" | "standard" | "subtle";
+
+/** Parse a #RRGGBB hex into [r,g,b] 0-255. Returns [0,0,0] on
+ *  invalid input (defensive; never throws so palette rendering
+ *  never fails silently). */
+function hexToRgb(hex: string): [number, number, number] {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!m) return [0, 0, 0];
+  const n = parseInt(m[1], 16);
+  return [(n >> 16) & 0xff, (n >> 8) & 0xff, n & 0xff];
+}
+
+/** Convert [r,g,b] 0-255 back to a #RRGGBB hex string. */
+function rgbToHex(r: number, g: number, b: number): string {
+  const clamp = (v: number) => Math.max(0, Math.min(255, Math.round(v)));
+  const h = (v: number) => clamp(v).toString(16).padStart(2, "0");
+  return `#${h(r)}${h(g)}${h(b)}`;
+}
+
+/** Convert RGB → HSL. Used for saturation adjustment. */
+function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
+  const R = r / 255, G = g / 255, B = b / 255;
+  const max = Math.max(R, G, B), min = Math.min(R, G, B);
+  const l = (max + min) / 2;
+  let h = 0, s = 0;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case R: h = ((G - B) / d + (G < B ? 6 : 0)); break;
+      case G: h = ((B - R) / d + 2);               break;
+      case B: h = ((R - G) / d + 4);               break;
+    }
+    h *= 60;
+  }
+  return [h, s, l];
+}
+
+function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+  h = ((h % 360) + 360) % 360 / 360;
+  if (s === 0) {
+    const v = Math.round(l * 255);
+    return [v, v, v];
+  }
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const conv = (t: number) => {
+    if (t < 0) t += 1;
+    if (t > 1) t -= 1;
+    if (t < 1 / 6) return p + (q - p) * 6 * t;
+    if (t < 1 / 2) return q;
+    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+    return p;
+  };
+  return [Math.round(conv(h + 1 / 3) * 255), Math.round(conv(h) * 255), Math.round(conv(h - 1 / 3) * 255)];
+}
+
+/** Multiply the saturation of a hex colour. `mult > 1` boosts,
+ *  `< 1` desaturates. Clamped to [0, 1]. */
+function adjustSaturation(hex: string, mult: number): string {
+  const [r, g, b] = hexToRgb(hex);
+  const [h, s, l] = rgbToHsl(r, g, b);
+  const [nr, ng, nb] = hslToRgb(h, Math.max(0, Math.min(1, s * mult)), l);
+  return rgbToHex(nr, ng, nb);
+}
+
+/** Apply the merchant's intensity choice to a palette's accent
+ *  colours. Non-accent fields (bg, text, mutedText) pass through
+ *  unchanged. */
+export function applyIntensity(
+  palette: PaletteTokens,
+  intensity: PaletteIntensity | undefined
+): PaletteTokens {
+  if (!intensity || intensity === "standard") return palette;
+  const mult = intensity === "bold" ? 1.15 : 0.55;
+  return {
+    ...palette,
+    accent:       adjustSaturation(palette.accent, mult),
+    heroLastWord: adjustSaturation(palette.heroLastWord, mult),
+    chip:         adjustSaturation(palette.chip, mult)
+  };
+}

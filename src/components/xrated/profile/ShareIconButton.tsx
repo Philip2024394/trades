@@ -64,7 +64,7 @@ export function ShareIconButton({
       key: "wa",
       label: "WhatsApp",
       href: `https://wa.me/?text=${t}%20${u}`,
-      bg: "#25D366",
+      bg: "#166534",
       icon: (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M19.05 4.91A10 10 0 0 0 12 2a10 10 0 0 0-8.94 14.5L2 22l5.62-1.47A10 10 0 1 0 19.05 4.91Zm-7.05 15.4a8.36 8.36 0 0 1-4.27-1.17l-.3-.18-3.34.87.89-3.26-.2-.33A8.32 8.32 0 1 1 12 20.31Z" />

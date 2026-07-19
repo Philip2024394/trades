@@ -34,12 +34,14 @@ import { useState } from "react";
 import { XRATED_BRAND, XRATED_PRICING } from "@/lib/xratedTrades";
 import { FX, convertGbpToCurrency, type Currency } from "@/lib/fx";
 
-// When true, Starter and Business route to /trade-off/waitlist rather
-// than /trade-off/signup. Flip to false once each tier's billing is
-// wired (Starter needs a new DB tier value; Business needs multi-user
-// + premium industry packs).
-const STARTER_WAITLIST_MODE = true;
-const BUSINESS_WAITLIST_MODE = true;
+// Waitlist gating — Philip 2026-07-17 launch spec took Starter +
+// Business OFF waitlist. Both are now live-billable via Stripe.
+// Kept as consts (not deleted) so we can flip one back to waitlist
+// mode if billing infra breaks and we need to route to a temporary
+// waitlist page while we fix. Source-of-truth per-tier feature list
+// lives in src/lib/tierCatalog.ts.
+const STARTER_WAITLIST_MODE = false;
+const BUSINESS_WAITLIST_MODE = false;
 
 type Billing = "monthly" | "annual";
 

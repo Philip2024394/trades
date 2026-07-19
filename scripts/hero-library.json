@@ -2,7 +2,7 @@
   "$schema_version": "1.0.0",
   "$generated_by": "Claude image scan session 2026-07-06",
   "$notes": "Hero banner image library. Each entry powers the 'change image' chip on merchant hero slots — the platform queries this file by intersecting merchant.trade_keywords with entries[].keywords_strict (strict match only). Extracted theme palette can be applied to merchant brand tokens when they select an image.",
-  "$brand_policy": "NO third-party brand logos, watermarks, or channel identity marks visible in any hero image (FAKRO, Youngman, Screwfix, Wickes, etc.). Only exception: brand marks that are physically stamped on the product itself (chisel steel, spirit-level face, tool casing) — those are permanent product features. Any image with a burned-in overlay logo (marketing shots from manufacturers) must be rejected. Philip 2026-07-16.",
+  "$brand_policy": "NO third-party brand logos, watermarks, or channel identity marks visible in any hero image (FAKRO, Youngman, Screwfix, Wickes, etc.). Only exception: brand marks that are physically stamped on the product itself (chisel steel, spirit-level face, tool casing) — those are permanent product features. Any image with a burned-in overlay logo (marketing shots from manufacturers) must be rejected. Site Interest 2026-07-16.",
   "$field_reference": {
     "id": "stable slug identifier",
     "image_url": "canonical CDN URL",
@@ -96,7 +96,9 @@
       "hero_use_case": "Landing hero for builders' merchants / timber yards. Warm honey timber tones + cool forest green pair with earthy CTAs.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "loft-ladder-showroom-03_45_28",
@@ -137,7 +139,9 @@
       "hero_use_case": "Landing hero for loft ladder specialist retailers targeting homeowners. Warm honey + walnut suggests premium brand.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "loft-ladder-wall-of-7-03_36_34",
@@ -178,7 +182,9 @@
       "hero_use_case": "Landing hero for loft ladder retailers wanting to signal 'full range in stock'. Horizontal repetition emphasises breadth.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "wood-turning-workshop-03_29_09",
@@ -220,7 +226,9 @@
       "hero_use_case": "Landing hero for wood-turning manufacturers wanting 'we make it here' authenticity. Industrial green is a distinctive brand differentiator.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "turned-parts-showroom-03_26_58",
@@ -260,7 +268,9 @@
       "hero_use_case": "Landing hero for stair-parts specialist retailers. Warm honey + walnut speaks to 'every profile in stock'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "staircase-showroom-cool-03_23_40",
@@ -300,7 +310,9 @@
       "hero_use_case": "Landing hero for staircase fitters targeting spec-and-build / commercial. Cooler stone-tile floor + wrought-iron accents give architectural feel.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "staircase-showroom-warm-03_15_27",
@@ -341,7 +353,9 @@
       "hero_use_case": "Landing hero for staircase installers targeting homeowners. Warm palette signals 'your home, our craft'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "stair-parts-warehouse-03_11_14",
@@ -379,7 +393,9 @@
       "hero_use_case": "Landing hero for trade wholesalers. Cool grey shelving undertone signals 'we stock volume, not just samples'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "mouldings-hero-03_09_06",
@@ -418,7 +434,9 @@
       "hero_use_case": "Landing hero for mouldings suppliers. Multi-species mix supports 'we stock every wood' positioning.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "mouldings-factory-03_06_54",
@@ -456,7 +474,9 @@
       "hero_use_case": "Landing hero for mouldings manufacturers. Consistent industrial-green baseline with other maker/mill imagery.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "sawmill-yard-with-truck-03_04_48",
@@ -499,7 +519,9 @@
       "hero_use_case": "Cinematic landing hero for timber merchants wanting 'we source direct' / heritage-craftsmanship positioning.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "sawmill-processing-single-log-02_54_01",
@@ -539,7 +561,9 @@
       "hero_use_case": "Landing hero for artisan / heritage sawmills. Consistent green baseline with other maker imagery.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "sawmill-production-line-02_51_24",
@@ -580,7 +604,9 @@
       "hero_use_case": "Landing hero for high-volume sawmill / bulk timber supplier. Reads as 'shift-run production, not artisan'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "decking-display-samples-02_48_11",
@@ -621,7 +647,9 @@
       "hero_use_case": "Landing hero for composite decking suppliers with physical showroom. Signals 'walk on the samples before you buy'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "brown-decking-installed-02_41_45",
@@ -661,7 +689,9 @@
       "hero_use_case": "Landing hero for decking installers selling to homeowners. Warm walnut + saddle brown feels premium and inviting.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "tanalised-decking-02_39_14",
@@ -702,7 +732,9 @@
       "hero_use_case": "Landing hero for traditional UK builders' merchants selling tanalised timber decking. Cottage-garden lavender accent gives cosy edge.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "decking-preservative-02_36_00",
@@ -742,7 +774,9 @@
       "hero_use_case": "Landing hero for decking preservative / treatment merchants. Sage-olive theme complements 'protect your investment' messaging.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "sleepers-truck-delivery-02_33_21",
@@ -781,7 +815,9 @@
       "hero_use_case": "Landing hero for garden timber / sleeper delivery merchants. Warm timber + blue sky palette suggests 'we deliver same-day'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "decking-natural-timber-02_29_09",
@@ -819,7 +855,9 @@
       "hero_use_case": "Landing hero for decking installers doing higher-end residential. Cream sofa suggests 'built for the lifestyle you want'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "decking-led-premium-02_25_35",
@@ -859,7 +897,9 @@
       "hero_use_case": "Landing hero for premium decking + landscape lighting installers. LED-warm gold accent doubles as CTA colour.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plasterer-external-front-02_18_53",
@@ -899,7 +939,9 @@
       "hero_use_case": "Documentary hero for plasterers / external rendering specialists. Real-worker authenticity beats stock imagery for trust.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plasterer-external-side-01_47_47",
@@ -939,7 +981,9 @@
       "hero_use_case": "Best composition of the plasterer trio — cleanest sky, cinematic. Lead-of-three for a plasterer merchant carousel.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plasterer-external-back-01_46_49",
@@ -979,7 +1023,9 @@
       "hero_use_case": "Third angle of the plasterer trio. Use as section-page hero (services page) alongside the lead 01_47_47.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "garden-shed-classic-12_05_09",
@@ -1020,7 +1066,9 @@
       "hero_use_case": "Landing hero for garden shed suppliers. Sage roof + lavender give a cosy cottage vibe.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "garden-sunroom-office-11_58_14",
@@ -1062,7 +1110,9 @@
       "hero_use_case": "Landing hero for garden office / log cabin suppliers. Positions merchant as premium remote-workspace specialist.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "fascia-timber-11_51_35",
@@ -1102,7 +1152,9 @@
       "hero_use_case": "Landing hero for exterior finish carpenters / roofline timber specialists. Timber + black roof = premium new-build signalling.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "dog-house-11_42_53",
@@ -1142,7 +1194,9 @@
       "hero_use_case": "Landing hero for bespoke pet-housing manufacturers. Three sizes narrate 'we make bespoke to your dog'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "beehive-supplier-11_33_56",
@@ -1182,7 +1236,9 @@
       "hero_use_case": "Landing hero for beekeeping merchants / honey producers. Golden honey accent doubles as CTA colour.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "garden-sunroom-warm-11_29_34",
@@ -1222,7 +1278,9 @@
       "hero_use_case": "Alternative garden sunroom hero — warmer, more residential 'hideaway' vibe than the office-positioned 11_58_14.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "metal-shed-11_25_53",
@@ -1265,7 +1323,9 @@
       "hero_use_case": "Landing hero for metal shed suppliers. Distinct from wooden — cool charcoal palette suggests modern engineering.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "wooden-sheds-showcase-11_21_42",
@@ -1306,7 +1366,9 @@
       "hero_use_case": "Landing hero for boutique wooden shed suppliers. Golden-hour warmth suggests aspirational lifestyle.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "wooden-sheds-large-11_18_06",
@@ -1347,7 +1409,9 @@
       "hero_use_case": "Landing hero for wooden shed suppliers targeting larger buildings / trade orders. Black felt roofs signal 'premium finish'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "loft-ladder-install-worker-11_12_08",
@@ -1385,7 +1449,9 @@
       "hero_use_case": "Documentary service-page hero for loft ladder INSTALLERS (distinct from showroom sellers). Real-worker authenticity.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "formwork-carpenter-11_04_56",
@@ -1427,7 +1493,9 @@
       "hero_use_case": "Landing hero for formwork / shuttering carpenters serving commercial construction. Sunset gold reads as CTA colour.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "fence-install-golden-hour-10_56_22",
@@ -1468,7 +1536,9 @@
       "hero_use_case": "Service-page hero for fencers / garden builders. Part of golden-hour carpenter series — bundleable with other outdoor jobs.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "shed-install-golden-hour-10_52_50",
@@ -1509,7 +1579,9 @@
       "hero_use_case": "Service-page hero for shed installers. Part of golden-hour carpenter series.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "door-repair-golden-hour-10_48_25",
@@ -1551,7 +1623,9 @@
       "hero_use_case": "Service-page hero for door-repair carpenters. Real-world site context helps 'we come to you' insurance-claim positioning.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "roof-carpenter-rafters-10_44_14",
@@ -1594,7 +1668,9 @@
       "hero_use_case": "Service-page hero for first-fix / structural / cut-roof carpenters. Do NOT tag as roofer — different trade.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "roof-carpenter-battens-10_41_29",
@@ -1637,7 +1713,9 @@
       "hero_use_case": "Service-page hero for the next stage after 10_44_14 — narrates 'we do frame + membrane + battens before roofer takes over'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "front-door-grid-10_09_34",
@@ -1679,7 +1757,9 @@
       "hero_use_case": "Category-index landing OR split-hero right-side content. Merchant text sits left, grid right. Signals 'we stock every style'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "split-hero"
+      "recommended_use": "split-hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "site-engineer-untitled",
@@ -1723,7 +1803,9 @@
       "hero_use_case": "Landing hero for site engineers / setting-out engineers / building surveyors — WHITE-COLLAR construction professionals. Laser-orange accent is distinctive.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1536,
+      "height_px": 870
     },
     {
       "id": "electrician-spark-hand-01_52_48",
@@ -1761,7 +1843,10 @@
       "hero_use_case": "Landing hero for electrical brand marketing — dramatic branding punch, not service-page use. Best for 'we do 24/7 emergency' positioning.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887,
+      "is_banner": true
     },
     {
       "id": "electrician-spark-angle-01_45_44",
@@ -1798,7 +1883,10 @@
       "hero_use_case": "Alternate dramatic electrical hero — includes visible tools for 'trade-professional' framing.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887,
+      "is_banner": true
     },
     {
       "id": "electrician-real-worker-01_26_18",
@@ -1838,7 +1926,9 @@
       "hero_use_case": "Service-page hero for domestic electricians. Real-worker trust beats dramatic marketing shots for 'book me' pages.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "fuse-board-dark-01_41_39",
@@ -1878,7 +1968,9 @@
       "hero_use_case": "Product-hero for electrical merchants — 'we install to spec'. Black left-half is ideal for large text overlay.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "fuse-board-full-01_38_55",
@@ -1918,7 +2010,9 @@
       "hero_use_case": "Split-hero right-side content or category-page hero. Do NOT use as full-bleed with text overlay.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "split-hero"
+      "recommended_use": "split-hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "cables-4core-01_34_24",
@@ -1954,7 +2048,9 @@
       "hero_use_case": "Landing hero for electrical wholesalers / cable specialists. Left-half black is ideal for large text overlay.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "cables-5core-01_31_39",
@@ -1991,7 +2087,9 @@
       "hero_use_case": "Landing hero for data cable / structured wiring merchants. Blue-heavy palette for tech-forward brand.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "cables-4core-clean-01_30_01",
@@ -2028,7 +2126,9 @@
       "hero_use_case": "PREMIUM landing hero for electrical wholesalers — cleanest composition of the dramatic-cable set. Biggest text zone.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "electrician-first-fix-01_23_54",
@@ -2068,7 +2168,9 @@
       "hero_use_case": "Service-page hero for electricians serving new-builds. Timber framing gives 'we work with construction' feel.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "understair-storage-carpenter-01_09_30",
@@ -2108,7 +2210,9 @@
       "hero_use_case": "Service-page hero for bespoke understair storage specialists (Neatsmith-style operators). Niche but authentic.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "glass-balustrade-installed-01_00_58",
@@ -2149,7 +2253,9 @@
       "hero_use_case": "Landing hero for glass-balustrade staircase installers. Editorial magazine feel signals premium bespoke.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "glass-stair-install-working-12_56_38",
@@ -2189,7 +2295,9 @@
       "hero_use_case": "Service-page hero showing 'we fit it in your home'. Part of staircase-fitter-series 4-stage narrative.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "staircase-spraying-12_45_11",
@@ -2229,7 +2337,9 @@
       "hero_use_case": "About-page hero showing 'we spray-finish in-house before delivery'. Part of staircase-fitter-series.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "staircase-manufacture-12_40_16",
@@ -2269,7 +2379,9 @@
       "hero_use_case": "About-page hero — 'we make it ourselves'. First stage in the 4-stage manufacture→spray→install narrative.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "stair-install-turned-12_34_37",
@@ -2309,7 +2421,9 @@
       "hero_use_case": "Service-page hero for staircase installers. Classic turned-baluster style distinguishes from the glass-balustrade variant (01_00_58).",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "stair-refurb-12_31_48",
@@ -2348,7 +2462,9 @@
       "hero_use_case": "Service-page hero for staircase refurb / repair specialists. Signals 'we restore, not just install'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "wood-carving-workshop-12_18_55",
@@ -2389,7 +2505,9 @@
       "hero_use_case": "Landing hero for heritage joiners / bespoke wood-carvers. Signals 'artisan craft, not factory'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "skirting-install-12_15_38",
@@ -2431,7 +2549,9 @@
       "hero_use_case": "Service-page hero for trim carpenters — pairs with Phase 16 Trim Carpenter calc audience.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "joiner-workshop-sawing-12_06_42",
@@ -2472,7 +2592,9 @@
       "hero_use_case": "Landing hero for heritage joiners / bespoke workshops. Warm side-lit atmosphere signals 'artisan operation'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "joiner-workshop-marking-12_01_55",
@@ -2513,7 +2635,9 @@
       "hero_use_case": "About-page hero for heritage joiners. Pairs with 12_06_42 as 'measure twice, cut once' narrative.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "circular-saw-sunset-11_58_04",
@@ -2554,7 +2678,9 @@
       "hero_use_case": "Landing hero for site / first-fix carpenters. DeWalt yellow accent works as CTA colour.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "site-foreman-orange-phone-03_08_19",
@@ -2595,7 +2721,9 @@
       "hero_use_case": "Landing hero for construction management / builder companies. Signals scale + oversight.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "site-foreman-yellow-plans-02_34_38",
@@ -2636,7 +2764,9 @@
       "hero_use_case": "Landing hero for builder company / development firm. Rolled plans signal 'we plan before we build'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "excavator-sunset-02_25_52",
@@ -2676,7 +2806,9 @@
       "hero_use_case": "Landing hero for plant hire / groundworks contractors. Big yellow excavator = clear trade identifier.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "kitchen-fitter-install-02_10_31",
@@ -2717,7 +2849,9 @@
       "hero_use_case": "Service-page hero for kitchen fitters. Unfinished kitchen signals 'we're mid-install' authenticity.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "kitchen-workshop-mfg-02_09_05",
@@ -2758,7 +2892,9 @@
       "hero_use_case": "About-page hero for kitchen manufacturers. 'We make it ourselves' — pairs with 02_10_31 install shot.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "city-foreman-sunset-02_02_10",
@@ -2799,7 +2935,9 @@
       "hero_use_case": "Landing hero for commercial construction / urban development firms. Reads as 'we deliver at scale'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plant-breakdown-24hr-01_18_24",
@@ -2842,7 +2980,9 @@
       "hero_use_case": "Landing hero for plant machinery breakdown / mobile mechanic services. FIRST night-time emergency image in library.",
       "burned_in_text": true,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "site-worker-tiling-08_44_32",
@@ -2883,7 +3023,9 @@
       "hero_use_case": "Landing hero for commercial / warehouse floor tilers. Scale of building signals 'we do big spaces'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "new-build-plaster-and-roof-09_07_25",
@@ -2922,7 +3064,9 @@
       "hero_use_case": "Landing hero for main contractors / house builders coordinating multiple trades. Signals 'we manage the whole build'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "carpenter-golden-block-08_40_16",
@@ -2962,7 +3106,9 @@
       "hero_use_case": "Landing hero for site carpenters / small building firms. Sunrise = 'we start early'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "site-still-life-hardhat-blueprints-08_38_50",
@@ -3002,7 +3148,9 @@
       "hero_use_case": "Landing hero for construction consultancy, QS firm, or architect. Blueprints = 'we plan first, build second'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "carpenter-golden-frame-09_12_44",
@@ -3042,7 +3190,9 @@
       "hero_use_case": "Service-page hero for site carpenters. Depicts frame-erection stage — pairs with roof / fascia / batten images.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "trades-team-lineup-08_56_55",
@@ -3080,7 +3230,9 @@
       "hero_use_case": "About-page / trust hero for builder companies. 'Meet the team' — signals scale + capability + hi-vis compliance.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "plant-line-up-04_00_55",
@@ -3119,7 +3271,9 @@
       "hero_use_case": "Landing hero for plant hire companies. Fleet lineup = 'we have the kit'. Orange excavator adds visual variety.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 2048,
+      "height_px": 768
     },
     {
       "id": "multi-trade-sunset-02_36_48",
@@ -3157,7 +3311,9 @@
       "hero_use_case": "Landing hero for main contractors / builder companies. Multi-trade story = 'we run the whole build'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "dumptruck-tipping-stone-02_10_51",
@@ -3198,7 +3354,9 @@
       "hero_use_case": "Landing hero for aggregate / stone / hardcore delivery merchants. Tipping action + sunset = premium 'we deliver' brand.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "excavator-on-trailer-transport-01_29_50",
@@ -3238,7 +3396,9 @@
       "hero_use_case": "Landing hero for plant machinery transport specialists. Signals 'we move the big kit'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "garden-landscape-pergola-02_58_48",
@@ -3279,7 +3439,9 @@
       "hero_use_case": "Premium landing hero for landscape gardeners. Massive right-side quiet zone is ideal for large hero text — best text-zone-to-image ratio in library.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1983,
+      "height_px": 793
     },
     {
       "id": "oak-frame-carved-entrance-03_27_08",
@@ -3319,7 +3481,9 @@
       "hero_use_case": "Landing hero for oak-frame builders / heritage timber craftsmen. Carved detail signals 'we do the ornate work others can't'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1823,
+      "height_px": 863
     },
     {
       "id": "building-merchant-warehouse-03_56_29",
@@ -3359,7 +3523,9 @@
       "burned_in_text": true,
       "worker_visible": true,
       "recommended_use": "hero",
-      "note": "Image has burned-in shop signage. Hero text should complement not compete — avoid overlapping the branded wall panels on right."
+      "note": "Image has burned-in shop signage. Hero text should complement not compete — avoid overlapping the branded wall panels on right.",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "dumptruck-and-excavator-earthworks-03_29_54",
@@ -3401,7 +3567,9 @@
       "hero_use_case": "Landing hero for large-scale plant hire / earthworks contractors. Dramatic sunset = premium brand feel.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "building-merchant-exterior-03_36_49",
@@ -3441,7 +3609,9 @@
       "burned_in_text": true,
       "worker_visible": true,
       "recommended_use": "hero",
-      "note": "Contains 'UK BUILDING SUPPLIES' branded signage. Merchant using this image should either have compatible branding or be advised to use the interior variant (03_56_29) as it's less brand-specific."
+      "note": "Contains 'UK BUILDING SUPPLIES' branded signage. Merchant using this image should either have compatible branding or be advised to use the interior variant (03_56_29) as it's less brand-specific.",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "tool-supplier-pro-store-11_56_25",
@@ -3482,7 +3652,9 @@
       "burned_in_text": true,
       "worker_visible": true,
       "recommended_use": "hero",
-      "note": "Contains 'PRO' branded signage burned in. Best fit for merchants operating under that or a compatible black/yellow brand."
+      "note": "Contains 'PRO' branded signage burned in. Best fit for merchants operating under that or a compatible black/yellow brand.",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plasterer-render-house-corner-06_38_39",
@@ -3523,7 +3695,9 @@
       "hero_use_case": "Service-page hero for external render specialists. Alternate angle to the plasterer trio — outdoor domestic setting.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "architect-site-composite-07_14_46",
@@ -3565,7 +3739,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "note": "This is a composited marketing image (multiple photos overlaid with graphic panels), not a natural scene. Best for merchants with polished corporate positioning."
+      "note": "This is a composited marketing image (multiple photos overlaid with graphic panels), not a natural scene. Best for merchants with polished corporate positioning.",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "trades-team-chat-yard-02_13_13",
@@ -3603,7 +3779,9 @@
       "hero_use_case": "About-page / team hero for builder companies. Casual moment builds trust — 'we work together, not at each other'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "paver-luxury-patio-01_46_23",
@@ -3647,7 +3825,9 @@
       "hero_use_case": "Landing hero for premium patio / paving installers targeting homeowners with modern-luxury positioning. Moody sky + warm house interior signals 'we finish jobs to lifestyle standard'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "blocklayer-house-extension-01_46_00",
@@ -3692,7 +3872,9 @@
       "hero_use_case": "Landing hero for blocklayers / extension builders. Real-work authenticity — 'we build extensions to your existing house'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "blocklayer-garden-wall-01_45_33",
@@ -3736,7 +3918,9 @@
       "hero_use_case": "Landing hero for landscape / garden-wall builders targeting premium residential. Signals 'we build the hardscape that anchors your garden'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "slate-roof-repair-01_44_51",
@@ -3781,7 +3965,9 @@
       "hero_use_case": "Landing hero for slate roofers / roof repair specialists. Moody sky + real repair work = 'we come when your roof needs us most'.",
       "burned_in_text": false,
       "worker_visible": true,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "shower-showroom-02_10_15",
@@ -3822,7 +4008,9 @@
       "hero_use_case": "Landing hero for premium shower / bathroom retailers. Dark moody palette signals high-end brand differentiation.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "shower-installation-02_04_52",
@@ -3863,7 +4051,9 @@
       "hero_use_case": "Landing hero for shower / bathroom installers. Product-hero angle signals 'we fit premium kit'. Left tile has great dark rest zone for hero text overlay.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plumbing-fittings-copper-brass-02_03_04",
@@ -3906,7 +4096,9 @@
       "hero_use_case": "Landing hero for plumbers / plumbing merchants. Copper + red-wrench palette pops on dark backgrounds — good for high-contrast text overlay.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "plumbing-under-sink-02_01_34",
@@ -3949,7 +4141,9 @@
       "hero_use_case": "Landing hero for domestic plumbers / emergency plumbing services. 'Real work' vibe suggests 'we've done this before'.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "hero"
+      "recommended_use": "hero",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "sign-in-banner-2026-07-08",
@@ -3981,7 +4175,10 @@
       "hero_use_case": "Left-half hero on /home/sign-in. Legibility gradient overlays the image so the amber brand chip (top-left) + white headline (bottom-left) read on any imagery.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "split-hero"
+      "recommended_use": "split-hero",
+      "width_px": 1536,
+      "height_px": 1024,
+      "is_banner": true
     },
     {
       "id": "market-hero-2026-07-09",
@@ -4011,7 +4208,10 @@
       "hero_use_case": "Right column of the /market hero. Left column carries eyebrow + headline + copy + CTAs; the image is decorative rather than text-bearing. Full-bleed inside a rounded-3xl frame.",
       "burned_in_text": false,
       "worker_visible": false,
-      "recommended_use": "split-hero"
+      "recommended_use": "split-hero",
+      "width_px": 1774,
+      "height_px": 887,
+      "is_banner": true
     },
     {
       "id": "chatgpt-image-jul-3-2026-03-00-28-pm",
@@ -4051,7 +4251,9 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/beforeAfterSlider.tsx"
+      "$migration_source": "sections/hero/beforeAfterSlider.tsx",
+      "width_px": 1254,
+      "height_px": 1254
     },
     {
       "id": "chatgpt-image-jul-3-2026-02-28-07-pm",
@@ -4090,7 +4292,9 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/compareHero.tsx"
+      "$migration_source": "sections/hero/compareHero.tsx",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "chatgpt-image-jul-3-2026-09-14-47-am",
@@ -4128,7 +4332,9 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/cursorSpotlight.tsx"
+      "$migration_source": "sections/hero/cursorSpotlight.tsx",
+      "width_px": 1672,
+      "height_px": 941
     },
     {
       "id": "chatgpt-image-jul-3-2026-02-43-45-pm",
@@ -4168,7 +4374,9 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/mapHero.tsx"
+      "$migration_source": "sections/hero/mapHero.tsx",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "chatgpt-image-jul-3-2026-02-14-02-pm",
@@ -4201,7 +4409,9 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/marqueeScroll.tsx"
+      "$migration_source": "sections/hero/marqueeScroll.tsx",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "hero-minimal-centred-1",
@@ -4279,7 +4489,10 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/plantHireBold.tsx"
+      "$migration_source": "sections/hero/plantHireBold.tsx",
+      "width_px": 1774,
+      "height_px": 887,
+      "is_banner": true
     },
     {
       "id": "chatgpt-image-jul-3-2026-02-03-18-pm",
@@ -4318,7 +4531,10 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/splitPhotoLeft.tsx"
+      "$migration_source": "sections/hero/splitPhotoLeft.tsx",
+      "width_px": 1774,
+      "height_px": 887,
+      "is_banner": true
     },
     {
       "id": "chatgpt-image-jul-3-2026-02-17-19-pm",
@@ -4351,14 +4567,16 @@
       "worker_visible": null,
       "recommended_use": "hero",
       "$migration_status": "auto-migrated-2026-07-09-needs-review",
-      "$migration_source": "sections/hero/textKineticHero.tsx"
+      "$migration_source": "sections/hero/textKineticHero.tsx",
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "manchester-tools-direct-hero-04_06_22-DEPRECATED",
       "$deprecated": true,
       "$deprecated_reason": "Replaced 2026-07-11 by 04_36_21 variant. Kept in library for reference; preserve per feedback_preserve_old_theme_images.md.",
       "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2011,%202026,%2004_06_22%20AM.png",
-      "subject": "Hero banner assigned by Philip 2026-07-11 as Manchester Tools Direct's storeHeroImageUrl. Visual subject not yet confirmed — awaiting Philip's 1-line description.",
+      "subject": "Hero banner assigned by Site Interest 2026-07-11 as Manchester Tools Direct's storeHeroImageUrl. Visual subject not yet confirmed — awaiting the platform's 1-line description.",
       "keywords_strict": [
         "plastering tools",
         "plastering trowels",
@@ -4388,7 +4606,7 @@
         "surface_warm": "#F5F0E4",
         "surface_deep": "#1a1a1a",
         "accent": "#166534",
-        "$note": "Palette inferred from Manchester Tools Direct's TC brand identity (dark surface + yellow accent). Update once Philip confirms the extracted image palette."
+        "$note": "Palette inferred from Manchester Tools Direct's TC brand identity (dark surface + yellow accent). Update once Site Interest confirms the extracted image palette."
       },
       "aspect_variants": {
         "recommended_source": "1920 × 720 (8:3) or 1600 × 640 (5:2)",
@@ -4401,7 +4619,7 @@
       "burned_in_text": null,
       "worker_visible": null,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-11",
+      "$posted_by": "Site Interest 2026-07-11",
       "$applied_to_merchant_slug": "manchester-tools-direct",
       "$fields_needing_confirmation": [
         "subject",
@@ -4410,12 +4628,15 @@
         "aspect_variants",
         "burned_in_text",
         "worker_visible"
-      ]
+      ],
+      "width_px": 1536,
+      "height_px": 1024,
+      "is_banner": true
     },
     {
       "id": "manchester-tools-direct-hero-04_36_21",
       "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2011,%202026,%2004_36_21%20AM.png",
-      "subject": "Hero banner assigned by Philip 2026-07-11 as Manchester Tools Direct's storeHeroImageUrl (replaces 04_06_22). Visual subject not yet confirmed — awaiting Philip's 1-line description.",
+      "subject": "Hero banner assigned by Site Interest 2026-07-11 as Manchester Tools Direct's storeHeroImageUrl (replaces 04_06_22). Visual subject not yet confirmed — awaiting the platform's 1-line description.",
       "keywords_strict": [
         "plastering tools",
         "plastering trowels",
@@ -4446,7 +4667,7 @@
         "surface_warm": "#F5F0E4",
         "surface_deep": "#000000",
         "accent": "#166534",
-        "$note": "Palette inferred from Manchester Tools Direct brand identity + Philip's 'black' description. Confirm once visually verified."
+        "$note": "Palette inferred from Manchester Tools Direct brand identity + the platform's 'black' description. Confirm once visually verified."
       },
       "aspect_variants": {
         "recommended_source": "1920 × 720 (8:3) or 1600 × 640 (5:2)",
@@ -4459,7 +4680,7 @@
       "burned_in_text": null,
       "worker_visible": null,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-11 04:36 AM",
+      "$posted_by": "Site Interest 2026-07-11 04:36 AM",
       "$replaces": "manchester-tools-direct-hero-04_06_22",
       "$applied_to_merchant_slug": "manchester-tools-direct",
       "$fields_needing_confirmation": [
@@ -4467,7 +4688,10 @@
         "theme_palette",
         "burned_in_text",
         "worker_visible"
-      ]
+      ],
+      "width_px": 2048,
+      "height_px": 768,
+      "is_banner": true
     },
     {
       "id": "kitchen-design-signature-handleless-12_31_13",
@@ -4509,8 +4733,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-101"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-101",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-handleless-detail-09_14_25",
@@ -4552,8 +4778,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-101"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-101",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-handleless-detail-09_08_59",
@@ -4595,8 +4823,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-101"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-101",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-handleless-detail-09_05_46",
@@ -4638,8 +4868,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-101"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-101",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-shaker-11_04_56",
@@ -4681,8 +4913,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": null
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": null,
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "kitchen-design-traditional-inframe-06_38_39",
@@ -4723,8 +4957,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": null
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": null,
+      "width_px": 1774,
+      "height_px": 887
     },
     {
       "id": "kitchen-design-compact-galley-01_37_29",
@@ -4765,8 +5001,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-galley-detail-03_45_13",
@@ -4807,8 +5045,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-galley-detail-03_45_49",
@@ -4849,8 +5089,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-galley-custom-untitled-v1",
@@ -4891,8 +5133,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 605,
+      "height_px": 401
     },
     {
       "id": "kitchen-design-galley-custom-untitled-v2",
@@ -4933,8 +5177,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 605,
+      "height_px": 391
     },
     {
       "id": "kitchen-design-galley-custom-untitled-v3",
@@ -4975,8 +5221,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-105"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-105",
+      "width_px": 607,
+      "height_px": 402
     },
     {
       "id": "kitchen-design-walnut-island-hero-01_52_07",
@@ -5019,8 +5267,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-102"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-102",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-walnut-detail-02_16_52",
@@ -5062,8 +5312,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-102"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-102",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-walnut-angle-02_20_49",
@@ -5104,8 +5356,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-102"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-102",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-walnit-wide-02_44_16",
@@ -5146,8 +5400,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-102"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-102",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-stainless-hero-01_49_21",
@@ -5190,8 +5446,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-103"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-103",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-stainless-detail-02_54_07",
@@ -5232,8 +5490,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-103"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-103",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-stainless-detail-02_57_15",
@@ -5274,8 +5534,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-103"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-103",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-stainless-detail-02_58_59",
@@ -5317,8 +5579,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-103"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-103",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-stainless-detail-03_02_24",
@@ -5359,8 +5623,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-103"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-103",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-classic-inframe-01_46_41",
@@ -5402,8 +5668,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-inframe-detail-03_07_05",
@@ -5445,8 +5713,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-inframe-detail-03_08_14",
@@ -5488,8 +5758,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-inframe-detail-03_10_28",
@@ -5531,8 +5803,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-inframe-detail-03_25_14",
@@ -5574,8 +5848,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-inframe-detail-03_38_21",
@@ -5617,8 +5893,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-104"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-104",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-showstopper-01_32_24",
@@ -5660,8 +5938,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-106"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-106",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-showstopper-detail-08_58_14",
@@ -5703,8 +5983,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-106"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-106",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-showstopper-detail-08_59_27",
@@ -5746,8 +6028,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-106"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-106",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "kitchen-design-showstopper-detail-09_00_24",
@@ -5789,8 +6073,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_design_ref": "DS-106"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_design_ref": "DS-106",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-solid-oak-worktop-40mm-09_20_03",
@@ -5832,8 +6118,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_oak_worktop_40mm"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_oak_worktop_40mm",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-shaker-cabinet-doors-3pack-09_21_27",
@@ -5875,8 +6163,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_shaker_doors"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_shaker_doors",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-prefab-pantry-carcasses-09_22_21",
@@ -5918,8 +6208,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_pantry_carcasses"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_pantry_carcasses",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-brushed-brass-handles-09_24_55",
@@ -5961,8 +6253,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_brass_handles"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_brass_handles",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-quartz-offcuts-assorted-09_29_23",
@@ -6004,8 +6298,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_quartz_offcuts"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_quartz_offcuts",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-undermount-stainless-sink-15bowl-09_28_11",
@@ -6047,8 +6343,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_undermount_sink"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_undermount_sink",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "product-angled-chimney-extractor-90cm-09_30_26",
@@ -6090,8 +6388,10 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-13",
-      "$linked_product_id": "prod_extractor_hood"
+      "$posted_by": "Site Interest 2026-07-13",
+      "$linked_product_id": "prod_extractor_hood",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "landscape-design-modern-black-mulch-topiary-d3dc4fdf",
@@ -6134,7 +6434,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 474,
+      "height_px": 711
     },
     {
       "id": "landscape-design-lit-cobblestone-path-9171141",
@@ -6178,7 +6480,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "landscape-design-hillside-lit-stairs-0ae6e496",
@@ -6222,7 +6526,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "landscape-design-lit-curved-deck-lounge-feac4e23",
@@ -6266,7 +6572,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 736,
+      "height_px": 1312
     },
     {
       "id": "landscape-design-pebble-rill-topiary-night-7edc29b9",
@@ -6310,7 +6618,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 736,
+      "height_px": 1318
     },
     {
       "id": "landscape-design-corten-rain-ring-water-feature-8b3797f4",
@@ -6354,7 +6664,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 675,
+      "height_px": 1200
     },
     {
       "id": "landscape-design-waterfall-wall-lit-steps-9be8dabe",
@@ -6398,7 +6710,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-15"
+      "$posted_by": "Site Interest 2026-07-15",
+      "width_px": 1199,
+      "height_px": 1451
     },
     {
       "id": "loft-hatch-closed-flush-white",
@@ -6440,7 +6754,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1080,
+      "height_px": 1440
     },
     {
       "id": "loft-ladder-timber-concertina-deploy",
@@ -6482,7 +6798,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1200,
+      "height_px": 1600
     },
     {
       "id": "loft-ladder-alu-pull-down",
@@ -6524,7 +6842,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 484,
+      "height_px": 650
     },
     {
       "id": "loft-ladder-alu-concertina-in-loft",
@@ -6565,7 +6885,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 564,
+      "height_px": 751
     },
     {
       "id": "loft-ladder-timber-3section-oakfloor",
@@ -6606,7 +6928,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1200,
+      "height_px": 1600
     },
     {
       "id": "loft-ladder-lifestyle-woman-climbing",
@@ -6647,7 +6971,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 933,
+      "height_px": 1400
     },
     {
       "id": "loft-ladder-timber-fold-down-landing",
@@ -6688,7 +7014,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 420,
+      "height_px": 561
     },
     {
       "id": "loft-ladder-timber-slidefold-white-panel",
@@ -6729,7 +7057,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 488,
+      "height_px": 650
     },
     {
       "id": "loft-ladder-alu-3section-product",
@@ -6772,7 +7102,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 679,
+      "height_px": 849
     },
     {
       "id": "loft-ladder-timber-scissor-product",
@@ -6815,7 +7147,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 512,
+      "height_px": 512
     },
     {
       "id": "loft-ladder-lifestyle-sagegreen-landing",
@@ -6856,7 +7190,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 720,
+      "height_px": 1000
     },
     {
       "id": "loft-ladder-timber-zfold-folded-hatch",
@@ -6897,7 +7233,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "section-content",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 747,
+      "height_px": 1328
     },
     {
       "id": "loft-ladder-timber-unfold-lifestyle",
@@ -6938,7 +7276,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 564,
+      "height_px": 846
     },
     {
       "id": "loft-ladder-timber-3section-red-spring-product",
@@ -6981,7 +7321,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "product-grid",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 453,
+      "height_px": 640
     },
     {
       "id": "pool-ec00382fb6730231",
@@ -7028,7 +7370,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-a3e10bce2ba2032d",
@@ -7079,7 +7423,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 236,
+      "height_px": 316
     },
     {
       "id": "pool-04c46c8b2dbc4283",
@@ -7128,7 +7474,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 720,
+      "height_px": 925
     },
     {
       "id": "pool-60eca123217a3d58",
@@ -7177,7 +7525,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 896,
+      "height_px": 1344
     },
     {
       "id": "pool-1010759fdc8b75c9",
@@ -7226,7 +7576,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1288
     },
     {
       "id": "pool-2b98fbf0659c2733",
@@ -7275,7 +7627,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 896,
+      "height_px": 1280
     },
     {
       "id": "pool-3f7bb07a8cf5fc60",
@@ -7326,7 +7680,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 768,
+      "height_px": 1024
     },
     {
       "id": "pool-58999c472887b3e1",
@@ -7377,7 +7733,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "pool-38efc050a7448718",
@@ -7426,7 +7784,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-a11d3b545a679671",
@@ -7475,7 +7835,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 576,
+      "height_px": 1024
     },
     {
       "id": "pool-7adeca2f199b7def",
@@ -7524,7 +7886,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 832,
+      "height_px": 1248
     },
     {
       "id": "pool-19bc3508d9569873",
@@ -7573,7 +7937,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1000,
+      "height_px": 1500
     },
     {
       "id": "pool-ffefe84df6efc84f",
@@ -7622,7 +7988,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 236,
+      "height_px": 303
     },
     {
       "id": "pool-e6b3e307e89bb33b",
@@ -7673,7 +8041,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 888
     },
     {
       "id": "pool-152b9b64be49e300",
@@ -7722,7 +8092,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 800,
+      "height_px": 1169
     },
     {
       "id": "pool-977aa6d4f30d9f19",
@@ -7771,7 +8143,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1200,
+      "height_px": 1206
     },
     {
       "id": "pool-273c63731599d758",
@@ -7820,7 +8194,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 828,
+      "height_px": 1091
     },
     {
       "id": "pool-3cc401bc1525610b",
@@ -7869,7 +8245,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1193
     },
     {
       "id": "pool-936641d1204cb4ba",
@@ -7918,7 +8296,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1308
     },
     {
       "id": "pool-8f8dc8275c47e3a0",
@@ -7969,7 +8349,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1080,
+      "height_px": 1908
     },
     {
       "id": "pool-3945b309324ce36d",
@@ -8020,7 +8402,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 675,
+      "height_px": 1200
     },
     {
       "id": "pool-19789e688ed5a111",
@@ -8071,7 +8455,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-ec257e596b5a10ee",
@@ -8120,7 +8506,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1024
     },
     {
       "id": "pool-9f9cb93f787ef8e2",
@@ -8171,7 +8559,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1308
     },
     {
       "id": "pool-3e8e369f38563829",
@@ -8220,7 +8610,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 810,
+      "height_px": 1440
     },
     {
       "id": "pool-b431de47ac88f456",
@@ -8269,7 +8661,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 828,
+      "height_px": 1242
     },
     {
       "id": "pool-4cb15d8b1b61ffb8",
@@ -8320,7 +8714,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1308
     },
     {
       "id": "pool-6621661177ece08a",
@@ -8369,7 +8765,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-a93b560a86512110",
@@ -8420,7 +8818,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1308
     },
     {
       "id": "pool-6c1df1349a978c1d",
@@ -8469,7 +8869,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 735,
+      "height_px": 490
     },
     {
       "id": "pool-d61bb5cd3df620db",
@@ -8520,7 +8922,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1080,
+      "height_px": 1388
     },
     {
       "id": "pool-3e89a5eaceadec3a",
@@ -8571,7 +8975,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 735,
+      "height_px": 945
     },
     {
       "id": "pool-a858df4050fb9eeb",
@@ -8620,7 +9026,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1311
     },
     {
       "id": "pool-58277372308cae7e",
@@ -8669,7 +9077,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-98353bf6c4c52ffc",
@@ -8718,7 +9128,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 768,
+      "height_px": 1344
     },
     {
       "id": "pool-b562727020e9cc5a",
@@ -8769,7 +9181,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 683
     },
     {
       "id": "pool-3c8d2bce30102c7e",
@@ -8820,7 +9234,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "pool-d1c00eddcda0dbc1",
@@ -8871,7 +9287,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "garden-house-c4c74da0133d",
@@ -8927,7 +9345,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "garden-house-f92e621a49ad",
@@ -8983,7 +9403,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 675,
+      "height_px": 1200
     },
     {
       "id": "garden-house-e2702a2314e7",
@@ -9039,7 +9461,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1089
     },
     {
       "id": "garden-house-41049cd4255e",
@@ -9092,7 +9516,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 800,
+      "height_px": 1200
     },
     {
       "id": "garden-house-04a3d6bdc2d3",
@@ -9146,7 +9572,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 981
     },
     {
       "id": "garden-house-6c8d95c69198",
@@ -9197,7 +9625,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1318
     },
     {
       "id": "garden-house-32b694810037",
@@ -9249,7 +9679,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "garden-house-22150e6e6fd4",
@@ -9302,7 +9734,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 800,
+      "height_px": 1200
     },
     {
       "id": "garden-house-1b8fa511174e",
@@ -9356,7 +9790,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 900,
+      "height_px": 1350
     },
     {
       "id": "shed-d98c46e29d17a06b4a4a",
@@ -9403,7 +9839,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 735,
+      "height_px": 869
     },
     {
       "id": "shed-6b2a7a9026ffc82b5ad0",
@@ -9450,7 +9888,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 870
     },
     {
       "id": "shed-75ee701a2d9578b7a1d7",
@@ -9497,7 +9937,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 816,
+      "height_px": 1456
     },
     {
       "id": "shed-2099659832cf4cf26334",
@@ -9544,7 +9986,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "shed-1a915d5a1fdea90ffa63",
@@ -9591,7 +10035,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "shed-5370774da62cd4adad2e",
@@ -9638,7 +10084,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 972
     },
     {
       "id": "shed-7a64d24dd42dd50bfb42",
@@ -9685,7 +10133,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 928,
+      "height_px": 1232
     },
     {
       "id": "shed-68126e797b431412f587",
@@ -9732,7 +10182,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 900,
+      "height_px": 1350
     },
     {
       "id": "shed-a8c903215ec769b1b735",
@@ -9779,7 +10231,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 236,
+      "height_px": 303
     },
     {
       "id": "shed-680b1e3a3d684f1eb8c2",
@@ -9826,7 +10280,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 640,
+      "height_px": 640
     },
     {
       "id": "shed-48e4befc9cdccb492c88",
@@ -9873,7 +10329,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "shed-369cf9af853bfd9ff470",
@@ -9920,7 +10378,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 236,
+      "height_px": 303
     },
     {
       "id": "shed-6d425b17281ae768d03a",
@@ -9967,7 +10427,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "shed-0480a356e7e8443a89be",
@@ -10014,7 +10476,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1024,
+      "height_px": 1536
     },
     {
       "id": "shed-ba98772e7f6a9cf79d3c",
@@ -10061,7 +10525,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 575,
+      "height_px": 862
     },
     {
       "id": "shed-61cdf429a093e415a1e7",
@@ -10108,7 +10574,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "shed-fda9463760d13c52d635",
@@ -10155,7 +10623,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 704,
+      "height_px": 1024
     },
     {
       "id": "shed-ChatGPT-Image-Jul-6-",
@@ -10202,7 +10672,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "shed-ChatGPT-Image-Jul-6-",
@@ -10249,7 +10721,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "shed-ChatGPT-Image-Jul-6-",
@@ -10296,7 +10770,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "shed-ChatGPT-Image-Jul-6-",
@@ -10343,7 +10819,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "chickencoop-ChatGPT-Image-Jul-6-",
@@ -10387,7 +10865,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1536,
+      "height_px": 1024
     },
     {
       "id": "bricklayer-f2846637e4f8",
@@ -10441,7 +10921,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1104
     },
     {
       "id": "bricklayer-98dd72b483f7",
@@ -10495,7 +10977,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1349
     },
     {
       "id": "bricklayer-91c371b6931b",
@@ -10549,7 +11033,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 920
     },
     {
       "id": "bricklayer-ebce049dff08",
@@ -10606,7 +11092,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1200,
+      "height_px": 1799
     },
     {
       "id": "bricklayer-b3d599ff40bf",
@@ -10660,7 +11148,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1200,
+      "height_px": 1600
     },
     {
       "id": "bricklayer-59149c03bb7a",
@@ -10714,7 +11204,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 1199,
+      "height_px": 1836
     },
     {
       "id": "bricklayer-f2835419b97d",
@@ -10768,7 +11260,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 320,
+      "height_px": 480
     },
     {
       "id": "bricklayer-6a381c66d311",
@@ -10824,7 +11318,9 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 704,
+      "height_px": 1024
     },
     {
       "id": "bricklayer-c30fa69bb427",
@@ -10880,7 +11376,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 736,
+      "height_px": 1288
     },
     {
       "id": "bricklayer-71316059d0bc",
@@ -10936,7 +11434,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 832,
+      "height_px": 1248
     },
     {
       "id": "bricklayer-6dfaec08d5c7",
@@ -10992,7 +11492,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 575,
+      "height_px": 1030
     },
     {
       "id": "bricklayer-413fb75faeb6",
@@ -11049,7 +11551,9 @@
       "burned_in_text": false,
       "worker_visible": false,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 664,
+      "height_px": 1000
     },
     {
       "id": "bricklayer-aa07ed81dda7",
@@ -11106,7 +11610,2785 @@
       "burned_in_text": false,
       "worker_visible": true,
       "recommended_use": "hero",
-      "$posted_by": "Philip 2026-07-16"
+      "$posted_by": "Site Interest 2026-07-16",
+      "width_px": 322,
+      "height_px": 428
+    },
+    {
+      "id": "plumbing-underwater-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2016,%202026,%2007_42_12%20PM.png",
+      "subject": "Chrome plumbing tools laid against a deep blue underwater backdrop with rising air bubbles",
+      "keywords_strict": [
+        "plumbing",
+        "plumber",
+        "wrench",
+        "pipe fittings",
+        "bathroom",
+        "water"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Plumber canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "hammerex-toolbelts-black",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2001_37_15%20AM.png",
+      "subject": "Hammerex tool bag beside drivers, drills, and circular saw arranged on a black studio backdrop",
+      "keywords_strict": [
+        "tool belt",
+        "tool bag",
+        "hammerex",
+        "drill",
+        "circular saw",
+        "tape measure",
+        "scaffolder"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#F5B21A",
+        "secondary": "#171717",
+        "surface_warm": "#3D2E14",
+        "surface_deep": "#000000",
+        "accent": "#E6A500"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "hammerex-product-hero",
+      "hero_use_case": "Hammerex / scaffolder / building-merchant canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "bricklayer-wheelbarrow-scene",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2001_41_56%20AM.png",
+      "subject": "Red brick wall backdrop with wheelbarrow of bricks, trowels, mortar bucket and hammer on paved floor",
+      "keywords_strict": [
+        "bricklayer",
+        "brickwork",
+        "mortar",
+        "wheelbarrow",
+        "trowel",
+        "bricks"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#3D1810",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Bricklayer canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plasterer-textured-wall",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2001_46_02%20AM.png",
+      "subject": "Textured grey plaster wall with mixing tray, hawks, floats and finishing trowels on concrete floor",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "render",
+        "skim",
+        "hawk",
+        "float",
+        "trowel"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#B0ACA8",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Plasterer canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "landscaping-stone-garden-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2001_49_05%20AM.png",
+      "subject": "Stone garden wall with mixed planted border, wheelbarrow of compost, shovel, rake and turf roll on paving",
+      "keywords_strict": [
+        "landscaping",
+        "landscaper",
+        "garden design",
+        "planting",
+        "turf",
+        "paving",
+        "wheelbarrow"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#4A5D23",
+        "secondary": "#8F7B4A",
+        "surface_warm": "#5C6B45",
+        "surface_deep": "#1F2814",
+        "accent": "#7A5B3A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Landscaper / garden-designer canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "electrician-consumer-unit-scene",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2001_54_55%20AM.png",
+      "subject": "Wired consumer unit with tester, drill, work light and full electrician tool pouch on concrete floor",
+      "keywords_strict": [
+        "electrician",
+        "electrical",
+        "consumer unit",
+        "fuse board",
+        "tester",
+        "tool pouch"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#F5B21A",
+        "secondary": "#E63946",
+        "surface_warm": "#5C4A2E",
+        "surface_deep": "#1A1918",
+        "accent": "#4A9BE0"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Electrician canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-workshop-leather-belt",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_10_47%20AM.png",
+      "subject": "Rustic carpenter workshop with leather tool belt, hand saws, drill, timber offcuts and wood shavings on plank floor",
+      "keywords_strict": [
+        "carpenter",
+        "carpentry",
+        "joinery",
+        "workshop",
+        "hand tools",
+        "leather tool belt",
+        "timber"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Carpenter / master-carpenter / bespoke-joiner canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "garden-shed-exterior-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_15_01%20AM.png",
+      "subject": "Timber garden shed exterior with lantern, rakes, boots, watering can and toolbox on decking",
+      "keywords_strict": [
+        "garden shed",
+        "shed",
+        "garden buildings",
+        "carpenter",
+        "timber shed"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B4423",
+        "secondary": "#3E4B2E",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#2A1F14",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Garden-buildings / shed-supplier / carpenter canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "lawn-tiller-soil-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_21_34%20AM.png",
+      "subject": "Petrol tiller machine on freshly turned soil with hand tools, twine, gloves and heather planter",
+      "keywords_strict": [
+        "lawn",
+        "seeding",
+        "landscaper",
+        "tiller",
+        "soil",
+        "garden preparation"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#3D2914",
+        "secondary": "#5C4A2E",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0F08",
+        "accent": "#C25848"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Landscaper / lawn-care canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "tiler-dark-slate-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_32_29%20AM.png",
+      "subject": "Dark slate wall tiles being fitted with notched trowel, level, tile cutter and tile spacers",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "tile",
+        "slate",
+        "notched trowel",
+        "tile spacers",
+        "bathroom"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Tiler canteen live-feed tile.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywall-tapers-fresh-joints",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_49_00%20AM.png",
+      "subject": "Freshly taped drywall joints in white compound with mud pan, tape roll, hawks and paint tray",
+      "keywords_strict": [
+        "drywall",
+        "drywall taper",
+        "plasterboard",
+        "joint compound",
+        "mud pan",
+        "taping",
+        "tape roll"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Drywaller / drywall-taper canteen live-feed tile — DARK TEXT (textTone='black') required due to light background.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "tool-hire-yellow-signage",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_50_33%20AM.png",
+      "subject": "Yellow TOOL HIRE signage above rentable breaker, mixer, ladder, saw and jackhammer on concrete floor",
+      "keywords_strict": [
+        "tool hire",
+        "plant hire",
+        "rentable",
+        "breaker",
+        "mixer",
+        "ladder",
+        "yellow signage"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#F5B21A",
+        "secondary": "#171717",
+        "surface_warm": "#5C4A2E",
+        "surface_deep": "#1A1918",
+        "accent": "#E6A500"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Tool-hire / plant-hire canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "carpenter-roofing-signage-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2002_56_42%20AM.png",
+      "subject": "Yellow CARPENTER ROOFING signage above slate stack, timber battens, tool belt, hand saw and hammer",
+      "keywords_strict": [
+        "carpenter",
+        "roofer",
+        "roofing",
+        "slate",
+        "battens",
+        "tool belt",
+        "hand saw"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#F5B21A",
+        "secondary": "#6B4423",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1F1814",
+        "accent": "#3E3A36"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Roofer / carpenter (roofing-side) canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "skip-hire-yellow-signage",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2003_02_23%20AM.png",
+      "subject": "Yellow SKIP HIRE signage above filled yellow skip with rubble, cone, safety barrier and wheelbarrow",
+      "keywords_strict": [
+        "skip hire",
+        "waste clearance",
+        "skip",
+        "rubble",
+        "safety cone",
+        "yellow signage"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#F5B21A",
+        "secondary": "#3E3A36",
+        "surface_warm": "#5C4A2E",
+        "surface_deep": "#1A1918",
+        "accent": "#E6A500"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Skip-hire / waste-clearance canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "swimming-pool-supplies-signage",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2003_07_12%20AM.png",
+      "subject": "SWIMMING POOL SUPPLIES signage above pool pump, chlorine, algaecide, pH minus, hose and skimmer beside tiled pool edge",
+      "keywords_strict": [
+        "swimming pool supplies",
+        "pool chemicals",
+        "chlorine",
+        "pool pump",
+        "pool maintenance",
+        "skimmer"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#1E5F8C",
+        "secondary": "#F5F5F5",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#1A1918",
+        "accent": "#0A3D5C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "swimming-pool-signage-pair",
+      "hero_use_case": "Swimming-pool-supplier / pool-builder canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "swimming-pool-builders-signage",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2003_29_09%20AM.png",
+      "subject": "SWIMMING POOL BUILDERS signage above half-built pool with blue mosaic tiles, pool mortar bags, wheelbarrow and hand trowel",
+      "keywords_strict": [
+        "pool builder",
+        "swimming pool",
+        "mosaic tile",
+        "pool construction",
+        "pool mortar"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#1E5F8C",
+        "secondary": "#F5F5F5",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#1A1918",
+        "accent": "#0A3D5C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "swimming-pool-signage-pair",
+      "hero_use_case": "Pool-builder canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "kitchen-manufacture-signage",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2003_39_50%20AM.png",
+      "subject": "KITCHEN MANUFACTURE signage above kitchen cabinet build in progress with shaker doors, hinges, drill and plan",
+      "keywords_strict": [
+        "kitchen manufacture",
+        "kitchen fitter",
+        "shaker doors",
+        "cabinet build",
+        "hinges"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft-in-action",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#3E3A36",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#1A1918",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Kitchen-fitter / kitchen-manufacturer canteen live-feed tile.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "landscaping-cream-wall-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_20_25%20AM.png",
+      "subject": "Cream stone garden wall with planted border, wheelbarrow of compost, turf roll and hand tools on soil",
+      "keywords_strict": [
+        "landscaping",
+        "landscaper",
+        "garden design",
+        "planting",
+        "turf",
+        "wheelbarrow",
+        "stone wall"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#4A5D23",
+        "secondary": "#8F7B4A",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#1F2814",
+        "accent": "#7A5B3A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "landscaping-scene-showcase",
+      "hero_use_case": "Landscaper / garden-designer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "landscaping-cottage-garden-tools",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_22_54%20AM.png",
+      "subject": "Bright cottage garden border with wheelbarrow, rakes, turf roll and hand tools on manicured lawn",
+      "keywords_strict": [
+        "landscaping",
+        "landscaper",
+        "cottage garden",
+        "flower border",
+        "rake",
+        "turf",
+        "wheelbarrow"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#4A5D23",
+        "secondary": "#8F7B4A",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#1F2814",
+        "accent": "#7A5B3A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "landscaping-scene-showcase",
+      "hero_use_case": "Landscaper / garden-designer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "landscaping-ride-on-mower",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_25_41%20AM.png",
+      "subject": "Ride-on lawn mower on bright green lawn with flowering border and mature hedging behind",
+      "keywords_strict": [
+        "landscaping",
+        "landscaper",
+        "lawn mower",
+        "ride-on mower",
+        "garden maintenance",
+        "hedging"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#4A5D23",
+        "secondary": "#8F7B4A",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#1F2814",
+        "accent": "#7A5B3A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "landscaping-scene-showcase",
+      "hero_use_case": "Landscaper / garden-designer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plasterer-interior-skim",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_34_03%20AM.png",
+      "subject": "Plasterer skimming interior wall with float and hawk, mixing bucket on floor, bright interior light",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "interior",
+        "skim",
+        "float",
+        "hawk",
+        "render"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plasterer-render-showcase",
+      "hero_use_case": "Plasterer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plasterer-external-render",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_35_31%20AM.png",
+      "subject": "Plasterer applying external render to house wall from scaffold platform, blue sky and green foliage",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "render",
+        "external render",
+        "scaffold",
+        "house exterior"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plasterer-render-showcase",
+      "hero_use_case": "Plasterer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plasterer-ceiling-stilts",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_41_26%20AM.png",
+      "subject": "Plasterer on stilts finishing bright white ceiling in new-build corridor with mixing bucket on floor",
+      "keywords_strict": [
+        "plasterer",
+        "plasterboard",
+        "ceiling",
+        "stilts",
+        "new-build",
+        "interior finish"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plasterer-render-showcase",
+      "hero_use_case": "Plasterer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plasterer-scaffold-mix",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_43_32%20AM.png",
+      "subject": "Plasterer mixing plaster in bucket on scaffolded external render site, plaster bags stacked",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "external render",
+        "scaffold",
+        "mixing",
+        "plaster bags"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plasterer-render-showcase",
+      "hero_use_case": "Plasterer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "plasterer-bags-pallet",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2005_47_24%20AM.png",
+      "subject": "Stack of plaster bags on wooden pallet with trowels, mixing tray and sponge on site — plastering supplies",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "plaster bags",
+        "trowels",
+        "supplies",
+        "pallet"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#6B6763",
+        "secondary": "#8F8B87",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#2B2925",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plasterer-render-showcase",
+      "hero_use_case": "Plasterer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "bricklayer-wall-mortar-bags",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_00_39%20AM.png",
+      "subject": "Bricklayer building red brick wall on scaffolded new-build site with masonry mortar bags and mixing tub",
+      "keywords_strict": [
+        "bricklayer",
+        "brickwork",
+        "mortar",
+        "facing bricks",
+        "scaffold",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "bricklayer-craft-scene",
+      "hero_use_case": "Bricklayer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "bricklayer-facing-bricks-pallet",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_01_12%20AM.png",
+      "subject": "Bricklayer at pallet of facing bricks with cement mixer, mortar bag and scaffolded house behind",
+      "keywords_strict": [
+        "bricklayer",
+        "facing bricks",
+        "cement mixer",
+        "pallet",
+        "mortar",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "bricklayer-craft-scene",
+      "hero_use_case": "Bricklayer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "bricklayer-arch-build",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_02_50%20AM.png",
+      "subject": "Bricklayer building red brick arch with wooden former on new-build site, scaffold behind",
+      "keywords_strict": [
+        "bricklayer",
+        "brick arch",
+        "masonry",
+        "craft",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "bricklayer-craft-scene",
+      "hero_use_case": "Bricklayer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "bricklayer-garden-project",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_04_21%20AM.png",
+      "subject": "Bricklayer garden project — pallet of red bricks, spirit level, gloves and mixing bucket on stone paving",
+      "keywords_strict": [
+        "bricklayer",
+        "garden wall",
+        "facing bricks",
+        "spirit level",
+        "paving",
+        "mortar"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "bricklayer-craft-scene",
+      "hero_use_case": "Bricklayer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "builders-merchant-brick-yard",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_05_51%20AM.png",
+      "subject": "Builders merchant yard — pallets of red, buff, grey and yellow bricks under bright blue sky with storage racks behind",
+      "keywords_strict": [
+        "bricklayer",
+        "building merchant",
+        "builders merchant",
+        "brick yard",
+        "facing bricks",
+        "supplier"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / outdoor / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A2A1E",
+        "secondary": "#C25848",
+        "surface_warm": "#8F7A5A",
+        "surface_deep": "#1A0A08",
+        "accent": "#B03A2A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "bricklayer-craft-scene",
+      "hero_use_case": "Bricklayer canteen live-feed tile — bright / light image, DARK TEXT (textTone='black') required.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plumber-shower-grey-tile",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_17_13%20AM.png",
+      "subject": "Plumber fitting chrome shower in grey stone-tile bathroom with tool bag of fittings foreground",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "shower",
+        "bathroom",
+        "chrome fittings",
+        "fittings"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / interior",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plumber-scene-showcase",
+      "hero_use_case": "Plumber canteen live-feed tile — text-tone 'white'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plumber-heat-pump-outdoor",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_15_38%20AM.png",
+      "subject": "Plumber wiring up outdoor air-source heat pump against brick house with copper manifolds and toolbox",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "heat pump",
+        "air-source",
+        "copper",
+        "outdoor install"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plumber-scene-showcase",
+      "hero_use_case": "Plumber canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plumber-water-tank-outdoor",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_14_40%20AM.png",
+      "subject": "Plumber installing outdoor water tank with copper stopcocks in bright garden setting",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "water tank",
+        "outdoor",
+        "stopcock",
+        "garden install"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plumber-scene-showcase",
+      "hero_use_case": "Plumber canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plumber-first-fix-copper",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_13_05%20AM.png",
+      "subject": "Plumber first-fixing copper and plastic pipework on timber studs with wrenches and fittings on floor",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "first-fix",
+        "copper pipe",
+        "plastic pipe",
+        "wrench",
+        "fittings"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plumber-scene-showcase",
+      "hero_use_case": "Plumber canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "plumber-first-fix-display",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_10_19%20AM.png",
+      "subject": "First-fix bathroom plumbing display — copper pipe grid on studs with concealed cistern and toolbox",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "first-fix",
+        "copper pipe",
+        "concealed cistern",
+        "bathroom rough-in"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#0F3B60",
+        "secondary": "#1E5F8C",
+        "surface_warm": "#B8D4E8",
+        "surface_deep": "#061826",
+        "accent": "#C0C7CC"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "plumber-scene-showcase",
+      "hero_use_case": "Plumber canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-roofing-dusk",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_26_37%20AM.png",
+      "subject": "Carpenter/roofer nailing battens on slate roof at golden-hour dusk with dramatic cloudy sky",
+      "keywords_strict": [
+        "carpenter",
+        "roofer",
+        "roofing",
+        "slate",
+        "battens",
+        "dusk"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / dramatic / dusk",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "carpenter-roofing-scene",
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'white'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "roofer-slate-dawn",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/Jul%2017,%202026,%2006_29_08%20AM.png",
+      "subject": "Roofer laying slate tiles on new roof with chimney behind under bright blue cloudy sky",
+      "keywords_strict": [
+        "carpenter",
+        "roofer",
+        "roofing",
+        "slate tiles",
+        "chimney",
+        "new roof"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "carpenter-roofing-scene",
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-skirting-fit",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_33_33%20AM.png",
+      "subject": "Carpenter fitting white skirting board along oak floor in bright interior with hammer and caulk gun",
+      "keywords_strict": [
+        "carpenter",
+        "skirting",
+        "bespoke joiner",
+        "master carpenter",
+        "finish carpentry",
+        "oak floor"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / interior",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-loft-ladder-install",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_35_08%20AM.png",
+      "subject": "Carpenter installing timber loft ladder into ceiling hatch in bright landing with cordless drill",
+      "keywords_strict": [
+        "carpenter",
+        "loft ladder",
+        "loft hatch",
+        "installer",
+        "cordless drill",
+        "interior"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / interior",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-oak-staircase",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_36_01%20AM.png",
+      "subject": "Carpenter drilling into new oak staircase treads with tool belt, spirit level and hammer on floor",
+      "keywords_strict": [
+        "carpenter",
+        "staircase",
+        "oak stairs",
+        "bespoke joiner",
+        "master carpenter",
+        "staircase fitter"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / interior",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 852,
+      "height_px": 1846
+    },
+    {
+      "id": "carpenter-kitchen-door-fit",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_39_48%20AM.png",
+      "subject": "Carpenter fitting shaker-style kitchen cabinet door with cordless drill on worktop behind",
+      "keywords_strict": [
+        "carpenter",
+        "kitchen fitter",
+        "cabinet door",
+        "shaker door",
+        "hinges",
+        "interior"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / interior",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": null,
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "carpenter-roof-rafters",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2006_41_39%20AM.png",
+      "subject": "Carpenter hammering timber rafters on new roof structure under bright blue cloudy sky",
+      "keywords_strict": [
+        "carpenter",
+        "roof rafters",
+        "new roof",
+        "timber frame",
+        "hammer",
+        "outdoor"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#8B4513",
+        "secondary": "#5C3A1E",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#2E1810",
+        "accent": "#C0793D"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "carpenter-roofing-scene",
+      "hero_use_case": "Carpenter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "tiler-porcelain-bathroom",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_02_23%20AM.png",
+      "subject": "Tiler fitting grey porcelain wall tiles in bright bathroom with notched trowel and porcelain tile boxes stacked",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "porcelain",
+        "bathroom",
+        "wall tiles",
+        "notched trowel"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "tiler-white-splashback",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_03_56%20AM.png",
+      "subject": "Tiler applying white brick-tile kitchen splashback with notched trowel, second worker background",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "splashback",
+        "kitchen",
+        "white tiles",
+        "notched trowel"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "tiler-terracotta-floor",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_05_01%20AM.png",
+      "subject": "Tiler laying terracotta floor tiles in bright kitchen interior with adhesive bag and cutter",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "terracotta",
+        "floor tiles",
+        "kitchen",
+        "adhesive"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 1086,
+      "height_px": 1448
+    },
+    {
+      "id": "tiler-mosaic-bathroom",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_06_07%20AM.png",
+      "subject": "Tiler installing small ceramic mosaic wall tiles in grey bathroom with sponge and mixing bucket",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "mosaic",
+        "bathroom",
+        "sponge",
+        "mixing"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'white'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 1086,
+      "height_px": 1448
+    },
+    {
+      "id": "tiler-supplies-kitchen",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_07_19%20AM.png",
+      "subject": "Tile trade supplies — porcelain tile boxes, adhesive bags, grout, notched trowels and mallet in kitchen setting",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "tile supplies",
+        "adhesive",
+        "grout",
+        "building merchant"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 1086,
+      "height_px": 1448
+    },
+    {
+      "id": "tiler-star-mosaic-floor",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_08_32%20AM.png",
+      "subject": "Tiler installing decorative star mosaic floor pattern in bright hallway with grout bag and notched trowel",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "mosaic",
+        "decorative",
+        "hallway",
+        "master carpenter"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 1086,
+      "height_px": 1448
+    },
+    {
+      "id": "tiler-pool-dolphin-mosaic",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_13_41%20AM.png",
+      "subject": "Tiler installing blue-mosaic dolphin motif in empty swimming pool at poolside garden setting",
+      "keywords_strict": [
+        "tiler",
+        "tiling",
+        "mosaic",
+        "pool",
+        "swimming pool",
+        "pool builder"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#2E2E2E",
+        "secondary": "#5C5A57",
+        "surface_warm": "#8F8B87",
+        "surface_deep": "#141414",
+        "accent": "#3D4A5A"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "tiler-scene-showcase",
+      "hero_use_case": "Tiler canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 887,
+      "height_px": 1774
+    },
+    {
+      "id": "drywaller-skim-wall",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_29_02%20AM.png",
+      "subject": "Drywaller in white overalls skimming freshly-jointed drywall wall in bright interior with tool belt and drills",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "drywall taper",
+        "plasterboard",
+        "skim",
+        "interior"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywaller-plasterboard-stack",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_38_49%20AM.png",
+      "subject": "Stack of plasterboard sheets with drywaller tool belt, tape and drill in bright new-build room",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "plasterboard",
+        "stack",
+        "tool belt",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywaller-truck-pickup",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_36_26%20AM.png",
+      "subject": "Tradesperson loading plasterboard sheets onto pickup truck at builders merchants yard under bright sky",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "plasterboard",
+        "builders merchants",
+        "pickup",
+        "supply"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywaller-arch-cut",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_35_38%20AM.png",
+      "subject": "Drywaller cutting a curved drywall arch feature in bright new-build interior with hand saw",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "arch",
+        "feature",
+        "hand saw",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywaller-sawhorse-score",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_34_11%20AM.png",
+      "subject": "Drywaller scoring a plasterboard sheet on sawhorses in bright new-build interior with tool belt",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "plasterboard",
+        "sawhorse",
+        "score",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "drywaller-stilts-ceiling",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_30_55%20AM.png",
+      "subject": "Drywaller on stilts jointing ceiling in bright new-build room with window light and hawks below",
+      "keywords_strict": [
+        "drywall",
+        "drywaller",
+        "stilts",
+        "ceiling",
+        "jointing",
+        "new-build"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#B0ACA8",
+        "secondary": "#D4CFC7",
+        "surface_warm": "#E6DFD3",
+        "surface_deep": "#6B6763",
+        "accent": "#1E5F8C"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "drywall-scene",
+      "hero_use_case": "Drywaller / drywall-taper / plasterboard-fitter canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "paving-crane-truck-delivery",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_26_13%20AM.png",
+      "subject": "Crane-lorry unloading pallets of block paving to driveway with brick house and hedge behind",
+      "keywords_strict": [
+        "paving",
+        "paving contractor",
+        "block paving",
+        "delivery",
+        "driveway",
+        "crane truck"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A5B3A",
+        "secondary": "#8F8B87",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#3D2914",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "paving-scene",
+      "hero_use_case": "Paving contractor / landscaper canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 941,
+      "height_px": 1672
+    },
+    {
+      "id": "paving-site-materials",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_23_27%20AM.png",
+      "subject": "Paving contractor site — pallets of block pavers, jointing sand, compactor, level and gravel bags on newly-laid driveway",
+      "keywords_strict": [
+        "paving",
+        "paving contractor",
+        "block pavers",
+        "jointing sand",
+        "compactor",
+        "driveway"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A5B3A",
+        "secondary": "#8F8B87",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#3D2914",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "paving-scene",
+      "hero_use_case": "Paving contractor / landscaper canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 941,
+      "height_px": 1672
+    },
+    {
+      "id": "paving-team-driveway",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_21_27%20AM.png",
+      "subject": "Three paving contractors laying curved driveway pattern in front of large brick house with landscaped border",
+      "keywords_strict": [
+        "paving",
+        "paving contractor",
+        "driveway",
+        "team",
+        "curved",
+        "brick house"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A5B3A",
+        "secondary": "#8F8B87",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#3D2914",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "paving-scene",
+      "hero_use_case": "Paving contractor / landscaper canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "paving-finished-compactor",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_19_24%20AM.png",
+      "subject": "Finished block-paved driveway with wacker plate compactor and level in front of brick house",
+      "keywords_strict": [
+        "paving",
+        "paving contractor",
+        "block paving",
+        "compactor",
+        "wacker plate",
+        "finished driveway"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A5B3A",
+        "secondary": "#8F8B87",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#3D2914",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "paving-scene",
+      "hero_use_case": "Paving contractor / landscaper canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "paving-golden-hour-driveway",
+      "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2017,%202026,%2007_18_32%20AM.png",
+      "subject": "Elegant block-paved driveway at golden hour with landscaped border, brick house and dark garage behind",
+      "keywords_strict": [
+        "paving",
+        "paving contractor",
+        "block paving",
+        "driveway",
+        "golden hour",
+        "landscaped"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / bright",
+      "text_zone": {
+        "primary": "top",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {
+        "primary": "#7A5B3A",
+        "secondary": "#8F8B87",
+        "surface_warm": "#D4A373",
+        "surface_deep": "#3D2914",
+        "accent": "#4A5D23"
+      },
+      "aspect_variants": {
+        "9:16": "native",
+        "1:1": "crop-bottom",
+        "4:3": "crop-bottom"
+      },
+      "sibling_group_id": "paving-scene",
+      "hero_use_case": "Paving contractor / landscaper canteen live-feed tile — text-tone 'black'.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "feed-tile",
+      "$posted_by": "Site Interest 2026-07-17",
+      "width_px": 853,
+      "height_px": 1844
+    },
+    {
+      "id": "scaffolders-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_36_01%20AM.png",
+      "subject": "Scaffolders canteen hero — system scaff + tube-and-fitting workday scene",
+      "keywords_strict": [
+        "scaffolder",
+        "scaffolding",
+        "system scaff",
+        "tube and fitting"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / gritty / hi-vis",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Scaffolders canteen page header (slug: uk-scaffolders).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "north-sparks-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_37_08%20AM.png",
+      "subject": "North Sparks canteen hero — electricians Yorkshire to Highlands",
+      "keywords_strict": [
+        "electrician",
+        "sparks",
+        "consumer unit",
+        "eicr"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / focused",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "North Sparks canteen page header (slug: north-uk-sparks).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "emergency-repairs-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_39_58%20AM.png",
+      "subject": "Emergency Repairs canteen hero — 24h insurance-approved storm/burst-pipe response",
+      "keywords_strict": [
+        "emergency repair",
+        "storm damage",
+        "burst pipe",
+        "insurance response"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "urgent / dramatic / trade at work",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Emergency Repairs canteen page header (slug: uk-emergency-repairs).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "copper-flashing-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_43_03%20AM.png",
+      "subject": "Copper Flashing Specialists canteen hero — heritage-grade metalwork on listed roofline",
+      "keywords_strict": [
+        "copper flashing",
+        "copper roofing",
+        "roof flashing",
+        "heritage metalwork",
+        "listed property"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "craft / heritage / premium",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Copper Flashing Specialists canteen page header (slug: uk-copper-flashing-specialists).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "prestige-builders-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_44_02%20AM.png",
+      "subject": "Prestige Builders canteen hero — full-house refurbs, basement digs, heritage conversions",
+      "keywords_strict": [
+        "prestige builder",
+        "high end builder",
+        "heritage conversion",
+        "basement dig",
+        "full house refurb"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "premium / craft / prestige",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Prestige Builders canteen page header (slug: uk-prestige-builders).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "bricklayers-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_46_23%20AM.png",
+      "subject": "Bricklayers canteen hero — coursed bond + cavity work + extensions",
+      "keywords_strict": [
+        "bricklayer",
+        "brickwork",
+        "coursed bond",
+        "cavity work",
+        "extension"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / craft / gritty",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Bricklayers canteen page header (slug: uk-bricklayers).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "metal-fabricators-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_48_35%20AM.png",
+      "subject": "Metal Fabricators canteen hero — MIG/TIG welding + structural steel + bespoke gates + balustrades",
+      "keywords_strict": [
+        "welder",
+        "metal fabricator",
+        "steel fabrication",
+        "structural steel",
+        "mig welding",
+        "tig welding",
+        "gates",
+        "balustrade"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / gritty / dramatic",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Metal Fabricators canteen page header (slug: uk-metal-fabricators).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "stone-masons-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_53_57%20AM.png",
+      "subject": "Stone Masons canteen hero — lime mortar, listed-building consents, heritage walling",
+      "keywords_strict": [
+        "stone mason",
+        "stone masonry",
+        "lime mortar",
+        "heritage stone",
+        "listed building"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "craft / heritage / trade at work",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Stone Masons canteen page header (slug: uk-heritage-stone — renamed from Heritage Stone 2026-07-19).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "interior-designers-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_58_31%20AM.png",
+      "subject": "Interior Designers canteen hero — boutique styling + colour boards + fabric swatches",
+      "keywords_strict": [
+        "interior designer",
+        "interior design",
+        "colour boards",
+        "styling",
+        "boutique"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "premium / craft / editorial",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Interior Designers canteen page header (slug: uk-interior-designers).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "rated-electricians-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2001_00_12%20AM.png",
+      "subject": "Rated Electricians canteen hero — verified sparks + NICEIC + Certsure certified callouts",
+      "keywords_strict": [
+        "electrician",
+        "rated electrician",
+        "verified spark",
+        "niceic",
+        "certsure"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "trade at work / verified / focused",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Rated Electricians canteen page header (slug: uk-rated-electricians).",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "hammerex-direct-canteen-hero-2026-07-19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2001_13_24%20AM.png",
+      "subject": "Hammerex Direct canteen hero — UK building merchant direct-supply banner",
+      "keywords_strict": [
+        "hammerex",
+        "building merchant",
+        "builders merchant",
+        "direct supply",
+        "merchant hero"
+      ],
+      "match_mode": "strict",
+      "excluded_trades": [],
+      "vibe": "retail / merchant / warm",
+      "text_zone": {
+        "primary": "left",
+        "container_required": false,
+        "container_style": "none"
+      },
+      "theme_palette": {},
+      "aspect_variants": {},
+      "sibling_group_id": null,
+      "hero_use_case": "Hammerex Direct canteen page header (slug: hammerex-direct) — DB-backed, updated in hammerex_canteens.header_bg_url 2026-07-19.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
     }
   ]
 }

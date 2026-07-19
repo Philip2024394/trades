@@ -73,7 +73,7 @@ export default function WhyPage() {
           </Link>
           <nav className="flex items-center gap-4 text-[13px] font-semibold">
             <Link
-              href="/project/start"
+              href="/homeowners/signup?intent=create-project"
               className="hidden underline-offset-4 hover:underline sm:inline"
               style={{ color: PALETTE.ink }}
             >
@@ -379,7 +379,7 @@ export default function WhyPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/project/start"
+                href="/homeowners/signup?intent=create-project"
                 className="group inline-flex min-h-[56px] items-center justify-center gap-3 rounded-full pl-6 pr-4 text-[15px] font-bold"
                 style={{
                   backgroundColor: PALETTE.honeyBright,

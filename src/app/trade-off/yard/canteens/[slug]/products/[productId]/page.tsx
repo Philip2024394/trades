@@ -95,6 +95,17 @@ export default async function CanteenProductDetailPage({
 
   const galleryImages = [product.imageUrl, ...(product.galleryUrls ?? [])].filter(Boolean);
 
+  // Resolve Deal Breaker upsell targets from the addon_bundle refs by
+  // matching against products already loaded for this canteen. Skip
+  // any entry whose target product is missing (deleted / hidden).
+  const addonBundle = (product.addonBundle ?? [])
+    .map((entry) => {
+      const target = allProducts.find((p) => p.id === entry.productId);
+      if (!target) return null;
+      return { entry, target };
+    })
+    .filter((v): v is { entry: NonNullable<typeof product.addonBundle>[number]; target: typeof product } => v !== null);
+
   return (
     <main className="min-h-screen overflow-x-hidden" style={{ backgroundColor: CREAM }}>
       {/* Hero — same visual language as CanteenHeader. Dark banner
@@ -139,9 +150,22 @@ export default async function CanteenProductDetailPage({
             </span>
           </div>
 
-          {/* Host chip */}
-          <div className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
-            Library of products
+          {/* Host chip + optional Ref chip. Ref surfaces on every
+              Hammerex-origin product per feedback_hammerex_ref_number.md
+              — "Ref: HX-LB2-001" so the merchant recognises the SKU
+              when a buyer messages them. */}
+          <div className="flex items-center gap-2">
+            <div className="text-[10px] font-black uppercase tracking-[0.22em] text-white/60">
+              Library of products
+            </div>
+            {product.ref && (
+              <span
+                className="inline-flex items-center gap-1 rounded-sm border border-white/30 bg-white/10 px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.14em] text-white/90 backdrop-blur"
+                title="Reference number — use this when messaging the seller"
+              >
+                Ref: {product.ref}
+              </span>
+            )}
           </div>
 
           {/* Product name — hero heading */}
@@ -193,14 +217,28 @@ export default async function CanteenProductDetailPage({
           {/* Buy column — the hero above carries name + blurb + host,
               so this column focuses on the commerce actions. */}
           <aside className="flex flex-col gap-4">
-            {/* Price */}
-            <div className="flex items-baseline gap-2">
-              <span className="text-[28px] font-black text-neutral-900 sm:text-[32px]">
-                £{product.priceGbp}
-              </span>
-              <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
-                {product.currency ?? "GBP"} · price from seller
-              </span>
+            {/* Price — GBP is always primary. When the merchant sells
+                in a non-GBP base currency (e.g. Hammerex-Direct in
+                IDR), the canonical price is shown below as
+                indicative-vs-chargeable per
+                project_hammerex_pricing_fx.md. */}
+            <div>
+              <div className="flex items-baseline gap-2">
+                <span className="text-[28px] font-black text-neutral-900 sm:text-[32px]">
+                  £{product.priceGbp}
+                </span>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-500">
+                  {product.currency ?? "GBP"} · price from seller
+                </span>
+              </div>
+              {product.priceIdr != null && (
+                <div className="mt-1 text-[11px] font-bold text-neutral-500">
+                  Canonical: Rp {product.priceIdr.toLocaleString("en-GB")}
+                  <span className="ml-1 text-[10px] font-normal text-neutral-400">
+                    (chargeable in IDR — GBP is indicative)
+                  </span>
+                </div>
+              )}
             </div>
 
             {/* Bulk-buy strip */}
@@ -252,6 +290,62 @@ export default async function CanteenProductDetailPage({
               )}
             </div>
 
+            {/* Deal Breaker upsell card — inline yellow-accent block
+                per project_hammerex_deal_breaker.md. Renders only
+                when the product has a bound addon_bundle. Every
+                add-on links to its own PDP so the buyer can inspect
+                before committing. */}
+            {addonBundle.length > 0 && (
+              <div
+                className="overflow-hidden rounded-xl border-2 shadow-sm"
+                style={{ borderColor: BRAND_YELLOW, backgroundColor: "#FFF9E6" }}
+              >
+                <div
+                  className="flex items-center gap-1.5 px-3 py-2 text-[11px] font-black uppercase tracking-[0.14em]"
+                  style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+                >
+                  <span aria-hidden>★</span>
+                  Deal Breaker · add these at a discount
+                </div>
+                <ul className="flex flex-col divide-y" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
+                  {addonBundle.map(({ entry, target }) => (
+                    <li key={entry.productId}>
+                      <Link
+                        href={`/trade-off/yard/canteens/${slug}/products/${target.id}`}
+                        className="flex items-center gap-3 px-3 py-2 transition hover:bg-white"
+                      >
+                        <div
+                          className="h-12 w-12 flex-shrink-0 rounded-md border"
+                          style={{
+                            backgroundImage: `url('${target.imageUrl}')`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            borderColor: "rgba(139,69,19,0.15)",
+                            backgroundColor: "#F3F4F6"
+                          }}
+                          aria-hidden
+                        />
+                        <div className="min-w-0 flex-1">
+                          <div className="line-clamp-1 text-[12.5px] font-black text-neutral-900">
+                            {entry.label ?? target.name}
+                          </div>
+                          <div className="flex items-baseline gap-2 text-[11px]">
+                            <span className="font-black" style={{ color: BRAND_GREEN_DARK }}>
+                              £{entry.dealPriceGbp}
+                            </span>
+                            <span className="text-neutral-400 line-through">
+                              £{target.priceGbp}
+                            </span>
+                          </div>
+                        </div>
+                        <ChevronRight size={14} className="flex-shrink-0 text-neutral-400"/>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {/* Trust strip */}
             <div
               className="flex items-start gap-2 rounded-lg border p-3"
@@ -282,7 +376,7 @@ export default async function CanteenProductDetailPage({
               </p>
             </div>
           </div>
-          <div>
+          <div className="flex flex-col gap-4">
             {product.specs && product.specs.length > 0 && (
               <div
                 className="rounded-xl border bg-white p-4 shadow-sm sm:p-5"
@@ -304,6 +398,43 @@ export default async function CanteenProductDetailPage({
                   ))}
                 </ul>
               </div>
+            )}
+            {/* Commerce meta card — brand, model, warranty, country,
+                shipping. Populated from product.commerce (JSONB).
+                Renders row-by-row so a product with only 2 fields
+                doesn't look padded. Hidden entirely when commerce
+                is empty. */}
+            {product.commerce && (
+              (() => {
+                const c = product.commerce;
+                const rows: Array<[string, React.ReactNode]> = [];
+                if (c.brand) rows.push(["Brand", c.brand]);
+                if (c.model) rows.push(["Model", c.model]);
+                if (c.condition) rows.push(["Condition", c.condition.replace(/-/g, " ")]);
+                if (c.countryOfOrigin) rows.push(["Country of origin", c.countryOfOrigin]);
+                if (c.warranty) rows.push(["Warranty", typeof c.warranty === "string" ? c.warranty : `${c.warranty.months} months`]);
+                if (c.shipping?.freeLocalShipping) rows.push(["Local shipping", "Free"]);
+                else if (c.shipping?.localShippingGbp != null) rows.push(["Local shipping", `£${c.shipping.localShippingGbp}`]);
+                if (rows.length === 0) return null;
+                return (
+                  <div
+                    className="rounded-xl border bg-white p-4 shadow-sm sm:p-5"
+                    style={{ borderColor: "rgba(139,69,19,0.15)" }}
+                  >
+                    <div className="text-[10px] font-black uppercase tracking-[0.18em] text-neutral-500">
+                      Item specifics
+                    </div>
+                    <dl className="mt-2 flex flex-col gap-1.5">
+                      {rows.map(([label, value]) => (
+                        <div key={label} className="flex items-baseline justify-between gap-3 text-[12px] leading-snug">
+                          <dt className="font-bold text-neutral-500">{label}</dt>
+                          <dd className="text-right font-semibold text-neutral-800">{value}</dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                );
+              })()
             )}
           </div>
         </div>

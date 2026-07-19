@@ -163,7 +163,7 @@ function PlantHireBoldHero({
                 className="w-full border-white/25 bg-white/5 text-white backdrop-blur-md hover:bg-white/10"
               >
                 <Link href={secondaryHref || "#"} {...treeAttrs(instanceId, "secondaryCtaLabel", "Secondary CTA", "button")}>
-                  <MessageCircle strokeWidth={2.5} style={{ color: "#25D366" }} aria-hidden="true" />
+                  <MessageCircle strokeWidth={2.5} style={{ color: "#166534" }} aria-hidden="true" />
                   {secondaryLabel}
                 </Link>
               </Button>

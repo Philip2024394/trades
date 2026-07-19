@@ -97,7 +97,7 @@ export function CanteenHeader({
 
   return (
     <section
-      className="relative min-h-[70vh] overflow-hidden lg:min-h-[80vh]"
+      className="relative min-h-[420px] overflow-hidden lg:min-h-[560px]"
       style={{ backgroundColor: CREAM }}
     >
       {/* Background — full-width, full-height, edge-to-edge photo at
@@ -131,114 +131,25 @@ export function CanteenHeader({
         }}
       />
 
-      {/* Mobile burger — opens the right-side drawer with canteen +
-          network navigation. Hidden at md:+ where the AppShell top bar
-          returns and carries the same links inline. Dark pill on the
-          cream hero for contrast. */}
-      <button
-        type="button"
-        onClick={() => setDrawerOpen(true)}
-        aria-label="Open menu"
-        className="absolute right-3 top-3 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full shadow-md transition hover:brightness-110 active:scale-[0.95] md:hidden"
-        style={{ backgroundColor: BRAND_BLACK, color: "#FFFFFF" }}
-      >
-        <Menu size={18} strokeWidth={2.5}/>
-      </button>
-
+      {/* In-hero burger + owner greeting strip removed (Philip
+          2026-07-16). GlobalHeader at the top of every page already
+          carries the burger + avatar drawer + notification bell.
+          Duplicating them inside the hero was pushing the H1 down
+          and reading as a second, competing header. Trade-label pill
+          stays because it's hero context, not chrome. */}
       <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8">
-        {/* ── Top-nav strip ────────────────────────────────────
-            Two text links: browse other canteens (/trade-off/yard/
-            canteens) + jump to the Trade Center market with its
-            category-rail catalogue (/tc/trade-center). Small caps
-            eyebrow style so they sit above the hero copy without
-            competing. Right-pad reserves room for the mobile burger. */}
-        <nav
-          aria-label="Canteen navigation"
-          className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 pr-14 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700 md:pr-0 md:text-[11px]"
-        >
-          <Link
-            href="/trade-off/yard/canteens"
-            className="transition hover:text-neutral-900 hover:underline"
+        {/* Round WhatsApp button relocated to the left side of the
+            CanteenHeroStats container (Philip 2026-07-17) so it sits
+            with the stats bar rather than floating on the banner
+            image. See CanteenHeroStats in CanteenPageShell.tsx. */}
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span
+            className="rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.18em]"
+            style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
           >
-            ← Canteens directory
-          </Link>
-          <span aria-hidden className="text-neutral-400">·</span>
-          <Link
-            href="/tc/trade-center"
-            className="transition hover:text-neutral-900 hover:underline"
-          >
-            Trade Center →
-          </Link>
-        </nav>
-        {/* Owner greeting strip — top row, mimics the design mockup:
-            avatar + "Hi {name}" + role + verified. Non-owners see the
-            trade tag row instead so guests get context, not personal
-            chrome. */}
-        {isHost ? (
-          <div className="mb-4 flex items-center gap-3 pr-14">
-            <div
-              className="relative flex h-12 w-12 flex-shrink-0 items-center justify-center overflow-hidden rounded-full text-[16px] font-black shadow-sm sm:h-14 sm:w-14 sm:text-[18px]"
-              style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-              aria-hidden
-            >
-              {hostAvatarUrl ? (
-                /* eslint-disable-next-line @next/next/no-img-element */
-                <img
-                  src={hostAvatarUrl}
-                  alt=""
-                  className="h-full w-full object-cover"
-                  loading="lazy"
-                />
-              ) : (
-                canteen.hostDisplayName.charAt(0)
-              )}
-              {/* Online status dot */}
-              <span
-                aria-hidden
-                className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#FBF6EC]"
-                style={{ backgroundColor: "#22C55E" }}
-              />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-[16px] font-black leading-tight text-neutral-900 sm:text-[18px]">
-                Hi {canteen.hostDisplayName.split(/\s+/)[0]} 👋
-              </div>
-              <div className="flex items-center gap-1 text-[11px] font-bold text-neutral-500 sm:text-[12px]">
-                {canteen.tradeLabel} Specialist
-                <Check size={11} strokeWidth={3} style={{ color: "#166534" }}/>
-              </div>
-            </div>
-            {/* Notification bell — mockup pattern. Sits to the left of
-                the burger. Owner-only; count wired to hostActions len
-                by the shell in a follow-up. */}
-            <button
-              type="button"
-              aria-label="Notifications"
-              className="relative flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full text-neutral-700 transition hover:bg-neutral-900/[0.06]"
-            >
-              <Bell size={18} strokeWidth={2.2}/>
-              <span
-                aria-hidden
-                className="absolute right-1.5 top-1.5 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-black text-white"
-                style={{ backgroundColor: "#DC2626" }}
-              >
-                3
-              </span>
-            </button>
-          </div>
-        ) : (
-          <div className="mb-3 flex flex-wrap items-center gap-2">
-            <span
-              className="rounded-sm px-1.5 py-0.5 text-[10px] font-black uppercase tracking-[0.18em]"
-              style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
-            >
-              {canteen.tradeLabel}
-            </span>
-            <span className="text-[10px] font-black uppercase tracking-[0.24em] text-neutral-500">
-              Est. {new Date(canteen.createdAt).getFullYear()}
-            </span>
-          </div>
-        )}
+            {canteen.tradeLabel}
+          </span>
+        </div>
 
         {/* Asymmetric two-column: H1 + tagline on the LEFT, floating
             KPI cards on the RIGHT. Same pattern as the mockup — copy
@@ -251,8 +162,7 @@ export function CanteenHeader({
                 the "Build Beautiful KITCHENS." pattern from the
                 mockup. */}
             <h1
-              className="text-[36px] font-black leading-[0.95] text-neutral-900 sm:text-[52px] md:text-[64px] lg:text-[76px]"
-              style={{ fontFamily: 'Georgia, "Playfair Display", "Times New Roman", serif' }}
+              className="text-[60px] font-black leading-[0.95] text-neutral-900 sm:text-[80px] md:text-[100px] lg:text-[120px]"
             >
               {(() => {
                 const parts = canteen.name.trim().split(/\s+/);
@@ -261,13 +171,13 @@ export function CanteenHeader({
                 return (
                   <>
                     {rest && <>{rest}<br/></>}
-                    <span style={{ color: "#B8860B" }}>{last}.</span>
+                    <span style={{ color: "#B8860B" }}>{last}</span>
                   </>
                 );
               })()}
             </h1>
             <p className="mt-3 max-w-md text-[13px] font-bold leading-snug text-neutral-700 sm:text-[14px] md:mt-4">
-              Connect. Share. Grow.
+              Built for the trade.
             </p>
           </div>
 
@@ -307,7 +217,7 @@ export function CanteenHeader({
                   type="button"
                   onClick={() => setCardOpen(true)}
                   aria-label={`Open ${canteen.hostDisplayName}'s business card`}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                  className="inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
                   style={{ backgroundColor: "#B8860B" }}
                 >
                   <IdCard size={13} strokeWidth={2.6}/>
@@ -316,37 +226,19 @@ export function CanteenHeader({
               ) : null
             ) : !isMember ? (
               hostWhatsapp ? (
-                <div className="flex flex-wrap items-center gap-2">
-                  <VerifiedContactButton
-                    merchantSlug={canteen.hostSlug}
-                    merchantDisplayName={canteen.hostDisplayName}
-                    merchantFirstName={canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName}
-                    merchantWhatsapp={hostWhatsapp}
-                    tradeLabel={canteen.tradeLabel}
-                    source="canteen-hero"
-                    sourceLabel={`${canteen.hostDisplayName.split(/\s+/)[0] ?? canteen.hostDisplayName}'s canteen "${canteen.name}" on Thenetworkers.app`}
-                    canteenSlug={canteen.slug}
-                    ariaLabel={`WhatsApp ${canteen.hostDisplayName}`}
-                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-                    style={{ backgroundColor: "#25D366" }}
-                  >
-                    <MessageCircle size={13} strokeWidth={2.6}/>
-                    WhatsApp us
-                  </VerifiedContactButton>
-                  {/* Business Card companion — same modal + WhatsApp
-                      share as the mobile app view. Platform-standard
-                      button on every trade's hero. */}
-                  <button
-                    type="button"
-                    onClick={() => setCardOpen(true)}
-                    aria-label={`Open ${canteen.hostDisplayName}'s business card`}
-                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-                    style={{ backgroundColor: "#B8860B" }}
-                  >
-                    <IdCard size={13} strokeWidth={2.6}/>
-                    Business Card
-                  </button>
-                </div>
+                /* WhatsApp CTA moved to the round button at top-left
+                   of the hero (Philip 2026-07-17). Business Card
+                   stays here as the primary text-CTA. */
+                <button
+                  type="button"
+                  onClick={() => setCardOpen(true)}
+                  aria-label={`Open ${canteen.hostDisplayName}'s business card`}
+                  className="inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                  style={{ backgroundColor: "#B8860B" }}
+                >
+                  <IdCard size={13} strokeWidth={2.6}/>
+                  Business Card
+                </button>
               ) : (
                 <Link
                   href={`/trade-off/yard/canteens/${canteen.slug}/contact`}
@@ -632,21 +524,16 @@ function FloatingKpiStack({
   rating,
   dark = false
 }: {
+  /** Kept in the signature for prop compatibility; no longer rendered
+   *  (Projects tile removed 2026-07-17 per Philip). */
   projectsActive: number;
   rating: { avg: number; count: number } | null;
   /** Dark palette flag — flips cards to near-black bg + white text. */
   dark?: boolean;
 }) {
+  void projectsActive;
   return (
     <div className="flex flex-row gap-2 md:min-w-[240px] md:flex-col md:gap-3">
-      <KpiCard
-        icon={<Package size={14} strokeWidth={2.3}/>}
-        label="Projects"
-        value={String(projectsActive)}
-        subLabel="Active"
-        accent
-        dark={dark}
-      />
       {rating ? (
         <KpiCard
           icon={<Star size={14} strokeWidth={2.3} fill="currentColor"/>}

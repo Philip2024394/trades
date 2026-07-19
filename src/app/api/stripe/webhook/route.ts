@@ -185,6 +185,30 @@ async function handleCheckoutCompleted(
     return;
   }
 
+  // Attribute the upgrade to any upgrade-prompt this merchant saw.
+  // Reads the `src=<promptKey>` query param the pricing/dashboard CTA
+  // routes carry, or falls back to marking ALL undismissed prompts
+  // for this listing as `upgraded`. Best-effort — never blocks the
+  // webhook. Powers per-prompt conversion analytics.
+  try {
+    const src = String(meta.src ?? "").trim();
+    const { supabaseAdmin: sa } = await import("@/lib/supabaseAdmin");
+    if (src && ["views5", "products10", "beacon-nowashers", "contacts10", "firstProduct", "referSuccess"].includes(src)) {
+      await sa.from("hammerex_upgrade_prompts")
+        .update({ upgraded_at: new Date().toISOString() })
+        .eq("listing_id", listing_id)
+        .eq("prompt_key", src);
+    } else {
+      // No explicit src — attribute to every shown-but-not-upgraded prompt
+      await sa.from("hammerex_upgrade_prompts")
+        .update({ upgraded_at: new Date().toISOString() })
+        .eq("listing_id", listing_id)
+        .is("upgraded_at", null);
+    }
+  } catch (err) {
+    console.error("[stripe/webhook] upgrade-prompt attribution failed:", err);
+  }
+
   // New paid member → drop the Trade Off team welcome post into the
   // Yard chat feed. Idempotent (skips if a welcome already exists for
   // this listing_id) and demo-aware (slug LIKE 'demo-%' skipped).
@@ -211,7 +235,7 @@ async function handleCheckoutCompleted(
   try {
     const { data: listingRow } = await supabaseAdmin
       .from("hammerex_trade_off_listings")
-      .select("affiliate_referrer_id")
+      .select("affiliate_referrer_id, merchant_referrer_slug, slug, display_name")
       .eq("id", listing_id)
       .maybeSingle();
     if (listingRow?.affiliate_referrer_id && subscriptionId) {
@@ -259,6 +283,46 @@ async function handleCheckoutCompleted(
     }
   } catch (e) {
     console.error("[stripe/webhook] affiliate commission insert threw:", e);
+  }
+
+  // Merchant-to-merchant referral upgrade reward. If the newly-paid
+  // listing carries a merchant_referrer_slug, queue a `first-paid-upgrade`
+  // reward row for the referrer and email them. Idempotent — checks
+  // for an existing reward before insert. Never blocks the webhook.
+  try {
+    const { data: mrefRow } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("merchant_referrer_slug, slug, display_name")
+      .eq("id", listing_id)
+      .maybeSingle();
+    const referrerSlug = mrefRow?.merchant_referrer_slug as string | null | undefined;
+    const referredSlug = mrefRow?.slug as string | null | undefined;
+    if (referrerSlug && referredSlug && referrerSlug !== referredSlug) {
+      const existing = await supabaseAdmin
+        .from("hammerex_merchant_referral_rewards")
+        .select("id")
+        .eq("referrer_slug", referrerSlug)
+        .eq("referred_slug", referredSlug)
+        .eq("reward_type", "first-paid-upgrade")
+        .maybeSingle();
+      if (!existing.data) {
+        await supabaseAdmin.from("hammerex_merchant_referral_rewards").insert({
+          referrer_slug: referrerSlug,
+          referred_slug: referredSlug,
+          reward_type:   "first-paid-upgrade",
+          reward_status: "pending",
+          reward_meta:   { washers: 200, trigger: "app_paid", subscription_id: subscriptionId ?? null }
+        });
+        const { sendReferralUpgradedEmail } = await import("@/lib/merchantReferralEmails");
+        await sendReferralUpgradedEmail({
+          referrerSlug,
+          referredSlug,
+          referredName: (mrefRow?.display_name as string | null) ?? null
+        });
+      }
+    }
+  } catch (e) {
+    console.error("[stripe/webhook] merchant referral upgrade reward threw:", e);
   }
 }
 

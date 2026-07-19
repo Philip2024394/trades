@@ -147,7 +147,7 @@ export function ContactSplit({
                   <div className="flex items-start gap-3">
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                      style={{ background: "rgba(37,211,102,0.12)", color: "#25D366" }}
+                      style={{ background: "rgba(22,101,52,0.12)", color: "#166534" }}
                     >
                       <MessageCircle strokeWidth={2.25} size={20} />
                     </div>

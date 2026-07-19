@@ -9,6 +9,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { CanteenRestoreForm } from "./CanteenRestoreForm";
+import { AdminCanteenActions } from "./AdminCanteenActions";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ type CanteenRow = {
   name: string;
   host_slug: string | null;
   trade_slug: string | null;
+  header_bg_url: string | null;
 };
 
 type RestoreLogRow = {
@@ -40,7 +42,7 @@ type RestoreLogRow = {
 async function loadCanteen(slug: string): Promise<CanteenRow | null> {
   const res = await supabaseAdmin
     .from("hammerex_canteens")
-    .select("id, slug, name, host_slug, trade_slug")
+    .select("id, slug, name, host_slug, trade_slug, header_bg_url")
     .eq("slug", slug)
     .maybeSingle();
   if (res.error || !res.data) return null;
@@ -49,7 +51,8 @@ async function loadCanteen(slug: string): Promise<CanteenRow | null> {
     slug: String(res.data.slug),
     name: String(res.data.name),
     host_slug: (res.data.host_slug as string | null) ?? null,
-    trade_slug: (res.data.trade_slug as string | null) ?? null
+    trade_slug: (res.data.trade_slug as string | null) ?? null,
+    header_bg_url: (res.data.header_bg_url as string | null) ?? null
   };
 }
 
@@ -136,6 +139,14 @@ export default async function AdminSupportCanteenRestorePage({
       <p className="mt-1 text-sm text-brand-muted">
         Host: <span className="font-mono">{canteen.host_slug ?? "—"}</span> &middot; Trade: {canteen.trade_slug ?? "—"}
       </p>
+
+      {/* Admin quick-edit — theme picker link + hero banner uploader.
+          Added 2026-07-17 (Philip): support should be able to nudge a
+          merchant's theme + banner without cross-tab context switching. */}
+      <AdminCanteenActions
+        canteenSlug={canteen.slug}
+        initialHeaderBgUrl={canteen.header_bg_url}
+      />
 
       {/* Restore form — client component with the safety gates. */}
       <div className="mt-6">

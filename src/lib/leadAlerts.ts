@@ -56,6 +56,25 @@ export type LeadAlertEvent =
       };
     }
   | {
+      type: "beacon_claim";
+      // Fires from beacon.server.ts runFanoutWave when a merchant is
+      // assigned a claim. Unlike project_beacon (direct WhatsApp),
+      // this routes to the /install-leads inbox where the merchant
+      // must claim (1 washer) before the WA handoff. `slug` +
+      // `edit_token` build a magic-link inbox URL. `sla_hours` used
+      // in the notification body.
+      data: {
+        customer_name:   string;
+        customer_city:   string;
+        trade_label:     string;
+        project_excerpt: string;
+        merchant_slug:   string;
+        merchant_edit_token: string;
+        sla_hours:       number;
+        readiness_tier:  1 | 2 | 3;
+      };
+    }
+  | {
       type: "order_paid";
       data: {
         order_ref: string;
@@ -186,6 +205,28 @@ function buildPayload(
         body: `${firstName} in ${event.data.customer_city}: "${event.data.project_excerpt}". Tap to WhatsApp them direct.`,
         data: { url: `https://wa.me/${wa}?text=${text}` },
         tag: `beacon-${listing.id}`,
+        vibrate,
+        requireInteraction: true
+      };
+    }
+    case "beacon_claim": {
+      const canonical = process.env.NEXT_PUBLIC_CANONICAL_ORIGIN ?? "https://thenetworkers.app";
+      const inboxUrl  = `${canonical}/trade-off/edit/${encodeURIComponent(event.data.merchant_slug)}/install-leads?token=${encodeURIComponent(event.data.merchant_edit_token)}`;
+      const firstName = event.data.customer_name.split(/\s+/)[0] ?? event.data.customer_name;
+      const cityBit   = event.data.customer_city ? ` · ${event.data.customer_city}` : "";
+      const title = event.data.readiness_tier === 1
+        ? `⚡ Claim within ${event.data.sla_hours}h — ${event.data.trade_label}${cityBit}`
+        : `👉 Someone wants to hire you — activate to reply`;
+      const body = event.data.readiness_tier === 1
+        ? `${firstName}: "${event.data.project_excerpt}". Tap → claim in inbox (1 washer).`
+        : `${firstName}: "${event.data.project_excerpt}". Set up WhatsApp + washers to unlock.`;
+      return {
+        title,
+        body,
+        data: { url: inboxUrl },
+        // Tag per beacon so a second wave for the same beacon replaces
+        // the first push rather than stacking two badges.
+        tag: `beacon-claim-${listing.id}`,
         vibrate,
         requireInteraction: true
       };

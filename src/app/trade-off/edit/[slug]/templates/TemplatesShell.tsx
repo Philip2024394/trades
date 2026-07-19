@@ -21,6 +21,9 @@ import {
   type PaletteTokens
 } from "@/lib/paletteTokens";
 import { MOCK_CANTEENS, type Canteen } from "@/lib/canteens";
+import { ThemeControls } from "./ThemeControls";
+import { PhoneMockupPreview } from "./PhoneMockupPreview";
+import type { FeedTileLibraryEntry } from "@/lib/canteenFeedTileLibrary.server";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK = "#0A0A0A";
@@ -204,6 +207,16 @@ function livePreviewUrl(
       ? (pSlug === "chalk" ? path : `${path}?preview_palette=${pSlug}`)
       : `${PREVIEW_CANTEEN_FALLBACK}?preview_palette=${pSlug}`;
   }
+  // Enforce embed=1 on EVERY template preview URL (Philip 2026-07-16
+  // — "never ever have this showing on templates"). The canteen page
+  // + GlobalHeader both key their chrome-suppression off this param;
+  // every template card becomes a bare hero-only preview. If any new
+  // preview code path forgets to route through this builder, that
+  // preview WILL show the header — this is the choke point.
+  {
+    const sep = url.includes("?") ? "&" : "?";
+    if (!url.includes("embed=1")) url = `${url}${sep}embed=1`;
+  }
   // [DEV BUTTON] Append override_accent + hero_shade when tuner set.
   if (overrideAccent && /^#[0-9A-Fa-f]{6}$/.test(overrideAccent)) {
     const sep = url.includes("?") ? "&" : "?";
@@ -270,7 +283,9 @@ type AppTemplateCard = {
 export function TemplatesShell({
   slug,
   appliedPaletteSlug,
-  templates = []
+  templates = [],
+  myCanteen = null,
+  feedTileLibrary = []
 }: {
   slug: string;
   appliedPaletteSlug: PaletteSlug;
@@ -279,8 +294,37 @@ export function TemplatesShell({
    *  merchants see every shipped template, not just the 20 palette
    *  variations. */
   templates?: AppTemplateCard[];
+  /** The current merchant's own canteen (loaded server-side from
+   *  hammerex_canteens by slug). Powers the "Your canteen" strip at
+   *  the top of the picker — merchant sees THEIR canteen in the
+   *  currently-installed template with View app + Go Live CTAs.
+   *  Null when the slug has no DB row (fixture / demo merchant). */
+  myCanteen?: {
+    slug:             string;
+    name:             string;
+    tradeSlug:        string | null;
+    headerBgUrl:      string | null;
+    templateSlug:     string;
+    paletteSlug:      string;
+    themeMode:        "light" | "dark";
+    paletteIntensity: "bold" | "standard" | "subtle";
+    heroShade:        number;
+    feedTileColor:    string | null;
+    feedTileImageUrl: string | null;
+    baseHue:          "yellow" | "orange" | "red" | "green" | "teal" | "blue" | "purple" | "neutral" | null;
+    lightness:        number | null;
+    feedTileHue:      "yellow" | "orange" | "red" | "green" | "teal" | "blue" | "purple" | "neutral" | null;
+    feedTileLightness: number | null;
+  } | null;
+  /** DB-loaded Live Feed Tile library. Passed down to ThemeControls
+   *  so the Library tab renders live entries (managed at /admin/
+   *  feed-tile-library) instead of the static seed. */
+  feedTileLibrary?: FeedTileLibraryEntry[];
 }) {
   const [palette, setPalette] = useState<PaletteSlug>(appliedPaletteSlug);
+  // Bumped on every successful theme save so the live phone preview
+  // iframe reloads and shows the merchant's latest choice.
+  const [previewRefreshTick, setPreviewRefreshTick] = useState(0);
   const [submitting, setSubmitting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   // [DEV BUTTON] Per-palette accent overrides for the dev colour tuner.
@@ -364,7 +408,18 @@ export function TemplatesShell({
   }
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-4 pb-16 pt-6 md:px-6 md:pt-10">
+    <main className="templates-shell-root mx-auto w-full max-w-6xl px-4 pb-16 pt-6 md:px-6 md:pt-10">
+      {/* Hide the browser scrollbar on the templates page — Philip
+          2026-07-17. Scroll still works; just no visible chrome.
+          Scoped via a page-local class so this doesn't leak into
+          other pages. */}
+      <style>{`
+        html:has(.templates-shell-root) { scrollbar-width: none; -ms-overflow-style: none; }
+        html:has(.templates-shell-root)::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        body:has(.templates-shell-root) { scrollbar-width: none; -ms-overflow-style: none; }
+        body:has(.templates-shell-root)::-webkit-scrollbar { display: none; width: 0; height: 0; }
+        .templates-shell-root ::-webkit-scrollbar { display: none; }
+      `}</style>
       <div className="mb-6">
         <Link
           href={`/trade-off/edit/${slug}`}
@@ -375,9 +430,11 @@ export function TemplatesShell({
         </Link>
       </div>
 
-      {/* Header — copy on the left, decorative illustration on the
-          right. Same header style as the washers page for consistency. */}
-      <header className="mb-8 flex items-start gap-4">
+      {/* Header — moved to TOP of page per Philip 2026-07-17.
+          "Mobile app themes / Choose your palette" + intro copy
+          + Brian Talton designer credit sit above the merchant
+          controls so the page reads: intro → your canteen → tools. */}
+      <header className="mb-6 flex items-start gap-4">
         <div className="min-w-0 flex-1">
           <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
             Mobile app themes
@@ -393,11 +450,7 @@ export function TemplatesShell({
           </p>
 
           {/* Designer credit — Brian Talton is the layout + palette
-              author. Shown under the intro copy as a trust signal:
-              the design is authored by a real engineer, not a stock
-              template. `designerNote` string is left empty until the
-              user provides copy — an empty note is silent so the row
-              stays clean rather than showing filler. */}
+              author. Trust signal: real engineer, not a stock template. */}
           <DesignerCredit
             avatarUrl="https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%2014,%202026,%2011_18_25%20PM.png"
             name="Brian Talton"
@@ -408,20 +461,50 @@ export function TemplatesShell({
         </div>
       </header>
 
+      {/* Your canteen strip + theme controls — the "logged-in
+          merchant" panels below the intro. Only render when the URL
+          slug matches a real DB canteen.
+          Two-column layout on lg+: controls left, live phone
+          preview right. Preview iframe auto-reloads after every
+          save so merchants see their choice in real time. */}
+      {myCanteen && (
+        <>
+          <YourCanteenStrip slug={slug} canteen={myCanteen} />
+          <div className="mb-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-6">
+            <ThemeControls
+              slug={slug}
+              tradeSlug={myCanteen.tradeSlug}
+              feedTileLibrary={feedTileLibrary}
+              initialPalette={myCanteen.paletteSlug as PaletteSlug}
+              initialMode={myCanteen.themeMode}
+              initialIntensity={myCanteen.paletteIntensity}
+              initialHeroShade={myCanteen.heroShade}
+              initialFeedTileColor={myCanteen.feedTileColor}
+              initialFeedTileImageUrl={myCanteen.feedTileImageUrl}
+              initialBaseHue={myCanteen.baseHue}
+              initialLightness={myCanteen.lightness}
+              initialFeedTileHue={myCanteen.feedTileHue}
+              initialFeedTileLightness={myCanteen.feedTileLightness}
+              onSaved={() => setPreviewRefreshTick((t) => t + 1)}
+            />
+            <PhoneMockupPreview
+              slug={slug}
+              refreshTick={previewRefreshTick}
+            />
+          </div>
+        </>
+      )}
+
       {error && (
         <div className="mb-4 rounded-md bg-red-50 px-3 py-2 text-[12px] font-black uppercase tracking-wider text-red-700">
           {error}
         </div>
       )}
 
-      {/* ── Featured Templates strip ─────────────────────────────
-          Renders one card per row in hammerex_app_templates so every
-          shipped template shows in the App Store, not just the 20
-          palette variations below. Horizontal scrollable strip mirrors
-          the App Store featured pattern. Each card links to the
-          template's reference canteen (from TEMPLATE_REFERENCE_CANTEEN
-          map) for the live iframe preview and quick-apply. */}
-      {templates.length > 0 && (
+      {/* Featured Templates / App Store strip removed per Philip
+          2026-07-17. Single-layout architecture — no template
+          browsing needed. ThemeControls is the only choice surface. */}
+      {false && templates.length > 0 && (
         <section className="mb-10">
           <div className="mb-3 flex items-baseline justify-between gap-3">
             <div>
@@ -503,13 +586,13 @@ export function TemplatesShell({
         </section>
       )}
 
-      {/* Canteens grid — one card per canteen in PICKER_CANTEENS.
-          Multiple canteens can share a palette (Oak x 5, Timber x 3, etc.)
-          so the merchant sees every trade demo we've shipped, not just
-          one representative per palette. Cards for palettes still marked
-          Coming Soon in READY_PALETTES render the Install button as
-          "Soon" so the merchant can see what's in the pipeline without
-          picking a broken surface. */}
+      {/* Legacy 20-card palette grid — hidden when the merchant has
+          a real DB canteen (myCanteen != null). The new ThemeControls
+          panel above replaces this UI. Grid kept in the DOM only for
+          fixture/demo merchants without a DB row so the picker still
+          renders something for them. Delete this whole block in a
+          follow-up cleanup pass once fixture merchants migrate. */}
+      {!myCanteen && (
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {PICKER_CANTEENS.map((canteen, idx) => {
           const pSlug = canteen.paletteSlug as PaletteSlug;
@@ -530,7 +613,11 @@ export function TemplatesShell({
           const cardNumber = String(idx + 1).padStart(2, "0");
           return (
             <article
-              key={pSlug}
+              // Multiple canteens can share a palette (mortar has 3,
+              // oak has 5) so keying by palette slug produces duplicate
+              // keys. Canteen slug is unique per card and stable across
+              // re-renders — the right identity here.
+              key={canteen.slug}
               className="flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition"
               style={{
                 borderColor: isSelected ? BRAND_YELLOW : "rgba(139,69,19,0.15)",
@@ -997,6 +1084,7 @@ export function TemplatesShell({
           </div>
         </article>
       </div>
+      )}
 
       {/* Footer note */}
       <footer className="mt-8 rounded-xl border bg-white p-4 text-[11.5px] leading-relaxed text-neutral-600 shadow-sm"
@@ -1413,5 +1501,105 @@ function LivePreviewModal({
         </button>
       </div>
     </div>
+  );
+}
+
+// ─── Your Canteen strip ──────────────────────────────────────
+//
+// Prominent card at the top of the picker showing the merchant's
+// own canteen (loaded server-side by slug). Displays the canteen
+// name, header image thumbnail, current template chip, and two
+// CTAs: View app (opens the canteen in a new tab with the current
+// template rendered), Go Live (routes to /trade-off/packages to
+// upgrade + activate the merchant's thenetworkers.app/{slug} URL).
+//
+// This is the "logged-in as merchant" surface Philip specified —
+// the data flows from canteen → template automatically. Changing
+// the merchant's canteen data (products, name, image) updates what
+// this card previews; changing template = updates the layout.
+function YourCanteenStrip({
+  slug,
+  canteen
+}: {
+  slug: string;
+  canteen: {
+    slug: string;
+    name: string;
+    headerBgUrl: string | null;
+    templateSlug: string;
+  };
+}) {
+  const TEMPLATE_LABEL: Record<string, string> = {
+    "template-1-chalk":  "Template 1 · Chalk",
+    "template-2-iron":   "Template 2 · Iron",
+    "template-3-canvas": "Template 3 · Canvas"
+  };
+  const templateLabel = TEMPLATE_LABEL[canteen.templateSlug] ?? canteen.templateSlug;
+  const viewAppUrl = `/trade-off/yard/canteens/${canteen.slug}`;
+  const goLiveUrl  = "/trade-off/packages";
+
+  return (
+    <section
+      className="mb-6 overflow-hidden rounded-2xl border shadow-md"
+      style={{ borderColor: "rgba(139,69,19,0.15)", backgroundColor: "#FFFFFF" }}
+    >
+      <div className="flex flex-col gap-3 p-4 md:flex-row md:items-center md:gap-4 md:p-5">
+        {/* Header image thumbnail */}
+        <div
+          className="h-20 w-32 flex-shrink-0 overflow-hidden rounded-xl border md:h-24 md:w-40"
+          style={{
+            borderColor: "rgba(139,69,19,0.15)",
+            backgroundColor: "#F3F4F6",
+            ...(canteen.headerBgUrl ? {
+              backgroundImage: `url('${canteen.headerBgUrl}')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            } : {})
+          }}
+          aria-hidden
+        />
+        {/* Copy */}
+        <div className="min-w-0 flex-1">
+          <div className="text-[10px] font-black uppercase tracking-[0.22em] text-neutral-500">
+            Your canteen
+          </div>
+          <div className="mt-0.5 text-[18px] font-black leading-tight text-neutral-900 md:text-[20px]">
+            {canteen.name}
+          </div>
+          <div className="mt-1.5 inline-flex items-center gap-1.5 rounded-sm px-2 py-0.5 text-[10px] font-black uppercase tracking-wider"
+            style={{ backgroundColor: "#0A0A0A", color: "#FFB300" }}
+            title="Currently applied template"
+          >
+            {templateLabel}
+          </div>
+          <p className="mt-2 text-[12px] leading-snug text-neutral-600">
+            Data flows from your canteen into whichever template you install. Change your products / posts / header image on your canteen — the template auto-reflects.
+          </p>
+        </div>
+        {/* CTAs */}
+        <div className="flex flex-shrink-0 flex-col gap-2 md:w-40">
+          <a
+            href={viewAppUrl}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition active:scale-[0.97]"
+            style={{ backgroundColor: "#FFB300" }}
+          >
+            View app
+          </a>
+          <Link
+            href={goLiveUrl}
+            className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97]"
+            style={{ backgroundColor: "#166534" }}
+            title="Upgrade + publish your canteen at thenetworkers.app/your-slug"
+          >
+            Go Live · Get URL
+          </Link>
+          <span className="mt-0.5 text-center text-[10px] text-neutral-500">
+            thenetworkers.app/{slug}
+          </span>
+        </div>
+      </div>
+    </section>
   );
 }

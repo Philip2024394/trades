@@ -48,6 +48,8 @@ import { BottomSheet } from "@/platform/ui/sheets/BottomSheet";
 import { tradeLabel } from "@/lib/tradeOff";
 import type { HammerexTradeOffYardPost } from "@/lib/supabase";
 import type { ReactionCounts } from "@/lib/yardReactions";
+import type { SideLanePost } from "@/lib/canteens";
+import { CanteenSideLane } from "./CanteenSideLane";
 import type { YardPoster } from "./YardPostCard";
 import { YardCommentsPanel } from "./YardCommentsPanel";
 import { YardInlineComposer } from "./YardInlineComposer";
@@ -79,13 +81,18 @@ type Props = {
   posters: Record<string, YardPoster>;
   reactions: Record<string, ReactionCounts>;
   viewerCircleIds: string[];
+  /** Platform-wide "Live listings" for the right rail — same source
+   *  the canteen pages use (platformSideLaneFromDb). Optional; the
+   *  panel simply omits the block when empty. */
+  sideLane?: SideLanePost[];
 };
 
 export function YardInboxShell({
   posts,
   posters,
   reactions,
-  viewerCircleIds
+  viewerCircleIds,
+  sideLane = []
 }: Props) {
   // Start with NO thread focused so the composer + top of the feed
   // stays in view. Focus (and its auto-scroll) only fires when the
@@ -232,6 +239,7 @@ export function YardInboxShell({
                 posts={posts}
                 posters={posters}
                 onSelect={setSelectedId}
+                sideLane={sideLane}
               />
             )}
           </aside>
@@ -1136,11 +1144,13 @@ function RightPanel({
 function DefaultRightPanel({
   posts,
   posters,
-  onSelect
+  onSelect,
+  sideLane = []
 }: {
   posts: HammerexTradeOffYardPost[];
   posters: Record<string, YardPoster>;
   onSelect: (id: string) => void;
+  sideLane?: SideLanePost[];
 }) {
   // Top 3 by comment_count. Ties broken by created_at (freshest wins).
   const trending = useMemo(() => {
@@ -1245,6 +1255,27 @@ function DefaultRightPanel({
             })}
           </ul>
         </div>
+      )}
+
+      {/* Live listings — platform-wide side-lane feed (same component
+          used on canteen pages). Auto-scrolling stack of member
+          listings + Trade Center products. On yard we don't have a
+          canteen slot for the in-place private view, so clicks route
+          to the canteens directory with the post id in the query. */}
+      {sideLane.length > 0 && (
+        <CanteenSideLane
+          posts={sideLane}
+          onOpenPost={(postId) => {
+            if (typeof window !== "undefined") {
+              window.location.href = `/trade-off/yard/canteens?post=${postId}`;
+            }
+          }}
+          onKnowTheFlow={() => {
+            if (typeof window !== "undefined") {
+              window.location.href = "/trade-off/yard/canteens";
+            }
+          }}
+        />
       )}
     </div>
   );

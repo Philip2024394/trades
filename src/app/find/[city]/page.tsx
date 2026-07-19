@@ -26,55 +26,15 @@ import { type FindCardListing } from "@/components/xrated/find/FindResultCard";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { XRATED_BRAND } from "@/lib/xratedTrades";
 import { BRAND, absolute } from "@/lib/seo";
+import { UK_CITY_BY_SLUG } from "@/lib/uk-cities";
+import { SmartVisitorHook } from "@/components/homepage/SmartVisitorHook";
 
 export const revalidate = 600;
 
-// City slug (lowercase, hyphenated) → display name (Title Case).
-// Add cities here as they're launched. Everything not in the map
-// 404s — deliberate, so search doesn't index empty pages.
-const SUPPORTED_CITIES: Record<string, {
-  displayName: string;
-  county: string;
-  postcodePrefixes: string[];
-  regionLabel: string;
-}> = {
-  manchester: {
-    displayName: "Manchester",
-    county: "Greater Manchester",
-    postcodePrefixes: ["M1", "M2", "M3", "M4", "M8", "M11", "M12", "M13", "M14", "M15", "M16", "M19", "M20", "M21", "M22"],
-    regionLabel: "the North West"
-  },
-  liverpool: {
-    displayName: "Liverpool",
-    county: "Merseyside",
-    postcodePrefixes: ["L1", "L2", "L3", "L4", "L5", "L6", "L7", "L8", "L15", "L17", "L18"],
-    regionLabel: "the North West"
-  },
-  leeds: {
-    displayName: "Leeds",
-    county: "West Yorkshire",
-    postcodePrefixes: ["LS1", "LS2", "LS3", "LS4", "LS6", "LS7", "LS8", "LS9", "LS11", "LS12"],
-    regionLabel: "West Yorkshire"
-  },
-  birmingham: {
-    displayName: "Birmingham",
-    county: "West Midlands",
-    postcodePrefixes: ["B1", "B2", "B3", "B4", "B5", "B12", "B15", "B16", "B17", "B18"],
-    regionLabel: "the Midlands"
-  },
-  london: {
-    displayName: "London",
-    county: "Greater London",
-    postcodePrefixes: ["E1", "E2", "E3", "E8", "E9", "N1", "N4", "N5", "N7", "N16", "SE1", "SE10", "SE15", "SW2", "SW9", "SW11", "SW16", "W1", "W6", "W10", "W11", "W12", "NW1", "NW3", "NW5", "NW6", "EC1", "EC2"],
-    regionLabel: "London"
-  },
-  glasgow: {
-    displayName: "Glasgow",
-    county: "Scotland",
-    postcodePrefixes: ["G1", "G2", "G3", "G4", "G11", "G12", "G13", "G14", "G20", "G21", "G22"],
-    regionLabel: "Scotland"
-  }
-};
+// City catalog now lives in src/lib/uk-cities.ts — shared with sitemap.ts
+// and /trade-off/[trade]/[city] so adding a city once unlocks every SEO
+// surface for that city. Unknown slugs still 404 by design.
+const SUPPORTED_CITIES = UK_CITY_BY_SLUG;
 
 const SELECT_COLS =
   "slug, display_name, trading_name, primary_trade, city, country, avatar_url, rating_avg, rating_count, years_in_trade, bio, tier, verified_plus_status";
@@ -130,11 +90,14 @@ async function loadCityMerchantCount(city: string): Promise<number> {
 }
 
 export default async function CityLandingPage({
-  params
+  params,
+  searchParams
 }: {
   params: Promise<{ city: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { city } = await params;
+  const _visitorParams = searchParams ? await searchParams : {};
   const meta = SUPPORTED_CITIES[city];
   if (!meta) notFound();
 
@@ -166,6 +129,7 @@ export default async function CityLandingPage({
 
   return (
     <main className="bg-neutral-50 pb-24 md:pb-0">
+      <SmartVisitorHook searchParams={_visitorParams}/>
       <FindHeader />
 
       {/* Hero */}

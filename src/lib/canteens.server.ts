@@ -61,7 +61,7 @@ function isUuid(id: string): boolean {
 export async function canteensAllFromDb(limit: number = 200): Promise<Canteen[]> {
   const res = await supabaseAdmin
     .from("hammerex_canteens")
-    .select("id, slug, name, tagline, trade_slug, trade_label, host_slug, host_display_name, member_count, posts_last_30d, activity_streak_months, header_bg_url, created_at, is_founding_100")
+    .select("id, slug, name, tagline, trade_slug, trade_label, host_slug, host_display_name, member_count, posts_last_30d, activity_streak_months, header_bg_url, created_at, is_founding_100, palette_slug, template_slug, entity_type, theme_mode, palette_intensity, hero_shade, feed_tile_color, feed_tile_image_url, base_hue, lightness, feed_tile_hue, feed_tile_lightness")
     .order("posts_last_30d", { ascending: false })
     .limit(limit);
   if (res.error) {
@@ -86,7 +86,7 @@ export async function canteenBySlugFromDb(slug: string): Promise<Canteen | null>
 
   const res = await supabaseAdmin
     .from("hammerex_canteens")
-    .select("id, slug, name, tagline, trade_slug, trade_label, host_slug, host_display_name, member_count, posts_last_30d, activity_streak_months, header_bg_url, created_at, is_founding_100")
+    .select("id, slug, name, tagline, trade_slug, trade_label, host_slug, host_display_name, member_count, posts_last_30d, activity_streak_months, header_bg_url, created_at, is_founding_100, palette_slug, template_slug, entity_type, theme_mode, palette_intensity, hero_shade, feed_tile_color, feed_tile_image_url, base_hue, lightness, feed_tile_hue, feed_tile_lightness")
     .eq("slug", slug)
     .maybeSingle();
   if (res.error) {
@@ -247,8 +247,17 @@ export async function designsForCanteenFromDb(canteenId: string): Promise<Cantee
     .order("sort_order", { ascending: true })
     .order("created_at", { ascending: true });
   if (res.error) {
-    // eslint-disable-next-line no-console
-    console.error("[canteens.server] designs", res.error);
+    // Downgrade to warn + skip logging when the error is empty {}
+    // (usually means the table isn't in this DB yet — cold-start).
+    // Same treatment as browseAllProductsFromDb above.
+    const hasDetail = (res.error.message?.trim() ?? "").length > 0
+      || (res.error.details?.trim() ?? "").length > 0
+      || (res.error.hint?.trim() ?? "").length > 0
+      || Boolean(res.error.code);
+    if (hasDetail) {
+      // eslint-disable-next-line no-console
+      console.warn("[canteens.server] designs", res.error);
+    }
     return designsForCanteenMock(canteenId);
   }
   const rows = res.data ?? [];
@@ -322,18 +331,30 @@ export type CanteenChatPost = {
   reactionsQuestion: number;
   replyCount: number;
   createdAt: string;
+  /** Sort/display signals — added 2026-07-17 when canteen own-post
+   *  actions (Pin/Edit/Boost) shipped. UI shows "Pinned" / "Boosted"
+   *  / "(edited)" chips based on these. */
+  isPinned: boolean;
+  boostActive: boolean;
+  boostExpiresAt: string | null;
+  bodyEditedAt: string | null;
 };
 
 export async function canteenPostsFromDb(canteenId: string, limit: number = 30): Promise<CanteenChatPost[]> {
   if (!isUuid(canteenId)) return [];
+  // Sort order: pinned first, then active-boosted (boost_expires_at in
+  // the future), then recency. All three columns come from the ALTER
+  // TABLE shipped 2026-07-17 alongside the Pin/Edit/Boost endpoints.
   const res = await supabaseAdmin
     .from("hammerex_canteen_posts")
-    .select("id, author_slug, author_display_name, author_avatar_url, body, photo_urls, mood_slug, reactions, reply_count, created_at")
+    .select("id, author_slug, author_display_name, author_avatar_url, body, photo_urls, mood_slug, reactions, reply_count, created_at, is_pinned, boost_expires_at, body_edited_at")
     .eq("canteen_id", canteenId)
     .eq("status", "live")
     .is("parent_id", null)
     .in("kind", ["chat", "question", "showcase", "announcement"])
-    .order("created_at", { ascending: false })
+    .order("is_pinned",       { ascending: false })
+    .order("boost_expires_at",{ ascending: false, nullsFirst: false })
+    .order("created_at",      { ascending: false })
     .limit(limit);
 
   if (res.error) {
@@ -366,6 +387,8 @@ export async function canteenSavedPostIdsFromDb(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function shapePost(r: any): CanteenChatPost {
   const reactions = (r.reactions ?? {}) as { like?: number; agree?: number; question?: number };
+  const boostExpiresAt = (r.boost_expires_at ?? null) as string | null;
+  const boostActive    = boostExpiresAt != null && Date.parse(boostExpiresAt) > Date.now();
   return {
     id: r.id,
     authorSlug: r.author_slug,
@@ -378,7 +401,11 @@ function shapePost(r: any): CanteenChatPost {
     reactionsAgree: reactions.agree ?? 0,
     reactionsQuestion: reactions.question ?? 0,
     replyCount: r.reply_count ?? 0,
-    createdAt: r.created_at
+    createdAt: r.created_at,
+    isPinned:      Boolean(r.is_pinned),
+    boostActive,
+    boostExpiresAt,
+    bodyEditedAt:  (r.body_edited_at ?? null) as string | null
   };
 }
 
@@ -491,8 +518,19 @@ export async function browseAllProductsFromDb(opts?: {
   const res = await q;
 
   if (res.error) {
-    // eslint-disable-next-line no-console
-    console.error("[canteens.server] browseAllProducts", res.error);
+    // Downgrade to warn + only log when the error has meaningful
+    // detail. Empty {} errors happen during cold-start (table not
+    // yet created / missing FK relationship in the dev DB) and used
+    // to spam the console on every Trade Center render. Fallback to
+    // mock data silently in that case.
+    const hasDetail = (res.error.message?.trim() ?? "").length > 0
+      || (res.error.details?.trim() ?? "").length > 0
+      || (res.error.hint?.trim() ?? "").length > 0
+      || Boolean(res.error.code);
+    if (hasDetail) {
+      // eslint-disable-next-line no-console
+      console.warn("[canteens.server] browseAllProducts", res.error);
+    }
     return browseAllProductsMock(opts);
   }
   const rows = res.data ?? [];
@@ -695,7 +733,19 @@ function shapeCanteen(r: any): Canteen {
     activityStreakMonths: r.activity_streak_months ?? 0,
     headerBgUrl: r.header_bg_url ?? null,
     createdAt: r.created_at,
-    isFounding100: r.is_founding_100 ?? false
+    isFounding100: r.is_founding_100 ?? false,
+    entityType: (r.entity_type as Canteen["entityType"]) ?? "trade",
+    paletteSlug: (r.palette_slug as string | null) ?? null,
+    templateSlug: (r.template_slug as string | undefined) ?? "template-1-chalk",
+    themeMode: (r.theme_mode as Canteen["themeMode"]) ?? "light",
+    paletteIntensity: (r.palette_intensity as Canteen["paletteIntensity"]) ?? "standard",
+    heroShade: typeof r.hero_shade === "number" ? r.hero_shade : 100,
+    feedTileColor: (r.feed_tile_color as string | null) ?? null,
+    feedTileImageUrl: (r.feed_tile_image_url as string | null) ?? null,
+    baseHue: (r.base_hue as Canteen["baseHue"]) ?? null,
+    lightness: typeof r.lightness === "number" ? r.lightness : null,
+    feedTileHue: (r.feed_tile_hue as Canteen["feedTileHue"]) ?? null,
+    feedTileLightness: typeof r.feed_tile_lightness === "number" ? r.feed_tile_lightness : null
   };
 }
 
@@ -775,6 +825,11 @@ function shapeProduct(r: any): CanteenProduct {
     variants: r.variants ?? undefined,
     commerce: r.commerce ?? undefined,
     categorySlug: r.category_slug ?? undefined,
-    categoryAspects: r.category_aspects ?? undefined
+    categoryAspects: r.category_aspects ?? undefined,
+    ref: r.ref ?? undefined,
+    priceIdr: r.price_idr != null ? Number(r.price_idr) : undefined,
+    addonBundle: Array.isArray(r.addon_bundle) && r.addon_bundle.length > 0
+      ? (r.addon_bundle as CanteenProduct["addonBundle"])
+      : undefined
   };
 }
