@@ -1613,6 +1613,7 @@ export function EditorClient({
               onLayerDragEnd={(id, x, y) => updateLayer(id, { x, y })}
               onLayerTransformEnd={(id, patch) => updateLayer(id, patch as Partial<EditorLayer>)}
               showSafeZone={!suppressSafeZone}
+              merchantSlug={merchantSlug}
             />
 
             {/* Empty-frame background — on-brand construction scene

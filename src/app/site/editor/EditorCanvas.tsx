@@ -99,10 +99,17 @@ export type EditorCanvasProps = {
    *  platform chrome. Toggled off during export so the flatten doesn't
    *  bake the scrim into the download. Default: true. */
   showSafeZone?:    boolean;
+  /** Merchant slug used for the per-user trace watermark. Rendered
+   *  at ~12% opacity in every corner so a leaked download can be
+   *  traced back to the account that pulled it. Present for both
+   *  free and paid tiers — free gets the bold visible watermark
+   *  ADDITIONALLY. Null when the caller isn't associated with a
+   *  merchant (anonymous editor session). */
+  merchantSlug?:    string | null;
 };
 
 export const EditorCanvas = forwardRef<CanvasHandle, EditorCanvasProps>(function EditorCanvas(
-  { width, height, paid, baseImg, baseVideo, videoPlaying, videoTime, base, secondaryImg, secondaryBase, mode, activeSlot, layers, selectedLayerId, layerImgs, onBaseDragEnd, onSecondaryDragEnd, onLayerSelect, onLayerDragEnd, onLayerTransformEnd, showSafeZone = true },
+  { width, height, paid, baseImg, baseVideo, videoPlaying, videoTime, base, secondaryImg, secondaryBase, mode, activeSlot, layers, selectedLayerId, layerImgs, onBaseDragEnd, onSecondaryDragEnd, onLayerSelect, onLayerDragEnd, onLayerTransformEnd, showSafeZone = true, merchantSlug = null },
   ref
 ) {
   // Konva.Animation loop — while the video plays, tick the base
@@ -615,6 +622,31 @@ export const EditorCanvas = forwardRef<CanvasHandle, EditorCanvasProps>(function
                 shadowBlur={3}
                 shadowOpacity={0.55}
               />
+            </>
+          );
+        })()}
+
+        {/* Per-user trace watermark — always renders when the caller
+            has a merchant slug (both free + paid). Faint 4-corner
+            "thenetworkers.app/<slug>" at ~12% opacity so a leaked
+            export can be tied back to the account that made it.
+            Doesn't interfere with the visible free-tier watermark;
+            invisible-ish to viewers, provable in DMCA. */}
+        {merchantSlug && (() => {
+          const tag  = `thenetworkers.app/${merchantSlug}`;
+          const fs   = Math.max(9, Math.round(Math.min(width, height) * 0.014));
+          const pad  = Math.round(fs * 0.9);
+          const op   = 0.12;
+          return (
+            <>
+              {/* Top-left */}
+              <KText x={pad}         y={pad}         text={tag} fontSize={fs} fontStyle="bold" fill="#FFFFFF" opacity={op} shadowColor="#000" shadowBlur={2} shadowOpacity={0.35}/>
+              {/* Top-right */}
+              <KText x={0}           y={pad}         width={width - pad} align="right" text={tag} fontSize={fs} fontStyle="bold" fill="#FFFFFF" opacity={op} shadowColor="#000" shadowBlur={2} shadowOpacity={0.35}/>
+              {/* Bottom-left */}
+              <KText x={pad}         y={height - pad - fs} text={tag} fontSize={fs} fontStyle="bold" fill="#FFFFFF" opacity={op} shadowColor="#000" shadowBlur={2} shadowOpacity={0.35}/>
+              {/* Bottom-right */}
+              <KText x={0}           y={height - pad - fs} width={width - pad} align="right" text={tag} fontSize={fs} fontStyle="bold" fill="#FFFFFF" opacity={op} shadowColor="#000" shadowBlur={2} shadowOpacity={0.35}/>
             </>
           );
         })()}

@@ -259,6 +259,16 @@ export function localBusinessJsonLd(
 ) {
   const url = absolute(`/trade/${listing.slug}`);
   const photo = listing.avatar_url ?? listing.photos[0] ?? BRAND.logo;
+  // Full image array — Google understands LocalBusiness.image as
+  // either a single URL or an array. Passing every portfolio photo
+  // + avatar + hero significantly boosts image discoverability and
+  // gives us provenance signals for DMCA claims. Dedupe + cap at 20.
+  const imageList = Array.from(new Set([
+    listing.avatar_url,
+    listing.custom_app_hero_url,
+    ...(Array.isArray(listing.photos) ? listing.photos : [])
+  ].filter(Boolean) as string[])).slice(0, 20);
+  const imageField: string | string[] = imageList.length > 1 ? imageList : photo;
   const digits = listing.whatsapp.replace(/\D/g, "");
   const geo =
     listing.lat != null && listing.lng != null
@@ -321,7 +331,7 @@ export function localBusinessJsonLd(
     "@id": url,
     name: listing.trading_name ?? listing.display_name,
     description: stripMarkdown(listing.bio).slice(0, 320),
-    image: photo,
+    image: imageField,
     url,
     telephone:
       listing.phone_calls_enabled && digits ? `+${digits}` : undefined,
