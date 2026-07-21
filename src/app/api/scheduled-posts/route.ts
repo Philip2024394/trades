@@ -78,6 +78,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     kind?:                string;
     body?:                string;
     photo_urls?:          string[];
+    image_ids?:           string[];    // hammerex_feed_tile_library slugs;
+                                        // server resolves to photo_urls
     mood_slug?:           string;
     price_gbp?:           number;
     target_trade_slugs?:  string[];
@@ -87,6 +89,21 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_json" }, { status: 400 });
+  }
+
+  // If the caller passed `image_ids` (feed_tile_library slugs), resolve
+  // them to URLs so we store the same shape as manual canteen posts.
+  if (Array.isArray(body.image_ids) && body.image_ids.length > 0 && (!body.photo_urls || body.photo_urls.length === 0)) {
+    const ids = body.image_ids.slice(0, 10);
+    const res = await supabaseAdmin
+      .from("hammerex_feed_tile_library")
+      .select("slug, url")
+      .in("slug", ids);
+    const bySlug = new Map((res.data ?? []).map((r) => [r.slug as string, r.url as string]));
+    body.photo_urls = ids.map((id) => bySlug.get(id)).filter((u): u is string => !!u);
+    if (body.photo_urls.length === 0) {
+      return NextResponse.json({ ok: false, error: "no_resolvable_images" }, { status: 400 });
+    }
   }
 
   // Validate timing.

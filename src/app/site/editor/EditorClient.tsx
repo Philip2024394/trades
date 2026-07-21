@@ -24,7 +24,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { Download, Loader2, Save, Send, Sparkles, Type, Image as ImageIcon, Square, Circle, Triangle, ArrowRight as ArrowIcon, Star, Trash2, Layers, RotateCw, MoveUp, MoveDown, Upload as UploadIcon, Camera, MessageCircle, Music2, Ghost, HardHat, Video as VideoIcon, Play, Pause, Undo2, Redo2, Copy, ChevronDown, X, LayoutTemplate, Wallet, Plus, Crown, Wand2 } from "lucide-react";
+import { Download, Loader2, Save, Send, Sparkles, Type, Image as ImageIcon, Square, Circle, Triangle, ArrowRight as ArrowIcon, Star, Trash2, Layers, RotateCw, MoveUp, MoveDown, Upload as UploadIcon, Camera, MessageCircle, Music2, Ghost, HardHat, Video as VideoIcon, Play, Pause, Undo2, Redo2, Copy, ChevronDown, X, LayoutTemplate, Wallet, Plus, Crown, Wand2, Clock } from "lucide-react";
 import { EDITOR_FRAMES, NETWORK_META, NETWORK_ICON_URL, EMPTY_FRAME_BG_URL, bestFitFrame, type EditorFrame, type NetworkSlug } from "@/lib/siteEditor/frames";
 import { ImageLibraryDrawer, type LibraryImage } from "@/components/site/ImageLibraryDrawer";
 import { SocialLinksDrawer, type SocialLinks, type SocialNetworkSlug } from "@/components/site/SocialLinksDrawer";
@@ -298,6 +298,10 @@ export function EditorClient({
   const [aiSubject, setAiSubject] = useState<string>(initialImage?.alt ?? "");
   const [washerBalance, setWasherBalance] = useState<number | null>(null);
   const [shareMenuOpen, setShareMenuOpen] = useState(false);
+  const [scheduleOpen,  setScheduleOpen]  = useState(false);
+  const [scheduleDate,  setScheduleDate]  = useState<string>("");
+  const [scheduleYard,  setScheduleYard]  = useState<boolean>(false);
+  const [scheduleBusy,  setScheduleBusy]  = useState<boolean>(false);
 
   // Ctrl+Z / Cmd+Z = undo · Ctrl+Y / Ctrl+Shift+Z / Cmd+Shift+Z = redo.
   // Skipped while a focussed <input>/<textarea>/contenteditable owns
@@ -1423,6 +1427,57 @@ export function EditorClient({
     }
   }, [busy, caption, flattenDataUrl, frame.slug, socialLinks, state]);
 
+  // Schedule the current composition for a future time. Reuses the
+  // same image_ids / caption payload as shareToCanteen, but POSTs
+  // to /api/scheduled-posts instead of publishing immediately. Cron
+  // /api/cron/publish-scheduled-posts picks it up every 5 min.
+  const scheduleToCanteen = useCallback(async () => {
+    if (scheduleBusy) return;
+    if (!scheduleDate) { setStatus("Pick a date + time first."); return; }
+
+    const carouselIds = state.slides
+      .map((s) => s.base.sourceImageId)
+      .filter((v): v is string => typeof v === "string" && v.length > 0);
+    if (carouselIds.length === 0) {
+      setStatus("Pick a Site image first (Schedule requires a licensed image source).");
+      return;
+    }
+    const when = new Date(scheduleDate);
+    if (isNaN(when.getTime())) { setStatus("Invalid date."); return; }
+    if (when.getTime() - Date.now() < 2 * 60 * 1000) {
+      setStatus("Schedule at least 2 minutes ahead.");
+      return;
+    }
+
+    setScheduleBusy(true);
+    try {
+      const res = await fetch("/api/scheduled-posts", {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          scheduled_for: when.toISOString(),
+          image_ids:     carouselIds,
+          body:          caption,
+          kind:          "showcase",
+          target_yard:   scheduleYard
+        })
+      });
+      const data = await res.json().catch(() => ({} as { ok?: boolean; error?: string; detail?: string }));
+      if (!res.ok || data.ok !== true) {
+        setStatus(data.detail ?? data.error ?? "Schedule failed.");
+        return;
+      }
+      setStatus(`Scheduled for ${when.toLocaleString()}${scheduleYard ? " · Canteen + Yard" : " · Canteen only"}.`);
+      setScheduleOpen(false);
+      setScheduleDate("");
+      setScheduleYard(false);
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "Schedule failed.");
+    } finally {
+      setScheduleBusy(false);
+    }
+  }, [caption, scheduleBusy, scheduleDate, scheduleYard, state.slides]);
+
   const shareToCanteen = useCallback(async () => {
     if (busy !== "none") return;
     setBusy("share");
@@ -2333,6 +2388,82 @@ export function EditorClient({
         />
       )}
 
+      {/* Schedule modal — merchant picks a future time + yard toggle,
+          POSTs the same image_ids/caption payload as shareToCanteen
+          into /api/scheduled-posts. Backend cron publishes when due. */}
+      {scheduleOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center"
+          style={{ backgroundColor: "rgba(10,10,10,0.55)", backdropFilter: "blur(4px)" }}
+          onClick={() => !scheduleBusy && setScheduleOpen(false)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-md rounded-xl bg-white p-4 shadow-2xl"
+          >
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-[14px] font-black uppercase tracking-[0.14em]" style={{ color: BRAND_BLACK }}>
+                Schedule this post
+              </h3>
+              <button
+                type="button"
+                onClick={() => !scheduleBusy && setScheduleOpen(false)}
+                className="flex h-7 w-7 items-center justify-center rounded-full hover:bg-neutral-100"
+                aria-label="Close"
+              >
+                <X size={13} strokeWidth={2.4}/>
+              </button>
+            </div>
+            <label className="mb-3 block">
+              <span className="mb-1 block text-[11px] font-black uppercase tracking-wider text-neutral-500">
+                Publish at
+              </span>
+              <input
+                type="datetime-local"
+                value={scheduleDate}
+                onChange={(e) => setScheduleDate(e.target.value)}
+                min={new Date(Date.now() + 2 * 60 * 1000).toISOString().slice(0, 16)}
+                className="h-10 w-full rounded-md border px-3 text-[14px]"
+              />
+            </label>
+            <label className="mb-4 flex cursor-pointer items-center gap-2 rounded-md bg-neutral-50 px-3 py-2 text-[13px]">
+              <input
+                type="checkbox"
+                checked={scheduleYard}
+                onChange={(e) => setScheduleYard(e.target.checked)}
+                className="h-4 w-4"
+              />
+              <span>Also push to the <b>Yard</b> feed (community-wide)</span>
+            </label>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => !scheduleBusy && setScheduleOpen(false)}
+                disabled={scheduleBusy}
+                className="h-10 flex-1 rounded-md border text-[12px] font-black uppercase tracking-wider hover:bg-neutral-50 disabled:opacity-40"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => void scheduleToCanteen()}
+                disabled={scheduleBusy || !scheduleDate}
+                className="h-10 flex-1 rounded-md text-[12px] font-black uppercase tracking-wider disabled:opacity-40"
+                style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+              >
+                {scheduleBusy ? "Scheduling…" : "Schedule"}
+              </button>
+            </div>
+            <p className="mt-3 text-[10.5px] leading-tight text-neutral-500">
+              Max 20 pending at a time. Max 3 yard posts per rolling 24h.
+              Times use your device's local timezone.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Desktop action bar. Mobile uses the fixed bottom rail
           rendered outside the scroll container. */}
       {!isMobile && (
@@ -2342,6 +2473,13 @@ export function EditorClient({
           onSave={() => void saveDraft(false)}
           onExport={doExport}
           onShareCanteen={shareToCanteen}
+          onScheduleCanteen={() => {
+            // Default the schedule input to 1h from now — sensible
+            // starting point the merchant tweaks.
+            const suggested = new Date(Date.now() + 60 * 60 * 1000);
+            setScheduleDate(suggested.toISOString().slice(0, 16));
+            setScheduleOpen(true);
+          }}
           shareMenuOpen={shareMenuOpen}
           onToggleShareMenu={() => setShareMenuOpen((v) => !v)}
           onAutoPost={autoPost}
@@ -2363,8 +2501,13 @@ export function EditorClient({
           }}
         >
           <MobileActionBtn icon={<Save size={16}/>}      label="Save"      busy={busy === "save"}   onClick={() => void saveDraft(false)}/>
-          <MobileActionBtn icon={<Download size={16}/>}  label="Download"  busy={busy === "export"} onClick={doExport}/>
+          <MobileActionBtn icon={<Download size={16}/>}  label="Down"      busy={busy === "export"} onClick={doExport}/>
           <MobileActionBtn icon={<Send size={16}/>}      label="Canteen"   busy={busy === "share"}  onClick={shareToCanteen}/>
+          <MobileActionBtn icon={<Clock size={16}/>}     label="Schedule"  busy={false}             onClick={() => {
+            const suggested = new Date(Date.now() + 60 * 60 * 1000);
+            setScheduleDate(suggested.toISOString().slice(0, 16));
+            setScheduleOpen(true);
+          }}/>
           <MobileActionBtn icon={<Send size={16}/>}      label="Auto"      busy={false}             onClick={() => setShareMenuOpen((v) => !v)}/>
         </div>
 
@@ -4219,6 +4362,7 @@ function ActionBar({
   onSave,
   onExport,
   onShareCanteen,
+  onScheduleCanteen,
   shareMenuOpen,
   onToggleShareMenu,
   onAutoPost,
@@ -4229,6 +4373,7 @@ function ActionBar({
   onSave:            () => void;
   onExport:          () => void;
   onShareCanteen:    () => void;
+  onScheduleCanteen: () => void;
   shareMenuOpen:     boolean;
   onToggleShareMenu: () => void;
   onAutoPost:        (network: "instagram" | "facebook" | "tiktok" | "snapchat") => void;
@@ -4250,7 +4395,8 @@ function ActionBar({
       <div className="flex flex-wrap items-center gap-1.5">
         <BarBtn onClick={onSave}          busy={busy === "save"}   icon={<Save size={12}/>}     label="Save"/>
         <BarBtn onClick={onExport}        busy={busy === "export"} icon={<Download size={12}/>} label="Download"/>
-        <BarBtn onClick={onShareCanteen}  busy={busy === "share"}  icon={<Send size={12}/>}     label="Canteen"/>
+        <BarBtn onClick={onShareCanteen}    busy={busy === "share"} icon={<Send size={12}/>}  label="Canteen"/>
+        <BarBtn onClick={onScheduleCanteen} busy={false}            icon={<Clock size={12}/>} label="Schedule"/>
         <div className="relative">
           <BarBtn onClick={onToggleShareMenu} busy={false} icon={<Send size={12}/>} label="Auto-post"/>
           {shareMenuOpen && (
