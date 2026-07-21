@@ -74,8 +74,22 @@
     "windows-01.png",
     "windows-02.png",
     "windows-03.png",
-    "windows-04.png"
+    "windows-04.png",
+    "alarm-01.png",
+    "alarm-02.png",
+    "alarm-03.png",
+    "alarm-04.png",
+    "drain-01.png",
+    "drain-02.png",
+    "drain-03.png",
+    "drain-04.png",
+    "drain-05.png",
+    "guttering-01.png",
+    "guttering-02.png",
+    "guttering-03.png",
+    "guttering-04.png",
+    "guttering-05.png"
   ],
   "version": 1,
-  "baked_at": "2026-07-21T19:55:26.206Z"
+  "baked_at": "2026-07-21T21:53:45.738Z"
 }
