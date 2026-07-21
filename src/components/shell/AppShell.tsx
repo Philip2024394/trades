@@ -40,7 +40,9 @@ import {
   ExternalLink,
   BarChart3,
   Wrench,
-  Circle
+  Circle,
+  Crown,
+  ShoppingCart
 } from "lucide-react";
 
 // `token` is `null` when the session came from the signed cookie
@@ -585,6 +587,34 @@ function AppDrawer({
           icon: User,
           label: "Verification & badges",
           hint: "ID · insurance · trade body — grow your trust score"
+        },
+        {
+          // Trust Ladder — Bronze/Silver/Gold/Platinum. Was reachable
+          // only via the launchpad panel's "Full ladder" button;
+          // drawer entry closes the loop for merchants navigating
+          // outside /home.
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/trust-ladder`),
+          icon: Crown,
+          label: "Trust ladder",
+          hint: "Bronze → Platinum · unlock perks + algorithmic boost"
+        },
+        {
+          // Pricing hub — previously only surfaced via inline "Upgrade"
+          // CTAs. Merchants who wanted to compare tiers had no direct
+          // entry point.
+          href: "/trade-off/pricing",
+          icon: Tag,
+          label: "Plans & pricing",
+          hint: "Free · Starter · Pro · Business · Works"
+        },
+        {
+          // Trade Counter — peer-to-peer trades-only marketplace.
+          // Separate from Trade Center (that's merchant-facing) and was
+          // completely invisible from the merchant drawer.
+          href: "/tc/trade-counter",
+          icon: ShoppingCart,
+          label: "Trade Counter",
+          hint: "Trades-only marketplace · post & sell to other trades"
         },
         {
           // Tips library — 10 tip pages that existed as pure orphans.
