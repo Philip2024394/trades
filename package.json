@@ -48,6 +48,7 @@
     "leaflet": "^1.9.4",
     "lucide-react": "^1.23.0",
     "next": "^16.2.9",
+    "onnxruntime-web": "^1.27.0",
     "qrcode": "^1.5.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

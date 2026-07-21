@@ -24,7 +24,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
-import { Download, Loader2, Save, Send, Sparkles, Type, Image as ImageIcon, Square, Circle, Triangle, ArrowRight as ArrowIcon, Star, Trash2, Layers, RotateCw, MoveUp, MoveDown, Upload as UploadIcon, Camera, MessageCircle, Music2, Ghost, HardHat, Video as VideoIcon, Play, Pause, Undo2, Redo2, Copy, ChevronDown, X, LayoutTemplate, Wallet, Plus, Crown } from "lucide-react";
+import { Download, Loader2, Save, Send, Sparkles, Type, Image as ImageIcon, Square, Circle, Triangle, ArrowRight as ArrowIcon, Star, Trash2, Layers, RotateCw, MoveUp, MoveDown, Upload as UploadIcon, Camera, MessageCircle, Music2, Ghost, HardHat, Video as VideoIcon, Play, Pause, Undo2, Redo2, Copy, ChevronDown, X, LayoutTemplate, Wallet, Plus, Crown, Wand2 } from "lucide-react";
 import { EDITOR_FRAMES, NETWORK_META, NETWORK_ICON_URL, EMPTY_FRAME_BG_URL, bestFitFrame, type EditorFrame, type NetworkSlug } from "@/lib/siteEditor/frames";
 import { ImageLibraryDrawer, type LibraryImage } from "@/components/site/ImageLibraryDrawer";
 import { SocialLinksDrawer, type SocialLinks, type SocialNetworkSlug } from "@/components/site/SocialLinksDrawer";
@@ -169,7 +169,7 @@ const EditorCanvasDynamic = dynamic(
   { ssr: false, loading: () => <div className="flex h-full w-full items-center justify-center text-[11px] text-neutral-400">Loading canvas…</div> }
 );
 
-type Tool = "upload" | "video" | "library" | "text" | "overlays" | "banners" | "shapes" | "objects" | "templates";
+type Tool = "upload" | "video" | "library" | "text" | "overlays" | "banners" | "shapes" | "objects" | "templates" | "cutout";
 
 const VIDEO_ACCEPT = "video/mp4,video/quicktime,video/mov";
 
@@ -859,6 +859,85 @@ export function EditorClient({
     reader.readAsDataURL(file);
   }, [patchSlide, activeSlot]);
 
+  // Background-removal state — spinner, progress, error surface.
+  // The heavy lifting runs in a Web Worker on the merchant's device
+  // (see src/lib/backgroundRemoval/worker.ts). We just orchestrate.
+  const [cutoutBusy, setCutoutBusy] = useState(false);
+  const [cutoutPct,  setCutoutPct]  = useState(0);
+
+  const runCutout = useCallback(async () => {
+    // Requires a base image on the active slide. Overlay-layer cutout
+    // is a follow-up; MVP focuses on the primary photo.
+    const url = activeS.base.url;
+    if (!url) {
+      setStatus("Load a photo first, then tap Cutout.");
+      return;
+    }
+    if (cutoutBusy) return;
+    setCutoutBusy(true);
+    setCutoutPct(0);
+    setStatus("Loading the background remover…");
+    try {
+      // Lazy-load the client (avoids pulling onnxruntime-web into
+      // the initial bundle — only merchants who tap Cutout pay the
+      // download cost).
+      const { removeBackground } = await import("@/lib/backgroundRemoval/client");
+      const result = await removeBackground(url, (pct) => {
+        setCutoutPct(pct);
+        if (pct < 45)      setStatus("Analysing your photo…");
+        else if (pct < 80) setStatus("Removing background…");
+        else               setStatus("Finalising cutout…");
+      });
+
+      // Persist to Supabase Storage so it survives page reloads.
+      const form = new FormData();
+      form.append("file",         result.blob, "cutout.png");
+      form.append("source_url",   url);
+      form.append("inference_ms", String(result.inferenceMs));
+      form.append("backend",      result.backend);
+      const saveRes  = await fetch("/api/site/editor/bg-removal/save", { method: "POST", body: form });
+      const saveJson = await saveRes.json().catch(() => ({ ok: false, error: "network" }));
+
+      if (!saveRes.ok || !saveJson.ok) {
+        if (saveJson.error === "monthly_limit") {
+          setStatus(`Monthly cutout limit reached (${saveJson.quota?.limit}). Upgrade for more.`);
+        } else if (saveJson.error === "rolling_24h_limit") {
+          setStatus("Rolling 24h cutout cap hit. Try again in a bit.");
+        } else if (saveJson.error === "not_authenticated") {
+          setStatus("Sign in to save your cutout.");
+        } else {
+          setStatus("Cutout ready in-browser but couldn't save. Try again.");
+        }
+        return;
+      }
+      const newUrl = saveJson.url as string;
+
+      // Swap the base image URL — merchant sees the cutout immediately.
+      // Undo (Ctrl+Z) restores the original since patchSlide flows
+      // through the history stack.
+      patchSlide((s) => ({
+        ...s,
+        base: {
+          ...s.base,
+          url:     newUrl,
+          // Reset transform so cover-fit re-runs against the new image.
+          offsetX: 0,
+          offsetY: 0,
+          scale:   1,
+          scaleX:  undefined,
+          scaleY:  undefined
+        }
+      }));
+      setStatus(`Cutout ready. ${saveJson.quota?.used}/${saveJson.quota?.limit} used this month.`);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatus(`Cutout failed: ${msg}`);
+    } finally {
+      setCutoutBusy(false);
+      setCutoutPct(0);
+    }
+  }, [activeS.base.url, cutoutBusy, patchSlide]);
+
   const addText = useCallback(() => {
     const layer: TextLayer = {
       id:         `text-${Date.now()}`,
@@ -1538,10 +1617,13 @@ export function EditorClient({
               else if (t === "library")   setLibraryOpen("images");
               else if (t === "shapes")    setLibraryOpen("shapes");
               else if (t === "templates") setLibraryOpen("templates");
+              else if (t === "cutout")    void runCutout();
               else                        setLibraryOpen(null);
             }}
             onAddText={addText}
             onOpenFilePicker={openFilePicker}
+            cutoutBusy={cutoutBusy}
+            cutoutPct={cutoutPct}
           />
         )}
 
@@ -3620,12 +3702,16 @@ function Toolrail({
   current,
   onSelect,
   onAddText,
-  onOpenFilePicker
+  onOpenFilePicker,
+  cutoutBusy = false,
+  cutoutPct  = 0
 }: {
   current:          Tool;
   onSelect:         (t: Tool) => void;
   onAddText:        () => void;
   onOpenFilePicker: () => void;
+  cutoutBusy?:      boolean;
+  cutoutPct?:       number;
 }) {
   return (
     <div className="flex flex-row gap-1.5 md:flex-col">
@@ -3646,6 +3732,16 @@ function Toolrail({
       <ToolBtn icon={<Square size={16}/>}   label="Banners"  active={current === "banners"}  onClick={() => onSelect("banners")}/>
       <ToolBtn icon={<Circle size={16}/>}  label="Shapes"  active={current === "shapes"}  onClick={() => onSelect("shapes")}/>
       <ToolBtn icon={<LayoutTemplate size={16}/>} label="Templates" active={current === "templates"} onClick={() => onSelect("templates")}/>
+      {/* Cutout — client-side background removal via RMBG-1.4 in a
+          Web Worker. Busy state shows the model download / inference
+          progress. Doubles as a signal that we can offer this feature
+          at zero per-image cost. */}
+      <ToolBtn
+        icon={cutoutBusy ? <Loader2 size={16} className="animate-spin"/> : <Wand2 size={16}/>}
+        label={cutoutBusy ? (cutoutPct > 0 ? `${cutoutPct}%` : "…") : "Cutout"}
+        active={current === "cutout" || cutoutBusy}
+        onClick={() => onSelect("cutout")}
+      />
     </div>
   );
 }
