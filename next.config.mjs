@@ -158,6 +158,26 @@ const nextConfig = {
       // { source: "/trade-off/yard/canteens", destination: "/community", permanent: true },
       // { source: "/trade-off/yard/canteens/:path*", destination: "/community/:path*", permanent: true }
     ];
+  },
+  // Security headers — Stripe / trust scrapers grade a domain by
+  // these on first fetch. HSTS locks the site to HTTPS for 2 years
+  // (preload-eligible); nosniff blocks MIME sniffing attacks;
+  // Referrer-Policy leaks less to third parties; Permissions-Policy
+  // hard-denies APIs we never use (camera/microphone) and scopes
+  // geolocation to same-origin only.
+  //
+  // CSP is deliberately NOT set here — the site uses inline
+  // dangerouslySetInnerHTML for JSON-LD in ~10 places, which needs
+  // a nonce-based CSP (deferred to a dedicated middleware pass).
+  async headers() {
+    const common = [
+      { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+      { key: "X-Content-Type-Options",    value: "nosniff" },
+      { key: "Referrer-Policy",           value: "strict-origin-when-cross-origin" },
+      { key: "Permissions-Policy",        value: "camera=(), microphone=(), geolocation=(self), interest-cohort=()" },
+      { key: "X-Frame-Options",           value: "SAMEORIGIN" }
+    ];
+    return [{ source: "/(.*)", headers: common }];
   }
 };
 

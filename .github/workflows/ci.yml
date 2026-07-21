@@ -1,0 +1,56 @@
+name: CI
+
+# Runs on every push to main and every PR. Fails fast on
+# typecheck errors so a broken build never lands on prod.
+# Vercel handles deployment separately — this workflow is a
+# quality gate only.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  typecheck:
+    name: TypeScript
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: TypeScript strict check
+        run: npx tsc --noEmit --project tsconfig.json
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: ESLint
+        run: npx next lint --quiet
+        continue-on-error: true  # ESLint is disabled in next.config.mjs for
+                                 # preview builds; run as a signal only
+                                 # until the codebase is clean.

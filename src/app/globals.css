@@ -560,3 +560,39 @@ html[data-site-foreman="on"] .studio-shell .bg-neutral-100 {
     animation: none;
   }
 }
+
+/* ─── Accessibility: keyboard focus ───────────────────────────
+   Global :focus-visible ring so keyboard users always see where
+   their focus is. WCAG 2.1 SC 2.4.7 (Focus Visible). Uses the
+   platform brand yellow with a dark offset so it reads against
+   any background. Mouse users don't see the ring (that's
+   :focus-visible vs :focus). */
+:focus-visible {
+  outline: 3px solid #FFB300;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Screen-reader-only pattern — used by the skip-to-content link
+   in root layout. Hidden visually until focused. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+.focus\:not-sr-only:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}

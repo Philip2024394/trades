@@ -3,6 +3,8 @@ import "./globals.css";
 import { BRAND } from "@/lib/seo";
 import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
 import { allFontVariables } from "@/lib/fonts";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 // Root layout for Thenetworkers. Page chrome (header, footer, dock)
 // lives on the route segments themselves; the root only owns html/body,
@@ -138,13 +140,36 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
         />
+        {/* Newsroom RSS auto-discovery — feed readers + editorial
+            bots pick this up on any page load. */}
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="The Networkers — Newsroom"
+          href="/news/feed.xml"
+        />
       </head>
       <body className="bg-brand-bg text-brand-text antialiased">
+        {/* Skip-to-content — invisible until focused, keyboard users
+            can jump straight past chrome to the page's <main>. WCAG
+            2.1 SC 2.4.1. Every route shell should mark its <main>
+            with id="main". */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[1000] focus:rounded-md focus:bg-brand-yellow focus:px-3 focus:py-2 focus:text-sm focus:font-black focus:text-brand-black focus:shadow-lg"
+        >
+          Skip to content
+        </a>
         {children}
         {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
             Renders nothing on the server and self-hides once the visitor
             has chosen, so it never blocks page chrome on repeat visits. */}
         <CookieConsentBanner />
+        {/* Vercel Analytics + Speed Insights — Web Vitals + pageview
+            telemetry. No config required on Vercel deployments;
+            no-ops in dev + on other hosts. */}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
