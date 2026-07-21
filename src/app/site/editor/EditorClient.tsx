@@ -38,6 +38,7 @@ import { BANNER_LIBRARY, type Banner } from "@/lib/siteEditor/banners";
 import { SHAPE_LIBRARY, SHAPE_CATEGORIES, stylePreset, type ShapeCategory } from "@/lib/siteEditor/shapes";
 import { SHOWCASE_TEMPLATES } from "@/lib/siteEditor/showcaseTemplates";
 import { resolveTemplateLayers, type TemplateContent } from "@/lib/siteEditor/frameLayout";
+import { useToast } from "@/components/toast/ToastProvider";
 
 const BRAND_BLACK  = "#0A0A0A";
 const BRAND_YELLOW = "#FFB300";
@@ -285,6 +286,7 @@ export function EditorClient({
   const [selectedLayerId, setSelectedLayerId] = useState<string | null>(null);
   const [busy, setBusy] = useState<"none" | "export" | "save" | "share" | "ai">("none");
   const [status, setStatus] = useState<string | null>(null);
+  const toast = useToast();
   /** Temporarily suppress the safe-zone dim overlay so it doesn't
    *  bake into the flatten during export. doExport flips this true
    *  before toDataURL and back false in finally. */
@@ -1464,19 +1466,41 @@ export function EditorClient({
       });
       const data = await res.json().catch(() => ({} as { ok?: boolean; error?: string; detail?: string }));
       if (!res.ok || data.ok !== true) {
+        // Failure: surface as a warning-kind toast (persists ~10s so
+        // the merchant has time to read the specific error).
+        toast.push({
+          kind:  "warning",
+          title: "Couldn't schedule that post",
+          body:  data.detail ?? data.error ?? "Please try again in a moment.",
+          ttlMs: 10_000
+        });
         setStatus(data.detail ?? data.error ?? "Schedule failed.");
         return;
       }
-      setStatus(`Scheduled for ${when.toLocaleString()}${scheduleYard ? " · Canteen + Yard" : " · Canteen only"}.`);
+      // Success: reassuring bottom-left toast, exactly the pattern
+      // Philip flagged for future "your post is queued" moments —
+      // reduces confusion when a post doesn't appear instantly.
+      const timeStr = when.toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+      toast.push({
+        kind:   "success",
+        title:  scheduleYard ? "Post queued for Canteen + Yard" : "Post queued for your Canteen",
+        body:   `Publishing at ${timeStr}. You can reschedule or cancel any time.`,
+        action: { label: "Manage schedule", href: `/trade-off/edit/${merchantSlug ?? ""}/scheduled` }
+      });
       setScheduleOpen(false);
       setScheduleDate("");
       setScheduleYard(false);
     } catch (err) {
-      setStatus(err instanceof Error ? err.message : "Schedule failed.");
+      const msg = err instanceof Error ? err.message : "Schedule failed.";
+      toast.push({
+        kind:  "error",
+        title: "Schedule failed",
+        body:  msg
+      });
     } finally {
       setScheduleBusy(false);
     }
-  }, [caption, scheduleBusy, scheduleDate, scheduleYard, state.slides]);
+  }, [caption, merchantSlug, scheduleBusy, scheduleDate, scheduleYard, state.slides, toast]);
 
   const shareToCanteen = useCallback(async () => {
     if (busy !== "none") return;

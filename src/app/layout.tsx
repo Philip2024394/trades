@@ -5,6 +5,7 @@ import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
 import { allFontVariables } from "@/lib/fonts";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { ToastProvider } from "@/components/toast/ToastProvider";
 
 // Root layout for Thenetworkers. Page chrome (header, footer, dock)
 // lives on the route segments themselves; the root only owns html/body,
@@ -160,7 +161,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
-        {children}
+        {/* Global toast provider — bottom-left slide-up notifications
+            for any "you did a thing, here's the outcome" moment
+            (post scheduled, cutout ready, cap reached, etc). */}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
         {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
             Renders nothing on the server and self-hides once the visitor
             has chosen, so it never blocks page chrome on repeat visits. */}
