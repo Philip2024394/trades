@@ -26,7 +26,7 @@ export function MerchantQuickBar({
       aria-label="Signed in confirmation"
       className="border-b border-[#E5D9BD] bg-white/60"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-center gap-2 px-3 py-2 md:px-6">
+      <div className="mx-auto flex max-w-[1400px] items-center justify-center gap-2 px-3 py-2 md:px-6">
         {/* Live-session dot — soft green with a slow pulsing halo so
             the merchant sees at a glance that their session is active.
             Halo animates via ::after ring expanding + fading. */}

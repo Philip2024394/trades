@@ -24,7 +24,7 @@ export function CanteenSocialLinks({
   if (links.length === 0) return null;
 
   return (
-    <div className="mx-auto mt-3 max-w-6xl px-3 pb-0 md:px-6">
+    <div className="mx-auto mt-3 max-w-[1400px] px-3 pb-0 md:px-6">
       <div className="text-center">
         <div className="text-[12px] font-black text-neutral-900 md:text-[13px]">
           Check Out Our Social Media

@@ -24,6 +24,9 @@ export default function robots(): MetadataRoute.Robots {
       }
     ],
     host: SITE,
-    sitemap: `${SITE}/sitemap.xml`
+    sitemap: [
+      `${SITE}/sitemap.xml`,
+      `${SITE}/sitemap-videos.xml`     // Google Video Sitemap for Networkers TV
+    ]
   };
 }

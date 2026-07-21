@@ -35,8 +35,7 @@ export const GLOBAL_NAV_ITEMS: ReadonlyArray<{
 }> = [
   { href: "/trade-off/yard",             label: "The Yard",       ariaLabel: "The Yard — community feed" },
   { href: "/trade-off/yard/canteens",    label: "Canteen",        ariaLabel: "Canteens — trade groups directory" },
-  { href: "/trade-off/search?tab=inspiration", label: "Site Interest", ariaLabel: "Site Interest — image discovery" },
-  { href: "/store",                      label: "Store",          ariaLabel: "Site Interest Store — buy AI-generated trade imagery" },
+  { href: "/trade-off/search?tab=inspiration", label: "The Site",  ariaLabel: "The Site — image discovery" },
   { href: "/tc/trade-center",            label: "Trade Center",   ariaLabel: "Trade Center — the marketplace" },
   { href: "/apps",                       label: "App Templates",  ariaLabel: "App Templates — the App Warehouse" }
 ];
@@ -47,7 +46,8 @@ export const GLOBAL_NAV_ITEMS: ReadonlyArray<{
  *  server + client (no hydration mismatches). */
 export function GlobalHeader({
   rightSlot,
-  variant = "sticky"
+  variant = "sticky",
+  pageTitle
 }: {
   rightSlot?: React.ReactNode;
   /** "sticky" (default) — position: sticky top-0 with cream bg + bottom
@@ -55,6 +55,11 @@ export function GlobalHeader({
    *  "plain" — no positioning / no border, for embedded contexts
    *  (e.g. inside TradeCenterHeader which owns its own frame). */
   variant?: "sticky" | "plain";
+  /** Optional in-header page title — renders directly beside the brand
+   *  yellow dot so the merchant always knows which surface they're on.
+   *  Used by /site/editor to show "The Site Editor". When set on
+   *  md+ we also hide the primary nav labels to keep the row tidy. */
+  pageTitle?: string;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const searchParams = useSearchParams();
@@ -87,23 +92,35 @@ export function GlobalHeader({
         style={{ backgroundColor: CREAM, borderColor: "rgba(27,26,23,0.08)" }}
       >
         <div className="mx-auto flex max-w-[1400px] items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6 sm:py-2.5">
-          {/* Brand → landing */}
+          {/* Brand → landing. When a pageTitle is set (e.g. on the
+              Site Editor) we swap the Thenetworkers wordmark for
+              the page title so the merchant knows which surface
+              they're on. The yellow dot stays as the anchor. */}
           <Link
             href="/"
             className="inline-flex shrink-0 items-center gap-1.5"
-            aria-label="Thenetworkers — home"
+            aria-label={pageTitle ? `${pageTitle} — home` : "Thenetworkers — home"}
           >
             <span
               aria-hidden
               className="inline-block h-2 w-2 rounded-full"
               style={{ backgroundColor: YELLOW }}
             />
-            <span
-              className="hidden text-[12px] font-black uppercase tracking-[0.20em] sm:inline"
-              style={{ color: HONEY_TEXT }}
-            >
-              Thenetworkers
-            </span>
+            {pageTitle ? (
+              <span
+                className="text-[13px] font-black uppercase tracking-[0.14em] sm:text-[15px]"
+                style={{ color: INK }}
+              >
+                {pageTitle}
+              </span>
+            ) : (
+              <span
+                className="hidden text-[12px] font-black uppercase tracking-[0.20em] sm:inline"
+                style={{ color: HONEY_TEXT }}
+              >
+                Thenetworkers
+              </span>
+            )}
           </Link>
 
           {/* Primary nav — md+ only. Yellow-dot text links. Under md
@@ -140,7 +157,7 @@ export function GlobalHeader({
           <Link
             href="/trade-off/search"
             className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-neutral-700 transition hover:bg-black/[0.04]"
-            aria-label="Search trades and Site Interest"
+            aria-label="Search trades and The Site"
             title="Search"
           >
             <Search size={16} strokeWidth={2.4}/>
@@ -152,16 +169,21 @@ export function GlobalHeader({
           {rightSlot}
 
           {/* Mobile hamburger — md-hidden. Opens overlay with the
-              4 links + right-slot echo. */}
-          <button
-            type="button"
-            onClick={() => setMobileOpen(true)}
-            className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-neutral-700 transition hover:bg-black/[0.04] md:hidden"
-            aria-label="Open menu"
-            aria-expanded={mobileOpen}
-          >
-            <Menu size={17} strokeWidth={2.4}/>
-          </button>
+              4 links + right-slot echo. Suppressed when a rightSlot
+              is supplied (the user-menu dropdown that pages pass in
+              already carries the nav links so a second entry point
+              is redundant). */}
+          {!rightSlot && (
+            <button
+              type="button"
+              onClick={() => setMobileOpen(true)}
+              className="inline-flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full text-neutral-700 transition hover:bg-black/[0.04] md:hidden"
+              aria-label="Open menu"
+              aria-expanded={mobileOpen}
+            >
+              <Menu size={17} strokeWidth={2.4}/>
+            </button>
+          )}
         </div>
       </header>
 

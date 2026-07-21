@@ -44,7 +44,12 @@ export async function GET(
     return NextResponse.json({ ok: true, isMember: false, isHost: false, viewerSlug });
   }
 
-  const isHost = canteenData.host_slug === viewerSlug;
+  // Dev override — when NETWORK_SESSION_STUB=1, treat any signed-in
+  // viewer as the host of whichever canteen they open. Lets Philip
+  // iterate on merchant-side UX without matching cookie values to
+  // host_slug per canteen. Ignored entirely in production.
+  const devForceHost = process.env.NETWORK_SESSION_STUB === "1";
+  const isHost = devForceHost || canteenData.host_slug === viewerSlug;
 
   // Host is always considered a member (they own the canteen). Skip
   // the extra DB round-trip when we already know the answer.

@@ -38,6 +38,25 @@ export type StripeAddonSlug =
   | "trade_center_picks"
   | "material_calculators";
 
+/** The Site — image commerce prices. Separate from tier subscriptions
+ *  because they're a different product line (image licence, not merchant
+ *  hosting). Single = one-off £5.99 payment. Unlimited = £14.99/mo sub. */
+export const SITE_PRICE_IDS = {
+  single:            process.env.STRIPE_PRICE_SITE_SINGLE ?? "",            // £5.99 payment mode
+  unlimitedMonthly:  process.env.STRIPE_PRICE_SITE_UNLIMITED_MONTHLY ?? ""  // £14.99/mo subscription
+} as const;
+
+/** Resolve the £5.99 single-image price ID. Returns empty when unset. */
+export function resolveSiteSinglePriceId(): string {
+  return SITE_PRICE_IDS.single;
+}
+
+/** Resolve the £14.99/mo unlimited subscription price ID. Returns empty
+ *  when unset — caller MUST 400 on empty, not 500. */
+export function resolveSiteUnlimitedPriceId(): string {
+  return SITE_PRICE_IDS.unlimitedMonthly;
+}
+
 export const STRIPE_PRICE_IDS: {
   "paid:monthly": string;
   "paid:annual": string;

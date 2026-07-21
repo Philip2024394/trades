@@ -27,7 +27,7 @@ export default async function PhotosPage({ params }: { params: Promise<{ project
   const untagged    = photos.filter((p) => !p.stage);
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <section className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6">
       <Link href={`/sitebook/${projectId}`} className="text-[12px] font-bold text-neutral-600 hover:text-neutral-900">← {project.title}</Link>
       <h1 className="mt-3 text-2xl font-black text-neutral-900">Photos ({photos.length})</h1>
       <p className="mt-1 text-[13px] text-neutral-600">Every photo saved forever. Group by stage — before / in progress / after.</p>

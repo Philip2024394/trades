@@ -143,10 +143,10 @@ export const FACE_HOOKS: Record<VisitorFace, {
   },
   "b2b-image": {
     eyebrow:  "Hand-curated UK trade imagery",
-    title:    "Rights-clean construction photos. Instant download.",
-    sub:      "Real UK trades, plant, groundworks, and finish scenes. Buy single, pack, or unlimited monthly.",
-    ctaLabel: "Browse the store",
-    ctaHref:  "/store"
+    title:    "Real UK trades, plant, groundworks, finish scenes.",
+    sub:      "Scroll The Site — a wall of on-site photos tagged by trade, with a WhatsApp button to the trade behind every image.",
+    ctaLabel: "Browse The Site",
+    ctaHref:  "/trade-off/search?tab=inspiration"
   },
   merchant: {
     eyebrow:  "Someone thinks you belong here",

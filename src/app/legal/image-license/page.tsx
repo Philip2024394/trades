@@ -1,10 +1,10 @@
-// /legal/image-license — Site Interest image use terms.
+// /legal/image-license — The Site image use terms.
 //
 // Targeted by:
 //   • JSON-LD ImageObject.license + acquireLicensePage in the
 //     /trade-off/search page, so Google Images crawler follows the
 //     link to a real page instead of 404.
-//   • Bottom-of-page link on Site Interest for humans who want to
+//   • Bottom-of-page link on The Site for humans who want to
 //     know what they can/can't do with a shared image.
 //
 // Kept static and plain-language — no lawyer-speak. Real licensing
@@ -17,7 +17,7 @@ import { BRAND } from "@/lib/seo";
 export const metadata: Metadata = {
   title: `Image use — ${BRAND.name}`,
   description:
-    "How Site Interest images on Thenetworkers can and can't be used, shared, and licensed.",
+    "How The Site images on Thenetworkers can and can't be used, shared, and licensed.",
   robots: { index: true, follow: true }
 };
 
@@ -34,10 +34,10 @@ export default function ImageLicensePage() {
         className="mt-1 text-[28px] font-black leading-tight text-neutral-900 md:text-[36px]"
         style={{ fontFamily: '"Playfair Display", Georgia, serif' }}
       >
-        Using Site Interest images
+        Using The Site images
       </h1>
       <p className="mt-3 text-[13.5px] leading-relaxed text-neutral-700">
-        Every photo on Site Interest is either (a) part of a curated visual library commissioned or licensed by {BRAND.name}, or (b) submitted by a trade professional who owns the work depicted. Both categories carry the same rules.
+        Every photo on The Site is either (a) part of a curated visual library commissioned or licensed by {BRAND.name}, or (b) submitted by a trade professional who owns the work depicted. Both categories carry the same rules.
       </p>
 
       <Section title="What you CAN do">
@@ -54,13 +54,13 @@ export default function ImageLicensePage() {
           <li><strong>Remove the watermark.</strong> Every image is served with a {BRAND.name} watermark baked into the file. Cropping, editing, or otherwise obscuring it isn&apos;t allowed.</li>
           <li><strong>Republish commercially.</strong> Selling the image, using it in paid ads for a competing platform, or including it in a product / listing you don&apos;t own violates both {BRAND.name}&apos;s terms and (in most cases) the submitting trade&apos;s copyright.</li>
           <li><strong>Claim you did the work.</strong> If the image is credited to another trade, don&apos;t pass it off as your own portfolio. Trades who do this lose their submission privileges immediately.</li>
-          <li><strong>Train an AI on it.</strong> Bulk scraping Site Interest images for machine-learning training sets is explicitly prohibited; every image lands with source metadata that we can prove ownership on.</li>
+          <li><strong>Train an AI on it.</strong> Bulk scraping The Site images for machine-learning training sets is explicitly prohibited; every image lands with source metadata that we can prove ownership on.</li>
         </ul>
       </Section>
 
       <Section title="If you're the trade who submitted an image">
         <p className="text-[13px] leading-relaxed text-neutral-800">
-          You keep copyright on the work in the photo. Submitting to {BRAND.name} grants us a non-exclusive licence to display the image on Site Interest, on your canteen, and (via approved shares) on external social channels — always with your credit attached. You can request removal at any time from your admin dashboard.
+          You keep copyright on the work in the photo. Submitting to {BRAND.name} grants us a non-exclusive licence to display the image on The Site, on your canteen, and (via approved shares) on external social channels — always with your credit attached. You can request removal at any time from your admin dashboard.
         </p>
       </Section>
 
@@ -73,7 +73,7 @@ export default function ImageLicensePage() {
       <div className="mt-10 border-t pt-6 text-[11.5px] text-neutral-500" style={{ borderColor: "rgba(139,69,19,0.20)" }}>
         Last updated 16 July 2026.{" "}
         <Link href="/trade-off/search" className="underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-900">
-          Return to Site Interest
+          Return to The Site
         </Link>
       </div>
     </main>

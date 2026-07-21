@@ -1580,12 +1580,10 @@ function YourCanteenStrip({
         <div className="flex flex-shrink-0 flex-col gap-2 md:w-40">
           <a
             href={viewAppUrl}
-            target="_blank"
-            rel="noreferrer noopener"
             className="inline-flex h-10 items-center justify-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-neutral-900 shadow-sm transition active:scale-[0.97]"
             style={{ backgroundColor: "#FFB300" }}
           >
-            View app
+            View canteen
           </a>
           <Link
             href={goLiveUrl}

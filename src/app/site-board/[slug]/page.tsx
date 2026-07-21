@@ -78,7 +78,7 @@ export default async function SiteBoardPage({
           <p className="mx-auto mt-1.5 max-w-md text-[12.5px] leading-relaxed text-neutral-600">
             Browse{" "}
             <Link href="/trade-off/search" className="underline decoration-neutral-400 underline-offset-2 hover:decoration-neutral-900">
-              Site Interest
+              The Site
             </Link>{" "}
             and tap the bookmark on any image to add it here.
           </p>
@@ -117,7 +117,7 @@ export default async function SiteBoardPage({
       )}
 
       <div className="mt-10 border-t pt-4 text-center text-[10.5px] text-neutral-500" style={{ borderColor: "rgba(139,69,19,0.15)" }}>
-        <Link href="/trade-off/search" className="hover:underline">Browse more Site Interest</Link>
+        <Link href="/trade-off/search" className="hover:underline">Browse more of The Site</Link>
         <span className="mx-2">·</span>
         <Link href="/legal/image-license" className="hover:underline">Image use terms</Link>
       </div>

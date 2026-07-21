@@ -36,6 +36,11 @@ const PRODUCT_EDITOR_EMPTY: ProductEditorInitial = {
 };
 import { CanteenInviteModal } from "@/components/xrated/yard/CanteenInviteModal";
 import { CanteenAdminCard } from "@/components/xrated/yard/CanteenAdminCard";
+import { CanteenMembersInboxRail } from "@/components/xrated/yard/CanteenMembersInboxRail";
+import { ApprenticeshipBanner } from "@/components/apprenticeships/ApprenticeshipBanner";
+import { SavedMediaRail } from "@/components/media/SavedMediaRail";
+import { CanteenMemberInviteModal } from "@/components/xrated/yard/CanteenMemberInviteModal";
+import { CanteenCounterStrip } from "@/components/xrated/yard/CanteenCounterStrip";
 import { CanteenVideoUpsellModal } from "@/components/xrated/yard/CanteenVideoUpsellModal";
 import { CanteenPrivateView } from "@/components/xrated/yard/CanteenPrivateView";
 import { CanteenMobilePostsRotator, type RotatorPost } from "@/components/xrated/yard/CanteenMobilePostsRotator";
@@ -64,7 +69,7 @@ import { canteenProductById } from "@/lib/canteens";
 import type { Canteen, SideLanePost, CanteenMember, CanteenProduct, CanteenDesign } from "@/lib/canteens";
 import type { CanteenChatPost } from "@/lib/canteens.server";
 import { DEFAULT_PALETTE, type PaletteTokens } from "@/lib/paletteTokens";
-import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles, Pencil, Pin, Flag } from "lucide-react";
+import { MessageCircle, Send, Heart, MessageSquare, ArrowUpRight, Image as ImageIcon, Video, X, MoreHorizontal, Trash2, ThumbsUp, HelpCircle, ShoppingBag, Tag, Users, Star, Package, Wrench, Radio, UserCog, TrendingUp, LayoutDashboard, BookOpen, Rocket, HardDrive, Sparkles, Pencil, Pin, Flag, Store } from "lucide-react";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK, BRAND_AMBER } from "@/lib/brand/tokens";
 import { CommentThread, CANTEEN_COMMENT_API } from "@/components/comments/CommentThread";
 import { MOOD_LIBRARY, suggestMood, type MoodSlug } from "@/lib/yardMoods";
@@ -188,6 +193,7 @@ export function CanteenPageShell({
   // (would otherwise iframe itself and recurse forever).
   const isEmbedded = searchParams?.get("embed") === "1";
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [membersInviteOpen, setMembersInviteOpen] = useState(false);
   const [videoUpsellOpen, setVideoUpsellOpen] = useState(false);
   const [privateViewPostId, setPrivateViewPostId] = useState<string | null>(null);
   const [focusedProductId, setFocusedProductId] = useState<string | null>(initialFocusProductId ?? null);
@@ -529,7 +535,7 @@ export function CanteenPageShell({
             a thin strip between hero and sheet, plus the sheet's
             shadow-lg cast up into that strip, reading as a visible
             line across the page. Flush + shadow only below = clean. */}
-        <div className="relative z-10 mx-auto mt-0 max-w-6xl px-3 md:px-6">
+        <div className="relative z-10 mx-auto mt-0 max-w-[1400px] px-3 md:px-6">
           <div
             className="rounded-[28px] border bg-white p-3 shadow-lg md:p-4"
             style={{ borderColor: "#FBF6EC" }}
@@ -723,7 +729,7 @@ export function CanteenPageShell({
             land on signup with the current merchant pre-filled as
             their referrer (mref → 50-washer reward for both sides
             when the new merchant joins). Philip 2026-07-17. */}
-        <div className="mx-auto mt-5 max-w-6xl px-3 md:px-6">
+        <div className="mx-auto mt-5 max-w-[1400px] px-3 md:px-6">
           <Link
             href={`/trade-off/signup?mref=${encodeURIComponent(canteen.hostSlug)}`}
             className="mx-auto flex max-w-xl items-center justify-center gap-2 rounded-full border px-4 py-2 text-[11px] font-black text-neutral-700 shadow-sm transition hover:border-[#B8860B] hover:text-neutral-900"
@@ -835,7 +841,7 @@ export function CanteenPageShell({
           distinct entry point — no picker step. Everything else on the
           page is hidden while a flow is active. */}
       {isHost && editMode && addItemStep !== "closed" && (
-        <div id="canteen-add-item" className="mx-auto mt-4 max-w-6xl px-3 md:px-6">
+        <div id="canteen-add-item" className="mx-auto mt-4 max-w-[1400px] px-3 md:px-6">
           {addItemStep === "product" && (
             <>
               <div className="mb-3 flex items-center justify-end">
@@ -911,7 +917,7 @@ export function CanteenPageShell({
       {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && !addProductPanelOpen && (
         <div
           id="canteen-products-library"
-          className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6"
+          className="mx-auto max-w-[1400px] px-3 pt-5 md:px-6 md:pt-6"
         >
           <CanteenProductPanel
             hostDisplayName={canteen.hostDisplayName}
@@ -933,7 +939,7 @@ export function CanteenPageShell({
           tap "Reply" on any card to open the compose overlay page.
           Desktop keeps the full feed + The Counter side-lane instead. */}
       {!counterExplainerOpen && !profileFocusOpen && !focusedProduct && !addProductPanelOpen && (
-        <div className="mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6 lg:hidden">
+        <div className="mx-auto max-w-[1400px] px-3 pt-5 md:px-6 md:pt-6 lg:hidden">
           <CanteenMobilePostsRotator
             posts={pickRotatorPosts(initialChatPosts, canteen.slug)}
             canteenSlug={canteen.slug}
@@ -961,11 +967,43 @@ export function CanteenPageShell({
           is active so his focus stays on the form (per Philip's spec:
           only stats container + product form visible in that mode). */}
       <div
-        className={`mx-auto max-w-6xl px-3 pb-16 pt-5 md:px-6 md:pt-6 ${
+        className={`mx-auto max-w-[1400px] px-3 pb-16 pt-5 md:px-6 md:pt-6 ${
           addProductPanelOpen ? "hidden" : ""
         }`}
       >
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
+        <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)_320px]">
+          {/* Left column — Trade members inbox rail. Same visual as the
+              Yard InboxShell ConversationList. Owner sees [+ Add] pill
+              which opens the invite modal. */}
+          <aside className="order-1 hidden min-w-0 space-y-4 lg:order-none lg:block">
+            {/* Apprenticeship recruitment banner — quiet compact placement.
+                Both directions read it: canteen owner ("hire an apprentice")
+                and homeowner visitors ("kid wants to learn a trade"). */}
+            <ApprenticeshipBanner
+              variant="button-under"
+              caption="Hire an apprentice · or start your own trade career."
+              ctaLabel="Apply / hire"
+              href="/apprenticeships"
+              compact
+            />
+            <CanteenMembersInboxRail
+              members={members}
+              posts={initialChatPosts ?? []}
+              isHost={isHost}
+              canteenSlug={canteen.slug}
+              onInvite={() => setMembersInviteOpen(true)}
+            />
+            <CanteenCounterStrip
+              posts={sideLane}
+              isHost={isHost}
+              canteenSlug={canteen.slug}
+            />
+            {/* Saved media (Networkers TV videos + photos). Auto-hidden
+                when viewer isn't authed; shows Image | Video toggle;
+                per-item Unsave + Share-to-Yard actions. */}
+            <SavedMediaRail/>
+          </aside>
+
           {/* Main feed — min-w-0 so wide children (carousel) can't push
               the right column off-screen. */}
           <section className="order-2 min-w-0 lg:order-none">
@@ -1118,7 +1156,8 @@ export function CanteenPageShell({
                         isPinned:       p.isPinned,
                         boostActive:    p.boostActive,
                         boostExpiresAt: p.boostExpiresAt,
-                        bodyEditedAt:   p.bodyEditedAt
+                        bodyEditedAt:   p.bodyEditedAt,
+                        isSample:       p.isSample
                       }}
                       tradeLabel={canteen.tradeLabel}
                       viewerSlug={viewerSlug}
@@ -1157,43 +1196,70 @@ export function CanteenPageShell({
           {/* Right column — admin card + The Counter marquee. HIDDEN
               on mobile (< lg): the mobile view is a trade showcase
               (host products + 3-post rotator only), no community
-              chrome. Both surfaces return at lg+. */}
+              chrome. Both surfaces return at lg+.
+
+              Guard rule per Philip 2026-07-20:
+                Visitor + no admin data → hide (blank truth)
+                Owner  + no admin data → show empty container with
+                                         "Update X here" placeholders
+                                         that link to the edit form
+                Any viewer + admin exists → render admin card. */}
           <div className="order-1 hidden min-w-0 lg:order-none lg:block">
-            {admin && (
-              <div className="hidden lg:block">
-                <CanteenAdminCard
-                  admin={admin}
-                  members={members}
-                  totalMemberCount={canteen.memberCount}
-                  onOpenProfileFocus={() => setProfileFocusOpen(true)}
-                />
-                {/* Mobile app showcase — sits directly under the admin
-                    "View profile" card in the desktop right column.
-                    Dual-purpose: QR handoff for Mick's customers +
-                    silent sales pitch to future canteen owners. Hidden
-                    when the canteen page is itself embedded inside the
-                    showcase's iframe (`?embed=1`) to prevent recursion. */}
-                {!isEmbedded && (
-                  <div className="mt-3">
-                    <CanteenMobileAppShowcase
-                      hostSlug={canteen.hostSlug}
-                      hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
-                      hostDisplayName={canteen.hostDisplayName}
-                      tradeLabel={canteen.tradeLabel}
-                      tradeSlug={canteen.tradeSlug ?? null}
-                      heroImageUrl={canteen.headerBgUrl}
-                      heroTitle={canteen.name}
-                      canteenSlug={canteen.slug}
-                      editMode={isHost && editMode}
-                    />
-                  </div>
-                )}
-              </div>
-            )}
+            <div className="hidden lg:block">
+              {(() => {
+                // Prefer real admin data. When absent + viewer is host,
+                // synthesize a placeholder CanteenMember from the canteen
+                // row so the card renders with the SAME design as populated
+                // canteens — just with "Update X here" placeholders in
+                // every empty field. Visitor still sees nothing when
+                // admin is absent (blank-truth rule).
+                const displayAdmin = admin ?? (isHost ? {
+                  slug:         canteen.hostSlug,
+                  displayName:  canteen.hostDisplayName || "Update your name",
+                  tradeLabel:   canteen.tradeLabel || "Update your trade",
+                  city:         "Update your city",
+                  avatarUrl:    null,
+                  role:         "admin" as const,
+                  whatsapp:     null,
+                  bioShort:     "Update your business bio here",
+                  memberOfCanteenSlugs: [canteen.slug]
+                } : null);
+                if (!displayAdmin) return null;
+                return (
+                  <CanteenAdminCard
+                    admin={displayAdmin}
+                    members={admin ? members : [displayAdmin]}
+                    totalMemberCount={canteen.memberCount}
+                    onOpenProfileFocus={() => setProfileFocusOpen(true)}
+                  />
+                );
+              })()}
+              {/* Mobile app showcase — always renders for host + paid
+                  canteens so the "Edit app" loop stays intact even when
+                  admin row is missing. Hidden inside the ?embed=1
+                  iframe to prevent recursion. */}
+              {!isEmbedded && (
+                <div className="mt-3">
+                  <CanteenMobileAppShowcase
+                    hostSlug={canteen.hostSlug}
+                    hostFirstName={canteen.hostDisplayName.split(/\s+/)[0]}
+                    hostDisplayName={canteen.hostDisplayName}
+                    tradeLabel={canteen.tradeLabel}
+                    tradeSlug={canteen.tradeSlug ?? null}
+                    heroImageUrl={canteen.headerBgUrl}
+                    heroTitle={canteen.name}
+                    canteenSlug={canteen.slug}
+                    isOwner={isHost}
+                    editMode={isHost && editMode}
+                  />
+                </div>
+              )}
+            </div>
             <CanteenSideLane
               posts={sideLane}
               onOpenPost={(postId) => setPrivateViewPostId(postId)}
               onKnowTheFlow={() => setCounterExplainerOpen(true)}
+              isHost={isHost}
             />
           </div>
         </div>
@@ -1210,6 +1276,16 @@ export function CanteenPageShell({
         open={videoUpsellOpen}
         onClose={() => setVideoUpsellOpen(false)}
         canteenTradeLabel={canteen.tradeLabel}
+      />
+      <CanteenMemberInviteModal
+        canteenSlug={canteen.slug}
+        open={membersInviteOpen}
+        onClose={() => setMembersInviteOpen(false)}
+        onInvited={() => {
+          // Refresh the RSC tree so the newly added member appears in
+          // the left rail immediately — no reload needed.
+          router.refresh();
+        }}
       />
     </main>
   );
@@ -1296,6 +1372,10 @@ type CanteenPost = {
   boostActive?:   boolean;
   boostExpiresAt?: string | null;
   bodyEditedAt?:  string | null;
+  /** True for seeded example posts. Suppresses the Contact/Message CTAs
+   *  and any lead-generating chip so viewers can't be "matched" with a
+   *  mock member. Renders alongside the amber "Example" pill. */
+  isSample?:      boolean;
 };
 
 // Canteen feed = chat + questions + announcements only.
@@ -1778,7 +1858,7 @@ export function CanteenHeroStats({
   reviews,
   productsCount,
   hostHasProducts,
-  editMode = false,
+  editMode: editModeProp,
   activeStep = "closed",
   hostWhatsapp = null,
   hostSlug = "",
@@ -1786,7 +1866,7 @@ export function CanteenHeroStats({
   tradeLabel = "",
   canteenSlug = "",
   canteenName = "",
-  isHost = false,
+  isHost: isHostProp,
   isMember = false
 }: {
   memberCount: number;
@@ -1812,6 +1892,43 @@ export function CanteenHeroStats({
   isHost?: boolean;
   isMember?: boolean;
 }) {
+  // CanteenHeroStats renders inside Template1Chalk, which sits BESIDE
+  // CanteenPageShell (they're siblings under the canteen page.tsx
+  // component tree). The Edit-mode toggle lives in the AppShell
+  // header — its state doesn't naturally flow through Template1Chalk
+  // to us as a prop. So we self-manage by:
+  //   1. Fetching isHost from /api/canteens/[slug]/membership on mount
+  //   2. Listening for the `canteen:edit-mode-changed` window event
+  //      that CanteenPageShell dispatches whenever editMode toggles
+  // Prop values (editModeProp / isHostProp) override the self-managed
+  // state — kept for backward compat with any caller that DOES pass them.
+  const [localIsHost, setLocalIsHost] = useState<boolean>(false);
+  const [localEditMode, setLocalEditMode] = useState<boolean>(false);
+  useEffect(() => {
+    if (!canteenSlug) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch(`/api/canteens/${encodeURIComponent(canteenSlug)}/membership`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (cancelled) return;
+        setLocalIsHost(Boolean(data.isHost));
+      } catch { /* offline — falls back to non-host */ }
+    })();
+    return () => { cancelled = true; };
+  }, [canteenSlug]);
+  useEffect(() => {
+    function onEditModeChanged(e: Event) {
+      const detail = (e as CustomEvent<{ active: boolean }>).detail;
+      setLocalEditMode(Boolean(detail?.active));
+    }
+    window.addEventListener("canteen:edit-mode-changed", onEditModeChanged);
+    return () => window.removeEventListener("canteen:edit-mode-changed", onEditModeChanged);
+  }, []);
+  const isHost   = isHostProp   ?? localIsHost;
+  const editMode = editModeProp ?? localEditMode;
+
   const showRating = reviews && reviews.count >= 5;
 
   // In Edit mode: tiles become square action buttons. Primary tile
@@ -1819,12 +1936,13 @@ export function CanteenHeroStats({
   // thing Mike does. Secondary tiles (cream) are Members + Reviews.
   // Small corner badge keeps the count visible so Mike doesn't lose
   // the "how many do I have" signal in the swap. Container height
-  // unchanged from view mode.
-  if (editMode) {
+  // unchanged from view mode. Host-only — visitors never see the
+  // white edit container even if a stray event fires.
+  if (editMode && isHost) {
     return (
-      <div className="mx-auto -mt-8 max-w-6xl px-3 md:px-6">
+      <div className="mx-auto -mt-8 max-w-[1400px] px-3 md:px-6">
         {/* Horizontal carousel — every tile is fixed width. Fits ~9
-            tiles on desktop max-w-6xl; on mobile it scrolls horizontally
+            tiles on desktop max-w-[1400px]; on mobile it scrolls horizontally
             (snap-x) so the merchant swipes rather than the container
             wrapping into multiple rows. Same compact tile size as the
             hero StatTile in view mode. */}
@@ -1917,7 +2035,7 @@ export function CanteenHeroStats({
   // wrapper is layout-only. Ancestor mounts as absolute overlay so
   // this component MUST NOT self-position with negative margins.
   return (
-    <div className="mx-auto max-w-6xl px-3 md:px-6">
+    <div className="mx-auto max-w-[1400px] px-3 md:px-6">
       <div
         className="relative flex items-stretch gap-2 rounded-2xl border bg-white p-2.5 shadow-2xl md:p-3"
         style={{ borderColor: "rgba(139,69,19,0.15)" }}
@@ -1939,24 +2057,56 @@ export function CanteenHeroStats({
             <MessageCircle size={20} strokeWidth={2.6}/>
           </VerifiedContactButton>
         )}
-        {/* Rating tile removed from the stats bar 2026-07-17 (Philip).
-            Rating now lives ONLY in the small KPI card at the top of
-            the hero. Stats bar carries Members + Products/Services
-            only so it stays clean. */}
-        <div className="grid flex-1 grid-cols-2 gap-2">
+        {/* Stats bar — 3 tappable tiles. Members + Products/Services
+            scroll to the in-canteen section; Trade Center Live routes
+            cross-app with an ↗ affordance (no confirmation modal — the
+            back button is the escape hatch, per Philip 2026-07-20). */}
+        <div className="grid flex-1 grid-cols-3 gap-2">
           <StatTile
             icon={<Users size={16} strokeWidth={2.2}/>}
             value={String(memberCount)}
             label="Members"
+            href={canteenSlug ? `/trade-off/yard/canteens/${canteenSlug}#members` : undefined}
+            ariaLabel={`${memberCount} members — jump to members section`}
           />
           <StatTile
             icon={hostHasProducts ? <Package size={16} strokeWidth={2.2}/> : <Wrench size={16} strokeWidth={2.2}/>}
             value={String(productsCount)}
             label={hostHasProducts ? "Products" : "Services"}
+            href={canteenSlug ? `/trade-off/yard/canteens/${canteenSlug}#${hostHasProducts ? "products" : "services"}` : undefined}
           />
+          <TradeCenterLiveTile canteenSlug={canteenSlug} hostSlug={hostSlug}/>
         </div>
       </div>
     </div>
+  );
+}
+
+/** TradeCenterLiveTile — client-fetches the merchant's live pick count
+ *  from /api/canteens/[slug]/tc-live-count. Renders "—" until loaded,
+ *  then the count. Href routes to the Trade Center filtered to this
+ *  merchant. External-link arrow signals cross-app jump.
+ *  Zero cost when the merchant has no listing (endpoint returns 0). */
+function TradeCenterLiveTile({ canteenSlug, hostSlug }: { canteenSlug: string; hostSlug: string }) {
+  const [count, setCount] = useState<number | null>(null);
+  useEffect(() => {
+    if (!canteenSlug) return;
+    let cancelled = false;
+    fetch(`/api/canteens/${encodeURIComponent(canteenSlug)}/tc-live-count`)
+      .then((r) => r.ok ? r.json() : { count: 0 })
+      .then((d) => { if (!cancelled) setCount(Number(d?.count ?? 0)); })
+      .catch(() => { if (!cancelled) setCount(0); });
+    return () => { cancelled = true; };
+  }, [canteenSlug]);
+  return (
+    <StatTile
+      icon={<Store size={16} strokeWidth={2.2}/>}
+      value={count === null ? "—" : String(count)}
+      label="Trade Center"
+      href={`/tc/trade-center?merchant=${encodeURIComponent(hostSlug)}`}
+      external
+      ariaLabel={`${count ?? 0} products live on Trade Center — open Trade Center`}
+    />
   );
 }
 
@@ -2047,18 +2197,39 @@ function StatTile({
   value,
   label,
   accent,
-  muted
+  muted,
+  href,
+  external,
+  ariaLabel
 }: {
   icon: React.ReactNode;
   value: string;
   label: string;
   accent?: boolean;
   muted?: boolean;
+  /** When set, the tile becomes a link. Same-origin nav uses Next.js
+   *  <Link> for prefetch + client transition; cross-app + external URLs
+   *  drop to a plain <a>. */
+  href?: string;
+  /** When true, renders the ↗ external-arrow badge in the top-right so
+   *  the user knows the tap leaves the canteen. Purely visual — no
+   *  modal, no confirmation (Philip 2026-07-20 UX rule). */
+  external?: boolean;
+  ariaLabel?: string;
 }) {
-  const iconColor = muted ? "text-neutral-400" : accent ? "text-amber-500" : "text-neutral-700";
+  const iconColor  = muted ? "text-neutral-400" : accent ? "text-amber-500" : "text-neutral-700";
   const valueColor = muted ? "text-neutral-500" : "text-neutral-900";
-  return (
-    <div className="flex flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-2 text-center md:py-3">
+  const inner = (
+    <>
+      {external && (
+        <span
+          aria-hidden
+          className="absolute right-1.5 top-1.5 text-neutral-400"
+          title="Opens another area of the app"
+        >
+          <ArrowUpRight size={11} strokeWidth={2.6}/>
+        </span>
+      )}
       <div className={`flex items-center gap-1 ${iconColor}`}>
         {icon}
       </div>
@@ -2068,8 +2239,21 @@ function StatTile({
       <div className="text-[9px] font-black uppercase tracking-[0.14em] text-neutral-500 md:text-[10px]">
         {label}
       </div>
-    </div>
+    </>
   );
+  const base = "relative flex flex-col items-center justify-center gap-0.5 rounded-xl px-2 py-2 text-center md:py-3";
+  if (href) {
+    return (
+      <Link
+        href={href}
+        aria-label={ariaLabel ?? label}
+        className={`${base} transition hover:-translate-y-0.5 hover:bg-white/50 active:scale-[0.97]`}
+      >
+        {inner}
+      </Link>
+    );
+  }
+  return <div className={base}>{inner}</div>;
 }
 
 function EmptyPostsState({ canteenName }: { canteenName: string }) {
@@ -2104,6 +2288,55 @@ function formatAgoShort(iso: string): string {
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days}d`;
   return `${Math.floor(days / 7)}w`;
+}
+
+/** ViewMemberCanteenChip — shown on MEMBER posts (posts where the
+ *  author isn't the canteen host). Instead of a Contact button that
+ *  would bleed leads from the host, this chip navigates to the
+ *  member's own canteen page so the visitor can contact them there.
+ *
+ *  Fires `canteen.member_post_clickthrough` into the Analytics Engine
+ *  so we can measure the cross-canteen discovery loop and credit the
+ *  hosting canteen as the source referrer.
+ *
+ *  Defined ABOVE CanteenPostCard so definition precedes reference
+ *  literally — Turbopack HMR occasionally trips on function-declaration
+ *  hoisting across sibling module-scope functions. */
+function ViewMemberCanteenChip({
+  memberSlug,
+  memberFirstName,
+  canteenSlug
+}: {
+  memberSlug:       string;
+  memberFirstName:  string;
+  canteenSlug:      string;
+}) {
+  function handleClick() {
+    // Fire-and-forget analytics — never blocks the navigation.
+    void fetch("/api/analytics/track", {
+      method:  "POST",
+      headers: { "Content-Type": "application/json" },
+      body:    JSON.stringify({
+        slug:       "canteen.member_post_clickthrough",
+        product:    "canteen",
+        targetKind: "canteen",
+        targetId:   memberSlug,
+        metadata:   { source_canteen: canteenSlug, member_slug: memberSlug }
+      })
+    }).catch(() => { /* silent */ });
+  }
+  return (
+    <Link
+      href={`/trade-off/yard/canteens/${memberSlug}`}
+      onClick={handleClick}
+      className="inline-flex h-8 items-center gap-1 rounded-full border px-3 text-[10.5px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50 active:scale-[0.97]"
+      style={{ borderColor: "rgba(139,69,19,0.20)" }}
+      aria-label={`View ${memberFirstName}'s canteen`}
+    >
+      View {memberFirstName}
+      <ArrowUpRight size={11} strokeWidth={2.6}/>
+    </Link>
+  );
 }
 
 function CanteenPostCard({
@@ -2399,21 +2632,100 @@ function CanteenPostCard({
             </a>
           )}
 
-          {/* Action row — Like + Comment. */}
-          <ReactionRow
-            initialCount={post.reactions}
-            initialAgree={post.reactionsAgree ?? 0}
-            initialQuestion={post.reactionsQuestion ?? 0}
-            initialReplies={post.replies}
-            postId={post.id ?? null}
-            canteenSlug={canteenSlug}
-            canteenName={canteenName}
-            hostFirstName={hostFirstName}
-            viewerSlug={viewerSlug ?? null}
-          />
+          {/* Action row — Like + Comment + Contact. */}
+          <div className="flex items-center justify-between gap-2">
+            <ReactionRow
+              initialCount={post.reactions}
+              initialAgree={post.reactionsAgree ?? 0}
+              initialQuestion={post.reactionsQuestion ?? 0}
+              initialReplies={post.replies}
+              postId={post.id ?? null}
+              canteenSlug={canteenSlug}
+              canteenName={canteenName}
+              hostFirstName={hostFirstName}
+              viewerSlug={viewerSlug ?? null}
+            />
+            {/* Author-slot behaviour matrix (Philip 2026-07-20 anti-
+                lead-bleed rule). All three branches suppress on the
+                viewer's own post + on sample posts:
+                  • Owner's own post → green "Message [firstName]"
+                    (direct match-making, owner keeps the lead)
+                  • Member's post    → subtle "View on their canteen"
+                    (cross-canteen discovery, no lead bleed)
+                  • Sample post      → nothing (Example pill only). */}
+            {post.id && canteenSlug && !post.isSample && viewerSlug !== post.handle && (
+              post.handle === hostSlug ? (
+                <ContactAuthorButton
+                  canteenSlug={canteenSlug}
+                  postId={post.id}
+                  authorDisplayName={post.who}
+                />
+              ) : (
+                <ViewMemberCanteenChip
+                  memberSlug={post.handle}
+                  memberFirstName={post.who.split(/\s+/)[0] ?? post.who}
+                  canteenSlug={canteenSlug}
+                />
+              )
+            )}
+          </div>
         </div>
       </div>
     </article>
+  );
+}
+
+/** ContactAuthorButton — fires the match_created event via
+ *  /api/canteens/[slug]/posts/[postId]/contact, then opens the
+ *  returned WhatsApp URL (or falls back to the author's canteen
+ *  page for an in-platform reply). Loading + error states inline. */
+function ContactAuthorButton({
+  canteenSlug,
+  postId,
+  authorDisplayName
+}: {
+  canteenSlug:       string;
+  postId:            string;
+  authorDisplayName: string;
+}) {
+  const [pending, setPending] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  async function contact() {
+    if (pending) return;
+    setPending(true);
+    setErr(null);
+    try {
+      const res = await fetch(
+        `/api/canteens/${encodeURIComponent(canteenSlug)}/posts/${encodeURIComponent(postId)}/contact`,
+        { method: "POST" }
+      );
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "Failed");
+      const url: string | null = data.whatsappUrl ?? null;
+      const fallback: string | null = data.fallbackHref ?? null;
+      if (url) window.open(url, "_blank", "noopener");
+      else if (fallback) window.location.href = fallback;
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "Failed");
+    } finally {
+      setPending(false);
+    }
+  }
+  return (
+    <div className="flex items-center gap-1.5">
+      {err && <span className="text-[10px] font-bold text-red-700">{err}</span>}
+      <button
+        type="button"
+        onClick={contact}
+        disabled={pending}
+        className="inline-flex h-8 items-center gap-1.5 rounded-full px-3 text-[11px] font-black uppercase tracking-wider text-white shadow-sm transition active:scale-[0.97] disabled:opacity-60"
+        style={{ backgroundColor: BRAND_GREEN_DARK }}
+        aria-label={`Message ${authorDisplayName}`}
+      >
+        <MessageCircle size={12} strokeWidth={2.6}/>
+        {pending ? "…" : `Message ${authorDisplayName.split(/\s+/)[0]}`}
+      </button>
+    </div>
   );
 }
 

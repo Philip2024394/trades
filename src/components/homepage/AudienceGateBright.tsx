@@ -64,9 +64,15 @@ export function AudienceGateBright() {
           />
         </div>
 
-        {/* Image frame — grows to fill remaining height. */}
+        {/* Image frame — grows to fill remaining height.
+            min-h-0 is required for flex-1 to shrink/grow correctly
+            inside a min-h-[100dvh] flex-col parent (common flex
+            gotcha). Explicit min-heights per breakpoint guarantee
+            the frame always has proper stature: 480px mobile,
+            600px tablet, 720px desktop, capped near-viewport on
+            large screens so the image never gets short-changed. */}
         <div
-          className="relative flex-1 overflow-hidden rounded-[28px] md:rounded-[36px]"
+          className="relative flex-1 min-h-0 min-h-[480px] overflow-hidden rounded-[28px] md:min-h-[600px] md:rounded-[36px] lg:min-h-[720px] xl:min-h-[calc(100dvh-140px)]"
           style={{
             boxShadow: `0 40px 80px -30px ${PALETTE.frameShadow}, 0 12px 32px -12px ${PALETTE.frameShadow}`
           }}
@@ -76,8 +82,8 @@ export function AudienceGateBright() {
             alt="A homeowner at ground level with her tradesperson working on the roof — the construction notebook connects them."
             fill
             priority
-            sizes="(min-width: 768px) 100vw, 100vw"
-            className="object-cover"
+            sizes="(min-width: 1600px) 1600px, 100vw"
+            className="object-cover object-center"
           />
 
           {/* Live activity feed — tall portrait panel floats top-left

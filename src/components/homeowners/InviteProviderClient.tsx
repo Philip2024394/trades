@@ -24,7 +24,7 @@ export function InviteProviderClient({
 }) {
   return (
     <InviteProvider projects={projects} active>
-      <div className="mx-auto max-w-6xl px-3 md:px-6">
+      <div className="mx-auto max-w-[1400px] px-3 md:px-6">
         <InviteBanner
           homeownerFirstName={firstName}
           siteBookNickname={nickname}

@@ -5,6 +5,7 @@
 
 import { AudienceGateBright } from "@/components/homepage/AudienceGateBright";
 import { SmartVisitorHook } from "@/components/homepage/SmartVisitorHook";
+import { HomepageDiscoveryStrip } from "@/components/homepage/HomepageDiscoveryStrip";
 
 export const metadata = {
   title: "Thenetworkers · For every trade, homeowner, and merchant",
@@ -22,6 +23,11 @@ export default async function Home({
     <main className="bg-[#FBF6EC]">
       <SmartVisitorHook searchParams={params} />
       <AudienceGateBright />
+      {/* Resource ecosystem — surfaces every Phase 2/3 SEO pillar so
+          direct + returning visitors discover the tools without
+          typing URLs. Kept below the hero so the existing conversion
+          path is not disturbed. */}
+      <HomepageDiscoveryStrip />
     </main>
   );
 }

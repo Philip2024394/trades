@@ -2,6 +2,29 @@
 
 Auto-loaded at the start of every Claude Code session. Keep this file small and pointer-heavy — the real detail lives in `docs/`.
 
+## PLATFORM RULES (permanent · every code decision passes these)
+
+1. **Build engines before modules.** Cross-cutting capabilities (analytics, notifications, verification, moderation, referrals, liquidity) become reusable engines FIRST. Product-specific features consume the engines.
+2. **Build reusable systems before product-specific systems.** One implementation used by Trade Centre + SiteBook + Marketplace + Delivery + Rentals + Beauty + Massage + future products, not per-product duplicates.
+3. **Every feature must pass one of these 5 tests**:
+   a) Increases successful matches
+   b) Increases liquidity
+   c) Increases retention
+   d) Increases revenue
+   e) Removes existential risk
+4. **If a feature fails all 5 tests → DO NOT BUILD.** Move to backlog. Do not schedule.
+5. **Every dashboard must answer**: "Are more homeowners getting matched with more trades faster than last week?"
+6. **Prefer one shared engine used by all products over multiple product-specific implementations.**
+7. **Founder workflow must fit inside 10 minutes per day** across `/warroom` + Network Health + Coverage + Growth + Revenue + Moderation queue.
+8. **Network effects are more important than feature count.**
+9. **Liquidity is more important than perfection.**
+10. **Distribution beats development.**
+
+**North star metric**: `first_reply_latency_48h` — % of new homeowner posts (SiteBook + Yard) receiving a trade reply within 48h. Segmented city × trade. Tracked daily.
+
+**Active 60-day build plan**: `docs/ADMIN_OPS_ROADMAP_60D_2026_07_19.md` (engine-first vertical slices).
+
+
 ## Read these first
 
 1. **`docs/BLUEPRINT.md`** — auto-generated map of the whole app (50 apps, 158 lib entries, 32 platform areas, 391 pages, 523 APIs, 207 migrations, 17 crons). Regenerate any time with `node scripts/scan-blueprint.mjs`.
@@ -24,9 +47,9 @@ Thenetworkers — a UK trades platform. Merchant canteen pages (`thenetworkers.a
 
 - **Free** — £0/mo · 10 signup washers · 10 product cap · Powered-by-The-Network footer (viral loop)
 - **Starter** — £9.99/mo · £99.99/yr · 50 washers/mo · unlimited products · all 20 calculators
-- **Professional** — £14.99/mo · £140/yr · 200 washers/mo · AI Visualiser 5/mo · Analytics · 20% off Site Interest
-- **Business** — £24.99/mo · £240/yr · 1,000 washers/mo · multi-user · custom domain · 5-slot beacon · 40% off Site Interest
-- **The Works** — £39.99/mo · £399/yr · unlimited washers · Site Interest membership included · Merchant Pro bundle
+- **Professional** — £14.99/mo · £140/yr · 200 washers/mo · AI Visualiser 5/mo · Analytics
+- **Business** — £24.99/mo · £240/yr · 1,000 washers/mo · multi-user · custom domain · 5-slot beacon
+- **The Works** — £39.99/mo · £399/yr · unlimited washers · Merchant Pro bundle · priority everything
 
 **Source of truth: `src/lib/tierCatalog.ts`** — never edit tier facts anywhere else. Feature bullets on the pricing page + REVENUE_MAP + this file all defer to it.
 

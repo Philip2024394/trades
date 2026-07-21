@@ -21,15 +21,22 @@ import { searchCanteens, type Canteen } from "@/lib/canteens";
 import { approvedSubmissionsForQuery, enrichSubmissionSources } from "@/lib/imageSubmissions";
 import { beforeAftersForQuery } from "@/lib/beforeAfterLibrary";
 import { featuredTradesForCategory } from "@/lib/featuredPlacements";
+import {
+  storeAllImages,
+  storeSearch,
+  type StoreImage
+} from "@/lib/storeLibrary.server";
+import { getMerchantSlug } from "@/lib/merchantSession";
+import { siteEntitlementForViewer } from "@/lib/siteAccess";
 import { BRAND } from "@/lib/seo";
 import { SearchShell, type InspirationImage } from "./SearchShell";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: `Search trades and Site Interest | ${BRAND.name}`,
+  title: `Search trades and The Site | ${BRAND.name}`,
   description:
-    "Find a trade near you or scroll Site Interest — a wall of real project photos from working trades — to spark your next project.",
+    "Find a trade near you or scroll The Site — a wall of real project photos from working trades — to spark your next project.",
   robots: { index: true, follow: true }
 };
 
@@ -65,12 +72,18 @@ export default async function SearchPage({
   const browseSeed = Math.floor(Date.now() / 1000) % 100000; // fresh per request
   const initialCuratedForBrowse = query ? [] : heroesBrowseAll(browseSeed, 0, 24);
 
-  const [rawTrades, curatedInspiration, approvedSubmissions, transformations, featured] = await Promise.all([
+  // Store images — the ex-/store pool from hammerex_feed_tile_library
+  // (tier 2 + 3, clean, non-banner). Unioned into the same feed so
+  // there's no separate "Store" surface. On a keyword query we run
+  // storeSearch(); on browse-all we pull the whole set (typically
+  // small enough to render in one shot).
+  const [rawTrades, curatedInspiration, approvedSubmissions, transformations, featured, storeImages] = await Promise.all([
     Promise.resolve(query ? searchCanteens(query, cityHint) : ([] as Canteen[])),
     Promise.resolve(query ? heroesForQuery(query) : (initialCuratedForBrowse as HeroEntry[])),
     query ? approvedSubmissionsForQuery(query) : Promise.resolve([]),
     Promise.resolve(query ? beforeAftersForQuery(query, 6) : []),
-    query ? featuredTradesForCategory(query) : Promise.resolve([])
+    query ? featuredTradesForCategory(query) : Promise.resolve([]),
+    query ? storeSearch(query, 60) : storeAllImages()
   ]);
 
   // Featured Placement boost — active paid slots for this query
@@ -142,6 +155,28 @@ export default async function SearchPage({
       heightPx:            null
     });
   }
+  for (const e of storeImages as StoreImage[]) {
+    if (seen.has(e.url)) continue;
+    seen.add(e.url);
+    inspiration.push({
+      id:                  e.id,
+      source:              "curated",
+      imageUrl:            e.url,
+      subject:             e.alt,
+      keywords:            e.trade_slugs,
+      submitterSlug:       null,
+      submitterDisplay:    null,
+      submitterAvatarUrl:  null,
+      sourceCanteenId:     null,
+      sourceCanteenSlug:   null,
+      sourcePostId:        null,
+      sourcePostReplyCount:0,
+      materials:           [],
+      isBuyable:           true,
+      widthPx:             null,
+      heightPx:            null
+    });
+  }
 
   // Structured data for Google Images — each Site Interest image
   // becomes an ImageObject in a graph so Google indexes them under
@@ -171,6 +206,21 @@ export default async function SearchPage({
       }
     : null;
 
+  const merchantSlug = await getMerchantSlug();
+
+  // Resolve viewer entitlement against The Site image commerce so the
+  // wall shows "Owned" / "Subscribed" / "Bundled" chips and the Buy
+  // button swaps to a direct Download link for entitled images. Batch
+  // the check over ONLY the buyable IDs in the first page — endless-
+  // scroll pages resolve entitlement client-side on demand.
+  const buyableIds = inspiration
+    .filter((i) => i.isBuyable === true && typeof i.id === "string" && i.id.length > 0)
+    .map((i) => i.id as string);
+  const siteEntitlement = await siteEntitlementForViewer(buyableIds, {
+    merchantSlug,
+    email: null
+  });
+
   return (
     <>
       {jsonLd && (
@@ -188,6 +238,8 @@ export default async function SearchPage({
         transformations={transformations}
         browseSeed={browseSeed}
         featuredTradeSlugs={Array.from(featuredSlugs)}
+        merchantSignedIn={Boolean(merchantSlug)}
+        siteEntitlement={siteEntitlement}
       />
     </>
   );

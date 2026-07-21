@@ -8,8 +8,9 @@
 // Auth: shared xrated_admin_session HMAC cookie via isAdminAuthed().
 
 import { NextResponse, type NextRequest } from "next/server";
-import { isAdminAuthed } from "@/lib/adminAuth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { writeAuditLog, extractRequestContext } from "@/lib/admin/auditLog";
+import { assertAdminRole } from "@/lib/admin/rbac";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,9 +28,13 @@ function isAction(v: unknown): v is Action {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
-  if (!(await isAdminAuthed())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  // RBAC — moderation is allowed for both 'admin' and 'moderator' roles.
+  // Analyst / support / finance cannot moderate.
+  const auth = await assertAdminRole(["admin", "moderator"]);
+  if (!auth.ok) {
+    return NextResponse.json({ error: auth.error }, { status: auth.status });
   }
+  const actor = auth.identity;
 
   let body: { post_id?: unknown; action?: unknown; reason?: unknown };
   try {
@@ -81,6 +86,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       break;
   }
 
+  // Snapshot before-state for audit log (Rule 3 non-destructive-restore)
+  const beforeRes = await supabaseAdmin
+    .from("hammerex_trade_off_yard_posts")
+    .select("id, moderation_status, moderation_reason, is_pinned, flag_count, title, trade_slug")
+    .eq("id", postId)
+    .maybeSingle();
+  const before = beforeRes.data as { id: string; moderation_status: string | null; moderation_reason: string | null; is_pinned: boolean; flag_count: number; title: string; trade_slug: string | null } | null;
+
   const upd = await supabaseAdmin
     .from("hammerex_trade_off_yard_posts")
     .update(patch)
@@ -98,6 +111,23 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   if (!upd.data) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
+
+  // Audit log — fire-and-forget (never blocks the response)
+  const { ipAddress, userAgent } = extractRequestContext(req);
+  void writeAuditLog({
+    actorAdminId: actor.adminId,
+    actorEmail:   actor.email,
+    actorKind:    actor.role,
+    action:       `yard.post.${action}`,
+    targetType:   "yard_post",
+    targetId:     postId,
+    targetSlug:   before?.trade_slug ?? null,
+    beforeState:  before ? { moderation_status: before.moderation_status, moderation_reason: before.moderation_reason, is_pinned: before.is_pinned, flag_count: before.flag_count, title: before.title } : null,
+    afterState:   { ...patch },
+    reason,
+    ipAddress,
+    userAgent
+  });
 
   return NextResponse.json({ ok: true, post: upd.data });
 }

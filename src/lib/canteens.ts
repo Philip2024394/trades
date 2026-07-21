@@ -197,6 +197,11 @@ export type SideLanePost = {
    *  offer model. Takes priority over the Hot chip but not the sold
    *  banner or make-me-offer mood. */
   serviceInquiry?: boolean;
+  /** Poster's primary trade slug — surfaced on The Counter cards as a
+   *  top-left category chip so buyers can filter mentally at a glance.
+   *  Populated by platformSideLaneFromDb via a batched lookup on
+   *  hammerex_trade_off_listings.primary_trade keyed on posterSlug. */
+  posterTradeSlug?: string | null;
 };
 
 /** Minimum live window on a make-me-offer listing. Seller cannot cancel

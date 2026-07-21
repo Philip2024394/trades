@@ -25,7 +25,7 @@ export type EditorialQuote = {
 
 export function CanteenEditorialQuote({ quote }: { quote: EditorialQuote }) {
   return (
-    <section className="mx-auto max-w-6xl px-4 pt-10 md:px-6 md:pt-16">
+    <section className="mx-auto max-w-[1400px] px-4 pt-10 md:px-6 md:pt-16">
       {/* Asymmetric layout: on md+ the quote sits in a narrower column
           justified to the left, giving the right side empty air that
           reads as intentional whitespace — that whitespace IS the

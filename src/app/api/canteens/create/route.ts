@@ -13,6 +13,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getMerchantIdentity } from "@/lib/merchantSession";
+import { seedCanteenExamples } from "@/lib/canteens/seed";
 
 const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const RESERVED_SLUGS = new Set([
@@ -116,6 +117,15 @@ export async function POST(req: Request) {
       trade_label: tradeLabel,
       role: "admin"
     });
+
+  // Seed the canteen with a hero banner + 5 example posts so it never
+  // looks empty. Fire-and-forget — canteen creation succeeds even if
+  // seeding fails (Philip 2026-07-20 seed system).
+  void seedCanteenExamples({
+    canteenSlug: slug,
+    tradeSlug:   tradeSlug,
+    listingId:   identity.listingId
+  });
 
   return NextResponse.json({ ok: true, id: insert.data.id, slug });
 }

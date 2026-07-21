@@ -323,6 +323,10 @@ export type CanteenChatPost = {
   authorSlug: string;
   authorDisplayName: string;
   authorAvatarUrl: string | null;
+  /** Matches hammerex_canteen_posts.kind enum. Exposed so client
+   *  components (e.g. CanteenMembersInboxRail tab filter) can bucket
+   *  posts without a second DB round-trip. */
+  kind: string;
   body: string;
   photoUrls: string[];
   moodSlug: string | null;
@@ -338,6 +342,10 @@ export type CanteenChatPost = {
   boostActive: boolean;
   boostExpiresAt: string | null;
   bodyEditedAt: string | null;
+  /** True for seeded example posts. Client uses this to suppress
+   *  lead-generating CTAs (Contact, "View on their canteen") so
+   *  viewers cannot be "matched" with a mock member. */
+  isSample: boolean;
 };
 
 export async function canteenPostsFromDb(canteenId: string, limit: number = 30): Promise<CanteenChatPost[]> {
@@ -347,10 +355,11 @@ export async function canteenPostsFromDb(canteenId: string, limit: number = 30):
   // TABLE shipped 2026-07-17 alongside the Pin/Edit/Boost endpoints.
   const res = await supabaseAdmin
     .from("hammerex_canteen_posts")
-    .select("id, author_slug, author_display_name, author_avatar_url, body, photo_urls, mood_slug, reactions, reply_count, created_at, is_pinned, boost_expires_at, body_edited_at")
+    .select("id, author_slug, author_display_name, author_avatar_url, kind, body, photo_urls, mood_slug, reactions, reply_count, created_at, is_pinned, boost_expires_at, body_edited_at, is_sample")
     .eq("canteen_id", canteenId)
     .eq("status", "live")
     .is("parent_id", null)
+    .is("moderation_hidden_at", null)   // hides auto-decayed samples
     .in("kind", ["chat", "question", "showcase", "announcement"])
     .order("is_pinned",       { ascending: false })
     .order("boost_expires_at",{ ascending: false, nullsFirst: false })
@@ -394,6 +403,7 @@ function shapePost(r: any): CanteenChatPost {
     authorSlug: r.author_slug,
     authorDisplayName: r.author_display_name,
     authorAvatarUrl: r.author_avatar_url ?? null,
+    kind: (r.kind ?? "chat") as string,
     body: r.body ?? "",
     photoUrls: (r.photo_urls ?? []) as string[],
     moodSlug: r.mood_slug ?? null,
@@ -405,7 +415,8 @@ function shapePost(r: any): CanteenChatPost {
     isPinned:      Boolean(r.is_pinned),
     boostActive,
     boostExpiresAt,
-    bodyEditedAt:  (r.body_edited_at ?? null) as string | null
+    bodyEditedAt:  (r.body_edited_at ?? null) as string | null,
+    isSample:      Boolean(r.is_sample)
   };
 }
 
@@ -419,13 +430,14 @@ function shapePost(r: any): CanteenChatPost {
 
 export async function platformSideLaneFromDb(canteenTradeSlug?: string): Promise<SideLanePost[]> {
   const nowIso = new Date().toISOString();
-  // Both kinds surface on The Counter:
-  //   counter    — host-elevated marketplace listings (via Promote button)
-  //   make-offer — member-posted "for sale" from the composer's Sell kind
+  // Three kinds surface on The Counter:
+  //   counter    — for-sale listings (default composer output)
+  //   make-offer — seller invites offers instead of setting a price
+  //   wanted     — buyer signals demand (2026-07-20 Philip)
   const res = await supabaseAdmin
     .from("hammerex_canteen_posts")
     .select("id, canteen_id, author_slug, author_display_name, author_avatar_url, kind, body, photo_urls, price_gbp, currency, target_trade_slugs, boost_expires_at, boost_paid_gbp, created_at, expires_at")
-    .in("kind", ["counter", "make-offer"])
+    .in("kind", ["counter", "make-offer", "wanted"])
     .eq("status", "live")
     .order("boost_expires_at", { ascending: false, nullsFirst: false })
     .order("created_at", { ascending: false })
@@ -439,6 +451,22 @@ export async function platformSideLaneFromDb(canteenTradeSlug?: string): Promise
   const rows = res.data ?? [];
   if (rows.length === 0) return platformSideLaneMock(canteenTradeSlug);
 
+  // Batched lookup for poster trade slugs — powers the "Plastering /
+  // Electrical / Roofing" category chip on Counter cards. One extra
+  // query total, not per-row. Missing listings gracefully render
+  // without a chip.
+  const uniquePosterSlugs = Array.from(new Set(rows.map((r) => r.author_slug).filter(Boolean) as string[]));
+  const tradeBySlug = new Map<string, string | null>();
+  if (uniquePosterSlugs.length > 0) {
+    const listingsRes = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("slug, primary_trade")
+      .in("slug", uniquePosterSlugs);
+    for (const l of (listingsRes.data ?? []) as Array<{ slug: string; primary_trade: string | null }>) {
+      tradeBySlug.set(l.slug, l.primary_trade);
+    }
+  }
+
   const shaped: SideLanePost[] = rows.map((r) => {
     const boostActive = r.boost_expires_at && Date.parse(r.boost_expires_at) > Date.now();
     return {
@@ -447,6 +475,7 @@ export async function platformSideLaneFromDb(canteenTradeSlug?: string): Promise
       kind: "member-listing",
       posterSlug: r.author_slug,
       posterDisplayName: r.author_display_name,
+      posterTradeSlug: tradeBySlug.get(r.author_slug) ?? null,
       headline: (r.body ?? "").slice(0, 90),
       imageUrl: (r.photo_urls ?? [])[0] ?? null,
       priceGbp: r.price_gbp ?? undefined,

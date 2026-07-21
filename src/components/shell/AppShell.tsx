@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { NotificationsPopover } from "./NotificationsPopover";
+import { WalletChip } from "./WalletChip";
 import { GlobalHeader } from "./GlobalHeader";
 import {
   Search,
@@ -371,6 +372,13 @@ function AppTopBar({
                 {editModeActive ? "Exit edit" : "Edit mode"}
               </button>
             )}
+            {/* Washer wallet chip — always visible for signed-in
+                merchants. Click reveals balance hero + recent activity
+                popover (Philip 2026-07-20 unified-wallet UX). */}
+            <WalletChip
+              ownerSlug={auth.slug}
+              fullWalletHref={preserveAuth(`/trade-off/edit/${auth.slug}/washers`)}
+            />
             <div className="relative">
               <button
                 type="button"
@@ -532,8 +540,8 @@ function AppDrawer({
         {
           href: preserveAuth(`/trade-off/edit/${auth.slug}/templates`),
           icon: Sparkles,
-          label: "App template",
-          hint: "Pick the visual theme your mobile app uses"
+          label: "Edit look",
+          hint: "Palette, shade and feed image for your canteen"
         },
         {
           href: preserveAuth(`/trade-off/edit/${auth.slug}`),

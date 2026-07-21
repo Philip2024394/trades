@@ -140,7 +140,7 @@ export function CanteenQuickActions({ canteenSlug, tradeSlug, inline = false }: 
   );
   if (inline) return grid;
   return (
-    <div className="mx-auto -mt-2 max-w-6xl px-3 md:px-6">
+    <div className="mx-auto -mt-2 max-w-[1400px] px-3 md:px-6">
       <div className="rounded-2xl border bg-white p-3 shadow-md md:p-4" style={{ borderColor: "rgba(139,69,19,0.10)" }}>
         {grid}
       </div>
@@ -244,7 +244,7 @@ export function CanteenTradeDeals({
   );
   if (inline) return banner;
   return (
-    <div className="mx-auto max-w-6xl px-3 pt-4 md:px-6 md:pt-6">
+    <div className="mx-auto max-w-[1400px] px-3 pt-4 md:px-6 md:pt-6">
       {banner}
     </div>
   );
@@ -503,7 +503,7 @@ export function CanteenTrendingRibbon({
     : [];
 
   return (
-    <section className={`mx-auto max-w-6xl px-3 md:px-6 ${compact ? "pt-3" : "pt-4 md:pt-6"}`}>
+    <section className={`mx-auto max-w-[1400px] px-3 md:px-6 ${compact ? "pt-3" : "pt-4 md:pt-6"}`}>
       <div className="mb-3 px-1">
         <h2
           className={`font-black leading-tight tracking-tight ${compact ? "text-[20px] md:text-[22px]" : "text-[22px] md:text-[26px]"}`}

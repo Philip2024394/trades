@@ -21,6 +21,7 @@
 import { NextResponse } from "next/server";
 import { heroesBrowseAll, heroesForQueryPaged } from "@/lib/heroLibrary";
 import { approvedSubmissionsForQuery } from "@/lib/imageSubmissions";
+import { storeAllImages, storeSearch } from "@/lib/storeLibrary.server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -67,19 +68,49 @@ export async function GET(req: Request) {
     }));
   }
 
+  // Store images (ex-/store pool from hammerex_feed_tile_library)
+  // fold in on the first page only, mirroring how submissions are
+  // handled. They read as `curated` on the client — the `isBuyable`
+  // flag lights up the Buy button on Store-sourced entries.
+  type CuratedRow = {
+    id:        string;
+    imageUrl:  string;
+    subject:   string;
+    keywords:  string[];
+    widthPx:   number | null;
+    heightPx:  number | null;
+    isBuyable: boolean;
+  };
+  const curatedFromSource: CuratedRow[] = source.map((e) => ({
+    id:        e.id,
+    imageUrl:  e.image_url,
+    subject:   e.subject,
+    keywords:  e.keywords_strict,
+    widthPx:   e.width_px  ?? null,
+    heightPx:  e.height_px ?? null,
+    isBuyable: false
+  }));
+  if (offset === 0) {
+    const storeRows = query ? await storeSearch(query, 60) : await storeAllImages();
+    const seenUrls = new Set(curatedFromSource.map((c) => c.imageUrl));
+    for (const s of storeRows) {
+      if (seenUrls.has(s.url)) continue;
+      seenUrls.add(s.url);
+      curatedFromSource.push({
+        id:        s.id,
+        imageUrl:  s.url,
+        subject:   s.alt,
+        keywords:  s.trade_slugs,
+        widthPx:   null,
+        heightPx:  null,
+        isBuyable: true
+      });
+    }
+  }
+
   return NextResponse.json({
     ok: true,
-    curated: source.map((e) => ({
-      id:       e.id,
-      imageUrl: e.image_url,
-      subject:  e.subject,
-      keywords: e.keywords_strict,
-      // Dimensions travel with every response so the masonry can
-      // reserve the aspect-ratio box on each new lazy row → zero
-      // layout shift while scrolling. Set by backfill-image-dims.mjs.
-      widthPx:  e.width_px  ?? null,
-      heightPx: e.height_px ?? null
-    })),
+    curated: curatedFromSource,
     submissions,
     // hint to the client whether more results are likely on next
     // page — false when the underlying source returned less than

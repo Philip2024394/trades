@@ -92,7 +92,7 @@ export function CanteenLiveFeedWow({
   const looped = [...posts, ...posts];
   const Wrapper: React.ElementType = inline ? "div" : "section";
   return (
-    <Wrapper className={inline ? "" : "mx-auto max-w-6xl px-3 pt-5 md:px-6 md:pt-6"}>
+    <Wrapper className={inline ? "" : "mx-auto max-w-[1400px] px-3 pt-5 md:px-6 md:pt-6"}>
       <style>{MARQUEE_CSS}</style>
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center gap-1.5">

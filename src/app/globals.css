@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Site Editor — slide-up sheet keyframe used by the Change style
+   panel that appears under the canvas. */
+@keyframes slideUp {
+  from { transform: translateY(12px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
 :root {
   /* ── Existing brand tokens (unchanged) ── */
   --brand-bg: 0 0 0;

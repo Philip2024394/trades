@@ -148,17 +148,27 @@ export function CanteenMobileAppShowcase({
     ? {
         eyebrow:     "Live edit mode",
         heading:     "Updates land here in real time",
-        buttonLabel: tier === "paid" ? "View app" : "Upgrade — only £7.99/mo",
-        // Route to the live canteen page. thenetworkers.app isn't
-        // deployed yet — relative URL points at the current origin
-        // (localhost in dev, whatever domain in prod) so the button
-        // always resolves to a real, viewable canteen.
+        // Paid + edit-mode = owner is actively editing → send them
+        // to the templates editor (palette / shade / feed).
+        // Free + edit-mode = free-tier owner previewing → upgrade nudge.
+        buttonLabel: tier === "paid" ? "Edit app" : "Upgrade — only £7.99/mo",
         buttonHref:  tier === "paid"
-          ? (canteenSlug ? `/trade-off/yard/canteens/${canteenSlug}` : `/trade/${hostSlug}`)
+          ? `/trade-off/edit/${hostSlug}/templates`
           : "/trade-off/packages",
-        openTarget:  tier === "paid" ? "_blank" : undefined
+        openTarget:  undefined
       }
-    : tier === "paid"
+    : tier === "paid" && isOwner
+      ? {
+          // Paid owner viewing their own canteen (any mode) — button
+          // always jumps into the App Studio editor. Two-way loop:
+          // canteen page ↔ /trade-off/edit/[slug]/templates.
+          eyebrow:     "Your mobile app",
+          heading:     "Tap Edit app to change palette + feed",
+          buttonLabel: "Edit app",
+          buttonHref:  `/trade-off/edit/${hostSlug}/templates`,
+          openTarget:  undefined
+        }
+      : tier === "paid"
       ? {
           eyebrow:     "On the go",
           // Prefer merchant/canteen name over trade label — visitors
@@ -179,9 +189,9 @@ export function CanteenMobileAppShowcase({
             openTarget:  undefined
           }
         : {
-            eyebrow:     "Tradesite Apps",
-            heading:     "Now available",
-            buttonLabel: "App Store",
+            eyebrow:     "The Network",
+            heading:     "See more trades",
+            buttonLabel: "Browse trades",
             buttonHref:  "/trade-off/trades",
             openTarget:  undefined
           };
@@ -252,36 +262,56 @@ export function CanteenMobileAppShowcase({
 
       {/* Phone frame — capped max-width so it reads as a preview.
           Tap opens the enlarge modal. Rim glow when editMode is on
-          so the merchant knows the phone is bound to their edits. */}
-      <button
-        type="button"
-        onClick={() => setEnlarged(true)}
-        aria-label="Enlarge phone preview"
-        className="group relative mx-auto block cursor-zoom-in transition active:scale-[0.98]"
-        style={{
-          maxWidth: "160px",
-          width:    "100%",
-          ...(editMode
-            ? {
-                filter:  "drop-shadow(0 0 8px rgba(255,179,0,0.55)) drop-shadow(0 0 16px rgba(255,179,0,0.25))",
-                animation: "canteen-phone-rim 2s ease-in-out infinite"
-              }
-            : {})
-        }}
-      >
-        <IphoneFrame
-          heroImageUrl={heroImageUrl}
-          canteenSlug={canteenSlug ?? null}
-          refreshTick={refreshTick}
-        />
-        {/* Hover hint — enlarge icon top-right of the phone. */}
-        <span
-          aria-hidden
-          className="pointer-events-none absolute right-1.5 top-1.5 z-30 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white opacity-0 shadow-md transition group-hover:opacity-100"
+          so the merchant knows the phone is bound to their edits.
+          "Edit look" pill anchored to the container (not the button)
+          so it doesn't nest inside the enlarge-modal <button>. */}
+      <div className="relative mx-auto" style={{ maxWidth: "160px" }}>
+        <button
+          type="button"
+          onClick={() => setEnlarged(true)}
+          aria-label="Enlarge phone preview"
+          className="group relative mx-auto block w-full cursor-zoom-in transition active:scale-[0.98]"
+          style={{
+            ...(editMode
+              ? {
+                  filter:  "drop-shadow(0 0 8px rgba(255,179,0,0.55)) drop-shadow(0 0 16px rgba(255,179,0,0.25))",
+                  animation: "canteen-phone-rim 2s ease-in-out infinite"
+                }
+              : {})
+          }}
         >
-          <Maximize2 size={11} strokeWidth={2.5}/>
-        </span>
-      </button>
+          <IphoneFrame
+            heroImageUrl={heroImageUrl}
+            canteenSlug={canteenSlug ?? null}
+            refreshTick={refreshTick}
+          />
+          {/* Hover hint — enlarge icon top-right of the phone. */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute right-1.5 top-1.5 z-30 flex h-5 w-5 items-center justify-center rounded-full bg-black/70 text-white opacity-0 shadow-md transition group-hover:opacity-100"
+          >
+            <Maximize2 size={11} strokeWidth={2.5}/>
+          </span>
+        </button>
+        {/* Edit-mode-only affordance — owner in canteen edit mode taps
+            here to jump to the palette / feed / shade editor. Yellow
+            pill anchored top-left so it doesn't clash with the QR chip
+            top-right. Parent CanteenPageShell ANDs isHost into editMode
+            before passing, so editMode alone is sufficient. */}
+        {editMode && (
+          <a
+            href={`/trade-off/edit/${hostSlug}/templates`}
+            aria-label="Edit app look"
+            className="absolute left-1.5 top-1.5 z-40 inline-flex h-6 items-center gap-1 rounded-full border border-black/25 px-2 text-[9px] font-black uppercase tracking-[0.14em] shadow-md transition hover:-translate-y-0.5 active:scale-[0.95]"
+            style={{ backgroundColor: BRAND_YELLOW, color: "#0A0A0A" }}
+          >
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M12 3l2.09 4.26L19 8l-3.5 3.42.83 4.83L12 14l-4.33 2.25L8.5 11.42 5 8l4.91-.74L12 3z"/>
+            </svg>
+            Edit look
+          </a>
+        )}
+      </div>
 
       {/* CTA button — under the phone. Yellow for paid + free-owner
           upsell, warm tan for free-visitor App Store link so it reads

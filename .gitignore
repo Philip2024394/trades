@@ -16,3 +16,7 @@ scripts/.pexels-query-cache.json
 
 # Runtime log — not source of truth
 dev.log
+
+# Local scratch — source images before processing, mockup HTML,
+# screenshots. Processed outputs live in /public/ and are tracked.
+tmp/

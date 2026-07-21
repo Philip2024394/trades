@@ -370,7 +370,15 @@ export function YardPostCard({
                   <Pin className="h-2.5 w-2.5 text-[#1B1A17]/70" aria-hidden />
                 </span>
               )}
-              {!post.is_sample && (
+              {post.is_sample ? (
+                <span
+                  className="rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-[0.14em]"
+                  style={{ backgroundColor: "rgba(255,179,0,0.22)", color: "#7A4E00" }}
+                  title="Example post — replaced automatically when you publish your own"
+                >
+                  Example
+                </span>
+              ) : (
                 <span className="text-[10px] font-semibold text-[#1B1A17]/45">
                   {timeAgoShort(post.created_at)}
                 </span>

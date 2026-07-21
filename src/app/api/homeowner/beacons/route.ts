@@ -11,6 +11,7 @@
 import { NextResponse } from "next/server";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { trackLiquidity } from "@/lib/analytics/track";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -72,6 +73,20 @@ export async function POST(req: Request) {
     console.error("[homeowner/beacons] insert failed", ins.error);
     return NextResponse.json({ ok: false, error: "insert-failed", detail: ins.error?.message }, { status: 500 });
   }
+
+  // Liquidity Engine · demand_created (Yard public broadcast)
+  void trackLiquidity({
+    slug:           "yard.beacon_created",
+    product:        "yard",
+    lifecycleStage: "demand_created",
+    actorKind:      "homeowner",
+    actorId:        homeowner.id,
+    actorDisplay:   homeowner.first_name || "Homeowner",
+    targetKind:     "yard_beacon",
+    targetId:       ins.data.id,
+    city:           region,
+    metadata:       { sitebook_project_id: project.id }
+  });
 
   return NextResponse.json({ ok: true, beaconId: ins.data.id });
 }

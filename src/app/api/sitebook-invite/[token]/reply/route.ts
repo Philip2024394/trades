@@ -19,6 +19,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { loadInvitationByToken } from "@/lib/homeowners/invitations";
+import { trackLiquidity } from "@/lib/analytics/track";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -76,13 +77,29 @@ export async function POST(
     return NextResponse.json({ ok: false, error: "insert-failed" }, { status: 500 });
   }
 
+  const isFirstReply = invitation.status === "pending" || invitation.status === "unavailable";
   // Flip invitation to 'responded' if this is the first reply
-  if (invitation.status === "pending" || invitation.status === "unavailable") {
+  if (isFirstReply) {
     await supabaseAdmin
       .from("hammerex_sitebook_invitations")
       .update({ status: "responded", responded_at: new Date().toISOString() })
       .eq("id", invitation.id);
   }
+
+  // Liquidity Engine · supply_responded — the core loop metric.
+  // First-reply-latency (48h target) is measured from post-created
+  // occurred_at to this event's occurred_at.
+  void trackLiquidity({
+    slug:           "sitebook.trade_replied",
+    product:        "sitebook",
+    lifecycleStage: "supply_responded",
+    actorKind:      "trade",
+    actorId:        invitation.trade_listing_id,
+    actorDisplay:   invitation.trade_merchant_name || invitation.trade_merchant_slug || "Trade",
+    targetKind:     "sitebook_post",
+    targetId:       postId,
+    metadata:       { is_first_reply: isFirstReply, invitation_id: invitation.id }
+  });
 
   return NextResponse.json({ ok: true, replyId: ins.data.id });
 }

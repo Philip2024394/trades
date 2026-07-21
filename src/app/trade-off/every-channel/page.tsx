@@ -491,9 +491,9 @@ export default function EveryChannelPage() {
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
             <TierCard name="Free"         price="£0"      washers="10 / mo"     highlight="Your URL, PWA, every channel access — forever"          featured={false}/>
             <TierCard name="Starter"      price="£9.99"   washers="50 / mo"     highlight="Unlimited products + all 20 UK material calculators"     featured={false}/>
-            <TierCard name="Professional" price="£14.99"  washers="200 / mo"    highlight="AI Visualiser 5 uses/mo + Analytics + 20% off Site Interest" featured={true}/>
+            <TierCard name="Professional" price="£14.99"  washers="200 / mo"    highlight="AI Visualiser 5 uses/mo + Analytics"                     featured={true}/>
             <TierCard name="Business"     price="£24.99"  washers="1,000 / mo"  highlight="Custom domain + 5-slot beacon + multi-user"              featured={false}/>
-            <TierCard name="The Works"    price="£39.99"  washers="Unlimited"   highlight="Site Interest included + Merchant Pro bundle"            featured={false}/>
+            <TierCard name="The Works"    price="£39.99"  washers="Unlimited"   highlight="Merchant Pro bundle + priority everything"               featured={false}/>
           </div>
 
           <p className="mt-4 text-[11px] leading-snug text-neutral-500">

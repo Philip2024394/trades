@@ -240,6 +240,63 @@ export async function creditPack(input: {
   return { ok: true, balance: nextBalance };
 }
 
+/** Spend an arbitrary number of washers on a discretionary action
+ *  (Counter boost, feature slot, priority listing, bulk broadcast).
+ *  Unlike deductOneWasher (which is idempotency-keyed per lead), this
+ *  helper is for one-off actions the merchant explicitly commits to,
+ *  so there's no idempotency window — every call debits the wallet.
+ *
+ *  Refuses when balance < amount. On success, writes a `deduct`
+ *  transaction with the source + detail so it appears in the merchant's
+ *  washer history alongside lead debits.
+ *
+ *  Never partial — either the full amount is spent or nothing is. */
+export async function spendWashers(input: {
+  merchantSlug: string;
+  amount:       number;                        // must be > 0
+  source:       string;                        // e.g. "counter-boost", "featured-slot"
+  detail?:      Record<string, unknown>;
+}): Promise<
+  | { ok: true;  balance: number; transactionId: string }
+  | { ok: false; reason: "merchant-not-found" | "insufficient-balance" | "invalid-amount" | "db-error";
+      message: string; balance?: number }
+> {
+  if (!Number.isFinite(input.amount) || input.amount <= 0 || Math.floor(input.amount) !== input.amount) {
+    return { ok: false, reason: "invalid-amount", message: "amount must be a positive integer" };
+  }
+  const listingId = await resolveListingIdBySlug(input.merchantSlug);
+  if (!listingId) return { ok: false, reason: "merchant-not-found", message: `No listing for slug ${input.merchantSlug}` };
+
+  const bag = await ensureWasherBag(listingId);
+  if (!bag) return { ok: false, reason: "db-error", message: "Failed to load washer bag" };
+
+  if (bag.balance < input.amount) {
+    return { ok: false, reason: "insufficient-balance", message: `Need ${input.amount}, have ${bag.balance}`, balance: bag.balance };
+  }
+
+  const nextBalance = bag.balance - input.amount;
+  const bagUpdate = await supabaseAdmin
+    .from("hammerex_washer_bag")
+    .update({ balance: nextBalance })
+    .eq("listing_id", listingId);
+  if (bagUpdate.error) return { ok: false, reason: "db-error", message: bagUpdate.error.message };
+
+  const tx = await supabaseAdmin
+    .from("hammerex_washer_transactions")
+    .insert({
+      listing_id:     listingId,
+      kind:           "deduct",
+      delta:          -input.amount,
+      balance_after:  nextBalance,
+      source:         input.source,
+      detail:         input.detail ?? null
+    })
+    .select("id")
+    .single();
+
+  return { ok: true, balance: nextBalance, transactionId: tx.data?.id ?? "" };
+}
+
 /** Read a merchant's bag balance + auto-topup config. Powers the
  *  merchant admin page (/trade-off/edit/[slug]/washers). */
 export async function loadWasherBag(merchantSlug: string): Promise<WasherBag | null> {

@@ -50,9 +50,1026 @@
     "garden-sheds-timber": "Timber garden sheds + storage sheds — shed suppliers + carpenters offering builds + timber merchants.",
     "garden-sunrooms-timber": "Timber garden sunrooms + summerhouses — cabin builders + carpenter fits + cedar-clad structures.",
     "timber-garden-accessories": "Beehives + dog houses + chicken coops in timber — smallholder + hobbyist market for bespoke carpenters.",
-    "bricklayer-craft-showcase": "Bricklayer canteen imagery — hands-on trowel + wall builds + feature walls + chimney + extension work."
+    "bricklayer-craft-showcase": "Bricklayer canteen imagery — hands-on trowel + wall builds + feature walls + chimney + extension work.",
+    "plasterer-van-house": "Plasterer working with branded van + residential house context — mobile-plasterer / local-jobs positioning.",
+    "plastering-tools-library": "Plastering tools + close-up craft shots — trowel work, hawk + float, spatter, skimming detail. Best-fit for plasterer canteens' tool/skills tab.",
+    "plumbing-workshop-library": "Plumbing craft imagery — pipe work, kitchen/bathroom in situ, wrench + copper close-ups. Best-fit for plumber canteen heroes.",
+    "staircase-showroom-library": "Staircase showroom + finished stair install imagery — staircase installers + staircase manufacturers.",
+    "carpenter-workshop-library": "Carpenter craft imagery — workbench detail + fine joinery + wood shavings + tool work. Best-fit for carpenter/joiner canteen heroes.",
+    "demolition-library": "Demolition trade imagery — controlled strip-out, machine breakers, site clearance. Best-fit for demolition contractors + site-clearance specialists.",
+    "steel-fixing-library": "Steel fixing / rebar imagery — reinforcement mat work, tying rebar, groundwork prep. Best-fit for steel fixers + groundworkers + reinforced concrete specialists.",
+    "concrete-finisher-canteen-hero": "Concrete finisher canteen heroes — power float + hand trowel + team-finishing shots covering industrial floors, domestic driveways, patios, and pathways. Best-fit for concrete-finisher / concrete-specialist / groundworker / driveway-installer canteens.",
+    "decorative-render-finished-portfolio": "Real completed decorative-render facades — stone-effect (ashlar) finishes shown as installed work on real houses. Best-fit for renderer / plasterer / decorative-render specialist canteens as portfolio + hero material.",
+    "staircase-premium-interior-finished": "Premium finished-staircase interior imagery — spirals, straight flights, cantilevers, glass balustrades, walnut + oak with LED underlighting in curated home contexts. Best-fit for staircase-installer / staircase-manufacturer / carpenter / joiner canteens.",
+    "window-supply-chain": "Windows across the full chain — manufacture (factory / production line), delivery (loaded van / crated frames), and installation (glazier fitting on-site). Best-fit for window installers, window manufacturers, and glazing suppliers who want to signal end-to-end capability.",
+    "entrance-gates-house": "Finished entrance-gate installs on residential houses — driveway gates, front gates, wrought-iron + wooden + automatic variants. Best-fit for gate installers, gate manufacturers, and fabricators offering bespoke house-entrance solutions.",
+    "apprenticeship-recruitment": "Marketing banner series for /apprenticeships — recruitment surface for 16+ UK youth applying to local trades. Three variants: (1) right-aligned CTA space suits 'Learn More' / 'Apply Today' overlays, (2) needs a button placed directly beneath, (3) burned-in 'start free' text so no additional CTA copy needed — used on the apply-form page. The Network commitment: 'supports UK trade youth' — every apprentice we route to a local trade is a future networker.",
+    "vault-editorial-covers": "Per-article editorial cover images for /vault long-form guides. Each cover pairs 1:1 with a specific article (cowboy red-flags, hiring questions, fair quote anatomy, payment schedules, plumber-vs-Gas-Safe, kitchen fitters vs bespoke joiners, extension timeline, bathroom resale). The ninth entry is the /vault hub hero banner with burned-in 'The Vault / Construction' branding — used at the top of the hub with no text overlay. Warm amber + black brand palette across the set.",
+    "cost-project-covers": "Per-project hero images pinned to /cost/[project] pages via PROJECT_CONTENT[slug].heroOverride. Used instead of the pickHeroForTrade fallback when we have an authored cover.",
+    "cta-backgrounds": "Full-bleed background images sitting behind CTA container copy — dark scrim overlay recommended for legibility. Used on marketing CTAs (e.g. 'Post one job — reach every verified trade' on /trades).",
+    "answers-editorial-covers": "Per-question editorial cover images pinned to /answers/[slug] pages via ANSWERS[i].heroImage. Rendered above the highlighted short answer. Optional — most Q&A pages ship without a cover; only add one for evergreen high-volume queries where the visual materially helps comprehension or SERP CTR.",
+    "tool-hero-covers": "Hero images for interactive tool pages (/check-quote, and future tools). Rendered beside the tool copy in a two-column layout. object-contain so the authored image is never cropped.",
+    "trades-hub-covers": "Per-trade card covers for the /trades hub. Pinned via TRADE_HUB_COVER map so the hub visuals stay consistent regardless of hero-library lookup order. Rendered aspect-[3/2] + object-contain — no cropping. One authored cover per TradeSlug.",
+    "emergency-hero-banner": "Full-bleed hero banner sitting above the Life-safety-first callout on /emergency + /emergency/[slug]. Signals urgency; no text overlay required — image carries the visual weight.",
+    "networkers-tv-hub-hero": "Full-bleed background image for the /videos (Networkers TV) hub hero container. Text overlaid with dark linear-gradient scrim for legibility. Object-cover full-bleed per the hero rule.",
+    "networkers-tv-video-frame": "Placeholder frame image used on video cards where thumbnail_url is null. Rendered inside the aspect-video slot on hub grid + category browse pages + video leaf poster. Auto-replaced the moment the trade uploads a thumbnail or the Phase 2 AI pipeline extracts one from the video.",
+    "networkers-tv-play-button": "Centered play-button icon overlaid on video thumbnails + posters. On grid cards: always visible, decorative signal that the card is a video. On the leaf video-player: click-target that hides itself and starts video playback."
   },
   "entries": [
+    {
+      "id": "vault-cover-cowboy-red-flags-06_37_40",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_37_40%20AM.png",
+      "subject": "Editorial cover — spotting a cowboy UK tradesperson (unmarked van / suspicious characters cue)",
+      "keywords_strict": [
+        "cowboy tradesperson",
+        "cowboy trader",
+        "trade red flags",
+        "dodgy tradesperson"
+      ],
+      "excluded_trades": [],
+      "vibe": "cautionary / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/how-to-spot-cowboy-tradesperson-uk. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-hiring-questions-06_38_46",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_38_46%20AM.png",
+      "subject": "Editorial cover — homeowner interviewing a tradesperson before hire (checklist theme)",
+      "keywords_strict": [
+        "hiring tradesperson",
+        "hire trade",
+        "questions to ask",
+        "trade interview"
+      ],
+      "excluded_trades": [],
+      "vibe": "consultative / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/10-questions-ask-before-hiring-uk-tradesperson. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-fair-quote-06_39_25",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_39_25%20AM.png",
+      "subject": "Editorial cover — reading a written UK trade quote (document + pen composition)",
+      "keywords_strict": [
+        "trade quote",
+        "fair quote",
+        "trade quotation",
+        "reading a quote"
+      ],
+      "excluded_trades": [],
+      "vibe": "analytical / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/what-a-fair-uk-trade-quote-looks-like-2026. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-payment-schedule-06_40_07",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_40_07%20AM.png",
+      "subject": "Editorial cover — UK trade payment schedule (deposits, milestones, retention)",
+      "keywords_strict": [
+        "trade payments",
+        "trade deposit",
+        "payment milestone",
+        "retention"
+      ],
+      "excluded_trades": [],
+      "vibe": "financial / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/uk-trade-payments-deposits-milestones-retention. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-plumber-vs-gas-safe-06_40_50",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_40_50%20AM.png",
+      "subject": "Editorial cover — plumber vs Gas Safe engineer (two-role comparison)",
+      "keywords_strict": [
+        "plumber vs gas safe",
+        "gas safe engineer",
+        "plumbing vs gas",
+        "trade comparison"
+      ],
+      "excluded_trades": [],
+      "vibe": "comparison / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/plumber-vs-gas-safe-engineer-uk. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-kitchen-fitters-vs-joiners-06_41_30",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_41_30%20AM.png",
+      "subject": "Editorial cover — kitchen fitter vs bespoke joiner (workshop + install comparison)",
+      "keywords_strict": [
+        "kitchen fitter",
+        "bespoke joiner",
+        "kitchen installer",
+        "bench joiner"
+      ],
+      "excluded_trades": [],
+      "vibe": "comparison / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/kitchen-fitters-vs-bespoke-joiners-uk. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-extension-timeline-06_42_11",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_42_11%20AM.png",
+      "subject": "Editorial cover — single-storey UK rear extension build timeline",
+      "keywords_strict": [
+        "house extension",
+        "rear extension",
+        "kitchen extension",
+        "extension timeline"
+      ],
+      "excluded_trades": [],
+      "vibe": "construction / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/uk-extension-8-week-timeline-planning-to-keys. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-cover-bathroom-resale-06_42_59",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_42_59%20AM.png",
+      "subject": "Editorial cover — refitted UK family bathroom (resale-value composition)",
+      "keywords_strict": [
+        "bathroom refit",
+        "bathroom resale",
+        "bathroom value",
+        "bathroom renovation"
+      ],
+      "excluded_trades": [],
+      "vibe": "premium / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Cover image for /vault/bathroom-refit-uk-what-adds-resale-value-2026. Article card + hero header.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "networkers-tv-video-frame-10_37_53",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2010_37_53%20AM.png",
+      "subject": "Networkers TV video-card frame v2 — 16:9 charcoal placeholder with amber bottom rule + branded corner watermark. Supersedes 10_21_03 version.",
+      "keywords_strict": [
+        "networkers tv",
+        "video frame",
+        "video placeholder",
+        "video card v2"
+      ],
+      "excluded_trades": [],
+      "vibe": "editorial / premium branded placeholder",
+      "text_zone": {
+        "primary": "none — image is the placeholder",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "3:2": "acceptable — crops sides",
+        "1:1": "not recommended"
+      },
+      "sibling_group_id": "networkers-tv-video-frame",
+      "hero_use_case": "Active placeholder background inside the aspect-video card slot on /videos hub + /videos/c/[category] + leaf player pre-play. Wired via PLACEHOLDER_FRAME_URL constant — single-const swap.",
+      "burned_in_text": true,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "networkers-tv-play-button-10_23_46",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2010_23_46%20AM.png",
+      "subject": "Networkers TV play-button icon — centered on video thumbnails; click-target on leaf player that starts playback",
+      "keywords_strict": [
+        "networkers tv",
+        "play button",
+        "video play",
+        "video overlay"
+      ],
+      "excluded_trades": [],
+      "vibe": "action / branded",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#0A0A0A",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "1:1": "native — icon is square",
+        "16:9": "not recommended",
+        "3:2": "not recommended"
+      },
+      "sibling_group_id": "networkers-tv-play-button",
+      "hero_use_case": "Overlay centered on aspect-video slots. Grid cards: pointer-events-none decorative. Leaf player: interactive — click hides overlay + calls play().",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "networkers-tv-video-frame-10_21_03",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2010_21_03%20AM.png",
+      "subject": "Networkers TV video-card frame — placeholder image displayed inside the aspect-video slot when a video has no custom thumbnail_url",
+      "keywords_strict": [
+        "networkers tv",
+        "video frame",
+        "video placeholder",
+        "video card"
+      ],
+      "excluded_trades": [],
+      "vibe": "editorial / branded placeholder",
+      "text_zone": {
+        "primary": "none — image is the placeholder",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#0A0A0A",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native — matches aspect-video card slot",
+        "3:2": "acceptable",
+        "1:1": "not recommended"
+      },
+      "sibling_group_id": "networkers-tv-video-frame",
+      "hero_use_case": "Placeholder background inside the aspect-video card slot on /videos hub + /videos/c/[category]. Auto-replaced when thumbnail_url is present or Phase 2 AI extracts a poster frame from the video.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "networkers-tv-play-button-10_42_17",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2010_42_17%20AM.png",
+      "subject": "Networkers TV play-button icon v2 — amber circle, dark triangle, transparent PNG with outer glow. Supersedes 10_23_46 version.",
+      "keywords_strict": [
+        "networkers tv",
+        "play button",
+        "video play",
+        "video overlay v2"
+      ],
+      "excluded_trades": [],
+      "vibe": "action / branded / premium",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#0A0A0A",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "1:1": "native — square icon",
+        "16:9": "not recommended",
+        "3:2": "not recommended"
+      },
+      "sibling_group_id": "networkers-tv-play-button",
+      "hero_use_case": "Overlay centered on aspect-video slots. Grid cards: pointer-events-none decorative at 280/320px. Leaf player: interactive click-target at 480/640px. Wired via PLAY_BUTTON_URL constant — single-const swap.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "networkers-tv-hub-hero-10_19_46",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2010_19_46%20AM.png",
+      "subject": "Networkers TV hub hero background — full-bleed image behind 'The Home of Trade Knowledge' hero text",
+      "keywords_strict": [
+        "networkers tv",
+        "video hub",
+        "trade knowledge",
+        "hero background"
+      ],
+      "excluded_trades": [],
+      "vibe": "editorial / premium video-platform",
+      "text_zone": {
+        "primary": "left-aligned overlay",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#0A0A0A",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "21:9": "acceptable — crop bottom",
+        "3:2": "acceptable",
+        "1:1": "not recommended"
+      },
+      "sibling_group_id": "networkers-tv-hub-hero",
+      "hero_use_case": "Full-bleed background on the /videos hub hero container. object-cover + dark linear-gradient scrim (0.75 → 0.4 alpha) so white overlay copy hits AA contrast.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "emergency-hero-08_20_06",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2008_20_06%20AM.png",
+      "subject": "Emergency hero banner — UK trade emergency composition, sits above the life-safety-first callout",
+      "keywords_strict": [
+        "emergency",
+        "trade emergency",
+        "life safety",
+        "urgent trade"
+      ],
+      "excluded_trades": [],
+      "vibe": "urgent / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#DC2626",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FEF2F2",
+        "surface_deep": "#1F2937",
+        "accent": "#FFB300"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "3:2": "acceptable",
+        "1:1": "not recommended"
+      },
+      "sibling_group_id": "emergency-hero-banner",
+      "hero_use_case": "Full-bleed banner above the life-safety callout on /emergency + /emergency/[slug]. object-contain, no text overlay.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-plumber-05_24_03",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_24_03%20AM.png",
+      "subject": "Trades hub cover — UK plumber card",
+      "keywords_strict": [
+        "plumber",
+        "uk plumber",
+        "verified plumber"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the plumber tile. Wired via TRADE_HUB_COVER.plumber.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-carpenter-05_25_00",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_25_00%20AM.png",
+      "subject": "Trades hub cover — UK carpenter card",
+      "keywords_strict": [
+        "carpenter",
+        "uk carpenter",
+        "verified carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the carpenter tile. Wired via TRADE_HUB_COVER.carpenter.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-bricklayer-05_26_04",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_26_04%20AM.png",
+      "subject": "Trades hub cover — UK bricklayer card",
+      "keywords_strict": [
+        "bricklayer",
+        "uk bricklayer",
+        "verified bricklayer"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the bricklayer tile. Wired via TRADE_HUB_COVER.bricklayer.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-electrician-05_27_02",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_27_02%20AM.png",
+      "subject": "Trades hub cover — UK electrician card",
+      "keywords_strict": [
+        "electrician",
+        "uk electrician",
+        "verified electrician",
+        "sparky"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the electrician tile. Wired via TRADE_HUB_COVER.electrician.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-plasterer-05_28_13",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_28_13%20AM.png",
+      "subject": "Trades hub cover — UK plasterer card",
+      "keywords_strict": [
+        "plasterer",
+        "uk plasterer",
+        "verified plasterer"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the plasterer tile. Wired via TRADE_HUB_COVER.plasterer.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "trades-hub-roofer-05_28_57",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2005_28_57%20AM.png",
+      "subject": "Trades hub cover — UK roofer card",
+      "keywords_strict": [
+        "roofer",
+        "uk roofer",
+        "verified roofer",
+        "roofing"
+      ],
+      "excluded_trades": [],
+      "vibe": "trade card / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "trades-hub-covers",
+      "hero_use_case": "Pinned card cover on /trades hub for the roofer tile. Wired via TRADE_HUB_COVER.roofer.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "tool-hero-check-quote-06_58_31",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_58_31%20AM.png",
+      "subject": "UK Trade Quote Checker hero — 'is your quote fair' visual composition, homeowner + magnifying glass over an invoice",
+      "keywords_strict": [
+        "quote checker",
+        "trade quote fair",
+        "check my quote",
+        "quote sanity check"
+      ],
+      "excluded_trades": [],
+      "vibe": "confidence / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "tool-hero-covers",
+      "hero_use_case": "Right-side hero on /check-quote. Two-column layout: copy on left, this image on right. object-contain — never crop.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "answers-cover-boiler-fit-cost-06_53_07",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_53_07%20AM.png",
+      "subject": "UK boiler install — Gas Safe engineer fitting a wall-mounted combi in a domestic utility room",
+      "keywords_strict": [
+        "boiler cost uk",
+        "boiler install cost",
+        "boiler fitting",
+        "gas safe boiler",
+        "combi boiler install"
+      ],
+      "excluded_trades": [],
+      "vibe": "professional / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "answers-editorial-covers",
+      "hero_use_case": "Cover image for /answers/how-much-does-a-boiler-cost-to-fit-uk. Rendered above the short-answer callout on the leaf page.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "cost-cover-kitchen-extension-06_46_58",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_46_58%20AM.png",
+      "subject": "UK single-storey rear kitchen extension with bifold doors and open-plan living",
+      "keywords_strict": [
+        "kitchen extension",
+        "rear extension",
+        "single storey extension",
+        "kitchen cost"
+      ],
+      "excluded_trades": [],
+      "vibe": "aspirational / editorial",
+      "text_zone": {
+        "primary": "none",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "acceptable",
+        "3:2": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "cost-project-covers",
+      "hero_use_case": "Right-side hero on /cost/kitchen-extension. Wired via PROJECT_CONTENT['kitchen-extension'].heroOverride — bypasses pickHeroForTrade.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "cta-bg-post-one-job-06_50_23",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_50_23%20AM.png",
+      "subject": "Full-bleed CTA background — homeowner-posts-a-job composition, used with a dark gradient scrim for copy legibility",
+      "keywords_strict": [
+        "post a job",
+        "homeowner cta",
+        "hire trade cta",
+        "cta background"
+      ],
+      "excluded_trades": [],
+      "vibe": "marketing / action",
+      "text_zone": {
+        "primary": "full-bleed with scrim",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "3:2": "acceptable",
+        "1:1": "not recommended"
+      },
+      "sibling_group_id": "cta-backgrounds",
+      "hero_use_case": "Background image for the 'Post one job — reach every verified trade' CTA on /trades. object-cover + dark linear-gradient scrim (0.72 → 0.30 alpha) so white headline copy hits AA contrast.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "vault-hub-hero-banner-06_43_33",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_43_33%20AM.png",
+      "subject": "Hero banner for /vault hub — burned-in 'The Vault / Construction' branding, no additional text overlay required",
+      "keywords_strict": [
+        "vault hub",
+        "the vault",
+        "construction vault",
+        "editorial hero"
+      ],
+      "excluded_trades": [],
+      "vibe": "editorial hero / premium",
+      "text_zone": {
+        "primary": "burned-in",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "not recommended — text zone breaks",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "vault-editorial-covers",
+      "hero_use_case": "Hero banner at the top of /vault. Do NOT overlay additional text — burned-in branding already present. Full-bleed placement.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "apprentice-recruitment-right-cta-06_04_23",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_04_23%20AM.png",
+      "subject": "Apprenticeship recruitment marketing banner — right-side clear zone for a 'Learn More' or 'Apply Today' CTA chip",
+      "keywords_strict": [
+        "apprenticeship",
+        "apprentice recruitment",
+        "trade youth",
+        "young trade",
+        "start a trade",
+        "become a tradesperson"
+      ],
+      "excluded_trades": [],
+      "vibe": "encouraging / bright / opportunity",
+      "text_zone": {
+        "primary": "right",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native — right CTA zone",
+        "1:1": "not recommended — CTA zone collapses",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "apprenticeship-recruitment",
+      "hero_use_case": "Primary marketing banner on /apprenticeships hub + /careers hub. Right-side clear zone accepts overlay CTA ('Learn More' or 'Apply Today'). Use as top-of-page hero.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "apprentice-recruitment-button-under-06_03_37",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_03_37%20AM.png",
+      "subject": "Apprenticeship recruitment marketing banner — full-composition image, CTA button sits below the frame",
+      "keywords_strict": [
+        "apprenticeship",
+        "apprentice recruitment",
+        "trade youth",
+        "young trade",
+        "success confirmation",
+        "become a tradesperson"
+      ],
+      "excluded_trades": [],
+      "vibe": "celebratory / on-your-way / momentum",
+      "text_zone": {
+        "primary": "below-image",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native — button-under composition",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "apprenticeship-recruitment",
+      "hero_use_case": "Confirmation + success surfaces — banner sits above a standalone CTA button (e.g. /apprenticeships/apply/success), or as a compact side-card on Yard + Canteen pages that pairs with a caption + button beneath.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
+    {
+      "id": "apprentice-recruitment-start-free-06_02_25",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2020,%202026,%2006_02_25%20AM.png",
+      "subject": "Apprenticeship recruitment marketing banner — burned-in 'start free' composition, image itself is the CTA when tapped",
+      "keywords_strict": [
+        "apprenticeship",
+        "apprentice recruitment",
+        "start free",
+        "apply today",
+        "trade youth",
+        "become a tradesperson"
+      ],
+      "excluded_trades": [],
+      "vibe": "action / start-now / no-cost",
+      "text_zone": {
+        "primary": "burned-in",
+        "container_required": false,
+        "text_shadow_recommended": false
+      },
+      "theme_palette": {
+        "primary": "#FFB300",
+        "secondary": "#0A0A0A",
+        "surface_warm": "#FFFDF6",
+        "surface_deep": "#1F2937",
+        "accent": "#166534"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "acceptable",
+        "3:4": "not recommended"
+      },
+      "sibling_group_id": "apprenticeship-recruitment",
+      "hero_use_case": "Feeds the /apprenticeships/apply form — the image itself IS the CTA (already has 'start free' burned in). Wrap the whole image in a link to /apprenticeships/apply. Do not overlay additional text.",
+      "burned_in_text": true,
+      "worker_visible": true,
+      "recommended_use": "hero"
+    },
     {
       "id": "timber-yard-02_59_22",
       "image_url": "https://ik.imagekit.io/9mrgsv2rp/ChatGPT%20Image%20Jul%206,%202026,%2002_59_22%20AM.png",
@@ -14389,6 +15406,3204 @@
       "worker_visible": false,
       "recommended_use": "hero",
       "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plasterer-van-house-10_45_04",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_45_04%20AM.png",
+      "subject": "Plasterer working outside a residential house with a branded work van parked in view, house facade in background, mobile-plasterer local-jobs context",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "mobile plasterer",
+        "local plasterer",
+        "plastering services",
+        "domestic plasterer"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "documentary / mobile trade / real worker",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a89e91",
+        "secondary": "#5c6b7a",
+        "surface_warm": "#e8ded1",
+        "surface_deep": "#2a2f38",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "left-anchor",
+        "3:4": "van-crop"
+      },
+      "sibling_group_id": "plasterer-van-house",
+      "hero_use_case": "Hero for local/mobile plasterers who want to signal 'I come to you' — van + house in one frame builds instant trust.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plasterer-van-house-10_43_02",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_43_02%20AM.png",
+      "subject": "Plasterer + branded van + residential house background, alternative angle from van-house series, mobile plasterer positioning",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "mobile plasterer",
+        "local plasterer",
+        "plastering services",
+        "domestic plasterer"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "documentary / mobile trade / real worker",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#b0a595",
+        "secondary": "#4a5a6a",
+        "surface_warm": "#ede3d3",
+        "surface_deep": "#2f363f",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "van-anchor",
+        "3:4": "worker-crop"
+      },
+      "sibling_group_id": "plasterer-van-house",
+      "hero_use_case": "Alternate composition for local-plasterer canteens — pair with the 10_45_04 variant on split-hero.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plastering-tools-10_40_20",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_40_20%20AM.png",
+      "subject": "Plastering tools close-up — trowel + hawk + float in working context, plaster on tools",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "plastering tools",
+        "plaster trowel",
+        "skimming"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "craft / detail / tools",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a89e91",
+        "secondary": "#6b7580",
+        "surface_warm": "#f0ede8",
+        "surface_deep": "#3a3a3a",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "tool-centre",
+        "3:4": "tool-portrait"
+      },
+      "sibling_group_id": "plastering-tools-library",
+      "hero_use_case": "Craft-detail hero / section header for plasterers wanting to lead with skill signals over face-of-worker imagery.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plastering-tools-10_38_12",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_38_12%20AM.png",
+      "subject": "Plastering tools variant — hands with trowel skimming wall, detail shot",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "plastering tools",
+        "plaster trowel",
+        "skimming",
+        "wall plastering"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "craft / detail / hands-at-work",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#b0a498",
+        "secondary": "#5c6b78",
+        "surface_warm": "#ede4d5",
+        "surface_deep": "#333a42",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "hands-crop",
+        "3:4": "tool-portrait"
+      },
+      "sibling_group_id": "plastering-tools-library",
+      "hero_use_case": "Hands-at-work hero for skimming/plastering skill emphasis.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plastering-tools-10_36_02",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_36_02%20AM.png",
+      "subject": "Plastering tools + wet plaster on trowel, wall being skimmed",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "plastering tools",
+        "plaster trowel",
+        "skimming"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "craft / tool detail",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a89e91",
+        "secondary": "#4c5e6c",
+        "surface_warm": "#efe8dc",
+        "surface_deep": "#2f363f",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "trowel-centre",
+        "3:4": "tool-portrait"
+      },
+      "sibling_group_id": "plastering-tools-library",
+      "hero_use_case": "Trowel + wet plaster hero — best for canteens leading on 'clean finish' as the sell.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plastering-tools-10_34_12",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_34_12%20AM.png",
+      "subject": "Plastering tools — hawk with fresh plaster + trowel loaded ready to apply",
+      "keywords_strict": [
+        "plasterer",
+        "plastering",
+        "plastering tools",
+        "plaster hawk",
+        "plaster trowel",
+        "skimming"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "joiner",
+        "decorator",
+        "roofer",
+        "electrician"
+      ],
+      "vibe": "craft / tool detail",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#b0a598",
+        "secondary": "#5c6b78",
+        "surface_warm": "#ede4d5",
+        "surface_deep": "#333a42",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "hawk-anchor",
+        "3:4": "tool-portrait"
+      },
+      "sibling_group_id": "plastering-tools-library",
+      "hero_use_case": "Hawk + trowel loaded hero — pairs well with 10_36_02 in a rotator.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plumbing-10_31_49",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_31_49%20AM.png",
+      "subject": "Plumber at work with copper pipe + fittings, working on residential pipework",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "plumbing services",
+        "domestic plumber",
+        "copper pipework",
+        "pipe fitting"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "electrician",
+        "roofer",
+        "plasterer"
+      ],
+      "vibe": "documentary / real worker / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#b87a56",
+        "secondary": "#5a6a78",
+        "surface_warm": "#e8dfd3",
+        "surface_deep": "#2a2f38",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "hands-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "plumbing-workshop-library",
+      "hero_use_case": "Hero for domestic plumbers — copper + pipework signals traditional craft over 'boiler chain' branding.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plumbing-10_29_05",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_29_05%20AM.png",
+      "subject": "Plumber working with wrench + pipework, bathroom or kitchen install context",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "plumbing services",
+        "domestic plumber",
+        "bathroom plumbing",
+        "kitchen plumbing"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "electrician",
+        "roofer",
+        "plasterer"
+      ],
+      "vibe": "documentary / real worker / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a97b5c",
+        "secondary": "#5c6a78",
+        "surface_warm": "#e8dfd3",
+        "surface_deep": "#2f363f",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "wrench-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "plumbing-workshop-library",
+      "hero_use_case": "Bathroom/kitchen plumbing hero — pair with 10_31_49 for rotator.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plumbing-10_28_00",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_28_00%20AM.png",
+      "subject": "Plumber close-up on pipework detail, tool work in progress",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "plumbing services",
+        "copper pipework",
+        "pipe fitting"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "electrician",
+        "roofer",
+        "plasterer"
+      ],
+      "vibe": "detail / tool close-up",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#b8825e",
+        "secondary": "#4c5e6c",
+        "surface_warm": "#ede3d3",
+        "surface_deep": "#2f363f",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "detail-centre",
+        "3:4": "pipe-portrait"
+      },
+      "sibling_group_id": "plumbing-workshop-library",
+      "hero_use_case": "Detail hero for plumbers who prefer craft close-up over face-of-worker.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "plumbing-10_26_37",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_26_37%20AM.png",
+      "subject": "Plumber on job site with tool bag + pipework in view",
+      "keywords_strict": [
+        "plumber",
+        "plumbing",
+        "plumbing services",
+        "domestic plumber"
+      ],
+      "excluded_trades": [
+        "carpenter",
+        "electrician",
+        "roofer",
+        "plasterer"
+      ],
+      "vibe": "documentary / real worker",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a97b5c",
+        "secondary": "#5c6a78",
+        "surface_warm": "#e8dfd3",
+        "surface_deep": "#2a2f38",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "worker-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "plumbing-workshop-library",
+      "hero_use_case": "On-site plumber hero — tool bag adds 'called out to your job' framing.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "staircase-showroom-10_23_17",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_23_17%20AM.png",
+      "subject": "Staircase showroom / finished stair install, warm timber tones",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "wooden staircase",
+        "bespoke staircase"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "loft ladders"
+      ],
+      "vibe": "premium / warm / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a267",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "centre-crop",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-showroom-library",
+      "hero_use_case": "Hero for staircase installers + manufacturers — warm timber signals premium bespoke work.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "wood-turning-10_20_53",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_20_53%20AM.png",
+      "subject": "Wood turning craftsperson at lathe, wood shavings visible, workshop light",
+      "keywords_strict": [
+        "wood turner",
+        "wood turning",
+        "turned staircase parts",
+        "bespoke wood turning",
+        "spindle turning"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer"
+      ],
+      "vibe": "craft / workshop / traditional",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "lathe-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "wood-turning",
+      "hero_use_case": "Wood-turning workshop hero — real craft over stock imagery.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "wood-turning-10_18_14",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_18_14%20AM.png",
+      "subject": "Wood turning detail — spindle in progress on lathe, chisel work",
+      "keywords_strict": [
+        "wood turner",
+        "wood turning",
+        "turned staircase parts",
+        "spindle turning"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer"
+      ],
+      "vibe": "craft / detail / traditional",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#efdcbc",
+        "surface_deep": "#2f2418",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "spindle-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "wood-turning",
+      "hero_use_case": "Detail hero for spindle-turning specialists.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "wood-turning-10_13_35",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_13_35%20AM.png",
+      "subject": "Finished turned wooden pieces — spindles / newel posts / balusters displayed",
+      "keywords_strict": [
+        "wood turner",
+        "wood turning",
+        "turned staircase parts",
+        "newel posts",
+        "balusters",
+        "spindles"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer"
+      ],
+      "vibe": "craft / product / traditional",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#d1a870",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f0dfc0",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "product-centre",
+        "3:4": "product-portrait"
+      },
+      "sibling_group_id": "wood-turning",
+      "hero_use_case": "Product-heavy hero — best for wood-turning suppliers surfacing SKU depth.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_10_05",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_10_05%20AM.png",
+      "subject": "Carpenter at workbench with wood + hand tools, workshop context",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "wood workshop"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / workshop / bespoke",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "worker-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Workshop hero for carpenters/joiners — real craft imagery.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_08_39",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_08_39%20AM.png",
+      "subject": "Carpenter hands-on-tools detail, planing / sawing / chiselling",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "hand tools"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / detail / hands-at-work",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "hands-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Hands-at-work carpenter hero — skill signal.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_06_13",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_06_13%20AM.png",
+      "subject": "Carpenter workshop wide shot — bench, hand tools, wood in progress",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "wood workshop"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / workshop / bespoke",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "bench-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Wide workshop hero — carpenter canteen landing.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_05_46",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_05_46%20AM.png",
+      "subject": "Carpenter fine joinery detail — dovetail / mortice / bespoke joint in progress",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "fine joinery",
+        "hand tools"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / detail / fine joinery",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "joint-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Fine-joinery hero — bespoke carpenters targeting high-spec kitchens/furniture.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_05_17",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_05_17%20AM.png",
+      "subject": "Carpenter workshop atmosphere — wood shavings on bench, ambient workshop light",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "wood workshop"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / atmosphere / traditional",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#efdcbc",
+        "surface_deep": "#2f2418",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "bench-anchor",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Atmospheric workshop hero — carpenter canteens leading on 'here's where the work happens'.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-08_32_36",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2008_32_36%20AM.png",
+      "subject": "Carpenter at work — tools + wood + workshop context, alternate composition",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "bespoke joinery",
+        "wood workshop"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / workshop / traditional",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "centre-crop",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Alternate carpenter workshop hero — rotate with 10_10_05 / 10_06_13.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-10_04_09",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2010_04_09%20AM.png",
+      "subject": "Carpenter tool close-up — chisel / plane / saw detail on wood",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "hand tools",
+        "bespoke joinery"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / tool detail",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "tool-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Tool close-up hero — skill signal.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "carpenter-07_48_05",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2007_48_05%20AM.png",
+      "subject": "Carpenter early-shift atmosphere — natural light workshop / bench setup",
+      "keywords_strict": [
+        "carpenter",
+        "joiner",
+        "wood workshop",
+        "bespoke joinery"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "roofer",
+        "plumber"
+      ],
+      "vibe": "craft / atmosphere / natural light",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#efdcbc",
+        "surface_deep": "#2f2418",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "bench-anchor",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "carpenter-workshop-library",
+      "hero_use_case": "Natural-light carpenter workshop — softer feel for artisan positioning.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_20_04",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_20_04%20AM.png",
+      "subject": "Demolition site — controlled strip-out / machine breaker at work, dust and rubble in frame",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "strip out",
+        "controlled demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / heavy / site-work",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a7060",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "machine-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Hero for demolition contractors — machine + dust signals scale of work.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_19_05",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_19_05%20AM.png",
+      "subject": "Demolition site alternate angle — site clearance / rubble / heavy machinery",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "strip out",
+        "controlled demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / heavy / site-work",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a6f5e",
+        "secondary": "#3f3830",
+        "surface_warm": "#cbc0ae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "site-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Alternate demolition hero — rotate with 11_20_04 on split-hero setups.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_22_36",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_22_36%20AM.png",
+      "subject": "Demolition site — breaker attachment mid-strike / structural takedown in progress",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "strip out",
+        "controlled demolition",
+        "structural demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / heavy / action",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a6f5e",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "action-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Action demolition hero — breaker mid-strike signals real work over stock imagery.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_23_21",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_23_21%20AM.png",
+      "subject": "Demolition site — rubble field / post-strike clearance context",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "strip out",
+        "controlled demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / aftermath / site-work",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a7060",
+        "secondary": "#3f3830",
+        "surface_warm": "#cbc0ae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "rubble-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Clearance / aftermath hero — best for site-clearance contractors leading with 'we leave it ready'.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_24_09",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_24_09%20AM.png",
+      "subject": "Demolition site — machinery wide shot with partial structure standing",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "structural demolition",
+        "controlled demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / heavy / scale",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a6f5e",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "machine-anchor",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Scale hero — machinery + partial structure signals capability for large jobs.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "demolition-11_25_13",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_25_13%20AM.png",
+      "subject": "Demolition site — close-up on machine arm / attachment detail",
+      "keywords_strict": [
+        "demolition",
+        "demolition contractor",
+        "site clearance",
+        "controlled demolition"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / detail / machinery",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a7060",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "detail-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "demolition-library",
+      "hero_use_case": "Machinery-detail hero — technical trust signal for demolition specialists.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "steel-fixing-11_28_39",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_28_39%20AM.png",
+      "subject": "Steel fixing — rebar reinforcement mat, tying wire + hook, groundwork prep in progress",
+      "keywords_strict": [
+        "steel fixer",
+        "steel fixing",
+        "rebar",
+        "rebar tying",
+        "reinforcement",
+        "groundworker",
+        "reinforced concrete"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / groundwork / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a6f5e",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "rebar-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "steel-fixing-library",
+      "hero_use_case": "Hero for steel fixers + groundworkers — rebar mat + tying signals technical trust.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "steel-fixing-11_29_39",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_29_39%20AM.png",
+      "subject": "Steel fixing alternate angle — rebar grid + hook detail, pre-pour context",
+      "keywords_strict": [
+        "steel fixer",
+        "steel fixing",
+        "rebar",
+        "rebar tying",
+        "reinforcement",
+        "groundworker",
+        "reinforced concrete"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / detail / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a7060",
+        "secondary": "#3f3830",
+        "surface_warm": "#cbc0ae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "grid-anchor",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "steel-fixing-library",
+      "hero_use_case": "Alternate steel-fixing hero — rotate with 11_28_39 on split-hero setups.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "steel-fixing-11_31_19",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_31_19%20AM.png",
+      "subject": "Steel fixing — rebar cage detail / vertical bars tied for column or wall pour",
+      "keywords_strict": [
+        "steel fixer",
+        "steel fixing",
+        "rebar",
+        "rebar cage",
+        "reinforcement",
+        "groundworker",
+        "reinforced concrete"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / structural / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a6f5e",
+        "secondary": "#3a3530",
+        "surface_warm": "#c9bfae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "cage-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "steel-fixing-library",
+      "hero_use_case": "Rebar cage hero — best for steel fixers signalling column/wall pour work.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "steel-fixing-11_31_59",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_31_59%20AM.png",
+      "subject": "Steel fixing — wider site shot with rebar layout across slab footprint pre-pour",
+      "keywords_strict": [
+        "steel fixer",
+        "steel fixing",
+        "rebar",
+        "reinforcement",
+        "groundworker",
+        "reinforced concrete",
+        "slab reinforcement"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator"
+      ],
+      "vibe": "raw / scale / site-work",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7a7060",
+        "secondary": "#3f3830",
+        "surface_warm": "#cbc0ae",
+        "surface_deep": "#1e1c19",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "site-anchor",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "steel-fixing-library",
+      "hero_use_case": "Wide-site steel-fixing hero — slab reinforcement signals capability for foundation-scale work.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-manufacture-11_36_16",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_36_16%20AM.png",
+      "subject": "Window manufacture — factory production line / frame assembly context",
+      "keywords_strict": [
+        "window manufacturer",
+        "window manufacture",
+        "window factory",
+        "window supplier",
+        "upvc windows",
+        "double glazing manufacturer",
+        "glazing"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "industrial / production / trust",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2a3038",
+        "surface_warm": "#dcdcd8",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "factory-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Manufacture hero — factory shot signals 'we make it here' for window suppliers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-manufacture-11_36_45",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_36_45%20AM.png",
+      "subject": "Window manufacture alternate angle — frame assembly / production detail",
+      "keywords_strict": [
+        "window manufacturer",
+        "window manufacture",
+        "window factory",
+        "window supplier",
+        "upvc windows",
+        "double glazing manufacturer",
+        "glazing"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "industrial / production / detail",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2f3540",
+        "surface_warm": "#dcdcd8",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "assembly-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Alternate manufacture hero — rotate with 11_36_16 for window supplier canteens.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-delivery-11_37_10",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_37_10%20AM.png",
+      "subject": "Window delivery — loaded van / crated frames being moved to site",
+      "keywords_strict": [
+        "window delivery",
+        "window supplier",
+        "window manufacturer",
+        "glazing supplier",
+        "upvc windows",
+        "trade delivery",
+        "glazing"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "logistics / delivery / trust",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2a3038",
+        "surface_warm": "#dcdcd8",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "van-anchor",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Delivery hero — van + crated frames signals 'we bring it to you' for window suppliers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-delivery-11_37_35",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_37_35%20AM.png",
+      "subject": "Window delivery alternate angle — crated frames on site / offload context",
+      "keywords_strict": [
+        "window delivery",
+        "window supplier",
+        "window manufacturer",
+        "glazing supplier",
+        "upvc windows",
+        "trade delivery",
+        "glazing"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "logistics / on-site / delivery",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2f3540",
+        "surface_warm": "#dcdcd8",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "offload-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Alternate delivery hero — pair with 11_37_10 on split-hero for supply-chain storytelling.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-installation-11_41_13",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_41_13%20AM.png",
+      "subject": "Window installation — glazier fitting a new window frame into a residential opening",
+      "keywords_strict": [
+        "window installer",
+        "window fitter",
+        "window installation",
+        "glazier",
+        "glazing",
+        "double glazing installer",
+        "upvc windows"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "documentary / on-site / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2a3038",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "worker-centre",
+        "3:4": "worker-portrait"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Installation hero for glaziers / window fitters — real fitter on-site beats stock manufacturer imagery.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "window-installation-11_41_57",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_41_57%20AM.png",
+      "subject": "Window installation alternate angle — glazier detail work on frame / sealing",
+      "keywords_strict": [
+        "window installer",
+        "window fitter",
+        "window installation",
+        "glazier",
+        "glazing",
+        "double glazing installer",
+        "upvc windows"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "documentary / detail / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#6b7580",
+        "secondary": "#2f3540",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "detail-centre",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "window-supply-chain",
+      "hero_use_case": "Detail installation hero — sealing / trim work signals craft for window installers.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-11_55_15",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_55_15%20AM.png",
+      "subject": "Residential entrance gate installed at driveway — house facade in background, finished front-gate context",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "front gates",
+        "automatic gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / residential / finished",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c6b7a",
+        "secondary": "#2a3038",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Hero for entrance-gate installers — finished driveway shot signals real completed work.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-11_55_41",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_55_41%20AM.png",
+      "subject": "Entrance gate at residential house — alternate angle showing gate + pillar + house entrance",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "front gates",
+        "automatic gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / residential / finished",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c6b7a",
+        "secondary": "#2f3540",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-anchor",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Alternate driveway-gate hero — rotate with 11_55_15 for gate installer canteens.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-11_56_07",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_56_07%20AM.png",
+      "subject": "Entrance gate installed at house — wider composition with landscape context",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "front gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / residential / landscape",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c6b7a",
+        "secondary": "#2a3038",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "landscape-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Wide-context entrance-gate hero — pairs well as split-hero backdrop for gate + landscape trades.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-11_57_54",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_57_54%20AM.png",
+      "subject": "Entrance gate at house — closer detail on gate design + finish",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "wrought iron gates",
+        "wooden gates",
+        "metal gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / detail / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c6b7a",
+        "secondary": "#2f3540",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-detail",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Detail hero — gate design + finish signals bespoke craft for gate manufacturers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-11_58_23",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2011_58_23%20AM.png",
+      "subject": "Entrance gate at house — additional finished-install variant",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "front gates",
+        "automatic gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / residential / finished",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c6b7a",
+        "secondary": "#2a3038",
+        "surface_warm": "#e0dcd0",
+        "surface_deep": "#1a1e22",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Additional entrance-gate hero — 5-variant rotator for gate installer canteens.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-wooden-12_11_58",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_11_58%20PM.png",
+      "subject": "Wooden entrance gate at residential house — timber craftsmanship on front driveway",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "wooden gates",
+        "timber gates",
+        "bespoke wooden gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / warm / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Wooden entrance-gate hero — warm timber tones signal bespoke joinery for gate makers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-wooden-12_12_38",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_12_38%20PM.png",
+      "subject": "Wooden entrance gate variant — alternate design showing timber grain + hardware detail",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "wooden gates",
+        "timber gates",
+        "bespoke wooden gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / warm / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#efdcbc",
+        "surface_deep": "#2f2418",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-anchor",
+        "3:4": "detail-portrait"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Alternate wooden entrance-gate hero — timber grain + hardware detail for bespoke gate makers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-wooden-12_15_07",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_15_07%20PM.png",
+      "subject": "Wooden entrance gate variant — wider landscape context with driveway",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "wooden gates",
+        "timber gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / warm / landscape",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e8dcc2",
+        "surface_deep": "#2a1f14",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "landscape-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Wide-context wooden entrance-gate hero — pairs well as split-hero for gate + landscape trades.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "entrance-gate-wooden-12_15_42",
+      "image_url": "https://ik.imagekit.io/9huhxxvtr/ChatGPT%20Image%20Jul%2019,%202026,%2012_15_42%20PM.png",
+      "subject": "Wooden entrance gate variant — finished-install detail with house facade beyond",
+      "keywords_strict": [
+        "gate installer",
+        "gate fitter",
+        "entrance gates",
+        "driveway gates",
+        "house gates",
+        "wooden gates",
+        "timber gates",
+        "bespoke wooden gates"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer"
+      ],
+      "vibe": "premium / warm / finished",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9a670",
+        "secondary": "#5c3d24",
+        "surface_warm": "#efdcbc",
+        "surface_deep": "#2f2418",
+        "accent": "#7d8f4e"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "gate-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "entrance-gates-house",
+      "hero_use_case": "Finished-install wooden entrance-gate hero — house facade context adds trust for gate installers.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-19"
+    },
+    {
+      "id": "concrete-finisher-industrial-power-float",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-industrial-power-float.png",
+      "subject": "Concrete finisher power-floating a large polished industrial floor — hi-vis worker with ride-on / walk-behind trowel machine in a factory / warehouse",
+      "keywords_strict": [
+        "concrete finisher",
+        "concrete finishing",
+        "power float",
+        "power trowel",
+        "polished concrete floor",
+        "industrial concrete floor",
+        "warehouse floor",
+        "factory floor",
+        "commercial slab",
+        "concrete specialist"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer",
+        "bricklayer"
+      ],
+      "vibe": "industrial / scale / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7d8189",
+        "secondary": "#2f3238",
+        "surface_warm": "#c9cdd3",
+        "surface_deep": "#1a1d21",
+        "accent": "#ffcc33"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "worker-right",
+        "3:4": "worker-anchor"
+      },
+      "sibling_group_id": "concrete-finisher-canteen-hero",
+      "hero_use_case": "Industrial-scale concrete finisher hero — signals commercial-slab + warehouse-floor capability. Best fit for finishers who take on factory / warehouse / retail-park work alongside domestic. Yellow hi-vis + machine scale = trust cue.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "concrete-finisher-driveway-trowel-closeup",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-driveway-trowel-closeup.png",
+      "subject": "Concrete finisher hand-floating a domestic driveway with a steel trowel — close-up, single worker kneeling, modern house entrance visible behind",
+      "keywords_strict": [
+        "concrete finisher",
+        "concrete finishing",
+        "concrete trowel",
+        "hand float",
+        "driveway",
+        "concrete driveway",
+        "domestic driveway",
+        "driveway installer",
+        "concrete specialist"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer",
+        "bricklayer"
+      ],
+      "vibe": "craft / residential / hands-on",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a857d",
+        "secondary": "#3a3630",
+        "surface_warm": "#d6cfc3",
+        "surface_deep": "#1c1a17",
+        "accent": "#6b7a4c"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "worker-left",
+        "3:4": "trowel-anchor"
+      },
+      "sibling_group_id": "concrete-finisher-canteen-hero",
+      "hero_use_case": "Domestic driveway hero — close-up craft shot with modern residential context. Best fit for finishers + driveway-installers who focus on domestic frontage jobs. Reads as approachable + skilled.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "concrete-finisher-team-modern-patio",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-team-modern-patio.png",
+      "subject": "Two concrete finishers hand-finishing a large domestic patio slab at a modern architect-designed house with floor-to-ceiling glazing",
+      "keywords_strict": [
+        "concrete finisher",
+        "concrete finishing",
+        "concrete patio",
+        "domestic patio",
+        "patio slab",
+        "hand float",
+        "concrete team",
+        "driveway installer",
+        "concrete specialist",
+        "concrete contractor"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer",
+        "bricklayer"
+      ],
+      "vibe": "premium / architectural / team",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#7d7770",
+        "secondary": "#2f2b26",
+        "surface_warm": "#c9c1b3",
+        "surface_deep": "#1a1815",
+        "accent": "#5a8a54"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "foreground-worker",
+        "3:4": "worker-right-anchor"
+      },
+      "sibling_group_id": "concrete-finisher-canteen-hero",
+      "hero_use_case": "Premium-residential team hero — architect-designed house context signals high-end domestic work. Best fit for finishers + concrete contractors who target the premium extension / new-build patio market.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "concrete-finisher-team-pathway-sunset",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/concrete-finisher-team-pathway-sunset.png",
+      "subject": "Team of concrete finishers hand-floating a long domestic pathway at golden hour, brick house behind — sunset warm-tone lighting",
+      "keywords_strict": [
+        "concrete finisher",
+        "concrete finishing",
+        "concrete pathway",
+        "concrete path",
+        "concrete walkway",
+        "domestic path",
+        "hand float",
+        "concrete team",
+        "concrete specialist",
+        "concrete contractor",
+        "groundworker"
+      ],
+      "excluded_trades": [
+        "plasterer",
+        "carpenter",
+        "joiner",
+        "electrician",
+        "plumber",
+        "decorator",
+        "roofer",
+        "bricklayer"
+      ],
+      "vibe": "warm / craft / long-format / team",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": false,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#e6c69a",
+        "surface_deep": "#2b1e15",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "foreground-worker",
+        "3:4": "worker-right-anchor"
+      },
+      "sibling_group_id": "concrete-finisher-canteen-hero",
+      "hero_use_case": "Warm sunset pathway hero — team + long-format work reads as capable of larger residential jobs. Golden-hour palette (warm honey) shifts brand tone toward premium + trustworthy. Best fit for landscape-adjacent concrete finishers + groundworkers.",
+      "burned_in_text": false,
+      "worker_visible": true,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "faux-plaster-stone-cream-cottage",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-cream-cottage.png",
+      "subject": "Real finished house frontage with cream ashlar stone-effect render — carved joints, warm honey tones, lantern lights, cottage aesthetic",
+      "keywords_strict": [
+        "decorative rendering",
+        "stone-effect render",
+        "ashlar render",
+        "faux stone render",
+        "carved render",
+        "cream stone finish",
+        "renderer portfolio",
+        "plasterer portfolio",
+        "external render finish"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "carpenter",
+        "joiner",
+        "decorator",
+        "bricklayer"
+      ],
+      "vibe": "premium / craft / traditional",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#d4bd8f",
+        "secondary": "#8a7148",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2a231a",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "facade-centre",
+        "3:4": "door-anchor"
+      },
+      "sibling_group_id": "decorative-render-finished-portfolio",
+      "hero_use_case": "Portfolio-quality hero for renderer / decorative-render specialist canteens — REAL completed job (not AI). Shows carved ashlar detail + full-facade context. Warm honey palette lifts brand tone toward premium heritage.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "faux-plaster-stone-white-modern",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-white-modern.png",
+      "subject": "Real finished house corner with white organic stone-effect render — irregular rustic pattern, modern black roof, extension context",
+      "keywords_strict": [
+        "decorative rendering",
+        "stone-effect render",
+        "faux stone render",
+        "white stone finish",
+        "rustic render",
+        "organic stone pattern",
+        "renderer portfolio",
+        "modern extension render",
+        "external render finish"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "carpenter",
+        "joiner",
+        "decorator",
+        "bricklayer"
+      ],
+      "vibe": "modern / clean / craft",
+      "text_zone": {
+        "primary": "top-right",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#e8e4de",
+        "secondary": "#8a8680",
+        "surface_warm": "#f2eee7",
+        "surface_deep": "#1c1a17",
+        "accent": "#3a3630"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "corner-centre",
+        "3:4": "wall-anchor"
+      },
+      "sibling_group_id": "decorative-render-finished-portfolio",
+      "hero_use_case": "Modern-aesthetic hero for renderer canteens serving contemporary extension market. REAL completed job. Neutral white palette makes it easy to apply merchant brand accent overlay.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "faux-plaster-stone-brown-multi-tone",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/networkers-tv-thumbnails/faux-plaster-stone-brown-multi-tone.png",
+      "subject": "Real finished bungalow with multi-tone brown + tan + grey natural stone-effect render, window and door surrounds detailed",
+      "keywords_strict": [
+        "decorative rendering",
+        "stone-effect render",
+        "ashlar render",
+        "faux stone render",
+        "natural stone finish",
+        "multi-tone render",
+        "cottage render",
+        "renderer portfolio",
+        "external render finish",
+        "window surrounds"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "carpenter",
+        "joiner",
+        "decorator",
+        "bricklayer"
+      ],
+      "vibe": "traditional / craft / warm",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#a68a6a",
+        "secondary": "#5c4530",
+        "surface_warm": "#d6c4a8",
+        "surface_deep": "#2b1e15",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "corner-centre",
+        "3:4": "windows-anchor"
+      },
+      "sibling_group_id": "decorative-render-finished-portfolio",
+      "hero_use_case": "Multi-tone natural-stone hero — highest realism of the 3. Best fit for renderer canteens targeting the heritage / cottage / countryside client. Signals attention to detail (surrounds + coursing).",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-spiral-curved-walnut-modern",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-spiral-curved-walnut-modern.png",
+      "subject": "Curved / spiral walnut staircase with black metal balustrade in a bright modern hallway",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "premium / architectural / bespoke",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#3a2a1c",
+        "surface_warm": "#f2ede4",
+        "surface_deep": "#1a1611",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Statement spiral / curved-stair hero — best fit for bespoke staircase manufacturers who take on modern architect-designed projects. Walnut palette + curved sweep signals top-end capability.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-modern-hallway",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-modern-hallway.png",
+      "subject": "Oak straight-flight staircase with matt-black balustrade in a bright modern hallway",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "modern / clean / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2b1e15",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Clean modern oak straight-flight hero — versatile default for most staircase installer canteens. Bright neutral palette accepts merchant brand accent overlays.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-glass-balustrade-modern",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-glass-balustrade-modern.png",
+      "subject": "Modern floating staircase with full-height glass balustrade in a hallway with polished floor",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "premium / clean / architectural",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c9c1b3",
+        "secondary": "#4a4238",
+        "surface_warm": "#efe9dd",
+        "surface_deep": "#1c1815",
+        "accent": "#b8a68a"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Glass-balustrade hero — best for staircase installers targeting the premium new-build market. Frameless glass reads as luxury + engineering competence.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-walnut-under-stair-storage",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-under-stair-storage.png",
+      "subject": "Walnut staircase with integrated under-stair storage and drawers in a family home hallway",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "warm / family / bespoke joinery",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#3a2a1c",
+        "surface_warm": "#e2d5be",
+        "surface_deep": "#1a1611",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Under-stair storage hero — best for staircase manufacturers who bundle joinery + storage design. Signals problem-solving + bespoke value.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-white-riser-cottage",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-white-riser-cottage.png",
+      "subject": "Traditional oak treads with white-painted risers in a period cottage hallway",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "traditional / heritage / warm",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2b1e15",
+        "accent": "#8a7148"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Cottage / period-property hero — best fit for staircase installers in heritage areas. Contrast riser/tread reads as attention to traditional detail.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-walnut-floating-modern",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-floating-modern.png",
+      "subject": "Modern floating walnut staircase with hidden stringers and slim metal balustrade",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "modern / minimal / bespoke",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#2a1e15",
+        "surface_warm": "#efe9dd",
+        "surface_deep": "#1a1611",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Floating-stair hero — best for staircase manufacturers who engineer floating cantilever systems. Signals structural engineering + design partnership.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-led-underlit-hallway",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-led-underlit-hallway.png",
+      "subject": "Oak staircase with warm LED underlighting cast onto herringbone floor at night",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "warm / evening / premium",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#3a2a1c",
+        "surface_warm": "#e2c69a",
+        "surface_deep": "#1a1611",
+        "accent": "#ffb35c"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "LED-lit warmth hero — best fit for staircase installers who bundle lighting integration. Night mood signals premium finish + electrical coordination.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-cantilever-glass-walnut",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-cantilever-glass-walnut.png",
+      "subject": "Cantilever walnut staircase with frameless glass balustrade in a double-height atrium",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "premium / architectural / dramatic",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#2a1e15",
+        "surface_warm": "#efe9dd",
+        "surface_deep": "#1a1611",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Cantilever + glass hero — best for the top-tier staircase manufacturers only. Signals bespoke engineering + high-end architectural collaboration.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-solid-oak-traditional",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-solid-oak-traditional.png",
+      "subject": "Solid oak traditional staircase with turned newel post and painted spindles in a period home",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "traditional / heritage / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2b1e15",
+        "accent": "#8a7148"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Traditional turned-newel hero — best fit for staircase manufacturers serving period + listed-building market. Turned spindles + newel = craft heritage.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-walnut-glass-panelled",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-glass-panelled.png",
+      "subject": "Walnut staircase with panelled glass balustrade in an open-plan modern home",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "modern / spacious / premium",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#3a2a1c",
+        "surface_warm": "#efe9dd",
+        "surface_deep": "#1a1611",
+        "accent": "#b8a68a"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Open-plan glass-panelled hero — versatile modern-home fit. Wide aspect suits landscape hero slots on canteens with big banner space.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-open-riser-atrium",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-open-riser-atrium.png",
+      "subject": "Open-riser oak staircase in a double-height glazed atrium with garden view",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "modern / bright / architectural",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#4a3628",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2b1e15",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Bright open-riser hero — best for staircase installers on new-build architect-designed projects. Garden view signals lifestyle + spec quality.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-walnut-cantilever-lit",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-cantilever-lit.png",
+      "subject": "Cantilevered walnut treads with LED underlighting on each step, glass balustrade",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "premium / dramatic / craft",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#8a6a4a",
+        "secondary": "#2a1e15",
+        "surface_warm": "#e2c69a",
+        "surface_deep": "#1a1611",
+        "accent": "#ffb35c"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Illuminated cantilever hero — highest visual drama in the set. Best reserved for top-tier bespoke staircase manufacturer canteens.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-walnut-glass-tread-lit",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-walnut-glass-tread-lit.png",
+      "subject": "Walnut staircase with glass balustrade and tread-edge LED lighting, dark wood cabinetry",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "moody / premium / evening",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#5c4530",
+        "secondary": "#1c1610",
+        "surface_warm": "#8a6a4a",
+        "surface_deep": "#0d0a06",
+        "accent": "#ffb35c"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Dark-mood premium hero — best for staircase installers with a modern-luxury brand tone. Complements dark-palette canteen themes.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-white-spindle-classic",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-white-spindle-classic.png",
+      "subject": "Classic oak straight-flight staircase with white-painted spindles and skirting in a bright modern hallway",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "clean / classic / bright",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f4ede0",
+        "surface_deep": "#1c1815",
+        "accent": "#8a7148"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Universal-fit hero — clean oak treads + white spindles works for 90% of UK domestic staircase installers. Bright neutral palette accepts merchant brand accent overlays cleanly.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-plan-drawing-to-photo-split",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-plan-drawing-to-photo-split.png",
+      "subject": "Split image showing an architectural plan drawing (left) morphing into the finished top-down photo of a dogleg oak staircase (right) — design + realisation",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "designed / architectural / process",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#3a2a1c",
+        "surface_warm": "#f4ede0",
+        "surface_deep": "#1c1815",
+        "accent": "#4a4238"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Design-to-build split hero — best fit for staircase manufacturers who offer full design + fabrication service. Signals CAD + engineered process. Great for landing-page banners.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
+    },
+    {
+      "id": "staircase-oak-warm-modern-hallway",
+      "image_url": "https://msdonkkechxzgagyguoe.supabase.co/storage/v1/object/public/product-images/heroes/staircase-oak-warm-modern-hallway.png",
+      "subject": "Warm honey-oak straight-flight staircase in a bright modern hallway with matching oak floor + door",
+      "keywords_strict": [
+        "staircase",
+        "staircase installer",
+        "staircase manufacturer",
+        "bespoke staircase",
+        "hardwood staircase",
+        "interior staircase",
+        "staircase installer",
+        "carpenter",
+        "joiner"
+      ],
+      "excluded_trades": [
+        "electrician",
+        "plumber",
+        "roofer",
+        "decorator",
+        "bricklayer",
+        "plasterer",
+        "renderer"
+      ],
+      "vibe": "warm / modern / cohesive",
+      "text_zone": {
+        "primary": "top-left",
+        "container_required": true,
+        "text_shadow_recommended": true
+      },
+      "theme_palette": {
+        "primary": "#c69a5b",
+        "secondary": "#5c3d24",
+        "surface_warm": "#f0e2c5",
+        "surface_deep": "#2b1e15",
+        "accent": "#c9a670"
+      },
+      "aspect_variants": {
+        "16:9": "native",
+        "1:1": "stair-centre",
+        "3:4": "portrait-anchor"
+      },
+      "sibling_group_id": "staircase-premium-interior-finished",
+      "hero_use_case": "Warm-modern hero — great for staircase manufacturers who bundle stair + floor + door in one commission. Cohesive oak throughout reads as full-service joiner + stair fitter.",
+      "burned_in_text": false,
+      "worker_visible": false,
+      "recommended_use": "hero",
+      "$posted_by": "Philip 2026-07-20"
     }
   ]
 }

@@ -86,7 +86,7 @@ export default function JoinHomeownerPage() {
             imageUrl={STEP_IMAGES.save}
             icon={<Heart className="h-4 w-4" aria-hidden />}
             title="Save what you like"
-            body="Every kitchen, extension, and finished floor on Site Interest — tap the heart to pin it to your Site Board."
+            body="Every kitchen, extension, and finished floor on The Site — tap the heart to pin it to your Site Board."
           />
           <FlowStep
             n="02"

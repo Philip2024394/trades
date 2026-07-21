@@ -13,7 +13,9 @@
 import { NextResponse } from "next/server";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { createPost } from "@/lib/homeowners/posts";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import type { PostKind, PostVisibility } from "@/lib/homeowners/types";
+import { trackLiquidity } from "@/lib/analytics/track";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -47,5 +49,27 @@ export async function POST(req: Request) {
   });
 
   if (!res.ok) return NextResponse.json({ ok: false, error: res.error }, { status: 400 });
+
+  // Liquidity Engine · demand_created
+  // Enrich with city for Coverage Map + city-slice dashboards.
+  const projRes = await supabaseAdmin
+    .from("hammerex_sitebook_projects")
+    .select("address_city")
+    .eq("id", body.projectId)
+    .maybeSingle();
+  const city = (projRes.data as { address_city: string | null } | null)?.address_city ?? homeowner.city ?? null;
+  void trackLiquidity({
+    slug:           "sitebook.post_created",
+    product:        "sitebook",
+    lifecycleStage: "demand_created",
+    actorKind:      "homeowner",
+    actorId:        homeowner.id,
+    actorDisplay:   homeowner.first_name || "Homeowner",
+    targetKind:     "sitebook_post",
+    targetId:       res.post.id,
+    city,
+    metadata:       { visibility: body.visibility ?? "all-trades", kind: body.kind ?? "update" }
+  });
+
   return NextResponse.json({ ok: true, postId: res.post.id });
 }

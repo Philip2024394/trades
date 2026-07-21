@@ -21,10 +21,12 @@ import {
   Package,
   Clock,
   Sparkles,
-  Info
+  Info,
+  Plus
 } from "lucide-react";
 import type { SideLanePost } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
+import { CounterComposerModal } from "@/components/xrated/yard/CounterComposerModal";
 
 // Banner assets — transparent-bg PNGs pinned to the top-right of the
 // card image. Make-me-offer is the seller's invitation; Sold replaces
@@ -60,7 +62,8 @@ function kindMeta(kind: SideLanePost["kind"]) {
 export function CanteenSideLane({
   posts,
   onOpenPost,
-  onKnowTheFlow: _onKnowTheFlow
+  onKnowTheFlow: _onKnowTheFlow,
+  isHost = false
 }: {
   posts: SideLanePost[];
   /** Fires when a live card is clicked. The parent is responsible for
@@ -70,9 +73,14 @@ export function CanteenSideLane({
   /** Fires when the "Know The Flow?" chip is clicked. Parent replaces
    *  the main canteen feed with the in-place explainer. */
   onKnowTheFlow: () => void;
+  /** When true, renders the owner-only "+ Post" pill on the header
+   *  line. Opens the CounterComposerModal (same composer as /counter
+   *  and the SideStrip primer). Silent for visitors. */
+  isHost?: boolean;
 }) {
   const listRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
+  const [composerOpen, setComposerOpen] = useState(false);
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Duplicate the list so scrollTop wrap-around loops seamlessly.
@@ -111,16 +119,35 @@ export function CanteenSideLane({
 
   return (
     <aside className="mt-6 w-full">
-      <div className="mb-2 flex items-center gap-1.5">
-        <span
-          className="h-1 w-1 animate-pulse rounded-full"
-          style={{ backgroundColor: BRAND_YELLOW }}
-          aria-hidden="true"
-        />
-        <div className="text-[8px] font-black uppercase tracking-[0.22em] text-neutral-500">
-          Live listings
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <div className="inline-flex items-center gap-1.5">
+          <span
+            className="h-1 w-1 animate-pulse rounded-full"
+            style={{ backgroundColor: BRAND_YELLOW }}
+            aria-hidden="true"
+          />
+          <div className="text-[8px] font-black uppercase tracking-[0.22em] text-neutral-500">
+            Live listings
+          </div>
         </div>
+        {isHost && (
+          <button
+            type="button"
+            onClick={() => setComposerOpen(true)}
+            className="inline-flex h-6 items-center gap-0.5 rounded-full px-2 text-[9.5px] font-black uppercase tracking-wider shadow-sm transition active:scale-[0.97]"
+            style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+            title="Post to The Counter"
+          >
+            <Plus size={10} strokeWidth={2.6}/>
+            Post
+          </button>
+        )}
       </div>
+      <CounterComposerModal
+        open={composerOpen}
+        onClose={() => setComposerOpen(false)}
+        onPosted={() => { window.location.reload(); }}
+      />
 
       {posts.length === 0 ? (
         <div

@@ -20,11 +20,13 @@ import { CategoryPageBody } from "@/apps/tradecenter/components/CategoryPageBody
 import { BlockedFeatureToast } from "@/apps/tradecenter/components/BlockedFeatureToast";
 import { DiyWelcomeBanner } from "@/apps/tradecenter/components/DiyWelcomeBanner";
 import { FreshSignupWelcome } from "@/apps/tradecenter/components/FreshSignupWelcome";
+import { TradeCenterViewTabs } from "@/apps/tradecenter/components/TradeCenterViewTabs";
 import { ViewScopeBadge } from "@/apps/hub/components/ViewScopeBadge";
 import { PRODUCT_FIXTURES, searchProductsFixture } from "@/apps/tradecenter/data/products";
-import { browseAllProductsFromDb } from "@/lib/canteens.server";
+import { browseAllProductsFromDb, platformSideLaneFromDb } from "@/lib/canteens.server";
 import type { BrowseProductRow } from "@/lib/canteens";
 import type { TradeCenterProduct, ProductCategorySlug } from "@/apps/tradecenter/types";
+import { CounterStreamShell } from "@/app/counter/CounterStreamShell";
 
 bootstrapPlatform();
 
@@ -75,10 +77,28 @@ function adaptDbRow(row: BrowseProductRow): TradeCenterProduct {
 export default async function TradeCenterLanding({
   searchParams
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; view?: string }>;
 }) {
-  const { q } = await searchParams;
+  const { q, view } = await searchParams;
   const searching = typeof q === "string" && q.trim().length > 0;
+  const isLiveView = view === "live";
+
+  // Live view — merged Counter feed. Shares the Trade Center chrome
+  // (top nav via layout + TradeCenterHeader + view-tabs) so users get
+  // one marketplace surface with two lenses (Catalogue vs Live). This
+  // is the Facebook Marketplace / eBay / StockX standard — one nav
+  // slot for browse, tabs inside for different content shapes.
+  if (isLiveView) {
+    const posts = await platformSideLaneFromDb();
+    return (
+      <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
+        <TradeCenterHeader activeCategorySlug={null}/>
+        <TradeCenterViewTabs/>
+        <CounterStreamShell posts={posts}/>
+        <ViewScopeBadge scope="customer"/>
+      </div>
+    );
+  }
 
   // Try DB first. On empty result set, fall through to fixtures so the
   // page always renders a populated grid during cold-start.
@@ -102,6 +122,7 @@ export default async function TradeCenterLanding({
   return (
     <div className="flex min-h-screen flex-col bg-[#FBF6EC]">
       <TradeCenterHeader activeCategorySlug={null}/>
+      <TradeCenterViewTabs/>
       <BlockedFeatureToast/>
       <DiyWelcomeBanner/>
       <FreshSignupWelcome/>

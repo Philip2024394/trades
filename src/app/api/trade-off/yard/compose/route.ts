@@ -19,6 +19,7 @@ import { NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { logBeaconFired, fanoutNewPostToFollowers } from "@/lib/activity";
+import { pruneOneExamplePost } from "@/lib/canteens/seed";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -514,6 +515,10 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+
+  // Auto-decay one example post per real post published. Silent no-op
+  // once all 5 examples are consumed. Fire-and-forget.
+  void pruneOneExamplePost(listing.id);
 
   // Fan out to followers — every non-chat post kind notifies the
   // poster's audience. Chat posts are noisy; excluded on purpose.

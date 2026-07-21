@@ -81,7 +81,7 @@ export function CanteenVisitUs({
   if (!hasPremisesData && !hasCoverageData) return null;
 
   return (
-    <section className="mx-auto max-w-6xl px-3 pt-4 md:px-6 md:pt-6">
+    <section className="mx-auto max-w-[1400px] px-3 pt-4 md:px-6 md:pt-6">
       <div className="mb-2 px-1">
         <span className="text-[14px] font-black text-neutral-900 md:text-[15px]">
           {premises ? "Visit us" : "Where we work"}

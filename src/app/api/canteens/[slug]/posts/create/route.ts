@@ -13,6 +13,7 @@
 
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { pruneOneExampleCanteenPost } from "@/lib/canteens/seed";
 import { getMerchantIdentity } from "@/lib/merchantSession";
 import { logActivityEvent } from "@/lib/activity";
 
@@ -20,12 +21,18 @@ type PostPayload = {
   kind: "chat" | "question" | "showcase" | "make-offer" | "announcement" | "counter";
   body?: string;
   photoUrls?: string[];
+  /** Composed MP4 URLs from the Site Editor's video pipeline.
+   *  Paid-tier merchants only (same gate as Yard video posts). */
+  videoUrls?: string[];
   moodSlug?: string;
   priceGbp?: number;
   currency?: string;
   targetTradeSlugs?: string[];
   expiresAt?: string;
 };
+
+const MAX_VIDEOS = 1;    // one video per canteen post (matches Yard)
+const PAID_TIER_SET = new Set(["app_trial", "app_paid", "verified"]);
 
 const HOST_ONLY_KINDS = new Set<PostPayload["kind"]>(["announcement", "counter"]);
 const VALID_KINDS = new Set<PostPayload["kind"]>([
@@ -72,6 +79,12 @@ export async function POST(
   if ((payload.photoUrls?.length ?? 0) > MAX_PHOTOS) {
     return NextResponse.json({ ok: false, error: "too-many-photos" }, { status: 400 });
   }
+  const videoUrls = Array.isArray(payload.videoUrls)
+    ? payload.videoUrls.filter((u): u is string => typeof u === "string" && u.trim().length > 0).slice(0, MAX_VIDEOS)
+    : [];
+  if (videoUrls.length > MAX_VIDEOS) {
+    return NextResponse.json({ ok: false, error: "too-many-videos" }, { status: 400 });
+  }
 
   // Look up canteen + verify membership. Host bypasses the member
   // check (host is always allowed even if the membership row is
@@ -102,6 +115,28 @@ export async function POST(
     }
   }
 
+  // Video paid-tier gate — same rule Yard uses. Read the poster's
+  // listing tier and reject if they're on standard/free but trying
+  // to attach a video URL.
+  if (videoUrls.length > 0) {
+    const posterListing = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("tier")
+      .eq("slug", identity.slug)
+      .maybeSingle();
+    const posterTier = (posterListing.data as { tier?: string } | null)?.tier ?? "standard";
+    if (!PAID_TIER_SET.has(posterTier)) {
+      return NextResponse.json(
+        {
+          ok:     false,
+          error:  "video_requires_paid",
+          detail: "Video posts are a paid-tier feature. Upgrade to include video in your Canteen posts."
+        },
+        { status: 403 }
+      );
+    }
+  }
+
   // Look up author display name once — reused across every post.
   const author = await supabaseAdmin
     .from("hammerex_canteen_members")
@@ -120,6 +155,7 @@ export async function POST(
       kind: payload.kind,
       body: body || null,
       photo_urls: payload.photoUrls ?? [],
+      video_urls: videoUrls,
       mood_slug: payload.moodSlug?.trim() ?? null,
       price_gbp: typeof payload.priceGbp === "number" ? Math.round(payload.priceGbp) : null,
       currency: payload.currency?.trim() ?? (payload.priceGbp !== undefined ? "GBP" : null),
@@ -138,6 +174,11 @@ export async function POST(
       { status: 500 }
     );
   }
+
+  // Auto-decay one example canteen post per real post published. Silent
+  // no-op once all 5 seeded samples are consumed. Fire-and-forget so a
+  // slow prune never blocks the response.
+  void pruneOneExampleCanteenPost(canteen.data.id);
 
   // Bump the 30-day activity counter on the canteen so Founding-100
   // status recalculates correctly.

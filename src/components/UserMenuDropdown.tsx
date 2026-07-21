@@ -148,6 +148,11 @@ export function UserMenuDropdown({ ctx }: { ctx: UserMenuContext }) {
 
 function Avatar({ ctx, size = "sm" }: { ctx: Extract<UserMenuContext, { kind: "homeowner" | "merchant" }>; size?: "sm" | "lg" }) {
   const dim = size === "lg" ? "h-9 w-9 text-[14px]" : "h-7 w-7 text-[12px]";
+  // 2px brand-yellow ring + subtle yellow drop shadow — makes the
+  // profile chip pop against both cream and dark headers.
+  const ringStyle: React.CSSProperties = {
+    boxShadow: `0 0 0 2px ${BRAND_YELLOW}, 0 1px 3px rgba(255,179,0,0.35)`
+  };
   if (ctx.avatarUrl) {
     return (
       /* eslint-disable-next-line @next/next/no-img-element */
@@ -155,13 +160,14 @@ function Avatar({ ctx, size = "sm" }: { ctx: Extract<UserMenuContext, { kind: "h
         src={ctx.avatarUrl}
         alt={ctx.displayName}
         className={"rounded-full object-cover " + dim}
+        style={ringStyle}
       />
     );
   }
   return (
     <span
       className={"inline-flex items-center justify-center rounded-full font-black text-neutral-900 " + dim}
-      style={{ backgroundColor: BRAND_YELLOW }}
+      style={{ backgroundColor: BRAND_YELLOW, ...ringStyle }}
     >
       {ctx.initial}
     </span>

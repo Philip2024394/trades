@@ -34,7 +34,7 @@ export default async function ProjectOverviewPage({
   const photos   = (photosRes.data as SiteBookPhoto[]) ?? [];
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+    <section className="mx-auto max-w-[1400px] px-4 py-8 sm:px-6">
       <Link href="/sitebook" className="text-[12px] font-bold text-neutral-600 hover:text-neutral-900">← Back to SiteBook</Link>
 
       <div className="mt-4 flex flex-wrap items-start justify-between gap-3">

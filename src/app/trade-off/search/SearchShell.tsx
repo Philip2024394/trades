@@ -2,7 +2,7 @@
 
 // Client shell for /trade-off/search.
 //
-// Two tabs — Trades (directory) + Site Interest (masonry wall). Tab
+// Two tabs — Trades (directory) + The Site (masonry wall). Tab
 // state syncs to the URL (?tab=) so back/forward + share links work.
 //
 // The re-searchable input at the top mirrors LandingSearchBar's shape
@@ -21,7 +21,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Search, Users, Image as ImageIcon, MapPin, ArrowRight, User, MessageSquare, Heart, X, Bookmark, BookmarkCheck, Plus, Loader2, Sparkles } from "lucide-react";
+import { Search, Users, Image as ImageIcon, MapPin, ArrowRight, User, MessageSquare, Heart, X, Bookmark, BookmarkCheck, Plus, Loader2, Sparkles, Download, Send, Check } from "lucide-react";
+import { BuyImageModal, type BuyImageContext } from "@/components/site/BuyImageModal";
+import { PostToSocialModal, type PostToSocialContext } from "@/components/site/PostToSocialModal";
 import {
   canteensForTradeQuery,
   canteenCityHint,
@@ -54,10 +56,11 @@ export type InspirationMaterial = {
 
 export type InspirationImage = {
   /** Stable ID — hero-library entry.id for curated, submission UUID
-   *  for user-submitted. Powers the /trade-off/inspiration/[id]
-   *  detail page. Kept `string | null` because older search-result
-   *  payloads may pre-date this field; the card falls back to a
-   *  no-link render when id is missing. */
+   *  for user-submitted, hammerex_feed_tile_library.slug for buyable
+   *  Store images. Powers the /trade-off/inspiration/[id] detail page
+   *  AND the /api/site/checkout/single request. Kept `string | null`
+   *  because older search-result payloads may pre-date this field; the
+   *  card falls back to a no-link render when id is missing. */
   id:                   string | null;
   source:               "curated" | "submission";
   imageUrl:             string;
@@ -71,6 +74,11 @@ export type InspirationImage = {
   sourcePostId:         string | null;
   sourcePostReplyCount: number;
   materials:            InspirationMaterial[];
+  /** True when the image is in the platform-owned Store pool (ex-/store,
+   *  hammerex_feed_tile_library tier 2/3). Only these images render the
+   *  Buy button — trade submissions and non-Store hero images aren't
+   *  ours to sell. Defaults to false. */
+  isBuyable?:           boolean;
   /** Natural pixel dimensions of the source image — passed to
    *  <img width/height/> so the browser reserves the aspect-ratio
    *  box BEFORE the image bytes arrive. Kills the jumping-while-
@@ -97,6 +105,14 @@ const BRAND_YELLOW = "#FFB300";
 
 type Tab = "trades" | "inspiration";
 
+/** Per-image entitlement snapshot passed to a card. `reason` labels
+ *  the chip: subscription = "Subscribed", tier-bundled = "Bundled",
+ *  purchase = "Owned". Null reason renders no chip. */
+export type SiteCardEntitlement = {
+  hasClean: boolean;
+  reason:   "subscription" | "tier-bundled" | "purchase" | null;
+};
+
 export function SearchShell({
   query,
   city,
@@ -105,7 +121,9 @@ export function SearchShell({
   inspiration,
   transformations = [],
   browseSeed = 1,
-  featuredTradeSlugs = []
+  featuredTradeSlugs = [],
+  merchantSignedIn = false,
+  siteEntitlement = { hasBlanket: false, blanketReason: null, ownedImageIds: [] }
 }: {
   query: string;
   city: string;
@@ -113,9 +131,9 @@ export function SearchShell({
   trades: Canteen[];
   inspiration: InspirationImage[];
   /** Before/After showcase entries matching the query. Rendered as
-   *  a "Transformations" strip above the masonry on the Site
-   *  Interest tab so the drag-reveal wow lands first. Passed empty
-   *  when no matches — the strip hides entirely. */
+   *  a "Transformations" strip above the masonry on The Site tab
+   *  so the drag-reveal wow lands first. Passed empty when no
+   *  matches — the strip hides entirely. */
   transformations?: BeforeAfterEntry[];
   /** Random seed the server chose for the no-query browse-all
    *  shuffle. Client uses this seed on every /api/inspiration/browse
@@ -128,6 +146,21 @@ export function SearchShell({
    *  pill on the card so the boost reads as intentional, not
    *  random sort order. */
   featuredTradeSlugs?: string[];
+  /** True when the caller has a valid trade-session cookie. Passed
+   *  down to BuyImageModal so signed-in merchants skip the email
+   *  input — the checkout endpoint reads the session server-side. */
+  merchantSignedIn?: boolean;
+  /** The viewer's Site entitlement — resolved server-side by
+   *  siteEntitlementForViewer over the buyable IDs in the first page.
+   *  hasBlanket=true means every buyable image is entitled (sub or
+   *  bundling tier); ownedImageIds enumerates individual purchases.
+   *  Cards use this to render "Owned"/"Subscribed" chips and swap the
+   *  Buy button for a direct Download link. */
+  siteEntitlement?: {
+    hasBlanket:    boolean;
+    blanketReason: "subscription" | "tier-bundled" | null;
+    ownedImageIds: string[];
+  };
 }) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>(initialTab);
@@ -142,6 +175,51 @@ export function SearchShell({
   const [scrollLoading, setScrollLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const scrollOffsetRef = useRef<number>(inspiration.length);
+  // Entitlement state — hoisted above loadMoreInspiration because that
+  // callback references refreshEntitlementForIds. Reason lookup in
+  // entitlementForImage stays cheap (set contains).
+  const [ownedIdSet, setOwnedIdSet] = useState<Set<string>>(
+    () => new Set(siteEntitlement.ownedImageIds)
+  );
+  const refreshEntitlementForIds = useCallback(
+    async (candidateIds: string[]) => {
+      if (siteEntitlement.hasBlanket) return;
+      const unknown = candidateIds.filter((id) => id && !ownedIdSet.has(id));
+      if (unknown.length === 0) return;
+      try {
+        const res = await fetch("/api/site/entitlement", {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ image_ids: unknown })
+        });
+        if (!res.ok) return;
+        const data = await res.json().catch(() => ({} as {
+          hasBlanket?: boolean; ownedImageIds?: string[];
+        }));
+        if (data.hasBlanket) {
+          setOwnedIdSet((prev) => {
+            const next = new Set(prev);
+            for (const id of candidateIds) next.add(id);
+            for (const id of unknown)      next.add(id);
+            return next;
+          });
+          return;
+        }
+        const newlyOwned = ((data.ownedImageIds ?? []) as unknown[]).filter(
+          (id): id is string => typeof id === "string" && id.length > 0
+        );
+        if (newlyOwned.length === 0) return;
+        setOwnedIdSet((prev) => {
+          const next = new Set(prev);
+          for (const id of newlyOwned) next.add(id);
+          return next;
+        });
+      } catch {
+        // Silent fail — entitlement is best-effort.
+      }
+    },
+    [ownedIdSet, siteEntitlement.hasBlanket]
+  );
   // Reset appended pages when query changes (SSR gave us a fresh
   // first page).
   useEffect(() => {
@@ -169,6 +247,7 @@ export function SearchShell({
         id?: string;
         imageUrl: string; subject: string; keywords: string[];
         widthPx?: number | null; heightPx?: number | null;
+        isBuyable?: boolean;
       }>;
       const submissions = (data.submissions ?? []) as Array<{
         id?: string;
@@ -190,6 +269,7 @@ export function SearchShell({
           submitterSlug: null, submitterDisplay: null, submitterAvatarUrl: null,
           sourceCanteenId: null, sourceCanteenSlug: null, sourcePostId: null, sourcePostReplyCount: 0,
           materials: [],
+          isBuyable: c.isBuyable === true,
           widthPx: c.widthPx ?? null,
           heightPx: c.heightPx ?? null
         });
@@ -216,13 +296,21 @@ export function SearchShell({
         setScrolled((prev) => [...prev, ...next]);
         scrollOffsetRef.current += curated.length;
         if (!data.hasMore) setHasMore(false);
+        // Fire-and-forget entitlement refresh for the buyable IDs in
+        // this page — no await, doesn't block scroll rendering.
+        const buyableIds = next
+          .filter((e) => e.isBuyable === true && typeof e.id === "string" && e.id.length > 0)
+          .map((e) => e.id as string);
+        if (buyableIds.length > 0) {
+          void refreshEntitlementForIds(buyableIds);
+        }
       }
     } catch {
       setHasMore(false);
     } finally {
       setScrollLoading(false);
     }
-  }, [browseSeed, hasMore, inspiration, query, scrollLoading, scrolled]);
+  }, [browseSeed, hasMore, inspiration, query, refreshEntitlementForIds, scrollLoading, scrolled]);
 
   // IntersectionObserver sentinel — a hidden div at the bottom of
   // the masonry that triggers loadMoreInspiration when it enters
@@ -264,6 +352,29 @@ export function SearchShell({
   // source. Constitutional expectations screen fires on first-use
   // per feedback_ai_visualiser_expectations_and_no_refunds.md.
   const [visualiseContext, setVisualiseContext] = useState<VisualiseContext | null>(null);
+  // Buy modal — opens with a two-choice sheet (£5.99 single vs
+  // £14.99/mo unlimited) when the user taps the download icon on a
+  // buyable Store-sourced card.
+  const [buyContext, setBuyContext] = useState<BuyImageContext | null>(null);
+  // Social editor — opens when an entitled viewer taps Share on a
+  // buyable card. Posts through /api/site/share which drops a canteen
+  // post carrying the image URL. Canteen posts aggregate into the
+  // platform-wide Yard so one call feeds both surfaces.
+  const [shareContext, setShareContext] = useState<PostToSocialContext | null>(null);
+  // Card-level entitlement lookup — reads the hoisted ownedIdSet.
+  const entitlementForImage = useCallback(
+    (imageId: string | null): SiteCardEntitlement => {
+      if (!imageId) return { hasClean: false, reason: null };
+      if (siteEntitlement.hasBlanket) {
+        return { hasClean: true, reason: siteEntitlement.blanketReason };
+      }
+      if (ownedIdSet.has(imageId)) {
+        return { hasClean: true, reason: "purchase" };
+      }
+      return { hasClean: false, reason: null };
+    },
+    [siteEntitlement.hasBlanket, siteEntitlement.blanketReason, ownedIdSet]
+  );
   useEffect(() => {
     if (!contactContext) return;
     const onKey = (e: KeyboardEvent) => {
@@ -314,7 +425,7 @@ export function SearchShell({
           className="mt-1 text-[28px] font-black leading-tight text-neutral-900 md:text-[34px]"
           style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}
         >
-          {query ? <>Results for &ldquo;{query}&rdquo;</> : "Search trades or browse Site Interest"}
+          {query ? <>Results for &ldquo;{query}&rdquo;</> : "Search trades or browse The Site"}
         </h1>
 
         <form
@@ -387,22 +498,9 @@ export function SearchShell({
             active={tab === "inspiration"}
             onClick={() => switchTab("inspiration")}
             icon={<ImageIcon size={14} strokeWidth={2.4}/>}
-            label="Site Interest"
+            label="The Site"
             count={inspiration.length + transformations.length}
           />
-          {/* Toggle → Store. Not a tab (routes away). Sits inline with
-              the tab pills so merchants can jump from browsing to
-              buying without hunting through the header nav. */}
-          <a
-            href="/store"
-            className="ml-auto inline-flex h-8 items-center gap-1 rounded-full border px-3 text-[10px] font-black uppercase tracking-wider text-neutral-700 transition hover:bg-neutral-50"
-            style={{ borderColor: "rgba(0,0,0,0.12)" }}
-            aria-label="Buy AI-generated trade imagery from the Site Interest Store"
-          >
-            <span aria-hidden>🛒</span>
-            Buy images
-            <span className="ml-0.5 text-neutral-400">→</span>
-          </a>
         </div>
       </section>
 
@@ -411,7 +509,7 @@ export function SearchShell({
         {!query && (
           <EmptyState
             title="Type what you're looking for."
-            body="Try a trade (‘plumber’), a category (‘loft ladders’) or a project word (‘garden design’). Every result gives you real trades OR a Site Interest wall of photos."
+            body="Try a trade (‘plumber’), a category (‘loft ladders’) or a project word (‘garden design’). Every result gives you real trades OR a wall of photos on The Site."
           />
         )}
         {query && tab === "trades" && (
@@ -420,7 +518,7 @@ export function SearchShell({
             : (
               <EmptyState
                 title={`No trades match “${query}” yet.`}
-                body="Try a broader term, or switch to the Site Interest tab to browse photos."
+                body="Try a broader term, or switch to The Site tab to browse photos."
               />
             )
         )}
@@ -428,6 +526,13 @@ export function SearchShell({
           inspiration.length > 0 || transformations.length > 0 || scrolled.length > 0
             ? (
               <>
+                {/* Subscription banner — one-off Manage entry point for
+                    viewers on an active £14.99/mo sub. Bundling-tier
+                    subscribers don't see this; their sub is managed
+                    on the main pricing/settings page. */}
+                {siteEntitlement.hasBlanket && siteEntitlement.blanketReason === "subscription" && (
+                  <SiteSubscriptionBanner/>
+                )}
                 {transformations.length > 0 && (
                   <TransformationsStrip
                     entries={transformations}
@@ -442,6 +547,9 @@ export function SearchShell({
                     query={query}
                     city={city}
                     onLikeIt={setContactContext} onSave={setSaveTarget} onVisualise={setVisualiseContext}
+                    onBuy={setBuyContext}
+                    onShare={setShareContext}
+                    entitlementForImage={entitlementForImage}
                   />
                 )}
                 {/* Sentinel — invisible target the observer watches to
@@ -466,13 +574,13 @@ export function SearchShell({
             : query
               ? (
                 <EmptyState
-                  title={`No Site Interest for “${query}” yet.`}
+                  title={`Nothing on The Site for “${query}” yet.`}
                   body="Try a broader term (e.g. ‘garden’, ‘kitchen’, ‘bathroom’)."
                 />
               )
               : (
                 <EmptyState
-                  title="Loading Site Interest…"
+                  title="Loading The Site…"
                   body="Fetching the wall of construction photos. If nothing appears in a second, try refreshing."
                 />
               )
@@ -493,6 +601,24 @@ export function SearchShell({
         <VisualiseModal
           context={visualiseContext}
           onClose={() => setVisualiseContext(null)}
+        />
+      )}
+
+      {/* Buy image modal — £5.99 single vs £14.99/mo unlimited */}
+      {buyContext && (
+        <BuyImageModal
+          context={buyContext}
+          merchantSignedIn={merchantSignedIn}
+          onClose={() => setBuyContext(null)}
+        />
+      )}
+
+      {/* Social editor — entitled viewers post the Site image straight
+          into their canteen; aggregated Yard picks it up automatically. */}
+      {shareContext && (
+        <PostToSocialModal
+          context={shareContext}
+          onClose={() => setShareContext(null)}
         />
       )}
 
@@ -691,7 +817,10 @@ function InspirationMasonry({
   city,
   onLikeIt,
   onSave,
-  onVisualise
+  onVisualise,
+  onBuy,
+  onShare,
+  entitlementForImage
 }: {
   entries: InspirationImage[];
   query: string;
@@ -699,6 +828,9 @@ function InspirationMasonry({
   onLikeIt: (ctx: QuickContactContext) => void;
   onSave: (image: InspirationImage) => void;
   onVisualise: (ctx: VisualiseContext) => void;
+  onBuy: (ctx: BuyImageContext) => void;
+  onShare: (ctx: PostToSocialContext) => void;
+  entitlementForImage: (imageId: string | null) => SiteCardEntitlement;
 }) {
   return (
     <div
@@ -722,6 +854,9 @@ function InspirationMasonry({
             onLikeIt={onLikeIt}
             onSave={onSave}
             onVisualise={onVisualise}
+            onBuy={onBuy}
+            onShare={onShare}
+            entitlement={entitlementForImage(entry.id)}
           />
         ))}
       </div>
@@ -751,7 +886,10 @@ function InspirationCard({
   city,
   onLikeIt,
   onSave,
-  onVisualise
+  onVisualise,
+  onBuy,
+  onShare,
+  entitlement
 }: {
   entry: InspirationImage;
   /** Position in the visible list — controls eager/lazy loading. */
@@ -761,6 +899,9 @@ function InspirationCard({
   onLikeIt: (ctx: QuickContactContext) => void;
   onSave: (image: InspirationImage) => void;
   onVisualise: (ctx: VisualiseContext) => void;
+  onBuy: (ctx: BuyImageContext) => void;
+  onShare: (ctx: PostToSocialContext) => void;
+  entitlement: SiteCardEntitlement;
 }) {
   // Resolve up to 3 real trade canteens for the "nearest to me" chip.
   // Uses the entry's first keyword as the trade query — cheaper than
@@ -842,7 +983,15 @@ function InspirationCard({
   //   • ondragstart   → suppresses drag-to-desktop / drag-to-message
   //   • draggable     → same, belt-and-braces
   //   • userSelect    → hides selection UI on long-press mobile
-  const watermarked = watermarkImageUrl(entry.imageUrl);
+  //
+  // Watermark source:
+  //   • Buyable Site images → /api/site/thumb (sharp burns the mark
+  //     into any-CDN bytes). Universal, works regardless of upstream.
+  //   • Everything else (curated hero-library, submissions) → the
+  //     ImageKit URL-transform mark. Free, no server bytes.
+  const watermarked = entry.isBuyable && entry.id
+    ? `/api/site/thumb/${encodeURIComponent(entry.id)}?w=800`
+    : watermarkImageUrl(entry.imageUrl);
   // Detail page URL — every clickable image points at
   // /trade-off/inspiration/[id] where the buyer sees the big
   // image + 3 nearest WhatsApp-opted trades + "buy this image"
@@ -909,6 +1058,24 @@ function InspirationCard({
         ) : (
           imgElement
         )}
+        {/* Entitlement chip — top-left corner on buyable cards when the
+            viewer has clean access. Yellow-on-black for the paid
+            reasons (subscription, tier-bundled) so it reads as a badge;
+            neutral for a one-off purchase. */}
+        {entry.isBuyable && entitlement.hasClean && entitlement.reason && (
+          <div
+            className="pointer-events-none absolute left-2 top-2 rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-[0.14em] shadow-sm"
+            style={
+              entitlement.reason === "purchase"
+                ? { backgroundColor: "#0A0A0A", color: "#FFB300" }
+                : { backgroundColor: "#FFB300", color: "#0A0A0A" }
+            }
+          >
+            {entitlement.reason === "subscription" ? "Subscribed"
+              : entitlement.reason === "tier-bundled" ? "Bundled"
+              : "Owned"}
+          </div>
+        )}
       </div>
 
       {/* Utility action row — Try It pill on the LEFT, Save + Share +
@@ -942,6 +1109,60 @@ function InspirationCard({
           Try it
         </button>
         <div className="flex items-center gap-1.5">
+          {entry.isBuyable && entry.id && (
+            entitlement.hasClean ? (
+              <>
+                <a
+                  href={`/api/site/download/${encodeURIComponent(entry.id)}`}
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full transition hover:brightness-95"
+                  style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
+                  aria-label="Download this image (entitled)"
+                  title="Download — you have access"
+                >
+                  <Download size={13} strokeWidth={2.6}/>
+                </a>
+                <Link
+                  href={`/site/editor?image_id=${encodeURIComponent(entry.id)}`}
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+                  aria-label="Open in the Site Editor"
+                  title="Edit for Instagram / Facebook / TikTok / Snap"
+                >
+                  <Sparkles size={13} strokeWidth={2.4}/>
+                </Link>
+                <button
+                  type="button"
+                  onClick={() =>
+                    onShare({
+                      imageId:  entry.id!,
+                      imageUrl: entry.imageUrl,
+                      subject:  deriveCardCaption(entry.subject)
+                    })
+                  }
+                  className="inline-flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+                  aria-label="Post to my Canteen (also appears on Yard)"
+                  title="Share — post to your Canteen + Yard"
+                >
+                  <Send size={13} strokeWidth={2.4}/>
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={() =>
+                  onBuy({
+                    imageId:  entry.id!,
+                    imageUrl: entry.imageUrl,
+                    subject:  deriveCardCaption(entry.subject)
+                  })
+                }
+                className="inline-flex h-7 w-7 items-center justify-center rounded-full text-neutral-500 transition hover:bg-neutral-100 hover:text-neutral-900"
+                aria-label="Get this image — from £5.99"
+                title="Get this image — from £5.99"
+              >
+                <Download size={13} strokeWidth={2.4}/>
+              </button>
+            )
+          )}
           <button
             type="button"
             onClick={() => onSave(entry)}
@@ -1559,4 +1780,73 @@ function capitalise(s: string): string {
     .split(/\s+/)
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
     .join(" ");
+}
+
+/** Yellow "Subscribed · Manage" banner. Manage opens the Stripe
+ *  Billing Portal for the caller's Site sub via /api/site/portal.
+ *  Bundling-tier subscribers don't render this — their sub belongs
+ *  to the merchant listing, managed elsewhere. */
+function SiteSubscriptionBanner() {
+  const [busy,  setBusy]  = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function openPortal() {
+    if (busy) return;
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/site/portal", { method: "POST" });
+      const data = await res.json().catch(() => ({} as { url?: string; error?: string }));
+      if (!res.ok || !data.url) {
+        setError(data.error ?? "Could not open the billing portal.");
+        setBusy(false);
+        return;
+      }
+      window.location.href = data.url;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Network error.");
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div
+      className="mt-3 flex items-center justify-between gap-3 rounded-xl border px-3 py-2"
+      style={{ borderColor: "rgba(139,69,19,0.12)", backgroundColor: "#0A0A0A", color: "white" }}
+    >
+      <div className="flex items-center gap-2">
+        <span
+          className="inline-flex h-6 w-6 items-center justify-center rounded-full text-[10px] font-black"
+          style={{ backgroundColor: BRAND_YELLOW, color: "#0A0A0A" }}
+          aria-hidden
+        >
+          <Check size={12} strokeWidth={3}/>
+        </span>
+        <div className="flex flex-col leading-tight">
+          <span className="text-[11px] font-black uppercase tracking-[0.14em]">
+            The Site — Subscribed
+          </span>
+          <span className="text-[10px] text-neutral-300">
+            Unlimited clean downloads · post to Canteen + Yard
+          </span>
+        </div>
+      </div>
+      <button
+        type="button"
+        onClick={openPortal}
+        disabled={busy}
+        className="inline-flex h-8 items-center gap-1 rounded-full px-3 text-[10.5px] font-black uppercase tracking-wider text-neutral-900 disabled:opacity-60"
+        style={{ backgroundColor: BRAND_YELLOW }}
+        aria-label="Manage subscription"
+      >
+        {busy ? <Loader2 size={11} className="animate-spin"/> : null}
+        Manage
+      </button>
+      {error && (
+        <div className="ml-2 rounded-md bg-red-100 px-2 py-1 text-[10px] font-black text-red-700">
+          {error}
+        </div>
+      )}
+    </div>
+  );
 }

@@ -165,28 +165,3 @@ export async function nearestWhatsappTrades(input: {
   }).filter((t) => t.whatsapp.length >= 8);
 }
 
-/** Look up the store's paid-license availability for this image URL.
- *  If the image is also in hammerex_feed_tile_library at tier 2 or 3,
- *  return the slug + price so the "buy this image" CTA can point at
- *  /store/i/{slug}. Returns null when the image isn't in the store
- *  (curated hero-library images that haven't been added to the store). */
-export async function storeAvailabilityFor(imageUrl: string): Promise<{
-  slug:      string;
-  priceGbp:  number;
-} | null> {
-  const res = await supabaseAdmin
-    .from("hammerex_feed_tile_library")
-    .select("slug, tier, has_brand_marks, is_banner")
-    .eq("url", imageUrl)
-    .eq("active", true)
-    .maybeSingle();
-  if (res.error || !res.data) return null;
-  const t = res.data.tier as number | null;
-  if (t !== 2 && t !== 3) return null;
-  if (res.data.has_brand_marks) return null;
-  if (res.data.is_banner) return null;
-  return {
-    slug:     res.data.slug as string,
-    priceGbp: 10   // single-image price per REVENUE_MAP.md
-  };
-}

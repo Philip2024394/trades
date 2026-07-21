@@ -99,19 +99,178 @@ async function handleBoostCompleted(
   }
 }
 
+/** The Site — single-image £5.99 purchase. Records the paid session
+ *  into hammerex_site_purchases which the access-check reads to
+ *  authorise clean downloads. Idempotent via UNIQUE(stripe_session_id). */
+async function handleSiteSingleCompleted(
+  session: Stripe.Checkout.Session,
+  meta: Stripe.Metadata
+): Promise<void> {
+  const imageId = String(meta.image_id ?? "").trim();
+  if (!imageId) {
+    console.warn("[stripe/webhook] site.single without image_id; skipping", { sessionId: session.id });
+    return;
+  }
+  const buyerEmail = String(
+    meta.email ?? session.customer_details?.email ?? ""
+  ).trim().toLowerCase();
+  if (!buyerEmail) {
+    console.warn("[stripe/webhook] site.single without buyer email; skipping", { sessionId: session.id });
+    return;
+  }
+  const merchantSlug = String(meta.merchant_slug ?? "").trim() || null;
+  const paymentIntent =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent && "id" in session.payment_intent
+        ? session.payment_intent.id
+        : null;
+
+  const ins = await supabaseAdmin
+    .from("hammerex_site_purchases")
+    .insert({
+      image_id:              imageId,
+      buyer_email:           buyerEmail,
+      buyer_merchant_slug:   merchantSlug,
+      amount_pence:          session.amount_total ?? 599,
+      currency:              (session.currency ?? "gbp").toLowerCase(),
+      stripe_session_id:     session.id,
+      stripe_payment_intent: paymentIntent,
+      status:                "paid"
+    });
+  // Duplicate insert on webhook retry is expected — UNIQUE constraint
+  // catches it. Log only on other errors.
+  if (ins.error && !/duplicate|unique/i.test(ins.error.message)) {
+    console.error("[stripe/webhook] site.single insert failed:", ins.error.message);
+  }
+}
+
+/** The Site — £14.99/mo unlimited subscription. Upserts a projection
+ *  row keyed by stripe_subscription_id so the access-check can read
+ *  status + period without going back to Stripe. */
+async function handleSiteSubscribeCompleted(
+  session: Stripe.Checkout.Session,
+  meta: Stripe.Metadata
+): Promise<void> {
+  const subscriptionId =
+    typeof session.subscription === "string"
+      ? session.subscription
+      : session.subscription && "id" in session.subscription
+        ? session.subscription.id
+        : null;
+  const customerId =
+    typeof session.customer === "string"
+      ? session.customer
+      : session.customer && "id" in session.customer
+        ? session.customer.id
+        : null;
+  if (!subscriptionId || !customerId) {
+    console.warn("[stripe/webhook] site.subscribe missing subscription/customer id; skipping", { sessionId: session.id });
+    return;
+  }
+
+  // Fetch the fresh subscription so we get authoritative period bounds
+  // rather than trusting the checkout session's shortcut fields.
+  let periodStart = new Date();
+  let periodEnd   = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+  let status      = "active";
+  try {
+    const stripe = getStripe();
+    const sub = await stripe.subscriptions.retrieve(subscriptionId) as SubscriptionWithPeriod;
+    if (sub.current_period_start) periodStart = new Date(sub.current_period_start * 1000);
+    if (sub.current_period_end)   periodEnd   = new Date(sub.current_period_end * 1000);
+    if (sub.status)               status      = sub.status;
+  } catch (e) {
+    console.error("[stripe/webhook] site.subscribe fetch retrieve failed, using fallbacks:", e);
+  }
+
+  const merchantSlug = String(meta.merchant_slug ?? "").trim() || null;
+  const buyerEmail = String(
+    meta.email ?? session.customer_details?.email ?? ""
+  ).trim().toLowerCase() || null;
+
+  const up = await supabaseAdmin
+    .from("hammerex_site_subscriptions")
+    .upsert(
+      {
+        merchant_slug:          merchantSlug,
+        buyer_email:            buyerEmail,
+        stripe_customer_id:     customerId,
+        stripe_subscription_id: subscriptionId,
+        status,
+        current_period_start:   periodStart.toISOString(),
+        current_period_end:     periodEnd.toISOString(),
+        cancel_at_period_end:   false,
+        updated_at:             new Date().toISOString()
+      },
+      { onConflict: "stripe_subscription_id" }
+    );
+  if (up.error) {
+    console.error("[stripe/webhook] site.subscribe upsert failed:", up.error.message);
+  }
+}
+
+/** Sync updates (renewal, plan swap, past_due) into the projection. */
+async function handleSiteSubscriptionUpdated(sub: Stripe.Subscription): Promise<void> {
+  const s = sub as SubscriptionWithPeriod;
+  const periodEnd   = s.current_period_end   ? new Date(s.current_period_end   * 1000).toISOString() : null;
+  const periodStart = s.current_period_start ? new Date(s.current_period_start * 1000).toISOString() : null;
+
+  const patch: Record<string, unknown> = {
+    status:               sub.status,
+    cancel_at_period_end: sub.cancel_at_period_end === true,
+    updated_at:           new Date().toISOString()
+  };
+  if (periodEnd)   patch.current_period_end   = periodEnd;
+  if (periodStart) patch.current_period_start = periodStart;
+
+  const upd = await supabaseAdmin
+    .from("hammerex_site_subscriptions")
+    .update(patch)
+    .eq("stripe_subscription_id", sub.id);
+  if (upd.error) {
+    console.error("[stripe/webhook] site.subscription.updated failed:", upd.error.message);
+  }
+}
+
+/** Cancellation — flip status to canceled so the access check stops
+ *  granting clean downloads at the next request. */
+async function handleSiteSubscriptionDeleted(sub: Stripe.Subscription): Promise<void> {
+  const upd = await supabaseAdmin
+    .from("hammerex_site_subscriptions")
+    .update({
+      status:     "canceled",
+      updated_at: new Date().toISOString()
+    })
+    .eq("stripe_subscription_id", sub.id);
+  if (upd.error) {
+    console.error("[stripe/webhook] site.subscription.deleted failed:", upd.error.message);
+  }
+}
+
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
   const meta = session.metadata ?? {};
 
   // Fork on kind — boost is a one-time payment for a specific post;
-  // subscription paths (below) upgrade a listing tier.
+  // site.single is a one-off image licence; site.subscribe is the
+  // £14.99/mo unlimited plan; subscription paths (below) upgrade a
+  // listing tier.
   if (meta.kind === "boost") {
     await handleBoostCompleted(session, {
       post_id: String(meta.post_id ?? ""),
       hours: String(meta.hours ?? "0"),
       unit_amount_pence: String(meta.unit_amount_pence ?? "0")
     });
+    return;
+  }
+  if (meta.kind === "site.single") {
+    await handleSiteSingleCompleted(session, meta);
+    return;
+  }
+  if (meta.kind === "site.subscribe") {
+    await handleSiteSubscribeCompleted(session, meta);
     return;
   }
 
@@ -330,6 +489,13 @@ async function handleSubscriptionUpdated(
   sub: Stripe.Subscription
 ): Promise<void> {
   const meta = sub.metadata ?? {};
+  // Fork Site subs off to their own projection — they're keyed by
+  // stripe_subscription_id (no listing_id), and updates go to the
+  // hammerex_site_subscriptions table not the listings table.
+  if (meta.kind === "site.subscribe") {
+    await handleSiteSubscriptionUpdated(sub);
+    return;
+  }
   const listing_id = meta.listing_id;
   if (!listing_id) return;
 
@@ -395,6 +561,10 @@ async function handleSubscriptionDeleted(
   sub: Stripe.Subscription
 ): Promise<void> {
   const meta = sub.metadata ?? {};
+  if (meta.kind === "site.subscribe") {
+    await handleSiteSubscriptionDeleted(sub);
+    return;
+  }
   const listing_id = meta.listing_id;
   if (!listing_id) return;
 

@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { BRAND } from "@/lib/seo";
 import { CookieConsentBanner } from "@/components/xrated/CookieConsentBanner";
-import { GlobalTradeCenterLink } from "@/apps/hub/components/GlobalTradeCenterLink";
 import { allFontVariables } from "@/lib/fonts";
 
 // Root layout for Thenetworkers. Page chrome (header, footer, dock)
@@ -142,10 +141,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="bg-brand-bg text-brand-text antialiased">
         {children}
-        {/* Persistent Trade Center shortcut — appears on every page
-            except /tc/* (which has the wordmark in its own header) so
-            users can always jump into the Trade Center app. */}
-        <GlobalTradeCenterLink/>
         {/* GDPR / UK PECR consent banner — first-party cookie, no SDK.
             Renders nothing on the server and self-hides once the visitor
             has chosen, so it never blocks page chrome on repeat visits. */}

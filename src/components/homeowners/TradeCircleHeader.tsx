@@ -16,7 +16,7 @@ export function TradeCircleHeader() {
     <>
       {/* Page title strip — replaces the trade-facing "Canteens" strip */}
       <section style={{ borderBottom: "1px solid rgba(139,69,19,0.15)" }}>
-        <div className="mx-auto flex w-full max-w-6xl items-start gap-3 px-3 py-6 md:px-6 md:py-8">
+        <div className="mx-auto flex w-full max-w-[1400px] items-start gap-3 px-3 py-6 md:px-6 md:py-8">
           <div className="min-w-0 flex-1">
             <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.22em] text-neutral-700 shadow-sm">
               <span

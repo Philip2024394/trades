@@ -1,12 +1,10 @@
 // /trade-off/inspiration/[id] — inspiration image detail page.
 //
-// Server-rendered. Full-page treatment of a single Site Interest
-// image with three conversion paths on one screen:
+// Server-rendered. Full-page treatment of a single The Site image
+// with two conversion paths on one screen:
 //   1. Contact a trade near you — 3 WhatsApp-opted trades matching
 //      the image's trade tags, sorted by rating volume + score
-//   2. Buy this image — Site Interest store CTA when the image is
-//      in the store's tier 2/3 catalogue
-//   3. Browse related — sibling-group images if curated
+//   2. Browse related — sibling-group images if curated
 //
 // Google indexes each ID as its own ImageObject-schema page so this
 // route is also SEO surface (12k+ URLs across all inspiration).
@@ -23,8 +21,7 @@ import { BRAND, absolute } from "@/lib/seo";
 import {
   loadInspirationDetail,
   loadRelated,
-  nearestWhatsappTrades,
-  storeAvailabilityFor
+  nearestWhatsappTrades
 } from "@/lib/inspirationDetail.server";
 import { watermarkImageUrl } from "@/lib/imageWatermark";
 import { tradeLabel } from "@/lib/tradeOff";
@@ -74,10 +71,9 @@ export default async function InspirationDetailPage({
   const sp    = searchParams ? await searchParams : {};
   const city  = pick(sp["city"]);
 
-  // Load trade cards, store price, related images — all in parallel.
-  const [trades, storeAvail, related] = await Promise.all([
+  // Load trade cards + related images in parallel.
+  const [trades, related] = await Promise.all([
     nearestWhatsappTrades({ keywords: detail.keywords, city, limit: 3 }),
-    storeAvailabilityFor(detail.imageUrl),
     Promise.resolve(loadRelated(detail, 8))
   ]);
 
@@ -86,8 +82,7 @@ export default async function InspirationDetailPage({
   const shareUrl    = absolute(`/trade-off/inspiration/${id}`);
 
   // ImageObject JSON-LD — Google Images indexes each inspiration URL
-  // separately. Include copyright + licence so the licence page can
-  // resolve when someone reverse-image-searches the file.
+  // separately. Includes the platform-wide image-use terms.
   const jsonLd = {
     "@context":     "https://schema.org",
     "@type":        "ImageObject",
@@ -98,8 +93,7 @@ export default async function InspirationDetailPage({
     url:            shareUrl,
     creditText:     BRAND.name,
     copyrightNotice:`© ${BRAND.name}`,
-    license:        absolute("/legal/image-licence"),
-    acquireLicensePage: absolute("/legal/image-licence"),
+    license:        absolute("/legal/image-license"),
     ...(detail.widthPx && detail.heightPx
       ? { width: detail.widthPx, height: detail.heightPx }
       : {})
@@ -213,35 +207,6 @@ export default async function InspirationDetailPage({
             />
           )}
 
-          {storeAvail && (
-            <section
-              className="rounded-2xl border p-4"
-              style={{ borderColor: "rgba(0,0,0,0.08)", backgroundColor: "#FBF6EC" }}
-            >
-              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#B8860B]">
-                Use this image
-              </p>
-              <p className="mt-1 text-[14px] font-black text-neutral-900">
-                Buy for your website, social, or brochure
-              </p>
-              <p className="mt-1 text-[11px] text-neutral-600">
-                Commercial licence — 4 crops (Instagram · Website · Mobile · Full). Watermark removed.
-              </p>
-              <div className="mt-3 flex items-baseline gap-2">
-                <span className="text-[28px] font-black leading-none text-neutral-900">£{storeAvail.priceGbp}</span>
-                <span className="text-[11px] font-bold text-neutral-500">one-off</span>
-              </div>
-              <Link
-                href={`/store/i/${encodeURIComponent(storeAvail.slug)}`}
-                className="mt-3 inline-flex h-10 w-full items-center justify-center rounded-full bg-[#0A0A0A] text-[12px] font-black uppercase tracking-wider text-white transition hover:bg-neutral-800"
-              >
-                See licence + buy
-              </Link>
-              <p className="mt-2 text-[10px] text-neutral-500">
-                Or <Link href="/store/membership" className="underline">£29/mo unlimited</Link> — every image in Site Interest.
-              </p>
-            </section>
-          )}
         </aside>
       </div>
 

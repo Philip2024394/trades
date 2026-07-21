@@ -29,6 +29,7 @@ import { loadInvitationsForHomeowner } from "@/lib/homeowners/invitations";
 import { loadProjectCostSummary, loadCostsForProject } from "@/lib/homeowners/costs";
 import { loadDocumentsForProject } from "@/lib/homeowners/costDocuments";
 import { loadHomeownerPhotos } from "@/lib/homeowners/photos";
+import { SavedMediaRail } from "@/components/media/SavedMediaRail";
 import { loadInstalledAppSlugs } from "@/lib/homeowners/apps";
 import { loadUpcomingHomeCare } from "@/lib/homeowners/homeCare";
 import { HomeCareCard } from "@/components/homeowners/HomeCareCard";
@@ -206,7 +207,7 @@ export default async function SiteBookHubPage({
     const guideMode0 = typeof sp0.guide === "string" && sp0.guide.length > 0;
     const guideFocus0 = guideMode0 && sp0.guide !== "1" ? sp0.guide! : null;
     return (
-      <section className="mx-auto max-w-6xl px-3 py-6 md:px-6">
+      <section className="mx-auto max-w-[1400px] px-3 py-6 md:px-6">
         <div className="mb-5">
           <LiveProjectsFeed/>
         </div>
@@ -309,7 +310,7 @@ export default async function SiteBookHubPage({
   for (const p of posts) postCounts.set(p.project_id, (postCounts.get(p.project_id) ?? 0) + 1);
 
   return (
-    <section className="mx-auto max-w-6xl px-3 py-6 md:px-6">
+    <section className="mx-auto max-w-[1400px] px-3 py-6 md:px-6">
       {/* First-visit walkthrough modal — dismisses forever after the
           user clicks Got it or closes. Client-side, localStorage-gated. */}
       <SiteBookOnboardingModal/>
@@ -337,6 +338,9 @@ export default async function SiteBookHubPage({
             projects={projects.map((p) => ({ id: p.id, title: p.title }))}
             seeAllHref="/sitebook?view=gallery"
           />
+          {/* Saved media rail — Image | Video toggle. Auto-hidden
+              when not authed. Videos link back to Networkers TV. */}
+          <SavedMediaRail/>
           {/* Home Care app — default-installed retention hook. */}
           {homeCareInstalled && <HomeCareCard items={homeCareItems}/>}
         </aside>

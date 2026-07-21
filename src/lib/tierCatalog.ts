@@ -25,8 +25,13 @@ export type PackageTier = {
   featuresHeadline:     string[];    // marketing bullets — short & punchy
   beaconSlots:          number;      // fanout size for this tier's leads
   aiVisualiserMonthly:  number;      // included renders per month
-  storeDiscountPct:     number;      // 0..100 — Site Interest single-image discount
-  siteInterestBundled:  boolean;     // includes £29 membership
+  /** @deprecated Store was folded into The Site (free browse). Kept
+   *  as zero for schema stability — remove when all consumers gone. */
+  storeDiscountPct:     number;
+  /** True when the tier bundles a £14.99/mo The Site unlimited plan
+   *  (unlimited image downloads + editor + post-to-Canteen/Yard).
+   *  Read by src/lib/siteAccess.ts hasBundlingTier(). */
+  siteInterestBundled:  boolean;
   customDomainIncluded: boolean;
   waitlist:             boolean;     // pricing page routes to /waitlist instead of /signup
   recommended:          boolean;     // "Recommended" badge on pricing page
@@ -69,7 +74,7 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
       "Publish immediately",
       "10 free washers on signup",
       "Beacon leads visible (contact requires washers)",
-      "Site Interest browse — buy singles from £10"
+      "The Site — browse the full image wall"
     ]
   },
   starter: {
@@ -117,8 +122,8 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
     productCap:          null,
     beaconSlots:         3,           // priority-ranked in fanout
     aiVisualiserMonthly: 5,
-    storeDiscountPct:    20,
-    siteInterestBundled: false,
+    storeDiscountPct:    0,
+    siteInterestBundled: true,        // ← The Site unlimited bundled (£14.99 value)
     customDomainIncluded: false,      // add-on £4.99/mo
     waitlist:            false,
     recommended:         true,        // ← headline tier
@@ -128,9 +133,9 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
       "Everything in Starter",
       "200 washers/mo included (£14.99 value — tier pays for itself)",
       "AI Visualiser — 5 renders/mo",
+      "The Site — unlimited images + editor included",
       "Priority in beacon lead routing",
       "Analytics dashboard",
-      "20% off Site Interest image singles",
       "Custom domain add-on £4.99/mo"
     ],
     featuresIncluded: [
@@ -139,11 +144,11 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
       "Trade Circle access",
       "AI Content Tools",
       "AI Visualiser — 5 renders/mo",
+      "The Site unlimited (£14.99/mo value bundled)",
       "Priority beacon routing (Tier 1 rank)",
       "Analytics dashboard",
       "Advanced Studio features",
       "Advanced promotions",
-      "Site Interest store — 20% off image singles",
       "Custom domain add-on £4.99/mo"
     ]
   },
@@ -156,7 +161,7 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
     productCap:          null,
     beaconSlots:         5,
     aiVisualiserMonthly: 20,
-    storeDiscountPct:    40,
+    storeDiscountPct:    0,
     siteInterestBundled: false,
     customDomainIncluded: true,       // ← included
     waitlist:            false,       // ← taken off waitlist
@@ -170,8 +175,7 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
       "Custom domain included",
       "Verified badge fast-track",
       "5-slot beacon fanout (vs 3)",
-      "Featured Placement — 1 slot/mo",
-      "40% off Site Interest image singles"
+      "Featured Placement — 1 slot/mo"
     ],
     featuresIncluded: [
       "Everything in Professional",
@@ -183,7 +187,6 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
       "Beacon fanout: 5 slots (vs 3)",
       "Featured Placement — 1 free slot/mo",
       "AI Visualiser — 20 renders/mo",
-      "Site Interest store — 40% off singles",
       "Priority support",
       "Premium Industry Packs",
       "Advanced automation"
@@ -198,8 +201,8 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
     productCap:          null,
     beaconSlots:         5,
     aiVisualiserMonthly: 999999,
-    storeDiscountPct:    100,         // free
-    siteInterestBundled: true,        // ← includes £29/mo membership
+    storeDiscountPct:    0,
+    siteInterestBundled: true,        // ← The Site unlimited bundled
     customDomainIncluded: true,
     waitlist:            false,
     recommended:         false,
@@ -208,7 +211,7 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
     featuresHeadline: [
       "Everything in Business",
       "UNLIMITED washers",
-      "Site Interest membership included (£29/mo value)",
+      "The Site — unlimited images + editor included",
       "Merchant Pro bundle (all add-ons)",
       "AI Visualiser — unlimited",
       "Priority everything"
@@ -216,7 +219,7 @@ export const TIER_CATALOG: Record<TierKey, PackageTier> = {
     featuresIncluded: [
       "Everything in Business",
       "Unlimited washers",
-      "Site Interest membership included",
+      "The Site unlimited (£14.99/mo value bundled)",
       "Merchant Pro bundle (building-merchant + builders-supplies)",
       "AI Visualiser — unlimited renders",
       "Custom domain included",

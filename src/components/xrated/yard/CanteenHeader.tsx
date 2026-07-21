@@ -12,6 +12,7 @@ import type { Canteen } from "@/lib/canteens";
 import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens";
 import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
 import { CanteenBusinessCardModal } from "@/components/xrated/yard/CanteenBusinessCardModal";
+import { CanteenJoinRequestButton } from "@/components/xrated/yard/CanteenJoinRequestButton";
 
 const CREAM = "#FBF6EC";
 
@@ -137,7 +138,7 @@ export function CanteenHeader({
           Duplicating them inside the hero was pushing the H1 down
           and reading as a second, competing header. Trade-label pill
           stays because it's hero context, not chrome. */}
-      <div className="relative mx-auto max-w-6xl px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8">
+      <div className="relative mx-auto max-w-[1400px] px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8">
         {/* Round WhatsApp button relocated to the left side of the
             CanteenHeroStats container (Philip 2026-07-17) so it sits
             with the stats bar rather than floating on the banner
@@ -225,30 +226,40 @@ export function CanteenHeader({
                 </button>
               ) : null
             ) : !isMember ? (
-              hostWhatsapp ? (
-                /* WhatsApp CTA moved to the round button at top-left
-                   of the hero (Philip 2026-07-17). Business Card
-                   stays here as the primary text-CTA. */
-                <button
-                  type="button"
-                  onClick={() => setCardOpen(true)}
-                  aria-label={`Open ${canteen.hostDisplayName}'s business card`}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-                  style={{ backgroundColor: "#B8860B" }}
-                >
-                  <IdCard size={13} strokeWidth={2.6}/>
-                  Business Card
-                </button>
-              ) : (
-                <Link
-                  href={`/trade-off/yard/canteens/${canteen.slug}/contact`}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
-                  style={{ backgroundColor: BRAND_GREEN_DARK }}
-                >
-                  <Mail size={13} strokeWidth={2.6}/>
-                  Contact us
-                </Link>
-              )
+              <div className="flex flex-wrap items-center gap-2">
+                {hostWhatsapp ? (
+                  /* WhatsApp CTA moved to the round button at top-left
+                     of the hero (Philip 2026-07-17). Business Card
+                     stays here as the primary text-CTA. */
+                  <button
+                    type="button"
+                    onClick={() => setCardOpen(true)}
+                    aria-label={`Open ${canteen.hostDisplayName}'s business card`}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-md px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                    style={{ backgroundColor: "#B8860B" }}
+                  >
+                    <IdCard size={13} strokeWidth={2.6}/>
+                    Business Card
+                  </button>
+                ) : (
+                  <Link
+                    href={`/trade-off/yard/canteens/${canteen.slug}/contact`}
+                    className="inline-flex h-10 items-center gap-1.5 rounded-full px-4 text-[12px] font-black uppercase tracking-wider text-white shadow-md transition active:scale-[0.97]"
+                    style={{ backgroundColor: BRAND_GREEN_DARK }}
+                  >
+                    <Mail size={13} strokeWidth={2.6}/>
+                    Contact us
+                  </Link>
+                )}
+                {/* Request-to-Join — visible for signed-in trades who
+                    aren't already members. Self-hides for the host, for
+                    guests (no auth), and once a request is pending. */}
+                <CanteenJoinRequestButton
+                  canteenSlug={canteen.slug}
+                  canteenName={canteen.name}
+                  visible={true}
+                />
+              </div>
             ) : null}
           </div>
           {/* QR chip — mobile only, inline with the WhatsApp/Contact

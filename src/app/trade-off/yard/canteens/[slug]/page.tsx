@@ -221,8 +221,37 @@ export default async function CanteenDetailPage({
     };
   }
 
+  // Rich structured data retrofit (Philip 2026-07-20 SEO Phase 1).
+  // Every canteen surfaces LocalBusiness + Image (if hero present) so
+  // the entire canteen network gets rich-snippet + local-pack coverage
+  // without touching a single component. AggregateRating only when we
+  // have real reviews (≥5) per the honest-signal rule — never fake it.
+  const localBusinessLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type":    "LocalBusiness",
+    name:       canteen.name,
+    url:        absolute(`/trade-off/yard/canteens/${slug}`),
+    image:      canteen.headerBgUrl ?? undefined,
+    description: canteen.tagline ?? undefined,
+    address: {
+      "@type":         "PostalAddress",
+      addressLocality: admin?.city ?? undefined,
+      addressCountry:  "GB"
+    }
+  };
+  if (admin?.reviews && admin.reviews.count >= 5) {
+    localBusinessLd.aggregateRating = {
+      "@type":     "AggregateRating",
+      ratingValue: admin.reviews.avg.toFixed(1),
+      reviewCount: admin.reviews.count,
+      bestRating:  "5",
+      worstRating: "1"
+    };
+  }
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessLd) }}/>
       {backCtx && <HomeBackPill ctx={backCtx}/>}
       <Template
         canteen={canteen}

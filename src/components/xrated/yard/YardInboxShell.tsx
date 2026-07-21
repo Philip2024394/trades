@@ -54,6 +54,7 @@ import type { YardPoster } from "./YardPostCard";
 import { YardCommentsPanel } from "./YardCommentsPanel";
 import { YardInlineComposer } from "./YardInlineComposer";
 import { TradeCounterSlideOut } from "./TradeCounterSlideOut";
+import { ApprenticeshipBanner } from "@/components/apprenticeships/ApprenticeshipBanner";
 import Link from "next/link";
 import {
   MOOD_LIBRARY,
@@ -1174,6 +1175,16 @@ function DefaultRightPanel({
 
   return (
     <div className="space-y-3">
+      {/* Apprenticeship recruitment banner — top of the default right
+          panel so every yard visitor sees "The Network supports UK
+          trade youth" the moment they arrive with nothing selected. */}
+      <ApprenticeshipBanner
+        variant="button-under"
+        caption="Hire an apprentice · or start your own trade career."
+        ctaLabel="Apply / hire"
+        href="/apprenticeships"
+        compact
+      />
       {/* p-5 (was p-4) — a hair more internal padding so the copy has
           breathing room inside the card matching the outer symmetry. */}
       <div

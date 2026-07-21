@@ -1,0 +1,37 @@
+-- Extend crown-banner schema to support MULTIPLE editable slots.
+--
+-- The first crown banners (staircase, joinery, electrician, drywall
+-- etc) each have ONE editable slot — the phone number — stored in
+-- the `phone_slot` JSONB column. That's the "phoneSlot" path in the
+-- EditorClient pick handler.
+--
+-- Later banners (garden fence, laminate, pine doors) have DIFFERENT
+-- slot patterns:
+--   • garden fence: single "PER PANEL PRICE" circle
+--   • laminate: single "PER M² PRICE" rectangle
+--   • pine doors: TWO slots — a "WAS" box + a "NOW ONLY" box
+--
+-- Rather than shoehorn these through `phone_slot`, we add a proper
+-- multi-slot array. `edit_slots` is a JSONB array of slot objects:
+--
+--   [
+--     { "id": "was",  "kind": "price", "x": 120, "y": 790,
+--       "width": 250, "fontSize": 44,
+--       "placeholder": "£249", "color": "#0A0A0A" },
+--     { "id": "now",  "kind": "price", "x": 400, "y": 830,
+--       "width": 380, "fontSize": 55,
+--       "placeholder": "£179", "color": "#FFFFFF" }
+--   ]
+--
+-- `kind` values: "phone" | "price" | "text". Purely semantic — the
+-- pick handler renders every slot as a Konva text layer regardless.
+-- The `kind` is used later for input-field validation in the phone /
+-- price entry drawer.
+--
+-- Backward compat: `phone_slot` stays. Pick handler prefers
+-- `edit_slots` when set, falls back to wrapping `phone_slot` in a
+-- single-element array otherwise. Existing 63 crown banners keep
+-- working unchanged.
+
+ALTER TABLE public.hammerex_site_editor_templates
+  ADD COLUMN IF NOT EXISTS edit_slots JSONB;
