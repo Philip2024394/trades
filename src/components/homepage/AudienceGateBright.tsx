@@ -64,17 +64,18 @@ export function AudienceGateBright() {
           />
         </div>
 
-        {/* Image frame — grows to fill remaining height.
-            min-h-0 is required for flex-1 to shrink/grow correctly
-            inside a min-h-[100dvh] flex-col parent (common flex
-            gotcha). Explicit min-heights per breakpoint guarantee
-            the frame always has proper stature: 480px mobile,
-            600px tablet, 720px desktop, capped near-viewport on
-            large screens so the image never gets short-changed. */}
+        {/* Image frame — FULL WIDTH of its parent (1600px max on
+            desktop, 100vw on mobile). Height locked to the hero
+            image's native 16:9 aspect so the picture fills the
+            frame edge-to-edge with zero cropping and zero letterbox.
+            No min-height / max-height caps — the frame is the
+            image's natural size at the current width. */}
         <div
-          className="relative flex-1 min-h-0 min-h-[480px] overflow-hidden rounded-[28px] md:min-h-[600px] md:rounded-[36px] lg:min-h-[720px] xl:min-h-[calc(100dvh-140px)]"
+          className="relative w-full flex-none overflow-hidden rounded-[28px] md:rounded-[36px]"
           style={{
-            boxShadow: `0 40px 80px -30px ${PALETTE.frameShadow}, 0 12px 32px -12px ${PALETTE.frameShadow}`
+            boxShadow: `0 40px 80px -30px ${PALETTE.frameShadow}, 0 12px 32px -12px ${PALETTE.frameShadow}`,
+            aspectRatio: "16 / 9",
+            backgroundColor: PALETTE.cream
           }}
         >
           <Image
@@ -104,9 +105,14 @@ export function AudienceGateBright() {
             }}
           />
 
-          {/* Copy + CTAs overlaid on the image */}
-          <div className="absolute inset-x-0 bottom-0 p-5 md:p-10 lg:p-14">
-            <div className="mx-auto max-w-[880px]">
+          {/* Copy + CTAs overlaid on the image — pinned bottom-right
+              so it never overlaps the ActivityFeedPanel that lives
+              top-left. On mobile the panel is smaller so the copy
+              can go centred; on md+ it shifts right so the two
+              never fight for the same real estate. z-30 keeps the
+              copy in front of the panel (z-20) at all times. */}
+          <div className="absolute inset-x-0 bottom-0 z-30 p-5 md:p-10 lg:p-14">
+            <div className="mx-auto max-w-[880px] md:mx-0 md:ml-auto md:mr-0">
               <h1
                 className="font-black leading-[0.98] tracking-tight text-white"
                 style={{ fontSize: "clamp(30px, 5.6vw, 68px)" }}

@@ -37,7 +37,7 @@ export const GLOBAL_NAV_ITEMS: ReadonlyArray<{
   { href: "/trade-off/yard/canteens",    label: "Canteen",        ariaLabel: "Canteens — trade groups directory" },
   { href: "/trade-off/search?tab=inspiration", label: "The Site",  ariaLabel: "The Site — image discovery" },
   { href: "/tc/trade-center",            label: "Trade Center",   ariaLabel: "Trade Center — the marketplace" },
-  { href: "/apps",                       label: "App Templates",  ariaLabel: "App Templates — the App Warehouse" }
+  { href: "/site/editor",                label: "App Templates",  ariaLabel: "App Templates — Site Editor + template library" }
 ];
 
 /** Right-side slot — parent supplies whatever avatar drawer /

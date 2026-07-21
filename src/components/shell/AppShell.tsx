@@ -544,6 +544,55 @@ function AppDrawer({
           hint: "Palette, shade and feed image for your canteen"
         },
         {
+          // Site Editor — the crown banner + template composer.
+          // Previously unreachable from the merchant drawer; the
+          // audit flagged it as one of the two entire product
+          // families invisible from the dashboard.
+          href: "/site/editor",
+          icon: Sparkles,
+          label: "Site Editor",
+          hint: "Crown banners · templates · cutout · schedule posts"
+        },
+        {
+          // Scheduled posts dashboard — where merchants manage the
+          // queue built via the Site Editor's Schedule button.
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/scheduled`),
+          icon: Bell,
+          label: "Scheduled posts",
+          hint: "Upcoming · posted · failed — reschedule or cancel"
+        },
+        {
+          // Reviews inbox — was orphan pre-audit; merchant had a
+          // respond API but no way to reach it from the drawer.
+          href: "/site-office/apps/reviews",
+          icon: MessageCircle,
+          label: "Reviews inbox",
+          hint: "See + reply to customer reviews"
+        },
+        {
+          // Verification badges — merchants literally couldn't find
+          // how to level up before this link.
+          href: "/trade-off/verified",
+          icon: User,
+          label: "Verification & badges",
+          hint: "ID · insurance · trade body — grow your trust score"
+        },
+        {
+          // Tips library — 10 tip pages that existed as pure orphans.
+          href: "/trade-off/tips",
+          icon: Sparkles,
+          label: "Tips & growth guides",
+          hint: "How to win more work with your Networkers profile"
+        },
+        {
+          // Help centre — was only reachable via a small in-page
+          // HelpInfoButton before this link.
+          href: "/trade-off/help",
+          icon: Bell,
+          label: "Help centre",
+          hint: "Search articles · quick answers · walkthroughs"
+        },
+        {
           href: preserveAuth(`/trade-off/edit/${auth.slug}`),
           icon: User,
           label: "Profile",

@@ -4,6 +4,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Sparkles, Gift, ShieldCheck, Zap, Timer } from "lucide-react";
 import { XratedHeader } from "@/components/xrated/XratedHeader";
 import { XratedFooter } from "@/components/xrated/XratedFooter";
 
@@ -70,7 +71,7 @@ export default function HomeownerSignupPage() {
           </h1>
           <p className="mt-1 text-[13px] text-neutral-600">
             {intent === "create-project"
-              ? "60 seconds. Then you're on the project form."
+              ? "60 seconds. Then you're on the project form. Your SiteBook is ready before your coffee gets cold."
               : "Free forever · No card · Your data belongs to you"}
           </p>
 
@@ -86,6 +87,52 @@ export default function HomeownerSignupPage() {
             <p className="mt-1 text-neutral-600">
               <span className="font-black">Trade or supplier?</span> You don&rsquo;t need a SiteBook &mdash; project owners invite you directly from their post.{" "}
               <Link href="/trade-off" className="font-black text-neutral-900 underline">List your trade profile instead →</Link>
+            </p>
+          </div>
+
+          {/* Founding-member perks strip — subtle value stack that
+              turns the signup from a chore into a small win. Every
+              item is real (documented in the SiteBook build), not
+              marketing air. The "yours to keep" line lands the
+              non-shouty urgency: this is a founding-member window,
+              not a permanent thing. */}
+          <div
+            className="mt-3 rounded-xl border-2 p-3.5"
+            style={{
+              borderColor: BRAND_YELLOW,
+              background: "linear-gradient(135deg, #FFFBEB 0%, #FFF5D6 100%)"
+            }}
+          >
+            <div className="mb-2 flex items-center gap-1.5">
+              <Sparkles size={13} strokeWidth={2.6} style={{ color: BRAND_YELLOW }}/>
+              <p className="text-[10.5px] font-black uppercase tracking-[0.14em] text-[#7A5B00]">
+                Founding member perks · while we&rsquo;re growing
+              </p>
+            </div>
+            <ul className="grid gap-2 sm:grid-cols-2">
+              <PerkItem
+                icon={<Gift size={13} strokeWidth={2.6}/>}
+                title="Free PDF export"
+                sub="Worth £9.99 · yours to keep"
+              />
+              <PerkItem
+                icon={<Zap size={13} strokeWidth={2.6}/>}
+                title="Priority trade responses"
+                sub="24h average vs standard 48h"
+              />
+              <PerkItem
+                icon={<ShieldCheck size={13} strokeWidth={2.6}/>}
+                title="Unlimited warranty vault"
+                sub="Every receipt & certificate, one place"
+              />
+              <PerkItem
+                icon={<Timer size={13} strokeWidth={2.6}/>}
+                title="AI cost check on quotes"
+                sub="Know if a quote is fair before you say yes"
+              />
+            </ul>
+            <p className="mt-2.5 text-[10.5px] leading-snug text-[#7A5B00]">
+              No card. Nothing to cancel. These perks stay on your account for as long as you have it — even after we start charging new signups.
             </p>
           </div>
 
@@ -164,6 +211,26 @@ export default function HomeownerSignupPage() {
       </section>
       <XratedFooter/>
     </main>
+  );
+}
+
+/** Compact perk row for the founding-member strip. Yellow tick chip
+ *  + bold headline + one-line detail. Kept intentionally small so
+ *  the strip doesn't shove the form below the fold. */
+function PerkItem({ icon, title, sub }: { icon: React.ReactNode; title: string; sub: string }) {
+  return (
+    <li className="flex items-start gap-2 rounded-md bg-white/60 p-2">
+      <span
+        className="mt-0.5 flex h-6 w-6 flex-none items-center justify-center rounded-md"
+        style={{ backgroundColor: "#FFB300", color: "#0A0A0A" }}
+      >
+        {icon}
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="text-[12px] font-black leading-tight text-neutral-900">{title}</p>
+        <p className="text-[10.5px] leading-tight text-neutral-600">{sub}</p>
+      </div>
+    </li>
   );
 }
 
