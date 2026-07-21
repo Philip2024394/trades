@@ -474,6 +474,15 @@ function AppDrawer({
   const links = auth
     ? [
         {
+          // Home dashboard — the merchant launchpad. First entry
+          // so it's the default landing spot instead of the
+          // profile form. Renders /api/merchant/dashboard/summary.
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/home`),
+          icon: BarChart3,
+          label: "Home dashboard",
+          hint: "Wallet · inbox · growth · every tool in one tap"
+        },
+        {
           href: preserveAuth("/trade-off/following"),
           icon: Users,
           label: "Following feed",
