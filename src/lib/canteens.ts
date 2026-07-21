@@ -113,6 +113,14 @@ export type Canteen = {
   /** Feed-tile lightness 0-100. Combined with feedTileHue at save
    *  time to produce the feed_tile_color hex. */
   feedTileLightness?: number | null;
+  /** Trust ladder tier for the host listing — Bronze / Silver / Gold
+   *  / Platinum. Cached on the listing row (denormalised nightly by
+   *  /api/cron/recompute-trust-ladders). Public surfaces show a
+   *  small chip when tier > bronze. */
+  trustTier?: "bronze" | "silver" | "gold" | "platinum" | null;
+  /** Custom badge hex for Platinum merchants who purchased the £2.99
+   *  unlock. Null = use the tier default colour. */
+  trustBadgeColor?: string | null;
 };
 
 /** Live offer on a make-me-an-offer listing. Displayed inline on the

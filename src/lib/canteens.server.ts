@@ -95,7 +95,23 @@ export async function canteenBySlugFromDb(slug: string): Promise<Canteen | null>
     return canteenBySlugMock(slug);
   }
   if (!res.data) return canteenBySlugMock(slug);
-  return shapeCanteen(res.data);
+  const canteen = shapeCanteen(res.data);
+
+  // Enrich with trust ladder tier + custom badge colour from the
+  // host merchant's listing row. Kept as a follow-up query so the
+  // canteens table doesn't need to denormalise these fields (they
+  // move with the listing, not the canteen).
+  const listingRes = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .select("trust_tier, trust_badge_color")
+    .eq("slug", canteen.hostSlug)
+    .maybeSingle();
+  if (listingRes.data) {
+    canteen.trustTier       = (listingRes.data.trust_tier as Canteen["trustTier"]) ?? null;
+    canteen.trustBadgeColor = (listingRes.data.trust_badge_color as string | null) ?? null;
+  }
+
+  return canteen;
 }
 
 // ─── Members ──────────────────────────────────────────────

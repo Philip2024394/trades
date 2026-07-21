@@ -13,6 +13,7 @@ import { BRAND_YELLOW, BRAND_BLACK, BRAND_GREEN_DARK } from "@/lib/brand/tokens"
 import { VerifiedContactButton } from "@/components/xrated/VerifiedContactButton";
 import { CanteenBusinessCardModal } from "@/components/xrated/yard/CanteenBusinessCardModal";
 import { CanteenJoinRequestButton } from "@/components/xrated/yard/CanteenJoinRequestButton";
+import { TrustBadge } from "@/components/trust/TrustBadge";
 
 const CREAM = "#FBF6EC";
 
@@ -150,6 +151,7 @@ export function CanteenHeader({
           >
             {canteen.tradeLabel}
           </span>
+          <TrustBadge tier={canteen.trustTier} color={canteen.trustBadgeColor} size="md"/>
         </div>
 
         {/* Asymmetric two-column: H1 + tagline on the LEFT, floating

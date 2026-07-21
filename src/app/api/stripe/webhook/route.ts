@@ -248,6 +248,58 @@ async function handleSiteSubscriptionDeleted(sub: Stripe.Subscription): Promise<
   }
 }
 
+/** Trust Ladder — merchant paid £4.99 to jump the manual insurance
+ *  verification queue. Sets trust_skip_queue_paid_at, which makes
+ *  the `insurance_verified` criterion resolve true on the next
+ *  ladder read. Never overwrites — idempotent on retry. */
+async function handleTrustSkipQueueCompleted(
+  session: Stripe.Checkout.Session,
+  meta: Stripe.Metadata
+): Promise<void> {
+  const merchantSlug = String(meta.merchant_slug ?? "").trim();
+  if (!merchantSlug) {
+    console.warn("[stripe/webhook] trust.skip_queue without merchant_slug; skipping", { sessionId: session.id });
+    return;
+  }
+  await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .update({ trust_skip_queue_paid_at: new Date().toISOString() })
+    .eq("slug", merchantSlug)
+    .is("trust_skip_queue_paid_at", null);
+  await supabaseAdmin
+    .from("hammerex_merchant_trust_history")
+    .insert({
+      merchant_slug: merchantSlug,
+      from_tier:     "unchanged",
+      to_tier:       "unchanged",
+      reason:        "skip_queue_paid",
+      score_before:  null,
+      score_after:   null
+    });
+}
+
+/** Trust Ladder — merchant paid £2.99 for Platinum custom badge
+ *  colour unlock. Marks the entitlement; the picker page reads
+ *  the corresponding checkout row and writes the chosen hex. */
+async function handleTrustCustomBadgeCompleted(
+  session: Stripe.Checkout.Session,
+  meta: Stripe.Metadata
+): Promise<void> {
+  const merchantSlug = String(meta.merchant_slug ?? "").trim();
+  if (!merchantSlug) {
+    console.warn("[stripe/webhook] trust.custom_badge without merchant_slug; skipping", { sessionId: session.id });
+    return;
+  }
+  // We mark the unlock by writing a sentinel colour (#FFB300 —
+  // the tier default) so the picker page knows the merchant has
+  // paid. The picker overwrites this the moment they choose.
+  await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .update({ trust_badge_color: "#FFB300" })
+    .eq("slug", merchantSlug)
+    .is("trust_badge_color", null);
+}
+
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
@@ -271,6 +323,14 @@ async function handleCheckoutCompleted(
   }
   if (meta.kind === "site.subscribe") {
     await handleSiteSubscribeCompleted(session, meta);
+    return;
+  }
+  if (meta.kind === "trust.skip_queue") {
+    await handleTrustSkipQueueCompleted(session, meta);
+    return;
+  }
+  if (meta.kind === "trust.custom_badge") {
+    await handleTrustCustomBadgeCompleted(session, meta);
     return;
   }
 

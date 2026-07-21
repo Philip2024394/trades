@@ -14,6 +14,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Wallet, Bell, TrendingUp, TrendingDown, CheckCircle2, Sparkles, Wand2, Clock, MessageCircle, ShoppingBag, Crown, ArrowRight, Zap, ChevronRight } from "lucide-react";
+import { TrustLadderPanel } from "./TrustLadderPanel";
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK  = "#0A0A0A";
@@ -220,6 +221,9 @@ export function HomeLaunchpad({ slug }: { slug: string }) {
           </div>
         )}
       </div>
+
+      {/* ─── Trust ladder panel (ambition driver + monetisation) ─ */}
+      <TrustLadderPanel slug={slug}/>
 
       {/* ─── Primary CTA — Post something (biggest button) ───── */}
       <div className="rounded-2xl border-2 p-4" style={{ borderColor: BRAND_GREEN, backgroundColor: "#F0FDF4" }}>
