@@ -4,6 +4,10 @@ Canonical architecture specification for the Trade OS, the platform layer that t
 
 Written as a multi-volume specification per the "Architecture Specification Series" approach — the ChatGPT-generated architecture is split into 4 volumes to avoid single-response context degradation.
 
+## 🔒 Master Reference (read first)
+
+- **[Engineering Principles](./PRINCIPLES.md)** — **CONFIDENTIAL · Trade Secret**. The Master Rule (*"save the recipe, not the image"*) + 11 governing principles. Read this before anything else. If any spec doc contradicts this file, this file wins.
+
 ## Volume Index
 
 ### ✅ V1 — Core Platform (complete, 4 parts)
