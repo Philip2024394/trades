@@ -8,6 +8,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { recordGap } from "@/lib/mate/gaps";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,5 +34,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     .eq("role", "assistant");
 
   if (error) return NextResponse.json({ ok: false, error: error.message }, { status: 500 });
+
+  // Thumbs-down → log a knowledge gap so admins can teach me.
+  // Fire-and-forget; the signal is already saved on the message row.
+  if (signal === -1) {
+    recordGap(id).catch((e) => console.error("[mate/feedback] recordGap failed:", e));
+  }
+
   return NextResponse.json({ ok: true });
 }

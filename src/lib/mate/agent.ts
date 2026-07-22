@@ -66,17 +66,27 @@ export type AskMateResult = {
   uiCards:          MateUiCard[];
 };
 
+const HARD_HINTS = [
+  "should i", "why did", "analyse", "analyze", "compare",
+  "strategy", "recommend", "explain why", "break down",
+  "how am i doing", "growth", "trend"
+];
+
 /** Choose the cheaper Haiku unless the question hints at analysis. */
 function pickModel(question: string): string {
   const q = question.toLowerCase();
-  const hardHints = [
-    "should i", "why did", "analyse", "analyze", "compare",
-    "strategy", "recommend", "explain why", "break down",
-    "how am i doing", "growth", "trend"
-  ];
-  if (hardHints.some((h) => q.includes(h))) return MODEL_OPUS;
+  if (HARD_HINTS.some((h) => q.includes(h))) return MODEL_OPUS;
   if (question.length > 260) return MODEL_OPUS;
   return MODEL_HAIKU;
+}
+
+/** Extended thinking budget — only on Opus, only for genuine analysis
+ *  asks. 4000 tokens is enough headroom for compare/why-did questions
+ *  without ballooning cost. Returns 0 to disable. */
+function pickThinkingBudget(model: string, question: string): number {
+  if (model !== MODEL_OPUS) return 0;
+  const q = question.toLowerCase();
+  return HARD_HINTS.some((h) => q.includes(h)) ? 4000 : 0;
 }
 
 function knowledgeToText(hits: KnowledgeHit[]): string {
@@ -143,6 +153,10 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
 
   const tools = toolsForSurface(params.surface);
 
+  const thinkingBudget = pickThinkingBudget(model, params.question);
+  // max_tokens must exceed thinking budget so the actual answer has
+  // room. When thinking is on we allow 700 for the reply on top.
+  const maxTokens = thinkingBudget > 0 ? thinkingBudget + 700 : 700;
   const run = await runAgentic({
     cachedSystem,
     system:       freshSystem,
@@ -155,8 +169,9 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
       slug:        params.extras.slug,
       homeownerId: params.extras.homeownerId
     },
-    maxTokens:    700,
-    temperature:  0.35
+    maxTokens,
+    temperature:  0.35,
+    thinkingBudgetTokens: thinkingBudget
   });
 
   const latencyMs = Date.now() - started;

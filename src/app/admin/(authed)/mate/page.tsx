@@ -93,9 +93,14 @@ export default async function MateAdminPage() {
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-5 p-6">
-      <div>
-        <h1 className="text-2xl font-black">Mate · Observatory</h1>
-        <p className="text-[13px] text-neutral-600">Every conversation, feedback signal, and cost line for our AI agent.</p>
+      <div className="flex items-baseline justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-black">Mate · Observatory</h1>
+          <p className="text-[13px] text-neutral-600">Every conversation, feedback signal, and cost line for our AI agent.</p>
+        </div>
+        <Link href="/admin/mate/gaps" className="rounded-full bg-neutral-900 px-3 py-1.5 text-[11px] font-black text-white hover:bg-neutral-800">
+          Knowledge gaps →
+        </Link>
       </div>
 
       {/* KPIs */}

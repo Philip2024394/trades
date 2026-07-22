@@ -44,13 +44,26 @@ const ALLOWED_IMAGE_TYPES: readonly string[] = [
 ];
 
 // Fair-use daily caps by surface. Prevents runaway cost.
-// Merchant Pro tier bypasses this — check merchant.tier for
-// unlimited (Business + Works).
+// Business + Works merchants are uncapped (see uncappedMerchantTier).
 const DAILY_CAP: Record<string, number> = {
   merchant:  50,
   homeowner: 20,
   visitor:   10
 };
+const UNCAPPED_TIERS = new Set(["business", "works"]);
+
+/** Read the merchant's tier to decide if they're on unlimited Mate.
+ *  Returns null when the merchant row can't be found (fall through
+ *  to standard cap). */
+async function isMerchantUncapped(slug: string): Promise<boolean> {
+  const { data } = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .select("tier")
+    .eq("slug", slug)
+    .maybeSingle();
+  const tier = String(data?.tier ?? "").toLowerCase();
+  return UNCAPPED_TIERS.has(tier);
+}
 
 function hashIp(req: NextRequest): string {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim()
@@ -178,11 +191,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "not_authenticated" }, { status: 401 });
   }
 
-  const cap = await checkDailyCap(user.key, surface);
-  if (cap.over) {
-    return NextResponse.json({
-      ok: false, error: "daily_cap_reached", used: cap.used, cap: cap.cap
-    }, { status: 429 });
+  const uncapped = surface === "merchant" ? await isMerchantUncapped(user.key) : false;
+  if (!uncapped) {
+    const cap = await checkDailyCap(user.key, surface);
+    if (cap.over) {
+      return NextResponse.json({
+        ok: false, error: "daily_cap_reached", used: cap.used, cap: cap.cap,
+        upgrade_hint: surface === "merchant" ? "Business or The Works unlocks unlimited Mate." : null
+      }, { status: 429 });
+    }
   }
 
   // Get-or-create the conversation row

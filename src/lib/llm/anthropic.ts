@@ -19,6 +19,7 @@ const ANTHROPIC_VERSION = "2023-06-01";
  *  content is still supported for the simple completion path. */
 export type AnthropicContentBlock =
   | { type: "text"; text: string }
+  | { type: "thinking"; thinking: string; signature?: string }
   | { type: "tool_use"; id: string; name: string; input: Record<string, unknown> }
   | { type: "tool_result"; tool_use_id: string; content: string; is_error?: boolean }
   | { type: "image"; source: { type: "base64"; media_type: string; data: string } };
@@ -141,6 +142,9 @@ export type AgenticInput = CompleteInput & {
   /** Force a specific tool by name, "auto" lets the model choose,
    *  "any" requires the model to call at least one tool. */
   toolChoice?: "auto" | "any" | { type: "tool"; name: string };
+  /** Extended thinking budget in tokens. Opus 4.7 spends up to this
+   *  many tokens reasoning before answering. Unset = no thinking. */
+  thinkingBudgetTokens?: number;
 };
 
 export type AgenticResult = {
@@ -182,6 +186,11 @@ export async function completeAgentic(input: AgenticInput): Promise<AgenticResul
       body.tool_choice = input.toolChoice
         ? (typeof input.toolChoice === "string" ? { type: input.toolChoice } : input.toolChoice)
         : { type: "auto" };
+    }
+    if (input.thinkingBudgetTokens && input.thinkingBudgetTokens > 0) {
+      body.thinking = { type: "enabled", budget_tokens: input.thinkingBudgetTokens };
+      // Thinking mode requires temperature=1
+      body.temperature = 1;
     }
 
     const res = await fetch(ANTHROPIC_URL, {

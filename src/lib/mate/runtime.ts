@@ -61,6 +61,9 @@ export type AgenticRunInput = {
   ctx:          MateToolContext;
   maxTokens?:   number;
   temperature?: number;
+  /** Opus-only extended thinking budget. When set the model reasons
+   *  before answering — worth it for analytics / strategy asks. */
+  thinkingBudgetTokens?: number;
 };
 
 function extractText(content: AnthropicContentBlock[]): string {
@@ -101,7 +104,8 @@ export async function runAgentic(input: AgenticRunInput): Promise<AgenticRunResu
       toolChoice:   wireTools.length > 0 ? "auto" : undefined,
       model:        input.model,
       maxTokens:    input.maxTokens  ?? 1024,
-      temperature:  input.temperature ?? 0.35
+      temperature:  input.temperature ?? 0.35,
+      thinkingBudgetTokens: input.thinkingBudgetTokens
     });
 
     if (!res) {
