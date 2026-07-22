@@ -91,7 +91,7 @@ export const LOGO_STYLES: LogoStyle[] = [
     tagline:      "Clean vector, one accent colour",
     description:  "Minimal flat-vector mark with a single accent colour and clean sans typography. Scales perfectly on websites, apps and embroidery. Good primary logo choice paired with a 3D variant for marketing.",
     gradient:     ["#FBF6EC", "#FFB300"],
-    suitedTrades: ["carpenter", "kitchen-fitter", "bathroom-fitter", "tiler", "painter"],
+    suitedTrades: ["carpenter", "bricklayer", "kitchen-fitter", "bathroom-fitter", "tiler", "painter"],
     vibe:         "Minimal",
     samples: [
       // Carpenter / joinery vector variants (9)
@@ -103,7 +103,17 @@ export const LOGO_STYLES: LogoStyle[] = [
       { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcv.png" },
       { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvc.png" },
       { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcc.png" },
-      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvccc.png" }
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvccc.png" },
+      // Bricklayer vector variants (9)
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccdd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddff.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfff.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffdd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffddd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffdddd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffddddd.png" },
+      { tradeSlug: "bricklayer", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcccddfffddddddd.png" }
     ]
   },
   {
