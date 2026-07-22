@@ -18,6 +18,8 @@ import { manifest } from "./manifest";
 import { compile, buildVehicleIR } from "@/lib/design/compiler";
 import { generateImage } from "@/lib/openai/imageGen";
 import { parseBrandRecord } from "@/lib/design/brand/schema";
+import { runLoop } from "@/lib/design/critic/regenerate-loop";
+import type { CompiledPrompt } from "@/lib/design/compiler";
 
 const generator: AppGenerator = async (input) => {
   const t0 = Date.now();
@@ -103,11 +105,44 @@ const generator: AppGenerator = async (input) => {
     };
   }
 
+  // Run through the Design Critic + auto-regenerate loop. Merchant
+  // never sees output below score 92. Loop caps at 3 attempts.
+  const loop = await runLoop({
+    criticInput: {
+      brand_snapshot:   input.brand_snapshot,
+      capability_slug:  manifest.id,
+      merchant_request: input.user_prompt ?? ""
+    },
+    initialPrompt: result.prompt,
+    initialImage:  gen,
+    regenerate: async (prevPrompt: CompiledPrompt, feedback: string[]) => {
+      // Re-run compile with feedback woven into the IR as memory hints.
+      // Real "compile with modification" pattern lands with the
+      // Orchestrator wiring — for now we just re-fire generation with
+      // feedback appended to the user prompt.
+      const feedbackText = feedback.length
+        ? `\n\nMODIFICATION_REQUEST:\n- ${feedback.join("\n- ")}`
+        : "";
+      const nextGen = await generateImage({
+        prompt:  prevPrompt.userPrompt + feedbackText,
+        quality: prevPrompt.qualityProfile === "hd" ? "hd" : "medium",
+        size:    "1536x1024"
+      });
+      return { prompt: prevPrompt, image: nextGen ?? gen };
+    }
+  });
+
+  const final = loop.final;
+  const finalImage = (final.imageResult as typeof gen | null) ?? gen;
+  const totalCost = finalImage
+    ? Math.ceil(finalImage.usage_usd_estimate * 0.79 * 100) * loop.rounds.length
+    : 0;
+
   return {
     ok:          true,
-    asset_urls:  gen.images.map((_, i) => `b64:image_${i}`),   // caller persists to Storage
-    prompt_used: result.prompt.userPrompt,
-    cost_pence:  Math.ceil(gen.usage_usd_estimate * 0.79 * 100),
+    asset_urls:  finalImage?.images.map((_, i) => `b64:image_${i}`) ?? [],
+    prompt_used: final.prompt.userPrompt,
+    cost_pence:  totalCost,
     latency_ms:  Date.now() - t0
   };
 };
