@@ -91,9 +91,20 @@ export const LOGO_STYLES: LogoStyle[] = [
     tagline:      "Clean vector, one accent colour",
     description:  "Minimal flat-vector mark with a single accent colour and clean sans typography. Scales perfectly on websites, apps and embroidery. Good primary logo choice paired with a 3D variant for marketing.",
     gradient:     ["#FBF6EC", "#FFB300"],
-    suitedTrades: ["kitchen-fitter", "bathroom-fitter", "tiler", "painter"],
+    suitedTrades: ["carpenter", "kitchen-fitter", "bathroom-fitter", "tiler", "painter"],
     vibe:         "Minimal",
-    samples:      []
+    samples: [
+      // Carpenter / joinery vector variants (9)
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvdd.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddc.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddcc.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccv.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvc.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcv.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvc.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvcc.png" },
+      { tradeSlug: "carpenter", imageUrl: "https://ik.imagekit.io/5vv5pw26q/Untitledzxczxdddddddddfdasdddfffdddddxdsdxczxcxcxccccddcccccccccvddvvvdvddccvcvccc.png" }
+    ]
   },
   {
     slug:         "vintage-workshop",
