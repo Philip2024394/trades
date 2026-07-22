@@ -42,7 +42,9 @@ import {
   Wrench,
   Circle,
   Crown,
-  ShoppingCart
+  ShoppingCart,
+  Printer,
+  Trophy
 } from "lucide-react";
 
 // `token` is `null` when the session came from the signed cookie
@@ -597,6 +599,22 @@ function AppDrawer({
           icon: Crown,
           label: "Trust ladder",
           hint: "Bronze → Platinum · unlock perks + algorithmic boost"
+        },
+        {
+          // Free print assets — site posters, Google review cards,
+          // business cards. Signup magnet + upsell surface.
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/assets`),
+          icon: Printer,
+          label: "Free print assets",
+          hint: "Site posters · Google review cards · business cards"
+        },
+        {
+          // Featured slot auction — weekly Trade Center placement.
+          // £9.99 minimum bid. Sunday 23:55 UTC close.
+          href: preserveAuth(`/trade-off/edit/${auth.slug}/featured-slots`),
+          icon: Trophy,
+          label: "Featured slots",
+          hint: "Bid for the top of Trade Center · weekly auction"
         },
         {
           // Pricing hub — previously only surfaced via inline "Upgrade"

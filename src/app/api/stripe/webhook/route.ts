@@ -300,6 +300,65 @@ async function handleTrustCustomBadgeCompleted(
     .is("trust_badge_color", null);
 }
 
+/** Merchant Asset — £2.99 unlock to remove the "Powered by The
+ *  Networkers" footer on a specific asset. Sets footer_removed_paid_at
+ *  on the asset row so subsequent PDF renders skip the footer. */
+async function handleAssetFooterRemoval(
+  session: Stripe.Checkout.Session,
+  meta:    Stripe.Metadata
+): Promise<void> {
+  const assetId = String(meta.asset_id ?? "").trim();
+  if (!assetId) {
+    console.warn("[stripe/webhook] asset.footer_removal missing asset_id; skipping", { sessionId: session.id });
+    return;
+  }
+  await supabaseAdmin
+    .from("hammerex_merchant_assets")
+    .update({ footer_removed_paid_at: new Date().toISOString() })
+    .eq("id", assetId)
+    .is("footer_removed_paid_at", null);
+}
+
+/** Merchant Asset — £1.99 unlock to skip the 30-day refresh
+ *  cooldown once. Sets instant_refresh_paid_at on the asset;
+ *  consumed on the next successful /generate. */
+async function handleAssetInstantRefresh(
+  session: Stripe.Checkout.Session,
+  meta:    Stripe.Metadata
+): Promise<void> {
+  const assetId = String(meta.asset_id ?? "").trim();
+  if (!assetId) {
+    console.warn("[stripe/webhook] asset.instant_refresh missing asset_id; skipping", { sessionId: session.id });
+    return;
+  }
+  await supabaseAdmin
+    .from("hammerex_merchant_assets")
+    .update({ instant_refresh_paid_at: new Date().toISOString() })
+    .eq("id", assetId)
+    .is("instant_refresh_paid_at", null);
+}
+
+/** Featured-slot auction — merchant paid for a 7-day Trade Center
+ *  featured placement. Marks the bid as paid; the weekly cron
+ *  picks the highest-paid bid as the week's winner. */
+async function handleFeaturedSlotBidPaid(
+  session: Stripe.Checkout.Session,
+  meta:    Stripe.Metadata
+): Promise<void> {
+  const bidId = String(meta.bid_id ?? "").trim();
+  if (!bidId) {
+    console.warn("[stripe/webhook] featured_slot.bid missing bid_id; skipping", { sessionId: session.id });
+    return;
+  }
+  await supabaseAdmin
+    .from("hammerex_featured_slot_bids")
+    .update({
+      paid_at:           new Date().toISOString(),
+      stripe_session_id: session.id
+    })
+    .eq("id", bidId);
+}
+
 async function handleCheckoutCompleted(
   session: Stripe.Checkout.Session
 ): Promise<void> {
@@ -331,6 +390,18 @@ async function handleCheckoutCompleted(
   }
   if (meta.kind === "trust.custom_badge") {
     await handleTrustCustomBadgeCompleted(session, meta);
+    return;
+  }
+  if (meta.kind === "asset.footer_removal") {
+    await handleAssetFooterRemoval(session, meta);
+    return;
+  }
+  if (meta.kind === "asset.instant_refresh") {
+    await handleAssetInstantRefresh(session, meta);
+    return;
+  }
+  if (meta.kind === "featured_slot.bid") {
+    await handleFeaturedSlotBidPaid(session, meta);
     return;
   }
 
