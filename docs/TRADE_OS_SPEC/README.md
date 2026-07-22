@@ -19,11 +19,21 @@ The kernel.
 - **[V1 Part 3 — Studio App Manifest v2](./V1_PART_3_APP_MANIFEST.md)** — plugin contract for every Studio App, dependencies, brand fields, outputs, permissions, event subscriptions, generator, storage, exports, pricing, AI config, QA. Includes Van Wrap App reference implementation
 - **[V1 Part 4 — Event Bus](./V1_PART_4_EVENT_BUS.md)** — central nervous system. Event envelope, 6 domains, subscriber registration, ordering per (merchant, brand), retry + DLQ, event store append-only, replay, versioning, correlation IDs
 
-### ⏳ V2 — Merchant Experience (pending)
-The application layer. Brand Vault · Version UX · Capability Store · Studio Build Order · Pricing · Export.
+### 🟡 V2 — Merchant Experience (in flight)
+The application layer.
 
-### ⏳ V3 — AI Intelligence (pending)
-The moat. AI Memory · Design Critic · Prompt Compiler · DIL v2 · Design Token Engine · Multi-Agent Orchestration.
+- **[V2 Part 5 — Brand Vault (Merchant Home Screen)](./V2_PART_5_BRAND_VAULT.md)** — six-zone home screen: Hero + Brand Health + Quick Actions + My Brand + My Assets + Recent Activity + AI Recommendations
+- **[V2 Part 6 — Version UX](./V2_PART_6_VERSION_UX.md)** — preview + approval + rollback flow, Brand Impact Map, three regeneration modes
+- **[V2 Part 7 — Capability Store](./V2_PART_7_CAPABILITY_STORE.md)** — 12 Studios, business-outcome bundles, Business Roadmap
+- **[V2 Part 8 — Build Order](./V2_PART_8_BUILD_ORDER.md)** — dependency-first construction, revenue-first surfacing, Asset Library Studio
+
+Remaining V2 parts: Pricing (Q9) · Export (Q10).
+
+### 🟡 V3 — AI Intelligence + Extended Knowledge
+
+- **[V3 Extended — Additional Knowledge Areas 18-32](./V3_ADDITIONAL_KNOWLEDGE.md)** — Design Language System · Trade Intelligence · Vehicle Intelligence · Print Intelligence · Layout Grammar Engine · Merchant Psychology · Conversion Intelligence · AI Cost Optimiser · Brand Evolution · Competitive Intelligence · Prompt Analytics · AI Model Router · Creative Director Knowledge Base · Design Pattern Library · Knowledge Graph. Closing rule elevated to PRINCIPLES.md Principle 12.
+
+Remaining V3 parts: Memory (Q11) · Design Critic (Q12) · Prompt Compiler (Q13) · DIL v2 (Q14) · Design Token Engine (Q15) · Multi-Agent Orchestration (Q16).
 
 ### ⏳ V4 — Future Vision (pending, review-only)
 Adobe 2030 strategic doc.

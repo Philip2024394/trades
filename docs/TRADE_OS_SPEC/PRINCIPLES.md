@@ -1,5 +1,36 @@
 # Trade OS · Engineering Principles
 
+---
+
+## 🎯 The Mission (put this at the top of your engineering handbook)
+
+**By 2030 a merchant should not think *"I'm using AI".* They should think *"My business has a creative department."***
+
+Trade OS becomes their:
+- Brand Manager
+- Creative Director
+- Marketing Manager
+- Vehicle Wrap Designer
+- Graphic Designer
+- Print Production Manager
+- Website Designer
+- Design Archivist
+- Quality Controller
+
+All working from the same Brand DNA.
+
+## 📜 The Architectural Commandment
+
+> **Every feature must increase the intelligence of the platform, not merely the number of things it can generate.**
+>
+> **AI models are interchangeable. The Intelligence Layer is not.**
+>
+> Our mission is to build the world's best Creative Operating System for trades — one that understands businesses, learns continuously, preserves brand consistency, and orchestrates the best AI tools to deliver professional outcomes. Every architectural decision should strengthen that Intelligence Layer. **That is the enduring competitive advantage.**
+
+Every PR bounces if it fails this test: *"does this deepen the intelligence layer, or does it just wrap another model?"* If the honest answer is the latter, the PR bounces.
+
+---
+
 > ### 🔒 CONFIDENTIAL · Trade Secret · Do Not Distribute
 >
 > This document codifies the architectural rules that give Networkers Studio its structural moat. They are the reason the platform will outperform image-generation wrappers and general-purpose design tools.
@@ -85,6 +116,23 @@ Cache prompts by compiler version + input hash. Cache Brand DNA reads by version
 
 ### 11. Every image is a photo of the recipe
 Corollary to the Master Rule. Treat generated images the same way you'd treat a photograph of a physical thing: proof of existence, cached representation, replaceable. The thing itself is the recipe. If your code loses an image URL and can't regenerate from stored recipe → the code is broken.
+
+### 12. Build a Creative Operating System, not an AI image generator
+The competitive advantage is not better prompts, better images, or better AI models — those will all become commodities.
+
+**The moat is the intelligence layer between the merchant and the AI.** That layer knows:
+
+- Who the merchant is
+- What trade they're in
+- What has worked before
+- What assets already exist
+- What should change
+- What should stay consistent
+- Which AI model is best for the task
+- How to judge the result
+- How to evolve the brand over years
+
+Very difficult to copy because it becomes proprietary knowledge, not dependence on any single AI model. This is the closing principle from the Chief Architect review (V3 additional knowledge areas 18-32) — it applies at the architectural level to every future feature decision. Every proposed feature must answer: *"does this deepen the intelligence layer, or does it just wrap another model?"* Prefer the former.
 
 ---
 
