@@ -11,7 +11,7 @@
 //   • Public canteen page      → surface="visitor" + canteenSlug
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Loader2, Paperclip, Image as ImageIcon } from "lucide-react";
+import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Loader2, Paperclip, Image as ImageIcon, Bell } from "lucide-react";
 
 const ALLOWED_IMAGE = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_IMAGE_BYTES = 2_500_000; // 2.5MB raw before base64 inflation
@@ -80,6 +80,17 @@ type PendingImage = {
   size:       number;
 };
 
+type Signal = {
+  id:           string;
+  kind:         string;
+  priority:     1 | 2 | 3;
+  title:        string;
+  body:         string;
+  action_url:   string | null;
+  action_label: string | null;
+  metadata:     Record<string, unknown>;
+};
+
 export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickPrompts }: Props) {
   const [open, setOpen]         = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -88,8 +99,39 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
   const [busy, setBusy]         = useState(false);
   const [err, setErr]           = useState<string | null>(null);
   const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
+  const [signals, setSignals]   = useState<Signal[]>([]);
+  const [showSignals, setShowSignals] = useState(false);
   const fileRef                 = useRef<HTMLInputElement>(null);
   const scrollRef               = useRef<HTMLDivElement>(null);
+
+  // Poll signals on mount + every 5 min. Only for merchant/homeowner —
+  // visitors don't get proactive nudges (anonymous).
+  useEffect(() => {
+    if (surface === "visitor") return;
+    let timer: ReturnType<typeof setInterval> | null = null;
+    async function pullSignals() {
+      try {
+        const q = new URLSearchParams({ surface, ...(homeownerId ? { homeowner_id: homeownerId } : {}) });
+        const res  = await fetch(`/api/mate/signals?${q.toString()}`);
+        const json = await res.json();
+        if (json.ok) setSignals(json.signals ?? []);
+      } catch {}
+    }
+    pullSignals();
+    timer = setInterval(pullSignals, 5 * 60 * 1000);
+    return () => { if (timer) clearInterval(timer); };
+  }, [surface, homeownerId]);
+
+  async function markSignal(id: string, action: "read" | "actioned" | "dismissed") {
+    setSignals((prev) => prev.filter((s) => s.id !== id));
+    try {
+      await fetch("/api/mate/signals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ signal_id: id, action, surface, homeowner_id: homeownerId })
+      });
+    } catch {}
+  }
 
   // Load persisted conv id on mount
   useEffect(() => {
@@ -214,7 +256,7 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
       {/* Floating chip */}
       {!open && (
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => { setOpen(true); if (signals.length > 0) setShowSignals(true); }}
           aria-label="Chat with Mate"
           className="fixed bottom-4 right-4 z-40 flex h-14 w-14 items-center justify-center rounded-full shadow-xl transition hover:scale-105 active:scale-95"
           style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}
@@ -222,6 +264,15 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
           <span className="absolute -top-1 -right-1 rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-wider shadow" style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}>
             Mate
           </span>
+          {signals.length > 0 && (
+            <span
+              className="absolute -bottom-1 -right-1 flex h-5 min-w-5 items-center justify-center rounded-full px-1 text-[10px] font-black shadow"
+              style={{ backgroundColor: "#DC2626", color: "white" }}
+              aria-label={`${signals.length} things to know`}
+            >
+              {signals.length}
+            </span>
+          )}
           <MessageCircle size={22} strokeWidth={2.3}/>
         </button>
       )}
@@ -249,8 +300,60 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
             </button>
           </div>
 
+          {/* Signals panel — shown when there are unread + user tapped */}
+          {showSignals && signals.length > 0 && (
+            <div className="border-b bg-amber-50 p-2">
+              <div className="mb-1 flex items-center justify-between">
+                <p className="flex items-center gap-1 text-[10px] font-black uppercase tracking-wider text-amber-900">
+                  <Bell size={11}/> Things to know
+                </p>
+                <button onClick={() => setShowSignals(false)} className="text-[10px] font-black uppercase tracking-wider text-amber-900/60 hover:text-amber-900">Hide</button>
+              </div>
+              <div className="space-y-1.5">
+                {signals.map((s) => (
+                  <div key={s.id} className="rounded-lg border border-amber-200 bg-white p-2">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <p className="text-[12px] font-black text-neutral-900">{s.title}</p>
+                      {s.priority === 1 && (
+                        <span className="rounded-full bg-red-100 px-1.5 py-0.5 text-[8px] font-black uppercase tracking-wider text-red-800">Priority</span>
+                      )}
+                    </div>
+                    <p className="mt-0.5 text-[11px] text-neutral-700">{s.body}</p>
+                    <div className="mt-1.5 flex items-center gap-1">
+                      {s.action_url && (
+                        <a
+                          href={s.action_url}
+                          onClick={() => markSignal(s.id, "actioned")}
+                          className="rounded-full px-2 py-0.5 text-[10px] font-black"
+                          style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+                        >
+                          {s.action_label ?? "Open"}
+                        </a>
+                      )}
+                      <button
+                        onClick={() => markSignal(s.id, "dismissed")}
+                        className="rounded-full px-2 py-0.5 text-[10px] font-black text-neutral-500 hover:text-neutral-800"
+                      >
+                        Not now
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Messages */}
           <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto p-3">
+            {showGreeting && !showSignals && signals.length > 0 && (
+              <button
+                onClick={() => setShowSignals(true)}
+                className="flex w-full items-center justify-between rounded-2xl border border-amber-200 bg-amber-50 p-2 text-left text-[12px] text-amber-900 hover:bg-amber-100"
+              >
+                <span className="flex items-center gap-2"><Bell size={12}/> {signals.length} thing{signals.length === 1 ? "" : "s"} to know</span>
+                <span className="text-[10px] font-black uppercase tracking-wider">Show</span>
+              </button>
+            )}
             {showGreeting && (
               <div className="rounded-2xl bg-neutral-100 p-3 text-[13px] text-neutral-800">
                 {greeting ?? DEFAULT_GREETINGS[surface]}

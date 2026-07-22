@@ -43,6 +43,7 @@
     { "path": "/api/cron/publish-scheduled-posts",  "schedule": "*/5 * * * *" },
     { "path": "/api/cron/recompute-trust-ladders",  "schedule": "30 2 * * *" },
     { "path": "/api/cron/custom-domain-billing",    "schedule": "15 3 * * *" },
-    { "path": "/api/cron/featured-slot-award",      "schedule": "55 23 * * 0" }
+    { "path": "/api/cron/featured-slot-award",      "schedule": "55 23 * * 0" },
+    { "path": "/api/cron/mate-proactive",           "schedule": "0 5 * * *" }
   ]
 }
