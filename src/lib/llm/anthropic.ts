@@ -222,6 +222,174 @@ export async function completeAgentic(input: AgenticInput): Promise<AgenticResul
   }
 }
 
+// ─── Streaming ─────────────────────────────────────────────────
+//
+// Async-generator streaming for agentic turns. Yields one event per
+// meaningful state change (text delta, tool started, tool input
+// finished, thinking delta) plus a final `done` event carrying the
+// reassembled content array + usage + stop reason. The Mate runtime
+// consumes this to interleave tool execution with visible typing.
+
+export type AgenticStreamEvent =
+  | { type: "text_delta";     text: string }
+  | { type: "thinking_delta"; text: string }
+  | { type: "tool_start";     id: string; name: string }
+  | { type: "tool_input";     id: string; input: Record<string, unknown> }
+  | { type: "done";           content: AnthropicContentBlock[]; stopReason: string; usage: CompleteResult["usage"] }
+  | { type: "error";          error: string };
+
+/** Streaming variant of completeAgentic. Yields events as they land.
+ *  Reassembles the final content array so the runtime can execute
+ *  tool_use blocks + loop. Never throws — yields error events. */
+export async function* completeAgenticStream(input: AgenticInput): AsyncGenerator<AgenticStreamEvent> {
+  const key = process.env.ANTHROPIC_API_KEY;
+  if (!key) { yield { type: "error", error: "missing_api_key" }; return; }
+
+  const systemField: unknown = input.cachedSystem
+    ? [
+        { type: "text", text: input.cachedSystem, cache_control: { type: "ephemeral" } },
+        { type: "text", text: input.system }
+      ]
+    : input.system;
+
+  const headers: Record<string, string> = {
+    "Content-Type":       "application/json",
+    "x-api-key":          key,
+    "anthropic-version":  ANTHROPIC_VERSION,
+    "accept":             "text/event-stream"
+  };
+  if (input.cachedSystem) headers["anthropic-beta"] = "prompt-caching-2024-07-31";
+
+  const body: Record<string, unknown> = {
+    model:       input.model ?? DEFAULT_MODEL,
+    max_tokens:  input.maxTokens  ?? 1024,
+    temperature: input.temperature ?? 0.4,
+    system:      systemField,
+    messages:    input.messages,
+    stream:      true
+  };
+  if (input.tools && input.tools.length > 0) {
+    body.tools = input.tools;
+    body.tool_choice = input.toolChoice
+      ? (typeof input.toolChoice === "string" ? { type: input.toolChoice } : input.toolChoice)
+      : { type: "auto" };
+  }
+  if (input.thinkingBudgetTokens && input.thinkingBudgetTokens > 0) {
+    body.thinking = { type: "enabled", budget_tokens: input.thinkingBudgetTokens };
+    body.temperature = 1;
+  }
+
+  let res: Response;
+  try {
+    res = await fetch(ANTHROPIC_URL, { method: "POST", headers, body: JSON.stringify(body) });
+  } catch (e) {
+    yield { type: "error", error: e instanceof Error ? e.message : "network" };
+    return;
+  }
+  if (!res.ok || !res.body) {
+    yield { type: "error", error: `upstream_${res.status}` };
+    return;
+  }
+
+  // Reassembly state — one entry per block index. text blocks accumulate
+  // strings; tool_use blocks accumulate partial JSON to parse at the end.
+  const blocks: Array<{ type: string; text?: string; thinking?: string; id?: string; name?: string; inputJson?: string }> = [];
+  let stopReason = "end_turn";
+  let usage: CompleteResult["usage"] = { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheCreationTokens: 0 };
+
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+
+  try {
+    while (true) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      buffer += decoder.decode(chunk.value, { stream: true });
+
+      // SSE events separated by blank lines. Parse and dispatch.
+      let sepIdx: number;
+      while ((sepIdx = buffer.indexOf("\n\n")) !== -1) {
+        const raw = buffer.slice(0, sepIdx);
+        buffer   = buffer.slice(sepIdx + 2);
+        const dataLine = raw.split("\n").find((l) => l.startsWith("data:"));
+        if (!dataLine) continue;
+        const jsonStr = dataLine.slice(5).trim();
+        if (!jsonStr) continue;
+        let evt: {
+          type?: string;
+          index?: number;
+          content_block?: { type: string; text?: string; thinking?: string; id?: string; name?: string; input?: Record<string, unknown> };
+          delta?: { type?: string; text?: string; thinking?: string; partial_json?: string; stop_reason?: string };
+          usage?: { input_tokens?: number; output_tokens?: number; cache_read_input_tokens?: number; cache_creation_input_tokens?: number };
+        };
+        try { evt = JSON.parse(jsonStr); } catch { continue; }
+
+        if (evt.type === "content_block_start" && evt.content_block && typeof evt.index === "number") {
+          const cb = evt.content_block;
+          blocks[evt.index] = {
+            type: cb.type,
+            text: cb.type === "text" ? "" : undefined,
+            thinking: cb.type === "thinking" ? "" : undefined,
+            id: cb.id,
+            name: cb.name,
+            inputJson: cb.type === "tool_use" ? "" : undefined
+          };
+          if (cb.type === "tool_use" && cb.id && cb.name) {
+            yield { type: "tool_start", id: cb.id, name: cb.name };
+          }
+        } else if (evt.type === "content_block_delta" && typeof evt.index === "number" && evt.delta) {
+          const b = blocks[evt.index];
+          if (!b) continue;
+          if (evt.delta.type === "text_delta" && typeof evt.delta.text === "string") {
+            b.text = (b.text ?? "") + evt.delta.text;
+            yield { type: "text_delta", text: evt.delta.text };
+          } else if (evt.delta.type === "thinking_delta" && typeof evt.delta.thinking === "string") {
+            b.thinking = (b.thinking ?? "") + evt.delta.thinking;
+            yield { type: "thinking_delta", text: evt.delta.thinking };
+          } else if (evt.delta.type === "input_json_delta" && typeof evt.delta.partial_json === "string") {
+            b.inputJson = (b.inputJson ?? "") + evt.delta.partial_json;
+          }
+        } else if (evt.type === "content_block_stop" && typeof evt.index === "number") {
+          const b = blocks[evt.index];
+          if (b?.type === "tool_use" && b.id) {
+            let parsed: Record<string, unknown> = {};
+            try { parsed = b.inputJson ? JSON.parse(b.inputJson) as Record<string, unknown> : {}; } catch {}
+            yield { type: "tool_input", id: b.id, input: parsed };
+          }
+        } else if (evt.type === "message_delta") {
+          if (evt.delta?.stop_reason) stopReason = evt.delta.stop_reason;
+          if (evt.usage) {
+            usage = {
+              inputTokens:         evt.usage.input_tokens ?? usage.inputTokens,
+              outputTokens:        evt.usage.output_tokens ?? usage.outputTokens,
+              cacheReadTokens:     evt.usage.cache_read_input_tokens ?? usage.cacheReadTokens,
+              cacheCreationTokens: evt.usage.cache_creation_input_tokens ?? usage.cacheCreationTokens
+            };
+          }
+        }
+      }
+    }
+  } catch (e) {
+    yield { type: "error", error: e instanceof Error ? e.message : "stream_error" };
+    return;
+  }
+
+  // Reassemble final content array
+  const finalContent: AnthropicContentBlock[] = blocks.map((b) => {
+    if (b.type === "text") return { type: "text", text: b.text ?? "" };
+    if (b.type === "thinking") return { type: "thinking", thinking: b.thinking ?? "" };
+    if (b.type === "tool_use") {
+      let parsed: Record<string, unknown> = {};
+      try { parsed = b.inputJson ? JSON.parse(b.inputJson) as Record<string, unknown> : {}; } catch {}
+      return { type: "tool_use", id: b.id ?? "", name: b.name ?? "", input: parsed };
+    }
+    return { type: "text", text: "" };
+  });
+
+  yield { type: "done", content: finalContent, stopReason, usage };
+}
+
 /** Text-only helper — same as completeWithUsage but returns just the
  *  string. Existing callers keep working. */
 export async function complete(input: CompleteInput): Promise<string | null> {

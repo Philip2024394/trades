@@ -35,6 +35,9 @@ type Msg = {
   /** Client-side preview URL for a photo the user just sent. Not
    *  persisted server-side; refreshing loses the thumb. Fine. */
   imagePreview?:  string;
+  /** In-flight tool label shown under the streaming reply. Null when
+   *  no tool is running. */
+  toolStatus?:    string | null;
 };
 
 type Props = {
@@ -196,8 +199,10 @@ export function MateWidget({ surface, canteenSlug, greeting, quickPrompts }: Pro
     setMessages((prev) => [...prev, { role: "user", content: displayContent, imagePreview: previewToShow }]);
     const imgToSend = pendingImage;
     setPendingImage(null);
+    // Streaming path — parse NDJSON events and append text as they land.
+    // Falls back to sync /api/mate/converse if streaming errors early.
     try {
-      const res  = await fetch("/api/mate/converse", {
+      const res = await fetch("/api/mate/converse/stream", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -209,23 +214,57 @@ export function MateWidget({ surface, canteenSlug, greeting, quickPrompts }: Pro
           image_media_type: imgToSend?.media_type
         })
       });
-      const json = await res.json();
       if (res.status === 429) {
-        setErr(`You've hit today's ${json.cap}-message limit. Try again tomorrow, or upgrade for higher caps.`);
+        const j = await res.json().catch(() => ({}));
+        setErr(`You've hit today's ${j.cap ?? ""}-message limit. Try again tomorrow, or upgrade for unlimited Mate.`);
         return;
       }
-      if (!res.ok || !json.ok) throw new Error(json.error ?? "converse_failed");
-      if (json.conversation_id && json.conversation_id !== convId) {
-        setConvId(json.conversation_id);
-        localStorage.setItem(STORAGE_KEY(surface), json.conversation_id);
+      if (!res.ok || !res.body) throw new Error(`stream_${res.status}`);
+
+      // Placeholder assistant message we append text into
+      let asstIdx = -1;
+      setMessages((prev) => { asstIdx = prev.length; return [...prev, { role: "assistant", content: "" }]; });
+      const uiCards: UiCard[] = [];
+      let toolStatus: string | null = null;
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+      let done = false;
+      while (!done) {
+        const chunk = await reader.read();
+        if (chunk.done) break;
+        buf += decoder.decode(chunk.value, { stream: true });
+        let nl: number;
+        while ((nl = buf.indexOf("\n")) !== -1) {
+          const line = buf.slice(0, nl).trim();
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          let evt: { type: string; delta?: string; name?: string; ok?: boolean; ui?: UiCard; conversation_id?: string; message_id?: string; model_used?: string; error?: string; cap?: number };
+          try { evt = JSON.parse(line); } catch { continue; }
+          if (evt.type === "text" && evt.delta) {
+            setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, content: m.content + evt.delta } : m));
+          } else if (evt.type === "tool_start" && evt.name) {
+            toolStatus = evt.name;
+            setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, toolStatus: evt.name ?? null } : m));
+          } else if (evt.type === "tool_end") {
+            if (evt.ui) uiCards.push(evt.ui);
+            toolStatus = null;
+            setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, toolStatus: null, uiCards: [...(m.uiCards ?? []), ...(evt.ui ? [evt.ui] : [])] } : m));
+          } else if (evt.type === "meta" && evt.conversation_id) {
+            if (evt.conversation_id !== convId) {
+              setConvId(evt.conversation_id);
+              localStorage.setItem(STORAGE_KEY(surface), evt.conversation_id);
+            }
+          } else if (evt.type === "done") {
+            setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, id: evt.message_id ?? undefined, model: evt.model_used ?? undefined } : m));
+            done = true;
+          } else if (evt.type === "error") {
+            throw new Error(evt.error ?? "stream_error");
+          }
+        }
       }
-      setMessages((prev) => [...prev, {
-        id:      json.message_id,
-        role:    "assistant",
-        content: json.answer,
-        model:   json.model_used,
-        uiCards: Array.isArray(json.ui_cards) ? json.ui_cards : []
-      }]);
+      void toolStatus;   // last-tool status is only used inline in the message
     } catch (e) {
       setErr(e instanceof Error ? e.message : "converse_failed");
     } finally {
@@ -373,7 +412,12 @@ export function MateWidget({ surface, canteenSlug, greeting, quickPrompts }: Pro
                 ) : (
                   <div>
                     <div className="max-w-[85%] rounded-2xl bg-neutral-100 px-3 py-2 text-[13px] text-neutral-900 whitespace-pre-wrap">
-                      {m.content}
+                      {m.content || (m.toolStatus ? "" : <span className="text-neutral-400">…</span>)}
+                      {m.toolStatus && (
+                        <span className="mt-1 block text-[10px] italic text-neutral-500">
+                          checking {m.toolStatus.replace(/_/g, " ")}…
+                        </span>
+                      )}
                     </div>
                     {m.uiCards && m.uiCards.length > 0 && (
                       <div className="mt-2 space-y-2">
