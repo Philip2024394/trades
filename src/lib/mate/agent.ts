@@ -14,7 +14,7 @@
 // real DB reads. Cost tracker accumulates usage across every step
 // of the tool-use loop.
 
-import type { AnthropicMessage } from "@/lib/llm/anthropic";
+import type { AnthropicMessage, AnthropicContentBlock } from "@/lib/llm/anthropic";
 import { buildSystemPrompt } from "./personality";
 import { buildMateContext, type MateSurface } from "./context";
 import type { KnowledgeHit } from "@/lib/knowledge/search";
@@ -33,12 +33,22 @@ const PRICING: Record<string, { input_usd_per_mtok: number; output_usd_per_mtok:
 
 const GBP_PER_USD = 0.79;
 
+export type MateImageInput = {
+  /** Base64 payload — no data:image/ prefix. */
+  base64:     string;
+  media_type: "image/jpeg" | "image/png" | "image/webp" | "image/gif";
+};
+
 export type AskMateParams = {
   surface:              MateSurface;
   userKey:              string;
   question:             string;
   conversationHistory:  AnthropicMessage[];
   extras:               { slug?: string; homeownerId?: string; canteenSlug?: string };
+  /** Optional photo attached by the user. Claude sees it natively
+   *  (vision). Great for homeowners photographing broken things and
+   *  merchants photographing jobs for post-drafting. */
+  image?:               MateImageInput;
 };
 
 export type AskMateResult = {
@@ -78,7 +88,10 @@ function knowledgeToText(hits: KnowledgeHit[]): string {
 
 export async function askMate(params: AskMateParams): Promise<AskMateResult> {
   const started = Date.now();
-  const model   = pickModel(params.question);
+  // Vision asks always route to Opus — better trade + material
+  // identification, worth the extra pennies when a real photo is
+  // attached.
+  const model   = params.image ? MODEL_OPUS : pickModel(params.question);
 
   const ctx = await buildMateContext(params.surface, params.question, {
     slug:         params.extras.slug         ?? "",
@@ -98,9 +111,26 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
     knowledgeToText(ctx.knowledge)
   ].join("\n");
 
+  // Vision path: when an image is attached, the current user turn
+  // becomes a multi-block content array (image + text). Claude reads
+  // the image natively and may call any of the surface's tools
+  // afterwards. Vision + tool-use compose cleanly in the same loop.
+  const currentTurn: AnthropicMessage = params.image
+    ? {
+        role: "user",
+        content: [
+          {
+            type: "image",
+            source: { type: "base64", media_type: params.image.media_type, data: params.image.base64 }
+          },
+          { type: "text", text: params.question || "What do you see in this photo?" }
+        ] as AnthropicContentBlock[]
+      }
+    : { role: "user", content: params.question };
+
   const messages: AnthropicMessage[] = [
     ...params.conversationHistory,
-    { role: "user", content: params.question }
+    currentTurn
   ];
 
   const tools = toolsForSurface(params.surface);

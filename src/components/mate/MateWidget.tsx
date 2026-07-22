@@ -11,7 +11,10 @@
 //   • Public canteen page      → surface="visitor" + canteenSlug
 
 import { useEffect, useRef, useState } from "react";
-import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Loader2 } from "lucide-react";
+import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Loader2, Paperclip, Image as ImageIcon } from "lucide-react";
+
+const ALLOWED_IMAGE = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const MAX_IMAGE_BYTES = 2_500_000; // 2.5MB raw before base64 inflation
 
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK  = "#0A0A0A";
@@ -29,6 +32,9 @@ type Msg = {
   feedback?:      1 | -1 | null;
   model?:         string;
   uiCards?:       UiCard[];
+  /** Client-side preview URL for a photo the user just sent. Not
+   *  persisted server-side; refreshing loses the thumb. Fine. */
+  imagePreview?:  string;
 };
 
 type Props = {
@@ -49,13 +55,13 @@ const DEFAULT_GREETINGS: Record<Props["surface"], string> = {
 
 const DEFAULT_PROMPTS: Record<Props["surface"], string[]> = {
   merchant: [
-    "How am I doing this week?",
-    "How do I reach Gold?",
-    "Draft a reply to my last review"
+    "How am I doing this month?",
+    "Reply to my last review",
+    "Compare views vs WhatsApp taps"
   ],
   homeowner: [
     "What trade do I need for a leaking radiator?",
-    "How do I find a good electrician nearby?",
+    "Find a plumber near me",
     "What should a new consumer unit cost?"
   ],
   visitor: [
@@ -67,6 +73,13 @@ const DEFAULT_PROMPTS: Record<Props["surface"], string[]> = {
 
 const STORAGE_KEY = (s: string) => `mate_conv_${s}`;
 
+type PendingImage = {
+  base64:     string;   // no data: prefix
+  media_type: string;
+  previewUrl: string;   // data: URL for the preview thumb
+  size:       number;
+};
+
 export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickPrompts }: Props) {
   const [open, setOpen]         = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
@@ -74,6 +87,8 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
   const [convId, setConvId]     = useState<string | null>(null);
   const [busy, setBusy]         = useState(false);
   const [err, setErr]           = useState<string | null>(null);
+  const [pendingImage, setPendingImage] = useState<PendingImage | null>(null);
+  const fileRef                 = useRef<HTMLInputElement>(null);
   const scrollRef               = useRef<HTMLDivElement>(null);
 
   // Load persisted conv id on mount
@@ -110,23 +125,49 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
     }
   }, [messages, open]);
 
+  async function pickFile(f: File) {
+    if (!ALLOWED_IMAGE.includes(f.type)) {
+      setErr("That file type isn't supported. Try JPG, PNG, WebP or GIF.");
+      return;
+    }
+    if (f.size > MAX_IMAGE_BYTES) {
+      setErr("Photo is over 2.5MB. Try a smaller one or compress it first.");
+      return;
+    }
+    const buf   = await f.arrayBuffer();
+    const bytes = new Uint8Array(buf);
+    let bin = "";
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    const b64   = btoa(bin);
+    const dataUrl = `data:${f.type};base64,${b64}`;
+    setPendingImage({ base64: b64, media_type: f.type, previewUrl: dataUrl, size: f.size });
+    setErr(null);
+  }
+
   async function send(text: string) {
     const trimmed = text.trim();
-    if (!trimmed || busy) return;
+    const hasImage = !!pendingImage;
+    if ((!trimmed && !hasImage) || busy) return;
     setBusy(true);
     setErr(null);
     setInput("");
-    setMessages((prev) => [...prev, { role: "user", content: trimmed }]);
+    const displayContent = trimmed || (hasImage ? "(sent a photo)" : "");
+    const previewToShow  = pendingImage?.previewUrl;
+    setMessages((prev) => [...prev, { role: "user", content: displayContent, imagePreview: previewToShow }]);
+    const imgToSend = pendingImage;
+    setPendingImage(null);
     try {
       const res  = await fetch("/api/mate/converse", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           surface,
-          conversation_id: convId,
-          message:         trimmed,
-          canteen_slug:    canteenSlug,
-          homeowner_id:    homeownerId
+          conversation_id:  convId,
+          message:          trimmed,
+          canteen_slug:     canteenSlug,
+          homeowner_id:     homeownerId,
+          image_base64:     imgToSend?.base64,
+          image_media_type: imgToSend?.media_type
         })
       });
       const json = await res.json();
@@ -218,8 +259,16 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
             {messages.map((m, i) => (
               <div key={m.id ?? i} className={m.role === "user" ? "flex justify-end" : ""}>
                 {m.role === "user" ? (
-                  <div className="max-w-[85%] rounded-2xl px-3 py-2 text-[13px]" style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}>
-                    {m.content}
+                  <div className="flex flex-col items-end gap-1">
+                    {m.imagePreview && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={m.imagePreview} alt="attached" className="max-h-40 max-w-[70%] rounded-xl object-contain shadow"/>
+                    )}
+                    {m.content && (
+                      <div className="max-w-[85%] rounded-2xl px-3 py-2 text-[13px]" style={{ backgroundColor: BRAND_YELLOW, color: BRAND_BLACK }}>
+                        {m.content}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div>
@@ -284,15 +333,53 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
             </div>
           )}
 
+          {/* Attachment preview strip */}
+          {pendingImage && (
+            <div className="flex items-center gap-2 border-t px-3 py-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={pendingImage.previewUrl} alt="preview" className="h-10 w-10 rounded object-cover"/>
+              <div className="flex-1 text-[11px] text-neutral-600">
+                <ImageIcon size={11} className="mr-1 inline"/> Photo ready. Add a note or just send.
+              </div>
+              <button
+                onClick={() => setPendingImage(null)}
+                className="rounded-full p-1 text-neutral-500 hover:bg-neutral-100"
+                aria-label="Remove photo"
+              >
+                <X size={13}/>
+              </button>
+            </div>
+          )}
+
           {/* Input */}
           <form
             onSubmit={(e) => { e.preventDefault(); send(input); }}
             className="flex items-center gap-2 border-t p-2"
           >
             <input
+              ref={fileRef}
+              type="file"
+              accept={ALLOWED_IMAGE.join(",")}
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) pickFile(f);
+                e.target.value = "";
+              }}
+            />
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={busy}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-neutral-500 hover:bg-neutral-100 disabled:opacity-50"
+              aria-label="Attach photo"
+            >
+              <Paperclip size={15}/>
+            </button>
+            <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask Mate anything…"
+              placeholder={pendingImage ? "Add a note…" : "Ask Mate anything…"}
               disabled={busy}
               maxLength={1200}
               className="flex-1 rounded-full border px-3 py-2 text-[13px] focus:outline-none focus:ring-2"
@@ -300,7 +387,7 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
             />
             <button
               type="submit"
-              disabled={busy || !input.trim()}
+              disabled={busy || (!input.trim() && !pendingImage)}
               className="flex h-9 w-9 items-center justify-center rounded-full transition disabled:opacity-50"
               style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
               aria-label="Send"

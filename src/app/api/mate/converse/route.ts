@@ -33,6 +33,14 @@ export const dynamic = "force-dynamic";
 const MAX_MESSAGE_LEN = 1200;
 const HISTORY_TURNS   = 8;   // last 8 user+assistant pairs
 
+// Photo upload — base64 payload cap. Roughly 2.5MB decoded which is
+// well under Vercel's 4.5MB Serverless body limit AND under Anthropic's
+// 5MB per-image cap. Bigger images should be compressed client-side.
+const MAX_IMAGE_BASE64_BYTES = 3_400_000; // ~2.5MB decoded
+const ALLOWED_IMAGE_TYPES: readonly string[] = [
+  "image/jpeg", "image/png", "image/webp", "image/gif"
+];
+
 // Fair-use daily caps by surface. Prevents runaway cost.
 // Merchant Pro tier bypasses this — check merchant.tier for
 // unlimited (Business + Works).
@@ -123,11 +131,13 @@ async function loadHistory(conversationId: string): Promise<AnthropicMessage[]> 
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   const body = await req.json().catch(() => null) as {
-    surface?:         string;
-    conversation_id?: string;
-    message?:         string;
-    canteen_slug?:    string;
-    homeowner_id?:    string;
+    surface?:          string;
+    conversation_id?:  string;
+    message?:          string;
+    canteen_slug?:     string;
+    homeowner_id?:     string;
+    image_base64?:     string;
+    image_media_type?: string;
   } | null;
 
   const surface        = String(body?.surface ?? "");
@@ -135,12 +145,30 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const message        = String(body?.message ?? "").trim().slice(0, MAX_MESSAGE_LEN);
   const canteenSlug    = body?.canteen_slug ?? null;
   const homeownerId    = body?.homeowner_id ?? "";
+  const imageBase64    = body?.image_base64 ?? "";
+  const imageMediaType = body?.image_media_type ?? "";
 
   if (!["merchant", "homeowner", "visitor"].includes(surface)) {
     return NextResponse.json({ ok: false, error: "invalid_surface" }, { status: 400 });
   }
-  if (!message) {
+  // Message OR image required (photo-only turns are valid — "what's this?")
+  if (!message && !imageBase64) {
     return NextResponse.json({ ok: false, error: "empty_message" }, { status: 400 });
+  }
+
+  // Validate image if attached
+  let validatedImage: { base64: string; media_type: "image/jpeg" | "image/png" | "image/webp" | "image/gif" } | undefined;
+  if (imageBase64) {
+    if (!ALLOWED_IMAGE_TYPES.includes(imageMediaType)) {
+      return NextResponse.json({ ok: false, error: "unsupported_image_type" }, { status: 400 });
+    }
+    if (imageBase64.length > MAX_IMAGE_BASE64_BYTES) {
+      return NextResponse.json({ ok: false, error: "image_too_large" }, { status: 413 });
+    }
+    validatedImage = {
+      base64:     imageBase64,
+      media_type: imageMediaType as "image/jpeg" | "image/png" | "image/webp" | "image/gif"
+    };
   }
   if (surface === "visitor" && !canteenSlug) {
     return NextResponse.json({ ok: false, error: "canteen_slug_required" }, { status: 400 });
@@ -179,11 +207,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const history = conversationId ? await loadHistory(conversationId) : [];
 
-  // Save the user message first
+  // Save the user message first (image not persisted — costs storage
+  // and we're not doing retrieval on old photos. Only the text stays.)
   await supabaseAdmin.from("hammerex_mate_messages").insert({
     conversation_id: convId,
     role:            "user",
-    content:         message
+    content:         message || "(sent a photo)",
+    context_snapshot: validatedImage ? { has_image: true, image_media_type: validatedImage.media_type } : null
   });
 
   // Ask Mate
@@ -197,7 +227,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     userKey:             user.key,
     question:            message,
     conversationHistory: history,
-    extras
+    extras,
+    image:               validatedImage
   });
 
   // Save Mate's reply (tool_calls persisted for admin observability
