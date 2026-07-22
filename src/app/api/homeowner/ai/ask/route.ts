@@ -69,19 +69,32 @@ async function answerQuestion(homeownerId: string, question: string): Promise<An
   return offlineFallback(question);
 }
 
-/** Placeholder provider dispatch — Phase 1 keeps this minimal. When
- *  keys are configured, we'll enrich with real SiteBook context
- *  (recent posts, warranties, invitations). For now: keyless flow. */
+/** Provider dispatch — routes through Mate (our agent). Mate handles
+ *  the context injection (SiteBook projects, warranties, quote
+ *  requests) + knowledge-base RAG + Anthropic call + cost tracking
+ *  via src/lib/mate. This endpoint remains as the SiteBook-native
+ *  entry point so the existing UI + daily-cap logic keep working;
+ *  Mate is the brain underneath. */
 async function callProvider(input: {
   homeownerId:   string;
   question:      string;
   openAiKey?:    string;
   anthropicKey?: string;
 }): Promise<Answer> {
-  // TODO Phase 1 · Slot 3.5: real OpenAI/Anthropic call with context
-  // builder pulling top posts, warranties, invitations.
-  void input;
-  throw new Error("provider-not-wired");
+  const { askMate } = await import("@/lib/mate/agent");
+  const result = await askMate({
+    surface:             "homeowner",
+    userKey:             input.homeownerId,
+    question:            input.question,
+    conversationHistory: [],
+    extras:              { homeownerId: input.homeownerId }
+  });
+  return {
+    answer: result.answer
+    // Mate doesn't return action pills yet — that's a Phase 2 tool.
+    // Leave `action` undefined so the SiteBook UI falls through to
+    // its own action-suggestion layer (which reads the answer text).
+  };
 }
 
 /** Offline fallback answers — keyword-driven. Enough to demonstrate

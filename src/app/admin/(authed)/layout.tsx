@@ -28,7 +28,8 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/password-recovery", label: "Password Reset", live: true },
   { href: "/admin/support", label: "Support", live: true },
   { href: "/admin/beacon-residuals", label: "Bait Leads", live: true },
-  { href: "/admin/asset-analytics", label: "Asset Analytics", live: true }
+  { href: "/admin/asset-analytics", label: "Asset Analytics", live: true },
+  { href: "/admin/mate", label: "Mate (AI)", live: true }
   // Removed 2026-07-17: /admin/listings + /admin/reports were
   // placeholder-only ("Coming soon" ghost nav items). Add back when
   // the routes actually ship.
