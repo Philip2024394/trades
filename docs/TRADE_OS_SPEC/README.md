@@ -43,8 +43,11 @@ The application layer.
 
 **V3 complete.** Closing rule elevated to PRINCIPLES.md Principle 12.
 
-### ⏳ V4 — Future Vision (pending, review-only)
-Adobe 2030 strategic doc.
+### ✅ V4 — Future Vision (complete)
+
+- **[V4 Adobe 2030 — Chief Architect Review](./V4_ADOBE_2030.md)** — validates V1-V3 architecture, deterministic vs AI vs human ownership matrix, 2030 reference architecture, cost economics per bundle, top 3 architectural bets, top 3 anti-patterns, minute-by-minute 2030 merchant journey. **The one recommendation: "Treat Brand DNA as source code."**
+
+**Trade OS spec 100% complete across all four volumes. Every architectural question has an answer in the brain. No more spec blocks implementation.**
 
 ## Reading order
 
