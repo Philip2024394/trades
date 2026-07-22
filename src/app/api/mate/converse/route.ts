@@ -25,6 +25,7 @@ import { createHash } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getMerchantSlug } from "@/lib/merchantSession";
 import { askMate } from "@/lib/mate/agent";
+import { getUserMemory, refreshUserMemory, shouldRefresh, conversationIdsForUser } from "@/lib/mate/memory";
 import type { AnthropicMessage } from "@/lib/llm/anthropic";
 
 export const runtime = "nodejs";
@@ -251,6 +252,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   // Fire-and-forget usage bump — don't block the response
   bumpUsage(user.key, result.costPence).catch((e) => console.error("[mate/converse] usage bump failed:", e));
+
+  // Cross-session memory refresh — fire-and-forget when enough new
+  // messages have accumulated since the last refresh. Visitor skipped
+  // inside refreshUserMemory (anonymous IP hashes).
+  if (surface === "merchant" || surface === "homeowner") {
+    (async () => {
+      try {
+        const mem   = await getUserMemory(surface as "merchant" | "homeowner", user.key);
+        const ids   = await conversationIdsForUser(surface as "merchant" | "homeowner", user.key);
+        const { count } = await supabaseAdmin
+          .from("hammerex_mate_messages")
+          .select("id", { count: "exact", head: true })
+          .in("conversation_id", ids);
+        if (shouldRefresh(mem, count ?? 0)) {
+          await refreshUserMemory(surface as "merchant" | "homeowner", user.key, ids);
+        }
+      } catch (e) {
+        console.error("[mate/converse] memory refresh failed:", e);
+      }
+    })();
+  }
 
   return NextResponse.json({
     ok:              true,

@@ -20,6 +20,7 @@ import { buildMateContext, type MateSurface } from "./context";
 import type { KnowledgeHit } from "@/lib/knowledge/search";
 import { toolsForSurface } from "./tools/registry";
 import { runAgentic, type MateToolCall, type MateUiCard } from "./runtime";
+import { getUserMemory, memoryToText } from "./memory";
 
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 const MODEL_OPUS  = "claude-opus-4-7";
@@ -93,23 +94,30 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
   // attached.
   const model   = params.image ? MODEL_OPUS : pickModel(params.question);
 
-  const ctx = await buildMateContext(params.surface, params.question, {
-    slug:         params.extras.slug         ?? "",
-    homeownerId:  params.extras.homeownerId  ?? "",
-    canteenSlug:  params.extras.canteenSlug  ?? ""
-  } as never);
+  // Parallel: context builder + cross-session memory read
+  const [ctx, memory] = await Promise.all([
+    buildMateContext(params.surface, params.question, {
+      slug:         params.extras.slug         ?? "",
+      homeownerId:  params.extras.homeownerId  ?? "",
+      canteenSlug:  params.extras.canteenSlug  ?? ""
+    } as never),
+    getUserMemory(params.surface, params.userKey)
+  ]);
 
   const systemBase = buildSystemPrompt(params.surface);
   const cachedSystem = systemBase;
+  const memoryBlock = memoryToText(memory);
   const freshSystem  = [
     `${ctx.userLabel}.`,
     "",
+    memoryBlock,
+    memoryBlock ? "" : null,
     "CONTEXT (real data on this user right now — cite these numbers when relevant):",
     JSON.stringify(ctx.systemFacts, null, 2),
     "",
     "KNOWLEDGE BASE HITS (relevant excerpts — cite the source name if you use them):",
     knowledgeToText(ctx.knowledge)
-  ].join("\n");
+  ].filter((s) => s !== null).join("\n");
 
   // Vision path: when an image is attached, the current user turn
   // becomes a multi-block content array (image + text). Claude reads
