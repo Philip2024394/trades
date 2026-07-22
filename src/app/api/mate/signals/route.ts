@@ -10,27 +10,30 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getMerchantSlug } from "@/lib/merchantSession";
+import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-async function resolveKey(surface: string, req: NextRequest, homeownerId: string): Promise<string | null> {
+async function resolveKey(surface: string): Promise<string | null> {
   if (surface === "merchant") {
     const slug = await getMerchantSlug();
     return slug ?? null;
   }
-  if (surface === "homeowner") return homeownerId || null;
+  if (surface === "homeowner") {
+    const h = await getHomeownerFromCookie();
+    return h?.id ?? null;
+  }
   return null;
 }
 
 export async function GET(req: NextRequest): Promise<NextResponse> {
   const url          = new URL(req.url);
   const surface      = url.searchParams.get("surface") ?? "";
-  const homeownerId  = url.searchParams.get("homeowner_id") ?? "";
   if (surface !== "merchant" && surface !== "homeowner") {
     return NextResponse.json({ ok: false, error: "invalid_surface" }, { status: 400 });
   }
-  const key = await resolveKey(surface, req, homeownerId);
+  const key = await resolveKey(surface);
   if (!key) return NextResponse.json({ ok: false, error: "not_authenticated" }, { status: 401 });
 
   const { data } = await supabaseAdmin
@@ -52,19 +55,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     signal_id?: string;
     action?:    "read" | "dismissed" | "actioned";
     surface?:   string;
-    homeowner_id?: string;
   } | null;
 
   const signalId = body?.signal_id ?? "";
   const action   = body?.action    ?? "read";
   const surface  = body?.surface   ?? "";
-  const homeownerId = body?.homeowner_id ?? "";
   if (!signalId) return NextResponse.json({ ok: false, error: "signal_id_missing" }, { status: 400 });
   if (!["read", "dismissed", "actioned"].includes(action)) {
     return NextResponse.json({ ok: false, error: "invalid_action" }, { status: 400 });
   }
 
-  const key = await resolveKey(surface, req, homeownerId);
+  const key = await resolveKey(surface);
   if (!key) return NextResponse.json({ ok: false, error: "not_authenticated" }, { status: 401 });
 
   // Ownership check — the signal must belong to the caller

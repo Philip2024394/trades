@@ -24,6 +24,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createHash } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getMerchantSlug } from "@/lib/merchantSession";
+import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { askMate } from "@/lib/mate/agent";
 import { getUserMemory, refreshUserMemory, shouldRefresh, conversationIdsForUser } from "@/lib/mate/memory";
 import type { AnthropicMessage } from "@/lib/llm/anthropic";
@@ -60,19 +61,18 @@ function hashIp(req: NextRequest): string {
 
 async function resolveUserKey(
   surface: string,
-  req: NextRequest,
-  homeownerId: string
+  req: NextRequest
 ): Promise<{ key: string; keyType: string } | null> {
   if (surface === "merchant") {
     const slug = await getMerchantSlug();
     return slug ? { key: slug, keyType: "merchant_slug" } : null;
   }
   if (surface === "homeowner") {
-    // TODO — full homeowner session verification. For v1 we trust
-    // the client-provided id but require it to be present. Ship-blocker
-    // fix: verify tn_homeowner_sid cookie once that lib is stable.
-    if (!homeownerId) return null;
-    return { key: homeownerId, keyType: "homeowner_id" };
+    // Verified via tn_homeowner_sid cookie — the client-side id is
+    // ignored. If someone forges a body id they still need a valid
+    // session cookie to get anywhere.
+    const h = await getHomeownerFromCookie();
+    return h ? { key: h.id, keyType: "homeowner_id" } : null;
   }
   return { key: hashIp(req), keyType: "anon_ip_hash" };
 }
@@ -136,7 +136,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     conversation_id?:  string;
     message?:          string;
     canteen_slug?:     string;
-    homeowner_id?:     string;
     image_base64?:     string;
     image_media_type?: string;
   } | null;
@@ -145,7 +144,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const conversationId = body?.conversation_id ?? null;
   const message        = String(body?.message ?? "").trim().slice(0, MAX_MESSAGE_LEN);
   const canteenSlug    = body?.canteen_slug ?? null;
-  const homeownerId    = body?.homeowner_id ?? "";
   const imageBase64    = body?.image_base64 ?? "";
   const imageMediaType = body?.image_media_type ?? "";
 
@@ -175,7 +173,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "canteen_slug_required" }, { status: 400 });
   }
 
-  const user = await resolveUserKey(surface, req, homeownerId);
+  const user = await resolveUserKey(surface, req);
   if (!user) {
     return NextResponse.json({ ok: false, error: "not_authenticated" }, { status: 401 });
   }

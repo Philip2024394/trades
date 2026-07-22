@@ -22,6 +22,7 @@ import { generatePalette, BASE_HUES, type BaseHue } from "@/lib/paletteHsl";
 import { resolveTemplate } from "@/templates/_registry";
 import { CanteenInviteOverlay } from "@/components/homeowners/CanteenInviteOverlay";
 import { HomeBackPill } from "@/components/HomeBackPill";
+import { MateWidget } from "@/components/mate/MateWidget";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { resolveHomeBackContext } from "@/lib/homeBackContext";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -280,6 +281,11 @@ export default async function CanteenDetailPage({
           homeownerFirstName={homeownerFirstNameForInvite}
         />
       )}
+      {/* Mate for visitors — answers "what does this trade do", "are
+          they any good", "how do I get a quote" using this canteen's
+          real data. Skipped in the embed preview (that's the mobile
+          app mockup and mustn't get a floating overlay). */}
+      {!isEmbedded && <MateWidget surface="visitor" canteenSlug={slug}/>}
     </>
   );
 }

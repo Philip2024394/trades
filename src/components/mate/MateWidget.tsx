@@ -40,7 +40,6 @@ type Msg = {
 type Props = {
   surface:      "merchant" | "homeowner" | "visitor";
   canteenSlug?: string;
-  homeownerId?: string;
   /** Optional overrides — used by embed contexts to preset the
    *  greeting or seed suggested prompts. */
   greeting?:    string;
@@ -91,7 +90,7 @@ type Signal = {
   metadata:     Record<string, unknown>;
 };
 
-export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickPrompts }: Props) {
+export function MateWidget({ surface, canteenSlug, greeting, quickPrompts }: Props) {
   const [open, setOpen]         = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput]       = useState("");
@@ -111,8 +110,7 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
     let timer: ReturnType<typeof setInterval> | null = null;
     async function pullSignals() {
       try {
-        const q = new URLSearchParams({ surface, ...(homeownerId ? { homeowner_id: homeownerId } : {}) });
-        const res  = await fetch(`/api/mate/signals?${q.toString()}`);
+        const res  = await fetch(`/api/mate/signals?surface=${surface}`);
         const json = await res.json();
         if (json.ok) setSignals(json.signals ?? []);
       } catch {}
@@ -120,7 +118,7 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
     pullSignals();
     timer = setInterval(pullSignals, 5 * 60 * 1000);
     return () => { if (timer) clearInterval(timer); };
-  }, [surface, homeownerId]);
+  }, [surface]);
 
   async function markSignal(id: string, action: "read" | "actioned" | "dismissed") {
     setSignals((prev) => prev.filter((s) => s.id !== id));
@@ -128,7 +126,7 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
       await fetch("/api/mate/signals", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ signal_id: id, action, surface, homeowner_id: homeownerId })
+        body: JSON.stringify({ signal_id: id, action, surface })
       });
     } catch {}
   }
@@ -207,7 +205,6 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
           conversation_id:  convId,
           message:          trimmed,
           canteen_slug:     canteenSlug,
-          homeowner_id:     homeownerId,
           image_base64:     imgToSend?.base64,
           image_media_type: imgToSend?.media_type
         })

@@ -16,6 +16,7 @@ import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { getGuestSession } from "@/lib/homeowners/guestSession";
 import { UserMenuDropdownMount } from "@/components/UserMenuDropdownMount";
 import { AskSiteBookButton } from "@/components/homeowners/AskSiteBookButton";
+import { MateWidget } from "@/components/mate/MateWidget";
 
 export const dynamic = "force-dynamic";
 
@@ -73,10 +74,10 @@ export default async function SiteBookLayout({ children }: { children: React.Rea
       {/* Normal page flow — children scroll with the document. */}
       <main>{children}</main>
 
-      {/* Ask SiteBook — floating yellow pill bottom-right, on every
-          SiteBook page. Overlay (Rule 3: hidden until earned = always
-          on because the whole page needs an "ask anything" affordance). */}
-      <AskSiteBookButton/>
+      {/* Authed homeowners get the full Mate agent (memory, threads,
+          proactive signals, photo). Guests get the lightweight
+          AskSiteBookButton since they've no session to hang memory off. */}
+      {homeowner ? <MateWidget surface="homeowner"/> : <AskSiteBookButton/>}
     </div>
   );
 }
