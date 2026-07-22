@@ -1,18 +1,25 @@
-// Mate agent orchestrator — glues personality + context + Claude.
+// Mate agent orchestrator — glues personality + context + runtime.
 //
 // Public entry point: askMate({ surface, userKey, question,
-// conversationHistory, extras }) → { answer, usage, cost, modelUsed }
+// conversationHistory, extras }) → { answer, usage, cost, modelUsed,
+// toolCalls, uiCards }
 //
 // Model tiering:
 //   • Haiku 4.5 for short chatter (< 300 words in the last user
 //     message and no analytics-heavy keywords)
 //   • Opus 4.7 for longer / analysis / "should I" strategic asks
-// Both go through the SAME wrapper (src/lib/llm/anthropic.ts).
+//
+// Tool use: routed through src/lib/mate/runtime.ts. Tools available
+// to Claude are filtered by surface via the registry. Handlers do
+// real DB reads. Cost tracker accumulates usage across every step
+// of the tool-use loop.
 
-import { completeWithUsage, type AnthropicMessage } from "@/lib/llm/anthropic";
+import type { AnthropicMessage } from "@/lib/llm/anthropic";
 import { buildSystemPrompt } from "./personality";
 import { buildMateContext, type MateSurface } from "./context";
 import type { KnowledgeHit } from "@/lib/knowledge/search";
+import { toolsForSurface } from "./tools/registry";
+import { runAgentic, type MateToolCall, type MateUiCard } from "./runtime";
 
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 const MODEL_OPUS  = "claude-opus-4-7";
@@ -24,8 +31,6 @@ const PRICING: Record<string, { input_usd_per_mtok: number; output_usd_per_mtok:
   [MODEL_OPUS]:  { input_usd_per_mtok: 15.00, output_usd_per_mtok: 75.00, cache_read_usd_per_mtok: 1.50 }
 };
 
-// £ / $ estimate for the cost-tracking column. Rough — actual FX
-// applied by Anthropic invoice at month end. 0.79 = £/$ (mid-2026).
 const GBP_PER_USD = 0.79;
 
 export type AskMateParams = {
@@ -46,6 +51,8 @@ export type AskMateResult = {
   costPence:        number;
   contextSnapshot:  Record<string, unknown>;
   latencyMs:        number;
+  toolCalls:        MateToolCall[];
+  uiCards:          MateUiCard[];
 };
 
 /** Choose the cheaper Haiku unless the question hints at analysis. */
@@ -73,7 +80,6 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
   const started = Date.now();
   const model   = pickModel(params.question);
 
-  // Build the runtime context — one data pull per turn.
   const ctx = await buildMateContext(params.surface, params.question, {
     slug:         params.extras.slug         ?? "",
     homeownerId:  params.extras.homeownerId  ?? "",
@@ -81,10 +87,6 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
   } as never);
 
   const systemBase = buildSystemPrompt(params.surface);
-
-  // We split the system prompt into a CACHED prefix (identity + rules,
-  // stable) and a FRESH suffix (per-user context). Prompt caching
-  // makes the cached prefix 10× cheaper on reuse.
   const cachedSystem = systemBase;
   const freshSystem  = [
     `${ctx.userLabel}.`,
@@ -101,48 +103,62 @@ export async function askMate(params: AskMateParams): Promise<AskMateResult> {
     { role: "user", content: params.question }
   ];
 
-  const res = await completeWithUsage({
-    model,
+  const tools = toolsForSurface(params.surface);
+
+  const run = await runAgentic({
     cachedSystem,
-    system:      freshSystem,
+    system:       freshSystem,
     messages,
-    maxTokens:   700,
-    temperature: 0.35
+    tools,
+    model,
+    ctx: {
+      surface:     params.surface,
+      userKey:     params.userKey,
+      slug:        params.extras.slug,
+      homeownerId: params.extras.homeownerId
+    },
+    maxTokens:    700,
+    temperature:  0.35
   });
 
   const latencyMs = Date.now() - started;
 
-  if (!res) {
-    // Anthropic key missing OR upstream error. Fall back to a
-    // deterministic response so the widget doesn't just error.
+  if (run.stoppedBy === "error") {
     return {
       answer:            "I'm having trouble reaching my brain right now, mate. Try again in a bit, or ping the team via the Help centre in the drawer.",
       modelUsed:         model,
       usage:             { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheCreationTokens: 0 },
       costPence:         0,
       contextSnapshot:   { fallback: true, reason: "provider_unavailable" },
-      latencyMs
+      latencyMs,
+      toolCalls:         [],
+      uiCards:           []
     };
   }
 
   const pricing = PRICING[model];
   const usdCost =
-    (res.usage.inputTokens        / 1_000_000) * pricing.input_usd_per_mtok +
-    (res.usage.outputTokens       / 1_000_000) * pricing.output_usd_per_mtok +
-    (res.usage.cacheReadTokens    / 1_000_000) * pricing.cache_read_usd_per_mtok;
+    (run.usage.inputTokens     / 1_000_000) * pricing.input_usd_per_mtok +
+    (run.usage.outputTokens    / 1_000_000) * pricing.output_usd_per_mtok +
+    (run.usage.cacheReadTokens / 1_000_000) * pricing.cache_read_usd_per_mtok;
   const costPence = Math.ceil(usdCost * GBP_PER_USD * 100);
 
   return {
-    answer:           res.text,
+    answer:           run.finalText || "Not sure how to answer that, mate — try rephrasing?",
     modelUsed:        model,
-    usage:            res.usage,
+    usage:            run.usage,
     costPence,
     contextSnapshot: {
-      surface:      params.surface,
-      knowledge_hit_count: ctx.knowledge.length,
+      surface:              params.surface,
+      knowledge_hit_count:  ctx.knowledge.length,
       knowledge_hit_titles: ctx.knowledge.map((h) => h.title),
-      fact_keys:    Object.keys(ctx.systemFacts)
+      fact_keys:            Object.keys(ctx.systemFacts),
+      tools_available:      tools.map((t) => t.name),
+      steps:                run.toolCalls.length > 0 ? Math.max(...run.toolCalls.map((c) => c.step)) : 0,
+      stopped_by:           run.stoppedBy
     },
-    latencyMs
+    latencyMs,
+    toolCalls: run.toolCalls,
+    uiCards:   run.uiCards
   };
 }

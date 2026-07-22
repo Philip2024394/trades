@@ -16,12 +16,19 @@ import { MessageCircle, X, Send, ThumbsUp, ThumbsDown, Loader2 } from "lucide-re
 const BRAND_YELLOW = "#FFB300";
 const BRAND_BLACK  = "#0A0A0A";
 
+type UiCard = {
+  kind:     "draft-review-reply" | "draft-yard-post" | "list" | "action";
+  payload:  Record<string, unknown>;
+  fromTool: string;
+};
+
 type Msg = {
   id?:            string;
   role:           "user" | "assistant";
   content:        string;
   feedback?:      1 | -1 | null;
   model?:         string;
+  uiCards?:       UiCard[];
 };
 
 type Props = {
@@ -136,7 +143,8 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
         id:      json.message_id,
         role:    "assistant",
         content: json.answer,
-        model:   json.model_used
+        model:   json.model_used,
+        uiCards: Array.isArray(json.ui_cards) ? json.ui_cards : []
       }]);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "converse_failed");
@@ -218,6 +226,13 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
                     <div className="max-w-[85%] rounded-2xl bg-neutral-100 px-3 py-2 text-[13px] text-neutral-900 whitespace-pre-wrap">
                       {m.content}
                     </div>
+                    {m.uiCards && m.uiCards.length > 0 && (
+                      <div className="mt-2 space-y-2">
+                        {m.uiCards.map((c, ci) => (
+                          <MateCard key={ci} card={c}/>
+                        ))}
+                      </div>
+                    )}
                     {m.id && (
                       <div className="mt-1 flex items-center gap-1 pl-1">
                         <button
@@ -297,4 +312,92 @@ export function MateWidget({ surface, canteenSlug, homeownerId, greeting, quickP
       )}
     </>
   );
+}
+
+/** Tool-result artefact renderer. Each tool that returns a `ui`
+ *  payload maps to one of these card shapes. Kept in the widget so
+ *  the tool contract stays back-end-owned + rendering stays visual. */
+function MateCard({ card }: { card: UiCard }) {
+  const [busy, setBusy]     = useState(false);
+  const [done, setDone]     = useState(false);
+  const [error, setError]   = useState<string | null>(null);
+  const [draft, setDraft]   = useState<string>(String(card.payload.draft ?? ""));
+
+  if (card.kind === "draft-review-reply") {
+    const applyUrl = String(card.payload.apply_endpoint ?? "");
+    async function apply() {
+      if (!applyUrl || busy) return;
+      setBusy(true); setError(null);
+      try {
+        const res = await fetch(applyUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ body: draft })
+        });
+        if (!res.ok) throw new Error(`apply_failed_${res.status}`);
+        setDone(true);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "apply_failed");
+      } finally {
+        setBusy(false);
+      }
+    }
+    return (
+      <div className="rounded-xl border border-neutral-200 bg-white p-2.5">
+        <p className="mb-1 text-[9px] font-black uppercase tracking-wider text-neutral-500">Draft reply</p>
+        <textarea
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          disabled={busy || done}
+          rows={3}
+          className="w-full resize-none rounded-lg border border-neutral-200 p-2 text-[12px] focus:outline-none focus:ring-1"
+        />
+        {done ? (
+          <p className="mt-1.5 text-[11px] font-semibold text-green-700">Reply posted.</p>
+        ) : (
+          <button
+            onClick={apply}
+            disabled={busy || !draft.trim()}
+            className="mt-1.5 rounded-full px-3 py-1 text-[11px] font-black transition disabled:opacity-50"
+            style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
+          >
+            {busy ? "Posting…" : "Apply reply"}
+          </button>
+        )}
+        {error && <p className="mt-1 text-[10px] text-red-600">{error}</p>}
+      </div>
+    );
+  }
+
+  if (card.kind === "list") {
+    const items = Array.isArray(card.payload.items) ? card.payload.items as Array<Record<string, unknown>> : [];
+    const title = String(card.payload.title ?? "");
+    return (
+      <div className="rounded-xl border border-neutral-200 bg-white p-2.5">
+        {title && <p className="mb-1 text-[9px] font-black uppercase tracking-wider text-neutral-500">{title}</p>}
+        <ul className="space-y-1">
+          {items.map((it, i) => (
+            <li key={i} className="text-[12px]">
+              <a
+                href={String(it.profile_url ?? "#")}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-lg border border-neutral-100 px-2 py-1.5 hover:bg-neutral-50"
+              >
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-black">{String(it.display_name ?? "")}</span>
+                  <span className="text-[10px] uppercase tracking-wider text-neutral-500">{String(it.trust_tier ?? "")}</span>
+                </div>
+                <div className="text-[10px] text-neutral-500">
+                  {String(it.city ?? "")}{it.rating_avg ? ` · ${it.rating_avg}★ (${it.rating_count ?? 0})` : ""}
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  }
+
+  return null;
 }

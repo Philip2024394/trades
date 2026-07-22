@@ -200,7 +200,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     extras
   });
 
-  // Save Mate's reply
+  // Save Mate's reply (tool_calls persisted for admin observability
+  // — see /admin/mate. UI cards travel back to the widget but are
+  // NOT persisted; if the user reopens, they re-request via history).
   const { data: replyRow } = await supabaseAdmin.from("hammerex_mate_messages").insert({
     conversation_id:      convId,
     role:                 "assistant",
@@ -212,7 +214,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     cache_created_tokens: result.usage.cacheCreationTokens,
     cost_pence:           result.costPence,
     latency_ms:           result.latencyMs,
-    context_snapshot:     result.contextSnapshot
+    context_snapshot:     result.contextSnapshot,
+    tool_calls:           result.toolCalls
   }).select("id").single();
 
   // Fire-and-forget usage bump — don't block the response
@@ -225,6 +228,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     answer:          result.answer,
     model_used:      result.modelUsed,
     cost_pence:      result.costPence,
-    latency_ms:      result.latencyMs
+    latency_ms:      result.latencyMs,
+    tool_calls:      result.toolCalls,
+    ui_cards:        result.uiCards
   });
 }
