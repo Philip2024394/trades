@@ -12,10 +12,11 @@
 //   3  Name + generate
 //   4  Preview + tweak + buy
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import * as Icons from "lucide-react";
-import { LOGO_STYLES, LOGO_TRADES, styleBySlug, tradeBySlug } from "@/lib/logo/catalog";
+import { LOGO_STYLES, LOGO_TRADES, styleBySlug, tradeBySlug, supplyBySlug } from "@/lib/logo/catalog";
 import { StylePreviewTile } from "@/components/logo/StylePreviewTile";
 import { StyleModal } from "@/components/logo/StyleModal";
 
@@ -25,14 +26,30 @@ const BRAND_BLACK  = "#0A0A0A";
 type Step = 1 | 2 | 3 | 4;
 
 export default function LogoBuilderPage() {
+  const params = useSearchParams();
   const [step, setStep]           = useState<Step>(1);
   const [tradeSlug, setTradeSlug] = useState<string | null>(null);
   const [styleSlug, setStyleSlug] = useState<string | null>(null);
+  const [sampleUrl, setSampleUrl] = useState<string | null>(null);
   const [previewSlug, setPreviewSlug] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState("");
 
+  // URL params — the style page hands off with ?style=X&trade=Y&sample=URL
+  // so we can jump the user straight to the name step with everything
+  // pre-picked. Trade lookup falls through supply too so supply slugs
+  // land in the same field.
+  useEffect(() => {
+    const s = params?.get("style");
+    const t = params?.get("trade");
+    const p = params?.get("sample");
+    if (s && styleBySlug(s)) setStyleSlug(s);
+    if (t && (tradeBySlug(t) || supplyBySlug(t))) setTradeSlug(t);
+    if (p) setSampleUrl(p);
+    if (s && t && p) setStep(3);   // land at name step, previous picks done
+  }, [params]);
+
   const style = styleSlug ? styleBySlug(styleSlug) : null;
-  const trade = tradeSlug ? tradeBySlug(tradeSlug) : null;
+  const trade = tradeSlug ? (tradeBySlug(tradeSlug) ?? supplyBySlug(tradeSlug)) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12">
@@ -134,7 +151,7 @@ export default function LogoBuilderPage() {
           <div className="grid gap-6 md:grid-cols-[1fr_260px]">
             <div>
               <div className="relative overflow-hidden rounded-3xl border border-neutral-200 shadow-lg">
-                <StylePreviewTile style={style} size="lg" tradeSlug={tradeSlug}/>
+                <StylePreviewTile style={style} size="lg" tradeSlug={tradeSlug} imageUrl={sampleUrl ?? undefined}/>
                 <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-6">
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-white/70">Live preview</p>
                   <p className="text-2xl font-black text-white">{businessName}</p>

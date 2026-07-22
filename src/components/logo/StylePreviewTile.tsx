@@ -58,13 +58,14 @@ export function StylePreviewTile({
       style={bg}
     >
       {src && imageOk && (
-        // Per global rule: object-contain, never crop a logo.
+        // Full-container fill, no padding. Object-contain still respected
+        // per global rule so no logo ever crops — but the image now uses
+        // the tile edges instead of sitting inside a gradient border.
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={style.name}
-          className="h-full w-full object-contain p-2"
-          style={{ backgroundImage: `linear-gradient(135deg, ${style.gradient[0]}, ${style.gradient[1]})` }}
+          className="absolute inset-0 h-full w-full object-contain"
           onError={() => setImageOk(false)}
         />
       )}

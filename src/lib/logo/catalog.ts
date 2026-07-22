@@ -198,3 +198,41 @@ export const LOGO_TRADES: LogoTrade[] = [
 export function tradeBySlug(slug: string): LogoTrade | undefined {
   return LOGO_TRADES.find((t) => t.slug === slug);
 }
+
+// ─── Supplies ──────────────────────────────────────────────────
+//
+// Merchants who sell to trades. Separate from LOGO_TRADES because
+// the tool icon and typical styling lean different (a builders
+// merchant logo reads differently to a plumber logo).
+
+export type LogoSupply = {
+  slug:  string;
+  label: string;
+  icon:  string;
+};
+
+export const LOGO_SUPPLIES: LogoSupply[] = [
+  { slug: "builders-merchant",     label: "Builders Merchant",     icon: "Warehouse"    },
+  { slug: "timber-yard",           label: "Timber Yard",           icon: "TreePine"     },
+  { slug: "tool-hire",             label: "Tool Hire",             icon: "Wrench"       },
+  { slug: "plant-hire",            label: "Plant Hire",            icon: "Truck"        },
+  { slug: "kitchen-supplier",      label: "Kitchen Supplier",      icon: "Utensils"     },
+  { slug: "bathroom-supplier",     label: "Bathroom Supplier",     icon: "Bath"         },
+  { slug: "tile-supplier",         label: "Tile Supplier",         icon: "Square"       },
+  { slug: "paint-supplier",        label: "Paint Supplier",        icon: "PaintBucket"  },
+  { slug: "electrical-wholesaler", label: "Electrical Wholesaler", icon: "Zap"          },
+  { slug: "plumbing-merchant",     label: "Plumbing Merchant",     icon: "Droplet"      },
+  { slug: "roofing-supplier",      label: "Roofing Supplier",      icon: "Home"         },
+  { slug: "skip-hire",             label: "Skip Hire",             icon: "Trash2"       }
+];
+
+export function supplyBySlug(slug: string): LogoSupply | undefined {
+  return LOGO_SUPPLIES.find((s) => s.slug === slug);
+}
+
+/** Trades + supplies as one flat list for the picker dropdown. */
+export type LogoCategory = { slug: string; label: string; icon: string; kind: "trade" | "supply" };
+export const LOGO_CATEGORIES: LogoCategory[] = [
+  ...LOGO_TRADES.map((t) => ({ ...t, kind: "trade" as const })),
+  ...LOGO_SUPPLIES.map((s) => ({ ...s, kind: "supply" as const }))
+];

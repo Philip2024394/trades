@@ -7,6 +7,7 @@
 // current style has no samples.
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { X, ArrowLeft, ArrowRight, Check } from "lucide-react";
 import type { LogoStyle } from "@/lib/logo/catalog";
 import { LOGO_STYLES, tradeBySlug } from "@/lib/logo/catalog";
@@ -25,6 +26,8 @@ export function StyleModal({
   /** If set, prioritise samples matching this trade in the browse index. */
   tradeSlug?: string | null;
 }) {
+  const router = useRouter();
+
   // Sample browser — if the style has samples, arrows step through the
   // samples (trade-filtered first). Otherwise arrows navigate styles.
   const sampleList = tradeSlug
@@ -133,11 +136,18 @@ export function StyleModal({
             Close
           </button>
           <button
-            onClick={() => onSelect(style.slug)}
+            onClick={() => {
+              onSelect(style.slug);
+              // Open dedicated style page with search + trade/supply
+              // dropdown. Trade context (if any) preserved in the URL
+              // so the browser lands filtered.
+              const q = tradeSlug ? `?trade=${tradeSlug}` : "";
+              router.push(`/logo/style/${style.slug}${q}`);
+            }}
             className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-[12px] font-black transition hover:brightness-95"
             style={{ backgroundColor: BRAND_BLACK, color: BRAND_YELLOW }}
           >
-            <Check size={13}/> Select this style
+            <Check size={13}/> Open style page
           </button>
         </div>
       </div>
