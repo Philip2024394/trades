@@ -7,6 +7,7 @@ Written as a multi-volume specification per the "Architecture Specification Seri
 ## 🔒 Master Reference (read first)
 
 - **[Engineering Principles](./PRINCIPLES.md)** — **CONFIDENTIAL · Trade Secret**. The Master Rule (*"save the recipe, not the image"*) + 11 governing principles. Read this before anything else. If any spec doc contradicts this file, this file wins.
+- **[Studio Interface Spec](./UI_SPEC_STUDIO_INTERFACE.md)** — Internal. Three-panel shell + left navigation + 6-tab preview + signature features (Improve Design, Show 4 Ideas, Creative Director Panel, Command Palette, Brand Health). Applies across every Studio.
 
 ## Volume Index
 
