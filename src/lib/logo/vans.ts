@@ -69,3 +69,34 @@ export const VAN_TEMPLATES: VanTemplate[] = [
 export function vanBySlug(slug: string): VanTemplate | undefined {
   return VAN_TEMPLATES.find((v) => v.slug === slug);
 }
+
+// ─── Van colours ──────────────────────────────────────────────
+//
+// Common UK trade-van paint colours. The composer tints the base
+// image with the picked colour; the AI is told which colour was
+// picked so it chooses contrasting text + strip colours that read
+// clean at distance.
+
+export type VanColour = {
+  slug:            string;
+  label:           string;
+  hex:             string;   // paint colour (for the tint layer)
+  contrast:        "light" | "dark";  // guides default text colour
+  aiHint:          string;   // how to describe it to Claude
+};
+
+export const VAN_COLOURS: VanColour[] = [
+  { slug: "white",     label: "White",      hex: "#F5F5F5", contrast: "light", aiHint: "clean white van, dark text works best" },
+  { slug: "silver",    label: "Silver",     hex: "#B8B8B8", contrast: "light", aiHint: "silver van, dark bold text with high contrast" },
+  { slug: "grey",      label: "Grey",       hex: "#5A5A5A", contrast: "dark",  aiHint: "mid-grey van, light or amber text stands out" },
+  { slug: "black",     label: "Black",      hex: "#111111", contrast: "dark",  aiHint: "black van, use white or brand yellow for lettering" },
+  { slug: "blue",      label: "Blue",       hex: "#1E40AF", contrast: "dark",  aiHint: "deep blue van, white or yellow lettering, avoid navy-on-blue" },
+  { slug: "red",       label: "Red",        hex: "#B91C1C", contrast: "dark",  aiHint: "red van, white or black lettering, avoid orange" },
+  { slug: "green",     label: "Green",      hex: "#166534", contrast: "dark",  aiHint: "dark green van, white or gold lettering" },
+  { slug: "yellow",    label: "Yellow",     hex: "#EAB308", contrast: "light", aiHint: "yellow van, black lettering only" },
+  { slug: "orange",    label: "Orange",     hex: "#EA580C", contrast: "dark",  aiHint: "safety orange van, black lettering, high visibility" }
+];
+
+export function vanColourBySlug(slug: string): VanColour | undefined {
+  return VAN_COLOURS.find((c) => c.slug === slug);
+}
