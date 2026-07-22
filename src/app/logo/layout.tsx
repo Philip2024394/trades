@@ -35,6 +35,7 @@ export default function LogoStudioLayout({ children }: { children: React.ReactNo
           <nav className="hidden items-center gap-4 text-[12px] font-semibold text-neutral-700 sm:flex">
             <Link href="/logo" className="hover:text-neutral-900">Home</Link>
             <Link href="/logo/build" className="hover:text-neutral-900">Build a logo</Link>
+            <Link href="/logo/van" className="hover:text-neutral-900">Van preview</Link>
             <Link href="/logo#pricing" className="hover:text-neutral-900">Pricing</Link>
             <Link
               href="/logo/build"
