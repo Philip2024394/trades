@@ -1,0 +1,29 @@
+{
+  "slug": "travel",
+  "title": "Nex Travel",
+  "description": "Nex Travel — coming soon.",
+  "version": "0.1.0",
+  "category": "travel",
+  "icon": "✈️",
+  "keywords": [
+    "travel",
+    "flight",
+    "hotel",
+    "holiday",
+    "visa",
+    "passport",
+    "destination",
+    "airline"
+  ],
+  "supported_languages": [
+    "en-GB"
+  ],
+  "prompt_file": "./prompt.md",
+  "knowledge_paths": [
+    "./knowledge/*.json"
+  ],
+  "plugins": {},
+  "enabled": false,
+  "priority": 50,
+  "status": "coming_soon"
+}

@@ -156,20 +156,37 @@ export interface AIOrchestrator {
 }
 
 // ─── Event bus (loose coupling) ────────────────────────────────
+//
+// Envelope-based per V1 Part 4. The concrete envelope shape lives in
+// event-bus.ts; runtime.ts only declares the contract so consumers
+// don't need to import from event-bus directly.
 
-export type PlatformEvent =
-  | { type: "BrandUpdated"; brand_id: string; version: number; changed_fields: string[] }
-  | { type: "AssetGenerated"; asset_id: string; brand_id: string; capability_slug: string }
-  | { type: "AssetApproved"; asset_id: string; approved_by: string }
-  | { type: "AssetRejected"; asset_id: string; rejected_by: string; reason: string }
-  | { type: "BrandPublished"; brand_id: string; version: number };
+export type PlatformEventEnvelope<T = unknown> = {
+  id:              string;
+  type:            string;
+  timestamp:       string;
+  version:         number;
+  merchantId:      string | null;
+  organisationId:  string | null;
+  brandVersion:    string | null;
+  correlationId:   string;
+  causationId:     string | null;
+  producer:        string;
+  payload:         T;
+};
 
-export type EventSubscriber<T extends PlatformEvent = PlatformEvent> = (event: T) => Promise<void>;
+/** Handler contract for a single event type. `name` is used for
+ *  Dead Letter Queue records so we can trace what subscriber failed. */
+export interface EventHandler<T = unknown> {
+  name:  string;
+  handle(event: PlatformEventEnvelope<T>): Promise<void>;
+}
 
 export interface EventBus {
-  publish(event: PlatformEvent): Promise<void>;
-  subscribe<T extends PlatformEvent["type"]>(type: T, handler: EventSubscriber<Extract<PlatformEvent, { type: T }>>): void;
-  unsubscribe(type: PlatformEvent["type"], handler: EventSubscriber): void;
+  publish<T>(event: PlatformEventEnvelope<T>):                  Promise<void>;
+  subscribe<T>(event: string, handler: EventHandler<T>):        Promise<void>;
+  unsubscribe(event: string, handlerId: string):                Promise<void>;
+  replay?(stream: string, from: Date, to?: Date):               Promise<void>;
 }
 
 // ─── Asset store ───────────────────────────────────────────────
@@ -227,7 +244,7 @@ export type CapabilityManifest = {
   outputs:                 string[];              // asset kinds this produces
   permissions:             string[];
   generator:               string;                // fn reference
-  event_subscriptions:     PlatformEvent["type"][];
+  event_subscriptions:     string[];    // envelope-type strings
   storage_pattern:         string;
   exports:                 string[];
   pricing_washers:         number;

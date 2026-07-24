@@ -48,8 +48,8 @@ export default async function BrandVaultPage() {
     .order("created_at", { ascending: false })
     .limit(10);
 
-  // Proactive AI recommendations from Mate's signals engine (already
-  // shipped in the Mate build).
+  // Proactive AI recommendations from Nex's signals engine (already
+  // shipped in the Nex build).
   const { data: signals } = await supabaseAdmin
     .from("hammerex_mate_signals")
     .select("id, kind, title, body, action_url, action_label, priority")

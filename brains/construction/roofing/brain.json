@@ -1,0 +1,31 @@
+{
+  "slug": "roofing",
+  "title": "Nex Roofing",
+  "description": "Nex Roofing — coming soon.",
+  "version": "0.1.0",
+  "category": "construction",
+  "icon": "🏠",
+  "keywords": [
+    "roof",
+    "roofer",
+    "roofing",
+    "tile",
+    "slate",
+    "gutter",
+    "fascia",
+    "soffit",
+    "flashing",
+    "ridge"
+  ],
+  "supported_languages": [
+    "en-GB"
+  ],
+  "prompt_file": "./prompt.md",
+  "knowledge_paths": [
+    "./knowledge/*.json"
+  ],
+  "plugins": {},
+  "enabled": false,
+  "priority": 50,
+  "status": "coming_soon"
+}

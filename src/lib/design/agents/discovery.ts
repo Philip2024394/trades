@@ -22,11 +22,11 @@ export const DISCOVERY_VERSION = "1.0.0";
  *  portfolio / vehicle. */
 export const DISCOVERY_QUESTIONS = [
   { id: "money_maker",   label: "What work makes you the most money?",              required: true  },
-  { id: "target",        label: "What type of customer do you want more of?",       required: true  },
+  { id: "target",        label: "What kind of customer do you want more of?",       required: true  },
   { id: "areas",         label: "Which areas do you cover?",                        required: true  },
-  { id: "why_you",       label: "What makes customers choose you instead of another?", required: true },
-  { id: "existing",      label: "Do you already have a logo or brand colours?",     required: false },
-  { id: "portfolio",     label: "Upload your best 3 completed jobs.",               required: false },
+  { id: "why_you",       label: "Why do customers pick you over the next lad?",     required: true  },
+  { id: "existing",      label: "Got a logo or brand colours already?",             required: false },
+  { id: "portfolio",     label: "Upload your best 3 jobs.",                         required: false },
   { id: "van",           label: "Which van do you drive?",                          required: false }
 ] as const;
 

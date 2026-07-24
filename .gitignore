@@ -20,3 +20,11 @@ dev.log
 # Local scratch — source images before processing, mockup HTML,
 # screenshots. Processed outputs live in /public/ and are tracked.
 tmp/
+
+# Brain-authoring staging JSONs — session state for import scripts,
+# regenerated on demand, not source of truth.
+scripts/.staging-*.json
+
+# Author Studio local drafts folder — filesystem fallback used only
+# in dev before the drafts DB migration is applied.
+.author-studio-drafts/

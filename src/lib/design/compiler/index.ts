@@ -15,7 +15,10 @@ import { parseIR } from "./ir";
 import { assembleSections } from "./stages/prompt-assembly";
 import { validate } from "./stages/validator";
 import { resolveConstraints } from "./stages/constraint-resolver";
-import { compileForGptImage } from "./backends/gpt-image";
+import { refineSections } from "./stages/image-refinement";
+import { resolveIntent } from "./stages/intent";
+import { resolveContext } from "./stages/context";
+import { chooseBackend, compileForBackend } from "./backends/router";
 import { cacheKey, readCache, writeCache } from "./cache";
 
 export const COMPILER_VERSION = "1.0.0";
@@ -60,21 +63,39 @@ export function compile(input: unknown): CompileResult {
   const cached = readCache(key);
   if (cached) return { ok: true, prompt: cached, cached: true };
 
-  // Resolve constraints — merges universal + surface + trade rules
-  // into the IR before assembly reads them.
+  // Stages 1 + 2 — Intent + Context. Deterministic normalisation of
+  // the merchant's request and the surface-kind lookup. Results are
+  // attached to the IR so the assembler can read them.
+  const intent  = resolveIntent(ir, undefined);
+  const context = resolveContext(ir);
+
+  // Stage 3 — Constraint resolution. Now includes trade rules,
+  // accessibility rules and print rules per Stages 5, 7, 8.
   const irWithConstraints: DesignIR = {
     ...ir,
+    layout: {
+      ...ir.layout,
+      style_anchor: ir.layout?.style_anchor ?? intent.style_anchor
+    },
     constraints: resolveConstraints(ir.intent.surface, ir.trade, ir.constraints)
   };
+  void context;
 
-  const sections = assembleSections(irWithConstraints);
+  // Stage 11 — Assemble sections.
+  const rawSections = assembleSections(irWithConstraints);
+
+  // Stage 9 — Image prompt refinement. Dedupe, promote negatives to
+  // preservations, remove empty sections.
+  const sections = refineSections(rawSections);
 
   const validation = validate(irWithConstraints, sections);
   if (!validation.ok) return { ok: false, errors: validation.errors };
 
-  // Model routing — for now only GPT Image 1. When Ideogram / Recraft
-  // / Flux backends land, dispatch by ir.production or a router hint.
-  const compiled = compileForGptImage(irWithConstraints, sections);
+  // Model routing — chooseBackend() picks by surface + hint. Currently
+  // GPT Image 1 covers vehicle; Ideogram + Recraft fall through to it
+  // until their adapters ship. See backends/router.ts.
+  const decision = chooseBackend(irWithConstraints);
+  const compiled = compileForBackend(irWithConstraints, sections, decision);
   compiled.cacheKey = key;
 
   writeCache(key, compiled);

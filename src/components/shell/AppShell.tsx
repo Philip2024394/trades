@@ -21,7 +21,7 @@ import Link from "next/link";
 import { NotificationsPopover } from "./NotificationsPopover";
 import { WalletChip } from "./WalletChip";
 import { GlobalHeader } from "./GlobalHeader";
-import { MateWidget } from "@/components/mate/MateWidget";
+import { NexWidget } from "@/components/nex/NexWidget";
 import {
   Search,
   Bell,
@@ -319,11 +319,11 @@ export function AppShell({
           in the top-right avatar drawer. */}
       <main>{children}</main>
 
-      {/* Mate — the AI agent, mounted for signed-in merchants on every
+      {/* Nex — the AI agent, mounted for signed-in merchants on every
           shell page. Floating chip bottom-right; expands to a chat
           panel. Persists conversation across navigations via
-          localStorage. See src/components/mate/MateWidget.tsx. */}
-      {auth && <MateWidget surface="merchant"/>}
+          localStorage. See src/components/nex/NexWidget.tsx. */}
+      {auth && <NexWidget surface="merchant"/>}
 
       {/* Avatar drawer — opens from the top-right avatar */}
       <AppDrawer

@@ -29,7 +29,18 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/support", label: "Support", live: true },
   { href: "/admin/beacon-residuals", label: "Bait Leads", live: true },
   { href: "/admin/asset-analytics", label: "Asset Analytics", live: true },
-  { href: "/admin/mate", label: "Mate (AI)", live: true }
+  { href: "/admin/nex", label: "Nex (AI)", live: true },
+  { href: "/admin/nex/knowledge", label: "Knowledge", live: true },
+  { href: "/admin/nex/review", label: "Review", live: true },
+  { href: "/admin/nex/health", label: "Health", live: true },
+  { href: "/admin/nex/sources", label: "Sources", live: true },
+  { href: "/admin/nex/research", label: "Research", live: true },
+  { href: "/admin/nex/weekly", label: "Weekly", live: true },
+  { href: "/admin/nex/teach", label: "Teach", live: true },
+  { href: "/admin/nex/backup", label: "Backup", live: true },
+  { href: "/admin/nex/marketing", label: "Marketing", live: true },
+  { href: "/admin/nex/character", label: "Character", live: true },
+  { href: "/admin/business-brains", label: "Business Brains", live: true }
   // Removed 2026-07-17: /admin/listings + /admin/reports were
   // placeholder-only ("Coming soon" ghost nav items). Add back when
   // the routes actually ship.

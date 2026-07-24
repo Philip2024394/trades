@@ -14,12 +14,19 @@
 //     hammerex_homeowner_ai_usage (created lazily; row-per-day).
 //   - Free: 20/day · Pro: 200/day · Concierge: unlimited (soft cap 2000).
 //
-// Body: { question: string }
+// Body: { question: string, projectId?: string }
 // Response: { ok: true, answer: string, action?: { label, href } }
+//
+// When `projectId` is set AND the question is project-scoped (photos,
+// spend, snags, timeline, risks, …) the Project Intelligence engine
+// answers directly from the project snapshot — no LLM call, evidence
+// linked back to the source tables. Otherwise we fall through to the
+// existing Nex agent + offline dictionary.
 
 import { NextResponse } from "next/server";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { answerProjectQuestion, buildProjectSnapshot, classifyProjectQuestion } from "@/lib/nex/pi";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,8 +42,9 @@ export async function POST(req: Request) {
   const homeowner = await getHomeownerFromCookie();
   if (!homeowner) return NextResponse.json({ ok: false, error: "not-authed" }, { status: 401 });
 
-  const body = await req.json().catch(() => null) as { question?: string } | null;
+  const body = await req.json().catch(() => null) as { question?: string; projectId?: string } | null;
   const question = body?.question?.trim();
+  const projectId = body?.projectId?.trim();
   if (!question)             return NextResponse.json({ ok: false, error: "empty" }, { status: 400 });
   if (question.length > 500) return NextResponse.json({ ok: false, error: "too-long" }, { status: 400 });
 
@@ -45,6 +53,31 @@ export async function POST(req: Request) {
   const usage = await incrementUsage(homeowner.id, cap);
   if (!usage.allowed) {
     return NextResponse.json({ ok: false, error: "quota-exceeded", cap }, { status: 402 });
+  }
+
+  // Project-scoped questions answered by the PI engine — no LLM, real
+  // evidence-linked numbers.
+  if (projectId) {
+    const pq = classifyProjectQuestion(question);
+    if (pq.kind !== "none") {
+      const res = await buildProjectSnapshot({
+        projectId,
+        viewer:   "homeowner",
+        viewerId: homeowner.id
+      });
+      if (!res.ok) {
+        // Permission denied or project missing — fall through to Nex.
+      } else {
+        const answer = answerProjectQuestion(pq, res.snapshot);
+        if (answer) {
+          return NextResponse.json({
+            ok: true,
+            answer,
+            action: { label: "Open project", href: `/sitebook/${projectId}` }
+          });
+        }
+      }
+    }
   }
 
   const answer = await answerQuestion(homeowner.id, question);
@@ -69,20 +102,20 @@ async function answerQuestion(homeownerId: string, question: string): Promise<An
   return offlineFallback(question);
 }
 
-/** Provider dispatch — routes through Mate (our agent). Mate handles
+/** Provider dispatch — routes through Nex (our agent). Nex handles
  *  the context injection (SiteBook projects, warranties, quote
  *  requests) + knowledge-base RAG + Anthropic call + cost tracking
- *  via src/lib/mate. This endpoint remains as the SiteBook-native
+ *  via src/lib/nex. This endpoint remains as the SiteBook-native
  *  entry point so the existing UI + daily-cap logic keep working;
- *  Mate is the brain underneath. */
+ *  Nex is the brain underneath. */
 async function callProvider(input: {
   homeownerId:   string;
   question:      string;
   openAiKey?:    string;
   anthropicKey?: string;
 }): Promise<Answer> {
-  const { askMate } = await import("@/lib/mate/agent");
-  const result = await askMate({
+  const { askNex } = await import("@/lib/nex/agent");
+  const result = await askNex({
     surface:             "homeowner",
     userKey:             input.homeownerId,
     question:            input.question,
@@ -91,7 +124,7 @@ async function callProvider(input: {
   });
   return {
     answer: result.answer
-    // Mate doesn't return action pills yet — that's a Phase 2 tool.
+    // Nex doesn't return action pills yet — that's a Phase 2 tool.
     // Leave `action` undefined so the SiteBook UI falls through to
     // its own action-suggestion layer (which reads the answer text).
   };

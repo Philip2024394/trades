@@ -11,6 +11,7 @@
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { loadStudioSession } from "@/lib/studio/session";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -42,9 +43,20 @@ export default async function StudioEntryPage({
     redirect(`/api/studio/enter?${params.toString()}`);
   }
 
-  // Already signed in — jump to the requested deep-link or home.
+  // Already signed in — jump to the requested deep-link, then decide
+  // the correct first-visit target. New merchants (no Brand DNA yet)
+  // land on Discovery so they build their brand foundation first.
+  // Returning merchants land on the Brand Vault home.
   const session = await loadStudioSession();
-  if (session) redirect(safeNext || "/studio/home");
+  if (session) {
+    if (safeNext) redirect(safeNext);
+    const { data: brand } = await supabaseAdmin
+      .from("hammerex_brand_identity")
+      .select("merchant_slug")
+      .eq("merchant_slug", session.merchant.slug)
+      .maybeSingle();
+    redirect(brand ? "/studio/vault" : "/studio/discovery");
+  }
 
   const badLink = sp.failed === "1";
 
@@ -62,8 +74,7 @@ export default async function StudioEntryPage({
         </span>
         <h1 className="mt-6 text-3xl font-extrabold leading-tight">Studio</h1>
         <p className="mt-2 text-[13px] leading-relaxed text-white/70">
-          Your merchant workspace. Sign in with the magic link we sent to your
-          email — the same one that opens your dashboard.
+          Sign in with the magic link we sent to your email.
         </p>
         {badLink && (
           <p
@@ -81,7 +92,7 @@ export default async function StudioEntryPage({
         {process.env.NODE_ENV !== "production" && <DevBypassCard />}
 
         <p className="mt-8 text-[11px] font-bold uppercase tracking-widest text-white/40">
-          Xrated Trades
+          The Network
         </p>
       </div>
     </main>

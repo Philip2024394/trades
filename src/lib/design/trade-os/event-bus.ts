@@ -5,7 +5,7 @@
 // change when we upgrade the transport.
 //
 // Guarantees:
-//   • Every publish appends to hammerex_events (append-only source of truth)
+//   • Every publish appends to hammerex_trade_os_events (append-only source of truth)
 //   • Subscribers fire in priority order per event type
 //   • Ordering per (organisationId, brandVersion) — never global
 //   • Retry with backoff (5s / 30s / 2min) then Dead Letter Queue
@@ -124,10 +124,10 @@ class InProcessEventBus implements EventBus {
   }
 
   async replay(stream: string, from: Date, to?: Date): Promise<void> {
-    // Read events from hammerex_events matching stream pattern and
+    // Read events from hammerex_trade_os_events matching stream pattern and
     // re-publish. Used for post-bug regeneration per V1 Part 4.
     let q = supabaseAdmin
-      .from("hammerex_events")
+      .from("hammerex_trade_os_events")
       .select("id, type, payload_json, envelope_json")
       .like("type", `${stream}%`)
       .gte("created_at", from.toISOString())
@@ -214,7 +214,7 @@ async function dispatchWithRetry(record: SubscriberRecord, event: EventEnvelope<
 
 async function deadLetter(record: SubscriberRecord, event: EventEnvelope<unknown>, error: unknown): Promise<void> {
   const message = error instanceof Error ? error.message : String(error);
-  await supabaseAdmin.from("hammerex_events_dead_letter").insert({
+  await supabaseAdmin.from("hammerex_trade_os_events_dlq").insert({
     event_id:      event.id,
     subscriber_id: record.id,
     event_type:    event.type,
@@ -228,7 +228,7 @@ async function deadLetter(record: SubscriberRecord, event: EventEnvelope<unknown
 // ─── Persistence ─────────────────────────────────────────────────
 
 async function persistEvent(event: EventEnvelope<unknown>): Promise<void> {
-  await supabaseAdmin.from("hammerex_events").insert({
+  await supabaseAdmin.from("hammerex_trade_os_events").insert({
     id:              event.id,
     type:            event.type,
     merchant_id:     event.merchantId,

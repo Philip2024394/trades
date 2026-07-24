@@ -45,10 +45,13 @@ export async function runLoop(input: LoopInput): Promise<LoopResult> {
   let currentImage  = input.initialImage;
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const { b64, url } = extractImageForCritic(currentImage);
     const critic = await review({
       ...input.criticInput,
       compiled_prompt:    currentPrompt.userPrompt,
-      asset_description:  describeAsset(currentImage)
+      asset_description:  describeAsset(currentImage),
+      image_b64:          b64,
+      image_url:          url
     });
 
     const round: RegenerationRound = {
@@ -89,8 +92,24 @@ export async function runLoop(input: LoopInput): Promise<LoopResult> {
 }
 
 function describeAsset(image: unknown): string {
-  // TODO — when Vision API integration lands, ask the vision model to
-  // describe the actual pixels. For now we describe the metadata.
-  if (image && typeof image === "object" && "images" in image) return "Image returned from generator (base64 payload — full visual review requires vision-model handoff).";
+  // Vision API is called separately with the actual pixels — this
+  // description exists only as a hint for the metadata-only fallback.
+  if (image && typeof image === "object" && "images" in image) return "Vision-model review of generated pixels.";
   return "No image returned — critic operating on prompt-only metadata.";
+}
+
+/** Pull a base64 payload or URL out of the generator's response so we
+ *  can hand the actual pixels to the vision critic. */
+function extractImageForCritic(image: unknown): { b64?: string; url?: string } {
+  if (!image || typeof image !== "object") return {};
+  const asImg = image as { images?: Array<{ b64?: string; url?: string } | string> };
+  const first = asImg.images?.[0];
+  if (!first) return {};
+  if (typeof first === "string") {
+    if (first.startsWith("http")) return { url: first };
+    return { b64: first };
+  }
+  if (first.b64) return { b64: first.b64 };
+  if (first.url) return { url: first.url };
+  return {};
 }

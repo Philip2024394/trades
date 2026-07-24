@@ -101,10 +101,13 @@ export type StudioAppManifest = z.infer<typeof StudioAppManifestSchema>;
 export type AppGenerator = (input: AppGenerateInput) => Promise<AppGenerateResult>;
 
 export type AppGenerateInput = {
-  correlation_id: string;
-  brand_snapshot: Record<string, unknown>;   // frozen BrandDNA
-  user_prompt?:   string;
-  reference_urls?: string[];
+  correlation_id:    string;
+  brand_snapshot:    Record<string, unknown>;   // frozen BrandDNA
+  brand_identity_id?: string;                    // for snapshot lineage
+  merchant_slug?:    string;                     // for session ownership
+  session_id?:       string;                     // if continuing a session
+  user_prompt?:      string;
+  reference_urls?:   string[];
 };
 
 export type AppGenerateResult = {
@@ -198,7 +201,8 @@ export async function ensureAppsLoaded(): Promise<void> {
   // Static imports so Next.js bundles them. Each App module exports
   // its own manifest + generator + handlers.
   const modules: StudioAppModule[] = [
-    // (await import("@/apps/van-wrap")).default,
+    (await import("@/apps/van-wrap")).default,
+    (await import("@/apps/business-card")).default
     // add more Studio Apps here as they ship
   ];
   for (const mod of modules) {

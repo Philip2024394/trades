@@ -37,7 +37,9 @@ export const GLOBAL_NAV_ITEMS: ReadonlyArray<{
   { href: "/trade-off/yard/canteens",    label: "Canteen",        ariaLabel: "Canteens — trade groups directory" },
   { href: "/trade-off/search?tab=inspiration", label: "The Site",  ariaLabel: "The Site — image discovery" },
   { href: "/tc/trade-center",            label: "Trade Center",   ariaLabel: "Trade Center — the marketplace" },
-  { href: "/site/editor",                label: "App Templates",  ariaLabel: "App Templates — Site Editor + template library" }
+  { href: "/site/editor",                label: "App Templates",  ariaLabel: "App Templates — Site Editor + template library" },
+  { href: "/studio",                     label: "Studio",         ariaLabel: "Studio — your merchant workspace + Brand OS" },
+  { href: "/nex",                        label: "Nex",            ariaLabel: "Nex — talk to your AI assistant" }
 ];
 
 /** Right-side slot — parent supplies whatever avatar drawer /

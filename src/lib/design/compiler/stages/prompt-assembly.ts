@@ -32,7 +32,7 @@ export function assembleSections(ir: DesignIR): PromptSection[] {
     sections.push({
       name:    "VEHICLE",
       content: [
-        `${ir.vehicle.year ?? "current"} ${ir.vehicle.model} ${ir.vehicle.body} van, ${ir.vehicle.colour.label} (${ir.vehicle.colour.hex}).`,
+        `${ir.vehicle.year ?? "current"} ${ir.vehicle.model} ${ir.vehicle.body} van, ${ir.vehicle.colour.name} (${ir.vehicle.colour.hex}).`,
         `Studio background, photorealistic, correct manufacturer proportions.`
       ].join("\n"),
       version: PROMPT_ASSEMBLY_VERSION,

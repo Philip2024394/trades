@@ -7,9 +7,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import {
-  Sparkles, Palette, Type as TypeIcon, Camera, BookOpen,
+  Palette, Type as TypeIcon, Camera, BookOpen,
   Car, CreditCard, Globe, FileText, Shirt, Map,
-  Zap, Wrench, Wand2, Download, ArrowUpRight,
+  Zap, Wrench, Download,
   MessageSquare, TrendingUp, Clock, ChevronRight, Bell
 } from "lucide-react";
 import type { BrandRecord } from "@/lib/design/brand/schema";
@@ -57,11 +57,10 @@ export function BrandVaultHome(props: Props) {
       {/* ─── ZONE 2 · Quick Actions ──────────────────────────────── */}
       <section className="mx-auto max-w-6xl px-6 pb-6">
         <div className="flex flex-wrap gap-2">
-          <QuickAction icon={<Sparkles size={13}/>} label="Generate" href="/logo/van" primary/>
-          <QuickAction icon={<Wand2 size={13}/>} label="Improve"    href="#improve"/>
-          <QuickAction icon={<ArrowUpRight size={13}/>} label="Compare" href="#compare"/>
-          <QuickAction icon={<Download size={13}/>} label="Export"     href="#export"/>
-          <QuickAction icon={<MessageSquare size={13}/>} label="Ask AI" href="#ask-ai"/>
+          <QuickAction icon={<Car size={13}/>}       label="Design my van"   href="/studio/studios/van-wrap" primary/>
+          <QuickAction icon={<CreditCard size={13}/>} label="Business cards" href="/nex?prompt=business%20cards"/>
+          <QuickAction icon={<MessageSquare size={13}/>} label="Talk to Nex"  href="/nex"/>
+          <ExportButton/>
         </div>
       </section>
 
@@ -69,7 +68,7 @@ export function BrandVaultHome(props: Props) {
       <section className="mx-auto max-w-6xl px-6 pb-6">
         <SectionHeader title="My Brand"/>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          <BrandTile icon={<Palette size={16}/>} label="Logo"       version={props.brand?.logo?.masterSvg ? "set" : "—"} href="/studio/brands"/>
+          <BrandTile icon={<Palette size={16}/>} label="Logo"       version={(props.brand?.logo?.lockups?.length ?? 0) > 0 ? "set" : "—"} href="/studio/brands"/>
           <BrandTile icon={<Zap size={16}/>}     label="Colours"    version={props.brand ? `${countColours(props.brand)} set` : "—"} href="/studio/brands"/>
           <BrandTile icon={<TypeIcon size={16}/>} label="Typography" version={props.brand?.typography?.primary || "—"} href="/studio/brands"/>
           <BrandTile icon={<BookOpen size={16}/>} label="Brand Guide" version={props.brandVersion > 0 ? `v${props.brandVersion}` : "—"} href="/studio/brands"/>
@@ -81,7 +80,7 @@ export function BrandVaultHome(props: Props) {
       <section className="mx-auto max-w-6xl px-6 pb-6">
         <SectionHeader title="My Assets" action={{ label: "See all", href: "/studio/vault/assets" }}/>
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <AssetTile icon={<Car size={16}/>}        label="Van"           status="Ready"    thumbnailUrl={props.vanSessions[0]?.thumbnailUrl ?? null} href="/logo/van"/>
+          <AssetTile icon={<Car size={16}/>}        label="Van"           status="Ready"    thumbnailUrl={props.vanSessions[0]?.thumbnailUrl ?? null} href="/studio/studios/van-wrap"/>
           <AssetTile icon={<CreditCard size={16}/>} label="Cards"         status="Pending"  thumbnailUrl={null}                                         href="#business-card"/>
           <AssetTile icon={<Globe size={16}/>}      label="Website"       status="Draft"    thumbnailUrl={null}                                         href="#website"/>
           <AssetTile icon={<FileText size={16}/>}   label="Invoice"       status="Pending"  thumbnailUrl={null}                                         href="#invoice"/>
@@ -112,11 +111,11 @@ export function BrandVaultHome(props: Props) {
 
       {/* ─── ZONE 6 · AI Recommendations ─────────────────────────── */}
       <section className="mx-auto max-w-6xl px-6 pb-16">
-        <SectionHeader title="AI Recommendations" action={{ label: "From Mate", href: "#mate" }}/>
+        <SectionHeader title="AI Recommendations" action={{ label: "From Nex", href: "#nex" }}/>
         {props.signals.length === 0 ? (
           <div className="rounded-2xl border border-neutral-200 bg-white p-4">
             <p className="text-[13px] text-neutral-500">
-              Mate's brain is quiet right now. Once you publish your first assets, seasonal ideas and improvement suggestions will surface here.
+              Nex's brain is quiet right now. Once you publish your first assets, seasonal ideas and improvement suggestions will surface here.
             </p>
           </div>
         ) : (
@@ -154,6 +153,45 @@ function SectionHeader({ title, action }: { title: string; action?: { label: str
         </Link>
       )}
     </div>
+  );
+}
+
+function ExportButton() {
+  const [busy, setBusy] = useState(false);
+  const [note, setNote] = useState<string | null>(null);
+
+  async function download() {
+    setBusy(true); setNote(null);
+    try {
+      const res = await fetch("/api/studio/export", { method: "POST" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setNote(body.error === "no_brand_dna_yet" ? "Do Discovery first" : (body.error ?? "export_failed"));
+        return;
+      }
+      const blob = await res.blob();
+      const url  = URL.createObjectURL(blob);
+      const a    = document.createElement("a");
+      a.href     = url;
+      a.download = "brand-package.zip";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch {
+      setNote("network_error");
+    } finally { setBusy(false); }
+  }
+
+  return (
+    <button
+      onClick={download}
+      disabled={busy}
+      className="inline-flex items-center gap-1.5 rounded-full border border-neutral-300 bg-white px-3.5 py-2 text-[12px] font-black transition hover:bg-neutral-50 disabled:opacity-40"
+      title={note ?? "Download your full Brand Package as ZIP"}
+    >
+      <Download size={13}/> {busy ? "Preparing…" : "Export"}
+    </button>
   );
 }
 
@@ -209,7 +247,7 @@ function BrandHealthCard({ score, axes }: { score: number; axes: Record<string, 
   return (
     <div className="w-64 rounded-2xl border border-neutral-200 bg-white p-3 shadow-sm">
       <div className="flex items-baseline justify-between">
-        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-neutral-500">Brand Health</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-neutral-500">Brand complete</p>
         <span className="text-[10px] font-black text-amber-500">{stars}</span>
       </div>
       <p className="mt-1 text-2xl font-black">{score}%</p>
@@ -243,7 +281,7 @@ function computeBrandHealth(brand: BrandRecord | null, vanSessions: number): { o
   const identity      = brand.name && brand.industry ? 100 : 40;
   const consistency   = countColours(brand) === 3 ? 96 : 70;
   const premium       = brand.tagline && brand.positioning ? 92 : 65;
-  const printReady    = brand.logo?.masterSvg ? 100 : 60;
+  const printReady    = (brand.logo?.lockups?.length ?? 0) > 0 ? 100 : 60;
   const marketingReady = vanSessions > 0 ? 90 : 50;
   const axes = { identity, consistency, premium, print: printReady, marketing: marketingReady };
   const overall = Math.round(

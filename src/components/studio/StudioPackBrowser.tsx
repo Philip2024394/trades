@@ -155,10 +155,8 @@ function EmptyState() {
         Industry Packs launching soon.
       </p>
       <p className="max-w-md text-[12px] leading-relaxed text-neutral-500">
-        The first Packs — Plant Hire, Building Merchant, Plumber — go
-        live once we finish converting our reference apps to the
-        manifest system. Until then, browse the App Store to install
-        Apps individually.
+        First Packs go live soon (Plant Hire, Building Merchant, Plumber).
+        Meanwhile, browse the App Store to install Apps one by one.
       </p>
       <Link
         href="/studio/apps"

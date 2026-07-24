@@ -6,6 +6,9 @@
 // Preservation language beats negation per V3 Q13 spec.
 
 import type { Constraint, Surface } from "../ir";
+import { tradeRulesToConstraints } from "./trade-rules";
+import { accessibilityConstraints } from "./accessibility";
+import { printRuleConstraints } from "./print-rules";
 
 // ─── Universal preservation constraints ─────────────────────────
 
@@ -54,9 +57,15 @@ export function resolveConstraints(surface: Surface, trade: string, extra: Const
     PRINT_PRESERVATIONS.forEach((c) => out.push({ ...c, source: "print-surface" }));
   }
 
-  // Trade-specific — placeholder; DIL Trade Intelligence provides these
-  // once V3 Q14 module implementation ships. For now, surface-only.
-  void trade;
+  // Trade-specific — rulebook per trade (Stage 5 · Trade Rules).
+  tradeRulesToConstraints(trade).forEach((c) => out.push(c));
+
+  // Accessibility (Stage 7) — WCAG + trades legibility rules.
+  accessibilityConstraints(surface).forEach((c) => out.push(c));
+
+  // Print rules (Stage 8) — bleed / dpi / vinyl / embroidery minimums
+  // for physical surfaces.
+  printRuleConstraints(surface).forEach((c) => out.push(c));
 
   // Explicit constraints from caller (e.g. Studio App's manifest.qa.rules)
   extra.forEach((c) => out.push(c));

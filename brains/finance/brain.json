@@ -1,0 +1,30 @@
+{
+  "slug": "finance",
+  "title": "Nex Finance",
+  "description": "Nex Finance — coming soon.",
+  "version": "0.1.0",
+  "category": "finance",
+  "icon": "💷",
+  "keywords": [
+    "finance",
+    "mortgage",
+    "loan",
+    "interest rate",
+    "isa",
+    "tax",
+    "vat",
+    "budget",
+    "savings"
+  ],
+  "supported_languages": [
+    "en-GB"
+  ],
+  "prompt_file": "./prompt.md",
+  "knowledge_paths": [
+    "./knowledge/*.json"
+  ],
+  "plugins": {},
+  "enabled": false,
+  "priority": 50,
+  "status": "coming_soon"
+}

@@ -96,16 +96,25 @@ export async function completeWithUsage(
     if (input.cachedSystem) {
       headers["anthropic-beta"] = "prompt-caching-2024-07-31";
     }
+    // Opus 4.x deprecates the `temperature` parameter · sending it
+    // returns HTTP 400 invalid_request_error. Older models still
+    // accept it, so keep it for anything not on the deprecation list.
+    const modelName = input.model ?? DEFAULT_MODEL;
+    const temperatureDeprecated = /^claude-opus-4/.test(modelName);
+    const body: Record<string, unknown> = {
+      model:      modelName,
+      max_tokens: input.maxTokens ?? 512,
+      system:     systemField,
+      messages:   input.messages
+    };
+    if (!temperatureDeprecated) {
+      body.temperature = input.temperature ?? 0.4;
+    }
+
     const res = await fetch(ANTHROPIC_URL, {
-      method: "POST",
+      method:  "POST",
       headers,
-      body: JSON.stringify({
-        model: input.model ?? DEFAULT_MODEL,
-        max_tokens: input.maxTokens ?? 512,
-        temperature: input.temperature ?? 0.4,
-        system: systemField,
-        messages: input.messages
-      })
+      body:    JSON.stringify(body)
     });
     if (!res.ok) return null;
     const data = (await res.json()) as {
@@ -154,7 +163,7 @@ export type AgenticResult = {
 };
 
 /** Agentic completion — returns the full content array (may contain
- *  tool_use blocks) plus stop reason. The Mate runtime loops on this
+ *  tool_use blocks) plus stop reason. The Nex runtime loops on this
  *  until stopReason !== "tool_use". Never throws. */
 export async function completeAgentic(input: AgenticInput): Promise<AgenticResult | null> {
   const key = process.env.ANTHROPIC_API_KEY;
@@ -227,7 +236,7 @@ export async function completeAgentic(input: AgenticInput): Promise<AgenticResul
 // Async-generator streaming for agentic turns. Yields one event per
 // meaningful state change (text delta, tool started, tool input
 // finished, thinking delta) plus a final `done` event carrying the
-// reassembled content array + usage + stop reason. The Mate runtime
+// reassembled content array + usage + stop reason. The Nex runtime
 // consumes this to interleave tool execution with visible typing.
 
 export type AgenticStreamEvent =

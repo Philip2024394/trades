@@ -156,4 +156,70 @@ Full ADR: [`0015-canteen-app-template-split.md`](0015-canteen-app-template-split
 
 ---
 
-_No ADRs currently marked Superseded or Deprecated. All 15 are Accepted._
+---
+
+## 0016 · Memory Engine Privacy Architecture — Draft
+
+**Context:** Phase 26 Memory V0 shipped owner-scoped memory. V1 unlocks cross-tenant rollups that give merchants regional peer benchmarks · but flat K=5 is de-anonymisable for pricing in small trades × small regions, and consent framework needs concrete implementation to be lawful across UK/IE/AU jurisdictions.
+**Decision:** Tiered K-anonymity thresholds (K≥5 demand · K≥10 pricing · K≥20 margin · never PII crosses) · consent-first opt-in per memory-type category · regional granularity capped at ONS-region/state/province · "your data helped" transparency dashboard · full GDPR portability + right-to-be-forgotten workflows.
+**Consequences:** Defensible under adversarial de-anonymisation · legally sound across jurisdictions · turns compliance into trust advantage · but rollup density in low-K regions takes months to accumulate · Y1 revenue projections should not depend heavily on cross-tenant reads.
+
+Full ADR: [`0016-memory-privacy-architecture.md`](0016-memory-privacy-architecture.md)
+
+---
+
+## 0017 · Trade Brain Contract — Draft
+
+**Context:** Phase 27 upgrades Phase 24's thin trade-agent stubs into Trade Expert Brains authored by human master tradespeople. If the module schema is not locked before authoring begins, every subsequent Brain requires schema migrations and wastes contracted author time.
+**Decision:** 10-module Brain schema with 6 modules required at V1 (craft · regulations · materials · workflow · defects · pricing_model) and 4 deferred to V2 (tools · business_tone · sub_specialisations · regional_variants) · JSON pack file format under `src/lib/nex/brains/<slug>/` · named human author with authoritative editorial control · correction chain via `hammerex_nex_brain_corrections` · semver + rollback pathway.
+**Consequences:** Contract locked before authoring · 6-module V1 achievable in author capacity · trust earned via named authors · but 4 modules deferred means known depth gaps at V1 · author recruitment is Y1's biggest hidden bottleneck.
+
+**Amendment 2026-07-23 (§8 Field Learning Loop):** every Brain must support 6 loop mechanisms (Author-authored baseline · verified corrections · field outcome capture · prediction-vs-actual delta tracking · confidence updates · version history). Data flow: Brain prediction → Twin outcome → K-anonymised rollup → Author quarterly review → learning-loop version bump. New tables: `hammerex_nex_brain_field_outcomes` + `hammerex_nex_brain_learning_signals`. Author contract extended to include quarterly outcome-pattern review (retainer-funded).
+
+Full ADR: [`0017-trade-brain-contract.md`](0017-trade-brain-contract.md)
+
+---
+
+## 0018 · Twin Event Log Schema — Draft
+
+**Context:** Phase 29 Digital Twin creates a persistent replica of every project · every future Twin behaviour derives from the event log schema and getting it wrong later is not a rollback but a migration of every historical event ever written.
+**Decision:** Append-only event log (`hammerex_nex_twin_events`) partitioned by month · versioned Zod schemas per event kind · approval-state field for medium-confidence Vision events · V0 ships 2 perspectives only (Merchant + Homeowner) not full Brain-perspective engine · V0 ships WITHOUT BIM ingest · weekly snapshot cache for perf · 24-month hot retention + cold archival.
+**Consequences:** Time-travel + correction transparency + perspective folding become free capabilities · event log grows to millions of events per year at merchant density · partitioning + archival mandatory from day one · BIM ingest deferral means enterprise merchants can't use Twin V0 for BIM workflows.
+
+Full ADR: [`0018-twin-event-log-schema.md`](0018-twin-event-log-schema.md)
+
+---
+
+## 0019 · Workforce Trust Ladder — Draft
+
+**Context:** Phase 32 Workforce ships 5-25 AI agents that act for the merchant · original 7-level trust ladder was too complex for merchants to distinguish (per ES-01 correction #8) · every action must be safe by construction not by careful design of individual features.
+**Decision:** 4-level ladder (Observe · Draft · Prepare · Auto-Execute) with Level 5 Emergency Stop as non-negotiable safety valve · default Level 2 for every new agent · Level 4 auto-execute opt-in per action class with hard caps · Level 4 whitelist strictly limited to non-external-facing actions · downgrade triggers on ≥85% approval-rate breach · immutable audit log per level.
+**Consequences:** Levels distinguishable by non-technical merchants · default Level 2 means no agent surprises at onboarding · Emergency Stop non-negotiable creates fundamental safety guarantee · approval fatigue at Level 2 remains a risk addressed by weekly digest (Validation Report C-5) · some "obviously safe" automations require Level 3 approval even at scale.
+
+Full ADR: [`0019-workforce-trust-ladder.md`](0019-workforce-trust-ladder.md)
+
+---
+
+## 0020 · Workforce Economy Honesty Framework — Draft
+
+**Context:** Phase 33 Workforce Economy uses employment language (hire, retire, promote) as strategic asset · one incident of fabricated review, faked credential, or human-impersonation ends the category-shift narrative and creates significant legal exposure · trust is one-shot.
+**Decision:** AI always disclosed as AI in external communications · zero fabrication enforced at schema level (reviews · credentials · portfolio · aggregate statistics) · verification badges earned not granted (Registered · Insured · Certified · Trusted · Master) · warm-professional voice never fake emotion · approval-required for every external send regardless of agent level · terms of use disclaim personhood + legal capacity · verified retention framework on retirement.
+**Consequences:** Every merchant-facing surface passes honesty audit by construction · category-shift framing survives regulatory scrutiny · verified badges become genuine trust signals · but some competitive marketing tactics (fake urgency, generated testimonials) forbidden · verification cron adds ongoing ops cost per merchant.
+
+Full ADR: [`0020-workforce-economy-honesty-framework.md`](0020-workforce-economy-honesty-framework.md)
+
+---
+
+---
+
+## 0021 · Intelligence Domain Separation — Draft
+
+**Context:** As Nex intelligence grows (40+ Trade Brains authored over years · Memory rollups compounding · Business Brains formalising) the temptation to build "universal search over all construction knowledge" grows with it · that approach degrades AI quality (unrelated retrieval · bloated LLM context · higher hallucination · specialist authorship dilutes · latency degrades). Phase 24 mesh and ADR-0017 already practice domain separation at file/schema level · this codifies as a first-class enforcement rule before Phase 1 Substrate begins.
+**Decision:** Nex intelligence organised into 5 domain categories (Trade Brains · Business Brains · Memory Layers · Regulatory Knowledge · Product Knowledge) · every domain enforces separation at 5 levels (namespace · schema · storage · retrieval · ownership) · every AI query follows domain-scoped routing · cross-domain retrieval requires explicit multi-domain listing (default deny · no wildcards) · Supabase Storage bucket paths always domain-prefixed · CI enforcement via ESLint rule + retrieval function contracts.
+**Consequences:** Retrieval scoped to relevant domain (faster · cheaper · fewer hallucinations) · Author authority preserved · adding new Brain is additive · but legitimate compound queries require explicit multi-domain routing · cross-Brain analogical reasoning requires explicit adjacency edges not implicit search · onboarding engineers must learn domain boundaries.
+
+Full ADR: [`0021-intelligence-domain-separation.md`](0021-intelligence-domain-separation.md)
+
+---
+
+_ADRs 16-21 are Draft (awaiting signoff) · all 15 prior ADRs remain Accepted · none currently Superseded or Deprecated._

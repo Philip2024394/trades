@@ -9,6 +9,7 @@
 // something during dev).
 
 import { reasonJson } from "@/lib/openai/reasoning";
+import { reviewImage } from "@/lib/openai/vision";
 import type { CriticInput } from "./prompts/creative-director";
 import { CREATIVE_DIRECTOR_SYSTEM, buildCriticPrompt } from "./prompts/creative-director";
 import {
@@ -29,14 +30,13 @@ type RawCriticResponse = {
 };
 
 /** Review a generated asset. Returns null when the AI reasoning key
- *  is missing (dev fallback). */
-export async function review(input: CriticInput): Promise<CriticResult | null> {
-  const raw = await reasonJson<RawCriticResponse>({
-    system:      CREATIVE_DIRECTOR_SYSTEM,
-    messages:    [{ role: "user", content: buildCriticPrompt(input) }],
-    temperature: 0.2,
-    maxTokens:   1200
-  });
+ *  is missing (dev fallback).
+ *
+ *  Vision path: if the caller supplies `image_b64` or `image_url`, the
+ *  critic reviews the actual pixels via GPT-4o vision. Otherwise it
+ *  falls back to the metadata-only path (worse but still cheap).  */
+export async function review(input: CriticInput & { image_b64?: string; image_url?: string }): Promise<CriticResult | null> {
+  const raw = await runCritic(input);
 
   if (!raw || !raw.scores) return null;
 
@@ -74,4 +74,23 @@ export async function review(input: CriticInput): Promise<CriticResult | null> {
 function clamp(v: number | undefined): number {
   if (typeof v !== "number" || Number.isNaN(v)) return 0;
   return Math.max(0, Math.min(100, Math.round(v)));
+}
+
+/** Route to vision-based critic if we have pixels, else metadata critic. */
+async function runCritic(input: CriticInput & { image_b64?: string; image_url?: string }): Promise<RawCriticResponse | null> {
+  if (input.image_b64 || input.image_url) {
+    const res = await reviewImage<RawCriticResponse>({
+      system:  CREATIVE_DIRECTOR_SYSTEM,
+      prompt:  buildCriticPrompt(input),
+      image:   { b64: input.image_b64, url: input.image_url },
+      jsonMode: true
+    });
+    return res?.parsed ?? null;
+  }
+  return reasonJson<RawCriticResponse>({
+    system:      CREATIVE_DIRECTOR_SYSTEM,
+    messages:    [{ role: "user", content: buildCriticPrompt(input) }],
+    temperature: 0.2,
+    maxTokens:   1200
+  });
 }

@@ -1,45 +1,30 @@
-// Van Wrap App — real generator wired through the Prompt Compiler.
+// Van Wrap App — the reference implementation of a Trade OS Studio,
+// now built on top of the reusable StudioTemplate. Every step of the
+// seven-step generator pattern lives in `createStudio()` — Van Wrap
+// supplies only what makes it a Van Wrap: the IR shape and the image
+// backend call.
 //
-// Flow:
-//   1. Read brand snapshot + user inputs from input.brand_snapshot
-//   2. Build the DesignIR via compiler.buildVehicleIR()
-//   3. compile() → CompiledPrompt (deterministic, cached, versioned)
-//   4. Send to GPT Image 1 via imageGen.generateImage()
-//   5. Return image URLs + recipe metadata per Master Rule ("save the
-//      recipe not the image")
+// Adding a new Studio (Logo, Business Card, Workwear) is now:
+//   1. Write manifest.ts
+//   2. Write buildIR({ brand, input }) → DesignIR
+//   3. Write runBackend({ compiled }) → BackendCallResult
+//   4. Write persist() if the Studio uses a bespoke table (Van Wrap
+//      uses hammerex_van_generations)
 //
-// Generation only fires when OPENAI_API_KEY is live. Compiler runs
-// regardless — you can inspect the prompt before spending money.
+// That's it. Everything else — Brand DNA parse, compile, critic loop,
+// event publish, subscriber bootstrap — is inherited.
 
-import type { StudioAppModule, AppGenerator } from "@/lib/design/trade-os/manifest";
-import type { EventHandler } from "@/lib/design/trade-os/runtime";
-import type { EventEnvelope } from "@/lib/design/trade-os/event-bus";
 import { manifest } from "./manifest";
-import { compile, buildVehicleIR } from "@/lib/design/compiler";
-import { generateImage } from "@/lib/openai/imageGen";
-import { parseBrandRecord } from "@/lib/design/brand/schema";
-import { runLoop } from "@/lib/design/critic/regenerate-loop";
-import type { CompiledPrompt } from "@/lib/design/compiler";
+import { createStudio } from "@/lib/design/trade-os/studio-template";
+import type { PersistArgs } from "@/lib/design/trade-os/studio-template";
+import { buildVehicleIR } from "@/lib/design/compiler";
+import { dispatchBackend } from "@/lib/design/trade-os/backend-dispatch";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-const generator: AppGenerator = async (input) => {
-  const t0 = Date.now();
+const { module } = createStudio({
+  manifest,
 
-  // Parse + validate the brand snapshot. Master Rule: brand is source
-  // of truth, so we validate it hard before doing anything.
-  let brand;
-  try {
-    brand = parseBrandRecord(input.brand_snapshot);
-  } catch (e) {
-    return {
-      ok: false,
-      error: e instanceof Error ? `invalid_brand_snapshot:${e.message}` : "invalid_brand_snapshot",
-      latency_ms: Date.now() - t0
-    };
-  }
-
-  // TODO — real values from the SDS. Placeholders until Van Wrap App
-  // has a proper input shape passed from the Studio UI.
-  const ir = buildVehicleIR({
+  buildIR: ({ brand, input }) => buildVehicleIR({
     brand: {
       colour: {
         primary:   brand.colour.primary,
@@ -71,99 +56,59 @@ const generator: AppGenerator = async (input) => {
     style_anchor:       "Luxury Minimal",
     hero_photo_urls:    input.reference_urls,
     memory_hints:       []
-  });
+  }),
 
-  // Compile — deterministic. Runs whether or not OPENAI_API_KEY exists.
-  const result = compile(ir);
-  if (!result.ok) {
-    return {
-      ok: false,
-      error: `compile_failed:${result.errors.map((e) => `${e.path}: ${e.message}`).join("; ")}`,
-      latency_ms: Date.now() - t0
-    };
-  }
+  runBackend: async ({ compiled }) => dispatchBackend(compiled),
 
-  // Persist the recipe (compiled prompt + IR) so we can regenerate
-  // forever from stored inputs. Master Rule.
-  //   TODO — write to hammerex_van_generations.sds_json + .prompt_text
-  //   (already have columns from the foundation migration)
-
-  // Fire GPT Image 1. Returns null when OPENAI_API_KEY missing.
-  const gen = await generateImage({
-    prompt:  result.prompt.userPrompt,
-    quality: result.prompt.qualityProfile === "hd" ? "hd" : "medium",
-    size:    "1536x1024"
-  });
-
-  if (!gen) {
-    return {
-      ok:          false,
-      error:       "openai_unavailable",   // key missing OR upstream error
-      prompt_used: result.prompt.userPrompt,   // still return the prompt for inspection
-      latency_ms:  Date.now() - t0,
-      cost_pence:  0
-    };
-  }
-
-  // Run through the Design Critic + auto-regenerate loop. Merchant
-  // never sees output below score 92. Loop caps at 3 attempts.
-  const loop = await runLoop({
-    criticInput: {
-      brand_snapshot:   input.brand_snapshot,
-      capability_slug:  manifest.id,
-      merchant_request: input.user_prompt ?? ""
-    },
-    initialPrompt: result.prompt,
-    initialImage:  gen,
-    regenerate: async (prevPrompt: CompiledPrompt, feedback: string[]) => {
-      // Re-run compile with feedback woven into the IR as memory hints.
-      // Real "compile with modification" pattern lands with the
-      // Orchestrator wiring — for now we just re-fire generation with
-      // feedback appended to the user prompt.
-      const feedbackText = feedback.length
-        ? `\n\nMODIFICATION_REQUEST:\n- ${feedback.join("\n- ")}`
-        : "";
-      const nextGen = await generateImage({
-        prompt:  prevPrompt.userPrompt + feedbackText,
-        quality: prevPrompt.qualityProfile === "hd" ? "hd" : "medium",
-        size:    "1536x1024"
-      });
-      return { prompt: prevPrompt, image: nextGen ?? gen };
+  persist: async (args: PersistArgs) => {
+    // Van Wrap has bespoke lineage: needs a van_session row before it
+    // can write a van_generation row. Discover-or-create the session
+    // once per merchant per invocation. Future generations reuse.
+    let sessionId = args.sessionId;
+    if (!sessionId && args.merchantSlug) {
+      const { data } = await supabaseAdmin
+        .from("hammerex_van_sessions")
+        .insert({
+          merchant_slug:     args.merchantSlug,
+          brand_snapshot_id: args.brandSnapshotId,
+          business_name:     args.ir.business?.name ?? "",
+          trade:             args.ir.trade ?? "trade",
+          van_slug:          "ford-transit-custom",
+          van_colour:        "Frozen White",
+          design_mode:       "best-shot"
+        })
+        .select("id")
+        .single();
+      sessionId = data?.id ?? null;
     }
-  });
+    if (!sessionId) return { generationId: null };
 
-  const final = loop.final;
-  const finalImage = (final.imageResult as typeof gen | null) ?? gen;
-  const totalCost = finalImage
-    ? Math.ceil(finalImage.usage_usd_estimate * 0.79 * 100) * loop.rounds.length
-    : 0;
-
-  return {
-    ok:          true,
-    asset_urls:  finalImage?.images.map((_, i) => `b64:image_${i}`) ?? [],
-    prompt_used: final.prompt.userPrompt,
-    cost_pence:  totalCost,
-    latency_ms:  Date.now() - t0
-  };
-};
-
-// Regenerate the merchant's van preview on Brand DNA change.
-const generatePreview: EventHandler<unknown> = {
-  name: "generatePreview",
-  async handle(event: EventEnvelope<unknown>) {
-    // TODO — read brand snapshot for this merchant from the event,
-    // then call generator(). Wired once the Orchestrator (V3 Q16)
-    // ships its handler dispatch.
-    void event;
+    const { data, error } = await supabaseAdmin
+      .from("hammerex_van_generations")
+      .insert({
+        session_id:      sessionId,
+        kind:            "initial",
+        sds_json:        args.ir as unknown as Record<string, unknown>,
+        prompt_text:     args.compiled.userPrompt,
+        user_prompt:     args.userPrompt,
+        image_urls:      args.imageUrls,
+        washers_charged: 10,
+        usd_cost:        args.usdCost,
+        latency_ms:      args.latencyMs,
+        model_used:      args.compiled.model,
+        quality_tier:    args.compiled.qualityProfile === "hd" ? "hd" : "medium",
+        quality_score:   args.qualityScore,
+        score_breakdown: args.scoreBreakdown
+      })
+      .select("id")
+      .single();
+    if (error) {
+      // eslint-disable-next-line no-console
+      console.error("[van-wrap] persist failed", error.message);
+      return { generationId: null };
+    }
+    return { generationId: data?.id ?? null };
   }
-};
-
-const module: StudioAppModule = {
-  manifest,
-  generator,
-  handlers: {
-    generatePreview: generatePreview as EventHandler<unknown>
-  }
-};
+});
 
 export default module;

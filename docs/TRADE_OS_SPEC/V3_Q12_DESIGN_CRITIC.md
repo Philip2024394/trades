@@ -323,4 +323,4 @@ By separating creation from evaluation, Trade OS gains a self-improving quality 
 - **Persistence:** every critique persists to `hammerex_van_generations.quality_score` (already exists) + new `score_breakdown JSONB` column (already added in the foundation migration).
 - **Feedback injection:** the critic's `actions[]` array feeds back into the compiler as `MODIFICATION_REQUEST` sections for the next attempt.
 - **Ensemble critique** (multi-persona) deferred — start with one Creative Director persona, add Landor + Wolff Olins later if scoring drift observed.
-- **Human escalation** → surfaced in `/admin/mate/gaps` (already exists) as a new category "design-critic-escalation".
+- **Human escalation** → surfaced in `/admin/nex/gaps` (already exists) as a new category "design-critic-escalation".

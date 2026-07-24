@@ -1,0 +1,30 @@
+{
+  "slug": "garden",
+  "title": "Nex Garden",
+  "description": "Nex Garden — coming soon.",
+  "version": "0.1.0",
+  "category": "construction",
+  "icon": "🌿",
+  "keywords": [
+    "garden",
+    "landscaping",
+    "landscaper",
+    "patio",
+    "decking",
+    "lawn",
+    "hedge",
+    "planting",
+    "fence"
+  ],
+  "supported_languages": [
+    "en-GB"
+  ],
+  "prompt_file": "./prompt.md",
+  "knowledge_paths": [
+    "./knowledge/*.json"
+  ],
+  "plugins": {},
+  "enabled": false,
+  "priority": 50,
+  "status": "coming_soon"
+}
