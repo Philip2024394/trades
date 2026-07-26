@@ -5,8 +5,8 @@
 // backend catalogue. This page proves the drawer works standalone and shows
 // current selection state so Philip can validate UX before we hook it in.
 
-import { useRef, useState } from "react";
-import { SlidersHorizontal, LayoutGrid } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { SlidersHorizontal, LayoutGrid, Share2 } from "lucide-react";
 import {
   StaircaseConfiguratorDrawer,
   SAMPLE_STAIRCASE_CATEGORIES,
@@ -36,12 +36,58 @@ const DEFAULT_SELECTION: Record<string, string> = {
   finish:    "varnish-clear",
 };
 
+/** Read config from URL query params, filtering out anything that isn't a
+ *  known category → option pair. Ensures pasted / edited URLs can't inject
+ *  arbitrary strings into state. */
+function readConfigFromUrl(): Record<string, string> {
+  if (typeof window === "undefined") return DEFAULT_SELECTION;
+  const params = new URLSearchParams(window.location.search);
+  const config: Record<string, string> = { ...DEFAULT_SELECTION };
+  for (const cat of SAMPLE_STAIRCASE_CATEGORIES) {
+    const v = params.get(cat.id);
+    if (v && cat.options.some((o) => o.id === v)) config[cat.id] = v;
+  }
+  return config;
+}
+
+/** Push the current config into the URL query string. Uses replaceState so
+ *  the browser back button doesn't fill up with every option change. */
+function writeConfigToUrl(config: Record<string, string>) {
+  if (typeof window === "undefined") return;
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(config)) {
+    // Skip defaults to keep the URL short. A missing param falls back to default.
+    if (DEFAULT_SELECTION[k] !== v) params.set(k, v);
+  }
+  const query = params.toString();
+  const next = query ? `${window.location.pathname}?${query}` : window.location.pathname;
+  window.history.replaceState(null, "", next);
+}
+
 export default function StaircaseConfiguratorPage() {
   const [open, setOpen] = useState(false);
   const [designsOpen, setDesignsOpen] = useState(false);
   const [selected, setSelected] = useState(DEFAULT_SELECTION);
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied">("idle");
   const { designs: savedDesigns, saveDesign, deleteDesign, renameDesign } = useSavedDesigns();
   const previewRef = useRef<StaircasePreviewHandle | null>(null);
+
+  // Hydrate from URL on mount so a shared link loads the same configuration
+  // the sender was looking at. Runs once — server-side always renders defaults.
+  useEffect(() => {
+    setSelected(readConfigFromUrl());
+  }, []);
+
+  // Reflect the current config in the URL so the address bar is always a
+  // shareable link. Skip the very first render (before URL hydration ran).
+  const hasHydratedRef = useRef(false);
+  useEffect(() => {
+    if (!hasHydratedRef.current) {
+      hasHydratedRef.current = true;
+      return;
+    }
+    writeConfigToUrl(selected);
+  }, [selected]);
 
   const setValue = (categoryId: string, optionId: string) =>
     setSelected((prev) => ({ ...prev, [categoryId]: optionId }));
@@ -87,6 +133,29 @@ export default function StaircaseConfiguratorPage() {
     deleteDesign(id);
   };
 
+  const handleShare = async () => {
+    if (typeof window === "undefined") return;
+    // Always compute a fresh URL — writeConfigToUrl may not have run yet on a
+    // brand-new render, and the address bar reflects the last committed change.
+    const params = new URLSearchParams();
+    for (const [k, v] of Object.entries(selected)) {
+      if (DEFAULT_SELECTION[k] !== v) params.set(k, v);
+    }
+    const query = params.toString();
+    const url = query
+      ? `${window.location.origin}${window.location.pathname}?${query}`
+      : `${window.location.origin}${window.location.pathname}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareStatus("copied");
+      setTimeout(() => setShareStatus("idle"), 1600);
+    } catch {
+      // Clipboard blocked (permission / http) — fall back to prompt so the
+      // user can copy manually.
+      window.prompt("Copy this design link", url);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-background text-foreground">
       <div className="max-w-5xl mx-auto px-5 py-8">
@@ -128,6 +197,18 @@ export default function StaircaseConfiguratorPage() {
             >
               <LayoutGrid className="w-5 h-5" />
               <span>Designs</span>
+            </button>
+            {/* Share — copies a URL-encoded snapshot of the current config to
+                the clipboard. Recipient opens the link and sees the same
+                configured staircase. */}
+            <button
+              type="button"
+              onClick={handleShare}
+              aria-label="Share this design"
+              className="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-card text-foreground border border-border shadow-lg text-body-sm font-medium hover:bg-muted transition-colors"
+            >
+              <Share2 className="w-5 h-5" />
+              <span>{shareStatus === "copied" ? "Copied!" : "Share"}</span>
             </button>
           </div>
 
