@@ -1,0 +1,396 @@
+{
+  "version": "V1",
+  "generated": "2026-07-27",
+  "purpose": "The data model, workflow states, notifications and engine integrations for the NEX Staircase Project Operating System. Converts a customer idea into a tracked staircase project. Serves both customer and trade sides.",
+
+  "philosophy": [
+    "Not a dashboard - a full operating system.",
+    "One project = one source of truth. Every stage references the same project record.",
+    "Never lose a project. If a customer goes silent for 30 days, the project pauses (not deletes) and can resume.",
+    "Reuse existing engines. Assessment consumes diagnosis engine + photo rules. Design consumes design recommendation engine. Supplier consumes matching engine. Quote consumes quote engine.",
+    "Both sides tracked. Customer journey and trade journey are two views of the same project state."
+  ],
+
+  "entities": {
+    "customer": {
+      "fields": {
+        "id": "cus_XXX",
+        "name": "string",
+        "email": "string",
+        "phone": "optional string",
+        "postcode": "string",
+        "created_at": "timestamp",
+        "intent_profile_id": "reference to intent_profile"
+      }
+    },
+
+    "intent_profile": {
+      "fields": {
+        "id": "int_XXX",
+        "customer_type": ["homeowner", "builder", "architect", "interior_designer", "developer", "trade_reseller"],
+        "budget_tier": ["entry", "mid", "premium", "luxury", "bespoke_luxury"],
+        "priority": ["price_first", "speed_first", "design_first", "craftsmanship_first", "practicality_first"],
+        "style_preference": ["modern_minimal", "farmhouse", "victorian_period", "industrial", "luxury_contemporary", "classic_period", "modern_farmhouse", "industrial_luxury", "scandinavian", "contemporary_classic", "unsure"],
+        "house_type": ["victorian_terrace", "1930s_semi", "modern_new_build", "georgian_townhouse", "cottage", "apartment", "self_build", "commercial", "other"],
+        "timeline": ["urgent_under_4_weeks", "standard_4_to_12_weeks", "flexible_3_to_6_months", "long_planning_6_plus_months"],
+        "children_in_home": "boolean",
+        "notes": "string - free text customer context"
+      },
+      "note": "Captured once, refined over time. Improves every downstream recommendation."
+    },
+
+    "project": {
+      "fields": {
+        "id": "prj_XXX",
+        "customer_id": "reference",
+        "current_stage": "one of workflow_states",
+        "created_at": "timestamp",
+        "last_activity_at": "timestamp",
+        "status": ["active", "paused", "completed", "cancelled"],
+        "target_completion_date": "optional date",
+        "internal_notes": "string"
+      }
+    },
+
+    "inspiration_collection": {
+      "fields": {
+        "id": "insp_XXX",
+        "project_id": "reference",
+        "saved_images": "array of image URLs with tags",
+        "liked_styles": "array of style ids",
+        "liked_materials": "array of material ids",
+        "liked_designs": "array of design_recommendation ids from browsing"
+      },
+      "stage": 1,
+      "note": "Optional stage - customer may skip straight to assessment."
+    },
+
+    "assessment": {
+      "fields": {
+        "id": "asm_XXX",
+        "project_id": "reference",
+        "uploaded_photos": "array with photo_type tag (front / side / top / underneath / handrail / defect)",
+        "video_uploaded": "optional",
+        "nex_analysis": {
+          "stair_type_identified": "from photo_analysis rules",
+          "materials_identified": "array with confidence level",
+          "style_identified": "one of styles",
+          "condition_report": "array of detected defects with diag-XXX cross-refs",
+          "upgrade_opportunities": "array with tier (budget / mid / premium)",
+          "safety_flags": "array of safety_critical findings",
+          "confidence_level": "per photo_analysis rules"
+        },
+        "customer_provided_measurements": "optional",
+        "surveyor_visit_recommended": "boolean"
+      },
+      "stage": 2,
+      "engines_consumed": ["photo-analysis-rules.md", "staircase-diagnosis-engine.json", "staircase-defect-responsibility-matrix.json"]
+    },
+
+    "design_recommendation": {
+      "fields": {
+        "id": "des_XXX",
+        "project_id": "reference",
+        "generated_at": "timestamp",
+        "options": [
+          {
+            "tier": "budget | mid | premium",
+            "label": "e.g. Budget upgrade / Premium renovation / Full replacement",
+            "spec": "9-dimension design spec from design engine",
+            "reasoning": "why this fits the house + intent profile",
+            "indicative_price_range_gbp": "from quote engine",
+            "existing_structure_reused": "boolean - refurbish vs replace"
+          }
+        ],
+        "customer_selected_option": "optional - which tier customer chose"
+      },
+      "stage": 3,
+      "engines_consumed": ["staircase-design-recommendation-rules.json", "staircase-quote-engine.json"]
+    },
+
+    "supplier_match": {
+      "fields": {
+        "id": "sup_XXX",
+        "project_id": "reference",
+        "based_on_design_option": "reference to design_recommendation.options[]",
+        "matched_suppliers": [
+          {
+            "merchant_id": "reference to uk-merchant-directory",
+            "role": "manufacturer | material_supplier | installer | glass | flooring | loft",
+            "match_score": "number from matching engine",
+            "match_reasoning": "one-line from matching engine",
+            "verification_level": "listed | claimed | verified | partner"
+          }
+        ],
+        "customer_shortlist": "array of merchant_ids the customer chose to enquire with"
+      },
+      "stage": 4,
+      "engines_consumed": ["staircase-supplier-matching-rules.json", "uk-merchant-directory.json"]
+    },
+
+    "quote_request": {
+      "fields": {
+        "id": "qr_XXX",
+        "project_id": "reference",
+        "sent_to_merchant_ids": "array",
+        "structured_enquiry": {
+          "customer_summary": "auto-generated from intent profile",
+          "current_stair_summary": "from assessment",
+          "desired_spec": "from selected design option",
+          "budget_indication": "from quote engine",
+          "photos_shared": "array of photo URLs",
+          "preferred_survey_dates": "optional array",
+          "postcode": "string",
+          "additional_notes": "optional string"
+        },
+        "sent_at": "timestamp"
+      },
+      "stage": 5,
+      "note": "Saves trades hours of back-and-forth. Every enquiry arrives complete."
+    },
+
+    "quote_received": {
+      "fields": {
+        "id": "quo_XXX",
+        "project_id": "reference",
+        "quote_request_id": "reference",
+        "merchant_id": "reference",
+        "received_at": "timestamp",
+        "price_range_or_fixed_gbp": "quoted amount",
+        "spec_breakdown": "line items",
+        "lead_time_weeks": "number",
+        "validity_days": "number",
+        "attachments": "array of file references (CAD drawings, spec sheets)",
+        "customer_status": ["received", "reviewed", "declined", "shortlisted", "accepted"]
+      }
+    },
+
+    "installer_selection": {
+      "fields": {
+        "id": "ins_XXX",
+        "project_id": "reference",
+        "comparison_data": [
+          {
+            "merchant_id": "reference",
+            "verification_level": "level",
+            "previous_projects_visible": "count",
+            "reviews_summary": "e.g. 4.8 avg over 42 reviews",
+            "distance_or_coverage": "string",
+            "availability": "optional",
+            "insurance_confirmed": "boolean"
+          }
+        ],
+        "customer_selected_merchant_id": "reference"
+      },
+      "stage": 6,
+      "note": "V1: installer selection may be the same as manufacturer selection where the manufacturer offers install. General installer directory is a V2 gap."
+    },
+
+    "project_milestone": {
+      "fields": {
+        "id": "mil_XXX",
+        "project_id": "reference",
+        "milestone_type": ["survey_booked", "survey_completed", "design_approved", "deposit_paid", "manufacturing_started", "manufacturing_completed", "delivery_scheduled", "installation_scheduled", "installation_in_progress", "installation_completed", "handover_completed", "aftercare_check_1", "aftercare_check_annual"],
+        "scheduled_date": "optional",
+        "completed_date": "optional",
+        "notes": "string",
+        "photos": "optional array",
+        "verified_by": ["customer", "trade", "nex_system"]
+      },
+      "stage": 7
+    },
+
+    "notification": {
+      "fields": {
+        "id": "not_XXX",
+        "project_id": "reference",
+        "audience": ["customer", "trade", "both"],
+        "channel": ["email", "sms", "in_app", "push"],
+        "event_type": "one of notification_triggers",
+        "sent_at": "timestamp",
+        "delivered": "boolean",
+        "acknowledged": "boolean"
+      }
+    },
+
+    "message": {
+      "fields": {
+        "id": "msg_XXX",
+        "project_id": "reference",
+        "thread_participants": "array of customer/merchant ids",
+        "from": "customer_id or merchant_id",
+        "body": "text",
+        "attachments": "optional array",
+        "sent_at": "timestamp",
+        "read_by": "array of ids"
+      },
+      "note": "All messages persisted with the project - creates evidence trail per safety_liability framework."
+    }
+  },
+
+  "workflow_states": {
+    "state_machine": [
+      { "state": "inspiration", "stage": 1, "next_allowed": ["assessment", "design_recommended"] },
+      { "state": "assessment", "stage": 2, "next_allowed": ["design_recommended"] },
+      { "state": "design_recommended", "stage": 3, "next_allowed": ["suppliers_matched", "assessment"] },
+      { "state": "suppliers_matched", "stage": 4, "next_allowed": ["quotes_requested", "design_recommended"] },
+      { "state": "quotes_requested", "stage": 5, "next_allowed": ["quotes_received"] },
+      { "state": "quotes_received", "stage": 5, "next_allowed": ["installer_selected", "suppliers_matched"] },
+      { "state": "installer_selected", "stage": 6, "next_allowed": ["survey_booked"] },
+      { "state": "survey_booked", "stage": 7, "next_allowed": ["survey_completed"] },
+      { "state": "survey_completed", "stage": 7, "next_allowed": ["design_approved"] },
+      { "state": "design_approved", "stage": 7, "next_allowed": ["deposit_paid"] },
+      { "state": "deposit_paid", "stage": 7, "next_allowed": ["manufacturing"] },
+      { "state": "manufacturing", "stage": 7, "next_allowed": ["installation_scheduled"] },
+      { "state": "installation_scheduled", "stage": 7, "next_allowed": ["installation_in_progress"] },
+      { "state": "installation_in_progress", "stage": 7, "next_allowed": ["completed"] },
+      { "state": "completed", "stage": 7, "next_allowed": ["aftercare"] },
+      { "state": "aftercare", "stage": 7, "next_allowed": [] }
+    ],
+    "reverse_transitions_allowed": "State can move backward if customer requests (e.g. design_recommended -> assessment for re-analysis with new photos). Track reversion reason."
+  },
+
+  "stage_definitions": {
+    "1_inspiration": {
+      "customer_actions": ["Browse styles", "Save photos", "Like designs"],
+      "nex_actions": ["Learn preferences", "Update intent profile"],
+      "outputs": "populated inspiration_collection + refined intent_profile",
+      "typical_duration": "days to weeks - customer explores"
+    },
+    "2_assessment": {
+      "customer_actions": ["Upload photos (front / side / underneath / defect close-ups)", "Optionally upload video", "Optionally provide measurements"],
+      "nex_actions": ["Run photo analysis rules", "Detect stair type / materials / defects", "Cross-reference diagnosis engine", "Flag safety-critical items"],
+      "outputs": "assessment record with NEX condition report",
+      "typical_duration": "same day - AI-driven",
+      "quality_gate": "If photos insufficient, ask for more. If safety_critical detected, warn customer before proceeding."
+    },
+    "3_design_recommendation": {
+      "customer_actions": ["Review 3 tiers", "Choose one to proceed", "Request variations"],
+      "nex_actions": ["Feed assessment + intent_profile into design engine", "Feed each option into quote engine", "Present 3 tiers with reasoning + indicative price"],
+      "outputs": "design_recommendation record with selected option",
+      "typical_duration": "same day to a few days - customer reflects",
+      "presentation_rule": "Always three tiers per design engine convention. Never a single answer."
+    },
+    "4_supplier_matching": {
+      "customer_actions": ["Review matched suppliers", "Shortlist those to enquire with"],
+      "nex_actions": ["Feed selected design into supplier matching engine", "Return top 5 matches per role (manufacturer, materials, installer if separate)"],
+      "outputs": "supplier_match record with customer shortlist",
+      "typical_duration": "same day",
+      "trust_rule": "Verified suppliers first. Listed suppliers include unverified caveat wording."
+    },
+    "5_quote_request": {
+      "customer_actions": ["Confirm shortlist", "Add optional message", "Send"],
+      "nex_actions": ["Assemble structured enquiry auto-populating all known data", "Send to each shortlisted merchant", "Track responses"],
+      "outputs": "quote_request records sent + quote_received records as they arrive",
+      "typical_duration": "1-2 weeks for merchant responses",
+      "value_proposition": "Every enquiry arrives complete - saves trades hours of back-and-forth."
+    },
+    "6_installer_selection": {
+      "customer_actions": ["Compare quotes", "Compare merchants side by side", "Select one"],
+      "nex_actions": ["Present comparison matrix (price / lead time / verification / reviews / distance)", "Enforce trust-response rules for unverified suppliers"],
+      "outputs": "installer_selection record with chosen merchant_id",
+      "typical_duration": "days to weeks - customer deliberates"
+    },
+    "7_project_tracking": {
+      "customer_actions": ["Confirm each milestone", "Message trade", "Upload photos post-install", "Provide review at completion"],
+      "trade_actions": ["Update milestone status", "Book survey", "Upload survey drawings", "Confirm manufacturing progress", "Schedule installation", "Confirm handover"],
+      "nex_actions": ["Persist all milestones", "Fire notifications on state changes", "Prompt for missing updates after threshold", "Generate handover pack template", "Schedule aftercare check-ins"],
+      "outputs": "populated project_milestone history + completed project record",
+      "typical_duration": "6-12 weeks manufacturing + install day",
+      "evidence_rule": "All milestones photographed and timestamped per safety_liability framework."
+    }
+  },
+
+  "notification_triggers": {
+    "customer_facing": [
+      { "event": "assessment_complete", "channel": ["email", "in_app"], "content": "Your staircase report is ready" },
+      { "event": "design_recommendations_ready", "channel": ["email", "in_app"], "content": "3 design options prepared for your staircase" },
+      { "event": "quote_received", "channel": ["email", "in_app"], "content": "Quote received from [merchant]" },
+      { "event": "quote_deadline_soon", "channel": ["email"], "content": "Quote from [merchant] expires in 7 days" },
+      { "event": "survey_scheduled", "channel": ["email", "sms"], "content": "Site survey confirmed for [date]" },
+      { "event": "milestone_completed", "channel": ["in_app"], "content": "[Milestone] completed" },
+      { "event": "installation_scheduled", "channel": ["email", "sms"], "content": "Installation booked for [date]" },
+      { "event": "handover_pack_ready", "channel": ["email", "in_app"], "content": "Your staircase handover pack is ready" },
+      { "event": "aftercare_check_due", "channel": ["email"], "content": "How is your staircase 6 months on?" }
+    ],
+    "trade_facing": [
+      { "event": "new_enquiry_received", "channel": ["email", "in_app", "sms"], "content": "New qualified enquiry from [customer] - [postcode] - budget [range]" },
+      { "event": "customer_response_received", "channel": ["in_app"], "content": "[Customer] replied on project [id]" },
+      { "event": "quote_accepted", "channel": ["email", "in_app"], "content": "[Customer] accepted your quote" },
+      { "event": "survey_booking_requested", "channel": ["email", "in_app"], "content": "Survey requested for [date preferences]" },
+      { "event": "milestone_awaiting_your_update", "channel": ["email", "in_app"], "content": "Please update project [id] - [milestone] due" },
+      { "event": "customer_message", "channel": ["in_app"], "content": "New message on project [id]" },
+      { "event": "review_received", "channel": ["email", "in_app"], "content": "[Customer] left a review on project [id]" }
+    ],
+    "system_alerts": [
+      { "event": "project_stalled_30_days", "action": "Pause project. Notify customer + trade. Offer to resume." },
+      { "event": "safety_critical_finding_in_assessment", "action": "Prevent proceed-to-design until customer acknowledges warning." },
+      { "event": "unverified_supplier_recommended", "action": "Auto-attach caveat wording per trust doc." },
+      { "event": "customer_data_retention_expiry", "action": "Follow GDPR schedule - anonymise closed projects after retention period." }
+    ]
+  },
+
+  "trade_pipeline_view": {
+    "purpose": "Trades need to see their side of every project - what's coming in, what's mid-flight, what's due to complete",
+    "trade_dashboard_columns": [
+      { "column": "new_enquiries", "shows": "quote_requests received, not yet responded to", "priority": "48-hour response target" },
+      { "column": "quotes_out", "shows": "quotes sent, awaiting customer decision" },
+      { "column": "in_survey", "shows": "customer accepted, survey pending or completed" },
+      { "column": "in_manufacture", "shows": "deposit paid, currently in workshop" },
+      { "column": "install_scheduled", "shows": "manufacturing complete, install date booked" },
+      { "column": "completed_this_month", "shows": "projects delivered this month - source of reviews + referrals" },
+      { "column": "aftercare_due", "shows": "projects at 6-month or annual aftercare check" }
+    ],
+    "trade_response_metrics_tracked": ["avg_time_to_first_quote", "quote_win_rate", "customer_rating_avg", "on_time_delivery_rate", "aftercare_response_rate"]
+  },
+
+  "engine_integrations": {
+    "assessment_stage": ["photo-analysis-rules.md", "staircase-diagnosis-engine.json", "staircase-defect-responsibility-matrix.json"],
+    "design_stage": ["staircase-design-recommendation-rules.json"],
+    "quote_stage": ["staircase-quote-engine.json"],
+    "supplier_stage": ["staircase-supplier-matching-rules.json", "uk-merchant-directory.json"],
+    "safety_flags": ["staircase-safety-liability-framework.md"],
+    "trust_rules": ["nex-business-listing-and-trust-architecture.md"],
+    "confidence_rules": ["nex-answer-engine-confidence-model.md"],
+    "country_context": ["staircase-country-packs/*.json"]
+  },
+
+  "data_persistence_rules": [
+    "One project = one canonical record. All stage data hangs off project_id.",
+    "Never lose a project. If stalled 30 days, pause (not delete). Notify customer + trade. Offer resume.",
+    "All milestone photos + messages persisted permanently per safety_liability evidence rules.",
+    "Personal data follows GDPR retention schedule (V2 - not V1 spec).",
+    "Trade-side data is aggregated for metrics (avg response time, win rate) but individual project data belongs to the customer.",
+    "Customer can export their project history at any time.",
+    "Customer can delete their account - project records anonymised, retained for statistical / evidence purposes."
+  ],
+
+  "single_source_of_truth_rule": "Every field appears once. Assessment records the stair type - design engine reads it from there, not re-detected. Intent profile records budget - quote engine reads it from there, not re-asked. This is enforced by the entity model above.",
+
+  "presentation_priorities_by_intent_profile": {
+    "note": "Intent profile shapes what the customer sees at each stage.",
+    "homeowner_price_first": "Show budget option first. Emphasise cost breakdown. Delay premium options.",
+    "homeowner_design_first": "Show premium option first. Emphasise materials + finishing. Cost secondary.",
+    "builder_speed_first": "Show fastest lead-time suppliers. Emphasise availability. De-emphasise design consultation.",
+    "architect_craftsmanship_first": "Show bespoke manufacturers. Emphasise portfolio + technical drawings. Skip kit options.",
+    "designer_style_first": "Match style_preference tightly. Show samples + material boards. Multiple design iterations expected."
+  },
+
+  "success_metrics_v1": {
+    "customer_side": ["time_from_enquiry_to_first_quote", "num_quotes_received_per_project", "conversion_from_quote_to_deposit", "customer_satisfaction_at_handover"],
+    "trade_side": ["qualified_enquiry_conversion_rate", "avg_project_value", "review_score_average", "repeat_customer_rate"],
+    "platform_side": ["project_completion_rate_vs_start", "aftercare_response_rate_6mo_12mo", "stalled_project_recovery_rate", "trust_level_progression_rate (Listed -> Claimed -> Verified)"]
+  },
+
+  "not_in_v1": [
+    "Live payment processing (deposit + stage payments) - integration with Stripe or trade-specific payments in V2",
+    "In-app messaging real-time (V1 uses email + in-app notifications only)",
+    "CAD file review UI - V1 attaches files, V2 renders them in-browser",
+    "AR staircase preview in customer's own hallway",
+    "Multi-project management for architects / developers with parallel projects",
+    "Trade-side pricing tools (helping tradesperson build the quote inside NEX)",
+    "Automated review request workflow",
+    "Cross-project analytics (regional demand trends, popular styles)",
+    "Trade-to-trade referrals (manufacturer needs installer, uses NEX to find one)"
+  ]
+}

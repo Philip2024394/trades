@@ -1,0 +1,157 @@
+{
+  "version": "V1",
+  "generated": "2026-07-27",
+  "purpose": "Customer Intent Profile as a first-class data model. Every customer has one. It shapes every downstream recommendation - which design tier surfaces first, which suppliers get shown, what tone NEX uses.",
+
+  "philosophy": "A homeowner planning a Victorian restoration and a developer building 30 units want completely different things from the same platform. Intent Profile captures who the customer is so NEX can serve them appropriately.",
+
+  "schema": {
+    "id": "int_XXX",
+    "created_at": "timestamp",
+    "updated_at": "timestamp",
+    "customer_id": "reference",
+
+    "customer_type": {
+      "options": ["homeowner", "self_builder", "builder", "architect", "interior_designer", "developer", "trade_reseller", "housing_association", "commercial"],
+      "capture_method": "Ask directly at first interaction",
+      "affects": "tone of communication, level of technical detail, which suppliers surface"
+    },
+
+    "budget_tier": {
+      "options": ["entry", "mid", "premium", "luxury", "bespoke_luxury"],
+      "capture_method": "Ask a range not a specific number (e.g. '£6-12k') or 'unsure'",
+      "affects": "which design options appear, which suppliers match, which quote tier is default",
+      "note": "Customers often understate budget out of caution. NEX shows their tier plus one up so they can see the difference."
+    },
+
+    "priority": {
+      "options": ["price_first", "speed_first", "design_first", "craftsmanship_first", "practicality_first", "safety_first", "future_proofing"],
+      "multi_select": true,
+      "capture_method": "Ask 'What matters most to you?' with these as suggestions",
+      "affects": "ranking of design options, presentation order of suppliers, urgency of milestones"
+    },
+
+    "style_preference": {
+      "options": ["modern_minimal", "farmhouse", "victorian_period", "industrial", "luxury_contemporary", "classic_period", "modern_farmhouse", "industrial_luxury", "scandinavian", "contemporary_classic", "unsure"],
+      "capture_method": "Show 6-9 example images and let customer pick favourites; OR ask directly",
+      "affects": "design engine style filter, avoid[] rules, material recommendations"
+    },
+
+    "house_type": {
+      "options": ["victorian_terrace", "1930s_semi", "modern_new_build", "georgian_townhouse", "cottage", "apartment", "self_build", "commercial", "other"],
+      "capture_method": "Ask directly; if unknown, offer visual examples",
+      "affects": "regs context, typical property assumptions from country pack, style compatibility warnings"
+    },
+
+    "timeline": {
+      "options": ["urgent_under_4_weeks", "standard_4_to_12_weeks", "flexible_3_to_6_months", "long_planning_6_plus_months"],
+      "capture_method": "Ask 'When would you like the work completed?'",
+      "affects": "supplier availability filter, lead-time flag on quotes, urgency in notifications"
+    },
+
+    "children_in_home": {
+      "type": "boolean",
+      "capture_method": "Optional question; skippable",
+      "affects": "activates child-safety rules (100mm sphere, no horizontal-rail balustrades), design engine avoid[] extended"
+    },
+
+    "elderly_or_mobility_user": {
+      "type": "boolean",
+      "capture_method": "Optional question",
+      "affects": "handrail height + both-side handrail recommendations, stairlift consideration, contrast nosing suggestion"
+    },
+
+    "pets_in_home": {
+      "type": "boolean",
+      "capture_method": "Optional question",
+      "affects": "finish durability recommendations (harder-wearing lacquer or oil), tread material advice"
+    },
+
+    "current_stair_status": {
+      "options": ["new_build_no_existing", "existing_to_replace", "existing_to_refurbish", "existing_to_repair", "unsure"],
+      "capture_method": "Ask early - drives whole project scope",
+      "affects": "assessment focus, design engine refurbish vs replace, supplier matching"
+    },
+
+    "postcode": {
+      "type": "string",
+      "capture_method": "Ask early - drives supplier matching",
+      "affects": "regional supplier matching, country pack context, regional labour multiplier in quote engine"
+    },
+
+    "communication_preference": {
+      "options": ["email_only", "sms_and_email", "in_app_only", "phone_call_ok"],
+      "affects": "notification channels"
+    },
+
+    "notes": {
+      "type": "string",
+      "capture_method": "Free text - anything the customer wants to add",
+      "affects": "notes are shared with matched trades in structured enquiry"
+    }
+  },
+
+  "capture_strategy": {
+    "principle": "Never front-load the customer with a form. Capture progressively as it becomes relevant.",
+    "phased_capture": [
+      { "phase": "first_interaction", "capture": ["customer_type", "postcode"], "reason": "Needed for any answer to be relevant" },
+      { "phase": "browsing_inspiration", "capture": ["style_preference", "house_type"], "reason": "Improves inspiration and design recommendations" },
+      { "phase": "requesting_assessment", "capture": ["current_stair_status", "children_in_home"], "reason": "Shapes photo analysis and safety flags" },
+      { "phase": "receiving_design_options", "capture": ["budget_tier", "priority", "timeline"], "reason": "Filters options and orders suppliers" },
+      { "phase": "before_sending_enquiry", "capture": ["communication_preference", "notes"], "reason": "Delivery and enrichment for trade" }
+    ]
+  },
+
+  "refinement_over_time": {
+    "principle": "Intent Profile evolves as NEX learns from customer behaviour.",
+    "signals_to_watch": [
+      { "signal": "customer selects premium option 3 times in a row", "action": "Update budget_tier upward if not explicitly set" },
+      { "signal": "customer saves 5+ industrial-style images", "action": "Update style_preference toward industrial" },
+      { "signal": "customer accepts 4-week lead time quote", "action": "Confirm timeline as standard, not urgent" },
+      { "signal": "customer edits budget upward after seeing options", "action": "Explicit customer update - no inference needed" }
+    ],
+    "user_control": "Customer can view and edit intent profile at any time. Never inferred without a way to correct."
+  },
+
+  "intent_shapes_recommendations": {
+    "example_homeowner_price_first_mid_budget_modern_1930s_semi": {
+      "design_engine": "Present mid tier first, include entry-tier variant, defer premium/luxury unless asked",
+      "supplier_matching": "Prefer verified regional over premium national brands; show trade-account bonus",
+      "quote_engine": "Lead with lower range of estimate; itemise labour vs material transparently",
+      "presentation_tone": "Warm, practical, cost-conscious"
+    },
+    "example_architect_craftsmanship_first_premium_budget_luxury_contemporary_new_build": {
+      "design_engine": "Present premium and luxury tiers; skip entry; emphasise curved/floating options",
+      "supplier_matching": "Prefer bespoke manufacturers with portfolio evidence; skip kit specialists",
+      "quote_engine": "Show full range; emphasise material specification and finishing detail",
+      "presentation_tone": "Technical, design-language-fluent, portfolio-focused"
+    },
+    "example_builder_speed_first_mid_budget_various_house_types": {
+      "design_engine": "Show mid tier; emphasise standard specs that can be manufactured quickly",
+      "supplier_matching": "Filter by lead-time availability; highlight trade-account merchants",
+      "quote_engine": "Show fast-track lead-time badge; note if premium options add weeks",
+      "presentation_tone": "Efficient, no-nonsense, trade-friendly"
+    },
+    "example_elderly_customer_safety_first_mid_budget_traditional_1930s_semi": {
+      "design_engine": "Prefer classic_period; both-side handrails default; contrast nosings; no open risers",
+      "supplier_matching": "Prefer suppliers with accessibility credentials",
+      "quote_engine": "Include cost of both-side handrails, contrast nosings, stairlift-ready design if relevant",
+      "presentation_tone": "Reassuring, safety-forward, plain language"
+    }
+  },
+
+  "privacy_and_consent": [
+    "Intent profile fields are captured with explicit consent per GDPR",
+    "Customer can view all captured data at any time",
+    "Customer can delete their profile - project retention rules per project workflow doc",
+    "Trade partners see only the fields relevant to the enquiry (structured summary), not raw profile"
+  ],
+
+  "not_in_v1": [
+    "Machine-learning-based style inference from browsing behaviour (rules-based inference only in V1)",
+    "Multi-property profiles (developer / architect with many parallel projects)",
+    "Household composition beyond binary flags (children / elderly / pets)",
+    "Financial capacity verification (mortgage / lending integration)",
+    "Preferred payment method capture (comes with payment integration in V2)"
+  ]
+}
