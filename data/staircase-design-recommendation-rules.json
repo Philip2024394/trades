@@ -2,28 +2,163 @@
   "version": "V1",
   "generated": "2026-07-27",
   "purpose": "Rule-based mapping from customer inputs (house style + budget + space + priorities) to concrete staircase design recommendations.",
-
   "input_dimensions": {
     "house_style": [
-      { "id": "modern_minimal", "label": "Modern Minimal", "signals": ["clean lines", "concrete floors", "open plan", "white walls", "black hardware"] },
-      { "id": "farmhouse", "label": "Farmhouse / Country", "signals": ["exposed beams", "natural stone", "warm timber floors", "cottage or barn conversion"] },
-      { "id": "victorian_period", "label": "Victorian / Period", "signals": ["cornicing", "high ceilings", "original features", "listed building"] },
-      { "id": "industrial", "label": "Industrial", "signals": ["exposed brick", "steel beams", "warehouse conversion", "black metalwork"] },
-      { "id": "luxury_contemporary", "label": "Luxury Contemporary", "signals": ["designer furniture", "large glass", "integrated lighting", "high-end finishes"] },
-      { "id": "classic_period", "label": "Classic Period (Georgian / Edwardian)", "signals": ["panelling", "cornice", "sash windows", "traditional decor"] }
+      {
+        "id": "modern_minimal",
+        "label": "Modern Minimal",
+        "signals": [
+          "clean lines",
+          "concrete floors",
+          "open plan",
+          "white walls",
+          "black hardware"
+        ]
+      },
+      {
+        "id": "farmhouse",
+        "label": "Farmhouse / Country",
+        "signals": [
+          "exposed beams",
+          "natural stone",
+          "warm timber floors",
+          "cottage or barn conversion"
+        ]
+      },
+      {
+        "id": "victorian_period",
+        "label": "Victorian / Period",
+        "signals": [
+          "cornicing",
+          "high ceilings",
+          "original features",
+          "listed building"
+        ]
+      },
+      {
+        "id": "industrial",
+        "label": "Industrial",
+        "signals": [
+          "exposed brick",
+          "steel beams",
+          "warehouse conversion",
+          "black metalwork"
+        ]
+      },
+      {
+        "id": "luxury_contemporary",
+        "label": "Luxury Contemporary",
+        "signals": [
+          "designer furniture",
+          "large glass",
+          "integrated lighting",
+          "high-end finishes"
+        ]
+      },
+      {
+        "id": "classic_period",
+        "label": "Classic Period (Georgian / Edwardian)",
+        "signals": [
+          "panelling",
+          "cornice",
+          "sash windows",
+          "traditional decor"
+        ]
+      },
+      {
+        "id": "modern_farmhouse",
+        "label": "Modern Farmhouse",
+        "signals": [
+          "shaker cabinetry",
+          "white walls with warm timber accents",
+          "black metal light fittings",
+          "engineered oak floor"
+        ]
+      },
+      {
+        "id": "industrial_luxury",
+        "label": "Industrial Luxury",
+        "signals": [
+          "exposed brick or concrete plus premium timber",
+          "black steel structural elements",
+          "large-format tile floors",
+          "designer lighting"
+        ]
+      },
+      {
+        "id": "scandinavian",
+        "label": "Scandinavian",
+        "signals": [
+          "pale timber floors",
+          "white or off-white walls",
+          "minimal ornament",
+          "wool textiles",
+          "clean lines with warmth"
+        ]
+      },
+      {
+        "id": "contemporary_classic",
+        "label": "Contemporary Classic",
+        "signals": [
+          "traditional architecture with modern finishes",
+          "restored period features",
+          "muted neutral palette",
+          "quality hardware"
+        ]
+      }
     ],
     "budget_tier": [
-      { "id": "entry", "label": "Entry level", "indicative_range_gbp": "£2,500 - £6,000", "for": "rental properties, basic new builds, functional replacements" },
-      { "id": "mid", "label": "Mid-range", "indicative_range_gbp": "£6,000 - £12,000", "for": "family homes, thoughtful renovations" },
-      { "id": "premium", "label": "Premium", "indicative_range_gbp": "£12,000 - £25,000", "for": "high-end homes, design-led renovations" },
-      { "id": "luxury", "label": "Luxury bespoke", "indicative_range_gbp": "£25,000+", "for": "architect projects, statement pieces, curved/floating stairs" }
+      {
+        "id": "entry",
+        "label": "Entry level",
+        "indicative_range_gbp": "£2,500 - £6,000",
+        "for": "rental properties, basic new builds, functional replacements"
+      },
+      {
+        "id": "mid",
+        "label": "Mid-range",
+        "indicative_range_gbp": "£6,000 - £12,000",
+        "for": "family homes, thoughtful renovations"
+      },
+      {
+        "id": "premium",
+        "label": "Premium",
+        "indicative_range_gbp": "£12,000 - £25,000",
+        "for": "high-end homes, design-led renovations"
+      },
+      {
+        "id": "luxury",
+        "label": "Luxury bespoke",
+        "indicative_range_gbp": "£25,000+",
+        "for": "architect projects, statement pieces, curved/floating stairs"
+      }
     ],
     "space_context": [
-      { "id": "small_hallway", "label": "Small hallway", "constraint": "restricted floor area, low light" },
-      { "id": "large_entrance", "label": "Large entrance", "constraint": "generous space, first-impression object" },
-      { "id": "narrow_staircase", "label": "Narrow staircase width", "constraint": "under 800mm width, slim components needed" },
-      { "id": "dark_hallway", "label": "Dark hallway", "constraint": "limited natural light" },
-      { "id": "standard", "label": "Standard", "constraint": "no specific constraint" }
+      {
+        "id": "small_hallway",
+        "label": "Small hallway",
+        "constraint": "restricted floor area, low light"
+      },
+      {
+        "id": "large_entrance",
+        "label": "Large entrance",
+        "constraint": "generous space, first-impression object"
+      },
+      {
+        "id": "narrow_staircase",
+        "label": "Narrow staircase width",
+        "constraint": "under 800mm width, slim components needed"
+      },
+      {
+        "id": "dark_hallway",
+        "label": "Dark hallway",
+        "constraint": "limited natural light"
+      },
+      {
+        "id": "standard",
+        "label": "Standard",
+        "constraint": "no specific constraint"
+      }
     ],
     "priorities": [
       "aesthetic_first",
@@ -34,7 +169,6 @@
       "quick_upgrade_path"
     ]
   },
-
   "recommendations_by_style": {
     "modern_minimal": {
       "reasoning": "Clean architectural lines. Glass balustrade opens sightlines. Warm oak grounds the cool palette. Matt finishes avoid the plastic look of high-gloss.",
@@ -50,20 +184,68 @@
         "under_stair": "open architectural if space allows; hidden-door storage if not"
       },
       "budget_variants": {
-        "entry": { "swap": { "treads": "oak-veneered engineered board", "balustrade": "square-section black metal balusters at 99mm centres" }, "reasoning_change": "Substitute engineered treads and metal balusters — maintains the palette at a fraction of the cost." },
-        "mid": { "keep": "default_spec but skip integrated lighting", "reasoning_change": "Full material spec, defer lighting to phase 2." },
-        "premium": { "add": { "stair_type": "floating over steel stringer", "under_stair": "open architectural volume with feature wall" }, "reasoning_change": "Floating stair becomes the design statement." },
-        "luxury": { "add": { "treads": "American White Oak 40mm with shadow-gap detail to risers", "balustrade": "frameless low-iron 12mm glass", "lighting": "full three-layer (ambient + step + feature)" }, "reasoning_change": "Every detail curated for premium read." }
+        "entry": {
+          "swap": {
+            "treads": "oak-veneered engineered board",
+            "balustrade": "square-section black metal balusters at 99mm centres"
+          },
+          "reasoning_change": "Substitute engineered treads and metal balusters — maintains the palette at a fraction of the cost."
+        },
+        "mid": {
+          "keep": "default_spec but skip integrated lighting",
+          "reasoning_change": "Full material spec, defer lighting to phase 2."
+        },
+        "premium": {
+          "add": {
+            "stair_type": "floating over steel stringer",
+            "under_stair": "open architectural volume with feature wall"
+          },
+          "reasoning_change": "Floating stair becomes the design statement."
+        },
+        "luxury": {
+          "add": {
+            "treads": "American White Oak 40mm with shadow-gap detail to risers",
+            "balustrade": "frameless low-iron 12mm glass",
+            "lighting": "full three-layer (ambient + step + feature)"
+          },
+          "reasoning_change": "Every detail curated for premium read."
+        }
       },
       "space_variants": {
-        "small_hallway": { "override": { "balustrade": "frameless glass to maximise light + sightlines", "stair_type": "open-riser to allow light through" }, "reasoning_change": "Open the space visually." },
-        "narrow_staircase": { "override": { "handrail": "slim oval 40mm oak" }, "reasoning_change": "Slimmer profile suits narrow flights." },
-        "dark_hallway": { "add": { "lighting": "under-tread LED essential, plus wall lights" }, "reasoning_change": "Compensate for low daylight." }
+        "small_hallway": {
+          "override": {
+            "balustrade": "frameless glass to maximise light + sightlines",
+            "stair_type": "open-riser to allow light through"
+          },
+          "reasoning_change": "Open the space visually."
+        },
+        "narrow_staircase": {
+          "override": {
+            "handrail": "slim oval 40mm oak"
+          },
+          "reasoning_change": "Slimmer profile suits narrow flights."
+        },
+        "dark_hallway": {
+          "add": {
+            "lighting": "under-tread LED essential, plus wall lights"
+          },
+          "reasoning_change": "Compensate for low daylight."
+        }
       },
-      "compatible_stair_types": ["straight", "quarter_turn", "half_turn", "floating"],
-      "avoid": ["turned spindles", "carpet runner", "yellow-tone oak stain", "high-gloss lacquer", "brass fittings"]
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn",
+        "floating"
+      ],
+      "avoid": [
+        "turned spindles",
+        "carpet runner",
+        "yellow-tone oak stain",
+        "high-gloss lacquer",
+        "brass fittings"
+      ]
     },
-
     "farmhouse": {
       "reasoning": "Honest materials. The staircase reads as part of the house architecture rather than a designed object. Warm timber, painted structure, chunky proportions.",
       "default_spec": {
@@ -78,19 +260,55 @@
         "under_stair": "painted panelled cupboards, or hallway bench with coat storage"
       },
       "budget_variants": {
-        "entry": { "swap": { "treads": "pine treads painted or stained to look like oak" }, "reasoning_change": "Pine base with the right paint palette still reads as farmhouse." },
-        "mid": { "keep": "default_spec" },
-        "premium": { "add": { "handrail": "hand-turned oak", "under_stair": "custom panelled cupboards with beading detail" }, "reasoning_change": "Craft details signal quality without breaking the honest-materials rule." },
-        "luxury": { "add": { "treads": "reclaimed period oak", "under_stair": "boot room / cloakroom with bench, hooks, mirror" }, "reasoning_change": "Reclaimed materials + hallway lifestyle features." }
+        "entry": {
+          "swap": {
+            "treads": "pine treads painted or stained to look like oak"
+          },
+          "reasoning_change": "Pine base with the right paint palette still reads as farmhouse."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "handrail": "hand-turned oak",
+            "under_stair": "custom panelled cupboards with beading detail"
+          },
+          "reasoning_change": "Craft details signal quality without breaking the honest-materials rule."
+        },
+        "luxury": {
+          "add": {
+            "treads": "reclaimed period oak",
+            "under_stair": "boot room / cloakroom with bench, hooks, mirror"
+          },
+          "reasoning_change": "Reclaimed materials + hallway lifestyle features."
+        }
       },
       "space_variants": {
-        "small_hallway": { "override": { "handrail": "slim traditional oval" } },
-        "large_entrance": { "add": { "treads": "wider treads suit the grander proportion" } }
+        "small_hallway": {
+          "override": {
+            "handrail": "slim traditional oval"
+          }
+        },
+        "large_entrance": {
+          "add": {
+            "treads": "wider treads suit the grander proportion"
+          }
+        }
       },
-      "compatible_stair_types": ["straight", "quarter_turn", "half_turn"],
-      "avoid": ["glass balustrade", "floating stair", "chrome or stainless hardware", "shadow-gap details", "matt-black finishes"]
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn"
+      ],
+      "avoid": [
+        "glass balustrade",
+        "floating stair",
+        "chrome or stainless hardware",
+        "shadow-gap details",
+        "matt-black finishes"
+      ]
     },
-
     "victorian_period": {
       "reasoning": "Preserve historic character. Turned spindles, detailed newels, dark stain or heritage paint. A modern glass-and-oak staircase in a Victorian house is a design mismatch.",
       "default_spec": {
@@ -105,18 +323,49 @@
         "under_stair": "traditional panelled cupboard door matched to hall panelling"
       },
       "budget_variants": {
-        "entry": { "swap": { "treads": "existing treads sanded and refinished (refurbishment not replacement)" }, "reasoning_change": "In period property, refurbishment is often more appropriate than replacement." },
-        "mid": { "keep": "default_spec" },
-        "premium": { "add": { "handrail": "restored or heritage-copy mahogany or oak" }, "reasoning_change": "Sourced period components." },
-        "luxury": { "add": { "treads": "reclaimed period oak matched to original", "balustrade": "custom-turned spindles to original profile" }, "reasoning_change": "Full restoration to museum standard." }
+        "entry": {
+          "swap": {
+            "treads": "existing treads sanded and refinished (refurbishment not replacement)"
+          },
+          "reasoning_change": "In period property, refurbishment is often more appropriate than replacement."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "handrail": "restored or heritage-copy mahogany or oak"
+          },
+          "reasoning_change": "Sourced period components."
+        },
+        "luxury": {
+          "add": {
+            "treads": "reclaimed period oak matched to original",
+            "balustrade": "custom-turned spindles to original profile"
+          },
+          "reasoning_change": "Full restoration to museum standard."
+        }
       },
       "space_variants": {
-        "small_hallway": { "override": { "balustrade": "slimmer turned profile at same 99mm centres" } }
+        "small_hallway": {
+          "override": {
+            "balustrade": "slimmer turned profile at same 99mm centres"
+          }
+        }
       },
-      "compatible_stair_types": ["straight", "quarter_turn", "half_turn"],
-      "avoid": ["glass balustrade", "floating stair", "square modern handrails", "shadow-gap detail", "cool grey paint"]
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn"
+      ],
+      "avoid": [
+        "glass balustrade",
+        "floating stair",
+        "square modern handrails",
+        "shadow-gap detail",
+        "cool grey paint"
+      ]
     },
-
     "industrial": {
       "reasoning": "Timber warmth grounding steel structure. Black metal hardware. Exposed fixings are acceptable and often deliberate.",
       "default_spec": {
@@ -131,18 +380,50 @@
         "under_stair": "open (with metal shelving unit if storage needed)"
       },
       "budget_variants": {
-        "entry": { "swap": { "strings": "closed string painted matt black instead of steel" }, "reasoning_change": "Timber string painted matte black reads as industrial without the metalwork cost." },
-        "mid": { "keep": "default_spec" },
-        "premium": { "add": { "stair_type": "floating on steel spine stringer" }, "reasoning_change": "Steel spine is the industrial signature." },
-        "luxury": { "add": { "balustrade": "laser-cut steel panel with pattern", "treads": "walnut" }, "reasoning_change": "Custom metalwork + premium timber." }
+        "entry": {
+          "swap": {
+            "strings": "closed string painted matt black instead of steel"
+          },
+          "reasoning_change": "Timber string painted matte black reads as industrial without the metalwork cost."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "stair_type": "floating on steel spine stringer"
+          },
+          "reasoning_change": "Steel spine is the industrial signature."
+        },
+        "luxury": {
+          "add": {
+            "balustrade": "laser-cut steel panel with pattern",
+            "treads": "walnut"
+          },
+          "reasoning_change": "Custom metalwork + premium timber."
+        }
       },
       "space_variants": {
-        "large_entrance": { "add": { "lighting": "statement pendant becomes the room feature" } }
+        "large_entrance": {
+          "add": {
+            "lighting": "statement pendant becomes the room feature"
+          }
+        }
       },
-      "compatible_stair_types": ["straight", "floating", "quarter_turn", "spine_stringer"],
-      "avoid": ["turned spindles", "brass fittings", "carpet runner", "high-gloss finishes", "cream or pale-yellow paint tones"]
+      "compatible_stair_types": [
+        "straight",
+        "floating",
+        "quarter_turn",
+        "spine_stringer"
+      ],
+      "avoid": [
+        "turned spindles",
+        "brass fittings",
+        "carpet runner",
+        "high-gloss finishes",
+        "cream or pale-yellow paint tones"
+      ]
     },
-
     "luxury_contemporary": {
       "reasoning": "Statement piece. Every detail deliberate. Materials, geometry and lighting all coordinated. Under-budget premium timber is a false economy here.",
       "default_spec": {
@@ -157,19 +438,48 @@
         "under_stair": "sculpted open architectural volume, or feature wine display"
       },
       "budget_variants": {
-        "entry": { "note": "Luxury contemporary is not achievable at entry budget. Recommend stepping up to premium tier or shifting style to modern minimal." },
-        "mid": { "note": "Marginal — most luxury contemporary specifications require premium+." },
-        "premium": { "keep": "default_spec" },
-        "luxury": { "add": { "stair_type": "curved cantilevered", "treads": "book-matched walnut with shadow gaps", "balustrade": "curved glass panels" }, "reasoning_change": "Full custom fabrication." }
+        "entry": {
+          "note": "Luxury contemporary is not achievable at entry budget. Recommend stepping up to premium tier or shifting style to modern minimal."
+        },
+        "mid": {
+          "note": "Marginal — most luxury contemporary specifications require premium+."
+        },
+        "premium": {
+          "keep": "default_spec"
+        },
+        "luxury": {
+          "add": {
+            "stair_type": "curved cantilevered",
+            "treads": "book-matched walnut with shadow gaps",
+            "balustrade": "curved glass panels"
+          },
+          "reasoning_change": "Full custom fabrication."
+        }
       },
       "space_variants": {
-        "large_entrance": { "override": { "stair_type": "curved is worth the premium in a large entrance" } },
-        "small_hallway": { "note": "Style mismatch — luxury contemporary needs volume to work." }
+        "large_entrance": {
+          "override": {
+            "stair_type": "curved is worth the premium in a large entrance"
+          }
+        },
+        "small_hallway": {
+          "note": "Style mismatch — luxury contemporary needs volume to work."
+        }
       },
-      "compatible_stair_types": ["floating", "cantilevered", "curved", "spine_stringer"],
-      "avoid": ["visible fixings", "off-the-shelf hardware", "yellow-tone oak", "traditional spindle profiles", "brass fittings unless deliberately styled"]
+      "compatible_stair_types": [
+        "floating",
+        "cantilevered",
+        "curved",
+        "spine_stringer"
+      ],
+      "avoid": [
+        "visible fixings",
+        "off-the-shelf hardware",
+        "yellow-tone oak",
+        "traditional spindle profiles",
+        "brass fittings unless deliberately styled"
+      ]
     },
-
     "classic_period": {
       "reasoning": "Formal proportions. Detailed but restrained joinery. Panelling continuity into the stairwell. Painted string with hardwood treads is the canonical spec.",
       "default_spec": {
@@ -184,80 +494,539 @@
         "under_stair": "panelled cupboard door matched to hall panelling"
       },
       "budget_variants": {
-        "entry": { "swap": { "treads": "pine treads stained to look like hardwood" } },
-        "mid": { "keep": "default_spec" },
-        "premium": { "add": { "handrail": "custom-profiled hardwood with volute at bottom newel" } },
-        "luxury": { "add": { "treads": "solid mahogany", "under_stair": "custom-panelled hallway continuation" } }
+        "entry": {
+          "swap": {
+            "treads": "pine treads stained to look like hardwood"
+          }
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "handrail": "custom-profiled hardwood with volute at bottom newel"
+          }
+        },
+        "luxury": {
+          "add": {
+            "treads": "solid mahogany",
+            "under_stair": "custom-panelled hallway continuation"
+          }
+        }
       },
-      "compatible_stair_types": ["straight", "quarter_turn", "half_turn"],
-      "avoid": ["glass balustrade", "floating stair", "modern handrail profiles", "matt black metalwork"]
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn"
+      ],
+      "avoid": [
+        "glass balustrade",
+        "floating stair",
+        "modern handrail profiles",
+        "matt black metalwork"
+      ]
+    },
+    "modern_farmhouse": {
+      "reasoning": "Bridges the farmhouse warmth of natural timber with modern minimal lines. White oak grounds the space, painted risers keep it fresh, black metal or glass provides the modern edge. Avoids the busy detail of traditional farmhouse and the coldness of pure modern minimal.",
+      "default_spec": {
+        "stair_type": "closed_string",
+        "treads": "American White Oak 40mm solid",
+        "risers": "painted MDF - warm off-white or crisp white",
+        "strings": "painted string in matched tone",
+        "handrail": "square-profile oak matched to treads",
+        "balustrade": "square black metal balusters at 99mm centres, OR 12mm toughened glass with black bosses",
+        "finish": "matt hardwax oil (Osmo Polyx) on timber",
+        "lighting": "warm 2700K under-handrail LED plus black metal wall lights",
+        "under_stair": "hallway bench with black metal hooks above and painted panelled cupboards below"
+      },
+      "budget_variants": {
+        "entry": {
+          "swap": {
+            "treads": "engineered oak with genuine oak wear layer",
+            "balustrade": "square black metal balusters"
+          },
+          "reasoning_change": "Engineered treads + metal balusters at accessible price."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "treads": "wider oak treads with shadow gap detail to risers",
+            "balustrade": "frameless glass with matte black hardware"
+          },
+          "reasoning_change": "Cleaner detail + statement balustrade."
+        },
+        "luxury": {
+          "add": {
+            "treads": "American White Oak 45mm with book-matched grain",
+            "under_stair": "boot room / cloakroom with bench + hooks + mirror"
+          },
+          "reasoning_change": "Full farmhouse-lifestyle features at contemporary quality."
+        }
+      },
+      "space_variants": {
+        "small_hallway": {
+          "override": {
+            "balustrade": "frameless glass to open sightlines"
+          }
+        },
+        "large_entrance": {
+          "add": {
+            "treads": "wider proportions suit the space"
+          }
+        }
+      },
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn"
+      ],
+      "avoid": [
+        "turned spindles (too traditional-farmhouse)",
+        "curved staircase (too formal)",
+        "brass hardware (breaks the black-metal palette)",
+        "carpet runner (too traditional)"
+      ]
+    },
+    "industrial_luxury": {
+      "reasoning": "Combines the raw material honesty of industrial with premium timber and finishing. Steel structural elements paired with walnut or smoked oak, matte black hardware, frameless glass. The industrial roots stay visible but every surface is refined.",
+      "default_spec": {
+        "stair_type": "floating with hidden steel stringer",
+        "treads": "American Black Walnut or smoked/fumed oak, 40mm",
+        "risers": "open riser (no riser at all)",
+        "strings": "matte black powder-coated steel, exposed",
+        "handrail": "matte black steel square section, OR brushed stainless",
+        "balustrade": "12mm smoked laminated glass with matte black bosses, OR square black steel balusters",
+        "finish": "matt hardwax oil on timber, matte powder coat on steel",
+        "lighting": "under-tread LED strip + industrial-style pendant over stairwell + optional black metal wall sconces",
+        "under_stair": "open architectural volume with feature wall (exposed brick, or dark stained timber)"
+      },
+      "budget_variants": {
+        "entry": {
+          "note": "Industrial luxury is spec-driven and hard to achieve at entry budget. Recommend stepping up to premium or shifting to plain industrial."
+        },
+        "mid": {
+          "swap": {
+            "treads": "American White Oak instead of walnut",
+            "balustrade": "square black metal balusters"
+          },
+          "reasoning_change": "Retain industrial-luxury language with less premium timber."
+        },
+        "premium": {
+          "keep": "default_spec"
+        },
+        "luxury": {
+          "add": {
+            "stair_type": "curved floating on steel spine",
+            "treads": "book-matched walnut with shadow gap",
+            "lighting": "three-layer full scheme with feature pendant"
+          },
+          "reasoning_change": "Curved cantilevered fabrication is the luxury statement."
+        }
+      },
+      "space_variants": {
+        "large_entrance": {
+          "override": {
+            "stair_type": "cantilevered curved becomes the room feature"
+          }
+        },
+        "small_hallway": {
+          "note": "Style mismatch — industrial luxury needs volume and exposed materials to breathe."
+        }
+      },
+      "compatible_stair_types": [
+        "floating",
+        "cantilevered",
+        "spine_stringer",
+        "curved"
+      ],
+      "avoid": [
+        "closed string in painted MDF",
+        "turned spindles",
+        "carpet runner",
+        "brass fittings (unless deliberately styled as a single accent)",
+        "pale flooring"
+      ]
+    },
+    "scandinavian": {
+      "reasoning": "Warm minimalism. Pale oak, white walls, functional joinery with beautiful proportions. No visual clutter — every line intentional. Softer than pure modern minimal, warmer than luxury contemporary.",
+      "default_spec": {
+        "stair_type": "closed_string or open_riser (both work)",
+        "treads": "pale European or American White Oak 40mm, whitewash or ultra-pale oil finish",
+        "risers": "painted MDF in off-white / linen tone",
+        "strings": "painted string in matched tone",
+        "handrail": "slim oval or round oak - understated",
+        "balustrade": "slim vertical square oak balusters, OR minimal frameless glass with hidden fixings",
+        "finish": "hardwax oil with white pigment (Osmo White) or Rubio Monocoat white",
+        "lighting": "single warm pendant or simple under-handrail LED - never busy",
+        "under_stair": "open architectural, OR hidden-door storage with flush finish"
+      },
+      "budget_variants": {
+        "entry": {
+          "swap": {
+            "treads": "pine treads with white pigmented finish (looks scandi at pine price)"
+          },
+          "reasoning_change": "Pine + whitewash reads scandinavian if grain is calm."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "treads": "wider oak treads with shadow gap",
+            "under_stair": "purpose-designed shelving unit in matched pale timber"
+          },
+          "reasoning_change": "Detail-tier of the same restrained palette."
+        },
+        "luxury": {
+          "add": {
+            "balustrade": "single-panel frameless low-iron glass full-flight",
+            "lighting": "integrated feature designer pendant"
+          },
+          "reasoning_change": "Statement pieces used sparingly — one strong feature not many."
+        }
+      },
+      "space_variants": {
+        "small_hallway": {
+          "override": {
+            "balustrade": "frameless glass essential for light and openness"
+          }
+        },
+        "dark_hallway": {
+          "add": {
+            "lighting": "additional wall lights + under-handrail LED"
+          }
+        }
+      },
+      "compatible_stair_types": [
+        "straight",
+        "open_riser",
+        "half_turn"
+      ],
+      "avoid": [
+        "turned spindles",
+        "dark timber",
+        "curved staircase",
+        "black metal (too heavy for the palette)",
+        "brass fittings",
+        "carpet runner"
+      ]
+    },
+    "contemporary_classic": {
+      "reasoning": "Traditional architecture treated with modern finishes. Restores or references period features (turned newels, panelled string) but with contemporary materials (glass balustrade, clean paint, integrated lighting). The 'right way' to update a period property without erasing its character.",
+      "default_spec": {
+        "stair_type": "closed_string with cut string detail on open side",
+        "treads": "European Oak solid 40mm - warm honey tone",
+        "risers": "painted timber - warm off-white or heritage colour",
+        "strings": "painted string with beading detail",
+        "handrail": "profiled oak or restored original handrail if present",
+        "balustrade": "turned oak spindles at 99mm centres for character, OR 12mm glass for modern update on newel-and-cap frame",
+        "finish": "matt hardwax oil on treads and handrail, satin paint on painted elements",
+        "lighting": "wall lights in period-appropriate style (bronze or brass acceptable here), plus under-handrail LED subtle",
+        "under_stair": "panelled cupboard door matched to hallway panelling, OR wine display behind glass"
+      },
+      "budget_variants": {
+        "entry": {
+          "swap": {
+            "treads": "existing treads sanded and refinished"
+          },
+          "reasoning_change": "Refurbishment is often more appropriate than replacement in period property."
+        },
+        "mid": {
+          "keep": "default_spec"
+        },
+        "premium": {
+          "add": {
+            "handrail": "restored or heritage-copy hardwood",
+            "balustrade": "custom-turned spindles to original profile"
+          },
+          "reasoning_change": "Craft detail matches period."
+        },
+        "luxury": {
+          "add": {
+            "treads": "reclaimed period oak matched to original",
+            "under_stair": "wine cellar with period-appropriate glass door and integrated lighting"
+          },
+          "reasoning_change": "Restoration to museum standard with contemporary lifestyle feature."
+        }
+      },
+      "space_variants": {
+        "small_hallway": {
+          "override": {
+            "balustrade": "slimmer turned spindle profile at same centres"
+          }
+        },
+        "large_entrance": {
+          "add": {
+            "handrail": "custom-profiled with volute at bottom newel",
+            "note": "large entrance rewards the traditional detail"
+          }
+        }
+      },
+      "compatible_stair_types": [
+        "straight",
+        "quarter_turn",
+        "half_turn"
+      ],
+      "avoid": [
+        "floating stair (destroys period character)",
+        "matt black metalwork (too industrial)",
+        "cool grey paint (fights the warm tones)",
+        "shadow-gap detail (too modern)"
+      ]
     }
   },
-
   "material_personality_matrix": {
     "american_white_oak": {
-      "personality": ["modern", "scandinavian", "clean", "premium"],
-      "matches": ["white walls", "concrete floors", "black metal", "matt finishes"],
-      "avoid_pairings": ["yellow paint tones", "brass hardware", "heavy dark furniture"],
-      "typical_budget_tiers": ["mid", "premium", "luxury"]
+      "personality": [
+        "modern",
+        "scandinavian",
+        "clean",
+        "premium"
+      ],
+      "matches": [
+        "white walls",
+        "concrete floors",
+        "black metal",
+        "matt finishes"
+      ],
+      "avoid_pairings": [
+        "yellow paint tones",
+        "brass hardware",
+        "heavy dark furniture"
+      ],
+      "typical_budget_tiers": [
+        "mid",
+        "premium",
+        "luxury"
+      ]
     },
     "european_oak": {
-      "personality": ["traditional", "warm", "character", "grounding"],
-      "matches": ["farmhouse interiors", "stone floors", "period features", "leather furniture"],
-      "avoid_pairings": ["cool grey palettes", "chrome hardware"],
-      "typical_budget_tiers": ["mid", "premium"]
+      "personality": [
+        "traditional",
+        "warm",
+        "character",
+        "grounding"
+      ],
+      "matches": [
+        "farmhouse interiors",
+        "stone floors",
+        "period features",
+        "leather furniture"
+      ],
+      "avoid_pairings": [
+        "cool grey palettes",
+        "chrome hardware"
+      ],
+      "typical_budget_tiers": [
+        "mid",
+        "premium"
+      ]
     },
     "american_walnut": {
-      "personality": ["luxury", "warm", "premium", "designer"],
-      "matches": ["dark interiors", "leather", "brass or matte black hardware", "large-format tiles"],
-      "avoid_pairings": ["pale scandi palettes", "farmhouse rustic"],
-      "typical_budget_tiers": ["premium", "luxury"]
+      "personality": [
+        "luxury",
+        "warm",
+        "premium",
+        "designer"
+      ],
+      "matches": [
+        "dark interiors",
+        "leather",
+        "brass or matte black hardware",
+        "large-format tiles"
+      ],
+      "avoid_pairings": [
+        "pale scandi palettes",
+        "farmhouse rustic"
+      ],
+      "typical_budget_tiers": [
+        "premium",
+        "luxury"
+      ]
     },
     "ash": {
-      "personality": ["light", "contemporary", "clean"],
-      "matches": ["minimal interiors", "scandinavian palettes", "pale floors"],
-      "avoid_pairings": ["traditional interiors", "heavy dark colours"],
-      "typical_budget_tiers": ["mid", "premium"]
+      "personality": [
+        "light",
+        "contemporary",
+        "clean"
+      ],
+      "matches": [
+        "minimal interiors",
+        "scandinavian palettes",
+        "pale floors"
+      ],
+      "avoid_pairings": [
+        "traditional interiors",
+        "heavy dark colours"
+      ],
+      "typical_budget_tiers": [
+        "mid",
+        "premium"
+      ]
     },
     "pine": {
-      "personality": ["budget", "practical", "paintable"],
-      "matches": ["painted staircases", "farmhouse", "budget builds"],
-      "avoid_pairings": ["luxury interiors", "modern high-end"],
-      "typical_budget_tiers": ["entry", "mid"]
+      "personality": [
+        "budget",
+        "practical",
+        "paintable"
+      ],
+      "matches": [
+        "painted staircases",
+        "farmhouse",
+        "budget builds"
+      ],
+      "avoid_pairings": [
+        "luxury interiors",
+        "modern high-end"
+      ],
+      "typical_budget_tiers": [
+        "entry",
+        "mid"
+      ]
     },
     "painted_mdf": {
-      "personality": ["clean", "flexible", "affordable"],
-      "matches": ["most interiors as risers or strings"],
+      "personality": [
+        "clean",
+        "flexible",
+        "affordable"
+      ],
+      "matches": [
+        "most interiors as risers or strings"
+      ],
       "note": "Only use MDF for painted surfaces (risers, strings, panels) - never for wearing tread surfaces."
     },
     "smoked_fumed_oak": {
-      "personality": ["luxury", "contemporary", "dark drama"],
-      "matches": ["luxury contemporary interiors", "designer-led homes"],
-      "typical_budget_tiers": ["premium", "luxury"]
+      "personality": [
+        "luxury",
+        "contemporary",
+        "dark drama"
+      ],
+      "matches": [
+        "luxury contemporary interiors",
+        "designer-led homes"
+      ],
+      "typical_budget_tiers": [
+        "premium",
+        "luxury"
+      ]
     }
   },
-
   "balustrade_selection_rules": [
-    { "when": { "style": "modern_minimal", "priority": "aesthetic_first" }, "recommend": "frameless glass with polished stainless bosses", "reasoning": "Maximises light and sightlines while reading as premium." },
-    { "when": { "style": "modern_minimal", "budget": "entry" }, "recommend": "square black metal balusters at 99mm centres", "reasoning": "Achieves modern look at accessible price." },
-    { "when": { "style": "farmhouse" }, "recommend": "turned oak spindles - traditional profile", "reasoning": "Timber craftsmanship signals honest materials." },
-    { "when": { "style": "victorian_period" }, "recommend": "turned spindles - Victorian profile at 90-99mm centres", "reasoning": "Preserves historic character." },
-    { "when": { "style": "industrial" }, "recommend": "square black steel balusters OR black cable OR glass with black fittings", "reasoning": "Metal or glass with black hardware carries the industrial language." },
-    { "when": { "style": "luxury_contemporary" }, "recommend": "frameless low-iron 12mm laminated glass with hidden fixings", "reasoning": "Cleanest premium read - no visible fixings." },
-    { "when": { "space": "small_hallway" }, "recommend": "glass balustrade regardless of style if compatible", "reasoning": "Opens the space visually." },
-    { "when": { "children_in_home": true }, "recommend": "vertical spindles at max 99mm centres (100mm sphere rule)", "reasoning": "Doc K child safety. Avoid horizontal rails or cable systems where possible.", "safety_note": true }
+    {
+      "when": {
+        "style": "modern_minimal",
+        "priority": "aesthetic_first"
+      },
+      "recommend": "frameless glass with polished stainless bosses",
+      "reasoning": "Maximises light and sightlines while reading as premium."
+    },
+    {
+      "when": {
+        "style": "modern_minimal",
+        "budget": "entry"
+      },
+      "recommend": "square black metal balusters at 99mm centres",
+      "reasoning": "Achieves modern look at accessible price."
+    },
+    {
+      "when": {
+        "style": "farmhouse"
+      },
+      "recommend": "turned oak spindles - traditional profile",
+      "reasoning": "Timber craftsmanship signals honest materials."
+    },
+    {
+      "when": {
+        "style": "victorian_period"
+      },
+      "recommend": "turned spindles - Victorian profile at 90-99mm centres",
+      "reasoning": "Preserves historic character."
+    },
+    {
+      "when": {
+        "style": "industrial"
+      },
+      "recommend": "square black steel balusters OR black cable OR glass with black fittings",
+      "reasoning": "Metal or glass with black hardware carries the industrial language."
+    },
+    {
+      "when": {
+        "style": "luxury_contemporary"
+      },
+      "recommend": "frameless low-iron 12mm laminated glass with hidden fixings",
+      "reasoning": "Cleanest premium read - no visible fixings."
+    },
+    {
+      "when": {
+        "space": "small_hallway"
+      },
+      "recommend": "glass balustrade regardless of style if compatible",
+      "reasoning": "Opens the space visually."
+    },
+    {
+      "when": {
+        "children_in_home": true
+      },
+      "recommend": "vertical spindles at max 99mm centres (100mm sphere rule)",
+      "reasoning": "Doc K child safety. Avoid horizontal rails or cable systems where possible.",
+      "safety_note": true
+    }
   ],
-
   "under_stair_selection_rules": [
-    { "when": { "space": "small_hallway" }, "priority": "storage", "recommend": "full-width pull-out drawers", "reasoning": "Maximises useable volume in tight space." },
-    { "when": { "space": "large_entrance" }, "priority": "atmosphere", "recommend": "open architectural volume", "reasoning": "Empty space reads as premium in generous entrances." },
-    { "when": { "style": "farmhouse" }, "recommend": "hallway bench with coat storage above and shoe drawers below", "reasoning": "Practical and stylistically appropriate." },
-    { "when": { "style": "luxury_contemporary" }, "recommend": "feature wine cellar with glass door and integrated lighting", "reasoning": "Statement feature that supports the luxury read." },
-    { "when": { "priority": "practicality_first" }, "recommend": "dedicated cleaning cupboard with charging point for cordless/robot vacuum", "reasoning": "Highest daily practical value." },
-    { "when": { "priority": "aesthetic_first" }, "recommend": "hidden-door storage with flush wall finish, or open architectural", "reasoning": "Storage disappears or the space stays open." },
-    { "when": { "children_in_home": true }, "recommend": "consider a small under-stair playhouse door + window if height allows", "reasoning": "Very high emotional value for young families." }
+    {
+      "when": {
+        "space": "small_hallway"
+      },
+      "priority": "storage",
+      "recommend": "full-width pull-out drawers",
+      "reasoning": "Maximises useable volume in tight space."
+    },
+    {
+      "when": {
+        "space": "large_entrance"
+      },
+      "priority": "atmosphere",
+      "recommend": "open architectural volume",
+      "reasoning": "Empty space reads as premium in generous entrances."
+    },
+    {
+      "when": {
+        "style": "farmhouse"
+      },
+      "recommend": "hallway bench with coat storage above and shoe drawers below",
+      "reasoning": "Practical and stylistically appropriate."
+    },
+    {
+      "when": {
+        "style": "luxury_contemporary"
+      },
+      "recommend": "feature wine cellar with glass door and integrated lighting",
+      "reasoning": "Statement feature that supports the luxury read."
+    },
+    {
+      "when": {
+        "priority": "practicality_first"
+      },
+      "recommend": "dedicated cleaning cupboard with charging point for cordless/robot vacuum",
+      "reasoning": "Highest daily practical value."
+    },
+    {
+      "when": {
+        "priority": "aesthetic_first"
+      },
+      "recommend": "hidden-door storage with flush wall finish, or open architectural",
+      "reasoning": "Storage disappears or the space stays open."
+    },
+    {
+      "when": {
+        "children_in_home": true
+      },
+      "recommend": "consider a small under-stair playhouse door + window if height allows",
+      "reasoning": "Very high emotional value for young families."
+    }
   ],
-
   "engine_workflow": [
     "1. Capture house_style + budget_tier + space_context + priorities from user.",
     "2. Look up recommendations_by_style[house_style].default_spec for base recommendation.",
@@ -269,7 +1038,6 @@
     "8. Assemble final specification with reasoning and budget indication.",
     "9. Present as 2-3 variants (default + one down-tier + one up-tier) so customer sees range."
   ],
-
   "not_in_v1": [
     "Multi-style hybrid recommendations (e.g. modern-farmhouse crossover)",
     "Regional variants (see country packs)",

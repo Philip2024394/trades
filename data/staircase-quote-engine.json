@@ -1,0 +1,211 @@
+{
+  "version": "V1",
+  "generated": "2026-07-27",
+  "currency": "GBP",
+  "region_default": "UK",
+
+  "purpose": "Turn a design specification into a realistic price range. Not a firm quote - an educated estimate that gives customers order-of-magnitude clarity before they engage a supplier. Every output must carry the disclaimer that a real quote requires a site survey.",
+
+  "disclaimer": "All figures are indicative market-rate estimates for UK 2026-2027. Real quotes depend on site access, specific supplier, regional labour rates, material availability at time of order, and dozens of project-specific factors. This engine gives ranges, not commitments.",
+
+  "material_cost_bands_gbp": {
+    "note": "Per-unit indicative trade prices before installer markup. Retail prices are typically 20-40% higher.",
+
+    "treads": {
+      "pine_solid_40mm": { "per_tread_low": 25, "per_tread_high": 45, "unit": "each" },
+      "engineered_oak_20mm_top": { "per_tread_low": 55, "per_tread_high": 90, "unit": "each" },
+      "european_oak_solid_40mm": { "per_tread_low": 85, "per_tread_high": 140, "unit": "each" },
+      "american_white_oak_solid_40mm": { "per_tread_low": 90, "per_tread_high": 150, "unit": "each" },
+      "american_walnut_solid_40mm": { "per_tread_low": 180, "per_tread_high": 320, "unit": "each" },
+      "smoked_fumed_oak_40mm": { "per_tread_low": 140, "per_tread_high": 220, "unit": "each" },
+      "reclaimed_period_oak": { "per_tread_low": 200, "per_tread_high": 400, "unit": "each", "note": "Highly variable — depends on source and matching" }
+    },
+
+    "risers": {
+      "painted_mdf_18mm": { "per_riser_low": 8, "per_riser_high": 18, "unit": "each" },
+      "painted_softwood": { "per_riser_low": 12, "per_riser_high": 25, "unit": "each" },
+      "oak_veneered_mdf": { "per_riser_low": 20, "per_riser_high": 40, "unit": "each" },
+      "solid_oak": { "per_riser_low": 45, "per_riser_high": 80, "unit": "each" },
+      "solid_walnut": { "per_riser_low": 80, "per_riser_high": 150, "unit": "each" }
+    },
+
+    "strings": {
+      "softwood_painted": { "per_flight_low": 80, "per_flight_high": 180, "unit": "per_flight" },
+      "hardwood_stained": { "per_flight_low": 200, "per_flight_high": 450, "unit": "per_flight" },
+      "steel_stringer_powdercoated": { "per_flight_low": 800, "per_flight_high": 2000, "unit": "per_flight" }
+    },
+
+    "newels": {
+      "painted_softwood": { "per_newel_low": 35, "per_newel_high": 80, "unit": "each" },
+      "solid_oak_traditional_turned": { "per_newel_low": 90, "per_newel_high": 220, "unit": "each" },
+      "solid_oak_square_modern": { "per_newel_low": 70, "per_newel_high": 180, "unit": "each" },
+      "solid_walnut": { "per_newel_low": 200, "per_newel_high": 500, "unit": "each" }
+    },
+
+    "handrails": {
+      "oak_traditional_moulded": { "per_metre_low": 30, "per_metre_high": 65, "unit": "per_metre" },
+      "oak_square_modern": { "per_metre_low": 25, "per_metre_high": 55, "unit": "per_metre" },
+      "walnut": { "per_metre_low": 55, "per_metre_high": 120, "unit": "per_metre" },
+      "stainless_steel": { "per_metre_low": 80, "per_metre_high": 180, "unit": "per_metre" },
+      "black_powdercoated_steel": { "per_metre_low": 45, "per_metre_high": 110, "unit": "per_metre" }
+    },
+
+    "balustrade_infill": {
+      "turned_oak_spindles": { "per_spindle_low": 8, "per_spindle_high": 25, "unit": "each" },
+      "square_oak_spindles_stopchamfered": { "per_spindle_low": 6, "per_spindle_high": 18, "unit": "each" },
+      "square_black_metal_balusters": { "per_baluster_low": 12, "per_baluster_high": 30, "unit": "each" },
+      "12mm_toughened_glass_panel": { "per_panel_low": 180, "per_panel_high": 380, "unit": "per_panel_up_to_1sqm" },
+      "12mm_laminated_glass_panel": { "per_panel_low": 250, "per_panel_high": 500, "unit": "per_panel_up_to_1sqm" },
+      "frameless_low_iron_glass": { "per_panel_low": 400, "per_panel_high": 800, "unit": "per_panel_up_to_1sqm" },
+      "stainless_cable_system": { "per_metre_run_low": 90, "per_metre_run_high": 200, "unit": "per_horizontal_metre" }
+    },
+
+    "hardware_fixings": {
+      "standard_stair_fixing_kit": { "per_flight_low": 40, "per_flight_high": 100, "unit": "per_flight" },
+      "glass_spigot_boss_stainless": { "per_boss_low": 35, "per_boss_high": 80, "unit": "each" },
+      "cantilever_pin_fabricated": { "per_tread_low": 250, "per_tread_high": 600, "unit": "each" },
+      "handrail_wall_bracket_stainless": { "per_bracket_low": 15, "per_bracket_high": 45, "unit": "each" }
+    },
+
+    "finishes": {
+      "hardwax_oil_osmo_fiddes": { "per_stair_low": 120, "per_stair_high": 250, "unit": "per_full_stair" },
+      "spray_lacquer_workshop": { "per_stair_low": 200, "per_stair_high": 500, "unit": "per_full_stair" },
+      "paint_2coat_satin": { "per_stair_low": 150, "per_stair_high": 350, "unit": "per_full_stair" },
+      "rubio_monocoat_premium": { "per_stair_low": 180, "per_stair_high": 380, "unit": "per_full_stair" }
+    },
+
+    "lighting": {
+      "under_handrail_LED_strip_installed": { "per_stair_low": 250, "per_stair_high": 600, "unit": "per_flight" },
+      "step_light_recessed": { "per_light_low": 45, "per_light_high": 120, "unit": "each" },
+      "three_layer_system_full": { "per_stair_low": 800, "per_stair_high": 2200, "unit": "per_flight" }
+    },
+
+    "under_stair": {
+      "pull_out_drawers_custom_joinery": { "per_project_low": 800, "per_project_high": 2500, "unit": "per_project" },
+      "cloakroom_bench_hooks": { "per_project_low": 600, "per_project_high": 1800, "unit": "per_project" },
+      "wine_cellar_glass_door_climate": { "per_project_low": 2500, "per_project_high": 8000, "unit": "per_project" },
+      "hidden_door_storage": { "per_project_low": 1200, "per_project_high": 3500, "unit": "per_project" },
+      "micro_office": { "per_project_low": 700, "per_project_high": 2200, "unit": "per_project" }
+    }
+  },
+
+  "labour_rates_gbp": {
+    "note": "UK 2026-2027 indicative rates. Real quotes vary by region and specific supplier.",
+    "surveyor": { "hourly": 55, "typical_site_visit": 250 },
+    "workshop_junior": { "hourly": 25, "day": 200 },
+    "workshop_joiner": { "hourly": 40, "day": 320 },
+    "workshop_master_craftsman": { "hourly": 60, "day": 480 },
+    "installer_one_person": { "day": 300 },
+    "installer_two_person_team": { "day": 500 },
+    "specialist_glass_fitter": { "day": 450 },
+    "spray_finisher": { "day": 380 },
+    "designer_cad_hourly": { "hourly": 65 }
+  },
+
+  "labour_hours_by_stair_type": {
+    "note": "Total workshop + install hours for a typical straight domestic flight. Add ~50% for winders / half-turn, ~100% for curved.",
+    "straight_closed_string_pine": { "workshop_hours": [15, 25], "install_hours": [8, 14], "notes": "Simplest build - kit-style" },
+    "straight_closed_string_oak": { "workshop_hours": [25, 40], "install_hours": [10, 16], "notes": "Standard bespoke oak build" },
+    "quarter_turn_landing": { "workshop_hours": [35, 55], "install_hours": [12, 20] },
+    "half_turn_u_shape": { "workshop_hours": [50, 80], "install_hours": [16, 28] },
+    "winder_stair": { "workshop_hours": [45, 70], "install_hours": [14, 24], "notes": "Complex geometry - each winder tread individually cut" },
+    "open_riser_modern": { "workshop_hours": [30, 50], "install_hours": [12, 20], "notes": "No riser to hide misalignment - more precise install" },
+    "floating_cantilever": { "workshop_hours": [60, 120], "install_hours": [20, 40], "notes": "Structural engineering + steel spec required" },
+    "curved_bespoke": { "workshop_hours": [120, 300], "install_hours": [30, 60], "notes": "Custom jigs, laminated components" },
+    "spiral_kit_assembly": { "workshop_hours": [10, 20], "install_hours": [10, 18], "notes": "Kit systems can be quicker but limited spec" }
+  },
+
+  "regional_multipliers": {
+    "note": "Multiply labour totals by regional factor. Materials are more national but delivery adds a small premium.",
+    "london_and_home_counties": 1.30,
+    "south_east_england": 1.15,
+    "south_west_england": 1.05,
+    "midlands": 1.00,
+    "north_west_england": 0.95,
+    "north_east_england": 0.90,
+    "yorkshire": 0.95,
+    "scotland_central_belt": 0.95,
+    "scotland_rural": 1.05,
+    "wales_urban": 0.90,
+    "wales_rural": 1.00,
+    "northern_ireland": 0.85
+  },
+
+  "budget_tier_definitions_gbp": {
+    "entry": {
+      "range": [2500, 6000],
+      "typical_spec": "pine or engineered treads + painted MDF risers + softwood spindles or square metal balusters + basic finish",
+      "for_customer": "rental properties, first-time renovation, new-build upgrade, functional replacement"
+    },
+    "mid": {
+      "range": [6000, 12000],
+      "typical_spec": "European oak treads + painted risers + oak or modern balusters + oil finish + basic under-stair storage",
+      "for_customer": "family home renovation, thoughtful design without curved/floating spec"
+    },
+    "premium": {
+      "range": [12000, 25000],
+      "typical_spec": "American White Oak or walnut treads + glass or premium balustrade + LED lighting + shadow-gap or matching-flooring detail + custom under-stair",
+      "for_customer": "design-led renovation, high-end family home, first impression matters"
+    },
+    "luxury": {
+      "range": [25000, 60000],
+      "typical_spec": "walnut / smoked oak / reclaimed premium timber + frameless glass or curved / floating design + full lighting scheme + statement under-stair feature",
+      "for_customer": "architect projects, statement pieces, sub-luxury bespoke"
+    },
+    "bespoke_luxury": {
+      "range": [60000, 250000],
+      "typical_spec": "curved or cantilevered engineering + rare timber + custom metalwork + integrated lighting + architectural detail",
+      "for_customer": "top-of-market homes, developer show pieces, celebrity / heritage restoration"
+    }
+  },
+
+  "engine_workflow": [
+    "1. Take design_spec from staircase-design-recommendation-rules.json (or user input).",
+    "2. Compute material list from spec: enumerate treads * count, risers * count, string per flight, newels * count, handrail * metres, balustrade infill * count/metres, balustrade panels * count.",
+    "3. Look up each item in material_cost_bands_gbp. Sum low totals and high totals separately.",
+    "4. Add labour: match stair_type to labour_hours_by_stair_type, multiply hour ranges by workshop_joiner + installer rates.",
+    "5. Apply regional_multipliers based on user postcode.",
+    "6. Add finish cost + lighting cost + under_stair cost from bands.",
+    "7. Add contingency: 10 percent low end, 15 percent high end (covers unforeseen site work).",
+    "8. Add supplier margin: manufacturer typically 25-40 percent gross on total materials + labour.",
+    "9. Present three quote tiers (default + one down + one up per design engine convention) with itemised breakdown.",
+    "10. Every output ends with: this is an estimate — real quote requires site survey."
+  ],
+
+  "example_output_structure": {
+    "for_design_spec": "modern_minimal + mid budget + standard space (13-riser straight staircase in Leeds)",
+    "materials_low_total_gbp": 3200,
+    "materials_high_total_gbp": 5100,
+    "labour_low_total_gbp": 2400,
+    "labour_high_total_gbp": 4200,
+    "regional_multiplier_applied": 0.95,
+    "contingency_added_gbp": [560, 1395],
+    "supplier_margin_added_gbp": [2050, 4180],
+    "final_range_gbp": [8210, 15870],
+    "suggested_target": 12000,
+    "caveats": [
+      "Assumes straight flight in normal domestic property",
+      "Site survey may reveal additional preparation cost",
+      "Real supplier pricing varies +/- 20 percent from this estimate",
+      "Excludes VAT if applicable"
+    ]
+  },
+
+  "customer_presentation_rules": [
+    "Always present as a RANGE, never a single number",
+    "Always show three tiers (budget / mid / premium equivalents of the spec)",
+    "Always itemise materials vs labour vs contingency vs margin",
+    "Always cite the disclaimer that this is an estimate not a quote",
+    "Always link to nearby suppliers from data/uk-merchant-directory.json for the real quote"
+  ],
+
+  "not_in_v1": [
+    "Live pricing feeds from suppliers (needs API integrations)",
+    "Regional-specific supplier price variations beyond the multiplier",
+    "Currency conversion for country packs (USD, AUD, EUR)",
+    "VAT and business-status handling",
+    "Delivery / access cost surcharges",
+    "Historic staircase restoration pricing (specialist market)",
+    "Commercial project pricing (different labour rates + scope)"
+  ]
+}
