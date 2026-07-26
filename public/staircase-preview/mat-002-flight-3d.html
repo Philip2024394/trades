@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MAT-002 · White Oak Straight Flight — 3D Preview</title>
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: rgba(22, 22, 26, 0.9);
+    --border: #2a2a30;
+    --text: #f5f5f7;
+    --muted: #9b9ba3;
+    --accent: #ff8c1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #canvas-container { position: fixed; inset: 0; }
+  canvas { display: block; }
+
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 10;
+  }
+  .brand {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 12px;
+  }
+  .title { font-size: 18px; font-weight: 600; margin-top: 2px; }
+  .subtitle { color: var(--muted); font-size: 12px; margin-top: 2px; }
+
+  .info-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 320px;
+    z-index: 10;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .info-panel h3 {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); }
+  .info-value { color: var(--text); font-weight: 500; }
+  .info-value.accent { color: var(--accent); }
+
+  .controls-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    z-index: 10;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .controls-hint strong { color: var(--accent); }
+
+  .view-switcher {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding-right: 6px;
+  }
+  .view-switcher::-webkit-scrollbar { width: 4px; }
+  .view-switcher::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .view-switcher::-webkit-scrollbar-track { background: transparent; }
+  .view-btn {
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    min-width: 140px;
+    text-align: left;
+  }
+  .view-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .view-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .disclaimer {
+    position: fixed;
+    top: 100px;
+    left: 20px;
+    max-width: 320px;
+    background: rgba(255, 140, 26, 0.1);
+    border: 1px solid rgba(255, 140, 26, 0.3);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #ffb066;
+    line-height: 1.5;
+    z-index: 10;
+  }
+
+  .loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    z-index: 100;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .loading.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="top-bar">
+  <div>
+    <div class="brand">NEX STAIRPLAN · 3D STRAIGHT FLIGHT PREVIEW</div>
+    <div class="title">MAT-002 · American White Oak</div>
+    <div class="subtitle">13 rises · 12 treads · 200 mm rise · 220 mm going · 42.3° pitch</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <strong>Preview mode:</strong> treads reuse the same procedural geometry from the single-tread preview.
+  Risers + strings + newel post are placeholder boxes textured with your material face.
+  Handrails, balusters, glass panels, real house context all await the 3D artist's GLB set.
+</div>
+
+<div class="view-switcher">
+  <div style="display:flex; gap:8px; justify-content:center; align-items:center; padding:6px 0;">
+    <div style="color: var(--muted); font-size: 11px; letter-spacing: 1px; margin-right: 4px;">BALUSTER</div>
+    <button id="baluster-oak" title="Oak baluster (chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid #ff8c1a; background:#c9a878; cursor:pointer; padding:0;"></button>
+    <button id="baluster-white" title="White sprayed baluster (stop-chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--border); background:#f5f2ec; cursor:pointer; padding:0;"></button>
+    <button id="baluster-cream" title="Cream sprayed baluster (chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--border); background:#f0e2c1; cursor:pointer; padding:0;"></button>
+  </div>
+  <div style="display:flex; flex-direction:column; gap:4px; padding:4px 4px 8px;">
+    <label for="sheeting-tone-slider" style="color: var(--muted); font-size: 11px; letter-spacing: 1px;">SHEETING TONE</label>
+    <input type="range" id="sheeting-tone-slider" min="-0.30" max="0.30" step="0.02" value="0" style="width:100%; accent-color: var(--accent);">
+  </div>
+  <button class="view-btn active" data-view="hero">3-Quarter Hero</button>
+  <button class="view-btn" data-view="side">Side Elevation</button>
+  <button class="view-btn" data-view="front">Front Elevation</button>
+  <button class="view-btn" data-view="top">Top Plan</button>
+  <button class="view-btn" data-view="walkup">Walk-Up</button>
+  <button class="view-btn" data-view="foot">Standing at Foot</button>
+  <button class="view-btn" data-view="under">Back of Stairs</button>
+  <button class="view-btn" id="varnish-toggle" style="margin-top:16px; background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600;">Varnish: ON</button>
+  <button class="view-btn" id="sheeting-toggle" style="margin-top:4px;">Sheeting: OFF</button>
+  <button class="view-btn" id="walk-flight-btn" style="margin-top:16px; background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600;">▶ Walk Up Flight</button>
+  <button class="view-btn" id="stairlights-toggle" style="margin-top:4px;">💡 Stairlights: OFF</button>
+  <button class="view-btn" id="round-step-toggle" style="margin-top:4px;">Round Starting Step: OFF</button>
+</div>
+
+<div class="info-panel">
+  <h3>Flight Specifications</h3>
+  <div class="info-row"><span class="info-label">Material ID</span><span class="info-value accent">MAT-002 · American White Oak</span></div>
+  <div class="info-row"><span class="info-label">Rises</span><span class="info-value">13</span></div>
+  <div class="info-row"><span class="info-label">Treads</span><span class="info-value">12 + top step (100mm)</span></div>
+  <div class="info-row"><span class="info-label">Rise (each)</span><span class="info-value">200 mm</span></div>
+  <div class="info-row"><span class="info-label">Going (each)</span><span class="info-value">220 mm</span></div>
+  <div class="info-row"><span class="info-label">Pitch</span><span class="info-value">42.3°</span></div>
+  <div class="info-row"><span class="info-label">Floor-to-floor</span><span class="info-value">2,600 mm</span></div>
+  <div class="info-row"><span class="info-label">Overall run</span><span class="info-value">2,640 mm</span></div>
+  <div class="info-row"><span class="info-label">Width</span><span class="info-value">900 mm</span></div>
+  <div class="info-row"><span class="info-label">Doc K compliance</span><span class="info-value" style="color:#4ade80;">✓ Private stair</span></div>
+  <div class="info-row"><span class="info-label">Angle blocks per step</span><span class="info-value">2 (rule: ≤1000mm)</span></div>
+  <div class="info-row"><span class="info-label">Total angle blocks</span><span class="info-value">24</span></div>
+  <div class="info-row"><span class="info-label">Newel posts</span><span class="info-value">4 · 90×90 · centred on string</span></div>
+</div>
+
+<div class="controls-hint">
+  <strong>DRAG</strong> to orbit · <strong>SCROLL</strong> to zoom · <strong>RIGHT-DRAG</strong> to pan
+</div>
+
+<div class="loading" id="loading">LOADING MATERIAL TEXTURE...</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+// RectAreaLight requires uniforms lib init before any RectAreaLight can illuminate MeshStandard /
+// MeshPhysical materials. Called once at module load.
+RectAreaLightUniformsLib.init();
+
+const TEXTURE_URL = "https://ik.imagekit.io/5vv5pw26q/Untitledfsdf.png";
+// Carpet texture for BOTH ground floor and landing (per Philip 2026-07-25).
+// Fine-grain seamless-looking carpet swatch — tiles well without visible boundaries.
+const CARPET_TEXTURE_URL = "https://ik.imagekit.io/5vv5pw26q/Untitledasdadasssdasdasd.png";
+
+// -----------------------------------------------------------------------------
+// Real dimensions (metres)
+// -----------------------------------------------------------------------------
+const RISES = 13;
+const TREADS = RISES - 1;
+const RISE = 0.200;           // 200 mm per rise
+const GOING = 0.220;          // 220 mm per going
+const NOSING = 0.020;         // 20 mm nosing overhang
+const TREAD_DEPTH = GOING + NOSING;   // 240 mm total tread depth
+const TREAD_THICK = 0.040;    // 40 mm tread thickness
+const TREAD_WIDTH = 0.900;    // 900mm — standard staircase width (over-string)
+const RISER_THICK = 0.018;    // 18 mm riser board
+const STRING_THICK = 0.032;   // 32 mm string board
+const STRING_HEIGHT = 0.275;  // 275 mm — UK standard raw stringer stock depth
+const STRING_TREAD_OVERLAP = 0.020; // 20mm — tread embeds deeply into string housing on both sides (increased from 12mm to close any light gap at the tread-string joint)
+const STRING_NOSING_TOP_OFFSET = 0.030; // 30mm — perpendicular distance from string TOP EDGE down to tread nosing line (Philip 2026-07-25 refinement)
+// String extension values TUNED so tenon depth = 50mm at BOTH newels:
+// Bottom newel front face at X=-45, back face at X=+45. String tenons 50mm into newel from back face
+// (via haunched joint) — string end center X = -5, i.e. 40mm inside newel body from back face.
+// Top newel front face at X=2595, back face at X=+2685. String tenons 50mm into newel — end center X = 2645.
+// Below values chosen by algebra to hit those endpoint positions given pitchAngle 42.27°.
+const STRING_PRE_EXTENSION = 0.070;     // string tenons exactly 50mm into bottom newel
+const STRING_POST_EXTENSION = 0.240;    // string tenons exactly 50mm into top newel
+
+// Newel posts — Philip's construction rule (2026-07-25):
+// (1) String THICKNESS is centered on newel post cross-section — regardless of newel size (75/90/120mm),
+//     newel Z position matches the string Z position exactly, so some newel shows on both sides of the string.
+// (2) String reduced with a tenon at each end that goes ~50mm INSIDE the newel post (haunched joint).
+// (3) On the interior (flight side): bullnose tread is 12mm haunched inside newel, ~25mm back from front edge.
+// (4) On the interior: riser is haunched into newel back ~45-50mm from newel edge.
+const NEWEL_SIZE = 0.090;              // 90mm × 90mm square section (spec-standard modern size)
+const NEWEL_HEIGHT_BOTTOM = 1.100;     // 1100mm from floor
+// Top newel: Philip's corrected rule (2026-07-25) — top newel extends from 100mm BELOW the string
+// BOTTOM edge, UP through the string, PAST it, to a top height that MATCHES the bottom newel's
+// "over-string" distance. So it mirrors the bottom newel visually: the string enters roughly in
+// the lower third of the post, and the post continues up well above the string top edge.
+const NEWEL_TOP_BELOW_STRING_BOTTOMEDGE = 0.100; // 100mm — top newel base sits this far below string bottom edge at newel X
+
+// Top step (Philip's rule 2026-07-25) — the topmost step is a SHORT bullnose piece 100mm deep
+// with bullnose, sitting AT LANDING LEVEL at the front edge of the landing.
+const TOP_STEP_DEPTH = 0.100;    // 100mm going depth
+const TOP_STEP_NOSING = 0.020;   // 20mm bullnose front overhang
+
+// Angle blocks — traditional glue blocks reinforcing tread-riser joint from underneath.
+// UK trade rule: staircases ≤1000mm wide = 2 blocks per step, >1000mm = 3 blocks per step.
+const ANGLE_BLOCK_SIZE = 0.060;      // 60mm × 60mm cross-section
+const ANGLE_BLOCK_LENGTH = 0.090;    // 90mm long along the tread-width axis
+const ANGLE_BLOCK_STRING_INSET = 0.080; // 80mm inset from string interior face (block sits inside the step body, not against string)
+const ANGLE_BLOCK_COUNT = TREAD_WIDTH > 1.000 ? 3 : 2;
+const OVERALL_RISE = RISE * RISES;                    // 2.60 m
+const OVERALL_RUN = GOING * TREADS;                   // 2.64 m
+
+// -----------------------------------------------------------------------------
+// Scene
+// -----------------------------------------------------------------------------
+const container = document.getElementById("canvas-container");
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0e0e10);
+scene.fog = new THREE.Fog(0x0e0e10, 6, 15);
+
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 100);
+camera.position.set(4.5, 2.5, 4.5);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = false;   // Philip 2026-07-26 — shadows off by default to test rear-face darkness hypothesis
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 1;
+controls.maxDistance = 12;
+controls.maxPolarAngle = Math.PI / 2; // hard cap — camera cannot rotate below the target's horizon (stops the camera going under the floor)
+
+// Wood materials collected here so the Varnish toggle button can flip their finish at runtime.
+const woodMaterials = []; // { mat, kind: 'standard'|'physical' }
+let varnishOn = true;
+controls.target.set(OVERALL_RUN / 2, OVERALL_RISE / 2, 0);
+
+// -----------------------------------------------------------------------------
+// Lighting — 3-point studio rig, scaled up for larger scene
+// -----------------------------------------------------------------------------
+// Natural-looking shadows: reduced ambient (was overwashing) + hemisphere fill (sky+ground bounce
+// prevents shadows from going pitch-black) + higher-res shadow map + softer edges.
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.25);
+scene.add(ambientLight);
+const hemiLight = new THREE.HemisphereLight(0xffe0c0, 0x3a2f24, 0.35);
+scene.add(hemiLight);
+
+const keyLight = new THREE.DirectionalLight(0xffe8cc, 1.4);
+keyLight.position.set(5, 8, 5);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(4096, 4096);   // sharper shadow detail
+keyLight.shadow.camera.near = 1;
+keyLight.shadow.camera.far = 25;
+keyLight.shadow.camera.left = -8;          // wider bounds so full flight is inside shadow camera
+keyLight.shadow.camera.right = 8;
+keyLight.shadow.camera.top = 8;
+keyLight.shadow.camera.bottom = -3;
+keyLight.shadow.bias = -0.0002;            // reduced from -0.0005 (less aggressive, cleaner)
+keyLight.shadow.normalBias = 0.02;         // reduces shadow acne on curved surfaces
+keyLight.shadow.radius = 4;                // soft PCF edges (works with PCFSoftShadowMap)
+scene.add(keyLight);
+
+// Warm cream fill (was cool blue 0xaaccff which was tinting downward-facing surfaces greenish —
+// blue fill × warm oak base = grey-green muddy tint on the T&G sheeting underside).
+const fillLight = new THREE.DirectionalLight(0xffe8cc, 0.35);
+fillLight.position.set(-4, 3, -3);
+scene.add(fillLight);
+
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.5);
+rimLight.position.set(0, 2, -5);
+scene.add(rimLight);
+
+// -----------------------------------------------------------------------------
+// Ground plane
+// -----------------------------------------------------------------------------
+// Ground + landing floors will be built with oak flooring texture once the flooring texture loads.
+const groundGeometry = new THREE.PlaneGeometry(20, 20);
+const landingGeometry = new THREE.PlaneGeometry(2.5, 2.5);
+let ground, landing;
+
+// --- Both floors use the same carpet texture (per Philip 2026-07-25) ---
+new THREE.TextureLoader().load(CARPET_TEXTURE_URL, (carpetMap) => {
+  carpetMap.colorSpace = THREE.SRGBColorSpace;
+  carpetMap.wrapS = THREE.RepeatWrapping;
+  carpetMap.wrapT = THREE.RepeatWrapping;
+  carpetMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+  // Ground floor carpet — 20x20m plane. MirroredRepeatWrapping makes each alternate tile a mirror
+  // of its neighbour, so edges match perfectly and no square boundaries are visible.
+  const groundCarpetTex = carpetMap.clone();
+  groundCarpetTex.needsUpdate = true;
+  groundCarpetTex.wrapS = THREE.MirroredRepeatWrapping;
+  groundCarpetTex.wrapT = THREE.MirroredRepeatWrapping;
+  groundCarpetTex.repeat.set(40, 40);
+  groundCarpetTex.colorSpace = THREE.SRGBColorSpace;
+
+  ground = new THREE.Mesh(
+    groundGeometry,
+    new THREE.MeshStandardMaterial({
+      map: groundCarpetTex,
+      bumpMap: groundCarpetTex,
+      bumpScale: 0.005,
+      roughness: 0.98,      // matte — carpet doesn't reflect
+      metalness: 0,
+    })
+  );
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = 0;
+  ground.receiveShadow = true;
+  scene.add(ground);
+
+  // Landing carpet — 2.5x2.5m plane. Same mirrored tiling as ground floor.
+  const landingCarpetTex = carpetMap.clone();
+  landingCarpetTex.needsUpdate = true;
+  landingCarpetTex.wrapS = THREE.MirroredRepeatWrapping;
+  landingCarpetTex.wrapT = THREE.MirroredRepeatWrapping;
+  landingCarpetTex.repeat.set(5, 5);
+  landingCarpetTex.colorSpace = THREE.SRGBColorSpace;
+
+  landing = new THREE.Mesh(
+    landingGeometry,
+    new THREE.MeshStandardMaterial({
+      map: landingCarpetTex,
+      bumpMap: landingCarpetTex,
+      bumpScale: 0.005,
+      roughness: 0.98,
+      metalness: 0,
+    })
+  );
+  landing.rotation.x = -Math.PI / 2;
+  // Landing FRONT edge starts PAST the top step's back mount, so carpet doesn't flash through the bullnose.
+  landing.position.set(OVERALL_RUN + 0.100 + 1.25, OVERALL_RISE, 0);
+  landing.receiveShadow = true;
+  scene.add(landing);
+});
+
+// Back wall (subtle)
+const backWall = new THREE.Mesh(
+  new THREE.PlaneGeometry(20, 8),
+  new THREE.MeshStandardMaterial({ color: 0x1a1a1e, roughness: 1.0, metalness: 0 })
+);
+backWall.position.set(OVERALL_RUN / 2, 4, -1.2);
+backWall.receiveShadow = true;
+scene.add(backWall);
+
+// -----------------------------------------------------------------------------
+// Tread geometry — bullnose profile extruded across width
+// -----------------------------------------------------------------------------
+function makeTreadGeometry() {
+  const profile = new THREE.Shape();
+  const r = NOSING;
+  profile.moveTo(0, 0);
+  profile.lineTo(TREAD_DEPTH - r, 0);
+  profile.absarc(TREAD_DEPTH - r, r, r, -Math.PI / 2, Math.PI / 2, false);
+  profile.lineTo(0, TREAD_THICK);
+  profile.lineTo(0, 0);
+
+  const geometry = new THREE.ExtrudeGeometry(profile, {
+    depth: TREAD_WIDTH,
+    bevelEnabled: false,   // no bevel — extrude cap face reaches the full ±W/2 boundary cleanly, so tread meets string flush on both sides
+    steps: 1,
+    curveSegments: 16,
+  });
+
+  // After extrude: X = depth (0..240), Y = thickness (0..40), Z = width (0..900).
+  // Recentre width, keep X starting at 0 (so front of nosing sticks forward).
+  geometry.translate(0, 0, -TREAD_WIDTH / 2);
+  geometry.computeVertexNormals();
+
+  fixBoxUVs(geometry, TREAD_DEPTH, TREAD_THICK, TREAD_WIDTH);
+
+  // Philip 2026-07-26 geometry split: separate the UNDERSIDE face from the rest of the perimeter
+  // so it can carry a dedicated rear material. ExtrudeGeometry natively produces two groups:
+  //   [0] = caps (the two ends of the extrusion — hidden inside string housings)
+  //   [1] = perimeter (top walking surface + bullnose + back edge + UNDERSIDE — all mixed)
+  // We reorder the perimeter vertex block so underside triangles are contiguous at the tail, then
+  // reset the groups to: [caps + non-underside perimeter] → material 0, [underside] → material 1.
+  // Classification is by face normal Y-component: underside triangles have normal (0,-1,0).
+  splitTreadPerimeterByUnderside(geometry);
+
+  return geometry;
+}
+
+// Reorder the perimeter block of an ExtrudeGeometry so all triangles whose face normal points
+// downward (n.y < -0.5, the tread underside) are contiguous at the tail. Caps stay untouched at
+// the head. After reorder, groups are:
+//   [0] caps + non-underside perimeter → material index 0 (treadMaterial)
+//   [1] underside triangles            → material index 1 (rearTreadMaterial)
+function splitTreadPerimeterByUnderside(geometry) {
+  const pos = geometry.attributes.position;
+  const norm = geometry.attributes.normal;
+  const uv  = geometry.attributes.uv;
+  if (geometry.groups.length !== 2) return; // sanity — ExtrudeGeometry default is two groups
+  const capsGrp  = geometry.groups[0]; // materialIndex 0 by default
+  const perimGrp = geometry.groups[1]; // materialIndex 1 by default
+
+  const undersideTri = []; // triangle-start vertex indices in current buffer
+  const otherTri     = [];
+  for (let t = 0; t < perimGrp.count; t += 3) {
+    const v0 = perimGrp.start + t;
+    const nyAvg = (norm.getY(v0) + norm.getY(v0 + 1) + norm.getY(v0 + 2)) / 3;
+    (nyAvg < -0.5 ? undersideTri : otherTri).push(v0);
+  }
+
+  const total = pos.count;
+  const newPos  = new Float32Array(total * 3);
+  const newNorm = new Float32Array(total * 3);
+  const newUv   = new Float32Array(total * 2);
+  let w = 0;
+  const copyVertex = (src) => {
+    newPos [w * 3]     = pos.array [src * 3];
+    newPos [w * 3 + 1] = pos.array [src * 3 + 1];
+    newPos [w * 3 + 2] = pos.array [src * 3 + 2];
+    newNorm[w * 3]     = norm.array[src * 3];
+    newNorm[w * 3 + 1] = norm.array[src * 3 + 1];
+    newNorm[w * 3 + 2] = norm.array[src * 3 + 2];
+    newUv  [w * 2]     = uv.array  [src * 2];
+    newUv  [w * 2 + 1] = uv.array  [src * 2 + 1];
+    w++;
+  };
+
+  // 1. Caps unchanged
+  for (let i = 0; i < capsGrp.count; i++) copyVertex(capsGrp.start + i);
+  // 2. Non-underside perimeter (top + bullnose + back)
+  for (const triStart of otherTri) { copyVertex(triStart); copyVertex(triStart + 1); copyVertex(triStart + 2); }
+  const undersideStart = w;
+  // 3. Underside triangles
+  for (const triStart of undersideTri) { copyVertex(triStart); copyVertex(triStart + 1); copyVertex(triStart + 2); }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(newPos, 3));
+  geometry.setAttribute('normal',   new THREE.BufferAttribute(newNorm, 3));
+  geometry.setAttribute('uv',       new THREE.BufferAttribute(newUv, 2));
+
+  geometry.clearGroups();
+  geometry.addGroup(0, undersideStart, 0);                       // caps + top/bullnose/back → treadMaterial
+  geometry.addGroup(undersideStart, w - undersideStart, 1);      // underside → rearTreadMaterial
+}
+
+// Reorder the caps block of a string ExtrudeGeometry so triangles are grouped by cap normal:
+// first the cap+Z triangles (normal (0,0,+1)), then the cap-Z triangles (normal (0,0,-1)).
+// Perimeter triangles stay in their original position at the tail.
+// Groups after:
+//   [0] cap+Z    → material index 0
+//   [1] cap-Z    → material index 1
+//   [2] perimeter → material index 2
+function splitStringCapsByZ(geometry) {
+  const pos = geometry.attributes.position;
+  const norm = geometry.attributes.normal;
+  const uv  = geometry.attributes.uv;
+  if (geometry.groups.length !== 2) return;
+  const capsGrp  = geometry.groups[0];
+  const perimGrp = geometry.groups[1];
+
+  const posZTri = [];
+  const negZTri = [];
+  for (let t = 0; t < capsGrp.count; t += 3) {
+    const v0 = capsGrp.start + t;
+    const nzAvg = (norm.getZ(v0) + norm.getZ(v0 + 1) + norm.getZ(v0 + 2)) / 3;
+    (nzAvg > 0 ? posZTri : negZTri).push(v0);
+  }
+
+  const total = pos.count;
+  const newPos  = new Float32Array(total * 3);
+  const newNorm = new Float32Array(total * 3);
+  const newUv   = new Float32Array(total * 2);
+  let w = 0;
+  const copyVertex = (src) => {
+    newPos [w * 3]     = pos.array [src * 3];
+    newPos [w * 3 + 1] = pos.array [src * 3 + 1];
+    newPos [w * 3 + 2] = pos.array [src * 3 + 2];
+    newNorm[w * 3]     = norm.array[src * 3];
+    newNorm[w * 3 + 1] = norm.array[src * 3 + 1];
+    newNorm[w * 3 + 2] = norm.array[src * 3 + 2];
+    newUv  [w * 2]     = uv.array  [src * 2];
+    newUv  [w * 2 + 1] = uv.array  [src * 2 + 1];
+    w++;
+  };
+
+  // 1. cap+Z triangles
+  for (const triStart of posZTri) { copyVertex(triStart); copyVertex(triStart + 1); copyVertex(triStart + 2); }
+  const negZStart = w;
+  // 2. cap-Z triangles
+  for (const triStart of negZTri) { copyVertex(triStart); copyVertex(triStart + 1); copyVertex(triStart + 2); }
+  const perimStart = w;
+  // 3. Perimeter unchanged
+  for (let i = 0; i < perimGrp.count; i++) copyVertex(perimGrp.start + i);
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(newPos, 3));
+  geometry.setAttribute('normal',   new THREE.BufferAttribute(newNorm, 3));
+  geometry.setAttribute('uv',       new THREE.BufferAttribute(newUv, 2));
+
+  geometry.clearGroups();
+  geometry.addGroup(0,          negZStart,             0); // cap+Z    → material 0
+  geometry.addGroup(negZStart,  perimStart - negZStart, 1); // cap-Z    → material 1
+  geometry.addGroup(perimStart, w - perimStart,         2); // perimeter → material 2
+}
+
+// Generic UV fixer for extruded boxes — top/bottom get the material laid out along length,
+// vertical faces get short scale so they read as end grain / edge grain.
+function fixBoxUVs(geometry, depth, thickness, width) {
+  const pos = geometry.attributes.position;
+  const uv = geometry.attributes.uv;
+  const normal = geometry.attributes.normal;
+  const uvArray = uv.array;
+
+  for (let i = 0; i < pos.count; i++) {
+    const nx = normal.getX(i);
+    const ny = normal.getY(i);
+    const nz = normal.getZ(i);
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+
+    if (Math.abs(ny) > 0.7) {
+      // Top or bottom face — grain along Z (length).
+      uvArray[i * 2] = (z + width / 2) / width;
+      uvArray[i * 2 + 1] = x / depth;
+    } else if (Math.abs(nz) > 0.7) {
+      // End faces (short sides — end grain).
+      uvArray[i * 2] = x / depth;
+      uvArray[i * 2 + 1] = y / thickness * 0.3;
+    } else {
+      // Front + back long edges.
+      uvArray[i * 2] = (z + width / 2) / width;
+      uvArray[i * 2 + 1] = y / thickness * 0.3;
+    }
+  }
+  uv.needsUpdate = true;
+}
+
+// Simple box with UV mapping for risers + strings.
+function makeBox(w, h, d) {
+  const g = new THREE.BoxGeometry(w, h, d);
+  // Box UVs are already sensible per-face; leave default and rely on texture repeat scaling via wrap.
+  return g;
+}
+
+// -----------------------------------------------------------------------------
+// Assemble the flight
+// -----------------------------------------------------------------------------
+const loadingEl = document.getElementById("loading");
+
+new THREE.TextureLoader().load(
+  TEXTURE_URL,
+  (baseColorMap) => {
+    baseColorMap.colorSpace = THREE.SRGBColorSpace;
+    baseColorMap.wrapS = THREE.RepeatWrapping;
+    baseColorMap.wrapT = THREE.RepeatWrapping;
+    baseColorMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    // Helper: clone the base texture with real-world repeat so grain shows at correct scale.
+    // BoxGeometry default UVs are 0→1 per face, so we scale repeat proportionally to the face size.
+    function cloneTex(src, repX, repY) {
+      const t = src.clone();
+      t.needsUpdate = true;
+      t.wrapS = THREE.RepeatWrapping;
+      t.wrapT = THREE.RepeatWrapping;
+      t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      t.repeat.set(repX, repY);
+      return t;
+    }
+
+    // Philip's finish (2026-07-25): 2-pack lacquer / varnish on all oak elements — shiny, warm,
+    // reflective. Lowered roughness from 0.55 to 0.30. Slight warm-honey colour tint on top of the
+    // base white oak texture to reflect how lacquer deepens the grain colour.
+    const LACQUER_ROUGHNESS = 0.30;
+    const LACQUER_COLOR = new THREE.Color(0xf7e0b8); // warm honey tint (subtle multiplier over texture)
+
+    // Tread — DoubleSide so neither culling nor tiny z-order issues can produce edge "white lines"
+    // where the tread meets the string. polygonOffset pushes rendering slightly further so it never
+    // z-fights with the string interior face when they occupy near-shared space (tread embeds 20mm
+    // into string housing on both sides).
+    const treadMaterial = new THREE.MeshStandardMaterial({
+      map: baseColorMap,
+      color: LACQUER_COLOR,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      bumpMap: baseColorMap,
+      bumpScale: 0.0003,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+    });
+    woodMaterials.push({ mat: treadMaterial, kind: 'standard' });
+
+    // rearTreadMaterial — Philip 2026-07-26 Phase 2 (proper geometry split). Identical PBR maps
+    // to treadMaterial + emissive self-lift. Applied to the UNDERSIDE face group only via the
+    // splitTreadPerimeterByUnderside() reorder. Top walking surface, bullnose, back edge and end
+    // faces remain on treadMaterial unchanged — walker-visible faces are untouched.
+    const rearTreadMaterial = new THREE.MeshStandardMaterial({
+      map: baseColorMap,
+      color: LACQUER_COLOR,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      bumpMap: baseColorMap,
+      bumpScale: 0.0003,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      // Subtle rear-face lift (Philip 2026-07-26 Technical Art Director iteration): reduced from
+      // 0.5 to 0.15 — enough to lift the tread underside from dark to slightly-warmer-than-front,
+      // not enough to produce the "glow" effect that failed at 0.5. Applied only to the tread
+      // underside via the splitTreadPerimeterByUnderside geometry group.
+      emissive: LACQUER_COLOR,
+      emissiveMap: baseColorMap,
+      emissiveIntensity: 0.05,
+    });
+    woodMaterials.push({ mat: rearTreadMaterial, kind: 'standard' });
+
+    // rearAngleBeadMaterial — Philip 2026-07-26 TAD iteration: emissive dropped 0.5 → 0.15 to
+    // sit inside the same "rear-face subtle lift family" as rearTreadMaterial · rearRiserMaterial ·
+    // sheetingMaterial. Angle slips on the left and right of the sheeting panel now read at the
+    // same warm honey shade as the handrail (treadMaterial), rather than glowing hotter.
+    const rearAngleBeadMaterial = new THREE.MeshStandardMaterial({
+      map: baseColorMap,
+      color: LACQUER_COLOR,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      bumpMap: baseColorMap,
+      bumpScale: 0.0003,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      emissive: LACQUER_COLOR,
+      emissiveMap: baseColorMap,
+      emissiveIntensity: 0.05,
+    });
+    woodMaterials.push({ mat: rearAngleBeadMaterial, kind: 'standard' });
+
+    // Risers: same lacquered finish as tread.
+    const riserTex = cloneTex(baseColorMap, 1, 1);
+    const riserMaterial = new THREE.MeshStandardMaterial({
+      map: riserTex,
+      color: LACQUER_COLOR,
+      bumpMap: riserTex,
+      bumpScale: 0.0001,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+    });
+    woodMaterials.push({ mat: riserMaterial, kind: 'standard' });
+
+    // rearRiserMaterial — Philip 2026-07-26 Phase 2 (proper geometry split). Identical PBR maps
+    // to riserMaterial + emissive self-lift. Applied to the +X face (rear-visible) of every
+    // riser via BoxGeometry's 6 material groups. The −X front face (walker sees) stays on
+    // riserMaterial unchanged.
+    const rearRiserMaterial = new THREE.MeshStandardMaterial({
+      map: riserTex,
+      color: LACQUER_COLOR,
+      bumpMap: riserTex,
+      bumpScale: 0.0001,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: 1,
+      polygonOffsetUnits: 1,
+      // Subtle rear-face lift (Philip 2026-07-26 TAD iteration): 0.15 not 0.5 — enough to lift
+      // riser back from dark to slightly-warmer without producing the "glow" effect.
+      emissive: LACQUER_COLOR,
+      emissiveMap: riserTex,
+      emissiveIntensity: 0.05,
+    });
+    woodMaterials.push({ mat: rearRiserMaterial, kind: 'standard' });
+
+    // Strings: proper VARNISHED oak with SAME finish colour as treads/risers.
+    // Custom UVs already handle grain-along-pitch (see fixStringUVs above) — no texture rotation.
+    // MeshPhysicalMaterial: base wood + clearcoat for varnish shine + LACQUER_COLOR tint to match
+    // the honey finish colour of the tread/riser/newel elements.
+    // ClampToEdgeWrapping stops the texture wrapping at UV boundaries — kills the visible "line at
+    // top of string" caused by texture repeat wrapping at V=1.
+    const stringTex = cloneTex(baseColorMap, 1, 1);
+    stringTex.wrapS = THREE.ClampToEdgeWrapping;
+    stringTex.wrapT = THREE.ClampToEdgeWrapping;
+    stringTex.needsUpdate = true;
+    const stringMaterial = new THREE.MeshPhysicalMaterial({
+      map: stringTex,
+      color: LACQUER_COLOR,
+      bumpMap: stringTex,
+      bumpScale: 0.0003,
+      roughness: 0.55,
+      metalness: 0.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
+    });
+    woodMaterials.push({ mat: stringMaterial, kind: 'physical' });
+
+    // rearStringMaterial — used for string PERIMETER (bottom pitched edge visible from behind).
+    // Reworked (Philip 2026-07-26 TAD iteration) to match HANDRAIL family (Standard class,
+    // roughness 0.30, no clearcoat) rather than the string Physical family. This satisfies
+    // "lower edges of the strings same color as handrail". Subtle emissive 0.15 lifts the
+    // pitched-down normal (which otherwise receives dark-brown hemi ground contribution).
+    const rearStringMaterial = new THREE.MeshStandardMaterial({
+      map: stringTex,
+      color: LACQUER_COLOR,
+      bumpMap: stringTex,
+      bumpScale: 0.0003,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
+      emissive: LACQUER_COLOR,
+      emissiveMap: stringTex,
+      emissiveIntensity: 0.05,
+    });
+    woodMaterials.push({ mat: rearStringMaterial, kind: 'standard' });
+
+    // rearStringOuterMaterial — REPURPOSED (Philip 2026-07-26 TAD iteration) for RIGHT INNER
+    // cap face lift only. Keeps MeshPhysicalMaterial + string family PBR (roughness 0.55, clearcoat
+    // 1.0) so it matches the LEFT INNER cap's visual character — this satisfies "right inner change
+    // to same color as left string looking from back view". Subtle emissive 0.15 compensates for
+    // the shadow-map occlusion the right inner receives from surrounding geometry. Applied via
+    // per-side materials array in the string mesh loop (only right string cap-Z group).
+    const rearStringOuterMaterial = new THREE.MeshPhysicalMaterial({
+      map: stringTex,
+      color: LACQUER_COLOR,
+      bumpMap: stringTex,
+      bumpScale: 0.0003,
+      roughness: 0.55,
+      metalness: 0.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.08,
+      side: THREE.DoubleSide,
+      polygonOffset: true,
+      polygonOffsetFactor: -1,
+      polygonOffsetUnits: -1,
+      // Philip 2026-07-26 TAD iteration: emissive reduced from 0.15 → 0.08 so the right inner cap
+      // lifts closer to the LEFT INNER's natural warmth without over-tinting from LACQUER_COLOR.
+      emissive: LACQUER_COLOR,
+      emissiveMap: stringTex,
+      emissiveIntensity: 0.08,
+    });
+    woodMaterials.push({ mat: rearStringOuterMaterial, kind: 'physical' });
+
+
+    // Balusters — same lacquered oak as treads/newels BUT texture rotated 90° so grain runs
+    // ALONG the baluster length (up-down), NEVER across. Traditional woodworking rule (Philip
+    // 2026-07-25): balusters are always cut with grain running up-down for structural strength
+    // and visual consistency.
+    const balusterTex = cloneTex(baseColorMap, 1, 1);
+    balusterTex.center.set(0.5, 0.5);
+    balusterTex.rotation = Math.PI / 2; // 90° — grain now runs along the baluster length axis
+    const balusterMaterial = new THREE.MeshStandardMaterial({
+      map: balusterTex,
+      color: LACQUER_COLOR,
+      bumpMap: balusterTex,
+      bumpScale: 0.0003,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+    });
+    woodMaterials.push({ mat: balusterMaterial, kind: 'standard' });
+
+    // Pine — softwood used for structural / hidden components (wedges + angle blocks in traditional
+    // UK housed-string construction). Lighter and yellower than the white oak feature timber, so
+    // it reads distinct from the oak parts.
+    const pineTex = cloneTex(baseColorMap, 1, 1);
+    // Pine look RESTORED (Philip 2026-07-26 TAD iteration — reverts the earlier oak-match change):
+    // angle blocks + wedges render as PALE PINE per traditional joinery convention. Original PBR
+    // values (color 0xe8d0a0 warm cream · roughness 0.7 matte · bumpScale 0.0001 subtle grain).
+    // Subtle emissive 0.15 lifts the pieces enough that they don't appear dark under the current
+    // lighting rig, without producing the 0.5 "glow" effect that was rejected earlier.
+    const pineMaterial = new THREE.MeshStandardMaterial({
+      map: pineTex,
+      // Philip 2026-07-26 TAD iteration: pine cream lightened one step from 0xe8d0a0 → 0xf0dcaa
+      // (each RGB channel +8) — subtle lightening per "little lighter" request, still pale pine
+      // character, not oak.
+      color: new THREE.Color(0xf0dcaa),
+      bumpMap: pineTex,
+      bumpScale: 0.0001,
+      roughness: 0.7,
+      metalness: 0.0,
+      emissive: LACQUER_COLOR,
+      emissiveMap: pineTex,
+      emissiveIntensity: 0.05,
+    });
+
+    // Newel: 90mm square × 1100mm tall. ONE texture instance — no visible join lines. Turned
+    // from a solid timber blank in real construction, so a continuous grain read is correct.
+    const newelTex = cloneTex(baseColorMap, 1, 1);
+    const newelMaterial = new THREE.MeshStandardMaterial({
+      map: newelTex,
+      color: LACQUER_COLOR,
+      bumpMap: newelTex,
+      bumpScale: 0.0001,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+    });
+    woodMaterials.push({ mat: newelMaterial, kind: 'standard' });
+
+    const treadGeometry = makeTreadGeometry();
+
+    // --- Build 12 treads stepping up the flight ---
+    // Nosing (bullnose) faces the approach direction (-X) — the person walking up sees the
+    // rounded front edge overhanging the riser below. Achieved by rotating each tread 180° on Y.
+    for (let i = 0; i < TREADS; i++) {
+      // Philip 2026-07-26 TAD iteration: tread underside gets subtle lift via rearTreadMaterial
+      // (emissive 0.15) so it renders slightly lighter than pure PBR would give. Top / bullnose /
+      // back / ends stay on treadMaterial unchanged. Uses the existing splitTreadPerimeterByUnderside
+      // geometry group: group 0 = treadMaterial, group 1 = rearTreadMaterial (underside triangles).
+      const tread = new THREE.Mesh(treadGeometry, [treadMaterial, rearTreadMaterial]);
+      tread.castShadow = true;
+      tread.receiveShadow = true;
+      // After rotateY(π): tread's back-mount ends up at tread.position.x, bullnose ends up at
+      // tread.position.x - TREAD_DEPTH. So tread.position.x = (i+1)*GOING puts the back mount
+      // against the next riser and the bullnose overhanging the riser below by NOSING mm.
+      tread.rotation.y = Math.PI;
+      tread.position.set((i + 1) * GOING, (i + 1) * RISE - TREAD_THICK, 0);
+      scene.add(tread);
+    }
+
+    // --- Build 13 risers (one behind each tread + the top one at landing edge) ---
+    // Philip's rule (2026-07-25): each riser (except bottom-most) EXTENDS DOWN by TREAD_THICK to
+    // COVER the back face of the tread below it. This makes only ONE visible edge where riser meets
+    // tread (at the tread underside line) instead of two edges with an exposed tread-back strip.
+    // Also shift riser back by 0.5mm to avoid z-fighting with the tread back face.
+    const screwSizes = { headR: 0.005, headThick: 0.002 };
+    const screwMaterial = new THREE.MeshStandardMaterial({
+      color: 0x505050, roughness: 0.35, metalness: 0.85,
+    });
+    const screwGeometry = new THREE.CylinderGeometry(screwSizes.headR, screwSizes.headR, screwSizes.headThick, 12);
+    screwGeometry.rotateZ(Math.PI / 2); // axis along X (perpendicular to riser back face)
+
+    for (let i = 0; i < RISES; i++) {
+      // extendDown = TREAD_THICK + 5mm so the riser bottom face sits 5mm BELOW the tread underside
+      // plane, not on it. Two coplanar horizontal opaque faces at the same Y caused z-fighting
+      // ("yellow lines across where the riser meets the tread underneath"). 5mm offset kills it.
+      const extendDown = (i > 0) ? (TREAD_THICK + 0.005) : 0;
+      const riserHeight = RISE + extendDown;
+      // Philip 2026-07-26 TAD iteration: riser back (+X face, BoxGeometry group 0) gets subtle lift
+      // via rearRiserMaterial (emissive 0.15) so it renders slightly lighter than pure PBR would
+      // give. Front (-X, group 1) and all other faces (groups 2-5) stay on riserMaterial unchanged.
+      // BoxGeometry material-group order: [+X, -X, +Y, -Y, +Z, -Z].
+      const riser = new THREE.Mesh(
+        makeBox(RISER_THICK, riserHeight, TREAD_WIDTH),
+        [rearRiserMaterial, riserMaterial, riserMaterial, riserMaterial, riserMaterial, riserMaterial]
+      );
+      riser.castShadow = true;
+      riser.receiveShadow = true;
+      // Philip's rule (2026-07-25): riser tongues UP INTO a groove in the tread underside (12mm deep).
+      // In real construction this prevents light from showing through the back joint.
+      // For preview: push riser front face 3mm INTO the tread body (approximates the tongue-and-groove
+      // seal without needing to CSG-cut the tread). Eliminates the yellow light line at the back.
+      const riserFrontX = i * GOING - 0.003;
+      const riserBottomY = i * RISE - extendDown;
+      riser.position.set(riserFrontX + RISER_THICK / 2, riserBottomY + riserHeight / 2, 0);
+      scene.add(riser);
+
+      // 3 screws per riser (for risers 1..12 that meet a tread below) — left, middle, right across
+      // the 900mm width. Screws go THROUGH the riser INTO the tread's back edge, holding the riser
+      // tight against the tread thickness. Head visible from BEHIND the staircase (+X viewpoint).
+      if (i > 0) {
+        const screwBackFaceX = i * GOING + RISER_THICK + screwSizes.headThick / 2; // just outside back face
+        const screwY = i * RISE - TREAD_THICK / 2;         // middle of tread thickness
+        const stringInterior = TREAD_WIDTH / 2 - STRING_TREAD_OVERLAP; // ±438mm for our 900mm tread
+        const screwZPositions = [
+          -stringInterior + 0.100,  // ~100mm from left string
+          0,                        // middle
+          +stringInterior - 0.100,  // ~100mm from right string
+        ];
+        for (const zPos of screwZPositions) {
+          const screw = new THREE.Mesh(screwGeometry, screwMaterial);
+          screw.castShadow = true;
+          screw.position.set(screwBackFaceX, screwY, zPos);
+          scene.add(screw);
+        }
+      }
+    }
+
+    // --- Build 2 housed strings as PARALLELOGRAMS with VERTICAL end cuts.
+    //     Philip's rule (2026-07-25): string top edge meets the FRONT face of each newel post.
+    //     Bottom newel front face at X=-45. Top newel front face at X=+2595 (facing -X toward flight).
+    //     String does NOT pass through top newel post — terminates AT its front face.
+    const pitchAngle = Math.atan(RISE / GOING); // 42.27°
+    const pitchCos = Math.cos(pitchAngle);
+    const pitchSin = Math.sin(pitchAngle);
+
+    // Top edge line: nosing line + 50mm perpendicular offset up.
+    // Nosing line passes through world (X=0, Y=RISE) with slope RISE/GOING.
+    // Top edge Y at any world X = (RISE + 50mm*pitchCos) + slope*(X + 50mm*pitchSin)
+    const topEdgeY = (X) => (RISE + STRING_NOSING_TOP_OFFSET * pitchCos)
+                          + (RISE / GOING) * (X + STRING_NOSING_TOP_OFFSET * pitchSin);
+
+    // Pull string ends 3mm INSIDE the newel front faces (not coincident with them) — otherwise
+    // the string end face and the newel front face share the exact same plane → z-fighting flash
+    // on the newel front face. Visually still reads as "string meets front of newel".
+    // Philip's rule (2026-07-25) — BOTH string ends MORTISE INTO the newel bodies (not just meet
+    // the front face). Bottom string end at bottom newel centre (45mm inside from front face).
+    // Top string end at top newel centre (45mm inside from front face) — same tenon depth as bottom.
+    const stringStartX = 0;                        // bottom newel centre X — 45mm mortise depth
+    const stringEndX   = OVERALL_RUN;              // top newel centre X — 45mm mortise depth
+    const stringTopEdgeStartY = topEdgeY(stringStartX);
+    const stringTopEdgeEndY   = topEdgeY(stringEndX);
+    const stringVerticalHeight = STRING_HEIGHT / pitchCos;  // vertical drop from top edge to bottom edge when end cut is vertical
+
+    // Build the parallelogram shape in world XY, then extrude along Z.
+    // CCW vertex order (viewed from +Z) — Three.js requirement for outer contour.
+    // Traversing TL → BL → BR → TR → close = CCW. The previous CW order produced INVERTED
+    // face normals on the front/back caps, causing the string exterior face to be backface-culled
+    // when viewed from the camera side (visible as "seeing through the staircase" on the right).
+    const stringShape = new THREE.Shape();
+    stringShape.moveTo(stringStartX, stringTopEdgeStartY);
+    stringShape.lineTo(stringStartX, stringTopEdgeStartY - stringVerticalHeight);
+    stringShape.lineTo(stringEndX,   stringTopEdgeEndY   - stringVerticalHeight);
+    stringShape.lineTo(stringEndX,   stringTopEdgeEndY);
+    stringShape.lineTo(stringStartX, stringTopEdgeStartY);
+
+    const stringGeometry = new THREE.ExtrudeGeometry(stringShape, {
+      depth: STRING_THICK,
+      bevelEnabled: false,
+      steps: 1,
+      curveSegments: 2,
+    });
+    stringGeometry.translate(0, 0, -STRING_THICK / 2);
+    stringGeometry.computeVertexNormals();
+
+    // Philip 2026-07-26 Phase 3 geometry split. Split the ExtrudeGeometry caps (group 0) into
+    // two sub-groups by local Z normal:
+    //   [0] cap+Z — the face at local Z=+STRING_THICK/2 (normal +Z)
+    //   [1] cap−Z — the face at local Z=−STRING_THICK/2 (normal −Z)
+    //   [2] perimeter — top + bottom + short ends (unchanged from ExtrudeGeometry group 1)
+    // Which cap is the OUTWARD-facing side depends on the string's world position: for the
+    // right string (side=+1), cap+Z faces outward; for the left string (side=−1), cap−Z faces
+    // outward. Each string mesh gets its own materials array with the correct outward assignment.
+    splitStringCapsByZ(stringGeometry);
+
+    // Custom UV fix: project each front/back-face vertex onto the pitch axis (U) and perpendicular
+    // axis (V), normalized to [0,1]. This gives ONE texture instance across the string with grain
+    // running along the pitch direction — no rotation needed, no wrap-around lines.
+    {
+      const pitchLenAlongTopEdge = Math.hypot(stringEndX - stringStartX, stringTopEdgeEndY - stringTopEdgeStartY);
+      const originX = stringStartX;
+      const originY = stringTopEdgeStartY - stringVerticalHeight;
+      const pos = stringGeometry.attributes.position;
+      const uv = stringGeometry.attributes.uv;
+      const normal = stringGeometry.attributes.normal;
+      for (let i = 0; i < pos.count; i++) {
+        const nx = normal.getX(i);
+        const ny = normal.getY(i);
+        const nz = normal.getZ(i);
+        if (Math.abs(nz) > 0.7) {
+          // CAP faces (wide flat sides of the string, normal ±Z): pitch-projected UVs.
+          // U along the pitch, V perpendicular-to-pitch.
+          const dx = pos.getX(i) - originX;
+          const dy = pos.getY(i) - originY;
+          uv.array[i * 2]     = (dx * pitchCos + dy * pitchSin) / pitchLenAlongTopEdge;
+          uv.array[i * 2 + 1] = (-dx * pitchSin + dy * pitchCos) / STRING_HEIGHT;
+        } else if (Math.abs(ny) > 0.3) {
+          // PITCHED PERIMETER faces (top edge with normal ≈ (−sin θ, +cos θ, 0), bottom edge
+          // with normal ≈ (+sin θ, −cos θ, 0)): same U-projection as caps for consistent grain
+          // direction along the pitch, V along the extrusion depth (STRING_THICK) so texel
+          // density on the 32 mm edge is correct. Previously these vertices retained default
+          // ExtrudeGeometry perimeter UVs which stretched the texture across the full pitch
+          // length on both axes, causing the bottom edge to read as washed / brown.
+          const dx = pos.getX(i) - originX;
+          const dy = pos.getY(i) - originY;
+          const z  = pos.getZ(i);
+          uv.array[i * 2]     = (dx * pitchCos + dy * pitchSin) / pitchLenAlongTopEdge;
+          uv.array[i * 2 + 1] = (z + STRING_THICK / 2) / STRING_THICK;
+        }
+        // Short end faces (normal ±X with no Y component) — left on default ExtrudeGeometry
+        // UVs. These faces are hidden inside the newel post and not visible from any camera angle.
+      }
+      uv.needsUpdate = true;
+    }
+
+    const stringZOffset = TREAD_WIDTH / 2 + STRING_THICK / 2 - STRING_TREAD_OVERLAP;
+    for (const side of [-1, 1]) {
+      // Philip 2026-07-26 TAD iteration — per-side materials array on string mesh:
+      //   Group 0 = cap+Z (local): on LEFT string this is INNER (already OK, keep stringMaterial).
+      //             On RIGHT string this is OUTER (already OK, keep stringMaterial).
+      //   Group 1 = cap-Z (local): on LEFT string this is OUTER (already OK, keep stringMaterial).
+      //             On RIGHT string this is INNER (currently darker — lift with rearStringOuterMaterial
+      //             subtle emissive 0.15 to match LEFT INNER's warmer appearance).
+      //   Group 2 = perimeter (top + bottom + short ends): both sides get rearStringMaterial
+      //             (repurposed as Standard-family with roughness 0.30, no clearcoat, emissive 0.15)
+      //             so the bottom pitched edges read as the same lacquered finish family as the
+      //             HANDRAIL.
+      // Philip 2026-07-26 TAD iteration — RIGHT INNER cap now uses treadMaterial DIRECTLY per
+      // direct instruction "when I am standing at back of staircase looking direct at back the
+      // right inner string inside need change the color to same as the handrail color". treadMaterial
+      // IS the handrail material (line 1389 handrail mesh uses treadMaterial). Direct assignment
+      // guarantees exact colour + finish parity — no emissive lift, no different texture map, no
+      // clearcoat difference. Left inner keeps stringMaterial character.
+      // Philip 2026-07-26 TAD iteration — face-mapping correction:
+      //   Group 0 (capPosZ_mat) = local +Z cap. On LEFT string (side=-1, positioned at Z<0) this
+      //   local +Z face points TOWARDS center → LEFT INNER. On RIGHT string this local +Z face
+      //   points AWAY from center → RIGHT OUTER.
+      //   Group 1 (capNegZ_mat) = local -Z cap. On LEFT string = LEFT OUTER, on RIGHT string = RIGHT INNER.
+      //   Philip's "right inner string from back view" resolves to LEFT INNER in mesh coordinates
+      //   (back-view flips the observer's left/right relative to mesh +X axis). Applying treadMaterial
+      //   to LEFT INNER = `side < 0` and group 0 (capPosZ_mat).
+      // Philip 2026-07-26 TAD iteration — SYMMETRIC INNER = HANDRAIL. Both inner cap faces now
+      // use treadMaterial (the handrail material) exactly. Both outer cap faces use stringMaterial.
+      // Group 0 (capPosZ_mat) resolves to LEFT INNER on side=-1, RIGHT OUTER on side=+1.
+      // Group 1 (capNegZ_mat) resolves to LEFT OUTER on side=-1, RIGHT INNER on side=+1.
+      // Therefore: capPosZ_mat = treadMaterial when side<0 (LEFT INNER), else stringMaterial (RIGHT OUTER).
+      //            capNegZ_mat = treadMaterial when side>0 (RIGHT INNER), else stringMaterial (LEFT OUTER).
+      // Philip 2026-07-26 — FULL REVERT to symmetric stringMaterial on ALL four cap faces per
+      // direct instruction "mirror outside same for inside — it was ok on front before". Both
+      // inner and outer cap faces on both strings use stringMaterial (the original character
+      // Philip confirmed looked correct from FRONT view). Trade-off: from BACK view the inner
+      // faces will read darker (PBR-correct shadow response) — accepted per Philip's decision.
+      // Perimeter (group 2) remains rearStringMaterial for handrail-family bottom edges.
+      const capPosZ_mat = stringMaterial;
+      const capNegZ_mat = stringMaterial;
+      const string = new THREE.Mesh(stringGeometry, [capPosZ_mat, capNegZ_mat, rearStringMaterial]);
+      string.castShadow = true;
+      string.receiveShadow = true;
+      string.position.set(0, 0, side * stringZOffset);
+      scene.add(string);
+    }
+
+    // --- Angle blocks (glue blocks) — Philip's rule (2026-07-25): TRIANGULAR shape (not square).
+    //     Right-triangle cross-section, legs 60mm each. One leg glued to tread underside, one leg
+    //     glued to riser back, hypotenuse visible from inside step body.
+    const blockShape = new THREE.Shape();
+    blockShape.moveTo(0, 0);                              // right-angle corner (at tread-riser interior corner)
+    blockShape.lineTo(0, -ANGLE_BLOCK_SIZE);              // vertical leg (glued to riser back)
+    blockShape.lineTo(ANGLE_BLOCK_SIZE, 0);               // hypotenuse
+    blockShape.lineTo(0, 0);                              // close (horizontal leg back to origin)
+    const blockGeometry = new THREE.ExtrudeGeometry(blockShape, {
+      depth: ANGLE_BLOCK_LENGTH,
+      bevelEnabled: false,
+      steps: 1,
+    });
+    blockGeometry.translate(0, 0, -ANGLE_BLOCK_LENGTH / 2);
+    blockGeometry.computeVertexNormals();
+    // Angle blocks are PINE (softwood) — traditional UK construction uses pine for structural/hidden components.
+    const blockMaterial = pineMaterial;
+
+    for (let i = 0; i < TREADS; i++) {
+      // Interior corner: tread i's underside meets riser i's back face.
+      // Corner point (world): X = i*GOING + RISER_THICK, Y = (i+1)*RISE - TREAD_THICK
+      // Block occupies 60×60mm cross-section extending down and back from that corner.
+      // With triangular shape, the mesh's LOCAL (0,0) IS the right-angle corner of the block.
+      // Position mesh AT the corner directly — no offset needed.
+      const cornerX = i * GOING + RISER_THICK;
+      const cornerY = (i + 1) * RISE - TREAD_THICK;
+      const blockCenterX = cornerX;
+      const blockCenterY = cornerY;
+
+      // Z positions along tread width: evenly space blocks between the two string interior faces.
+      // For 2 blocks: near each string. For 3: near each end + one in middle.
+      const stringInterior = TREAD_WIDTH / 2 - STRING_TREAD_OVERLAP;   // ±438mm for 900mm width with 12mm overlap
+      const usableSpan = 2 * stringInterior - 2 * ANGLE_BLOCK_STRING_INSET - ANGLE_BLOCK_LENGTH;
+
+      const zPositions = [];
+      if (ANGLE_BLOCK_COUNT === 2) {
+        const z1 = -stringInterior + ANGLE_BLOCK_STRING_INSET + ANGLE_BLOCK_LENGTH / 2;
+        const z2 = +stringInterior - ANGLE_BLOCK_STRING_INSET - ANGLE_BLOCK_LENGTH / 2;
+        zPositions.push(z1, z2);
+      } else {
+        const z1 = -stringInterior + ANGLE_BLOCK_STRING_INSET + ANGLE_BLOCK_LENGTH / 2;
+        const z2 = 0;
+        const z3 = +stringInterior - ANGLE_BLOCK_STRING_INSET - ANGLE_BLOCK_LENGTH / 2;
+        zPositions.push(z1, z2, z3);
+      }
+
+      for (const z of zPositions) {
+        const block = new THREE.Mesh(blockGeometry, blockMaterial);
+        block.castShadow = true;
+        block.receiveShadow = false;  // Philip 2026-07-26 Option A: back-facing surfaces skip shadow reception
+        block.position.set(blockCenterX, blockCenterY, z);
+        scene.add(block);
+      }
+    }
+
+    // --- WEDGES (pine) — L-SHAPE PAIR at each string end per Philip's reference image 2026-07-25.
+    //     Every step + every riser has a wedge on left + right side.
+    //     TREAD wedge: horizontal, TIGHT against tread underside, in the string housing.
+    //     RISER wedge: vertical, TIGHT against riser back face, in the string housing.
+    //     Dimensions: 10mm at thin end (point), 16mm at thick end, ~200mm long, 28mm wide (inside string).
+    const WEDGE_LENGTH = 0.200;
+    const WEDGE_THIN = 0.010;   // 10mm at point
+    const WEDGE_THICK = 0.016;  // 16mm at thick end
+    const WEDGE_WIDTH = 0.028;  // 28mm — inside string thickness (32mm)
+
+    // Tread wedge cross-section (side view) — horizontal wedge with FLAT top (tight against tread underside)
+    // and SLOPED bottom (thick end at back near riser, thin end away). Thin end at local X=0, thick end at local X=WEDGE_LENGTH.
+    const treadWedgeShape = new THREE.Shape();
+    treadWedgeShape.moveTo(0, WEDGE_THICK - WEDGE_THIN);         // bottom-left (thin end bottom, 6mm above baseline)
+    treadWedgeShape.lineTo(0, WEDGE_THICK);                       // top-left (thin end top)
+    treadWedgeShape.lineTo(WEDGE_LENGTH, WEDGE_THICK);            // top-right (thick end top — flat top of wedge)
+    treadWedgeShape.lineTo(WEDGE_LENGTH, 0);                      // bottom-right (thick end bottom)
+    treadWedgeShape.lineTo(0, WEDGE_THICK - WEDGE_THIN);          // close
+    const treadWedgeGeometry = new THREE.ExtrudeGeometry(treadWedgeShape, {
+      depth: WEDGE_WIDTH, bevelEnabled: false, steps: 1,
+    });
+    treadWedgeGeometry.translate(0, 0, -WEDGE_WIDTH / 2);
+    treadWedgeGeometry.computeVertexNormals();
+
+    // Riser wedge — same cross-section, will be rotated 90° so length axis is vertical.
+    const riserWedgeGeometry = treadWedgeGeometry.clone();
+
+    // Wedge Z position — inside the string housing at each end.
+    const wedgeZOffset = TREAD_WIDTH / 2 - STRING_TREAD_OVERLAP / 2;
+
+    // TREAD wedges — 24 total (12 treads × 2 sides). Top edge tight against tread underside.
+    // Thick end at back of tread (near riser), thin end pointing toward tread nose.
+    for (let i = 0; i < TREADS; i++) {
+      const treadBackX = (i + 1) * GOING;
+      const treadUndersideY = (i + 1) * RISE - TREAD_THICK;
+      for (const side of [-1, 1]) {
+        const wedge = new THREE.Mesh(treadWedgeGeometry, pineMaterial);
+        wedge.castShadow = true;
+        wedge.receiveShadow = false;  // Option A: back-facing wedge, no shadow reception
+        // Position local (0,WEDGE_THICK) at world (treadBackX - WEDGE_LENGTH, treadUndersideY, ±wedgeZ).
+        // So mesh.position.y = treadUndersideY - WEDGE_THICK.
+        wedge.position.set(treadBackX - WEDGE_LENGTH, treadUndersideY - WEDGE_THICK, side * wedgeZOffset);
+        scene.add(wedge);
+      }
+    }
+
+    // RISER wedges — 26 total (13 risers × 2 sides). Front face tight against riser back.
+    // Rotate the wedge 90° so length axis is vertical. Thick end at TOP (near tread joint), thin end at bottom.
+    for (let i = 0; i < RISES; i++) {
+      const riserBackX = i * GOING + RISER_THICK;
+      const riserTopY = (i + 1) * RISE;
+      for (const side of [-1, 1]) {
+        const wedge = new THREE.Mesh(riserWedgeGeometry, pineMaterial);
+        wedge.castShadow = true;
+        wedge.receiveShadow = false;  // Option A: back-facing wedge, no shadow reception
+        // Rotate 90° CCW: local +X becomes world -Y, local +Y becomes world +X.
+        // So local (WEDGE_LENGTH, WEDGE_THICK) - the thick-end top corner - becomes world (WEDGE_THICK, -WEDGE_LENGTH).
+        // We want thick end AT THE TOP (near tread), so we position with a specific offset.
+        wedge.rotation.z = -Math.PI / 2; // clockwise 90° when viewed from +Z, so local +X → world +Y, local +Y → world -X
+        // After rotation.z = -π/2: local (x, y) → world (y, -x).
+        // So local (0, WEDGE_THICK) (thin end top) → world (WEDGE_THICK, 0)  [thin end at BOTTOM]
+        //    local (WEDGE_LENGTH, WEDGE_THICK) (thick end top) → world (WEDGE_THICK, -WEDGE_LENGTH)  [thick end DOWN by WEDGE_LENGTH]
+        // Hmm this puts thick end at BOTTOM (world -Y direction from origin), thin end at TOP.
+        // To put thick end at TOP: use rotation.z = +π/2 instead.
+        wedge.rotation.z = Math.PI / 2;
+        // After rotation.z = +π/2: local (x, y) → world (-y, x).
+        // Local (0, WEDGE_THICK) → world (-WEDGE_THICK, 0) [thin end at bottom, X shifted]
+        // Local (WEDGE_LENGTH, WEDGE_THICK) → world (-WEDGE_THICK, WEDGE_LENGTH) [thick end at top]
+        // Local (WEDGE_LENGTH, 0) → world (0, WEDGE_LENGTH) [thick end bottom corner at top-right]
+        // Local (0, WEDGE_THICK - WEDGE_THIN) → world (-(WEDGE_THICK - WEDGE_THIN), 0) [thin end bottom]
+
+        // We want the FRONT face of the wedge (originally the top face at local Y=WEDGE_THICK, now at world X=-WEDGE_THICK)
+        // to be tight against the riser back face at world X = riserBackX.
+        // So position.x = riserBackX + WEDGE_THICK.
+        // And we want thick end (now at world Y=WEDGE_LENGTH from origin) to reach up to riserTopY.
+        // So position.y = riserTopY - WEDGE_LENGTH.
+        wedge.position.set(riserBackX + WEDGE_THICK, riserTopY - WEDGE_LENGTH, side * wedgeZOffset);
+        scene.add(wedge);
+      }
+    }
+
+    // --- Newel posts (4 total: 2 bottom + 2 top, one on each side of flight) ---
+    // Z position: aligned with string centerline (Z = ±stringZOffset) so string thickness is
+    // centered on newel — newel extends (NEWEL_SIZE - STRING_THICK)/2 = 29mm on each side of string.
+    const newelGeometry = new THREE.BoxGeometry(NEWEL_SIZE, NEWEL_HEIGHT_BOTTOM, NEWEL_SIZE);
+    // Top newel geometry is built later inside the top-newels block (dynamic height per Philip's rule).
+    const newelZ = TREAD_WIDTH / 2 + STRING_THICK / 2 - STRING_TREAD_OVERLAP; // same as string Z
+
+    // --- Newel cap factory — FLAT OAK CAP, plain BoxGeometry (guaranteed to work) ---
+    // 114mm × 30mm × 114mm square. Rounded edges are a follow-up refinement; ExtrudeGeometry+bevel
+    // versions have caused loader callback failures that killed the stairlights setup, so this
+    // simplified version is the safe default. Cap centre at mesh origin.
+    function makeNewelCap() {
+      const geom = new THREE.BoxGeometry(0.114, 0.030, 0.114);
+      const cap = new THREE.Mesh(geom, newelMaterial);
+      cap.castShadow = true;
+      cap.receiveShadow = true;
+      return cap;
+    }
+
+    // Bottom newels — at first-riser front, base on floor. Both sides. WITH CAP ON TOP.
+    for (const side of [-1, 1]) {
+      const bottomNewel = new THREE.Mesh(newelGeometry, newelMaterial);
+      bottomNewel.castShadow = true;
+      bottomNewel.receiveShadow = true;
+      bottomNewel.position.set(0, NEWEL_HEIGHT_BOTTOM / 2, side * newelZ);
+      scene.add(bottomNewel);
+      // Flat cap on bottom newel — 5mm groove into cap underside; cap centre = newel top + 10mm
+      // (cap outer bottom at newel_top - 5mm; cap wraps top 5mm of newel).
+      const cap = makeNewelCap();
+      cap.position.set(0, NEWEL_HEIGHT_BOTTOM + 0.010, side * newelZ);
+      scene.add(cap);
+    }
+
+    // Top newels — Philip's rule (2026-07-25): top newel base is 100mm below string BOTTOM edge
+    // at that X. Top newel top is LONGER — extends well above the string top edge (1300mm total
+    // from the string bottom edge upward = full balustrade-height post).
+    const stringBottomEdgeAtTopNewelX = topEdgeY(OVERALL_RUN) - stringVerticalHeight;
+    const topNewelBaseY = stringBottomEdgeAtTopNewelX - NEWEL_TOP_BELOW_STRING_BOTTOMEDGE;
+    const topNewelTopY = stringBottomEdgeAtTopNewelX + 1.300; // 1300mm above string bottom edge — LONGER per Philip
+    const topNewelActualHeight = topNewelTopY - topNewelBaseY;
+    const topNewelDynamicGeometry = new THREE.BoxGeometry(NEWEL_SIZE, topNewelActualHeight, NEWEL_SIZE);
+
+    for (const side of [-1, 1]) {
+      const topNewel = new THREE.Mesh(topNewelDynamicGeometry, newelMaterial);
+      topNewel.castShadow = true;
+      topNewel.receiveShadow = true;
+      topNewel.position.set(OVERALL_RUN, topNewelBaseY + topNewelActualHeight / 2, side * newelZ);
+      scene.add(topNewel);
+      // Flat cap on TOP of top newel — 5mm groove; cap centre = topNewelTopY + 10mm.
+      const capTop = makeNewelCap();
+      capTop.position.set(OVERALL_RUN, topNewelTopY + 0.010, side * newelZ);
+      scene.add(capTop);
+      // Flat cap on BOTTOM of top newel — UPSIDE DOWN; cap centre = topNewelBaseY - 10mm
+      // (cap wraps bottom 5mm of newel; cap outer bottom at topNewelBaseY - 25mm).
+      const capBottom = makeNewelCap();
+      capBottom.position.set(OVERALL_RUN, topNewelBaseY - 0.010, side * newelZ);
+      capBottom.rotation.x = Math.PI;
+      scene.add(capBottom);
+    }
+
+    // --- Top step — 100mm bullnose piece sitting at landing level, at the front edge of landing.
+    // Same tread geometry function (bullnose profile extruded across width) with reduced depth.
+    function makeTopStepGeometry() {
+      const profile = new THREE.Shape();
+      const r = TOP_STEP_NOSING;
+      profile.moveTo(0, 0);
+      profile.lineTo(TOP_STEP_DEPTH - r, 0);
+      profile.absarc(TOP_STEP_DEPTH - r, r, r, -Math.PI / 2, Math.PI / 2, false);
+      profile.lineTo(0, TREAD_THICK);
+      profile.lineTo(0, 0);
+      const geometry = new THREE.ExtrudeGeometry(profile, {
+        depth: TREAD_WIDTH, bevelEnabled: false, steps: 1, curveSegments: 16,
+      });
+      geometry.translate(0, 0, -TREAD_WIDTH / 2);
+      geometry.computeVertexNormals();
+      fixBoxUVs(geometry, TOP_STEP_DEPTH, TREAD_THICK, TREAD_WIDTH);
+      return geometry;
+    }
+    const topStep = new THREE.Mesh(makeTopStepGeometry(), treadMaterial);
+    topStep.castShadow = true;
+    topStep.receiveShadow = true;
+    topStep.rotation.y = Math.PI;
+    topStep.position.set(OVERALL_RUN + TOP_STEP_DEPTH, OVERALL_RISE - TREAD_THICK + 0.0005, 0);
+    scene.add(topStep);
+
+    // --- Baserail / shoe rail (Philip's rule 2026-07-25) ---
+    // White oak, varnished. Both sides. Sits ON TOP of the string top edge, mortising into both
+    // newel bodies same as the string does. Built as PARALLELOGRAM WITH VERTICAL END CUTS (same
+    // technique as the string) so its end corners are contained inside the newel bodies — no
+    // corners sticking out past the newel front faces.
+    const BASERAIL_WIDTH  = 0.055;
+    const BASERAIL_HEIGHT = 0.030;
+    const BASERAIL_VERTICAL_HEIGHT = BASERAIL_HEIGHT / pitchCos; // vertical measure when cut vertically
+
+    // Match the string endpoints — same X range, so baserail mortises into newels alongside string.
+    const brStartX = stringStartX;    // 0 — bottom newel centre
+    const brEndX   = stringEndX;      // OVERALL_RUN — top newel centre
+    const brBottomStartY = topEdgeY(brStartX);
+    const brBottomEndY   = topEdgeY(brEndX);
+
+    const baserailShape = new THREE.Shape();
+    baserailShape.moveTo(brStartX, brBottomStartY);
+    baserailShape.lineTo(brEndX,   brBottomEndY);
+    baserailShape.lineTo(brEndX,   brBottomEndY   + BASERAIL_VERTICAL_HEIGHT);
+    baserailShape.lineTo(brStartX, brBottomStartY + BASERAIL_VERTICAL_HEIGHT);
+    baserailShape.lineTo(brStartX, brBottomStartY);
+
+    const baserailGeometry = new THREE.ExtrudeGeometry(baserailShape, {
+      depth: BASERAIL_WIDTH,
+      bevelEnabled: false,
+      steps: 1,
+    });
+    baserailGeometry.translate(0, 0, -BASERAIL_WIDTH / 2);
+    baserailGeometry.computeVertexNormals();
+
+    for (const side of [-1, 1]) {
+      const baserail = new THREE.Mesh(baserailGeometry, treadMaterial);
+      baserail.castShadow = true;
+      baserail.receiveShadow = true;
+      baserail.position.set(0, 0, side * newelZ);
+      scene.add(baserail);
+    }
+
+    // --- Balusters (Philip's rule 2026-07-25) ---
+    // 41mm × 41mm full-chamfer oak balusters, 2 per step (rule of thumb).
+    // Slot into groove on top of baserail + groove on underside of handrail.
+    // Reference: `ChatGPT Image Jul 25, 2026, 10_27_58 PM.png` — chamfered oak baluster.
+    // Placement: X = 55mm, 165mm, 275mm... (every 110mm = GOING/2) — quarter and three-quarter along each tread.
+    const BALUSTER_SIZE   = 0.041;
+    const BALUSTER_SPACING_X = GOING / 2;   // 110mm — 2 balusters per tread (Doc K: 100mm max sphere gap, our 69mm gap passes)
+    // First/last baluster measured from NEWEL OUTER FACE (not newel centre). Prior 0.055 measured
+    // from the newel centre and buried 10.5mm of the end balusters INSIDE the newel body.
+    // Correct: half a spacing past the newel outer face → 45mm (newel half-width) + 55mm = 100mm.
+    const BALUSTER_START_X   = NEWEL_SIZE / 2 + BALUSTER_SPACING_X / 2;              // 100mm past bottom newel centre → 34.5mm clear of newel outer face
+    const BALUSTER_END_X     = OVERALL_RUN - NEWEL_SIZE / 2 - BALUSTER_SPACING_X / 2; // symmetric at top
+    // TOP of handrail sits 75mm below the top of the FIRST (BOTTOM) NEWEL POST — measured from
+    // the NEWEL POST TOP (the wood), NOT the top of the cap. Same VERTICAL offset from string top
+    // edge maintained all the way along the flight. Both sides.
+    const HANDRAIL_WIDTH  = 0.065;
+    const HANDRAIL_HEIGHT = 0.055;
+    const HANDRAIL_BELOW_BOTTOM_NEWEL_TOP = 0.075;
+
+    // Anchor point: at bottom newel front face X (=0), handrail top = bottom newel top Y - 75mm.
+    const stringTopEdgeAtBottomNewelXvalue = topEdgeY(0);
+    const handrailTopAtBottomNewelX = NEWEL_HEIGHT_BOTTOM - HANDRAIL_BELOW_BOTTOM_NEWEL_TOP;
+    const handrailVerticalOffsetAboveString = handrailTopAtBottomNewelX - stringTopEdgeAtBottomNewelXvalue;
+
+    // Handrail top Y at any X = string_top_edge_Y(X) + handrailVerticalOffsetAboveString
+    // Handrail CENTER Y at any X = handrail top Y - HANDRAIL_HEIGHT/2 (approx)
+    const railStartTopY = topEdgeY(0) + handrailVerticalOffsetAboveString;
+    const railEndTopY   = topEdgeY(OVERALL_RUN) + handrailVerticalOffsetAboveString;
+    const railStartCenterY = railStartTopY - HANDRAIL_HEIGHT / 2;
+    const railEndCenterY   = railEndTopY - HANDRAIL_HEIGHT / 2;
+    const railLength = Math.hypot(OVERALL_RUN, railEndCenterY - railStartCenterY);
+    const railMidX = OVERALL_RUN / 2;
+    const railMidY = (railStartCenterY + railEndCenterY) / 2;
+
+    const handrailGeometry = new THREE.BoxGeometry(HANDRAIL_HEIGHT, railLength, HANDRAIL_WIDTH);
+    for (const side of [-1, 1]) {
+      const handrail = new THREE.Mesh(handrailGeometry, treadMaterial);
+      handrail.castShadow = true;
+      handrail.receiveShadow = true;
+      handrail.position.set(railMidX, railMidY, side * newelZ);
+      // Rotate: local +Y (length) → pitch direction (cos, sin, 0)
+      // Direction: from bottom end to top end of handrail
+      const railDirection = new THREE.Vector3(OVERALL_RUN, railEndCenterY - railStartCenterY, 0).normalize();
+      handrail.quaternion.setFromUnitVectors(
+        new THREE.Vector3(0, 1, 0),
+        railDirection
+      );
+      scene.add(handrail);
+    }
+
+    // --- LED STRIP LIGHTS — grooved into the tread underside at the front (bullnose) edge.
+    //     Emit warm white light down onto the riser below. Toggled via UI button — turning
+    //     Stairlights ON dims the scene lights so the LEDs become the primary illumination.
+    // Per Philip 2026-07-26: cut a groove 3mm deep × 7mm wide into the bullnose underside and
+    // recess the LED strip into it. Groove sits within the NOSING overhang zone (currently 20mm
+    // in this model; Philip's spec calls out 25mm — dimension discrepancy flagged separately).
+    const LED_STRIP_LENGTH = 0.800;   // 800mm — across most of the tread width
+    const LED_STRIP_HEIGHT = 0.003;   // 3mm — matches groove depth
+    const LED_STRIP_DEPTH  = 0.007;   // 7mm — matches groove width (front-to-back)
+    const ledStripGeometry = new THREE.BoxGeometry(LED_STRIP_DEPTH, LED_STRIP_HEIGHT, LED_STRIP_LENGTH);
+    // Single shared material so toggling emissiveIntensity affects all strips at once.
+    const ledStripMaterial = new THREE.MeshStandardMaterial({
+      color: 0x1a1a1a,
+      emissive: 0xffdd99,
+      emissiveIntensity: 0,
+      roughness: 0.4,
+      metalness: 0.1,
+      side: THREE.DoubleSide,   // must render both sides so bottom face (facing DOWN) isn't culled
+    });
+
+    const ledStrips = [];
+    const stairStepLights = [];   // SpotLights aimed downward — subtle wash on tread below
+    const stairRiserLights = [];  // SpotLights aimed at riser — even wash on riser
+    const nLeds = TREADS + 1;
+    const RISER_LIT_HEIGHT = RISE - TREAD_THICK;
+    for (let i = 0; i < nLeds; i++) {
+      const bullnoseX = (i < TREADS) ? ((i + 1) * GOING - TREAD_DEPTH) : OVERALL_RUN;
+      const ledX = bullnoseX + NOSING / 2;
+      const undersideY = (i < TREADS) ? ((i + 1) * RISE - TREAD_THICK) : (OVERALL_RISE - TREAD_THICK);
+      const ledY = undersideY + LED_STRIP_HEIGHT / 2 - 0.0005;
+      const strip = new THREE.Mesh(ledStripGeometry, ledStripMaterial);
+      strip.position.set(ledX, ledY, 0);
+      scene.add(strip);
+      ledStrips.push(strip);
+
+      // Two SpotLights per LED — SpotLight is well-supported and proven, unlike RectAreaLight
+      // which was causing risers to go dark. Both narrow cones (soft penumbra) so no back-of-
+      // flight spill.
+      // STEP LIGHT — narrow cone straight down. Illuminates the tread below.
+      const stepSpot = new THREE.SpotLight(0xffdd99, 0, 1.5, Math.PI * 0.30, 0.7, 1.2);
+      stepSpot.position.set(ledX, undersideY - 0.001, 0);
+      stepSpot.target.position.set(ledX, undersideY - 0.4, 0); // straight down 400mm
+      scene.add(stepSpot);
+      scene.add(stepSpot.target);
+      stairStepLights.push(stepSpot);
+
+      // RISER LIGHT — narrow cone aimed at the centre of the riser below. Only for LEDs that
+      // have a riser below (all except the top step).
+      if (i < TREADS) {
+        const riserCenterY = i * RISE + RISER_LIT_HEIGHT / 2;
+        const riserSpot = new THREE.SpotLight(0xffdd99, 0, 1.0, Math.PI * 0.35, 0.8, 1.2);
+        riserSpot.position.set(ledX, undersideY - 0.001, 0);
+        riserSpot.target.position.set(bullnoseX + NOSING + 0.02, riserCenterY, 0); // riser face centre
+        scene.add(riserSpot);
+        scene.add(riserSpot.target);
+        stairRiserLights.push(riserSpot);
+      }
+    }
+
+    // Store references for the toggle button (defined outside the loader callback).
+    window.__nexStairlights = {
+      material: ledStripMaterial,
+      stepLights: stairStepLights,
+      riserLights: stairRiserLights,
+      // Store originals so we can restore when lights turn OFF
+      originals: {
+        ambient: 0.25,
+        hemi: 0.35,
+        key: 1.4,
+        fill: 0.35,
+        rim: 0.5,
+      },
+      sceneLights: { ambient: ambientLight, hemi: hemiLight, key: keyLight, fill: fillLight, rim: rimLight },
+    };
+
+    // --- Place BALUSTERS between baserail and handrail on both sides ---
+    // Philip's rule (2026-07-25): each baluster fits 10mm INTO the baserail groove (bottom) and
+    // 10mm INTO the handrail groove (top). Cut to pitch angle at both ends — BUT since both ends
+    // are BURIED INSIDE the opaque rail bodies, the pitch-angle cut is invisible from any view.
+    // So a square-cut box baluster works fine as long as we extend it 10mm at each end.
+    // Per Philip 2026-07-25 (revisited): balusters cut to pitch angle at top/bottom + 10mm LONGER at
+    // each end so they tenon INTO the rail grooves and no corners are visible. Because my box balusters
+    // have HORIZONTAL cuts (not pitch-angled), the geometry needs MORE inset — 20mm hides all corners
+    // safely (a box-tread with 10mm inset leaves front-top and front-bottom corners peeking outside
+    // the rail bodies because the rail bottoms are pitched, not horizontal).
+    const BALUSTER_RAIL_INSET = 0.020;
+    const balusterVisibleHeight = handrailVerticalOffsetAboveString - HANDRAIL_HEIGHT - BASERAIL_VERTICAL_HEIGHT;
+    const balusterHeight = balusterVisibleHeight + 2 * BALUSTER_RAIL_INSET;
+
+    // Chamfered cross-section (Philip 2026-07-25) — full-chamfer baluster has small 45° chamfer on
+    // all 4 long corners. Build the cross-section as a Shape (octagonal outline) and extrude along
+    // the baluster length. Cross-section built in XZ plane (X = baluster width, Z = baluster depth),
+    // extrusion along Y = baluster length.
+    const BALUSTER_CHAMFER = 0.004; // 4mm chamfer on each corner
+    const s = BALUSTER_SIZE;        // 41mm
+    const c = BALUSTER_CHAMFER;
+    const balusterShape = new THREE.Shape();
+    balusterShape.moveTo(-s/2 + c, -s/2);
+    balusterShape.lineTo( s/2 - c, -s/2);
+    balusterShape.lineTo( s/2,     -s/2 + c);
+    balusterShape.lineTo( s/2,      s/2 - c);
+    balusterShape.lineTo( s/2 - c,  s/2);
+    balusterShape.lineTo(-s/2 + c,  s/2);
+    balusterShape.lineTo(-s/2,      s/2 - c);
+    balusterShape.lineTo(-s/2,     -s/2 + c);
+    balusterShape.lineTo(-s/2 + c, -s/2);
+    const balusterGeometry = new THREE.ExtrudeGeometry(balusterShape, {
+      depth: balusterHeight,
+      bevelEnabled: false,
+      steps: 1,
+      curveSegments: 2,
+    });
+    // Extrusion is along +Z by default. Rotate so length axis is along +Y (world vertical).
+    balusterGeometry.rotateX(-Math.PI / 2);
+    // Centre on Y so mesh.position.y sets the vertical CENTRE of the baluster (matches how
+    // BoxGeometry works — position = centre, geometry spans -h/2 to +h/2 around it).
+    balusterGeometry.translate(0, -balusterHeight / 2, 0);
+    balusterGeometry.computeVertexNormals();
+
+    // White-sprayed baluster alternate material (Philip 2026-07-26). 41×41×900mm.
+    // White variant is STOP-CHAMFERED (square ends + chamfered middle).
+    const balusterWhiteMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf5f2ec,
+      roughness: 0.45,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+    });
+    // Cream-sprayed baluster (Philip 2026-07-26). 41×41×900mm. Fully chamfered profile (same as oak).
+    // Underneath: pine (typical) or hardwood. Sprayed quality cream finish.
+    const balusterCreamMaterial = new THREE.MeshStandardMaterial({
+      color: 0xf0e2c1,           // warm cream (spray finish)
+      roughness: 0.45,
+      metalness: 0.0,
+      side: THREE.DoubleSide,
+    });
+
+    // Stop-chamfer white baluster — 3 stacked meshes assembled as a Group: square bottom + chamfered
+    // middle + square top. Positioned so the Group's origin is the baluster CENTER (matches how the
+    // oak balusterGeometry is centred, so we can swap positions 1:1).
+    function makeStopChamferBaluster() {
+      const grp = new THREE.Group();
+      const SQ_END_H = 0.150; // 150mm ~ 6 inches
+      const MIDDLE_H = balusterHeight - 2 * SQ_END_H;
+      // Bottom square
+      const bottom = new THREE.Mesh(
+        new THREE.BoxGeometry(BALUSTER_SIZE, SQ_END_H, BALUSTER_SIZE),
+        balusterWhiteMaterial
+      );
+      bottom.position.y = -balusterHeight / 2 + SQ_END_H / 2;
+      bottom.castShadow = true; bottom.receiveShadow = true;
+      grp.add(bottom);
+      // Chamfered middle — reuse existing chamfered plankShape approach
+      const midGeom = new THREE.ExtrudeGeometry(balusterShape, {
+        depth: MIDDLE_H, bevelEnabled: false, steps: 1, curveSegments: 2,
+      });
+      midGeom.rotateX(-Math.PI / 2);
+      midGeom.translate(0, -MIDDLE_H / 2, 0);
+      midGeom.computeVertexNormals();
+      const middle = new THREE.Mesh(midGeom, balusterWhiteMaterial);
+      middle.castShadow = true; middle.receiveShadow = true;
+      grp.add(middle);
+      // Top square
+      const top = new THREE.Mesh(
+        new THREE.BoxGeometry(BALUSTER_SIZE, SQ_END_H, BALUSTER_SIZE),
+        balusterWhiteMaterial
+      );
+      top.position.y = balusterHeight / 2 - SQ_END_H / 2;
+      top.castShadow = true; top.receiveShadow = true;
+      grp.add(top);
+      return grp;
+    }
+
+    const balusterOakMeshes = [];    // oak balusters (fully chamfered), shown by default
+    const balusterWhiteMeshes = [];  // white balusters (stop-chamfered), hidden by default
+    const balusterCreamMeshes = [];  // cream balusters (fully chamfered like oak), hidden by default
+    for (let bx = BALUSTER_START_X; bx <= BALUSTER_END_X + 0.001; bx += BALUSTER_SPACING_X) {
+      const balusterBottomY = topEdgeY(bx) + BASERAIL_VERTICAL_HEIGHT - BALUSTER_RAIL_INSET;
+      const balusterCenterY = balusterBottomY + balusterHeight / 2;
+      for (const side of [-1, 1]) {
+        const oak = new THREE.Mesh(balusterGeometry, balusterMaterial);
+        oak.castShadow = true; oak.receiveShadow = true;
+        oak.position.set(bx, balusterCenterY, side * newelZ);
+        scene.add(oak);
+        balusterOakMeshes.push(oak);
+
+        const white = makeStopChamferBaluster();
+        white.position.set(bx, balusterCenterY, side * newelZ);
+        white.visible = false;
+        scene.add(white);
+        balusterWhiteMeshes.push(white);
+
+        const cream = new THREE.Mesh(balusterGeometry, balusterCreamMaterial);
+        cream.castShadow = true; cream.receiveShadow = true;
+        cream.position.set(bx, balusterCenterY, side * newelZ);
+        cream.visible = false;
+        scene.add(cream);
+        balusterCreamMeshes.push(cream);
+      }
+    }
+    // Expose swap function for the UI colour swatches — toggles VISIBILITY of oak / white / cream sets.
+    window.__nexBalusterFinish = {
+      setOak:   () => { balusterOakMeshes.forEach(m => m.visible = true);  balusterWhiteMeshes.forEach(m => m.visible = false); balusterCreamMeshes.forEach(m => m.visible = false); },
+      setWhite: () => { balusterOakMeshes.forEach(m => m.visible = false); balusterWhiteMeshes.forEach(m => m.visible = true);  balusterCreamMeshes.forEach(m => m.visible = false); },
+      setCream: () => { balusterOakMeshes.forEach(m => m.visible = false); balusterWhiteMeshes.forEach(m => m.visible = false); balusterCreamMeshes.forEach(m => m.visible = true);  },
+    };
+
+    // --- T&G SHEETING factory (Philip 2026-07-25 REV 3) — single flat panel with PROCEDURAL
+    //     T&G texture drawn on a canvas: 12 sections (75mm each) with dark groove lines between
+    //     them + slight color + grain variation per section. Plus 25mm angle bead trim on both
+    //     outer edges to cover the raw sheeting edges (per Philip's spec).
+    const SHEETING_THICKNESS = 0.012;
+    const SHEETING_WIDTH = TREAD_WIDTH;
+    const stringBottomStartY = stringTopEdgeStartY - stringVerticalHeight;
+    const stringBottomEndY   = stringTopEdgeEndY   - stringVerticalHeight;
+    const sheetingLength = Math.hypot(stringEndX - stringStartX, stringBottomEndY - stringBottomStartY);
+    const sheetingDir = new THREE.Vector3(stringEndX - stringStartX, stringBottomEndY - stringBottomStartY, 0).normalize();
+    const sheetingMidX = (stringStartX + stringEndX) / 2;
+    const sheetingMidY = (stringBottomStartY + stringBottomEndY) / 2 - SHEETING_THICKNESS / 2;
+    const sheetingGeometry = new THREE.BoxGeometry(SHEETING_THICKNESS, sheetingLength, SHEETING_WIDTH);
+    // Remap UVs on the ±X faces (the visible top and underside of the flat panel) so grain runs
+    // ALONG THE PITCH — same axis as fixStringUVs uses on the strings. Local Y is the pitch axis
+    // after the panel's quaternion rotation aligns local +Y with sheetingDir. Default BoxGeometry
+    // UVs put U across Z (width), which would put grain across the panel — wrong. Swap so U tracks
+    // local Y and V tracks local Z. Once the panel uses stringMaterial (below), the sheeting
+    // reads as a visual continuation of the string outer face — same grain, same pitch direction.
+    {
+      const sPos = sheetingGeometry.attributes.position;
+      const sUv  = sheetingGeometry.attributes.uv;
+      const sNor = sheetingGeometry.attributes.normal;
+      for (let i = 0; i < sPos.count; i++) {
+        if (Math.abs(sNor.getX(i)) > 0.7) {
+          const y = sPos.getY(i);
+          const z = sPos.getZ(i);
+          sUv.array[i * 2]     = (y + sheetingLength / 2) / sheetingLength;
+          sUv.array[i * 2 + 1] = (z + SHEETING_WIDTH / 2) / SHEETING_WIDTH;
+        }
+      }
+      sUv.needsUpdate = true;
+    }
+
+    // Build procedural T&G texture on a canvas — 12 sections, dark grooves between them, varied grain.
+    function makeSheetingTexture() {
+      const canvas = document.createElement("canvas");
+      // Keep both dimensions under 2048 (safe on all WebGL implementations).
+      const w = 1024; canvas.width = w;
+      const h = 2048; canvas.height = h;
+      const ctx = canvas.getContext("2d");
+      // Base honey oak — CALIBRATED to match tread final rendered colour.
+      // Previously multiplied by LACQUER_COLOR which combined with directional lighting to shift
+      // the tone slightly cool/greenish. This canvas is now the FINAL colour with no material
+      // multiplier (material.color = white below).
+      ctx.fillStyle = "#e8c485";
+      ctx.fillRect(0, 0, w, h);
+      const N = 12;
+      const secW = w / N;
+      for (let i = 0; i < N; i++) {
+        const x0 = i * secW;
+        // Section tint — subtle variation so each plank looks slightly different
+        const t = 0.9 + Math.random() * 0.2;
+        ctx.fillStyle = `rgba(238, ${Math.floor(212 * t)}, ${Math.floor(164 * t)}, 0.12)`;
+        ctx.fillRect(x0, 0, secW, h);
+        // Grain lines — softer, less contrast
+        ctx.strokeStyle = "rgba(140, 100, 60, 0.14)";
+        ctx.lineWidth = 1.0;
+        const nGrain = 5 + Math.floor(Math.random() * 5);
+        for (let g = 0; g < nGrain; g++) {
+          const gx = x0 + 4 + Math.random() * (secW - 8);
+          const wave = 3 + Math.random() * 10;
+          const freq = 0.006 + Math.random() * 0.006;
+          const phase = Math.random() * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(gx, 0);
+          for (let y = 0; y < h; y += 30) {
+            ctx.lineTo(gx + Math.sin(y * freq + phase) * wave, y);
+          }
+          ctx.stroke();
+        }
+      }
+      // Groove lines between sections — softer + narrower so they're visible but not stark
+      ctx.fillStyle = "rgba(110, 75, 40, 0.55)";
+      for (let i = 1; i < N; i++) {
+        ctx.fillRect(i * secW - 1, 0, 2, h);
+      }
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.wrapS = THREE.ClampToEdgeWrapping;
+      tex.wrapT = THREE.ClampToEdgeWrapping;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      tex.needsUpdate = true;
+      return tex;
+    }
+    // Sheeting texture — REVERTED to baseColorMap-derived (matches strings) because the URL
+    // Philip supplied 2026-07-26 (`Untitleddasdassbbbsdsd-removebg-preview.png`) has a transparent
+    // background from removebg processing; PNG transparent pixels are (0,0,0,0) and without
+    // material.transparent+alphaTest handling they render as BLACK. Awaiting a version of the
+    // image WITHOUT background removal (a solid rectangular grain texture, no cut-out).
+    const sheetingTex = baseColorMap.clone();
+    sheetingTex.needsUpdate = true;
+    sheetingTex.wrapS = THREE.ClampToEdgeWrapping;
+    sheetingTex.wrapT = THREE.ClampToEdgeWrapping;
+    sheetingTex.colorSpace = THREE.SRGBColorSpace;
+    sheetingTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    // PBR parity tune with treadMaterial (Philip 2026-07-26 Technical Art Director directive):
+    // sheeting kept as MeshPhysicalMaterial (class preserved for future sheen/iridescence
+    // headroom) but its extras that shift appearance away from tread are neutralised —
+    // roughness matched to tread, clearcoat off (removes Fresnel desaturation at grazing
+    // angles), emissive removed (removes constant colour glow). With clearcoat: 0 the class
+    // renders equivalently to MeshStandardMaterial so the panel appears as the same lacquered
+    // finish family as the front tread.
+    // Philip 2026-07-26 TAD iteration: subtle emissive lift 0.15 added so the sheeting back
+    // reads at the same warm honey shade as the handrail (which is treadMaterial on the front
+    // side of the flight, well-lit). Without the lift the sheeting sits in the shadowed rear
+    // half of the scene and reads noticeably cooler/darker than the handrail, even though the
+    // base colour + PBR values are already tread-matched. Emissive uses sheetingTex so the
+    // T&G grain is preserved through the lift rather than washed to flat colour.
+    const sheetingMaterial = new THREE.MeshPhysicalMaterial({
+      map: sheetingTex,
+      color: LACQUER_COLOR,
+      bumpMap: sheetingTex,
+      bumpScale: 0.0003,
+      roughness: LACQUER_ROUGHNESS,
+      metalness: 0,
+      clearcoat: 0,
+      clearcoatRoughness: 0.08,   // inert when clearcoat is 0; kept for future re-enable
+      side: THREE.DoubleSide,
+      emissive: LACQUER_COLOR,
+      emissiveMap: sheetingTex,
+      emissiveIntensity: 0.05,
+    });
+    // Sheeting tone control — slider adjusts sheetingMaterial.color lightness in HSL space
+    // (preserves hue + saturation; only shifts lightness). Slider default 0 = staircase-matching
+    // tone. Range −0.30 (darker) to +0.30 (lighter). Only sheetingMaterial is affected; the rest
+    // of the staircase wood is unchanged.
+    const baseSheetingHSL = { h: 0, s: 0, l: 0 };
+    new THREE.Color(LACQUER_COLOR).getHSL(baseSheetingHSL);
+    window.__nexSheetingTone = {
+      setLightness: (offset) => {
+        const newL = Math.max(0, Math.min(1, baseSheetingHSL.l + offset));
+        sheetingMaterial.color.setHSL(baseSheetingHSL.h, baseSheetingHSL.s, newL);
+      }
+    };
+    woodMaterials.push({ mat: sheetingMaterial, kind: 'physical' });
+
+    // V-groove strips — 11 thin dark strips at 75mm intervals across the sheeting, running full
+    // length. Simulates T&G plank divisions (12 planks of 75mm each = 900mm total sheeting width).
+    const N_GROOVES = 11;
+    const grooveSpacing = SHEETING_WIDTH / (N_GROOVES + 1);  // 75mm for 900mm width, 12 sections
+    const grooveGeometry = new THREE.BoxGeometry(SHEETING_THICKNESS + 0.002, sheetingLength, 0.0015);
+    const grooveMaterial = new THREE.MeshStandardMaterial({
+      color: 0x2a1810,
+      roughness: 0.9,
+      metalness: 0,
+      side: THREE.DoubleSide,
+    });
+
+    // Angle bead — 25mm square-section trim strip running along the sheeting length.
+    const ANGLE_BEAD_SIZE = 0.025;
+    const beadGeometry = new THREE.BoxGeometry(ANGLE_BEAD_SIZE, sheetingLength, ANGLE_BEAD_SIZE);
+
+    let sheetingMeshes = [];
+    function addSheeting() {
+      // Main sheeting panel — uses sheetingMaterial (dedicated instance, texture loaded from the
+      // URL Philip supplied 2026-07-26). Combined with the pitch-along UV remap on sheetingGeometry
+      // above, the grain runs along the pitch — same axis as the string outer face.
+      const sheet = new THREE.Mesh(sheetingGeometry, sheetingMaterial);
+      sheet.castShadow = true;
+      sheet.receiveShadow = false;  // Option A: back-of-flight sheeting, no shadow reception
+      sheet.position.set(sheetingMidX, sheetingMidY, 0);
+      sheet.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), sheetingDir);
+      scene.add(sheet);
+      sheetingMeshes.push(sheet);
+      // Angle beads on outer edges (both sides) — cover raw sheeting edges
+      for (const side of [-1, 1]) {
+        const bead = new THREE.Mesh(beadGeometry, rearAngleBeadMaterial);
+        bead.castShadow = true;
+        bead.receiveShadow = false;  // Option A: sheeting edge trim, no shadow reception
+        bead.position.set(
+          sheetingMidX,
+          sheetingMidY + SHEETING_THICKNESS / 2 - ANGLE_BEAD_SIZE / 2,
+          side * (SHEETING_WIDTH / 2 + ANGLE_BEAD_SIZE / 2)
+        );
+        bead.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), sheetingDir);
+        scene.add(bead);
+        sheetingMeshes.push(bead);
+      }
+      // V-groove strips — 11 thin dark strips at 75mm intervals for T&G plank effect.
+      for (let g = 0; g < N_GROOVES; g++) {
+        const grooveZ = -SHEETING_WIDTH / 2 + (g + 1) * grooveSpacing;
+        const groove = new THREE.Mesh(grooveGeometry, grooveMaterial);
+        groove.castShadow = true;
+        groove.receiveShadow = false;  // Option A: sheeting groove strips, no shadow reception
+        groove.position.set(sheetingMidX, sheetingMidY, grooveZ);
+        groove.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), sheetingDir);
+        scene.add(groove);
+        sheetingMeshes.push(groove);
+      }
+    }
+    function removeSheeting() {
+      for (const s of sheetingMeshes) scene.remove(s);
+      sheetingMeshes = [];
+    }
+    window.__nexSheeting = { add: addSheeting, remove: removeSheeting, isOn: () => sheetingMeshes.length > 0 };
+
+    // -----------------------------------------------------------------------------
+    // DOUBLE ROUND STARTING STEP (Philip 2026-07-26)
+    // -----------------------------------------------------------------------------
+    // Used when the staircase is not supported on either side by wall or partition — provides an
+    // additional point of entry from left and right and a wide entrance appearance. Traditional
+    // construction: solid blocks of wood with riser board / veneer wrapped and glued (no visible
+    // block marks) and haunched 15-18mm into the newel post + screw-fixed through the riser.
+    // The round double step passes OUT past the outer edges of the two bottom newels.
+    // (The bottom newels already extend to floor level in this model — verified in code.)
+    //
+    // Geometry: D-shape from top-down (straight back edge against the flight, semi-circle forward).
+    // Extruded vertically as a SOLID block per Philip's spec (block + veneer, not hollow).
+    //   Step 1 (bottom): floor → RISE     — larger radius, extends ~100mm past each newel
+    //   Step 2 (top):    RISE  → 2·RISE   — smaller radius, ~20mm past each newel
+    // Back edges align at X = -NOSING (level with first standard bullnose front) so the round step
+    // sits flush against the standard flight with the semi-circle facing outward in −X.
+    const R_STEP_1 = 0.600;   // 600mm radius — 1200mm total width
+    const R_STEP_2 = 0.520;   // 520mm radius — 1040mm total width
+    const ROUND_BACK_X = -NOSING;  // aligned with first bullnose front
+
+    function makeRoundStepGeometry(radius, blockHeight) {
+      const shape = new THREE.Shape();
+      // Straight back edge at local X=0, from Y=-radius to Y=+radius
+      shape.moveTo(0, -radius);
+      shape.lineTo(0, radius);
+      // Semi-circle CCW from (0,+radius) through (-radius,0) to (0,-radius) — curve extends into -X
+      shape.absarc(0, 0, radius, Math.PI / 2, 3 * Math.PI / 2, false);
+      const geom = new THREE.ExtrudeGeometry(shape, {
+        depth: blockHeight, bevelEnabled: false, steps: 1, curveSegments: 48,
+      });
+      // Rotate so extrude direction becomes world +Y (up). After rotate:
+      //   local X → world X  (back at 0, curve at -radius)
+      //   local Y → world -Z (side to side)
+      //   local Z → world Y  (bottom at 0, top at blockHeight)
+      geom.rotateX(-Math.PI / 2);
+      geom.computeVertexNormals();
+      return geom;
+    }
+
+    const roundStep1Geom = makeRoundStepGeometry(R_STEP_1, RISE);
+    const roundStep2Geom = makeRoundStepGeometry(R_STEP_2, RISE);
+
+    let roundStepMeshes = [];
+    function addRoundStep() {
+      // Step 1 — floor level, solid block from Y=0 up to Y=RISE
+      const step1 = new THREE.Mesh(roundStep1Geom, treadMaterial);
+      step1.castShadow = true;
+      step1.receiveShadow = true;
+      step1.position.set(ROUND_BACK_X, 0, 0);
+      scene.add(step1);
+      roundStepMeshes.push(step1);
+      // Step 2 — sits on top of step 1, solid block from Y=RISE up to Y=2·RISE
+      const step2 = new THREE.Mesh(roundStep2Geom, treadMaterial);
+      step2.castShadow = true;
+      step2.receiveShadow = true;
+      step2.position.set(ROUND_BACK_X, RISE, 0);
+      scene.add(step2);
+      roundStepMeshes.push(step2);
+    }
+    function removeRoundStep() {
+      for (const m of roundStepMeshes) scene.remove(m);
+      roundStepMeshes = [];
+    }
+    window.__nexRoundStep = { add: addRoundStep, remove: removeRoundStep, isOn: () => roundStepMeshes.length > 0 };
+
+    loadingEl.classList.add("hidden");
+  },
+  undefined,
+  (err) => {
+    console.error("Failed to load texture", err);
+    loadingEl.textContent = "TEXTURE LOAD FAILED — check console";
+  }
+);
+
+// -----------------------------------------------------------------------------
+// View switcher (with smooth animation)
+// -----------------------------------------------------------------------------
+const centreTarget = [OVERALL_RUN / 2, OVERALL_RISE / 2, 0];
+const views = {
+  hero:   { pos: [4.5, 2.5, 4.5], target: centreTarget },
+  side:   { pos: [OVERALL_RUN / 2, OVERALL_RISE / 2, 5.5], target: centreTarget },
+  front:  { pos: [OVERALL_RUN + 5.0, OVERALL_RISE / 2, 0], target: centreTarget },
+  top:    { pos: [OVERALL_RUN / 2, 6.5, 0.01], target: [OVERALL_RUN / 2, 0, 0] },
+  walkup: { pos: [-1.5, 0.4, 0.2], target: [OVERALL_RUN / 2, OVERALL_RISE / 2, 0] },
+  foot:   { pos: [-0.3, 1.65, 1.2], target: [OVERALL_RUN / 2, OVERALL_RISE * 0.4, 0] },
+  under:  { pos: [OVERALL_RUN + 2.5, 2.2, 1.8], target: [OVERALL_RUN * 0.5, 1.2, 0] },
+};
+
+// Only the view-preset buttons have a data-view attribute — toggle buttons (Varnish, Sheeting,
+// Walk Up Flight) don't and have their own handlers. Filter to only real view buttons here.
+const buttons = document.querySelectorAll(".view-btn[data-view]");
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    buttons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    const v = views[btn.dataset.view];
+    if (!v) return; // safety
+    controls.maxPolarAngle = v.allowUnderside ? Math.PI : (Math.PI / 2);
+    animateCameraTo(v.pos, v.target);
+  });
+});
+
+// Varnish ON/OFF toggle — flips every oak material between LACQUERED (with clearcoat + honey tint
+// + low roughness) and RAW (no tint, matte roughness, no clearcoat) so you can compare finishes.
+document.getElementById("varnish-toggle").addEventListener("click", () => {
+  varnishOn = !varnishOn;
+  const btn = document.getElementById("varnish-toggle");
+  btn.textContent = varnishOn ? "Varnish: ON" : "Varnish: OFF";
+  btn.style.background = varnishOn ? "var(--accent)" : "var(--surface)";
+  btn.style.color = varnishOn ? "#000" : "var(--text)";
+  for (const { mat, kind } of woodMaterials) {
+    if (varnishOn) {
+      mat.color.setHex(0xf7e0b8);
+      mat.roughness = kind === "physical" ? 0.55 : 0.30;
+      if (kind === "physical") mat.clearcoat = 1.0;
+    } else {
+      mat.color.setHex(0xffffff);       // no tint — show raw texture colour
+      mat.roughness = 0.75;             // matte raw-wood roughness
+      if (kind === "physical") mat.clearcoat = 0.0;
+    }
+    mat.needsUpdate = true;
+  }
+});
+
+// --- Walk Up Flight — 4-phase fly-camera walk (Philip 2026-07-25 refinement):
+//     Phase 1: APPROACH — walk from 2.5m before flight up to the bottom step (2.5s)
+//     Phase 2: ASCEND — walk up the flight with a subtle vertical BOUNCE per step (6s)
+//     Phase 3: LANDING — continue forward onto landing (1.5s)
+//     Phase 4: TURN AROUND — rotate 180° to look back down the staircase (2s)
+//     Total: 12 seconds
+let walkAnimating = false;
+document.getElementById("walk-flight-btn").addEventListener("click", () => {
+  if (walkAnimating) return;
+  walkAnimating = true;
+
+  const walkerHeight = 1.6;
+  const approachStartX = -2.5;
+  const flightStartX = -0.4;
+  const flightEndX = OVERALL_RUN + 0.4;
+  const landingEndX = OVERALL_RUN + 1.2;
+  const flightStartYNosing = 0;
+  const flightEndYNosing = OVERALL_RISE;
+  const pitchAngleForWalk = Math.atan((flightEndYNosing - flightStartYNosing) / (flightEndX - flightStartX));
+
+  // Timings — walk-up feels good, turn was too slow + jumpy. Turn shortened to 3s.
+  const PHASE_APPROACH = 3500;
+  const PHASE_ASCEND   = 10000;
+  const PHASE_LANDING  = 500;    // was 2000ms — the "continue onto landing" phase was making the pre-turn wait feel like ~4s. Cut to 0.5s so turn starts almost immediately after ascent.
+  const PHASE_TURN     = 2000;
+  const TOTAL = PHASE_APPROACH + PHASE_ASCEND + PHASE_LANDING + PHASE_TURN;
+
+  const stepsCount = TREADS + 1; // 12 treads + 1 top step
+  const bounceAmplitude = 0.025; // 25mm bounce per step
+
+  const startTime = performance.now();
+  const originalMaxPolar = controls.maxPolarAngle;
+  const originalDamping = controls.enableDamping;
+  controls.maxPolarAngle = Math.PI;
+  // Damping causes visible LAG/JUMP when the target moves quickly across the scene (as in the
+  // turn-around phase where the target sweeps from landing-forward to bottom-of-stairs). Turning
+  // damping OFF during the walk means every camera update is applied instantly = smooth motion.
+  controls.enableDamping = false;
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+  }
+  function easeIn(t) { return t * t; }
+  function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
+
+  function step() {
+    const elapsed = performance.now() - startTime;
+    let camX, camY, targetX, targetY;
+
+    if (elapsed < PHASE_APPROACH) {
+      // PHASE 1: Approach — walk toward the staircase
+      const t = elapsed / PHASE_APPROACH;
+      const e = easeInOut(t);
+      camX = approachStartX + (flightStartX - approachStartX) * e;
+      camY = walkerHeight;
+      targetX = camX + 1.5;
+      targetY = camY - 0.15;
+    }
+    else if (elapsed < PHASE_APPROACH + PHASE_ASCEND) {
+      // PHASE 2: Ascend the flight with a subtle vertical BOUNCE for each step.
+      // First 30% of phase — SMOOTHLY blend head-look from Phase 1 forward-look to Phase 2
+      // ahead-along-pitch look. Prevents the abrupt "head snaps up" at the start.
+      const t = (elapsed - PHASE_APPROACH) / PHASE_ASCEND;
+      const e = easeInOut(t);
+      camX = flightStartX + (flightEndX - flightStartX) * e;
+      const nosingY = flightStartYNosing + (flightEndYNosing - flightStartYNosing) * e;
+      const bounce = bounceAmplitude * Math.abs(Math.sin(e * stepsCount * Math.PI));
+      camY = nosingY + walkerHeight + bounce;
+
+      const phase2NormalTargetX = camX + 1.2 * Math.cos(pitchAngleForWalk);
+      const phase2NormalTargetY = camY + 1.2 * Math.sin(pitchAngleForWalk) - 0.4;
+      if (t < 0.3) {
+        // Blend from Phase 1 end target (camX + 1.5, camY - 0.15) to normal Phase 2 target
+        const blend = easeInOut(t / 0.3);
+        const phase1EndTargetX = camX + 1.5;
+        const phase1EndTargetY = camY - 0.15;
+        targetX = phase1EndTargetX * (1 - blend) + phase2NormalTargetX * blend;
+        targetY = phase1EndTargetY * (1 - blend) + phase2NormalTargetY * blend;
+      } else {
+        targetX = phase2NormalTargetX;
+        targetY = phase2NormalTargetY;
+      }
+    }
+    else if (elapsed < PHASE_APPROACH + PHASE_ASCEND + PHASE_LANDING) {
+      // PHASE 3: Continue onto landing at flat height
+      const t = (elapsed - PHASE_APPROACH - PHASE_ASCEND) / PHASE_LANDING;
+      const e = easeOut(t);
+      camX = flightEndX + (landingEndX - flightEndX) * e;
+      camY = flightEndYNosing + walkerHeight;
+      targetX = camX + 1.2;
+      targetY = camY - 0.1;
+    }
+    else {
+      // PHASE 4: Turn around SLOWLY (5s) and look back down the WHOLE staircase.
+      // End target is at the BOTTOM of the flight so the walker sees all stairs from the top.
+      const t = Math.min(1, (elapsed - PHASE_APPROACH - PHASE_ASCEND - PHASE_LANDING) / PHASE_TURN);
+      const e = easeInOut(t);
+      camX = landingEndX;
+      camY = flightEndYNosing + walkerHeight;
+      // Interpolate target from START (looking forward on landing) to END (looking down the entire staircase to the bottom).
+      const startTargetX = camX + 1.2;
+      const startTargetY = camY - 0.1;
+      const endTargetX = 0;                       // bottom newel X
+      const endTargetY = 0.4;                     // low — at start of flight, well below walker eye height
+      targetX = startTargetX * (1 - e) + endTargetX * e;
+      targetY = startTargetY * (1 - e) + endTargetY * e;
+    }
+
+    camera.position.set(camX, camY, 0);
+    controls.target.set(targetX, targetY, 0);
+    controls.update();
+
+    if (elapsed < TOTAL) {
+      requestAnimationFrame(step);
+    } else {
+      walkAnimating = false;
+      controls.maxPolarAngle = originalMaxPolar;
+      controls.enableDamping = originalDamping; // restore normal user-controlled damping
+    }
+  }
+  step();
+});
+
+// Baluster finish swatches — round buttons in the top-right panel to swap all balusters between
+// oak (default) / white-sprayed / cream-sprayed finishes.
+function setBalusterActive(id) {
+  for (const b of ["baluster-oak", "baluster-white", "baluster-cream"]) {
+    const el = document.getElementById(b);
+    if (el) el.style.borderColor = (b === id) ? "#ff8c1a" : "var(--border)";
+  }
+}
+document.getElementById("baluster-oak").addEventListener("click", () => {
+  if (!window.__nexBalusterFinish) return;
+  window.__nexBalusterFinish.setOak();
+  setBalusterActive("baluster-oak");
+});
+document.getElementById("baluster-white").addEventListener("click", () => {
+  if (!window.__nexBalusterFinish) return;
+  window.__nexBalusterFinish.setWhite();
+  setBalusterActive("baluster-white");
+});
+document.getElementById("baluster-cream").addEventListener("click", () => {
+  if (!window.__nexBalusterFinish) return;
+  window.__nexBalusterFinish.setCream();
+  setBalusterActive("baluster-cream");
+});
+
+// --- Stairlights toggle — switch scene from daytime to atmospheric LED-lit-only mode ---
+let stairlightsOn = false;
+document.getElementById("stairlights-toggle").addEventListener("click", () => {
+  const btn = document.getElementById("stairlights-toggle");
+  if (!window.__nexStairlights) return;
+  const sl = window.__nexStairlights;
+  stairlightsOn = !stairlightsOn;
+  if (stairlightsOn) {
+    // Night / LED-only mode: DIM all main lights, LIGHT UP the LED strips + spotlights
+    sl.sceneLights.ambient.intensity = sl.originals.ambient * 0.15;
+    sl.sceneLights.hemi.intensity    = sl.originals.hemi    * 0.15;
+    sl.sceneLights.key.intensity     = sl.originals.key     * 0.08;
+    sl.sceneLights.fill.intensity    = sl.originals.fill    * 0.08;
+    sl.sceneLights.rim.intensity     = sl.originals.rim     * 0.10;
+    sl.material.emissiveIntensity = 4.5;
+    // Two-light rig (Philip 2026-07-26): riser light EVEN across the whole riser face, step light
+    // A LITTLE on the tread below. Riser is what the user sees when walking up — favour it.
+    for (const l of sl.stepLights)  l.intensity = 1.6;   // subtle wash on the tread below
+    for (const l of sl.riserLights) l.intensity = 3.2;   // even lift across the riser face
+    // Darken scene background for atmospheric mood
+    scene.background = new THREE.Color(0x080608);
+    btn.textContent = "💡 Stairlights: ON";
+    btn.style.background = "var(--accent)";
+    btn.style.color = "#000";
+    btn.style.fontWeight = "600";
+  } else {
+    // Daytime mode: restore all main lights, turn off LEDs
+    sl.sceneLights.ambient.intensity = sl.originals.ambient;
+    sl.sceneLights.hemi.intensity    = sl.originals.hemi;
+    sl.sceneLights.key.intensity     = sl.originals.key;
+    sl.sceneLights.fill.intensity    = sl.originals.fill;
+    sl.sceneLights.rim.intensity     = sl.originals.rim;
+    sl.material.emissiveIntensity = 0;
+    for (const l of sl.stepLights)  l.intensity = 0;
+    for (const l of sl.riserLights) l.intensity = 0;
+    scene.background = new THREE.Color(0x0e0e10);
+    btn.textContent = "💡 Stairlights: OFF";
+    btn.style.background = "var(--surface)";
+    btn.style.color = "var(--text)";
+    btn.style.fontWeight = "normal";
+  }
+});
+
+// Sheeting toggle — adds/removes T&G sheeting panel on the underside of the flight.
+document.getElementById("sheeting-toggle").addEventListener("click", () => {
+  const btn = document.getElementById("sheeting-toggle");
+  if (!window.__nexSheeting) return;
+  const isOn = window.__nexSheeting.isOn();
+  if (isOn) {
+    window.__nexSheeting.remove();
+    btn.textContent = "Sheeting: OFF";
+    btn.style.background = "var(--surface)";
+    btn.style.color = "var(--text)";
+  } else {
+    window.__nexSheeting.add();
+    btn.textContent = "Sheeting: ON";
+    btn.style.background = "var(--accent)";
+    btn.style.color = "#000";
+  }
+});
+
+// Sheeting tone slider — adjusts sheeting lightness in real time.
+document.getElementById("sheeting-tone-slider").addEventListener("input", (e) => {
+  if (!window.__nexSheetingTone) return;
+  window.__nexSheetingTone.setLightness(parseFloat(e.target.value));
+});
+
+
+// Round starting step toggle — adds/removes the double round bottom entry step assembly.
+document.getElementById("round-step-toggle").addEventListener("click", () => {
+  const btn = document.getElementById("round-step-toggle");
+  if (!window.__nexRoundStep) return;
+  const isOn = window.__nexRoundStep.isOn();
+  if (isOn) {
+    window.__nexRoundStep.remove();
+    btn.textContent = "Round Starting Step: OFF";
+    btn.style.background = "var(--surface)";
+    btn.style.color = "var(--text)";
+  } else {
+    window.__nexRoundStep.add();
+    btn.textContent = "Round Starting Step: ON";
+    btn.style.background = "var(--accent)";
+    btn.style.color = "#000";
+  }
+});
+
+function animateCameraTo(pos, target) {
+  const startPos = camera.position.clone();
+  const endPos = new THREE.Vector3(...pos);
+  const startTarget = controls.target.clone();
+  const endTarget = new THREE.Vector3(...target);
+  const startTime = performance.now();
+  const duration = 900;
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
+  function tick() {
+    const t = Math.min(1, (performance.now() - startTime) / duration);
+    const e = ease(t);
+    camera.position.lerpVectors(startPos, endPos, e);
+    controls.target.lerpVectors(startTarget, endTarget, e);
+    controls.update();
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+// -----------------------------------------------------------------------------
+// Render loop + resize
+// -----------------------------------------------------------------------------
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>

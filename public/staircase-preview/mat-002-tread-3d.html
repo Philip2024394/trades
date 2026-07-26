@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MAT-002 · White Oak Tread — 3D Preview</title>
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: rgba(22, 22, 26, 0.9);
+    --border: #2a2a30;
+    --text: #f5f5f7;
+    --muted: #9b9ba3;
+    --accent: #ff8c1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  #canvas-container { position: fixed; inset: 0; }
+  canvas { display: block; }
+
+  .top-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 16px 20px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .brand {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 12px;
+  }
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .info-panel {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    max-width: 320px;
+    z-index: 10;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .info-panel h3 {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { color: var(--muted); }
+  .info-value { color: var(--text); font-weight: 500; }
+
+  .controls-hint {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    z-index: 10;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .controls-hint strong { color: var(--accent); }
+
+  .view-switcher {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+  }
+  .view-btn {
+    background: var(--surface);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .view-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .view-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .disclaimer {
+    position: fixed;
+    top: 70px;
+    left: 20px;
+    max-width: 320px;
+    background: rgba(255, 140, 26, 0.1);
+    border: 1px solid rgba(255, 140, 26, 0.3);
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    color: #ffb066;
+    line-height: 1.5;
+    z-index: 10;
+  }
+
+  .loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    z-index: 100;
+    color: var(--muted);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+  .loading.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div class="top-bar">
+  <div>
+    <div class="brand">NEX STAIRPLAN · 3D TREAD PREVIEW</div>
+    <div class="title">MAT-002 · American White Oak</div>
+    <div class="subtitle">TR-001 Standard Tread · 900 × 240 × 40 mm · bullnose front</div>
+  </div>
+</div>
+
+<div class="disclaimer">
+  <strong>Preview mode:</strong> geometry is a procedural extrusion (not the final GLB from the 3D artist). Texture is your pbr_texture_reference wrapped around a real 3D mesh. Lighting is a 3-point studio rig — no HDR IBL yet.
+</div>
+
+<div class="view-switcher">
+  <button class="view-btn active" data-view="hero">3-Quarter Hero</button>
+  <button class="view-btn" data-view="top">Top View</button>
+  <button class="view-btn" data-view="front">Front Elevation</button>
+  <button class="view-btn" data-view="side">Side Profile</button>
+  <button class="view-btn" data-view="underside">Underside</button>
+</div>
+
+<div class="info-panel">
+  <h3>Tread Specifications</h3>
+  <div class="info-row"><span class="info-label">Component ID</span><span class="info-value">TR-001</span></div>
+  <div class="info-row"><span class="info-label">Material ID</span><span class="info-value">MAT-002</span></div>
+  <div class="info-row"><span class="info-label">Species</span><span class="info-value">American White Oak</span></div>
+  <div class="info-row"><span class="info-label">Width</span><span class="info-value">900 mm</span></div>
+  <div class="info-row"><span class="info-label">Depth (going)</span><span class="info-value">240 mm</span></div>
+  <div class="info-row"><span class="info-label">Nosing overhang</span><span class="info-value">20 mm</span></div>
+  <div class="info-row"><span class="info-label">Thickness</span><span class="info-value">40 mm</span></div>
+  <div class="info-row"><span class="info-label">Nosing profile</span><span class="info-value">Bullnose R20</span></div>
+  <div class="info-row"><span class="info-label">Finish</span><span class="info-value">Satin lacquer</span></div>
+</div>
+
+<div class="controls-hint">
+  <strong>DRAG</strong> to rotate · <strong>SCROLL</strong> to zoom · <strong>RIGHT-DRAG</strong> to pan
+</div>
+
+<div class="loading" id="loading">LOADING MATERIAL TEXTURE...</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.161.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.161.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+const TEXTURE_URL = "https://ik.imagekit.io/5vv5pw26q/Untitledfsdf.png";
+
+// Real dimensions in mm — we scale down by 1000 for scene units (metres).
+const W = 0.900;   // 900mm wide
+const D = 0.240;   // 240mm deep (going)
+const T = 0.040;   // 40mm thick
+const NOSING = 0.020; // 20mm bullnose radius
+const OVERHANG = 0.020; // 20mm front overhang beyond string face
+
+// -----------------------------------------------------------------------------
+// Scene
+// -----------------------------------------------------------------------------
+const container = document.getElementById("canvas-container");
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0e0e10);
+scene.fog = new THREE.Fog(0x0e0e10, 3, 8);
+
+// Camera
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 100);
+camera.position.set(1.2, 0.9, 1.4);
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+// Controls
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.minDistance = 0.4;
+controls.maxDistance = 4;
+controls.maxPolarAngle = Math.PI * 0.95;
+controls.target.set(0, 0, 0);
+
+// -----------------------------------------------------------------------------
+// Lighting — 3-point studio rig
+// -----------------------------------------------------------------------------
+const ambient = new THREE.AmbientLight(0xffffff, 0.35);
+scene.add(ambient);
+
+const keyLight = new THREE.DirectionalLight(0xffe8cc, 1.4);
+keyLight.position.set(2, 3, 2);
+keyLight.castShadow = true;
+keyLight.shadow.mapSize.set(2048, 2048);
+keyLight.shadow.camera.near = 0.5;
+keyLight.shadow.camera.far = 8;
+keyLight.shadow.camera.left = -1.5;
+keyLight.shadow.camera.right = 1.5;
+keyLight.shadow.camera.top = 1.5;
+keyLight.shadow.camera.bottom = -1.5;
+keyLight.shadow.bias = -0.0005;
+scene.add(keyLight);
+
+const fillLight = new THREE.DirectionalLight(0xaaccff, 0.4);
+fillLight.position.set(-2, 1, -1);
+scene.add(fillLight);
+
+const rimLight = new THREE.DirectionalLight(0xffffff, 0.6);
+rimLight.position.set(0, 1, -2);
+scene.add(rimLight);
+
+// -----------------------------------------------------------------------------
+// Ground plane (subtle reflection surface)
+// -----------------------------------------------------------------------------
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(6, 6),
+  new THREE.MeshStandardMaterial({
+    color: 0x121215,
+    roughness: 0.9,
+    metalness: 0.0,
+  })
+);
+ground.rotation.x = -Math.PI / 2;
+ground.position.y = -0.021;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// -----------------------------------------------------------------------------
+// Tread geometry — extrusion with bullnose front edge
+// -----------------------------------------------------------------------------
+function makeTreadGeometry() {
+  const shape = new THREE.Shape();
+  // Start at back-left of tread footprint (looking down at the top).
+  // Coordinates in metres. Origin at centre of tread footprint (excluding nosing).
+  const halfW = W / 2;
+  const backD = D / 2;                // depth at back edge (mounts against riser)
+  const frontD = -(D / 2 + OVERHANG); // depth at front nose (overhang beyond string)
+
+  // Build the top-down footprint outline (we'll extrude vertically for thickness).
+  shape.moveTo(-halfW, backD);
+  shape.lineTo(halfW, backD);
+  shape.lineTo(halfW, frontD + NOSING); // straight down right side to where bullnose starts
+  // Bullnose curve on right corner (top view is straight — we round the front edge in profile via extrude bevel)
+  shape.lineTo(halfW, frontD);
+  shape.lineTo(-halfW, frontD);
+  shape.lineTo(-halfW, frontD + NOSING);
+  shape.lineTo(-halfW, backD);
+
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth: T,
+    bevelEnabled: true,
+    bevelSegments: 12,
+    steps: 1,
+    bevelSize: 0.001,   // tiny bevel on all edges for realism
+    bevelThickness: 0.001,
+    curveSegments: 24,
+  });
+
+  geometry.rotateX(-Math.PI / 2);      // extrude was up-Z, rotate so thickness is up-Y
+  geometry.translate(0, T / 2, 0);     // sit tread top at Y=T (bottom at Y=0)
+  geometry.computeVertexNormals();
+
+  return geometry;
+}
+
+// Bullnose front edge — better version using a rounded box approach.
+// The ExtrudeGeometry above produces a boxy tread; for proper bullnose we build the profile as a Shape with an arc.
+function makeTreadWithBullnose() {
+  // Build the SIDE PROFILE (X = depth, Y = height), then extrude along Z (width).
+  const profile = new THREE.Shape();
+  const depth = D + OVERHANG;   // 260mm total (240 going + 20 nosing overhang)
+  const thickness = T;
+  const r = NOSING;             // 20mm nosing radius
+
+  // Start at back-bottom, go clockwise.
+  profile.moveTo(0, 0);                                // back-bottom
+  profile.lineTo(depth - r, 0);                        // bottom edge to start of bullnose
+  profile.absarc(depth - r, r, r, -Math.PI / 2, Math.PI / 2, false); // bullnose arc (front edge rounded)
+  profile.lineTo(0, thickness);                        // top edge back to origin
+  profile.lineTo(0, 0);                                // close
+
+  const geometry = new THREE.ExtrudeGeometry(profile, {
+    depth: W,               // extrude across the width
+    bevelEnabled: true,
+    bevelSegments: 2,
+    steps: 1,
+    bevelSize: 0.001,
+    bevelThickness: 0.001,
+    curveSegments: 16,
+  });
+
+  // The extrusion is now: X = depth (0 to 260mm), Y = thickness (0 to 40mm), Z = width (0 to 900mm).
+  // Recentre so origin is at centre of tread.
+  geometry.translate(-(D + OVERHANG) / 2, 0, -W / 2);
+  geometry.computeVertexNormals();
+
+  // Fix UVs so texture wraps sensibly — top face gets the grain aligned along length.
+  fixTreadUVs(geometry);
+
+  return geometry;
+}
+
+// Assign UVs so texture reads correctly on each face — top/bottom use width×depth plane;
+// sides use their natural extrusion mapping.
+function fixTreadUVs(geometry) {
+  const pos = geometry.attributes.position;
+  const uv = geometry.attributes.uv;
+  const normal = geometry.attributes.normal;
+  const uvArray = uv.array;
+
+  for (let i = 0; i < pos.count; i++) {
+    const nx = normal.getX(i);
+    const ny = normal.getY(i);
+    const nz = normal.getZ(i);
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const z = pos.getZ(i);
+
+    if (Math.abs(ny) > 0.7) {
+      // Top or bottom face — map from (Z=width, X=depth) so grain runs along length (Z).
+      uvArray[i * 2] = (z + W / 2) / W;            // U: 0..1 across width
+      uvArray[i * 2 + 1] = (x + (D + OVERHANG) / 2) / (D + OVERHANG); // V: 0..1 across depth
+    } else if (Math.abs(nz) > 0.7) {
+      // Left or right end (short side of tread — grain visible as end grain).
+      uvArray[i * 2] = (x + (D + OVERHANG) / 2) / (D + OVERHANG);
+      uvArray[i * 2 + 1] = y / T * 0.15;
+    } else {
+      // Front (bullnose) or back edge — long face.
+      uvArray[i * 2] = (z + W / 2) / W;
+      uvArray[i * 2 + 1] = y / T * 0.15;
+    }
+  }
+  uv.needsUpdate = true;
+}
+
+// -----------------------------------------------------------------------------
+// Material — PBR with the material_face texture as base colour
+// -----------------------------------------------------------------------------
+const loadingEl = document.getElementById("loading");
+
+const textureLoader = new THREE.TextureLoader();
+textureLoader.crossOrigin = "anonymous";
+
+textureLoader.load(
+  TEXTURE_URL,
+  (baseColorMap) => {
+    baseColorMap.colorSpace = THREE.SRGBColorSpace;
+    baseColorMap.wrapS = THREE.RepeatWrapping;
+    baseColorMap.wrapT = THREE.RepeatWrapping;
+    baseColorMap.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    const material = new THREE.MeshStandardMaterial({
+      map: baseColorMap,
+      roughness: 0.55,
+      metalness: 0.0,
+      // Fake a subtle bump using the base colour for now (no real normal map yet).
+      bumpMap: baseColorMap,
+      bumpScale: 0.0005,
+    });
+
+    const treadGeometry = makeTreadWithBullnose();
+    const tread = new THREE.Mesh(treadGeometry, material);
+    tread.castShadow = true;
+    tread.receiveShadow = true;
+    scene.add(tread);
+
+    loadingEl.classList.add("hidden");
+  },
+  undefined,
+  (err) => {
+    console.error("Failed to load texture", err);
+    loadingEl.textContent = "TEXTURE LOAD FAILED — check console";
+  }
+);
+
+// -----------------------------------------------------------------------------
+// View switcher
+// -----------------------------------------------------------------------------
+const views = {
+  hero:      { pos: [1.2, 0.9, 1.4],  target: [0, 0.02, 0] },
+  top:       { pos: [0.0, 1.6, 0.001], target: [0, 0.02, 0] },
+  front:     { pos: [0.0, 0.15, 1.6], target: [0, 0.02, 0] },
+  side:      { pos: [1.6, 0.15, 0.0], target: [0, 0.02, 0] },
+  underside: { pos: [0.0, -1.2, 0.6], target: [0, 0.02, 0] },
+};
+
+const buttons = document.querySelectorAll(".view-btn");
+buttons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    buttons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    const v = views[btn.dataset.view];
+    animateCameraTo(v.pos, v.target);
+  });
+});
+
+function animateCameraTo(pos, target) {
+  const startPos = camera.position.clone();
+  const endPos = new THREE.Vector3(...pos);
+  const startTarget = controls.target.clone();
+  const endTarget = new THREE.Vector3(...target);
+  const startTime = performance.now();
+  const duration = 700;
+
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
+
+  function tick() {
+    const now = performance.now();
+    const t = Math.min(1, (now - startTime) / duration);
+    const e = ease(t);
+    camera.position.lerpVectors(startPos, endPos, e);
+    controls.target.lerpVectors(startTarget, endTarget, e);
+    controls.update();
+    if (t < 1) requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+// -----------------------------------------------------------------------------
+// Render loop
+// -----------------------------------------------------------------------------
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+// Resize
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+</script>
+
+</body>
+</html>

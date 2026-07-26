@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MAT-002 American White Oak — Straight Flight Preview</title>
+<style>
+  :root {
+    --bg: #0e0e10;
+    --surface: #16161a;
+    --border: #2a2a30;
+    --text: #f5f5f7;
+    --muted: #9b9ba3;
+    --accent: #ff8c1a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .header {
+    max-width: 1200px;
+    margin: 0 auto 24px;
+  }
+  .brand {
+    color: var(--accent);
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .disclaimer {
+    max-width: 1200px;
+    margin: 0 auto 24px;
+    background: rgba(255, 140, 26, 0.08);
+    border: 1px solid rgba(255, 140, 26, 0.3);
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #ffb066;
+    line-height: 1.5;
+  }
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .swatch {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--border);
+  }
+  .single-tread {
+    width: 100%;
+    border-radius: 8px;
+    background-color: #1a1a1e;
+    display: block;
+  }
+  .flight-card {
+    grid-column: 1 / -1;
+    padding: 32px 20px;
+  }
+  .flight-stage {
+    background: linear-gradient(180deg, #1e1e24 0%, #0e0e10 100%);
+    border-radius: 8px;
+    padding: 40px 32px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 500px;
+    overflow: hidden;
+    position: relative;
+  }
+  .flight-stage::after {
+    content: "";
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+  }
+  .flight {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    max-width: 900px;
+  }
+  .tread {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  }
+  .riser {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: 200px auto;
+    background-position: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    filter: brightness(0.85);
+  }
+  .string {
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.75);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  }
+  .flight-caption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .flight-caption strong { color: var(--text); }
+  .footer {
+    max-width: 1200px;
+    margin: 32px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .stats-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  .stat-label { color: var(--muted); }
+  .stat-value { color: var(--accent); font-weight: 600; margin-left: 4px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">NEX STAIRPLAN · MATERIAL PREVIEW</div>
+  <h1>MAT-002 · American White Oak — Straight Flight (13 rises)</h1>
+  <div class="subtitle">Elevation view built from the two references catalogued so far. This is not the final 3D render — it's a scale preview to help judge how the material reads at staircase scale.</div>
+</div>
+
+<div class="disclaimer">
+  <strong>Honest note:</strong> real Stairplan renders use PBR materials + HDR lighting on modelled GLB components (produced by the 3D artist).
+  This page uses ONLY the two images you've catalogued for MAT-002 so far (pbr_texture_reference + tread_sample), CSS-stacked to Doc K rise/going.
+  So it shows scale and material read, not final render fidelity. Handrails, newels, balusters, real shadows, room context all missing.
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>1 · Material face (pbr_texture_reference)</h3>
+    <div class="swatch" style="background-image: url('https://ik.imagekit.io/5vv5pw26q/Untitledfsdf.png');"></div>
+  </div>
+
+  <div class="card">
+    <h3>2 · Single tread render (tread_sample)</h3>
+    <img class="single-tread" src="https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2006_54_44%20PM.png" alt="MAT-002 tread" />
+  </div>
+
+  <div class="card flight-card">
+    <h3>3 · Straight flight elevation — 13 rises · 200 mm rise · 220 mm going · 42° pitch</h3>
+    <div class="flight-stage">
+      <div class="flight" id="flight"></div>
+    </div>
+    <div class="flight-caption">
+      Doc K-compliant private-stair geometry · 12 treads visible in elevation · overall run 2,640 mm · overall rise 2,600 mm floor-to-floor.<br />
+      Tread top surfaces textured with your <strong>tread_sample</strong>. Risers + strings textured with your <strong>pbr_texture_reference</strong> (darkened for depth cue).
+    </div>
+    <div class="stats-row">
+      <div class="stat"><span class="stat-label">Rises</span><span class="stat-value">13</span></div>
+      <div class="stat"><span class="stat-label">Treads</span><span class="stat-value">12</span></div>
+      <div class="stat"><span class="stat-label">Rise</span><span class="stat-value">200 mm</span></div>
+      <div class="stat"><span class="stat-label">Going</span><span class="stat-value">220 mm</span></div>
+      <div class="stat"><span class="stat-label">Pitch</span><span class="stat-value">42.3°</span></div>
+      <div class="stat"><span class="stat-label">Nosing</span><span class="stat-value">20 mm</span></div>
+      <div class="stat"><span class="stat-label">Overall run</span><span class="stat-value">2,640 mm</span></div>
+      <div class="stat"><span class="stat-label">Overall rise</span><span class="stat-value">2,600 mm</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Preview generated from `data/staircase-materials.json` → MAT-002 marketing_images (2/12 slots filled).<br />
+  Next 10 references needed to complete MAT-002: plank_studio · end_grain_closeup · edge_grain_closeup · handrail_sample · newel_sample · baluster_sample · complete_staircase_hero · luxury_hallway_installed · close_up_detail · mobile_icon.
+</div>
+
+<script>
+  // Straight flight elevation — 13 rises × 200mm rise, 220mm going, 20mm nosing, 40mm tread thickness.
+  // Real dimensions scaled to fit the stage.
+  const RISES = 13;
+  const RISE_MM = 200;
+  const GOING_MM = 220;
+  const NOSING_MM = 20;
+  const TREAD_THICKNESS_MM = 40;
+  const RISER_THICKNESS_MM = 18;
+
+  const treadUrl = "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2006_54_44%20PM.png";
+  const materialUrl = "https://ik.imagekit.io/5vv5pw26q/Untitledfsdf.png";
+
+  const flight = document.getElementById("flight");
+
+  // Fit into 900px wide × 460px tall, preserving real proportions.
+  const totalRunMm = GOING_MM * (RISES - 1);
+  const totalRiseMm = RISE_MM * RISES;
+
+  const stageW = 900;
+  const stageH = 460;
+  const scale = Math.min(stageW / (totalRunMm + 240), stageH / (totalRiseMm + 60));
+
+  const px = (mm) => mm * scale;
+
+  // Left string (housed side stringer, drawn beneath the treads).
+  const stringL = document.createElement("div");
+  stringL.className = "string";
+  stringL.style.backgroundImage = "url('" + materialUrl + "')";
+  stringL.style.left = "0";
+  stringL.style.bottom = "0";
+  stringL.style.width = px(240) + "px";
+  stringL.style.height = px(totalRiseMm) + "px";
+  stringL.style.clipPath = "polygon(100% 100%, 100% 0, 60% 0, 0 " + (100 - 100 / RISES) + "%, 0 100%)";
+  flight.appendChild(stringL);
+
+  // Right string — drawn stepping upward under each tread.
+  for (let i = 0; i < RISES; i++) {
+    const riser = document.createElement("div");
+    riser.className = "riser";
+    riser.style.backgroundImage = "url('" + materialUrl + "')";
+    riser.style.left = px(240 + i * GOING_MM) + "px";
+    riser.style.bottom = px(i * RISE_MM) + "px";
+    riser.style.width = px(RISER_THICKNESS_MM) + "px";
+    riser.style.height = px(RISE_MM) + "px";
+    flight.appendChild(riser);
+  }
+
+  // Treads (elevation view — tread renders shown as top faces, ~40mm thick, projected as thin strips).
+  for (let i = 0; i < RISES - 1; i++) {
+    const tread = document.createElement("div");
+    tread.className = "tread";
+    tread.style.backgroundImage = "url('" + treadUrl + "')";
+    tread.style.left = px(240 + i * GOING_MM) + "px";
+    tread.style.bottom = px((i + 1) * RISE_MM) + "px";
+    tread.style.width = px(GOING_MM + NOSING_MM) + "px";
+    tread.style.height = px(TREAD_THICKNESS_MM) + "px";
+    flight.appendChild(tread);
+  }
+
+  // Top landing edge
+  const landing = document.createElement("div");
+  landing.className = "tread";
+  landing.style.backgroundImage = "url('" + treadUrl + "')";
+  landing.style.left = px(240 + (RISES - 1) * GOING_MM) + "px";
+  landing.style.bottom = px(RISES * RISE_MM) + "px";
+  landing.style.width = px(180) + "px";
+  landing.style.height = px(TREAD_THICKNESS_MM) + "px";
+  flight.appendChild(landing);
+
+  // Center the whole flight in the stage
+  const flightW = 240 + (RISES - 1) * GOING_MM + 180;
+  const flightH = RISES * RISE_MM + TREAD_THICKNESS_MM;
+  flight.style.width = px(flightW) + "px";
+  flight.style.height = px(flightH) + "px";
+  flight.style.margin = "0 auto";
+</script>
+
+</body>
+</html>
