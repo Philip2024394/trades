@@ -1924,22 +1924,32 @@ new THREE.TextureLoader().load(
       side: THREE.DoubleSide,
     });
     // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
-    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
-    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
-    //
-    // IMPORTANT: the scene has no envMap. High metalness (0.9+) makes a
-    // MeshStandardMaterial render BLACK because there's no environment to
-    // reflect — all its lighting comes from that envMap. Fix: use LOWER
-    // metalness (0.5) so the diffuse component contributes, brighter base
-    // colour (silvery not grey), and subtle emissive lift so the baluster
-    // reads as bright brushed steel from every viewing angle even without
-    // an IBL. This is the "no envMap" recipe for stainless.
+    // Reference image: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png
+    // Loaded as map + bumpMap + roughnessMap so the actual brushed grain
+    // appears on every face — without a texture the material renders as
+    // flat silver ("only color"). Bump scale kept very subtle (0.0002)
+    // so the grain hints without looking corrugated. Aniso filtering is
+    // maxed so the grain stays crisp at grazing angles.
+    const stainlessTex = new THREE.TextureLoader().load(
+      "https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png",
+      (tex) => {
+        tex.wrapS = THREE.ClampToEdgeWrapping;
+        tex.wrapT = THREE.ClampToEdgeWrapping;
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        tex.needsUpdate = true;
+      }
+    );
     const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
-      color: 0xd0d4d8,
+      map:       stainlessTex,
+      bumpMap:   stainlessTex,
+      bumpScale: 0.0002,
+      roughnessMap: stainlessTex,  // brighter grain lines = lower roughness = shinier stripes
+      color:     0xd8dce0,          // slight brightening tint on top of texture
       roughness: 0.42,
-      metalness: 0.50,
-      emissive: 0x8a8e92,
-      emissiveIntensity: 0.20,
+      metalness: 0.55,
+      emissive:  0x808488,
+      emissiveIntensity: 0.14,      // subtle self-lift so the baluster reads bright without envMap
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
