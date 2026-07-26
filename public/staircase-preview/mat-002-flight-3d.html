@@ -510,6 +510,7 @@
     <button id="baluster-oak" title="Oak baluster (chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid #ff8c1a; background:#c9a878; cursor:pointer; padding:0;"></button>
     <button id="baluster-white" title="White sprayed baluster (stop-chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--border); background:#f5f2ec; cursor:pointer; padding:0;"></button>
     <button id="baluster-cream" title="Cream sprayed baluster (chamfered)" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--border); background:#f0e2c1; cursor:pointer; padding:0;"></button>
+    <button id="baluster-stainless" title="Brushed stainless steel 40×40×900mm" style="width:34px; height:34px; border-radius:50%; border:2px solid var(--border); background:linear-gradient(135deg,#c8c8c8 0%,#8a8a8a 100%); cursor:pointer; padding:0;"></button>
   </div>
   <div style="display:flex; flex-direction:column; gap:4px; padding:4px 4px 8px;">
     <label for="sheeting-tone-slider" style="color: var(--muted); font-size: 11px; letter-spacing: 1px;">SHEETING TONE</label>
@@ -1906,6 +1907,20 @@ new THREE.TextureLoader().load(
       metalness: 0.0,
       side: THREE.DoubleSide,
     });
+    // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
+    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
+    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish
+    // = metallic PBR with medium roughness (NOT mirror-polished, NOT rough
+    // sand-blast) — brushed grain scatters light softly. Slight bluish-cool
+    // tint on the base colour matches genuine stainless vs warm chrome.
+    const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
+      color: 0xb4b6b8,
+      roughness: 0.38,
+      metalness: 0.90,
+    });
+    // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
+    // so a separate geometry keeps the profile crisp).
+    const balusterStainlessGeometry = new THREE.BoxGeometry(0.040, balusterHeight, 0.040);
 
     // Stop-chamfer white baluster — 3 stacked meshes assembled as a Group: square bottom + chamfered
     // middle + square top. Positioned so the Group's origin is the baluster CENTER (matches how the
@@ -1943,9 +1958,10 @@ new THREE.TextureLoader().load(
       return grp;
     }
 
-    const balusterOakMeshes = [];    // oak balusters (fully chamfered), shown by default
-    const balusterWhiteMeshes = [];  // white balusters (stop-chamfered), hidden by default
-    const balusterCreamMeshes = [];  // cream balusters (fully chamfered like oak), hidden by default
+    const balusterOakMeshes = [];        // oak balusters (fully chamfered), shown by default
+    const balusterWhiteMeshes = [];      // white balusters (stop-chamfered), hidden by default
+    const balusterCreamMeshes = [];      // cream balusters (fully chamfered like oak), hidden by default
+    const balusterStainlessMeshes = [];  // brushed stainless steel 40×40mm plain square, hidden by default
     for (let bx = BALUSTER_START_X; bx <= BALUSTER_END_X + 0.001; bx += BALUSTER_SPACING_X) {
       const balusterBottomY = topEdgeY(bx) + BASERAIL_VERTICAL_HEIGHT - BALUSTER_RAIL_INSET;
       const balusterCenterY = balusterBottomY + balusterHeight / 2;
@@ -1968,13 +1984,29 @@ new THREE.TextureLoader().load(
         cream.visible = false;
         scene.add(cream);
         balusterCreamMeshes.push(cream);
+
+        // Stainless — separate box geometry (40×40mm, crisp square), silver
+        // brushed material. Positioned identically so swapping is 1:1.
+        const stainless = new THREE.Mesh(balusterStainlessGeometry, balusterStainlessMaterial);
+        stainless.castShadow = true; stainless.receiveShadow = true;
+        stainless.position.set(bx, balusterCenterY, side * newelZ);
+        stainless.visible = false;
+        scene.add(stainless);
+        balusterStainlessMeshes.push(stainless);
       }
     }
-    // Expose swap function for the UI colour swatches — toggles VISIBILITY of oak / white / cream sets.
+    // Expose swap function for the UI colour swatches — toggles VISIBILITY of the four sets.
+    function showBalusters(kind) {
+      balusterOakMeshes.forEach(m       => m.visible = kind === "oak");
+      balusterWhiteMeshes.forEach(m     => m.visible = kind === "white");
+      balusterCreamMeshes.forEach(m     => m.visible = kind === "cream");
+      balusterStainlessMeshes.forEach(m => m.visible = kind === "stainless");
+    }
     window.__nexBalusterFinish = {
-      setOak:   () => { balusterOakMeshes.forEach(m => m.visible = true);  balusterWhiteMeshes.forEach(m => m.visible = false); balusterCreamMeshes.forEach(m => m.visible = false); },
-      setWhite: () => { balusterOakMeshes.forEach(m => m.visible = false); balusterWhiteMeshes.forEach(m => m.visible = true);  balusterCreamMeshes.forEach(m => m.visible = false); },
-      setCream: () => { balusterOakMeshes.forEach(m => m.visible = false); balusterWhiteMeshes.forEach(m => m.visible = false); balusterCreamMeshes.forEach(m => m.visible = true);  },
+      setOak:       () => showBalusters("oak"),
+      setWhite:     () => showBalusters("white"),
+      setCream:     () => showBalusters("cream"),
+      setStainless: () => showBalusters("stainless"),
     };
 
     // --- T&G SHEETING factory (Philip 2026-07-25 REV 3) — single flat panel with PROCEDURAL
@@ -2482,7 +2514,7 @@ document.getElementById("walk-flight-btn").addEventListener("click", () => {
 // Baluster finish swatches — round buttons in the top-right panel to swap all balusters between
 // oak (default) / white-sprayed / cream-sprayed finishes.
 function setBalusterActive(id) {
-  for (const b of ["baluster-oak", "baluster-white", "baluster-cream"]) {
+  for (const b of ["baluster-oak", "baluster-white", "baluster-cream", "baluster-stainless"]) {
     const el = document.getElementById(b);
     if (el) el.style.borderColor = (b === id) ? "#ff8c1a" : "var(--border)";
   }
@@ -2501,6 +2533,11 @@ document.getElementById("baluster-cream").addEventListener("click", () => {
   if (!window.__nexBalusterFinish) return;
   window.__nexBalusterFinish.setCream();
   setBalusterActive("baluster-cream");
+});
+document.getElementById("baluster-stainless").addEventListener("click", () => {
+  if (!window.__nexBalusterFinish) return;
+  window.__nexBalusterFinish.setStainless();
+  setBalusterActive("baluster-stainless");
 });
 
 // --- Stairlights toggle — switch scene from daytime to atmospheric LED-lit-only mode ---
@@ -2647,8 +2684,10 @@ window.addEventListener("resize", () => {
 
 (function setupNexConfigBridge() {
   function ensureBaluster(target) {
-    const btnId = target === "white-chamfered" ? "baluster-white"
-                : target === "cream-chamfered" ? "baluster-cream"
+    const btnId = target === "white-chamfered"    ? "baluster-white"
+                : target === "cream-chamfered"    ? "baluster-cream"
+                : target === "stainless-steel"    ? "baluster-stainless"
+                : target === "brushed-stainless"  ? "baluster-stainless"
                 : "baluster-oak";
     const btn = document.getElementById(btnId);
     if (btn) btn.click();
@@ -2862,7 +2901,8 @@ window.addEventListener("resize", () => {
       desc: "Balusters · sheeting · lighting · round starting step",
       icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7"/><rect x="13" y="4" width="7" height="7"/><rect x="4" y="13" width="7" height="7"/><rect x="13" y="13" width="7" height="7"/></svg>',
       options: [
-        { id: "baluster-oak",     label: "Baluster: Oak",     swatch: "#c9a878", action: () => document.getElementById("baluster-oak")?.click() },
+        { id: "baluster-oak",       label: "Baluster: Oak",         swatch: "#c9a878",                                            action: () => document.getElementById("baluster-oak")?.click() },
+        { id: "baluster-stainless", label: "Baluster: Stainless steel", swatch: "linear-gradient(135deg,#c8c8c8 0%,#8a8a8a 100%)", action: () => document.getElementById("baluster-stainless")?.click() },
         { id: "baluster-white",   label: "Baluster: White",   swatch: "#f5f2ec", action: () => document.getElementById("baluster-white")?.click() },
         { id: "baluster-cream",   label: "Baluster: Cream",   swatch: "#f0e2c1", action: () => document.getElementById("baluster-cream")?.click() },
         { id: "sheeting-on",      label: "Sheeting ON",       action: () => { const b = document.getElementById("sheeting-toggle"); if (b && !b.textContent.includes("ON")) b.click(); } },
