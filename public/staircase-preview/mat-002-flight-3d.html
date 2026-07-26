@@ -1924,32 +1924,16 @@ new THREE.TextureLoader().load(
       side: THREE.DoubleSide,
     });
     // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
-    // Reference image: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png
-    // Loaded as map + bumpMap + roughnessMap so the actual brushed grain
-    // appears on every face — without a texture the material renders as
-    // flat silver ("only color"). Bump scale kept very subtle (0.0002)
-    // so the grain hints without looking corrugated. Aniso filtering is
-    // maxed so the grain stays crisp at grazing angles.
-    const stainlessTex = new THREE.TextureLoader().load(
-      "https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png",
-      (tex) => {
-        tex.wrapS = THREE.ClampToEdgeWrapping;
-        tex.wrapT = THREE.ClampToEdgeWrapping;
-        tex.colorSpace = THREE.SRGBColorSpace;
-        tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        tex.needsUpdate = true;
-      }
-    );
+    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
+    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
+    // Rendered without textures — waiting on decision about which "real
+    // metal" approach to adopt (envMap / MatCap / procedural / anisotropy).
     const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
-      map:       stainlessTex,
-      bumpMap:   stainlessTex,
-      bumpScale: 0.0002,
-      roughnessMap: stainlessTex,  // brighter grain lines = lower roughness = shinier stripes
-      color:     0xd8dce0,          // slight brightening tint on top of texture
+      color: 0xd0d4d8,
       roughness: 0.42,
-      metalness: 0.55,
-      emissive:  0x808488,
-      emissiveIntensity: 0.14,      // subtle self-lift so the baluster reads bright without envMap
+      metalness: 0.50,
+      emissive: 0x8a8e92,
+      emissiveIntensity: 0.20,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
