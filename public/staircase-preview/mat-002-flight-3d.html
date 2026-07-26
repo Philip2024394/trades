@@ -420,6 +420,21 @@
   .compliance-row .title  { color: var(--text); font-size: 13px; font-weight: 600; }
   .compliance-row .detail { color: var(--muted); font-size: 12px; margin-top: 2px; line-height: 1.4; }
   .compliance-row .value  { color: var(--accent); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  /* Dimensions sheet — grouped sections with numeric readouts. */
+  .dim-group { margin-bottom: 20px; }
+  .dim-group:last-child { margin-bottom: 0; }
+  .dim-group-title {
+    color: var(--accent); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .dim-rows {
+    display: grid; grid-template-columns: 1fr auto; gap: 6px 20px;
+    background: #2a2620; border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 12px 14px;
+  }
+  .dim-rows .dim-label { color: var(--text); font-size: 13px; }
+  .dim-rows .dim-value { color: var(--accent); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -2813,6 +2828,34 @@ window.addEventListener("resize", () => {
       ],
     },
     {
+      id: "dimensions",
+      title: "Dimensions",
+      desc: "Every measurement in one place — overall rise/run · treads · structure · balustrade",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3 L3 21 M3 6 L6 6 M3 10 L6 10 M3 14 L6 14 M3 18 L6 18 M21 21 L21 15 L15 15 L15 21 L21 21"/></svg>',
+      renderContent: (contentEl) => {
+        const dims = computeDimensions();
+        const wrap = document.createElement("div");
+        for (const group of dims) {
+          const g = document.createElement("div");
+          g.className = "dim-group";
+          const title = document.createElement("div");
+          title.className = "dim-group-title";
+          title.textContent = group.title;
+          g.appendChild(title);
+          const rows = document.createElement("div");
+          rows.className = "dim-rows";
+          for (const r of group.rows) {
+            const l = document.createElement("div"); l.className = "dim-label"; l.textContent = r.label;
+            const v = document.createElement("div"); v.className = "dim-value"; v.textContent = r.value;
+            rows.appendChild(l); rows.appendChild(v);
+          }
+          g.appendChild(rows);
+          wrap.appendChild(g);
+        }
+        contentEl.appendChild(wrap);
+      },
+    },
+    {
       id: "compliance",
       title: "Compliance & Regs",
       desc: "Live UK Doc K checks — rise · going · pitch · handrail · balusters · headroom",
@@ -2919,6 +2962,71 @@ window.addEventListener("resize", () => {
     if (sheet.classList.contains("open")) closeSheet();
     else if (drawer.classList.contains("open")) closeAll();
   });
+
+  // ── Dimensions engine ──
+  // Reads the module-scope geometry constants and returns grouped rows for
+  // the Dimensions sheet. Everything in millimetres — matches how UK joiners
+  // spec and communicate.
+  function computeDimensions() {
+    const mm = (m) => `${(m * 1000).toFixed(0)}mm`;
+    const overallRise    = RISE * RISES;
+    const overallGoing   = GOING * TREADS;
+    const planLength     = overallGoing + TREAD_DEPTH; // add final nosing
+    const pitchDeg       = (Math.atan2(RISE, GOING) * 180) / Math.PI;
+    const stringLength   = Math.hypot(overallGoing, overallRise);
+    return [
+      {
+        title: "Overall",
+        rows: [
+          { label: "Total rise (floor to floor)", value: mm(overallRise) },
+          { label: "Total going (horizontal)",    value: mm(overallGoing) },
+          { label: "Plan length (with nosing)",   value: mm(planLength) },
+          { label: "Pitch angle",                 value: `${pitchDeg.toFixed(1)}°` },
+          { label: "String length (pitched)",     value: mm(stringLength) },
+        ],
+      },
+      {
+        title: "Treads & risers",
+        rows: [
+          { label: "Number of rises",         value: `${RISES}` },
+          { label: "Number of treads",        value: `${TREADS}` },
+          { label: "Rise (individual)",       value: mm(RISE) },
+          { label: "Going (individual)",      value: mm(GOING) },
+          { label: "Nosing overhang",         value: mm(NOSING) },
+          { label: "Tread depth (with nosing)", value: mm(TREAD_DEPTH) },
+          { label: "Tread thickness",         value: mm(TREAD_THICK) },
+          { label: "Riser thickness",         value: mm(RISER_THICK) },
+        ],
+      },
+      {
+        title: "Structure",
+        rows: [
+          { label: "Staircase width (over strings)", value: mm(TREAD_WIDTH) },
+          { label: "String thickness",               value: mm(STRING_THICK) },
+          { label: "String depth (raw stock)",       value: mm(STRING_HEIGHT) },
+          { label: "Newel post size",                value: `${(NEWEL_SIZE * 1000).toFixed(0)}×${(NEWEL_SIZE * 1000).toFixed(0)}mm` },
+          { label: "Newel height (bottom)",          value: mm(NEWEL_HEIGHT_BOTTOM) },
+        ],
+      },
+      {
+        title: "Balustrade",
+        rows: [
+          { label: "Handrail height above pitch", value: "900mm" },
+          { label: "Baluster count per tread",    value: "2 (rule: minus 1 where a newel post is)" },
+          { label: "Baluster gap (max)",          value: "100mm (Doc K sphere rule)" },
+          { label: "Baluster profile",            value: "41×41×900mm chamfered (current UK standard)" },
+        ],
+      },
+      {
+        title: "Angle blocks & wedges",
+        rows: [
+          { label: "Angle blocks per tread",      value: `${ANGLE_BLOCK_COUNT} (rule: 2 up to 1000mm width, 3 above)` },
+          { label: "Angle block cross-section",   value: `${(ANGLE_BLOCK_SIZE * 1000).toFixed(0)}×${(ANGLE_BLOCK_SIZE * 1000).toFixed(0)}mm` },
+          { label: "Angle block length",          value: mm(ANGLE_BLOCK_LENGTH) },
+        ],
+      },
+    ];
+  }
 
   // ── UK Doc K compliance engine ──
   // References Approved Document K (Protection from falling, collision and
