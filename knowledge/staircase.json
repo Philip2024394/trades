@@ -24616,5 +24616,83 @@
     "source_verified_at": null,
     "fact_check_flag": null,
     "diagram": null
+  },
+  {
+    "id": "staircase-faq-1923",
+    "kind": "faq",
+    "question": "What is a 'climbable' balustrade and why is it a child-safety problem?",
+    "answer": "A balustrade design that gives a small child hand and foot holds — most commonly horizontal rails or wide horizontal glass fixings — so the balustrade itself becomes a ladder to the drop it was supposed to prevent. UK Approved Doc K guidance and most European codes therefore favour vertical spindles with the 100mm-sphere rule, and warn against horizontal or ranch-rail balustrades in homes with young children.",
+    "category_tag": "staircase",
+    "audience_level": 2,
+    "classification": "safety_advice",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
+  },
+  {
+    "id": "staircase-faq-1924",
+    "kind": "faq",
+    "question": "Why are horizontal-rail balustrades warned against on domestic staircases?",
+    "answer": "Because the horizontal members function as a climbing ladder for a child. A design that looks clean and architectural to the customer is a fall risk to a two-year-old. Vertical spindles at maximum 99mm centres (so a 100mm sphere cannot pass) are the safer default. If a horizontal rail balustrade is specified, the customer should be explicitly informed of the climbing risk and it should be documented in the specification.",
+    "category_tag": "staircase",
+    "audience_level": 2,
+    "classification": "safety_advice",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
+  },
+  {
+    "id": "staircase-faq-1925",
+    "kind": "faq",
+    "question": "What is an alternating-tread staircase and when is it used?",
+    "answer": "A space-saving stair where each tread is cut on alternating left/right halves, so the user climbs one foot per tread rather than one foot per step-plane. Legal only for loft access to a single habitable room under Doc K in the UK, never as a main staircase. Steep, harder to descend, and unsuitable for elderly or young children — a compromise design accepted only where a full staircase will not fit.",
+    "category_tag": "staircase",
+    "audience_level": 2,
+    "classification": "safety_advice",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
+  },
+  {
+    "id": "staircase-faq-1926",
+    "kind": "faq",
+    "question": "Should a staircase design consider a future stairlift installation?",
+    "answer": "Yes if the household is planning to age in place or serves an elderly resident. Considerations: minimum straight-run width for stairlift rail (typically 720mm clear on standard flights, more for curved), a plan for electrical supply at the top and bottom of the flight, and the choice of newel and handrail on the wall side that stairlift brackets can attach to. Retrofitting a stairlift onto a stair that ignored this is possible but expensive.",
+    "category_tag": "staircase",
+    "audience_level": 2,
+    "classification": "professional_recommendation",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
+  },
+  {
+    "id": "staircase-faq-1927",
+    "kind": "faq",
+    "question": "What accessibility considerations should a new staircase design include?",
+    "answer": "Handrails on both sides of the flight (not just one), contrast nosings on the tread edges for visually-impaired users, no open risers if any user has visual impairment (open risers cause disorientation), consistent stair pitch (never a mix of shallow and steep in the same run), and adequate warm lighting at both landings and along the flight. Not all mandatory in domestic Doc K but all reduce fall risk for older users.",
+    "category_tag": "staircase",
+    "audience_level": 2,
+    "classification": "safety_advice",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
+  },
+  {
+    "id": "staircase-faq-1928",
+    "kind": "faq",
+    "question": "Where do commercial staircase requirements differ from domestic Doc K?",
+    "answer": "Commercial buildings under Approved Doc K Category 1 (public buildings) and Doc M (accessibility) have stricter dimensions: minimum going 250mm (vs 220mm domestic), maximum pitch 38° (vs 42°), handrails on both sides mandatory, contrast strips on nosings, and specific requirements for landing dimensions and stair widths based on occupancy. A staircase designed to domestic Doc K cannot legally be used in a public building — different envelope, different quote.",
+    "category_tag": "staircase",
+    "audience_level": 3,
+    "classification": "safety_advice",
+    "safety_note": null,
+    "source_verified_at": null,
+    "fact_check_flag": null,
+    "diagram": null
   }
 ]
