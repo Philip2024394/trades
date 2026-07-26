@@ -30,18 +30,25 @@ import {
 } from "react";
 import {
   BadgeCheck,
+  Building2,
   Heart,
   Mail,
   MapPin,
   MessageCircle,
   Search,
   Share2,
+  ShoppingBag,
   SlidersHorizontal,
   Sparkles,
   Store,
+  Tag,
+  Users,
+  Wrench,
   X,
 } from "lucide-react";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
+import { DiagramCard } from "./DiagramCard";
+import type { BrainEntry } from "@/lib/nex/knowledge/retrieve";
 
 type ApiResponse = {
   ok: boolean;
@@ -99,6 +106,12 @@ function buildQuery(
   return params.toString();
 }
 
+// ── AskNex chat panel state ───────────────────────────────────────
+type AskNexReply = {
+  reply: string;
+  brain_matches: BrainEntry[];
+};
+
 export function NexCentreLiveFeed() {
   const [items, setItems] = useState<CentreFeedItem[]>([]);
   const [query, setQuery] = useState("");
@@ -112,6 +125,50 @@ export function NexCentreLiveFeed() {
   const [saved, setSaved] = useState<Set<string>>(new Set());
   const [emptyFallback, setEmptyFallback] = useState<CentreFeedItem[]>([]);
   const sentinelRef = useRef<HTMLDivElement>(null);
+
+  // AskNex chat panel state
+  const [askQuery, setAskQuery] = useState("");
+  const [askLoading, setAskLoading] = useState(false);
+  const [askReply, setAskReply] = useState<AskNexReply | null>(null);
+
+  const askNex = useCallback(async () => {
+    const q = askQuery.trim();
+    if (!q || askLoading) return;
+    setAskLoading(true);
+    try {
+      const res = await fetch("/api/nex/centre-search", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query: q,
+          postcode: filters.postcode.trim() || undefined,
+        }),
+      });
+      const data = await res.json();
+      setAskReply({
+        reply: data?.reply ?? "NEX couldn't find anything for that.",
+        brain_matches: Array.isArray(data?.brain_matches)
+          ? (data.brain_matches as BrainEntry[])
+          : [],
+      });
+      // Also drop the same query into the feed filter so cards below match
+      setQuery(q);
+    } catch {
+      setAskReply({
+        reply: "NEX is temporarily unavailable — please try again.",
+        brain_matches: [],
+      });
+    } finally {
+      setAskLoading(false);
+    }
+  }, [askQuery, askLoading, filters.postcode]);
+
+  const toggleHeroChip = useCallback((label: string) => {
+    setFilters((f) => ({
+      ...f,
+      category: f.category === label ? "" : label,
+    }));
+  }, []);
 
   // Debounce the search query (300ms) so keystrokes don't hammer the API.
   useEffect(() => {
@@ -232,7 +289,7 @@ export function NexCentreLiveFeed() {
 
   return (
     <div className="min-h-screen bg-[#faf7f2]">
-      {/* Header */}
+      {/* Sticky mini-header — always shows the tight search + filters */}
       <header className="sticky top-0 z-30 border-b border-black/5 bg-[#faf7f2]/95 backdrop-blur">
         <div className="mx-auto max-w-4xl px-4 py-3">
           <div className="flex items-center gap-2">
@@ -383,6 +440,161 @@ export function NexCentreLiveFeed() {
         </div>
       </header>
 
+      {/* Hero container — big image backdrop + ask NEX + quick chips */}
+      <section className="relative">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0"
+          style={{
+            height: 64,
+            background:
+              "linear-gradient(to bottom, #faf7f2 0%, transparent 100%)",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 top-0 pointer-events-none"
+          style={{
+            height: 400,
+            backgroundImage:
+              'url("https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2012_12_45%20AM.png")',
+            backgroundSize: "cover",
+            backgroundPosition: "left center",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: "#faf7f2",
+          }}
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0"
+          style={{
+            top: 260,
+            height: 160,
+            background:
+              "linear-gradient(to top, #faf7f2 25%, transparent 100%)",
+          }}
+        />
+        <div
+          className="relative mx-4 max-w-4xl rounded-[22px] border border-black/10 bg-white px-4 py-4 shadow-lg md:mx-auto"
+          style={{ marginTop: 250 }}
+        >
+          <div className="text-[10px] font-black uppercase tracking-[0.28em] text-orange-600">
+            NEX Trade Centre
+          </div>
+          <h2 className="mt-1 text-[22px] font-black leading-[1.08] tracking-tight text-black">
+            What are you looking for?
+          </h2>
+
+          {/* Ask NEX search bar */}
+          <div className="mt-3 flex items-center gap-2 rounded-full border border-black/10 bg-white pl-3.5 pr-1 py-1 shadow-sm">
+            <input
+              type="text"
+              value={askQuery}
+              onChange={(e) => setAskQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") void askNex();
+              }}
+              placeholder="Type a product, service, supplier or ask NEX…"
+              aria-label="Ask NEX"
+              className="min-w-0 flex-1 bg-transparent py-2 text-[12px] text-black placeholder:text-black/45 outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => void askNex()}
+              disabled={askLoading || !askQuery.trim()}
+              aria-label="Ask NEX"
+              className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 px-3 py-2 text-[11px] font-black text-white transition-transform active:scale-95 disabled:opacity-55"
+              style={{ boxShadow: "0 6px 16px -4px rgba(246,138,30,0.55)" }}
+            >
+              <Sparkles size={12} strokeWidth={2.5} />
+              {askLoading ? "Thinking…" : "AskNex"}
+            </button>
+          </div>
+
+          {/* NEX reply panel */}
+          {askReply && (
+            <div
+              className="mt-3 rounded-2xl border border-black/10 bg-gradient-to-br from-orange-50 to-white px-3 py-3"
+              style={{
+                boxShadow: "0 8px 22px -14px rgba(246,138,30,0.35)",
+              }}
+            >
+              <div className="flex items-start gap-2">
+                <span className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+                  <Sparkles size={11} strokeWidth={2.5} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="text-[9px] font-black uppercase tracking-[0.22em] text-orange-600">
+                    NEX
+                  </div>
+                  <p className="mt-0.5 text-[11.5px] leading-[1.5] text-black">
+                    {askReply.reply}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setAskReply(null)}
+                  aria-label="Dismiss"
+                  className="grid h-6 w-6 flex-shrink-0 place-items-center rounded-full border border-black/10 bg-white text-black/50"
+                >
+                  <X size={11} strokeWidth={2} />
+                </button>
+              </div>
+
+              {/* Educational diagrams from matched Brain entries */}
+              {(() => {
+                const seen = new Set<string>();
+                return askReply.brain_matches
+                  .filter(
+                    (m) =>
+                      m.diagram &&
+                      m.diagram.url &&
+                      !seen.has(m.diagram.url) &&
+                      (seen.add(m.diagram.url), true)
+                  )
+                  .map((m) => (
+                    <DiagramCard key={`diagram-${m.id}`} diagram={m.diagram!} />
+                  ));
+              })()}
+            </div>
+          )}
+
+          {/* Quick-filter chips */}
+          <div className="scrollbar-none mt-3 flex gap-2 overflow-x-auto">
+            <HeroChip
+              icon={ShoppingBag}
+              label="Products"
+              active={filters.category === "Products"}
+              onClick={() => toggleHeroChip("Products")}
+            />
+            <HeroChip
+              icon={Users}
+              label="Suppliers"
+              active={filters.category === "Suppliers"}
+              onClick={() => toggleHeroChip("Suppliers")}
+            />
+            <HeroChip
+              icon={Wrench}
+              label="Services"
+              active={filters.category === "Services"}
+              onClick={() => toggleHeroChip("Services")}
+            />
+            <HeroChip
+              icon={Building2}
+              label="Projects"
+              active={filters.category === "Projects"}
+              onClick={() => toggleHeroChip("Projects")}
+            />
+            <HeroChip
+              icon={Tag}
+              label="Deals"
+              active={filters.category === "Deals"}
+              onClick={() => toggleHeroChip("Deals")}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Feed */}
       <main className="mx-auto max-w-4xl px-3 py-4">
         {error && (
@@ -463,6 +675,33 @@ function MasonrySkeleton() {
         </div>
       ))}
     </Masonry>
+  );
+}
+
+function HeroChip({
+  icon: Icon,
+  label,
+  active,
+  onClick,
+}: {
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`inline-flex flex-none items-center gap-1.5 rounded-full border px-3 py-1.5 text-[11px] font-semibold transition-transform active:scale-95 ${
+        active
+          ? "border-orange-500 bg-orange-500 text-white"
+          : "border-black/10 bg-white text-black/70 hover:bg-black/5"
+      }`}
+    >
+      <Icon size={12} strokeWidth={2.5} />
+      {label}
+    </button>
   );
 }
 
