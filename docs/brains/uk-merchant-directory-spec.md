@@ -62,14 +62,19 @@ Each merchant record:
 
 ## Categories
 
-**`general_builders_merchant`** — Jewson, Travis Perkins, Huws Gray, Buildbase, MKM, Selco, Bradfords, Ridgeons, Robert Price
-**`timber_merchant`** — Howarth, International Timber, Arnold Laver, Timbmet, James Latham, James Jones & Sons, MGM, James Donaldson, Bury Timber, Champion Timber, Beesley & Fildes, Myers, Brooks Bros
-**`sheet_materials`** — Hanson Plywood, Robbins Timber
-**`fixings`** — Screwfix, Toolstation, TIMCO
-**`stair_specialist`** — Richard Burbidge, Cheshire Mouldings, StairBox
-**`stair_manufacturer`** — Neville Lumb, Staircraft, Complete Stair Systems, The Stair Factory, Elite Staircases, Pear Stairs, TK Stairs
-**`glass_balustrade`** — CRL (C.R. Laurence), Q-railing, F H Brundle, Balustrade Components
-**`metal`** — Aalco, Metal Supermarkets UK, Parker Steel
+**`general_builders_merchant`** — Jewson · Travis Perkins · Huws Gray · Buildbase · MKM · Selco · Bradfords · Ridgeons · Robert Price · Parker BS · Covers · Lawsons · Supreme · ANT · London Builders Merchants · Builder Depot · TBM · C&S · Haldane Fisher · JP Corry · MacBlair
+**`timber_merchant`** — Howarth · International Timber · Arnold Laver · Timbmet · James Jones & Sons · MGM · James Donaldson · Bury · Champion · Beesley & Fildes · Myers · Brooks Bros · Pontrilas · Lakeside · Staddons
+**`sheet_materials`** — James Latham · Hanson Plywood · Robbins Timber
+**`fixings`** — Screwfix · Toolstation · TIMCO
+**`stair_specialist`** — Richard Burbidge · Cheshire Mouldings · StairBox · Yorkshire Timber (Halifax) · Trade Stair Parts (Halstead)
+**`stair_manufacturer`** — Neville Lumb · Staircraft · Complete Stair Systems · The Stair Factory · Elite Staircases · Pear Stairs · TK Stairs
+**`glass_balustrade`** — CRL (C.R. Laurence) · Q-railing · F H Brundle · Balustrade Components
+**`metal`** — Aalco · Metal Supermarkets UK · Parker Steel
+**`tool_hire`** — HSS Hire · Speedy Hire · Travis Perkins Tool Hire · National Tool Hire Shops · RSD Tool Hire
+**`machinery_supplier`** — Record Power · Felder Group UK · Axminster Tools · SCM Group UK · Biesse UK · AXYZ · Multicam
+**`software_vendor`** — Autodesk (AutoCAD / Fusion 360) · Dassault Systèmes (SolidWorks) · StairDesigner · Compass Software · Consultec (Staircon)
+**`finishing_supplier`** — Osmo UK · Fiddes · Rubio Monocoat · Morrells · Bona · Sikkens
+**`ironmongery`** — Ironmongery Direct · Prima Ironmongery · IronmongeryOnline
 
 ## Staircase relevance rating
 
@@ -101,6 +106,16 @@ User describes project → NEX creates a categorised material list → matches e
 3. Screws + adhesive → fixings → Screwfix or Toolstation (local branch)
 4. Glass balustrade → glass specialist → CRL or Q-railing
 5. Stair parts → stair specialist → Richard Burbidge / Cheshire Mouldings (online + local trade counters)
+6. Finish → Osmo Polyx Oil or Fiddes hardwax oil (via any timber merchant carrying finishing lines)
+7. Handrail brackets → Ironmongery Direct (next-day delivery)
+8. Site tools (floor sander for tread refinishing, dust extractor) → HSS or Speedy Hire (local branch)
+
+**Example — workshop setup** — user says "starting a small staircase workshop":
+1. Small-tier machinery → Record Power · Axminster Tools
+2. Larger-tier machinery → Felder Group UK · SCM · Biesse
+3. Software → StairDesigner (calculations + drawings + CNC output for small workshop) or Compass / Staircon (industrial scale)
+4. Finishing kit → Osmo / Fiddes / Rubio Monocoat / Morrells
+5. Timber supply chain → Howarth / Arnold Laver / International Timber / regional independent depending on location
 
 ### Filter by service
 User needs delivery / trade account / cutting service → filter merchants by services block.
