@@ -18,6 +18,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { loadMerchantContextFromSession } from "@/lib/nex/merchant-assistant/contextLoader";
 import { executePublishProduct } from "@/lib/nex/merchant-assistant/toolExecutors";
+import { publishToFeed } from "@/lib/nex/centre-publishing";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -65,9 +66,22 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  // Centre-publishing step: register the newly-active product with
+  // the NEX Centre feed. Merchant opt-out via nex_centre_visible is
+  // honoured. Failure to register is non-fatal — the product is
+  // published either way; the centre feed simply omits it next read.
+  const feedResult = await publishToFeed({
+    canonicalId: productId,
+    merchantId: ctx.merchantId,
+  });
+
   return NextResponse.json({
     ok: true,
     product_id: productId,
     lifecycle_status: "active",
+    centre_feed: {
+      offer_ids_included: feedResult.offer_ids_included,
+      offer_ids_hidden: feedResult.offer_ids_hidden,
+    },
   });
 }
