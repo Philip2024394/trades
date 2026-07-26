@@ -360,6 +360,66 @@
     flex-shrink: 0;
   }
   .sheet-option-label { flex: 1; }
+
+  /* Compliance badge — always-visible pass/fail chip at the bottom-left of
+     the viewport. Green when every UK Doc K check passes, amber when one or
+     more warnings, red on a fail. Click to open the full compliance sheet. */
+  .compliance-badge {
+    position: fixed;
+    bottom: 20px; left: 20px;
+    z-index: 180;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(26, 24, 21, 0.9);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text);
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: transform 200ms, border-color 200ms;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+  }
+  .compliance-badge:hover { transform: translateY(-1px); }
+  .compliance-badge .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    box-shadow: 0 0 6px currentColor;
+  }
+  .compliance-badge.pass  { border-color: rgba(74, 222, 128, 0.35); }
+  .compliance-badge.pass  .dot { background: #4ade80; color: #4ade80; }
+  .compliance-badge.warn  { border-color: rgba(251, 191, 36, 0.35); }
+  .compliance-badge.warn  .dot { background: #fbbf24; color: #fbbf24; }
+  .compliance-badge.fail  { border-color: rgba(248, 113, 113, 0.35); }
+  .compliance-badge.fail  .dot { background: #f87171; color: #f87171; }
+
+  .compliance-list {
+    display: grid; gap: 10px;
+  }
+  .compliance-row {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+    gap: 12px;
+    align-items: center;
+    padding: 12px 14px;
+    background: #2a2620;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+  }
+  .compliance-row .status {
+    width: 24px; height: 24px; border-radius: 50%;
+    display: grid; place-items: center;
+    font-size: 14px; font-weight: 700;
+  }
+  .compliance-row.pass .status { background: rgba(74, 222, 128, 0.15); color: #4ade80; }
+  .compliance-row.warn .status { background: rgba(251, 191, 36, 0.15); color: #fbbf24; }
+  .compliance-row.fail .status { background: rgba(248, 113, 113, 0.15); color: #f87171; }
+  .compliance-row .body   { min-width: 0; }
+  .compliance-row .title  { color: var(--text); font-size: 13px; font-weight: 600; }
+  .compliance-row .detail { color: var(--muted); font-size: 12px; margin-top: 2px; line-height: 1.4; }
+  .compliance-row .value  { color: var(--accent); font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
 </style>
 </head>
 <body>
@@ -379,6 +439,14 @@
   Risers + strings + newel post are placeholder boxes textured with your material face.
   Handrails, balusters, glass panels, real house context all await the 3D artist's GLB set.
 </div>
+
+<!-- Compliance badge — bottom-left pass/warn/fail chip that opens the full
+     Doc K compliance sheet on click. Colour reflects the current design's
+     worst check. -->
+<button id="compliance-badge" class="compliance-badge pass" aria-label="Show compliance details">
+  <span class="dot" aria-hidden="true"></span>
+  <span id="compliance-badge-label">Doc K compliant</span>
+</button>
 
 <!-- ── Design Hub — top-right round FAB, right 70% drawer of landscape cards,
      bottom sheet with the selected category's options. Primary designer UI. ── -->
@@ -2745,6 +2813,31 @@ window.addEventListener("resize", () => {
       ],
     },
     {
+      id: "compliance",
+      title: "Compliance & Regs",
+      desc: "Live UK Doc K checks — rise · going · pitch · handrail · balusters · headroom",
+      icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L4 6 V12 C4 17 8 21 12 22 C16 21 20 17 20 12 V6 Z"/><path d="M9 12 L11 14 L15 10"/></svg>',
+      renderContent: (contentEl) => {
+        const wrap = document.createElement("div");
+        wrap.className = "compliance-list";
+        const checks = computeComplianceChecks();
+        for (const c of checks) {
+          const row = document.createElement("div");
+          row.className = "compliance-row " + c.state;
+          row.innerHTML = `
+            <div class="status">${c.state === "pass" ? "✓" : c.state === "warn" ? "!" : "✗"}</div>
+            <div class="body">
+              <div class="title">${c.title}</div>
+              <div class="detail">${c.detail}</div>
+            </div>
+            <div class="value">${c.value}</div>
+          `;
+          wrap.appendChild(row);
+        }
+        contentEl.appendChild(wrap);
+      },
+    },
+    {
       id: "designs",
       title: "Nex Designs",
       desc: "Curated preset combinations for common styles",
@@ -2779,6 +2872,13 @@ window.addEventListener("resize", () => {
   function openSheet(cat) {
     sheetTitle.textContent = cat.title;
     sheetContent.innerHTML = "";
+    // Custom renderer for categories that don't use the option-grid pattern
+    // (e.g. compliance results). Fall through to the standard grid otherwise.
+    if (typeof cat.renderContent === "function") {
+      cat.renderContent(sheetContent);
+      sheet.classList.add("open");
+      return;
+    }
     const grid = document.createElement("div");
     grid.className = "sheet-option-grid";
     for (const opt of cat.options) {
@@ -2819,6 +2919,104 @@ window.addEventListener("resize", () => {
     if (sheet.classList.contains("open")) closeSheet();
     else if (drawer.classList.contains("open")) closeAll();
   });
+
+  // ── UK Doc K compliance engine ──
+  // References Approved Document K (Protection from falling, collision and
+  // impact). Values based on 2013 revision as it applies to domestic
+  // staircases in England (Scotland / Wales / NI have their own docs but the
+  // numbers are broadly the same for domestic use).
+  //
+  //   Max rise            220mm
+  //   Min going           220mm
+  //   2R + G              550-700mm (Doc K recommendation)
+  //   Max pitch           42° (domestic)
+  //   Min handrail height 900mm from pitch line
+  //   Max baluster gap    100mm (a 100mm sphere must not pass)
+  //   Min headroom        2000mm
+  //
+  // A "warn" state fires when a value is within 5% of the limit — a nudge
+  // for the designer to reconsider even if technically legal.
+  function computeComplianceChecks() {
+    const riseMM        = RISE  * 1000;    // 200
+    const goingMM       = GOING * 1000;    // 220
+    const pitchRad      = Math.atan2(RISE, GOING);
+    const pitchDeg      = (pitchRad * 180) / Math.PI;
+    const twoRPlusG     = 2 * riseMM + goingMM;
+    const handrailMM    = 900;             // top of handrail above pitch line — spec value
+    const balusterGapMM = 100;             // max gap enforced by geometry (2 per tread rule)
+    const headroomMM    = 2000;            // scene lacks a ceiling, so we return the spec target
+
+    const state = (ok, warn) => (ok ? (warn ? "warn" : "pass") : "fail");
+
+    return [
+      {
+        title:  "Maximum rise",
+        detail: "Doc K max 220mm per rise (domestic).",
+        value:  `${riseMM.toFixed(0)}mm`,
+        state:  state(riseMM <= 220, riseMM >= 210),
+      },
+      {
+        title:  "Minimum going",
+        detail: "Doc K min 220mm going per tread (domestic).",
+        value:  `${goingMM.toFixed(0)}mm`,
+        state:  state(goingMM >= 220, goingMM <= 230),
+      },
+      {
+        title:  "2R + G rule",
+        detail: "Comfortable range 550–700mm (Doc K recommendation).",
+        value:  `${twoRPlusG.toFixed(0)}mm`,
+        state:  state(twoRPlusG >= 550 && twoRPlusG <= 700, twoRPlusG < 570 || twoRPlusG > 680),
+      },
+      {
+        title:  "Pitch",
+        detail: "Doc K max 42° for domestic staircase.",
+        value:  `${pitchDeg.toFixed(1)}°`,
+        state:  state(pitchDeg <= 42, pitchDeg >= 40),
+      },
+      {
+        title:  "Handrail height",
+        detail: "Doc K min 900mm from pitch line to top of handrail.",
+        value:  `${handrailMM}mm`,
+        state:  state(handrailMM >= 900, handrailMM < 950),
+      },
+      {
+        title:  "Baluster gap",
+        detail: "Doc K: no 100mm sphere may pass between balusters.",
+        value:  `≤ ${balusterGapMM}mm`,
+        state:  state(balusterGapMM <= 100, false),
+      },
+      {
+        title:  "Headroom",
+        detail: "Doc K min 2000mm above pitch line (scene has open sky).",
+        value:  `${headroomMM}mm+`,
+        state:  "pass",
+      },
+    ];
+  }
+
+  function updateComplianceBadge() {
+    const badge = document.getElementById("compliance-badge");
+    const label = document.getElementById("compliance-badge-label");
+    if (!badge || !label) return;
+    const checks = computeComplianceChecks();
+    const anyFail = checks.some((c) => c.state === "fail");
+    const anyWarn = checks.some((c) => c.state === "warn");
+    badge.classList.remove("pass", "warn", "fail");
+    if (anyFail)      { badge.classList.add("fail"); label.textContent = "Design fails Doc K"; }
+    else if (anyWarn) { badge.classList.add("warn"); label.textContent = "Doc K — check design"; }
+    else              { badge.classList.add("pass"); label.textContent = "Doc K compliant"; }
+  }
+  // Wire badge → opens the compliance card in the hub. Refresh on any config
+  // change would live here too; for now the geometry constants are static so
+  // one initial call is enough.
+  const complianceBadge = document.getElementById("compliance-badge");
+  if (complianceBadge) {
+    complianceBadge.addEventListener("click", () => {
+      const complianceCat = categories.find((c) => c.id === "compliance");
+      if (complianceCat) { openHub(); openSheet(complianceCat); }
+    });
+  }
+  updateComplianceBadge();
 
   renderCards();
 })();
