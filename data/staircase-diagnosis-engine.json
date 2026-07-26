@@ -1,0 +1,1984 @@
+[
+  {
+    "id": "diag-001",
+    "symptom": "Squeaky tread when walked on",
+    "customer_language": ["my stairs squeak", "one step is noisy", "the stairs creak when I walk on them"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Loose tread-to-string joint", "probability": "high", "why": "The tread has lifted slightly out of its housing in the string and rubs on each step." },
+      { "cause": "Failed wedge under the tread", "probability": "high", "why": "The pine wedge that locks the tread into the string housing has dried out or fallen away." },
+      { "cause": "Loose glue block at tread-riser corner", "probability": "medium", "why": "The angle block glued behind the joint has failed and the joint now flexes under load." },
+      { "cause": "Nosing rubbing on riser above", "probability": "low", "why": "Seasonal timber movement has closed the gap; the two surfaces rub." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the squeak worse in winter (when heating is on)?", "answer_maps_to": { "Yes": "Timber movement / shrinkage", "No": "Loose joint or wedge" } },
+      { "q": "Can you see a visible gap between the tread and the riser above it?", "answer_maps_to": { "Yes": "Loose tread joint", "No": "Wedge or glue block" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose tread-to-string joint", "diy": true, "difficulty": "moderate", "method": "Access the underside of the stair if possible. Apply wood glue into the gap between tread and string. Wedge or screw upward from below to close the joint. Clamp until dry." },
+      { "for_cause": "Failed wedge under the tread", "diy": true, "difficulty": "moderate", "method": "From underneath, remove the loose wedge, apply glue, drive a new pine wedge into the housing to tighten the tread. Cut off protruding wedge flush." },
+      { "for_cause": "Loose glue block at tread-riser corner", "diy": true, "difficulty": "easy", "method": "From underneath, re-glue any loose angle blocks. Add a new 60mm block with wood glue if the original is missing." }
+    ],
+    "when_to_call_professional": "If the stair has no accessible underside (closed under-stair storage), or if multiple treads squeak, call an installer to diagnose whether the whole flight needs re-wedging.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-001", "staircase-faq-102"]
+  },
+  {
+    "id": "diag-002",
+    "symptom": "Multiple treads squeak in cold weather",
+    "customer_language": ["stairs only squeak in winter", "noisier when the heating is on"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Seasonal timber shrinkage opening joint gaps", "probability": "high", "why": "Central heating dries the timber; gaps open at every joint and squeak under load." },
+      { "cause": "Insufficient wedging at manufacture", "probability": "medium", "why": "Marginal wedges only reveal themselves when shrinkage removes the last of the friction." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Do the squeaks disappear again in summer?", "answer_maps_to": { "Yes": "Seasonal shrinkage - not a defect", "No": "Structural loose joint" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Seasonal timber shrinkage opening joint gaps", "diy": true, "difficulty": "easy", "method": "Add a humidifier in the hallway during heating season to keep relative humidity above 40%. Squeaks typically reduce within 2-3 weeks." },
+      { "for_cause": "Insufficient wedging at manufacture", "diy": false, "difficulty": "hard", "method": "Installer re-wedges from underneath - not a homeowner job." }
+    ],
+    "when_to_call_professional": "If squeaks persist through spring and summer, the cause is structural not seasonal - call an installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1842"]
+  },
+  {
+    "id": "diag-003",
+    "symptom": "Newel post creaks when handrail is pressed",
+    "customer_language": ["newel creaks", "post at the bottom of the stairs makes a noise"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Loose newel base fixing", "probability": "high", "why": "The bolt or screw fixing the newel to the floor structure has slackened; movement produces the creak." },
+      { "cause": "Failed mortice-and-tenon joint at string", "probability": "medium", "why": "The string tenon in the newel mortice has dried and shrunk; the joint creaks under lateral load." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the newel visibly rock when you push it sideways?", "answer_maps_to": { "Yes": "Loose base fixing", "No": "String tenon joint" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose newel base fixing", "diy": true, "difficulty": "moderate", "method": "Access the fixing (may be under floorboards or in the newel base). Tighten the bolt or replace short screws with longer structural screws. Add wood glue at the joint face." },
+      { "for_cause": "Failed mortice-and-tenon joint at string", "diy": false, "difficulty": "hard", "method": "Requires bench-joinery repair - installer to re-fix with hidden reinforcement." }
+    ],
+    "when_to_call_professional": "If tightening the visible fixings does not stop the creak, call an installer - a loose newel is a handrail-safety issue.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1798", "staircase-faq-1799"]
+  },
+  {
+    "id": "diag-004",
+    "symptom": "Spindles rattle when someone walks past",
+    "customer_language": ["spindles rattle", "balusters loose", "clicking noise from banister"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Loose slips in the baserail or handrail groove", "probability": "high", "why": "The infill slips between spindles have shrunk or come loose; spindles now have play in the groove." },
+      { "cause": "Spindle shrinkage in the groove", "probability": "medium", "why": "Timber shrinkage has left the spindle loose in its housing." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you push a spindle sideways with your finger and see it move?", "answer_maps_to": { "Yes": "Loose slips or spindle housing", "No": "Different noise source" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose slips in the baserail or handrail groove", "diy": true, "difficulty": "easy", "method": "Remove the loose slip, apply wood glue, refit and pin with 23-gauge headless pin. Touch up any visible pin hole with filler." },
+      { "for_cause": "Spindle shrinkage in the groove", "diy": true, "difficulty": "moderate", "method": "Insert a small hardwood wedge into the groove alongside the spindle, glue and trim flush." }
+    ],
+    "when_to_call_professional": "If more than a few spindles are loose, call an installer - could indicate a wider balustrade fixing issue.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-005",
+    "symptom": "Ticking noise from stairs at night",
+    "customer_language": ["stairs tick", "clicking noise from staircase", "noise when no-one is walking"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Thermal expansion and contraction of timber", "probability": "high", "why": "The heating cycles on/off; timber components expand and contract at joints producing the tick." },
+      { "cause": "Pipe or heating system passing under stairs", "probability": "medium", "why": "The tick is from the pipework, not the stairs themselves." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the ticking follow the heating cycle (on/off)?", "answer_maps_to": { "Yes": "Thermal movement - normal", "No": "Structural or other source" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Thermal expansion and contraction of timber", "diy": true, "difficulty": "easy", "method": "Normal seasonal behaviour, no repair needed. Educating the household usually resolves the concern." }
+    ],
+    "when_to_call_professional": "If ticking becomes loud cracking or is accompanied by visible movement, call an installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1842", "staircase-faq-1867"]
+  },
+  {
+    "id": "diag-006",
+    "symptom": "Deep groan under weight in the middle of a flight",
+    "customer_language": ["stairs groan when I walk up", "loud noise mid-flight"],
+    "trade_category": "noise",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Under-supported stringer flexing under load", "probability": "high", "why": "The stringer is spanning too far without midspan support and flexes noticeably." },
+      { "cause": "Missing or failed midspan bracket", "probability": "medium", "why": "A midspan support bracket has come away from the wall." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you see the stair visibly deflect (dip) when someone walks up it?", "answer_maps_to": { "Yes": "Structural under-support - call installer immediately", "No": "Investigate loose fixings" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Under-supported stringer flexing under load", "diy": false, "difficulty": "hard", "method": "Requires structural assessment and installation of intermediate support - installer only." },
+      { "for_cause": "Missing or failed midspan bracket", "diy": false, "difficulty": "moderate", "method": "Installer re-fixes bracket into structural wall behind." }
+    ],
+    "when_to_call_professional": "Immediately. Visible deflection on a domestic stair indicates structural inadequacy.",
+    "safety_note": "If deflection is visible during use, limit stair use to essential trips only until inspected.",
+    "related_brain_entries": ["staircase-faq-1836"]
+  },
+  {
+    "id": "diag-007",
+    "symptom": "Squeak only on top step",
+    "customer_language": ["only the last step squeaks", "top of stairs makes noise"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Top nosing not fixed to landing", "probability": "high", "why": "The final tread nosing extends onto the landing floor but was never secured to it." },
+      { "cause": "Landing board loose at stair connection", "probability": "medium", "why": "The landing floorboard closest to the stair top has come loose from the trimmer joist." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you feel the landing board move when you press it?", "answer_maps_to": { "Yes": "Landing board loose", "No": "Nosing not fixed" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Top nosing not fixed to landing", "diy": true, "difficulty": "easy", "method": "Screw the top nosing down into the landing joist with two hidden countersunk screws, filled and finished." },
+      { "for_cause": "Landing board loose at stair connection", "diy": true, "difficulty": "moderate", "method": "Locate the joist through the loose board, fix with 60mm screws countersunk and filled." }
+    ],
+    "when_to_call_professional": "If unclear which board is moving, or the whole landing feels bouncy, call an installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1834", "staircase-faq-1830"]
+  },
+  {
+    "id": "diag-008",
+    "symptom": "Handrail creaks when gripped hard",
+    "customer_language": ["handrail creaks", "rail makes noise when I lean on it"],
+    "trade_category": "noise",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Loose handrail-to-newel joint", "probability": "high", "why": "The screw or bolt joining handrail to newel has slackened; the joint creaks under lateral load." },
+      { "cause": "Failed handrail wall bracket", "probability": "medium", "why": "A wall bracket has come loose in the plaster or fixings." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the creak come from a specific point along the handrail?", "answer_maps_to": { "At newel": "Handrail-to-newel joint", "At wall bracket": "Wall bracket", "Along length": "Handrail body joint" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose handrail-to-newel joint", "diy": true, "difficulty": "moderate", "method": "Access the joint fixing (may be through the newel top under a cap). Tighten the bolt, or add a hidden reinforcement screw. See loose-handrail entries for detail." },
+      { "for_cause": "Failed handrail wall bracket", "diy": true, "difficulty": "moderate", "method": "Remove bracket cover, replace short screws with longer structural screws into stud or masonry with correct plugs." }
+    ],
+    "when_to_call_professional": "If tightening does not stop the creak, or fixings pull straight out, call an installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1804", "staircase-faq-1806"]
+  },
+  {
+    "id": "diag-009",
+    "symptom": "Squeak from the bottom step only",
+    "customer_language": ["first step squeaks", "bottom of stairs is noisy"],
+    "trade_category": "noise",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Bullnose starting step not properly bedded on subfloor", "probability": "high", "why": "The starting step rests on an uneven subfloor without packers - flexes under load." },
+      { "cause": "Loose fixing to lower newel", "probability": "medium", "why": "The starting step joint to the newel has come loose." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the step feel like it moves as a whole unit, or just at one edge?", "answer_maps_to": { "Whole step moves": "Not bedded on subfloor", "One edge": "Loose fixing to newel" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Bullnose starting step not properly bedded on subfloor", "diy": true, "difficulty": "moderate", "method": "Lift the step or access from below if possible. Insert timber or plastic packers to bring it into solid contact with the subfloor. Refix." },
+      { "for_cause": "Loose fixing to lower newel", "diy": true, "difficulty": "moderate", "method": "Locate and tighten the newel-to-step fixing, or add a hidden reinforcement." }
+    ],
+    "when_to_call_professional": "If the step cannot be lifted safely, or the newel itself rocks, call an installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1795"]
+  },
+  {
+    "id": "diag-010",
+    "symptom": "Squeak that moves depending on where you step",
+    "customer_language": ["different squeaks all over the stairs", "noise moves around"],
+    "trade_category": "noise",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "General wedging failure across the whole flight", "probability": "high", "why": "The pine wedges under multiple treads have dried and released - the stair flexes at every joint." },
+      { "cause": "Insufficient original fixing across the flight", "probability": "medium", "why": "The staircase was under-fixed at installation; wear over time has revealed it." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the staircase more than 20 years old?", "answer_maps_to": { "Yes": "Age-related wedging failure", "No": "Installation defect" } }
+    ],
+    "repair_options": [
+      { "for_cause": "General wedging failure across the whole flight", "diy": false, "difficulty": "hard", "method": "Full re-wedge from underneath - installer job. Access via under-stair area; every joint refreshed with glue and new pine wedges." },
+      { "for_cause": "Insufficient original fixing across the flight", "diy": false, "difficulty": "hard", "method": "Installer assessment - may need refurbishment rather than repair." }
+    ],
+    "when_to_call_professional": "Yes - a whole-flight squeak pattern is not a homeowner-DIY job.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1878"]
+  },
+  {
+    "id": "diag-011",
+    "symptom": "Newel post wobbles when pushed sideways",
+    "customer_language": ["newel is loose", "post moves when I push it", "wobbly stair post"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Loose bolt or screw at newel base", "probability": "high", "why": "The structural fixing to the floor or joist has slackened." },
+      { "cause": "Rotten timber at floor line", "probability": "medium", "why": "Moisture damage (often historic) has weakened the timber the newel is fixed into." },
+      { "cause": "Wedges below newel base failed", "probability": "medium", "why": "Original pine wedges have released, newel is no longer bedded solidly." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is there visible water staining or soft timber at the newel base?", "answer_maps_to": { "Yes": "Rot - call installer", "No": "Loose fixing or wedge" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose bolt or screw at newel base", "diy": true, "difficulty": "moderate", "method": "Access fixing, tighten or upgrade to longer structural screw. Add glue at the joint face if bench-accessible." },
+      { "for_cause": "Rotten timber at floor line", "diy": false, "difficulty": "hard", "method": "Structural repair by installer - remove rotten section and splice new timber, or replace newel." },
+      { "for_cause": "Wedges below newel base failed", "diy": false, "difficulty": "moderate", "method": "Installer re-wedges the newel base from below." }
+    ],
+    "when_to_call_professional": "A loose newel is a handrail-safety issue. Fix within days, not weeks.",
+    "safety_note": "Warn all household members not to lean on the handrail heavily until the newel is re-secured.",
+    "related_brain_entries": ["staircase-faq-1800", "staircase-faq-1801"]
+  },
+  {
+    "id": "diag-012",
+    "symptom": "Handrail feels loose but I can't tell where",
+    "customer_language": ["shaky handrail", "handrail moves", "banister feels weak"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Loose newel post transmitting movement to handrail", "probability": "high", "why": "The newel is loose; the handrail attached to it inherits the movement." },
+      { "cause": "Handrail-to-newel joint has failed", "probability": "medium", "why": "The bolt or screw holding handrail to newel has come loose." },
+      { "cause": "Wall bracket has failed", "probability": "medium", "why": "The bracket fixing to the wall has come away from the substrate." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Walk the handrail slowly and press each section - where does it move?", "answer_maps_to": { "At newel end": "Newel or newel joint", "At wall": "Wall bracket", "Along length": "Handrail body joint" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose newel post", "diy": true, "difficulty": "moderate", "method": "See loose-newel diagnostic (diag-011)." },
+      { "for_cause": "Handrail-to-newel joint failed", "diy": true, "difficulty": "moderate", "method": "See loose-handrail repair options in brain entries 1804 and 1806." },
+      { "for_cause": "Wall bracket has failed", "diy": true, "difficulty": "moderate", "method": "Longer screws into structural wall; correct plugs for substrate." }
+    ],
+    "when_to_call_professional": "If diagnostic push-test does not identify the source, or the customer is uncomfortable working at height on the stair.",
+    "safety_note": "A wobbly handrail is a safety-critical defect - do not use it as primary support until repaired.",
+    "related_brain_entries": ["staircase-faq-1802", "staircase-faq-1806"]
+  },
+  {
+    "id": "diag-013",
+    "symptom": "Landing bounces underfoot",
+    "customer_language": ["landing feels bouncy", "spring in landing floor", "top of stairs moves"],
+    "trade_category": "movement",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Insufficient joists or missing noggins", "probability": "high", "why": "Landing framing spans too far without lateral bracing - deflects noticeably." },
+      { "cause": "Landing boards too thin for the span", "probability": "medium", "why": "Undersized boards flex individually even if the joists are correct." },
+      { "cause": "Poor fixing to joists", "probability": "medium", "why": "Screws missed the joists at installation." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the whole landing move together, or just individual boards?", "answer_maps_to": { "Whole landing": "Structural framing issue", "Individual boards": "Fixing or board thickness issue" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Insufficient joists or missing noggins", "diy": false, "difficulty": "hard", "method": "Structural repair - additional joists or noggins added from below. Installer or structural carpenter." },
+      { "for_cause": "Landing boards too thin", "diy": false, "difficulty": "moderate", "method": "Replace boards with correct-thickness stock." },
+      { "for_cause": "Poor fixing to joists", "diy": true, "difficulty": "moderate", "method": "Locate joists and re-fix boards with correct-length structural screws." }
+    ],
+    "when_to_call_professional": "Landing bounce on a new install is a defect the installer must fix. On older stairs, get structural inspection before use as heavy access route.",
+    "safety_note": "If the bounce is increasing over time, or accompanied by cracking sounds, stop use and inspect immediately.",
+    "related_brain_entries": ["staircase-faq-1830", "staircase-faq-1834"]
+  },
+  {
+    "id": "diag-014",
+    "symptom": "Whole staircase moves as one unit",
+    "customer_language": ["whole staircase moves", "entire flight is loose", "stairs feel unstable"],
+    "trade_category": "movement",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Failed fixing at top or bottom of stringers", "probability": "high", "why": "The stair is no longer positively connected to the floor structure at one end." },
+      { "cause": "Structural failure of trimmer joist", "probability": "medium", "why": "The joist that carries the top of the stair has failed or split." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you see or feel gaps opening between the stair top and the landing?", "answer_maps_to": { "Yes": "Failed fixing at stair head", "No": "Investigate lower end and trimmer" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Failed fixing at top or bottom of stringers", "diy": false, "difficulty": "hard", "method": "Installer to re-fix stringers to the structure with correct bolts or structural screws." },
+      { "for_cause": "Structural failure of trimmer joist", "diy": false, "difficulty": "hard", "method": "Structural carpenter or engineer - the joist needs strengthening or replacing." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "Do not use the staircase until inspected. Use an alternative route between floors.",
+    "related_brain_entries": ["staircase-faq-1806"]
+  },
+  {
+    "id": "diag-015",
+    "symptom": "Individual spindle can be pulled out by hand",
+    "customer_language": ["spindle came out", "loose baluster falling out"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Failed slip fixing", "probability": "high", "why": "The infill slips that lock the spindle in the baserail/handrail groove have come out." },
+      { "cause": "Original glue joint failure", "probability": "medium", "why": "The glue at the top or bottom of the spindle has released with age or timber movement." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Are the slips between spindles missing or loose?", "answer_maps_to": { "Yes": "Failed slip fixing", "No": "Glue joint failure" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Failed slip fixing", "diy": true, "difficulty": "easy", "method": "Refit spindle in groove, glue and refit slips either side with wood glue and 23-gauge pins." },
+      { "for_cause": "Original glue joint failure", "diy": true, "difficulty": "easy", "method": "Apply wood glue to both ends of spindle, refit into grooves, pin discreetly to hold while glue cures." }
+    ],
+    "when_to_call_professional": "If more than 2-3 spindles are loose, or if the whole balustrade feels weak.",
+    "safety_note": "A missing spindle is a fall risk - warn children and cover the gap until repaired.",
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-016",
+    "symptom": "Tread visibly rocks when stepped on",
+    "customer_language": ["step is loose", "tread rocks", "wobbly step"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Front nosing fixing failed", "probability": "high", "why": "The tread has lost its fixing at the front edge and pivots on the back." },
+      { "cause": "Tread lifted from string housing", "probability": "high", "why": "The tread has come out of its housing in the string on one or both sides." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you see a gap under the tread nosing when weight is off it?", "answer_maps_to": { "Yes": "Nosing fixing failed", "No": "String housing" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Front nosing fixing failed", "diy": true, "difficulty": "moderate", "method": "Screw down through the nosing into the riser below with countersunk screws, filled and finished." },
+      { "for_cause": "Tread lifted from string housing", "diy": false, "difficulty": "hard", "method": "Installer to re-seat and re-wedge from underneath." }
+    ],
+    "when_to_call_professional": "A rocking tread is a trip hazard - fix within days, not weeks.",
+    "safety_note": "Avoid the affected step until repaired if possible.",
+    "related_brain_entries": ["staircase-faq-1798"]
+  },
+  {
+    "id": "diag-017",
+    "symptom": "Glass balustrade panel wobbles in its channel",
+    "customer_language": ["glass panel loose", "wobbly glass on stairs"],
+    "trade_category": "movement",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Glass gasket or rubber setting has failed", "probability": "high", "why": "The rubber setting that grips the glass in the channel has degraded or dropped out." },
+      { "cause": "Channel fixings to stair have loosened", "probability": "medium", "why": "The channel itself is no longer solidly fixed to the stair." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the glass loose in the channel, or is the channel itself loose?", "answer_maps_to": { "Glass in channel": "Gasket failed", "Channel loose": "Channel fixings" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Glass gasket or rubber setting has failed", "diy": false, "difficulty": "moderate", "method": "Specialist glass installer replaces gasket - not a DIY job because glass handling is unforgiving." },
+      { "for_cause": "Channel fixings to stair have loosened", "diy": false, "difficulty": "moderate", "method": "Installer re-fixes channel and re-seats glass." }
+    ],
+    "when_to_call_professional": "Immediately - loose glass on a stair is a serious safety issue.",
+    "safety_note": "Do not lean on the glass panel until repaired. If children are in the household, restrict access to the stair.",
+    "related_brain_entries": ["staircase-faq-1868", "staircase-faq-1869"]
+  },
+  {
+    "id": "diag-018",
+    "symptom": "Handrail cap on top of newel is loose",
+    "customer_language": ["newel cap wobbly", "top of post is loose"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Glue on cap has failed", "probability": "high", "why": "The cap is normally glued and pinned to the newel top; glue can release over time." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the cap lift straight off, or just wobble?", "answer_maps_to": { "Lifts off": "Glue failed completely", "Wobbles": "Partial glue failure" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Glue on cap has failed", "diy": true, "difficulty": "easy", "method": "Remove cap, scrape old glue off both faces, re-glue with wood glue, clamp for 4 hours. Optional: add a discreet pin from the side." }
+    ],
+    "when_to_call_professional": "Only if the newel post itself is also loose (see diag-011).",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1865"]
+  },
+  {
+    "id": "diag-019",
+    "symptom": "Riser board rattles when a tread is stepped on",
+    "customer_language": ["riser is loose", "board behind step rattles"],
+    "trade_category": "movement",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Riser has come loose from tread groove above", "probability": "high", "why": "The riser tongue that fits into the groove under the tread has released." },
+      { "cause": "Angle blocks behind riser failed", "probability": "medium", "why": "The angle blocks that reinforce the tread-to-riser joint have failed." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you push the riser inward with a finger and feel it move?", "answer_maps_to": { "Yes": "Riser loose from tread or blocks", "No": "Different noise source" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Riser has come loose from tread groove above", "diy": true, "difficulty": "moderate", "method": "From underneath, apply glue and re-secure with angle blocks or a fixing into the tread." },
+      { "for_cause": "Angle blocks behind riser failed", "diy": true, "difficulty": "easy", "method": "From underneath, re-glue any loose blocks or add new 60mm angle blocks with wood glue." }
+    ],
+    "when_to_call_professional": "If underside is not accessible.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1786"]
+  },
+  {
+    "id": "diag-020",
+    "symptom": "Whole balustrade panel section moves as one",
+    "customer_language": ["balustrade is loose", "banister section moves together"],
+    "trade_category": "movement",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Newel fixing at one end has failed", "probability": "high", "why": "One of the newels bracketing the panel is loose; whole balustrade transmits the movement." },
+      { "cause": "Baserail or handrail fixing has failed", "probability": "medium", "why": "The horizontal members are no longer fixed to the newel at one end." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Which newel is loose - top, bottom, or both?", "answer_maps_to": { "One newel": "Newel fixing", "Both": "Whole flight movement (see diag-014)" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Newel fixing at one end has failed", "diy": true, "difficulty": "moderate", "method": "See loose-newel repair (diag-011)." },
+      { "for_cause": "Baserail or handrail fixing has failed", "diy": true, "difficulty": "moderate", "method": "Tighten or replace fixings between horizontal member and newel." }
+    ],
+    "when_to_call_professional": "If the whole flight moves (both newels loose), stop use and call an installer immediately.",
+    "safety_note": "Balustrade is a fall prevention system - a loose panel is a safety-critical defect.",
+    "related_brain_entries": ["staircase-faq-1806"]
+  },
+  {
+    "id": "diag-021",
+    "symptom": "Cracked riser board",
+    "customer_language": ["riser is cracked", "split in stair board"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Impact damage", "probability": "high", "why": "Something has struck the riser - vacuum, footwear, moving furniture." },
+      { "cause": "Timber movement crack", "probability": "medium", "why": "Seasonal shrinkage has cracked a wide solid-timber riser." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the crack a clean split, or splintered?", "answer_maps_to": { "Clean split": "Timber movement", "Splintered": "Impact damage" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Impact damage", "diy": true, "difficulty": "moderate", "method": "Small cracks: fill with matching wood filler, sand, touch up finish. Large cracks: replace the riser." },
+      { "for_cause": "Timber movement crack", "diy": true, "difficulty": "moderate", "method": "Fill with wood filler that accepts finish. Prime and paint if painted; touch up lacquer if clear-finished." }
+    ],
+    "when_to_call_professional": "If the riser needs replacing (rather than filling) - fitting a new painted or veneer-matched riser is a joinery job.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1874"]
+  },
+  {
+    "id": "diag-022",
+    "symptom": "Split at end of a tread",
+    "customer_language": ["stair tread split", "crack in step"],
+    "trade_category": "damage",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Wedge behind tread has forced the timber to split", "probability": "high", "why": "Over-driven wedge has caused a longitudinal split along the tread." },
+      { "cause": "Over-fixing at manufacture", "probability": "medium", "why": "Screw too close to the edge has split the timber." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the split at the front nosing or at the back (against the riser above)?", "answer_maps_to": { "Front nosing": "Load damage", "Back edge": "Wedge or fixing damage" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Wedge or fixing damage", "diy": true, "difficulty": "moderate", "method": "Glue and clamp the split closed with a sash clamp. Fill hairline residue. Refinish." },
+      { "for_cause": "Front nosing damage", "diy": false, "difficulty": "hard", "method": "Consider replacing the tread - a split nosing under load is a safety issue." }
+    ],
+    "when_to_call_professional": "If the split extends across more than half the tread width, or the tread flexes under load.",
+    "safety_note": "A split tread near the nosing is a fall risk - avoid the step if possible until inspected.",
+    "related_brain_entries": ["staircase-faq-1798"]
+  },
+  {
+    "id": "diag-023",
+    "symptom": "Newel cap has split",
+    "customer_language": ["cap on top of post cracked"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Timber shrinkage in the cap", "probability": "high", "why": "Solid-timber cap has cracked as it dried out with central heating." },
+      { "cause": "Impact damage", "probability": "medium", "why": "Something struck the cap." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Timber shrinkage in the cap", "diy": true, "difficulty": "easy", "method": "Fill crack with wood filler, sand, refinish. Or replace the cap with a new matching one." },
+      { "for_cause": "Impact damage", "diy": true, "difficulty": "easy", "method": "Fill and refinish, or replace." }
+    ],
+    "when_to_call_professional": "If the cap is one-of-a-kind or matching new caps is difficult.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1874"]
+  },
+  {
+    "id": "diag-024",
+    "symptom": "Dented or crushed tread nosing",
+    "customer_language": ["dented step edge", "nosing damaged"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Impact damage (dropped object)", "probability": "high", "why": "Heavy object dropped on the nosing." },
+      { "cause": "Furniture moving damage", "probability": "medium", "why": "Furniture edge dragged across the nosing." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Impact damage or furniture damage", "diy": true, "difficulty": "moderate", "method": "Small dents: steam-raise the fibre with damp cloth and hot iron, then sand smooth and refinish. Deep dents: fill with matching wood filler." }
+    ],
+    "when_to_call_professional": "If the whole nosing needs replacing, or the tread is a hardwood with complex grain matching.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1857"]
+  },
+  {
+    "id": "diag-025",
+    "symptom": "Water stain on tread",
+    "customer_language": ["water mark on stairs", "stained step"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Spilled water penetrated finish", "probability": "high", "why": "Water sat on the tread long enough to penetrate the lacquer or oil." },
+      { "cause": "Historic leak from above", "probability": "low", "why": "Water damage from an old plumbing leak." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the stain from a recent spill or from historic damage?", "answer_maps_to": { "Recent": "Surface stain - repairable", "Historic": "Deeper penetration - may need replacement" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Spilled water penetrated finish", "diy": true, "difficulty": "moderate", "method": "Light stain: sand with 240 grit, refinish. Deep stain: oxalic-acid stain remover, then sand and refinish. Test in inconspicuous area first." }
+    ],
+    "when_to_call_professional": "If stain is deep, wide, or the tread has bowed from water damage.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-026",
+    "symptom": "Rot at bottom of stringer or newel",
+    "customer_language": ["stringer is rotten", "post has rot at bottom", "soft timber"],
+    "trade_category": "damage",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Long-term moisture ingress at floor level", "probability": "high", "why": "Water tracking under skirting or from an old leak has rotted the timber over years." },
+      { "cause": "Direct water contact (external stairs)", "probability": "medium", "why": "External or partially external stair exposed to rain." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Can you push a screwdriver into the timber easily?", "answer_maps_to": { "Yes": "Advanced rot - safety issue", "No": "Surface staining only" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Long-term moisture ingress or direct water contact", "diy": false, "difficulty": "hard", "method": "Structural repair by carpenter - cut back to sound timber and splice in new section, or replace whole component. Address the moisture source first or the repair will fail again." }
+    ],
+    "when_to_call_professional": "Immediately - rot in a load-bearing component is a structural failure risk.",
+    "safety_note": "Do not use the staircase for heavy loads until inspected. Identify and stop the water source before repair.",
+    "related_brain_entries": ["staircase-faq-1793"]
+  },
+  {
+    "id": "diag-027",
+    "symptom": "Deep scratch across a tread",
+    "customer_language": ["scratched stair", "scratch on step"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Furniture or heavy object dragged", "probability": "high", "why": "Sharp edge dragged across the finish." },
+      { "cause": "Pet claws or shoe damage", "probability": "medium", "why": "Repeated wear at a specific location." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the scratch through the finish only, or into the wood?", "answer_maps_to": { "Finish only": "Refinish", "Into wood": "Fill or replace" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Furniture or heavy object dragged", "diy": true, "difficulty": "moderate", "method": "Light scratch: rub with matching-colour wax stick. Deep scratch: fill with wood filler colour-matched to species, sand, refinish that area." },
+      { "for_cause": "Pet claws or shoe damage", "diy": true, "difficulty": "moderate", "method": "Same repair; consider protective runner or nosing strip in high-wear areas." }
+    ],
+    "when_to_call_professional": "If the whole tread needs refinishing, or the scratch pattern indicates the finish is generally failing.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1857"]
+  },
+  {
+    "id": "diag-028",
+    "symptom": "Chip out of glass balustrade edge",
+    "customer_language": ["glass panel chipped", "chip in glass balustrade"],
+    "trade_category": "damage",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Impact damage (usually during furniture move)", "probability": "high", "why": "Object struck the glass edge." },
+      { "cause": "Manufacturing defect revealing under load", "probability": "low", "why": "Latent edge damage from cutting has propagated." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the chip on the edge only, or has a crack propagated into the face?", "answer_maps_to": { "Edge only": "Monitor - may be usable temporarily", "Crack in face": "Replace immediately" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Impact damage or manufacturing defect", "diy": false, "difficulty": "hard", "method": "Glass panels cannot be repaired - replace the panel. Specialist glass supplier with the original spec." }
+    ],
+    "when_to_call_professional": "Immediately. A chipped edge can propagate into full panel failure.",
+    "safety_note": "Toughened glass fails suddenly and completely. Do not lean on the affected panel until replaced.",
+    "related_brain_entries": ["staircase-faq-1868"]
+  },
+  {
+    "id": "diag-029",
+    "symptom": "Handrail surface has become rough",
+    "customer_language": ["handrail feels rough", "rail is not smooth anymore"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Finish has worn through in high-touch areas", "probability": "high", "why": "Years of hand contact has worn the lacquer or oil away." },
+      { "cause": "UV damage from strong direct sunlight", "probability": "medium", "why": "Sun exposure has degraded the finish." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Finish worn through or UV damage", "diy": true, "difficulty": "moderate", "method": "Light sand with 240 grit along the grain, clean thoroughly, apply matching finish. Oil finishes are easier to spot-repair than lacquer." }
+    ],
+    "when_to_call_professional": "If the whole handrail needs refinishing, or a lacquer finish is desired (spray application).",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1866"]
+  },
+  {
+    "id": "diag-030",
+    "symptom": "Small burn mark on tread",
+    "customer_language": ["burn mark on stairs", "scorch on step"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Cigarette or hot object contact", "probability": "high", "why": "Something hot rested on the finish." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Cigarette or hot object contact", "diy": true, "difficulty": "moderate", "method": "Light burn: sand out with 240 grit and refinish. Deep burn (into wood): drill out, fill with matching filler, sand and refinish." }
+    ],
+    "when_to_call_professional": "If the burn is deep and species matching is difficult (e.g. walnut).",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-031",
+    "symptom": "Split at end of skirting where it meets stair string",
+    "customer_language": ["gap between skirting and stairs", "skirting joint split"],
+    "trade_category": "damage",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Poor original mitre or scribe", "probability": "high", "why": "The joint was never neat because it was not planned pre-manufacture (see brain entry 1838)." },
+      { "cause": "Timber movement has opened joint", "probability": "medium", "why": "Seasonal movement has opened a joint that was originally tight." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Poor original mitre or timber movement", "diy": true, "difficulty": "easy", "method": "Fill gap with decorator's caulk (paintable acrylic) matched to the paint colour. Simple cosmetic fix." }
+    ],
+    "when_to_call_professional": "If the join is fundamentally wrong (skirting cuts against a string that was not prepared) - carpenter to rework the detail.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1838", "staircase-faq-1841"]
+  },
+  {
+    "id": "diag-032",
+    "symptom": "Loose or missing nail head on tread surface",
+    "customer_language": ["nail sticking out of stairs", "pin popping through"],
+    "trade_category": "damage",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Original pin fixing has worked loose", "probability": "high", "why": "Timber movement has ejected the pin." },
+      { "cause": "Under-driven pin at manufacture", "probability": "medium", "why": "Original fixing was never fully seated." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Original pin fixing has worked loose", "diy": true, "difficulty": "easy", "method": "Punch the pin below the surface with a nail punch. Fill the hole with matching wood filler. Refinish that spot." }
+    ],
+    "when_to_call_professional": "If multiple pins are working out across the flight - indicates a wider fixing issue.",
+    "safety_note": "A protruding pin is a foot injury risk - repair the same day if barefoot use is normal.",
+    "related_brain_entries": ["staircase-faq-1865"]
+  },
+  {
+    "id": "diag-033",
+    "symptom": "Peeling paint on stringer",
+    "customer_language": ["paint flaking off stairs", "stringer paint peeling"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Poor surface preparation at original paint", "probability": "high", "why": "The stringer was not primed or sanded properly before painting." },
+      { "cause": "Wrong paint type over unsuitable substrate", "probability": "medium", "why": "Waterborne paint applied over old oil-based paint without correct primer." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Poor prep or wrong paint type", "diy": true, "difficulty": "moderate", "method": "Scrape peeling paint back to solid edge. Sand smooth. Apply appropriate primer (adhesion primer if unsure of substrate). Re-paint with 2 coats of quality water-based satin or eggshell." }
+    ],
+    "when_to_call_professional": "If large areas are affected, or the paint is coming off in sheets.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-034",
+    "symptom": "Faded stain on tread edges",
+    "customer_language": ["stain fading", "colour going lighter"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "UV damage from window sunlight", "probability": "high", "why": "Direct sunlight over months or years has bleached the stain." },
+      { "cause": "Wear from foot traffic on stain-only finish", "probability": "medium", "why": "Stain alone with no protective topcoat wears with use." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "UV damage or wear", "diy": true, "difficulty": "moderate", "method": "Light sand, apply matching stain to blend, then apply UV-resistant topcoat (hardwax oil with UV inhibitor, or UV-protective lacquer)." }
+    ],
+    "when_to_call_professional": "If the whole flight needs re-staining (large job, better with spray gun and controlled environment).",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1863"]
+  },
+  {
+    "id": "diag-035",
+    "symptom": "Sticky varnish finish",
+    "customer_language": ["stairs feel sticky", "lacquer tacky"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Finish never fully cured", "probability": "high", "why": "Applied too thick, or in wrong temperature / humidity - finish did not cross-link fully." },
+      { "cause": "Household cleaner has reacted with finish", "probability": "medium", "why": "Wrong cleaning product has left a sticky residue." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Was the finish applied recently, or has it been fine for years and just become sticky?", "answer_maps_to": { "Recent": "Uncured finish", "Years": "Cleaner reaction" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Finish never fully cured", "diy": false, "difficulty": "hard", "method": "Sand back to bare timber and refinish - uncured finish cannot be recovered by adding more." },
+      { "for_cause": "Household cleaner has reacted with finish", "diy": true, "difficulty": "easy", "method": "Wipe with white spirit on a rag, then clean with mild soapy water. Test on inconspicuous area first." }
+    ],
+    "when_to_call_professional": "If the finish needs stripping and reapplying.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1864"]
+  },
+  {
+    "id": "diag-036",
+    "symptom": "White ring or watermark on lacquered tread",
+    "customer_language": ["water mark on stairs", "cloudy patch"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Moisture trapped under lacquer", "probability": "high", "why": "Water sat long enough to penetrate the finish and become trapped in the microstructure." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Moisture trapped under lacquer", "diy": true, "difficulty": "easy", "method": "Cover with cloth and apply hot iron for a few seconds at a time - heat draws moisture out. If persistent, light sand and refinish that patch." }
+    ],
+    "when_to_call_professional": "If deep water has bowed the timber underneath.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-037",
+    "symptom": "Yellow discolouration in white paint",
+    "customer_language": ["white paint gone yellow", "stairs discoloured"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Oil-based paint yellowing with age (normal)", "probability": "high", "why": "Oil-based whites yellow over years, especially in low-light areas." },
+      { "cause": "Tannin bleed from underlying timber", "probability": "medium", "why": "Oak tannins have bled through inadequate primer." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the yellowing worse in shadow areas or on oak substrate?", "answer_maps_to": { "Shadow areas": "Age yellowing", "Oak substrate": "Tannin bleed" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Oil-based paint yellowing", "diy": true, "difficulty": "moderate", "method": "Sand lightly, prime with stain-block primer, repaint with modern water-based white (does not yellow)." },
+      { "for_cause": "Tannin bleed", "diy": true, "difficulty": "moderate", "method": "Sand back to primer, apply oil-based stain-block primer, then repaint." }
+    ],
+    "when_to_call_professional": "If the whole staircase needs stripping.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-038",
+    "symptom": "Oil finish looking dry and thirsty",
+    "customer_language": ["oil finish dry", "stairs need feeding"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Normal wear - oil needs periodic refresh", "probability": "high", "why": "Hardwax oil and Danish oil need re-application every 2-5 years in high-wear areas." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Normal wear", "diy": true, "difficulty": "easy", "method": "Clean thoroughly, light key with 240 grit, apply thin coat of matching oil with lint-free cloth. Wipe off excess. Cure 12 hours." }
+    ],
+    "when_to_call_professional": "Not usually - oil refresh is one of the easiest maintenance jobs.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1866"]
+  },
+  {
+    "id": "diag-039",
+    "symptom": "Visible glue squeeze-out on finished timber",
+    "customer_language": ["glue marks on stairs", "yellow patches on finish"],
+    "trade_category": "finish",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Installer did not clean glue before finish", "probability": "high", "why": "Wood glue left on timber blocks finish absorption - shows as different colour patch." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Installer error", "diy": true, "difficulty": "moderate", "method": "Sand back to bare timber in the affected area, apply matching finish. Small patches blend well; large patches show." }
+    ],
+    "when_to_call_professional": "If this is on a new installation - it is an installer defect they should return to correct under warranty.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1877", "staircase-faq-1874"]
+  },
+  {
+    "id": "diag-040",
+    "symptom": "Uneven sheen across the finish",
+    "customer_language": ["shiny patches and dull patches", "finish looks patchy"],
+    "trade_category": "finish",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Inadequate sanding before finish", "probability": "high", "why": "Different sanding grits absorbed finish differently - the pattern shows through." },
+      { "cause": "Finish applied in different conditions", "probability": "medium", "why": "Some sections applied at different temperature or humidity, cured to different sheen." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Inadequate sanding or inconsistent application", "diy": false, "difficulty": "hard", "method": "Best fixed by full re-sand and consistent re-application - spray-booth finish is more consistent than brush." }
+    ],
+    "when_to_call_professional": "Yes, unless the customer is happy to live with the patchiness. Full refinish is a workshop-level job.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1876"]
+  },
+  {
+    "id": "diag-041",
+    "symptom": "Sun damage on treads near a stairwell window",
+    "customer_language": ["stairs faded by sun", "colour uneven near window"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "UV bleaching of timber and finish", "probability": "high", "why": "Direct sunlight over years bleaches natural timber colour and degrades finish." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "UV bleaching", "diy": true, "difficulty": "hard", "method": "Sand back to bare timber, apply UV-protective finish (UV-inhibitor oil or UV lacquer). Prevention: window film or blinds on the stairwell window." }
+    ],
+    "when_to_call_professional": "Full flight refinish is a workshop-level job.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1863"]
+  },
+  {
+    "id": "diag-042",
+    "symptom": "Filler visible under paint on riser",
+    "customer_language": ["patches showing under paint", "filler shows through"],
+    "trade_category": "finish",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Filler was not primed before top coat", "probability": "high", "why": "Filler absorbs paint differently to timber - shows as a patch unless primed." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Unprimed filler", "diy": true, "difficulty": "easy", "method": "Prime the whole riser with a decent primer, then two coats of finish paint." }
+    ],
+    "when_to_call_professional": "If this is on a new install, the decorator should return to correct.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1866"]
+  },
+  {
+    "id": "diag-043",
+    "symptom": "Stringer sagging visibly along the flight",
+    "customer_language": ["stringer bowing", "staircase side is bent"],
+    "trade_category": "structural",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Undersized stringer for the span", "probability": "high", "why": "The stringer was too thin or shallow for the flight length; it has deflected over years of load." },
+      { "cause": "Rot or insect damage reducing structural section", "probability": "medium", "why": "Hidden rot has weakened the stringer." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the sag more than 15mm across the flight?", "answer_maps_to": { "Yes": "Structural failure - do not use", "No": "Monitor and inspect" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Undersized stringer or rot", "diy": false, "difficulty": "hard", "method": "Structural repair by carpenter or engineer - additional stringer added, or full replacement." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "A sagging stringer is a structural failure. Stop use until inspected.",
+    "related_brain_entries": ["staircase-faq-1836"]
+  },
+  {
+    "id": "diag-044",
+    "symptom": "Crack across landing near stair head",
+    "customer_language": ["crack in landing floor", "split in floorboard at top of stairs"],
+    "trade_category": "structural",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Under-supported landing joist", "probability": "high", "why": "The joist has flexed past its elastic limit and cracked." },
+      { "cause": "Impact damage or historic overload", "probability": "medium", "why": "Something heavy has been dropped or a very heavy object was moved across the landing." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the crack in a board or in the joist below it?", "answer_maps_to": { "Board": "Cosmetic - replace board", "Joist": "Structural - call engineer" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Under-supported joist", "diy": false, "difficulty": "hard", "method": "Structural repair - add joist or sister the failing joist. Engineer assessment first." },
+      { "for_cause": "Cracked board", "diy": true, "difficulty": "moderate", "method": "Replace the individual board." }
+    ],
+    "when_to_call_professional": "If uncertain whether the crack is board-only or structural.",
+    "safety_note": "If bounce accompanies the crack, stop use of the landing until inspected.",
+    "related_brain_entries": ["staircase-faq-1830"]
+  },
+  {
+    "id": "diag-045",
+    "symptom": "Floating staircase cantilever bracket appears to be pulling out of wall",
+    "customer_language": ["floating stairs pulling away", "cantilever loose"],
+    "trade_category": "structural",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Wall structure inadequate for cantilever load", "probability": "high", "why": "Bracket was fixed to wall that cannot carry cantilever moment - fixings pulling out." },
+      { "cause": "Fixings undersized for design load", "probability": "medium", "why": "Insufficient number or size of structural bolts." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any cause", "diy": false, "difficulty": "hard", "method": "Structural engineer assessment required. Cantilever stairs need structural inspection - never a DIY fix." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "Stop using the staircase. Cantilever failure can be sudden and complete.",
+    "related_brain_entries": ["staircase-faq-1811"]
+  },
+  {
+    "id": "diag-046",
+    "symptom": "Gap between staircase and wall has opened over time",
+    "customer_language": ["gap by the wall", "stairs pulled away from wall"],
+    "trade_category": "structural",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Building movement (subsidence or settlement)", "probability": "medium", "why": "The building has moved; the staircase is fixed to the floor, not the wall." },
+      { "cause": "Original install left small gap that seasonal movement has enlarged", "probability": "high", "why": "Marginal initial fit has revealed itself over years." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Are other parts of the house showing new cracks?", "answer_maps_to": { "Yes": "Building movement - call surveyor", "No": "Cosmetic staircase gap" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Cosmetic gap", "diy": true, "difficulty": "easy", "method": "Fill with decorator's caulk, paint over. Cosmetic only." },
+      { "for_cause": "Building movement", "diy": false, "difficulty": "hard", "method": "Structural surveyor - understand cause before treating symptom." }
+    ],
+    "when_to_call_professional": "If accompanied by other signs of building movement, call a surveyor.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1846"]
+  },
+  {
+    "id": "diag-047",
+    "symptom": "Concrete stair edge chipping",
+    "customer_language": ["concrete stair damaged", "concrete edges crumbling"],
+    "trade_category": "structural",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Freeze-thaw damage (external stairs)", "probability": "high", "why": "Water penetrated concrete, froze, spalled the edges." },
+      { "cause": "Impact damage", "probability": "medium", "why": "Heavy objects dropped on edge." },
+      { "cause": "Poor concrete mix", "probability": "low", "why": "Original concrete was under-strength." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Chip out loose material back to sound concrete. Apply bonding agent. Rebuild edge with concrete repair mortar. Seal against water penetration." }
+    ],
+    "when_to_call_professional": "If large sections are failing, or exposed reinforcement is visible - call structural repair specialist.",
+    "safety_note": "Broken concrete edges are trip hazards - mark or restrict access until repaired.",
+    "related_brain_entries": ["staircase-faq-1616"]
+  },
+  {
+    "id": "diag-048",
+    "symptom": "Steel stringer showing rust bloom",
+    "customer_language": ["rust on metal stairs", "steel corroding"],
+    "trade_category": "structural",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Coating breakdown (external or moist environment)", "probability": "high", "why": "Powder coat or paint has broken down; moisture is corroding underlying steel." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the rust surface bloom, or has it eaten into the steel?", "answer_maps_to": { "Surface bloom": "Recoat", "Deep pitting": "Structural inspection" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Surface bloom", "diy": true, "difficulty": "moderate", "method": "Wire-brush rust back to bright metal, apply rust converter, prime and repaint with metal paint." },
+      { "for_cause": "Deep pitting", "diy": false, "difficulty": "hard", "method": "Structural inspection - may need welded repair or replacement." }
+    ],
+    "when_to_call_professional": "If rust is deep, or the stair carries significant load.",
+    "safety_note": "External stairs with visible rust should be inspected before heavy use.",
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-049",
+    "symptom": "Trimmer joist above stair opening cracked",
+    "customer_language": ["joist cracked", "beam above stairs split"],
+    "trade_category": "structural",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Undersized joist for the trimmer load", "probability": "high", "why": "Joist carries stair load plus floor load above - cannot handle both if under-specified." },
+      { "cause": "Cut or notch weakened joist during services install", "probability": "medium", "why": "Electrical or plumbing cut through the joist; failure over time." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Structural engineer inspection mandatory. Sister the joist, replace, or reinforce as engineer specifies." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "A cracked trimmer supports the stair opening AND the floor above. Stop use of both until inspected.",
+    "related_brain_entries": ["staircase-faq-1832"]
+  },
+  {
+    "id": "diag-050",
+    "symptom": "Cantilever tread has visible deflection",
+    "customer_language": ["floating step sags", "cantilever tread bends"],
+    "trade_category": "structural",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Steel cantilever pin bending under load", "probability": "high", "why": "The steel pin embedded in the wall is not strong enough for the tread load." },
+      { "cause": "Wall structure cannot resist cantilever moment", "probability": "medium", "why": "The wall itself is deflecting where the pin embeds." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Structural engineer assessment. Cantilever staircases are engineered products - repair is engineer-led." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "Stop using the affected step. Cantilever tread failure risks a fall from height.",
+    "related_brain_entries": ["staircase-faq-1811"]
+  },
+  {
+    "id": "diag-051",
+    "symptom": "Wall fixing bolt turning without tightening",
+    "customer_language": ["bolt spinning", "screw won't tighten"],
+    "trade_category": "fixings",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Wall plug has failed in the wall", "probability": "high", "why": "The plastic plug has stripped its grip in the substrate." },
+      { "cause": "Fixing is only in plasterboard", "probability": "medium", "why": "The bolt was never in structural wall - just plasterboard behind." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Wall plug failed", "diy": true, "difficulty": "moderate", "method": "Remove bolt and plug. Use larger plug for oversized hole, or resin-fix the fixing into masonry with chemical anchor." },
+      { "for_cause": "Fixing only in plasterboard", "diy": true, "difficulty": "moderate", "method": "Longer fixing to reach structural wall behind. If no timber or masonry behind, use spring-toggle or heavy-duty plasterboard fixing - but this is not appropriate for handrail support (see diag-052)." }
+    ],
+    "when_to_call_professional": "If fixing supports a handrail or safety-critical component, use a professional.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1805"]
+  },
+  {
+    "id": "diag-052",
+    "symptom": "Handrail bracket fixed only into plasterboard",
+    "customer_language": ["bracket in plasterboard", "handrail not in stud"],
+    "trade_category": "fixings",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Original install missed the structural stud", "probability": "high", "why": "Fixing was made into plasterboard alone - will pull out under handrail load." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Missed stud", "diy": true, "difficulty": "moderate", "method": "Locate the structural stud (stud detector), remove bracket, refix into stud with 75mm+ structural screws. Or install a horizontal timber pattress screwed into the studs and mount brackets to that." }
+    ],
+    "when_to_call_professional": "If unsure how to locate structural fixing points, call an installer.",
+    "safety_note": "A handrail fixed only to plasterboard will fail under fall-catch load. Warn users not to depend on it until refixed.",
+    "related_brain_entries": ["staircase-faq-1805"]
+  },
+  {
+    "id": "diag-053",
+    "symptom": "Screw head has stripped and cannot be removed",
+    "customer_language": ["stripped screw", "screw head broken"],
+    "trade_category": "fixings",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Wrong driver bit or over-tightening", "probability": "high", "why": "Bit slipped or cammed out under torque." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Try a screw extractor bit designed for stripped heads. If that fails, drill out the screw head, remove component, extract remaining shank with mole grips or drill out." }
+    ],
+    "when_to_call_professional": "If the screw is in a difficult-to-reach location or the component around it might be damaged.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1804"]
+  },
+  {
+    "id": "diag-054",
+    "symptom": "Newel bolt visible and rusting",
+    "customer_language": ["rusty bolt", "newel bolt showing"],
+    "trade_category": "fixings",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Original bolt was not concealed or not stainless", "probability": "high", "why": "Steel bolt in a damp environment has surface-rusted." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Wire-brush rust off, apply rust converter, prime and paint. Or replace with stainless bolt and conceal with a plug or filler." }
+    ],
+    "when_to_call_professional": "If concealment is not achievable easily.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1861"]
+  },
+  {
+    "id": "diag-055",
+    "symptom": "Concealed screw is pushing up through finished tread",
+    "customer_language": ["screw coming through", "bump under finish"],
+    "trade_category": "fixings",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Screw too long for material thickness", "probability": "high", "why": "Installer chose oversized screw; timber movement has pushed it further." },
+      { "cause": "Filler over screw head has failed", "probability": "medium", "why": "Filler cap has fallen out; screw head visible." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Screw too long", "diy": true, "difficulty": "moderate", "method": "Remove screw, replace with shorter one. Fill hole, refinish." },
+      { "for_cause": "Filler failed", "diy": true, "difficulty": "easy", "method": "Refill with matching wood filler, refinish." }
+    ],
+    "when_to_call_professional": "If multiple screws are affected - could indicate systemic install issue.",
+    "safety_note": "Protruding screw head is a foot injury risk in bare-foot use.",
+    "related_brain_entries": ["staircase-faq-1804"]
+  },
+  {
+    "id": "diag-056",
+    "symptom": "Structural adhesive letting go under a floating tread",
+    "customer_language": ["glue coming apart", "floating tread separating"],
+    "trade_category": "fixings",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Wrong adhesive spec for the load", "probability": "high", "why": "Non-structural adhesive was used where structural was required." },
+      { "cause": "Contamination of bonding faces at install", "probability": "medium", "why": "Dust or oil on face during install has degraded the bond." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Structural repair - remove, clean, re-bond with correct structural epoxy or engineered fixing. Installer only." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "Do not use the affected tread until fixed. A floating stair failing without warning is a fall from height.",
+    "related_brain_entries": ["staircase-faq-1811"]
+  },
+  {
+    "id": "diag-057",
+    "symptom": "Pin popped through tread surface after install",
+    "customer_language": ["nail head showing", "pin coming through step"],
+    "trade_category": "fixings",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Timber movement has ejected the pin", "probability": "high", "why": "Timber shrinkage has pushed the pin proud." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Timber movement", "diy": true, "difficulty": "easy", "method": "Punch pin below surface with nail punch. Fill and refinish that spot." }
+    ],
+    "when_to_call_professional": "Only if widespread.",
+    "safety_note": "Protruding pin is a bare-foot injury risk.",
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-058",
+    "symptom": "String fixing to trimmer joist has loosened",
+    "customer_language": ["stair pulling away at top"],
+    "trade_category": "fixings",
+    "audience_level": 3,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Original fixing insufficient for load and cycling", "probability": "high", "why": "Nails or short screws have loosened over years - the stair-to-house connection is failing." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Installer to re-fix stringer to trimmer with structural screws or bolts of correct spec." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "A stringer no longer connected to the trimmer is a whole-flight failure risk. Stop use.",
+    "related_brain_entries": ["staircase-faq-1836"]
+  },
+  {
+    "id": "diag-059",
+    "symptom": "Balustrade fixing bolt cover is missing",
+    "customer_language": ["bolt cover missing", "cover cap lost"],
+    "trade_category": "fixings",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Cover cap knocked off or vibrated loose", "probability": "high", "why": "Small aesthetic cover not glued at install; has fallen out." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Order replacement cap from the balustrade supplier (they are cheap). Push in - can add small dot of silicone if constantly falling out." }
+    ],
+    "when_to_call_professional": "Not needed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1868"]
+  },
+  {
+    "id": "diag-060",
+    "symptom": "Handrail wall bracket has come away with plaster attached",
+    "customer_language": ["bracket ripped out of wall"],
+    "trade_category": "fixings",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Fixing was only in plasterboard/plaster - not structural", "probability": "high", "why": "Bracket relied on plasterboard grip alone; catch-load has ripped it out." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Repair plaster patch. Refix bracket into structural stud or masonry with 75mm+ structural screws and correct plugs. Or install timber pattress across studs first." }
+    ],
+    "when_to_call_professional": "If unsure of stud locations or comfortable working on plaster.",
+    "safety_note": "Do not rely on the handrail until refixed. Warn all household members.",
+    "related_brain_entries": ["staircase-faq-1805"]
+  },
+  {
+    "id": "diag-061",
+    "symptom": "Cupped tread (edges higher than middle)",
+    "customer_language": ["tread has warped", "middle of step is lower"],
+    "trade_category": "timber",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Solid tread has cupped from moisture differential", "probability": "high", "why": "One face has taken on/released moisture differently - the board has cupped." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is only the top face finished (unsealed underside)?", "answer_maps_to": { "Yes": "Moisture imbalance - both faces need sealing", "No": "Wide solid board reaching movement limit" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Moisture imbalance", "diy": true, "difficulty": "hard", "method": "Seal the underside of the tread with matching finish (access from below). May allow the tread to re-flatten over months as moisture equalises." },
+      { "for_cause": "Wide solid board limit", "diy": false, "difficulty": "hard", "method": "Replace tread - preferably with engineered or laminated construction that resists cupping." }
+    ],
+    "when_to_call_professional": "If cup depth is more than 3-4mm - it becomes a trip hazard.",
+    "safety_note": "A significantly cupped tread is a trip risk. Consider a temporary anti-slip cover until repaired.",
+    "related_brain_entries": ["staircase-faq-1600"]
+  },
+  {
+    "id": "diag-062",
+    "symptom": "Wide gap has opened between tread and skirting in winter",
+    "customer_language": ["gap by wall in winter", "seasonal gap"],
+    "trade_category": "timber",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Normal seasonal shrinkage", "probability": "high", "why": "Central heating dries timber; gaps open in winter and close in summer." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the gap close again in summer?", "answer_maps_to": { "Yes": "Normal - do not fill", "No": "Permanent gap - fill" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Normal seasonal shrinkage", "diy": true, "difficulty": "easy", "method": "If seasonal: do nothing, or add hallway humidifier. If permanent: fill with decorator's caulk." }
+    ],
+    "when_to_call_professional": "Not needed for seasonal movement.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1842"]
+  },
+  {
+    "id": "diag-063",
+    "symptom": "Hairline crack running down a riser",
+    "customer_language": ["small crack in riser", "hairline in stair board"],
+    "trade_category": "timber",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Timber shrinkage in wide solid riser", "probability": "high", "why": "Wide solid boards develop shrinkage cracks in dry conditions - normal for solid timber." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Timber shrinkage", "diy": true, "difficulty": "easy", "method": "Fill with flexible wood filler that accepts finish. Refinish." }
+    ],
+    "when_to_call_professional": "Not needed unless the crack is significant or spreading.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1841", "staircase-faq-1842"]
+  },
+  {
+    "id": "diag-064",
+    "symptom": "Veneer lifting at edge of engineered tread",
+    "customer_language": ["veneer peeling", "surface layer coming off"],
+    "trade_category": "timber",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Bond failure at edge", "probability": "high", "why": "Original glue bond has failed, usually from water ingress at the edge." },
+      { "cause": "Moisture damage to substrate", "probability": "medium", "why": "The MDF or plywood core has swollen, pushing the veneer up." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Bond failure", "diy": true, "difficulty": "moderate", "method": "Small area: lift the loose veneer carefully, work in wood glue, press down and clamp with weight. Refinish." },
+      { "for_cause": "Moisture damage to substrate", "diy": false, "difficulty": "hard", "method": "Replace the tread - substrate cannot be un-swollen." }
+    ],
+    "when_to_call_professional": "If more than a small area is lifting.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1747"]
+  },
+  {
+    "id": "diag-065",
+    "symptom": "Tread has bowed lengthwise (banana shape)",
+    "customer_language": ["step is bowed", "tread not flat"],
+    "trade_category": "timber",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Grain-direction issue in solid tread", "probability": "high", "why": "Original board had grain running in a direction that encouraged bowing." },
+      { "cause": "Moisture imbalance between top and bottom", "probability": "medium", "why": "One face gaining/losing moisture faster than the other." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Bowing rarely reverses. Replace tread with engineered or better-selected solid stock." }
+    ],
+    "when_to_call_professional": "Yes.",
+    "safety_note": "A bowed tread is a trip risk if the bow is significant.",
+    "related_brain_entries": ["staircase-faq-1600"]
+  },
+  {
+    "id": "diag-066",
+    "symptom": "Knots are cracking and dropping out of pine treads",
+    "customer_language": ["knots falling out", "holes in stair"],
+    "trade_category": "timber",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Loose knots in original pine stock", "probability": "high", "why": "Pine can have loose knots that eventually drop; normal for cheaper stock." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Fill knot hole with two-part epoxy wood filler or a matching plug. Sand and refinish." }
+    ],
+    "when_to_call_professional": "If knot holes are on wearing surfaces and impact durability.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1598"]
+  },
+  {
+    "id": "diag-067",
+    "symptom": "Timber has darkened where sun exposure ended",
+    "customer_language": ["patch on stairs where rug was", "dark line under carpet"],
+    "trade_category": "timber",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "UV exposure elsewhere lightened surrounding timber", "probability": "high", "why": "Everything except the covered patch has faded - the patch is not dark, everything else is light." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Expose the whole area to daylight; over months the tone often equalises. Or lightly sand and match with stain if immediate result needed." }
+    ],
+    "when_to_call_professional": "Not usually.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1863"]
+  },
+  {
+    "id": "diag-068",
+    "symptom": "Two matched treads have taken on different colours over time",
+    "customer_language": ["treads different colours", "colour mismatch on stairs"],
+    "trade_category": "timber",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Natural colour variation revealed by ageing", "probability": "high", "why": "Two boards from the same tree age slightly differently; small original mismatch has grown with UV and use." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "hard", "method": "Refinish both treads with a slight stain to blend colour, or accept as natural timber character." }
+    ],
+    "when_to_call_professional": "For serious mismatch on premium stairs, workshop refinish is best.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1594"]
+  },
+  {
+    "id": "diag-069",
+    "symptom": "Squeaks appearing 2-3 months after new install",
+    "customer_language": ["new stairs squeaking already"],
+    "trade_category": "timber",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Timber acclimatising and shrinking in the house environment", "probability": "high", "why": "Workshop-conditioned timber has adjusted to the dryer house environment; small gaps have opened at joints." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "moderate", "method": "Contact the installer under warranty. Squeaks in the first 6-12 months are a known adjustment period - a good installer will return to re-wedge or re-fix." }
+    ],
+    "when_to_call_professional": "Yes - this is a warranty visit, not a homeowner-DIY job.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1866", "staircase-faq-1842"]
+  },
+  {
+    "id": "diag-070",
+    "symptom": "Newel post has developed a lengthwise crack",
+    "customer_language": ["crack in newel post", "split down the post"],
+    "trade_category": "timber",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Solid timber newel shrinkage crack", "probability": "high", "why": "Large solid section drying and shrinking - crack relieves the stress." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the crack cosmetic (surface only), or does it feel like the newel is weakened?", "answer_maps_to": { "Surface only": "Fill and monitor", "Weakened": "Replace or reinforce" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Solid timber newel shrinkage crack", "diy": true, "difficulty": "easy", "method": "Fill with wood filler or flexible caulk if cosmetic. If crack widens under load, replace newel." }
+    ],
+    "when_to_call_professional": "If the newel feels weaker or wobbles when pressed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1841"]
+  },
+  {
+    "id": "diag-071",
+    "symptom": "Multiple spindles have come loose in the baserail",
+    "customer_language": ["spindles all loose", "balustrade rattles"],
+    "trade_category": "balustrade",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Slips have shrunk and released", "probability": "high", "why": "Timber slips between spindles have shrunk with age; grip on the spindles has released." },
+      { "cause": "Original glue joints failing on age", "probability": "medium", "why": "Old-style glue on spindle bottoms has failed." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Systematically re-glue and re-pin every spindle top and bottom. Refit or replace slips with fresh glue. Working through the whole flight is a day-long job but low skill." }
+    ],
+    "when_to_call_professional": "If the whole balustrade needs professional refit for aesthetic quality.",
+    "safety_note": "A balustrade with multiple loose spindles is a fall risk - do not lean on it until repaired.",
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-072",
+    "symptom": "Glass balustrade panels not aligned at top",
+    "customer_language": ["glass panels uneven", "not straight along top"],
+    "trade_category": "balustrade",
+    "audience_level": 3,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Bosses drilled off-centre in glass at manufacture", "probability": "medium", "why": "Fixing holes not symmetrical; panels sit at slight angles." },
+      { "cause": "Channel not perfectly level at install", "probability": "high", "why": "Setting-out error at install; every subsequent panel inherits the error." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Glass specialist to loosen fixings, reset panels level, retighten. May require removing and re-drilling if bosses are wrong." }
+    ],
+    "when_to_call_professional": "Yes - glass work is not DIY.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1869"]
+  },
+  {
+    "id": "diag-073",
+    "symptom": "Cable balustrade has visibly slack cables",
+    "customer_language": ["cables loose", "wire balustrade sagging"],
+    "trade_category": "balustrade",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Cables have stretched with age", "probability": "high", "why": "Stainless cable can stretch under sustained tension - most systems have adjustable tensioners." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Locate cable tensioners (usually at one end - screw-adjusted or wrench-adjusted). Tighten each cable until it deflects less than 15mm under normal hand pressure. Doc K rule: gap must stay under 100mm even with cable pressed." }
+    ],
+    "when_to_call_professional": "If tensioners are seized or unable to remove all slack.",
+    "safety_note": "Slack cables can allow a 100mm sphere to pass - child safety failure. Adjust promptly.",
+    "related_brain_entries": ["staircase-faq-1924"]
+  },
+  {
+    "id": "diag-074",
+    "symptom": "Wooden balustrade has developed 100mm+ gap between spindles",
+    "customer_language": ["gap too wide between balusters", "child could get through"],
+    "trade_category": "balustrade",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Spindle has fallen out entirely", "probability": "high", "why": "Loose spindle now missing - gap has doubled." },
+      { "cause": "Original spacing was non-compliant", "probability": "medium", "why": "Older stair built before current regs - never met the 100mm rule." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Missing spindle", "diy": true, "difficulty": "moderate", "method": "Source matching spindle, refit into groove with glue and slips." },
+      { "for_cause": "Original non-compliant spacing", "diy": false, "difficulty": "hard", "method": "Add additional spindles between existing ones - joinery job for a carpenter." }
+    ],
+    "when_to_call_professional": "For non-compliant spacing on a stair with children in the household.",
+    "safety_note": "A 100mm+ gap on a stair balustrade is a serious child-safety issue. Restrict child access to the stair until repaired.",
+    "related_brain_entries": ["staircase-faq-1923"]
+  },
+  {
+    "id": "diag-075",
+    "symptom": "Metal balustrade has developed rust at the base",
+    "customer_language": ["rust on balustrade", "corroded metal balusters"],
+    "trade_category": "balustrade",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Coating breakdown at base where cleaning water pools", "probability": "high", "why": "Powder coat broken at the foot; moisture from cleaning has corroded steel." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Wire-brush rust, apply rust converter, prime and repaint with matching metal paint. Prevention: change cleaning routine to avoid pooling water at balustrade base." }
+    ],
+    "when_to_call_professional": "For extensive rust or if refurbishment is needed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-076",
+    "symptom": "Glass panel has cracked but not broken",
+    "customer_language": ["cracked glass panel", "glass broken but still there"],
+    "trade_category": "balustrade",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Impact damage causing crack propagation", "probability": "high", "why": "Toughened glass usually shatters completely on impact; a persistent crack is unusual and unstable." },
+      { "cause": "Edge damage propagating under thermal or mechanical stress", "probability": "medium", "why": "Latent edge chip has grown into face crack." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Replace panel. Toughened glass cannot be repaired." }
+    ],
+    "when_to_call_professional": "Immediately.",
+    "safety_note": "A cracked toughened panel can shatter suddenly and completely. Do not lean on or touch the panel. Restrict access.",
+    "related_brain_entries": ["staircase-faq-1868"]
+  },
+  {
+    "id": "diag-077",
+    "symptom": "Handrail groove is holding spindles but slips have popped out",
+    "customer_language": ["slips missing between balusters"],
+    "trade_category": "balustrade",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Original slips not glued at manufacture", "probability": "high", "why": "Some builders only fit slips without glue - they eventually fall out." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Cut new slips to length from matching timber. Glue and pin in position." }
+    ],
+    "when_to_call_professional": "Not needed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-078",
+    "symptom": "Balustrade is warm to touch during summer",
+    "customer_language": ["metal balustrade hot in summer"],
+    "trade_category": "balustrade",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Metal or dark-coloured components absorbing solar heat", "probability": "high", "why": "Black metal in direct sun heats up - normal behaviour, not a defect." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Not a repairable defect. Blinds or window film on the stairwell window reduce direct sun exposure if the temperature becomes uncomfortable." }
+    ],
+    "when_to_call_professional": "Not needed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1616"]
+  },
+  {
+    "id": "diag-079",
+    "symptom": "Glass panel channel is filling with dust and debris",
+    "customer_language": ["channel dirty", "glass base dirty"],
+    "trade_category": "balustrade",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Normal accumulation over time", "probability": "high", "why": "Any channel collects debris - needs periodic cleaning." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Use a soft brush and vacuum to clear debris from the channel. Wipe with damp microfibre." }
+    ],
+    "when_to_call_professional": "Not needed.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1859"]
+  },
+  {
+    "id": "diag-080",
+    "symptom": "Spindles look tilted (not vertical)",
+    "customer_language": ["balusters wonky", "spindles leaning"],
+    "trade_category": "balustrade",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Slips have shifted spindle position", "probability": "high", "why": "Loose slips have let spindles move sideways in the groove." },
+      { "cause": "Building settlement", "probability": "low", "why": "House movement has racked the balustrade." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Slips shifted", "diy": true, "difficulty": "moderate", "method": "Reset spindles to vertical, glue and refit slips to lock position." }
+    ],
+    "when_to_call_professional": "If accompanied by other signs of building movement.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1614"]
+  },
+  {
+    "id": "diag-081",
+    "symptom": "Handrail is loose at one end only",
+    "customer_language": ["handrail loose at top", "handrail wobbly at bottom"],
+    "trade_category": "handrail",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Newel at that end is loose (see diag-011)", "probability": "high", "why": "Handrail movement inherited from a loose newel." },
+      { "cause": "Handrail-to-newel joint failed", "probability": "medium", "why": "The specific fixing at that end has slackened." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Does the newel itself move when pushed sideways?", "answer_maps_to": { "Yes": "Loose newel (diag-011)", "No": "Handrail-to-newel joint" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Loose newel", "diy": true, "difficulty": "moderate", "method": "See diag-011." },
+      { "for_cause": "Handrail-to-newel joint failed", "diy": true, "difficulty": "moderate", "method": "Access joint fixing through newel top under the cap. Tighten or add hidden reinforcement screw." }
+    ],
+    "when_to_call_professional": "For hidden joint reinforcement, install an experienced carpenter.",
+    "safety_note": "Warn users not to depend on the handrail at that end until repaired.",
+    "related_brain_entries": ["staircase-faq-1804"]
+  },
+  {
+    "id": "diag-082",
+    "symptom": "Handrail has a visible gap where two lengths join",
+    "customer_language": ["gap in handrail", "handrail joint open"],
+    "trade_category": "handrail",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Timber shrinkage has opened the joint", "probability": "high", "why": "Original joint was tight; seasonal drying has opened it." },
+      { "cause": "Original joint not glued", "probability": "medium", "why": "Installer relied on friction fit - joint has come apart." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Clean joint faces, apply wood glue, clamp closed. If joint cannot be pulled fully closed, fill remaining hairline with matching wood filler." }
+    ],
+    "when_to_call_professional": "For premium handrails where visible repair is unacceptable.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1866"]
+  },
+  {
+    "id": "diag-083",
+    "symptom": "Wall handrail is set too low or too high",
+    "customer_language": ["handrail wrong height"],
+    "trade_category": "handrail",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Original install did not follow regs", "probability": "high", "why": "Domestic Doc K requires 900-1000mm above pitch line - install error." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Refix brackets at correct height (900-1000mm above pitch line for domestic). Fill old holes and touch up. If handrail also needs replacing (length change), carpenter job." }
+    ],
+    "when_to_call_professional": "For neat refit and to confirm the correct regulation height.",
+    "safety_note": "Wrong-height handrails are less effective in a fall - should be corrected on new installs under warranty.",
+    "related_brain_entries": ["staircase-faq-1927"]
+  },
+  {
+    "id": "diag-084",
+    "symptom": "Handrail is uncomfortable to grip - too fat or too thin",
+    "customer_language": ["handrail wrong shape", "handrail hard to grip"],
+    "trade_category": "handrail",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Handrail profile does not match ergonomic guidance", "probability": "high", "why": "Handrail should be 45-50mm diameter (round) or equivalent - some designs prioritise looks over grip." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Replace handrail with correct-profile section. Cannot be modified in place." }
+    ],
+    "when_to_call_professional": "Yes.",
+    "safety_note": "Non-graspable handrails do not perform their fall-catch function - correct if used by elderly or unsteady household members.",
+    "related_brain_entries": ["staircase-faq-1867"]
+  },
+  {
+    "id": "diag-085",
+    "symptom": "Only one side of the stair has a handrail",
+    "customer_language": ["missing handrail on one side"],
+    "trade_category": "handrail",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Original install to old spec (one-sided handrail was standard)", "probability": "high", "why": "Older stairs often had only wall-side handrails; balustrade handrails are the modern standard." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Is the stair wider than 1000mm, or used by elderly or accessibility users?", "answer_maps_to": { "Yes": "Second handrail recommended", "No": "Existing single handrail may be sufficient" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Install a second handrail on the wall side at 900-1000mm above pitch line. Standard bracket fitting into structural wall." }
+    ],
+    "when_to_call_professional": "For confidence in structural fixings.",
+    "safety_note": "Both-side handrails significantly improve fall recovery for older users - worth doing regardless of regs.",
+    "related_brain_entries": ["staircase-faq-1927"]
+  },
+  {
+    "id": "diag-086",
+    "symptom": "Different riser heights within the same flight",
+    "customer_language": ["uneven steps", "one step feels different"],
+    "trade_category": "dimensions",
+    "audience_level": 2,
+    "urgency": "safety_critical",
+    "possible_causes": [
+      { "cause": "Manufacture or install error", "probability": "high", "why": "Doc K requires all risers within 5mm of each other; larger variation is an install defect." },
+      { "cause": "Floor covering added after install", "probability": "medium", "why": "New flooring at top or bottom has changed the effective rise of the first or last step." }
+    ],
+    "diagnostic_questions": [
+      { "q": "Was flooring added at top or bottom after the stair was built?", "answer_maps_to": { "Yes": "Floor-covering issue", "No": "Manufacture/install defect" } }
+    ],
+    "repair_options": [
+      { "for_cause": "Manufacture or install error", "diy": false, "difficulty": "hard", "method": "Requires stair rebuild or specific step modification - installer only." },
+      { "for_cause": "Floor covering added after install", "diy": true, "difficulty": "moderate", "method": "Reduce covering at problem step, or add matching thickness to other steps." }
+    ],
+    "when_to_call_professional": "Yes.",
+    "safety_note": "Uneven riser heights are the leading cause of stair fall injuries. Warn all users, prioritise repair.",
+    "related_brain_entries": ["staircase-faq-540", "staircase-faq-1922"]
+  },
+  {
+    "id": "diag-087",
+    "symptom": "I hit my head coming up the stairs",
+    "customer_language": ["not enough headroom", "hit head on ceiling"],
+    "trade_category": "dimensions",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Sloped ceiling / low ceiling reduces headroom below Doc K minimum", "probability": "high", "why": "Doc K requires 2000mm minimum headroom vertically above the pitch line - hit-head indicates non-compliance." },
+      { "cause": "Loft conversion or extension has changed ceiling above stair", "probability": "medium", "why": "Post-original works have reduced the space." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Structural change required - raising ceiling, moving stair, or accepting the limitation. Architect or structural engineer needed." }
+    ],
+    "when_to_call_professional": "Yes.",
+    "safety_note": "Head-strike hazard is a real risk. Consider padded corner or clearly-marked warning until permanently resolved.",
+    "related_brain_entries": ["staircase-faq-1922"]
+  },
+  {
+    "id": "diag-088",
+    "symptom": "Stair pitch feels too steep for comfort",
+    "customer_language": ["stairs too steep", "hard to walk up"],
+    "trade_category": "dimensions",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Pitch exceeds Doc K 42-degree domestic maximum", "probability": "medium", "why": "Older stairs may exceed current pitch limit." },
+      { "cause": "Compliant but steep end of range", "probability": "high", "why": "42-degree stair is legal but feels steep to some users." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Non-compliant pitch", "diy": false, "difficulty": "hard", "method": "Rebuild required - only feasible during major renovation." },
+      { "for_cause": "Compliant but steep", "diy": true, "difficulty": "easy", "method": "Not a repair - user education and possibly both-side handrails to improve grip." }
+    ],
+    "when_to_call_professional": "For non-compliant pitch or if elderly users cannot manage.",
+    "safety_note": "Steep stairs increase fall risk - improve lighting, add second handrail, consider stairlift if user needs it.",
+    "related_brain_entries": ["staircase-faq-1922"]
+  },
+  {
+    "id": "diag-089",
+    "symptom": "Tread going is too shallow for a full foot",
+    "customer_language": ["treads too narrow", "foot hangs over edge"],
+    "trade_category": "dimensions",
+    "audience_level": 2,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Going below Doc K 220mm minimum", "probability": "high", "why": "Older or space-saving stairs may have going less than 220mm." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Cannot be modified in place - the stair envelope is fixed by the opening. Only a full rebuild changes it." }
+    ],
+    "when_to_call_professional": "For renovation-scale response.",
+    "safety_note": "Descending is more dangerous than ascending on shallow-going stairs. Warn users, add both-side handrails, consider nosing grip strips.",
+    "related_brain_entries": ["staircase-faq-779"]
+  },
+  {
+    "id": "diag-090",
+    "symptom": "Nosing overhang seems missing or damaged",
+    "customer_language": ["no overhang on stairs", "flat step edges"],
+    "trade_category": "dimensions",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Original design without overhang (modern square-edge)", "probability": "high", "why": "Not a defect - modern stairs often have square edges intentionally." },
+      { "cause": "Overhang cut off in past repair", "probability": "low", "why": "Damaged nosing was cut back rather than replaced." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Original design", "diy": true, "difficulty": "easy", "method": "Not a repair - accept the design choice." },
+      { "for_cause": "Cut off in past repair", "diy": false, "difficulty": "hard", "method": "Add applied nosing strip - joinery job." }
+    ],
+    "when_to_call_professional": "For applied nosing.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1857"]
+  },
+  {
+    "id": "diag-091",
+    "symptom": "Skirting board stops abruptly at the string with gap or bad mitre",
+    "customer_language": ["skirting doesn't fit at stairs", "bad joint by staircase"],
+    "trade_category": "installation",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "String was not prepared to receive skirting at manufacture", "probability": "high", "why": "See brain entry 1838 - skirting coordination requires pre-manufacture communication." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Fill gap with decorator's caulk matched to paint colour. Cosmetic only." },
+      { "for_cause": "For premium finish", "diy": false, "difficulty": "hard", "method": "Carpenter to add a scribed timber block or trim to disguise the joint." }
+    ],
+    "when_to_call_professional": "For premium stairs where cosmetic caulk is unacceptable.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1838"]
+  },
+  {
+    "id": "diag-092",
+    "symptom": "Visible unfilled pin holes across finished tread surface",
+    "customer_language": ["pin holes not filled", "small dots on stairs"],
+    "trade_category": "installation",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Installer did not fill pins before finish", "probability": "high", "why": "Skipped step in the finishing process." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Fill each pin hole with matching wood filler using a small applicator. Touch up finish over each spot." }
+    ],
+    "when_to_call_professional": "If on a new install, installer should return under warranty.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1877"]
+  },
+  {
+    "id": "diag-093",
+    "symptom": "Finish is contaminated with dust and specks",
+    "customer_language": ["dirty finish", "bits in the lacquer"],
+    "trade_category": "installation",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Finish applied without dust control", "probability": "high", "why": "Site-applied lacquer or on-site sanding dust settled in wet finish." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Full re-finish under proper dust control - workshop spray booth if possible." }
+    ],
+    "when_to_call_professional": "Yes.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1875"]
+  },
+  {
+    "id": "diag-094",
+    "symptom": "Fresh install has visible dents from clamps or pipe presses",
+    "customer_language": ["clamp marks on new stairs"],
+    "trade_category": "installation",
+    "audience_level": 1,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Installer clamped over finished timber without protection", "probability": "high", "why": "Direct clamp contact has crushed timber fibre." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Steam-raise the crushed fibre - damp cloth and hot iron. Fill remainder with wood filler. Refinish that spot." }
+    ],
+    "when_to_call_professional": "New install - installer to correct under warranty.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1874"]
+  },
+  {
+    "id": "diag-095",
+    "symptom": "Stair has been installed out of square with the wall",
+    "customer_language": ["staircase is wonky", "not straight against wall"],
+    "trade_category": "installation",
+    "audience_level": 3,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Install error - not levelled and squared before fixing", "probability": "high", "why": "Wall was not straight, installer did not compensate with packers." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Installer to unfix, re-set with correct packing, re-fix. Not a small job." }
+    ],
+    "when_to_call_professional": "Yes - warranty issue.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1846"]
+  },
+  {
+    "id": "diag-096",
+    "symptom": "No lighting cable was routed for planned LED strip",
+    "customer_language": ["can't add LED lights", "no cables for lighting"],
+    "trade_category": "installation",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Lighting not planned before install (see brain 1849)", "probability": "high", "why": "Cable route needed during first-fix; retrofit means visible trunking or destructive access." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Options: (1) surface-mount LED strip with cable in a discreet trunking - fastest and cheapest. (2) Battery-operated LED strips with charging dock hidden - no cable at all. (3) Partial disassembly of the stair to run cable - most invasive." }
+    ],
+    "when_to_call_professional": "For cable running inside finished stair components.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1849"]
+  },
+  {
+    "id": "diag-097",
+    "symptom": "Wall behind stair was not fully plastered before install",
+    "customer_language": ["bare plasterboard behind stairs"],
+    "trade_category": "installation",
+    "audience_level": 2,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Trade sequencing error - stair before plaster", "probability": "high", "why": "Should have been plastered first - the stair now blocks access." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Plaster the visible parts of the wall, accepting that behind-stair sections may need to remain as bare plasterboard. Careful masking of finished timber essential." }
+    ],
+    "when_to_call_professional": "For plaster work.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1852"]
+  },
+  {
+    "id": "diag-098",
+    "symptom": "Newel is standing on subfloor rather than finished floor",
+    "customer_language": ["newel gap at bottom", "post doesn't reach floor"],
+    "trade_category": "installation",
+    "audience_level": 2,
+    "urgency": "medium",
+    "possible_causes": [
+      { "cause": "Stair fitted before finished floor - not accounted for", "probability": "high", "why": "See brain entry 1810 - finished floor level must be known before install." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "moderate", "method": "Add a base moulding or plinth to hide the gap. If gap is severe, newel may need lifting and re-fixing (installer job)." }
+    ],
+    "when_to_call_professional": "For significant gap requiring newel modification.",
+    "safety_note": "If the gap has weakened the newel base fixing, address as loose newel (diag-011).",
+    "related_brain_entries": ["staircase-faq-1810"]
+  },
+  {
+    "id": "diag-099",
+    "symptom": "Handover paperwork was never provided",
+    "customer_language": ["no warranty documents", "installer didn't leave papers"],
+    "trade_category": "installation",
+    "audience_level": 1,
+    "urgency": "low",
+    "possible_causes": [
+      { "cause": "Installer did not include handover pack (unprofessional practice)", "probability": "high", "why": "Premium installers provide printed care instructions, warranty, maintenance schedule, CAD drawing (see brain 1817)." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": true, "difficulty": "easy", "method": "Request in writing from the installer. Any professional installer will provide it. Keep the email trail as your warranty evidence." }
+    ],
+    "when_to_call_professional": "Request from the original installer.",
+    "safety_note": null,
+    "related_brain_entries": ["staircase-faq-1817"]
+  },
+  {
+    "id": "diag-100",
+    "symptom": "Multiple visible defects on a brand-new installation",
+    "customer_language": ["new stairs badly fitted", "many problems with new installation"],
+    "trade_category": "installation",
+    "audience_level": 1,
+    "urgency": "high",
+    "possible_causes": [
+      { "cause": "Systemic install quality failure", "probability": "high", "why": "Multiple defects together indicate a wider quality problem, not a single mistake." }
+    ],
+    "diagnostic_questions": [],
+    "repair_options": [
+      { "for_cause": "Any", "diy": false, "difficulty": "hard", "method": "Do not attempt individual DIY repairs on a new install with multiple defects. Follow the poorly-fitted staircase protocol (see brain entries 1783-1792): document everything, contact installer in writing, request full inspection, escalate if refused." }
+    ],
+    "when_to_call_professional": "This is a warranty issue and potentially a Consumer Rights Act 2015 case. Follow the escalation route in the brain, not the DIY route.",
+    "safety_note": "If any defect is safety-critical (loose handrail, loose newel, cracked stringer), stop use of the affected part immediately and prioritise those defects in the inspection request.",
+    "related_brain_entries": ["staircase-faq-1783", "staircase-faq-1785", "staircase-faq-1786"]
+  }
+]
