@@ -186,12 +186,397 @@ export async function executePreviewChange(
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// WRITE EXECUTORS — Phase 7 · Increment 3
+// ═══════════════════════════════════════════════════════════════════
+//
+// Every write follows the 6-step contract:
+//   1. Merchant request  →  (endpoint-level session gate)
+//   2. Signed session    →  (contextLoader)
+//   3. Merchant context  →  ctx passed in
+//   4. Ownership verify  →  each executor re-checks the target row
+//   5. Draft creation    →  lifecycle_status='draft' forced
+//   6. Audit event       →  persisted via tool_calls JSONB on message row
+//
+// Rules encoded here:
+//   - No executor accepts merchant_id / publisher_business_id from input.
+//     Both come from ctx only — NEX cannot spoof either value.
+//   - No executor writes lifecycle_status='active' directly. Only
+//     executePublishProduct with confirm=true transitions state.
+//   - Every text field passes through guardrails.checkFields BEFORE
+//     storage. Rejections return guardrail_blocked=true so NEX can
+//     surface the plain-language reason to the merchant.
+
+import { checkFields } from "./guardrails";
+import { publish as publishEvent } from "@/lib/os/events";
+
+/** slug helper: brand-slug/name-slug pattern per canonical schema. */
+function makeSlug(brandName: string, name: string): string {
+  const kebab = (s: string) =>
+    s
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "");
+  return `${kebab(brandName)}/${kebab(name)}`;
+}
+
+// ─── create_product_draft ─────────────────────────────────────────
+
+export type CreateProductDraftInput = {
+  name: string;
+  brand_name: string;
+  description?: string;
+  category_path?: string[];
+  price_pence: number;
+  tags?: string[];
+  hero_image_url?: string;
+};
+
+export type CreateProductDraftResult = {
+  canonical_id: string;
+  offer_id: string;
+  name: string;
+  brand_name: string;
+  slug: string;
+  price_pence: number;
+  lifecycle_status: "draft";
+};
+
+export async function executeCreateProductDraft(
+  ctx: MerchantContext,
+  input: CreateProductDraftInput
+): Promise<ToolExecutionResult<CreateProductDraftResult>> {
+  // Input validation
+  if (!input.name?.trim() || !input.brand_name?.trim()) {
+    return { ok: false, error: "name and brand_name are required" };
+  }
+  if (!Number.isFinite(input.price_pence) || input.price_pence < 0) {
+    return { ok: false, error: "price_pence must be a non-negative integer" };
+  }
+
+  // Guardrails on every text field BEFORE storage
+  const g = checkFields(
+    {
+      name: input.name,
+      brand_name: input.brand_name,
+      description: input.description ?? null,
+    },
+    {
+      // TODO Increment 6: read real credentials + trading-since from
+      // hammerex_trade_off_listings.years_in_trade / start_year. For now
+      // pass empty so all certification claims are blocked (safest default).
+      merchantCredentials: [],
+    }
+  );
+  if (!g.ok) {
+    return {
+      ok: false,
+      error: g.reason,
+      guardrail_blocked: true,
+      guardrail_reason: g.reason,
+    };
+  }
+
+  const slug = makeSlug(input.brand_name, input.name);
+
+  // Step 5 · draft creation — INSERT canonical as draft
+  const { data: canonical, error: canonicalError } = await supabaseAdmin
+    .from("os_products_canonical")
+    .insert({
+      publisher_business_id: ctx.merchantId, // forced from ctx, NEVER from input
+      brand_name: input.brand_name,
+      name: input.name,
+      slug,
+      description: input.description ?? null,
+      category_path: input.category_path ?? [],
+      attributes: {},
+      hero_image_url: input.hero_image_url ?? null,
+      image_urls: input.hero_image_url ? [input.hero_image_url] : [],
+      documents: [],
+      lifecycle_status: "draft",
+      nex_draft_source: "nex_merchant_assistant",
+    })
+    .select("id, name, brand_name, slug")
+    .single();
+
+  if (canonicalError || !canonical) {
+    return {
+      ok: false,
+      error: `Could not create canonical draft: ${canonicalError?.message ?? "unknown"}`,
+    };
+  }
+
+  // Corresponding merchant offer, also draft-flagged via source column
+  const { data: offer, error: offerError } = await supabaseAdmin
+    .from("app_products_merchant_offers")
+    .insert({
+      merchant_id: ctx.merchantId, // forced from ctx
+      canonical_product_id: canonical.id,
+      price_pence: input.price_pence,
+      stock_status: "in_stock",
+      is_active: false, // draft: offer stays inactive until publish
+      nex_draft_source: "nex_merchant_assistant",
+    })
+    .select("id")
+    .single();
+
+  if (offerError || !offer) {
+    return {
+      ok: false,
+      error: `Canonical created but offer failed: ${offerError?.message ?? "unknown"}`,
+    };
+  }
+
+  return {
+    ok: true,
+    data: {
+      canonical_id: canonical.id as string,
+      offer_id: offer.id as string,
+      name: canonical.name as string,
+      brand_name: canonical.brand_name as string,
+      slug: canonical.slug as string,
+      price_pence: input.price_pence,
+      lifecycle_status: "draft",
+    },
+  };
+}
+
+// ─── update_product_field ─────────────────────────────────────────
+
+export type UpdateProductFieldInput = {
+  product_id: string;
+  field:
+    | "name"
+    | "description"
+    | "price_pence"
+    | "tags"
+    | "hero_image_url"
+    | "category_path"
+    | "stock_status"
+    | "stock_quantity";
+  value: unknown;
+};
+
+export async function executeUpdateProductField(
+  ctx: MerchantContext,
+  input: UpdateProductFieldInput
+): Promise<ToolExecutionResult<{ product_id: string; field: string }>> {
+  if (!input.product_id) {
+    return { ok: false, error: "product_id is required" };
+  }
+
+  // Step 4 · ownership verification
+  const canonical = await findCanonicalById(input.product_id);
+  if (!canonical) return { ok: false, error: "Product not found." };
+  if (canonical.publisherBusinessId !== ctx.merchantId) {
+    return {
+      ok: false,
+      error: "You can only edit products you own.",
+    };
+  }
+
+  // Text-field guardrails
+  if (
+    (input.field === "name" || input.field === "description") &&
+    typeof input.value === "string"
+  ) {
+    const g = checkFields({ [input.field]: input.value } as Record<string, string>, {
+      merchantCredentials: [],
+    });
+    if (!g.ok) {
+      return {
+        ok: false,
+        error: g.reason,
+        guardrail_blocked: true,
+        guardrail_reason: g.reason,
+      };
+    }
+  }
+
+  // Route updates: canonical vs offer
+  const canonicalFields = new Set([
+    "name",
+    "description",
+    "hero_image_url",
+    "category_path",
+  ]);
+  const offerFields = new Set(["price_pence", "stock_status", "stock_quantity"]);
+
+  if (canonicalFields.has(input.field)) {
+    const patch: Record<string, unknown> = {};
+    patch[input.field] = input.value;
+    const { error } = await supabaseAdmin
+      .from("os_products_canonical")
+      .update(patch)
+      .eq("id", input.product_id)
+      .eq("publisher_business_id", ctx.merchantId); // ownership re-check at SQL level
+    if (error) {
+      return { ok: false, error: `Update failed: ${error.message}` };
+    }
+    return { ok: true, data: { product_id: input.product_id, field: input.field } };
+  }
+
+  if (offerFields.has(input.field)) {
+    const { error } = await supabaseAdmin
+      .from("app_products_merchant_offers")
+      .update({ [input.field]: input.value })
+      .eq("canonical_product_id", input.product_id)
+      .eq("merchant_id", ctx.merchantId); // ownership re-check at SQL level
+    if (error) {
+      return { ok: false, error: `Update failed: ${error.message}` };
+    }
+    return { ok: true, data: { product_id: input.product_id, field: input.field } };
+  }
+
+  return { ok: false, error: `Field "${input.field}" is not updatable.` };
+}
+
+// ─── publish_product ──────────────────────────────────────────────
+
+export type PublishProductInput = {
+  product_id: string;
+  confirm: boolean;
+};
+
+export async function executePublishProduct(
+  ctx: MerchantContext,
+  input: PublishProductInput
+): Promise<ToolExecutionResult<{ product_id: string; lifecycle_status: "active" }>> {
+  if (!input.confirm) {
+    return {
+      ok: false,
+      error:
+        "Publish requires explicit merchant confirmation. NEX must ask the merchant 'shall I publish this?' and receive a yes before calling with confirm=true.",
+    };
+  }
+
+  // Step 4 · ownership verification
+  const canonical = await findCanonicalById(input.product_id);
+  if (!canonical) return { ok: false, error: "Product not found." };
+  if (canonical.publisherBusinessId !== ctx.merchantId) {
+    return {
+      ok: false,
+      error: "You can only publish products you own.",
+    };
+  }
+
+  const now = new Date().toISOString();
+
+  // Transition canonical to active
+  const { error: canonicalError } = await supabaseAdmin
+    .from("os_products_canonical")
+    .update({ lifecycle_status: "active", published_at: now })
+    .eq("id", input.product_id)
+    .eq("publisher_business_id", ctx.merchantId);
+  if (canonicalError) {
+    return { ok: false, error: `Publish failed: ${canonicalError.message}` };
+  }
+
+  // Activate all merchant offers on this canonical for the caller
+  await supabaseAdmin
+    .from("app_products_merchant_offers")
+    .update({ is_active: true })
+    .eq("canonical_product_id", input.product_id)
+    .eq("merchant_id", ctx.merchantId);
+
+  // Fire the platform product.published event so downstream apps
+  // (NEX Centre feed, search index, supplier matching) pick it up
+  try {
+    await publishEvent({
+      eventType: "product.published",
+      publisherApp: "products",
+      dedupKey: `nex-ma:${input.product_id}:${now}`,
+      actorBusinessId: ctx.merchantId,
+      subjectType: "product",
+      subjectId: input.product_id,
+      payload: {
+        brand: canonical.brandName,
+        name: canonical.name,
+        source: "nex_merchant_assistant",
+      },
+    });
+  } catch {
+    // Event bus failure should not block the publish itself — the state
+    // change is authoritative. Log elsewhere in a later increment.
+  }
+
+  return {
+    ok: true,
+    data: { product_id: input.product_id, lifecycle_status: "active" },
+  };
+}
+
+// ─── archive_product ──────────────────────────────────────────────
+
+export type ArchiveProductInput = {
+  product_id: string;
+  confirm: boolean;
+};
+
+export async function executeArchiveProduct(
+  ctx: MerchantContext,
+  input: ArchiveProductInput
+): Promise<ToolExecutionResult<{ product_id: string; lifecycle_status: "withdrawn" }>> {
+  if (!input.confirm) {
+    return {
+      ok: false,
+      error: "Archive requires explicit merchant confirmation.",
+    };
+  }
+
+  const canonical = await findCanonicalById(input.product_id);
+  if (!canonical) return { ok: false, error: "Product not found." };
+  if (canonical.publisherBusinessId !== ctx.merchantId) {
+    return { ok: false, error: "You can only archive products you own." };
+  }
+
+  const now = new Date().toISOString();
+  const { error: canonicalError } = await supabaseAdmin
+    .from("os_products_canonical")
+    .update({ lifecycle_status: "withdrawn", withdrawn_at: now })
+    .eq("id", input.product_id)
+    .eq("publisher_business_id", ctx.merchantId);
+  if (canonicalError) {
+    return { ok: false, error: `Archive failed: ${canonicalError.message}` };
+  }
+
+  await supabaseAdmin
+    .from("app_products_merchant_offers")
+    .update({ is_active: false })
+    .eq("canonical_product_id", input.product_id)
+    .eq("merchant_id", ctx.merchantId);
+
+  try {
+    await publishEvent({
+      eventType: "product.withdrawn",
+      publisherApp: "products",
+      dedupKey: `nex-ma-archive:${input.product_id}:${now}`,
+      actorBusinessId: ctx.merchantId,
+      subjectType: "product",
+      subjectId: input.product_id,
+      payload: {
+        brand: canonical.brandName,
+        name: canonical.name,
+        source: "nex_merchant_assistant",
+      },
+    });
+  } catch {
+    // Same as publish — event failure does not block the state change.
+  }
+
+  return {
+    ok: true,
+    data: { product_id: input.product_id, lifecycle_status: "withdrawn" },
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // Dispatch table — the API endpoint hands the raw tool_use block here
 // ═══════════════════════════════════════════════════════════════════
 
 /** Runs a tool call from NEX. Returns a serialisable result the
- *  endpoint feeds back as tool_result content. Unknown tool names and
- *  write tools (not shipped in Increment 2) return an error result. */
+ *  endpoint feeds back as tool_result content. Unknown tool names
+ *  return an error result. All write tools re-check ownership. */
 export async function runTool(
   ctx: MerchantContext,
   toolName: string,
@@ -202,16 +587,20 @@ export async function runTool(
       return executeListProducts(ctx, input as ListProductsInput);
     case "preview_change":
       return executePreviewChange(ctx, input as PreviewChangeInput);
-
-    // Write tools land in Increment 3
     case "create_product_draft":
+      return executeCreateProductDraft(ctx, input as CreateProductDraftInput);
     case "update_product_field":
-    case "generate_banner":
+      return executeUpdateProductField(ctx, input as UpdateProductFieldInput);
     case "publish_product":
+      return executePublishProduct(ctx, input as PublishProductInput);
     case "archive_product":
+      return executeArchiveProduct(ctx, input as ArchiveProductInput);
+
+    // generate_banner ships in Increment 4
+    case "generate_banner":
       return {
         ok: false,
-        error: `Tool "${toolName}" is not yet enabled. Write actions ship in Phase 7 Increment 3.`,
+        error: `Tool "${toolName}" ships in Phase 7 Increment 4.`,
       };
 
     default:

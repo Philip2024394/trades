@@ -41,6 +41,11 @@ import {
 } from "@/lib/nex/merchant-assistant/promptBuilder";
 import { MERCHANT_ASSISTANT_TOOLS } from "@/lib/nex/merchant-assistant/tools";
 import { runTool } from "@/lib/nex/merchant-assistant/toolExecutors";
+import {
+  ensureThread,
+  persistMessage,
+  type ToolCallAuditEntry,
+} from "@/lib/nex/merchant-assistant/persistence";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -84,7 +89,11 @@ export async function POST(req: NextRequest) {
   }
 
   // 3. Parse body
-  let body: { message?: unknown; history?: unknown };
+  let body: {
+    message?: unknown;
+    history?: unknown;
+    thread_id?: unknown;
+  };
   try {
     body = await req.json();
   } catch {
@@ -102,7 +111,28 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // 4. Build messages array — prior history + this turn
+  // 3b. Ensure a thread exists — new one if none supplied or invalid
+  const requestedThreadId =
+    typeof body.thread_id === "string" ? body.thread_id : null;
+  let threadId: string;
+  try {
+    threadId = await ensureThread(ctx.merchantId, requestedThreadId);
+  } catch {
+    return NextResponse.json(
+      { ok: false, error: "thread_create_failed" },
+      { status: 500 }
+    );
+  }
+
+  // 4. Persist the user message immediately (audit trail starts here)
+  await persistMessage({
+    threadId,
+    merchantId: ctx.merchantId,
+    role: "user",
+    content: message,
+  });
+
+  // 5. Build messages array — prior history + this turn
   const history = Array.isArray(body.history)
     ? (body.history as AnthropicMessage[]).filter(
         (m) =>
@@ -117,12 +147,8 @@ export async function POST(req: NextRequest) {
     { role: "user", content: message },
   ];
 
-  // 5. Tool-use loop
-  const toolCallAudit: Array<{
-    tool: string;
-    input: Record<string, unknown>;
-    result: unknown;
-  }> = [];
+  // 6. Tool-use loop
+  const toolCallAudit: ToolCallAuditEntry[] = [];
 
   let iterations = 0;
   let finalText = "";
@@ -196,10 +222,30 @@ export async function POST(req: NextRequest) {
     messages.push({ role: "user", content: toolResults });
   }
 
+  // 7. Persist the final assistant turn with the tool-call audit trail
+  await persistMessage({
+    threadId,
+    merchantId: ctx.merchantId,
+    role: "assistant",
+    content: finalText || "(No response generated.)",
+    toolCalls: toolCallAudit,
+  });
+
+  // Identify any draft that was created this turn — the UI uses this
+  // to render the DraftPreviewCard inline with the assistant reply.
+  const draftCreated = toolCallAudit.find(
+    (c) => c.tool === "create_product_draft" && c.result.ok
+  );
+
   return NextResponse.json({
     ok: true,
+    thread_id: threadId,
     response: finalText || "(No response generated.)",
     tool_calls: toolCallAudit,
+    draft:
+      draftCreated && draftCreated.result.ok
+        ? draftCreated.result.data
+        : null,
     usage: {
       input_tokens: totalInputTokens,
       output_tokens: totalOutputTokens,

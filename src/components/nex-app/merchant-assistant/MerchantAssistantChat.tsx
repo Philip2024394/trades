@@ -13,12 +13,15 @@
 // Reference: docs/brains/PHASE_7_IMPLEMENTATION_PLAN.md · Section 8
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { DraftPreviewCard, type Draft } from "./DraftPreviewCard";
 
 type Role = "user" | "assistant";
 
 type ChatMessage = {
   role: Role;
   text: string;
+  /** When the assistant reply created a draft, the card renders inline. */
+  draft?: Draft | null;
 };
 
 type ToolCall = {
@@ -29,8 +32,10 @@ type ToolCall = {
 
 type ApiResponse = {
   ok: boolean;
+  thread_id?: string;
   response?: string;
   tool_calls?: ToolCall[];
+  draft?: Draft | null;
   usage?: { input_tokens: number; output_tokens: number; iterations: number };
   error?: string;
 };
@@ -39,6 +44,7 @@ export function MerchantAssistantChat() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [pending, setPending] = useState(false);
   const [input, setInput] = useState("");
+  const [threadId, setThreadId] = useState<string | null>(null);
   const [lastToolCalls, setLastToolCalls] = useState<ToolCall[]>([]);
   const [errorBanner, setErrorBanner] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,9 +72,10 @@ export function MerchantAssistantChat() {
       const res = await fetch("/api/nex/merchant-assistant", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message, history }),
+        body: JSON.stringify({ message, history, thread_id: threadId }),
       });
       const data = (await res.json()) as ApiResponse;
+      if (data.thread_id) setThreadId(data.thread_id);
 
       if (!res.ok || !data.ok) {
         const msg =
@@ -87,7 +94,11 @@ export function MerchantAssistantChat() {
       setLastToolCalls(data.tool_calls ?? []);
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", text: data.response ?? "(no response)" },
+        {
+          role: "assistant",
+          text: data.response ?? "(no response)",
+          draft: data.draft ?? null,
+        },
       ]);
     } catch {
       setErrorBanner("Network error. Try again.");
@@ -129,21 +140,34 @@ export function MerchantAssistantChat() {
           </div>
         )}
         {messages.map((m, i) => (
-          <div
-            key={i}
-            className={`mb-3 flex ${
-              m.role === "user" ? "justify-end" : "justify-start"
-            }`}
-          >
+          <div key={i} className="mb-3">
             <div
-              className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed ${
-                m.role === "user"
-                  ? "bg-black text-white"
-                  : "bg-white text-black shadow-sm"
+              className={`flex ${
+                m.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
-              {m.text}
+              <div
+                className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
+                  m.role === "user"
+                    ? "bg-black text-white"
+                    : "bg-white text-black shadow-sm"
+                }`}
+              >
+                {m.text}
+              </div>
             </div>
+            {m.role === "assistant" && m.draft && (
+              <div className="mt-2 flex justify-start">
+                <DraftPreviewCard
+                  draft={m.draft}
+                  onEditRequested={() =>
+                    setInput(
+                      `NEX please update the ${m.draft?.name} listing —`
+                    )
+                  }
+                />
+              </div>
+            )}
           </div>
         ))}
         {pending && (
