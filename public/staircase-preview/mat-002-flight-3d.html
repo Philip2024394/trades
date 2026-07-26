@@ -808,7 +808,10 @@ new THREE.TextureLoader().load(
       polygonOffsetUnits: -1,
       emissive: LACQUER_COLOR,
       emissiveMap: stringTex,
-      emissiveIntensity: 0.05,
+      // Philip 2026-07-26 — bumped 0.05 → 0.20 after "lower string edges gone brown" report.
+      // The 0.05 reduction (part of the mass tone-down after shadows-off) was too subtle for the
+      // pitched-down normal; string perimeter needs more self-lift to read at handrail warmth.
+      emissiveIntensity: 0.20,
     });
     woodMaterials.push({ mat: rearStringMaterial, kind: 'standard' });
 
@@ -878,7 +881,10 @@ new THREE.TextureLoader().load(
       metalness: 0.0,
       emissive: LACQUER_COLOR,
       emissiveMap: pineTex,
-      emissiveIntensity: 0.05,
+      // Philip 2026-07-26 — bumped 0.05 → 0.20 after "angle blocks + wedges gone brown" report.
+      // Same reason as rearStringMaterial: pitched normals on hidden joinery pieces need more
+      // self-lift than the 0.05 mass-reduction gave them.
+      emissiveIntensity: 0.20,
     });
 
     // Newel: 90mm square × 1100mm tall. ONE texture instance — no visible join lines. Turned
@@ -928,6 +934,12 @@ new THREE.TextureLoader().load(
     const screwGeometry = new THREE.CylinderGeometry(screwSizes.headR, screwSizes.headR, screwSizes.headThick, 12);
     screwGeometry.rotateZ(Math.PI / 2); // axis along X (perpendicular to riser back face)
 
+    // Collect riser + screw meshes so the postMessage bridge can hide them
+    // when the configurator picks "open" risers (no back board between treads).
+    const riserMeshes = [];
+    const riserScrewMeshes = [];
+    window.__nexRisers = { meshes: riserMeshes, screws: riserScrewMeshes };
+
     for (let i = 0; i < RISES; i++) {
       // extendDown = TREAD_THICK + 5mm so the riser bottom face sits 5mm BELOW the tread underside
       // plane, not on it. Two coplanar horizontal opaque faces at the same Y caused z-fighting
@@ -952,6 +964,7 @@ new THREE.TextureLoader().load(
       const riserBottomY = i * RISE - extendDown;
       riser.position.set(riserFrontX + RISER_THICK / 2, riserBottomY + riserHeight / 2, 0);
       scene.add(riser);
+      riserMeshes.push(riser);
 
       // 3 screws per riser (for risers 1..12 that meet a tread below) — left, middle, right across
       // the 900mm width. Screws go THROUGH the riser INTO the tread's back edge, holding the riser
@@ -970,6 +983,7 @@ new THREE.TextureLoader().load(
           screw.castShadow = true;
           screw.position.set(screwBackFaceX, screwY, zPos);
           scene.add(screw);
+          riserScrewMeshes.push(screw);
         }
       }
     }
@@ -2221,6 +2235,194 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
+// ─── NEX Configurator postMessage bridge ─────────────────────────
+// Accepts config messages from the parent React page so the same 3D preview
+// can be embedded in an iframe and driven by the configurator drawer / chat /
+// design sheet without reloading. Ignores any origin — this is a read-only
+// preview, no privileged actions exposed. Only recognised toggle IDs are
+// touched; unknown keys are silently ignored so the schema can evolve.
+//
+// Supported payload keys (map to categoryIds in the React configurator):
+//   balusters  : "oak-chamfered" | "white-chamfered" | "cream-chamfered"
+//   sheeting   : "unfinished" (off) | anything else (on)
+//   lighting   : "off" (off) | anything else (on)
+//   roundStep  : true | false
+//   varnish    : true | false
+//   sheetingTone: number in [-0.30, 0.30]
+//
+// Message shape:
+//   window.postMessage({ type: "nex-config", payload: {...} }, "*")
+//
+// On load the iframe posts back {type:"nex-preview-ready"} so the parent
+// knows it's safe to send config updates.
+
+(function setupNexConfigBridge() {
+  function ensureBaluster(target) {
+    const btnId = target === "white-chamfered" ? "baluster-white"
+                : target === "cream-chamfered" ? "baluster-cream"
+                : "baluster-oak";
+    const btn = document.getElementById(btnId);
+    if (btn) btn.click();
+  }
+  function ensureToggle(btnId, wantOn, currentLabelOn) {
+    const btn = document.getElementById(btnId);
+    if (!btn) return;
+    const isCurrentlyOn = btn.textContent && btn.textContent.includes(currentLabelOn);
+    if (Boolean(wantOn) !== isCurrentlyOn) btn.click();
+  }
+  // ── Species / risers / finish state tracking ────────────────────
+  // Species and finish combine into an effective colour applied to the wood
+  // materials. Finish OVERRIDES species when the finish is a paint / stain
+  // (opaque coloured coating over the timber). Kept as module-scope state so
+  // updates to any one of the three re-derive the final look correctly.
+  const SPECIES_COLORS = {
+    "oak-40":    0xf7e0b8,  // LACQUER_COLOR — warm pale honey
+    "oak-32":    0xf7e0b8,
+    "walnut-40": 0x9a6b3f,  // medium walnut (tints oak texture to warm brown)
+    "ash-40":    0xefdfb8,  // very pale ash
+  };
+  const FINISH_OVERRIDES = {
+    "varnish-clear": null,   // no override — species colour wins
+    "oil-matte":     null,
+    "stain-walnut":  0x6b3a1a,
+    "stain-black":   0x2a2422,
+    "white-painted": 0xf5f2ec,
+  };
+  const RISER_OVERRIDES = {
+    "matching":    null,      // follow species / finish
+    "white-paint": 0xf5f2ec,  // painted white regardless
+    "open":        "hidden",  // hide the mesh entirely
+  };
+  let currentSteps  = "oak-40";
+  let currentRisers = "matching";
+  let currentFinish = "varnish-clear";
+
+  function effectiveWoodColor() {
+    const override = FINISH_OVERRIDES[currentFinish];
+    if (override != null) return override;
+    return SPECIES_COLORS[currentSteps] ?? 0xf7e0b8;
+  }
+  function effectiveRiserColor() {
+    const riserRule = RISER_OVERRIDES[currentRisers];
+    if (riserRule === "hidden") return "hidden";
+    if (typeof riserRule === "number") return riserRule;
+    // matching → same as wood body
+    return effectiveWoodColor();
+  }
+  function tintWoodMaterials(hex) {
+    // treadMaterial, stringMaterial, and their derivatives all use LACQUER_COLOR
+    // × texture. Setting .color re-tints the texture. Handrail + baserail use
+    // treadMaterial directly, so they update in place.
+    const set = (m) => { try { m.color.setHex(hex); } catch (e) {} };
+    set(treadMaterial);
+    set(stringMaterial);
+    set(rearTreadMaterial);
+    set(rearStringMaterial);
+    set(rearStringOuterMaterial);
+    set(rearAngleBeadMaterial);
+    // pineMaterial keeps its lighter cream so angle blocks + wedges stay pine
+    // even when the main timber changes species — traditional joinery detail.
+    // If Philip later asks for angle blocks to follow the steps species, add
+    // pineMaterial to this list.
+  }
+  function tintRiserMaterial(hex) {
+    try { riserMaterial.color.setHex(hex); rearRiserMaterial.color.setHex(hex); } catch (e) {}
+  }
+  function setRiserVisibility(visible) {
+    const risers = (window.__nexRisers && window.__nexRisers.meshes) || [];
+    const screws = (window.__nexRisers && window.__nexRisers.screws) || [];
+    for (const m of risers) m.visible = visible;
+    for (const m of screws) m.visible = visible;
+  }
+  function recomputeVisual() {
+    tintWoodMaterials(effectiveWoodColor());
+    const r = effectiveRiserColor();
+    if (r === "hidden") {
+      setRiserVisibility(false);
+    } else {
+      setRiserVisibility(true);
+      tintRiserMaterial(r);
+    }
+  }
+
+  function applyConfig(payload) {
+    if (!payload || typeof payload !== "object") return;
+    if (typeof payload.balusters === "string") ensureBaluster(payload.balusters);
+    if (payload.sheeting !== undefined) {
+      const wantOn = payload.sheeting !== "unfinished" && payload.sheeting !== false;
+      ensureToggle("sheeting-toggle", wantOn, "Sheeting: ON");
+    }
+    if (payload.lighting !== undefined) {
+      const wantOn = payload.lighting !== "off" && payload.lighting !== false;
+      ensureToggle("stairlights-toggle", wantOn, "Stairlights: ON");
+    }
+    if (payload.roundStep !== undefined) {
+      ensureToggle("round-step-toggle", Boolean(payload.roundStep), "Round Starting Step: ON");
+    }
+    if (payload.varnish !== undefined) {
+      ensureToggle("varnish-toggle", Boolean(payload.varnish), "Varnish: ON");
+    }
+    if (typeof payload.sheetingTone === "number") {
+      const slider = document.getElementById("sheeting-tone-slider");
+      if (slider) {
+        slider.value = String(Math.max(-0.30, Math.min(0.30, payload.sheetingTone)));
+        slider.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    }
+    // Species / risers / finish → derive an effective colour and re-tint.
+    let visualDirty = false;
+    if (typeof payload.steps === "string" && payload.steps in SPECIES_COLORS) {
+      currentSteps = payload.steps; visualDirty = true;
+    }
+    if (typeof payload.risers === "string" && payload.risers in RISER_OVERRIDES) {
+      currentRisers = payload.risers; visualDirty = true;
+    }
+    if (typeof payload.finish === "string" && payload.finish in FINISH_OVERRIDES) {
+      currentFinish = payload.finish; visualDirty = true;
+    }
+    if (visualDirty) recomputeVisual();
+  }
+  function captureThumbnail(requestId) {
+    // Force a fresh render so the framebuffer holds the latest frame at capture
+    // time (renderer wasn't started with preserveDrawingBuffer, so we must draw
+    // and read in the same tick to guarantee a non-blank image).
+    try {
+      renderer.render(scene, camera);
+      const dataUrl = renderer.domElement.toDataURL("image/jpeg", 0.72);
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type:      "nex-thumbnail",
+          requestId: requestId,
+          dataUrl:   dataUrl
+        }, "*");
+      }
+    } catch (e) {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type:      "nex-thumbnail",
+          requestId: requestId,
+          error:     e && e.message ? e.message : "capture_failed"
+        }, "*");
+      }
+    }
+  }
+  window.addEventListener("message", (event) => {
+    const data = event && event.data;
+    if (!data || typeof data !== "object") return;
+    if (data.type === "nex-config") {
+      try { applyConfig(data.payload); } catch (e) { /* ignore malformed */ }
+    } else if (data.type === "nex-capture-thumbnail") {
+      captureThumbnail(typeof data.requestId === "string" ? data.requestId : "");
+    }
+  });
+  // Announce readiness so the parent knows it can start pushing config.
+  try {
+    if (window.parent && window.parent !== window) {
+      window.parent.postMessage({ type: "nex-preview-ready" }, "*");
+    }
+  } catch (e) { /* cross-origin — silently ignore */ }
+})();
 </script>
 
 </body>
