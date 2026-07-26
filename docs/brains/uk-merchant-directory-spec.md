@@ -57,11 +57,30 @@ Each merchant record:
     "notes": "General merchant carrying softwood, MDF, plywood, screws, adhesive — good baseline for staircase installation supplies. Not the first stop for premium hardwood treads."
   },
   "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "TRADE_ACCOUNT", "DELIVERY", "CLICK_COLLECT"],
-  "verification_level": "listed | claimed | verified | partner"
+  "verification_level": "listed | claimed | verified | partner",
+  "data_quality": {
+    "last_checked": "2026-07-27",
+    "source": "philip_provided_and_claude_curated | well_known_uk_trade_name | trade_reference | category_placeholder | claude_curated",
+    "data_completeness_score": 85,
+    "missing_fields": ["phone", "detailed_branches"],
+    "verification_notes": null,
+    "confidence": "high | medium | low"
+  }
 }
 ```
 
 **`verification_level`** — see `docs/brains/nex-business-listing-and-trust-architecture.md`. Default `listed` on directory import; progresses when business owner claims and NEX completes checks.
+
+**`data_quality`** — completeness + confidence signals. Every record MUST carry this block per Phase 6 quality-first mandate.
+
+- `last_checked` — ISO date the record was last reviewed
+- `source` — provenance of the data (self-provided, well-known trade name, generic placeholder, curated)
+- `data_completeness_score` — computed 0-100 from filled required + high-value optional fields
+- `missing_fields` — array of field names still to populate
+- `verification_notes` — free text (e.g. "multiple businesses trade under this name — verification needed per region")
+- `confidence` — `high` for well-known specific brands, `medium` for regional named businesses, `low` for category placeholders
+
+**Progress toward 250-quality target:** 142 / 250 (57%) as of Phase 6 batch 1. Records with `confidence: low` should be verified or removed before counting toward the 250 milestone.
 
 ## Categories
 
@@ -78,9 +97,13 @@ Each merchant record:
 **`software_vendor`** — Autodesk (AutoCAD / Fusion 360) · Dassault Systèmes (SolidWorks) · StairDesigner · Compass Software · Consultec (Staircon)
 **`finishing_supplier`** — Osmo UK · Fiddes · Rubio Monocoat · Morrells · Bona · Sikkens
 **`ironmongery`** — Ironmongery Direct · Prima Ironmongery · IronmongeryOnline
-**`flooring_supplier`** — Havwoods · Ted Todd · Wood Floor Warehouse · UK Flooring Direct · Flooring Superstore · Direct Wood Flooring · Howdens · Carpetright · Abingdon · Crucial Trading
+**`flooring_supplier`** — Havwoods · Ted Todd · Wood Floor Warehouse · UK Flooring Direct · Flooring Superstore · Direct Wood Flooring · Howdens · Carpetright · Abingdon · Crucial Trading · Junckers UK · Boen UK · The Wood Flooring Company
 **`loft_ladder_supplier`** — FAKRO UK · Youngman · Werner · Telesteps · Bison · Electric Loft Ladder Co · Loft Shop · Ladders UK Direct · Ladderstore
 **`loft_installer`** — The Loft Access Company · The Loft Ladder Man · Loft Centre · Castlewood · Advanced Loft Ladders · Easyreach · Loft Ladders Herts · Home Counties · Loft & Ladders (Essex) · Yorkshire Loft Ladders · Loft Ladders Scotland · Lofts & Ladders (Liverpool)
+**`stair_manufacturer` (Phase 6 additions)** — Bisca · Jarrods · Stairplan · First Step Designs · Model Stairs · Canal Engineering · Signature Stairs · Diapason · Spiral UK
+**`glass_balustrade` (Phase 6 additions)** — Firman Glass · Cantifix · IQ Glass · Prism Architectural
+**`trade_association`** (verification-source category, new) — British Woodworking Federation · TrustMark · Federation of Master Builders · British Woodworking Association
+**`finishing_contractor`** (outsource service, new) — placeholder for spray-finishing contractors that workshops send stair components to
 
 ## Staircase relevance rating
 

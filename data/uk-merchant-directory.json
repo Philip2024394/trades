@@ -88,7 +88,15 @@
       "DELIVERY",
       "CLICK_COLLECT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 100,
+      "missing_fields": [],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-002",
@@ -180,7 +188,15 @@
       "TRADE_ONLY_PRICING",
       "DELIVERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 100,
+      "missing_fields": [],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-003",
@@ -258,7 +274,15 @@
       "LANDSCAPING",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 100,
+      "missing_fields": [],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-004",
@@ -326,7 +350,17 @@
       "FIXINGS",
       "SAME_DAY_PICKUP"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 93,
+      "missing_fields": [
+        "hq"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-005",
@@ -376,7 +410,18 @@
       "ROOFING",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 86,
+      "missing_fields": [
+        "hq",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-006",
@@ -432,7 +477,18 @@
       "TIMBER",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 86,
+      "missing_fields": [
+        "hq",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-007",
@@ -472,7 +528,20 @@
       "TIMBER",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-008",
@@ -511,7 +580,20 @@
       "TIMBER",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-009",
@@ -549,7 +631,21 @@
       "LONDON",
       "TIMBER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-010",
@@ -591,7 +687,20 @@
       "WALES",
       "TIMBER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-011",
@@ -630,7 +739,21 @@
       "TIMBER",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-012",
@@ -670,7 +793,21 @@
       "HARDWOOD",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-013",
@@ -714,7 +851,20 @@
       "TIMBER",
       "LOCAL_MERCHANT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-014",
@@ -759,7 +909,20 @@
       "TIMBER",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-015",
@@ -806,7 +969,20 @@
       "JOINERY",
       "OAK"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-016",
@@ -850,7 +1026,20 @@
       "TIMBER",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-017",
@@ -891,7 +1080,20 @@
       "NORTHERN_IRELAND",
       "TIMBER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-018",
@@ -932,7 +1134,20 @@
       "WEST_MIDLANDS",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-019",
@@ -977,7 +1192,20 @@
       "TIMBER",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-020",
@@ -1023,7 +1251,20 @@
       "LONDON",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-021",
@@ -1079,7 +1320,20 @@
       "SHEET_MATERIALS",
       "TOOLS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-022",
@@ -1148,7 +1402,20 @@
       "JOINERY",
       "STAIRCASE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-023",
@@ -1197,7 +1464,19 @@
       "MACHINING",
       "STAIRCASE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 79,
+      "missing_fields": [
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-024",
@@ -1255,7 +1534,19 @@
       "VENEER",
       "STAIRCASE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 79,
+      "missing_fields": [
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-025",
@@ -1296,7 +1587,20 @@
       "PREMIUM",
       "STAIRCASE_BACK_PANELS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-026",
@@ -1344,7 +1648,19 @@
       "EXOTIC",
       "VENEER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 79,
+      "missing_fields": [
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-027",
@@ -1380,7 +1696,20 @@
       "STRUCTURAL",
       "ENGINEERED_TIMBER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-028",
@@ -1423,7 +1752,20 @@
       "TIMBER_SPECIALIST",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-029",
@@ -1468,7 +1810,20 @@
       "PREMIUM",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-030",
@@ -1503,7 +1858,21 @@
       "GREATER_MANCHESTER",
       "TIMBER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-031",
@@ -1549,7 +1918,20 @@
       "TIMBER_SPECIALIST",
       "OAK"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-032",
@@ -1584,7 +1966,21 @@
       "JOINERY",
       "OAK"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-033",
@@ -1614,7 +2010,22 @@
       "LOCAL_DELIVERY",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 57,
+      "missing_fields": [
+        "coverage",
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-034",
@@ -1654,7 +2065,20 @@
       "CABINETRY",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-035",
@@ -1690,7 +2114,21 @@
       "MARINE_PLY",
       "BESPOKE_JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-036",
@@ -1736,7 +2174,19 @@
       "SAME_DAY_PICKUP",
       "EMERGENCY_SUPPLY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 79,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-037",
@@ -1779,7 +2229,19 @@
       "TRADE",
       "SAME_DAY_PICKUP"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 79,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-038",
@@ -1817,7 +2279,20 @@
       "TRADE_ONLY",
       "STAIRCASE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-039",
@@ -1861,7 +2336,20 @@
       "RENOVATION",
       "DIY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-040",
@@ -1903,7 +2391,20 @@
       "RENOVATION",
       "MOULDINGS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-041",
@@ -1945,7 +2446,20 @@
       "CONFIGURATOR",
       "DIY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-042",
@@ -1986,7 +2500,20 @@
       "GLASS",
       "LUXURY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-043",
@@ -2021,7 +2548,21 @@
       "MODERN",
       "CUSTOM"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-044",
@@ -2053,7 +2594,22 @@
       "TRADITIONAL",
       "CRAFT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 57,
+      "missing_fields": [
+        "coverage",
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-045",
@@ -2090,7 +2646,21 @@
       "HOUSE_BUILDERS",
       "NEW_BUILD"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-046",
@@ -2120,7 +2690,22 @@
       "INSTALLATION",
       "CUSTOM"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 57,
+      "missing_fields": [
+        "coverage",
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-047",
@@ -2151,7 +2736,22 @@
       "GLASS",
       "MODERN"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 57,
+      "missing_fields": [
+        "coverage",
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-048",
@@ -2185,7 +2785,22 @@
       "OAK",
       "DESIGN_SERVICE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 57,
+      "missing_fields": [
+        "coverage",
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-049",
@@ -2226,7 +2841,20 @@
       "CHANNELS",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-050",
@@ -2267,7 +2895,20 @@
       "COMMERCIAL",
       "SYSTEM_SUPPLIER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-051",
@@ -2307,7 +2948,20 @@
       "HARDWARE",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-052",
@@ -2343,7 +2997,21 @@
       "GLASS_BALUSTRADE",
       "CUSTOM_SYSTEMS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-053",
@@ -2385,7 +3053,20 @@
       "CUT_TO_SIZE",
       "FABRICATION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-054",
@@ -2423,7 +3104,20 @@
       "CUT_TO_SIZE",
       "SMALL_QUANTITY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-055",
@@ -2460,7 +3154,21 @@
       "FABRICATION",
       "FLOATING_STAIRS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-056",
@@ -2505,7 +3213,21 @@
       "MACHINING",
       "STAIRCASE_MATERIALS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-057",
@@ -2551,7 +3273,21 @@
       "TOOLS",
       "FIXINGS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-058",
@@ -2591,7 +3327,21 @@
       "DELIVERY",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-059",
@@ -2632,7 +3382,21 @@
       "DIY",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-060",
@@ -2673,7 +3437,21 @@
       "IRONMONGERY",
       "STAIR_PROJECTS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-061",
@@ -2730,7 +3508,20 @@
       "NEWELS",
       "SPINDLES"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-062",
@@ -2775,7 +3566,20 @@
       "BALUSTRADE",
       "TRADE_SUPPLIER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-063",
@@ -2818,7 +3622,20 @@
       "ACCESS_EQUIPMENT",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-064",
@@ -2859,7 +3676,20 @@
       "ACCESS_EQUIPMENT",
       "TRADE_ACCOUNT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-065",
@@ -2896,7 +3726,20 @@
       "POWER_TOOLS",
       "TP_GROUP"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-066",
@@ -2931,7 +3774,21 @@
       "DELIVERY",
       "HIRE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-067",
@@ -2967,7 +3824,21 @@
       "TOOL_HIRE",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-068",
@@ -3009,7 +3880,20 @@
       "SMALL_WORKSHOP",
       "WOODWORKING"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-069",
@@ -3056,7 +3940,20 @@
       "FORMAT4",
       "PREMIUM"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-070",
@@ -3098,7 +3995,20 @@
       "HAND_TOOLS",
       "SMALL_BUSINESS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-071",
@@ -3140,7 +4050,20 @@
       "5_AXIS",
       "VOLUME_PRODUCTION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-072",
@@ -3181,7 +4104,20 @@
       "CNC",
       "HIGH_VOLUME"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-073",
@@ -3219,7 +4155,21 @@
       "MID_TIER",
       "3_AXIS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-074",
@@ -3254,7 +4204,21 @@
       "CNC",
       "CUTTING"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-075",
@@ -3293,7 +4257,20 @@
       "CAM",
       "SUBSCRIPTION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-076",
@@ -3329,7 +4306,20 @@
       "ENGINEERING",
       "METAL_STAIRS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-077",
@@ -3369,7 +4359,20 @@
       "CNC_OUTPUT",
       "SMALL_WORKSHOP"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-078",
@@ -3408,7 +4411,20 @@
       "CNC_INTEGRATION",
       "INDUSTRIAL"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-079",
@@ -3445,7 +4461,20 @@
       "CNC_INTEGRATION",
       "PRODUCTION_PLANNING"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-080",
@@ -3485,7 +4514,20 @@
       "OAK_FINISH",
       "SPOT_REPAIRABLE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-081",
@@ -3525,7 +4567,20 @@
       "STAINS",
       "UK_BRAND"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-082",
@@ -3564,7 +4619,20 @@
       "SINGLE_COAT",
       "PREMIUM"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-083",
@@ -3604,7 +4672,20 @@
       "SPRAY_FINISH",
       "WORKSHOP"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-084",
@@ -3643,7 +4724,20 @@
       "FLOOR_GRADE",
       "STAIR_TREAD_FINISH"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-085",
@@ -3680,7 +4774,20 @@
       "EXTERNAL",
       "AKZONOBEL"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-086",
@@ -3725,7 +4832,20 @@
       "BALUSTRADE_HARDWARE",
       "ONLINE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-087",
@@ -3760,7 +4880,21 @@
       "IRONMONGERY",
       "TRADE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-088",
@@ -3795,7 +4929,21 @@
       "HANDLES",
       "DOOR_HARDWARE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-089",
@@ -3840,7 +4988,20 @@
       "STAIR_MATCHING",
       "ARCHITECT_PROJECTS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-090",
@@ -3881,7 +5042,20 @@
       "HERITAGE",
       "FARMHOUSE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-091",
@@ -3918,7 +5092,20 @@
       "MID_MARKET",
       "RENOVATION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-092",
@@ -3957,7 +5144,20 @@
       "BUDGET_MID",
       "MULTI_MATERIAL"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-093",
@@ -3996,7 +5196,20 @@
       "CARPET",
       "STAIR_RUNNERS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-094",
@@ -4032,7 +5245,20 @@
       "OAK_SPECIALIST",
       "ONLINE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-095",
@@ -4075,7 +5301,20 @@
       "JOINERY",
       "DOORS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-096",
@@ -4117,7 +5356,20 @@
       "STAIR_RUNNERS",
       "RETAIL"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-097",
@@ -4154,7 +5406,20 @@
       "PREMIUM",
       "STAIR_RUNNERS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-098",
@@ -4193,7 +5458,20 @@
       "DESIGNER",
       "STAIR_RUNNERS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-099",
@@ -4237,7 +5515,20 @@
       "INSULATED",
       "ARCHITECT_SPEC"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-100",
@@ -4276,7 +5567,20 @@
       "BUILDER_CHANNEL",
       "ACCESS"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-101",
@@ -4314,7 +5618,20 @@
       "TRADE",
       "SAFETY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-102",
@@ -4350,7 +5667,20 @@
       "SMALL_OPENING",
       "SPACE_SAVING"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-103",
@@ -4387,7 +5717,21 @@
       "PREMIUM",
       "INSTALLATION_INCLUDED"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-104",
@@ -4425,7 +5769,21 @@
       "ACCESSIBILITY",
       "BESPOKE"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 64,
+      "missing_fields": [
+        "website",
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-105",
@@ -4464,7 +5822,20 @@
       "HOMEOWNER",
       "INSTALLATION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-106",
@@ -4501,7 +5872,20 @@
       "TRADE",
       "MULTI_BRAND"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-107",
@@ -4536,7 +5920,20 @@
       "ONLINE",
       "ACCESS_EQUIPMENT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "hq",
+        "known_branches",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-108",
@@ -4576,7 +5973,20 @@
       "LOFT_INSTALLER",
       "SUPPLY_AND_FIT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-109",
@@ -4615,7 +6025,20 @@
       "LOFT_INSTALLER",
       "SUPPLY_AND_FIT"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-110",
@@ -4654,7 +6077,20 @@
       "SOUTH_COAST",
       "LOFT_INSTALLER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-111",
@@ -4692,7 +6128,20 @@
       "INDEPENDENT",
       "LOFT_INSTALLER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-112",
@@ -4733,7 +6182,20 @@
       "LOFT_INSTALLER",
       "JOINER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-113",
@@ -4772,7 +6234,20 @@
       "LOFT_INSTALLER",
       "INTERIOR_CONSTRUCTION"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-114",
@@ -4813,7 +6288,20 @@
       "HOME_COUNTIES",
       "LOFT_INSTALLER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-115",
@@ -4855,7 +6343,20 @@
       "LOFT_INSTALLER",
       "CARPENTER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-116",
@@ -4899,7 +6400,20 @@
       "LOFT_INSTALLER",
       "JOINERY"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-117",
@@ -4940,7 +6454,20 @@
       "LOFT_INSTALLER",
       "JOINER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-118",
@@ -4978,7 +6505,20 @@
       "SCOTLAND",
       "LOFT_INSTALLER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
   },
   {
     "id": "merchant-119",
@@ -5018,6 +6558,1203 @@
       "LIVERPOOL",
       "LOFT_INSTALLER"
     ],
-    "verification_level": "listed"
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "philip_provided_and_claude_curated",
+      "data_completeness_score": 71,
+      "missing_fields": [
+        "website",
+        "hq",
+        "parent_group",
+        "branch_finder_url"
+      ],
+      "verification_notes": null,
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-120",
+    "company": "Bisca",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "website": "bisca.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide from North Yorkshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Bisca Workshop",
+        "town": "Helmsley",
+        "county": "North Yorkshire"
+      }
+    ],
+    "products": [
+      "bespoke_luxury_staircases",
+      "curved_staircases",
+      "cantilevered_stairs",
+      "designer_pieces"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true,
+      "cad_drawings": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "luxury_bespoke",
+        "curved_signature",
+        "designer_projects",
+        "architect_channel"
+      ],
+      "notes": "Yorkshire-based luxury bespoke stair maker with national reputation. Signature curved and cantilevered pieces. Architect-facing."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "LUXURY",
+      "BESPOKE",
+      "CURVED",
+      "CANTILEVERED",
+      "YORKSHIRE"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-121",
+    "company": "Jarrods Staircases",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "website": "jarrodsstaircases.com",
+    "coverage": {
+      "regions": [
+        "Southern England from Dorset"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Jarrods Workshop",
+        "town": "Poole",
+        "county": "Dorset"
+      }
+    ],
+    "products": [
+      "bespoke_staircases",
+      "oak_staircases",
+      "hardwood_stairs",
+      "traditional_and_modern"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "bespoke_manufacturer",
+        "oak_specialist",
+        "southern_england"
+      ],
+      "notes": "Dorset-based bespoke stair manufacturer serving Southern England."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "BESPOKE",
+      "OAK",
+      "DORSET",
+      "SOUTH_ENGLAND"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-122",
+    "company": "Stairplan",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "website": "stairplan.com",
+    "coverage": {
+      "regions": [
+        "UK-wide from Shropshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Stairplan Workshop",
+        "town": "Telford",
+        "county": "Shropshire"
+      }
+    ],
+    "products": [
+      "custom_staircases",
+      "loft_staircases",
+      "space_saving_stairs",
+      "traditional_and_contemporary"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true,
+      "online_configurator": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "configurable_bespoke",
+        "loft_stairs",
+        "space_saving",
+        "online_design"
+      ],
+      "notes": "Long-established Shropshire stair manufacturer with online configurator - bridges DIY-configuration and bespoke manufacture."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "SHROPSHIRE",
+      "CONFIGURABLE",
+      "LOFT_STAIRS",
+      "ONLINE"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-123",
+    "company": "First Step Designs",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "website": "firststepdesigns.co.uk",
+    "coverage": {
+      "regions": [
+        "North West England from Cheshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "First Step Designs Workshop",
+        "county": "Cheshire"
+      }
+    ],
+    "products": [
+      "bespoke_staircases",
+      "glass_staircases",
+      "contemporary_designs",
+      "traditional_staircases"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "bespoke_manufacturer",
+        "glass_specialist",
+        "north_west"
+      ],
+      "notes": "Cheshire-based bespoke stair manufacturer covering contemporary and traditional styles."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "BESPOKE",
+      "GLASS",
+      "CHESHIRE",
+      "NORTH_WEST"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 80,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-124",
+    "company": "Model Stairs",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "coverage": {
+      "regions": [
+        "North West England"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Model Stairs Workshop",
+        "town": "Blackpool",
+        "county": "Lancashire"
+      }
+    ],
+    "products": [
+      "timber_staircases",
+      "traditional_stairs",
+      "modern_stairs"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "regional_manufacturer",
+        "north_west"
+      ],
+      "notes": "Blackpool-based regional stair manufacturer."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "LANCASHIRE",
+      "NORTH_WEST"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 70,
+      "missing_fields": [
+        "website",
+        "phone",
+        "detailed_products"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-125",
+    "company": "Canal Engineering",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "website": "canalengineering.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide from Nottingham"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Canal Engineering Workshop",
+        "town": "Nottingham",
+        "county": "Nottinghamshire"
+      }
+    ],
+    "products": [
+      "spiral_staircases",
+      "helical_staircases",
+      "steel_staircases",
+      "external_stairs",
+      "industrial_stairs"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true,
+      "structural_engineering": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "spiral_specialist",
+        "steel_stairs",
+        "structural_engineered"
+      ],
+      "notes": "Nottingham-based spiral and steel stair specialist. National distribution. Structural-engineering capability for cantilevered and external stairs."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "SPIRAL_SPECIALIST",
+      "STEEL",
+      "STRUCTURAL",
+      "NOTTINGHAM"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-126",
+    "company": "Signature Stairs",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "coverage": {
+      "regions": [
+        "Various UK locations"
+      ]
+    },
+    "products": [
+      "bespoke_staircases",
+      "modern_stairs",
+      "traditional_stairs"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "bespoke_manufacturer"
+      ],
+      "notes": "Bespoke stair manufacturer - multiple regional operators trade under this or similar names, needs verification per specific business."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "BESPOKE",
+      "NEEDS_VERIFICATION"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "generic_trade_name_verification_needed",
+      "data_completeness_score": 55,
+      "missing_fields": [
+        "website",
+        "phone",
+        "specific_branches",
+        "specific_products"
+      ],
+      "confidence": "low",
+      "verification_notes": "Multiple businesses trade under variations of 'Signature Stairs' - specific verification needed per region."
+    }
+  },
+  {
+    "id": "merchant-127",
+    "company": "Diapason Staircases",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "coverage": {
+      "regions": [
+        "Southern England from Wiltshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Diapason Workshop",
+        "county": "Wiltshire"
+      }
+    ],
+    "products": [
+      "curved_staircases",
+      "helical_staircases",
+      "bespoke_designs"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "curved_specialist",
+        "helical_specialist",
+        "bespoke_manufacturer"
+      ],
+      "notes": "Wiltshire-based curved and helical staircase specialist."
+    },
+    "tags": [
+      "REGIONAL",
+      "STAIR_MANUFACTURER",
+      "CURVED",
+      "HELICAL",
+      "BESPOKE",
+      "WILTSHIRE"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 80,
+      "missing_fields": [
+        "website_confirmed",
+        "phone"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-128",
+    "company": "Firman Glass",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "firmanglass.com",
+    "coverage": {
+      "regions": [
+        "UK-wide from Essex"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Firman Glass Production",
+        "town": "Harold Wood",
+        "county": "Essex"
+      }
+    ],
+    "products": [
+      "toughened_glass",
+      "laminated_glass",
+      "structural_glass",
+      "safety_glass_processing",
+      "cut_to_size",
+      "cnc_drilled_glass"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "cutting_service": true,
+      "cnc_drilling": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "structural_glass_processor",
+        "cut_to_size_stair_glass",
+        "cnc_hole_drilling",
+        "safety_glass_certified"
+      ],
+      "notes": "Major UK glass processor - cuts, drills and toughens glass to spec for stair balustrades. Trade-account channel."
+    },
+    "tags": [
+      "NATIONAL",
+      "GLASS_BALUSTRADE",
+      "GLASS_PROCESSOR",
+      "TOUGHENED",
+      "LAMINATED",
+      "CNC_DRILLING",
+      "STRUCTURAL"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-129",
+    "company": "Cantifix",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "cantifix.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide, London-focused"
+      ]
+    },
+    "products": [
+      "structural_glass",
+      "frameless_glass_systems",
+      "architectural_glass",
+      "balustrade_systems"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true,
+      "structural_engineering": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "structural_glass_specialist",
+        "architect_channel",
+        "premium_frameless"
+      ],
+      "notes": "Structural glass specialist for architect-led projects. Frameless glass expertise transfers directly to premium staircase balustrades."
+    },
+    "tags": [
+      "NATIONAL",
+      "GLASS_BALUSTRADE",
+      "STRUCTURAL_GLASS",
+      "ARCHITECT",
+      "FRAMELESS",
+      "LUXURY"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-130",
+    "company": "IQ Glass",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "iqglassuk.com",
+    "coverage": {
+      "regions": [
+        "UK-wide, London-focused"
+      ]
+    },
+    "products": [
+      "architectural_glass",
+      "structural_glass_balustrades",
+      "frameless_glass_installations"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "premium_glass_installations",
+        "architect_designer_channel"
+      ],
+      "notes": "Premium architectural glass installer - balustrade projects on architect-led homes."
+    },
+    "tags": [
+      "NATIONAL",
+      "GLASS_BALUSTRADE",
+      "ARCHITECTURAL",
+      "PREMIUM",
+      "ARCHITECT_CHANNEL"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-131",
+    "company": "Prism Architectural",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "prismarchitectural.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "glass_balustrade_systems",
+      "stainless_steel_systems",
+      "railing_systems",
+      "commercial_and_residential"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "balustrade_systems_supplier",
+        "commercial_and_residential",
+        "stainless_steel"
+      ],
+      "notes": "UK balustrade system supplier - complete systems for stairs including commercial-grade."
+    },
+    "tags": [
+      "NATIONAL",
+      "GLASS_BALUSTRADE",
+      "STAINLESS",
+      "SYSTEMS_SUPPLIER",
+      "COMMERCIAL"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-132",
+    "company": "Spiral UK",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "website": "spiraluk.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "spiral_staircases",
+      "helical_staircases",
+      "space_saving_stairs",
+      "external_spirals"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "design_service": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "spiral_specialist",
+        "helical_specialist",
+        "space_saving"
+      ],
+      "notes": "UK spiral and helical staircase specialist."
+    },
+    "tags": [
+      "NATIONAL",
+      "STAIR_MANUFACTURER",
+      "SPIRAL_SPECIALIST",
+      "HELICAL",
+      "SPACE_SAVING"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 80,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-133",
+    "company": "The Wood Flooring Company",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "thewoodflooringcompany.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "wood_flooring_supply",
+      "sanding_and_refinishing",
+      "stair_tread_refinishing",
+      "restoration"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "refinishing": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "stair_tread_refinishing",
+        "floor_sanding_transfer_to_stairs",
+        "restoration"
+      ],
+      "notes": "Flooring installer with sanding + refinishing service - directly applicable to stair tread refinish projects."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "SANDING",
+      "REFINISHING",
+      "STAIR_TREAD_RESTORATION"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 80,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-134",
+    "company": "British Woodworking Federation (BWF)",
+    "type": "national",
+    "primary_category": "trade_association",
+    "website": "bwf.org.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "trade_accreditation",
+      "industry_standards",
+      "member_directory"
+    ],
+    "services": {
+      "certification": true,
+      "member_directory": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "trade_accreditation_body",
+        "member_verification_source",
+        "industry_standards"
+      ],
+      "notes": "UK woodworking trade association. Member accreditation useful signal for NEX verification workflow - BWF membership is evidence a business is a legitimate trade operation."
+    },
+    "tags": [
+      "NATIONAL",
+      "TRADE_ASSOCIATION",
+      "ACCREDITATION",
+      "VERIFICATION_SOURCE"
+    ],
+    "verification_level": "verified",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_body",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-135",
+    "company": "British Woodworking Association",
+    "type": "national",
+    "primary_category": "trade_association",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "trade_accreditation",
+      "member_directory"
+    ],
+    "services": {
+      "certification": true,
+      "member_directory": true
+    },
+    "staircase_relevance": {
+      "rating": 3,
+      "categories": [
+        "trade_body",
+        "verification_source"
+      ],
+      "notes": "UK woodworking trade body - useful cross-reference for verifying claimed accreditations."
+    },
+    "tags": [
+      "NATIONAL",
+      "TRADE_ASSOCIATION",
+      "VERIFICATION_SOURCE"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "trade_reference",
+      "data_completeness_score": 60,
+      "missing_fields": [
+        "website_confirmed",
+        "phone",
+        "detailed_services"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-136",
+    "company": "TrustMark",
+    "type": "national",
+    "primary_category": "trade_association",
+    "website": "trustmark.org.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "government_endorsed_trade_scheme",
+      "member_directory",
+      "consumer_protection"
+    ],
+    "services": {
+      "certification": true,
+      "member_directory": true,
+      "dispute_resolution": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "government_endorsed_verification",
+        "consumer_protection",
+        "trade_membership"
+      ],
+      "notes": "UK Government-endorsed quality scheme for trade businesses. TrustMark membership is a strong verification signal for NEX."
+    },
+    "tags": [
+      "NATIONAL",
+      "TRADE_ASSOCIATION",
+      "GOVERNMENT_ENDORSED",
+      "VERIFICATION_SOURCE",
+      "CONSUMER_PROTECTION"
+    ],
+    "verification_level": "verified",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_body",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-137",
+    "company": "Federation of Master Builders (FMB)",
+    "type": "national",
+    "primary_category": "trade_association",
+    "website": "fmb.org.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "builder_membership",
+      "member_directory",
+      "consumer_protection"
+    ],
+    "services": {
+      "certification": true,
+      "member_directory": true,
+      "mediation": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "builder_verification",
+        "member_directory_for_matching"
+      ],
+      "notes": "UK's largest trade association for construction. FMB membership adds credibility for staircase-installing builders."
+    },
+    "tags": [
+      "NATIONAL",
+      "TRADE_ASSOCIATION",
+      "BUILDER_VERIFICATION",
+      "VERIFICATION_SOURCE"
+    ],
+    "verification_level": "verified",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_body",
+      "data_completeness_score": 90,
+      "missing_fields": [
+        "phone"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-138",
+    "company": "Junckers UK",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "junckers.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "solid_hardwood_flooring",
+      "sports_flooring",
+      "commercial_flooring"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "solid_hardwood_matched_stairs",
+        "premium_solid_timber"
+      ],
+      "notes": "Danish premium solid-hardwood flooring, strong UK presence. Match-species stair treads possible from same stock."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "SOLID_HARDWOOD",
+      "PREMIUM",
+      "STAIR_MATCHING"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-139",
+    "company": "Boen UK",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "boen.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "engineered_wood_flooring",
+      "oak_flooring",
+      "chevron_and_herringbone"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "engineered_oak_stair_matching",
+        "chevron_herringbone_hall_matching"
+      ],
+      "notes": "Norwegian premium engineered wood flooring - popular for matching to bespoke oak stair treads on modern-classic and scandinavian projects."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "ENGINEERED_OAK",
+      "PREMIUM",
+      "SCANDINAVIAN"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "well_known_uk_trade_name",
+      "data_completeness_score": 85,
+      "missing_fields": [
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "high"
+    }
+  },
+  {
+    "id": "merchant-140",
+    "company": "Deben Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": {
+      "regions": [
+        "East Anglia"
+      ]
+    },
+    "products": [
+      "hardwood",
+      "softwood",
+      "sheet_materials",
+      "joinery_timber"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "east_anglia_hardwood",
+        "joinery_supply"
+      ],
+      "notes": "East Anglia regional timber merchant."
+    },
+    "tags": [
+      "REGIONAL",
+      "TIMBER_MERCHANT",
+      "EAST_ANGLIA",
+      "HARDWOOD"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "trade_reference",
+      "data_completeness_score": 60,
+      "missing_fields": [
+        "website",
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "medium"
+    }
+  },
+  {
+    "id": "merchant-141",
+    "company": "GE Robinson Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": {
+      "regions": [
+        "North East England"
+      ]
+    },
+    "products": [
+      "hardwood",
+      "softwood",
+      "joinery_timber"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "north_east_hardwood"
+      ],
+      "notes": "North East regional timber merchant."
+    },
+    "tags": [
+      "REGIONAL",
+      "TIMBER_MERCHANT",
+      "NORTH_EAST",
+      "HARDWOOD"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "trade_reference",
+      "data_completeness_score": 55,
+      "missing_fields": [
+        "website",
+        "phone",
+        "detailed_branches"
+      ],
+      "confidence": "low",
+      "verification_notes": "Name is common - verification needed per specific business"
+    }
+  },
+  {
+    "id": "merchant-142",
+    "company": "Finish Perfection Ltd",
+    "type": "national",
+    "primary_category": "finishing_contractor",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "spray_finishing_service",
+      "lacquer_application",
+      "oil_finishing",
+      "colour_matching"
+    ],
+    "services": {
+      "spray_finishing": true,
+      "on_site_finishing": true,
+      "workshop_finishing": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "stair_component_spray_finishing",
+        "colour_matching_service"
+      ],
+      "notes": "Spray finishing contractor - workshops outsource stair component finishing here. Category placeholder - specific verification needed per region."
+    },
+    "tags": [
+      "NATIONAL",
+      "FINISHING_CONTRACTOR",
+      "SPRAY_FINISHING",
+      "OUTSOURCE_SERVICE",
+      "NEEDS_VERIFICATION"
+    ],
+    "verification_level": "listed",
+    "data_quality": {
+      "last_checked": "2026-07-27",
+      "source": "category_placeholder",
+      "data_completeness_score": 40,
+      "missing_fields": [
+        "website",
+        "phone",
+        "detailed_branches",
+        "specific_capabilities"
+      ],
+      "confidence": "low",
+      "verification_notes": "Category placeholder - specific regional finishing contractors need Philip-provided verification"
+    }
   }
 ]
