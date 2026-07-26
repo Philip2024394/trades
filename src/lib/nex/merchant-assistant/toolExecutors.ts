@@ -1,6 +1,6 @@
 // NEX Merchant Assistant — server-side tool executors.
 //
-// The AI proposes a tool call → this file runs it. Every executor:
+// NEX proposes a tool call → this file runs it. Every executor:
 //   1. Re-validates merchant ownership (defence-in-depth beyond RLS
 //      and beyond the endpoint's session check).
 //   2. Calls existing Products app helpers (never bypasses them).
@@ -189,7 +189,7 @@ export async function executePreviewChange(
 // Dispatch table — the API endpoint hands the raw tool_use block here
 // ═══════════════════════════════════════════════════════════════════
 
-/** Runs a tool call from the AI. Returns a serialisable result the
+/** Runs a tool call from NEX. Returns a serialisable result the
  *  endpoint feeds back as tool_result content. Unknown tool names and
  *  write tools (not shipped in Increment 2) return an error result. */
 export async function runTool(

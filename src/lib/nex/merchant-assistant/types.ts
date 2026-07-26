@@ -59,7 +59,7 @@ export type MerchantAssistantBanner = {
   approvedAt: string | null;
 };
 
-/** Every tool executor returns this shape so the AI loop is
+/** Every tool executor returns this shape so NEX loop is
  *  guaranteed a stable contract regardless of which tool ran. */
 export type ToolExecutionResult<TData = unknown> = {
   ok: boolean;
@@ -83,7 +83,7 @@ export type MerchantContext = {
   tradeType: string | null;
 };
 
-/** Names for every tool the AI can call. Kept as a const so callers
+/** Names for every tool NEX can call. Kept as a const so callers
  *  can switch exhaustively. Extending this list requires adding both
  *  the definition (tools.ts) and the executor (toolExecutors.ts). */
 export const MERCHANT_ASSISTANT_TOOL_NAMES = [

@@ -1,14 +1,14 @@
 // NEX Merchant Assistant — tool definitions.
 //
-// Anthropic tool schemas for every action the AI can propose. Every
-// tool here has a matching executor in toolExecutors.ts that
-// re-validates merchant ownership and runs the operation through the
-// existing Products app helpers.
+// Anthropic tool schemas for every action NEX can propose. Every tool
+// here has a matching executor in toolExecutors.ts that re-validates
+// merchant ownership and runs the operation through the existing
+// Products app helpers.
 //
 // Reference: docs/brains/PHASE_7_IMPLEMENTATION_PLAN.md · Section 11
 // Reference: src/lib/llm/anthropic.ts · AnthropicToolDef
 //
-// Rule: the AI never writes to lifecycleStatus: active directly. Every
+// Rule: NEX never writes to lifecycleStatus: active directly. Every
 // create/update lands in draft. Only publish_product (with explicit
 // merchant confirmation in the message) or the /approve endpoint
 // transitions to active.
@@ -110,7 +110,7 @@ export const UPDATE_PRODUCT_FIELD_TOOL: AnthropicToolDef = {
   },
 };
 
-/** generate_banner — AI-composed promotional banner */
+/** generate_banner — NEX-composed promotional banner */
 export const GENERATE_BANNER_TOOL: AnthropicToolDef = {
   name: "generate_banner",
   description:
@@ -158,7 +158,7 @@ export const PREVIEW_CHANGE_TOOL: AnthropicToolDef = {
 export const PUBLISH_PRODUCT_TOOL: AnthropicToolDef = {
   name: "publish_product",
   description:
-    "Transition a product from draft to active (published). REQUIRES explicit merchant confirmation in the preceding message — the AI must ask 'shall I publish this?' and see the merchant say yes before calling this tool. Fires the product.published event which makes the product appear in the NEX Centre feed.",
+    "Transition a product from draft to active (published). REQUIRES explicit merchant confirmation in the preceding message — NEX must ask 'shall I publish this?' and see the merchant say yes before calling this tool. Fires the product.published event which makes the product appear in the NEX Centre feed.",
   input_schema: {
     type: "object",
     properties: {
@@ -197,7 +197,7 @@ export const ARCHIVE_PRODUCT_TOOL: AnthropicToolDef = {
   },
 };
 
-/** The full toolset the Merchant Assistant endpoint exposes to the AI. */
+/** The full toolset the Merchant Assistant endpoint exposes to NEX. */
 export const MERCHANT_ASSISTANT_TOOLS: AnthropicToolDef[] = [
   LIST_PRODUCTS_TOOL,
   CREATE_PRODUCT_DRAFT_TOOL,

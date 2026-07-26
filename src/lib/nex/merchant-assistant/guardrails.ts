@@ -1,6 +1,6 @@
 // NEX Merchant Assistant — content guardrails.
 //
-// Code-level validation applied to every AI-generated field BEFORE it
+// Code-level validation applied to every NEX-generated field BEFORE it
 // reaches any product / offer / banner storage. Prompt-only defence is
 // insufficient — this file is where the trust promises from the
 // Business Listing Trust Architecture become enforceable rules.
@@ -18,7 +18,7 @@ export type GuardrailResult =
 
 /** Certification / accreditation phrases that require evidence on the
  *  merchant record. If the merchant has not registered the credential
- *  in their listing, the AI cannot invent it. */
+ *  in their listing, NEX cannot invent it. */
 const CERTIFICATION_PHRASES = [
   "BSI-approved",
   "BSI approved",
@@ -117,13 +117,13 @@ function findFirstBlockedPhrase(
   return null;
 }
 
-/** Public: check a piece of AI-generated text against every guardrail
+/** Public: check a piece of NEX-generated text against every guardrail
  *  rule and return the first violation (or ok). */
 export function checkText(
   text: string,
   context: {
     /** Certifications the merchant has actually registered. Empty array
-     *  means the AI must not claim any. */
+     *  means NEX must not claim any. */
     merchantCredentials?: string[];
     /** Year the merchant registered as trading (from Companies House
      *  or self-declared during signup). If set, invented earlier dates
@@ -208,7 +208,7 @@ export function checkText(
   return { ok: true };
 }
 
-/** Convenience for validating a whole object of AI-generated fields
+/** Convenience for validating a whole object of NEX-generated fields
  *  (e.g. { name, description, tags }) — returns the first violation
  *  across any field or ok. */
 export function checkFields<T extends Record<string, string | null | undefined>>(

@@ -4,8 +4,8 @@
 //
 // Basic read-only chat surface: message stream + input. Writes land in
 // Increment 3 when the write tool executors ship. For now the merchant
-// can ask the assistant to list their products, preview drafts, and
-// converse — no product changes possible yet.
+// can ask NEX to list their products, preview drafts, and converse —
+// no product changes possible yet.
 //
 // Kept intentionally minimal — layout / theming polish arrives in
 // Increment 7. This file's job is to prove the round-trip works.
@@ -73,11 +73,11 @@ export function MerchantAssistantChat() {
       if (!res.ok || !data.ok) {
         const msg =
           data.error === "not_authenticated"
-            ? "You need to sign in as a merchant to use the assistant."
+            ? "You need to sign in as a merchant to use NEX."
             : data.error === "rate_limited"
             ? "Please slow down — you've hit the rate limit (60 requests / 5 min)."
             : data.error === "anthropic_unavailable"
-            ? "The AI service is temporarily unavailable. Try again in a moment."
+            ? "NEX is temporarily unavailable. Please try again in a moment."
             : "Something went wrong. Try again.";
         setErrorBanner(msg);
         setPending(false);

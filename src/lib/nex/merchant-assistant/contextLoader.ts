@@ -37,9 +37,17 @@ export async function loadMerchantContextFromSession(): Promise<MerchantContext 
     };
   }
 
+  // Schema audit 2026-07-27: real columns on hammerex_trade_off_listings
+  // are display_name (not business_name), primary_trade (not trade_type),
+  // trust_tier (not tier). verification_level does not exist as a single
+  // column — hammerex_standard_verified boolean + trust_tier text is the
+  // closest equivalent. NEX-level verification_level lives in the
+  // merchant-directory JSON layer, not here.
   const { data } = await supabaseAdmin
     .from("hammerex_trade_off_listings")
-    .select("id, slug, business_name, verification_level, tier, trade_type")
+    .select(
+      "id, slug, display_name, primary_trade, trust_tier, hammerex_standard_verified"
+    )
     .eq("id", listingId)
     .maybeSingle();
 
@@ -48,18 +56,30 @@ export async function loadMerchantContextFromSession(): Promise<MerchantContext 
     return null;
   }
 
+  // Map trust_tier + hammerex_standard_verified onto the 4-level
+  // verification model used by the Business Listing Trust Architecture:
+  //   trust_tier 'platinum' + verified   → 'partner'
+  //   hammerex_standard_verified true    → 'verified'
+  //   trust_tier non-bronze              → 'claimed'
+  //   default                             → 'listed'
+  const trustTier = (data.trust_tier as string) ?? "bronze";
+  const stdVerified = (data.hammerex_standard_verified as boolean) === true;
+  let verificationLevel: MerchantContext["verificationLevel"] = "listed";
+  if (stdVerified && trustTier === "platinum") verificationLevel = "partner";
+  else if (stdVerified) verificationLevel = "verified";
+  else if (trustTier !== "bronze") verificationLevel = "claimed";
+
   return {
     merchantId: data.id as string,
     slug: (data.slug as string) ?? slug,
-    businessName: (data.business_name as string) ?? null,
-    verificationLevel:
-      (data.verification_level as MerchantContext["verificationLevel"]) ?? "listed",
-    tier: (data.tier as string) ?? null,
-    tradeType: (data.trade_type as string) ?? null,
+    businessName: (data.display_name as string) ?? null,
+    verificationLevel,
+    tier: trustTier,
+    tradeType: (data.primary_trade as string) ?? null,
   };
 }
 
-/** Convenience: build the system-prompt lead line so the AI always
+/** Convenience: build the system-prompt lead line so NEX always
  *  knows who it is talking to. Kept here (not in promptBuilder) so
  *  callers can log/audit exactly what identity string went to the LLM. */
 export function formatMerchantIdentityForPrompt(ctx: MerchantContext): string {

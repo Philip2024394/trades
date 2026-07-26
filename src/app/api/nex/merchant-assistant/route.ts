@@ -1,10 +1,10 @@
 // POST /api/nex/merchant-assistant
 //
-// Conversational Merchant AI Assistant — Phase 7 · Increment 2.
+// Conversational NEX Merchant Assistant — Phase 7 · Increment 2.
 //
 // Reads-only tools shipped this increment: list_products, preview_change.
 // Write tools land in Increment 3 and return a helpful "not yet enabled"
-// message via toolExecutors.runTool() if the AI tries to call them.
+// message via toolExecutors.runTool() if NEX tries to call them.
 //
 // Flow:
 //   1. Session gate → 401 if no merchant signed in
@@ -192,7 +192,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Feed tool results back to the AI for the next turn
+    // Feed tool results back to NEX for the next turn
     messages.push({ role: "user", content: toolResults });
   }
 
