@@ -1962,23 +1962,37 @@ new THREE.TextureLoader().load(
       metalness: 0.0,
       side: THREE.DoubleSide,
     });
-    // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
-    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
-    // Plain square hollow tube, crisp 90° edges (no chamfer).
-    //
-    // Swapped to MeshPhysicalMaterial with clearcoat — same envMap, but the
-    // clearcoat adds a SECOND reflective layer on top of the metal that
-    // shows brighter/sharper highlights than MeshStandardMaterial alone.
-    // Combined with high specular intensity, this reads as visibly
-    // reflective metal even off the soft RoomEnvironment IBL.
+    // Brushed stainless steel baluster (Philip 2026-07-26 · Tier 2 realism).
+    // 40×40×900mm plain square. Combines two effects:
+    //   1. HDRI environment reflection (scene.environment, royal_esplanade)
+    //      → sky-and-buildings tones reflected across the surface, so metal
+    //        reads as reflective from every viewing angle
+    //   2. Reference-image texture bound as map + bumpMap + roughnessMap
+    //      → vertical brushed grain pattern with subtle bumps and shinier-
+    //        along-grain / matter-across-grain roughness variation
+    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png
+    const stainlessTex = new THREE.TextureLoader().load(
+      "https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png",
+      (t) => {
+        t.wrapS = THREE.ClampToEdgeWrapping;
+        t.wrapT = THREE.ClampToEdgeWrapping;
+        t.colorSpace = THREE.SRGBColorSpace;
+        t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        t.needsUpdate = true;
+      }
+    );
     const balusterStainlessMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xe0e4e8,
-      roughness: 0.22,
-      metalness: 1.0,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.05,
+      map:              stainlessTex,   // brushed grain as base colour
+      bumpMap:          stainlessTex,
+      bumpScale:        0.0001,          // very subtle — grain hints, not corrugated
+      roughnessMap:     stainlessTex,   // grain lines shinier vs matte (brushed contrast)
+      color:            0xdadee1,        // slight brightening tint
+      roughness:        0.32,            // base roughness — modulated by roughnessMap
+      metalness:        1.0,
+      clearcoat:        0.7,             // second reflective layer for extra "polished" pop
+      clearcoatRoughness: 0.10,
       specularIntensity: 1.0,
-      specularColor: 0xffffff,
+      specularColor:    0xffffff,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
