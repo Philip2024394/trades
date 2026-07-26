@@ -1942,14 +1942,15 @@ new THREE.TextureLoader().load(
     // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
     // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
     //
-    // Uses the scene RoomEnvironment (PMREM'd) for reflections. envMapIntensity
-    // is boosted to 1.5 below so the brushed metal reads bright and shiny.
-    // metalness back up to 0.9 (proper metal) since we now have an envMap to
-    // reflect. roughness 0.42 keeps the reflection soft-focus, not mirror.
+    // Uses the scene RoomEnvironment (PMREM'd) for reflections. Previous
+    // roughness 0.42 was too soft — reflections blurred to a flat colour.
+    // Dropped roughness to 0.18 (near-polished so the envMap actually shows
+    // ROOM SHAPE variations across the surface), envMapIntensity to 3.0
+    // below so the reflection reads clearly as reflective metal.
     const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
-      color: 0xd0d4d8,
-      roughness: 0.42,
-      metalness: 0.90,
+      color: 0xd8dcdf,
+      roughness: 0.18,
+      metalness: 1.0,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
@@ -2054,7 +2055,7 @@ new THREE.TextureLoader().load(
     }
     if (balusterWhiteMaterial)     balusterWhiteMaterial.envMapIntensity     = 0;
     if (balusterCreamMaterial)     balusterCreamMaterial.envMapIntensity     = 0;
-    if (balusterStainlessMaterial) balusterStainlessMaterial.envMapIntensity = 1.5;
+    if (balusterStainlessMaterial) balusterStainlessMaterial.envMapIntensity = 3.0;
 
     // --- T&G SHEETING factory (Philip 2026-07-25 REV 3) — single flat panel with PROCEDURAL
     //     T&G texture drawn on a canvas: 12 sections (75mm each) with dark groove lines between
