@@ -2915,6 +2915,10 @@ window.addEventListener("resize", () => {
   function openSheet(cat) {
     sheetTitle.textContent = cat.title;
     sheetContent.innerHTML = "";
+    // Philip's rule: drawer and sheet are never open together. Card tap
+    // closes the drawer, the sheet slides up. Backdrop stays so tapping
+    // outside still dismisses everything.
+    drawer.classList.remove("open");
     // Custom renderer for categories that don't use the option-grid pattern
     // (e.g. compliance results). Fall through to the standard grid otherwise.
     if (typeof cat.renderContent === "function") {
@@ -2949,9 +2953,12 @@ window.addEventListener("resize", () => {
     sheet.classList.add("open");
   }
 
-  function openHub()  { backdrop.classList.add("open"); drawer.classList.add("open"); }
+  function openHub()  { backdrop.classList.add("open"); drawer.classList.add("open"); sheet.classList.remove("open"); }
   function closeAll() { drawer.classList.remove("open"); backdrop.classList.remove("open"); sheet.classList.remove("open"); }
-  function closeSheet() { sheet.classList.remove("open"); }
+  // Sheet close reopens the drawer so users can hop between categories
+  // without needing to re-tap the FAB every time. Backdrop was already
+  // showing so this is a smooth transition.
+  function closeSheet() { sheet.classList.remove("open"); drawer.classList.add("open"); }
 
   fab.addEventListener("click", openHub);
   backdrop.addEventListener("click", closeAll);

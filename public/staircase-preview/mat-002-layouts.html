@@ -771,6 +771,8 @@ try {
   function openSheet(cat) {
     sheetTitle.textContent = cat.title;
     sheetContent.innerHTML = "";
+    // Drawer + sheet mutually exclusive per Philip's rule.
+    drawer.classList.remove("open");
     const grid = document.createElement("div");
     grid.className = "sheet-option-grid";
     for (const opt of cat.options) {
@@ -803,13 +805,15 @@ try {
       cards.appendChild(btn);
     }
   }
-  function openHub()  { backdrop.classList.add("open"); drawer.classList.add("open"); }
+  function openHub()  { backdrop.classList.add("open"); drawer.classList.add("open"); sheet.classList.remove("open"); }
   function closeAll() { drawer.classList.remove("open"); backdrop.classList.remove("open"); sheet.classList.remove("open"); }
+  // Sheet close reopens the drawer so users can pick another category.
+  function closeSheet() { sheet.classList.remove("open"); drawer.classList.add("open"); }
   fab.addEventListener("click", openHub);
   backdrop.addEventListener("click", closeAll);
   hubClose.addEventListener("click", closeAll);
-  sheetClose.addEventListener("click", () => sheet.classList.remove("open"));
-  window.addEventListener("keydown", (e) => { if (e.key === "Escape") { if (sheet.classList.contains("open")) sheet.classList.remove("open"); else if (drawer.classList.contains("open")) closeAll(); } });
+  sheetClose.addEventListener("click", closeSheet);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") { if (sheet.classList.contains("open")) closeSheet(); else if (drawer.classList.contains("open")) closeAll(); } });
   renderCards();
 })();
 </script>
