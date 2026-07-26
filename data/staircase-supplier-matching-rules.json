@@ -1,0 +1,356 @@
+{
+  "version": "V1",
+  "generated": "2026-07-27",
+  "purpose": "Turn a customer requirement into a ranked shortlist of matched suppliers from the UK merchant directory. Bridge from customer intent to real-world sourcing.",
+
+  "consumes": [
+    "data/uk-merchant-directory.json (supplier records with category, staircase_relevance, tags, verification_level)",
+    "data/staircase-quote-engine.json (regional multipliers for coverage inference)",
+    "data/staircase-design-recommendation-rules.json (recommended materials to source)"
+  ],
+
+  "input_dimensions": {
+    "requirement_type": [
+      { "id": "material_supply", "label": "Buy materials", "note": "Customer or trade wants to buy stair components" },
+      { "id": "stair_manufacture", "label": "Get a stair made", "note": "Customer wants a bespoke stair manufactured" },
+      { "id": "installation", "label": "Get a stair installed", "note": "Customer has product, needs fitter" },
+      { "id": "glass_balustrade", "label": "Glass balustrade supply/fit" },
+      { "id": "flooring", "label": "Flooring for hallway / landing" },
+      { "id": "loft_access", "label": "Loft ladder or loft stair" },
+      { "id": "finishing", "label": "Lacquer / oil / paint supply" },
+      { "id": "tool_hire", "label": "Tool or equipment hire" },
+      { "id": "machinery", "label": "Workshop machinery purchase" },
+      { "id": "software", "label": "Stair design / manufacturing software" }
+    ],
+
+    "specific_material": [
+      "american_white_oak", "european_oak", "walnut", "ash", "pine", "mdf", "plywood",
+      "toughened_glass", "laminated_glass", "stainless_steel", "black_metal", "any"
+    ],
+
+    "region": {
+      "input_type": "postcode_or_region_name",
+      "examples": ["M20 4AB", "Leeds", "West Yorkshire", "Scotland"]
+    },
+
+    "verification_preference": [
+      { "id": "verified_only", "label": "Verified NEX suppliers only", "returns": "verified + partner only" },
+      { "id": "verified_first", "label": "Verified first, then listed", "returns": "all levels sorted by verification" },
+      { "id": "any", "label": "All listings", "returns": "all levels sorted by relevance" }
+    ],
+
+    "priority": [
+      "distance_first",
+      "specialisation_first",
+      "verification_first",
+      "price_range_first"
+    ]
+  },
+
+  "matching_algorithm": {
+    "step_1_category_filter": "Filter merchants where primary_category is in supplier_type_routing[requirement_type]",
+    "step_2_material_filter": "Sub-filter by material match in staircase_relevance.categories or products array",
+    "step_3_region_filter": "Include merchants where coverage.regions matches user region OR includes 'UK-wide'",
+    "step_4_verification_filter": "Apply verification_preference (all / verified+ / partner only)",
+    "step_5_score_and_sort": "Compute combined score per merchant using scoring_weights, sort descending",
+    "step_6_present_top_n": "Return top 5 by default, with reasoning per match"
+  },
+
+  "supplier_type_routing": {
+    "material_supply_oak_treads": {
+      "primary": ["timber_merchant", "stair_specialist"],
+      "secondary": ["general_builders_merchant"],
+      "min_staircase_relevance": 4,
+      "material_tags_required": ["OAK", "HARDWOOD"]
+    },
+    "material_supply_walnut_treads": {
+      "primary": ["timber_merchant"],
+      "secondary": ["stair_specialist"],
+      "min_staircase_relevance": 4,
+      "material_tags_required": ["WALNUT", "HARDWOOD", "PREMIUM"]
+    },
+    "material_supply_pine_treads": {
+      "primary": ["timber_merchant", "general_builders_merchant"],
+      "secondary": [],
+      "min_staircase_relevance": 3
+    },
+    "material_supply_mdf_risers": {
+      "primary": ["sheet_materials", "general_builders_merchant"],
+      "secondary": ["timber_merchant"],
+      "min_staircase_relevance": 3
+    },
+    "material_supply_veneer_sheet": {
+      "primary": ["sheet_materials"],
+      "secondary": ["timber_merchant"],
+      "min_staircase_relevance": 4,
+      "material_tags_required": ["VENEER"]
+    },
+    "material_supply_stair_parts": {
+      "primary": ["stair_specialist"],
+      "secondary": ["general_builders_merchant"],
+      "min_staircase_relevance": 4
+    },
+    "material_supply_fixings": {
+      "primary": ["fixings"],
+      "secondary": ["general_builders_merchant"],
+      "min_staircase_relevance": 3
+    },
+    "material_supply_finishing": {
+      "primary": ["finishing_supplier"],
+      "secondary": ["timber_merchant"],
+      "min_staircase_relevance": 4
+    },
+    "material_supply_ironmongery": {
+      "primary": ["ironmongery"],
+      "secondary": ["general_builders_merchant"],
+      "min_staircase_relevance": 3
+    },
+
+    "stair_manufacture_bespoke": {
+      "primary": ["stair_manufacturer"],
+      "secondary": [],
+      "min_staircase_relevance": 5
+    },
+    "stair_manufacture_kit": {
+      "primary": ["stair_specialist", "stair_manufacturer"],
+      "secondary": [],
+      "min_staircase_relevance": 4
+    },
+
+    "installation": {
+      "primary": ["stair_manufacturer"],
+      "secondary": ["loft_installer"],
+      "min_staircase_relevance": 4,
+      "note": "V1: NEX does not yet carry a dedicated installer directory beyond loft installers. Route via manufacturer's own installation service or ask user to request installer separately."
+    },
+
+    "glass_balustrade": {
+      "primary": ["glass_balustrade"],
+      "secondary": ["stair_specialist"],
+      "min_staircase_relevance": 4
+    },
+
+    "flooring": {
+      "primary": ["flooring_supplier"],
+      "secondary": [],
+      "min_staircase_relevance": 3
+    },
+
+    "loft_access_ladder": {
+      "primary": ["loft_ladder_supplier"],
+      "secondary": ["loft_installer"],
+      "min_staircase_relevance": 3
+    },
+    "loft_access_installation": {
+      "primary": ["loft_installer"],
+      "secondary": [],
+      "min_staircase_relevance": 4
+    },
+
+    "finishing": {
+      "primary": ["finishing_supplier"],
+      "secondary": [],
+      "min_staircase_relevance": 4
+    },
+
+    "tool_hire": {
+      "primary": ["tool_hire"],
+      "secondary": [],
+      "min_staircase_relevance": 3
+    },
+
+    "machinery": {
+      "primary": ["machinery_supplier"],
+      "secondary": [],
+      "min_staircase_relevance": 3
+    },
+
+    "software": {
+      "primary": ["software_vendor"],
+      "secondary": [],
+      "min_staircase_relevance": 3
+    }
+  },
+
+  "scoring_weights": {
+    "verification_level": {
+      "partner": 100,
+      "verified": 75,
+      "claimed": 50,
+      "listed": 25
+    },
+    "staircase_relevance_rating": {
+      "5_star": 50,
+      "4_star": 35,
+      "3_star": 20,
+      "2_star": 10,
+      "1_star": 5
+    },
+    "regional_match": {
+      "exact_postcode_area": 40,
+      "county_match": 30,
+      "region_match": 20,
+      "national_coverage": 15,
+      "no_direct_coverage": 5
+    },
+    "category_match": {
+      "primary_specialist": 60,
+      "secondary_capability": 30,
+      "general_coverage": 15
+    },
+    "service_match_bonuses": {
+      "delivery_when_needed": 10,
+      "trade_account_when_needed": 10,
+      "cutting_service_when_needed": 15,
+      "click_and_collect_when_urgent": 15
+    }
+  },
+
+  "regional_coverage_map": {
+    "note": "Maps merchant coverage.regions strings to a broader match tree. When user gives a postcode, resolve to region and match against these buckets.",
+    "postcode_to_region": {
+      "M": "greater_manchester",
+      "L": "merseyside",
+      "LS": "west_yorkshire",
+      "S": "south_yorkshire",
+      "B": "west_midlands",
+      "BS": "bristol",
+      "LE": "east_midlands",
+      "NG": "east_midlands",
+      "OX": "oxfordshire",
+      "GL": "gloucestershire",
+      "N": "north_london",
+      "E": "east_london",
+      "SE": "south_east_london",
+      "SW": "south_west_london",
+      "W": "west_london",
+      "NW": "north_west_london",
+      "TN": "kent",
+      "ME": "kent",
+      "CT": "kent",
+      "CM": "essex",
+      "SS": "essex",
+      "CO": "essex",
+      "IP": "suffolk",
+      "NR": "norfolk",
+      "CB": "cambridgeshire",
+      "BT": "northern_ireland",
+      "EH": "edinburgh",
+      "G": "glasgow",
+      "CF": "cardiff",
+      "SA": "swansea",
+      "LL": "north_wales"
+    },
+    "region_to_supermatch": {
+      "greater_manchester": ["North West England", "UK-wide"],
+      "merseyside": ["North West England", "UK-wide"],
+      "west_yorkshire": ["Yorkshire", "UK-wide"],
+      "south_yorkshire": ["Yorkshire", "UK-wide"],
+      "west_midlands": ["Midlands", "UK-wide"],
+      "east_midlands": ["Midlands", "UK-wide"],
+      "north_london": ["London", "Greater London", "South East", "UK-wide"],
+      "east_london": ["London", "Greater London", "South East", "UK-wide"],
+      "south_east_london": ["London", "Greater London", "South East", "UK-wide"],
+      "south_west_london": ["London", "Greater London", "South East", "UK-wide"],
+      "west_london": ["London", "Greater London", "South East", "UK-wide"],
+      "north_west_london": ["London", "Greater London", "South East", "UK-wide"],
+      "kent": ["Kent", "South East", "UK-wide"],
+      "essex": ["Essex", "South East", "UK-wide"],
+      "bristol": ["Bristol", "South West", "UK-wide"],
+      "northern_ireland": ["Northern Ireland", "UK-wide"],
+      "edinburgh": ["Scotland", "UK-wide"],
+      "glasgow": ["Scotland", "UK-wide"],
+      "cardiff": ["Wales", "UK-wide"],
+      "swansea": ["Wales", "UK-wide"],
+      "north_wales": ["Wales", "UK-wide"]
+    }
+  },
+
+  "requirement_translation_rules": {
+    "note": "Natural-language customer input → structured requirement. This is the entry-point translation layer.",
+    "patterns": [
+      { "match": "oak treads|oak stair tread", "requirement_type": "material_supply", "specific": "oak_treads", "route_key": "material_supply_oak_treads" },
+      { "match": "walnut tread|walnut stair", "requirement_type": "material_supply", "specific": "walnut_treads", "route_key": "material_supply_walnut_treads" },
+      { "match": "pine tread|pine stair", "requirement_type": "material_supply", "specific": "pine_treads", "route_key": "material_supply_pine_treads" },
+      { "match": "mdf riser|painted riser", "requirement_type": "material_supply", "specific": "mdf_risers", "route_key": "material_supply_mdf_risers" },
+      { "match": "veneer sheet|8x4 veneer|panel veneer", "requirement_type": "material_supply", "specific": "veneer_sheet", "route_key": "material_supply_veneer_sheet" },
+      { "match": "handrail|newel|spindle|baluster|stair part", "requirement_type": "material_supply", "specific": "stair_parts", "route_key": "material_supply_stair_parts" },
+      { "match": "screws|adhesive|fixing", "requirement_type": "material_supply", "specific": "fixings", "route_key": "material_supply_fixings" },
+      { "match": "osmo|hardwax oil|lacquer|stair finish", "requirement_type": "material_supply", "specific": "finishing", "route_key": "material_supply_finishing" },
+      { "match": "bracket|hinge|handrail bracket", "requirement_type": "material_supply", "specific": "ironmongery", "route_key": "material_supply_ironmongery" },
+      { "match": "bespoke stair|custom staircase|new staircase|oak staircase made", "requirement_type": "stair_manufacture", "specific": "bespoke", "route_key": "stair_manufacture_bespoke" },
+      { "match": "stair kit|configurable stair|order stair online", "requirement_type": "stair_manufacture", "specific": "kit", "route_key": "stair_manufacture_kit" },
+      { "match": "glass balustrade|glass panel|glass staircase", "requirement_type": "glass_balustrade", "route_key": "glass_balustrade" },
+      { "match": "engineered oak floor|hardwood floor|stair matching floor", "requirement_type": "flooring", "route_key": "flooring" },
+      { "match": "loft ladder|attic ladder|folding ladder", "requirement_type": "loft_access_ladder", "route_key": "loft_access_ladder" },
+      { "match": "loft ladder install|fit loft ladder", "requirement_type": "loft_access_installation", "route_key": "loft_access_installation" },
+      { "match": "hire dust extractor|hire sander|floor sander hire|scaffold hire", "requirement_type": "tool_hire", "route_key": "tool_hire" },
+      { "match": "cnc router|workshop machinery|panel saw", "requirement_type": "machinery", "route_key": "machinery" },
+      { "match": "stair software|stairdesigner|compass software|staircon", "requirement_type": "software", "route_key": "software" }
+    ]
+  },
+
+  "presentation_rules": [
+    "Return top 5 matches unless user requests more (max 15)",
+    "Show verification level badge (Partner / Verified / Claimed / Listed) per Business Trust doc",
+    "Show one-line reason for the match (e.g. 'Hardwood specialist in your region, 5-star staircase relevance')",
+    "Show services (delivery / trade account / cutting service) if relevant to the query",
+    "If no verified matches, show listed matches WITH the standard unverified-caveat wording",
+    "Always offer 'broaden search' if fewer than 3 matches",
+    "Never rank paid tier higher than verification level - trust always wins over commercial placement"
+  ],
+
+  "engine_workflow": [
+    "1. Parse customer natural-language input via requirement_translation_rules -> structured requirement",
+    "2. If requirement is ambiguous (e.g. 'I need oak stair stuff'), ask clarifying question before matching",
+    "3. Filter merchant directory by supplier_type_routing[route_key].primary and .secondary categories",
+    "4. Apply min_staircase_relevance threshold",
+    "5. If material_tags_required is set, filter to merchants with those tags",
+    "6. Resolve user region via regional_coverage_map, filter merchants with matching coverage",
+    "7. Apply verification_preference filter (verified_only / verified_first / any)",
+    "8. Score each remaining merchant using scoring_weights sum",
+    "9. Sort descending by score",
+    "10. Present top 5 with reasoning per match, applying presentation_rules"
+  ],
+
+  "example_execution": {
+    "user_input": "Where can I get oak treads near Leeds?",
+    "parsed": {
+      "requirement_type": "material_supply",
+      "specific": "oak_treads",
+      "route_key": "material_supply_oak_treads",
+      "region_input": "Leeds",
+      "resolved_region": "west_yorkshire"
+    },
+    "filter_step_1_category": "Included: timber_merchant, stair_specialist, general_builders_merchant",
+    "filter_step_2_material": "Filtered to merchants with OAK or HARDWOOD tags",
+    "filter_step_3_region": "Included merchants covering Yorkshire, UK-wide",
+    "filter_step_4_verification": "Default 'verified_first' - none verified in V1 - falling back to listed with caveat",
+    "expected_top_matches": [
+      { "company": "Howarth Timber Leeds", "score_breakdown": "5-star relevance (50) + primary specialist (60) + Yorkshire coverage (30) + listed (25) = 165", "reason": "Premier North England hardwood specialist with a Leeds branch - top match for oak stair treads" },
+      { "company": "Arnold Laver", "score_breakdown": "5-star relevance (50) + primary specialist (60) + national coverage (15) + listed (25) = 150", "reason": "Premium hardwood specialist with Sheffield branch nearby" },
+      { "company": "Yorkshire Timber Halifax", "score_breakdown": "5-star relevance (50) + primary specialist (60) + Yorkshire (30) + listed (25) = 165", "reason": "Halifax-based stair-parts specialist carrying oak" },
+      { "company": "Jewson (Leeds branches)", "score_breakdown": "4-star relevance (35) + secondary (30) + Yorkshire (30) + listed (25) = 120", "reason": "General merchant for MDF risers and installation supplies if not oak treads specifically" },
+      { "company": "International Timber (Birmingham)", "score_breakdown": "5-star relevance (50) + primary specialist (60) + national (15) + listed (25) = 150", "reason": "National hardwood distributor - option if regional stock is limited" }
+    ],
+    "presentation": "5 hardwood suppliers matched for oak stair treads near Leeds. None currently verified by NEX - we recommend confirming stock, price and lead time directly. [Full listings with contact and services]"
+  },
+
+  "clarifying_question_rules": {
+    "when_ambiguous": [
+      { "trigger": "material vs manufacture unclear", "ask": "Are you looking to buy oak boards to make the stair yourself, or looking for a company to make the whole staircase?" },
+      { "trigger": "installation vs manufacture unclear", "ask": "Do you have the staircase already and need it fitted, or do you need it made and installed?" },
+      { "trigger": "region unspecified", "ask": "Where are you based? A postcode helps me find nearby suppliers." },
+      { "trigger": "material unspecified", "ask": "What material are you working in - oak, walnut, painted, glass?" }
+    ]
+  },
+
+  "not_in_v1": [
+    "Distance-in-miles calculation from postcode (requires geocoding of all branch addresses)",
+    "Live stock availability (needs supplier API integrations)",
+    "Actual installer directory (V1 has loft installers only - general stair installers deferred)",
+    "Cross-country matching (US, AU merchant directories not yet populated)",
+    "Customer-rating weighting (requires verified-transaction reviews to be live)",
+    "Multi-material bundle matching (e.g. 'oak stair + matching floor + fittings' in one query)"
+  ]
+}
