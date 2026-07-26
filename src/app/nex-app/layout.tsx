@@ -4,14 +4,20 @@
 // Language surface. Scoped to /nex-app/* only — every existing route
 // unaffected. Applies to the platform landing, Messenger, every Brain
 // surface, every Studio.
+//
+// Mounts the persistent NexSectionsNav (top-right menu → side drawer with
+// all top-level sections) so users can jump between Discover · Contacts ·
+// Centre · Staircase Configurator · Design System from any /nex-app/* page.
 
 import type { ReactNode } from "react";
+import { NexSectionsNav } from "@/components/nex-app/shell/NexSectionsNav";
 import "./nex-app.css";
 
 export default function NexPlatformLayout({ children }: { children: ReactNode }) {
   return (
     <div className="nex-app-root">
       {children}
+      <NexSectionsNav />
     </div>
   );
 }
