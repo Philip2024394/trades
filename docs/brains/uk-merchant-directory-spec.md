@@ -56,9 +56,12 @@ Each merchant record:
     "categories": ["treads_supply", "risers_mdf", "fixings", "adhesive", "under_stair_plasterboard"],
     "notes": "General merchant carrying softwood, MDF, plywood, screws, adhesive — good baseline for staircase installation supplies. Not the first stop for premium hardwood treads."
   },
-  "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "TRADE_ACCOUNT", "DELIVERY", "CLICK_COLLECT"]
+  "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "TRADE_ACCOUNT", "DELIVERY", "CLICK_COLLECT"],
+  "verification_level": "listed | claimed | verified | partner"
 }
 ```
+
+**`verification_level`** — see `docs/brains/nex-business-listing-and-trust-architecture.md`. Default `listed` on directory import; progresses when business owner claims and NEX completes checks.
 
 ## Categories
 
@@ -75,6 +78,9 @@ Each merchant record:
 **`software_vendor`** — Autodesk (AutoCAD / Fusion 360) · Dassault Systèmes (SolidWorks) · StairDesigner · Compass Software · Consultec (Staircon)
 **`finishing_supplier`** — Osmo UK · Fiddes · Rubio Monocoat · Morrells · Bona · Sikkens
 **`ironmongery`** — Ironmongery Direct · Prima Ironmongery · IronmongeryOnline
+**`flooring_supplier`** — Havwoods · Ted Todd · Wood Floor Warehouse · UK Flooring Direct · Flooring Superstore · Direct Wood Flooring · Howdens · Carpetright · Abingdon · Crucial Trading
+**`loft_ladder_supplier`** — FAKRO UK · Youngman · Werner · Telesteps · Bison · Electric Loft Ladder Co · Loft Shop · Ladders UK Direct · Ladderstore
+**`loft_installer`** — The Loft Access Company · The Loft Ladder Man · Loft Centre · Castlewood · Advanced Loft Ladders · Easyreach · Loft Ladders Herts · Home Counties · Loft & Ladders (Essex) · Yorkshire Loft Ladders · Loft Ladders Scotland · Lofts & Ladders (Liverpool)
 
 ## Staircase relevance rating
 

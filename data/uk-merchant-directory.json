@@ -87,7 +87,8 @@
       "TRADE_ACCOUNT",
       "DELIVERY",
       "CLICK_COLLECT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-002",
@@ -178,7 +179,8 @@
       "TIMBER",
       "TRADE_ONLY_PRICING",
       "DELIVERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-003",
@@ -255,7 +257,8 @@
       "KITCHENS",
       "LANDSCAPING",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-004",
@@ -322,7 +325,8 @@
       "TOOLS",
       "FIXINGS",
       "SAME_DAY_PICKUP"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-005",
@@ -371,7 +375,8 @@
       "TIMBER",
       "ROOFING",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-006",
@@ -426,7 +431,8 @@
       "INDEPENDENT_STYLE",
       "TIMBER",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-007",
@@ -465,7 +471,8 @@
       "SOUTH_WEST",
       "TIMBER",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-008",
@@ -503,7 +510,8 @@
       "EAST_ENGLAND",
       "TIMBER",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-009",
@@ -540,7 +548,8 @@
       "ESSEX",
       "LONDON",
       "TIMBER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-010",
@@ -581,7 +590,8 @@
       "REGIONAL",
       "WALES",
       "TIMBER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-011",
@@ -619,7 +629,8 @@
       "SUSSEX",
       "TIMBER",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-012",
@@ -658,7 +669,8 @@
       "TIMBER",
       "HARDWOOD",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-013",
@@ -701,7 +713,8 @@
       "NORTH_WEST",
       "TIMBER",
       "LOCAL_MERCHANT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-014",
@@ -745,7 +758,8 @@
       "YORKSHIRE",
       "TIMBER",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-015",
@@ -791,7 +805,8 @@
       "TIMBER",
       "JOINERY",
       "OAK"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-016",
@@ -834,7 +849,8 @@
       "NORTHERN_IRELAND",
       "TIMBER",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-017",
@@ -874,7 +890,8 @@
       "REGIONAL",
       "NORTHERN_IRELAND",
       "TIMBER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-018",
@@ -914,7 +931,8 @@
       "INDEPENDENT",
       "WEST_MIDLANDS",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-019",
@@ -958,7 +976,8 @@
       "LONDON",
       "TIMBER",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-020",
@@ -1003,7 +1022,8 @@
       "INDEPENDENT",
       "LONDON",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-021",
@@ -1058,7 +1078,8 @@
       "TRADE_WAREHOUSE",
       "SHEET_MATERIALS",
       "TOOLS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-022",
@@ -1126,7 +1147,8 @@
       "WALNUT",
       "JOINERY",
       "STAIRCASE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-023",
@@ -1174,7 +1196,8 @@
       "OAK",
       "MACHINING",
       "STAIRCASE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-024",
@@ -1231,7 +1254,8 @@
       "HARDWOOD",
       "VENEER",
       "STAIRCASE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-025",
@@ -1271,7 +1295,8 @@
       "DECORATIVE_PANELS",
       "PREMIUM",
       "STAIRCASE_BACK_PANELS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-026",
@@ -1318,7 +1343,8 @@
       "PREMIUM_HARDWOOD",
       "EXOTIC",
       "VENEER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-027",
@@ -1353,7 +1379,8 @@
       "TIMBER_SPECIALIST",
       "STRUCTURAL",
       "ENGINEERED_TIMBER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-028",
@@ -1395,7 +1422,8 @@
       "SCOTLAND",
       "TIMBER_SPECIALIST",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-029",
@@ -1439,7 +1467,8 @@
       "TIMBER_SPECIALIST",
       "PREMIUM",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-030",
@@ -1473,7 +1502,8 @@
       "REGIONAL",
       "GREATER_MANCHESTER",
       "TIMBER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-031",
@@ -1518,7 +1548,8 @@
       "KENT",
       "TIMBER_SPECIALIST",
       "OAK"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-032",
@@ -1552,7 +1583,8 @@
       "TIMBER_SPECIALIST",
       "JOINERY",
       "OAK"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-033",
@@ -1581,7 +1613,8 @@
       "TIMBER",
       "LOCAL_DELIVERY",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-034",
@@ -1620,7 +1653,8 @@
       "BIRCH_PLY",
       "CABINETRY",
       "JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-035",
@@ -1655,7 +1689,8 @@
       "PLYWOOD",
       "MARINE_PLY",
       "BESPOKE_JOINERY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-036",
@@ -1700,7 +1735,8 @@
       "ADHESIVE",
       "SAME_DAY_PICKUP",
       "EMERGENCY_SUPPLY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-037",
@@ -1742,7 +1778,8 @@
       "TOOLS",
       "TRADE",
       "SAME_DAY_PICKUP"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-038",
@@ -1779,7 +1816,8 @@
       "WOOD_SCREWS",
       "TRADE_ONLY",
       "STAIRCASE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-039",
@@ -1822,7 +1860,8 @@
       "HANDRAILS",
       "RENOVATION",
       "DIY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-040",
@@ -1863,7 +1902,8 @@
       "OAK_COMPONENTS",
       "RENOVATION",
       "MOULDINGS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-041",
@@ -1904,7 +1944,8 @@
       "GLASS",
       "CONFIGURATOR",
       "DIY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-042",
@@ -1944,7 +1985,8 @@
       "OAK",
       "GLASS",
       "LUXURY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-043",
@@ -1978,7 +2020,8 @@
       "STAIR_MANUFACTURER",
       "MODERN",
       "CUSTOM"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-044",
@@ -2009,7 +2052,8 @@
       "BESPOKE",
       "TRADITIONAL",
       "CRAFT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-045",
@@ -2045,7 +2089,8 @@
       "VOLUME",
       "HOUSE_BUILDERS",
       "NEW_BUILD"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-046",
@@ -2074,7 +2119,8 @@
       "STAIR_MANUFACTURER",
       "INSTALLATION",
       "CUSTOM"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-047",
@@ -2104,7 +2150,8 @@
       "BESPOKE",
       "GLASS",
       "MODERN"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-048",
@@ -2137,7 +2184,8 @@
       "GLASS",
       "OAK",
       "DESIGN_SERVICE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-049",
@@ -2177,7 +2225,8 @@
       "SPIGOTS",
       "CHANNELS",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-050",
@@ -2217,7 +2266,8 @@
       "PREMIUM",
       "COMMERCIAL",
       "SYSTEM_SUPPLIER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-051",
@@ -2256,7 +2306,8 @@
       "WROUGHT_IRON",
       "HARDWARE",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-052",
@@ -2291,7 +2342,8 @@
       "NATIONAL",
       "GLASS_BALUSTRADE",
       "CUSTOM_SYSTEMS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-053",
@@ -2332,7 +2384,8 @@
       "ALUMINIUM",
       "CUT_TO_SIZE",
       "FABRICATION"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-054",
@@ -2369,7 +2422,8 @@
       "METAL",
       "CUT_TO_SIZE",
       "SMALL_QUANTITY"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-055",
@@ -2405,7 +2459,8 @@
       "STRUCTURAL_STEEL",
       "FABRICATION",
       "FLOATING_STAIRS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-056",
@@ -2449,7 +2504,8 @@
       "HARDWOOD",
       "MACHINING",
       "STAIRCASE_MATERIALS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-057",
@@ -2494,7 +2550,8 @@
       "TIMBER",
       "TOOLS",
       "FIXINGS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-058",
@@ -2533,7 +2590,8 @@
       "TIMBER",
       "DELIVERY",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-059",
@@ -2573,7 +2631,8 @@
       "SHEET_MATERIALS",
       "DIY",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-060",
@@ -2613,7 +2672,8 @@
       "TIMBER_CUTTING",
       "IRONMONGERY",
       "STAIR_PROJECTS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-061",
@@ -2669,7 +2729,8 @@
       "HANDRAILS",
       "NEWELS",
       "SPINDLES"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-062",
@@ -2713,7 +2774,8 @@
       "STAIR_COMPONENTS",
       "BALUSTRADE",
       "TRADE_SUPPLIER"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-063",
@@ -2755,7 +2817,8 @@
       "POWER_TOOLS",
       "ACCESS_EQUIPMENT",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-064",
@@ -2795,7 +2858,8 @@
       "POWER_TOOLS",
       "ACCESS_EQUIPMENT",
       "TRADE_ACCOUNT"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-065",
@@ -2831,7 +2895,8 @@
       "TOOL_HIRE",
       "POWER_TOOLS",
       "TP_GROUP"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-066",
@@ -2865,7 +2930,8 @@
       "TOOL_HIRE",
       "DELIVERY",
       "HIRE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-067",
@@ -2900,7 +2966,8 @@
       "MIDLANDS",
       "TOOL_HIRE",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-068",
@@ -2941,7 +3008,8 @@
       "DUST_EXTRACTION",
       "SMALL_WORKSHOP",
       "WOODWORKING"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-069",
@@ -2987,7 +3055,8 @@
       "SPRAY_BOOTHS",
       "FORMAT4",
       "PREMIUM"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-070",
@@ -3028,7 +3097,8 @@
       "WORKSHOP_EQUIPMENT",
       "HAND_TOOLS",
       "SMALL_BUSINESS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-071",
@@ -3069,7 +3139,8 @@
       "CNC",
       "5_AXIS",
       "VOLUME_PRODUCTION"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-072",
@@ -3109,7 +3180,8 @@
       "INDUSTRIAL",
       "CNC",
       "HIGH_VOLUME"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-073",
@@ -3146,7 +3218,8 @@
       "CNC",
       "MID_TIER",
       "3_AXIS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-074",
@@ -3180,7 +3253,8 @@
       "MACHINERY",
       "CNC",
       "CUTTING"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-075",
@@ -3218,7 +3292,8 @@
       "CAD",
       "CAM",
       "SUBSCRIPTION"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-076",
@@ -3253,7 +3328,8 @@
       "CAD",
       "ENGINEERING",
       "METAL_STAIRS"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-077",
@@ -3292,7 +3368,8 @@
       "CALCULATIONS",
       "CNC_OUTPUT",
       "SMALL_WORKSHOP"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-078",
@@ -3330,7 +3407,8 @@
       "PROFESSIONAL",
       "CNC_INTEGRATION",
       "INDUSTRIAL"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-079",
@@ -3366,7 +3444,8 @@
       "STAIR_SPECIFIC",
       "CNC_INTEGRATION",
       "PRODUCTION_PLANNING"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-080",
@@ -3405,7 +3484,8 @@
       "PREMIUM",
       "OAK_FINISH",
       "SPOT_REPAIRABLE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-081",
@@ -3444,7 +3524,8 @@
       "WAX",
       "STAINS",
       "UK_BRAND"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-082",
@@ -3482,7 +3563,8 @@
       "COLOUR",
       "SINGLE_COAT",
       "PREMIUM"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-083",
@@ -3521,7 +3603,8 @@
       "PU_FINISH",
       "SPRAY_FINISH",
       "WORKSHOP"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-084",
@@ -3559,7 +3642,8 @@
       "WATERBORNE_LACQUER",
       "FLOOR_GRADE",
       "STAIR_TREAD_FINISH"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-085",
@@ -3595,7 +3679,8 @@
       "STAINS",
       "EXTERNAL",
       "AKZONOBEL"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-086",
@@ -3639,7 +3724,8 @@
       "HANDRAIL_BRACKETS",
       "BALUSTRADE_HARDWARE",
       "ONLINE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-087",
@@ -3673,7 +3759,8 @@
       "NATIONAL",
       "IRONMONGERY",
       "TRADE"
-    ]
+    ],
+    "verification_level": "listed"
   },
   {
     "id": "merchant-088",
@@ -3707,6 +3794,1230 @@
       "IRONMONGERY",
       "HANDLES",
       "DOOR_HARDWARE"
-    ]
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-089",
+    "company": "Havwoods",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "havwoods.com",
+    "coverage": {
+      "regions": [
+        "UK-wide",
+        "international"
+      ]
+    },
+    "products": [
+      "european_oak_flooring",
+      "american_oak_flooring",
+      "engineered_wood",
+      "herringbone",
+      "wide_plank",
+      "luxury_flooring"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true,
+      "design_consultation": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "oak_stair_tread_matching",
+        "landing_flooring",
+        "premium_hallway_coordination"
+      ],
+      "notes": "Premier UK premium engineered oak brand. When customer wants matched-species floor + stairs, Havwoods is the specification-tier supplier. Architect-facing."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "PREMIUM_OAK",
+      "ENGINEERED",
+      "STAIR_MATCHING",
+      "ARCHITECT_PROJECTS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-090",
+    "company": "Ted Todd",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "tedtodd.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "reclaimed_wood_flooring",
+      "oak_flooring",
+      "bespoke_finishes",
+      "aged_and_distressed"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "reclaimed_stair_tread_matching",
+        "farmhouse_period_floors",
+        "heritage_projects"
+      ],
+      "notes": "Reclaimed and character-oak specialist. Ideal when stair project is farmhouse, period property or heritage restoration and floor needs to match."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "RECLAIMED",
+      "PREMIUM_OAK",
+      "HERITAGE",
+      "FARMHOUSE"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-091",
+    "company": "Wood Floor Warehouse",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "woodfloorwarehouse.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "engineered_oak",
+      "solid_wood_flooring",
+      "accessories"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "renovation_grade_oak",
+        "stair_matching_floor"
+      ],
+      "notes": "Mid-market engineered and solid wood. Right tier for renovation-level stair matching without premium spec pricing."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "ENGINEERED_OAK",
+      "MID_MARKET",
+      "RENOVATION"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-092",
+    "company": "UK Flooring Direct",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "ukflooringdirect.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "engineered_flooring",
+      "laminate",
+      "vinyl",
+      "hardwood"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 3,
+      "categories": [
+        "budget_to_mid_flooring",
+        "matching_stair_options"
+      ],
+      "notes": "Broad-range online flooring — mostly budget to mid tier. Useful for whole-home flooring packages including stair matching at accessible prices."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "ONLINE",
+      "BUDGET_MID",
+      "MULTI_MATERIAL"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-093",
+    "company": "Flooring Superstore",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "flooringsuperstore.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "carpet",
+      "vinyl",
+      "laminate",
+      "wood_flooring",
+      "LVT"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 3,
+      "categories": [
+        "whole_home_flooring",
+        "stair_runner_options"
+      ],
+      "notes": "Retail-focused multi-flooring superstore. Whole-home packages include stair runner options — useful when combining stair renovation with hallway carpet or LVT."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "MULTI_MATERIAL",
+      "CARPET",
+      "STAIR_RUNNERS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-094",
+    "company": "Direct Wood Flooring",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "directwoodflooring.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "oak_flooring",
+      "engineered_boards",
+      "solid_timber"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "oak_flooring_matched_stairs"
+      ],
+      "notes": "Oak-focused online supplier. Direct-to-consumer pricing on engineered and solid oak — often paired with stair renovation."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "OAK_SPECIALIST",
+      "ONLINE"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-095",
+    "company": "Howdens",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "howdens.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ],
+      "approximate_branch_count": 800
+    },
+    "products": [
+      "flooring",
+      "doors",
+      "joinery_products",
+      "kitchen_products",
+      "worktops"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_only": true,
+      "no_public_pricing": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "builder_channel_flooring",
+        "renovation_projects",
+        "trade_only"
+      ],
+      "notes": "Trade-only channel. Builders working on stair renovation projects often source flooring, doors and joinery from Howdens on the same trade account. Not open to public."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "BUILDER_CHANNEL",
+      "TRADE_ONLY",
+      "JOINERY",
+      "DOORS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-096",
+    "company": "Carpetright",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "carpetright.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ],
+      "approximate_branch_count": 300
+    },
+    "products": [
+      "carpet",
+      "stair_runners",
+      "underlay",
+      "vinyl",
+      "laminate"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "stair_runners",
+        "carpet_stairs",
+        "traditional_home_stair_dressing"
+      ],
+      "notes": "National carpet retailer. Primary source when the stair scope includes a runner (oak treads + wool runner is a canonical premium-traditional combination)."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "CARPET",
+      "STAIR_RUNNERS",
+      "RETAIL"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-097",
+    "company": "Abingdon Flooring",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "abingdonflooring.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "wool_carpets",
+      "stair_runners",
+      "quality_carpets"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "premium_wool_stair_runners",
+        "luxury_carpet"
+      ],
+      "notes": "Premium UK wool carpet manufacturer. First choice for a proper wool stair runner on a premium oak or painted staircase."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "WOOL_CARPET",
+      "PREMIUM",
+      "STAIR_RUNNERS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-098",
+    "company": "Crucial Trading",
+    "type": "national",
+    "primary_category": "flooring_supplier",
+    "website": "crucial-trading.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "luxury_carpets",
+      "natural_fibre_flooring",
+      "designer_interiors"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "samples": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "luxury_stair_runners",
+        "natural_fibre_runners_sisal_wool"
+      ],
+      "notes": "Designer-tier natural-fibre carpet supplier. Sisal, coir and wool runners for high-end period and luxury contemporary staircases."
+    },
+    "tags": [
+      "NATIONAL",
+      "FLOORING",
+      "LUXURY_CARPET",
+      "NATURAL_FIBRE",
+      "DESIGNER",
+      "STAIR_RUNNERS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-099",
+    "company": "FAKRO UK",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "fakro.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "wooden_folding_loft_ladders",
+      "metal_folding_ladders",
+      "fire_rated_ladders",
+      "insulated_ladders",
+      "electric_loft_ladders",
+      "scissor_loft_ladders"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true,
+      "specification_support": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "premium_loft_access",
+        "energy_efficient",
+        "fire_rated",
+        "architect_specification"
+      ],
+      "notes": "Premium Polish loft-ladder manufacturer with strong UK presence. First-choice specification tier when energy efficiency, fire rating or insulation matter — new builds, extensions, Passivhaus."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "PREMIUM",
+      "FIRE_RATED",
+      "INSULATED",
+      "ARCHITECT_SPEC"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-100",
+    "company": "Youngman Access",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "youngman.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "folding_loft_ladders",
+      "telescopic_ladders",
+      "aluminium_access_ladders",
+      "timber_loft_ladders"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "trade_standard_loft_ladder",
+        "builder_favourite",
+        "everyday_access"
+      ],
+      "notes": "UK trade default. Where most builders and general carpenters buy loft ladders. Not a premium spec but reliably good at the practical end."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "TRADE_STANDARD",
+      "BUILDER_CHANNEL",
+      "ACCESS"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-101",
+    "company": "Werner UK",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "wernerco.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "loft_ladders",
+      "extension_ladders",
+      "access_equipment"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "professional_access",
+        "trade",
+        "safety"
+      ],
+      "notes": "Professional-tier access equipment brand. Loft ladders alongside broader access range — trade-focused."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "PROFESSIONAL",
+      "TRADE",
+      "SAFETY"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-102",
+    "company": "Telesteps",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "telesteps.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "telescopic_loft_ladders",
+      "compact_access_ladders"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "telescopic_small_opening",
+        "limited_storage_space"
+      ],
+      "notes": "Telescopic specialist — collapses to almost nothing, ideal when the loft opening is small or the landing can't accommodate a folding ladder."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "TELESCOPIC",
+      "SMALL_OPENING",
+      "SPACE_SAVING"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-103",
+    "company": "Bison Loft Ladders",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "made_to_measure_loft_ladders",
+      "insulated_systems"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "made_to_measure",
+        "premium_access",
+        "installation_included"
+      ],
+      "notes": "Made-to-measure specialist with installation. Right for non-standard loft openings where off-the-shelf products don't fit."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "MADE_TO_MEASURE",
+      "PREMIUM",
+      "INSTALLATION_INCLUDED"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-104",
+    "company": "The Electric Loft Ladder Company",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "electric_loft_ladders",
+      "bespoke_access_solutions"
+    ],
+    "services": {
+      "delivery": true,
+      "installation": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "electric_operation",
+        "luxury_home",
+        "accessibility",
+        "bespoke"
+      ],
+      "notes": "Electric loft ladders — premium tier. Chosen for accessibility, elderly homeowners, or luxury homes where manual operation is not wanted."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "ELECTRIC",
+      "LUXURY",
+      "ACCESSIBILITY",
+      "BESPOKE"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-105",
+    "company": "Loft Shop",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "loftshop.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "loft_ladders",
+      "loft_boarding",
+      "loft_accessories",
+      "loft_lighting"
+    ],
+    "services": {
+      "delivery": true,
+      "click_and_collect": true,
+      "installation": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "loft_full_project_kit",
+        "homeowner_direct"
+      ],
+      "notes": "Loft-project one-stop-shop covering ladder + boarding + lighting + accessories. Homeowner-focused."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "LOFT_SPECIALIST",
+      "HOMEOWNER",
+      "INSTALLATION"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-106",
+    "company": "Ladders UK Direct",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "laddersukdirect.co.uk",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "loft_ladders",
+      "access_equipment",
+      "trade_ladders"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 3,
+      "categories": [
+        "online_trade_ladders",
+        "access_equipment"
+      ],
+      "notes": "Online-first trade ladder retailer. Multi-brand — good for comparison shopping."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "ONLINE",
+      "TRADE",
+      "MULTI_BRAND"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-107",
+    "company": "Ladderstore",
+    "type": "national",
+    "primary_category": "loft_ladder_supplier",
+    "website": "ladderstore.com",
+    "coverage": {
+      "regions": [
+        "UK-wide"
+      ]
+    },
+    "products": [
+      "loft_ladders",
+      "access_equipment",
+      "trade_ladders"
+    ],
+    "services": {
+      "delivery": true,
+      "trade_account": true
+    },
+    "staircase_relevance": {
+      "rating": 3,
+      "categories": [
+        "online_access_supplier"
+      ],
+      "notes": "Online multi-brand ladder retailer."
+    },
+    "tags": [
+      "NATIONAL",
+      "LOFT_LADDER",
+      "ONLINE",
+      "ACCESS_EQUIPMENT"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-108",
+    "company": "The Loft Access Company",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "South East England"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "The Loft Access Company",
+        "phone": "01753 840485"
+      }
+    ],
+    "products": [
+      "loft_ladder_installation",
+      "loft_access_solutions"
+    ],
+    "services": {
+      "installation": true,
+      "supply_and_fit": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "specialist_loft_installer",
+        "supply_and_fit"
+      ],
+      "notes": "Specialist loft ladder installer — supply and fit service. High-rated (5.0) independent."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "SOUTH_EAST",
+      "LOFT_INSTALLER",
+      "SUPPLY_AND_FIT"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-109",
+    "company": "The Loft Ladder Man",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "UK regional"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "The Loft Ladder Man",
+        "phone": "07779 118807"
+      }
+    ],
+    "products": [
+      "loft_ladder_fitting",
+      "loft_access_upgrades"
+    ],
+    "services": {
+      "installation": true,
+      "supply_and_fit": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "specialist_installer",
+        "loft_upgrade"
+      ],
+      "notes": "Specialist loft ladder installer. Independent — one-person or small-team operation typical of the category."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "LOFT_INSTALLER",
+      "SUPPLY_AND_FIT"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-110",
+    "company": "Loft Centre",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "South Coast"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Loft Centre Loft Ladders",
+        "phone": "01243 785246"
+      }
+    ],
+    "products": [
+      "loft_ladder_supply",
+      "installation_solutions"
+    ],
+    "services": {
+      "installation": true,
+      "supply_and_fit": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "loft_installer",
+        "supply_and_fit"
+      ],
+      "notes": "South Coast loft specialist."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "SOUTH_COAST",
+      "LOFT_INSTALLER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-111",
+    "company": "Castlewood Loft Ladders Limited",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "UK regional"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Castlewood Loft Ladders",
+        "phone": "07375 994153"
+      }
+    ],
+    "products": [
+      "loft_ladder_installation",
+      "access_improvements"
+    ],
+    "services": {
+      "installation": true,
+      "supply_and_fit": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "loft_installer",
+        "access_improvements"
+      ],
+      "notes": "Loft ladder specialist installer."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "LOFT_INSTALLER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-112",
+    "company": "Advanced Loft Ladders Fitted Ltd",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Midlands"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Advanced Loft Ladders",
+        "town": "Northampton area",
+        "phone": "01604 677999"
+      }
+    ],
+    "products": [
+      "loft_ladder_fitting",
+      "joinery_work"
+    ],
+    "services": {
+      "installation": true,
+      "joinery": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "loft_installer_joiner",
+        "joinery_capable"
+      ],
+      "notes": "Joiner who specialises in loft ladders — additional joinery capability useful when opening needs modification."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "MIDLANDS",
+      "LOFT_INSTALLER",
+      "JOINER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-113",
+    "company": "Easyreach Loft Ladders Ltd",
+    "type": "independent",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "UK regional"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Easyreach Loft Ladders",
+        "phone": "07957 115705"
+      }
+    ],
+    "products": [
+      "loft_access_installation",
+      "interior_construction"
+    ],
+    "services": {
+      "installation": true,
+      "construction": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "loft_installer_construction",
+        "interior_construction"
+      ],
+      "notes": "Loft access with broader interior construction capability."
+    },
+    "tags": [
+      "INDEPENDENT",
+      "LOFT_INSTALLER",
+      "INTERIOR_CONSTRUCTION"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-114",
+    "company": "Loft Ladders Herts Ltd",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Hertfordshire",
+        "Home Counties"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Loft Ladders Herts",
+        "county": "Hertfordshire",
+        "phone": "01992 676602"
+      }
+    ],
+    "products": [
+      "loft_ladder_supply",
+      "loft_access_improvements"
+    ],
+    "services": {
+      "installation": true,
+      "supply_and_fit": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "regional_loft_specialist"
+      ],
+      "notes": "Hertfordshire regional loft specialist."
+    },
+    "tags": [
+      "REGIONAL",
+      "HERTFORDSHIRE",
+      "HOME_COUNTIES",
+      "LOFT_INSTALLER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-115",
+    "company": "Home Counties Loft Ladders Ltd",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Home Counties"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Home Counties Loft Ladders",
+        "phone": "0808 301 9548"
+      }
+    ],
+    "products": [
+      "loft_ladders",
+      "carpentry",
+      "access_improvements"
+    ],
+    "services": {
+      "installation": true,
+      "carpentry": true,
+      "freephone": true
+    },
+    "staircase_relevance": {
+      "rating": 5,
+      "categories": [
+        "regional_carpenter_loft"
+      ],
+      "notes": "Home Counties carpenter with loft specialism. Freephone number."
+    },
+    "tags": [
+      "REGIONAL",
+      "SOUTH_EAST",
+      "HOME_COUNTIES",
+      "LOFT_INSTALLER",
+      "CARPENTER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-116",
+    "company": "Loft & Ladders",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Essex",
+        "Hertfordshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Loft & Ladders",
+        "county": "Essex",
+        "phone": "01279 797900"
+      }
+    ],
+    "products": [
+      "loft_ladders",
+      "carpentry",
+      "loft_improvements"
+    ],
+    "services": {
+      "installation": true,
+      "carpentry": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "regional_carpenter_loft",
+        "loft_improvements"
+      ],
+      "notes": "Essex / Herts carpenter with loft focus."
+    },
+    "tags": [
+      "REGIONAL",
+      "ESSEX",
+      "HERTFORDSHIRE",
+      "LOFT_INSTALLER",
+      "JOINERY"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-117",
+    "company": "Yorkshire Loft Ladders",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Yorkshire"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Yorkshire Loft Ladders",
+        "phone": "0800 612 8359"
+      }
+    ],
+    "products": [
+      "loft_ladders",
+      "joinery",
+      "loft_access"
+    ],
+    "services": {
+      "installation": true,
+      "joinery": true,
+      "freephone": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "yorkshire_loft_specialist"
+      ],
+      "notes": "Yorkshire regional loft specialist with joinery capability. Freephone."
+    },
+    "tags": [
+      "REGIONAL",
+      "YORKSHIRE",
+      "LOFT_INSTALLER",
+      "JOINER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-118",
+    "company": "Loft Ladders Scotland",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Scotland"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Loft Ladders Scotland",
+        "phone": "07522 782899"
+      }
+    ],
+    "products": [
+      "loft_access",
+      "home_improvements"
+    ],
+    "services": {
+      "installation": true,
+      "home_improvement": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "scotland_loft_installer"
+      ],
+      "notes": "Scotland regional loft installer."
+    },
+    "tags": [
+      "REGIONAL",
+      "SCOTLAND",
+      "LOFT_INSTALLER"
+    ],
+    "verification_level": "listed"
+  },
+  {
+    "id": "merchant-119",
+    "company": "Lofts & Ladders (Liverpool)",
+    "type": "regional",
+    "primary_category": "loft_installer",
+    "coverage": {
+      "regions": [
+        "Merseyside",
+        "North West"
+      ]
+    },
+    "known_branches": [
+      {
+        "branch_name": "Lofts & Ladders Liverpool",
+        "town": "Liverpool",
+        "phone": "07907 266715"
+      }
+    ],
+    "products": [
+      "loft_ladder_installation",
+      "loft_solutions"
+    ],
+    "services": {
+      "installation": true
+    },
+    "staircase_relevance": {
+      "rating": 4,
+      "categories": [
+        "north_west_loft_installer"
+      ],
+      "notes": "Liverpool / North West loft installer."
+    },
+    "tags": [
+      "REGIONAL",
+      "NORTH_WEST",
+      "LIVERPOOL",
+      "LOFT_INSTALLER"
+    ],
+    "verification_level": "listed"
   }
 ]
