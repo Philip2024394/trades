@@ -634,3 +634,76 @@ Please confirm each — building starts only after these are settled:
 - Publish or ship anything
 
 **Awaiting your approval on the 10 confirmation points in Section 17.**
+
+---
+
+## AMENDMENT — NEX Centre publishing surface (added 2026-07-27 per Philip)
+
+**Requirement:** when a merchant approves a product via the Merchant Assistant, the listing should also publish to the Pinterest-style NEX Centre page, and become searchable through NEX when a customer needs something nearby.
+
+**Existing surface identified:**
+- Page: `src/app/nex-app/centre/page.tsx`
+- Feed component: `src/components/nex-app/centre/NexPinterestFeed.tsx`
+- Shell + filter: `NexCentreShell.tsx` · `NexCentreFilterSheet.tsx` · `SupplierCard.tsx` · `SupplierSheet.tsx`
+- Search API: `src/app/api/nex/centre-search/route.ts`
+
+**Additional scope for Phase 7:**
+
+### A. Publish path integration
+
+When `POST /api/nex/merchant-assistant/approve` transitions a product to `active`:
+1. Existing behaviour — write `lifecycleStatus: active` + fire `product.published` event (already in plan)
+2. **New:** register the product with the NEX Centre feed pipeline so it appears on the Pinterest-style page for the merchant's region
+3. **New:** update the centre-search index so the product is discoverable by `/api/nex/centre-search`
+
+### B. Centre-search proximity extension
+
+Investigate `src/app/api/nex/centre-search/route.ts` and extend it to:
+- Accept a `postcode` parameter for proximity ranking
+- Index against the postcode → region mapping in `data/staircase-supplier-matching-rules.json`
+- Return products alongside the existing supplier results, ranked by regional match
+
+### C. Pinterest-style card fields
+
+The NexPinterestFeed likely already renders card-shaped tiles. Verify the schema and, if needed, add:
+- `hero_image_url` (already exists in `os_products_canonical.hero_image_url`)
+- `tile_layout_hint` (portrait / landscape) — new optional field
+- `pinterest_visible` boolean — merchant-controllable, default true on publish
+
+### D. Additional files
+
+Add to Section 4 files-to-create:
+```
+src/lib/nex/centre-publishing/
+├── index.ts
+├── publishToFeed.ts        Called from the approve endpoint
+├── indexForSearch.ts       Updates centre-search index
+└── types.ts
+```
+
+Add to Section 7 API changes: extend `GET /api/nex/centre-search` to accept `postcode` and return proximity-ranked results including approved products.
+
+### E. Additional migration content
+
+Add to migration `20260728000000_nex_merchant_assistant.sql`:
+```sql
+ALTER TABLE app_products_merchant_offers
+  ADD COLUMN IF NOT EXISTS nex_centre_visible boolean NOT NULL DEFAULT true,
+  ADD COLUMN IF NOT EXISTS nex_centre_tile_layout text;    -- 'portrait' | 'landscape' | null
+```
+
+### F. Estimated additional build effort
+
+**Increment 4 (Banner generation) → Increment 4B (add Centre publishing + proximity search):** +2 days.
+
+Adjusted total: **15-21 working days** across 7 increments.
+
+### G. Extra confirmation points (added to Section 17)
+
+11. **Confirm centre-publishing on approve** — every approved product auto-appears on the NEX Centre feed (with merchant opt-out via `nex_centre_visible`), rather than requiring a separate publish action.
+
+12. **Confirm postcode-proximity extension** — extending the existing `/api/nex/centre-search` to accept a postcode and rank by regional match, using the postcode-to-region map from the supplier matching engine.
+
+13. **Confirm the centre-publishing library location** — `src/lib/nex/centre-publishing/` as a shared library that the merchant assistant + any future publish path (e.g. bulk import, catalog sync) can call.
+
+Everything else in the plan holds. Still awaiting approval on all 13 confirmation points before code starts.
