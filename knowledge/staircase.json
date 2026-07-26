@@ -22633,7 +22633,13 @@
     "safety_note": null,
     "source_verified_at": null,
     "fact_check_flag": null,
-    "diagram": null
+    "diagram": {
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitledsdfsdfdff-removebg-preview.png?updatedAt=1785012343846",
+      "alt": "Slab-plus-moulding back panel — cutout product visual",
+      "title": "Slab-plus-moulding back panel",
+      "caption": "Cutout product render: slab-plus-moulding back panel as a NEX configurator option",
+      "labels": null
+    }
   },
   {
     "id": "staircase-faq-1771",
