@@ -93,38 +93,48 @@ export function StaircaseConfiguratorDrawer({
         ].join(" ")}
       />
 
-      {/* Drawer panel */}
+      {/* Drawer panel — full-screen on all breakpoints per Philip's request.
+          Slides in from the right so the transition still reads as a "drawer
+          opening" rather than a hard page replacement. The inner content is
+          capped to max-w-2xl and centred so the option list stays readable
+          at desktop widths (a 100vw-wide option list would look absurd on
+          a large monitor). */}
       <aside
         role="dialog"
         aria-modal="true"
         aria-labelledby="staircase-configurator-title"
         className={[
-          "fixed inset-y-0 right-0 z-50 flex flex-col",
-          "w-[92vw] max-w-[400px] bg-card text-foreground border-l border-border shadow-2xl",
+          "fixed inset-0 z-50 flex flex-col",
+          "bg-card text-foreground shadow-2xl",
           "transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
           open ? "translate-x-0" : "translate-x-full",
         ].join(" ")}
       >
-        {/* Header */}
-        <header className="flex items-center justify-between px-5 py-4 border-b border-border">
-          <div>
-            <p className="text-eyebrow uppercase text-muted-foreground">Configurator</p>
-            <h2 id="staircase-configurator-title" className="text-heading-md font-heading">
-              {title}
-            </h2>
+        {/* Header — full-width bar with border, inner content centred so
+            the title + close button don't drift to opposite edges of a wide monitor. */}
+        <header className="border-b border-border">
+          <div className="max-w-3xl w-full mx-auto px-5 py-4 flex items-center justify-between">
+            <div>
+              <p className="text-eyebrow uppercase text-muted-foreground">Configurator</p>
+              <h2 id="staircase-configurator-title" className="text-heading-md font-heading">
+                {title}
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onOpenChange(false)}
+              aria-label="Close configurator"
+              className="w-9 h-9 grid place-items-center rounded-full hover:bg-muted transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            aria-label="Close configurator"
-            className="w-9 h-9 grid place-items-center rounded-full hover:bg-muted transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
         </header>
 
-        {/* Category accordion list */}
+        {/* Category accordion list — inner container capped to 3xl so options
+            stay readable on wide displays. */}
         <div className="flex-1 overflow-y-auto">
+          <div className="max-w-3xl w-full mx-auto">
           <ul className="divide-y divide-border">
             {categories.map((cat) => {
               const isExpanded = expandedId === cat.id;
@@ -214,34 +224,37 @@ export function StaircaseConfiguratorDrawer({
               );
             })}
           </ul>
+          </div>
         </div>
 
-        {/* Footer */}
-        <footer className="px-5 py-4 border-t border-border flex items-center gap-2">
-          {onReset && (
+        {/* Footer — same max-width centring so buttons sit under the option list. */}
+        <footer className="border-t border-border">
+          <div className="max-w-3xl w-full mx-auto px-5 py-4 flex items-center gap-2">
+            {onReset && (
+              <button
+                type="button"
+                onClick={onReset}
+                className="h-11 px-4 rounded-md border border-border text-body-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              >
+                Reset
+              </button>
+            )}
             <button
               type="button"
-              onClick={onReset}
-              className="h-11 px-4 rounded-md border border-border text-body-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+              onClick={() => onOpenChange(false)}
+              className="flex-1 h-11 rounded-md border border-border text-body-sm font-medium hover:bg-muted transition-colors"
             >
-              Reset
+              Close
             </button>
-          )}
-          <button
-            type="button"
-            onClick={() => onOpenChange(false)}
-            className="flex-1 h-11 rounded-md border border-border text-body-sm font-medium hover:bg-muted transition-colors"
-          >
-            Close
-          </button>
-          <button
-            type="button"
-            onClick={() => onSaveDesign?.()}
-            disabled={!onSaveDesign}
-            className="flex-1 h-11 rounded-md bg-primary text-primary-foreground text-body-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            Save Design
-          </button>
+            <button
+              type="button"
+              onClick={() => onSaveDesign?.()}
+              disabled={!onSaveDesign}
+              className="flex-1 h-11 rounded-md bg-primary text-primary-foreground text-body-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Save Design
+            </button>
+          </div>
         </footer>
       </aside>
     </>
