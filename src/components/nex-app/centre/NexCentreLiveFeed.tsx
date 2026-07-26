@@ -35,7 +35,6 @@ import {
   Mail,
   MapPin,
   MessageCircle,
-  Search,
   Share2,
   ShoppingBag,
   SlidersHorizontal,
@@ -288,31 +287,87 @@ export function NexCentreLiveFeed() {
   }, [filters]);
 
   return (
-    <div className="min-h-screen bg-[#faf7f2]">
+    <div className="relative min-h-screen bg-[#faf7f2]">
       {/* ═════════════════════════════════════════════════════════════
-          HERO — the very top of the page. Image is the first thing the
-          customer sees. Sticky mini-header appears BELOW and only sticks
-          to the top once the user scrolls past the hero.
+          FLOATING HEADER — sits ON TOP of the hero image so it's
+          always accessible AND the image is the visual hero. Bg is
+          translucent cream + backdrop-blur so the image reads through
+          when scrolled to the top.
           ═════════════════════════════════════════════════════════════ */}
-      <section className="relative" style={{ minHeight: 460 }}>
-        <div
-          aria-hidden
-          className="absolute inset-x-0 top-0 pointer-events-none"
-          style={{
-            height: 400,
-            backgroundImage:
-              'url("https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2012_12_45%20AM.png")',
-            backgroundSize: "cover",
-            backgroundPosition: "left center",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "#faf7f2",
+      <header className="sticky top-0 z-30 border-b border-black/5 bg-[#faf7f2]/85 backdrop-blur-md">
+        <div className="mx-auto max-w-4xl px-4 py-2.5">
+          <div className="flex items-center gap-2">
+            <div className="text-sm font-semibold tracking-tight text-black">
+              NEX Centre
+            </div>
+            <div className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-medium text-orange-700">
+              Live
+            </div>
+            <div className="flex-1" />
+            <button
+              type="button"
+              onClick={() => setShowFilters((v) => !v)}
+              aria-label="Filters"
+              className={`relative flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium ${
+                activeFilterCount > 0
+                  ? "border-orange-500 bg-orange-500 text-white"
+                  : "border-black/10 bg-white text-black/70 hover:bg-black/5"
+              }`}
+            >
+              <SlidersHorizontal className="h-3 w-3" />
+              Filters
+              {activeFilterCount > 0 && (
+                <span className="rounded-full bg-white/25 px-1.5 py-0.5 text-[9px] font-semibold">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
+          </div>
+          {showFilters && (
+            <div className="mt-2 rounded-2xl border border-black/10 bg-white p-3">
+              <FilterPanel
+                filters={filters}
+                setFilters={setFilters}
+                activeFilterCount={activeFilterCount}
+                onClear={clearFilters}
+              />
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* ═════════════════════════════════════════════════════════════
+          HERO — image FIRST, floats under the translucent header.
+          Card sits over the lower portion of the image.
+          ═════════════════════════════════════════════════════════════ */}
+      <section className="relative -mt-[52px] pt-[52px]" style={{ minHeight: 500 }}>
+        {/* Real <img> for reliability (previous background-image sometimes
+            flaked on cold caches) */}
+        <img
+          src="https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2012_12_45%20AM.png"
+          alt="NEX Trade Centre"
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] w-full object-cover object-[left_center]"
+          loading="eager"
+          onError={(e) => {
+            // Graceful fallback if the CDN is unreachable — solid
+            // gradient replaces the missing image, keeps the hero
+            // legible so nothing goes black.
+            const el = e.currentTarget;
+            el.style.display = "none";
+            const fallback = el.nextElementSibling as HTMLElement | null;
+            if (fallback) fallback.style.opacity = "1";
           }}
         />
         <div
           aria-hidden
+          className="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-gradient-to-br from-orange-200 via-amber-100 to-neutral-100 opacity-0 transition-opacity"
+        />
+        {/* Bottom cream scrim so card reads over any crop */}
+        <div
+          aria-hidden
           className="pointer-events-none absolute inset-x-0"
           style={{
-            top: 260,
+            top: 280,
             height: 200,
             background:
               "linear-gradient(to top, #faf7f2 25%, transparent 100%)",
@@ -320,7 +375,7 @@ export function NexCentreLiveFeed() {
         />
         <div
           className="relative mx-4 max-w-4xl rounded-[22px] border border-black/10 bg-white px-4 py-4 shadow-lg md:mx-auto"
-          style={{ marginTop: 260 }}
+          style={{ marginTop: 280 }}
         >
           <div className="text-[10px] font-black uppercase tracking-[0.28em] text-orange-600">
             NEX Trade Centre
@@ -437,157 +492,6 @@ export function NexCentreLiveFeed() {
         </div>
       </section>
 
-      {/* Sticky mini-header — only sticks once user scrolls past the hero */}
-      <header className="sticky top-0 z-30 border-b border-black/5 bg-[#faf7f2]/95 backdrop-blur">
-        <div className="mx-auto max-w-4xl px-4 py-3">
-          <div className="flex items-center gap-2">
-            <div className="text-base font-semibold tracking-tight text-black">
-              NEX Centre
-            </div>
-            <div className="rounded-full bg-orange-100 px-2 py-0.5 text-[10px] font-medium text-orange-700">
-              Live
-            </div>
-          </div>
-          <div className="mt-2 flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-black/40" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search oak treads, glass balustrade, joiners…"
-                className="w-full rounded-full border border-black/10 bg-white pl-9 pr-3 py-2 text-sm focus:border-black/30 focus:outline-none"
-                aria-label="Search NEX Centre"
-              />
-              {query && (
-                <button
-                  type="button"
-                  onClick={() => setQuery("")}
-                  aria-label="Clear search"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 text-black/40 hover:bg-black/5"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={() => setShowFilters((v) => !v)}
-              aria-label="Filters"
-              className={`relative flex items-center gap-1 rounded-full border px-3 py-2 text-xs font-medium ${
-                activeFilterCount > 0
-                  ? "border-orange-500 bg-orange-500 text-white"
-                  : "border-black/10 bg-white text-black/70 hover:bg-black/5"
-              }`}
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5" />
-              Filters
-              {activeFilterCount > 0 && (
-                <span className="rounded-full bg-white/25 px-1.5 py-0.5 text-[9px] font-semibold">
-                  {activeFilterCount}
-                </span>
-              )}
-            </button>
-          </div>
-
-          {/* Filter panel */}
-          {showFilters && (
-            <div className="mt-3 rounded-2xl border border-black/10 bg-white p-3">
-              <div className="grid grid-cols-2 gap-2 text-xs">
-                <label className="flex flex-col gap-1">
-                  <span className="text-black/60">Category</span>
-                  <input
-                    type="text"
-                    value={filters.category}
-                    onChange={(e) =>
-                      setFilters((f) => ({ ...f, category: e.target.value }))
-                    }
-                    placeholder="e.g. staircase, tiles"
-                    className="rounded-lg border border-black/10 px-2 py-1.5"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span className="text-black/60">Your postcode</span>
-                  <input
-                    type="text"
-                    value={filters.postcode}
-                    onChange={(e) =>
-                      setFilters((f) => ({ ...f, postcode: e.target.value }))
-                    }
-                    placeholder="e.g. M20"
-                    className="rounded-lg border border-black/10 px-2 py-1.5 uppercase"
-                    maxLength={12}
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span className="text-black/60">Min price (£)</span>
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    value={filters.min_price}
-                    onChange={(e) =>
-                      setFilters((f) => ({ ...f, min_price: e.target.value }))
-                    }
-                    className="rounded-lg border border-black/10 px-2 py-1.5"
-                  />
-                </label>
-                <label className="flex flex-col gap-1">
-                  <span className="text-black/60">Max price (£)</span>
-                  <input
-                    type="number"
-                    inputMode="decimal"
-                    value={filters.max_price}
-                    onChange={(e) =>
-                      setFilters((f) => ({ ...f, max_price: e.target.value }))
-                    }
-                    className="rounded-lg border border-black/10 px-2 py-1.5"
-                  />
-                </label>
-                <label className="col-span-2 mt-1 flex items-center justify-between gap-2">
-                  <span className="text-black/70">Verified merchants only</span>
-                  <input
-                    type="checkbox"
-                    checked={filters.verified_only}
-                    onChange={(e) =>
-                      setFilters((f) => ({
-                        ...f,
-                        verified_only: e.target.checked,
-                      }))
-                    }
-                    className="h-4 w-4"
-                  />
-                </label>
-                <label className="col-span-2 flex items-center justify-between gap-2">
-                  <span className="text-black/70">Sort</span>
-                  <select
-                    value={filters.sort}
-                    onChange={(e) =>
-                      setFilters((f) => ({
-                        ...f,
-                        sort: e.target.value as Filters["sort"],
-                      }))
-                    }
-                    className="rounded-lg border border-black/10 px-2 py-1"
-                  >
-                    <option value="relevance">Relevance</option>
-                    <option value="newest">Newest</option>
-                  </select>
-                </label>
-              </div>
-              {activeFilterCount > 0 && (
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="mt-3 w-full rounded-full border border-black/10 py-1.5 text-xs text-black/60 hover:bg-black/5"
-                >
-                  Clear all
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      </header>
-
       {/* Feed */}
       <main className="mx-auto max-w-4xl px-3 py-4">
         {error && (
@@ -668,6 +572,110 @@ function MasonrySkeleton() {
         </div>
       ))}
     </Masonry>
+  );
+}
+
+function FilterPanel({
+  filters,
+  setFilters,
+  activeFilterCount,
+  onClear,
+}: {
+  filters: Filters;
+  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  activeFilterCount: number;
+  onClear: () => void;
+}) {
+  return (
+    <>
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <label className="flex flex-col gap-1">
+          <span className="text-black/60">Category</span>
+          <input
+            type="text"
+            value={filters.category}
+            onChange={(e) =>
+              setFilters((f) => ({ ...f, category: e.target.value }))
+            }
+            placeholder="e.g. staircase, tiles"
+            className="rounded-lg border border-black/10 px-2 py-1.5"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-black/60">Your postcode</span>
+          <input
+            type="text"
+            value={filters.postcode}
+            onChange={(e) =>
+              setFilters((f) => ({ ...f, postcode: e.target.value }))
+            }
+            placeholder="e.g. M20"
+            className="rounded-lg border border-black/10 px-2 py-1.5 uppercase"
+            maxLength={12}
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-black/60">Min price (£)</span>
+          <input
+            type="number"
+            inputMode="decimal"
+            value={filters.min_price}
+            onChange={(e) =>
+              setFilters((f) => ({ ...f, min_price: e.target.value }))
+            }
+            className="rounded-lg border border-black/10 px-2 py-1.5"
+          />
+        </label>
+        <label className="flex flex-col gap-1">
+          <span className="text-black/60">Max price (£)</span>
+          <input
+            type="number"
+            inputMode="decimal"
+            value={filters.max_price}
+            onChange={(e) =>
+              setFilters((f) => ({ ...f, max_price: e.target.value }))
+            }
+            className="rounded-lg border border-black/10 px-2 py-1.5"
+          />
+        </label>
+        <label className="col-span-2 mt-1 flex items-center justify-between gap-2">
+          <span className="text-black/70">Verified merchants only</span>
+          <input
+            type="checkbox"
+            checked={filters.verified_only}
+            onChange={(e) =>
+              setFilters((f) => ({ ...f, verified_only: e.target.checked }))
+            }
+            className="h-4 w-4"
+          />
+        </label>
+        <label className="col-span-2 flex items-center justify-between gap-2">
+          <span className="text-black/70">Sort</span>
+          <select
+            value={filters.sort}
+            onChange={(e) =>
+              setFilters((f) => ({
+                ...f,
+                sort: e.target.value as Filters["sort"],
+              }))
+            }
+            className="rounded-lg border border-black/10 px-2 py-1"
+          >
+            <option value="relevance">Relevance</option>
+            <option value="newest">Newest</option>
+          </select>
+        </label>
+      </div>
+      {activeFilterCount > 0 && (
+        <button
+          type="button"
+          onClick={onClear}
+          className="mt-3 w-full rounded-full border border-black/10 py-1.5 text-xs text-black/60 hover:bg-black/5"
+        >
+          Clear all
+        </button>
+      )}
+    </>
   );
 }
 
