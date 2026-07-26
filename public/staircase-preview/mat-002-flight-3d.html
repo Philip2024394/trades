@@ -1940,17 +1940,21 @@ new THREE.TextureLoader().load(
     });
     // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
     // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
-    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
+    // Plain square hollow tube, crisp 90° edges (no chamfer).
     //
-    // Uses the scene RoomEnvironment (PMREM'd) for reflections. Previous
-    // roughness 0.42 was too soft — reflections blurred to a flat colour.
-    // Dropped roughness to 0.18 (near-polished so the envMap actually shows
-    // ROOM SHAPE variations across the surface), envMapIntensity to 3.0
-    // below so the reflection reads clearly as reflective metal.
-    const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
-      color: 0xd8dcdf,
-      roughness: 0.18,
+    // Swapped to MeshPhysicalMaterial with clearcoat — same envMap, but the
+    // clearcoat adds a SECOND reflective layer on top of the metal that
+    // shows brighter/sharper highlights than MeshStandardMaterial alone.
+    // Combined with high specular intensity, this reads as visibly
+    // reflective metal even off the soft RoomEnvironment IBL.
+    const balusterStainlessMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0xe0e4e8,
+      roughness: 0.22,
       metalness: 1.0,
+      clearcoat: 1.0,
+      clearcoatRoughness: 0.05,
+      specularIntensity: 1.0,
+      specularColor: 0xffffff,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
