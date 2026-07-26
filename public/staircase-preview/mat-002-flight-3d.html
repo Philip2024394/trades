@@ -2130,7 +2130,12 @@ new THREE.TextureLoader().load(
       side: THREE.DoubleSide,
       emissive: LACQUER_COLOR,
       emissiveMap: sheetingTex,
-      emissiveIntensity: 0.05,
+      // Philip 2026-07-26 — bumped 0.05 → 0.20 after "sheeting has gone dark again"
+      // report. Same fix pattern as pineMaterial + rearStringMaterial earlier: pitched-
+      // down / rear-facing normals need more self-lift than the 0.05 mass-reduction
+      // gave them once shadows were turned off. Sheeting is a large back-of-flight
+      // surface so it needs the same 0.20 treatment.
+      emissiveIntensity: 0.20,
     });
     // Sheeting tone control — slider adjusts sheetingMaterial.color lightness in HSL space
     // (preserves hue + saturation; only shifts lightness). Slider default 0 = staircase-matching
