@@ -1,0 +1,76 @@
+{
+  "version": "V1",
+  "generated": "2026-07-27",
+  "purpose": "Symptom -> likely cause -> likely responsibility triage. Feeds the NEX safety-and-liability framework. Not legal advice - a starting point for investigation.",
+  "disclaimer": "Every incident is fact-specific. Actual liability is determined by contract, applicable law, insurance policy terms and evidence. NEX must always recommend qualified legal advice for active claims.",
+
+  "entries": [
+    { "symptom": "Loose handrail", "cause": "Poor fixing at installation", "responsibility": "installer", "investigation_hint": "Check original installation photos for fixing type and substrate", "diag_ref": "diag-012" },
+    { "symptom": "Loose handrail", "cause": "Wall plug or fixing degraded over time under normal use", "responsibility": "property_owner (maintenance)", "investigation_hint": "How old is the installation?", "diag_ref": "diag-051" },
+    { "symptom": "Loose handrail", "cause": "Wrong bracket specification for the load", "responsibility": "designer_or_specifier", "investigation_hint": "Check design spec against actual bracket used", "diag_ref": "diag-052" },
+    { "symptom": "Loose handrail", "cause": "Fixed only into plasterboard - never went into structure", "responsibility": "installer", "investigation_hint": "Remove bracket - what was behind it?", "diag_ref": "diag-060", "safety_note": true },
+
+    { "symptom": "Loose newel post", "cause": "Poor original base fixing", "responsibility": "installer", "investigation_hint": "Access base fixing and inspect", "diag_ref": "diag-011", "safety_note": true },
+    { "symptom": "Loose newel post", "cause": "Rot at floor line from historic moisture", "responsibility": "property_owner (maintenance) - or unknown historic issue", "investigation_hint": "Source of moisture must be found and stopped", "diag_ref": "diag-026" },
+
+    { "symptom": "Cracked tread", "cause": "Wrong species or grade for the load", "responsibility": "manufacturer", "investigation_hint": "Check material specification against project brief", "diag_ref": "diag-022" },
+    { "symptom": "Cracked tread", "cause": "Wedge over-driven - split from below", "responsibility": "manufacturer", "investigation_hint": "Inspect underside for wedge damage", "diag_ref": "diag-022" },
+    { "symptom": "Cracked tread", "cause": "Impact damage from dropped or dragged object", "responsibility": "property_owner", "investigation_hint": "Ask when the damage appeared", "diag_ref": "diag-024" },
+    { "symptom": "Cracked riser", "cause": "Timber shrinkage in wide solid riser (hairline)", "responsibility": "normal - not fault", "investigation_hint": "Is the crack fine (< 1mm) and following the grain?", "diag_ref": "diag-021" },
+
+    { "symptom": "Squeaking stairs", "cause": "Poor wedging at manufacture", "responsibility": "manufacturer", "investigation_hint": "Full-flight pattern or only new stairs suggests manufacture", "diag_ref": "diag-010" },
+    { "symptom": "Squeaking stairs", "cause": "Poor installation packing between staircase and structure", "responsibility": "installer", "investigation_hint": "Squeak on install day or shortly after", "diag_ref": "diag-001" },
+    { "symptom": "Squeaking stairs", "cause": "Seasonal timber movement from heating cycles", "responsibility": "normal - not fault", "investigation_hint": "Squeaks only in winter, disappears in summer", "diag_ref": "diag-002" },
+    { "symptom": "Squeaking stairs after 2-3 months on new install", "cause": "Timber acclimatising to house environment", "responsibility": "manufacturer or installer (warranty return)", "investigation_hint": "Small adjustment period is normal but stairs should not squeak long-term", "diag_ref": "diag-069" },
+
+    { "symptom": "Balustrade gap exceeds 100mm", "cause": "Design or manufacture error", "responsibility": "manufacturer_or_designer", "investigation_hint": "Check design drawings against as-built spacing", "diag_ref": "diag-074", "safety_note": true },
+    { "symptom": "Balustrade gap exceeds 100mm", "cause": "Missing spindle that has fallen out", "responsibility": "property_owner or installer (depending on age)", "investigation_hint": "How old, was spindle previously in place?", "diag_ref": "diag-015" },
+    { "symptom": "Balustrade gap exceeds 100mm", "cause": "Original build predates current regulations", "responsibility": "grandfathered - not fault under most codes", "investigation_hint": "Age of the building", "diag_ref": "diag-074" },
+
+    { "symptom": "Uneven riser heights", "cause": "Manufacture or install error", "responsibility": "manufacturer_or_installer", "investigation_hint": "Which risers vary and by how much?", "diag_ref": "diag-086", "safety_note": true },
+    { "symptom": "Uneven riser heights", "cause": "Floor covering added after install changed effective rise of first or last step", "responsibility": "property_owner or flooring_contractor", "investigation_hint": "When was flooring added?", "diag_ref": "diag-086" },
+
+    { "symptom": "Missing headroom", "cause": "Original design did not meet Doc K minimum (2000mm UK domestic)", "responsibility": "designer_or_manufacturer", "investigation_hint": "Measure headroom against pitch line", "diag_ref": "diag-087", "safety_note": true },
+    { "symptom": "Missing headroom", "cause": "Loft conversion or extension has reduced ceiling above stair after original install", "responsibility": "post-install_change (owner responsibility for the change)", "investigation_hint": "When was the ceiling changed?", "diag_ref": "diag-087" },
+
+    { "symptom": "Structural failure of stringer", "cause": "Undersized stringer for the span", "responsibility": "designer_or_manufacturer", "investigation_hint": "Structural engineer assessment", "diag_ref": "diag-043", "safety_note": true },
+    { "symptom": "Structural failure of stringer", "cause": "Rot from long-term moisture ignored", "responsibility": "property_owner (maintenance)", "investigation_hint": "Was there visible water damage or staining ignored?", "diag_ref": "diag-026" },
+
+    { "symptom": "Floating staircase cantilever bracket pulling out of wall", "cause": "Wall structure inadequate for cantilever load", "responsibility": "designer_or_engineer (wall spec) or installer (if fixings wrong)", "investigation_hint": "Structural engineer assessment mandatory", "diag_ref": "diag-045", "safety_note": true },
+    { "symptom": "Floating staircase cantilever bracket pulling out of wall", "cause": "Fixings undersized for design load", "responsibility": "installer", "investigation_hint": "Check original spec against installed fixings", "diag_ref": "diag-045", "safety_note": true },
+
+    { "symptom": "Chipped or cracked glass panel", "cause": "Impact damage during furniture move or use", "responsibility": "property_owner (if post-install)", "investigation_hint": "When did the chip appear?", "diag_ref": "diag-028", "safety_note": true },
+    { "symptom": "Chipped or cracked glass panel", "cause": "Manufacturing defect propagating under load", "responsibility": "glass_manufacturer or supplier", "investigation_hint": "Check age - defect propagating early points to manufacture", "diag_ref": "diag-028", "safety_note": true },
+
+    { "symptom": "Slip on stair tread", "cause": "Contamination on tread (water, polish, wax)", "responsibility": "property_owner (maintenance)", "investigation_hint": "What was on the tread at time of slip?", "diag_ref": null, "safety_note": true },
+    { "symptom": "Slip on stair tread", "cause": "Original finish specified without adequate slip resistance", "responsibility": "designer_or_specifier", "investigation_hint": "What finish was specified? High-gloss lacquer without slip additive?", "diag_ref": null, "safety_note": true },
+    { "symptom": "Slip on stair tread", "cause": "Worn tread nosing reducing traction", "responsibility": "property_owner (maintenance) or original spec if unusually rapid wear", "investigation_hint": "How old is the installation? Normal wear or premature?", "diag_ref": "diag-027" },
+
+    { "symptom": "Peeling paint on stringer", "cause": "Poor original surface preparation before painting", "responsibility": "decorator_or_installer (whoever painted)", "investigation_hint": "Recent install or long-standing", "diag_ref": "diag-033" },
+    { "symptom": "Peeling paint on stringer", "cause": "Wrong paint type over unsuitable substrate (water-based over old oil-based without primer)", "responsibility": "decorator_or_installer", "investigation_hint": "Paint substrate check", "diag_ref": "diag-033" },
+
+    { "symptom": "Visible glue squeeze-out on finished timber", "cause": "Installer did not clean glue before finish coat", "responsibility": "installer or manufacturer (workshop finish)", "investigation_hint": "Where was the finish applied - workshop or site?", "diag_ref": "diag-039" },
+
+    { "symptom": "Cupped tread", "cause": "Solid tread finished on top face only, unsealed underside creating moisture imbalance", "responsibility": "manufacturer or installer (finishing spec)", "investigation_hint": "Check underside for finish", "diag_ref": "diag-061" },
+    { "symptom": "Cupped tread", "cause": "Wide solid board reaching movement limits in seasonal humidity swing", "responsibility": "manufacturer (material selection) or normal timber behaviour", "investigation_hint": "How wide is the board?", "diag_ref": "diag-061" },
+
+    { "symptom": "Handover paperwork missing", "cause": "Installer did not provide required documentation", "responsibility": "installer", "investigation_hint": "This is an evidence gap - complicates all other liability assessment", "diag_ref": "diag-099", "safety_note": false }
+  ],
+
+  "usage": [
+    "1. User reports symptom.",
+    "2. NEX filters entries[] by symptom match.",
+    "3. For each matching entry, NEX walks the user through the investigation_hint to distinguish causes.",
+    "4. Once cause is narrowed, responsibility is triage-only - a starting point for investigation, not a final determination.",
+    "5. NEX always closes with: 'This is not legal advice. If a formal claim is involved, contact your insurer and a solicitor.'",
+    "6. Cross-link diag_ref to data/staircase-diagnosis-engine.json for the diagnostic and repair detail."
+  ],
+
+  "not_in_v1": [
+    "Contract-specific liability analysis (needs contract text)",
+    "Insurance policy interpretation (needs policy text)",
+    "Regional legal-code variance (Consumer Rights Act, product liability directives)",
+    "Statute-of-limitations calculations",
+    "Cost apportionment where multiple parties share responsibility"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "country_code": "US",
+  "country_name": "United States of America",
+  "version": "V1",
+  "generated": "2026-07-27",
+
+  "terminology": {
+    "stair_carriage": "stringer",
+    "vertical_infill": "baluster",
+    "handrail_post": "newel post",
+    "top_rail": "handrail",
+    "bottom_rail": "shoe rail",
+    "step_face": "riser",
+    "step_top": "tread",
+    "step_edge": "nose",
+    "overhang": "nose overhang",
+    "full_infill_system": "railing system",
+    "landing": "floor landing"
+  },
+
+  "terminology_map_uk_to_us": {
+    "string": "stringer",
+    "spindle": "baluster",
+    "newel": "newel post",
+    "handrail": "handrail",
+    "baserail": "shoe rail",
+    "landing": "floor landing",
+    "balustrade": "railing system",
+    "going": "run",
+    "riser": "riser"
+  },
+
+  "regulations": {
+    "primary_reference": "International Residential Code (IRC) for one- and two-family dwellings; International Building Code (IBC) for commercial. Adopted with amendments state-by-state.",
+    "residential_irc_r311_7": {
+      "min_stair_width_mm": 914,
+      "min_stair_width_inches": 36,
+      "max_rise_mm": 196,
+      "max_rise_inches": 7.75,
+      "min_run_mm": 254,
+      "min_run_inches": 10,
+      "min_headroom_mm": 2032,
+      "min_headroom_inches": 80,
+      "handrail_height_range_mm": [864, 965],
+      "handrail_height_range_inches": [34, 38],
+      "min_handrail_sides": 1,
+      "baluster_gap_rule": "4-inch (approx 100mm) sphere may not pass through",
+      "note": "US uses imperial by default. State amendments may adjust — always verify local code."
+    },
+    "commercial_ibc": {
+      "min_stair_width_mm": 1118,
+      "min_stair_width_inches": 44,
+      "max_rise_mm": 178,
+      "max_rise_inches": 7,
+      "min_run_mm": 279,
+      "min_run_inches": 11,
+      "min_handrail_sides": 2,
+      "note": "Commercial IBC significantly stricter than residential IRC — do not conflate."
+    },
+    "state_variance": "California (CBC), New York City, Massachusetts, Florida all publish amended codes. Always check local building department."
+  },
+
+  "regional_style_preferences": {
+    "east_coast_traditional": ["classic_period", "farmhouse", "colonial"],
+    "west_coast_modern": ["modern_minimal", "luxury_contemporary"],
+    "midwest": ["farmhouse", "classic_period", "craftsman"],
+    "south": ["classic_period", "farmhouse", "grand_entrance"],
+    "urban_lofts": ["industrial", "modern_minimal"]
+  },
+
+  "cultural_preferences": [
+    "Feature staircases in the entrance foyer are a US signature — the stair as first-impression object drives grander proportions than UK equivalents.",
+    "Curved and open-foyer staircases much more common than in UK due to larger homes.",
+    "Oak treads with painted risers is universal; wrought iron balusters are more common than in UK.",
+    "Carpet runners on stairs are still common in traditional and colonial styles.",
+    "Maple and cherry are US popular species alongside oak — walnut for luxury."
+  ],
+
+  "supplier_categories": {
+    "big_box_retailers": "Home Depot, Lowe's — general building supplies, some stair parts (limited premium range)",
+    "stair_specialists": "L.J. Smith Stair Systems, Fitts, StairSupplies.com, Stair Parts USA — dominant US stair-parts brands",
+    "hardwood_lumber": "Regional hardwood specialists — most metros have several",
+    "stair_manufacturers": "Regional bespoke shops; national kit suppliers like Salter Spiral Stair (spirals), Southern Staircase",
+    "glass_balustrade": "AGS Stainless, ACS Stainless, StairSupplies.com Prova Glass, Fortress Building Products",
+    "finishing": "Bona (floor-industry crossover), Watco, Waterlox, Rubio Monocoat US",
+    "note": "US supplier directory is not built in NEX yet — V2 target."
+  },
+
+  "typical_property_types": {
+    "colonial_traditional": {
+      "typical_floor_to_floor_mm": [2743, 3048],
+      "typical_floor_to_floor_feet": [9, 10],
+      "notes": "Grand entrance foyer common. Wide staircases with curved bottom steps."
+    },
+    "ranch_style": {
+      "typical_floor_to_floor_mm": [2438, 2743],
+      "notes": "Single-storey — no main staircase, sometimes basement access only."
+    },
+    "modern_open_plan": {
+      "typical_floor_to_floor_mm": [2743, 3200],
+      "notes": "Floating and open-riser stairs increasingly popular. Cable and glass balustrades common."
+    },
+    "loft_conversion_urban": {
+      "notes": "Industrial style dominates. Steel + oak combinations. NYC and Chicago drive the trend."
+    }
+  },
+
+  "regulatory_warnings": [
+    "US codes are STATE-specific with local amendments — never quote 'US code' without verifying the specific jurisdiction.",
+    "IRC residential and IBC commercial are different envelopes — get the building type right first.",
+    "California (CBC) has additional seismic and accessibility requirements.",
+    "New York City has extensive local amendments beyond the IBC.",
+    "Historic districts may have preservation requirements affecting stair modifications."
+  ],
+
+  "not_in_v1": [
+    "State-by-state code amendment library",
+    "Full US supplier directory",
+    "Climate zone considerations (Florida humidity vs Arizona dry vs New England seasonal swing) for timber selection"
+  ]
+}

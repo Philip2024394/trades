@@ -1,0 +1,128 @@
+{
+  "country_code": "AU",
+  "country_name": "Australia",
+  "version": "V1",
+  "generated": "2026-07-27",
+
+  "terminology": {
+    "stair_carriage": "stringer (US influence) or string (UK influence — both used)",
+    "vertical_infill": "baluster",
+    "handrail_post": "newel post",
+    "top_rail": "handrail",
+    "bottom_rail": "bottom rail",
+    "step_face": "riser",
+    "step_top": "tread",
+    "step_edge": "nosing",
+    "full_infill_system": "balustrade",
+    "landing": "landing"
+  },
+
+  "terminology_notes": [
+    "AU terminology sits between UK and US usage.",
+    "'Baluster' is more common than the UK 'spindle'.",
+    "'Stringer' is more common than 'string'.",
+    "Otherwise closer to UK vocabulary than US."
+  ],
+
+  "regulations": {
+    "primary_reference": "National Construction Code (NCC), Volume 1 (Building Code of Australia) for commercial, Volume 2 for residential. Referenced Australian Standard AS 1657 for stairs, ramps, ladders.",
+    "residential_ncc_volume_2": {
+      "max_pitch_degrees": 42,
+      "note_pitch": "For domestic stairs; steeper for industrial/access ladders.",
+      "max_rise_mm": 190,
+      "min_going_mm": 240,
+      "min_headroom_mm": 2000,
+      "handrail_height_mm": [865, 1000],
+      "min_handrail_sides": 1,
+      "baluster_gap_rule": "125mm sphere may not pass through (looser than UK's 100mm rule)",
+      "note": "AU 125mm rule is more relaxed than UK 100mm — but customer expectation and child safety still favour tighter spacing."
+    },
+    "commercial_ncc_volume_1": {
+      "max_pitch_degrees": 36,
+      "min_going_mm": 250,
+      "handrail_both_sides": true,
+      "note": "Commercial requirements significantly stricter."
+    },
+    "glass_balustrade": "Grade A safety glass (toughened or laminated) per AS 1288. Height requirements per NCC — typically 1000mm above finished floor level on landings and balconies over 1000mm above the ground.",
+    "referenced_standards": [
+      "AS 1657 — Fixed platforms, walkways, stairways and ladders",
+      "AS 1288 — Glass in buildings — Selection and installation",
+      "AS 1170 — Structural design actions",
+      "AS 1428 — Design for access and mobility"
+    ]
+  },
+
+  "regional_style_preferences": {
+    "sydney_urban": ["modern_minimal", "luxury_contemporary"],
+    "melbourne_urban": ["modern_minimal", "industrial", "warehouse_conversion"],
+    "queensland_coastal": ["light_open_modern", "queenslander_traditional"],
+    "outback_rural": ["farmhouse", "steel_industrial"],
+    "tasmania": ["cottage", "farmhouse", "cool_climate_traditional"]
+  },
+
+  "climate_considerations": [
+    "Bushfire zones (BAL rating): timber species selection restricted in bushfire-prone areas. External and semi-external stairs may require BAL-rated timber or non-combustible substitutes.",
+    "Coastal (Queensland, WA): high humidity + salt air favours engineered timber and marine-grade finishes over solid.",
+    "Tropical north: monsoon humidity extremes — solid timber species selection critical to avoid seasonal movement.",
+    "Alpine (VIC, TAS): significant seasonal humidity swing.",
+    "External timber must be species-rated for outdoor use — hardwoods like Spotted Gum, Blackbutt, Ironbark preferred."
+  ],
+
+  "cultural_preferences": [
+    "Modern glass-and-timber stairs are dominant in new-build metropolitan homes.",
+    "Outdoor timber stairs (deck stairs, external access) are much more common than in UK.",
+    "Australian hardwoods (Spotted Gum, Blackbutt, Tasmanian Oak, Jarrah, Blackwood) preferred over imported oak/walnut for character projects — supports local industry.",
+    "'Queenslander' traditional homes have external timber staircases as a signature feature.",
+    "Glass balustrades on external decks and stairs almost universal in coastal new builds."
+  ],
+
+  "australian_timber_species": {
+    "tasmanian_oak": { "type": "hardwood", "notes": "Not related to European oak - commercial name for Eucalyptus regnans, obliqua, delegatensis. Light colour, straight grain, popular for interior stairs." },
+    "blackbutt": { "type": "hardwood", "notes": "Light-to-medium colour, durable, coastal-suitable, BAL-rated for bushfire areas." },
+    "spotted_gum": { "type": "hardwood", "notes": "Beautiful figured grain, very durable, common for external and premium interior stairs." },
+    "jarrah": { "type": "hardwood", "notes": "Rich red-brown WA hardwood, dense and durable, luxury choice." },
+    "blackwood": { "type": "hardwood", "notes": "Tasmanian species, walnut-like appearance, premium interior use." },
+    "ironbark": { "type": "hardwood", "notes": "Extremely dense and durable, favoured for structural and external stairs." },
+    "imported_oak": { "type": "hardwood", "notes": "American White Oak and European Oak imported — still popular but less patriotic than Australian species." }
+  },
+
+  "supplier_categories": {
+    "national_hardware": "Bunnings — dominant retail chain, general building supplies plus limited stair parts",
+    "trade_focus": "Mitre 10, Home Timber & Hardware, Trade Tools",
+    "specialist_timber": "Britton Timbers, Ironwood Australia, Wood2u, State-specific hardwood mills",
+    "stair_specialists": "Signature Stairs, Barestairs, Stairbuilder, Aussie Stairs — bespoke manufacturers per state",
+    "glass_balustrade": "Glass and Metal, Balcony Systems, Frameless Impressions, TAG Balustrades",
+    "note": "AU supplier directory is not built in NEX yet — V2 target."
+  },
+
+  "typical_property_types": {
+    "queenslander": {
+      "notes": "Traditional elevated timber house with external timber staircase as a signature feature. Timber species and durability critical."
+    },
+    "californian_bungalow": {
+      "typical_floor_to_floor_mm": [2700, 3000],
+      "notes": "Common in Sydney, Melbourne inner suburbs. Modest internal stair; renovation-friendly."
+    },
+    "modern_open_plan_metro": {
+      "typical_floor_to_floor_mm": [2700, 3200],
+      "notes": "Floating and open-riser stairs increasingly common. Glass balustrades dominant."
+    },
+    "warehouse_conversion": {
+      "notes": "Melbourne + Sydney inner-city. Industrial style: steel + hardwood."
+    }
+  },
+
+  "regulatory_warnings": [
+    "Bushfire Attack Level (BAL) rating drives materials choice for external stairs in bushfire zones — do not spec unrated timber in BAL-12.5 or above.",
+    "State-specific building regulations layer on top of NCC — Victoria, NSW, Queensland, WA all have local variations.",
+    "Coastal humidity + salt air degrades finishes faster than temperate zones — spec marine-grade or plan for more frequent maintenance.",
+    "Historic Queenslander stairs may retain original non-compliant dimensions under heritage protection."
+  ],
+
+  "not_in_v1": [
+    "State-by-state code variation library",
+    "Full AU supplier directory",
+    "BAL-rating decision tree",
+    "Full Australian hardwood species characteristic database"
+  ]
+}

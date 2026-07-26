@@ -1,0 +1,128 @@
+{
+  "country_code": "GB",
+  "country_name": "United Kingdom",
+  "version": "V1",
+  "generated": "2026-07-27",
+
+  "terminology": {
+    "stair_carriage": "string",
+    "vertical_infill": "spindle (traditional) or baluster (modern)",
+    "handrail_post": "newel",
+    "top_rail": "handrail",
+    "bottom_rail": "baserail",
+    "step_face": "riser",
+    "step_top": "tread",
+    "step_edge": "nosing",
+    "overhang": "nosing overhang",
+    "full_infill_system": "balustrade",
+    "landing": "landing"
+  },
+
+  "regional_style_preferences": {
+    "england_urban": ["modern_minimal", "luxury_contemporary", "victorian_period"],
+    "england_rural": ["farmhouse", "classic_period", "victorian_period"],
+    "london": ["modern_minimal", "luxury_contemporary", "period conversion"],
+    "scotland": ["farmhouse", "classic_period", "traditional_stone_property"],
+    "wales": ["farmhouse", "cottage", "victorian_period"],
+    "northern_ireland": ["farmhouse", "modern_new_build", "traditional"]
+  },
+
+  "regulations": {
+    "primary_reference": "Approved Document K (Protection from Falling, Collision and Impact)",
+    "domestic": {
+      "max_pitch_degrees": 42,
+      "max_rise_mm": 220,
+      "min_going_mm": 220,
+      "min_headroom_mm": 2000,
+      "handrail_height_range_mm": [900, 1000],
+      "min_handrail_sides": 1,
+      "spindle_gap_rule": "no 100mm sphere may pass through",
+      "formula_2R_G": {
+        "min_mm": 550,
+        "max_mm": 700,
+        "note": "2 × riser + going should sit in this range for comfort"
+      }
+    },
+    "commercial_category_1": {
+      "note": "Public buildings — stricter than domestic",
+      "min_going_mm": 250,
+      "max_pitch_degrees": 38,
+      "min_handrail_sides": 2,
+      "contrast_nosings": "required per Doc M accessibility guidance"
+    },
+    "glass_balustrade": "Toughened or toughened-laminated safety glass required. Reference BS 6180 for balustrade design and BS 6262 for glazing.",
+    "loft_conversion_exception": "Alternating tread stair permitted where a full compliant stair will not fit, only for access to a single habitable room.",
+    "building_control": "New staircases and significant alterations trigger Building Control notification in England/Wales. Scotland uses Building Standards; NI uses Building Regulations (Northern Ireland)."
+  },
+
+  "regional_regulations_variance": {
+    "england": "Approved Document K (2013 edition currently active)",
+    "wales": "Approved Document K adopted with Welsh amendments",
+    "scotland": "Building Standards (Section 4: Safety, Standard 4.3 Stairs and Ramps) — different specific values",
+    "northern_ireland": "Building Regulations (Northern Ireland) — mirrors Doc K in most respects with local wording"
+  },
+
+  "supplier_categories": {
+    "general_builders_merchants": "Jewson, Travis Perkins, Huws Gray, Selco, Buildbase, MKM, Bradfords, Ridgeons, Robert Price + independents",
+    "timber_merchants": "Howarth Timber, International Timber, Arnold Laver, Timbmet, MGM (Scotland), James Donaldson (Scotland), Haldane Fisher (NI), Champion Timber, Beesley & Fildes",
+    "stair_specialists": "Richard Burbidge, Cheshire Mouldings, StairBox (online configurator), Yorkshire Timber (Halifax), Trade Stair Parts (Halstead)",
+    "stair_manufacturers": "Pear Stairs, TK Stairs, Neville Lumb, Staircraft, Complete Stair Systems, The Stair Factory, Elite Staircases",
+    "glass_balustrade": "CRL, Q-railing, F H Brundle, Balustrade Components",
+    "finishing": "Osmo, Fiddes, Rubio Monocoat, Morrells, Bona",
+    "cross_reference": "See data/uk-merchant-directory.json for full 88-record directory"
+  },
+
+  "typical_property_types": {
+    "victorian_terrace": {
+      "typical_hallway_width_mm": [900, 1100],
+      "typical_floor_to_floor_mm": [2700, 3000],
+      "notes": "Original stairs often steep by modern standards. Renovation more common than replacement. Paired-neighbour mirror rule applies (right-side house typically has staircase on left)."
+    },
+    "1930s_semi": {
+      "typical_hallway_width_mm": [1000, 1200],
+      "typical_floor_to_floor_mm": [2500, 2700],
+      "notes": "Straight or quarter-turn typical. Original oak or pine stairs frequently intact."
+    },
+    "modern_new_build": {
+      "typical_hallway_width_mm": [1000, 1400],
+      "typical_floor_to_floor_mm": [2400, 2600],
+      "notes": "Straight pine + MDF riser default. Prime candidate for oak refurbishment upgrade."
+    },
+    "georgian_townhouse": {
+      "typical_floor_to_floor_mm": [3000, 3500],
+      "notes": "Grand proportions. Classic period style dominates. Restoration typically preferred over replacement."
+    },
+    "cottage": {
+      "typical_floor_to_floor_mm": [2200, 2600],
+      "notes": "Often steep and narrow. Farmhouse style. May be non-compliant with current Doc K — retained under listed-building or historic exemption."
+    },
+    "apartment": {
+      "notes": "Rarely has an internal staircase; where present, often to a mezzanine or roof terrace."
+    }
+  },
+
+  "cultural_preferences": [
+    "Oak is the default premium timber choice — customer defaults to oak unless steered otherwise.",
+    "Glass balustrade increasingly common in mid-to-premium new builds; still associated with 'modern'.",
+    "Renovation preferred over replacement in period properties.",
+    "Painted string + oak tread is a classic UK budget-to-mid combination.",
+    "'Building regulations' is a household phrase — customers know Doc K exists even if they don't cite it."
+  ],
+
+  "common_customer_journey": [
+    "Search 'staircase company [town]' or 'oak stairs [town]'",
+    "Compare 3-5 companies by website + Google reviews",
+    "Site visit for measurement",
+    "Written quote with breakdown",
+    "6-12 week lead time",
+    "1-2 day installation",
+    "Handover with care guide"
+  ],
+
+  "regulatory_warnings": [
+    "Doc K sets MINIMUMS, not maximums.",
+    "Retrofitting a stair into an existing opening often triggers Building Control notification even if the original was legal.",
+    "Wales, Scotland and NI have their own versions of Building Regulations — never quote England Doc K to a Scottish customer as if it applies.",
+    "Historic listed buildings may retain non-compliant original stairs — do not modify without listed-building consent."
+  ]
+}
