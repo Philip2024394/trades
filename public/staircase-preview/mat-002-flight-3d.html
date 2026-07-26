@@ -567,6 +567,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 // RectAreaLight requires uniforms lib init before any RectAreaLight can illuminate MeshStandard /
 // MeshPhysical materials. Called once at module load.
 RectAreaLightUniformsLib.init();
@@ -649,18 +650,41 @@ renderer.toneMappingExposure = 1.15;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 container.appendChild(renderer.domElement);
 
-// ── RoomEnvironment PMREM (Philip 2026-07-26) ─────────────────────
-// Three.js built-in procedurally-lit room converted to a pre-filtered
-// mipmap radiance environment. Assigned to scene.environment so any
-// MeshStandard/Physical material with envMapIntensity > 0 picks it up
-// as its reflection source. Metals (stainless baluster, screws, future
-// chrome/brass) will look truly reflective; wood materials are opted
-// OUT by setting their envMapIntensity to 0 so American White Oak V1
-// LOCKED values are preserved pixel-identical.
+// ── Scene environment (Philip 2026-07-26 → HDRI upgrade) ──────────
+// Starts with RoomEnvironment as a fast-loading fallback so metals have
+// SOMETHING to reflect immediately. Then asynchronously loads a real HDRI
+// (royal_esplanade_1k — bright outdoor scene with strong sky/building
+// contrast) and swaps it in when ready. HDRI has huge dynamic range so
+// reflective metals show clear bright/dark zones — visibly REAL reflection
+// rather than the soft grey RoomEnvironment gives.
+//
+// Wood + paint materials are opted out via envMapIntensity = 0 further
+// below so American White Oak V1 LOCKED values stay pixel-identical
+// regardless of which envMap is active.
 const pmremGenerator = new THREE.PMREMGenerator(renderer);
 const roomEnvTex     = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
 scene.environment    = roomEnvTex;
 // Note: NOT set as scene.background so the current cream backdrop stays.
+
+// Async-load the real HDRI. On success, swap. On failure, keep the room.
+new RGBELoader().load(
+  "https://cdn.jsdelivr.net/gh/mrdoob/three.js@r161/examples/textures/equirectangular/royal_esplanade_1k.hdr",
+  (hdrTex) => {
+    hdrTex.mapping = THREE.EquirectangularReflectionMapping;
+    const pmremHDR = new THREE.PMREMGenerator(renderer);
+    const hdrEnv   = pmremHDR.fromEquirectangular(hdrTex).texture;
+    scene.environment = hdrEnv;
+    pmremHDR.dispose();
+    hdrTex.dispose();
+    // eslint-disable-next-line no-console
+    console.log("[nex] HDRI environment loaded (royal_esplanade_1k) — metals will look reflective.");
+  },
+  undefined,
+  (err) => {
+    // eslint-disable-next-line no-console
+    console.warn("[nex] HDRI load failed, keeping RoomEnvironment fallback:", err);
+  }
+);
 pmremGenerator.dispose();
 
 const controls = new OrbitControls(camera, renderer.domElement);
