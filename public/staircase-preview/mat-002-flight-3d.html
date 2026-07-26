@@ -515,7 +515,7 @@
     <label for="sheeting-tone-slider" style="color: var(--muted); font-size: 11px; letter-spacing: 1px;">SHEETING TONE</label>
     <input type="range" id="sheeting-tone-slider" min="-0.30" max="0.30" step="0.02" value="0" style="width:100%; accent-color: var(--accent);">
   </div>
-  <button class="view-btn active" data-view="hero">3-Quarter Hero</button>
+  <button class="view-btn active" data-view="hero">3D Reset</button>
   <button class="view-btn" data-view="side">Side Elevation</button>
   <button class="view-btn" data-view="front">Front Elevation</button>
   <button class="view-btn" data-view="top">Top Plan</button>
@@ -2252,8 +2252,48 @@ new THREE.TextureLoader().load(
 // View switcher (with smooth animation)
 // -----------------------------------------------------------------------------
 const centreTarget = [OVERALL_RUN / 2, OVERALL_RISE / 2, 0];
+
+// Dynamic reset view — computes camera distance so the WHOLE staircase (flight
+// + newels + handrails + landing) fits inside the CURRENT viewport. Works
+// correctly on desktop / tablet / mobile in landscape OR portrait because the
+// distance is derived from the current renderer aspect ratio and camera FOV.
+// Uses a bounding-sphere fit: distance = radius / sin(minFov / 2). Applies
+// safetyMargin (1.10) so nothing kisses the viewport edge.
+function computeFitView() {
+  const marginNewel = NEWEL_SIZE * 1.5;
+  const bbox = {
+    minX: -marginNewel,
+    maxX: OVERALL_RUN + marginNewel + 0.30,
+    minY: -STRING_HEIGHT * 0.3,
+    maxY: OVERALL_RISE + NEWEL_HEIGHT_BOTTOM * 0.5,
+    minZ: -(TREAD_WIDTH / 2 + STRING_THICK + marginNewel),
+    maxZ:  (TREAD_WIDTH / 2 + STRING_THICK + marginNewel),
+  };
+  const cx = (bbox.minX + bbox.maxX) / 2;
+  const cy = (bbox.minY + bbox.maxY) / 2;
+  const cz = (bbox.minZ + bbox.maxZ) / 2;
+  const hx = (bbox.maxX - bbox.minX) / 2;
+  const hy = (bbox.maxY - bbox.minY) / 2;
+  const hz = (bbox.maxZ - bbox.minZ) / 2;
+  const radius = Math.sqrt(hx * hx + hy * hy + hz * hz);
+
+  const aspect = window.innerWidth / window.innerHeight;
+  const vFov = (camera.fov * Math.PI) / 180;
+  const hFov = 2 * Math.atan(Math.tan(vFov / 2) * aspect);
+  const minFov = Math.min(vFov, hFov);
+  const safetyMargin = 1.10;
+  const distance = (radius / Math.sin(minFov / 2)) * safetyMargin;
+
+  const el = (22 * Math.PI) / 180;
+  const az = (42 * Math.PI) / 180;
+  const posX = cx + distance * Math.cos(el) * Math.cos(az);
+  const posY = cy + distance * Math.sin(el);
+  const posZ = cz + distance * Math.cos(el) * Math.sin(az);
+  return { pos: [posX, posY, posZ], target: [cx, cy, cz] };
+}
+
 const views = {
-  hero:   { pos: [4.5, 2.5, 4.5], target: centreTarget },
+  hero:   { compute: computeFitView },
   side:   { pos: [OVERALL_RUN / 2, OVERALL_RISE / 2, 5.5], target: centreTarget },
   front:  { pos: [OVERALL_RUN + 5.0, OVERALL_RISE / 2, 0], target: centreTarget },
   top:    { pos: [OVERALL_RUN / 2, 6.5, 0.01], target: [OVERALL_RUN / 2, 0, 0] },
@@ -2269,11 +2309,29 @@ buttons.forEach((btn) => {
   btn.addEventListener("click", () => {
     buttons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
-    const v = views[btn.dataset.view];
+    let v = views[btn.dataset.view];
     if (!v) return; // safety
+    // Compute-based views (3D Reset) resolve fresh values every click so
+    // they respect the current viewport aspect + size — critical for browser
+    // chrome (URL bar), mobile portrait/landscape, window resizes.
+    if (typeof v.compute === "function") v = v.compute();
     controls.maxPolarAngle = v.allowUnderside ? Math.PI : (Math.PI / 2);
     animateCameraTo(v.pos, v.target);
   });
+});
+
+// Apply the fit view on initial load so the staircase is properly framed
+// before the user clicks anything, and re-apply on window resize (mobile
+// rotation, browser chrome collapse) so it always stays fit-to-screen.
+function applyResetView() {
+  const v = computeFitView();
+  animateCameraTo(v.pos, v.target);
+}
+setTimeout(applyResetView, 0);
+let __resetResizeTimer = null;
+window.addEventListener("resize", () => {
+  clearTimeout(__resetResizeTimer);
+  __resetResizeTimer = setTimeout(applyResetView, 180);
 });
 
 // Varnish ON/OFF toggle — flips every oak material between LACQUERED (with clearcoat + honey tint
