@@ -59,11 +59,8 @@ describe("runTool — dispatch behaviour", () => {
     if (!result.ok) expect(result.error).toMatch(/unknown tool/i);
   });
 
-  it("returns 'ships in Increment 4' for generate_banner (not yet enabled)", async () => {
-    const result = await runTool(ctx, "generate_banner", {});
-    expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.error).toMatch(/increment 4/i);
-  });
+  // generate_banner is now live (Increment 4). Its own ownership /
+  // guardrail / persistence tests live in bannerGenerator.test.ts.
 });
 
 describe("runTool — list_products (ownership passthrough)", () => {

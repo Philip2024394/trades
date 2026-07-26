@@ -14,6 +14,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DraftPreviewCard, type Draft } from "./DraftPreviewCard";
+import { BannerPreview } from "./BannerPreview";
+import type {
+  BannerVisualStyle,
+  MerchantAssistantBanner,
+} from "@/lib/nex/merchant-assistant/types";
 
 type Role = "user" | "assistant";
 
@@ -22,6 +27,8 @@ type ChatMessage = {
   text: string;
   /** When the assistant reply created a draft, the card renders inline. */
   draft?: Draft | null;
+  /** When the assistant reply generated a banner, the preview renders inline. */
+  banner?: MerchantAssistantBanner | null;
 };
 
 type ToolCall = {
@@ -36,6 +43,7 @@ type ApiResponse = {
   response?: string;
   tool_calls?: ToolCall[];
   draft?: Draft | null;
+  banner?: MerchantAssistantBanner | null;
   usage?: { input_tokens: number; output_tokens: number; iterations: number };
   error?: string;
 };
@@ -98,6 +106,7 @@ export function MerchantAssistantChat() {
           role: "assistant",
           text: data.response ?? "(no response)",
           draft: data.draft ?? null,
+          banner: data.banner ?? null,
         },
       ]);
     } catch {
@@ -163,6 +172,18 @@ export function MerchantAssistantChat() {
                   onEditRequested={() =>
                     setInput(
                       `NEX please update the ${m.draft?.name} listing —`
+                    )
+                  }
+                />
+              </div>
+            )}
+            {m.role === "assistant" && m.banner && (
+              <div className="mt-2 flex justify-start">
+                <BannerPreview
+                  banner={m.banner}
+                  onRegenerateRequested={(nextStyle) =>
+                    setInput(
+                      `NEX please rework this banner in a more ${nextStyle} style`
                     )
                   }
                 />

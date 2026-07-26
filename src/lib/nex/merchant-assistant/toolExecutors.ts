@@ -208,6 +208,11 @@ export async function executePreviewChange(
 
 import { checkFields } from "./guardrails";
 import { publish as publishEvent } from "@/lib/os/events";
+import {
+  generateAndSaveBanner,
+  type GenerateBannerInput,
+} from "./bannerGenerator";
+import type { BannerVisualStyle, MerchantAssistantBanner } from "./types";
 
 /** slug helper: brand-slug/name-slug pattern per canonical schema. */
 function makeSlug(brandName: string, name: string): string {
@@ -570,6 +575,65 @@ export async function executeArchiveProduct(
   };
 }
 
+// ─── generate_banner ──────────────────────────────────────────────
+
+export type GenerateBannerToolInput = {
+  offer_id: string;
+  visual_style?: BannerVisualStyle;
+  angle?: string;
+};
+
+export async function executeGenerateBanner(
+  ctx: MerchantContext,
+  input: GenerateBannerToolInput
+): Promise<ToolExecutionResult<MerchantAssistantBanner>> {
+  if (!input.offer_id) {
+    return { ok: false, error: "offer_id is required" };
+  }
+
+  // Load offer + verify ownership + get canonical for product context
+  const { data: offer } = await supabaseAdmin
+    .from("app_products_merchant_offers")
+    .select("id, merchant_id, canonical_product_id, price_pence")
+    .eq("id", input.offer_id)
+    .maybeSingle();
+
+  if (!offer) return { ok: false, error: "Offer not found." };
+  if ((offer.merchant_id as string) !== ctx.merchantId) {
+    return { ok: false, error: "You can only generate banners for your own offers." };
+  }
+
+  const canonical = await findCanonicalById(offer.canonical_product_id as string);
+  if (!canonical) {
+    return { ok: false, error: "Could not load the linked product." };
+  }
+
+  // Compose + persist a new draft banner version
+  const generatorInput: GenerateBannerInput = {
+    offerId: input.offer_id,
+    visualStyle: input.visual_style,
+    angle: input.angle,
+  };
+
+  const result = await generateAndSaveBanner(ctx, generatorInput, {
+    productName: canonical.name,
+    brandName: canonical.brandName,
+    description: canonical.description,
+    pricePence: offer.price_pence as number,
+  });
+
+  if (!result.ok) {
+    return {
+      ok: false,
+      error: result.error,
+      guardrail_blocked: result.guardrail_blocked,
+      guardrail_reason: result.guardrail_reason,
+    };
+  }
+
+  return { ok: true, data: result.banner };
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // Dispatch table — the API endpoint hands the raw tool_use block here
 // ═══════════════════════════════════════════════════════════════════
@@ -595,13 +659,8 @@ export async function runTool(
       return executePublishProduct(ctx, input as PublishProductInput);
     case "archive_product":
       return executeArchiveProduct(ctx, input as ArchiveProductInput);
-
-    // generate_banner ships in Increment 4
     case "generate_banner":
-      return {
-        ok: false,
-        error: `Tool "${toolName}" ships in Phase 7 Increment 4.`,
-      };
+      return executeGenerateBanner(ctx, input as GenerateBannerToolInput);
 
     default:
       return { ok: false, error: `Unknown tool: ${toolName}` };

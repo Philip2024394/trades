@@ -231,11 +231,15 @@ export async function POST(req: NextRequest) {
     toolCalls: toolCallAudit,
   });
 
-  // Identify any draft that was created this turn — the UI uses this
-  // to render the DraftPreviewCard inline with the assistant reply.
+  // Identify any inline cards this turn should surface.
+  // - draft: from create_product_draft
+  // - banner: latest successful generate_banner call
   const draftCreated = toolCallAudit.find(
     (c) => c.tool === "create_product_draft" && c.result.ok
   );
+  const bannerGenerated = [...toolCallAudit]
+    .reverse()
+    .find((c) => c.tool === "generate_banner" && c.result.ok);
 
   return NextResponse.json({
     ok: true,
@@ -245,6 +249,10 @@ export async function POST(req: NextRequest) {
     draft:
       draftCreated && draftCreated.result.ok
         ? draftCreated.result.data
+        : null,
+    banner:
+      bannerGenerated && bannerGenerated.result.ok
+        ? bannerGenerated.result.data
         : null,
     usage: {
       input_tokens: totalInputTokens,
