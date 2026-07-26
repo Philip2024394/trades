@@ -992,6 +992,22 @@ new THREE.TextureLoader().load(
     const LACQUER_ROUGHNESS = 0.30;
     const LACQUER_COLOR = new THREE.Color(0xf7e0b8); // warm honey tint (subtle multiplier over texture)
 
+    // ═════════════════════════════════════════════════════════════════════
+    // AMERICAN WHITE OAK — APPROVED V1 · LOCKED 2026-07-26
+    // Philip: "we got to same these colors now for oak american . no more change"
+    // Do NOT modify the following values without explicit instruction on the
+    // specific value being changed:
+    //   LACQUER_COLOR + LACQUER_ROUGHNESS
+    //   rearTreadMaterial.emissiveIntensity 0.05
+    //   rearRiserMaterial.emissiveIntensity 0.05
+    //   rearAngleBeadMaterial.emissiveIntensity 0.05
+    //   rearStringMaterial.emissiveIntensity 0.20
+    //   sheetingMaterial.emissiveIntensity 0.20
+    //   pineMaterial (angle blocks + wedges) color 0xf0dcaa + emissiveIntensity 0.20
+    // See feedback_nex_american_white_oak_approved_v1.md memory for details.
+    // Renderer shadows OFF is the paired renderer setting — do not re-enable.
+    // ═════════════════════════════════════════════════════════════════════
+
     // Tread — DoubleSide so neither culling nor tiny z-order issues can produce edge "white lines"
     // where the tread meets the string. polygonOffset pushes rendering slightly further so it never
     // z-fights with the string interior face when they occupy near-shared space (tread embeds 20mm
@@ -1909,14 +1925,21 @@ new THREE.TextureLoader().load(
     });
     // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
     // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
-    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish
-    // = metallic PBR with medium roughness (NOT mirror-polished, NOT rough
-    // sand-blast) — brushed grain scatters light softly. Slight bluish-cool
-    // tint on the base colour matches genuine stainless vs warm chrome.
+    // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
+    //
+    // IMPORTANT: the scene has no envMap. High metalness (0.9+) makes a
+    // MeshStandardMaterial render BLACK because there's no environment to
+    // reflect — all its lighting comes from that envMap. Fix: use LOWER
+    // metalness (0.5) so the diffuse component contributes, brighter base
+    // colour (silvery not grey), and subtle emissive lift so the baluster
+    // reads as bright brushed steel from every viewing angle even without
+    // an IBL. This is the "no envMap" recipe for stainless.
     const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
-      color: 0xb4b6b8,
-      roughness: 0.38,
-      metalness: 0.90,
+      color: 0xd0d4d8,
+      roughness: 0.42,
+      metalness: 0.50,
+      emissive: 0x8a8e92,
+      emissiveIntensity: 0.20,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
