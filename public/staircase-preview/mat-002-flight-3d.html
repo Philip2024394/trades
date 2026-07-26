@@ -566,6 +566,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 // RectAreaLight requires uniforms lib init before any RectAreaLight can illuminate MeshStandard /
 // MeshPhysical materials. Called once at module load.
 RectAreaLightUniformsLib.init();
@@ -647,6 +648,20 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.15;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 container.appendChild(renderer.domElement);
+
+// ── RoomEnvironment PMREM (Philip 2026-07-26) ─────────────────────
+// Three.js built-in procedurally-lit room converted to a pre-filtered
+// mipmap radiance environment. Assigned to scene.environment so any
+// MeshStandard/Physical material with envMapIntensity > 0 picks it up
+// as its reflection source. Metals (stainless baluster, screws, future
+// chrome/brass) will look truly reflective; wood materials are opted
+// OUT by setting their envMapIntensity to 0 so American White Oak V1
+// LOCKED values are preserved pixel-identical.
+const pmremGenerator = new THREE.PMREMGenerator(renderer);
+const roomEnvTex     = pmremGenerator.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.environment    = roomEnvTex;
+// Note: NOT set as scene.background so the current cream backdrop stays.
+pmremGenerator.dispose();
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
@@ -1926,14 +1941,15 @@ new THREE.TextureLoader().load(
     // Brushed stainless steel baluster (Philip 2026-07-26). 40×40×900mm.
     // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdasdassddsddssdd-removebg-preview.png
     // Plain square hollow tube, crisp 90° edges (no chamfer). Brushed finish.
-    // Rendered without textures — waiting on decision about which "real
-    // metal" approach to adopt (envMap / MatCap / procedural / anisotropy).
+    //
+    // Uses the scene RoomEnvironment (PMREM'd) for reflections. envMapIntensity
+    // is boosted to 1.5 below so the brushed metal reads bright and shiny.
+    // metalness back up to 0.9 (proper metal) since we now have an envMap to
+    // reflect. roughness 0.42 keeps the reflection soft-focus, not mirror.
     const balusterStainlessMaterial = new THREE.MeshStandardMaterial({
       color: 0xd0d4d8,
       roughness: 0.42,
-      metalness: 0.50,
-      emissive: 0x8a8e92,
-      emissiveIntensity: 0.20,
+      metalness: 0.90,
     });
     // Dedicated 40×40mm box geometry (matches spec — chamfered oak is 41mm,
     // so a separate geometry keeps the profile crisp).
@@ -2025,6 +2041,20 @@ new THREE.TextureLoader().load(
       setCream:     () => showBalusters("cream"),
       setStainless: () => showBalusters("stainless"),
     };
+
+    // ── RoomEnvironment opt-out for wood + paint materials ──
+    // scene.environment is set globally so metals reflect the room, but every
+    // wood / paint material must stay pixel-identical to the LOCKED American
+    // White Oak V1 values. envMapIntensity = 0 removes the envMap contribution
+    // per material. Stainless (real metal) gets 1.5 so the reflection pops.
+    for (const entry of woodMaterials) {
+      if (entry && entry.mat && typeof entry.mat.envMapIntensity === "number") {
+        entry.mat.envMapIntensity = 0;
+      }
+    }
+    if (balusterWhiteMaterial)     balusterWhiteMaterial.envMapIntensity     = 0;
+    if (balusterCreamMaterial)     balusterCreamMaterial.envMapIntensity     = 0;
+    if (balusterStainlessMaterial) balusterStainlessMaterial.envMapIntensity = 1.5;
 
     // --- T&G SHEETING factory (Philip 2026-07-25 REV 3) — single flat panel with PROCEDURAL
     //     T&G texture drawn on a canvas: 12 sections (75mm each) with dark groove lines between
