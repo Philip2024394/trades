@@ -78,7 +78,7 @@ export async function listCentreFeedItems(
     supabaseAdmin
       .from("hammerex_trade_off_listings")
       .select(
-        "id, slug, display_name, city, postcode_prefix, lat, lng, status"
+        "id, slug, display_name, city, postcode_prefix, lat, lng, status, avatar_url, whatsapp, email, hammerex_standard_verified, trust_tier"
       )
       .in("id", merchantIds)
       .eq("status", "live"),
@@ -119,6 +119,18 @@ export async function listCentreFeedItems(
 
       const banner = bannerByOfferId.get(o.id as string);
 
+      // Derive verification level onto the 4-level Trust Architecture
+      // model (same mapping used in contextLoader for consistency)
+      const stdVerified =
+        (merchant.hammerex_standard_verified as boolean) === true;
+      const trustTier = (merchant.trust_tier as string) ?? "bronze";
+      let verificationLevel: CentreFeedItem["merchant_verification_level"] =
+        "listed";
+      if (stdVerified && trustTier === "platinum")
+        verificationLevel = "partner";
+      else if (stdVerified) verificationLevel = "verified";
+      else if (trustTier !== "bronze") verificationLevel = "claimed";
+
       const item: CentreFeedItem = {
         kind: "product",
         offer_id: o.id as string,
@@ -140,6 +152,10 @@ export async function listCentreFeedItems(
           (merchant.postcode_prefix as string) ?? null,
         merchant_lat: merchantLat,
         merchant_lng: merchantLng,
+        merchant_avatar_url: (merchant.avatar_url as string) ?? null,
+        merchant_whatsapp: (merchant.whatsapp as string) ?? null,
+        merchant_email: (merchant.email as string) ?? null,
+        merchant_verification_level: verificationLevel,
         distance_km: distanceKm,
         region_match_score:
           distanceKm != null ? Math.max(0, 100 - Math.round(distanceKm)) : null,
