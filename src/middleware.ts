@@ -63,6 +63,32 @@ const SLUG_RE = /^[a-z0-9][a-z0-9-]{1,62}[a-z0-9]$/;
 // here keeps the middleware bullet-proof against future matcher edits.
 const BYPASS_PATH_PREFIXES = ["/_next/", "/api/", "/favicon"];
 
+// ------------------------------------------------------------------
+// LEGACY MARKETPLACE REDIRECTS (Philip 2026-07-27)
+// ------------------------------------------------------------------
+// /nex-app/centre is the SINGLE marketplace surface. Every prior
+// marketplace-adjacent route redirects to it so there is one place
+// customers see merchant + trade posts.
+//
+// 302 (temporary) initially — promote to 301 once we are certain
+// nothing else in the app links back to the retired paths. The
+// underlying tradecenter app code + APIs + data pipeline are LEFT
+// IN PLACE so /nex-app/centre can continue to pull the same data;
+// only the customer-facing routes are redirected.
+//
+// NOT redirected (merchant-editing surfaces, replaced by the future
+// Merchant Assistant in Phase 7):
+//   - /trade-off/trade-center
+//   - /trade-off/edit/[slug]/trade-center-picks
+//   - /trade/[slug]/trade-center-picks
+//   - /api/trade-off/trade-center-picks/*
+// ------------------------------------------------------------------
+const LEGACY_MARKETPLACE_PREFIXES = [
+  "/tc/trade-center",
+  "/tc/trade-counter"
+];
+const MARKETPLACE_CANONICAL_PATH = "/nex-app/centre";
+
 // Affiliate cookie carries the numeric affiliate_id for 30 days.
 const AFFILIATE_REF_COOKIE = "xrated_affiliate_ref";
 const AFFILIATE_REF_MAX_AGE = 60 * 60 * 24 * 30; // 30 days
@@ -179,6 +205,17 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const pathname = req.nextUrl.pathname;
   for (const prefix of BYPASS_PATH_PREFIXES) {
     if (pathname.startsWith(prefix)) return NextResponse.next();
+  }
+
+  // Legacy marketplace redirect — Philip 2026-07-27. /nex-app/centre
+  // is the single marketplace surface; every prior route bounces to it.
+  for (const legacy of LEGACY_MARKETPLACE_PREFIXES) {
+    if (pathname === legacy || pathname.startsWith(`${legacy}/`)) {
+      const target = req.nextUrl.clone();
+      target.pathname = MARKETPLACE_CANONICAL_PATH;
+      // Preserve any query string (search terms etc.)
+      return NextResponse.redirect(target, 302);
+    }
   }
 
   const rawHost = req.headers.get("host") ?? "";
