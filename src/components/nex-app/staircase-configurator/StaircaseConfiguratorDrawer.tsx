@@ -23,6 +23,9 @@ export type ComponentOption = {
   /** Optional colour swatch or thumbnail URL rendered at 32×32 next to the label. */
   swatch?: string;
   thumbnailUrl?: string;
+  /** When false, the drawer shows a "coming soon" badge and the 3D preview
+   *  won't visibly change on selection. Prevents overpromising. Default true. */
+  previewSupported?: boolean;
 };
 
 export type ComponentCategory = {
@@ -42,6 +45,7 @@ export function StaircaseConfiguratorDrawer({
   selected,
   onChange,
   onSaveDesign,
+  onReset,
   title = "Customise Staircase",
 }: {
   open: boolean;
@@ -52,6 +56,9 @@ export function StaircaseConfiguratorDrawer({
   /** Called when the user taps "Save Design" in the footer. Parent should
    *  snapshot the current selection and persist it. */
   onSaveDesign?: () => void;
+  /** Called when the user taps "Reset". Parent should restore the default
+   *  configuration. Falsy hides the button. */
+  onReset?: () => void;
   title?: string;
 }) {
   const [expandedId, setExpandedId] = useState<string | null>(
@@ -180,7 +187,14 @@ export function StaircaseConfiguratorDrawer({
                                 />
                               )}
                               <div className="flex-1 min-w-0">
-                                <div className="text-body-sm">{opt.label}</div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-body-sm">{opt.label}</span>
+                                  {opt.previewSupported === false && (
+                                    <span className="text-caption uppercase tracking-wider px-1.5 py-0.5 rounded bg-muted text-muted-foreground shrink-0">
+                                      Soon
+                                    </span>
+                                  )}
+                                </div>
                                 {opt.description && (
                                   <div className="text-caption text-muted-foreground truncate">
                                     {opt.description}
@@ -203,7 +217,16 @@ export function StaircaseConfiguratorDrawer({
         </div>
 
         {/* Footer */}
-        <footer className="px-5 py-4 border-t border-border flex items-center gap-3">
+        <footer className="px-5 py-4 border-t border-border flex items-center gap-2">
+          {onReset && (
+            <button
+              type="button"
+              onClick={onReset}
+              className="h-11 px-4 rounded-md border border-border text-body-sm font-medium text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            >
+              Reset
+            </button>
+          )}
           <button
             type="button"
             onClick={() => onOpenChange(false)}
@@ -233,10 +256,10 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
     description: "Overall staircase shape and direction",
     options: [
       { id: "straight",     label: "Straight flight",         description: "Single run, no turns" },
-      { id: "l-shape",      label: "L-shape (quarter turn)",  description: "90° turn with landing" },
-      { id: "u-shape",      label: "U-shape (half turn)",     description: "180° turn with landing" },
-      { id: "winder",       label: "Winder",                  description: "Turn without landing" },
-      { id: "spiral",       label: "Spiral",                  description: "Central column" },
+      { id: "l-shape",      label: "L-shape (quarter turn)",  description: "90° turn with landing", previewSupported: false },
+      { id: "u-shape",      label: "U-shape (half turn)",     description: "180° turn with landing", previewSupported: false },
+      { id: "winder",       label: "Winder",                  description: "Turn without landing", previewSupported: false },
+      { id: "spiral",       label: "Spiral",                  description: "Central column", previewSupported: false },
     ],
   },
   {
@@ -245,8 +268,8 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
     description: "Side beams supporting the treads",
     options: [
       { id: "housed-closed", label: "Housed / closed string", description: "Treads slot into routed housings" },
-      { id: "cut-open",      label: "Cut / open string",       description: "Tread ends visible" },
-      { id: "wall-string",   label: "Wall string",              description: "String against a wall" },
+      { id: "cut-open",      label: "Cut / open string",       description: "Tread ends visible", previewSupported: false },
+      { id: "wall-string",   label: "Wall string",              description: "String against a wall", previewSupported: false },
     ],
   },
   {
@@ -276,10 +299,10 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
     description: "Corner and end posts",
     options: [
       { id: "square-90",     label: "90mm Square",              description: "Standard modern" },
-      { id: "square-120",    label: "120mm Square",             description: "Heavy traditional" },
-      { id: "turned",        label: "Turned",                    description: "Lathe-turned traditional" },
-      { id: "square-cap",    label: "Square cap",               description: "Modern flat cap" },
-      { id: "pyramid-cap",   label: "Pyramid cap",              description: "Traditional pyramid" },
+      { id: "square-120",    label: "120mm Square",             description: "Heavy traditional", previewSupported: false },
+      { id: "turned",        label: "Turned",                    description: "Lathe-turned traditional", previewSupported: false },
+      { id: "square-cap",    label: "Square cap",               description: "Modern flat cap", previewSupported: false },
+      { id: "pyramid-cap",   label: "Pyramid cap",              description: "Traditional pyramid", previewSupported: false },
     ],
   },
   {
@@ -288,8 +311,8 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
     description: "Top rail (handrail) and bottom rail (baserail)",
     options: [
       { id: "profile-41",    label: "41mm grooved (standard UK)",  description: "Current UK / Ireland standard" },
-      { id: "profile-44",    label: "44mm grooved (traditional)",  description: "Traditional profile" },
-      { id: "profile-50",    label: "50mm heavy",                  description: "Requires 50mm balusters" },
+      { id: "profile-44",    label: "44mm grooved (traditional)",  description: "Traditional profile", previewSupported: false },
+      { id: "profile-50",    label: "50mm heavy",                  description: "Requires 50mm balusters", previewSupported: false },
     ],
   },
   {
@@ -300,8 +323,8 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
       { id: "oak-chamfered",   label: "Oak fully-chamfered 41mm",   swatch: "#c9a878" },
       { id: "white-chamfered", label: "White sprayed 41mm",         swatch: "#f5f2ec" },
       { id: "cream-chamfered", label: "Cream sprayed 41mm",         swatch: "#f0e2c1" },
-      { id: "square-plain",    label: "Plain square 41mm",           description: "No chamfer" },
-      { id: "glass-panel",     label: "Glass panel",                 description: "Toughened 10mm" },
+      { id: "square-plain",    label: "Plain square 41mm",           description: "No chamfer", previewSupported: false },
+      { id: "glass-panel",     label: "Glass panel",                 description: "Toughened 10mm", previewSupported: false },
     ],
   },
   {

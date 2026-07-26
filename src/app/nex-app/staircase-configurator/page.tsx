@@ -177,6 +177,7 @@ export default function StaircaseConfiguratorPage() {
         selected={selected}
         onChange={setValue}
         onSaveDesign={handleSaveDesign}
+        onReset={() => setSelected(DEFAULT_SELECTION)}
       />
 
       <StaircaseDesignSheet
