@@ -35,8 +35,14 @@ export type CentreFeedItem = {
   merchant_lat: number | null;
   merchant_lng: number | null;
   merchant_avatar_url: string | null;
-  merchant_whatsapp: string | null; // E.164 or normalised phone; null = not enabled
-  merchant_email: string | null; // null when not opted-in for public display
+  // Contact channels — each field is null when the merchant has not
+  // opted-in for public display OR when they have no value on file.
+  // The four `nex_show_*` toggles on hammerex_trade_off_listings gate
+  // whether the corresponding value gets surfaced to the customer card.
+  merchant_whatsapp: string | null;
+  merchant_email: string | null;
+  merchant_phone: string | null;
+  merchant_website: string | null;
   merchant_verification_level: MerchantVerificationLevel;
   // Ranking signals
   distance_km: number | null; // populated when query includes a postcode

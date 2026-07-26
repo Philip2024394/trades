@@ -661,8 +661,71 @@ export async function runTool(
       return executeArchiveProduct(ctx, input as ArchiveProductInput);
     case "generate_banner":
       return executeGenerateBanner(ctx, input as GenerateBannerToolInput);
+    case "update_contact_preferences":
+      return executeUpdateContactPreferences(ctx, input as UpdateContactPreferencesInput);
 
     default:
       return { ok: false, error: `Unknown tool: ${toolName}` };
   }
+}
+
+// ─── update_contact_preferences ───────────────────────────────────
+
+export type UpdateContactPreferencesInput = {
+  show_whatsapp?: boolean;
+  show_email?: boolean;
+  show_phone?: boolean;
+  show_website?: boolean;
+};
+
+export async function executeUpdateContactPreferences(
+  ctx: MerchantContext,
+  input: UpdateContactPreferencesInput
+): Promise<
+  ToolExecutionResult<{
+    show_whatsapp: boolean;
+    show_email: boolean;
+    show_phone: boolean;
+    show_website: boolean;
+  }>
+> {
+  const patch: Record<string, boolean> = {};
+  if (typeof input.show_whatsapp === "boolean") patch.nex_show_whatsapp = input.show_whatsapp;
+  if (typeof input.show_email === "boolean") patch.nex_show_email = input.show_email;
+  if (typeof input.show_phone === "boolean") patch.nex_show_phone = input.show_phone;
+  if (typeof input.show_website === "boolean") patch.nex_show_website = input.show_website;
+
+  if (Object.keys(patch).length === 0) {
+    return {
+      ok: false,
+      error: "At least one contact preference (show_whatsapp / show_email / show_phone / show_website) must be supplied.",
+    };
+  }
+
+  // SQL-level ownership re-check via .eq() on id === ctx.merchantId
+  const { error } = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .update(patch)
+    .eq("id", ctx.merchantId);
+
+  if (error) {
+    return { ok: false, error: `Could not update contact preferences: ${error.message}` };
+  }
+
+  // Re-read the current state so NEX can confirm to the merchant
+  const { data: after } = await supabaseAdmin
+    .from("hammerex_trade_off_listings")
+    .select("nex_show_whatsapp, nex_show_email, nex_show_phone, nex_show_website")
+    .eq("id", ctx.merchantId)
+    .maybeSingle();
+
+  return {
+    ok: true,
+    data: {
+      show_whatsapp: (after?.nex_show_whatsapp as boolean) ?? true,
+      show_email: (after?.nex_show_email as boolean) ?? true,
+      show_phone: (after?.nex_show_phone as boolean) ?? false,
+      show_website: (after?.nex_show_website as boolean) ?? true,
+    },
+  };
 }

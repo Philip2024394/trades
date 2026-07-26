@@ -20,7 +20,6 @@
 //
 // Everything else deliberately omitted — the cards stay clean.
 
-import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -31,15 +30,11 @@ import {
 import {
   BadgeCheck,
   Building2,
-  Heart,
-  Mail,
   MapPin,
-  MessageCircle,
-  Share2,
   ShoppingBag,
   SlidersHorizontal,
   Sparkles,
-  Store,
+  Star,
   Tag,
   Users,
   Wrench,
@@ -48,6 +43,9 @@ import {
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
 import { DiagramCard } from "./DiagramCard";
 import type { BrainEntry } from "@/lib/nex/knowledge/retrieve";
+import { NexBottomSheet } from "./NexBottomSheet";
+import { ProductDetailsSheet } from "./ProductDetailsSheet";
+import { MerchantProfileSheet } from "./MerchantProfileSheet";
 
 type ApiResponse = {
   ok: boolean;
@@ -129,6 +127,22 @@ export function NexCentreLiveFeed() {
   const [askQuery, setAskQuery] = useState("");
   const [askLoading, setAskLoading] = useState(false);
   const [askReply, setAskReply] = useState<AskNexReply | null>(null);
+
+  // Bottom-sheet stack. The last element is the top-most (visible)
+  // sheet. Push to open, pop to close.
+  type SheetEntry =
+    | { kind: "product"; item: CentreFeedItem }
+    | { kind: "merchant"; seed: CentreFeedItem };
+  const [sheetStack, setSheetStack] = useState<SheetEntry[]>([]);
+  const openProduct = useCallback((item: CentreFeedItem) => {
+    setSheetStack((prev) => [...prev, { kind: "product", item }]);
+  }, []);
+  const openMerchant = useCallback((seed: CentreFeedItem) => {
+    setSheetStack((prev) => [...prev, { kind: "merchant", seed }]);
+  }, []);
+  const popSheet = useCallback(() => {
+    setSheetStack((prev) => prev.slice(0, -1));
+  }, []);
 
   const askNex = useCallback(async () => {
     const q = askQuery.trim();
@@ -508,8 +522,7 @@ export function NexCentreLiveFeed() {
               <ProductCard
                 key={item.offer_id}
                 item={item}
-                saved={saved.has(item.offer_id)}
-                onSaveToggle={() => toggleSaved(item.offer_id)}
+                onOpen={() => openProduct(item)}
               />
             ))}
           </Masonry>
@@ -517,8 +530,7 @@ export function NexCentreLiveFeed() {
           <EmptyState
             query={debouncedQuery}
             fallback={emptyFallback}
-            saved={saved}
-            onSaveToggle={toggleSaved}
+            onOpen={openProduct}
           />
         )}
 
@@ -538,6 +550,64 @@ export function NexCentreLiveFeed() {
           </div>
         )}
       </main>
+
+      {/* ═════════════════════════════════════════════════════════════
+          BOTTOM SHEET STACK — one reusable NexBottomSheet, arbitrarily
+          many layered on top. Product opens the ProductDetailsSheet;
+          tapping the merchant strip inside pushes a MerchantProfileSheet
+          on top. Tap-out or Escape closes the top-most one.
+          ═════════════════════════════════════════════════════════════ */}
+      {sheetStack.map((entry, i) => {
+        const isTop = i === sheetStack.length - 1;
+        const zIndex = 50 + i * 10;
+        if (entry.kind === "product") {
+          return (
+            <NexBottomSheet
+              key={`prod-${i}`}
+              open
+              onClose={popSheet}
+              eyebrow="Product"
+              zIndex={zIndex}
+            >
+              {isTop && (
+                <ProductDetailsSheet
+                  item={entry.item}
+                  saved={saved.has(entry.item.offer_id)}
+                  onSaveToggle={() => toggleSaved(entry.item.offer_id)}
+                  onOpenMerchant={() => openMerchant(entry.item)}
+                  onSelectProduct={(p) => {
+                    // Swap the top-most product for the newly-selected
+                    // one, in-sheet — no extra layer, no navigation
+                    setSheetStack((prev) => {
+                      const next = [...prev];
+                      next[next.length - 1] = { kind: "product", item: p };
+                      return next;
+                    });
+                  }}
+                />
+              )}
+            </NexBottomSheet>
+          );
+        }
+        return (
+          <NexBottomSheet
+            key={`merch-${i}`}
+            open
+            onClose={popSheet}
+            eyebrow="Merchant"
+            zIndex={zIndex}
+          >
+            {isTop && (
+              <MerchantProfileSheet
+                seed={entry.seed}
+                onSelectProduct={(p) => {
+                  openProduct(p);
+                }}
+              />
+            )}
+          </NexBottomSheet>
+        );
+      })}
     </div>
   );
 }
@@ -738,56 +808,20 @@ function VerifiedBadge({
 
 function ProductCard({
   item,
-  saved,
-  onSaveToggle,
+  onOpen,
 }: {
   item: CentreFeedItem;
-  saved: boolean;
-  onSaveToggle: () => void;
+  onOpen: () => void;
 }) {
   const price = formatPrice(item.price_pence);
   const location =
-    item.merchant_city ??
-    item.merchant_postcode_prefix ??
-    "UK";
-  const distance =
-    item.distance_km != null ? ` · ${Math.round(item.distance_km)}km` : "";
-
-  const whatsappUrl = item.merchant_whatsapp
-    ? `https://wa.me/${item.merchant_whatsapp.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-        `Hi, I saw your ${item.name} on NEX Centre.`
-      )}`
-    : null;
-
-  const mailtoUrl = item.merchant_email
-    ? `mailto:${item.merchant_email}?subject=${encodeURIComponent(
-        `NEX Centre enquiry: ${item.name}`
-      )}`
-    : null;
-
-  const handleShare = async () => {
-    const url =
-      typeof window !== "undefined"
-        ? `${window.location.origin}/nex-app/centre#${item.offer_id}`
-        : "";
-    if (typeof navigator !== "undefined" && navigator.share) {
-      try {
-        await navigator.share({ title: item.name, text: item.brand_name, url });
-      } catch {
-        // user cancelled — ignore
-      }
-    } else if (typeof navigator !== "undefined" && navigator.clipboard) {
-      try {
-        await navigator.clipboard.writeText(url);
-      } catch {
-        // ignore
-      }
-    }
-  };
+    item.merchant_city ?? item.merchant_postcode_prefix ?? "UK";
 
   return (
-    <article className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm">
-      {/* Product image */}
+    <article
+      className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm"
+    >
+      {/* Product image (whole card is clickable via bottom button) */}
       {item.hero_image_url ? (
         <img
           src={item.hero_image_url}
@@ -804,96 +838,39 @@ function ProductCard({
       )}
 
       <div className="p-3">
-        {/* Merchant strip: logo + name + verified */}
-        <div className="mb-2 flex items-center gap-2">
-          {item.merchant_avatar_url ? (
-            <img
-              src={item.merchant_avatar_url}
-              alt=""
-              loading="lazy"
-              className="h-5 w-5 flex-none rounded-full object-cover"
-            />
-          ) : (
-            <div className="flex h-5 w-5 flex-none items-center justify-center rounded-full bg-orange-100">
-              <Store className="h-2.5 w-2.5 text-orange-700" />
-            </div>
-          )}
-          <div className="min-w-0 flex-1 truncate text-[11px] text-black/60">
-            {item.merchant_display_name ?? item.brand_name}
-          </div>
-          <VerifiedBadge level={item.merchant_verification_level} />
-        </div>
-
-        {/* Product title */}
-        <div className="text-sm font-semibold leading-tight text-black">
+        {/* Title */}
+        <div className="text-sm font-semibold leading-tight text-black line-clamp-2">
           {item.name}
         </div>
 
-        {/* Price + location */}
-        <div className="mt-1.5 flex items-baseline justify-between gap-2">
-          <div className="text-base font-semibold text-black">{price}</div>
-          <div className="flex items-center gap-0.5 text-[10px] text-black/50">
+        {/* Price */}
+        <div className="mt-1 text-base font-semibold text-black">{price}</div>
+
+        {/* Merchant name */}
+        <div className="mt-1.5 truncate text-[11px] text-black/70">
+          {item.merchant_display_name ?? item.brand_name}
+        </div>
+
+        {/* Verified badge + location on one meta line */}
+        <div className="mt-1 flex items-center justify-between text-[10px] text-black/50">
+          <span className="flex items-center gap-0.5">
+            <Star className="h-2.5 w-2.5 fill-current text-amber-500" />
+            <VerifiedBadge level={item.merchant_verification_level} />
+          </span>
+          <span className="flex items-center gap-0.5">
             <MapPin className="h-2.5 w-2.5" />
             {location}
-            {distance}
-          </div>
+          </span>
         </div>
 
-        {/* Action row */}
-        <div className="mt-3 flex items-center gap-1">
-          <button
-            type="button"
-            onClick={onSaveToggle}
-            aria-label={saved ? "Unsave" : "Save"}
-            className={`flex h-8 flex-1 items-center justify-center rounded-full border ${
-              saved
-                ? "border-red-200 bg-red-50 text-red-600"
-                : "border-black/10 text-black/60 hover:bg-black/5"
-            }`}
-          >
-            <Heart
-              className={`h-3.5 w-3.5 ${saved ? "fill-current" : ""}`}
-            />
-          </button>
-          <button
-            type="button"
-            onClick={handleShare}
-            aria-label="Share"
-            className="flex h-8 flex-1 items-center justify-center rounded-full border border-black/10 text-black/60 hover:bg-black/5"
-          >
-            <Share2 className="h-3.5 w-3.5" />
-          </button>
-          {whatsappUrl && (
-            <a
-              href={whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="WhatsApp merchant"
-              className="flex h-8 flex-1 items-center justify-center rounded-full bg-[#25D366] text-white hover:opacity-90"
-            >
-              <MessageCircle className="h-3.5 w-3.5" />
-            </a>
-          )}
-          {mailtoUrl && (
-            <a
-              href={mailtoUrl}
-              aria-label="Email merchant"
-              className="flex h-8 flex-1 items-center justify-center rounded-full border border-black/10 text-black/60 hover:bg-black/5"
-            >
-              <Mail className="h-3.5 w-3.5" />
-            </a>
-          )}
-        </div>
-
-        {/* View merchant link */}
-        {item.merchant_slug && (
-          <Link
-            href={`/trade/${item.merchant_slug}`}
-            className="mt-2 block w-full rounded-full bg-black py-1.5 text-center text-[11px] font-medium text-white hover:bg-black/85"
-          >
-            View merchant
-          </Link>
-        )}
+        {/* Single action button — opens the bottom sheet with everything */}
+        <button
+          type="button"
+          onClick={onOpen}
+          className="mt-3 w-full rounded-full bg-black py-2 text-[11px] font-medium text-white hover:bg-black/85"
+        >
+          I'm Interested
+        </button>
       </div>
     </article>
   );
@@ -902,13 +879,11 @@ function ProductCard({
 function EmptyState({
   query,
   fallback,
-  saved,
-  onSaveToggle,
+  onOpen,
 }: {
   query: string;
   fallback: CentreFeedItem[];
-  saved: Set<string>;
-  onSaveToggle: (id: string) => void;
+  onOpen: (item: CentreFeedItem) => void;
 }) {
   if (fallback.length > 0) {
     return (
@@ -927,8 +902,7 @@ function EmptyState({
             <ProductCard
               key={item.offer_id}
               item={item}
-              saved={saved.has(item.offer_id)}
-              onSaveToggle={() => onSaveToggle(item.offer_id)}
+              onOpen={() => onOpen(item)}
             />
           ))}
         </Masonry>

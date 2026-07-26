@@ -118,7 +118,7 @@ function GridCard({
             className="rounded-full px-2 py-0.5 text-[9.5px] font-black"
             style={
               claimed
-                ? { background: T.whatsapp, color: "#FFFFFF" }
+                ? { background: T.whatsapp, color: "#FFFFFF", borderRadius: 8, boxShadow: "0 3px 8px -3px rgba(22,101,52,0.45)" }
                 : { background: T.accentSoft, color: T.accent, border: `1px solid ${T.borderWarm}` }
             }
           >
@@ -233,7 +233,7 @@ function ListCard({
             className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10.5px] font-black"
             style={
               claimed
-                ? { background: T.whatsapp, color: "#FFFFFF", boxShadow: "0 4px 12px -3px rgba(37,211,102,0.55)" }
+                ? { background: T.whatsapp, color: "#FFFFFF", borderRadius: 8, boxShadow: "0 4px 12px -3px rgba(22,101,52,0.45)" }
                 : { background: "transparent", color: T.accent, border: `1px solid ${T.borderWarm}` }
             }
           >

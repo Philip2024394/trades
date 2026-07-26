@@ -197,6 +197,23 @@ export const ARCHIVE_PRODUCT_TOOL: AnthropicToolDef = {
   },
 };
 
+/** update_contact_preferences — toggle which contact channels appear
+ *  on the merchant's NEX Centre product cards + detail sheet. */
+export const UPDATE_CONTACT_PREFERENCES_TOOL: AnthropicToolDef = {
+  name: "update_contact_preferences",
+  description:
+    "Toggle which contact channels the merchant wants displayed on their NEX Centre. Merchants say things like 'NEX show my phone on my listings' or 'NEX hide my email' — route those to this tool. Values omitted are left unchanged.",
+  input_schema: {
+    type: "object",
+    properties: {
+      show_whatsapp: { type: "boolean", description: "Show WhatsApp button. Default on." },
+      show_email:    { type: "boolean", description: "Show Email button. Default on." },
+      show_phone:    { type: "boolean", description: "Show Phone button. Default OFF — merchant must opt in." },
+      show_website:  { type: "boolean", description: "Show Website link. Default on." },
+    },
+  },
+};
+
 /** The full toolset the Merchant Assistant endpoint exposes to NEX. */
 export const MERCHANT_ASSISTANT_TOOLS: AnthropicToolDef[] = [
   LIST_PRODUCTS_TOOL,
@@ -206,4 +223,5 @@ export const MERCHANT_ASSISTANT_TOOLS: AnthropicToolDef[] = [
   PREVIEW_CHANGE_TOOL,
   PUBLISH_PRODUCT_TOOL,
   ARCHIVE_PRODUCT_TOOL,
+  UPDATE_CONTACT_PREFERENCES_TOOL,
 ];

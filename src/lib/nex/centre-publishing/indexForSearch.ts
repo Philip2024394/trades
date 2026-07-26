@@ -78,7 +78,10 @@ export async function listCentreFeedItems(
     supabaseAdmin
       .from("hammerex_trade_off_listings")
       .select(
-        "id, slug, display_name, city, postcode_prefix, lat, lng, status, avatar_url, whatsapp, email, hammerex_standard_verified, trust_tier"
+        "id, slug, display_name, city, postcode_prefix, lat, lng, status, " +
+          "avatar_url, whatsapp, email, phone, website, " +
+          "nex_show_whatsapp, nex_show_email, nex_show_phone, nex_show_website, " +
+          "hammerex_standard_verified, trust_tier"
       )
       .in("id", merchantIds)
       .eq("status", "live"),
@@ -153,8 +156,26 @@ export async function listCentreFeedItems(
         merchant_lat: merchantLat,
         merchant_lng: merchantLng,
         merchant_avatar_url: (merchant.avatar_url as string) ?? null,
-        merchant_whatsapp: (merchant.whatsapp as string) ?? null,
-        merchant_email: (merchant.email as string) ?? null,
+        // Contact channels gated by the merchant's opt-in flags. If the
+        // merchant has toggled a channel off, we surface null so the
+        // ProductCard hides the corresponding button. Defaults per the
+        // migration comment: whatsapp/email/website on, phone off.
+        merchant_whatsapp:
+          (merchant.nex_show_whatsapp as boolean) !== false
+            ? (merchant.whatsapp as string) ?? null
+            : null,
+        merchant_email:
+          (merchant.nex_show_email as boolean) !== false
+            ? (merchant.email as string) ?? null
+            : null,
+        merchant_phone:
+          (merchant.nex_show_phone as boolean) === true
+            ? (merchant.phone as string) ?? null
+            : null,
+        merchant_website:
+          (merchant.nex_show_website as boolean) !== false
+            ? (merchant.website as string) ?? null
+            : null,
         merchant_verification_level: verificationLevel,
         distance_km: distanceKm,
         region_match_score:

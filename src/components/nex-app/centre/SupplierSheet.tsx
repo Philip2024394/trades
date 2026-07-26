@@ -172,10 +172,11 @@ export function SupplierSheet({
                 href={waHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-[13px] font-black text-white transition-transform active:scale-[0.99]"
+                className="flex w-full items-center justify-center gap-2 py-3.5 text-[13px] font-black text-white transition-transform active:scale-[0.99]"
                 style={{
                   background: T.whatsapp,
-                  boxShadow: "0 14px 34px -8px rgba(37,211,102,0.55)"
+                  borderRadius: 10,
+                  boxShadow: "0 14px 34px -8px rgba(22,101,52,0.55)"
                 }}
               >
                 <WhatsAppGlyph size={17} />
