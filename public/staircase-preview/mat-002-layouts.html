@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NEX Staircase Layout Skeletons</title>
 <style>
-  :root { --bg: #1a1815; --text: #e8dcc4; --accent: #ff8c1a; }
+  :root { --bg: #1a1815; --text: #e8dcc4; --accent: #ff8c1a; --muted: rgba(232,220,196,0.55); }
   html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
   #canvas-container { position: fixed; inset: 0; }
   #canvas-container canvas { display: block; width: 100% !important; height: 100% !important; }
@@ -15,11 +15,79 @@
     padding: 6px 12px; border-radius: 999px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
     border: 1px solid rgba(255, 140, 26, 0.3);
   }
+
+  /* Design Hub — same pattern as the straight-flight page. Round FAB → right
+     drawer at 70vw → bottom sheet on card select. Skeletons page only serves
+     Plans + Designs (Parts / Materials aren't wired here yet). */
+  .hub-fab { position: fixed; top: 20px; right: 20px; width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: #1a1815; border: none; cursor: pointer; display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0,0,0,0.4); z-index: 200; transition: transform 200ms cubic-bezier(0.16,1,0.3,1); }
+  .hub-fab:hover { transform: scale(1.05); }
+  .hub-fab svg { width: 24px; height: 24px; }
+  .hub-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); z-index: 250; opacity: 0; pointer-events: none; transition: opacity 280ms cubic-bezier(0.16,1,0.3,1); }
+  .hub-backdrop.open { opacity: 1; pointer-events: auto; }
+  .hub-drawer { position: fixed; top: 0; right: 0; bottom: 0; width: 70vw; max-width: 900px; background: #232019; border-left: 1px solid rgba(255,140,26,0.15); box-shadow: -12px 0 40px rgba(0,0,0,0.5); z-index: 260; transform: translateX(100%); transition: transform 320ms cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; overflow: hidden; }
+  .hub-drawer.open { transform: translateX(0); }
+  @media (max-width: 640px) { .hub-drawer { width: 92vw; } }
+  .hub-header { padding: 20px 24px; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: center; justify-content: space-between; }
+  .hub-header .hub-eyebrow { color: var(--accent); font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+  .hub-header h2 { color: var(--text); font-size: 22px; font-weight: 600; margin-top: 2px; }
+  .hub-close { background: transparent; border: none; color: var(--text); cursor: pointer; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; transition: background 200ms; }
+  .hub-close:hover { background: rgba(255,255,255,0.08); }
+  .hub-cards { flex: 1; overflow-y: auto; padding: 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; align-content: start; }
+  .hub-card { background: linear-gradient(135deg, #2d2820 0%, #1e1b16 100%); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; overflow: hidden; cursor: pointer; text-align: left; color: inherit; display: flex; flex-direction: column; aspect-ratio: 3 / 2; transition: transform 220ms cubic-bezier(0.16,1,0.3,1), border-color 220ms; position: relative; }
+  .hub-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .hub-card .card-visual { flex: 1; background: radial-gradient(circle at 30% 30%, rgba(255,140,26,0.12), transparent 60%); display: grid; place-items: center; color: var(--accent); padding: 20px; }
+  .hub-card .card-visual svg { width: 64px; height: 64px; opacity: 0.85; }
+  .hub-card .card-body { padding: 14px 18px 18px; border-top: 1px solid rgba(255,255,255,0.04); }
+  .hub-card .card-title { color: var(--text); font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .hub-card .card-desc { color: var(--muted); font-size: 12px; line-height: 1.4; }
+  .hub-sheet { position: fixed; left: 0; right: 0; bottom: 0; max-height: 60vh; background: #1e1b16; border-top: 1px solid rgba(255,140,26,0.2); border-radius: 16px 16px 0 0; box-shadow: 0 -12px 40px rgba(0,0,0,0.5); z-index: 270; transform: translateY(100%); transition: transform 320ms cubic-bezier(0.16,1,0.3,1); display: flex; flex-direction: column; overflow: hidden; }
+  .hub-sheet.open { transform: translateY(0); }
+  .hub-sheet .sheet-handle { width: 44px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin: 10px auto 0; flex-shrink: 0; }
+  .hub-sheet .sheet-header { padding: 16px 24px 12px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+  .hub-sheet .sheet-title { color: var(--text); font-size: 18px; font-weight: 600; }
+  .hub-sheet .sheet-content { flex: 1; overflow-y: auto; padding: 8px 24px 24px; }
+  .sheet-option-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  .sheet-option { background: #2a2620; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; padding: 12px 14px; color: var(--text); font-size: 13px; cursor: pointer; text-align: left; transition: all 180ms; }
+  .sheet-option:hover { border-color: var(--accent); background: #322b21; }
+  .sheet-option.active { background: rgba(255,140,26,0.15); border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
 <div id="canvas-container"></div>
 <div id="layout-badge">Layout: <span id="layout-name">straight</span> · SKELETON</div>
+
+<!-- Design Hub — round FAB + drawer + sheet, wired to layout navigation only -->
+<button id="hub-fab" class="hub-fab" aria-label="Open design hub" title="Design Hub">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3"  y="3"  width="8" height="8"></rect>
+    <rect x="13" y="3"  width="8" height="8"></rect>
+    <rect x="3"  y="13" width="8" height="8"></rect>
+    <rect x="13" y="13" width="8" height="8"></rect>
+  </svg>
+</button>
+<div id="hub-backdrop" class="hub-backdrop"></div>
+<aside id="hub-drawer" class="hub-drawer" role="dialog" aria-modal="true" aria-labelledby="hub-title">
+  <header class="hub-header">
+    <div>
+      <p class="hub-eyebrow">Design + Build</p>
+      <h2 id="hub-title">Staircase Hub</h2>
+    </div>
+    <button class="hub-close" id="hub-close" aria-label="Close">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </header>
+  <div class="hub-cards" id="hub-cards"></div>
+</aside>
+<div id="hub-sheet" class="hub-sheet" role="dialog" aria-modal="false" aria-labelledby="hub-sheet-title">
+  <div class="sheet-handle" aria-hidden="true"></div>
+  <div class="sheet-header">
+    <div class="sheet-title" id="hub-sheet-title">Options</div>
+    <button class="hub-close" id="hub-sheet-close" aria-label="Close options">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="sheet-content" id="hub-sheet-content"></div>
+</div>
 
 <script type="importmap">
 {
@@ -656,6 +724,94 @@ try {
     window.parent.postMessage({ type: "nex-preview-ready" }, "*");
   }
 } catch (e) { /* cross-origin */ }
+
+// ── Design Hub (same UX as mat-002-flight-3d.html but Plans-only) ──
+(function setupHubOnLayouts() {
+  const fab       = document.getElementById("hub-fab");
+  const backdrop  = document.getElementById("hub-backdrop");
+  const drawer    = document.getElementById("hub-drawer");
+  const cards     = document.getElementById("hub-cards");
+  const sheet     = document.getElementById("hub-sheet");
+  const sheetContent = document.getElementById("hub-sheet-content");
+  const sheetTitle   = document.getElementById("hub-sheet-title");
+  const hubClose    = document.getElementById("hub-close");
+  const sheetClose  = document.getElementById("hub-sheet-close");
+  if (!fab || !drawer || !cards || !sheet) return;
+
+  const plansCard = {
+    id: "plans",
+    title: "Staircase Plans",
+    desc: "Switch between all 13 UK layouts · currently viewing " + layout,
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21 L3 15 L7 15 L7 11 L11 11 L11 7 L15 7 L15 3 L21 3"/></svg>',
+    options: [
+      { id: "straight",         label: "Straight flight",         href: "mat-002-flight-3d.html" },
+      { id: "quarter-landing",  label: "Quarter landing",         href: "mat-002-layouts.html?layout=quarter-landing" },
+      { id: "l-shape",          label: "L-shape (winder turn)",   href: "mat-002-layouts.html?layout=l-shape" },
+      { id: "half-landing",     label: "Half landing (dogleg)",   href: "mat-002-layouts.html?layout=half-landing" },
+      { id: "u-shape",          label: "U-shape (open well)",     href: "mat-002-layouts.html?layout=u-shape" },
+      { id: "double-winder",    label: "Double winder",           href: "mat-002-layouts.html?layout=double-winder" },
+      { id: "winder-entry",     label: "Winder at bottom",        href: "mat-002-layouts.html?layout=winder-entry" },
+      { id: "winder-halfway",   label: "Winder halfway",          href: "mat-002-layouts.html?layout=winder-halfway" },
+      { id: "winder-top",       label: "Winder at top",           href: "mat-002-layouts.html?layout=winder-top" },
+      { id: "t-shape",          label: "T-shape (bifurcated)",    href: "mat-002-layouts.html?layout=t-shape" },
+      { id: "curved",           label: "Curved (arc)",            href: "mat-002-layouts.html?layout=curved" },
+      { id: "spiral",           label: "Spiral",                  href: "mat-002-layouts.html?layout=spiral" },
+      { id: "ladder",           label: "Ladder / space-saver",    href: "mat-002-layouts.html?layout=ladder" },
+    ],
+  };
+  const backCard = {
+    id: "back-to-straight",
+    title: "Back to Straight Flight",
+    desc: "Return to the fully-materialised production preview",
+    icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>',
+    href: "mat-002-flight-3d.html",
+  };
+  const categories = [plansCard, backCard];
+
+  function openSheet(cat) {
+    sheetTitle.textContent = cat.title;
+    sheetContent.innerHTML = "";
+    const grid = document.createElement("div");
+    grid.className = "sheet-option-grid";
+    for (const opt of cat.options) {
+      const b = document.createElement("button");
+      b.className = "sheet-option";
+      if (opt.id === layout) b.classList.add("active");
+      b.textContent = opt.label;
+      b.addEventListener("click", () => { if (opt.href) window.location.href = opt.href; });
+      grid.appendChild(b);
+    }
+    sheetContent.appendChild(grid);
+    sheet.classList.add("open");
+  }
+  function renderCards() {
+    cards.innerHTML = "";
+    for (const cat of categories) {
+      const btn = document.createElement("button");
+      btn.className = "hub-card";
+      btn.innerHTML = `
+        <div class="card-visual">${cat.icon}</div>
+        <div class="card-body">
+          <div class="card-title">${cat.title}</div>
+          <div class="card-desc">${cat.desc}</div>
+        </div>
+      `;
+      btn.addEventListener("click", () => {
+        if (cat.href) { window.location.href = cat.href; return; }
+        openSheet(cat);
+      });
+      cards.appendChild(btn);
+    }
+  }
+  function openHub()  { backdrop.classList.add("open"); drawer.classList.add("open"); }
+  function closeAll() { drawer.classList.remove("open"); backdrop.classList.remove("open"); sheet.classList.remove("open"); }
+  fab.addEventListener("click", openHub);
+  backdrop.addEventListener("click", closeAll);
+  hubClose.addEventListener("click", closeAll);
+  sheetClose.addEventListener("click", () => sheet.classList.remove("open"));
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") { if (sheet.classList.contains("open")) sheet.classList.remove("open"); else if (drawer.classList.contains("open")) closeAll(); } });
+  renderCards();
+})();
 </script>
 </body>
 </html>
