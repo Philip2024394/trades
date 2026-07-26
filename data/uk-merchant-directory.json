@@ -1,0 +1,730 @@
+[
+  {
+    "id": "merchant-001",
+    "company": "Jewson",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "STARK Group",
+    "website": "jewson.co.uk",
+    "branch_finder_url": "jewson.co.uk/branch-locator",
+    "hq": { "address": "Merchant House, Harry Weston Road", "town": "Coventry", "postcode": "CV3 2TT", "phone": "024 7643 8400" },
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 500 },
+    "known_branches": [
+      { "id": "jewson-battersea", "branch_name": "Jewson Battersea", "town": "London", "county": "Greater London" },
+      { "id": "jewson-maidstone", "branch_name": "Jewson Maidstone", "town": "Maidstone", "county": "Kent" },
+      { "id": "jewson-leeds", "branch_name": "Jewson Leeds", "town": "Leeds", "county": "West Yorkshire" },
+      { "id": "jewson-blackburn", "branch_name": "Jewson Blackburn", "town": "Blackburn", "county": "Lancashire" },
+      { "id": "jewson-birmingham", "branch_name": "Jewson Birmingham", "town": "Birmingham", "county": "West Midlands" }
+    ],
+    "products": ["timber", "sheet_materials", "plasterboard", "insulation", "fixings", "tools", "landscaping", "roofing"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true, "cutting_service": null },
+    "staircase_relevance": { "rating": 4, "categories": ["mdf_risers", "plywood", "softwood_strings", "fixings", "adhesive", "under_stair_plasterboard"], "notes": "Baseline for staircase installation supplies. Softwood strings, MDF/plywood, fixings, plasterboard for under-stair. Not first choice for premium hardwood treads." },
+    "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "SHEET_MATERIALS", "TRADE_ACCOUNT", "DELIVERY", "CLICK_COLLECT"]
+  },
+  {
+    "id": "merchant-002",
+    "company": "Travis Perkins",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "Travis Perkins plc",
+    "website": "travisperkins.co.uk",
+    "branch_finder_url": "travisperkins.co.uk/branch-locator",
+    "hq": { "town": "Northampton", "postcode": null, "phone": null },
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 600 },
+    "known_branches": [
+      { "id": "tp-enfield", "branch_name": "Travis Perkins Enfield", "town": "Enfield", "county": "Greater London" },
+      { "id": "tp-dartford", "branch_name": "Travis Perkins Dartford", "town": "Dartford", "county": "Kent" },
+      { "id": "tp-sheffield", "branch_name": "Travis Perkins Sheffield", "town": "Sheffield", "county": "South Yorkshire" },
+      { "id": "tp-preston", "branch_name": "Travis Perkins Preston", "town": "Preston", "county": "Lancashire" },
+      { "id": "tp-manchester", "branch_name": "Travis Perkins Manchester", "town": "Manchester", "county": "Greater Manchester" },
+      { "id": "tp-cardiff", "branch_name": "Travis Perkins Cardiff", "town": "Cardiff", "county": "Cardiff" }
+    ],
+    "products": ["timber", "sheet_materials", "insulation", "roofing", "plumbing", "tools", "fixings"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true, "cutting_service": null },
+    "staircase_relevance": { "rating": 4, "categories": ["mdf_risers", "plywood", "softwood", "fixings", "adhesive"], "notes": "Trade-focused general merchant. Strong for structural timber and installation supplies. Trade account is meaningful because pricing is not published to walk-ins." },
+    "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "TRADE_ONLY_PRICING", "DELIVERY"]
+  },
+  {
+    "id": "merchant-003",
+    "company": "Huws Gray",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "Huws Gray Ltd (formerly Grafton brands + Ridgeons)",
+    "website": "huwsgray.co.uk",
+    "branch_finder_url": "huwsgray.co.uk/branches",
+    "hq": { "town": "Anglesey", "postcode": null, "phone": null },
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 500 },
+    "known_branches": [
+      { "id": "hg-canterbury", "branch_name": "Huws Gray Canterbury", "town": "Canterbury", "county": "Kent" },
+      { "id": "hg-lancaster", "branch_name": "Huws Gray Lancaster", "town": "Lancaster", "county": "Lancashire" },
+      { "id": "hg-birmingham", "branch_name": "Huws Gray Birmingham", "town": "Birmingham", "county": "West Midlands" },
+      { "id": "hg-swansea", "branch_name": "Huws Gray Swansea", "town": "Swansea", "county": "Swansea" }
+    ],
+    "products": ["timber", "kitchens", "landscaping", "plumbing", "civils", "fixings"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["softwood_strings", "mdf_risers", "fixings", "landscaping"], "notes": "Strong local-branch network especially in rural areas. Timber + kitchens + landscaping combination makes them useful for whole-project supply." },
+    "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "KITCHENS", "LANDSCAPING", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-004",
+    "company": "Selco Builders Warehouse",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "Grafton Group UK",
+    "website": "selcobw.com",
+    "branch_finder_url": "selcobw.com/branches",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 75 },
+    "known_branches": [
+      { "id": "selco-beckton", "branch_name": "Selco Beckton", "town": "London", "county": "Greater London" },
+      { "id": "selco-manchester", "branch_name": "Selco Manchester", "town": "Manchester", "county": "Greater Manchester" },
+      { "id": "selco-birmingham", "branch_name": "Selco Birmingham", "town": "Birmingham", "county": "West Midlands" }
+    ],
+    "products": ["timber", "sheet_materials", "fixings", "plumbing", "electrical", "tools"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["mdf_risers", "plywood", "fixings", "adhesive", "tools"], "notes": "Trade-warehouse format — walk in, pick from stock, drive out. Good for last-minute or missing-part supply during install. Priced for trade customers." },
+    "tags": ["NATIONAL", "TRADE_WAREHOUSE", "TIMBER", "TOOLS", "FIXINGS", "SAME_DAY_PICKUP"]
+  },
+  {
+    "id": "merchant-005",
+    "company": "Buildbase",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "Huws Gray Ltd",
+    "website": "buildbase.co.uk",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 180 },
+    "known_branches": [
+      { "id": "bb-newport", "branch_name": "Buildbase Newport", "town": "Newport", "county": "Newport" }
+    ],
+    "products": ["timber", "roofing", "insulation", "general_building"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "mdf", "fixings"], "notes": "General trade merchant. Comparable to Jewson at branch level. Now part of the Huws Gray group after the Grafton restructure." },
+    "tags": ["NATIONAL", "GENERAL_MERCHANT", "TIMBER", "ROOFING", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-006",
+    "company": "MKM Building Supplies",
+    "type": "national",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "MKM Building Supplies (independent-style national)",
+    "website": "mkmbs.co.uk",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 130 },
+    "known_branches": [
+      { "id": "mkm-chelmsford", "branch_name": "MKM Chelmsford", "town": "Chelmsford", "county": "Essex" },
+      { "id": "mkm-hull", "branch_name": "MKM Hull", "town": "Hull", "county": "East Yorkshire" }
+    ],
+    "products": ["timber", "plumbing", "roofing", "kitchens", "landscaping"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "mdf", "fixings"], "notes": "Independent-style national — branches often locally-managed with more product flexibility than the big three." },
+    "tags": ["NATIONAL", "INDEPENDENT_STYLE", "TIMBER", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-007",
+    "company": "Bradfords Building Supplies",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "website": "bradfords.co.uk",
+    "coverage": { "regions": ["South West England"], "approximate_branch_count": 40 },
+    "products": ["timber", "building_materials", "landscaping", "roofing"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "mdf", "general_supply"], "notes": "South West specialist. Regional strength for Devon/Somerset/Dorset staircase work." },
+    "tags": ["REGIONAL", "SOUTH_WEST", "TIMBER", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-008",
+    "company": "Ridgeons",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "parent_group": "Huws Gray Ltd",
+    "coverage": { "regions": ["East of England"], "approximate_branch_count": 30 },
+    "products": ["timber", "building_materials", "trade_supplies"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "mdf", "general_supply"], "notes": "East England regional merchant, now under Huws Gray." },
+    "tags": ["REGIONAL", "EAST_ENGLAND", "TIMBER", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-009",
+    "company": "Lawsons",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Essex", "London"] },
+    "products": ["timber", "sheet_materials", "landscaping", "building_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "sheet_materials", "outdoor_timber"], "notes": "Essex/London regional — useful for outdoor staircase timber and general supply." },
+    "tags": ["REGIONAL", "ESSEX", "LONDON", "TIMBER"]
+  },
+  {
+    "id": "merchant-010",
+    "company": "Robert Price Builders Merchants",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Wales"] },
+    "known_branches": [
+      { "id": "rp-cardiff", "branch_name": "Robert Price Cardiff", "town": "Cardiff", "county": "Cardiff" }
+    ],
+    "products": ["timber", "landscaping", "building_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "general_supply"], "notes": "Wales regional merchant — first-choice for Welsh staircase installers who want a local supplier." },
+    "tags": ["REGIONAL", "WALES", "TIMBER"]
+  },
+  {
+    "id": "merchant-011",
+    "company": "Parker Building Supplies",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Kent", "Sussex"] },
+    "products": ["timber", "joinery_products", "building_materials", "landscaping"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["oak_components", "softwood_strings", "fixings"], "notes": "Kent/Sussex regional with joinery focus — better than most generalists for staircase components." },
+    "tags": ["REGIONAL", "KENT", "SUSSEX", "TIMBER", "JOINERY"]
+  },
+  {
+    "id": "merchant-012",
+    "company": "Covers Timber & Builders Merchants",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Kent", "Sussex", "Hampshire"] },
+    "products": ["hardwood", "softwood", "sheet_materials", "doors"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["hardwood_treads", "handrails", "doors_matching"], "notes": "Strong timber and joinery focus — carries hardwood for staircase treads and matching doors." },
+    "tags": ["REGIONAL", "KENT", "TIMBER", "HARDWOOD", "JOINERY"]
+  },
+  {
+    "id": "merchant-013",
+    "company": "Beesley & Fildes",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["North West England"] },
+    "known_branches": [
+      { "branch_name": "Beesley & Fildes (multiple)", "town": "Liverpool / Chester / Warrington / Birkenhead", "county": "Merseyside / Cheshire" }
+    ],
+    "products": ["timber", "building_supplies", "landscaping", "roofing"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["timber", "softwood", "hardwood_selection"], "notes": "NW England specialist. Better timber selection than generalists in Liverpool / Chester area." },
+    "tags": ["REGIONAL", "NORTH_WEST", "TIMBER", "LOCAL_MERCHANT"]
+  },
+  {
+    "id": "merchant-014",
+    "company": "Myers Building & Timber Supplies",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["West Yorkshire"] },
+    "known_branches": [
+      { "id": "myers-brighouse", "branch_name": "Myers Brighouse", "town": "Brighouse", "county": "West Yorkshire", "postcode": "HD6 1QG", "phone": "01484 712531" }
+    ],
+    "products": ["timber", "building_materials", "joinery_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["timber", "joinery_supply"], "notes": "West Yorkshire timber and joinery specialist." },
+    "tags": ["REGIONAL", "YORKSHIRE", "TIMBER", "JOINERY"]
+  },
+  {
+    "id": "merchant-015",
+    "company": "Haldane Fisher",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Northern Ireland", "Republic of Ireland"] },
+    "known_branches": [
+      { "branch_name": "Haldane Fisher Belfast", "town": "Belfast", "county": "Antrim" }
+    ],
+    "products": ["timber", "joinery_products", "doors", "building_materials"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["oak_treads", "handrails", "joinery", "doors"], "notes": "Premier NI timber and joinery merchant. First choice for oak staircase components in Northern Ireland." },
+    "tags": ["REGIONAL", "NORTHERN_IRELAND", "TIMBER", "JOINERY", "OAK"]
+  },
+  {
+    "id": "merchant-016",
+    "company": "JP Corry",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Northern Ireland"] },
+    "known_branches": [
+      { "branch_name": "JP Corry Belfast", "town": "Belfast", "county": "Antrim" }
+    ],
+    "products": ["timber", "plumbing", "tools", "building_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["softwood", "fixings", "general_supply"], "notes": "NI general trade merchant." },
+    "tags": ["REGIONAL", "NORTHERN_IRELAND", "TIMBER", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-017",
+    "company": "MacBlair",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Northern Ireland"] },
+    "known_branches": [
+      { "branch_name": "MacBlair Belfast", "town": "Belfast", "county": "Antrim" }
+    ],
+    "products": ["timber", "sheet_materials", "trade_products"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["timber", "sheet_materials"], "notes": "NI trade merchant." },
+    "tags": ["REGIONAL", "NORTHERN_IRELAND", "TIMBER"]
+  },
+  {
+    "id": "merchant-018",
+    "company": "Supreme Builders Merchants",
+    "type": "independent",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["West Midlands"] },
+    "known_branches": [
+      { "id": "supreme-smethwick", "branch_name": "Supreme Smethwick", "town": "Smethwick", "county": "West Midlands", "phone": "0121 558 5534" }
+    ],
+    "products": ["general_building_materials", "trade_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 2, "categories": ["general_supply"], "notes": "Independent general merchant. Useful for local Smethwick / West Midlands trade needs." },
+    "tags": ["INDEPENDENT", "WEST_MIDLANDS", "TRADE"]
+  },
+  {
+    "id": "merchant-019",
+    "company": "ANT Builders Merchants",
+    "type": "independent",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["London"] },
+    "known_branches": [
+      { "id": "ant-wembley", "branch_name": "ANT Wembley", "town": "Wembley", "county": "Greater London", "postcode": "NW10 0AB", "phone": "020 8459 5397" }
+    ],
+    "products": ["timber", "building_supplies", "trade_materials"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["timber", "installation_supplies"], "notes": "NW London independent — carries timber and installation products for local trade." },
+    "tags": ["INDEPENDENT", "LONDON", "TIMBER", "TRADE"]
+  },
+  {
+    "id": "merchant-020",
+    "company": "London Builders Merchants Ltd",
+    "type": "independent",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["Central London"] },
+    "known_branches": [
+      { "id": "lbm-tower-bridge", "branch_name": "London Builders Merchants Tower Bridge", "address": "Tower Bridge Road", "town": "London", "postcode": "SE1 4TL", "phone": "020 7403 3480" }
+    ],
+    "products": ["timber", "fixings", "plasterboard", "general_supplies"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["installation_materials", "wall_finishing", "stair_boxing"], "notes": "Central London independent — fast material sourcing for London staircase installs." },
+    "tags": ["INDEPENDENT", "LONDON", "TRADE"]
+  },
+  {
+    "id": "merchant-021",
+    "company": "Builder Depot",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "coverage": { "regions": ["London"], "approximate_branch_count": 6 },
+    "known_branches": [
+      { "id": "bd-park-royal", "branch_name": "Builder Depot Park Royal", "address": "Abbey Road", "town": "London", "postcode": "NW10 7SJ", "phone": "020 8963 3820" }
+    ],
+    "products": ["timber", "mdf", "plywood", "screws", "adhesives", "tools", "sheet_materials"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["mdf_risers", "plywood", "fixings", "adhesive", "tools", "under_stair_supplies"], "notes": "London trade warehouse — strong for staircase repair, MDF risers, fixings and under-stair projects. Broad range in one stop." },
+    "tags": ["REGIONAL", "LONDON", "TRADE_WAREHOUSE", "SHEET_MATERIALS", "TOOLS"]
+  },
+  {
+    "id": "merchant-022",
+    "company": "Howarth Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["North England", "Midlands"], "approximate_branch_count": 30 },
+    "known_branches": [
+      { "id": "howarth-leeds", "branch_name": "Howarth Timber Leeds", "town": "Leeds", "county": "West Yorkshire" },
+      { "id": "howarth-bolton", "branch_name": "Howarth Timber Bolton", "town": "Bolton", "county": "Greater Manchester" },
+      { "id": "howarth-manchester", "branch_name": "Howarth Timber Manchester", "town": "Manchester", "county": "Greater Manchester" }
+    ],
+    "products": ["hardwood", "softwood", "mdf", "plywood", "doors", "joinery_products"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["oak_treads", "hardwood_handrails", "newel_stock", "joinery_timber", "mdf_risers"], "notes": "Premier timber merchant across North England and Midlands. First choice for oak and walnut staircase components in Leeds / Manchester / Bolton." },
+    "tags": ["REGIONAL", "NORTH_ENGLAND", "MIDLANDS", "TIMBER_SPECIALIST", "OAK", "WALNUT", "JOINERY", "STAIRCASE"]
+  },
+  {
+    "id": "merchant-023",
+    "company": "International Timber",
+    "type": "national",
+    "primary_category": "timber_merchant",
+    "website": "internationaltimber.com",
+    "coverage": { "regions": ["UK-wide via distribution"] },
+    "known_branches": [
+      { "branch_name": "International Timber Birmingham", "town": "Birmingham", "county": "West Midlands" }
+    ],
+    "products": ["hardwood", "softwood", "sheet_materials", "timber_machining"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["oak_treads", "hardwood_stair_components", "walnut", "specialist_hardwood"], "notes": "National hardwood distributor. Species range and machining service make them a first-call supplier for premium staircase work." },
+    "tags": ["NATIONAL", "TIMBER_SPECIALIST", "HARDWOOD", "OAK", "MACHINING", "STAIRCASE"]
+  },
+  {
+    "id": "merchant-024",
+    "company": "Arnold Laver",
+    "type": "national",
+    "primary_category": "timber_merchant",
+    "website": "arnoldlaver.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "known_branches": [
+      { "id": "laver-sheffield", "branch_name": "Arnold Laver Sheffield", "town": "Sheffield", "county": "South Yorkshire" },
+      { "id": "laver-birmingham", "branch_name": "Arnold Laver Birmingham", "town": "Birmingham", "county": "West Midlands" }
+    ],
+    "products": ["hardwood", "oak", "walnut", "engineered_timber", "veneered_boards", "panels"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["oak_treads", "walnut_treads", "veneered_panels", "handrails"], "notes": "Premium hardwood and veneer specialist. Ideal for luxury staircase work — oak, walnut, ash, decorative veneered boards for risers and under-stair panelling." },
+    "tags": ["NATIONAL", "TIMBER_SPECIALIST", "PREMIUM", "HARDWOOD", "VENEER", "STAIRCASE"]
+  },
+  {
+    "id": "merchant-025",
+    "company": "James Latham",
+    "type": "national",
+    "primary_category": "sheet_materials",
+    "website": "lathamtimber.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["decorative_panels", "veneers", "boards", "timber_products", "solid_surface"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["veneered_sheet_backpanels", "decorative_boards", "9mm_veneer"], "notes": "The go-to national supplier for 9mm veneer sheets in every species. Directly supports the slab-plus-moulding back-panel construction method." },
+    "tags": ["NATIONAL", "SHEET_MATERIALS", "VENEER", "DECORATIVE_PANELS", "PREMIUM", "STAIRCASE_BACK_PANELS"]
+  },
+  {
+    "id": "merchant-026",
+    "company": "Timbmet",
+    "type": "national",
+    "primary_category": "timber_merchant",
+    "website": "timbmet.com",
+    "coverage": { "regions": ["UK-wide"] },
+    "known_branches": [
+      { "branch_name": "Timbmet Midlands Distribution", "town": "Midlands", "county": null }
+    ],
+    "products": ["hardwood", "oak", "walnut", "exotic_timber", "veneer", "decorative_panels"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["premium_hardwood", "exotic_stair_components", "walnut"], "notes": "Premium hardwood specialist. Access to exotic species for bespoke luxury staircases." },
+    "tags": ["NATIONAL", "TIMBER_SPECIALIST", "PREMIUM_HARDWOOD", "EXOTIC", "VENEER"]
+  },
+  {
+    "id": "merchant-027",
+    "company": "James Jones & Sons",
+    "type": "national",
+    "primary_category": "timber_merchant",
+    "website": "jamesjones.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["timber", "engineered_timber", "structural_timber"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["structural_timber", "engineered_stringers"], "notes": "Structural and engineered timber specialist. Useful for stringers on large staircases needing engineered timber for stability." },
+    "tags": ["NATIONAL", "TIMBER_SPECIALIST", "STRUCTURAL", "ENGINEERED_TIMBER"]
+  },
+  {
+    "id": "merchant-028",
+    "company": "MGM Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["Scotland"] },
+    "known_branches": [
+      { "branch_name": "MGM Timber Glasgow", "town": "Glasgow", "county": "Glasgow" }
+    ],
+    "products": ["timber", "sheet_materials", "joinery_products"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["timber", "joinery_supply", "stair_components"], "notes": "Scotland's premier timber merchant. First choice for staircase timber in the central belt." },
+    "tags": ["REGIONAL", "SCOTLAND", "TIMBER_SPECIALIST", "JOINERY"]
+  },
+  {
+    "id": "merchant-029",
+    "company": "James Donaldson Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["Scotland"] },
+    "known_branches": [
+      { "branch_name": "James Donaldson Timber Fife", "town": "Fife", "county": "Fife" }
+    ],
+    "products": ["hardwood", "softwood", "timber_engineering"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["premium_timber", "joinery", "staircase_manufacture"], "notes": "Scotland premium timber supplier with engineered timber for stair manufacture." },
+    "tags": ["REGIONAL", "SCOTLAND", "TIMBER_SPECIALIST", "PREMIUM", "JOINERY"]
+  },
+  {
+    "id": "merchant-030",
+    "company": "Bury Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["Greater Manchester"] },
+    "products": ["hardwood", "softwood", "sheet_materials"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["treads", "strings", "handrails"], "notes": "Greater Manchester timber supplier — good breadth of hardwood and softwood for local staircase work." },
+    "tags": ["REGIONAL", "GREATER_MANCHESTER", "TIMBER"]
+  },
+  {
+    "id": "merchant-031",
+    "company": "Champion Timber",
+    "type": "regional",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["South East England", "Kent"] },
+    "known_branches": [
+      { "branch_name": "Champion Timber Tunbridge Wells", "town": "Tunbridge Wells", "county": "Kent" }
+    ],
+    "products": ["hardwood", "oak", "joinery_timber", "decorative_boards"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["premium_oak_treads", "handrails", "feature_timber"], "notes": "South East premium timber — strong for oak staircase treads, handrails and feature components." },
+    "tags": ["REGIONAL", "SOUTH_EAST", "KENT", "TIMBER_SPECIALIST", "OAK"]
+  },
+  {
+    "id": "merchant-032",
+    "company": "Brooks Bros",
+    "type": "national",
+    "primary_category": "timber_merchant",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["hardwood", "softwood", "joinery_timber"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["oak_stair_stock", "joinery_grade"], "notes": "Joinery-grade timber supplier — oak stair stock plus general joinery timber." },
+    "tags": ["NATIONAL", "TIMBER_SPECIALIST", "JOINERY", "OAK"]
+  },
+  {
+    "id": "merchant-033",
+    "company": "PGR Builders & Timber Merchants",
+    "type": "regional",
+    "primary_category": "general_builders_merchant",
+    "products": ["timber", "building_supplies", "trade_materials"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 3, "categories": ["timber", "general_supply"], "notes": "Regional independent — postcode branch finder." },
+    "tags": ["REGIONAL", "TIMBER", "LOCAL_DELIVERY", "TRADE"]
+  },
+  {
+    "id": "merchant-034",
+    "company": "Hanson Plywood",
+    "type": "national",
+    "primary_category": "sheet_materials",
+    "website": "hansonplywood.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["birch_plywood", "decorative_plywood", "specialist_boards"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["birch_ply_risers", "cabinetry_grade", "under_stair_structure"], "notes": "Specialist plywood supplier. Birch ply is a premium alternative to MDF for painted risers." },
+    "tags": ["NATIONAL", "SHEET_MATERIALS", "PLYWOOD", "BIRCH_PLY", "CABINETRY", "JOINERY"]
+  },
+  {
+    "id": "merchant-035",
+    "company": "Robbins Timber",
+    "type": "national",
+    "primary_category": "sheet_materials",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["plywood", "marine_plywood", "specialist_panels"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["marine_ply_bathroom_stairs", "specialist_plywood"], "notes": "Plywood and marine ply specialist — needed for staircases in wet environments (bathroom stairs, external stairs)." },
+    "tags": ["NATIONAL", "SHEET_MATERIALS", "PLYWOOD", "MARINE_PLY", "BESPOKE_JOINERY"]
+  },
+  {
+    "id": "merchant-036",
+    "company": "Screwfix",
+    "type": "national",
+    "primary_category": "fixings",
+    "parent_group": "Kingfisher plc",
+    "website": "screwfix.com",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 850 },
+    "products": ["screws", "adhesives", "tools", "fixings", "electrical", "plumbing"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["stair_screws", "construction_adhesive", "hidden_fixings", "tools"], "notes": "Every staircase install needs the specific stair fixings, construction adhesive and 23-gauge pins Screwfix stocks. Near-universal UK coverage means one is always nearby." },
+    "tags": ["NATIONAL", "FIXINGS", "TOOLS", "ADHESIVE", "SAME_DAY_PICKUP", "EMERGENCY_SUPPLY"]
+  },
+  {
+    "id": "merchant-037",
+    "company": "Toolstation",
+    "type": "national",
+    "primary_category": "fixings",
+    "parent_group": "Travis Perkins plc",
+    "website": "toolstation.com",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 550 },
+    "products": ["fixings", "electrical", "plumbing", "tools", "adhesives"],
+    "services": { "delivery": true, "click_and_collect": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["fixings", "tools", "adhesive"], "notes": "Alternative to Screwfix. Same day pickup for missing fixings during staircase install." },
+    "tags": ["NATIONAL", "FIXINGS", "TOOLS", "TRADE", "SAME_DAY_PICKUP"]
+  },
+  {
+    "id": "merchant-038",
+    "company": "TIMCO",
+    "type": "national",
+    "primary_category": "fixings",
+    "website": "timco.co.uk",
+    "coverage": { "regions": ["UK-wide (trade distribution)"] },
+    "products": ["wood_screws", "construction_fixings", "adhesives"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["wood_screws", "stair_specific_fixings", "adhesive"], "notes": "Trade-only fixings brand. Stair-specific screw ranges. Available through most builders merchants." },
+    "tags": ["NATIONAL", "FIXINGS", "WOOD_SCREWS", "TRADE_ONLY", "STAIRCASE"]
+  },
+  {
+    "id": "merchant-039",
+    "company": "Richard Burbidge",
+    "type": "national",
+    "primary_category": "stair_specialist",
+    "website": "richardburbidge.com",
+    "coverage": { "regions": ["UK-wide via merchant network"] },
+    "products": ["handrails", "newels", "spindles", "stair_parts", "balustrade_kits"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["handrails", "newels", "spindles", "diy_stair_upgrade", "renovation_parts"], "notes": "The UK's most widely-stocked stair-parts brand. Available through Wickes, B&Q, most merchants. First choice for DIY stair upgrades and renovation part replacement." },
+    "tags": ["NATIONAL", "STAIR_SPECIALIST", "STAIR_PARTS", "BALUSTRADE", "HANDRAILS", "RENOVATION", "DIY"]
+  },
+  {
+    "id": "merchant-040",
+    "company": "Cheshire Mouldings",
+    "type": "national",
+    "primary_category": "stair_specialist",
+    "website": "cheshiremouldings.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["stair_components", "oak_stair_parts", "pine_stair_parts", "renovation_kits", "mouldings"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["oak_handrails", "spindles", "newels", "renovation_kits", "mouldings"], "notes": "Alongside Burbidge, one of the two dominant UK stair-parts brands. Strong on oak components and renovation-focused kits." },
+    "tags": ["NATIONAL", "STAIR_SPECIALIST", "OAK_COMPONENTS", "RENOVATION", "MOULDINGS"]
+  },
+  {
+    "id": "merchant-041",
+    "company": "StairBox",
+    "type": "national",
+    "primary_category": "stair_specialist",
+    "website": "stairbox.com",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["stair_parts", "custom_staircases", "glass_stair_parts", "renovation_products"],
+    "services": { "delivery": true, "click_and_collect": null },
+    "staircase_relevance": { "rating": 5, "categories": ["online_stair_replacement", "oak_configurator", "glass_upgrade", "diy_stairs"], "notes": "Online-first stair supplier. Configurable staircase orders — measure and order from web without a workshop visit. Suits DIY and small-builder trade." },
+    "tags": ["NATIONAL", "STAIR_SPECIALIST", "ONLINE", "OAK", "GLASS", "CONFIGURATOR", "DIY"]
+  },
+  {
+    "id": "merchant-042",
+    "company": "Pear Stairs",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "website": "pearstairs.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["bespoke_staircases", "oak_staircases", "hardwood_stairs", "glass_staircases"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["bespoke_oak", "hardwood_stairs", "glass_stairs", "manufacturer"], "notes": "Bespoke staircase manufacturer with UK-wide delivery. Alternative to using a local workshop when the customer wants a specific quoted product." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "BESPOKE", "OAK", "GLASS", "LUXURY"]
+  },
+  {
+    "id": "merchant-043",
+    "company": "TK Stairs",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["bespoke_staircases", "hardwood_stairs", "contemporary_stairs"],
+    "services": { "delivery": true },
+    "staircase_relevance": { "rating": 5, "categories": ["custom_stairs", "modern_stairs", "timber"], "notes": "Custom stair manufacturer focused on contemporary designs." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "MODERN", "CUSTOM"]
+  },
+  {
+    "id": "merchant-044",
+    "company": "Neville Lumb",
+    "type": "regional",
+    "primary_category": "stair_manufacturer",
+    "products": ["bespoke_staircases", "traditional_staircases", "hardwood"],
+    "services": { "delivery": true },
+    "staircase_relevance": { "rating": 5, "categories": ["bespoke_traditional", "timber_craftsmanship", "oak", "pine"], "notes": "Traditional bespoke staircase maker. Craft-focused, appropriate for period properties and heritage projects." },
+    "tags": ["REGIONAL", "STAIR_MANUFACTURER", "BESPOKE", "TRADITIONAL", "CRAFT"]
+  },
+  {
+    "id": "merchant-045",
+    "company": "Staircraft",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "coverage": { "regions": ["UK-wide", "primarily new-build sector"] },
+    "products": ["new_build_staircases", "timber_stairs", "engineered_components"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["volume_new_build", "house_builder_supply"], "notes": "One of the UK's largest volume staircase manufacturers. Primarily serves house-builders — not the first choice for one-off bespoke residential." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "VOLUME", "HOUSE_BUILDERS", "NEW_BUILD"]
+  },
+  {
+    "id": "merchant-046",
+    "company": "Complete Stair Systems",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "products": ["staircases", "stair_components", "bespoke_designs"],
+    "services": { "delivery": true, "installation": true },
+    "staircase_relevance": { "rating": 5, "categories": ["custom_manufacture", "installation_included"], "notes": "Manufacturer plus installation service — end-to-end supply." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "INSTALLATION", "CUSTOM"]
+  },
+  {
+    "id": "merchant-047",
+    "company": "The Stair Factory",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "products": ["bespoke_staircases", "modern_stairs", "traditional_stairs"],
+    "services": { "delivery": true },
+    "staircase_relevance": { "rating": 5, "categories": ["bespoke", "glass_stairs", "wood_stairs"], "notes": "Bespoke manufacturer covering modern and traditional designs including glass systems." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "BESPOKE", "GLASS", "MODERN"]
+  },
+  {
+    "id": "merchant-048",
+    "company": "Elite Staircases",
+    "type": "national",
+    "primary_category": "stair_manufacturer",
+    "products": ["luxury_staircases", "glass_systems", "hardwood_stairs"],
+    "services": { "delivery": true, "installation": true, "design_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["luxury_bespoke", "glass_systems", "designer"], "notes": "Luxury bespoke manufacturer — architect and interior-designer channel focus." },
+    "tags": ["NATIONAL", "STAIR_MANUFACTURER", "LUXURY", "GLASS", "OAK", "DESIGN_SERVICE"]
+  },
+  {
+    "id": "merchant-049",
+    "company": "CRL (C.R. Laurence)",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "crlaurence.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["glass_hardware", "channels", "clamps", "balustrade_systems", "spigots"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["glass_channel_systems", "spigot_bosses", "balustrade_hardware"], "notes": "The global-brand glass hardware supplier. Trade-account first — most professional glass balustrade installers specify CRL." },
+    "tags": ["NATIONAL", "GLASS_BALUSTRADE", "HARDWARE", "SPIGOTS", "CHANNELS", "TRADE_ACCOUNT"]
+  },
+  {
+    "id": "merchant-050",
+    "company": "Q-railing",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "q-railing.com",
+    "coverage": { "regions": ["UK-wide", "EU"] },
+    "products": ["glass_railing_systems", "stainless_fittings", "aluminium_systems"],
+    "services": { "delivery": true, "trade_account": true, "design_service": true },
+    "staircase_relevance": { "rating": 5, "categories": ["premium_glass_railing", "commercial_systems", "stainless_fittings"], "notes": "Premium glass railing system supplier — used on commercial and high-end residential projects. Complete system approach (glass + hardware + design)." },
+    "tags": ["NATIONAL", "GLASS_BALUSTRADE", "STAINLESS", "PREMIUM", "COMMERCIAL", "SYSTEM_SUPPLIER"]
+  },
+  {
+    "id": "merchant-051",
+    "company": "F H Brundle",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "website": "fhbrundle.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["glass_fittings", "stainless_steel_components", "balustrade_hardware", "wrought_iron_components"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 5, "categories": ["glass_fittings", "stainless_hardware", "traditional_wrought_iron"], "notes": "Broad range of balustrade hardware including traditional wrought iron alongside modern glass and stainless systems." },
+    "tags": ["NATIONAL", "GLASS_BALUSTRADE", "STAINLESS", "WROUGHT_IRON", "HARDWARE", "TRADE"]
+  },
+  {
+    "id": "merchant-052",
+    "company": "Balustrade Components",
+    "type": "national",
+    "primary_category": "glass_balustrade",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["glass_clamps", "posts", "channels", "handrails", "custom_systems"],
+    "services": { "delivery": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["glass_supply", "custom_balustrade"], "notes": "Custom balustrade system supplier." },
+    "tags": ["NATIONAL", "GLASS_BALUSTRADE", "CUSTOM_SYSTEMS"]
+  },
+  {
+    "id": "merchant-053",
+    "company": "Aalco",
+    "type": "national",
+    "primary_category": "metal",
+    "website": "aalco.co.uk",
+    "coverage": { "regions": ["UK-wide"], "approximate_branch_count": 20 },
+    "products": ["stainless_steel", "aluminium", "metal_products", "brass"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 4, "categories": ["stainless_balusters", "stainless_handrail_stock", "custom_fabrication"], "notes": "Metal stock supplier — cut-to-size stainless and aluminium for custom balusters and metal stair components." },
+    "tags": ["NATIONAL", "METAL", "STAINLESS", "ALUMINIUM", "CUT_TO_SIZE", "FABRICATION"]
+  },
+  {
+    "id": "merchant-054",
+    "company": "Metal Supermarkets UK",
+    "type": "national",
+    "primary_category": "metal",
+    "website": "metalsupermarkets.co.uk",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["stainless", "aluminium", "steel", "brass"],
+    "services": { "delivery": true, "cutting_service": true, "trade_account": true },
+    "staircase_relevance": { "rating": 4, "categories": ["cut_to_size_metal", "custom_stair_metalwork"], "notes": "Small-quantity metal supplier with cutting service — good for one-off custom staircase metal parts." },
+    "tags": ["NATIONAL", "METAL", "CUT_TO_SIZE", "SMALL_QUANTITY"]
+  },
+  {
+    "id": "merchant-055",
+    "company": "Parker Steel",
+    "type": "national",
+    "primary_category": "metal",
+    "coverage": { "regions": ["UK-wide"] },
+    "products": ["stainless_steel", "engineering_metals", "structural_steel"],
+    "services": { "delivery": true, "trade_account": true, "cutting_service": true },
+    "staircase_relevance": { "rating": 4, "categories": ["structural_steel_for_floating_stairs", "engineered_stringers"], "notes": "Structural steel supplier — needed for cantilever floating stair stringers and engineered steel supports." },
+    "tags": ["NATIONAL", "METAL", "STRUCTURAL_STEEL", "FABRICATION", "FLOATING_STAIRS"]
+  }
+]
