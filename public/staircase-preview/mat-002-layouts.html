@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEX Staircase Layout Skeletons</title>
+<style>
+  :root { --bg: #1a1815; --text: #e8dcc4; --accent: #ff8c1a; }
+  html, body { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; }
+  #canvas-container { position: fixed; inset: 0; }
+  #canvas-container canvas { display: block; width: 100% !important; height: 100% !important; }
+  #layout-badge {
+    position: fixed; top: 12px; left: 12px; z-index: 10;
+    background: rgba(26, 24, 21, 0.85); color: var(--accent);
+    padding: 6px 12px; border-radius: 999px; font-size: 12px; letter-spacing: 1.5px; text-transform: uppercase;
+    border: 1px solid rgba(255, 140, 26, 0.3);
+  }
+</style>
+</head>
+<body>
+<div id="canvas-container"></div>
+<div id="layout-badge">Layout: <span id="layout-name">straight</span> · SKELETON</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+// ── Read layout from URL ─────────────────────────────────────────
+// Skeleton file for L-shape / U-shape / winder / spiral. The full straight
+// flight lives in the frozen mat-002-flight-3d.html. This file's job is to
+// give Philip a recognisable geometry for each remaining layout so he can
+// iterate on the specifics — treated as ROUGH DRAFTS, not final geometry.
+const url = new URL(window.location.href);
+const layoutParam = url.searchParams.get("layout") || "quarter-landing";
+// Every layout the drawer offers. Some route to a shared skeleton builder;
+// the remaining ones fall back to an approximated skeleton so the user still
+// sees a distinct shape they can iterate on.
+const layoutBuilders = {
+  "quarter-landing": () => buildLShape("landing"),   // 90° with landing
+  "l-shape":         () => buildLShape("winder"),    // 90° with winder wedges
+  "half-landing":    () => buildUShape("tight"),     // dogleg (parallel flights)
+  "u-shape":         () => buildUShape("open"),      // open well (gap)
+  "double-winder":   () => buildDoubleWinder(),
+  "winder-entry":    () => buildWinderPlacement("entry"),
+  "winder-halfway":  () => buildWinderPlacement("mid"),
+  "winder-top":      () => buildWinderPlacement("top"),
+  "t-shape":         () => buildTShape(),
+  "curved":          () => buildCurved(),
+  "spiral":          () => buildSpiral(),
+  "ladder":          () => buildLadder(),
+};
+const layout = layoutParam in layoutBuilders ? layoutParam : "quarter-landing";
+document.getElementById("layout-name").textContent = layout;
+
+// ── Constants shared with mat-002-flight-3d.html ─────────────────
+const RISES         = 13;
+const TREADS        = RISES - 1;
+const RISE          = 0.200;
+const GOING         = 0.220;
+const NOSING        = 0.020;
+const TREAD_DEPTH   = GOING + NOSING;
+const TREAD_THICK   = 0.040;
+const TREAD_WIDTH   = 0.900;
+const RISER_THICK   = 0.018;
+const STRING_THICK  = 0.032;
+const STRING_HEIGHT = 0.275;
+const NEWEL_SIZE    = 0.090;
+const NEWEL_HEIGHT  = 1.100;
+const HANDRAIL_HEIGHT = 0.056;
+const HANDRAIL_WIDTH  = 0.041;
+const BALUSTER_SIZE   = 0.041;
+const BALUSTER_HEIGHT = 0.900;
+
+// ── Scene / renderer / camera / lights ───────────────────────────
+const container = document.getElementById("canvas-container");
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x1a1815);
+scene.fog = new THREE.Fog(0x1a1815, 8, 25);
+
+const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 100);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = false; // Configurator Mode default per shadows-off finding
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+container.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+
+scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+scene.add(new THREE.HemisphereLight(0xffe0c0, 0x3a2f24, 0.45));
+const keyLight = new THREE.DirectionalLight(0xffe8cc, 1.2);
+keyLight.position.set(6, 8, 5);
+scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0xffe8cc, 0.35);
+fillLight.position.set(-4, 5, -3);
+scene.add(fillLight);
+
+// ── Shared skeleton materials ────────────────────────────────────
+const oakMaterial = new THREE.MeshStandardMaterial({
+  color: 0xc9a878, roughness: 0.45, metalness: 0.0
+});
+const paintMaterial = new THREE.MeshStandardMaterial({
+  color: 0xf5f2ec, roughness: 0.6, metalness: 0.0
+});
+const balusterMaterial = new THREE.MeshStandardMaterial({
+  color: 0xc9a878, roughness: 0.45, metalness: 0.0
+});
+const floorMaterial = new THREE.MeshStandardMaterial({
+  color: 0x2a2620, roughness: 0.9, metalness: 0.0
+});
+
+// Ground plane so the staircase sits ON something (helps depth perception)
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), floorMaterial);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.001;
+scene.add(floor);
+
+// ── Skeleton primitive builders ──────────────────────────────────
+function makeTread(width) {
+  const g = new THREE.BoxGeometry(TREAD_DEPTH, TREAD_THICK, width);
+  const m = new THREE.Mesh(g, oakMaterial);
+  return m;
+}
+function makeRiser(width, height) {
+  const g = new THREE.BoxGeometry(RISER_THICK, height, width);
+  return new THREE.Mesh(g, paintMaterial);
+}
+function makeString(length, height, thick) {
+  const g = new THREE.BoxGeometry(length, height, thick);
+  return new THREE.Mesh(g, oakMaterial);
+}
+function makeNewel(height = NEWEL_HEIGHT, size = NEWEL_SIZE) {
+  const g = new THREE.BoxGeometry(size, height, size);
+  const m = new THREE.Mesh(g, oakMaterial);
+  m.position.y = height / 2;
+  return m;
+}
+function makeHandrail(length) {
+  const g = new THREE.BoxGeometry(length, HANDRAIL_HEIGHT, HANDRAIL_WIDTH);
+  return new THREE.Mesh(g, oakMaterial);
+}
+function makeBaluster() {
+  const g = new THREE.BoxGeometry(BALUSTER_SIZE, BALUSTER_HEIGHT, BALUSTER_SIZE);
+  const m = new THREE.Mesh(g, balusterMaterial);
+  m.position.y = BALUSTER_HEIGHT / 2;
+  return m;
+}
+function makeLanding(depth, width) {
+  const g = new THREE.BoxGeometry(depth, TREAD_THICK, width);
+  return new THREE.Mesh(g, oakMaterial);
+}
+
+/**
+ * Build a straight flight starting at the given origin with `steps` treads.
+ * Direction is +X (forward) and +Y (up). Returns { treads, topY, endX }.
+ */
+function buildFlight(originX, originY, originZ, steps, width, addRailZ = 0.5 * (TREAD_WIDTH + NEWEL_SIZE)) {
+  const group = new THREE.Group();
+  for (let i = 0; i < steps; i++) {
+    const x = originX + i * GOING + GOING / 2;
+    const y = originY + (i + 1) * RISE - TREAD_THICK / 2;
+    const tread = makeTread(width);
+    tread.position.set(x, y, originZ);
+    group.add(tread);
+    // riser
+    const rY = originY + i * RISE + RISE / 2;
+    const riser = makeRiser(width, RISE);
+    riser.position.set(originX + i * GOING - RISER_THICK / 2 + RISER_THICK / 2, rY, originZ);
+    riser.position.x = originX + i * GOING + RISER_THICK / 2 - GOING / 2 + GOING;
+    group.add(riser);
+    // baluster (one per tread, at back edge, on both sides)
+    const b1 = makeBaluster();
+    b1.position.set(x, originY + (i + 1) * RISE + BALUSTER_HEIGHT / 2 - 0.02, originZ + addRailZ);
+    group.add(b1);
+    const b2 = makeBaluster();
+    b2.position.set(x, originY + (i + 1) * RISE + BALUSTER_HEIGHT / 2 - 0.02, originZ - addRailZ);
+    group.add(b2);
+  }
+  const runLength = steps * GOING;
+  return { group, endX: originX + runLength, topY: originY + steps * RISE, runLength };
+}
+
+/**
+ * Add a pitched string (side board) between two 3D points, tilted so its
+ * top edge follows the flight's pitch line.
+ */
+function addPitchString(group, startX, endX, baseY, topY, z) {
+  const runLength = endX - startX;
+  const centerX = (startX + endX) / 2;
+  const centerY = (baseY + topY) / 2 - STRING_HEIGHT / 2 + 0.05;
+  const pitchLength = Math.hypot(endX - startX, topY - baseY);
+  const string = makeString(pitchLength, STRING_HEIGHT, STRING_THICK);
+  string.position.set(centerX, centerY, z);
+  string.rotation.z = Math.atan2(topY - baseY, endX - startX);
+  group.add(string);
+}
+
+// ── Layout builders ──────────────────────────────────────────────
+
+/**
+ * L-SHAPE — 90° turn with EITHER a landing OR winders.
+ *   variant "landing" → quarter-landing plan: two flights meeting at a landing.
+ *   variant "winder"  → 3 wedge-shaped winders at the turn instead of a landing.
+ */
+function buildLShape(variant = "landing") {
+  if (variant === "winder") return buildLShapeWinder();
+  const root = new THREE.Group();
+  const flight1Steps = 7;
+  const flight2Steps = 6;
+  const landingSize = 1.000;
+
+  // Flight 1 — starts at origin, runs +X
+  const f1 = buildFlight(0, 0, 0, flight1Steps, TREAD_WIDTH);
+  root.add(f1.group);
+
+  // Landing — sits at the top of flight 1, extends +X by landingSize
+  const landingX = f1.endX + landingSize / 2;
+  const landingY = f1.topY - TREAD_THICK / 2;
+  const landing = makeLanding(landingSize, landingSize);
+  landing.position.set(landingX, landingY, 0);
+  root.add(landing);
+
+  // Flight 2 — starts at the far end of the landing, runs +Z direction (rotated 90°)
+  const f2 = buildFlight(0, f1.topY, 0, flight2Steps, TREAD_WIDTH);
+  f2.group.rotation.y = Math.PI / 2;
+  f2.group.position.set(f1.endX + landingSize / 2, 0, landingSize / 2);
+  root.add(f2.group);
+
+  // Newel posts at the 4 landing corners + start of flight 1 + end of flight 2
+  const cornerPositions = [
+    [0,                              0, TREAD_WIDTH / 2],           // flight 1 bottom right
+    [0,                              0, -TREAD_WIDTH / 2],          // flight 1 bottom left
+    [f1.endX + landingSize / 2,      f1.topY, landingSize / 2],     // landing far
+  ];
+  for (const [x, y, z] of cornerPositions) {
+    const n = makeNewel();
+    n.position.set(x, y + NEWEL_HEIGHT / 2, z);
+    root.add(n);
+  }
+
+  scene.add(root);
+  camera.position.set(4.5, 3.2, 5.2);
+  controls.target.set(f1.endX / 2 + 0.5, 1.4, 0.3);
+}
+
+/**
+ * L-SHAPE (winder variant) — 90° turn using three 30° winder wedges.
+ * Distinct from the quarter-landing plan: no flat landing platform.
+ */
+function buildLShapeWinder() {
+  const root = new THREE.Group();
+  const bottomSteps = 6;
+  const winderSteps = 3;
+  const topSteps    = 4;
+
+  const f1 = buildFlight(0, 0, 0, bottomSteps, TREAD_WIDTH);
+  root.add(f1.group);
+
+  const cx = f1.endX + TREAD_WIDTH / 2;
+  for (let i = 0; i < winderSteps; i++) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(TREAD_WIDTH, 0);
+    shape.lineTo(0, TREAD_WIDTH);
+    shape.lineTo(0, 0);
+    const geom = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+    geom.rotateX(-Math.PI / 2);
+    const tread = new THREE.Mesh(geom, oakMaterial);
+    tread.rotation.y = (i * Math.PI) / 6;
+    tread.position.set(cx - TREAD_WIDTH / 2, f1.topY + (i + 1) * RISE - TREAD_THICK, -TREAD_WIDTH / 2);
+    root.add(tread);
+  }
+
+  const f2 = buildFlight(0, f1.topY + winderSteps * RISE, 0, topSteps, TREAD_WIDTH);
+  f2.group.rotation.y = Math.PI / 2;
+  f2.group.position.set(cx, 0, TREAD_WIDTH);
+  root.add(f2.group);
+
+  scene.add(root);
+  camera.position.set(4.5, 3.5, 5.5);
+  controls.target.set(cx, 1.4, TREAD_WIDTH / 2);
+}
+
+/**
+ * U-SHAPE — two parallel flights meeting at a landing.
+ *   variant "tight" (dogleg): flights directly against each other · narrow landing.
+ *   variant "open"  (open well): 100mm+ gap between flights · wider landing.
+ */
+function buildUShape(variant = "open") {
+  const root = new THREE.Group();
+  const flight1Steps = 6;
+  const flight2Steps = 6;
+  const landingSize = 1.000;
+  const flightOffset = variant === "tight"
+    ? TREAD_WIDTH            // dogleg: flights touching
+    : TREAD_WIDTH + 0.200;   // open well: 200mm gap
+
+  const f1 = buildFlight(0, 0, 0, flight1Steps, TREAD_WIDTH);
+  root.add(f1.group);
+
+  const landingX = f1.endX + landingSize / 2;
+  const landingWidth = flightOffset + TREAD_WIDTH;
+  const landing = makeLanding(landingSize, landingWidth);
+  landing.position.set(landingX, f1.topY - TREAD_THICK / 2, flightOffset / 2);
+  root.add(landing);
+
+  // Flight 2 goes back in -X direction, offset in +Z
+  const f2 = buildFlight(0, f1.topY, 0, flight2Steps, TREAD_WIDTH);
+  f2.group.rotation.y = Math.PI;
+  f2.group.position.set(f1.endX + landingSize, 0, flightOffset);
+  root.add(f2.group);
+
+  scene.add(root);
+  camera.position.set(5.5, 4.0, 5.5);
+  controls.target.set(f1.endX / 2 + 0.5, 1.4, flightOffset / 2);
+}
+
+/**
+ * WINDER — straight flight with wedge-shaped treads at a turn (no landing).
+ *   3 straight bottom treads → 3 winder wedge treads (turning 90°) → 6 straight top treads.
+ */
+function buildWinder() {
+  const root = new THREE.Group();
+  const bottomSteps  = 3;
+  const winderSteps  = 3;
+  const topSteps     = 6;
+
+  const f1 = buildFlight(0, 0, 0, bottomSteps, TREAD_WIDTH);
+  root.add(f1.group);
+
+  // Winder wedges — three triangular treads turning 90° through 30° each.
+  // Uses a right-triangle ShapeGeometry extruded to tread thickness.
+  const winderCenter = new THREE.Vector3(f1.endX + TREAD_WIDTH / 2, 0, 0);
+  for (let i = 0; i < winderSteps; i++) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0);
+    shape.lineTo(TREAD_WIDTH, 0);
+    shape.lineTo(0, TREAD_WIDTH);
+    shape.lineTo(0, 0);
+    const geom = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+    geom.rotateX(-Math.PI / 2);
+    const tread = new THREE.Mesh(geom, oakMaterial);
+    const angle = (i * Math.PI) / 6; // 30° per step
+    tread.rotation.y = angle;
+    tread.position.set(winderCenter.x - TREAD_WIDTH / 2, f1.topY + (i + 1) * RISE - TREAD_THICK, -TREAD_WIDTH / 2);
+    root.add(tread);
+  }
+
+  // Top flight — starts at end of winder, runs +Z (rotated 90°)
+  const topStart = winderCenter.clone();
+  topStart.y = f1.topY + winderSteps * RISE;
+  const f2 = buildFlight(0, topStart.y, 0, topSteps, TREAD_WIDTH);
+  f2.group.rotation.y = Math.PI / 2;
+  f2.group.position.set(winderCenter.x, 0, TREAD_WIDTH);
+  root.add(f2.group);
+
+  scene.add(root);
+  camera.position.set(4.5, 3.5, 5.5);
+  controls.target.set(winderCenter.x, 1.4, TREAD_WIDTH / 2);
+}
+
+/**
+ * SPIRAL — treads radiating from a central column.
+ *   13 treads over one full 360° turn. Central newel column 90mm × total height.
+ */
+function buildSpiral() {
+  const root = new THREE.Group();
+  const centerRadius = 0.100;    // 100mm central column radius
+  const outerRadius  = 0.900;    // 900mm outer edge — matches TREAD_WIDTH
+  const steps        = 13;
+  const anglePerStep = (Math.PI * 2) / 12; // full 360° over 12 gaps (13 treads)
+
+  for (let i = 0; i < steps; i++) {
+    const angle = i * anglePerStep;
+    const wedge = new THREE.Shape();
+    // Wedge shape — an annular sector from centerRadius to outerRadius
+    // spanning `anglePerStep` at origin, we'll rotate afterwards.
+    const segments = 8;
+    wedge.moveTo(Math.cos(0) * centerRadius, Math.sin(0) * centerRadius);
+    for (let j = 0; j <= segments; j++) {
+      const a = (j / segments) * anglePerStep;
+      wedge.lineTo(Math.cos(a) * outerRadius, Math.sin(a) * outerRadius);
+    }
+    for (let j = segments; j >= 0; j--) {
+      const a = (j / segments) * anglePerStep;
+      wedge.lineTo(Math.cos(a) * centerRadius, Math.sin(a) * centerRadius);
+    }
+    const geom = new THREE.ExtrudeGeometry(wedge, { depth: TREAD_THICK, bevelEnabled: false });
+    geom.rotateX(-Math.PI / 2);
+    const tread = new THREE.Mesh(geom, oakMaterial);
+    tread.rotation.y = angle;
+    tread.position.y = (i + 1) * RISE - TREAD_THICK;
+    root.add(tread);
+  }
+
+  // Central column
+  const columnHeight = steps * RISE + 0.5;
+  const columnGeom = new THREE.CylinderGeometry(centerRadius, centerRadius, columnHeight, 24);
+  const column = new THREE.Mesh(columnGeom, oakMaterial);
+  column.position.y = columnHeight / 2;
+  root.add(column);
+
+  // Outer handrail — a helical curve extruded (simplified: a torus-segment approximation)
+  const handrailPoints = [];
+  const handrailY = 1.0;
+  for (let i = 0; i <= steps; i++) {
+    const angle = i * anglePerStep;
+    handrailPoints.push(new THREE.Vector3(
+      Math.cos(angle) * (outerRadius - 0.05),
+      i * RISE + handrailY,
+      Math.sin(angle) * (outerRadius - 0.05)
+    ));
+  }
+  const handrailCurve = new THREE.CatmullRomCurve3(handrailPoints);
+  const handrailGeom = new THREE.TubeGeometry(handrailCurve, 64, 0.025, 8, false);
+  root.add(new THREE.Mesh(handrailGeom, oakMaterial));
+
+  scene.add(root);
+  camera.position.set(2.5, 3.0, 2.5);
+  controls.target.set(0, 1.4, 0);
+}
+
+/**
+ * WINDER PLACEMENT — straight flight with winder wedges at entry / mid / top.
+ * Sets which section of the flight is a winder turn.
+ */
+function buildWinderPlacement(where = "mid") {
+  if (where === "entry") {
+    // Bottom 3 steps are winder wedges; then straight flight up
+    const root = new THREE.Group();
+    for (let i = 0; i < 3; i++) {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0); shape.lineTo(TREAD_WIDTH, 0); shape.lineTo(0, TREAD_WIDTH); shape.lineTo(0, 0);
+      const g = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+      g.rotateX(-Math.PI / 2);
+      const t = new THREE.Mesh(g, oakMaterial);
+      t.rotation.y = (i * Math.PI) / 6;
+      t.position.set(-TREAD_WIDTH / 2, (i + 1) * RISE - TREAD_THICK, -TREAD_WIDTH / 2);
+      root.add(t);
+    }
+    const straight = buildFlight(0, 3 * RISE, 0, 10, TREAD_WIDTH);
+    straight.group.position.set(TREAD_WIDTH / 2, 0, TREAD_WIDTH / 2);
+    root.add(straight.group);
+    scene.add(root);
+    camera.position.set(4.5, 3.2, 5.0);
+    controls.target.set(2, 1.4, 0);
+    return;
+  }
+  if (where === "top") {
+    // Straight bottom then 3 winder wedges at the top
+    const root = new THREE.Group();
+    const straight = buildFlight(0, 0, 0, 10, TREAD_WIDTH);
+    root.add(straight.group);
+    const cx = straight.endX + TREAD_WIDTH / 2;
+    for (let i = 0; i < 3; i++) {
+      const shape = new THREE.Shape();
+      shape.moveTo(0, 0); shape.lineTo(TREAD_WIDTH, 0); shape.lineTo(0, TREAD_WIDTH); shape.lineTo(0, 0);
+      const g = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+      g.rotateX(-Math.PI / 2);
+      const t = new THREE.Mesh(g, oakMaterial);
+      t.rotation.y = (i * Math.PI) / 6;
+      t.position.set(cx - TREAD_WIDTH / 2, straight.topY + (i + 1) * RISE - TREAD_THICK, -TREAD_WIDTH / 2);
+      root.add(t);
+    }
+    scene.add(root);
+    camera.position.set(4.5, 3.5, 5.5);
+    controls.target.set(cx / 2, 1.4, 0);
+    return;
+  }
+  // Default "mid" — same as classic winder in the middle
+  buildWinder();
+}
+
+/**
+ * DOUBLE WINDER — winders at BOTH ends of the flight (switch-back).
+ * 3 winders at bottom · straight middle · 3 winders at top.
+ */
+function buildDoubleWinder() {
+  const root = new THREE.Group();
+  // Bottom winders
+  for (let i = 0; i < 3; i++) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0); shape.lineTo(TREAD_WIDTH, 0); shape.lineTo(0, TREAD_WIDTH); shape.lineTo(0, 0);
+    const g = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+    g.rotateX(-Math.PI / 2);
+    const t = new THREE.Mesh(g, oakMaterial);
+    t.rotation.y = (i * Math.PI) / 6;
+    t.position.set(-TREAD_WIDTH / 2, (i + 1) * RISE - TREAD_THICK, -TREAD_WIDTH / 2);
+    root.add(t);
+  }
+  const midStart = new THREE.Vector3(TREAD_WIDTH / 2, 3 * RISE, TREAD_WIDTH / 2);
+  const middle = buildFlight(0, midStart.y, 0, 6, TREAD_WIDTH);
+  middle.group.position.set(midStart.x, 0, midStart.z);
+  root.add(middle.group);
+  // Top winders after the middle
+  const topStartX = midStart.x + 6 * GOING;
+  const topStartY = midStart.y + 6 * RISE;
+  for (let i = 0; i < 3; i++) {
+    const shape = new THREE.Shape();
+    shape.moveTo(0, 0); shape.lineTo(TREAD_WIDTH, 0); shape.lineTo(0, TREAD_WIDTH); shape.lineTo(0, 0);
+    const g = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+    g.rotateX(-Math.PI / 2);
+    const t = new THREE.Mesh(g, oakMaterial);
+    t.rotation.y = (i * Math.PI) / 6;
+    t.position.set(topStartX, topStartY + (i + 1) * RISE - TREAD_THICK, TREAD_WIDTH / 2);
+    root.add(t);
+  }
+  scene.add(root);
+  camera.position.set(5.0, 4.0, 5.5);
+  controls.target.set(2.5, 1.8, 0.5);
+}
+
+/**
+ * T-SHAPE (bifurcated) — single wide flight splits into two narrow flights
+ * at a landing (grand entrance style, common in Georgian townhouses).
+ */
+function buildTShape() {
+  const root = new THREE.Group();
+  const trunkSteps = 5;
+  const branchSteps = 6;
+  const trunkWidth = TREAD_WIDTH * 1.5;
+
+  const trunk = buildFlight(0, 0, 0, trunkSteps, trunkWidth);
+  root.add(trunk.group);
+
+  const landing = makeLanding(1.200, trunkWidth * 1.4);
+  landing.position.set(trunk.endX + 0.600, trunk.topY - TREAD_THICK / 2, 0);
+  root.add(landing);
+
+  // Left branch — goes in +Z direction
+  const leftBranch = buildFlight(0, trunk.topY, 0, branchSteps, TREAD_WIDTH);
+  leftBranch.group.rotation.y = Math.PI / 2;
+  leftBranch.group.position.set(trunk.endX + 1.200, 0, trunkWidth * 0.4);
+  root.add(leftBranch.group);
+
+  // Right branch — goes in -Z direction
+  const rightBranch = buildFlight(0, trunk.topY, 0, branchSteps, TREAD_WIDTH);
+  rightBranch.group.rotation.y = -Math.PI / 2;
+  rightBranch.group.position.set(trunk.endX + 1.200, 0, -trunkWidth * 0.4);
+  root.add(rightBranch.group);
+
+  scene.add(root);
+  camera.position.set(5.5, 4.5, 5.5);
+  controls.target.set(2.5, 1.6, 0);
+}
+
+/**
+ * CURVED (arc) — gentle curve across the plan without a discrete landing.
+ * 13 treads sweeping through ~60° along an arc.
+ */
+function buildCurved() {
+  const root = new THREE.Group();
+  const steps = 13;
+  const radius = 3.2;
+  const totalAngle = Math.PI / 3; // 60° sweep
+  const anglePerStep = totalAngle / (steps - 1);
+
+  for (let i = 0; i < steps; i++) {
+    const angle = i * anglePerStep;
+    const shape = new THREE.Shape();
+    const innerR = radius - TREAD_WIDTH / 2;
+    const outerR = radius + TREAD_WIDTH / 2;
+    const segs = 6;
+    shape.moveTo(Math.cos(0) * innerR, Math.sin(0) * innerR);
+    for (let j = 0; j <= segs; j++) {
+      const a = (j / segs) * anglePerStep;
+      shape.lineTo(Math.cos(a) * outerR, Math.sin(a) * outerR);
+    }
+    for (let j = segs; j >= 0; j--) {
+      const a = (j / segs) * anglePerStep;
+      shape.lineTo(Math.cos(a) * innerR, Math.sin(a) * innerR);
+    }
+    const geom = new THREE.ExtrudeGeometry(shape, { depth: TREAD_THICK, bevelEnabled: false });
+    geom.rotateX(-Math.PI / 2);
+    const tread = new THREE.Mesh(geom, oakMaterial);
+    tread.rotation.y = angle;
+    tread.position.y = (i + 1) * RISE - TREAD_THICK;
+    root.add(tread);
+  }
+  scene.add(root);
+  camera.position.set(4.5, 4.0, 5.5);
+  controls.target.set(1.5, 1.4, 1.0);
+}
+
+/**
+ * LADDER / SPACE-SAVER — steep alternating-tread stair for loft access.
+ * Half-width treads alternating left/right so the foot alternates on the way up.
+ */
+function buildLadder() {
+  const root = new THREE.Group();
+  const steps = 13;
+  const rise = 0.240; // steeper — 240mm per rise (typical space-saver)
+  const going = 0.180; // shorter going
+
+  for (let i = 0; i < steps; i++) {
+    const halfWidth = TREAD_WIDTH / 2 - 0.010;
+    const g = new THREE.BoxGeometry(going + NOSING, TREAD_THICK, halfWidth);
+    const t = new THREE.Mesh(g, oakMaterial);
+    const alternate = i % 2 === 0 ? halfWidth / 2 : -halfWidth / 2;
+    t.position.set(i * going + going / 2, (i + 1) * rise - TREAD_THICK / 2, alternate);
+    root.add(t);
+  }
+  // Support side stringers
+  const sLen = steps * going + 0.3;
+  const s1 = new THREE.Mesh(new THREE.BoxGeometry(sLen, STRING_HEIGHT, STRING_THICK), oakMaterial);
+  const s2 = s1.clone();
+  const midY = (steps * rise) / 2;
+  const angle = Math.atan2(steps * rise, steps * going);
+  s1.position.set(steps * going / 2, midY - 0.02, TREAD_WIDTH / 2);
+  s1.rotation.z = angle;
+  s2.position.set(steps * going / 2, midY - 0.02, -TREAD_WIDTH / 2);
+  s2.rotation.z = angle;
+  root.add(s1); root.add(s2);
+
+  scene.add(root);
+  camera.position.set(3.5, 3.0, 4.0);
+  controls.target.set(1.2, 1.4, 0);
+}
+
+// ── Dispatch ─────────────────────────────────────────────────────
+const builder = layoutBuilders[layout];
+if (builder) builder();
+
+// ── Render loop ──────────────────────────────────────────────────
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener("resize", () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ── postMessage bridge (minimal — announces readiness so React can detect
+//    the layout swap. Full material toggles come in a later iteration.)
+try {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: "nex-preview-ready" }, "*");
+  }
+} catch (e) { /* cross-origin */ }
+</script>
+</body>
+</html>

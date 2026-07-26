@@ -21,7 +21,16 @@ import {
   useState,
 } from "react";
 
-const PREVIEW_URL = "/staircase-preview/mat-002-flight-3d.html";
+const PREVIEW_URL_STRAIGHT = "/staircase-preview/mat-002-flight-3d.html";
+const PREVIEW_URL_LAYOUTS  = "/staircase-preview/mat-002-layouts.html";
+
+/** Map a layout optionId to the HTML file that renders it. Straight uses the
+ *  frozen full-feature file; the others use the shared skeleton file with a
+ *  ?layout= query param. */
+function urlForLayout(layout: string | undefined): string {
+  if (!layout || layout === "straight") return PREVIEW_URL_STRAIGHT;
+  return `${PREVIEW_URL_LAYOUTS}?layout=${encodeURIComponent(layout)}`;
+}
 
 export type StaircasePreviewHandle = {
   /** Ask the iframe to render + snapshot its WebGL canvas. Resolves with a
@@ -53,6 +62,7 @@ export const StaircasePreviewFrame = forwardRef<
 >(function StaircasePreviewFrame({ config, className = "", aspectRatio = "16 / 10" }, ref) {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const [ready, setReady] = useState(false);
+  const src = urlForLayout(config.layout);
 
   // Convert the flat configurator state into the payload the preview expects.
   const payload: PreviewPayload = {
@@ -66,6 +76,12 @@ export const StaircasePreviewFrame = forwardRef<
     risers:    config.risers,
     finish:    config.finish,
   };
+
+  // Reset readiness whenever the iframe source changes (layout swap → new
+  // document loads, and we need to wait for its ready signal again).
+  useEffect(() => {
+    setReady(false);
+  }, [src]);
 
   // Listen for the ready signal from the iframe.
   useEffect(() => {
@@ -130,7 +146,7 @@ export const StaircasePreviewFrame = forwardRef<
     >
       <iframe
         ref={iframeRef}
-        src={PREVIEW_URL}
+        src={src}
         title="3D staircase preview"
         className="absolute inset-0 w-full h-full"
         // No sandbox — same-origin static file served from /public. Enabling
