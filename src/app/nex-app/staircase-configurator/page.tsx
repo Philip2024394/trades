@@ -22,6 +22,7 @@ import {
   type StaircasePreviewHandle,
 } from "@/components/nex-app/staircase-configurator/StaircasePreviewFrame";
 import { useSavedDesigns } from "@/components/nex-app/staircase-configurator/useSavedDesigns";
+import { StaircaseLayoutPicker } from "@/components/nex-app/staircase-configurator/StaircaseLayoutPicker";
 
 const DEFAULT_SELECTION: Record<string, string> = {
   layout:    "straight",
@@ -170,6 +171,18 @@ export default function StaircaseConfiguratorPage() {
 
         <div className="mt-6 relative">
           <StaircasePreviewFrame ref={previewRef} config={selected} />
+          {/* Only show the skeleton hint when a non-straight layout is active —
+              straight-flight uses the full frozen HTML which is production quality. */}
+          {selected.layout !== "straight" && (
+            <div className="absolute top-3 left-3 sm:top-4 sm:left-4 bg-card/95 text-foreground border border-border rounded-full px-3 py-1 text-caption shadow backdrop-blur">
+              <span className="text-muted-foreground">Layout:</span>{" "}
+              <span className="font-medium">
+                {SAMPLE_STAIRCASE_CATEGORIES.find((c) => c.id === "layout")
+                  ?.options.find((o) => o.id === selected.layout)?.label ?? selected.layout}
+              </span>
+              <span className="text-muted-foreground"> · skeleton</span>
+            </div>
+          )}
 
           {/* Floating action buttons — top-right corner of the preview.
               Always visible while the user orbits, glassy pill shape so the 3D
@@ -226,8 +239,16 @@ export default function StaircaseConfiguratorPage() {
           </div>
         </div>
 
+        <div className="mt-4">
+          <StaircaseLayoutPicker
+            categories={SAMPLE_STAIRCASE_CATEGORIES}
+            selectedLayout={selected.layout}
+            onLayoutChange={(id) => setValue("layout", id)}
+          />
+        </div>
+
         <p className="text-caption text-muted-foreground mt-3">
-          Try in the chat above: "make the balusters cream" · "add LED lighting" · "no sheeting"
+          Try in the chat above: "make the balusters cream" · "add LED lighting" · "switch to spiral"
         </p>
 
         <section className="mt-10">
