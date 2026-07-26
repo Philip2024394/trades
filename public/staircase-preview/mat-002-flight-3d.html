@@ -1964,33 +1964,55 @@ new THREE.TextureLoader().load(
     });
     // Brushed stainless steel baluster (Philip 2026-07-26 · Tier 2 realism).
     // 40×40×900mm plain square. Combines two effects:
-    //   1. HDRI environment reflection (scene.environment, royal_esplanade)
-    //      → sky-and-buildings tones reflected across the surface, so metal
-    //        reads as reflective from every viewing angle
-    //   2. Reference-image texture bound as map + bumpMap + roughnessMap
-    //      → vertical brushed grain pattern with subtle bumps and shinier-
-    //        along-grain / matter-across-grain roughness variation
-    // Reference: https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png
-    const stainlessTex = new THREE.TextureLoader().load(
-      "https://ik.imagekit.io/5vv5pw26q/Untitledasdasdff.png",
-      (t) => {
-        t.wrapS = THREE.ClampToEdgeWrapping;
-        t.wrapT = THREE.ClampToEdgeWrapping;
-        t.colorSpace = THREE.SRGBColorSpace;
-        t.anisotropy = renderer.capabilities.getMaxAnisotropy();
-        t.needsUpdate = true;
+    //   1. HDRI reflection (scene.environment, royal_esplanade)
+    //   2. Procedurally-generated brushed pattern on a canvas (map + bumpMap +
+    //      roughnessMap). Procedural = no image background bleed — the earlier
+    //      reference image had a light background around the metal that showed
+    //      as grey patches on the box faces. Canvas fills every pixel with
+    //      pure brushed-metal tones, tiles cleanly with RepeatWrapping.
+    function makeBrushedSteelTexture() {
+      const c = document.createElement("canvas");
+      c.width = 256; c.height = 256;
+      const ctx = c.getContext("2d");
+      // Base silver fill
+      ctx.fillStyle = "#c0c4c8";
+      ctx.fillRect(0, 0, 256, 256);
+      // Vertical brushed lines — 256 columns, each a slightly different brightness
+      for (let x = 0; x < 256; x++) {
+        const b = 180 + (Math.random() - 0.5) * 60;
+        ctx.fillStyle = `rgb(${b|0}, ${(b + 2)|0}, ${(b + 4)|0})`;
+        ctx.fillRect(x, 0, 1, 256);
       }
-    );
+      // Per-pixel micro-noise so highlights sparkle slightly (real brushed
+      // metal never has perfectly straight lines — there's always fine grain).
+      const img = ctx.getImageData(0, 0, 256, 256);
+      for (let i = 0; i < img.data.length; i += 4) {
+        const n = (Math.random() - 0.5) * 20;
+        img.data[i]     = Math.max(0, Math.min(255, img.data[i]     + n));
+        img.data[i + 1] = Math.max(0, Math.min(255, img.data[i + 1] + n));
+        img.data[i + 2] = Math.max(0, Math.min(255, img.data[i + 2] + n));
+      }
+      ctx.putImageData(img, 0, 0);
+      const tex = new THREE.CanvasTexture(c);
+      tex.wrapS = THREE.RepeatWrapping;
+      tex.wrapT = THREE.RepeatWrapping;
+      tex.repeat.set(1, 8);              // tile 8× vertically so grain runs long down the baluster
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+      tex.needsUpdate = true;
+      return tex;
+    }
+    const stainlessTex = makeBrushedSteelTexture();
     const balusterStainlessMaterial = new THREE.MeshPhysicalMaterial({
       map:              stainlessTex,   // brushed grain as base colour
       bumpMap:          stainlessTex,
-      bumpScale:        0.0001,          // very subtle — grain hints, not corrugated
-      roughnessMap:     stainlessTex,   // grain lines shinier vs matte (brushed contrast)
-      color:            0xdadee1,        // slight brightening tint
-      roughness:        0.32,            // base roughness — modulated by roughnessMap
+      bumpScale:        0.0001,
+      roughnessMap:     stainlessTex,   // grain lines shinier vs matte
+      color:            0xe0e4e8,
+      roughness:        0.30,
       metalness:        1.0,
-      clearcoat:        0.7,             // second reflective layer for extra "polished" pop
-      clearcoatRoughness: 0.10,
+      clearcoat:        0.6,
+      clearcoatRoughness: 0.12,
       specularIntensity: 1.0,
       specularColor:    0xffffff,
     });
