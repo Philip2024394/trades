@@ -1,9 +1,7 @@
 // POST /api/admin/news
 //
-// Admin-gated. Creates a newsroom post. When status='live' on create,
-// the route ALSO calls createYardCrossPost so The Yard gets the
-// announcement instantly. Idempotent on yard side via the metadata
-// JSON lookup.
+// Admin-gated. Creates a newsroom post.
+// (Yard cross-post removed 2026-07-27 with the yard purge.)
 
 import { NextResponse, type NextRequest } from "next/server";
 import { isAdminAuthed } from "@/lib/adminAuth";
@@ -13,7 +11,6 @@ import {
   VALID_STATUSES,
   slugifyTitle
 } from "@/lib/newsCategories";
-import { createYardCrossPost } from "@/lib/newsCrossPost";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -97,20 +94,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       { error: ins.error?.message ?? "Insert failed" },
       { status: 500 }
     );
-  }
-
-  // Cross-post to Yard if going live straight away.
-  if (status === "live") {
-    try {
-      await createYardCrossPost({
-        id: ins.data.id,
-        slug: ins.data.slug,
-        title: ins.data.title,
-        excerpt: ins.data.excerpt
-      });
-    } catch (err) {
-      console.error("[api/admin/news] yard cross-post threw:", err);
-    }
   }
 
   return NextResponse.json({ ok: true, id: ins.data.id, slug: ins.data.slug });

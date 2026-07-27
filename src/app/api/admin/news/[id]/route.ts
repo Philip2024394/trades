@@ -1,10 +1,8 @@
 // PATCH /api/admin/news/[id]
 // DELETE /api/admin/news/[id]
 //
-// Admin-gated. PATCH updates the row in place. When status flips
-// draft→live, the route creates the Yard cross-post (idempotent).
-// When status flips live→archived, the route hides the existing Yard
-// echo. DELETE hard-removes the row and hides the Yard echo too.
+// Admin-gated. PATCH updates the row in place. DELETE hard-removes.
+// (Yard cross-post + hide removed 2026-07-27 with the yard purge.)
 
 import { NextResponse, type NextRequest } from "next/server";
 import { isAdminAuthed } from "@/lib/adminAuth";
@@ -13,7 +11,6 @@ import {
   VALID_CATEGORY_SLUGS,
   VALID_STATUSES
 } from "@/lib/newsCategories";
-import { createYardCrossPost, hideYardCrossPost } from "@/lib/newsCrossPost";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -50,11 +47,10 @@ export async function PATCH(
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  // Read the current row so we can detect status transitions and
-  // forward title/excerpt to the yard cross-poster if needed.
+  // Read the current row so we can detect status transitions.
   const current = await supabaseAdmin
     .from("hammerex_xrated_news_posts")
-    .select("id, slug, title, excerpt, status, published_at, yard_post_id")
+    .select("id, slug, title, excerpt, status, published_at")
     .eq("id", id)
     .maybeSingle();
 
@@ -133,24 +129,6 @@ export async function PATCH(
     );
   }
 
-  // Status transition side-effects on The Yard.
-  try {
-    const wasLive = current.data.status === "live";
-    const isLive = upd.data.status === "live";
-    if (!wasLive && isLive) {
-      await createYardCrossPost({
-        id: upd.data.id,
-        slug: upd.data.slug,
-        title: upd.data.title,
-        excerpt: upd.data.excerpt
-      });
-    } else if (wasLive && !isLive) {
-      await hideYardCrossPost(upd.data.id);
-    }
-  } catch (err) {
-    console.error("[api/admin/news/:id] yard sync threw:", err);
-  }
-
   return NextResponse.json({ ok: true, id: upd.data.id });
 }
 
@@ -164,12 +142,6 @@ export async function DELETE(
   const { id } = await params;
   if (!id) {
     return NextResponse.json({ error: "Missing id" }, { status: 400 });
-  }
-  // Hide the yard echo first (idempotent), then hard-delete the news row.
-  try {
-    await hideYardCrossPost(id);
-  } catch (err) {
-    console.error("[api/admin/news/:id] yard hide threw:", err);
   }
   const del = await supabaseAdmin
     .from("hammerex_xrated_news_posts")

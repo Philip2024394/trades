@@ -1,6 +1,8 @@
 # ADR-0015 · Canteen page and mobile-app template are decoupled surfaces
 
-**Status:** accepted
+> **SUPERSEDED 2026-07-27** — Canteen product removed from the entire system with the yard/canteen purge. `/nex-app/centre` is now the only marketplace surface. This ADR is preserved as historical record of the canteen template split that once existed.
+
+**Status:** superseded
 **Date:** 2026-07-17
 **Deciders:** Philip
 

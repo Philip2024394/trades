@@ -1,6 +1,8 @@
 # ADR-0005: Non-destructive canteen restore
 
-Status: Accepted
+> **SUPERSEDED 2026-07-27** — Canteen product removed from the entire system with the yard/canteen purge. `/nex-app/centre` is now the only marketplace surface. This ADR is preserved as historical record of the canteen restore mechanism that once existed.
+
+Status: Superseded
 Date: 2026-07-13
 
 ## Context

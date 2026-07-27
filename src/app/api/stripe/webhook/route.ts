@@ -29,7 +29,7 @@ import {
   allAddonSlugs,
   resolveAddonSlugFromPriceId
 } from "@/lib/stripePrices";
-import { createYardWelcomeMessage } from "@/lib/yardWelcome";
+// Yard welcome import removed 2026-07-27 with the yard purge.
 import { recomputeAffiliateLevel } from "@/lib/affiliateLevel";
 import { resolveActiveCampaign, priceCommissionWithCampaign } from "@/lib/affiliateCampaigns";
 import { detectSelfReferral } from "@/lib/affiliateFraud";
@@ -48,56 +48,8 @@ function expiresAtFor(billing: string | undefined): string {
   return new Date(Date.now() + days * DAY_MS).toISOString();
 }
 
-async function handleBoostCompleted(
-  session: Stripe.Checkout.Session,
-  meta: { post_id: string; hours: string; unit_amount_pence?: string }
-): Promise<void> {
-  const postId = meta.post_id;
-  const hours = Number(meta.hours);
-  const paidPence = Number(meta.unit_amount_pence ?? 0);
-  if (!postId || !Number.isFinite(hours) || hours <= 0) {
-    console.warn(
-      "[stripe/webhook] boost checkout without valid post_id/hours; skipping",
-      { sessionId: session.id, meta }
-    );
-    return;
-  }
-  const { data: post } = await supabaseAdmin
-    .from("hammerex_trade_off_yard_posts")
-    .select("id, is_boosted_until, boost_count, boost_paid_pence")
-    .eq("id", postId)
-    .maybeSingle();
-  if (!post) {
-    console.warn(
-      "[stripe/webhook] boost checkout for missing post; skipping",
-      { sessionId: session.id, postId }
-    );
-    return;
-  }
-  // Extend from now OR the existing boost end — whichever is later —
-  // so paying to boost a still-live boost adds duration on top rather
-  // than replacing it.
-  const now = Date.now();
-  const existing = post.is_boosted_until
-    ? Date.parse(post.is_boosted_until)
-    : 0;
-  const startFrom = Number.isFinite(existing) && existing > now ? existing : now;
-  const newUntil = new Date(startFrom + hours * 60 * 60 * 1000).toISOString();
-  const upd = await supabaseAdmin
-    .from("hammerex_trade_off_yard_posts")
-    .update({
-      is_boosted_until: newUntil,
-      boost_count: (post.boost_count ?? 0) + 1,
-      boost_paid_pence: (post.boost_paid_pence ?? 0) + paidPence
-    })
-    .eq("id", postId);
-  if (upd.error) {
-    console.error(
-      "[stripe/webhook] boost apply failed:",
-      upd.error.message
-    );
-  }
-}
+// handleBoostCompleted removed 2026-07-27 — targeted yard posts which
+// were purged with the yard/canteen removal. Boost checkout also removed.
 
 /** The Site — single-image £5.99 purchase. Records the paid session
  *  into hammerex_site_purchases which the access-check reads to
@@ -364,18 +316,10 @@ async function handleCheckoutCompleted(
 ): Promise<void> {
   const meta = session.metadata ?? {};
 
-  // Fork on kind — boost is a one-time payment for a specific post;
-  // site.single is a one-off image licence; site.subscribe is the
-  // £14.99/mo unlimited plan; subscription paths (below) upgrade a
-  // listing tier.
-  if (meta.kind === "boost") {
-    await handleBoostCompleted(session, {
-      post_id: String(meta.post_id ?? ""),
-      hours: String(meta.hours ?? "0"),
-      unit_amount_pence: String(meta.unit_amount_pence ?? "0")
-    });
-    return;
-  }
+  // Fork on kind — site.single is a one-off image licence;
+  // site.subscribe is the unlimited plan; subscription paths
+  // (below) upgrade a listing tier.
+  // (kind === "boost" removed 2026-07-27 with the yard purge.)
   if (meta.kind === "site.single") {
     await handleSiteSingleCompleted(session, meta);
     return;
@@ -499,24 +443,7 @@ async function handleCheckoutCompleted(
     console.error("[stripe/webhook] upgrade-prompt attribution failed:", err);
   }
 
-  // New paid member → drop the Trade Off team welcome post into the
-  // Yard chat feed. Idempotent (skips if a welcome already exists for
-  // this listing_id) and demo-aware (slug LIKE 'demo-%' skipped).
-  // Errors are logged but never thrown — the webhook must still 200.
-  try {
-    const welcome = await createYardWelcomeMessage(listing_id);
-    if (welcome.ok && welcome.created) {
-      console.log(
-        `[stripe/webhook] yard welcome posted for listing_id=${listing_id} post_id=${welcome.id}`
-      );
-    } else if (welcome.ok && !welcome.created) {
-      console.log(
-        `[stripe/webhook] yard welcome skipped for listing_id=${listing_id} reason=${welcome.reason}`
-      );
-    }
-  } catch (e) {
-    console.error("[stripe/webhook] yard welcome threw:", e);
-  }
+  // (Yard welcome removed 2026-07-27.)
 
   // Affiliate commission attribution. If the listing carries an
   // affiliate_referrer_id, insert a £10 pending commission row. We

@@ -7,12 +7,14 @@
 //
 // Kept pure (no React) so any server component or layout can call
 // this once and pass the context down.
+//
+// Canteen / yard menu items removed 2026-07-27 with the yard purge.
+// Merchant home now points at the NEX Centre.
 
 import { cookies } from "next/headers";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { TRADE_SESSION_COOKIE_NAME, verifyTradeSession } from "@/lib/tradeSession";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { MOCK_CANTEENS } from "@/lib/canteens";
 
 export type UserMenuLink = {
   label: string;
@@ -68,49 +70,25 @@ export async function resolveUserMenuContext(): Promise<UserMenuContext> {
   const sessionRaw = jar.get(TRADE_SESSION_COOKIE_NAME)?.value;
   const merchant   = verifyTradeSession(sessionRaw);
   if (merchant?.slug) {
-    // Look up display name + canteen slug + avatar
-    const [{ data: listing }, ownCanteen] = await Promise.all([
-      supabaseAdmin
-        .from("hammerex_trade_off_listings")
-        .select("display_name, avatar_url")
-        .eq("slug", merchant.slug)
-        .maybeSingle(),
-      resolveOwnCanteenSlug(merchant.slug)
-    ]);
+    const { data: listing } = await supabaseAdmin
+      .from("hammerex_trade_off_listings")
+      .select("display_name, avatar_url")
+      .eq("slug", merchant.slug)
+      .maybeSingle();
     const name = (listing?.display_name as string | null)?.trim() || merchant.slug;
     return {
       kind:         "merchant",
       displayName:  name,
       initial:      name.charAt(0).toUpperCase(),
       avatarUrl:    (listing?.avatar_url as string | null) ?? null,
-      homeHref:     ownCanteen ? `/trade-off/yard/canteens/${ownCanteen}` : "/trade-off/yard/canteens",
-      homeLabel:    ownCanteen ? "My canteen" : "Create my canteen",
+      homeHref:     "/nex-app/centre",
+      homeLabel:    "NEX Centre",
       logoutAction: "/api/trade-off/logout",
-      links: ownCanteen
-        ? [
-            { label: "Manage canteen",         href: `/trade-off/yard/canteens/${ownCanteen}/manage` },
-            { label: "Trade Center dashboard", href: `/tc/${merchant.slug}` },
-            { label: "Settings",               href: `/trade-off/edit/${merchant.slug}` }
-          ]
-        : [
-            { label: "Trade Center dashboard", href: `/tc/${merchant.slug}` },
-            { label: "Settings",               href: `/trade-off/edit/${merchant.slug}` }
-          ]
+      links: [
+        { label: "Settings", href: `/trade-off/edit/${merchant.slug}` }
+      ]
     };
   }
 
   return { kind: "anon" };
-}
-
-async function resolveOwnCanteenSlug(hostSlug: string): Promise<string | null> {
-  const fixture = MOCK_CANTEENS.find((c) => c.hostSlug === hostSlug);
-  if (fixture) return fixture.slug;
-  const { data } = await supabaseAdmin
-    .from("hammerex_canteens")
-    .select("slug")
-    .eq("host_slug", hostSlug)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
-  return (data?.slug as string | null) ?? null;
 }
