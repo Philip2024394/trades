@@ -4,6 +4,8 @@ audience: buyers wanting to understand joinery quality · specifiers choosing ha
 tone: expert · joinery-craftsmanship · trade-authoritative
 purpose: explain the two baluster-to-tread fixing methods (traditional hardwood dowel · modern haunched joint for softwood) and why the small haunch detail matters over time
 category: NEX Design Philosophy > Construction Knowledge
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

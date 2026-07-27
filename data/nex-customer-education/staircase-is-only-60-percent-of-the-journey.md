@@ -4,6 +4,8 @@ audience: pre-purchase design decision · homeowners setting expectations for th
 tone: expert · reassuring · trade-authoritative
 purpose: reset the expectation that timber species / staircase style alone define the outcome — 40% is finishing, dressing, and styling the surrounding space
 category: NEX Design Philosophy
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   material_variation_a:

@@ -4,6 +4,8 @@ audience: pre-purchase design decision · homeowners choosing staircase spec
 tone: expert · practical · trade-authoritative
 purpose: explain why NEX recommends AGAINST balusters against a wall + offer wall-mounted handrail alternatives
 category: NEX Design Recommendations
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: DO_NOT
 paired_images:
   anti_pattern:

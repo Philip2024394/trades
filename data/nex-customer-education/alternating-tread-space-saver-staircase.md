@@ -4,6 +4,8 @@ audience: homeowners with tight floorplans · loft-conversion planners · tiny-h
 tone: expert · practical · trade-authoritative
 purpose: explain what an alternating tread (space saver) staircase is, how it works, where it fits, and its cautions
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

@@ -4,6 +4,8 @@ audience: homeowners with children · under-stair space owners looking for creat
 tone: warm · imaginative · trade-authoritative
 purpose: reframe under-stair space as opportunity for a bespoke children's playhouse that grows with the family
 category: NEX Under-Stair Ideas
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

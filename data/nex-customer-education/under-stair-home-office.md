@@ -4,6 +4,8 @@ audience: homeowners working from home · homeowners maximising floorspace
 tone: practical · productivity-focused · trade-authoritative
 purpose: reframe under-stair space as bespoke home office opportunity
 category: NEX Under-Stair Ideas
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

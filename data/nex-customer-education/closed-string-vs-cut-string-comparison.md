@@ -4,6 +4,8 @@ audience: homeowners choosing between closed and cut string profiles · buyers w
 tone: expert · comparison-led · trade-authoritative
 purpose: teach the closed-string vs cut-string difference using a single split-demonstration image (both styles on one staircase) and introduce the popular hybrid design (closed on wall side + cut on open side)
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

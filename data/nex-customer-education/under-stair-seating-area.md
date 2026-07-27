@@ -4,6 +4,8 @@ audience: homeowners considering under-stair use · entrance hall planners
 tone: warm · lifestyle · trade-authoritative
 purpose: reframe under-stair space as a bespoke built-in seating area that combines comfort, storage, and welcoming character
 category: NEX Under-Stair Ideas
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

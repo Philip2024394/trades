@@ -4,6 +4,8 @@ audience: pre-purchase education · homeowners weighing construction quality · 
 tone: expert · trade-authoritative · engineering
 purpose: explain the hidden joinery that gives a traditional timber staircase its strength (strings · treads · risers · timber wedges · angle blocks) and reassure that different material combinations behind the staircase look identical from the back
 category: NEX Design Philosophy > Construction Knowledge
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   pine_lamwood_back:

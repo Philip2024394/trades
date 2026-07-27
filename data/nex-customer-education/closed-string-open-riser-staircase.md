@@ -4,6 +4,8 @@ audience: homeowners choosing a modern staircase spec · darker-hallway projects
 tone: expert · design-forward · trade-authoritative
 purpose: explain the closed string + open riser design pattern, its light-flow advantage, its building-regulation safety cautions, and its finish flexibility
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

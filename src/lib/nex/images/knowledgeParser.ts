@@ -171,7 +171,8 @@ export function inferCollectionMemberships(text: string): string[] {
 
 /** ADR-0033 Rule #4-6 · isolated brains. Each brain strictly scoped. */
 export type PrimaryBrain =
-  | "staircase_brain"
+  | "staircase_brain"        // INTERNAL staircases only (indoor)
+  | "garden_staircase_brain" // EXTERNAL / outdoor / decking / patio staircases — Philip 2026-07-27 HARD LAW
   | "door_brain"
   | "interior_brain"
   | "kitchen_brain"
@@ -199,6 +200,7 @@ export function classifyPrimaryBrain(
   // if it clearly leads. Ties or weak leaders → null (admin review).
   const scores: Record<Exclude<PrimaryBrain, null>, number> = {
     staircase_brain: 0,
+    garden_staircase_brain: 0,
     door_brain: 0,
     interior_brain: 0,
     kitchen_brain: 0,
@@ -210,6 +212,25 @@ export function classifyPrimaryBrain(
     roofing_brain: 0,
     marketing_brain: 0,
   };
+
+  // Garden / external staircase — Philip 2026-07-27 HARD LAW: internal and
+  // external staircases share most vocabulary (tread · riser · handrail ·
+  // baluster · newel · string · balustrade) but are different products,
+  // different suppliers, different customers, different materials, different
+  // fixings, different regulations. They MUST NOT cross-contaminate at
+  // retrieval. Detect garden/outdoor/decking/patio context and route to
+  // garden_staircase_brain instead of staircase_brain.
+  const isExternalContext =
+    /\bgarden\b|\boutdoor\b|\bexterior\b|\bexternal\b|decking|deck stair|patio (stair|staircase|steps)|weatherproof|weather[- ]?exposed|pressure[- ]?treated|composite decking|external timber|external staircase|outdoor staircase|garden staircase|garden stair/.test(t);
+  if (isExternalContext) {
+    scores.garden_staircase_brain += 6;
+    if (/\bstaircase\b|\bstairs\b|\bstair\b|tread|riser|handrail|baluster|newel|string|balustrade|decking/.test(t))
+      scores.garden_staircase_brain += 3;
+    if (/cedar|larch|douglas fir|iroko|balau|composite deck|pressure[- ]?treated|hot[- ]?dip galvanised|stainless steel fixing/.test(t))
+      scores.garden_staircase_brain += 2;
+    // Suppress the general staircase brain — this row is NOT an internal staircase
+    scores.staircase_brain -= 6;
+  }
 
   // Staircase — strong signals
   if (/\bstaircase\b|\bstairs\b|\bstair\b/.test(t)) scores.staircase_brain += 4;
@@ -262,11 +283,18 @@ export function classifyPrimaryBrain(
   // Bathroom
   if (/\bbathroom\b|shower|bathtub|basin|wc\b|toilet/.test(t)) scores.bathroom_brain += 4;
 
-  // Tools
-  if (/\btool\b|\btools\b|machinery|power tool|drill|saw|ppe/.test(t)) scores.tools_brain += 3;
+  // Tools — word-boundary all patterns 2026-07-27 after `saw` fired on
+  // "rough-sawn timber" and `ppe` fired on "appearing" in a staircase
+  // article description. Bare substring matches are too greedy for
+  // short common English fragments.
+  if (/\btool\b|\btools\b|\bmachinery\b|\bpower tool\b|\bdrill\b|\bsaw\b|\bPPE\b/i.test(t)) scores.tools_brain += 3;
 
-  // Timber (wood samples specifically — not staircase timber references)
-  if (/wood grain|timber sample|wood species|oak sample|walnut sample|pine sample/.test(t))
+  // Timber (wood samples specifically — not staircase timber references).
+  // Rule tightened 2026-07-27 after "hardwood species" (natural English) in
+  // a staircase article incorrectly fired the old broad "wood species" match.
+  // Timber_brain is for TIMBER SAMPLE / MATERIAL LIBRARY images — require
+  // an explicit sample / swatch / material-library signal.
+  if (/timber sample|wood sample|oak sample|walnut sample|pine sample|timber swatch|wood swatch|material library|pbr material|texture reference/.test(t))
     scores.timber_brain += 4;
   if (image_type === "product_shot" && /oak|walnut|pine|hardwood|softwood/.test(t) && !/stair/.test(t))
     scores.timber_brain += 2;

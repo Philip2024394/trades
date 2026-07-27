@@ -4,6 +4,8 @@ audience: homeowners choosing between closed and cut string profiles · minimali
 tone: expert · timeless-design · trade-authoritative
 purpose: explain what a double closed string staircase is, its symmetry / clean-lines advantage, its finish flexibility, and its easier maintenance
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

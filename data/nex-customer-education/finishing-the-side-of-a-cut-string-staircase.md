@@ -4,6 +4,8 @@ audience: homeowners choosing detailing for a cut string staircase · period-pro
 tone: expert · craftsmanship-focused · trade-authoritative
 purpose: explain the finishing choices for the side of a cut string staircase (scroll brackets · rosettes · flush face) and how a few detail changes can rebrand the same traditional structure as contemporary
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   traditional_scroll_bracket:

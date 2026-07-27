@@ -4,6 +4,8 @@ audience: homeowners choosing an under-stair treatment · designers looking for 
 tone: contemporary · design-forward · trade-authoritative
 purpose: introduce wide feature panels with circular display windows as an architectural under-stair treatment
 category: NEX Under-Stair Ideas
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

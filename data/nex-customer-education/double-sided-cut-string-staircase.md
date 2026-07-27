@@ -4,6 +4,8 @@ audience: homeowners choosing between closed-string and cut-string layouts · de
 tone: expert · craftsmanship-focused · trade-authoritative
 purpose: explain what a double-sided cut string staircase is, the mitred string edge detail, the heavy feature tread character, the plain-vs-scroll-bracket choice, and its finish flexibility
 category: NEX Staircase Types
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

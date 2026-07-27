@@ -4,6 +4,8 @@ audience: homeowners with tight hallways · renovation planners · Victorian / E
 tone: expert · practical · trade-authoritative
 purpose: explain the design solution of extending starting steps beyond the wall line when the lower section of an L-shaped staircase is restricted by hallway width
 category: NEX Staircase Design Techniques
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   primary:

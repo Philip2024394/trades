@@ -4,6 +4,8 @@ audience: pre-purchase design decision · homeowners choosing flooring alongside
 tone: expert · proportional-design · trade-authoritative
 purpose: teach that hallway flooring board width and direction must be considered alongside staircase treads to avoid a visually unbalanced entrance
 category: NEX Design Philosophy
+staircase_context: internal
+brain: staircase_brain
 recommendation_type: EDUCATIONAL
 paired_images:
   wide_grade_1b:
