@@ -222,4 +222,134 @@ Full ADR: [`0021-intelligence-domain-separation.md`](0021-intelligence-domain-se
 
 ---
 
-_ADRs 16-21 are Draft (awaiting signoff) · all 15 prior ADRs remain Accepted · none currently Superseded or Deprecated._
+## 0022 · Merchant images — no third-party copy on import — Accepted
+
+**Context:** NEX can technically auto-import imagery from Google Business Profile · Facebook · Instagram at scale to make free-tier listings look full on day one — but the copyright licence never transfers with the pixels, staleness becomes NEX's maintenance burden forever, and pre-filling removes the merchant's motivation to claim their listing.
+**Decision:** Free listings import ONLY publicly-available business text (name · address · phone · website · category · service area · hours · map location) · never logos · gallery · covers · products · video. Once claimed, only merchant-provided or merchant-authorised media is displayed. Linking to a merchant's official website or Google Business Profile is fine · copying/hosting third-party imagery is never allowed at any tier.
+**Consequences:** Legally cleaner across UK/IE/AU/US · zero third-party rot to maintain · empty gallery becomes a claim incentive that drives claim rate up · at the cost of visually thinner free-tier listings and less impressive marketing screenshots from unclaimed grids.
+
+Full ADR: [`0022-merchant-images-no-third-party-copy.md`](0022-merchant-images-no-third-party-copy.md)
+
+---
+
+## 0023 · Directory import rules & process for seed listings — Accepted
+
+**Context:** NEX needs a populated UK merchant directory on day one to be discoverable, but scraping merchant accounts (with images, fabricated data, or verified badges) creates legal and trust problems. Publicly-available business text can be imported as SEED LISTINGS — public directory entries that let customers discover local businesses before those businesses have engaged with NEX — provided the import contract is strict.
+**Decision:** Seed listings store TEXT ONLY (name · category · address · postcode · phone · website · email if public · hours · description · services · Google rating · Google review count · maps URL · lat/lng) · never invent data · never create login credentials · never mark verified · every record starts `status=listed · claimed=false · verified=false · visibility=public` · no images (ADR-0022) · reviews are a separate manual pipeline preserving verbatim text · claim path ATTACHES to existing listing (never duplicates, preserves URL/reviews/ranking/history) · 20-metro geographic priority (London → Belfast) not national sweep · processing model is one-business-at-a-time with returned listing ID · no batching unless instructed.
+**Consequences:** Directory looks active from day one with zero copyright risk · empty images become the claim incentive · reviews stay authentic (never AI-summarised) · at the cost of slower manual paste-per-business (deliberate) and sparser visual grids than scraping competitors.
+
+Full ADR: [`0023-directory-import-rules-and-process.md`](0023-directory-import-rules-and-process.md)
+
+---
+
+## 0024 · Every image asset carries its generation prompt / capture context — Accepted
+
+**Context:** Building the NEX directory revealed 82 ChatGPT-generated staircase images on `ik.imagekit.io/5vv5pw26q/` had no record of what any of them depicts — the generation prompt was lost at upload time and filenames like "ChatGPT Image Jul 25, 2026, 12_15_57 PM.png" carry zero subject signal. Without a manifest, automated image-to-usecase matching (directory cards, brain answers, banners) is impossible and A+ curation requires visual inspection of every file.
+**Decision:** Every image added to NEX (AI-generated · uploaded · screenshot · 3D render · photo) MUST be recorded in `data/nex-image-manifest.json` at creation time with URL · source · original_prompt (if AI) · description · tags[] · a_plus · subject_domain · created_at · created_by. No image lands in ImageKit / Supabase Storage / public/ without a manifest row. Components/scripts read the manifest by tag intersection rather than hardcoding URLs. Retroactive backfill for the 82 pre-rule images via one-shot admin tool at `/admin/image-tagger`.
+**Consequences:** Directory cards + brain illustrations + banners + hero art can all auto-select best match by tag · provenance is captured (enforces ADR-0022 by construction) · every design decision becomes auditable ("why is this image here?" → the manifest row) · at the cost of a ~30-second manual step on every new image generation and updating a handful of legacy upload scripts.
+
+Full ADR: [`0024-image-manifest-rule.md`](0024-image-manifest-rule.md)
+
+---
+
+## 0025 · Tiered thresholds for the NEX image matcher — Accepted
+
+**Context:** Once the image manifest has enough tagged rows, NEX surfaces images across many surfaces (directory cards, brain chat, marketing hero art, banners, workshop diagrams) each with a very different acceptable quality bar. A single global similarity threshold either produces silence on low-stakes surfaces or embarrassing mismatches on high-stakes surfaces. Neither is honest — mid-confidence matches deserve a caveat, low-confidence matches deserve a clarifying question, not a guess.
+**Decision:** Per-surface confident-floor thresholds + universal three-band response model (Confident ≥0.85 = no caveat · Soft-caveat 0.70-0.85 = "closest match, tell me more" · Clarify <0.70 = NEX asks a targeted follow-up like "felted or torch-on roof?" instead of surfacing anything). Score formula = 0.4 tag intersection + 0.4 description keyword overlap + 0.2 structured field agreement. Floors: directory cards 0.65 · brain chat 0.80 · marketing hero 0.90 · banner recs 0.75 · workshop diagrams 0.85 · search grid 0.60. Thresholds tighten as manifest grows (>100 rows +0.05, >500 rows +0.10). Every match writes telemetry so tuning is evidence-based.
+**Consequences:** Each surface gets the right precision/recall trade-off · the Clarify band turns "we don't know" into smart conversation · corpus-size scaling means early shipping without silence · at the cost of more per-surface code + a follow-up-tracker on the event stream + threshold-per-surface test surface area.
+
+Full ADR: [`0025-image-matcher-tiered-thresholds.md`](0025-image-matcher-tiered-thresholds.md)
+
+---
+
+## 0026 · NEX Image Knowledge System — parser-derived structured knowledge — Accepted
+
+**Context:** ADR-0024 gave the manifest; ADR-0025 gave the matcher. But saving 3,000-word MASTER IMAGE DESCRIPTIONs alongside a handful of scalar fields leaves NEX with two systemic problems at scale — every query pays the cost of parsing 150M words across 50k images, and there's no structured intelligence for "show me the next stage" · "make it blue" (locked?) · "show me similar images."
+**Decision:** Two-input authoring (`master_description` ~3000 words + `master_ai_prompt` ~500 words). Everything else parser-derived at save time: nested IMAGE DNA (STYLE/CAMERA/MATERIALS/LIGHTING/QUALITY/SETTING) with confidence SCORE + 32-bit deterministic HASH · AI INTENT (purpose/role/collection/use_cases) · LOCKED ATTRIBUTES (must_keep/editable/never_change) · MATERIAL JOURNEY (id/stage/total_stages/prev/next) · OBJECTS · TAGS. Retrieval hierarchy DNA→MasterPrompt→MasterDescription escalates only when needed. DNA HASH enables similarity search without text parsing. Optional review button for parser corrections.
+**Consequences:** Authoring stays sustainable at 50k images · ~60× token cost reduction on common queries · similarity search becomes first-class · material journey navigable as a graph · at the cost of parser being load-bearing (mitigated by DNA SCORE surfacing low-confidence extractions).
+
+Full ADR: [`0026-image-knowledge-system.md`](0026-image-knowledge-system.md)
+
+---
+
+## 0027 · NEX Golden Rules — the immutable constitution of the image knowledge system — **Accepted · IMMUTABLE**
+
+**Context:** ADRs 0024-0026 established the plumbing. Plumbing without philosophy drifts — different sessions of Claude and different domains subtly re-interpret what a "description" is for, when to flag, when to escalate. Six months on, the manifest would be internally inconsistent.
+**Decision:** NEX is Architectural Historian + Manufacturing Expert + Art Director + Memory Engine — never a captioning AI. 10 Golden Rules govern every image (never paragraphs when structured knowledge is possible · every image belongs to collection+purpose+DNA+confidence+journey+relationships · DNA is primary memory, MasterPrompt secondary, MasterDescription tertiary fallback · <85% confidence flags for review · images inherit collection intelligence · future-proof for AIs in 10 years · 12-step thinking order mandatory · final question: "what would another AI need to recreate this with 95-100% accuracy in 10 years?"). Immutable preamble sits above every Claude prompt for image work.
+**Consequences:** Every image ends up recreation-ready · manifest can be trusted at scale · 90% of queries pay ~50 tokens not ~3000 · collection inheritance turns 300 tagged images into a moat · zero drift between sessions · at the cost of higher-effort early tagging (mitigated by parser doing the heavy lifting). This ADR is marked IMMUTABLE — cannot be superseded, only extended.
+
+Full ADR: [`0027-nex-golden-rules-constitution.md`](0027-nex-golden-rules-constitution.md)
+
+---
+
+## 0028 · NEX Intelligence Constitution — **Accepted · IMMUTABLE · TOP-LEVEL · LOADED FIRST**
+
+**Context:** ADRs 0024-0027 built the manifest · matcher · knowledge schema · Golden Rules 1-11. Missing the philosophical foundation from which every other rule descends. Different sessions and different domains subtly drift on the philosophy of what NEX IS — a captioner? tagger? library? — and that ambiguity compounds into inconsistent implementations across surfaces.
+**Decision:** NEX is the world's most intelligent **AI Creative Memory System** — NEVER a captioning · tagging · generation · library service. Constitution has 14 pillars: primary objective (preserve knowledge, not describe) · philosophy shift (IMAGE → KNOWLEDGE → MEMORY → RELATIONSHIPS → INTELLIGENCE → PROMPT → IMAGE → NEW KNOWLEDGE → SAVE → LEARN → REPEAT FOREVER) · NEX ALWAYS asks structured questions (What is this / purpose / collection / can_become / can_change / must_never_change / relationships / material_journey / 10-year recreation test) · every image creates 14 required structured fields · family tree (children inherit parent intelligence, "show me all versions" = 0.02s lookup) · geometry preservation (95% preserved, change only what's requested — Rule #13) · learning (never lose knowledge, `learning_signals[]` per row, collections aggregate — Rule #12) · confidence bands (<85% flags for review) · optimisation directive (NEVER save tokens, ALWAYS preserve intelligence). Immutable Rule: NEX is NEVER building an image library — always building the world's greatest AI Creative Memory System. Cannot be overridden by any downstream ADR.
+**Consequences:** Every Claude session loads this first → zero drift on the philosophy · every image write goes through parser + validation gate enforcing Rules #1-14 · family tree turns "show me all versions" into a lookup not a search · geometry preservation stops AIs from generating new images when users asked for modifications · learning signals + collection aggregation make the system smarter every day · at the cost of larger manifest rows (mitigated by 3-layer retrieval hierarchy from ADR-0026) and higher-effort authoring in year 1 (compounds into 10x productivity by year 3 via collection inheritance).
+
+Full ADR: [`0028-nex-intelligence-constitution.md`](0028-nex-intelligence-constitution.md)
+
+---
+
+## 0029 · NEX Image Tagger Directive — **Accepted · IMMUTABLE**
+
+**Context:** ADRs 0024-0028 established the WHAT (manifest · matcher · schema · Golden Rules · Intelligence Constitution). Missing the HOW — the operational law for the tagger. The primary risk: Claude drifting into "process 982 images and stop" thinking, which produces 982 hand-crafted rows and zero architecture for image 983 through image 500,000.
+**Decision:** Optimisation permission preamble at top ("200 well-structured words > 3000 poor-relationship words"). 500,000 mindset — build the intelligence layer, not process a batch. Mandatory 8-counter header (Total · Completed · Remaining · Flagged · Collections Updated · Material Journeys Created · Cover Images Applied · Admin Reviews Required) always visible. Flagged images NEVER skipped — leave OPEN in editor with specific reason + suggested values + Accept/Edit/Reject actions. Auto-flag triggers: DNA <85% · geometry unclear · collection undetermined · purpose undetermined · materials undetermined · relationships unclear · master AI prompt generation fails · any Rule #4/#11 field missing. Collection inheritance is automatic (Collection DNA + aggregate A+ image DNA + aggregate learning signals). Trade Centre + Pinterest auto-cover priority: Collection → Hero → Marketing → Educational → Website Banner → Transparent → Leave Blank + flag "admin image required". NEVER fake · NEVER guess · NEVER silent placeholder.
+**Consequences:** Tagger operationally consistent every session · flagged images can't accumulate as silent debt · Trade Centre auto-populates from library the moment a match exists · at the cost of larger tagger header + flagged-row UI + priority matcher call per card on every feed load (mitigated by caching).
+
+Full ADR: [`0029-nex-image-tagger-directive.md`](0029-nex-image-tagger-directive.md)
+
+---
+
+## 0030 · Intelligence Layers Before Admin — **Accepted · IMMUTABLE**
+
+**Context:** The validator was flagging any row missing MASTER AI PROMPT for admin review — short-circuiting the entire intelligence stack (collection inheritance, DNA extraction, relationships) that ADRs 0024-0028 built. Philip's directive: admin is the LAST option, never the first. "If collection intelligence can determine the answer with 95% confidence, SAVE AUTOMATICALLY."
+**Decision:** 6-level intelligence stack, mandatory order: (1) Collection Intelligence — aggregate DNA across ≥3 A+ collection rows, inherit fields ≥85% confidence · (2) Image Intelligence — base parser · (3) Relationship Intelligence — family_tree parent/siblings (deferred) · (4) MASTER AI PROMPT auto-generator — compose real inherited+inferred fields (not fabrication) · (5) Vision Intelligence — pixel inspection (deferred build) · (6) Admin Review — LAST resort, only fires when overall_confidence <85%. Confidence formula weights inheritance at 30%. Bootstrap: needs 3+ A+ rows per collection to activate Level 1. Amends ADR-0027 Rule #6 (band applies to overall_confidence, not base DNA) + Rule #10 (auto-generated prompts pass at ≥85%). "You have permission to think" preamble loaded above every image task.
+**Consequences:** Admin intervention target drops from every unfamiliar image to <5% · collections compound (each A+ row lifts confidence for every subsequent row in that collection) · MASTER AI PROMPT auto-generation from inherited DNA means recreation-ready without manual authoring · at the cost of a real bootstrap requirement (≥3 A+ per collection to enable Level 1) and Level 5 vision still being deferred build.
+
+Full ADR: [`0030-intelligence-layers-before-admin.md`](0030-intelligence-layers-before-admin.md)
+
+---
+
+## 0031 · Global Intelligence Bootstrap + Golden Rule of NEX — **Accepted · IMMUTABLE**
+
+**Context:** ADR-0030's "≥3 A+ rows bootstrap" clause was too strict — collections need seeds before intelligence can help. Philip's insight: every image contributes to intelligence, even one. And the whole model of per-image processing is wrong.
+**Decision:** THE GOLDEN RULE OF NEX — "NEX MUST NEVER ASK ADMIN A QUESTION WHICH CAN BE ANSWERED BY ANOTHER IMAGE." 7-pass Global Intelligence Pipeline runs across ALL images before saving anything: (1) Collections · (2) Relationships · (3) Material Journeys · (4) DNA + cross-collection patterns · (5) Master AI Prompts · (6) Confidence · (7) atomic SAVE. Nothing persists before Pass 7. Every image benefits from every other image. Removes ADR-0030's bootstrap floor — sample size affects confidence but no image is excluded from teaching NEX.
+**Consequences:** Global intelligence emerges from collective evidence · no chicken-egg bootstrap · library becomes a graph not a pile · at the cost of complex 7-pass orchestrator + atomic-only writes + per-pass audit logs.
+
+Full ADR: [`0031-global-intelligence-bootstrap.md`](0031-global-intelligence-bootstrap.md)
+
+---
+
+## 0032 · NEX Chief Intelligence Officer — **Accepted · IMMUTABLE · CAPSTONE**
+
+**Context:** ADRs 0022-0031 built the full stack. Missing: the ROLE framing that gives NEX (and Claude working as NEX) a coherent job title and measurement.
+**Decision:** Claude working with NEX images = **NEX Chief Intelligence Officer**, not tagger. 5 Masters (Image · Collection · Creative · Intelligence · Knowledge). MASTER IMAGE SCORE 100 pts across 5 × 20-pt axes (Image · Collection · Relationship · Future · Creative). Success = INTELLIGENCE created, not images processed. Measurement is collections discovered · relationships · journeys · Master AI Prompts · admin required. One image belongs to 14 collections via Knowledge Master. **CAPSTONE — no further ADR expansion in image domain without Philip's explicit request.**
+**Consequences:** Mental model shift from tagger to CIO · 5 Masters give clean functional decomposition · MASTER SCORE makes quality measurable per-row · reports focus on intelligence not counts · at the cost of one more preamble block per session and slightly more per-row parsing work.
+
+Full ADR: [`0032-nex-chief-intelligence-officer.md`](0032-nex-chief-intelligence-officer.md)
+
+---
+
+## 0033 · Quality Over Quantity + Brain Isolation — **Accepted · IMMUTABLE**
+
+**Context:** ADR-0031's Pass-7 atomic write saved 981 rows including 856 <50 (poor) and 113 with 50-69 (marginal). Those rows pollute the intelligence layer. Philip: "NEX must be DIFFICULT to teach. If easy, it becomes inaccurate over time."
+**Decision:** 7 Golden Quality Rules: never guess · quality over quantity (250 correct > 950 partial) · poor images do NOT enter intelligence (SAVE DISABLED or SAVE AS DRAFT ONLY) · brains are ISOLATED (staircase / door / interior / kitchen / bathroom / tools / timber / flooring / lighting / roofing / marketing — no cross-contamination) · NO general brain · multi-collection but single `primary_brain` · save REFUSES low quality. Score gate: ≥70 clean save · 50-69 draft only (filtered from all intelligence reads) · <50 SAVE FAILED with missing-fields list. `primary_brain: null` = SAVE FAILED regardless. Overrides ADR-0031 Pass-7 save-everything for below-threshold rows.
+**Consequences:** Manifest becomes trusted knowledge base · brains stay pure · library shrinks before it grows but everything in it is real intelligence · long-term accuracy protected · at the cost of sharply lower auto-completion counter in Y1 and higher admin workload upfront.
+
+Full ADR: [`0033-nex-quality-over-quantity-and-brain-isolation.md`](0033-nex-quality-over-quantity-and-brain-isolation.md)
+
+---
+
+## 0034 · NEX Knowledge Engine + THE GOLD STANDARD OF NEX — **Accepted · IMMUTABLE · IDENTITY REFRAMING**
+
+**Context:** ADRs 0022-0033 built the machinery framed as an "image cataloguing system that also does intelligence." Philip's clarification: that framing is wrong. NEX is not an image system. NEX is an Architectural Knowledge Engine. Images are the input, knowledge is the output. Users don't care if image #437 exists — they care whether NEX understands their request.
+**Decision:** Claude's identity everywhere becomes "MASTER KNOWLEDGE ENGINE OF NEX" — replaces all prior variants. NEX must never learn an image; it must learn materials · styles · relationships · collections · manufacturing · architecture · installation · construction · designer/future/search/AI-generation/user intelligence. If an image contains 500 pieces of knowledge, discover all 500. THE GOLD STANDARD (highest rule): if a user asks for something that has never existed before, NEX MUST STILL UNDERSTAND WHAT THEY WANT. `"0 results found"` is BANNED — every zero-image search decomposes the query into knowledge fragments, returns per-fragment understanding + derived paths (references · similar designs · renders · plans · install guides · AI-generated concepts). Understanding intent > finding perfect image.
+**Consequences:** 850 images become "N thousand relationships" · users trust NEX more because it always demonstrates understanding · every search endpoint needs Gold Standard wrapper that decomposes zero-result queries · adds Knowledge Extraction Yield as new success axis complementing MASTER IMAGE SCORE · at the cost of implementing Query Knowledge Decomposer (deferred build) and richer response payloads on every search surface. All 33 prior ADRs remain in force — this ADR reframes what NEX IS, not what it does.
+
+Full ADR: [`0034-nex-knowledge-engine-and-gold-standard.md`](0034-nex-knowledge-engine-and-gold-standard.md)
+
+---
+
+_ADRs 16-21 are Draft (awaiting signoff) · all 15 prior ADRs remain Accepted · ADRs 0022-0026 Accepted · ADR-0027 v1.2 Accepted + IMMUTABLE · ADR-0028 Accepted + IMMUTABLE + TOP-LEVEL + LOADED FIRST · ADRs 0029-0033 Accepted + IMMUTABLE · ADR-0034 Accepted + IMMUTABLE + IDENTITY REFRAMING · none currently Superseded or Deprecated._

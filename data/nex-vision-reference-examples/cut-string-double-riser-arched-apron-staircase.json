@@ -1,0 +1,111 @@
+{
+  "reference_notes": "Philip's second canonical ADR-0037 example (2026-07-27). Bespoke traditional cut string staircase with decorative double-riser construction and repeating scalloped arched apron pattern. Walnut hardwood finish. Used alongside the first example (cut-string-half-open-riser-staircase.json) as the reference standard when the object is a bespoke traditional staircase. Both references define the quality bar Claude Sonnet vision must reach before we run the 981-batch.",
+  "source_image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2004_19_52%20PM.png?updatedAt=1784798410989",
+  "quality_bar": "Vision model must identify: (a) double-riser construction as a decorative-vs-structural distinction · (b) arched scalloped apron pattern as a specific Victorian joinery feature · (c) cut string profile · (d) walnut hardwood material · (e) high-end custom craftsmanship level. Every field of the 10-item staircase_checklist must be attempted. vision_quality_score.construction must exceed 90.",
+
+  "extraction": {
+    "object": "staircase",
+    "classification": {
+      "primary_type": "bespoke cut string staircase",
+      "construction_style": "double riser staircase with decorative arched apron panels",
+      "confidence": 95
+    },
+    "visual_identification": {
+      "view": "3D side/front perspective",
+      "recognition_features": [
+        "cut string profile following tread and riser shape on the outer side",
+        "double riser construction — full closed structural riser plus decorative front panel",
+        "repeating scalloped arched cut-out apron pattern between each step",
+        "solid timber treads with square projecting nosing",
+        "symmetrical straight-flight proportions",
+        "closed outer side panel with visible rich grain",
+        "handcrafted joinery finish with polished surface"
+      ]
+    },
+    "construction_intelligence": {
+      "subtype": "cut string",
+      "variant": "double riser with decorative arched apron",
+      "function_reasoning": [
+        "double riser adds decorative visual weight while structural load stays on the rear full-height riser",
+        "arched apron cut-outs turn the staircase face into a repeating Victorian pattern motif",
+        "closed side string protects the underside from view and creates a furniture-like enclosed appearance on that side"
+      ],
+      "structural_reasoning": [
+        "full-height rear riser carries the tread load in the traditional housed manner",
+        "front decorative riser panel is applied ornamentally, not structurally",
+        "solid thick timber treads with square nosing provide stiffness and support the applied front panel",
+        "traditional handcrafted joinery methods bind the assembly — no visible modern fixings"
+      ]
+    },
+    "joinery_details": {
+      "present": [
+        "cut string side profile on the outer face",
+        "solid timber tread construction with square nosing",
+        "full-height structural riser behind",
+        "decorative front riser panel with arched scalloped cut-outs",
+        "arched apron panels repeating between each step",
+        "closed outer side panel"
+      ],
+      "not_present": [
+        "no visible modern metal fixings",
+        "no glass or steel elements",
+        "no open riser gaps",
+        "no exposed rear structure or angle blocks visible"
+      ],
+      "reason": "the double-riser and closed-side construction present a fully-enclosed traditional furniture-grade appearance where every visible surface is a designed decorative element — the opposite of exposed modern floating construction"
+    },
+    "design_character": {
+      "style": [
+        "traditional Victorian",
+        "decorative cut string stair",
+        "bespoke hardwood joinery",
+        "luxury residential interior joinery",
+        "architectural joinery example"
+      ],
+      "materials": [
+        "dark walnut / stained hardwood finish",
+        "rich brown timber grain",
+        "smooth polished surface"
+      ]
+    },
+    "search_terms": [
+      "cut string staircase",
+      "double riser staircase",
+      "arched riser detail staircase",
+      "decorative arched apron staircase",
+      "bespoke walnut staircase",
+      "traditional Victorian staircase",
+      "scalloped apron staircase",
+      "handcrafted hardwood staircase"
+    ],
+    "comparison_exclusions": [
+      "not closed string staircase",
+      "not open riser staircase",
+      "not floating staircase",
+      "not modern minimalist staircase",
+      "not steel and glass staircase",
+      "not mass-produced staircase"
+    ],
+    "staircase_checklist": {
+      "staircase_type": "straight flight",
+      "string_construction": "cut string (outer) with closed side panel",
+      "riser_construction": "double riser — full closed structural + decorative front with arched cut-outs",
+      "tread_support_method": "traditional housed onto rear structural riser · front panel applied decoratively",
+      "handrail_termination": "not visible in this frame",
+      "baluster_style": "not visible in this frame",
+      "joinery_clues": "traditional handcrafted joinery · concealed fixings · decorative repeating cut-out pattern",
+      "architectural_period": "Victorian / traditional",
+      "material_species": "walnut / stained hardwood",
+      "craftsmanship_level": "high-end custom bespoke joinery"
+    },
+    "vision_quality_score": {
+      "construction": 95,
+      "material": 88,
+      "style": 96,
+      "components": 92,
+      "manufacturing_clues": 90,
+      "overall": 92
+    },
+    "vision_confidence": 93
+  }
+}

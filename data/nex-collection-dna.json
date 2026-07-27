@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-27T00:00:00Z",
+  "description": "NEX Collection DNA — per ADR-0027 Rule #11. Each collection carries its own transformation policy (allowed_types, default_sizes, allows_text/prices/whatsapp/logo, requires_transparent). Inherited by every image in the collection. When a user asks 'make me a hero image' or 'make me a Black Friday advert' for a collection, NEX loads the policy here and asks zero questions.",
+  "collections": {
+    "luxury_staircases": {
+      "collection_id": "luxury_staircases",
+      "display_name": "Luxury Staircases",
+      "allowed_types": [
+        "hero_image",
+        "facebook_banner",
+        "instagram_banner",
+        "instagram_story",
+        "website_banner",
+        "marketing_banner",
+        "black_friday_banner",
+        "collection_banner",
+        "video_thumbnail",
+        "material_journey_stage"
+      ],
+      "default_sizes": [
+        "1920x1080",
+        "1200x800",
+        "1080x1080",
+        "1080x1350",
+        "1200x600"
+      ],
+      "allows_text": true,
+      "allows_prices": true,
+      "allows_whatsapp": true,
+      "allows_logo": true,
+      "requires_transparent": false,
+      "notes": "Premium staircase imagery for hero + banner + social use."
+    },
+    "manufacturing_staircase_production_timber_processing": {
+      "collection_id": "manufacturing_staircase_production_timber_processing",
+      "display_name": "Manufacturing → Timber Processing",
+      "allowed_types": [
+        "material_journey_stage",
+        "educational_banner",
+        "collection_banner",
+        "website_banner",
+        "instagram_banner"
+      ],
+      "default_sizes": ["1920x1080", "1200x800"],
+      "allows_text": true,
+      "allows_prices": false,
+      "allows_whatsapp": false,
+      "allows_logo": true,
+      "requires_transparent": false,
+      "notes": "Material-journey imagery — educational focus, no pricing/CTA overlays."
+    }
+  }
+}

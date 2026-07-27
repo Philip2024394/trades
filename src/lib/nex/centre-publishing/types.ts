@@ -53,6 +53,11 @@ export type CentreFeedItem = {
   active_banner_visual_style: string | null;
   // Timestamps
   published_at: string | null;
+  // Admin ref — human-readable stable ID (e.g. "NEX-D-001") for
+  // directory seeds. Used during curation so Philip can point at a
+  // specific card and say "this one should get image X". Undefined
+  // for non-seed items (real merchant products).
+  admin_ref?: string;
 };
 
 export type CentreFeedFilters = {

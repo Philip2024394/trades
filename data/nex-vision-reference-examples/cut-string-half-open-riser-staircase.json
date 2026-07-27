@@ -1,0 +1,81 @@
+{
+  "reference_notes": "Philip's canonical ADR-0037 example (2026-07-27). Cut-string, half-open-riser walnut staircase. Used as the reference standard for what Claude Sonnet vision must produce for a similar unseen image. Source image: https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2004_10_51%20PM.png?updatedAt=1784797870414",
+  "source_image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2023,%202026,%2004_10_51%20PM.png?updatedAt=1784797870414",
+  "quality_bar": "Every future vision extraction on any staircase image is compared to this. If the model produces flat descriptive tags instead of reasoning, the extraction is rejected and the system prompt is tuned.",
+
+  "extraction": {
+    "object": "staircase",
+    "classification": {
+      "primary_type": "cut string staircase",
+      "construction_style": "half open riser staircase",
+      "confidence": 95
+    },
+    "visual_identification": {
+      "view": "3D side/front perspective",
+      "recognition_features": [
+        "visible exposed cut string profile",
+        "open riser gaps between treads",
+        "solid timber treads extending over string",
+        "decorative furniture-like appearance",
+        "clean exposed joinery"
+      ]
+    },
+    "construction_intelligence": {
+      "subtype": "cut string",
+      "variant": "half open riser",
+      "function_reasoning": [
+        "provides child safety by reducing large open gaps",
+        "prevents head entrapment risk compared with fully open risers",
+        "adds visual solidity while maintaining open staircase appearance"
+      ],
+      "structural_reasoning": [
+        "extra thick timber treads used to compensate for reduced support from open riser construction",
+        "treads provide additional stiffness and strength",
+        "treads are screw-fixed from the rear into the tread construction",
+        "riser does not act as a full structural support member"
+      ]
+    },
+    "joinery_details": {
+      "present": [
+        "cut string side profile",
+        "solid timber tread construction",
+        "half risers",
+        "rear fixing method"
+      ],
+      "not_present": [
+        "no angle support blocks between tread and riser",
+        "no traditional housed string wedge system visible",
+        "no closed string enclosure"
+      ],
+      "reason": "open rear construction leaves the underside visible, creating a furniture-style staircase appearance"
+    },
+    "design_character": {
+      "style": [
+        "modern luxury staircase",
+        "architectural timber furniture piece",
+        "minimalist joinery",
+        "designer residential interior"
+      ],
+      "materials": [
+        "walnut hardwood appearance",
+        "solid timber construction"
+      ]
+    },
+    "search_terms": [
+      "cut string staircase",
+      "half open riser staircase",
+      "open riser timber staircase",
+      "walnut staircase",
+      "modern luxury staircase",
+      "floating furniture style staircase",
+      "designer staircase joinery"
+    ],
+    "comparison_exclusions": [
+      "not closed string staircase",
+      "not traditional housed staircase",
+      "not fully floating staircase",
+      "not zig zag steel staircase"
+    ],
+    "vision_confidence": 95
+  }
+}

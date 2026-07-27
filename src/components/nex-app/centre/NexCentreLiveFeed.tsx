@@ -28,13 +28,13 @@ import {
   useState,
 } from "react";
 import {
-  BadgeCheck,
   Building2,
+  ChevronRight,
   MapPin,
+  Megaphone,
   ShoppingBag,
   SlidersHorizontal,
   Sparkles,
-  Star,
   Tag,
   Users,
   Wrench,
@@ -46,6 +46,13 @@ import type { BrainEntry } from "@/lib/nex/knowledge/retrieve";
 import { NexBottomSheet } from "./NexBottomSheet";
 import { ProductDetailsSheet } from "./ProductDetailsSheet";
 import { MerchantProfileSheet } from "./MerchantProfileSheet";
+import {
+  interleaveInterstitials,
+  type AdTile,
+  type CategoryTile,
+  type Interstitial,
+  type TipTile,
+} from "./interstitials";
 
 type ApiResponse = {
   ok: boolean;
@@ -518,13 +525,35 @@ export function NexCentreLiveFeed() {
           <MasonrySkeleton />
         ) : items.length > 0 ? (
           <Masonry>
-            {items.map((item) => (
-              <ProductCard
-                key={item.offer_id}
-                item={item}
-                onOpen={() => openProduct(item)}
-              />
-            ))}
+            {interleaveInterstitials(items, 5).map((tile) => {
+              // Product tile
+              if ("offer_id" in tile) {
+                return (
+                  <ProductCard
+                    key={`p-${tile.offer_id}`}
+                    item={tile}
+                    onOpen={() => openProduct(tile)}
+                  />
+                );
+              }
+              // Interstitial tile (category / tip / ad)
+              const inter = tile as Interstitial;
+              if (inter.kind === "category") {
+                return (
+                  <CategoryChipCard
+                    key={`c-${inter.id}`}
+                    tile={inter}
+                    onSelect={() =>
+                      setFilters((f) => ({ ...f, category: inter.label }))
+                    }
+                  />
+                );
+              }
+              if (inter.kind === "tip") {
+                return <NexTipCard key={`t-${inter.id}`} tile={inter} />;
+              }
+              return <AdCard key={`a-${inter.id}`} tile={inter} />;
+            })}
           </Masonry>
         ) : (
           <EmptyState
@@ -776,31 +805,46 @@ function HeroChip({
   );
 }
 
-function VerifiedBadge({
+// Deterministic size bucket for masonry variety.
+//
+// Business intent: the image aspect ratio IS a commercial lever.
+// Promoted cards always render TALL (3/5) — the biggest, most eye-
+// catching slot. Non-promoted cards deterministically hash to a size
+// (70% short, 25% medium, 5% tall) so the free feed still surprises
+// without giving every free card the premium slot. Deterministic ==
+// stable per card, no reshuffle on scroll.
+function cardAspect(item: CentreFeedItem): string {
+  if (item.is_promoted) return "3 / 5"; // tallest — paid slot
+  let h = 0;
+  for (let i = 0; i < item.offer_id.length; i++) {
+    h = ((h << 5) - h) + item.offer_id.charCodeAt(i);
+    h |= 0;
+  }
+  const bucket = Math.abs(h) % 100;
+  if (bucket < 70) return "3 / 4"; // 70% short
+  if (bucket < 95) return "4 / 5"; // 25% medium
+  return "2 / 3"; // 5% tall — occasional free-tier surprise
+}
+
+// Small gray verification pill — subtle by design. Trust level is
+// signalled by the dot colour, not a loud coloured background.
+function VerifiedPip({
   level,
 }: {
   level: CentreFeedItem["merchant_verification_level"];
 }) {
-  if (level === "listed") {
-    return (
-      <span className="inline-flex items-center gap-1 rounded-full bg-black/5 px-1.5 py-0.5 text-[9px] font-medium text-black/60">
-        Listed
-      </span>
-    );
-  }
-  const label =
-    level === "partner" ? "NEX Partner" : level === "verified" ? "Verified" : "Claimed";
-  const colour =
+  if (level === "listed") return null;
+  const dot =
     level === "partner"
-      ? "bg-amber-100 text-amber-700"
+      ? "bg-amber-500"
       : level === "verified"
-      ? "bg-emerald-100 text-emerald-700"
-      : "bg-blue-100 text-blue-700";
+      ? "bg-emerald-500"
+      : "bg-blue-500";
+  const label =
+    level === "partner" ? "Partner" : level === "verified" ? "Verified" : "Claimed";
   return (
-    <span
-      className={`inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[9px] font-medium ${colour}`}
-    >
-      <BadgeCheck className="h-2.5 w-2.5" />
+    <span className="inline-flex items-center gap-1 rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-medium text-black/60">
+      <span className={`h-1.5 w-1.5 rounded-full ${dot}`} />
       {label}
     </span>
   );
@@ -816,63 +860,208 @@ function ProductCard({
   const price = formatPrice(item.price_pence);
   const location =
     item.merchant_city ?? item.merchant_postcode_prefix ?? "UK";
+  const aspect = cardAspect(item);
+  const topCategory = item.category_path[0];
 
   return (
-    <article
-      className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm"
-    >
-      {/* Product image (whole card is clickable via bottom button) */}
-      {item.hero_image_url ? (
-        <img
-          src={item.hero_image_url}
-          alt={item.name}
-          loading="lazy"
-          className="w-full object-cover"
-          style={{ aspectRatio: "3 / 4" }}
-        />
-      ) : (
-        <div
-          className="w-full bg-gradient-to-br from-neutral-100 to-neutral-200"
-          style={{ aspectRatio: "3 / 4" }}
-        />
-      )}
+    <article className="group mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition-shadow hover:shadow-md">
+      {/* Whole image is clickable (Pinterest pattern) */}
+      <button
+        type="button"
+        onClick={onOpen}
+        aria-label={`Open ${item.name}`}
+        className="relative block w-full overflow-hidden"
+        style={{ aspectRatio: aspect }}
+      >
+        {item.hero_image_url ? (
+          <img
+            src={item.hero_image_url}
+            alt={item.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+          />
+        ) : (
+          <div className="h-full w-full bg-gradient-to-br from-neutral-100 to-neutral-200" />
+        )}
+
+        {/* Orange "Promoted" pill — the only splash of colour, only
+            appears on paid slots. Keeps the "some orange badges"
+            aesthetic loud enough to be an aspirational upsell but
+            rare enough not to feel spammy. */}
+        {item.is_promoted && (
+          <span className="absolute left-2 top-2 inline-flex items-center gap-1 rounded-full bg-orange-500 px-2 py-0.5 text-[9px] font-semibold text-white shadow-sm">
+            <Sparkles className="h-2.5 w-2.5" strokeWidth={2.5} />
+            Promoted
+          </span>
+        )}
+
+        {/* Admin ref badge — copyable NEX-D-XXX identifier for
+            directory-seed curation. Sits top-right so it doesn't
+            clash with the Promoted pill. Hidden until curation is
+            done (remove the badge or gate on ?admin=1 later). */}
+        {item.admin_ref && <AdminRefBadge refCode={item.admin_ref} />}
+      </button>
 
       <div className="p-3">
         {/* Title */}
-        <div className="text-sm font-semibold leading-tight text-black line-clamp-2">
-          {item.name}
-        </div>
-
-        {/* Price */}
-        <div className="mt-1 text-base font-semibold text-black">{price}</div>
-
-        {/* Merchant name */}
-        <div className="mt-1.5 truncate text-[11px] text-black/70">
-          {item.merchant_display_name ?? item.brand_name}
-        </div>
-
-        {/* Verified badge + location on one meta line */}
-        <div className="mt-1 flex items-center justify-between text-[10px] text-black/50">
-          <span className="flex items-center gap-0.5">
-            <Star className="h-2.5 w-2.5 fill-current text-amber-500" />
-            <VerifiedBadge level={item.merchant_verification_level} />
-          </span>
-          <span className="flex items-center gap-0.5">
-            <MapPin className="h-2.5 w-2.5" />
-            {location}
-          </span>
-        </div>
-
-        {/* Single action button — opens the bottom sheet with everything */}
         <button
           type="button"
           onClick={onOpen}
-          className="mt-3 w-full rounded-full bg-black py-2 text-[11px] font-medium text-white hover:bg-black/85"
+          className="block w-full text-left text-sm font-semibold leading-tight text-black line-clamp-2 hover:underline"
         >
-          I'm Interested
+          {item.name}
         </button>
+
+        {/* Price — hidden for directory listings (price_pence = 0). */}
+        {item.price_pence > 0 ? (
+          <div className="mt-1 text-base font-semibold text-black">{price}</div>
+        ) : (
+          <div className="mt-1 text-[11px] font-medium text-black/50">
+            Directory listing
+          </div>
+        )}
+
+        {/* Merchant name — hide when same as product name (directory
+            listings, where name = brand = merchant). */}
+        {(item.merchant_display_name ?? item.brand_name) !== item.name && (
+          <div className="mt-1.5 truncate text-[11px] text-black/70">
+            {item.merchant_display_name ?? item.brand_name}
+          </div>
+        )}
+
+        {/* Meta pills — all small gray, uniform weight */}
+        <div className="mt-1.5 flex flex-wrap items-center gap-1">
+          <VerifiedPip level={item.merchant_verification_level} />
+          {topCategory && (
+            <span className="inline-flex items-center rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-medium text-black/60">
+              {topCategory}
+            </span>
+          )}
+          <span className="inline-flex items-center gap-0.5 rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[9px] font-medium text-black/60">
+            <MapPin className="h-2 w-2" />
+            {location}
+          </span>
+        </div>
       </div>
     </article>
+  );
+}
+
+// ── Admin ref badge (curation aid) ───────────────────────────────
+
+function AdminRefBadge({ refCode }: { refCode: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(refCode).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1200);
+      });
+    }
+  };
+  return (
+    <span
+      role="button"
+      tabIndex={0}
+      onClick={handleCopy}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") handleCopy(e as unknown as React.MouseEvent);
+      }}
+      className="absolute right-2 top-2 z-10 inline-flex cursor-pointer items-center gap-1 rounded-md border border-black/20 bg-black/70 px-1.5 py-0.5 font-mono text-[9px] font-semibold text-white shadow-sm backdrop-blur-sm transition-colors hover:bg-black/85"
+      title="Click to copy"
+    >
+      {copied ? "copied!" : refCode}
+    </span>
+  );
+}
+
+// ── Interstitial tiles ───────────────────────────────────────────
+
+function CategoryChipCard({
+  tile,
+  onSelect,
+}: {
+  tile: CategoryTile;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className="group mb-3 flex w-full break-inside-avoid items-center justify-between gap-2 rounded-2xl border border-black/5 bg-white px-3 py-2.5 text-left shadow-sm hover:bg-black/[0.02]"
+    >
+      <span className="flex min-w-0 items-center gap-2">
+        {tile.emoji && (
+          <span className="text-base leading-none" aria-hidden>
+            {tile.emoji}
+          </span>
+        )}
+        <span className="min-w-0">
+          <span className="block truncate text-[11px] font-semibold text-black">
+            {tile.label}
+          </span>
+          <span className="block text-[10px] text-black/50">
+            {tile.count} items
+          </span>
+        </span>
+      </span>
+      <ChevronRight className="h-3.5 w-3.5 flex-none text-black/40 transition-transform group-hover:translate-x-0.5" />
+    </button>
+  );
+}
+
+function NexTipCard({ tile }: { tile: TipTile }) {
+  return (
+    <div className="mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-orange-100 bg-gradient-to-br from-orange-50 to-white p-3 shadow-sm">
+      <div className="flex items-center gap-1.5">
+        <span className="grid h-4 w-4 place-items-center rounded-full bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+          <Sparkles className="h-2 w-2" strokeWidth={2.5} />
+        </span>
+        <span className="text-[9px] font-black uppercase tracking-[0.18em] text-orange-600">
+          NEX Advice
+        </span>
+      </div>
+      <div className="mt-1.5 text-[11.5px] font-semibold leading-snug text-black">
+        {tile.headline}
+      </div>
+      <div className="mt-1 text-[10.5px] leading-relaxed text-black/65">
+        {tile.body}
+      </div>
+    </div>
+  );
+}
+
+function AdCard({ tile }: { tile: AdTile }) {
+  const accent = tile.accent ?? "bg-neutral-50";
+  return (
+    <a
+      href="#"
+      onClick={(e) => e.preventDefault()}
+      className={`mb-3 block break-inside-avoid overflow-hidden rounded-2xl border border-black/5 ${accent} p-3 shadow-sm transition-shadow hover:shadow-md`}
+    >
+      <div className="flex items-center justify-between">
+        <span className="inline-flex items-center gap-1 rounded-full bg-white/70 px-1.5 py-0.5 text-[8.5px] font-semibold uppercase tracking-wider text-black/50">
+          <Megaphone className="h-2 w-2" />
+          Sponsored
+        </span>
+        <span className="text-[9px] font-medium text-black/40">Ad</span>
+      </div>
+      <div className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-black/50">
+        {tile.brand}
+      </div>
+      <div className="mt-0.5 text-[12.5px] font-bold leading-tight text-black">
+        {tile.headline}
+      </div>
+      <div className="mt-1 text-[10.5px] leading-relaxed text-black/60">
+        {tile.sub}
+      </div>
+      <div className="mt-2 inline-flex items-center gap-0.5 text-[10px] font-semibold text-black">
+        {tile.cta}
+        <ChevronRight className="h-3 w-3" />
+      </div>
+    </a>
   );
 }
 

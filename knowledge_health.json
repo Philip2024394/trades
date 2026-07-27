@@ -1,0 +1,77 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-07-25T18:02:57.028Z",
+  "last_build_at": "2026-07-25T18:02:56.856Z",
+  "master_checksum": "c50f1060e36f",
+  "health_score": 2,
+  "health_band": "critical",
+  "totals": {
+    "categories": 5,
+    "entries": 1554,
+    "avg_answer_length": 231
+  },
+  "quality": {
+    "errors": 0,
+    "warnings": 985,
+    "duplicate_ids": 0,
+    "duplicate_questions": 1,
+    "banned_phrase_hits": 0,
+    "us_spelling_hits": 0,
+    "missing_voice": 878,
+    "fact_check_flags": 106,
+    "missing_required_fields": 0
+  },
+  "banned_phrase_breakdown": {},
+  "per_category": {
+    "cement": {
+      "count": 150,
+      "avg_answer_length": 110,
+      "missing_voice": 107,
+      "fact_check_flags": 106,
+      "banned_phrase_hits": 0,
+      "us_spelling_hits": 0,
+      "duplicate_questions": 0,
+      "voice_pass_rate": 29
+    },
+    "hand-tools": {
+      "count": 400,
+      "avg_answer_length": 65,
+      "missing_voice": 398,
+      "fact_check_flags": 0,
+      "banned_phrase_hits": 0,
+      "us_spelling_hits": 0,
+      "duplicate_questions": 0,
+      "voice_pass_rate": 1
+    },
+    "sand": {
+      "count": 149,
+      "avg_answer_length": 67,
+      "missing_voice": 145,
+      "fact_check_flags": 0,
+      "banned_phrase_hits": 0,
+      "us_spelling_hits": 0,
+      "duplicate_questions": 0,
+      "voice_pass_rate": 3
+    },
+    "staircase": {
+      "count": 655,
+      "avg_answer_length": 445,
+      "missing_voice": 29,
+      "fact_check_flags": 0,
+      "banned_phrase_hits": 0,
+      "us_spelling_hits": 0,
+      "duplicate_questions": 0,
+      "voice_pass_rate": 96
+    },
+    "steel-nails": {
+      "count": 200,
+      "avg_answer_length": 69,
+      "missing_voice": 199,
+      "fact_check_flags": 0,
+      "banned_phrase_hits": 0,
+      "us_spelling_hits": 0,
+      "duplicate_questions": 0,
+      "voice_pass_rate": 1
+    }
+  }
+}

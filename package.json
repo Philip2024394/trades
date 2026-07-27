@@ -8,7 +8,15 @@
     "start": "next start -p 3008",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "knowledge:validate":       "node scripts/knowledge/validate.mjs",
+    "knowledge:validate:strict":"node scripts/knowledge/validate.mjs --strict",
+    "knowledge:build":          "node scripts/knowledge/build.mjs",
+    "knowledge:all":            "npm run knowledge:validate && npm run knowledge:build",
+    "knowledge:import":         "node scripts/knowledge/import.mjs",
+    "knowledge:interactive":    "node scripts/knowledge/interactive.mjs",
+    "knowledge:generate":       "node scripts/knowledge/generate.mjs",
+    "knowledge:health":         "node scripts/knowledge/health.mjs"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

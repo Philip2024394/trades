@@ -1,0 +1,51 @@
+{
+  "example_notes": "Philip's canonical Phase 4 generation-brief example (2026-07-27). Every future generation brief NEX produces follows this 4-part structure. If a brief drops one of the four parts, it fails the Design Philosophy contract.",
+  "reference_image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2027,%202026,%2005_01_27%20PM.png",
+  "user_request_summary": "Take the reference walnut cut-string staircase as a QUALITY BAR. Replace the wooden risers with brushed stainless steel. Keep the walnut treads and strings. Deliver a bespoke original design — never a copy.",
+
+  "brief": {
+    "reference_image_instructions": {
+      "reference_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2027,%202026,%2005_01_27%20PM.png",
+      "reference_role": "Quality bar reference. Study the properties below. DO NOT copy this staircase exactly unless the user specifically asks.",
+      "study_features": [
+        "Rich natural walnut timber",
+        "Premium furniture-grade finish",
+        "Decorative curved arch detail on each riser",
+        "Clean joinery with realistic wood grain",
+        "Modern yet traditional craftsmanship",
+        "Photorealistic lighting",
+        "Transparent background",
+        "High resolution product render"
+      ]
+    },
+    "material_change": {
+      "replace": "All five wooden risers",
+      "with": "Brushed stainless steel",
+      "material_properties": [
+        "Satin brushed finish (not mirror polished)",
+        "Horizontal brushed grain",
+        "Soft reflections",
+        "Premium architectural stainless steel appearance",
+        "Professionally fitted into the walnut staircase",
+        "Realistic thickness and shadowing"
+      ]
+    },
+    "keep": [
+      "Walnut treads",
+      "Walnut strings",
+      "Overall proportions",
+      "Decorative timber framing around each riser"
+    ],
+    "design_philosophy": {
+      "immutable": true,
+      "text": "Never assume the customer wants an existing staircase copied. Use reference images only to understand style, craftsmanship and quality, then create an original design that matches the customer's requirements while maintaining realistic construction and professional joinery. Every staircase should look like it could be built by a master staircase manufacturer, with accurate proportions, believable structural details, and photorealistic materials."
+    }
+  },
+
+  "nex_conversational_response_template": {
+    "when_user_asks": "Hey NEX, can you create me something? Or do you just make the same old staircases?",
+    "nex_replies": "Absolutely. I don't just reproduce staircases — I design completely original ones. Every staircase can be customised, including: layout · timber species · string style · open or closed strings · floating treads · mono stringers · glass balustrades · forged iron balusters · modern/traditional/heritage styles · newel post designs · monkey tails · volutes · bullnose starting steps · curved staircases · spiral staircases · feature lighting · stainless steel/brass/timber details · carved panels · storage solutions · commercial or residential designs. I use any supplied image only as inspiration. Every staircase can be redesigned with different proportions, materials, construction methods and architectural styles to create something completely unique."
+  },
+
+  "assembled_ai_prompt_for_chatgpt_or_image_gen": "Ultra photorealistic architectural product render of a bespoke walnut cut-string staircase with brushed stainless steel risers. Reference image only — do NOT copy exactly. Original design: rich natural walnut treads and strings retained · all five risers replaced with satin brushed stainless steel (horizontal brushed grain · soft reflections · realistic thickness) · decorative timber framing preserved around each riser · overall proportions match the reference · premium furniture-grade finish · clean professional joinery · photorealistic lighting · transparent background · high resolution. Every detail must look like it could be built by a master staircase manufacturer with accurate proportions and believable structural details."
+}

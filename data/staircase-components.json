@@ -1,0 +1,695 @@
+{
+  "$schema_note": "NEX Stairplan DIGITAL STAIRCASE CATALOGUE — Stairplan's IP-worthy library of every staircase component. Each entry catalogues one physical part with stable ID + connection metadata (attachment points, rotation axis, centre line, stretch rules) so the Geometry Engine can auto-assemble by type-matching. GLB paths are placeholders until 3D artist creates the actual assets. Naming convention: 'Digital Staircase Catalogue' or 'component catalogue' — never 'GLB library' (that framing loses the IP positioning).",
+  "version": 2,
+  "generated_at": "2026-07-25",
+  "categories": [
+    { "id": "handrails",    "label": "Handrails",       "prefix": "HR" },
+    { "id": "newel_posts",  "label": "Newel Posts",     "prefix": "NP" },
+    { "id": "newel_caps",   "label": "Newel Caps",      "prefix": "NC" },
+    { "id": "balusters",    "label": "Balusters",       "prefix": "B"  },
+    { "id": "strings",      "label": "Strings",         "prefix": "ST" },
+    { "id": "treads",       "label": "Treads",          "prefix": "TR" },
+    { "id": "risers",       "label": "Risers",          "prefix": "RS" },
+    { "id": "glass_panels", "label": "Glass Panels",    "prefix": "GP" },
+    { "id": "glass_fixings","label": "Glass Fixings",   "prefix": "GF" },
+    { "id": "cover_slips",  "label": "Cover Slips",     "prefix": "CS" },
+    { "id": "volutes",      "label": "Volutes",         "prefix": "VL" },
+    { "id": "turnouts",     "label": "Turnouts",        "prefix": "TN" },
+    { "id": "curtail_steps","label": "Curtail Steps",   "prefix": "CT" },
+    { "id": "led_strips",   "label": "LED Lighting",    "prefix": "LED"},
+    { "id": "winder_wedges","label": "Winder Wedges",   "prefix": "WW" },
+    { "id": "landings",     "label": "Landings",        "prefix": "LG" }
+  ],
+  "reference_image_requirements_by_category": {
+    "description": "How many reference images per component, and which views, needed for the 3D artist to model accurately. Not every component needs the same set. Treads/risers/strings need NO per-item images — material textures do the work. See docs/rendering-engine-architecture.md for full spec.",
+    "categories": {
+      "profile_driven": {
+        "examples": ["handrails", "cover_slips", "base_rails", "mouldings"],
+        "shots_required": [
+          { "view": "end_cross_section_dimensioned", "critical": true, "purpose": "The whole geometry extrudes from this" },
+          { "view": "side_elevation_full_length",    "critical": true, "purpose": "Confirms straight/curved" },
+          { "view": "three_quarter_hero",            "critical": false, "purpose": "Aesthetic reference" },
+          { "view": "detail_joint_or_end",           "critical": "if_applicable", "purpose": "Scarf joint / mitre / return" }
+        ],
+        "typical_shot_count": "3-4"
+      },
+      "turned_or_symmetric": {
+        "examples": ["turned_balusters", "ball_caps", "finials", "volutes", "spindles"],
+        "shots_required": [
+          { "view": "side_silhouette_dimensioned", "critical": true, "purpose": "The lathe profile" },
+          { "view": "top_view",                    "critical": true, "purpose": "Confirms round/square/facetted section" },
+          { "view": "three_quarter_hero",          "critical": false, "purpose": "Shading + aesthetic reference" },
+          { "view": "detail_zoom_turnings",        "critical": "if_detailed", "purpose": "Bead/collar/turn features" },
+          { "view": "bottom_view",                 "critical": "if_mounting_detail", "purpose": "Mounting feature" }
+        ],
+        "typical_shot_count": "3-4"
+      },
+      "full_3d_form": {
+        "examples": ["newel_posts", "glass_point_fixings", "spider_clamps", "cantilever_brackets", "led_strip_channels", "string_end_returns"],
+        "shots_required": [
+          { "view": "front_elevation_dimensioned", "critical": true },
+          { "view": "side_elevation_dimensioned",  "critical": true },
+          { "view": "top_view_dimensioned",        "critical": true },
+          { "view": "three_quarter_hero",          "critical": true },
+          { "view": "detail_joinery_features",     "critical": "if_applicable", "purpose": "Mortice, housing, chamfer, fluting" },
+          { "view": "underside_mounting",          "critical": "if_applicable", "purpose": "Only if there's a specific mounting detail" }
+        ],
+        "typical_shot_count": "4-6"
+      },
+      "board_like": {
+        "examples": ["treads", "risers", "landings", "string_boards"],
+        "shots_required": [
+          { "view": "nosing_cross_section_ONLY_if_profile_variant", "critical": "only_for_nosing_variants", "purpose": "Bullnose / pencil-round / square differ only at the front edge" }
+        ],
+        "typical_shot_count": "0-1",
+        "note": "Board-like components use rectangular geometry painted with the MATERIAL texture. Same tread geometry works in oak, walnut, ash, pine — the material does the visual work. No per-item reference needed unless the nosing profile differs."
+      }
+    },
+    "material_reference_pack_per_MAT_ID": {
+      "description": "Separate from components — per MATERIAL, the standard reference pack (already spec'd in data/staircase-materials.json → reference_asset_checklist)",
+      "shot_count_per_material": 12
+    },
+    "modern_collection_total_estimate": {
+      "component_reference_images": "~145",
+      "material_pbr_texture_sets": "~250 (21 materials × 12 shots)",
+      "total_launch_reference_images": "~400"
+    },
+    "shot_format_rules": {
+      "lighting":         "Neutral studio softbox — avoid moody atmospheric lighting that hides geometry",
+      "background":       "White or 18% grey — high contrast against the component",
+      "elevation_angle":  "Perpendicular / orthographic — no perspective distortion on front/side/top elevations",
+      "scale_reference":  "Include a ruler, 100mm cube, or dimensioned annotation so the artist knows real size",
+      "dimensions":       "Front/side/top elevations MUST show real millimetre dimensions annotated on the image",
+      "resolution":       "Minimum 2K, ideally 4K for texture-reference material shots"
+    }
+  },
+
+  "canonical_id_rule": {
+    "description": "Every component in this catalogue has ONE canonical ID and ONE canonical geometry. Downstream systems (pricing, BOM, CNC, install guides, marketing) reference the component BY ID only and never duplicate component metadata. Change a component once here, every downstream system automatically references the improved version.",
+    "downstream_system_examples": {
+      "pricing_db":     "{ component_id: 'HR-014', price_gbp: 295, timber_id: 'MAT-004' }",
+      "bom_generator":  "{ component_id: 'HR-014', quantity: 2 }",
+      "cnc_toolpath":   "{ component_id: 'HR-014', operations: [...] }",
+      "install_guide":  "{ component_id: 'HR-014', steps: [...] }",
+      "marketing_copy": "{ component_id: 'HR-014', studio_photo_url: '...', install_video: '...' }"
+    },
+    "enforcement_rules": [
+      "No downstream system may store dimensions, geometry, or component metadata — only reference by ID",
+      "If a system needs data the catalogue doesn't have, ADD IT TO THE CATALOGUE, don't duplicate downstream",
+      "Component IDs are permanent — never renumbered. Add HR-015 rather than shift HR-014",
+      "Deprecating a component: mark status:'deprecated' in catalogue, keep the entry forever for old designs"
+    ]
+  },
+  "collections": {
+    "modern_launch": {
+      "id": "COL-001",
+      "name": "Modern Collection",
+      "status": "launch_scope",
+      "description": "The first premium collection to ship with Stairplan V1. Perfect these ~38 components at Tier 3+ visual quality before adding Collection 2. Quality beats quantity.",
+      "scope_targets": { "handrails": 6, "newel_posts": 6, "balusters": 8, "glass_systems": 3, "string_types": 4, "newel_caps": 6, "tread_profiles": 5, "total": 38 },
+      "included_ids": ["HR-001", "HR-003", "HR-004", "NP-001", "NP-004", "NC-002", "B-001", "B-003", "B-004", "ST-001", "ST-002", "ST-003", "ST-004", "TR-001", "TR-002", "GP-001", "GP-002", "GF-001", "GF-003", "GF-004", "LED-001", "LED-002"],
+      "additional_components_todo": ["3 more handrails", "4 more newels", "5 more balusters", "4 more caps", "3 more treads", "1 more glass system"]
+    },
+    "traditional_v2": {
+      "id": "COL-002",
+      "name": "Traditional Collection",
+      "status": "planned_v2",
+      "description": "Second collection — Victorian and Edwardian turned components. Do NOT build until Modern Collection is polished and shipped.",
+      "included_ids_planned": ["HR-002", "NP-002", "NP-003", "NC-001", "NC-003", "NC-004", "B-002", "TR-003", "VL-001", "TN-001", "CT-001"]
+    },
+    "industrial_v3": {
+      "id": "COL-003",
+      "name": "Industrial Loft Collection",
+      "status": "planned_v3"
+    },
+    "coastal_cottage_v4": {
+      "id": "COL-004",
+      "name": "Coastal Cottage Collection",
+      "status": "planned_v4"
+    }
+  },
+  "designer_presets": {
+    "description": "Curated starting-point configurations. Beginners choose a preset instead of a blank canvas. Advanced users tweak from the preset. All presets reference components BY canonical ID from the catalogue above — never duplicate metadata.",
+    "presets": [
+      {
+        "id": "PRESET-SCANDI",
+        "name": "Scandinavian",
+        "one_line": "Bright, pale timber, open lines, hidden fixings",
+        "components": { "handrail": "HR-001", "newel": "NP-001", "cap": "NC-002", "baluster": "B-004", "string": "ST-001", "tread": "TR-002", "glass": "GP-002", "glass_fixing": "GF-003" },
+        "recommended_timber": "MAT-005",
+        "room_environment": "scandi-white-loft.hdr",
+        "target_style_tags": ["modern", "coastal", "minimal"]
+      },
+      {
+        "id": "PRESET-LUX-MODERN",
+        "name": "Modern Luxury",
+        "one_line": "Walnut, glass, LED, floating feel",
+        "components": { "handrail": "HR-004", "newel": "NP-004", "cap": "NC-002", "baluster": "B-004", "string": "ST-003", "tread": "TR-001", "glass": "GP-001", "glass_fixing": "GF-001", "led": "LED-001" },
+        "recommended_timber": "MAT-004",
+        "room_environment": "luxury-open-plan-evening.hdr",
+        "target_style_tags": ["modern", "luxury", "loft"]
+      },
+      {
+        "id": "PRESET-TRAD-ENG",
+        "name": "Traditional English",
+        "one_line": "Turned balusters, oak, stop-chamfered newels",
+        "components": { "handrail": "HR-002", "newel": "NP-002", "cap": "NC-001", "baluster": "B-002", "string": "ST-001", "tread": "TR-003" },
+        "recommended_timber": "MAT-001",
+        "room_environment": "period-hallway-daylight.hdr",
+        "target_style_tags": ["traditional", "victorian", "edwardian", "cottage"]
+      },
+      {
+        "id": "PRESET-INDUSTRIAL",
+        "name": "Industrial Loft",
+        "one_line": "Black metal, ash treads, cable balustrade",
+        "components": { "handrail": "HR-004", "newel": "NP-004", "cap": "NC-002", "baluster": "B-003", "string": "ST-003", "tread": "TR-001" },
+        "recommended_timber": "MAT-005",
+        "room_environment": "warehouse-conversion-dusk.hdr",
+        "target_style_tags": ["industrial", "loft", "warehouse"]
+      },
+      {
+        "id": "PRESET-COASTAL",
+        "name": "Coastal Cottage",
+        "one_line": "Painted turned balusters, oak handrail, warm textures",
+        "components": { "handrail": "HR-002", "newel": "NP-002", "cap": "NC-001", "baluster": "B-002", "string": "ST-001", "tread": "TR-002" },
+        "recommended_timber": "MAT-001",
+        "recommended_finish": "painted_white_string_natural_oak_treads",
+        "room_environment": "coastal-cottage-morning.hdr",
+        "target_style_tags": ["coastal", "cottage", "scandi"]
+      }
+    ]
+  },
+  "marketing_metadata_schema": {
+    "description": "Every catalogue component should ALSO carry marketing/showcase metadata so the catalogue doubles as a product showcase. Fields below are optional; a component without them falls back to plain 3D+dimensions display.",
+    "fields": {
+      "studio_photo_url":     "Product photo on white/neutral studio background",
+      "installed_photo_url":  "Photo of the component installed in a real customer home",
+      "install_video_url":    "Short video of the component being fitted in a workshop or on site",
+      "gallery_urls":         "Array of additional real-installation photos across projects",
+      "marketing_copy":       "Sales-friendly one-paragraph description in Nex voice",
+      "customer_testimonial": "Optional quoted feedback from a homeowner who chose this component"
+    }
+  },
+
+  "product_page_contract": {
+    "description": "Every component in the catalogue has its own product page at /components/{ID}. The page is discoverable via SEO — customers land on individual components from Google, then discover the configurator. Stairplan positions itself as the UK's biggest staircase component library, not just a configurator.",
+    "sections_in_order": [
+      "3d_viewer",                    "Interactive orbit + zoom of the individual component (Three.js scene)",
+      "studio_photos",                "Product photography on neutral background — 3-5 shots",
+      "installed_photos",             "Component in real customer homes — 5+ shots",
+      "dimensions_and_tolerances",    "Full dimensions table from catalogue metadata",
+      "weight",                       "kg — for delivery + install planning",
+      "cost_per_timber_option",       "Price per available timber species (from pricing DB by canonical ID)",
+      "stock_status",                 "In stock / lead time X weeks / made to order",
+      "compatible_handrails",         "Cross-linked to catalogue by ID (for newel/baluster/glass pages)",
+      "compatible_newels",            "Cross-linked to catalogue by ID",
+      "compatible_balusters",         "Cross-linked to catalogue by ID",
+      "compatible_fixings",           "For glass components",
+      "manufacturing_drawing",        "PDF download link",
+      "installation_video",           "Embedded video",
+      "cnc_profile",                  "For trade users — machining path preview",
+      "customer_projects",            "Real customer builds that used this component (see customer_projects_schema)",
+      "nex_recommendation",           "Nex voice: 'This works particularly well when paired with...'",
+      "add_to_current_design_button", "One click to swap into the customer's live configuration"
+    ],
+    "url_pattern": "/components/{ID}",
+    "example_url": "/components/NP-004",
+    "seo_meta_template": "{name} — {category} — Stairplan UK",
+    "canonical_source": "All data pulled by canonical ID from data/staircase-components.json — never duplicated on the page."
+  },
+
+  "quality_levels": {
+    "description": "Same geometry, different execution grade. A component's ID stays the same across quality levels; the quality level is a MODIFIER, not a separate SKU. Geometry Engine references HR-001; Rendering Engine subtly adjusts material properties per quality; pricing engine applies the price multiplier.",
+    "levels": [
+      {
+        "id": "standard",       "label": "Standard",          "price_multiplier": 1.0,
+        "timber_grade":        "commercial",   "finish":         "machine_lacquer",
+        "lead_time_weeks":     [1, 2],         "notes":          "Production-grade timber, mass-appropriate finish. The default." },
+      {
+        "id": "professional",   "label": "Professional",      "price_multiplier": 1.35,
+        "timber_grade":        "prime",        "finish":         "hand_lacquer",
+        "lead_time_weeks":     [3, 4],         "notes":          "Better timber selection, hand-finishing. The typical upgrade." },
+      {
+        "id": "luxury",         "label": "Luxury",            "price_multiplier": 1.85,
+        "timber_grade":        "prime_select", "finish":         "hand_polished_grain_matched",
+        "lead_time_weeks":     [6, 8],         "notes":          "Premium grade, hand-polished, matched grain across all pieces. For statement staircases." },
+      {
+        "id": "architect",      "label": "Architect Series",  "price_multiplier": null,
+        "timber_grade":        "specified",    "finish":         "specified",
+        "lead_time_weeks":     [8, 16],        "notes":          "Bespoke to architect specification, one-off. Price on application." }
+    ],
+    "renderer_hints": {
+      "standard":     { "roughness_bump": 0,    "reflection_intensity": 0.6, "grain_contrast": 1.0 },
+      "professional": { "roughness_bump": -0.05,"reflection_intensity": 0.7, "grain_contrast": 1.1 },
+      "luxury":       { "roughness_bump": -0.15,"reflection_intensity": 0.85,"grain_contrast": 1.25 },
+      "architect":    { "roughness_bump": -0.15,"reflection_intensity": 0.9, "grain_contrast": 1.3 }
+    }
+  },
+
+  "compatibility_engine_rules": {
+    "description": "Reads the WHOLE current configuration (not just pairs of components) and reports every problematic combination with plain-English explanation + specific alternatives ranked by closest style match. More than validation — design guidance.",
+    "rule_severity_levels": [
+      { "id": "block",      "label": "Not compatible",              "action": "prevent_selection" },
+      { "id": "warn",       "label": "Unusual — worth checking",    "action": "allow_with_flag" },
+      { "id": "advise",     "label": "Would look better if…",       "action": "advisory_only" }
+    ],
+    "rule_examples": [
+      {
+        "id": "MOP-GLASS",
+        "severity": "warn",
+        "when": { "handrail_id": "HR-002", "baluster_id": "B-004" },
+        "explain": "Traditional Mopstick handrail (HR-002) isn't normally paired with frameless glass panels (B-004) — the round profile doesn't sit cleanly on the glass top edge.",
+        "suggest_alternatives_for_handrail": ["HR-001", "HR-003", "HR-004"]
+      },
+      {
+        "id": "CLOSED-STRING-FLOATING-TREAD",
+        "severity": "block",
+        "when": { "string_id": "ST-001", "tread_id_open_riser": true },
+        "explain": "Closed strings with open-riser floating treads is a structural contradiction — closed string carries riser boards; open-riser design uses cut string or central spine.",
+        "suggest_alternatives_for_string": ["ST-002", "ST-003", "ST-004"]
+      },
+      {
+        "id": "TURNED-BALUSTER-MODERN-NEWEL",
+        "severity": "advise",
+        "when": { "baluster_id": "B-002", "newel_id": "NP-004" },
+        "explain": "Traditional turned balusters (B-002) with modern box newels (NP-004) is a design language mismatch — turned components read as period; box newels as contemporary. Not incompatible, but rarely intentional.",
+        "suggest_alternatives_for_newel": ["NP-002", "NP-003"]
+      }
+    ],
+    "runs_when": "Every parameter change — same event as Geometry Engine rebuild. Compatibility results appear alongside compliance results in the right drawer."
+  },
+
+  "customer_projects_schema": {
+    "description": "Real customer staircase builds referenced by 'See Similar Projects' feature. Empty at launch; populated over time as customers submit their built staircase (permission-gated). Every project references the components used BY CANONICAL ID — same rule as everything else.",
+    "record_shape": {
+      "project_id":           "STP-2024-000042 (Stairplan project reference)",
+      "date_completed":       "2024-11-14",
+      "location_public":      "Kent (city/region only — no address, GDPR-clean)",
+      "property_type":        "Victorian terrace / 1930s semi / modern new-build / etc.",
+      "component_ids_used":   "['HR-004', 'NP-004', 'B-004', 'GF-001', 'ST-003', 'TR-001', 'LED-001']",
+      "timber_id":            "MAT-004 (American Walnut)",
+      "layout":               "half_turn_landing",
+      "quality_level":        "luxury",
+      "photo_urls":           "Array of customer-submitted photos (permission granted, ideally professional)",
+      "customer_testimonial": "Optional quoted feedback",
+      "designer_preset_base": "PRESET-LUX-MODERN (if the customer started from a preset)"
+    },
+    "similar_projects_algorithm": {
+      "step_1": "Read customer's current configuration (component IDs + timber + layout + quality)",
+      "step_2": "Score every customer project on component-ID overlap + timber match + layout match + quality-tier match",
+      "step_3": "Return top N projects (default 20) sorted by score desc",
+      "step_4": "Filter for photo-permission-granted projects only",
+      "step_5": "Present as gallery with location, date, and 'view this design' link"
+    }
+  },
+
+  "inspire_me_algorithm": {
+    "description": "Algorithmic, not AI-generated. Reads the customer's inputs so far (any partial choices they've made) → filters catalogue by matching style_tags → pulls Designer Presets across style categories → applies small random variations within compatible components → runs each candidate through compliance and health scoring → returns top 3 per category. Every result 100% real, buildable, priced, compliant. Never hallucinated.",
+    "output_categories_default": ["modern", "traditional", "luxury"],
+    "results_per_category": 3,
+    "steps": [
+      "Parse customer's current inputs (property type, budget hints, family situation, any components already chosen)",
+      "For each target category (modern/traditional/luxury): filter catalogue by matching style_tags",
+      "Start from the nearest matching Designer Preset as base",
+      "Vary within compatibility rules — swap balusters, tweak handrail, swap timber within category-appropriate options",
+      "Generate 3-5 candidates per category",
+      "Run each candidate through the Compliance Engine + Health Check",
+      "Reject any that fail Doc K or score < 70 health",
+      "Rank surviving candidates by health score",
+      "Return top N per category with hero render, cost estimate, and 'try this design' button"
+    ],
+    "no_ai_hallucination_guarantee": "Every suggestion is a real combination of catalogue components. Every price is from the pricing DB by canonical ID. Every render is from the Rendering Engine using real GLB assets. Every compliance verdict is from the deterministic Compliance Engine. Nothing is invented."
+  },
+
+  "components": [
+    { "id": "HR-001", "category": "handrails", "name": "Modern Square",
+      "3d_model_url": "/assets/glb/handrails/HR-001-modern-square.glb",
+      "2d_symbol_url": "/assets/svg/handrails/HR-001.svg",
+      "manufacturing_drawing_url": "/assets/pdf/handrails/HR-001-mfg.pdf",
+      "dimensions": { "width": 60, "height": 40, "cross_section": "square with rounded corners" },
+      "weight_per_metre_kg": 3.2,
+      "timber_usage_m3_per_metre": 0.0024,
+      "price_gbp": null,
+      "compatible_balusters": ["B-001", "B-003", "B-004"],
+      "compatible_newels": ["NP-001", "NP-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-005"],
+      "style_tags": ["modern", "minimal", "contemporary"],
+      "connections": {
+        "start":                 { "x": 0,     "y": 30, "z": 20, "type": "tenon",          "cross_section_mm": [40, 30] },
+        "end":                   { "x": "end", "y": 30, "z": 20, "type": "tenon",          "cross_section_mm": [40, 30] },
+        "baluster_attach_line":  { "y_axis": "bottom_centre", "spacing_mm": 100, "socket_type": "dowel_socket", "socket_diameter_mm": 12 }
+      },
+      "rotation_axis":  { "type": "along_pitch_line" },
+      "centre_line":    { "x": "centre", "y": "centre" },
+      "stretch_allowed":{ "x": true, "y": false, "z": false },
+      "section_max_length_mm": 3200,
+      "scarf_joint_supported": true,
+      "notes": "Clean rectangular profile with softened edges. Pairs with square newels and slim balusters. Scarf-jointed if flight > 3200mm."
+    },
+    { "id": "HR-002", "category": "handrails", "name": "Traditional Mopstick",
+      "3d_model_url": "/assets/glb/handrails/HR-002-mopstick.glb",
+      "2d_symbol_url": "/assets/svg/handrails/HR-002.svg",
+      "manufacturing_drawing_url": "/assets/pdf/handrails/HR-002-mfg.pdf",
+      "dimensions": { "diameter": 50, "cross_section": "circular flat-bottomed" },
+      "weight_per_metre_kg": 2.4,
+      "timber_usage_m3_per_metre": 0.002,
+      "price_gbp": null,
+      "compatible_balusters": ["B-001", "B-002"],
+      "compatible_newels": ["NP-002", "NP-003"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-013", "MAT-014"],
+      "style_tags": ["traditional", "period", "cottage", "victorian", "edwardian"],
+      "notes": "The classic British handrail profile — flat bottom for wall fixing or mounts on newels."
+    },
+    { "id": "HR-003", "category": "handrails", "name": "Oval",
+      "3d_model_url": "/assets/glb/handrails/HR-003-oval.glb",
+      "2d_symbol_url": "/assets/svg/handrails/HR-003.svg",
+      "manufacturing_drawing_url": "/assets/pdf/handrails/HR-003-mfg.pdf",
+      "dimensions": { "width": 65, "height": 40, "cross_section": "oval with grip flat" },
+      "weight_per_metre_kg": 2.8,
+      "timber_usage_m3_per_metre": 0.0022,
+      "price_gbp": null,
+      "compatible_balusters": ["B-001", "B-002", "B-004"],
+      "compatible_newels": ["NP-001", "NP-002", "NP-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-007", "MAT-009"],
+      "style_tags": ["modern", "transitional", "contemporary"],
+      "notes": "Comfortable oval grip with subtle character; sits between traditional and modern."
+    },
+    { "id": "HR-004", "category": "handrails", "name": "Contemporary Flat",
+      "3d_model_url": "/assets/glb/handrails/HR-004-contemporary.glb",
+      "2d_symbol_url": "/assets/svg/handrails/HR-004.svg",
+      "manufacturing_drawing_url": "/assets/pdf/handrails/HR-004-mfg.pdf",
+      "dimensions": { "width": 80, "height": 30, "cross_section": "wide flat with radiused edges" },
+      "weight_per_metre_kg": 3.4,
+      "timber_usage_m3_per_metre": 0.0024,
+      "price_gbp": null,
+      "compatible_balusters": ["B-003", "B-004"],
+      "compatible_newels": ["NP-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004"],
+      "style_tags": ["modern", "minimal", "loft", "industrial"],
+      "notes": "Wide flat top for a broader grip; bonds beautifully onto glass balustrade top edges."
+    },
+
+    { "id": "NP-001", "category": "newel_posts", "name": "Square",
+      "3d_model_url": "/assets/glb/newels/NP-001-square.glb",
+      "2d_symbol_url": "/assets/svg/newels/NP-001.svg",
+      "manufacturing_drawing_url": "/assets/pdf/newels/NP-001-mfg.pdf",
+      "dimensions": { "width": 90, "depth": 90, "height_range": [1800, 3800] },
+      "weight_kg": 18,
+      "timber_usage_m3": 0.024,
+      "price_gbp": null,
+      "compatible_caps": ["NC-002"],
+      "compatible_handrails": ["HR-001", "HR-003", "HR-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-005", "MAT-013"],
+      "style_tags": ["modern", "minimal"],
+      "connections": {
+        "base":             { "x": 45, "y": 45, "z": 0,          "type": "floor_bolt",   "bolt_pattern": "M12 × 4" },
+        "cap_top":          { "x": 45, "y": 45, "z": "top",      "type": "dowel_socket", "diameter_mm": 12 },
+        "handrail_socket":  { "x": 45, "y": 45, "z": "handrail_height", "type": "mortice", "cross_section_mm": [40, 30], "orientation": "any" },
+        "baserail_socket":  { "x": 45, "y": 45, "z": 100,        "type": "mortice",      "cross_section_mm": [40, 20], "orientation": "any" }
+      },
+      "rotation_axis":  { "x": 45, "y": 45, "axis": "z" },
+      "centre_line":    { "x": 45, "y": 45 },
+      "stretch_allowed":{ "x": false, "y": false, "z": false },
+      "height_options_mm":[ 1800, 2100, 2400, 2700, 3000, 3300, 3800 ],
+      "notes": "Plain square newel — the modern-house default. Clean lines, no turning. NEVER stretch this component — pick the correct height option instead."
+    },
+    { "id": "NP-002", "category": "newel_posts", "name": "Stop Chamfered",
+      "3d_model_url": "/assets/glb/newels/NP-002-stop-chamfered.glb",
+      "2d_symbol_url": "/assets/svg/newels/NP-002.svg",
+      "manufacturing_drawing_url": "/assets/pdf/newels/NP-002-mfg.pdf",
+      "dimensions": { "width": 90, "depth": 90, "height_range": [1800, 3800] },
+      "weight_kg": 17,
+      "timber_usage_m3": 0.023,
+      "price_gbp": null,
+      "compatible_caps": ["NC-001", "NC-002", "NC-003"],
+      "compatible_handrails": ["HR-002", "HR-003"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-013"],
+      "style_tags": ["transitional", "traditional", "edwardian"],
+      "notes": "Square newel with chamfered corners along the shaft — subtle detail between modern and turned."
+    },
+    { "id": "NP-003", "category": "newel_posts", "name": "Fluted",
+      "3d_model_url": "/assets/glb/newels/NP-003-fluted.glb",
+      "2d_symbol_url": "/assets/svg/newels/NP-003.svg",
+      "manufacturing_drawing_url": "/assets/pdf/newels/NP-003-mfg.pdf",
+      "dimensions": { "width": 100, "depth": 100, "height_range": [1800, 3800] },
+      "weight_kg": 21,
+      "timber_usage_m3": 0.028,
+      "price_gbp": null,
+      "compatible_caps": ["NC-001", "NC-004"],
+      "compatible_handrails": ["HR-002"],
+      "available_timbers": ["MAT-001", "MAT-003", "MAT-004", "MAT-009"],
+      "style_tags": ["traditional", "victorian", "georgian"],
+      "notes": "Fluted vertical grooves along the shaft — classic Georgian and Victorian period detail."
+    },
+    { "id": "NP-004", "category": "newel_posts", "name": "Modern Box",
+      "3d_model_url": "/assets/glb/newels/NP-004-modern-box.glb",
+      "2d_symbol_url": "/assets/svg/newels/NP-004.svg",
+      "manufacturing_drawing_url": "/assets/pdf/newels/NP-004-mfg.pdf",
+      "dimensions": { "width": 120, "depth": 120, "height_range": [1800, 3800] },
+      "weight_kg": 24,
+      "timber_usage_m3": 0.032,
+      "price_gbp": null,
+      "compatible_caps": ["NC-002"],
+      "compatible_handrails": ["HR-001", "HR-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004"],
+      "style_tags": ["modern", "minimal", "loft"],
+      "notes": "Chunky square box profile — the current 'modern luxury' newel. Pairs perfectly with glass balustrade."
+    },
+
+    { "id": "NC-001", "category": "newel_caps", "name": "Ball Cap",
+      "3d_model_url": "/assets/glb/newel-caps/NC-001-ball.glb",
+      "dimensions": { "diameter": 100, "height": 80 },
+      "weight_kg": 0.4, "timber_usage_m3": 0.0005, "price_gbp": null,
+      "compatible_newels": ["NP-002", "NP-003"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-018"],
+      "style_tags": ["traditional", "victorian", "georgian", "edwardian"],
+      "notes": "Turned ball finial — the classic Georgian/Victorian topping."
+    },
+    { "id": "NC-002", "category": "newel_caps", "name": "Flat Cap",
+      "3d_model_url": "/assets/glb/newel-caps/NC-002-flat.glb",
+      "dimensions": { "width": 120, "depth": 120, "height": 20 },
+      "weight_kg": 0.3, "timber_usage_m3": 0.0003, "price_gbp": null,
+      "compatible_newels": ["NP-001", "NP-002", "NP-004"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004"],
+      "style_tags": ["modern", "minimal"],
+      "notes": "Simple flat square cap — the modern default."
+    },
+    { "id": "NC-003", "category": "newel_caps", "name": "Pyramid Cap",
+      "3d_model_url": "/assets/glb/newel-caps/NC-003-pyramid.glb",
+      "dimensions": { "width": 120, "depth": 120, "height": 60 },
+      "weight_kg": 0.5, "timber_usage_m3": 0.0006, "price_gbp": null,
+      "compatible_newels": ["NP-002"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004"],
+      "style_tags": ["transitional", "edwardian"],
+      "notes": "Four-sided pyramid — Edwardian and Arts-and-Crafts favourite."
+    },
+    { "id": "NC-004", "category": "newel_caps", "name": "Acorn Finial",
+      "3d_model_url": "/assets/glb/newel-caps/NC-004-acorn.glb",
+      "dimensions": { "diameter": 90, "height": 120 },
+      "weight_kg": 0.5, "timber_usage_m3": 0.0006, "price_gbp": null,
+      "compatible_newels": ["NP-003"],
+      "available_timbers": ["MAT-001", "MAT-003", "MAT-004", "MAT-018"],
+      "style_tags": ["georgian", "victorian"],
+      "notes": "Elaborate turned acorn finial — grand-house period detail."
+    },
+
+    { "id": "B-001", "category": "balusters", "name": "Square Plain",
+      "3d_model_url": "/assets/glb/balusters/B-001-square.glb",
+      "dimensions": { "width": 40, "depth": 40, "length_range": [700, 950] },
+      "weight_kg": 1.0, "timber_usage_m3": 0.0014, "price_gbp": null,
+      "compatible_handrails": ["HR-001", "HR-002", "HR-003"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-004", "MAT-013"],
+      "style_tags": ["modern", "transitional"],
+      "notes": "Plain square-section vertical spindle. Modern default."
+    },
+    { "id": "B-002", "category": "balusters", "name": "Turned Traditional",
+      "3d_model_url": "/assets/glb/balusters/B-002-turned.glb",
+      "dimensions": { "diameter": 41, "length_range": [700, 950] },
+      "weight_kg": 0.9, "timber_usage_m3": 0.0012, "price_gbp": null,
+      "compatible_handrails": ["HR-002", "HR-003"],
+      "available_timbers": ["MAT-001", "MAT-002", "MAT-003", "MAT-013"],
+      "style_tags": ["traditional", "victorian", "edwardian", "cottage"],
+      "connections": {
+        "bottom": { "x": 20, "y": 20, "z": 0,     "type": "dowel_pin", "diameter_mm": 12 },
+        "top":    { "x": 20, "y": 20, "z": "top", "type": "dowel_pin", "diameter_mm": 12 }
+      },
+      "rotation_axis":  { "x": 20, "y": 20, "axis": "z" },
+      "centre_line":    { "x": 20, "y": 20 },
+      "stretch_allowed":{ "x": false, "y": false, "z": true },
+      "stretch_zones": { "z_stretchable_range": [200, 500], "z_locked_ends": [0, 200, "top-500", "top"] },
+      "height_range_mm":{ "min": 700, "max": 950 },
+      "section_max_length_mm": null,
+      "scarf_joint_supported": false,
+      "notes": "Classic turned baluster — Victorian/Edwardian period. Only the plain middle section stretches; turned decorative ends stay fixed length. Place N copies per tread per attachment_line spacing."
+    },
+    { "id": "B-003", "category": "balusters", "name": "Metal Black Round",
+      "3d_model_url": "/assets/glb/balusters/B-003-metal-black.glb",
+      "dimensions": { "diameter": 16, "length_range": [700, 950] },
+      "weight_kg": 1.5, "timber_usage_m3": 0, "price_gbp": null,
+      "material_override": "black_powder_coated_steel",
+      "compatible_handrails": ["HR-001", "HR-004"],
+      "style_tags": ["modern", "industrial", "farmhouse", "loft"],
+      "notes": "Slim black steel round bar — modern industrial look. Not timber."
+    },
+    { "id": "B-004", "category": "balusters", "name": "Glass Panel",
+      "3d_model_url": "/assets/glb/balusters/B-004-glass-panel.glb",
+      "dimensions": { "width_range": [400, 1500], "height": 900, "thickness": 12 },
+      "weight_kg_per_m2": 30, "timber_usage_m3": 0, "price_gbp": null,
+      "material_override": "toughened_laminated_glass",
+      "compatible_handrails": ["HR-001", "HR-004"],
+      "compatible_fixings": ["GF-001", "GF-002", "GF-003", "GF-004"],
+      "style_tags": ["modern", "luxury", "loft"],
+      "connections": {
+        "fixings": [
+          { "position": "bottom_left",  "x": 25,      "y": "centre", "z": 25,        "type": "point_fix_hole", "diameter_mm": 20 },
+          { "position": "top_left",     "x": 25,      "y": "centre", "z": "top-25",  "type": "point_fix_hole", "diameter_mm": 20 },
+          { "position": "bottom_right", "x": "end-25","y": "centre", "z": 25,        "type": "point_fix_hole", "diameter_mm": 20 },
+          { "position": "top_right",    "x": "end-25","y": "centre", "z": "top-25",  "type": "point_fix_hole", "diameter_mm": 20 }
+        ],
+        "top_edge_handrail_bond": { "y": "centre", "z": "top", "type": "silicone_bond_or_channel" }
+      },
+      "rotation_axis":  { "type": "along_flight_pitch" },
+      "centre_line":    { "y": "centre", "z": "centre" },
+      "stretch_allowed":{ "x": true, "y": false, "z": false },
+      "width_max_mm":   1500,
+      "section_max_length_mm": 1500,
+      "scarf_joint_supported": false,
+      "notes": "Frameless toughened-laminated glass panel. Width auto-computed per bay between newels/spigots. Point-fixing holes drilled BEFORE toughening — cannot be modified on site. If bay > 1500mm, split into two panels with a spigot between."
+    },
+
+    { "id": "ST-001", "category": "strings", "name": "Closed String",
+      "3d_model_url": "/assets/glb/strings/ST-001-closed.glb",
+      "dimensions": { "thickness": 32, "depth": 300, "length_range": [2500, 6000] },
+      "weight_per_metre_kg": 6.8, "timber_usage_m3_per_metre": 0.0096, "price_gbp": null,
+      "style_tags": ["traditional", "modern", "transitional"],
+      "notes": "Solid string with treads and risers housed inside grooves. UK default for wall-side of staircase."
+    },
+    { "id": "ST-002", "category": "strings", "name": "Cut String",
+      "3d_model_url": "/assets/glb/strings/ST-002-cut.glb",
+      "dimensions": { "thickness": 32, "depth": 300, "length_range": [2500, 6000] },
+      "weight_per_metre_kg": 5.5, "timber_usage_m3_per_metre": 0.0078, "price_gbp": null,
+      "style_tags": ["traditional", "period", "victorian"],
+      "notes": "String cut in stepped profile showing tread edges from the side. Show-side of open staircase."
+    },
+    { "id": "ST-003", "category": "strings", "name": "Mono String (central spine)",
+      "3d_model_url": "/assets/glb/strings/ST-003-mono.glb",
+      "dimensions": { "thickness": 120, "depth": 250, "length_range": [2500, 6000] },
+      "weight_per_metre_kg": 28, "timber_usage_m3_per_metre": 0.03, "price_gbp": null,
+      "material_override": "black_powder_coated_steel",
+      "style_tags": ["modern", "loft", "luxury"],
+      "notes": "Central steel spine — treads cantilever both sides. Structural steel, not timber."
+    },
+    { "id": "ST-004", "category": "strings", "name": "Floating (hidden steel)",
+      "3d_model_url": "/assets/glb/strings/ST-004-floating.glb",
+      "dimensions": { "hidden": true },
+      "weight_per_metre_kg": 0, "timber_usage_m3_per_metre": 0, "price_gbp": null,
+      "style_tags": ["modern", "luxury", "minimalist"],
+      "notes": "Hidden in wall structure — treads cantilever off. Requires structural engineer sign-off."
+    },
+
+    { "id": "TR-001", "category": "treads", "name": "Chunky Slab (50mm)",
+      "3d_model_url": "/assets/glb/treads/TR-001-chunky.glb",
+      "dimensions": { "thickness": 50, "width_range": [700, 1100], "depth_range": [250, 300] },
+      "weight_per_m2_kg": 40, "timber_usage_m3_per_unit": 0.014,
+      "style_tags": ["modern", "luxury"],
+      "connections": {
+        "string_housing_left":  { "x": 0,           "y": 0,          "z": 0,       "type": "housed_wedge", "depth_mm": 12, "wedge_size": "standard" },
+        "string_housing_right": { "x": 0,           "y": "full_width","z": 0,      "type": "housed_wedge", "depth_mm": 12, "wedge_size": "standard" },
+        "riser_below":          { "x": "front_edge","y": "centre",   "z": 0,       "type": "housed_groove", "depth_mm": 8 },
+        "riser_above":          { "x": "back_edge", "y": "centre",   "z": "top",   "type": "housed_groove", "depth_mm": 8 },
+        "baluster_positions":   [
+          { "x": 30,      "y": 30, "z": "top", "type": "dowel_socket", "diameter_mm": 12 },
+          { "x": "back-30","y": 30, "z": "top", "type": "dowel_socket", "diameter_mm": 12 }
+        ]
+      },
+      "rotation_axis":  { "type": "horizontal" },
+      "centre_line":    { "x": "centre", "y": "centre" },
+      "stretch_allowed":{ "x": true, "y": true, "z": false },
+      "width_range_mm": { "min": 700, "max": 1100 },
+      "depth_range_mm": { "min": 250, "max": 300 },
+      "notes": "Chunky solid slab — needed for open-riser designs where the tread self-supports. Premium look. Stretchable in both plan dimensions within range; thickness fixed at 50mm."
+    },
+    { "id": "TR-002", "category": "treads", "name": "Standard (32mm)",
+      "3d_model_url": "/assets/glb/treads/TR-002-standard.glb",
+      "dimensions": { "thickness": 32, "width_range": [700, 1100], "depth_range": [220, 280] },
+      "weight_per_m2_kg": 25, "timber_usage_m3_per_unit": 0.009,
+      "style_tags": ["modern", "traditional", "transitional"],
+      "notes": "Standard timber tread thickness for closed-riser staircases."
+    },
+    { "id": "TR-003", "category": "treads", "name": "Bullnose (rounded front)",
+      "3d_model_url": "/assets/glb/treads/TR-003-bullnose.glb",
+      "dimensions": { "thickness": 32, "nosing_radius": 22 },
+      "style_tags": ["traditional", "period"],
+      "notes": "Bullnose profile at the front edge — softer look than a square nosing."
+    },
+
+    { "id": "GP-001", "category": "glass_panels", "name": "Clear Toughened",
+      "3d_model_url": "/assets/glb/glass/GP-001-clear.glb",
+      "dimensions": { "thickness": 10, "width_range": [400, 1500], "height_range": [800, 1100] },
+      "weight_per_m2_kg": 25, "price_per_m2_gbp": null,
+      "material_override": "toughened_glass_clear",
+      "style_tags": ["modern", "luxury"],
+      "notes": "10mm toughened safety glass — the default modern-staircase spec."
+    },
+    { "id": "GP-002", "category": "glass_panels", "name": "Low-Iron (ultra-clear)",
+      "3d_model_url": "/assets/glb/glass/GP-002-low-iron.glb",
+      "dimensions": { "thickness": 12 },
+      "weight_per_m2_kg": 30, "price_per_m2_gbp": null,
+      "material_override": "toughened_glass_low_iron",
+      "style_tags": ["luxury"],
+      "notes": "Low-iron ultra-clear — removes the green tinge you see on thicker standard glass edges."
+    },
+    { "id": "GP-003", "category": "glass_panels", "name": "Tinted Grey",
+      "3d_model_url": "/assets/glb/glass/GP-003-tinted.glb",
+      "material_override": "toughened_glass_grey_tint",
+      "style_tags": ["modern", "loft", "industrial"],
+      "notes": "Grey-tinted toughened glass. Adds privacy + drama; pairs with black metal fixings."
+    },
+    { "id": "GP-004", "category": "glass_panels", "name": "Frosted",
+      "3d_model_url": "/assets/glb/glass/GP-004-frosted.glb",
+      "material_override": "toughened_glass_frosted",
+      "style_tags": ["modern"],
+      "notes": "Sandblasted frosted glass — for privacy where staircase is beside bedrooms/bathrooms."
+    },
+
+    { "id": "GF-001", "category": "glass_fixings", "name": "Point Fixing Disc",
+      "3d_model_url": "/assets/glb/glass-fixings/GF-001-point.glb",
+      "dimensions": { "disc_diameter": 50 },
+      "weight_kg_per_unit": 0.15,
+      "material_override": "stainless_steel_brushed",
+      "notes": "Disc fixing through pre-drilled hole in glass — needs 4 per panel typically."
+    },
+    { "id": "GF-002", "category": "glass_fixings", "name": "Spider Clamp",
+      "3d_model_url": "/assets/glb/glass-fixings/GF-002-spider.glb",
+      "material_override": "stainless_steel_brushed",
+      "notes": "Multi-arm clamp holding several panels at their meeting corners."
+    },
+    { "id": "GF-003", "category": "glass_fixings", "name": "Base Channel",
+      "3d_model_url": "/assets/glb/glass-fixings/GF-003-channel.glb",
+      "dimensions": { "channel_depth": 25 },
+      "material_override": "aluminium_or_stainless",
+      "notes": "Continuous channel along top of string; glass drops in vertically. Cleanest visual — no visible fixings."
+    },
+    { "id": "GF-004", "category": "glass_fixings", "name": "Spigot",
+      "3d_model_url": "/assets/glb/glass-fixings/GF-004-spigot.glb",
+      "material_override": "stainless_steel_brushed",
+      "notes": "Individual stud fixings at panel corners — middle ground between channel and point-fixing cost."
+    },
+
+    { "id": "LED-001", "category": "led_strips", "name": "Under-Tread Strip (warm white)",
+      "3d_model_url": "/assets/glb/led/LED-001-under-tread.glb",
+      "dimensions": { "length_per_tread": "flight_width" },
+      "colour_temperature_k": 2700,
+      "notes": "Warm white LED strip recessed into channel under each tread nosing. Plan cable routing at manufacture."
+    },
+    { "id": "LED-002", "category": "led_strips", "name": "Handrail LED",
+      "3d_model_url": "/assets/glb/led/LED-002-handrail.glb",
+      "colour_temperature_k": 2700,
+      "notes": "LED strip channel routed into underside of handrail. Illuminates hand + treads. Requires handrail machined at manufacture."
+    },
+    { "id": "LED-003", "category": "led_strips", "name": "Wall Step Light",
+      "3d_model_url": "/assets/glb/led/LED-003-wall-light.glb",
+      "notes": "Individual small wall lights recessed into adjacent wall at ~350mm above tread. One per step or alternate."
+    }
+  ]
+}

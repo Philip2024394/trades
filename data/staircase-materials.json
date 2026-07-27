@@ -1,0 +1,1743 @@
+{
+  "$schema_note": "NEX Stairplan MASTER MATERIAL LIBRARY — the single source of truth for every material used across the platform. Components in staircase-components.json reference materials BY MAT ID only (e.g. HR-014.material_id = 'MAT-002'). Change MAT-002 once here, every staircase in Stairplan automatically inherits the improvement. Do not duplicate material properties anywhere else.",
+  "version": 1,
+  "generated_at": "2026-07-25T17:07:02.919Z",
+  "canonical_id_rule": "Every material has ONE canonical MAT-ID. Downstream systems (components, pricing, rendering, marketing) reference by ID only. Never duplicate material properties.",
+  "build_order_note": "Per Philip (2026-07-25): MATERIALS FIRST, then handrails, newels, balusters, glass, strings, treads, landings, metal, staircase presets. Rationale — every component references materials, so perfecting materials first perfects every downstream component automatically.",
+  "reference_asset_checklist": {
+    "description": "Per material, the standard set of reference images Philip generates and Claude catalogues. Populate the marketing_images object on each material as URLs become available.",
+    "assets": [
+      {
+        "key": "pbr_texture_reference",
+        "purpose": "PBR reference for 3D artist"
+      },
+      {
+        "key": "plank_studio",
+        "purpose": "Material selector card in configurator"
+      },
+      {
+        "key": "end_grain_closeup",
+        "purpose": "Product page detail"
+      },
+      {
+        "key": "edge_grain_closeup",
+        "purpose": "Product page detail"
+      },
+      {
+        "key": "tread_sample",
+        "purpose": "Component library reference"
+      },
+      {
+        "key": "handrail_sample",
+        "purpose": "Component library reference"
+      },
+      {
+        "key": "newel_sample",
+        "purpose": "Component library reference"
+      },
+      {
+        "key": "baluster_sample",
+        "purpose": "Component library reference"
+      },
+      {
+        "key": "complete_staircase_hero",
+        "purpose": "Designer preview + marketing hero"
+      },
+      {
+        "key": "luxury_hallway_installed",
+        "purpose": "Marketing banner + Real House Mode reference"
+      },
+      {
+        "key": "close_up_detail",
+        "purpose": "Zoom / detail page"
+      },
+      {
+        "key": "mobile_icon",
+        "purpose": "Material picker mobile UI"
+      }
+    ]
+  },
+  "categories": [
+    {
+      "id": "timber_hardwood",
+      "label": "Hardwood Timber"
+    },
+    {
+      "id": "timber_softwood",
+      "label": "Softwood Timber"
+    },
+    {
+      "id": "timber_engineered",
+      "label": "Engineered / Modified Timber"
+    },
+    {
+      "id": "timber_paint_grade",
+      "label": "Paint-Grade Timber"
+    },
+    {
+      "id": "metal",
+      "label": "Metal"
+    },
+    {
+      "id": "glass",
+      "label": "Safety Glass"
+    }
+  ],
+  "materials": [
+    {
+      "id": "MAT-001",
+      "name": "European Oak",
+      "common_names": [
+        "Oak",
+        "European Oak",
+        "English Oak",
+        "Quercus robur",
+        "Quercus petraea"
+      ],
+      "category": "timber_hardwood",
+      "origin": "Europe (UK, France, Germany, Poland)",
+      "appearance": {
+        "colour": "Warm golden-brown with prominent medullary rays",
+        "grain": "Straight, sometimes wavy or figured on quarter-sawn boards",
+        "texture": "Medium to coarse, open pores",
+        "variation": "Notable — every board slightly different; darker heartwood streaks common"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "scandinavian": 4,
+        "farmhouse": 5,
+        "traditional": 5,
+        "victorian": 5,
+        "georgian": 5,
+        "industrial": 3
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 1290,
+      "hardness_janka_n": 5740,
+      "density_kg_m3": 750,
+      "machining_rating": 4,
+      "finishing_options": [
+        "clear_lacquer",
+        "hardwax_oil",
+        "natural_oil",
+        "satin_varnish",
+        "matt_varnish",
+        "stain",
+        "limed",
+        "smoked",
+        "painted_less_common"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "strings",
+        "handrails",
+        "base_rails",
+        "newel_posts",
+        "balusters",
+        "caps",
+        "bullnose_steps",
+        "landing_nosings",
+        "cover_slips"
+      ],
+      "compatible_styles": [
+        "glass_balustrades",
+        "metal_balusters",
+        "timber_balusters",
+        "floating_staircases",
+        "closed_string",
+        "open_string",
+        "cut_string",
+        "traditional_staircases",
+        "contemporary_staircases"
+      ],
+      "nex_description": "European Oak is the UK default premium staircase timber — warm, characterful, wildly versatile. Works in a Georgian townhouse or a modern new-build without fighting either. Ages beautifully; a well-made European oak staircase reads as heirloom joinery after 30 years. Pairs equally with turned traditional detail or slim contemporary glass.",
+      "rendering_engine": {
+        "texture_folder": "/materials/european-oak/",
+        "albedo_url": "/materials/european-oak/albedo.webp",
+        "normal_url": "/materials/european-oak/normal.webp",
+        "roughness_url": "/materials/european-oak/roughness.webp",
+        "ao_url": "/materials/european-oak/ao.webp",
+        "displacement_url": "/materials/european-oak/displacement.webp"
+      },
+      "available_finishes": [
+        "natural",
+        "matt",
+        "satin",
+        "gloss",
+        "smoked",
+        "limed",
+        "stained"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-002",
+      "name": "American White Oak",
+      "common_names": [
+        "White Oak",
+        "American White Oak",
+        "Quercus alba"
+      ],
+      "category": "timber_hardwood",
+      "origin": "North America (United States & Canada)",
+      "appearance": {
+        "colour": "Light golden brown with warm honey tones",
+        "grain": "Straight to slightly wavy",
+        "texture": "Medium to coarse",
+        "variation": "Natural — cleaner and paler than European oak, less prominent medullary rays"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "scandinavian": 5,
+        "farmhouse": 4,
+        "traditional": 4,
+        "victorian": 3,
+        "georgian": 3,
+        "industrial": 3
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 1360,
+      "hardness_janka_n": 6050,
+      "density_kg_m3": 770,
+      "machining_rating": 5,
+      "finishing_options": [
+        "clear_lacquer",
+        "hardwax_oil",
+        "natural_oil",
+        "satin_varnish",
+        "matt_finish",
+        "stain",
+        "smoked",
+        "painted_less_common"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "strings",
+        "handrails",
+        "base_rails",
+        "newel_posts",
+        "balusters",
+        "caps",
+        "bullnose_steps",
+        "landing_nosings",
+        "cover_slips"
+      ],
+      "compatible_styles": [
+        "glass_balustrades",
+        "metal_balusters",
+        "timber_balusters",
+        "floating_staircases",
+        "closed_string",
+        "open_string",
+        "mono_string",
+        "contemporary_staircases"
+      ],
+      "nex_description": "American White Oak is one of the world's most popular staircase timbers — prized for strength, stability, and a warm natural appearance. Pale honey tones and clean straight grain make it a favourite for modern and Scandinavian interiors. Pairs exceptionally well with frameless glass balustrades and black metal details.",
+      "rendering_engine": {
+        "texture_folder": "/materials/white-oak/",
+        "albedo_url": "/materials/white-oak/white-oak-color.webp",
+        "normal_url": "/materials/white-oak/white-oak-normal.webp",
+        "roughness_url": "/materials/white-oak/white-oak-roughness.webp",
+        "ao_url": "/materials/white-oak/white-oak-ao.webp",
+        "displacement_url": "/materials/white-oak/white-oak-height.webp"
+      },
+      "available_finishes": [
+        "natural",
+        "matt",
+        "satin",
+        "gloss",
+        "smoked",
+        "brushed"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": "https://ik.imagekit.io/5vv5pw26q/Untitledfsdf.png",
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2009_28_24%20PM.png",
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null,
+        "tread_sample_finish": "2-pack lacquer / varnish"
+      },
+      "marketing_images_updated_at": "2026-07-25T14:30:35.034Z"
+    },
+    {
+      "id": "MAT-003",
+      "name": "American Walnut",
+      "common_names": [
+        "Walnut",
+        "American Walnut",
+        "Black Walnut",
+        "Juglans nigra"
+      ],
+      "category": "timber_hardwood",
+      "origin": "North America (Eastern United States)",
+      "appearance": {
+        "colour": "Rich chocolate-brown with darker striping and occasional purple undertones",
+        "grain": "Straight to wavy, often with distinctive figuring",
+        "texture": "Medium, moderate lustre",
+        "variation": "Substantial — flame figure and burl patches common in premium grades"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "scandinavian": 3,
+        "farmhouse": 3,
+        "traditional": 4,
+        "victorian": 4,
+        "georgian": 5,
+        "industrial": 3,
+        "luxury": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 1010,
+      "hardness_janka_n": 4490,
+      "density_kg_m3": 670,
+      "machining_rating": 5,
+      "finishing_options": [
+        "clear_lacquer",
+        "natural_oil",
+        "hardwax_oil",
+        "satin_varnish",
+        "matt_finish",
+        "french_polish"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps",
+        "bullnose_steps",
+        "landing_nosings"
+      ],
+      "compatible_styles": [
+        "glass_balustrades",
+        "metal_balusters",
+        "floating_staircases",
+        "mono_string",
+        "contemporary_staircases",
+        "luxury_staircases"
+      ],
+      "nex_description": "American Walnut is one of the finest luxury staircase timbers available. Deep chocolate tones with darker striping, and it deepens and enriches as it ages — a walnut staircase becomes MORE beautiful over 20 years, not less. The go-to for statement staircases in premium homes.",
+      "rendering_engine": {
+        "texture_folder": "/materials/american-walnut/",
+        "albedo_url": "/materials/american-walnut/albedo.webp",
+        "normal_url": "/materials/american-walnut/normal.webp",
+        "roughness_url": "/materials/american-walnut/roughness.webp",
+        "ao_url": "/materials/american-walnut/ao.webp",
+        "displacement_url": "/materials/american-walnut/displacement.webp"
+      },
+      "available_finishes": [
+        "natural",
+        "matt",
+        "satin",
+        "gloss"
+      ],
+      "cost_band": "£££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-004",
+      "name": "European Ash",
+      "common_names": [
+        "Ash",
+        "European Ash",
+        "White Ash",
+        "Fraxinus excelsior"
+      ],
+      "category": "timber_hardwood",
+      "origin": "Europe",
+      "appearance": {
+        "colour": "Pale cream to light blonde, sometimes with darker brown streaks in the heartwood",
+        "grain": "Straight, prominent open grain — similar structure to oak",
+        "texture": "Coarse, open-pored",
+        "variation": "Moderate — clean straight-grained pieces predominant"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "scandinavian": 5,
+        "farmhouse": 3,
+        "traditional": 3,
+        "coastal": 5,
+        "industrial": 4
+      },
+      "durability": 4,
+      "hardness_janka_lbf": 1320,
+      "hardness_janka_n": 5870,
+      "density_kg_m3": 695,
+      "machining_rating": 4,
+      "finishing_options": [
+        "clear_lacquer",
+        "hardwax_oil",
+        "natural_oil",
+        "stain",
+        "limed",
+        "painted"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "strings",
+        "handrails",
+        "base_rails",
+        "newel_posts",
+        "balusters",
+        "caps",
+        "bullnose_steps",
+        "landing_nosings"
+      ],
+      "compatible_styles": [
+        "glass_balustrades",
+        "metal_balusters",
+        "floating_staircases",
+        "closed_string",
+        "open_string",
+        "contemporary_staircases"
+      ],
+      "nex_description": "Ash is the pale, bright hardwood — nearly as hard as oak but visually much lighter. Perfect for modern Scandi and coastal interiors where you want the strength of a hardwood without the golden warmth of oak. Takes stains beautifully so it doubles as a base for coloured finishes.",
+      "rendering_engine": {
+        "texture_folder": "/materials/european-ash/",
+        "albedo_url": "/materials/european-ash/albedo.webp",
+        "normal_url": "/materials/european-ash/normal.webp",
+        "roughness_url": "/materials/european-ash/roughness.webp",
+        "ao_url": "/materials/european-ash/ao.webp",
+        "displacement_url": "/materials/european-ash/displacement.webp"
+      },
+      "available_finishes": [
+        "natural",
+        "matt",
+        "satin",
+        "gloss",
+        "smoked",
+        "limed",
+        "stained"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-005",
+      "name": "Scandinavian Pine (Redwood)",
+      "common_names": [
+        "Pine",
+        "Scandinavian Pine",
+        "European Redwood",
+        "Pinus sylvestris"
+      ],
+      "category": "timber_softwood",
+      "origin": "Northern Europe (Scandinavia, Baltic states, Russia)",
+      "appearance": {
+        "colour": "Pale yellow to light amber, darkens to warm honey with age",
+        "grain": "Straight, often with prominent knots",
+        "texture": "Fine to medium",
+        "variation": "High — knot patterns vary widely; grade determines how much character is visible"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "contemporary": 3,
+        "scandinavian": 5,
+        "farmhouse": 5,
+        "coastal": 5,
+        "cottage": 5,
+        "traditional": 4,
+        "industrial": 3
+      },
+      "durability": 3,
+      "hardness_janka_lbf": 380,
+      "hardness_janka_n": 1690,
+      "density_kg_m3": 510,
+      "machining_rating": 5,
+      "finishing_options": [
+        "painted",
+        "clear_lacquer",
+        "natural_oil",
+        "stain",
+        "wax"
+      ],
+      "suitable_components": [
+        "treads_when_painted",
+        "risers",
+        "strings",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "painted_staircases",
+        "cottage_staircases",
+        "coastal_staircases",
+        "scandi_staircases",
+        "closed_string"
+      ],
+      "nex_description": "Scandinavian Pine is the UK default painted-staircase timber — economical, stable, works brilliantly under paint. For a natural clear-finished staircase pine is softer than the hardwoods (marks more easily) but for painted cottage/coastal/Scandi looks it's genuinely the best choice: takes primer + paint smoother than any hardwood.",
+      "rendering_engine": {
+        "texture_folder": "/materials/scandinavian-pine/",
+        "albedo_url": "/materials/scandinavian-pine/albedo.webp",
+        "normal_url": "/materials/scandinavian-pine/normal.webp",
+        "roughness_url": "/materials/scandinavian-pine/roughness.webp",
+        "ao_url": "/materials/scandinavian-pine/ao.webp",
+        "displacement_url": "/materials/scandinavian-pine/displacement.webp"
+      },
+      "available_finishes": [
+        "painted_white",
+        "painted_grey",
+        "painted_heritage_colour",
+        "natural",
+        "satin",
+        "wax"
+      ],
+      "cost_band": "£",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-006",
+      "name": "Sapele",
+      "common_names": [
+        "Sapele",
+        "Entandrophragma cylindricum"
+      ],
+      "category": "timber_hardwood",
+      "origin": "West and Central Africa",
+      "appearance": {
+        "colour": "Medium to dark reddish-brown",
+        "grain": "Interlocked with characteristic ribbon figure",
+        "texture": "Fine and even",
+        "variation": "Moderate"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "traditional": 4,
+        "victorian": 4
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 1500,
+      "hardness_janka_n": 6680,
+      "density_kg_m3": 660,
+      "machining_rating": 3,
+      "finishing_options": [
+        "clear_lacquer",
+        "natural_oil",
+        "french_polish",
+        "satin_varnish"
+      ],
+      "suitable_components": [
+        "treads",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "traditional_staircases",
+        "period_staircases"
+      ],
+      "nex_description": "Sapele is often specified where genuine mahogany would once have been — reddish-brown African hardwood with distinctive interlocked ribbon-figured grain. Dense, durable, takes a beautiful French-polished finish. Widely used on quality traditional and Victorian-style staircase work.",
+      "rendering_engine": {
+        "texture_folder": "/materials/sapele/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "satin",
+        "gloss",
+        "french_polished"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-007",
+      "name": "Genuine Mahogany",
+      "common_names": [
+        "Mahogany",
+        "Genuine Mahogany",
+        "Swietenia macrophylla"
+      ],
+      "category": "timber_hardwood",
+      "origin": "Central/South America (CITES-restricted)",
+      "appearance": {
+        "colour": "Rich reddish-brown, deepening with age",
+        "grain": "Straight to interlocked, fine",
+        "texture": "Fine and even",
+        "variation": "Moderate"
+      },
+      "style_compatibility": {
+        "traditional": 5,
+        "victorian": 5,
+        "georgian": 5,
+        "modern": 2
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 900,
+      "hardness_janka_n": 4020,
+      "density_kg_m3": 600,
+      "machining_rating": 5,
+      "finishing_options": [
+        "french_polish",
+        "clear_lacquer",
+        "natural_oil",
+        "satin_varnish"
+      ],
+      "suitable_components": [
+        "treads",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps",
+        "bullnose_steps"
+      ],
+      "compatible_styles": [
+        "traditional_staircases",
+        "victorian_staircases",
+        "georgian_staircases",
+        "period_staircases"
+      ],
+      "nex_description": "Genuine mahogany (Swietenia species) is CITES-restricted so genuine stock is rare and premium. The classic Georgian and Victorian staircase timber — deep reddish-brown, tight straight grain, polishes to a mirror finish. Most modern 'mahogany' staircases now use sapele or sipo (see MAT-006).",
+      "rendering_engine": {
+        "texture_folder": "/materials/genuine-mahogany/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "satin",
+        "gloss",
+        "french_polished"
+      ],
+      "cost_band": "£££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-008",
+      "name": "American Cherry",
+      "common_names": [
+        "Cherry",
+        "American Cherry",
+        "Black Cherry",
+        "Prunus serotina"
+      ],
+      "category": "timber_hardwood",
+      "origin": "North America",
+      "appearance": {
+        "colour": "Warm pinkish-brown, deepening to rich red-brown with UV exposure",
+        "grain": "Straight to slightly wavy, fine",
+        "texture": "Fine, smooth",
+        "variation": "Moderate"
+      },
+      "style_compatibility": {
+        "traditional": 5,
+        "arts_and_crafts": 5,
+        "modern": 4,
+        "farmhouse": 3
+      },
+      "durability": 4,
+      "hardness_janka_lbf": 950,
+      "hardness_janka_n": 4230,
+      "density_kg_m3": 590,
+      "machining_rating": 5,
+      "finishing_options": [
+        "clear_lacquer",
+        "natural_oil",
+        "hardwax_oil",
+        "satin_varnish",
+        "french_polish"
+      ],
+      "suitable_components": [
+        "treads",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "traditional_staircases",
+        "arts_and_crafts_staircases",
+        "period_staircases"
+      ],
+      "nex_description": "American cherry starts as a warm pinkish-brown and deepens to a rich red-brown over the first year or two — the ageing patina is one of the reasons people choose it. Silky-smooth, polishes beautifully, sits perfectly in traditional and Arts-and-Crafts interiors.",
+      "rendering_engine": {
+        "texture_folder": "/materials/american-cherry/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "satin",
+        "gloss"
+      ],
+      "cost_band": "££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-009",
+      "name": "Hard Maple",
+      "common_names": [
+        "Maple",
+        "Hard Maple",
+        "Rock Maple",
+        "Acer saccharum"
+      ],
+      "category": "timber_hardwood",
+      "origin": "North America",
+      "appearance": {
+        "colour": "Very pale, near-white to light cream",
+        "grain": "Fine, straight, sometimes birds-eye or curly figured",
+        "texture": "Very fine and smooth",
+        "variation": "Low — clean and consistent"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "scandinavian": 4,
+        "minimalist": 5,
+        "industrial": 3
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 1450,
+      "hardness_janka_n": 6450,
+      "density_kg_m3": 720,
+      "machining_rating": 5,
+      "finishing_options": [
+        "clear_lacquer",
+        "hardwax_oil",
+        "matt_varnish",
+        "satin_varnish"
+      ],
+      "suitable_components": [
+        "treads",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "contemporary_staircases",
+        "modern_staircases",
+        "sports_hall_staircases"
+      ],
+      "nex_description": "Hard maple is one of the palest hardwoods and one of the hardest — the traditional timber for basketball courts and bowling alleys. Very fine smooth grain, near-white colour, takes a mirror clear finish. Can yellow slightly under UV over decades, so best in interiors with controlled daylight.",
+      "rendering_engine": {
+        "texture_folder": "/materials/hard-maple/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "matt",
+        "satin",
+        "gloss"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-010",
+      "name": "European Beech",
+      "common_names": [
+        "Beech",
+        "European Beech",
+        "Fagus sylvatica"
+      ],
+      "category": "timber_hardwood",
+      "origin": "Europe",
+      "appearance": {
+        "colour": "Pale cream to pinkish-white",
+        "grain": "Very fine, straight",
+        "texture": "Very fine and even",
+        "variation": "Low"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "scandinavian": 5,
+        "contemporary": 4,
+        "coastal": 3
+      },
+      "durability": 3,
+      "hardness_janka_lbf": 1300,
+      "hardness_janka_n": 5780,
+      "density_kg_m3": 720,
+      "machining_rating": 5,
+      "finishing_options": [
+        "clear_lacquer",
+        "hardwax_oil",
+        "stain"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "handrails",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "scandi_staircases",
+        "contemporary_staircases"
+      ],
+      "nex_description": "European beech is pale, fine-grained and takes stains beautifully — often chosen where the customer wants a clean minimal look. Moves more than oak with humidity so needs good moisture control in the workshop.",
+      "rendering_engine": {
+        "texture_folder": "/materials/european-beech/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "satin",
+        "gloss",
+        "stained"
+      ],
+      "cost_band": "££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-011",
+      "name": "Hemlock",
+      "common_names": [
+        "Hemlock",
+        "Western Hemlock",
+        "Tsuga heterophylla"
+      ],
+      "category": "timber_softwood",
+      "origin": "North America (Pacific Northwest)",
+      "appearance": {
+        "colour": "Pale reddish-brown",
+        "grain": "Straight, fine",
+        "texture": "Fine, even",
+        "variation": "Low"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "farmhouse": 4,
+        "coastal": 4
+      },
+      "durability": 3,
+      "hardness_janka_lbf": 500,
+      "hardness_janka_n": 2220,
+      "density_kg_m3": 460,
+      "machining_rating": 5,
+      "finishing_options": [
+        "painted",
+        "clear_lacquer",
+        "stain",
+        "natural_oil"
+      ],
+      "suitable_components": [
+        "strings",
+        "risers",
+        "handrails",
+        "newel_posts",
+        "balusters"
+      ],
+      "compatible_styles": [
+        "painted_staircases",
+        "cottage_staircases"
+      ],
+      "nex_description": "Hemlock is a pale straight-grained softwood used as an alternative to pine for painted staircases — cleaner grain, less pronounced knots.",
+      "rendering_engine": {
+        "texture_folder": "/materials/hemlock/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "painted",
+        "natural",
+        "stained"
+      ],
+      "cost_band": "£",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-012",
+      "name": "Douglas Fir",
+      "common_names": [
+        "Douglas Fir",
+        "Oregon Pine",
+        "Pseudotsuga menziesii"
+      ],
+      "category": "timber_softwood",
+      "origin": "North America (Pacific Coast) + European plantations",
+      "appearance": {
+        "colour": "Warm reddish-orange with darker growth rings",
+        "grain": "Straight, strong figure from prominent growth rings",
+        "texture": "Medium",
+        "variation": "Moderate"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "industrial": 5,
+        "farmhouse": 4,
+        "loft": 4
+      },
+      "durability": 4,
+      "hardness_janka_lbf": 660,
+      "hardness_janka_n": 2940,
+      "density_kg_m3": 520,
+      "machining_rating": 4,
+      "finishing_options": [
+        "clear_lacquer",
+        "natural_oil",
+        "hardwax_oil",
+        "stain"
+      ],
+      "suitable_components": [
+        "treads",
+        "risers",
+        "strings",
+        "handrails",
+        "newel_posts",
+        "balusters"
+      ],
+      "compatible_styles": [
+        "industrial_staircases",
+        "loft_staircases",
+        "farmhouse_staircases"
+      ],
+      "nex_description": "Douglas Fir gives you a warm reddish softwood with strong growth-ring figure — harder than pine, works in structural and visible components. Popular in industrial-loft and farmhouse conversions where the exposed grain becomes a design feature.",
+      "rendering_engine": {
+        "texture_folder": "/materials/douglas-fir/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "natural",
+        "satin",
+        "stained"
+      ],
+      "cost_band": "££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-013",
+      "name": "Accoya (modified softwood)",
+      "common_names": [
+        "Accoya",
+        "Acetylated Radiata Pine"
+      ],
+      "category": "timber_engineered",
+      "origin": "New Zealand pine, modified in the Netherlands",
+      "appearance": {
+        "colour": "Pale honey similar to pine",
+        "grain": "Straight, similar to base pine but stabilised",
+        "texture": "Fine",
+        "variation": "Low"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "coastal": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": 830,
+      "hardness_janka_n": 3690,
+      "density_kg_m3": 530,
+      "machining_rating": 5,
+      "finishing_options": [
+        "painted",
+        "clear_lacquer",
+        "natural_oil"
+      ],
+      "suitable_components": [
+        "strings",
+        "risers",
+        "handrails",
+        "newel_posts",
+        "balusters"
+      ],
+      "compatible_styles": [
+        "painted_staircases",
+        "coastal_staircases",
+        "exterior_transition_staircases"
+      ],
+      "nex_description": "Accoya is chemically-modified radiata pine — the modification massively increases dimensional stability and rot resistance. Overkill for standard interior staircases but ideal where the flight transitions to exterior use or sits in high-humidity conditions.",
+      "rendering_engine": {
+        "texture_folder": "/materials/accoya/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "painted",
+        "natural"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-014",
+      "name": "MDF Paint Grade",
+      "common_names": [
+        "MDF",
+        "Medium Density Fibreboard",
+        "Paint-Grade MDF"
+      ],
+      "category": "timber_paint_grade",
+      "origin": "Engineered board (UK & European mills)",
+      "appearance": {
+        "colour": "Uniform brown (invisible under paint)",
+        "grain": "None — homogeneous",
+        "texture": "Very smooth",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "cottage": 4,
+        "coastal": 4,
+        "traditional": 3
+      },
+      "durability": 3,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 750,
+      "machining_rating": 5,
+      "finishing_options": [
+        "painted_primed"
+      ],
+      "suitable_components": [
+        "risers",
+        "strings_when_painted",
+        "newel_boxes",
+        "cover_slips",
+        "landing_lining"
+      ],
+      "compatible_styles": [
+        "painted_staircases"
+      ],
+      "nex_description": "MDF is the engineered-board choice for painted staircase carcass work — cost-effective, no grain to show through paint, machines cleanly. Use for risers, painted strings, cover slips. Never use MDF on treads or structural elements — it's not rated for foot traffic.",
+      "rendering_engine": {
+        "texture_folder": "/materials/mdf-painted/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "painted_white",
+        "painted_colour"
+      ],
+      "cost_band": "£",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-015",
+      "name": "White Primed Timber",
+      "common_names": [
+        "White Primed",
+        "Factory-Primed Timber",
+        "Primed Softwood"
+      ],
+      "category": "timber_paint_grade",
+      "origin": "UK & European timber mills",
+      "appearance": {
+        "colour": "Factory-primed white ready for final coat",
+        "grain": "Subtle timber grain visible under primer",
+        "texture": "Smooth primer surface",
+        "variation": "Low"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "cottage": 5,
+        "coastal": 5,
+        "traditional": 5,
+        "scandi": 5
+      },
+      "durability": 3,
+      "hardness_janka_lbf": 380,
+      "hardness_janka_n": 1690,
+      "density_kg_m3": 510,
+      "machining_rating": 5,
+      "finishing_options": [
+        "painted_white_final",
+        "painted_colour_final"
+      ],
+      "suitable_components": [
+        "strings",
+        "risers",
+        "handrails",
+        "newel_posts",
+        "balusters",
+        "caps"
+      ],
+      "compatible_styles": [
+        "painted_staircases",
+        "cottage_staircases",
+        "coastal_staircases",
+        "scandi_staircases"
+      ],
+      "nex_description": "Softwood delivered from the factory already primed white, saving the finisher a prep coat. Ideal for full-painted staircases — cottage, coastal, Scandi and any painted-cottage-style project. Combine with hardwood treads for the classic 'oak treads + painted string' combination.",
+      "rendering_engine": {
+        "texture_folder": "/materials/white-primed/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "painted_white_final",
+        "painted_heritage_colour"
+      ],
+      "cost_band": "£",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-016",
+      "name": "Satin Black Powder-Coated Steel",
+      "common_names": [
+        "Black Steel",
+        "Powder-Coated Steel",
+        "PC Black"
+      ],
+      "category": "metal",
+      "origin": "UK / European steel mills, powder-coated at fabrication",
+      "appearance": {
+        "colour": "Deep matt-satin black",
+        "grain": "None — smooth powder finish",
+        "texture": "Smooth micro-textured",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "industrial": 5,
+        "loft": 5,
+        "farmhouse": 4,
+        "contemporary": 5,
+        "traditional": 2
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 7850,
+      "machining_rating": 3,
+      "finishing_options": [
+        "powder_coat_matt",
+        "powder_coat_satin",
+        "powder_coat_gloss"
+      ],
+      "suitable_components": [
+        "stringers",
+        "spindles",
+        "balusters",
+        "glass_fixings",
+        "central_spine",
+        "cantilever_brackets",
+        "handrails"
+      ],
+      "compatible_styles": [
+        "industrial_staircases",
+        "loft_staircases",
+        "modern_staircases",
+        "cable_balustrade_staircases"
+      ],
+      "nex_description": "Satin black powder-coated mild steel is the modern-industrial staircase workhorse — used for central spines, slim balusters, cable-balustrade posts, glass fixings, floating-staircase brackets. Powder-coating gives a durable factory-cured finish that resists chips and scuffs far better than wet paint.",
+      "rendering_engine": {
+        "texture_folder": "/materials/black-steel/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "matt_black",
+        "satin_black",
+        "gloss_black"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-017",
+      "name": "Brushed Stainless Steel",
+      "common_names": [
+        "Stainless",
+        "Brushed Stainless Steel",
+        "Marine-Grade Stainless"
+      ],
+      "category": "metal",
+      "origin": "UK / European steel mills, brushed at fabrication",
+      "appearance": {
+        "colour": "Silver-grey with parallel brush lines",
+        "grain": "Directional brush lines",
+        "texture": "Smooth linear-brushed",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "luxury": 5,
+        "coastal": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 8000,
+      "machining_rating": 3,
+      "finishing_options": [
+        "brushed",
+        "satin",
+        "mirror_polish"
+      ],
+      "suitable_components": [
+        "cable_balustrade_cables",
+        "glass_point_fixings",
+        "glass_spider_clamps",
+        "handrails",
+        "glass_channels"
+      ],
+      "compatible_styles": [
+        "modern_staircases",
+        "coastal_staircases",
+        "cable_balustrade_staircases",
+        "glass_balustrade_staircases"
+      ],
+      "nex_description": "Brushed stainless steel is where you want metal that doesn't rust and doesn't shout — the natural pairing for frameless glass balustrades (point fixings, spider clamps, channels) and cable balustrading. Marine-grade (316) recommended in coastal properties.",
+      "rendering_engine": {
+        "texture_folder": "/materials/brushed-stainless/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "brushed",
+        "satin",
+        "mirror"
+      ],
+      "cost_band": "££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-018",
+      "name": "Toughened Clear Glass",
+      "common_names": [
+        "Toughened Glass",
+        "Tempered Glass",
+        "Safety Glass Clear"
+      ],
+      "category": "glass",
+      "origin": "UK & European glass manufacturers",
+      "appearance": {
+        "colour": "Clear with subtle green edge tint (from iron content)",
+        "grain": null,
+        "texture": "Perfectly smooth",
+        "variation": "Slight edge-tint variation"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "luxury": 5,
+        "loft": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 2500,
+      "machining_rating": 1,
+      "finishing_options": [
+        "polished_edge",
+        "flat_ground_edge",
+        "bevelled_edge",
+        "arris_edge"
+      ],
+      "suitable_components": [
+        "balustrade_panels",
+        "glass_treads_laminated_only"
+      ],
+      "compatible_styles": [
+        "glass_balustrade_staircases",
+        "modern_staircases",
+        "luxury_staircases"
+      ],
+      "nex_description": "Standard toughened safety glass — 10mm minimum on domestic balustrade panels. Shatters into small blunt cubes rather than shards. Clear glass has a subtle green edge tint from the iron content — if this bothers you, upgrade to Low-Iron (MAT-019).",
+      "rendering_engine": {
+        "texture_folder": "/materials/toughened-clear/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "polished_edge",
+        "flat_ground_edge"
+      ],
+      "cost_band": "£££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-019",
+      "name": "Low-Iron Glass",
+      "common_names": [
+        "Low-Iron",
+        "Optiwhite",
+        "Ultra-Clear Glass"
+      ],
+      "category": "glass",
+      "origin": "UK & European glass manufacturers",
+      "appearance": {
+        "colour": "Crystal-clear, no green edge tint",
+        "grain": null,
+        "texture": "Perfectly smooth",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "contemporary": 5,
+        "luxury": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 2500,
+      "machining_rating": 1,
+      "finishing_options": [
+        "polished_edge"
+      ],
+      "suitable_components": [
+        "balustrade_panels",
+        "glass_treads_laminated_only"
+      ],
+      "compatible_styles": [
+        "luxury_staircases",
+        "premium_glass_balustrades"
+      ],
+      "nex_description": "Low-iron (also called Optiwhite or ultra-clear) glass is the premium spec — reduced iron content removes the green tint you see on standard toughened glass edges. Worth the upgrade on any 12mm+ balustrade panel where the edge is visible.",
+      "rendering_engine": {
+        "texture_folder": "/materials/low-iron/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "polished_edge"
+      ],
+      "cost_band": "££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-020",
+      "name": "Bronze-Tinted Glass",
+      "common_names": [
+        "Bronze Glass",
+        "Bronze-Tinted Toughened"
+      ],
+      "category": "glass",
+      "origin": "UK & European glass manufacturers",
+      "appearance": {
+        "colour": "Warm bronze tint through the whole panel",
+        "grain": null,
+        "texture": "Perfectly smooth",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 4,
+        "luxury": 5,
+        "art_deco": 5,
+        "industrial": 4
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 2500,
+      "machining_rating": 1,
+      "finishing_options": [
+        "polished_edge"
+      ],
+      "suitable_components": [
+        "balustrade_panels"
+      ],
+      "compatible_styles": [
+        "luxury_staircases",
+        "art_deco_staircases",
+        "modern_staircases"
+      ],
+      "nex_description": "Bronze-tinted toughened glass — warm through-tint for a richer alternative to grey smoked glass. Pairs beautifully with brass fittings and walnut/mahogany timber. Adds warmth to a modern staircase that clear glass makes feel cold.",
+      "rendering_engine": {
+        "texture_folder": "/materials/bronze-glass/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "polished_edge"
+      ],
+      "cost_band": "££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    },
+    {
+      "id": "MAT-021",
+      "name": "Smoked Grey Glass",
+      "common_names": [
+        "Smoked Glass",
+        "Grey-Tinted Toughened"
+      ],
+      "category": "glass",
+      "origin": "UK & European glass manufacturers",
+      "appearance": {
+        "colour": "Grey tint through the whole panel",
+        "grain": null,
+        "texture": "Perfectly smooth",
+        "variation": "None"
+      },
+      "style_compatibility": {
+        "modern": 5,
+        "industrial": 5,
+        "loft": 5,
+        "contemporary": 5
+      },
+      "durability": 5,
+      "hardness_janka_lbf": null,
+      "hardness_janka_n": null,
+      "density_kg_m3": 2500,
+      "machining_rating": 1,
+      "finishing_options": [
+        "polished_edge"
+      ],
+      "suitable_components": [
+        "balustrade_panels"
+      ],
+      "compatible_styles": [
+        "industrial_staircases",
+        "loft_staircases",
+        "modern_dark_interiors"
+      ],
+      "nex_description": "Smoked grey toughened glass — through-tint for privacy and drama. Pairs perfectly with black powder-coated steel and darker timber. Adds mood to a modern industrial staircase. Shows cleaning streaks more visibly than clear — factor into maintenance decision.",
+      "rendering_engine": {
+        "texture_folder": "/materials/smoked-glass/",
+        "albedo_url": null,
+        "normal_url": null,
+        "roughness_url": null,
+        "ao_url": null,
+        "displacement_url": null
+      },
+      "available_finishes": [
+        "polished_edge"
+      ],
+      "cost_band": "££££",
+      "marketing_images": {
+        "pbr_texture_reference": null,
+        "plank_studio": null,
+        "end_grain_closeup": null,
+        "edge_grain_closeup": null,
+        "tread_sample": null,
+        "handrail_sample": null,
+        "newel_sample": null,
+        "baluster_sample": null,
+        "complete_staircase_hero": null,
+        "luxury_hallway_installed": null,
+        "close_up_detail": null,
+        "mobile_icon": null
+      }
+    }
+  ],
+  "staircase_backing_options": {
+    "tng_sheeting": {
+      "canonical_reference_image": "https://ik.imagekit.io/5vv5pw26q/ChatGPT Image Jul 26, 2026, 12_03_59 AM.png",
+      "reference_notes": "Product-shot 3-quarter view of an oak T&G plank. Warm honey colour, chamfered visible edges, tongue-and-groove joint visible. Use ONLY this image for T&G references across brain, catalogue, marketing. Not for 3D texture tiling (perspective shot).",
+      "thickness_options_mm": [
+        9,
+        12,
+        15,
+        18
+      ],
+      "default_thickness_mm": 12,
+      "plank_width_mm": 75,
+      "species": "Oak (species interchangeable — walnut, ash, pine also available)",
+      "expansion_gap_mm_each_end": "7-10",
+      "install_technique": "HIDDEN NAILING (through tongue side, next plank groove covers pin hole)",
+      "edge_trim": "25mm angle bead on both outer edges — covers raw sheeting edges + outer staircase side",
+      "underlying_battens": "2\"×2\" (50×50mm) rough drywood, fixed to inner back of staircase",
+      "documented_by": "Philip 2026-07-26"
+    }
+  }
+}

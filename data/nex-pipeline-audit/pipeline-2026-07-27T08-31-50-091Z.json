@@ -1,0 +1,401 @@
+{
+  "run_at": "2026-07-27T08:31:50.094Z",
+  "durations": {
+    "pass1_collections_ms": 183,
+    "pass2_relationships_ms": 31,
+    "pass3_journeys_ms": 8,
+    "pass4_dna_ms": 3051,
+    "pass5_prompts_ms": 23,
+    "pass6_scoring_ms": 9,
+    "pass7_save_ms": 7
+  },
+  "collections_discovered": 17,
+  "relationships_discovered": 377,
+  "material_journeys_discovered": 0,
+  "collection_aggregates": [
+    [
+      "legacy_networkers_assets",
+      {
+        "collection_id": "legacy_networkers_assets",
+        "sample_size": 720,
+        "dominant": {
+          "materials_primary": "ash",
+          "setting_primary": "studio"
+        },
+        "common_tags": [
+          "manufacturing"
+        ],
+        "confidence": 29
+      }
+    ],
+    [
+      "hero_images",
+      {
+        "collection_id": "hero_images",
+        "sample_size": 401,
+        "dominant": {
+          "materials_primary": "walnut",
+          "setting_primary": "studio"
+        },
+        "common_tags": [
+          "staircase",
+          "modern",
+          "oak",
+          "walnut",
+          "timber",
+          "glass",
+          "hardwood",
+          "tread",
+          "riser",
+          "traditional",
+          "cottage",
+          "stone",
+          "handrail",
+          "spindle",
+          "warm"
+        ],
+        "confidence": 29
+      }
+    ],
+    [
+      "unclassified",
+      {
+        "collection_id": "unclassified",
+        "sample_size": 29,
+        "dominant": {},
+        "common_tags": [],
+        "confidence": 0
+      }
+    ],
+    [
+      "manufacturing",
+      {
+        "collection_id": "manufacturing",
+        "sample_size": 21,
+        "dominant": {
+          "materials_primary": "timber",
+          "setting_primary": "workshop",
+          "camera_view": "aerial"
+        },
+        "common_tags": [
+          "staircase",
+          "timber",
+          "workshop",
+          "manufacturing",
+          "oak",
+          "modern",
+          "traditional",
+          "steel",
+          "tread",
+          "handrail",
+          "newel",
+          "riser",
+          "glass",
+          "balustrade",
+          "spindle"
+        ],
+        "confidence": 43
+      }
+    ],
+    [
+      "installation_guides",
+      {
+        "collection_id": "installation_guides",
+        "sample_size": 10,
+        "dominant": {
+          "materials_primary": "timber",
+          "setting_primary": "workshop"
+        },
+        "common_tags": [
+          "staircase",
+          "stone",
+          "oak",
+          "timber",
+          "workshop",
+          "glass",
+          "modern"
+        ],
+        "confidence": 29
+      }
+    ],
+    [
+      "nex_ai_generated",
+      {
+        "collection_id": "nex_ai_generated",
+        "sample_size": 134,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "workshop",
+          "lighting_primary": "natural light",
+          "camera_view": "aerial"
+        },
+        "common_tags": [
+          "staircase",
+          "timber",
+          "modern",
+          "oak",
+          "tread",
+          "warm",
+          "glass",
+          "traditional",
+          "steel",
+          "balustrade",
+          "handrail",
+          "luxury",
+          "hardwood",
+          "walnut",
+          "newel"
+        ],
+        "confidence": 71
+      }
+    ],
+    [
+      "avatars",
+      {
+        "collection_id": "avatars",
+        "sample_size": 124,
+        "dominant": {
+          "materials_primary": "timber",
+          "setting_primary": "studio"
+        },
+        "common_tags": [
+          "timber",
+          "staircase",
+          "oak",
+          "tread",
+          "riser",
+          "traditional",
+          "modern",
+          "cottage",
+          "warm"
+        ],
+        "confidence": 29
+      }
+    ],
+    [
+      "pinterest_collections",
+      {
+        "collection_id": "pinterest_collections",
+        "sample_size": 3,
+        "dominant": {},
+        "common_tags": [],
+        "confidence": 0
+      }
+    ],
+    [
+      "product_images",
+      {
+        "collection_id": "product_images",
+        "sample_size": 17,
+        "dominant": {
+          "materials_primary": "timber",
+          "setting_primary": "workshop"
+        },
+        "common_tags": [
+          "staircase",
+          "workshop",
+          "manufacturing",
+          "timber",
+          "pine",
+          "tread",
+          "riser",
+          "oak",
+          "industrial",
+          "hardwood",
+          "modern"
+        ],
+        "confidence": 29
+      }
+    ],
+    [
+      "website_assets",
+      {
+        "collection_id": "website_assets",
+        "sample_size": 4,
+        "dominant": {},
+        "common_tags": [],
+        "confidence": 0
+      }
+    ],
+    [
+      "brand_assets",
+      {
+        "collection_id": "brand_assets",
+        "sample_size": 61,
+        "dominant": {},
+        "common_tags": [],
+        "confidence": 0
+      }
+    ],
+    [
+      "timber_samples",
+      {
+        "collection_id": "timber_samples",
+        "sample_size": 68,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "workshop",
+          "lighting_primary": "natural light",
+          "camera_view": "aerial"
+        },
+        "common_tags": [
+          "staircase",
+          "timber",
+          "oak",
+          "modern",
+          "tread",
+          "glass",
+          "walnut",
+          "warm",
+          "traditional",
+          "steel",
+          "balustrade",
+          "handrail",
+          "hardwood",
+          "newel",
+          "cantilever"
+        ],
+        "confidence": 71
+      }
+    ],
+    [
+      "staircases",
+      {
+        "collection_id": "staircases",
+        "sample_size": 92,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "workshop",
+          "lighting_primary": "natural light",
+          "camera_view": "aerial"
+        },
+        "common_tags": [
+          "staircase",
+          "timber",
+          "modern",
+          "oak",
+          "tread",
+          "glass",
+          "warm",
+          "traditional",
+          "balustrade",
+          "steel",
+          "walnut",
+          "handrail",
+          "luxury",
+          "floating",
+          "newel"
+        ],
+        "confidence": 71
+      }
+    ],
+    [
+      "luxury_interiors",
+      {
+        "collection_id": "luxury_interiors",
+        "sample_size": 28,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "interior",
+          "lighting_primary": "natural light"
+        },
+        "common_tags": [
+          "staircase",
+          "modern",
+          "oak",
+          "warm",
+          "timber",
+          "tread",
+          "traditional",
+          "glass",
+          "handrail",
+          "balustrade",
+          "luxury",
+          "newel",
+          "steel",
+          "floating",
+          "spindle"
+        ],
+        "confidence": 57
+      }
+    ],
+    [
+      "educational_graphics",
+      {
+        "collection_id": "educational_graphics",
+        "sample_size": 5,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "interior",
+          "lighting_primary": "natural light"
+        },
+        "common_tags": [
+          "timber",
+          "staircase",
+          "tread",
+          "hardwood",
+          "handrail",
+          "traditional",
+          "modern",
+          "riser",
+          "newel",
+          "oak",
+          "walnut",
+          "glass",
+          "steel",
+          "balustrade",
+          "floating"
+        ],
+        "confidence": 57
+      }
+    ],
+    [
+      "luxury_staircases",
+      {
+        "collection_id": "luxury_staircases",
+        "sample_size": 24,
+        "dominant": {
+          "style_primary": "modern architectural",
+          "materials_primary": "timber",
+          "setting_primary": "interior",
+          "lighting_primary": "natural light"
+        },
+        "common_tags": [
+          "staircase",
+          "modern",
+          "glass",
+          "balustrade",
+          "tread",
+          "timber",
+          "steel",
+          "luxury",
+          "oak",
+          "floating",
+          "traditional",
+          "cantilever",
+          "warm",
+          "handrail",
+          "walnut"
+        ],
+        "confidence": 57
+      }
+    ],
+    [
+      "transparent_assets",
+      {
+        "collection_id": "transparent_assets",
+        "sample_size": 1,
+        "dominant": {},
+        "common_tags": [
+          "staircase"
+        ],
+        "confidence": 0
+      }
+    ]
+  ]
+}

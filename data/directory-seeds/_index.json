@@ -1,0 +1,340 @@
+{
+  "version": 1,
+  "generated_at": "2026-07-27T12:00:36Z",
+  "count": 37,
+  "listings": [
+    {
+      "id": "018f0a1c-3b1e-4d5a-a2c1-7e5b8f3d9a10",
+      "slug": "stairbox-stoke-on-trent",
+      "business_name": "StairBox",
+      "town": "Stoke-on-Trent",
+      "postcode": "ST4 4TW",
+      "path": "stoke-on-trent/stairbox-stoke-on-trent.json",
+      "imported_at": "2026-07-27T12:00:00Z"
+    },
+    {
+      "id": "018f0a1c-4c2f-4e6b-b3d2-8f6c9a4e0b21",
+      "slug": "stairs-direct-uk-ltd-otley",
+      "business_name": "Stairs Direct UK Ltd",
+      "town": "Otley",
+      "postcode": "LS21 3AX",
+      "path": "otley/stairs-direct-uk-ltd-otley.json",
+      "imported_at": "2026-07-27T12:00:01Z"
+    },
+    {
+      "id": "018f0a1c-5d30-4f7c-8ce3-9a7d0b5f1c32",
+      "slug": "tkstairs-woodmansey",
+      "business_name": "TKstairs.com",
+      "town": "Woodmansey",
+      "postcode": "HU17 0TB",
+      "path": "woodmansey/tkstairs-woodmansey.json",
+      "imported_at": "2026-07-27T12:00:02Z"
+    },
+    {
+      "id": "018f0a1c-6e41-4a8d-9df4-ab8e1c6a2d43",
+      "slug": "mrstairs-wickford",
+      "business_name": "MrStairs",
+      "town": "Wickford",
+      "postcode": "SS11 8QU",
+      "path": "wickford/mrstairs-wickford.json",
+      "imported_at": "2026-07-27T12:00:03Z"
+    },
+    {
+      "id": "018f0a1c-7f52-4b9e-aef5-bc9f2d7b3e54",
+      "slug": "first-step-designs-stoke-on-trent",
+      "business_name": "First Step Designs",
+      "town": "Stoke-on-Trent",
+      "postcode": "ST6 2LA",
+      "path": "stoke-on-trent/first-step-designs-stoke-on-trent.json",
+      "imported_at": "2026-07-27T12:00:04Z"
+    },
+    {
+      "id": "018f0a1c-8063-4cae-8f06-cd0a3e8c4f65",
+      "slug": "stair-and-banister-ltd-crawley",
+      "business_name": "Stair & Banister Ltd",
+      "town": "Crawley",
+      "postcode": "RH10 9RD",
+      "path": "crawley/stair-and-banister-ltd-crawley.json",
+      "imported_at": "2026-07-27T12:00:05Z"
+    },
+    {
+      "id": "018f0a1c-9174-4dbf-9017-de1b4f9d5076",
+      "slug": "timber-staircases-harlow",
+      "business_name": "Timber Staircases",
+      "town": "Harlow",
+      "postcode": "CM20 2DY",
+      "path": "harlow/timber-staircases-harlow.json",
+      "imported_at": "2026-07-27T12:00:06Z"
+    },
+    {
+      "id": "018f0a1c-a285-4ec1-a128-ef2c50ae6187",
+      "slug": "uk-stairparts-ltd-basildon",
+      "business_name": "UK Stairparts Ltd",
+      "town": "Basildon",
+      "postcode": "SS14 3ED",
+      "path": "basildon/uk-stairparts-ltd-basildon.json",
+      "imported_at": "2026-07-27T12:00:07Z"
+    },
+    {
+      "id": "018f0a1c-b396-4fd2-8239-f03d61bf7298",
+      "slug": "the-stair-shop-stockport",
+      "business_name": "The Stair Shop",
+      "town": "Stockport",
+      "postcode": "SK4 1NU",
+      "path": "stockport/the-stair-shop-stockport.json",
+      "imported_at": "2026-07-27T12:00:08Z"
+    },
+    {
+      "id": "018f0a1c-c4a7-40e3-9340-014e72c083a9",
+      "slug": "abbott-wade-staircases-warrington",
+      "business_name": "Abbott-Wade Staircases",
+      "town": "Warrington",
+      "postcode": "WA3 3UL",
+      "path": "warrington/abbott-wade-staircases-warrington.json",
+      "imported_at": "2026-07-27T12:00:09Z"
+    },
+    {
+      "id": "018f0a1c-d5b8-40f4-9451-125f83d194ba",
+      "slug": "ddc-london-ltd-london",
+      "business_name": "DDC London Ltd",
+      "town": "London",
+      "postcode": "SW1P 4QP",
+      "path": "london/ddc-london-ltd-london.json",
+      "imported_at": "2026-07-27T12:00:10Z"
+    },
+    {
+      "id": "018f0a1c-e6c9-4105-8562-236094e2a5cb",
+      "slug": "adm-london-wooden-stairs-london",
+      "business_name": "ADM London Wooden Stairs",
+      "town": "London",
+      "postcode": "W1K 4JT",
+      "path": "london/adm-london-wooden-stairs-london.json",
+      "imported_at": "2026-07-27T12:00:11Z"
+    },
+    {
+      "id": "018f0a1c-f7da-4216-9673-3471a5f3b6dc",
+      "slug": "ovoms-ltd-london",
+      "business_name": "Ovoms Ltd",
+      "town": "London",
+      "postcode": "W1S 1BN",
+      "path": "london/ovoms-ltd-london.json",
+      "imported_at": "2026-07-27T12:00:12Z"
+    },
+    {
+      "id": "018f0a1d-08eb-4327-a784-4582b604c7ed",
+      "slug": "inoval-london",
+      "business_name": "Inoval",
+      "town": "London",
+      "postcode": "W8 6SN",
+      "path": "london/inoval-london.json",
+      "imported_at": "2026-07-27T12:00:13Z"
+    },
+    {
+      "id": "018f0a1d-19fc-4438-b895-5693c715d8fe",
+      "slug": "craft-bespoke-staircase-joinery-london",
+      "business_name": "CRAFT Bespoke Staircase Joinery",
+      "town": "London",
+      "postcode": "E8 4FA",
+      "path": "london/craft-bespoke-staircase-joinery-london.json",
+      "imported_at": "2026-07-27T12:00:14Z"
+    },
+    {
+      "id": "018f0a1d-2a0d-4549-8906-67a4d826e90f",
+      "slug": "aw-bespoke-staircase-london",
+      "business_name": "AW Bespoke Staircase",
+      "town": "London",
+      "postcode": "E5 9AB",
+      "path": "london/aw-bespoke-staircase-london.json",
+      "imported_at": "2026-07-27T12:00:15Z"
+    },
+    {
+      "id": "018f0a1d-3b1e-465a-9a17-78b5e937fa10",
+      "slug": "higginson-staircases-ltd-london",
+      "business_name": "Higginson Staircases Ltd",
+      "town": "London",
+      "postcode": "NW2 7HJ",
+      "path": "london/higginson-staircases-ltd-london.json",
+      "imported_at": "2026-07-27T12:00:16Z"
+    },
+    {
+      "id": "018f0a1d-4c2f-476b-8b28-89c6fa480b21",
+      "slug": "legacy-staircase-carpenter-london",
+      "business_name": "Legacy Staircase Carpenter",
+      "town": "London",
+      "postcode": "SW6 2NQ",
+      "path": "london/legacy-staircase-carpenter-london.json",
+      "imported_at": "2026-07-27T12:00:17Z"
+    },
+    {
+      "id": "018f0a1d-5d30-487c-9c39-9ad70b591c32",
+      "slug": "great-wooden-stairs-and-joinery-hayes",
+      "business_name": "Great Wooden Stairs & Joinery",
+      "town": "Hayes",
+      "postcode": "UB3 3LH",
+      "path": "hayes/great-wooden-stairs-and-joinery-hayes.json",
+      "imported_at": "2026-07-27T12:00:18Z"
+    },
+    {
+      "id": "018f0a1d-6e41-498d-8d40-abe81c6a2d43",
+      "slug": "k-and-d-joinery-ilford",
+      "business_name": "K&D Joinery",
+      "town": "Ilford",
+      "postcode": "IG6 3UT",
+      "path": "ilford/k-and-d-joinery-ilford.json",
+      "imported_at": "2026-07-27T12:00:19Z"
+    },
+    {
+      "id": "018f0a1d-7f52-4a9e-9e51-bcf92d7b3e54",
+      "slug": "oak-and-rose-london",
+      "business_name": "Oak & Rose",
+      "town": "London",
+      "postcode": "EC1V 2NX",
+      "path": "london/oak-and-rose-london.json",
+      "imported_at": "2026-07-27T12:00:20Z"
+    },
+    {
+      "id": "018f0a1d-8063-4baf-8f62-cd0a3e8c4f65",
+      "slug": "paradigm-stairs-ltd-dorking",
+      "business_name": "Paradigm Stairs Ltd",
+      "town": "Dorking",
+      "postcode": null,
+      "path": "dorking/paradigm-stairs-ltd-dorking.json",
+      "imported_at": "2026-07-27T12:00:21Z"
+    },
+    {
+      "id": "018f0a1d-9174-4cbf-9f73-de1b4f9d5076",
+      "slug": "woodcraft-joinery-london-enfield",
+      "business_name": "Woodcraft Joinery London",
+      "town": "Enfield",
+      "postcode": null,
+      "path": "enfield/woodcraft-joinery-london-enfield.json",
+      "imported_at": "2026-07-27T12:00:22Z"
+    },
+    {
+      "id": "018f0a1d-a285-4dc1-af84-ef2c50ae6187",
+      "slug": "constantins-carpentry-london",
+      "business_name": "Constantin's Carpentry",
+      "town": "London",
+      "postcode": "HA4 8LX",
+      "path": "london/constantins-carpentry-london.json",
+      "imported_at": "2026-07-27T12:00:23Z"
+    },
+    {
+      "id": "018f0a1d-b396-4ed2-8f95-f03d61bf7298",
+      "slug": "smet-staircases-oxted",
+      "business_name": "Smet Staircases",
+      "town": "Oxted",
+      "postcode": "RH8",
+      "path": "oxted/smet-staircases-oxted.json",
+      "imported_at": "2026-07-27T12:00:24Z"
+    },
+    {
+      "id": "018f0a1d-c4a7-4fe3-9fa6-014e72c083a9",
+      "slug": "stair-part-replacements-birmingham",
+      "business_name": "Stair Part Replacements",
+      "town": "Birmingham",
+      "postcode": "B30 3AX",
+      "path": "birmingham/stair-part-replacements-birmingham.json",
+      "imported_at": "2026-07-27T12:00:25Z"
+    },
+    {
+      "id": "018f0a1d-d5b8-40f4-9fb7-125f83d194ba",
+      "slug": "staircase-banisters-and-balustrades-birmingham",
+      "business_name": "Staircase Banisters & Balustrades",
+      "town": "Birmingham",
+      "postcode": null,
+      "path": "birmingham/staircase-banisters-and-balustrades-birmingham.json",
+      "imported_at": "2026-07-27T12:00:26Z"
+    },
+    {
+      "id": "018f0a1d-e6c9-4105-8fc8-236094e2a5cb",
+      "slug": "rrj-design-birmingham",
+      "business_name": "RRJ Design",
+      "town": "Birmingham",
+      "postcode": "B5 5TR",
+      "path": "birmingham/rrj-design-birmingham.json",
+      "imported_at": "2026-07-27T12:00:27Z"
+    },
+    {
+      "id": "018f0a1d-f7da-4216-9fd9-3471a5f3b6dc",
+      "slug": "euro-stairs-ltd-walsall",
+      "business_name": "Euro Stairs Ltd",
+      "town": "Walsall",
+      "postcode": "WS1 3BZ",
+      "path": "walsall/euro-stairs-ltd-walsall.json",
+      "imported_at": "2026-07-27T12:00:28Z"
+    },
+    {
+      "id": "018f0a1e-08eb-4327-afea-4582b604c7ed",
+      "slug": "beautiful-stairs-by-joinery-and-installation-contracts-cradley-heath",
+      "business_name": "Beautiful Stairs by Joinery & Installation Contracts",
+      "town": "Cradley Heath",
+      "postcode": "B64 7PW",
+      "path": "cradley-heath/beautiful-stairs-by-joinery-and-installation-contracts-cradley-heath.json",
+      "imported_at": "2026-07-27T12:00:29Z"
+    },
+    {
+      "id": "018f0a1e-19fc-4438-bfb0-5693c715d8fe",
+      "slug": "shaw-stairs-ltd-tamworth",
+      "business_name": "Shaw Stairs Ltd",
+      "town": "Tamworth",
+      "postcode": "B79 7TA",
+      "path": "tamworth/shaw-stairs-ltd-tamworth.json",
+      "imported_at": "2026-07-27T12:00:30Z"
+    },
+    {
+      "id": "018f0a1e-2a0d-4549-8fc1-67a4d826e90f",
+      "slug": "midlands-premier-stairs-walsall",
+      "business_name": "Midlands Premier Stairs",
+      "town": "Walsall",
+      "postcode": "WS2 8LH",
+      "path": "walsall/midlands-premier-stairs-walsall.json",
+      "imported_at": "2026-07-27T12:00:31Z"
+    },
+    {
+      "id": "018f0a1e-3b1e-465a-9fd2-78b5e937fa10",
+      "slug": "a-and-t-stairs-ltd-bromsgrove",
+      "business_name": "A&T Stairs Ltd",
+      "town": "Bromsgrove",
+      "postcode": "B60 4AL",
+      "path": "bromsgrove/a-and-t-stairs-ltd-bromsgrove.json",
+      "imported_at": "2026-07-27T12:00:32Z"
+    },
+    {
+      "id": "018f0a1e-4c2f-476b-8fe3-89c6fa480b21",
+      "slug": "south-yorkshire-joinery-ltd-sheffield",
+      "business_name": "South Yorkshire Joinery Ltd",
+      "town": "Sheffield",
+      "postcode": "S3 8JL",
+      "path": "sheffield/south-yorkshire-joinery-ltd-sheffield.json",
+      "imported_at": "2026-07-27T12:00:33Z"
+    },
+    {
+      "id": "018f0a1e-5d30-487c-9c40-9ad70b591c32",
+      "slug": "burbeary-joinery-ltd-sheffield",
+      "business_name": "Burbeary Joinery Ltd",
+      "town": "Sheffield",
+      "postcode": "S20 1BB",
+      "path": "sheffield/burbeary-joinery-ltd-sheffield.json",
+      "imported_at": "2026-07-27T12:00:34Z"
+    },
+    {
+      "id": "018f0a1e-6e41-498d-8d51-abe81c6a2d43",
+      "slug": "complete-stair-creations-sheffield",
+      "business_name": "Complete Stair Creations (The Stair Company UK)",
+      "town": "Sheffield",
+      "postcode": "S6 2DL",
+      "path": "sheffield/complete-stair-creations-sheffield.json",
+      "imported_at": "2026-07-27T12:00:35Z"
+    },
+    {
+      "id": "018f0a1e-7f52-4a9e-9e62-bcf92d7b3e54",
+      "slug": "3d-joinery-ltd-sheffield",
+      "business_name": "3D Joinery Ltd",
+      "town": "Sheffield",
+      "postcode": "S2 2SP",
+      "path": "sheffield/3d-joinery-ltd-sheffield.json",
+      "imported_at": "2026-07-27T12:00:36Z"
+    }
+  ]
+}

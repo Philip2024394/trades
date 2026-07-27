@@ -1,0 +1,874 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#0e0e10">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>NEX PLAN — Staircase Configurator</title>
+  <style>
+    :root {
+      --bg: #0e0e10;
+      --surface: #18181b;
+      --surface-2: #1f1f23;
+      --surface-3: #26262c;
+      --border: #2a2a30;
+      --border-strong: #3a3a42;
+      --text: #f5f5f0;
+      --text-dim: #a0a0a8;
+      --text-mute: #6b6b73;
+      --accent: #ff8c1a;
+      --accent-hot: #ff9d3d;
+      --accent-dim: #7d4a13;
+      --success: #4ade80;
+      --success-bg: #14361f;
+      --warning: #fbbf24;
+      --warning-bg: #3a2c0d;
+      --danger: #ef4444;
+      --danger-bg: #3a1414;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html, body { height: 100%; overflow: hidden; overscroll-behavior: none; background: var(--bg); color: var(--text); }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      font-size: 14px; line-height: 1.4;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    button { font-family: inherit; }
+
+    /* ═════════ APP SHELL ═════════ */
+    .app { display: flex; flex-direction: column; height: 100dvh; height: 100vh; }
+
+    /* ═════════ HEADER ═════════ */
+    .header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: var(--bg); border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .brand { display: flex; flex-direction: column; }
+    .brand-name { font-size: 18px; font-weight: 800; letter-spacing: -0.5px; line-height: 1; }
+    .brand-name .accent { color: var(--accent); margin-left: 4px; }
+    .brand-tag { font-size: 10px; color: var(--text-mute); margin-top: 2px; letter-spacing: 0.2px; }
+    .header-actions { display: flex; align-items: center; gap: 4px; }
+    .icon-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 2px;
+      background: none; border: none; color: var(--text); padding: 8px 10px;
+      min-width: 44px; min-height: 44px; cursor: pointer; border-radius: 8px;
+      transition: background 0.15s;
+    }
+    .icon-btn:active { background: var(--surface-2); }
+    .icon-btn svg { width: 18px; height: 18px; }
+    .icon-btn .lbl { font-size: 10px; color: var(--text-dim); font-weight: 500; }
+    .burger { background: var(--surface-2); border: 1px solid var(--border); }
+
+    /* ═════════ MAIN TABS ═════════ */
+    .main-tabs {
+      display: flex; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0;
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .main-tabs::-webkit-scrollbar { display: none; }
+    .main-tab {
+      flex: 1; min-width: 90px; padding: 12px 8px; background: none; border: none;
+      color: var(--text-mute); font-size: 12px; font-weight: 600; letter-spacing: 0.3px;
+      display: flex; align-items: center; justify-content: center; gap: 5px;
+      border-bottom: 2px solid transparent; cursor: pointer;
+    }
+    .main-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .main-tab .tab-icon { font-size: 14px; }
+
+    /* ═════════ MAIN CONTENT (SCROLLABLE) ═════════ */
+    .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 12px; }
+    .main::-webkit-scrollbar { width: 6px; }
+    .main::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ═════════ 3D VIEWER CARD ═════════ */
+    .viewer-card { background: var(--surface); border-radius: 16px; overflow: hidden; margin-bottom: 12px; border: 1px solid var(--border); }
+    .view-tabs { display: flex; padding: 10px 10px 0; gap: 6px; }
+    .view-tab {
+      flex: 1; padding: 8px 4px; background: transparent; border: 1px solid transparent; border-radius: 8px;
+      color: var(--text-dim); font-size: 11px; font-weight: 600; letter-spacing: 0.3px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 3px;
+    }
+    .view-tab.active { background: var(--surface-3); border-color: var(--accent); color: var(--accent); }
+    .view-tab .icon { font-size: 12px; }
+    .viewer-body { position: relative; aspect-ratio: 1 / 1; background: linear-gradient(160deg, #2a2620, #1a1614); margin: 10px; border-radius: 12px; overflow: hidden; }
+    @media (min-width: 900px) { .viewer-body { aspect-ratio: 16 / 10; } }
+    #viewer-canvas { display: block; width: 100%; height: 100%; touch-action: none; }
+    .viewer-tools {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .tool-btn {
+      background: rgba(20,20,22,0.85); backdrop-filter: blur(8px); color: var(--text);
+      border: 1px solid var(--border); padding: 10px 8px; border-radius: 10px;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.3px; cursor: pointer; min-width: 48px;
+    }
+    .tool-btn:active { background: var(--surface-3); }
+    .tool-btn .icon { font-size: 15px; }
+    .ar-btn {
+      position: absolute; bottom: 10px; right: 10px; background: rgba(20,20,22,0.9);
+      color: var(--text); border: 1px solid var(--border); padding: 8px 14px; border-radius: 10px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;
+    }
+
+    /* ═════════ CONFIG CARD ═════════ */
+    .card { background: var(--surface); border-radius: 16px; margin-bottom: 12px; border: 1px solid var(--border); overflow: hidden; }
+    .card-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px 10px; }
+    .card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.6px; color: var(--text-dim); text-transform: uppercase; }
+    .card-link { font-size: 12px; color: var(--accent); font-weight: 500; text-decoration: none; }
+    .config-row {
+      display: flex; align-items: center; padding: 12px 16px; border-top: 1px solid var(--border); gap: 12px; cursor: pointer;
+      min-height: 52px;
+    }
+    .config-row:first-of-type { border-top-color: var(--border); }
+    .config-row:active { background: var(--surface-2); }
+    .config-icon { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: var(--surface-3); border-radius: 6px; font-size: 14px; }
+    .config-label { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
+    .config-value { color: var(--accent); font-size: 14px; font-weight: 600; }
+    .config-chevron { color: var(--text-mute); font-size: 14px; }
+    .config-row.toggle-row { justify-content: space-between; }
+    .toggle-sw { position: relative; width: 44px; height: 26px; background: var(--surface-3); border-radius: 13px; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+    .toggle-sw::after {
+      content: ""; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+      background: #fff; border-radius: 50%; transition: transform 0.2s;
+    }
+    input[type="checkbox"].tcb { position: absolute; opacity: 0; pointer-events: none; }
+    input[type="checkbox"].tcb:checked + .toggle-sw { background: var(--accent); }
+    input[type="checkbox"].tcb:checked + .toggle-sw::after { transform: translateX(18px); }
+
+    /* Config edit inline stepper (appears when a row is tapped) */
+    .stepper-inline { display: flex; align-items: center; padding: 0 16px 12px; gap: 8px; }
+    .stepper-inline button {
+      background: var(--surface-3); border: none; color: var(--accent); padding: 8px 14px;
+      border-radius: 8px; font-size: 18px; font-weight: 500; cursor: pointer; min-height: 40px; min-width: 44px;
+    }
+    .stepper-inline input {
+      flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); text-align: center; padding: 10px; font-size: 14px; font-weight: 600;
+    }
+    .stepper-inline select {
+      flex: 1; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+      color: var(--text); padding: 10px; font-size: 14px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23a0a0a8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      -webkit-appearance: none; appearance: none;
+    }
+
+    /* ═════════ MATERIALS SWATCHES ═════════ */
+    .swatches { display: flex; gap: 10px; padding: 10px 16px 16px; overflow-x: auto; scrollbar-width: none; }
+    .swatches::-webkit-scrollbar { display: none; }
+    .swatch {
+      flex: 0 0 auto; width: 68px; text-align: center; cursor: pointer;
+    }
+    .swatch-color {
+      width: 68px; height: 60px; border-radius: 10px; border: 2px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .swatch.active .swatch-color { border-color: var(--accent); box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--accent); }
+    .swatch-color .check {
+      background: var(--accent); color: #fff; width: 22px; height: 22px; border-radius: 50%;
+      display: none; align-items: center; justify-content: center; font-size: 12px;
+    }
+    .swatch.active .swatch-color .check { display: flex; }
+    .swatch-label { font-size: 10px; color: var(--text-dim); margin-top: 6px; font-weight: 500; line-height: 1.2; }
+    .swatch.active .swatch-label { color: var(--accent); }
+
+    /* ═════════ RIGHT DRAWER ═════════ */
+    .drawer-scrim {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 40;
+      opacity: 0; pointer-events: none; transition: opacity 0.25s;
+    }
+    .drawer-scrim.open { opacity: 1; pointer-events: auto; }
+    .drawer {
+      position: fixed; top: 0; right: 0; bottom: 0; width: min(88vw, 380px);
+      background: var(--bg); z-index: 50; overflow-y: auto; -webkit-overflow-scrolling: touch;
+      transform: translateX(100%); transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+      padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom);
+      border-left: 1px solid var(--border); box-shadow: -8px 0 32px rgba(0,0,0,0.5);
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 1px solid var(--border); }
+    .drawer-head .title { font-size: 15px; font-weight: 700; }
+    .drawer-body { padding: 12px; }
+
+    /* Drawer status cards */
+    .status-card {
+      background: var(--surface); border-radius: 14px; padding: 14px 16px; margin-bottom: 10px;
+      border: 1px solid var(--border);
+    }
+    .status-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .status-card-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--text-dim); text-transform: uppercase; }
+    .status-card-tick { color: var(--success); font-size: 14px; }
+    .verdict-badge {
+      display: inline-block; padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 700;
+      letter-spacing: 0.3px; margin-bottom: 8px;
+    }
+    .verdict-badge.pass { background: var(--success); color: #052912; }
+    .verdict-badge.warn { background: var(--warning); color: #2a1e05; }
+    .verdict-badge.fail { background: var(--danger); color: #fff; }
+    .status-card-desc { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+    .status-card-desc + .status-card-link, .verdict-badge + .status-card-link { margin-top: 8px; display: inline-block; }
+    .status-card-link { font-size: 12px; color: var(--accent); font-weight: 600; text-decoration: none; }
+
+    /* Health score circular gauge */
+    .gauge-wrap { display: flex; justify-content: center; margin: 10px 0 14px; }
+    .gauge { width: 120px; height: 120px; position: relative; }
+    .gauge svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+    .gauge-track { fill: none; stroke: var(--surface-3); stroke-width: 10; }
+    .gauge-value { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s; }
+    .gauge-num {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .gauge-num .score { font-size: 32px; font-weight: 800; line-height: 1; }
+    .gauge-num .of { font-size: 11px; color: var(--text-mute); margin-top: 2px; }
+
+    .score-list { display: flex; flex-direction: column; gap: 8px; }
+    .score-item { display: grid; grid-template-columns: 1fr 60px 32px; align-items: center; gap: 8px; font-size: 12px; }
+    .score-item .lbl { color: var(--text-dim); }
+    .score-item .bar { height: 4px; background: var(--surface-3); border-radius: 2px; overflow: hidden; }
+    .score-item .bar-fill { height: 100%; background: var(--success); border-radius: 2px; transition: width 0.3s, background 0.3s; }
+    .score-item .n { text-align: right; font-weight: 700; color: var(--text); }
+
+    .summary-list { display: flex; flex-direction: column; gap: 8px; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 13px; }
+    .summary-row .k { color: var(--text-dim); }
+    .summary-row .v { color: var(--text); font-weight: 600; }
+    .cost-big { font-size: 22px; font-weight: 800; color: var(--accent); margin-top: 10px; }
+    .cost-btn {
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 100%; background: var(--accent); color: #1a1000; border: none;
+      padding: 12px; border-radius: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.3px;
+      margin-top: 10px; cursor: pointer; min-height: 44px;
+    }
+    .cost-btn:active { background: var(--accent-hot); }
+
+    /* Nex assistant card */
+    .nex-card { background: var(--surface); border-radius: 14px; padding: 14px; border: 1px solid var(--border); }
+    .nex-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .nex-head .title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; color: var(--text-dim); text-transform: uppercase; }
+    .nex-head .ai-chip { background: var(--surface-3); color: var(--accent); font-size: 10px; padding: 3px 8px; border-radius: 5px; font-weight: 700; }
+    .nex-body { display: flex; gap: 10px; }
+    .nex-avatar {
+      flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%;
+      background: linear-gradient(135deg, #1e1a15, #2a2015);
+      border: 1.5px solid var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 800; color: var(--accent);
+    }
+    .nex-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+    .nex-input { margin-top: 12px; display: flex; align-items: center; gap: 8px; }
+    .nex-input a { color: var(--accent); font-size: 12px; font-weight: 600; text-decoration: none; }
+
+    /* ═════════ BOTTOM NAV ═════════ */
+    .bottom-nav {
+      display: flex; align-items: flex-end; background: var(--bg); border-top: 1px solid var(--border); flex-shrink: 0;
+      padding-bottom: env(safe-area-inset-bottom); position: relative;
+    }
+    .nav-btn {
+      flex: 1; background: none; border: none; padding: 10px 4px 8px; color: var(--text-mute);
+      display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer;
+      font-size: 10px; font-weight: 600;
+    }
+    .nav-btn .icon { font-size: 18px; }
+    .nav-btn.active { color: var(--accent); }
+    .nav-btn.plus {
+      position: relative;
+    }
+    .nav-btn.plus .plus-fab {
+      width: 48px; height: 48px; background: var(--accent); color: #1a1000; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 26px; font-weight: 500;
+      margin-top: -14px; box-shadow: 0 4px 12px rgba(255, 140, 26, 0.4);
+    }
+
+    /* ═════════ DESKTOP TWEAKS ═════════ */
+    @media (min-width: 900px) {
+      .app { display: grid; grid-template-columns: 1fr 380px; grid-template-rows: auto auto 1fr; }
+      .header { grid-column: 1 / -1; }
+      .main-tabs { grid-column: 1 / -1; }
+      .main { grid-column: 1; grid-row: 3; }
+      .drawer {
+        position: static; transform: none; width: auto; grid-column: 2; grid-row: 3;
+        border-left: 1px solid var(--border); box-shadow: none;
+      }
+      .drawer-scrim { display: none; }
+      .drawer-head .close-drawer { display: none; }
+      .bottom-nav { grid-column: 1 / -1; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ═════════ HEADER ═════════ -->
+  <header class="header">
+    <div class="brand">
+      <div class="brand-name">NEX<span class="accent">PLAN</span></div>
+      <div class="brand-tag">Design. Plan. Perfect.</div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" aria-label="Save">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+        <span class="lbl">Save</span>
+      </button>
+      <button class="icon-btn" aria-label="Share">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        <span class="lbl">Share</span>
+      </button>
+      <button class="icon-btn burger" id="btn-drawer" aria-label="Open info panel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ═════════ MAIN TABS ═════════ -->
+  <nav class="main-tabs">
+    <button class="main-tab active"><span class="tab-icon">📦</span> DESIGN</button>
+    <button class="main-tab"><span class="tab-icon">▦</span> ROOM PLANNER</button>
+    <button class="main-tab"><span class="tab-icon">📅</span> ESTIMATE</button>
+    <button class="main-tab"><span class="tab-icon">📄</span> DOCUMENTS</button>
+  </nav>
+
+  <!-- ═════════ MAIN CONTENT ═════════ -->
+  <main class="main">
+
+    <!-- 3D VIEWER CARD -->
+    <section class="viewer-card">
+      <div class="view-tabs">
+        <button class="view-tab active"><span class="icon">📦</span> 3D</button>
+        <button class="view-tab"><span class="icon">▦</span> PLAN</button>
+        <button class="view-tab"><span class="icon">📏</span> ELEVATION</button>
+        <button class="view-tab"><span class="icon">✂️</span> SECTION</button>
+      </div>
+      <div class="viewer-body">
+        <canvas id="viewer-canvas"></canvas>
+        <div class="viewer-tools">
+          <button class="tool-btn" id="btn-rotate"><span class="icon">↻</span><span>Rotate</span></button>
+          <button class="tool-btn" id="btn-reset"><span class="icon">⌂</span><span>Reset</span></button>
+          <button class="tool-btn" id="btn-full"><span class="icon">⛶</span><span>Fullscreen</span></button>
+        </div>
+        <button class="ar-btn"><span>▣</span> AR VIEW</button>
+        <div style="position: absolute; top: 10px; right: 10px; background: rgba(20,20,22,0.85); color: var(--text-dim); font-size: 10px; padding: 6px 10px; border-radius: 6px; max-width: 180px; line-height: 1.4;">
+          Preview uses placeholder shapes. Production loads GLB component library for photoreal output.
+        </div>
+      </div>
+    </section>
+
+    <!-- CONFIG CARD -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">STAIRCASE CONFIGURATION</div>
+        <a href="#" class="card-link">★ Presets</a>
+      </div>
+
+      <div class="config-row" data-config="layout">
+        <div class="config-icon">📐</div><span class="config-label">Layout</span>
+        <span class="config-value" id="cv-layout">Straight</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-layout" hidden>
+        <select id="p-layout"><option value="straight">Straight</option><option value="half_turn_landing">Half Turn with Landing</option></select>
+      </div>
+
+      <div class="config-row" data-config="ftf">
+        <div class="config-icon">↕</div><span class="config-label">Floor to Floor Height</span>
+        <span class="config-value" id="cv-ftf">2500 mm</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-ftf" hidden>
+        <button data-step="-10" data-target="p-ftf">−</button>
+        <input id="p-ftf" type="number" value="2500" min="2000" max="3500" step="10" inputmode="numeric">
+        <button data-step="10" data-target="p-ftf">+</button>
+      </div>
+
+      <div class="config-row" data-config="width">
+        <div class="config-icon">↔</div><span class="config-label">Stair Width</span>
+        <span class="config-value" id="cv-width">900 mm</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-width" hidden>
+        <button data-step="-10" data-target="p-width">−</button>
+        <input id="p-width" type="number" value="900" min="760" max="1400" step="10" inputmode="numeric">
+        <button data-step="10" data-target="p-width">+</button>
+      </div>
+
+      <div class="config-row" data-config="going">
+        <div class="config-icon">▤</div><span class="config-label">Going (Tread Depth)</span>
+        <span class="config-value" id="cv-going">250 mm</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-going" hidden>
+        <button data-step="-5" data-target="p-going">−</button>
+        <input id="p-going" type="number" value="250" min="220" max="320" step="5" inputmode="numeric">
+        <button data-step="5" data-target="p-going">+</button>
+      </div>
+
+      <div class="config-row">
+        <div class="config-icon">▲</div><span class="config-label">Rise Height</span>
+        <span class="config-value" id="cv-rise">- mm</span><span class="config-chevron">›</span>
+      </div>
+
+      <div class="config-row" data-config="timber">
+        <div class="config-icon">🪵</div><span class="config-label">Timber</span>
+        <span class="config-value" id="cv-timber">European Oak</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-timber" hidden>
+        <select id="p-timber">
+          <option value="european_oak">European Oak</option>
+          <option value="american_white_oak">American White Oak</option>
+          <option value="walnut">Walnut</option>
+          <option value="ash">Ash</option>
+          <option value="pine_scandinavian">Scandinavian Pine (painted)</option>
+        </select>
+      </div>
+
+      <div class="config-row" data-config="balustrade">
+        <div class="config-icon">▮</div><span class="config-label">Balustrade</span>
+        <span class="config-value" id="cv-balustrade">Timber Spindles</span><span class="config-chevron">›</span>
+      </div>
+      <div class="stepper-inline" id="ed-balustrade" hidden>
+        <select id="p-glass"><option value="false">Timber Spindles</option><option value="true">Glass Panels</option></select>
+      </div>
+
+      <div class="config-row">
+        <div class="config-icon">━</div><span class="config-label">Handrail</span>
+        <span class="config-value">Oak</span><span class="config-chevron">›</span>
+      </div>
+
+      <div class="config-row toggle-row">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div class="config-icon">▬</div>
+          <span class="config-label">Closed Risers</span>
+        </div>
+        <label>
+          <input type="checkbox" class="tcb" id="p-closed" checked>
+          <span class="toggle-sw"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- MATERIALS -->
+    <section class="card">
+      <div class="card-head">
+        <div class="card-title">MATERIALS</div>
+        <a href="#" class="card-link">View All ›</a>
+      </div>
+      <div class="swatches" id="swatches">
+        <div class="swatch active" data-timber="european_oak">
+          <div class="swatch-color" style="background:linear-gradient(135deg,#c9a675,#a68550)"><div class="check">✓</div></div>
+          <div class="swatch-label">European<br>Oak</div>
+        </div>
+        <div class="swatch" data-timber="american_white_oak">
+          <div class="swatch-color" style="background:linear-gradient(135deg,#d9c4a1,#a89678)"><div class="check">✓</div></div>
+          <div class="swatch-label">American<br>Oak</div>
+        </div>
+        <div class="swatch" data-timber="walnut">
+          <div class="swatch-color" style="background:linear-gradient(135deg,#5c3a20,#2d1a0a)"><div class="check">✓</div></div>
+          <div class="swatch-label">Walnut</div>
+        </div>
+        <div class="swatch" data-timber="ash">
+          <div class="swatch-color" style="background:linear-gradient(135deg,#e6d9b8,#c0b090)"><div class="check">✓</div></div>
+          <div class="swatch-label">Ash</div>
+        </div>
+        <div class="swatch" data-timber="pine_scandinavian">
+          <div class="swatch-color" style="background:linear-gradient(135deg,#f0e0b8,#d0c090)"><div class="check">✓</div></div>
+          <div class="swatch-label">Pine</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═════════ RIGHT DRAWER ═════════ -->
+  <div class="drawer-scrim" id="scrim"></div>
+  <aside class="drawer" id="drawer">
+    <div class="drawer-head">
+      <div class="title">Results</div>
+      <button class="icon-btn close-drawer" id="btn-close-drawer" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+
+      <div class="status-card">
+        <div class="status-card-head">
+          <div class="status-card-title">ROOM FIT</div>
+          <span class="status-card-tick" id="fit-tick">✓</span>
+        </div>
+        <div class="verdict-badge pass" id="fit-verdict">GOOD FIT</div>
+        <div class="status-card-desc" id="fit-desc">This staircase fits your room with clearance around.</div>
+        <a class="status-card-link" href="#">View Details ›</a>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card-title" style="margin-bottom: 8px;">COMPLIANCE (UK)</div>
+        <div class="verdict-badge pass" id="comp-verdict">PASS</div>
+        <div class="status-card-desc" id="comp-desc">Approved Document K</div>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card-title" style="margin-bottom: 0;">HEALTH SCORE</div>
+        <div class="gauge-wrap">
+          <div class="gauge">
+            <svg viewBox="0 0 120 120">
+              <circle class="gauge-track" cx="60" cy="60" r="52"/>
+              <circle class="gauge-value" id="gauge-arc" cx="60" cy="60" r="52" stroke-dasharray="326.7" stroke-dashoffset="26.1"/>
+            </svg>
+            <div class="gauge-num"><span class="score" id="gauge-score">92</span><span class="of">/100</span></div>
+          </div>
+        </div>
+        <div class="score-list" id="score-list"></div>
+        <a class="status-card-link" href="#" style="margin-top: 10px; display: inline-block;">View Full Report ›</a>
+      </div>
+
+      <div class="status-card">
+        <div class="status-card-title" style="margin-bottom: 10px;">SUMMARY</div>
+        <div class="summary-list">
+          <div class="summary-row"><span class="k">Total Parts</span><span class="v" id="sum-parts">-</span></div>
+          <div class="summary-row"><span class="k">Total Weight</span><span class="v" id="sum-weight">-</span></div>
+          <div class="summary-row"><span class="k">Timber Volume</span><span class="v" id="sum-volume">-</span></div>
+        </div>
+        <div style="margin-top: 12px;">
+          <div class="summary-row"><span class="k">Est. Cost</span></div>
+          <div class="cost-big" id="sum-cost">£0</div>
+        </div>
+        <button class="cost-btn">View Estimate Breakdown ›</button>
+      </div>
+
+      <div class="nex-card">
+        <div class="nex-head">
+          <div class="title">NEX ASSISTANT</div>
+          <div class="ai-chip">AI</div>
+        </div>
+        <div class="nex-body">
+          <div class="nex-avatar">NX</div>
+          <div class="nex-text" id="nex-text">Reading your design…</div>
+        </div>
+        <div class="nex-input"><a href="#">Ask Nex… ›</a></div>
+      </div>
+
+    </div>
+  </aside>
+
+  <!-- ═════════ BOTTOM NAV ═════════ -->
+  <nav class="bottom-nav">
+    <button class="nav-btn"><span class="icon">⌂</span><span>Home</span></button>
+    <button class="nav-btn"><span class="icon">▤</span><span>Projects</span></button>
+    <button class="nav-btn plus"><span class="plus-fab">+</span><span>New Project</span></button>
+    <button class="nav-btn"><span class="icon">💬</span><span>Chats</span></button>
+    <button class="nav-btn"><span class="icon">👤</span><span>Profile</span></button>
+  </nav>
+
+</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+// ── Engine (browser port) ──
+const TIMBER_DENSITY = { european_oak: 750, american_white_oak: 775, walnut: 670, ash: 695, pine_scandinavian: 510 };
+const TIMBER_COLOUR = { european_oak: 0xc9a675, american_white_oak: 0xd9c4a1, walnut: 0x5c3a20, ash: 0xe6d9b8, pine_scandinavian: 0xf0e0b8 };
+const TIMBER_LABEL = { european_oak: "European Oak", american_white_oak: "American White Oak", walnut: "Walnut", ash: "Ash", pine_scandinavian: "Scandinavian Pine" };
+const TIMBER_COST_MULT = { european_oak: 1.0, american_white_oak: 1.1, walnut: 2.2, ash: 0.85, pine_scandinavian: 0.35 };
+
+function buildModel(params) {
+  const { ftf, width, going, timber, closedRisers, glass } = params;
+  const numRises = Math.ceil(ftf / 220);
+  const actualRise = Math.round(ftf / numRises);
+  const numGoings = numRises - 1;
+  const totalRise = numRises * actualRise;
+  const flightLength = numGoings * going;
+  const stringDiag = Math.round(Math.sqrt(flightLength ** 2 + totalRise ** 2));
+  const pitch = Math.round(Math.atan(actualRise / going) * 180 / Math.PI * 10) / 10;
+  const twoRG = 2 * actualRise + going;
+  const treadTh = 40, riserTh = 18, stringTh = 32, stringDp = 300, nose = 22, spW = 40, newelSize = 90, hrH = 950;
+  const density = TIMBER_DENSITY[timber] ?? 700;
+  const w = v => Math.round(v / 1e9 * density * 10) / 10;
+  const parts = [];
+  for (let i = 0; i < numGoings; i++) parts.push({ component: "tread", pos: { x: i * going - nose, y: 0, z: (i + 1) * actualRise - treadTh }, size: { x: going + nose, y: width, z: treadTh }, weight: w((going + nose) * width * treadTh), volume: (going + nose) * width * treadTh });
+  if (closedRisers) for (let i = 0; i < numRises; i++) parts.push({ component: "riser", pos: { x: i * going, y: 0, z: i * actualRise }, size: { x: riserTh, y: width, z: actualRise }, weight: w(actualRise * width * riserTh), volume: actualRise * width * riserTh });
+  const sv = stringDiag * stringDp * stringTh;
+  for (const s of [{ y: 0 }, { y: width - stringTh }]) parts.push({ component: "string", pos: { x: 0, y: s.y, z: 0 }, diag: { length: stringDiag, depth: stringDp, thickness: stringTh, pitch }, weight: w(sv), volume: sv });
+  const nH = totalRise + hrH + 50, nV = newelSize * newelSize * nH;
+  for (const p of [{ x: 0, y: 0 }, { x: 0, y: width - newelSize }, { x: flightLength, y: 0 }, { x: flightLength, y: width - newelSize }]) parts.push({ component: "newel", pos: { x: p.x, y: p.y, z: 0 }, size: { x: newelSize, y: newelSize, z: nH }, weight: w(nV), volume: nV });
+  const hrV = stringDiag * 50 * 50;
+  for (const s of [{ y: 0 }, { y: width - 50 }]) parts.push({ component: "handrail", pos: { x: 0, y: s.y, z: hrH }, diag: { length: stringDiag, depth: 50, thickness: 50, pitch }, weight: w(hrV), volume: hrV });
+  if (!glass) {
+    const spLen = hrH - 50, spV = spW * spW * spLen;
+    for (let i = 0; i < numGoings; i++) for (const s of [{ y: 0 }, { y: width - spW }]) parts.push({ component: "spindle", pos: { x: i * going + going / 2, y: s.y, z: i * actualRise + actualRise }, size: { x: spW, y: spW, z: spLen }, weight: w(spV), volume: spV });
+  } else {
+    for (const s of [{ y: 5 }, { y: width - 15 }]) {
+      const a = flightLength * (hrH - 100);
+      parts.push({ component: "glass", pos: { x: 0, y: s.y, z: 50 }, diag: { length: stringDiag, depth: hrH - 100, thickness: 10, pitch }, weight: Math.round(a / 1e6 * 25 * 10) / 10, volume: a * 10 });
+    }
+  }
+  const totalWeight = Math.round(parts.reduce((a, p) => a + (p.weight || 0), 0) * 10) / 10;
+  const totalVolume = parts.reduce((a, p) => a + (p.volume || 0), 0);
+  const cost = Math.round(totalWeight * 12 * (TIMBER_COST_MULT[timber] ?? 1) + (glass ? 800 : 0));
+  const compliance = { rise: actualRise <= 220 && actualRise >= 150, going: going >= 220, pitch: pitch <= 42, trg: twoRG >= 550 && twoRG <= 700 };
+  const overallOk = Object.values(compliance).every(Boolean);
+  const iR = 185, iG = 265, iP = 37.5, iT = 630;
+  const scores = {
+    Comfort: Math.max(0, Math.round(100 - Math.abs(actualRise - iR) * 0.5 - Math.abs(going - iG) * 0.3 - Math.abs(pitch - iP) * 2 - Math.abs(twoRG - iT) * 0.2)),
+    Safety: overallOk ? Math.max(60, 100 - Math.max(0, pitch - 38) * 3) : 40,
+    Buildability: 100 - (glass ? 5 : 0),
+    "Cost Efficiency": Math.max(0, 100 - Math.round(cost / 100)),
+    Aesthetics: 92,
+    Sustainability: 90
+  };
+  const health = Math.round(Object.values(scores).reduce((a, b) => a + b, 0) / Object.keys(scores).length);
+  return { parameters: params, computed: { numRises, actualRise, numGoings, flightLength, totalRise, stringDiag, pitch, twoRG }, parts, totalWeight, totalVolume, cost, compliance, overallOk, scores, health };
+}
+
+// ── Three.js ──
+const canvas = document.getElementById("viewer-canvas");
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x1a1614, 6000, 18000);
+const camera = new THREE.PerspectiveCamera(42, 1, 100, 30000);
+camera.position.set(5000, 3200, 5000);
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.target.set(1500, 1200, 500);
+controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+controls.minDistance = 1500; controls.maxDistance = 12000;
+scene.add(new THREE.HemisphereLight(0xfff5e1, 0x4a4038, 0.5));
+scene.add(new THREE.AmbientLight(0xffffff, 0.15));
+const sun = new THREE.DirectionalLight(0xffddaa, 1.4);
+sun.position.set(4500, 7500, 3200); sun.castShadow = true;
+sun.shadow.mapSize.width = 2048; sun.shadow.mapSize.height = 2048;
+sun.shadow.camera.left = -4000; sun.shadow.camera.right = 6000;
+sun.shadow.camera.top = 6000; sun.shadow.camera.bottom = -2000;
+sun.shadow.bias = -0.0005; sun.shadow.radius = 4;
+scene.add(sun);
+scene.add(new THREE.DirectionalLight(0x8090aa, 0.3).clone().translateOnAxis(new THREE.Vector3(-1,0.5,-1).normalize(), 5000));
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(20000, 20000), new THREE.ShadowMaterial({ opacity: 0.35 }));
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+const grid = new THREE.GridHelper(10000, 20, 0x3a2f28, 0x2a2620);
+grid.position.y = 0.5; grid.material.transparent = true; grid.material.opacity = 0.5;
+scene.add(grid);
+const group = new THREE.Group(); scene.add(group);
+
+function clearGroup() { while (group.children.length) { const o = group.children.pop(); o.geometry?.dispose(); o.material?.dispose(); } }
+function mat(colour, glass) {
+  if (glass) return new THREE.MeshPhysicalMaterial({ color: colour, roughness: 0.05, metalness: 0, transmission: 0.85, thickness: 8, transparent: true, opacity: 0.5 });
+  return new THREE.MeshStandardMaterial({ color: colour, roughness: 0.6, metalness: 0.02 });
+}
+function addBox(x, y, z, sx, sy, sz, c, g) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sz, sy), mat(c, g));
+  m.position.set(x + sx / 2, z + sz / 2, y + sy / 2); m.castShadow = true; m.receiveShadow = true;
+  group.add(m);
+}
+function addDiag(x, y, z, len, dep, th, pit, c, g) {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(len, dep, th), mat(c, g));
+  const r = pit * Math.PI / 180;
+  m.position.set(x + Math.cos(r) * len / 2, z + Math.sin(r) * len / 2, y + th / 2); m.rotation.z = r;
+  m.castShadow = true; m.receiveShadow = true;
+  group.add(m);
+}
+function renderModel(model) {
+  clearGroup();
+  const c = TIMBER_COLOUR[model.parameters.timber] ?? 0xa08050;
+  for (const p of model.parts) {
+    const gl = p.component === "glass";
+    const col = gl ? 0xa5c8d8 : c;
+    if (p.diag) addDiag(p.pos.x, p.pos.y, p.pos.z, p.diag.length, p.diag.depth, p.diag.thickness, p.diag.pitch, col, gl);
+    else if (p.size) addBox(p.pos.x, p.pos.y, p.pos.z, p.size.x, p.size.y, p.size.z, col, gl);
+  }
+  if (model.computed) controls.target.set(model.computed.flightLength / 2, model.computed.totalRise / 2, model.parameters.width / 2);
+}
+function resize() {
+  const r = canvas.getBoundingClientRect();
+  if (r.width === 0 || r.height === 0) return;
+  renderer.setSize(r.width, r.height, false);
+  camera.aspect = r.width / r.height; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(canvas);
+window.addEventListener("resize", resize);
+setTimeout(resize, 100);
+let introStart = performance.now(); const INTRO_MS = 2500; let interacted = false;
+controls.addEventListener("start", () => interacted = true);
+function animate() {
+  requestAnimationFrame(animate);
+  const t = (performance.now() - introStart) / INTRO_MS;
+  if (!interacted && t < 1) {
+    const angle = t * Math.PI * 0.25;
+    const r = 6500;
+    camera.position.x = 1500 + Math.cos(angle - Math.PI / 4) * r;
+    camera.position.z = 500 + Math.sin(angle - Math.PI / 4) * r;
+    camera.position.y = 3200;
+    camera.lookAt(controls.target);
+  }
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+// ── UI wiring ──
+function readInputs() {
+  return {
+    ftf: Number(document.getElementById("p-ftf").value),
+    width: Number(document.getElementById("p-width").value),
+    going: Number(document.getElementById("p-going").value),
+    timber: document.getElementById("p-timber").value,
+    closedRisers: document.getElementById("p-closed").checked,
+    glass: document.getElementById("p-glass").value === "true"
+  };
+}
+
+function rebuild() {
+  const inp = readInputs();
+  const m = buildModel(inp);
+  renderModel(m);
+  updateUI(m);
+}
+
+function updateUI(m) {
+  const c = m.computed, p = m.parameters;
+  // Config values
+  document.getElementById("cv-ftf").textContent = `${p.ftf} mm`;
+  document.getElementById("cv-width").textContent = `${p.width} mm`;
+  document.getElementById("cv-going").textContent = `${p.going} mm`;
+  document.getElementById("cv-rise").textContent = `${c.actualRise} mm`;
+  document.getElementById("cv-timber").textContent = TIMBER_LABEL[p.timber] ?? p.timber;
+  document.getElementById("cv-balustrade").textContent = p.glass ? "Glass Panels" : "Timber Spindles";
+  document.getElementById("cv-layout").textContent = document.getElementById("p-layout").selectedOptions[0].text;
+
+  // Room fit
+  const stairL = c.flightLength + p.width;
+  const roomL = 4000, roomW = 2200;
+  const lMargin = roomL - stairL, wMargin = roomW - p.width;
+  const fitVerdict = document.getElementById("fit-verdict"), fitDesc = document.getElementById("fit-desc"), fitTick = document.getElementById("fit-tick");
+  if (lMargin >= 200 && wMargin >= 100) { fitVerdict.className = "verdict-badge pass"; fitVerdict.textContent = "GOOD FIT";
+    fitDesc.innerHTML = `This staircase fits your room with <b>${Math.min(lMargin, wMargin)} mm</b> clearance around.`; fitTick.textContent = "✓"; fitTick.style.color = "var(--success)"; }
+  else if (lMargin >= 0 && wMargin >= 0) { fitVerdict.className = "verdict-badge warn"; fitVerdict.textContent = "TIGHT FIT";
+    fitDesc.textContent = `Fits but tight — consider a half-turn to shorten the footprint.`; fitTick.textContent = "!"; fitTick.style.color = "var(--warning)"; }
+  else { fitVerdict.className = "verdict-badge fail"; fitVerdict.textContent = "DOESN'T FIT";
+    fitDesc.textContent = `Needs ${Math.max(Math.abs(lMargin), Math.abs(wMargin))} mm more space.`; fitTick.textContent = "✗"; fitTick.style.color = "var(--danger)"; }
+
+  // Compliance
+  const cv = document.getElementById("comp-verdict"), cd = document.getElementById("comp-desc");
+  if (m.overallOk) { cv.className = "verdict-badge pass"; cv.textContent = "PASS"; cd.textContent = "Approved Document K"; }
+  else { cv.className = "verdict-badge fail"; cv.textContent = "FAIL"; cd.textContent = "See details — one or more Doc K limits exceeded."; }
+
+  // Health gauge
+  document.getElementById("gauge-score").textContent = m.health;
+  const CIRC = 2 * Math.PI * 52;
+  document.getElementById("gauge-arc").setAttribute("stroke-dasharray", CIRC);
+  document.getElementById("gauge-arc").setAttribute("stroke-dashoffset", CIRC * (1 - m.health / 100));
+  const gaugeColour = m.health >= 85 ? "var(--success)" : m.health >= 60 ? "var(--warning)" : "var(--danger)";
+  document.getElementById("gauge-arc").setAttribute("stroke", gaugeColour === "var(--success)" ? "#4ade80" : gaugeColour === "var(--warning)" ? "#fbbf24" : "#ef4444");
+
+  // Score list
+  const sl = document.getElementById("score-list");
+  sl.innerHTML = "";
+  for (const [k, v] of Object.entries(m.scores)) {
+    const col = v >= 85 ? "#4ade80" : v >= 60 ? "#fbbf24" : "#ef4444";
+    sl.innerHTML += `<div class="score-item"><span class="lbl">${k}</span><div class="bar"><div class="bar-fill" style="width:${v}%;background:${col}"></div></div><span class="n">${v}</span></div>`;
+  }
+
+  // Summary
+  document.getElementById("sum-parts").textContent = m.parts.length;
+  document.getElementById("sum-weight").textContent = `${m.totalWeight} kg`;
+  document.getElementById("sum-volume").textContent = `${(m.totalVolume / 1e9).toFixed(2)} m³`;
+  document.getElementById("sum-cost").textContent = `£${m.cost.toLocaleString()}`;
+
+  // Nex commentary
+  document.getElementById("nex-text").textContent = nexQuote(m);
+}
+
+function nexQuote(m) {
+  const c = m.computed, p = m.parameters;
+  if (!m.overallOk) {
+    if (c.pitch > 42) return `Pitch is ${c.pitch}° — over Doc K's 42° max. Add another step or increase the going by 15-20mm.`;
+    if (c.twoRG < 550 || c.twoRG > 700) return `2R+G comfort formula at ${c.twoRG}mm — outside Doc K's 550-700mm band.`;
+  }
+  if (m.scores.Comfort >= 90) return `A well-proportioned ${TIMBER_LABEL[p.timber]?.toLowerCase()} staircase — 2R+G of ${c.twoRG}mm is in the comfort sweet spot. ${p.glass ? "Glass balustrade keeps the space open and modern." : "Pitch " + c.pitch + "° walks beautifully."}`;
+  if (p.glass) return `Glass balustrade + ${TIMBER_LABEL[p.timber]?.toLowerCase()} treads. Modern luxury spec. Glass must be toughened/laminated per Doc K 1.39.`;
+  return `${c.numRises} rises at ${c.actualRise}mm, going ${p.going}mm, pitch ${c.pitch}°. Compliance ${m.overallOk ? "PASS" : "FAIL"}. Weight ${m.totalWeight}kg.`;
+}
+
+// Config row → toggle inline editor
+document.querySelectorAll("[data-config]").forEach(row => {
+  row.addEventListener("click", () => {
+    const key = row.dataset.config;
+    const ed = document.getElementById("ed-" + key);
+    if (!ed) return;
+    const wasHidden = ed.hasAttribute("hidden");
+    document.querySelectorAll(".stepper-inline").forEach(e => e.setAttribute("hidden", ""));
+    if (wasHidden) ed.removeAttribute("hidden");
+  });
+});
+
+// Steppers
+document.querySelectorAll(".stepper-inline button[data-step]").forEach(b => {
+  b.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const t = document.getElementById(b.dataset.target);
+    const v = Math.max(Number(t.min), Math.min(Number(t.max), Number(t.value) + Number(b.dataset.step)));
+    t.value = v;
+    t.dispatchEvent(new Event("input", { bubbles: true }));
+  });
+});
+
+// Materials swatches → sync timber
+document.querySelectorAll(".swatch").forEach(sw => {
+  sw.addEventListener("click", () => {
+    document.querySelectorAll(".swatch").forEach(s => s.classList.remove("active"));
+    sw.classList.add("active");
+    const timber = sw.dataset.timber;
+    document.getElementById("p-timber").value = timber;
+    rebuild();
+  });
+});
+
+// Wire all inputs
+for (const id of ["p-ftf", "p-width", "p-going", "p-timber", "p-closed", "p-glass", "p-layout"]) {
+  const el = document.getElementById(id);
+  const evt = el.type === "checkbox" || el.tagName === "SELECT" ? "change" : "input";
+  el.addEventListener(evt, () => {
+    if (id === "p-timber") {
+      document.querySelectorAll(".swatch").forEach(s => s.classList.toggle("active", s.dataset.timber === el.value));
+    }
+    rebuild();
+  });
+}
+
+// Drawer
+const drawer = document.getElementById("drawer");
+const scrim = document.getElementById("scrim");
+document.getElementById("btn-drawer").addEventListener("click", () => { drawer.classList.add("open"); scrim.classList.add("open"); });
+document.getElementById("btn-close-drawer").addEventListener("click", () => { drawer.classList.remove("open"); scrim.classList.remove("open"); });
+scrim.addEventListener("click", () => { drawer.classList.remove("open"); scrim.classList.remove("open"); });
+
+// Tool buttons
+document.getElementById("btn-reset").addEventListener("click", () => {
+  camera.position.set(5000, 3200, 5000);
+  controls.target.set(1500, 1200, 500);
+  interacted = false; introStart = performance.now();
+});
+document.getElementById("btn-rotate").addEventListener("click", () => {
+  interacted = false; introStart = performance.now();
+});
+document.getElementById("btn-full").addEventListener("click", () => {
+  const el = canvas.parentElement;
+  if (!document.fullscreenElement) el.requestFullscreen?.();
+  else document.exitFullscreen?.();
+});
+
+rebuild();
+</script>
+</body>
+</html>

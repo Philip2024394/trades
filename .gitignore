@@ -28,3 +28,17 @@ scripts/.staging-*.json
 # Author Studio local drafts folder — filesystem fallback used only
 # in dev before the drafts DB migration is applied.
 .author-studio-drafts/
+
+# Manifest auto-backups — rotating recovery snapshots written by the
+# save endpoint (kept locally, last 50). Adds up to hundreds of MB and
+# would bloat the repo. Recovery lives locally on each dev's machine.
+data/.manifest-backups/
+
+# Local recovery snapshots — created by hand during incident recovery
+# (2026-07-27 manifest corruption). Not shared state.
+data/.recovery-*/
+
+# Timestamped .bak files written by knowledge editors — the .json
+# source is the truth, the .bak.* copies are local rotation history.
+*.bak.*
+knowledge/*.bak.*

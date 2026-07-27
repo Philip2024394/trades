@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thenetworkers.app/schemas/directory-seed-listing.json",
+  "title": "NEX Directory Seed Listing",
+  "description": "Public UK business listing imported from publicly-available business text per ADR-0023. Not a merchant account. No login, no verified status, no images.",
+  "type": "object",
+  "required": [
+    "id",
+    "slug",
+    "business_name",
+    "status",
+    "claimed",
+    "verified",
+    "visibility",
+    "photos",
+    "cover_image",
+    "source",
+    "imported_at"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "UUID v4 generated at insert time. Preserved on claim."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Kebab-case: <business-name>-<town>. Matches the filename stem."
+    },
+
+    "business_name": { "type": "string", "minLength": 1 },
+    "category": { "type": ["string", "null"] },
+
+    "address_line_1": { "type": ["string", "null"] },
+    "address_line_2": { "type": ["string", "null"] },
+    "town": { "type": ["string", "null"] },
+    "county": { "type": ["string", "null"] },
+    "postcode": { "type": ["string", "null"] },
+    "country": { "type": "string", "default": "United Kingdom" },
+
+    "telephone": { "type": ["string", "null"] },
+    "website": { "type": ["string", "null"] },
+    "email": {
+      "type": ["string", "null"],
+      "description": "ONLY if publicly listed by the business. Never inferred."
+    },
+
+    "opening_hours": {
+      "description": "Structured object OR free-text string as supplied by source.",
+      "oneOf": [
+        { "type": "null" },
+        { "type": "string" },
+        { "type": "object" }
+      ]
+    },
+
+    "description": { "type": ["string", "null"] },
+    "services": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+
+    "google_rating": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 5
+    },
+    "google_review_count": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "google_maps_url": { "type": ["string", "null"] },
+
+    "latitude": { "type": ["number", "null"] },
+    "longitude": { "type": ["number", "null"] },
+
+    "status": { "type": "string", "const": "listed" },
+    "claimed": { "type": "boolean", "const": false },
+    "verified": { "type": "boolean", "const": false },
+    "visibility": { "type": "string", "const": "public" },
+
+    "photos": {
+      "type": "array",
+      "maxItems": 0,
+      "description": "MUST be empty at seed time (ADR-0022)."
+    },
+    "cover_image": {
+      "type": "null",
+      "description": "MUST be null at seed time (ADR-0022)."
+    },
+
+    "source": {
+      "type": "string",
+      "const": "google_business_manual_paste",
+      "description": "Fixed for this pipeline. Enables downstream provenance filtering."
+    },
+    "imported_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

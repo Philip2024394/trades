@@ -1,0 +1,212 @@
+{
+  "$schema_note": "UK staircase plan-size reference. Source: Approved Doc K (England, 2013 revision). Verify against current published Doc K on gov.uk before use in real designs. Wales/Scotland/NI have their own regional documents.",
+  "version": 1,
+  "generated_at": "2026-07-25",
+  "regional_scope": "England",
+  "doc_k_source": {
+    "current_version": "Approved Document K (2013 edition incorporating 2015 amendments)",
+    "region": "England",
+    "canonical_pdf_url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+    "publisher": "Department for Levelling Up, Housing and Communities (gov.uk)",
+    "verification_note": "Numbers verified via canonical clause references (Philip 2026-07-25) + external HTML confirmation (tradecalculator.co.uk). PDF text not machine-readable from this environment; verbatim clause wording still to capture."
+  },
+  "doc_k_key_numbers_private_stair": {
+    "uniformity_rule":                 { "value": "same rise + same going",    "clause": "1.1" },
+    "definition":                      { "value": "one dwelling only",          "clause": "1.2" },
+    "rise_min_mm":                     { "value": 150,                          "clause": "1.3 + Table 1.1" },
+    "rise_max_mm":                     { "value": 220,                          "clause": "1.3 + Table 1.1" },
+    "going_min_mm":                    { "value": 220,                          "clause": "1.3 + Table 1.1" },
+    "pitch_max_deg":                   { "value": 42,                           "clause": "1.3 + Table 1.1" },
+    "two_r_plus_g_min_mm":             { "value": 550,                          "clause": "1.4" },
+    "two_r_plus_g_max_mm":             { "value": 700,                          "clause": "1.4" },
+    "headroom_min_mm":                 { "value": 2000,                         "clause": "1.6" },
+    "headroom_loft_exception":         { "value": "1900mm central axis, 2000mm at one side, loft conversions only", "clause": "1.7" },
+    "winder_rules":                    { "value": "walking-line going ≥220mm",  "clause": "1.9-1.12" },
+    "alternating_tread_rules":         { "value": "loft only, restricted use",  "clause": "1.27-1.28" },
+    "handrail_single_side_max_width_mm": { "value": 1000,                       "clause": "1.36" },
+    "handrail_both_sides_threshold_mm":  { "value": 1000,                       "clause": "1.36" },
+    "handrail_height_min_mm":          { "value": 900,                          "clause": "TBC" },
+    "handrail_height_max_mm":          { "value": 1000,                         "clause": "TBC" },
+    "balustrade_height_stair_mm":      { "value": 900,                          "clause": "TBC" },
+    "balustrade_height_landing_mm":    { "value": 1100,                         "clause": "TBC" },
+    "balustrade_landing_drop_threshold_mm": { "value": 600,                     "clause": "TBC" },
+    "balustrade_max_gap_mm":           { "value": 100,                          "clause": "1.39" },
+    "width_practical_min_mm":          { "value": 800,                          "clause": "no legal min since 2010 revision" },
+    "width_recommended_mm":            { "value": 900,                          "clause": "trade guidance, not Doc K" }
+  },
+  "doc_k_key_numbers_utility_stair": {
+    "_note": "Utility stairs used in institutional/commercial settings — tighter than private-stair limits.",
+    "rise_max_mm":  { "value": 190, "clause": "Table 1.1" },
+    "going_min_mm": { "value": 250, "clause": "Table 1.1" },
+    "pitch_max_deg":{ "value": 38,  "clause": "Table 1.1" }
+  },
+  "doc_k_key_numbers_common_stair": {
+    "_note": "Common stairs serve multiple dwellings (communal flat-block hallway stair). Same limits as utility; typically also handrails both sides regardless of width.",
+    "rise_max_mm":  { "value": 190, "clause": "Table 1.1" },
+    "going_min_mm": { "value": 250, "clause": "Table 1.1" },
+    "pitch_max_deg":{ "value": 38,  "clause": "Table 1.1" }
+  },
+  "professional_measurement_rules": {
+    "rule_1_finished_floor_to_finished_floor": "Rise is FINISHED-floor to FINISHED-floor. If floors not laid, maker must ask homeowner in writing what will be laid at both levels.",
+    "rule_2_nosing_not_part_of_going": "Nosing overhang (typical 22-25 mm bullnose) is NOT part of the going. Going is measured riser-front to riser-front.",
+    "rule_3_rises_equals_goings_plus_one": "Default: rises = goings + 1 (last rise takes you from top step onto landing). Exception: if top tread is designed level with landing, rises = goings.",
+    "rule_4_architrave_reduction": "Reduce run by 20-25 mm per architrave at doorways top/bottom of flight.",
+    "rule_5_skirting_stringer_cut": "String bottom edge is rebated for skirting board to continue past. Skirting height must be known at measure-up.",
+    "fitting_tolerance_l_shape_mm": 25,
+    "fitting_tolerance_straight_mm": 10,
+    "fitting_tolerance_notes": "L-shape has more forgiveness because trimmer out-of-square is absorbed at the landing turn."
+  },
+  "flooring_thickness_reference_mm": {
+    "solid_timber":                  { "min": 18, "max": 22 },
+    "engineered_timber_floating":    { "min": 14, "max": 18 },
+    "engineered_timber_on_battens":  { "min": 30, "max": 50, "note": "Batten depth varies significantly." },
+    "laminate_with_underlay":        { "min":  8, "max": 12 },
+    "luxury_vinyl_tile_lvt":         { "min":  5, "max":  8 },
+    "ceramic_or_porcelain_tile":     { "min": 10, "max": 15, "note": "Includes adhesive bed." },
+    "carpet_with_underlay":          { "min": 15, "max": 25, "note": "Depends on carpet grade." },
+    "self_levelling_concrete":       { "min":  3, "max": 10 }
+  },
+  "footprint_formula": {
+    "number_of_rises": "ceil(floor_to_floor_height / chosen_rise)",
+    "number_of_goings": "number_of_rises - 1",
+    "flight_length": "number_of_goings * chosen_going",
+    "landing_area": "flight_width * flight_width"
+  },
+  "layouts": [
+    {
+      "id": "straight",
+      "name": "Straight staircase",
+      "description": "One continuous flight, no turn.",
+      "presets": [
+        { "config": "doc_k_min",       "width_mm": 800,  "rise_mm": 220, "going_mm": 220, "length_calc": "12*220 + 800", "footprint_m2": 2.75 },
+        { "config": "modern_typical",  "width_mm": 900,  "rise_mm": 192, "going_mm": 250, "length_calc": "12*250 + 900", "footprint_m2": 3.51 },
+        { "config": "generous_luxury", "width_mm": 1100, "rise_mm": 178, "going_mm": 280, "length_calc": "12*280 + 1100","footprint_m2": 4.91 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "best_for": ["Long narrow houses", "Victorian terraces", "Hallway-run staircases"]
+    },
+    {
+      "id": "quarter_turn_landing",
+      "name": "Quarter-turn with landing (L-shape)",
+      "description": "Two flights at 90 degrees, joined by a small landing.",
+      "presets": [
+        { "config": "doc_k_min",      "footprint_m2": 2.9 },
+        { "config": "modern_typical", "footprint_m2": 3.6 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "best_for": ["Rectangular hallway with internal corner", "Edwardian/1930s semis"]
+    },
+    {
+      "id": "quarter_turn_winder",
+      "name": "Quarter-turn with winders (L-shape space-saver)",
+      "description": "Same 90-degree change but with wedge-shaped winder steps rather than a landing.",
+      "presets": [
+        { "config": "doc_k_min",      "footprint_m2": 2.3 },
+        { "config": "modern_typical", "footprint_m2": 2.7 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "saves_vs_landing_m2": 0.6,
+      "trade_off": "Turn feels tighter; walking-line going must be checked carefully."
+    },
+    {
+      "id": "half_turn_landing",
+      "name": "Half-turn with half-landing (U-shape / dogleg)",
+      "description": "Two parallel flights heading opposite directions, joined by a half-landing (~2x flight width).",
+      "presets": [
+        { "config": "doc_k_min",      "footprint_m2": 2.56 },
+        { "config": "modern_typical", "footprint_m2": 3.60 },
+        { "config": "generous",       "footprint_m2": 5.28 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "best_for": ["Compact terraces", "Victorian terrace basement tops"]
+    },
+    {
+      "id": "half_turn_winder",
+      "name": "Half-turn with winders (compact dogleg)",
+      "description": "180-degree change with winder steps rather than a half-landing.",
+      "presets": [
+        { "config": "doc_k_min",      "footprint_m2": 2.72 },
+        { "config": "modern_typical", "footprint_m2": 3.24 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "saves_vs_landing_m2": 0.4
+    },
+    {
+      "id": "split_double_return",
+      "name": "Split staircase (double-return)",
+      "description": "One wide central flight to a large half-landing, then splits into two flights heading opposite directions to the upper floor.",
+      "presets": [
+        { "config": "modern_typical", "footprint_m2": 12.25 },
+        { "config": "grand_manor",    "footprint_m2": 22.5 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": false,
+      "reason_not_flippable": "Symmetrical by design; flipping doesn't change the visible layout.",
+      "best_for": ["Country manors", "Large hotels", "Larger luxury new-builds"]
+    },
+    {
+      "id": "spiral",
+      "name": "Spiral staircase",
+      "description": "Circular flight around a central column.",
+      "presets": [
+        { "config": "doc_k_compliant_min", "diameter_mm": 1400, "footprint_m2": 1.54 },
+        { "config": "comfortable",         "diameter_mm": 1800, "footprint_m2": 2.54 },
+        { "config": "generous",            "diameter_mm": 2000, "footprint_m2": 3.14 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "flip_direction_note": "Handedness reverses (clockwise-up becomes anticlockwise-up).",
+      "doc_k_restriction": "Permitted as sole staircase to habitable floor only under specific conditions. Best specified as secondary access."
+    },
+    {
+      "id": "helical_curved",
+      "name": "Curved (helical) staircase",
+      "description": "Sweeping continuous curve without a central column.",
+      "presets": [
+        { "config": "tight_helical",    "diameter_mm": 2500, "footprint_m2": 4.9 },
+        { "config": "generous_helical", "diameter_mm": 3500, "footprint_m2": 9.6 },
+        { "config": "grand_helical",    "diameter_mm": 4500, "footprint_m2": 15.9 }
+      ],
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "note": "Walking-line going stays generous even on tight designs — the point of a helical vs a spiral. Top of the bespoke joinery market."
+    },
+    {
+      "id": "floating_cantilever",
+      "name": "Floating cantilever staircase",
+      "description": "Treads project directly from a load-bearing wall or hidden steel spine.",
+      "footprint_note": "Same as the equivalent straight/half-turn layout — 'floating' refers to the visible structure, not the footprint.",
+      "handrail_side_affects_footprint": false,
+      "flippable": true,
+      "structural_note": "Requires engineered steel structure and load-tested plate brackets. Never a DIY specification."
+    }
+  ],
+  "landing_footprints_by_width": [
+    { "width_mm": 800,  "min_landing_area_m2": 0.64 },
+    { "width_mm": 900,  "min_landing_area_m2": 0.81 },
+    { "width_mm": 1000, "min_landing_area_m2": 1.00 },
+    { "width_mm": 1100, "min_landing_area_m2": 1.21 }
+  ],
+  "paired_neighbour_mirror_rule": {
+    "description": "UK terraced houses typically mirror their internal layouts pair-by-pair to reduce inter-house sound transfer.",
+    "right_side_of_pair": "Staircase usually on LEFT of ground-floor plan; handrail typically against party wall.",
+    "left_side_of_pair":  "Staircase usually on RIGHT; handrail typically against party wall.",
+    "reliability": "Almost always true for Victorian and Edwardian terraces. Less consistent on 20th-century estate builds.",
+    "detail_ref": "project_nex_uk_property_type_awareness.md"
+  },
+  "sources": {
+    "primary": "Approved Document K — Protection from falling, collision and impact (England, 2013 revision)",
+    "publisher": "Department for Levelling Up, Housing and Communities (gov.uk)",
+    "regional_variants": [
+      { "region": "Wales",             "document": "Approved Document K (Welsh version)" },
+      { "region": "Scotland",          "document": "Technical Handbook — Domestic, Section 4 (Safety)" },
+      { "region": "Northern Ireland",  "document": "Technical Booklet H" }
+    ],
+    "verification_note": "Check the current published version on gov.uk before designing to it. This reference reflects the 2013 revision and does not track subsequent amendments."
+  }
+}

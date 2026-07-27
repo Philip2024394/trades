@@ -1,0 +1,35 @@
+{
+  "example_notes": "Philip 2026-07-27 — canonical NEX PRODUCT OUTPUT example. Modern Mahogany + Brushed Stainless Steel Contemporary Staircase. Demonstrates the sales/product-copy quality NEX should produce alongside every generation. Includes: rich narrative description · features list · rendered reference image · property/style positioning.",
+  "product_image_url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2027,%202026,%2005_15_47%20PM.png",
+  "positioning": {
+    "market": "luxury modern homes · contemporary interiors",
+    "style": "contemporary architectural feature staircase",
+    "trend_alignment": "Timber + Metal · Feature Staircase (per NEX Staircase Design System Prompt · Future Design Trends)"
+  },
+
+  "product_name": "NEX Modern Mahogany & Brushed Stainless Steel Staircase",
+
+  "product_description": "A statement in contemporary staircase design, this exclusive NEX creation combines the warmth of rich mahogany with the precision of brushed stainless steel to create a staircase that feels both timeless and architectural.\n\nThe handcrafted mahogany staircase features clean, uninterrupted lines enhanced by a striking brushed stainless steel newel base, seamlessly integrated into the oversized square newel post for a bold modern introduction. Every tread is finished with brushed stainless steel stair nosing, adding durability while creating a refined metallic highlight that complements the balustrade.\n\nThe minimalist balustrade is formed with slender brushed stainless steel balusters, delivering an open, elegant appearance that allows natural light to flow through the space. Matching brushed stainless steel detailing continues along the stringer, creating a cohesive design language from the first step to the landing.\n\nDesigned for luxury homes and contemporary interiors, this staircase demonstrates NEX's commitment to innovative craftsmanship, premium materials, and bespoke engineering. The contrast between the deep mahogany grain and the satin brushed stainless steel produces a sophisticated focal point that elevates any modern home.",
+
+  "features": [
+    "Handcrafted premium mahogany staircase",
+    "Contemporary brushed stainless steel newel base",
+    "Brushed stainless steel stair nosings integrated into every tread",
+    "Precision brushed stainless steel balusters for a clean architectural aesthetic",
+    "Matching brushed stainless steel stringer detailing",
+    "Bold square newel posts with minimalist styling",
+    "Bespoke NEX design tailored for luxury modern homes",
+    "Built to combine exceptional durability with timeless contemporary elegance"
+  ],
+
+  "closing_line": "NEX creates staircases that go beyond function — each design is crafted as an architectural feature, blending premium materials with innovative detailing to produce truly distinctive centrepieces for modern living.",
+
+  "why_this_example_matters": "This is the exact tone + structure NEX should produce as customer-facing product copy for every generated staircase. Every future generation-brief output should be able to be paired with a copy block that reads like this: (1) opening statement of design intent · (2) narrative walkthrough of the physical construction and materials · (3) design positioning (who it's for, why it exists) · (4) bulleted feature list for scannability · (5) closing brand line reinforcing NEX's design position.",
+
+  "matches_system_prompt": {
+    "future_trend_covered": "Timber + Metal (mahogany + brushed stainless steel)",
+    "property_type": "Contemporary Homes",
+    "modern_material_palette_hits": ["mahogany", "brushed stainless steel"],
+    "core_principle_honoured": "Bespoke design tailored to the modern home — never a catalogue copy"
+  }
+}
