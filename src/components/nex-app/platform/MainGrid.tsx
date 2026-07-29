@@ -12,7 +12,7 @@ import {
   Sparkles, Compass, Store, ShoppingBag, FileText, CalendarDays,
   BedDouble, MonitorSmartphone, Wrench, FolderClosed,
   MessagesSquare, Users, PenLine, ImageIcon, Languages,
-  Hammer, Home, TrendingUp, Palette,
+  Hammer, Home, TrendingUp, Palette, Layers, Calculator, SquareStack,
   type LucideIcon
 } from "lucide-react";
 
@@ -46,7 +46,10 @@ const TILES: Tile[] = [
   { label: "NEX Construction", subtitle: "Build & renovate",      icon: Hammer,            route: "/nex-app/categories/construction" },
   { label: "NEX Home",         subtitle: "Home improvement",      icon: Home,              route: "/nex-app/categories/home" },
   { label: "NEX Growth",       subtitle: "Business & marketing",  icon: TrendingUp,        route: "/nex-app/categories/growth" },
-  { label: "NEX Design",       subtitle: "Creative studio",       icon: Palette,           route: "/nex-app/categories/design" }
+  { label: "NEX Design",       subtitle: "Creative studio",       icon: Palette,           route: "/nex-app/categories/design" },
+  { label: "NEX Materials",    subtitle: "Timber, boards & stock",icon: Layers,            route: "/nex-app/materials" },
+  { label: "NEX Hardwood Calc",subtitle: "Volume, board feet",    icon: Calculator,        route: "/nex-app/hardwood-calculator" },
+  { label: "NEX Staircase Calc", subtitle: "What do I need?",     icon: SquareStack,       route: "/nex-app/staircase-calculator" }
 ];
 
 export function MainGrid() {

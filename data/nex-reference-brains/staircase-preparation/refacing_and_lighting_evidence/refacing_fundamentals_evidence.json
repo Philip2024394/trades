@@ -1,0 +1,946 @@
+{
+  "_meta": {
+    "agent": "evidence_agent_1",
+    "sections_covered": [
+      "Section 1 · Understanding Refacing (13 topics)",
+      "Section 2 · Materials (18 materials)"
+    ],
+    "governance": "Evidence only · no brain content · every fact traceable · expert_experience_required flagged honestly · no invented procedures · no fabricated advice · unable_to_verify used honestly · no specific prices per NEX HARD LAW",
+    "created": "2026-07-28",
+    "web_calls_used": 18,
+    "web_calls_budget": 20,
+    "web_calls_remaining": 2,
+    "source_reuse_policy": "src-001 to src-025 reused from source_catalogue.json where relevant · src-REF-XX assigned to new sources discovered this session",
+    "new_source_ids_assigned": [
+      "src-REF-01 BWF Stair Scheme public web hub",
+      "src-REF-02 TRADA Wood Species Database (public wooduchoose mirror)",
+      "src-REF-03 AHEC Sustainable American Hardwoods Species Guide (public PDF)",
+      "src-REF-04 Continox UK 2026 Part K / stair regulation guides (trade press-style consolidator)",
+      "src-REF-05 BuildingConservation.com — Historic Timber Staircases (technical article, Historic England-aligned)",
+      "src-REF-06 Cheshire Mouldings Stair Klad manufacturer spec pages",
+      "src-REF-07 Stairfurb (UK retail spec pages, oak stair cladding, 10-year guarantee)",
+      "src-REF-08 Duffield Timber Workbench species buyers guides (European vs American Oak)",
+      "src-REF-09 Timbersource UK species pages (Sapele, Tulipwood)",
+      "src-REF-10 iWood UK timber durability scale reference",
+      "src-REF-11 UK manufacturer/retailer web pages for stair systems (Multi-Turn, Pear Stairs, Stairway Joinery, Jarrods Bespoke Staircases, Shaw Stairs, Hampshire Staircase, County Stairs)",
+      "src-REF-12 Balcony/balustrade retailer regulation pages (Binks Balustrades, IQ Glass, Balustrade Superstore)",
+      "src-REF-13 UK Workshop community thread — staircase cladding hands-on (unpublished-craft signal)",
+      "src-REF-14 Marble Bros / Paramount Stone / Palazzostone / Omega Stone — UK stone stair fabricators"
+    ],
+    "traceability_note": "Every summary in this document traces to at least one source_id. Where evidence is contested or absent, classification honestly reflects that.",
+    "no_procedural_content_rule_check": "PASSED · every summary is topic-level (descriptive not prescriptive)."
+  },
+
+  "section_1_understanding_refacing": {
+    "what_is_refacing": {
+      "summary": "UK trade sources (BWF Stair Scheme member manufacturers, Cheshire Mouldings, StairFurb, Pear Stairs, Shaw Stairs, Hampshire Staircase) discuss staircase refacing (also termed refurbishment, cladding, overlay, recapping) as the practice of updating a staircase by installing new surface parts (treads, risers, balustrades, handrails, newel caps) over or in place of the visible components of an existing structurally-sound staircase. Sources consistently frame refacing as an alternative to full replacement rather than a like-for-like technique.",
+      "sources": [
+        { "source_id": "src-016", "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" },
+        { "source_id": "src-REF-01", "source_name": "BWF Stair Scheme public hub", "url": "https://stairs.bwf.org.uk/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad range", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-07", "source_name": "StairFurb oak stair cladding", "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Hampshire Staircase refurbishment vs replacement guide", "url": "https://hampshirestaircase.co.uk/staircase-refurbishment-vs-replacement-making-the-right-choice/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Trade press uses 'refacing', 'refurbishment', 'cladding', 'overlay' and 'recapping' interchangeably. BWF documentation itself does not appear to use 'refacing' as a defined term — this is a homeowner-facing marketing vocabulary rather than a code-of-practice term."
+      ],
+      "expert_experience_required": [
+        "The threshold at which refacing crosses into 'material alteration' triggering Building Regulations sign-off is a judgment call from an experienced installer or building control officer — not documented as a bright-line rule in any source consulted."
+      ],
+      "homeowner_misconceptions": [
+        "Refacing = cosmetic change with no regulatory consequence — regulations still apply when balustrades or handrails are replaced.",
+        "Refacing = same as replacement in appearance — the underlying carriage geometry is inherited; a poorly-set staircase remains poorly set."
+      ],
+      "related_topics": ["reface_vs_replace", "parts_refaceable", "building_regs_impact"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "parts_that_can_be_refaced": {
+      "summary": "UK retailer/manufacturer catalogues (Cheshire Mouldings Stair Klad, StairFurb, Stair Parts Direct, Pear Stairs, The Door Store) list refaceable components as: treads (via cladding overlay or tread extensions), risers (via oak-veneered MDF riser boards or vinyl/laminate face panels), strings (via string cladding profiles), newel posts (via newel post cladding sleeves and replacement caps), handrails and baserails (replacement mouldings), balustrades/spindles (swapped to timber, metal or glass), and the visible face of any bullnose or curtail step.",
+      "sources": [
+        { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad tread + riser kit", "url": "https://www.cheshiremouldings.co.uk/stairklad-tread-and-riser-kit/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-07", "source_name": "StairFurb custom stringer / newel post cladding", "url": "https://stairfurb.co.uk/product-category/stair-stringer-newel-post-cladding/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Stair Parts Direct — Stair Cladding category", "url": "https://stairpartsdirect.co.uk/product-category/stair-cladding/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Pear Stairs — Oak Veneer MDF Riser product page", "url": "https://www.pearstairs.co.uk/oak-veneer-mdf-riser-1-0m-x-19mm-x-230mm.html", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Some retailers offer 'extender tread' pieces to add depth on mid-landings or shallow top landings; others advise never to modify tread depth cosmetically because it changes the effective going. Both positions appear on legitimate UK retailer sites."
+      ],
+      "expert_experience_required": [
+        "Whether a specific staircase can safely accept overlay (structural soundness of existing carriage, adhesive compatibility with existing finish, cumulative thickness impact on going/rise) requires an in-person survey — not covered by any published guide."
+      ],
+      "homeowner_misconceptions": [
+        "All parts are refaceable — in fact, the carriage (stringers/strings) is typically encased rather than replaced, meaning any structural fault is inherited."
+      ],
+      "related_topics": ["what_is_refacing", "reface_vs_replace", "structural_defects_hidden"],
+      "confidence_score": 0.82,
+      "classification": "requires_manual_verification"
+    },
+
+    "reface_vs_replace_decision": {
+      "summary": "UK trade sources (Stairfurb, Hampshire Staircase, Shaw Stairs, Multi-Turn, DnaStair, Jarrods Bespoke Staircases) discuss the reface-vs-replace decision as governed by (1) structural condition of the existing carriage, (2) whether staircase geometry meets current Part K requirements, (3) whether the customer wants layout/route changes (which reface cannot deliver), (4) budget headroom, and (5) heritage/listed-building constraints. Sources consistently position refacing as appropriate for structurally-sound staircases needing cosmetic renewal, and replacement as appropriate where geometry, structure, layout or compliance is unresolved.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Stairfurb — Should I Refurbish or Replace My Stairs?", "url": "https://stairfurb.co.uk/replace-or-repair-stairs/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Hampshire Staircase — refurbishment vs replacement", "url": "https://hampshirestaircase.co.uk/staircase-refurbishment-vs-replacement-making-the-right-choice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Shaw Stairs — refurbishment cost guide 2026", "url": "https://www.shawstairs.com/staircase-refurbishment-cost-guide-uk-2026/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-016", "source_name": "BWF Stair Scheme — Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+      ],
+      "conflicting_opinions": [
+        "Cost-comparison claims of '30-70% cheaper than replacement' appear on retailer marketing sites without published methodology — treat as commercial estimation, not published data."
+      ],
+      "expert_experience_required": [
+        "The go/no-go call on borderline staircases (partial rot, spongy treads, wobble at handrail, out-of-square carriage) is judgement made from physical inspection — no published decision matrix exists in the sources consulted."
+      ],
+      "homeowner_misconceptions": [
+        "Refacing is always cheaper — for a badly-decayed or non-compliant staircase, refacing over the top can trap defects and force replacement within a few years.",
+        "Refacing can fix a squeaky staircase — squeaks originate in the carriage/wedges/joints, not the visible face."
+      ],
+      "related_topics": ["what_is_refacing", "structural_defects_hidden", "when_refacing_not_recommended"],
+      "confidence_score": 0.82,
+      "classification": "requires_manual_verification"
+    },
+
+    "when_refacing_not_recommended": {
+      "summary": "Sources indicate refacing is discussed as unsuitable in scenarios including: (a) structurally compromised carriage/strings (rot, insect damage, cracked treads), (b) staircase geometry non-compliant with Approved Document K where alteration is triggered, (c) listed buildings where the existing fabric is significant and covering it would constitute unauthorised alteration, (d) staircases with a wobble/movement at newel posts (indicating fixing failure at the mortice, not surface wear), (e) where the customer wants a route or layout change. Historic-buildings guidance particularly warns against surfacing/covering historic fabric as it can conceal decay and worsen it.",
+      "sources": [
+        { "source_id": "src-018", "source_name": "Historic England technical advice", "url": "https://historicengland.org.uk/advice/technical-advice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-05", "source_name": "BuildingConservation.com — Historic Timber Staircases: Management, Conservation and Repair", "url": "https://www.buildingconservation.com/articles/timber-staircases/timber-staircases.htm", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-020", "source_name": "SPAB — Society for the Protection of Ancient Buildings technical advice", "url": "https://www.spab.org.uk/advice", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Meer-End — Traditional Staircases in Listed Buildings", "url": "https://www.meer-end.co.uk/traditional-staircases-in-listed-buildings/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" }
+      ],
+      "conflicting_opinions": [
+        "Marketing pages of overlay-system suppliers state 'suitable for almost any staircase' while conservation authorities and independent joiners caution against overlay in structurally-marginal or heritage cases. Both views are legitimate for their respective contexts."
+      ],
+      "expert_experience_required": [
+        "Diagnosing whether a staircase is structurally sound enough to reface requires physical inspection by an experienced joiner or building surveyor — not documented in any consumer-facing UK guide as a checklist.",
+        "How to test for wedge failure, glue-block failure, or riser-to-tread joint failure from above without dismantling — craft knowledge not published in any consulted source."
+      ],
+      "homeowner_misconceptions": [
+        "If it looks OK from above, it's fine to reface. Most structural failure originates in the underside carriage, wedges and joints — invisible from the walking surface."
+      ],
+      "related_topics": ["structural_defects_hidden", "reface_vs_replace_decision", "listed_building_impact"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "structural_defects_hidden_by_refacing": {
+      "summary": "Historic England and building-conservation trade press discuss that surface repairs and resurfacing (e.g. concrete over stone treads on tenement stairs) can conceal and accelerate underlying deterioration — case officers on listed buildings may require removal of previous refacing to establish the true condition of the original fabric. Trade sources describe similar concerns for timber: covering rotting or insect-damaged treads with cladding does not arrest the decay and may accelerate it by trapping moisture.",
+      "sources": [
+        { "source_id": "src-018", "source_name": "Historic England — Principles of Repair for Historic Buildings", "url": "https://historicengland.org.uk/advice/technical-advice/buildings/principles-of-repair-for-historic-buildings/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-05", "source_name": "BuildingConservation.com — Historic Timber Staircases", "url": "https://www.buildingconservation.com/articles/timber-staircases/timber-staircases.htm", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-020", "source_name": "SPAB technical advice", "url": "https://www.spab.org.uk/advice", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": [
+        "The tap-and-listen, press-and-flex, and undercarriage-inspection techniques joiners use to detect hidden defects before overlaying are craft knowledge, not published in trade guides consulted."
+      ],
+      "homeowner_misconceptions": [
+        "New face = new staircase. Refacing preserves inherited condition of everything beneath.",
+        "A rotted tread can be 'sealed in' by cladding. Trapped moisture accelerates decay."
+      ],
+      "related_topics": ["when_refacing_not_recommended", "reface_vs_replace_decision"],
+      "confidence_score": 0.78,
+      "classification": "expert_experience_required"
+    },
+
+    "typical_duration": {
+      "summary": "UK trade sources state that stair cladding/overlay projects typically take 1-4 days, and are consistently described as shorter than full replacement, but no source consulted publishes a documented time study or governed standard for refacing duration. All figures encountered are quoted by installers/retailers as marketing estimates.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Continox — How Long Does It Take to Replace a Staircase UK 2026", "url": "https://continox.uk/how-long-replace-staircase-uk/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Shaw Stairs refurbishment cost guide 2026", "url": "https://www.shawstairs.com/staircase-refurbishment-cost-guide-uk-2026/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad news", "url": "https://www.cheshiremouldings.co.uk/news/stairklad-made-easy/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Consumer-DIY sources suggest single-weekend completion; professional trade sources cite 2-4 days for a typical straight flight — variance driven by whether balustrades are being replaced."
+      ],
+      "expert_experience_required": [
+        "How much adhesive open-time and set-time constrains actual completion vs claimed timeline — bench experience, not published."
+      ],
+      "homeowner_misconceptions": [
+        "'One-day' claims typically refer to walkable-after-drying time, not total works including balustrade change and finishing."
+      ],
+      "related_topics": ["disruption_level"],
+      "confidence_score": 0.65,
+      "classification": "requires_manual_verification"
+    },
+
+    "disruption_level": {
+      "summary": "UK trade sources consistently describe refacing/cladding as substantially less disruptive than replacement because the existing staircase remains in situ throughout, preserving vertical access to the upper floor for the household. Sources also note dust/adhesive-fume exposure and single-flight walking restriction while adhesive cures. No published Health and Safety guidance specific to residential stair refacing was found among sources consulted.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Stairfurb replace-or-repair guide", "url": "https://stairfurb.co.uk/replace-or-repair-stairs/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Hampshire Staircase refurbishment vs replacement", "url": "https://hampshirestaircase.co.uk/staircase-refurbishment-vs-replacement-making-the-right-choice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-025", "source_name": "HSE workplace stairs guidance L24", "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": [
+        "Sequencing (order of tread/riser install, single-flight vs alternating-tread approach for maintaining household access) is craft practice not documented in retail literature."
+      ],
+      "homeowner_misconceptions": [],
+      "related_topics": ["typical_duration"],
+      "confidence_score": 0.7,
+      "classification": "requires_manual_verification"
+    },
+
+    "planning_permission": {
+      "summary": "UK sources (Pear Stairs, Continox 2026 Part K guide, Jarrods Bespoke Staircases) discuss internal staircase alteration as normally falling under permitted development for a single dwelling — no planning permission required. Exceptions consistently cited: listed buildings (Listed Building Consent required regardless of what appears cosmetic), conservation areas where wider works are triggered, and where the alteration forms part of an extension/conversion requiring wider planning approval.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Pear Stairs — planning permission blog", "url": "https://www.pearstairs.co.uk/blog/planning-permission/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-04", "source_name": "Continox — Planning Permission for a New Staircase UK", "url": "https://continox.uk/is-planning-permission-required-for-new-staircase-installations-uk-regulations/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Jarrods Bespoke Staircases — building codes", "url": "https://www.jarrodsstaircases.co.uk/understanding-the-building-codes-and-regulations-for-replacement-staircase-renovations/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": [
+        "When Listed Building Consent is triggered by refacing rather than replacement is often a local-authority judgement call — no national bright line documented."
+      ],
+      "homeowner_misconceptions": [
+        "Internal work never needs consent — in listed buildings, ANY alteration to fabric can require consent."
+      ],
+      "related_topics": ["building_regulations_impact", "listed_buildings"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "building_regulations_impact": {
+      "summary": "Approved Document K (England) is the statutory guidance for stair geometry, headroom, handrail height, guarding openings and pitch. Sources (Continox 2026 Part K guide, Binks Balustrades, RR Interior) consistently discuss the position that: purely cosmetic reface (tread/riser cladding) without changing geometry or altering the balustrade generally does not trigger Part K sign-off, but replacing balustrades, altering handrail height, or changing tread depth/riser height engages Part K. BS 6180:2011 is cited as the load/durability standard for barriers and balustrades. Approved Document B (fire), M (accessibility) and E (sound) may engage in common-parts (flats/HMO) or accessible-dwelling scenarios.",
+      "sources": [
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "src-002", "source_name": "Approved Document B Vol 1 — Dwellings", "url": "https://www.gov.uk/government/publications/fire-safety-approved-document-b", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-004", "source_name": "Approved Document M Vol 1 — Dwellings", "url": "https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-005", "source_name": "Approved Document E — Sound", "url": "https://www.gov.uk/government/publications/resistance-to-sound-approved-document-e", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-04", "source_name": "Continox — UK Staircase Building Regulations 2026 Part K Guide", "url": "https://continox.uk/stair-staircase-regulations/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-12", "source_name": "Binks Balustrades — UK Height of Stair Handrails 2026", "url": "https://binksbalustrades.co.uk/height-of-stair-handrails/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-12", "source_name": "IQ Glass — Regulations and Best Practice for Glass Balustrades", "url": "https://www.iqglassuk.com/technical-advice/regulations-and-best-practice-for-glass-balustrades/s88644/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Whether cladding-thickness (typically 13-19mm on tread + 4-19mm on riser) sufficiently alters going/rise to trigger Part K compliance review is discussed inconsistently across retailer sites — no authoritative published threshold."
+      ],
+      "expert_experience_required": [
+        "Local Building Control interpretation of what constitutes 'material alteration' under Building Regs 2010 for stair refacing — varies by authority."
+      ],
+      "homeowner_misconceptions": [
+        "Cladding = cosmetic = no regs. Adding thickness to treads can change the effective going and rise ratio and may push a compliant staircase out of compliance."
+      ],
+      "related_topics": ["planning_permission", "listed_buildings", "when_refacing_not_recommended"],
+      "confidence_score": 0.82,
+      "classification": "verified"
+    },
+
+    "property_value_impact": {
+      "summary": "UK retailer and refurbishment sources make claims of return-on-investment for staircase refurbishment (Continox, County Stairs) but none of these are peer-reviewed or drawn from published valuer/RICS data — figures appear to be trade-press marketing estimates. RICS Home Survey Standard, HomeTrack, and Nationwide House Price Index publications were not surfaced by the searches conducted. Recommendation: treat any specific percentage-uplift figure as unverified marketing until an RICS-published source is confirmed.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "County Stairs — Staircase Renovation for ROI", "url": "https://countystairs.co.uk/staircase-renovation-for-roi/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-04", "source_name": "Continox — bespoke staircases worth the investment", "url": "https://continox.uk/reasons-why-bespoke-staircases-are-worth-the-investment/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Sources claim '70% ROI' or '3-5% property uplift' without published methodology — no RICS, valuer or estate-agent body source verified in this session."
+      ],
+      "expert_experience_required": [
+        "How much a refaced (rather than replaced) staircase actually swings a valuer's opinion is agent/valuer judgement — no published dataset."
+      ],
+      "homeowner_misconceptions": [
+        "Refurbishment always adds value. Poor-quality overlay visible to a buyer's eye may reduce perceived quality of the whole house."
+      ],
+      "related_topics": ["lifespan_after_refacing", "advantages_disadvantages"],
+      "confidence_score": 0.45,
+      "classification": "unable_to_verify"
+    },
+
+    "lifespan_after_refacing": {
+      "summary": "UK retailer sources (StairFurb — 10-year guarantee; iWood UK timber durability scale; Cheshire Mouldings) discuss manufacturer warranties on oak stair cladding of around 10 years and cite European oak's 'durable' classification (BS EN 350) as supporting long-term physical durability. No independent long-term (20+ year) performance study of overlay/cladding systems was surfaced.",
+      "sources": [
+        { "source_id": "src-REF-07", "source_name": "StairFurb — Oak Tread & Riser Stair Cladding, 10-year guarantee", "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-10", "source_name": "iWood — Timber Durability Scale and Rating", "url": "https://www.iwood.co.uk/timber-durability", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [
+        "Timber durability classifications (BS EN 350) are engineered for OUTDOOR service conditions — applying them to interior stair use is indicative but not conclusive."
+      ],
+      "expert_experience_required": [
+        "Actual field lifespan of cladding overlays in high-traffic households — no independent longitudinal study surfaced.",
+        "How adhesive-bond degradation, thermal cycling, and MDF-core moisture ingress affect long-term overlay adhesion — craft/manufacturer knowledge, not published."
+      ],
+      "homeowner_misconceptions": [
+        "10-year warranty = 10-year expected life. Warranties are minimums, not lifetime estimates."
+      ],
+      "related_topics": ["property_value_impact", "material_durability"],
+      "confidence_score": 0.6,
+      "classification": "requires_manual_verification"
+    },
+
+    "advantages_disadvantages": {
+      "summary": "UK trade sources consistently frame refacing advantages as: lower cost than replacement, faster completion, less household disruption, ability to update aesthetic with new materials (glass, metal balustrades), suitability for DIY-competent homeowners with kit products. Disadvantages consistently framed as: inherits underlying structural condition, may add thickness affecting geometry, cannot correct non-compliant original stair, may not deliver equivalent longevity to full replacement, warranty is finish-only (not carriage-related).",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Hampshire Staircase — refurbishment vs replacement", "url": "https://hampshirestaircase.co.uk/staircase-refurbishment-vs-replacement-making-the-right-choice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Stairfurb replace-or-repair", "url": "https://stairfurb.co.uk/replace-or-repair-stairs/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "Shaw Stairs refurbishment cost guide 2026", "url": "https://www.shawstairs.com/staircase-refurbishment-cost-guide-uk-2026/", "verification_status": "requires_manual_verification" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": [
+        "How to price the trade-off between short-term savings and inherited-defect risk over 10-20 year household horizon."
+      ],
+      "homeowner_misconceptions": [],
+      "related_topics": ["reface_vs_replace_decision", "common_mistakes"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "common_homeowner_mistakes": {
+      "summary": "UK trade sources (Jarrods Bespoke Staircases, DnaStair, Hatch Construction, Renovation Bay-Bee, UK Workshop community thread) discuss common homeowner mistakes with staircase renovation/refacing as: (a) not checking compliance of resulting geometry with Approved Document K, (b) overlaying visibly-sound but structurally-compromised carriage without inspection, (c) selecting balustrade openings >100mm sphere clearance, (d) selecting handrail height below 900mm or above 1000mm on stair pitch, (e) mixing incompatible finishes (lacquer over oil, painting over untreated MDF riser without primer), (f) DIY glue selection ignoring open-time/set-time requirements, (g) attempting refacing on a listed building without Listed Building Consent.",
+      "sources": [
+        { "source_id": "src-REF-11", "source_name": "Jarrods Bespoke Staircases — common stair design mistakes", "url": "https://www.jarrodsstaircases.co.uk/what-are-common-stair-design-mistakes/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-11", "source_name": "DnaStair — common stair construction mistakes", "url": "https://dnastair.co.uk/common-stair-construction-mistakes-homeowners-make/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-REF-13", "source_name": "UK Workshop community thread — staircase cladding treads and risers", "url": "https://www.ukworkshop.co.uk/threads/staircase-renovation-cladding-treads-and-risers.128161/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": [
+        "Diagnosing whether a specific homeowner's proposed refacing plan will succeed — physical-inspection dependent."
+      ],
+      "homeowner_misconceptions": [
+        "DIY = anyone can do it. Modern kits are designed for competent DIYers, not first-timers.",
+        "If it fits, it's compliant. Fit and compliance are separate."
+      ],
+      "related_topics": ["building_regulations_impact", "when_refacing_not_recommended", "advantages_disadvantages"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    }
+  },
+
+  "section_2_materials": {
+    "american_white_oak": {
+      "appearance": {
+        "summary": "American White Oak (Quercus alba) is described in AHEC/TRADA and UK timber-supplier sources as pale-brown to biscuit-cream sapwood with light-to-medium-brown heartwood, closed pores plugged with tyloses, straight grain and medium-to-coarse texture with a moderate flame figure on quarter-sawn faces.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Sustainable American Hardwoods Species Guide", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-014", "source_name": "TRADA Wood Information Sheets", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-08", "source_name": "Duffield Timber — European Oak vs American White Oak", "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "American White Oak is described as Janka ~1350 lbf; closed-pore structure with tyloses gives high water and decay resistance; BS EN 350 classification 'durable' (similar to European Oak). Sources consistently describe it as suitable for high-traffic domestic staircases.",
+        "sources": [
+          { "source_id": "src-REF-08", "source_name": "Duffield Timber — European Oak vs American White Oak", "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-03", "source_name": "AHEC Species Guide", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Sources discuss oak stair components as low-maintenance when factory-lacquered or oil-finished; oiled surfaces need periodic reapplication; lacquered surfaces need cosmetic refinishing at scuff points. Water resistance is high due to tyloses.",
+        "sources": [
+          { "source_id": "src-REF-07", "source_name": "StairFurb oak stair cladding", "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost driver themes documented in UK timber-trade sources: kiln-drying, grade (FAS, Sel & Btr, No.1 Common per NHLA), quarter-sawn vs plain-sawn premium, board width, and stability of USD/GBP freight costs. NO specific prices per NEX HARD LAW.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Species Guide + Grading Guide", "url": "https://www.americanhardwood.org/sites/default/files/publications/download/2017-10/AHEC%20Grading%20Guide_AW_pages_0.pdf", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["high hardness for a domestic oak", "closed-pore water resistance", "wide grade/board-width availability", "AHEC-documented sustainable supply chain", "takes clear and pigmented finishes well"],
+      "disadvantages": ["tannin content can react with iron fixings causing dark staining", "kiln-dried imported timber sensitive to UK humidity cycling in first months", "colour variation between boards can be pronounced without grade filtering"],
+      "best_applications": ["domestic staircase treads and stringers", "handrails and newel posts", "engineered veneer face on stair cladding overlay kits"],
+      "confidence_score": 0.85,
+      "classification": "verified"
+    },
+
+    "european_oak": {
+      "appearance": {
+        "summary": "European Oak (Quercus robur / petraea) described in UK timber-trade and TRADA sources as light-to-medium honey-brown heartwood, more pronounced medullary rays than American White Oak, straight-grained, medium-to-coarse texture. Duffield Timber notes European Oak often carries more character (knots, cathedral figure) than American White Oak.",
+        "sources": [
+          { "source_id": "src-REF-08", "source_name": "Duffield Timber — European Oak vs American White Oak", "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-014", "source_name": "TRADA WIS series", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "European Oak measured Janka ~1120 lbf (slightly softer than American White Oak per Duffield/Hardtwood); BS EN 350 class 'durable'; high tannin content aids insect/decay resistance. Sources describe European Oak as slightly more resistant to weather/UV than American White Oak but slightly less impact-resistant.",
+        "sources": [
+          { "source_id": "src-REF-08", "source_name": "Duffield Timber comparison", "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Similar to American White Oak: oil or lacquer finish; oil requires periodic re-application; lacquer refinished at wear points. Tannin bleed on new installs discussed by UK trade sources.",
+        "sources": [
+          { "source_id": "src-REF-08", "source_name": "Duffield Timber", "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost driver themes: source (French/German/Baltic/UK), FSC/PEFC certification premium, board length/width, prime-vs-character grade, kiln vs air-dry. No specific prices.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["heritage association / period-property appropriate", "high tannin gives insect resistance", "wide UK domestic supply chain", "accepts fuming/limed finishes traditionally used on stair treads"],
+      "disadvantages": ["slightly softer than American White Oak", "tannin causes iron-staining, requires stainless fixings", "greater colour/character variance can complicate matched joinery"],
+      "best_applications": ["period-property staircase refurbishment", "traditional joinery detail (handrails, newels, mouldings)", "matched engineered veneer for existing period fabric"],
+      "confidence_score": 0.85,
+      "classification": "verified"
+    },
+
+    "ash": {
+      "appearance": {
+        "summary": "Ash (Fraxinus excelsior / F. americana) is described in Dyfed Richards, Stairway Joinery and TRADA-referenced sources as pale-cream to light-brown, prominent straight open grain, high visual similarity to oak with less pronounced medullary ray. Stains readily to darker tones.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Dyfed Richards — best wood for staircases", "url": "https://www.dyfedrichards.com/choosing-the-right-wood-for-your-staircase", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Stairway Joinery — timbers used for staircases", "url": "https://www.stairwayjoinery.co.uk/resource/we-can-create-staircases-featuring-these-timbers", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Ash described as strong, tough and shock-resistant with excellent bending characteristics. Suitable for high-traffic residential staircases; BS EN 350 classification 'not durable' for outdoor exposure but adequate for interior stair use.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Dyfed Richards", "url": "https://www.dyfedrichards.com/choosing-the-right-wood-for-your-staircase", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Sources describe ash as taking stain and lacquer readily; open grain may require grain-fill for gloss finish.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Stairway Joinery", "url": "https://www.stairwayjoinery.co.uk/resource/we-can-create-staircases-featuring-these-timbers", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: source (European/American), grade, ash dieback affecting European supply chain, board dimension. No specific prices.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["excellent strength-to-weight", "takes dark stain well (mimic walnut option)", "shock-resistant for high-traffic treads", "prominent grain gives visual interest"],
+      "disadvantages": ["European supply constrained by ash dieback disease", "open grain needs grain-fill for smooth finish", "not naturally durable — interior use only"],
+      "best_applications": ["stair treads and handrails needing strength", "cost-controlled alternative to oak where staining is desired", "contemporary staircases where visible grain is a feature"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "walnut": {
+      "appearance": {
+        "summary": "American Black Walnut (Juglans nigra) described by AHEC, Stairway Joinery, Dyfed Richards as rich dark chocolate-brown heartwood with cream sapwood, straight-to-wavy grain, medium-fine texture. European Walnut variants are typically lighter with more figure. Dark tone consistently framed as 'luxury/premium'.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Species Guide", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Dyfed Richards", "url": "https://www.dyfedrichards.com/choosing-the-right-wood-for-your-staircase", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Stairway Joinery", "url": "https://www.stairwayjoinery.co.uk/resource/we-can-create-staircases-featuring-these-timbers", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Walnut is described as slightly softer than oak/ash but more than adequate for domestic staircases; BS EN 350 class 'moderately durable'. Sources describe it as suitable for residential feature staircases rather than heaviest-traffic commercial.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Dyfed Richards", "url": "https://www.dyfedrichards.com/choosing-the-right-wood-for-your-staircase", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Sources note walnut oxidises to a slightly lighter warmer tone over years of UV exposure. Oil finishes deepen tone; lacquer preserves original tone.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: premium species relative to oak/ash/beech; grade (FAS premium significant), figure (curly/burl figure carries significant premium), board width. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC grading guide", "url": "https://www.americanhardwood.org/sites/default/files/publications/download/2017-10/AHEC%20Grading%20Guide_AW_pages_0.pdf", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["premium visual character", "excellent workability and takes polish well", "distinctive dark tone without staining", "AHEC-documented sustainable supply"],
+      "disadvantages": ["higher cost than oak/ash", "softer than oak (dents more readily)", "colour drift under UV over years"],
+      "best_applications": ["feature staircases in premium residential", "handrail-only walnut with oak treads (cost-controlled)", "engineered veneer on premium stair cladding kits"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "beech": {
+      "appearance": {
+        "summary": "European Beech (Fagus sylvatica) described in TRADA and UK trade sources as pale pinkish-cream to biscuit, fine even texture, straight grain, minimal figure. Steamed beech has warmer pink-brown tone.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Stairway Joinery", "url": "https://www.stairwayjoinery.co.uk/resource/we-can-create-staircases-featuring-these-timbers", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Beech described as hard and abrasion-resistant; BS EN 350 class 'not durable' for outdoor exposure but very suitable for interior stair use. Sources note high moisture-movement sensitivity so joinery detailing matters.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Beech takes stain, lacquer and oil well; fine grain gives smooth uniform surface, forgiving for sanding and refinishing.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Stairway Joinery", "url": "https://www.stairwayjoinery.co.uk/resource/we-can-create-staircases-featuring-these-timbers", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: European supply widely available; sourced from managed forests (sustainable regrowth exceeds harvest); grade and steaming premium. No specific prices.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["fine even grain for contemporary aesthetic", "cost-effective hardwood option", "takes stain uniformly", "sustainable European supply"],
+      "disadvantages": ["high moisture movement — sensitive to humidity swings", "not naturally durable", "less visual character than oak/walnut may be seen as 'plain'"],
+      "best_applications": ["modern minimalist staircases", "painted stair components (excellent paint substrate)", "engineered stair-nose profiles"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "maple": {
+      "appearance": {
+        "summary": "Hard Maple (Acer saccharum) described in AHEC and stair-specialist sources as near-white to cream-white heartwood, sometimes with slight reddish-brown tinge, very fine consistent grain, minimal figure. Sugar/Rock Maple is the primary joinery variant.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Species Guide", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Top Tread Stairways species guide", "url": "https://www.toptreadstairways.com/the-wood-makes-the-stair-choosing-the-right-species-for-your-alternating-tread-staircase/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Hard Maple Janka ~1450 lbf — one of the hardest domestic hardwoods (AHEC/Top Tread). Excellent abrasion resistance for high-traffic stair treads.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Species Guide", "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Very dense closed grain gives smooth surface; takes lacquer well; harder to stain evenly (blotching risk) compared with oak.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Top Tread Stairways", "url": "https://www.toptreadstairways.com/the-wood-makes-the-stair-choosing-the-right-species-for-your-alternating-tread-staircase/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: North American supply; hard vs soft maple grade differential significant; figure (birds-eye, curly) commands premium. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC grading guide", "url": "https://www.americanhardwood.org/sites/default/files/publications/download/2017-10/AHEC%20Grading%20Guide_AW_pages_0.pdf", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["very high hardness for treads", "light bright appearance", "smooth close grain finishes cleanly", "consistent colour supply"],
+      "disadvantages": ["stains unevenly without conditioner", "less visual character (plain appearance)", "typically imported (freight sensitivity)"],
+      "best_applications": ["high-traffic tread applications", "contemporary light-toned staircases", "commercial residential (student housing, HMOs) where wear matters"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "pine": {
+      "appearance": {
+        "summary": "Scots Pine / Redwood (Pinus sylvestris) described in Multi-Turn UK stair-supplier sources as pale-golden to light-red heartwood with visible resinous knots. 'Whitewood' (spruce group) paler than redwood. Slow-grown Scandinavian pine gives tighter grain.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Multi-Turn — timber options for our staircases", "url": "https://www.multiturn.co.uk/staircases/timber-options/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Pine is a softwood, described as significantly softer than oak/ash/beech; not durable in BS EN 350 terms; commonly used for economy staircases where finish will be painted or where treads will be carpeted.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Multi-Turn", "url": "https://www.multiturn.co.uk/staircases/timber-options/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Sources describe pine as accepting paint or stain but resin bleed at knots can require knotting solution primer; softer surface dents readily.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Multi-Turn choosing timber", "url": "https://www.multiturn.co.uk/post/choosing-the-right-wood-for-your-staircase", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: dominant UK domestic staircase softwood; supply from Scandinavia / Baltic; grade (Unsorted vs V/VI) drives price. No specific prices.",
+        "sources": [
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["most economical timber staircase option", "wide availability", "easy to work / DIY-friendly", "excellent paint substrate when knot-primed"],
+      "disadvantages": ["softer surface dents and marks readily", "knot resin bleed under paint", "not suitable for exposed lacquered high-traffic tread without upgrade"],
+      "best_applications": ["carpeted stair carriages (structural role, hidden face)", "painted stair components", "budget refurbishment / rental / HMO stairs"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "sapele": {
+      "appearance": {
+        "summary": "Sapele (Entandrophragma cylindricum) described in Timbersource, iWood and TRADA-referenced sources as medium-to-dark reddish-brown heartwood, interlocked grain giving pronounced ribbon-stripe figure on quarter-sawn faces, fine even texture. Consistently described as a mahogany substitute.",
+        "sources": [
+          { "source_id": "src-REF-09", "source_name": "Timbersource — Sapele", "url": "https://www.timbersource.co.uk/blog/what-you-need-know-about-sapele-timber", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-014", "source_name": "TRADA WIS", "url": "https://trada.co.uk/publications/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Sapele described as very durable and dimensionally stable; harder than oak; BS EN 350 class 'moderately durable' to 'durable'; excellent for high-traffic stair applications.",
+        "sources": [
+          { "source_id": "src-REF-09", "source_name": "Timbersource Sapele", "url": "https://www.timbersource.co.uk/blog/what-you-need-know-about-sapele-timber", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Polishes to high sheen; deep-toned finishes stain well; interlocked grain can produce tear-out during machining requiring sharp tools and careful sanding.",
+        "sources": [
+          { "source_id": "src-REF-09", "source_name": "Timbersource", "url": "https://www.timbersource.co.uk/blog/what-you-need-know-about-sapele-timber", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: African supply with CITES scrutiny (SAP/CITES II Appendix listing for Sapele since 2022 — supply chain compliance premium); board dimension; figure premium for pronounced ribbon-stripe. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-09", "source_name": "Timbersource Sapele", "url": "https://www.timbersource.co.uk/blog/what-you-need-know-about-sapele-timber", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["mahogany-like appearance without CITES-restriction pressures previously affecting genuine mahogany (though Sapele now CITES II)", "very durable", "stable dimensionally", "premium visual"],
+      "disadvantages": ["CITES II supply-chain documentation requirements", "interlocked grain challenging to machine cleanly", "colour darkens further with UV exposure"],
+      "best_applications": ["traditional feature staircases", "handrails and newels where mahogany aesthetic is desired", "high-traffic tread applications where durability matters"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "tulipwood": {
+      "appearance": {
+        "summary": "American Tulipwood / Yellow Poplar (Liriodendron tulipifera) described in AHEC, TRADA (via wooduchoose), British Hardwoods, Timbersource and ProBoard UK sources as pale cream-white sapwood with olive-green to grey-green heartwood streaked purple/brown/pink. Fine straight grain, low visual figure. Often described as the go-to paint-grade hardwood because grain does not raise through paint.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC Tulipwood species page", "url": "https://www.americanhardwood.org/en/american-hardwood/american-tulipwood", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-02", "source_name": "TRADA Wood Species Database — Tulipwood (via wooduchoose)", "url": "https://www.wooduchoose.com/wood-database/tulipwood-poplar/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-09", "source_name": "British Hardwoods / Timbersource tulipwood pages", "url": "https://www.britishhardwoods.co.uk/planed-all-round-american-tulipwood-timber.html", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Tulipwood is described as fairly soft and lightweight (~510 kg/m³ dried) — softer than oak/ash/beech/maple. BS EN 350 class 'not durable' but adequate for interior joinery. Best suited for painted stair components rather than exposed high-traffic treads.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC", "url": "https://www.americanhardwood.org/en/american-hardwood/american-tulipwood", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Sources consistently describe tulipwood as the highest-quality paint substrate among affordable hardwoods; smooth surface holds crisp painted finish; softer surface dents more readily than oak.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "ProBoard — American Tulipwood for interior fit-out", "url": "https://www.construction.co.uk/construction-news/332039/proboard-timber-highlights-american-tulipwood-as-the-go-to-hardwood-for-interior", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: AHEC / NHLA graded lumber, widely available in 4/4 to 16/4 thicknesses; economical relative to oak/ash/walnut; USD/GBP freight and grade drive price. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-03", "source_name": "AHEC grading guide", "url": "https://www.americanhardwood.org/sites/default/files/publications/download/2017-10/AHEC%20Grading%20Guide_AW_pages_0.pdf", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["best-in-class paint substrate", "economical hardwood for joinery-grade painted stair parts", "sustainable US supply (AHEC-documented)", "excellent workability"],
+      "disadvantages": ["not naturally durable — interior use only", "softer than oak/ash — dents readily under lacquer", "distinctive green/purple heartwood streaks visible under clear finish"],
+      "best_applications": ["painted stair risers", "painted balustrade/spindle turning", "painted handrail (not exposed tread)", "internal joinery mouldings around stair openings"],
+      "confidence_score": 0.85,
+      "classification": "verified"
+    },
+
+    "mdf": {
+      "appearance": {
+        "summary": "Medium Density Fibreboard is a manufactured wood-fibre panel; base MDF is uniformly dense biscuit-brown with smooth machined edges. Not intended as a finished surface — always painted, laminated or veneered. Widely used as core substrate for oak-veneered stair risers and cladding panels in UK stair-parts range (Pear Stairs, Cheshire Mouldings).",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Pear Stairs — oak veneer MDF riser", "url": "https://www.pearstairs.co.uk/oak-veneer-mdf-riser-1-0m-x-19mm-x-230mm.html", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "MDF is described as vulnerable to water/moisture and prone to splitting at edges. Not suitable for exposed treads. Adequate for painted risers and hidden substrate under veneer.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Stairs UK — MDF treads vs timber treads", "url": "http://www.stairsuk.co.uk/mdf-treads.html", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Painted MDF surfaces refinish readily; water damage typically irreparable (fibre swelling); edge chip repair requires filling.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Stairs UK", "url": "http://www.stairsuk.co.uk/mdf-treads.html", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: economical relative to solid timber; moisture-resistant (MR-MDF) and fire-retardant (FR-MDF) grades carry premium; sheet size and thickness. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Pear Stairs MDF riser", "url": "https://www.pearstairs.co.uk/oak-veneer-mdf-riser-1-0m-x-19mm-x-230mm.html", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["economical", "dimensionally stable in stable interior humidity", "excellent paint / veneer substrate", "consistent thickness and density"],
+      "disadvantages": ["water damage catastrophic and typically unrepairable", "edges chip and split", "dust when machined contains fine wood fibre requiring respiratory PPE (HSE guidance)", "not suitable for exposed tread walking surface"],
+      "best_applications": ["painted stair risers", "core substrate for veneered stair cladding kits", "hidden stringer facing where painted"],
+      "confidence_score": 0.8,
+      "classification": "requires_manual_verification"
+    },
+
+    "veneered_products": {
+      "summary_note": "Grouped as a product category (veneered risers, veneered cladding boards, veneered handrails). Same-species evidence applies to the veneer face; core substrate is typically MDF or plywood.",
+      "appearance": {
+        "summary": "Veneered stair products present the visual grain and colour of the face species (typically 0.6mm-3mm veneer) bonded to MDF, plywood or engineered core. UK retailers (Cheshire Mouldings Stair Klad, StairFurb, Pear Stairs, The Door Store) supply factory-lacquered veneered stair components. Ribbon/grain matching across panels is a quality differentiator.",
+        "sources": [
+          { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-07", "source_name": "StairFurb oak stair cladding", "url": "https://stairfurb.co.uk/product-category/stair-stringer-newel-post-cladding/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Veneered surface durability is finish-dependent (typical factory clear satin lacquer). Under-veneer swelling if water penetrates seam is discussed as failure mode. Cannot be sanded and refinished more than once (some 0.6mm veneers cannot be sanded at all).",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Really Cheap Floors engineered pros/cons", "url": "https://www.reallycheapfloors.com/blog/pros-and-cons-of-engineered-hardwood/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Damaged veneer typically requires panel replacement rather than repair. Factory-lacquered surfaces are wipe-clean; scuff points may be spot-refinished.",
+        "sources": [
+          { "source_id": "src-REF-07", "source_name": "StairFurb spec pages", "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: veneer species (oak/walnut/maple), veneer thickness, core substrate, factory-finish quality, matched-set premium for grain matching across a full flight. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["material cost 50-65% below equivalent solid timber (industry-cited by engineered-wood sources)", "dimensional stability of core", "consistent grain matching available", "factory finish quality"],
+      "disadvantages": ["limited sanding/refinishing lifespan", "water damage failure mode is delamination", "underlying substrate species defines edge appearance"],
+      "best_applications": ["overlay/cladding kits for existing staircase refacing", "matched risers to solid timber treads", "cost-controlled feature stair sections"],
+      "confidence_score": 0.82,
+      "classification": "requires_manual_verification"
+    },
+
+    "engineered_timber": {
+      "appearance": {
+        "summary": "Engineered timber for stairs consists of a hardwood wear layer bonded to plywood or HDF core. UK sources (Really Cheap Floors, Factory Direct Flooring, Timbersol) describe grain, colour and finish as identical to solid timber of the same species when the wear layer is thick enough (typically 3-6mm on engineered flooring, thicker on engineered stair treads).",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Timbersol — solid vs engineered wood UK", "url": "https://timbersol.co.uk/blog/solid-wood-vs-engineered-wood/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Really Cheap Floors — engineered hardwood pros/cons", "url": "https://www.reallycheapfloors.com/blog/pros-and-cons-of-engineered-hardwood/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Engineered timber described as more dimensionally stable than solid timber under humidity swings; wear-layer thickness governs number of refinish cycles; core plywood eliminates warping and cupping.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Really Cheap Floors", "url": "https://www.reallycheapfloors.com/blog/pros-and-cons-of-engineered-hardwood/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Wear-layer determines lifetime: 2mm allows one or two light sandings, 3-6mm allows more. Once through wear-layer, panel is spent.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Really Cheap Floors", "url": "https://www.reallycheapfloors.com/blog/pros-and-cons-of-engineered-hardwood/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: wear-layer thickness, wear-layer species, core plywood quality (Baltic birch premium), factory finish, board dimension. Industry-cited savings of 50-65% versus equivalent solid. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Really Cheap Floors / Timbersol", "url": "https://timbersol.co.uk/blog/solid-wood-vs-engineered-wood/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["dimensional stability", "cost saving on premium species", "consistent thickness and finish", "reduced timber consumption / more sustainable use of premium species"],
+      "disadvantages": ["limited refinishing cycles", "water-damage failure mode is delamination", "premature failure if wear-layer worn through"],
+      "best_applications": ["engineered oak stair treads over existing carriage", "premium-species (walnut) overlay where cost of solid would be prohibitive", "high-humidity properties where solid timber movement would fail"],
+      "confidence_score": 0.82,
+      "classification": "requires_manual_verification"
+    },
+
+    "hardwood_overlays": {
+      "appearance": {
+        "summary": "Hardwood overlay systems (Cheshire Mouldings Stair Klad, StairFurb, The Door Store Oak Staircladding System, Stair Parts Direct) are typically pre-finished engineered or solid-hardwood tread and riser panels dimensioned to sit over a standard 200mm-rise existing tread with matching bullnose and extension pieces. Present as full solid-timber stair to the eye once installed.",
+        "sources": [
+          { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "The Door Store — Oak Staircladding System", "url": "https://doorstore.co.uk/products/oak-veneer-stairclad-system", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "System durability governed by wear-layer/veneer specification (see engineered_timber and veneered_products). Manufacturers cite 10-year product guarantees (StairFurb).",
+        "sources": [
+          { "source_id": "src-REF-07", "source_name": "StairFurb 10-year guarantee", "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Pre-finished factory lacquer surface described as low-maintenance; edge/nosing scuff highest wear point; delamination failure if adhesive bond fails.",
+        "sources": [
+          { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad news", "url": "https://www.cheshiremouldings.co.uk/news/stairklad-made-easy/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: species (oak most economical, walnut premium), veneer thickness, kit inclusion (adhesive/nosing/scotia), stair count. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-06", "source_name": "Cheshire Mouldings Stair Klad tread + riser kit", "url": "https://www.cheshiremouldings.co.uk/stairklad-tread-and-riser-kit/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["designed as DIY-installable overlay", "10-year manufacturer guarantee available on premium brands", "pre-finished factory quality", "wide species/aesthetic range"],
+      "disadvantages": ["inherits underlying stair condition", "adds thickness that may affect Part K geometry compliance", "adhesive-dependent bond can fail without correct surface prep"],
+      "best_applications": ["standard 200mm-rise straight-flight refacing", "cosmetic renewal on structurally sound carriage", "DIY-competent homeowner refurbishment"],
+      "confidence_score": 0.82,
+      "classification": "requires_manual_verification"
+    },
+
+    "laminate_systems": {
+      "appearance": {
+        "summary": "Laminate stair systems consist of photograph-printed melamine or high-pressure laminate (HPL) face bonded to HDF/MDF core. UK retailers (Antbs, Storiesflooring, Lowe's UK) describe wide colour/pattern range including realistic wood-look prints. Nosing is typically a matching pre-finished profile.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Storiesflooring — best flooring for stairs UK", "url": "https://storiesflooring.co.uk/blogs/stories/best-flooring-for-stairs-safety-meets-style", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Sources describe laminate as very impact and scratch resistant on the wear layer, but with lower grip than carpet or textured vinyl — slip risk described as higher without anti-slip nosing.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Storiesflooring", "url": "https://storiesflooring.co.uk/blogs/stories/best-flooring-for-stairs-safety-meets-style", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Wipe-clean surface; individual panel replacement possible if seams remain intact; water ingress at seams can swell HDF core.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Storiesflooring", "url": "https://storiesflooring.co.uk/blogs/stories/best-flooring-for-stairs-safety-meets-style", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: AC rating (AC3-AC6 durability class), print quality/embossing, core density, brand. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Antbs UK laminate stairs", "url": "https://antbs.co.uk/product-category/laminate-stairs/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["low cost", "wide aesthetic range including wood-look and stone-look", "very scratch-resistant wear layer", "quick installation"],
+      "disadvantages": ["slip resistance lower than carpet/vinyl without anti-slip nosing", "sound (echo, footfall) more pronounced than timber or carpet", "water damage at seams", "does not add property value in the way hardwood cladding does (per retailer positioning)"],
+      "best_applications": ["rental / HMO refurbishment", "cost-controlled cosmetic refresh", "properties where cost and speed dominate premium finish"],
+      "confidence_score": 0.75,
+      "classification": "requires_manual_verification"
+    },
+
+    "vinyl_coverings": {
+      "appearance": {
+        "summary": "Luxury Vinyl Tile / Plank (LVT/LVP) stair systems and Grey Vinyl Stairclad (The Door Store) present as pre-formed vinyl tread and riser sets. Wide colour/pattern range including wood-effect, stone-effect and plain grey/black.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "The Door Store Grey Vinyl Stairclad", "url": "https://doorstore.co.uk/products/grey-vinyl-stairclad-system", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Best 4 Flooring — LVT for stairs", "url": "https://www.best4flooring.co.uk/residential/stair-flooring/staircase-vinyl-flooring-tiles/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Sources describe vinyl as waterproof and moderately durable; slip resistance described as good with textured surface finish; not recommended for outdoor stairs.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Floor Coverings Local — vinyl on stairs UK", "url": "https://floorcoveringslocal.co.uk/vinyl-flooring/can-you-install-vinyl-flooring-on-stairs-uk-homeowner-advice/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Wipe-clean surface; hygienic in wet/muddy-shoe household context; individual damaged pieces replaceable.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Finishings UK — vinyl stair treads", "url": "https://www.finishingsuk.com/blogs/news/can-you-cover-stair-treads-with-vinyl-a-complete-uk-guide", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: wear-layer thickness, LVT vs sheet vinyl, colour/pattern, backing type. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Best 4 Flooring LVT", "url": "https://www.best4flooring.co.uk/residential/stair-flooring/staircase-vinyl-flooring-tiles/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["waterproof and moisture-resistant", "good slip resistance with textured surface", "hygienic and easy to clean", "sound-dampening compared to timber/laminate"],
+      "disadvantages": ["limited durability vs hardwood or stone", "less premium aesthetic (perception)", "not recommended for high-traffic commercial stairs", "does not add resale premium"],
+      "best_applications": ["family homes with wet/muddy-shoe traffic", "utility staircases (basement, garage)", "properties needing hygienic wipe-clean surface (rental, HMO)"],
+      "confidence_score": 0.75,
+      "classification": "requires_manual_verification"
+    },
+
+    "stone_stair_cladding": {
+      "appearance": {
+        "summary": "Stone stair cladding (Marble Bros, Paramount Stone, Palazzostone, Omega Stone, Polish Granite, ST Stoneworks) covers marble, granite, limestone, slate, quartz varieties. Marble presents veined figure; granite presents crystalline grain; limestone presents softer creamy uniform tone; slate presents dark grey layered texture.",
+        "sources": [
+          { "source_id": "src-REF-14", "source_name": "Marble Bros — Bespoke Stone Staircase Design UK", "url": "https://marble-bros.co.uk/bespoke-stone-staircases-london/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-14", "source_name": "Paramount Stone — Marble Staircases", "url": "https://www.paramountstone.co.uk/marble-staircases/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-14", "source_name": "ST Stoneworks — Bespoke Natural Stone Staircases", "url": "https://www.ststoneworks.co.uk/natural-stone-staircases/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "All natural stones described as extremely durable for stair use; granite hardest and most resistant to scratching; marble softer with etching risk from acidic spills; slate resistant to fire.",
+        "sources": [
+          { "source_id": "src-REF-14", "source_name": "Palazzostone / Polish Granite", "url": "https://palazzostone.co.uk/marble-staircase-steps-and-wall-cladding/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Marble requires sealing and pH-neutral cleaning; granite low-maintenance; slate texture aids slip resistance but needs sealing; polished surfaces may need slip-treatment for Part K compliance.",
+        "sources": [
+          { "source_id": "src-REF-14", "source_name": "Paramount Stone", "url": "https://www.paramountstone.co.uk/marble-staircases/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: stone type (marble/granite/limestone/slate — significantly different price bands), thickness (12mm vs 20mm vs 30mm), edge profile (bullnose grinding), template/bespoke premium, structural loading assessment. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-14", "source_name": "Marble Bros / Paramount Stone", "url": "https://marble-bros.co.uk/bespoke-stone-staircases-london/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["premium visual character", "extreme durability", "fire resistance", "long lifespan (multi-decade)", "positive property value impact (in premium market segment)"],
+      "disadvantages": ["heavy — structural loading assessment required", "polished stone can be slip-hazardous, requiring nosing treatment", "premium cost", "marble etches from acidic spills", "cold underfoot"],
+      "best_applications": ["premium residential feature staircases", "concrete-substrate existing staircases suited to stone weight", "entrance/foyer staircases where first-impression premium matters"],
+      "confidence_score": 0.78,
+      "classification": "requires_manual_verification"
+    },
+
+    "metal_components": {
+      "appearance": {
+        "summary": "Metal stair components (Richard Burbidge, Stair Parts Direct, Balustrade UK, Black Country Metalworks) include stainless steel handrails and balustrade posts, wrought iron / mild steel spindles (traditional and contemporary patterns), powder-coated aluminium handrails, brass and bronze accent finishes. Wide aesthetic range from Victorian-cast to minimalist stainless.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Richard Burbidge — staircase balustrades", "url": "https://richardburbidge.com/shop/stairparts", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Stair Parts Direct — metal spindles", "url": "https://stairpartsdirect.co.uk/product-category/metal/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Black Country Metalworks — stair spindles FAQ", "url": "https://www.blackcountrymetalworks.co.uk/stair-spindles-faq", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Sources describe stainless steel as maintenance-free and rust-resistant; anodised aluminium as maintenance-free and non-rusting; mild steel/wrought iron requires paint or powder-coat protection against rust; 316-grade stainless required for external or moisture-exposed applications.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "GLW Engineering — UK building regs stairs and steel banister rails", "url": "https://blog.glwengineering.co.uk/uk-building-regulations-for-stairs-and-steel-banister-rails", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Stainless and anodised aluminium wipe-clean; powder-coated components very low maintenance; painted mild steel requires periodic repaint at wear points.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Richard Burbidge", "url": "https://richardburbidge.com/shop/stairparts", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: material (mild steel < aluminium < stainless < brass/bronze), grade (304 vs 316 stainless), finish (mill vs polished vs brushed vs powder-coat), fabrication complexity (mass-produced spindle vs bespoke wrought). No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Stair Parts Direct metal", "url": "https://stairpartsdirect.co.uk/product-category/metal/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["contemporary aesthetic (stainless/anodised)", "traditional aesthetic (wrought iron)", "compliant with Part K + BS 6180 when correctly specified", "long service life", "recyclable at end-of-life"],
+      "disadvantages": ["mild steel and wrought iron require corrosion protection", "harder to modify on site than timber", "brass/bronze and 316 stainless carry premium cost"],
+      "best_applications": ["balustrade spindles as visual upgrade to existing timber stair", "handrails on glass balustrades", "period feature (wrought iron cast spindles) on Victorian/Edwardian refurbishment"],
+      "confidence_score": 0.82,
+      "classification": "verified"
+    },
+
+    "glass_components": {
+      "appearance": {
+        "summary": "Glass stair components (frameless balustrade panels, side-fixed panels, hybrid systems with handrail) present transparent open aesthetic maximising light. UK sources (IQ Glass, Balconette, StairFurb Stainless & Glass Kit, Glass Warehouse) describe 8mm toughened glass panels for framed systems and 17.5mm toughened-laminated glass for frameless systems.",
+        "sources": [
+          { "source_id": "src-REF-12", "source_name": "IQ Glass — Regulations and Best Practice for Glass Balustrades", "url": "https://www.iqglassuk.com/technical-advice/regulations-and-best-practice-for-glass-balustrades/s88644/", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "Balconette — Glass Balustrades for Stairs", "url": "https://www.balconette.co.uk/glass-balustrade/glass-balustrades-for-stairs", "verification_status": "requires_manual_verification" },
+          { "source_id": "src-REF-11", "source_name": "StairFurb — Glass and Stainless Steel Kit", "url": "https://stairfurb.co.uk/glass-and-stainless-steel-balustrade-kit/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "durability": {
+        "summary": "Toughened glass rated to structural loading per BS 6180:2011; toughened-laminated glass provides post-breakage integrity for frameless systems; 8mm toughened rated to 1.5 kN/m for domestic. Sources note laminate essential for frameless configurations without top handrail.",
+        "sources": [
+          { "source_id": "src-REF-12", "source_name": "Continox — Glass Balustrade Regulations UK 2026 (Part K & BS 6180)", "url": "https://continox.uk/glass-balustrade-regulations/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "maintenance": {
+        "summary": "Wipe-clean surface; smudges/fingerprints visible and require regular attention; sealant/gasket at fixing points requires inspection; damaged panels typically require full replacement.",
+        "sources": [
+          { "source_id": "src-REF-12", "source_name": "IQ Glass", "url": "https://www.iqglassuk.com/technical-advice/regulations-and-best-practice-for-glass-balustrades/s88644/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "cost_drivers": {
+        "summary": "Cost drivers: glass type (8mm toughened vs 17.5mm laminated toughened), fixing method (channel/base-shoe/side-fix/point-fix), custom vs standard sizes, edge finish, handrail inclusion. No specific prices.",
+        "sources": [
+          { "source_id": "src-REF-11", "source_name": "Glass Warehouse — balustrade glass for stairs", "url": "https://www.theglasswarehouse.co.uk/balustrade-glass/for-stairs/", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "advantages": ["maximises visual light transmission", "contemporary premium aesthetic", "compliant with Part K + BS 6180 when correctly specified", "does not obstruct view", "high resale desirability in contemporary property market"],
+      "disadvantages": ["smudge/fingerprint visibility requires frequent cleaning", "damage requires full panel replacement", "frameless systems require larger structural fixings than framed", "toughened-laminated glass premium cost"],
+      "best_applications": ["contemporary residential feature staircases", "narrow staircases where visual openness matters", "loft conversion stairs where light transmission is critical"],
+      "confidence_score": 0.85,
+      "classification": "verified"
+    }
+  },
+
+  "aggregate": {
+    "topics_researched": 31,
+    "verified": 5,
+    "requires_manual_verification": 24,
+    "expert_experience_required": 1,
+    "unable_to_verify": 1,
+    "avg_confidence": 0.78,
+    "topics_verified_list": [
+      "building_regulations_impact",
+      "american_white_oak",
+      "european_oak",
+      "tulipwood",
+      "metal_components",
+      "glass_components"
+    ],
+    "topics_expert_experience_required_list": [
+      "structural_defects_hidden_by_refacing"
+    ],
+    "topics_unable_to_verify_list": [
+      "property_value_impact (no RICS-published data found; only trade-press marketing claims)"
+    ],
+    "weakest_source_coverage_topics": [
+      "property_value_impact",
+      "typical_duration",
+      "lifespan_after_refacing"
+    ],
+    "strongest_source_coverage": [
+      "AHEC + TRADA + Duffield Timber (species properties across 5 timbers)",
+      "Approved Document K + BS 6180 + Continox 2026 guide + Binks Balustrades (Part K + BS 6180 regulation cluster)",
+      "BWF + Cheshire Mouldings + StairFurb + Pear Stairs + Hampshire Staircase (UK stair-parts / refurbishment retailer cluster)"
+    ]
+  }
+}

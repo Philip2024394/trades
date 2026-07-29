@@ -5,16 +5,24 @@
 // arrow returns to canvas without losing message history.
 
 import { ArrowLeft, Mic, Send, MoreVertical } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useConversationState } from "../state/ConversationStateProvider";
 import { ChatToolTilesRow } from "./ChatToolTilesRow";
 import { InlineComparisonCards } from "./InlineComparisonCards";
 import type { WoodCardSummary } from "../state/ConversationStateProvider";
+import { NexIcon } from "./NexIcons";
+import { classifyIntent, type ChatIntent } from "./classifyIntent";
 
 export function ChatSurface() {
   const { chatOpen, closeChat, history, sendUserMessage, config, state, canvasPayload, thinking } = useConversationState();
   const [draft, setDraft] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Freeze the intent of the LAST user turn so the thinking rotation
+  // is derived from what the user just asked (Philip 2026-07-29). Reads
+  // history at render time, not from a captured closure, so it stays
+  // in sync when a new user message arrives while thinking is true.
+  const lastUserText = [...history].reverse().find((m) => m.role === "user")?.content ?? "";
 
   useEffect(() => {
     if (!chatOpen) return;
@@ -124,7 +132,7 @@ export function ChatSurface() {
               woodCards={m.wood_cards}
             />
           ))}
-          {thinking && <ThinkingIndicator />}
+          {thinking && <ThinkingIndicator lastUserText={lastUserText} />}
           {/* Inline UI card summoned by current state */}
           {state === "compare" && canvasPayload.variant === "styles" && (
             <InlineComparisonCards />
@@ -260,12 +268,110 @@ function ChatBubble({
 
 // ─── Thinking / typing indicator ──────────────────────────────────
 //
-// Rendered in the chat stream while Nex is generating a response
-// (typically 2-5s while the LLM composes). Prevents the "is this
-// broken?" perception when the send button clicks and nothing
-// visibly happens.
+// Two-stage reveal (Philip 2026-07-29 UX spec):
+//   0-800ms   · Listening — small avatar pulse · "Understanding your
+//               staircase question..."
+//   800ms+    · Thinking  — brain icon + rotating context-aware
+//               messages · reads "there is a specialist behind this",
+//               not "the internet is slow"
+//
+// The indicator disappears when the composer returns · answer paragraphs
+// then fade in via ContainerFadeIn (below) — that's the "Creating" moment.
+//
+// Deliberately no per-letter typing. Users find that slower than reading.
+//
+// Intent-aware rotation (Philip 2026-07-29 v2): the message rotation is
+// picked from the user's last turn, so a material question shows timber
+// verbs, a regulation question shows compliance verbs, etc. The rule
+// is "show intelligence, don't pretend intelligence" — every phrase
+// describes a REAL action (checking / reviewing / comparing / matching),
+// never fake theatre ("consulting 27,000 documents…").
 
-function ThinkingIndicator() {
+const THINKING_MESSAGES_BY_INTENT: Record<ChatIntent, string[]> = {
+  greeting: [
+    "Saying hello back…",
+  ],
+  goodbye: [
+    "Wrapping up…",
+  ],
+  thanks: [
+    "…",
+  ],
+  availability_check: [
+    "I'm here…",
+  ],
+  identity: [
+    "One moment…",
+  ],
+  frustration: [
+    "Listening…",
+  ],
+  materials: [
+    "Checking timber behaviour…",
+    "Reviewing moisture guidance…",
+    "Comparing wood movement patterns…",
+  ],
+  regulation: [
+    "Reviewing staircase requirements…",
+    "Checking safety guidance…",
+    "Matching installation conditions…",
+  ],
+  design: [
+    "Comparing staircase styles…",
+    "Reviewing traditional details…",
+    "Matching design features…",
+  ],
+  terminology: [
+    "Checking staircase terminology…",
+    "Reviewing standard naming…",
+    "Matching your description…",
+  ],
+  procedural: [
+    "Reviewing installation steps…",
+    "Checking fitting guidance…",
+    "Matching workshop practice…",
+  ],
+  general: [
+    "Checking staircase terminology…",
+    "Comparing design options…",
+    "Reviewing material guidance…",
+    "Matching your project requirements…",
+  ],
+};
+
+function ThinkingIndicator({ lastUserText }: { lastUserText: string }) {
+  const [stage, setStage] = useState<"listening" | "thinking">("listening");
+  const [messageIndex, setMessageIndex] = useState(0);
+
+  // Classify once per mount — the user's turn doesn't change while
+  // NEX is composing, so no reclassify-on-every-render.
+  const { intent } = useMemo(() => classifyIntent(lastUserText), [lastUserText]);
+  const messages = THINKING_MESSAGES_BY_INTENT[intent];
+
+  // Stage transition. Social intents (greeting · goodbye · thanks ·
+  // availability_check · identity · frustration) skip the listening
+  // beat — those messages don't need NEX to look like it's decoding
+  // something serious. Frustration in particular should feel like NEX
+  // is listening to the correction, not "processing" it.
+  useEffect(() => {
+    const isSocial = intent === "greeting" || intent === "goodbye"       ||
+                     intent === "thanks"   || intent === "availability_check" ||
+                     intent === "identity" || intent === "frustration";
+    if (isSocial) { setStage("thinking"); return; }
+    const t = setTimeout(() => setStage("thinking"), 800);
+    return () => clearTimeout(t);
+  }, [intent]);
+
+  // Rotating messages during Thinking. Greetings have one line only,
+  // so the interval is a no-op for them.
+  useEffect(() => {
+    if (stage !== "thinking" || messages.length <= 1) return;
+    const interval = setInterval(() => {
+      setMessageIndex((i) => (i + 1) % messages.length);
+    }, 2400);
+    return () => clearInterval(interval);
+  }, [stage, messages.length]);
+
   return (
     <div className="mb-3 flex items-start gap-2">
       <NexAvatar size={32} />
@@ -278,37 +384,66 @@ function ThinkingIndicator() {
           style={{
             background: "var(--nex-neutral-0)",
             border: "1px solid var(--nex-neutral-200)",
-            borderBottomLeftRadius: 6
+            borderBottomLeftRadius: 6,
+            minHeight: 44,
           }}
         >
-          <span className="flex gap-1" aria-hidden>
-            <ThinkingDot delay={0} />
-            <ThinkingDot delay={0.2} />
-            <ThinkingDot delay={0.4} />
-          </span>
-          <span
-            className="text-[12.5px]"
-            style={{ color: "var(--nex-neutral-500)" }}
-          >
-            Nex is thinking…
-          </span>
+          {stage === "listening" ? (
+            <>
+              <span
+                className="nex-listen-pulse block rounded-full"
+                aria-hidden
+                style={{
+                  width: 10,
+                  height: 10,
+                  background: "var(--nex-accent-500)",
+                }}
+              />
+              <span className="text-[12.5px]" style={{ color: "var(--nex-neutral-500)" }}>
+                Understanding your question…
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="nex-brain-float" aria-hidden>
+                <NexIcon name="thinking" size={26} />
+              </span>
+              <span
+                className="nex-thinking-fade text-[12.5px]"
+                key={messageIndex}
+                style={{ color: "var(--nex-neutral-600)" }}
+              >
+                {messages[messageIndex]}
+              </span>
+            </>
+          )}
         </div>
       </div>
+      <style jsx>{`
+        .nex-listen-pulse {
+          animation: nexListenPulse 1200ms ease-in-out infinite;
+        }
+        @keyframes nexListenPulse {
+          0%, 100% { transform: scale(1); opacity: 0.55; }
+          50%      { transform: scale(1.35); opacity: 1; }
+        }
+        .nex-brain-float {
+          display: inline-flex;
+          animation: nexBrainFloat 2200ms ease-in-out infinite;
+        }
+        @keyframes nexBrainFloat {
+          0%, 100% { transform: translateY(0) scale(1); }
+          50%      { transform: translateY(-2px) scale(1.05); }
+        }
+        .nex-thinking-fade {
+          animation: nexThinkingFade 420ms ease-out;
+        }
+        @keyframes nexThinkingFade {
+          from { opacity: 0; transform: translateY(3px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
     </div>
-  );
-}
-
-function ThinkingDot({ delay }: { delay: number }) {
-  return (
-    <span
-      className="block rounded-full nex-thinking-dot"
-      style={{
-        width: 7,
-        height: 7,
-        background: "var(--nex-accent-500)",
-        animationDelay: `${delay}s`
-      }}
-    />
   );
 }
 
@@ -327,13 +462,36 @@ function NexStructuredResponse({ content }: { content: string }) {
 
   if (containers.length === 0) return null;
 
+  // Container-by-container fade-in (Philip 2026-07-29 UX spec · "Creating"
+  // moment). Each container reveals 140ms after the previous one — the
+  // user reads-along instead of receiving a wall of text. CSS-only · no
+  // per-letter typing (users perceive that as slow).
   return (
     <div className="flex flex-col" style={{ gap: 20 }}>
-      {containers.map((c, i) =>
-        c.type === "quick_answer"
-          ? <QuickAnswerContainer key={i} text={c.text} />
-          : <SectionContainer key={i} heading={c.heading} body={c.body} />
-      )}
+      {containers.map((c, i) => (
+        <div
+          key={i}
+          className="nex-container-reveal"
+          style={{ animationDelay: `${i * 140}ms` }}
+        >
+          {c.type === "quick_answer"
+            ? <QuickAnswerContainer text={c.text} />
+            : <SectionContainer heading={c.heading} body={c.body} />}
+        </div>
+      ))}
+      <style jsx>{`
+        .nex-container-reveal {
+          opacity: 0;
+          transform: translateY(6px);
+          animation: nexContainerReveal 380ms ease-out forwards;
+        }
+        @keyframes nexContainerReveal {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,0 +1,708 @@
+{
+  "_meta": {
+    "agent": "evidence_research_agent_5",
+    "scope": "Section 10 · Staircase Design Integration + Section 11 · Safety + Section 13 · Real Trade Experience (interview-question generation) + Section 14 · Future Trends",
+    "created": "2026-07-28",
+    "governance": "Sources-only. No invented craft knowledge. Section 13 items generate INTERVIEW QUESTIONS for certified experts, never fabricated answers. All unverifiable areas marked expert_experience_required or unable_to_verify per Philip's governance rules 2/3/4/5.",
+    "web_calls_used": 13,
+    "web_call_budget": 15,
+    "reuses_source_catalogue": "C:/Users/Victus/trades/data/nex-reference-brains/staircase-preparation/source_catalogue.json (25 sources: Approved Docs K/B/M/E, BS 5395, BS EN 14076, BWF Stair Scheme Design Guides 1 & 2, TRADA, HSE L24, Historic England, SPAB)",
+    "priority_sources_actually_reached_this_session": [
+      "CIBSE Lighting Guide 16 · Lighting for stairs (2017)",
+      "CIBSE LG9 · Lighting for communal residential buildings (2022)",
+      "BS EN 12464-1:2011 · Lighting of Indoor Work Places",
+      "BS 5266 · Emergency escape lighting code of practice",
+      "HSE HSG38 · Lighting at Work",
+      "HSE Workplace (Health, Safety and Welfare) Regulations 1992 / ACOP L24",
+      "HSE RIDDOR non-fatal injury statistics 2024/25",
+      "RoSPA Safer Stairs campaign + Building Towards Change report",
+      "BWF Stair Scheme news · 43% of Brits fall on stairs each year (RoSPA-cited)",
+      "Approved Document B Volume 1 · 2026 amendments (effective 30 Sept 2026)",
+      "UK Health Security Agency · LED flicker adverse health effects review",
+      "FSC UK · PEFC UK certification (sustainable timber chain of custody)",
+      "Bisca / Continox / Apex / Paradigm · UK bespoke floating staircase manufacturers"
+    ]
+  },
+
+  "section_10_design_integration": {
+    "_scope": "Authoritative source coverage for lighting integrated with specific staircase types and contexts.",
+
+    "oak_staircases_with_lighting": {
+      "classification": "partial_source_coverage_plus_expert_experience_required",
+      "published_evidence": [
+        {
+          "topic": "Oak tread integrated LED positioning",
+          "source": "Bisca (UK bespoke staircase manufacturer) · Feature Cantilevered Staircase with Integrated Lighting, Derby case study",
+          "url": "https://www.bisca.co.uk/staircase-gallery/feature-cantilevered-staircase-with-integrated-lighting-derby/",
+          "coverage": "case_study_level_only · shows integration is done but no numeric spec published"
+        },
+        {
+          "topic": "Oak staircase LED integration methods (4 methods)",
+          "source": "Continox (UK manufacturer)",
+          "url": "https://continox.uk/floating-staircases-with-led-lighting/",
+          "coverage": "commercial_marketing_material · not a design standard"
+        },
+        {
+          "topic": "General timber stair design principles",
+          "source": "BWF Stair Scheme Design Guide 1 · Domestic Timber Stairs (2025)",
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "coverage": "covers timber stair geometry/materials but LED integration is NOT a chapter of the current guide"
+        }
+      ],
+      "gap": "No BSI · CIBSE · BWF · TRADA standard specifies how LED strips shall be routed inside oak treads/strings/newels · what depth of groove is acceptable without weakening the string · whether adhesive-fixed vs mechanically-fixed LED channels affect timber movement · how oak's tannin content affects aluminium extrusion corrosion.",
+      "why_expert_required": "Craft-integration knowledge is held by BWF Stair Scheme member workshops; not published as a standard because each staircase is bespoke."
+    },
+
+    "glass_staircases_with_lighting": {
+      "classification": "partial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Low-iron frameless glass balustrade + LED tread lighting",
+          "source": "Multiple UK bespoke manufacturers (Bisca, Apex, Paradigm, Oak Carpentry Lancashire)",
+          "coverage": "trade website case studies · no independent design standard"
+        },
+        {
+          "topic": "Balustrade + guarding load standards (applies whether glass or otherwise)",
+          "source": "Approved Document K Section K2 · BS 5395-1:2010",
+          "coverage": "loads and heights only · does NOT address integrated LED"
+        }
+      ],
+      "gap": "No published BSI standard addresses integrated LED lighting in glass staircase channels · heat management inside sealed glass · condensation risk on LED PCBs when routed through cold external glass balustrades.",
+      "classification_notes": "unable_to_verify · specific glass+LED technical specification"
+    },
+
+    "painted_staircases_with_lighting": {
+      "classification": "expert_experience_required",
+      "gap": "No published UK standard addresses how LED heat from tread step-lights affects modern water-based paint systems on adjacent treads/risers/strings · yellowing risk from UV component of certain LED spectra on white acrylic paint · long-term paint film cracking around drilled LED apertures.",
+      "why_expert_required": "This is empirical finish-durability knowledge held by BWF Stair Scheme spraying workshops and coatings manufacturers (Blackfriar, Farrow & Ball, Little Greene, Sadolin) · not captured in a public standard."
+    },
+
+    "floating_staircases_with_lighting": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Floating staircase construction with concealed steel spine + integrated tread LEDs",
+          "source": "Continox · Floating Staircase LED Lighting UK (4 methods)",
+          "url": "https://continox.uk/floating-staircases-with-led-lighting/"
+        },
+        {
+          "topic": "Bespoke cantilever staircase with integrated lighting",
+          "source": "Bisca · Feature Cantilevered Staircase with Integrated Lighting (Derby case study)",
+          "url": "https://www.bisca.co.uk/staircase-gallery/feature-cantilevered-staircase-with-integrated-lighting-derby/"
+        },
+        {
+          "topic": "Motion-activated tread LED underside method",
+          "source": "Southern Staircase (US · shown for method reference)",
+          "url": "https://southernstaircase.com/floating-stairs-with-led-lighting-for-innovative-stair-design/"
+        }
+      ],
+      "gap": "No UK design standard specifies minimum concealed-steel-spine depth needed to accommodate LED wiring channels without compromising tread cantilever capacity."
+    },
+
+    "cut_string_staircases_with_lighting": {
+      "classification": "expert_experience_required",
+      "gap": "Cut-string (open-string) construction exposes the tread nosing profile at the string edge · published sources do not address whether LED step-lights recessed into the string face weaken the mitre-return joint at the nosing.",
+      "why_expert_required": "This is a joinery-specific interaction. Only BWF Stair Scheme cut-string specialists know the safe minimum meat of timber between the LED aperture and the mitre return."
+    },
+
+    "closed_string_staircases_with_lighting": {
+      "classification": "partial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Closed-string housed construction geometry",
+          "source": "BWF Stair Scheme Design Guide 1 · Domestic Timber Stairs (2025) + BS 5395-1:2010",
+          "coverage": "geometry and housing depths standardised · lighting-cutout impact not addressed"
+        }
+      ],
+      "gap": "No standard specifies safe LED aperture size in a housed closed string without violating the residual timber depth needed to retain wedge grip · this is empirical.",
+      "classification_notes": "expert_experience_required for LED-aperture-vs-wedge-grip interaction"
+    },
+
+    "feature_walls_adjacent_to_stairs": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Wall niche lighting alongside staircases",
+          "source": "Abbott Wade · Top Twenty Staircase Lighting Ideas",
+          "url": "https://www.abbottwade.co.uk/latest-news/staircase-lighting-ideas/"
+        },
+        {
+          "topic": "Under-cabinet lights UK · feature wall lighting integration",
+          "source": "SpaceCrafted Solutions",
+          "url": "https://under-cabinet-lights.co.uk/revolutionizing-hidden-spaces-integrated-lighting-transforms-under-stair-storage/"
+        }
+      ],
+      "gap": "Design-magazine level coverage · no design standard.",
+      "classification_notes": "unable_to_verify for numeric standard"
+    },
+
+    "under_stair_storage_with_lighting": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Integrated LED for under-stair display/storage",
+          "source": "SpaceCrafted Solutions · Revolutionizing Hidden Spaces",
+          "url": "https://under-cabinet-lights.co.uk/revolutionizing-hidden-spaces-integrated-lighting-transforms-under-stair-storage/"
+        },
+        {
+          "topic": "Under-stair storage design gallery",
+          "source": "Houzz UK · Under Stairs Storage Ideas",
+          "url": "https://www.houzz.co.uk/photos/staircase-with-under-stair-storage-ideas-and-designs-phbr1-bp~t_10413~a_3420-21009"
+        }
+      ],
+      "gap": "No standard addresses the fire-compartmentation implications of routing LED transformers/drivers inside protected under-stair enclosures used as means of escape (Approved Document B). This is a compliance interaction that requires expert review case-by-case.",
+      "compliance_flag": "See Approved Document B Vol 1 (2019 + 2020/2022/2025/2026 amendments) · escape stair under-cupboards"
+    },
+
+    "open_risers_with_lighting": {
+      "classification": "regulatory_only_coverage",
+      "published_evidence": [
+        {
+          "topic": "Open riser 100mm sphere rule",
+          "source": "Approved Document K · Section K1 (2013)",
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+          "coverage": "geometry rule that a 100mm sphere shall not pass through · LED bar integration not addressed"
+        }
+      ],
+      "gap": "Whether a horizontal LED strip mounted between open risers satisfies the 100mm sphere rule depends on the LED extrusion profile · no standard addresses this.",
+      "classification_notes": "expert_experience_required (Building Control interpretation)"
+    },
+
+    "carpet_runners_with_lighting": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "LED string-mounted lighting complementing carpet runner",
+          "source": "Stair Rods Direct · Staircase Lighting Ideas",
+          "url": "https://www.stair-rodsdirect.co.uk/blogs/article/staircase-lighting-ideas-and-how-theyre-complemented-by-your-interior-design/",
+          "coverage": "design-magazine level · no independent standard"
+        }
+      ],
+      "gap": "No standard addresses tread-edge LED specification when paired with a runner (nosing visibility vs. runner coverage)."
+    },
+
+    "luxury_homes_lighting_integration": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Bespoke floating cantilever oak + LED (£11,999+)",
+          "source": "Continox · Bespoke Staircase Cost UK 2026",
+          "url": "https://continox.uk/how-much-does-a-new-contemporary-staircase-cost/"
+        },
+        {
+          "topic": "Bisca gallery (high-end residential integration)",
+          "source": "https://www.bisca.co.uk/staircase-gallery/",
+          "coverage": "case studies · no standard"
+        }
+      ],
+      "classification_notes": "commercial_only · not a regulatory area"
+    },
+
+    "commercial_staircases_lighting": {
+      "classification": "regulatory_source_coverage_strong",
+      "published_evidence": [
+        {
+          "topic": "Communal residential building stair lighting · 100 lux avg / 25 lux min / uniformity 0.4",
+          "source": "CIBSE Lighting Guide 9 · Lighting for communal residential buildings (2022) referring to LG16",
+          "url": "https://www.cibse.org/knowledge-research/knowledge-portal/lg9-lighting-for-communal-residential-buildings-2022"
+        },
+        {
+          "topic": "Where on a stair to calculate/measure values · safe luminaire positions · maintenance access risk positions",
+          "source": "CIBSE Lighting Guide 16 · Lighting for stairs (2017)",
+          "url": "https://www.cibse.org/knowledge-research/knowledge-portal/lighting-guide-16-lighting-for-stairs-2017"
+        },
+        {
+          "topic": "100 lux avg for indoor workplace stair task",
+          "source": "BS EN 12464-1:2011 Lighting of Indoor Work Places (referenced via HSE guidance)"
+        },
+        {
+          "topic": "Workplace stair maintenance / handrail provision / slip resistance",
+          "source": "HSE L24 (ACOP for Workplace (Health, Safety and Welfare) Regulations 1992)",
+          "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf"
+        }
+      ]
+    }
+  },
+
+  "section_11_safety": {
+    "_scope": "Authoritative UK source coverage for stair-lighting-related safety topics.",
+
+    "are_stair_lights_safe": {
+      "classification": "regulatory_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Adequate lighting mandated for all new stairs and material alterations",
+          "source": "Approved Document K (2013)",
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf"
+        },
+        {
+          "topic": "Electrical safety of stair lighting installations",
+          "source": "Approved Document P (Electrical Safety in Dwellings) · Part P notifiable work",
+          "url": "https://lifetimeelectrical.co.uk/wp-content/uploads/2025/05/NICEIC-PART-P-Lifetime.pdf",
+          "supporting": "NICEIC accreditation for installers"
+        },
+        {
+          "topic": "Indoor stair recommended illuminance 20 lux avg / 5 lux min (HSG38); 100 lux via BS EN 12464-1",
+          "source": "HSE HSG38 Lighting at Work; BS EN 12464-1:2011"
+        }
+      ]
+    },
+
+    "lighting_as_trip_hazard": {
+      "classification": "regulatory_and_professional_guidance",
+      "published_evidence": [
+        {
+          "topic": "Non-uniform lighting perceived as level change / shadow trip hazard",
+          "source": "Community Health Partnerships / Sight Scotland / DW Windsor inclusive lighting guidance",
+          "url": "https://communityhealthpartnerships.co.uk/what-we-do/inclusive-design/interactive-tool/lighting/"
+        },
+        {
+          "topic": "CIBSE LG16 identifies luminaire positions that create maintenance access risk (installer trip risk)",
+          "source": "CIBSE Lighting Guide 16 (2017)"
+        }
+      ]
+    },
+
+    "glare": {
+      "classification": "regulatory_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Glare causes discomfort · reduces contrast · hides level changes → trip/fall risk",
+          "source": "Sight Scotland Lighting for visually impaired people",
+          "url": "https://sightscotland.org.uk/articles/information-and-advice/lighting-visually-impaired-people"
+        },
+        {
+          "topic": "Excessive glare/strobe/flicker prohibited",
+          "source": "NICEIC · Requirements for luminaires and lighting installations",
+          "url": "https://professional-electrician.com/technical/requirements-for-luminaires-and-lighting-installations-niceic/"
+        }
+      ]
+    },
+
+    "colour_effects_temperature_contrast": {
+      "classification": "regulatory_and_accessibility_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Warmer colour temperature ~3000K for outdoor · daylight-style for indoor visibility",
+          "source": "Sight Scotland; DW Windsor Access for All guidance",
+          "url": "https://www.dwwindsor.com/articles/knowledge/the-role-of-lighting-in-ensuring-access-for-all/"
+        },
+        {
+          "topic": "LRV contrast ≥30 points between tread and nosing (DDA requirement)",
+          "source": "Safe Tread · Visual Contrast Stair Safety (citing DDA)",
+          "url": "https://www.safetread.co.uk/faqs/light-reflection"
+        }
+      ]
+    },
+
+    "flicker": {
+      "classification": "regulatory_and_research_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "UK Health Security Agency review of LED flicker health effects",
+          "source": "UKHSA · Can the Adverse Health Effects of Flicker from LEDs and Other Artificial Lighting Be Prevented?",
+          "url": "https://researchportal.ukhsa.gov.uk/en/publications/can-the-adverse-health-effects-of-flicker-from-leds-and-other-art/",
+          "coverage": "established metrics do NOT reliably indicate flicker health effects · frequency-dependent"
+        },
+        {
+          "topic": "Mitigation · high-frequency control gear · three-phase distribution",
+          "source": "NICEIC · Requirements for luminaires and lighting installations",
+          "url": "https://professional-electrician.com/technical/requirements-for-luminaires-and-lighting-installations-niceic/"
+        }
+      ]
+    },
+
+    "emergency_escape_lighting": {
+      "classification": "regulatory_source_coverage_strong",
+      "published_evidence": [
+        {
+          "topic": "1 lux on centre-line escape route (routes ≤2m wide); 0.5 lux open areas >60m2; each stair flight directly lit",
+          "source": "BS 5266 Emergency Lighting Code of Practice",
+          "url": "https://lumenloop.co.uk/emergency-lighting-levels-in-the-uk-bs-5266-compliance-safety-standards/"
+        },
+        {
+          "topic": "Each tread must be properly illuminated · min duration 1h / 3h where immediate evac not feasible",
+          "source": "BS 5266 (via multiple UK compliance summaries; commercial trade texts)"
+        },
+        {
+          "topic": "ICEL Emergency Lighting Guide · UK third-party accreditation under LIA",
+          "source": "Lighting Industry Association (LIA) · ICEL",
+          "url": "https://www.thelia.org.uk/member-services/icel/icel-emergency-lighting-guide.html"
+        }
+      ]
+    },
+
+    "fire_considerations": {
+      "classification": "regulatory_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Protected stair enclosures · means of escape stairs · 2026 amendments (effective 30 Sept 2026) including mandatory second staircase >18m residential",
+          "source": "Approved Document B Volume 1 (Dwellings) · 2019 edition incorporating 2020/2022/2025 + 2026/2029 amendments",
+          "url": "https://assets.publishing.service.gov.uk/media/67d2bb074702aacd2251cb94/Approved_Document_B_volume_1_Dwellings_2019_edition_incorporating_2020_2022_and_2025_amendments_collated_with_2026_and_2029_amendments.pdf"
+        }
+      ],
+      "gap": "Approved Document B does not specify LED product fire ratings for tread-integrated fittings; that falls to individual product certifications (CE/UKCA + LM-80/TM-21 data)."
+    },
+
+    "maintenance_safety": {
+      "classification": "regulatory_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "CIBSE LG16 identifies luminaire positions that create risk during maintenance access on stairs",
+          "source": "CIBSE Lighting Guide 16 (2017)"
+        },
+        {
+          "topic": "Workplace stair maintenance obligations",
+          "source": "HSE L24 ACOP",
+          "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf"
+        }
+      ]
+    },
+
+    "electrical_inspection_requirements": {
+      "classification": "regulatory_source_coverage_strong",
+      "published_evidence": [
+        {
+          "topic": "Part P notifiable electrical work (dwellings)",
+          "source": "Approved Document P via NICEIC guide",
+          "url": "https://lifetimeelectrical.co.uk/wp-content/uploads/2025/05/NICEIC-PART-P-Lifetime.pdf"
+        },
+        {
+          "topic": "Installer competence · registered scheme (NICEIC / NAPIT / STROMA / ELECSA)",
+          "source": "NICEIC (registered domestic installer scheme)"
+        },
+        {
+          "topic": "BS 7671 (IET Wiring Regulations 18th Ed. + Amendments) governs all fixed lighting circuits · covered by all UK Part P competent-person schemes"
+        }
+      ]
+    },
+
+    "uk_stair_fall_statistics": {
+      "classification": "regulatory_and_research_source_coverage_strong",
+      "published_evidence": [
+        {
+          "topic": "43% of Brits fall on the stairs each year; younger adults highest risk",
+          "source": "BWF Stair Scheme (citing RoSPA-supported research)",
+          "url": "https://stairs.bwf.org.uk/news/43-of-brits-fall-on-the-stairs-each-year-with-younger-adults-at-highest-risk/"
+        },
+        {
+          "topic": "Falls on stairs kill >1,000 people/year in England & Wales; 43,000 hospitalised; 300,000+ A&E visits",
+          "source": "RoSPA · Can the home ever be safe? report (via BWF summary)"
+        },
+        {
+          "topic": ">850 deaths of >65s in 2023 from falls on/from stairs and steps (ONS)",
+          "source": "Office of National Statistics (via RoSPA/BWF)"
+        },
+        {
+          "topic": "18,051 non-fatal employee injuries from slips/trips/falls on the same level (2024/25) = 30% of all non-fatal reports",
+          "source": "HSE RIDDOR 2024/25 · via multiple UK training bodies (2026 summaries)",
+          "url": "https://www.manualhandlingtraining.org.uk/blog/slips-trips-and-falls-statistics-uk"
+        },
+        {
+          "topic": "BS 5395-1 adoption could reduce fall risk by up to 60% (RoSPA position)",
+          "source": "RoSPA Safer Stairs campaign",
+          "url": "https://www.rospa.com/safety-campaigns/safer-stairs"
+        }
+      ]
+    }
+  },
+
+  "section_13_trade_experience": {
+    "_scope": "MOST IMPORTANT for this agent. Every item marked expert_experience_required with interview questions for certified BWF Stair Scheme members / RoSPA / senior installers. NO fabricated craft answers per governance rules 2 and 4.",
+
+    "customer_mistakes": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Craft knowledge from repeated customer interactions across hundreds of installs. Not documented in BWF/TRADA/CIBSE publications because it is behavioural rather than technical.",
+      "suggested_interview_questions_for_certified_experts": [
+        "What are the three most common mistakes homeowners make when specifying a new staircase, and how do you head them off at the quote stage?",
+        "How often do customers choose a tread material that is unsuitable for the traffic level in their home, and what are the tell-tale signs at survey?",
+        "When customers ask for open risers, how many change their mind after you explain the 100mm-sphere rule under Approved Document K and the child-fall interaction?",
+        "What percentage of your customers underestimate the width required at the top and bottom for furniture moves, and how do you counsel this before joinery is cut?",
+        "Which decorative aspiration causes the most warranty callbacks in your experience — glass, painted, or oil-finished oak?"
+      ]
+    },
+
+    "design_regrets": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Follow-up feedback 3-10 years post-install is held only by manufacturers with long relationships to their customer base; not written up.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which staircase design decisions do customers most often regret 5 years later? Please rank the top three.",
+        "How often do customers who chose glass balustrades tell you they wish they had chosen timber (and vice versa) — and what practical factor drives the regret?",
+        "Do customers who chose tread-integrated LEDs report satisfaction 5 years later, or do they report driver failures / dead pixels / discoloured plastic diffusers?",
+        "For floating staircase installs, what post-install regrets do you hear most (echo · dust visibility · lighting glare · pet safety)?",
+        "Which paint colour / finish shows callback regret fastest in a family home with children?"
+      ]
+    },
+
+    "lighting_positions_that_work_best": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "CIBSE LG16 tells you WHERE to measure lux; only installers know which positions actually stay working, don't blind users mid-descent, and don't cast confusing shadows on the tread edge in a real home.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Given a straight domestic flight, where do you fit LED step-lights (riser · underside of tread · string face · wall-mounted at ankle height) and why?",
+        "How do you decide between recessed wall step-lights (kick-height) and tread-underside LEDs when the staircase runs against a plasterboard wall?",
+        "For a cut-string cantilever staircase, where do you route the LED wiring so it doesn't compromise the mitre-return joint at the tread nosing?",
+        "What is your rule of thumb for LED colour temperature on stairs shared by elderly residents?",
+        "When do you specify motion-activated PIR vs. photocell-triggered dusk-to-dawn on a domestic stair?"
+      ]
+    },
+
+    "lighting_positions_to_avoid": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Empirical field knowledge on positions that fail (heat build-up · dust ingress · maintenance-unfriendly · glare on descent) — not published.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which LED positions on a staircase do you refuse to install and why?",
+        "Have you seen LED step-lights recessed into the middle of a tread (rather than nosing edge) fail from foot compression, and how quickly?",
+        "Where does LED heat cause the most trouble in a timber staircase (adhesive line failure · veneer bubbling · paint yellowing)?",
+        "What positions cause glare on descent that users don't notice until after handover?",
+        "Which LED positions are unreachable for maintenance once the staircase is in service?"
+      ]
+    },
+
+    "refacing_mistakes": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Refacing (tread overlay / cladding / painted retrofit) is a fragmented trade area with no BSI standard; failure modes are known only to installers.",
+      "suggested_interview_questions_for_certified_experts": [
+        "What are the most common mistakes homeowners make when they attempt to reface their own staircase with overlay treads?",
+        "Which existing staircase conditions (loose wedges · rot at string ends · squeaks) MUST be fixed before an overlay is applied, and which are commonly ignored to the customer's cost?",
+        "When a customer asks for an oak-veneer overlay on a painted pine staircase, what preparation errors have you seen cause the finish to fail within 2 years?",
+        "What glue and fixing combinations do you recommend for overlay treads on a residential stair — and which combinations have you seen fail?",
+        "Does painting over an existing carpet-gripper-nailed tread ever succeed long-term, or should the customer always be told to remove the tread first?"
+      ]
+    },
+
+    "material_combinations_that_age_poorly": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "10-year visual ageing data is not captured in any UK standard; only long-established manufacturers see it.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which timber-with-metal combinations have you seen age poorly on a staircase (e.g. oak with brass · walnut with brushed steel · pine with chrome)?",
+        "What paint-finish + timber-species combinations show the most yellowing/cracking after 5 years of family use?",
+        "When customers pair painted stringers with oiled treads, what edge-line failure modes appear over time?",
+        "Do you have observed cases where oak tannin interacted with aluminium LED extrusions to cause corrosion or discolouration?",
+        "Which glass-tinting + LED-lighting combinations have shown premature colour drift?"
+      ]
+    },
+
+    "products_professionals_avoid": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Trade-only preference data. Never printed publicly because vendors would object; only held in the heads of specifiers.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which categories of stair-lighting product (not specific brands) do you personally never fit, and why?",
+        "Which LED driver categories have you seen fail within 2 years on stair installations?",
+        "Are there any tread-overlay product categories you refuse to quote for, and what is your reason?",
+        "Which handrail-integrated LED systems have caused you callbacks, and what was the root cause?",
+        "Which balustrade fixing systems have you stopped specifying and why?"
+      ]
+    },
+
+    "finishes_that_fail_prematurely": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Finish-failure timeline knowledge sits with coatings representatives (Blackfriar · Bona · Osmo · Rubio Monocoat · Sadolin · Sikkens · Manns) and stair installers, not with BSI.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Rank the top three tread finish systems by longevity in a family home (oil · hardwax oil · lacquer · pre-cat lacquer · UV-cured factory finish).",
+        "How quickly does water-based paint fail at the tread-nose leading edge in a busy household compared to oil-based?",
+        "Which factory-applied UV-cured finishes have you seen fail earliest, and what was the failure mode (edge chipping · wear-through · yellowing)?",
+        "When customers insist on a matt finish on treads, what is your typical touch-up cadence advice?",
+        "Which underside-of-tread stains have you seen bleed through a subsequent paint job?"
+      ]
+    },
+
+    "common_warranty_claims": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Warranty-claim distributions are commercial data not published by the BWF Stair Scheme. Only individual manufacturers hold it.",
+      "suggested_interview_questions_for_certified_experts": [
+        "What are your five most common warranty callback reasons in the first 12 months, ranked by frequency?",
+        "How many of your warranty claims trace to installation issues vs. manufacturing defects vs. customer misuse?",
+        "What proportion of LED-related warranty claims are driver failures vs. LED strip failures vs. installation faults?",
+        "Which warranty claim category has grown fastest in the last 3 years?",
+        "What is the typical time-to-first-callback for painted staircases in family homes?"
+      ]
+    },
+
+    "installation_shortcuts_that_cause_future_problems": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Site-installer shortcuts are known only to workshops that get called back to fix them. Never documented for obvious reasons.",
+      "suggested_interview_questions_for_certified_experts": [
+        "What are the three most common installation shortcuts you see when you're called out to fix another installer's staircase?",
+        "How often do you find pine wedges that were shorter than the recommended 9-12 inches, and what failure mode results?",
+        "How often do you find riser tongues that were NOT properly seated 12mm into the tread underside groove, and what shows the failure (light-leak / squeak / step separation)?",
+        "How often do you find that the string-to-newel housing was under-glued or improperly haunched?",
+        "How often do you find LED wiring routed through structural timber in a way that violates BS 7671 zoning?"
+      ]
+    }
+  },
+
+  "section_14_future_trends": {
+    "_scope": "Authoritative source coverage for future-trend topics. Marked commercial or trade-press where regulatory sources do not yet exist.",
+
+    "wireless_lighting": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Wireless PIR + Tuya WiFi / Bluetooth app-controlled stair lighting",
+          "source": "Multiple UK vendors (Joybuy, Smart Lighting, Superlightingled)",
+          "url": "https://www.joybuy.co.uk/blog/motion-sensor-light-uk-guide/wZKZnepJ"
+        },
+        {
+          "topic": "PIR wireless control system for stair lighting",
+          "source": "Stair-Lighting.com",
+          "url": "https://stair-lighting.com/pir-wireless-control-system-c-166_172.html"
+        }
+      ],
+      "trajectory": "growing · commercial supply is mature but no BSI or BWF standard yet"
+    },
+
+    "rechargeable_systems": {
+      "classification": "commercial_source_coverage_only",
+      "published_evidence": [
+        {
+          "topic": "Battery-powered / rechargeable wireless PIR stair lamps",
+          "source": "UK / EU vendor listings (Amazon UK · eBay UK · Fast Lighting Supply)",
+          "url": "https://www.fastlightingsupply.com/best-motion-sensor-lights-for-stairs/"
+        }
+      ],
+      "gap": "No UK trade press dedicated review of rechargeable stair-lighting systems at time of search."
+    },
+
+    "low_voltage_systems": {
+      "classification": "commercial_and_trade_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "24V DC LED stair strips + DALI drivers with 24V output",
+          "source": "Simple Lighting (UK DALI supplier)",
+          "url": "https://www.simplelighting.co.uk/collections/dali-lighting"
+        },
+        {
+          "topic": "KNX + DALI gateway for residential stair/low-level lighting",
+          "source": "KNX Shop Online UK",
+          "url": "https://knxshoponline.co.uk/stairs-low-level-lighting/"
+        },
+        {
+          "topic": "DALI+KNX combined lighting control (professional residential)",
+          "source": "TILLUME · Combining DALI-KNX Gateway",
+          "url": "https://tillumelight.com/en-us/blogs/dali-2-series/combining-dali-knx-gateway-lighting-control"
+        }
+      ],
+      "trajectory": "strong · low-voltage 24V DALI is the dominant professional install method for integrated stair lighting per 2026 UK trade supply"
+    },
+
+    "hidden_fixings": {
+      "classification": "commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Concealed steel spine / wall-mounted hidden fixings for floating cantilever staircases (UK)",
+          "source": "Apex Staircases · Bisca · Paradigm Stairs · Continox · Oak Carpentry Lancashire",
+          "url": "https://paradigmstairs.co.uk/floating-stairs/"
+        },
+        {
+          "topic": "80-120mm oak tread + low-iron frameless glass balustrade construction",
+          "source": "Continox floating staircase manufacture",
+          "url": "https://continox.uk/floating-staircase-manufacture/"
+        }
+      ],
+      "trajectory": "mature commercial supply · design standard covered under BS 5395-1 for geometry but hidden-fixing structural verification remains bespoke SE calculation per install"
+    },
+
+    "integrated_smart_home": {
+      "classification": "trade_press_and_commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Shift from PIR to mmWave presence sensors in 2026 · Matter protocol adoption",
+          "source": "Smart.Lighting · Best Smart Motion Sensors for 2026",
+          "url": "https://www.smart.lighting/post/best-smart-motion-sensors-for-2026"
+        },
+        {
+          "topic": "KNX as coordinator across HVAC/lighting/blinds/security with DALI as lighting sub-bus",
+          "source": "MeanWell Building · Better than DALI: KNX Lighting",
+          "url": "https://building.meanwell.com/newsInfo.aspx?c=5&i=868"
+        }
+      ],
+      "trajectory": "strongest published trajectory of all future trends · Matter + mmWave + KNX/DALI convergence is the clearly-signalled direction for 2026-2028"
+    },
+
+    "sustainable_materials": {
+      "classification": "certification_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "FSC (Forest Stewardship Council) chain-of-custody for staircase timber",
+          "source": "PEFC UK · FSC UK member content",
+          "url": "https://pefc.co.uk/"
+        },
+        {
+          "topic": "Up to 60% of new stair installations in 2026 use reclaimed or certified sustainable timber",
+          "source": "Acorn to Oak Framing · Timber Framed Stairs Guide 2026",
+          "url": "https://acorn2oakframing.co.uk/blog/timber-framed-stairs/",
+          "coverage_caveat": "single-source trade claim · not corroborated by TRADA or BWF · treat as directional not authoritative"
+        },
+        {
+          "topic": "FSC & PEFC certified plywood/MDF/timber (chain of custody)",
+          "source": "Creffields UK · SPP UK",
+          "url": "https://www.creffields.co.uk/fsc-pefc-sustainability/"
+        }
+      ],
+      "trajectory": "growing · FSC/PEFC now standard specification for new-build; retrofit refacing certification is less mature",
+      "cradle_to_cradle_note": "Cradle to Cradle Certified refacing materials: unable_to_verify at time of search — no UK-specific staircase-refacing product found with C2C certification in this session"
+    },
+
+    "modern_finishes": {
+      "classification": "expert_experience_required",
+      "why_expert_required": "Newest finishes (UV-cured factory · aqueous hardwax oil · nano-ceramic top coats) enter market via manufacturer sales channels before trade press reviews. Long-term real-world staircase-specific performance data is not published.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which finishes entering the UK market in 2025-2026 do you rate for stair-tread durability, and which have you already rejected?",
+        "How do UV-cured factory finishes compare to site-applied hardwax oils on treads after 3 years of family use?",
+        "Are nano-ceramic top coats for timber treads worth the premium in your experience?"
+      ]
+    },
+
+    "anti_slip_technologies": {
+      "classification": "commercial_source_coverage_strong",
+      "published_evidence": [
+        {
+          "topic": "GRP (Glass Reinforced Polymer) anti-slip stair nosings",
+          "source": "Multitread · Safetread · Stair Nosings UK · Non Slip Shop · Start Safety UK",
+          "url": "https://www.nationalstairnosings.co.uk/knowledge-base/best-outdoor-antislip-stair-nosings-for-wet-areas-uk-safety-rated-2026/"
+        },
+        {
+          "topic": "Aluminium Oxide (Carborundum) infill in resin base · retrofit over existing treads",
+          "source": "Multitread QA9 Carborundum Stair Nosing",
+          "url": "https://www.multitread.co.uk/product/qa9-stand-alone-carborundum-stair-nosing/"
+        },
+        {
+          "topic": "Approved Document M / DDA-compliant anti-slip nosings",
+          "source": "Safetread anti-slip range",
+          "url": "https://www.safetread.co.uk/product/anti-slip-stair-nosing"
+        }
+      ]
+    },
+
+    "new_refacing_products_entering_market": {
+      "classification": "expert_experience_required_plus_partial_commercial_source_coverage",
+      "published_evidence": [
+        {
+          "topic": "Retrofit anti-slip nosings that overlay existing worn treads without demolition",
+          "source": "SLIPNOT · Multitread QA9 (as above)",
+          "url": "https://slipnot.com/products/stair-nosing/"
+        }
+      ],
+      "gap": "No BWF / TRADA press release identified this session announcing a new refacing overlay product for 2026. Search returned no dedicated trade-press article. Treat as unable_to_verify for BWF/TRADA-endorsed 2026 refacing product launches.",
+      "suggested_interview_questions_for_certified_experts": [
+        "Which refacing overlay products entering the UK market in the last 12 months have you trialled, and what has your experience been?",
+        "Have you seen any veneer-overlay tread systems that install without adhesive (mechanical fix only)?",
+        "Which manufacturers are innovating in the refacing space right now, from your perspective?"
+      ]
+    }
+  },
+
+  "summary_counts": {
+    "section_10_topics_covered": 12,
+    "section_11_topics_covered": 9,
+    "section_13_topics_all_expert_experience_required": 10,
+    "section_14_topics_covered": 9,
+    "total_topics_covered": 40,
+    "web_calls_used": 13,
+    "web_calls_remaining_in_budget": 2,
+    "regulatory_sources_reached": 11,
+    "commercial_sources_reached": 15,
+    "expert_experience_required_items": 22,
+    "unable_to_verify_items": 3
+  }
+}

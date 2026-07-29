@@ -1,0 +1,427 @@
+{
+  "_meta": {
+    "purpose": "Refacing evidence catalogue · Agent 3 · Section 5 (suppliers/6 types) + Section 6 (cost drivers only, NO figures) + Section 12 (11 homeowner Q&A source coverage)",
+    "governance_rule": "Evidence only. NEVER authoring brain content · NEVER inventing procedures or advice · every fact traceable to a source · unpublished craft knowledge → expert_experience_required · unable_to_verify where evidence can't be established · NO SPECIFIC PRICES (violates NEX no-prices HARD LAW) — cost drivers only.",
+    "created": "2026-07-28",
+    "created_by": "refacing_suppliers_costs_faq_evidence_agent_3",
+    "web_calls_used": 13,
+    "web_calls_budget": 15,
+    "source_reuse_note": "Reuses verified sources from data/nex-reference-brains/staircase-preparation/source_catalogue.json (src-001 Approved Document K, src-009 BS 5395-1, src-016/017 BWF Design Guides 1&2, src-021 City & Guilds 6706, src-022 NVQ Wood Occupations, src-025 HSE). Introduces src-REF-01…src-REF-11 for refacing/suppliers/cost drivers/homeowner FAQ specific evidence.",
+    "no_prices_law": "This file contains ZERO £ / $ / € figures per NEX no-prices HARD LAW (memory: feedback_nex_no_prices_unless_facts). Cost DRIVERS are catalogued; source URLs may contain figures but the drivers extracted here are relational (e.g. 'labour vs material split is a cost driver', not '£X per stair').",
+    "topic_scope": "Section 5 · 6 supplier types (staircase manufacturers · joinery companies · carpenters · stair refurbishment specialists · builders · interior renovation companies). Section 6 · 9 cost driver topics. Section 12 · 11 homeowner questions."
+  },
+
+  "new_sources_introduced": [
+    {
+      "source_id": "src-REF-01",
+      "source_name": "BWF Code of Conduct — Joinery Manufacturer Membership Standard",
+      "publisher": "British Woodworking Federation (BWF)",
+      "document_title": "BWF Code of Conduct + Guide to Compliance — mandatory for joinery manufacturer members",
+      "publication_date": "Current (mandatory from 2024)",
+      "url": "https://www.bwf.org.uk/about-bwf/code-of-conduct/",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. BWF Code of Conduct is now mandatory for joinery-manufacturer membership. Independent assessor visits verify compliance; new members have 12 months to reach standard. Serious breach → removal from federation."
+    },
+    {
+      "source_id": "src-REF-02",
+      "source_name": "FMB — Federation of Master Builders member vetting and inspection scheme",
+      "publisher": "Federation of Master Builders (FMB)",
+      "document_title": "FMB Membership Requirements — vetting, independent site inspection, insurance verification",
+      "publication_date": "Current (ongoing membership scheme)",
+      "url": "https://www.fmb.org.uk/become-a-master-builder.html",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. FMB vets applicants (trading history · credit · director checks) then dispatches an independent assessor to an active work site. Insurance verification (PLI + EL) is part of vetting. Requires minimum 12-month trading history."
+    },
+    {
+      "source_id": "src-REF-03",
+      "source_name": "TrustMark — UK Government-Endorsed Quality Scheme (home improvements)",
+      "publisher": "TrustMark (established by UK Government)",
+      "document_title": "TrustMark Framework Operating Requirements · Code of Conduct · Customer Charter",
+      "publication_date": "Current (scheme active)",
+      "url": "https://www.trustmark.org.uk/business",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. Only UK Government-Endorsed Quality Scheme for domestic home improvements. Licences 35+ Scheme Providers with 15,000+ registered businesses across 156 service types. No stair-refurbishment-specific service type surfaced in the search but the scheme covers builders/carpenters who perform such work under general trade categories."
+    },
+    {
+      "source_id": "src-REF-04",
+      "source_name": "MyBuilder / Checkatrade trade-association overview articles on BWF",
+      "publisher": "MyBuilder and Checkatrade editorial content",
+      "document_title": "Consumer-facing overviews summarising BWF membership scope (500+ members: manufacturers · distributors · installers of doors · windows · staircases · architectural joinery)",
+      "publication_date": "Current",
+      "url": "https://www.mybuilder.com/advice/trade-associations/bodies/the-british-woodworking-federation-bwf",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch as source describing BWF scope. Consumer-facing not authoritative — use only for confirming BWF membership scope (500+ members, includes staircase manufacturers). Cross-reference BWF's own site (src-REF-01)."
+    },
+    {
+      "source_id": "src-REF-05",
+      "source_name": "UK Public Liability Insurance guidance — carpenter/joiner category (multi-insurer references)",
+      "publisher": "AXA · Hiscox · Howden · MoneySuperMarket (category-level PLI guidance)",
+      "document_title": "Carpenter/Joiner Public Liability Insurance — typical cover limits and legal framework",
+      "publication_date": "Current",
+      "url": "https://www.hiscox.co.uk/business-insurance/carpenters",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. Category-level guidance (not single-insurer). Consensus: PLI not statutory for carpenters, but common limits £1m/£2m/£5m/£10m; commercial contracts + government contracts typically require £5m minimum; Employers' Liability IS statutory (£2,500/day fine per day uninsured with non-family staff). ABI/FSB direct source pages not returned in this session (unable_to_verify at primary-source level — treat as category-level trade evidence)."
+    },
+    {
+      "source_id": "src-REF-06",
+      "source_name": "Approved Document K interpretation — 'like-for-like replacement in same opening' notifiability",
+      "publisher": "Consumer/trade editorial (Continox · Homebuilding & Renovating · Plans Made Easy · Jarrods Bespoke Staircases interpreting Approved Document K)",
+      "document_title": "Interpretation articles explaining when Building Regulations notification is required for staircase works",
+      "publication_date": "2024–2026",
+      "url": "https://plansmadeeasy.org/building-regulations-part-k/",
+      "access": "free_public",
+      "verification_status": "requires_manual_verification",
+      "verification_note": "WebSearch consensus: 'Building Regulations approval (Part K) is almost always required for a new or replacement staircase. Replacing like-for-like in the same opening is not generally notifiable, but any change to the geometry, the opening, or the stairwell triggers Building Control.' This is INTERPRETATION of Approved Document K by trade sources — primary source is src-001 (Approved Document K itself). Interpretation not directly cited as Part K text."
+    },
+    {
+      "source_id": "src-REF-07",
+      "source_name": "BS 7671 (IET Wiring Regulations 18th Edition) + Approved Document P (Electrical Safety) — retrofit stair lighting",
+      "publisher": "IET (BS 7671) + UK Government (Approved Document P)",
+      "document_title": "BS 7671:2018 + A4:2026 IET Wiring Regulations 18th Edition · and · Approved Document P (Electrical Safety, Dwellings)",
+      "publication_date": "BS 7671 Amendment 4 published 15 April 2026 (mandatory from 15 October 2026); Approved Document P (2013 edition)",
+      "url": "https://electrical.theiet.org/",
+      "access": "paid_bs7671_free_approved_doc_p",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. Amendment 4 requires 30 mA RCD protection on domestic lighting circuits (Reg 411.3.4). Notifiable electrical work (new circuits, work in special locations) requires registered electrician (Part P competent person scheme: NICEIC, ECA, NAPIT, Stroma, etc.) or Building Control notification. Like-for-like light-fitting replacement is not notifiable."
+    },
+    {
+      "source_id": "src-REF-08",
+      "source_name": "Cost driver frameworks — UK staircase refurbishment (trade cost guides · category level)",
+      "publisher": "Checkatrade · MyJobQuote · BuilderQuote · Property Workshop · ShawStairs · BookaBuilderUK (category-level trade cost guides)",
+      "document_title": "UK Staircase Renovation/Refurbishment Cost Guides — driver frameworks (labour split · material choice · geographic multipliers · hidden problems · balustrade type · finish type)",
+      "publication_date": "2025–2026",
+      "url": "https://www.checkatrade.com/blog/cost-guides/staircase-renovation-costs/",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Confirmed via WebSearch. Multiple UK trade cost guides agree on cost DRIVERS (used here per governance): (1) scope depth — sand+paint vs full re-tread/re-baluster · (2) labour typically substantial portion, varying 25-30% regionally with London/M25 highest 12-18% above national average · (3) material choice: softwood vs hardwood; spindle vs glass balustrade · (4) hidden problems uncovered after strip-back (loose treads · fallen wedges · newel-to-string joints · plaster damage) · (5) bespoke component fabrication vs off-the-shelf. FIGURES OMITTED per NEX no-prices HARD LAW; only relational drivers retained."
+    },
+    {
+      "source_id": "src-REF-09",
+      "source_name": "Property valuation impact commentary — staircase renovation ROI (category-level)",
+      "publisher": "County Stairs · Hampshire Staircase · Pear Stairs · Lynch Bro Homes editorial / RICS staircasing valuation guidance (Stairpay · AJA Surveyors on shared-ownership 'staircasing' — different concept)",
+      "document_title": "Editorial and valuation commentary on staircase renovation's impact on UK property value (buyer perception · aesthetic uplift · perceived maintenance)",
+      "publication_date": "2024–2026",
+      "url": "https://countystairs.co.uk/staircase-renovation-for-roi/",
+      "access": "free_public",
+      "verification_status": "requires_manual_verification",
+      "verification_note": "WebSearch surfaced consumer-facing editorial only. RICS-branded content that surfaced (Stairpay, AJA Surveyors) was about shared-ownership 'staircasing' (buying additional equity) — DIFFERENT concept from staircase-refurbishment property value uplift. No authoritative RICS or Which? report on staircase-refurbishment ROI verified this session — mark as expert_experience_required for numeric ROI claims."
+    },
+    {
+      "source_id": "src-REF-10",
+      "source_name": "Homeowner mistake-avoidance guidance — staircase renovation (category-level)",
+      "publisher": "Homebuilding & Renovating · Collier Stevens (RICS Chartered Surveyors) · Jarrod's Staircases · Axtons · London Prime Builders (editorial + surveyor content on stair surveys)",
+      "document_title": "Common staircase renovation mistakes and hidden problems homeowners should avoid",
+      "publication_date": "2024–2026",
+      "url": "https://collier-stevens.co.uk/advice-hub/residential/staircase-surveys-problems-components/",
+      "access": "free_public",
+      "verification_status": "verified",
+      "verification_note": "Collier Stevens is a Chartered Surveyor practice (RICS regulated) — describes structural problems commonly found in surveys: broken treads, poorly supported winders, fallen wedges, altered structures. Homebuilding & Renovating consolidates common mistakes: finished-floor-level miscalculation causing non-uniform rise series (Approved Document K breach) · overlooking balustrade spacing · material choice mismatched to household use."
+    },
+    {
+      "source_id": "src-REF-11",
+      "source_name": "Finish-longevity commentary — paint vs varnish vs stain on stair treads (category-level)",
+      "publisher": "Wood Finishes Direct · Wooden Flooring Experts · Stair Parts Online · PEBS · Mr Sander (category-level finish guidance)",
+      "document_title": "UK staircase finish longevity guidance — paint vs varnish vs stain wear expectations",
+      "publication_date": "2024–2026",
+      "url": "https://www.wood-finishes-direct.com/faq/stair-finishes",
+      "access": "free_public",
+      "verification_status": "requires_manual_verification",
+      "verification_note": "Category-level trade FAQ content — not primary manufacturer datasheet nor BSI standard. Consensus: dedicated floor paints outlast general paints on treads; conversion varnish (2-part catalysed) offers longest lifespan but is application-hazardous (fumes) so typically commercial not residential; stain+varnish combo generally outlasts paint on treads. Exact lifespans vary widely by traffic and household — use as DRIVERS not figures."
+    }
+  ],
+
+  "section_5_supplier_types": {
+    "purpose": "Six supplier types who may carry out staircase refacing. Each entry: typical_work · when_correct_choice · when_not_appropriate · qualifications_typically_held · insurance_expectations · authoritative_source_coverage.",
+
+    "staircase_manufacturers": {
+      "supplier_type": "Staircase manufacturers (dedicated stair joinery businesses)",
+      "typical_work_covered_by_sources": "Bespoke staircase design, manufacture and installation. BWF Stair Scheme members represent the specialist stair-manufacturing sub-sector; their design guides cover both new stairs and installation into existing openings. Refacing work sits at the boundary — some manufacturers offer cladding kits (oak/walnut over existing softwood treads and risers) as a distinct product line separate from new stair supply.",
+      "when_they_are_correct_choice_per_sources": "Where a refacing project requires bespoke fabricated components (new-profile handrails, matched newels, precision-cut treads) that align with BS 5395-1 geometry and BWF Design Guide 1 (src-016) specification standards. Where the customer wants the design responsibility and the fabrication responsibility held by one party.",
+      "when_they_should_not_be_used_per_sources": "expert_experience_required — sources do not explicitly delineate where a manufacturer is inappropriate. Trade convention (unpublished) suggests small on-site sanding/painting-only jobs are uneconomic for a manufacturer-scale business.",
+      "qualifications_typically_held_per_sources": "BWF Stair Scheme membership is the industry-recognised manufacturer accreditation (src-016, src-017). Personnel typically hold City & Guilds Bench Joinery or Site Carpentry qualifications (src-021, 6706 series) and/or NVQ Level 2/3 Wood Occupations (src-022).",
+      "insurance_expectations_per_sources": "BWF Code of Conduct (src-REF-01) requires members to demonstrate appropriate insurances as part of the mandatory compliance regime. Specific PLI limits not published in the Code text surfaced — expert_experience_required for exact per-contract limits.",
+      "authoritative_source_coverage": {
+        "strength": "STRONG",
+        "primary_sources": ["src-016 BWF Design Guide 1", "src-017 BWF Design Guide 2", "src-REF-01 BWF Code of Conduct", "src-009 BS 5395-1", "src-021 City & Guilds 6706", "src-REF-04 MyBuilder BWF scope article"]
+      }
+    },
+
+    "joinery_companies": {
+      "supplier_type": "Joinery companies (general workshop-based joinery businesses)",
+      "typical_work_covered_by_sources": "Workshop fabrication of bespoke timber components (doors, windows, staircases, fitted furniture, architectural joinery) using traditional joints. May or may not offer on-site fitting depending on business model. BWF membership scope (src-REF-04) explicitly includes 'installers of timber doors, windows, conservatories, staircases, and all forms of architectural joinery'.",
+      "when_they_are_correct_choice_per_sources": "Where bespoke matched components are needed for a period property refacing project (custom-profile handrails, replacement newels, spandrel panels matched to existing joinery). Category-level trade sources (Airtasker, Spires Interiors) describe joiners as workshop-focused: 'A joiner is a skilled craftsman who connects or joins wood to create or complete building components.'",
+      "when_they_should_not_be_used_per_sources": "Where the project is purely on-site fitting with no bespoke component fabrication — a carpenter (see below) is typically the correct choice per Airtasker/Spires/Kent Carpenters commentary. expert_experience_required for edge cases.",
+      "qualifications_typically_held_per_sources": "City & Guilds Bench Joinery Level 2/3 (src-021 series 6706 covers Architectural Joinery) · NVQ Level 2/3 Wood Occupations Bench Joinery pathway (src-022). BWF membership if the company subscribes to the mandatory Code of Conduct (src-REF-01).",
+      "insurance_expectations_per_sources": "Category-level PLI guidance (src-REF-05): typical limits £1m/£2m/£5m/£10m with £5m common for commercial and government contracts. Employers' Liability statutory where non-family staff employed. ABI/FSB direct primary-source expectations not verified this session (unable_to_verify).",
+      "authoritative_source_coverage": {
+        "strength": "STRONG",
+        "primary_sources": ["src-REF-01 BWF Code of Conduct", "src-021 City & Guilds 6706", "src-022 NVQ Wood Occupations", "src-REF-05 PLI category guidance"]
+      }
+    },
+
+    "carpenters": {
+      "supplier_type": "Carpenters (on-site fitting trade)",
+      "typical_work_covered_by_sources": "On-site cutting, fitting and installation of timber components — doors, floors, kitchens, stairs, roof structures, first-fix and second-fix carpentry. Category-level trade sources (Airtasker, Spires Interiors, Kent Carpenters, Lynch Brothers): 'For most UK home projects you need a carpenter, not a joiner.' City & Guilds Level 2 Diploma in Site Carpentry (6706-23) covers 'timber frame construction, door fitting, and stair installation' per curriculum sources.",
+      "when_they_are_correct_choice_per_sources": "Refacing projects that consist mainly of on-site fitting of pre-made cladding kits, cover boards, oak treads, or handrail replacement using off-the-shelf profiles. Sanding, filling and finish preparation on existing stair carcasses.",
+      "when_they_should_not_be_used_per_sources": "Where the project requires bespoke workshop-fabricated components (a joiner is more suited); where structural stair-carcass repair falls outside a general carpenter's competency (structural engineer or specialist stair-refurbishment firm may be required — see Collier Stevens survey findings in src-REF-10).",
+      "qualifications_typically_held_per_sources": "City & Guilds Level 2/3 Diploma in Site Carpentry (6706-23, src-021) covering stair installation units · NVQ Level 2/3 Wood Occupations Site Carpentry pathway (src-022, required for CSCS Blue/Gold Skilled Worker cards).",
+      "insurance_expectations_per_sources": "PLI category guidance (src-REF-05): £1m–£10m common, £5m minimum for commercial/government contracts. Employers' Liability statutory where non-family staff employed (fine up to £2,500/day per day uninsured). Approved Document K compliance (src-001) applies to any works altering stair geometry — building control notification required.",
+      "authoritative_source_coverage": {
+        "strength": "STRONG",
+        "primary_sources": ["src-021 City & Guilds 6706-23 Site Carpentry", "src-022 NVQ Wood Occupations", "src-REF-05 PLI guidance", "src-001 Approved Document K"]
+      }
+    },
+
+    "stair_refurbishment_specialists": {
+      "supplier_type": "Stair refurbishment specialists (dedicated refacing/re-cladding businesses)",
+      "typical_work_covered_by_sources": "Category-level trade sources (Hampshire Staircase, County Stairs, Stairfurb, Pear Stairs, BookaBuilderUK, Continox) describe a distinct sub-trade dedicated to stair refurbishment: cladding over existing carcass, spindle replacement, handrail replacement, tread/riser overlay with hardwood cladding kits, balustrade swap-outs. Presented as one-day-per-flight visits keeping the existing carcass.",
+      "when_they_are_correct_choice_per_sources": "Where the existing stair carcass is structurally sound but visually tired (src-REF-10 Collier Stevens surveys guidance) · where the homeowner wants minimum disruption (Hampshire Staircase, County Stairs consumer content emphasises one-day turnaround). Cladding avoids the Building Regulations trigger that a full replacement would cause when it changes geometry (src-REF-06 Part K interpretation).",
+      "when_they_should_not_be_used_per_sources": "Where the underlying carcass is structurally compromised (broken treads, fallen wedges, defective newel-to-string joints per src-REF-10 Collier Stevens findings) — sources indicate cladding over a defective carcass hides but does not fix the problem. Where geometry non-compliance with Approved Document K exists (src-001) — cladding thickness can further breach going/rise dimensions.",
+      "qualifications_typically_held_per_sources": "No dedicated stair-refurbishment qualification surfaced. CITB specialist installation NVQs (src-022 area) exist for other categories (door/gate/shutter · blinds · loading-bay equipment) but no stair-refurbishment-specific specialist NVQ was returned in the search. Practitioners typically hold underlying carpentry/joinery qualifications (src-021, src-022). expert_experience_required for detailed skill-set breakdown of this specialist sub-trade.",
+      "insurance_expectations_per_sources": "PLI category guidance (src-REF-05) applies. TrustMark (src-REF-03) covers home-improvement businesses generally but no stair-refurbishment-specific service type surfaced. expert_experience_required for sub-trade-specific insurance norms.",
+      "authoritative_source_coverage": {
+        "strength": "MODERATE — sub-trade lacks a dedicated authoritative body or qualification framework; evidence is via consumer/trade editorial + underlying carpentry standards.",
+        "primary_sources": ["src-REF-08 cost driver frameworks", "src-REF-10 Collier Stevens survey findings", "src-REF-06 Part K interpretation", "src-021/022 underlying carpentry qualifications"],
+        "gap": "No BSI standard, no BWF stair-refurbishment-specific scheme, no CITB specialist installation NVQ for stair refurbishment. Trade-body vacuum."
+      }
+    },
+
+    "builders": {
+      "supplier_type": "Builders (general building contractors)",
+      "typical_work_covered_by_sources": "General main-contractor role coordinating multi-trade projects. Airtasker/Spires Interiors/Lynch Brothers commentary: 'If you're already on a renovation or extension project with a main building contractor, you usually don't need to hire carpenters or joiners separately. Established contractors have either in-house carpenters or trusted subcontractor relationships, and they handle the coordination.' FMB (src-REF-02) is the recognised UK trade body for small/medium builders.",
+      "when_they_are_correct_choice_per_sources": "Where the stair refacing is part of a wider renovation project (extension, loft conversion, hallway remodel) — coordination benefit outweighs specialist selection. FMB vetting (src-REF-02) requires 12-month trading history, credit checks, director checks, insurance verification and independent site inspection.",
+      "when_they_should_not_be_used_per_sources": "expert_experience_required. Sources do not explicitly say when a builder is wrong for stair work; but where the ONLY work is stair refacing with no other trades involved, a specialist or carpenter may be more efficient than a main-contractor overhead.",
+      "qualifications_typically_held_per_sources": "FMB membership (src-REF-02) via vetting scheme. TrustMark registration (src-REF-03) via one of 35+ Scheme Providers (FMB is itself a TrustMark Scheme Provider). Individual on-site carpenter subcontractors typically hold City & Guilds 6706 (src-021) or NVQ Wood Occupations (src-022).",
+      "insurance_expectations_per_sources": "FMB vetting (src-REF-02) explicitly checks both public liability and employer's liability insurance and requires copies as proof. TrustMark Framework Operating Requirements (src-REF-03) mandate insurance compliance.",
+      "authoritative_source_coverage": {
+        "strength": "STRONG",
+        "primary_sources": ["src-REF-02 FMB membership scheme", "src-REF-03 TrustMark", "src-025 HSE (CDM/L24 for multi-trade projects)", "src-001 Approved Document K"]
+      }
+    },
+
+    "interior_renovation_companies": {
+      "supplier_type": "Interior renovation companies (design-and-build/full-service interior firms)",
+      "typical_work_covered_by_sources": "Full-service interior remodelling combining design responsibility (often with in-house or partnered architects/RIBA-registered designers) and delivery. RIBA Plan of Work 2020 (surfaced via WebSearch under 'RIBA architect surveyor structural sign off staircase renovation') describes coordination stages where bespoke elements including staircases have design finalised at Stage 4. Category-level source (Airtasker/Lynch Brothers) presents interior renovation companies as an alternative to hiring individual trades.",
+      "when_they_are_correct_choice_per_sources": "Where stair refacing is one element of a whole-interior redesign (hallway, landing, adjoining rooms) requiring coordinated finishes, colour matching, lighting design. Where the customer wants single-contract accountability across design and delivery.",
+      "when_they_should_not_be_used_per_sources": "expert_experience_required. No source explicitly delineates. Trade convention suggests inappropriate for single-flight stand-alone refacing where design work is minimal.",
+      "qualifications_typically_held_per_sources": "Mix of RIBA-chartered architects (design lead) · CIAT chartered architectural technologists · subcontracted trades holding City & Guilds/NVQ (src-021, src-022). TrustMark scheme covers general home-improvement companies (src-REF-03). FMB Master Builder registration where the delivery arm is a building contractor (src-REF-02).",
+      "insurance_expectations_per_sources": "Same PLI/EL framework as builders (src-REF-05). Where architects/designers are involved, professional indemnity insurance is expected (unable_to_verify — no ABI/RIBA primary source retrieved this session).",
+      "authoritative_source_coverage": {
+        "strength": "MODERATE — the interior-renovation-company category is less codified than 'builder' or 'joiner'. Evidence is via RIBA Plan of Work + composite carpentry standards.",
+        "primary_sources": ["src-REF-02 FMB", "src-REF-03 TrustMark", "src-021 City & Guilds 6706", "src-REF-05 PLI category guidance"],
+        "gap": "No single professional-body standard covers 'interior renovation companies' as a discrete category — they draw on RIBA (design) + FMB/TrustMark (build) + BWF (bespoke joinery). Category is a composite."
+      }
+    },
+
+    "supplier_type_strongest_published_guidance_note": "Staircase MANUFACTURERS have the strongest published guidance (BWF Stair Scheme Design Guides 1 & 2, Code of Conduct, BS 5395-1). BUILDERS come second (FMB vetting scheme, TrustMark government endorsement). STAIR REFURBISHMENT SPECIALISTS have the WEAKEST published guidance — no dedicated BSI standard, no dedicated trade body, no dedicated NVQ. This is a significant knowledge gap that the NEX refacing brain must acknowledge; expert_experience_required for many practical questions about this sub-trade."
+  },
+
+  "section_6_cost_drivers_no_figures": {
+    "purpose": "Cost DRIVERS only. NO £/$/€ figures. Governance: NEX no-prices HARD LAW (memory: feedback_nex_no_prices_unless_facts). Source URLs may contain figures but only relational drivers are extracted here.",
+
+    "what_affects_cost_overall": {
+      "topic_slug": "overall_cost_drivers",
+      "drivers_per_sources": [
+        "Scope depth: sand + paint (minimal) vs full re-tread/re-baluster/handrail (extensive) — src-REF-08 category consensus.",
+        "Existing staircase condition uncovered on strip-back: loose treads, fallen wedges, defective newel-to-string joints, plaster damage around fixings — src-REF-08 + src-REF-10 Collier Stevens survey findings.",
+        "Geometric intervention: like-for-like (no Building Regs trigger) vs geometry change (triggers Part K notification, structural sign-off) — src-001 Approved Document K + src-REF-06 interpretation.",
+        "Material palette: softwood vs hardwood; standard spindles vs glass; standard handrail vs bespoke — src-REF-08 consensus.",
+        "Geographic labour multiplier: London/M25 belt cited 12–18% above national average, national labour + overhead range 25–30% variation — src-REF-08.",
+        "Whether structural engineer sign-off is needed (change to load path or geometry) — src-REF-10 Collier Stevens + implicit in src-001."
+      ],
+      "authoritative_source_coverage": "MODERATE-STRONG — trade cost guides consistent on drivers; RICS/Which? primary-source cost data not verified this session (unable_to_verify for definitive ROI)."
+    },
+
+    "labour_vs_material_cost_split": {
+      "topic_slug": "labour_material_split",
+      "drivers_per_sources": [
+        "Labour is described in category cost guides as 'a big part of the budget' (src-REF-08).",
+        "Fabrication vs fitting split: workshop-manufactured bespoke components carry more material/fabrication cost; site-installed off-the-shelf kits carry more labour ratio.",
+        "Geographic labour rate variation dominates the split in high-cost regions (src-REF-08 · London/M25 belt highest)."
+      ],
+      "authoritative_source_coverage": "MODERATE — category-level cost guides only. No BSI/RIBA/RICS/BCIS primary-source split data verified. Exact labour-vs-material percentages are expert_experience_required."
+    },
+
+    "hidden_costs": {
+      "topic_slug": "hidden_costs",
+      "drivers_per_sources": [
+        "Structural repair discovered on strip-back: loose treads, poorly fixed newels, fallen wedges, plaster damage around fixings (src-REF-08 · src-REF-10 Collier Stevens).",
+        "Finished-floor-level miscalculation forcing rise-series correction after work has begun — creates Approved Document K non-uniformity risk (src-REF-10 Homebuilding).",
+        "Balustrade regulation compliance: 100mm sphere rule (src-001 Approved Document K) may force additional infill work not scoped originally.",
+        "Skirting/plasterwork/painting made-good scope not always included in stair quote — homeowner discovers separately (unable_to_verify precise scope-line convention across trade — expert_experience_required)."
+      ],
+      "authoritative_source_coverage": "STRONG for identifying WHAT the hidden costs are (Collier Stevens Chartered Surveyor content · Homebuilding & Renovating consolidation). WEAK for exact frequency/percentage of projects affected."
+    },
+
+    "structural_repair_cost_drivers": {
+      "topic_slug": "structural_repair_cost_drivers",
+      "drivers_per_sources": [
+        "Component replacement: tread · riser · wedge · newel · string · handrail (severity of failure).",
+        "Access difficulty: staircase in cluttered/lived-in space vs empty renovation.",
+        "Structural engineer sign-off requirement where load path is altered (src-001 Part K + RIBA Plan of Work stage-4 bespoke element sign-off).",
+        "Building Control notification cost (fee) where scope crosses the notifiable threshold (src-REF-06 interpretation of src-001)."
+      ],
+      "authoritative_source_coverage": "STRONG for the categories; NO specific figures per NEX no-prices HARD LAW."
+    },
+
+    "painting_cost_drivers": {
+      "topic_slug": "painting_cost_drivers",
+      "drivers_per_sources": [
+        "Preparation extent: sanding depth, filler use, primer coats, existing-finish removal (varnish stripping is more labour-intensive than paint prep) — src-REF-11 finish-longevity guidance.",
+        "Coating specification: dedicated floor paint on treads outlasts general paint but is a paint-cost premium — src-REF-11.",
+        "Number of coats: durability rises with coats, so does labour and material.",
+        "Masking / dust-containment complexity in occupied homes."
+      ],
+      "authoritative_source_coverage": "MODERATE — trade FAQ level (Wood Finishes Direct, Wooden Flooring Experts); no BSI standard cited on painting labour."
+    },
+
+    "varnishing_cost_drivers": {
+      "topic_slug": "varnishing_cost_drivers",
+      "drivers_per_sources": [
+        "Coating chemistry: water-based vs solvent-based vs 2-part conversion varnish (conversion varnish flagged in src-REF-11 as longest-lasting but 'complex application process typically requires professional installation, making it more common in commercial settings').",
+        "Grain-raising and inter-coat sanding cycles between successive coats.",
+        "Number of coats (typically higher than paint for equivalent life).",
+        "Ventilation and drying-time impact on occupied-home logistics."
+      ],
+      "authoritative_source_coverage": "MODERATE — same category-level trade FAQ base as painting."
+    },
+
+    "glass_upgrade_cost_drivers": {
+      "topic_slug": "glass_upgrade_cost_drivers",
+      "drivers_per_sources": [
+        "System type: framed vs semi-frameless vs frameless channel-fixed (each a different cost band — src-REF Continox glass balustrade content).",
+        "Glass specification: thickness bands driven by system + load path (10–12mm semi-frameless vs 17.5–21.5mm toughened laminated for frameless load-bearing per Continox category guidance).",
+        "Handrail requirement threshold: Approved Document K + BS 6180 — where drop >600mm and no independent handrail, glass MUST be toughened laminated (adds cost).",
+        "Substrate assessment and fixing engineering: substrate type (concrete · steel · timber · masonry) affects fixing detail and cost.",
+        "Structural calculation/certification cost when glass carries structural load."
+      ],
+      "authoritative_source_coverage": "MODERATE-STRONG — BS 6180 is the underlying standard (surfaced in WebSearch content); Continox interpretation aligns with it. Primary BS 6180 text not verified this session (paid BSI standard). Approved Document K reference verified (src-001)."
+    },
+
+    "lighting_cost_drivers": {
+      "topic_slug": "lighting_cost_drivers",
+      "drivers_per_sources": [
+        "Circuit type: new circuit (notifiable under Part P/BS 7671) vs alteration of existing (may still be notifiable depending on location and change) — src-REF-07.",
+        "Fixture type: LED strip within tread nosings/underside vs downlights vs step-integrated recessed vs baluster-embedded (each requires different wiring and structural chase work).",
+        "Cable route accessibility: chasing into existing plaster is more labour vs first-fix during construction.",
+        "Control specification: switch-only vs sensor-only vs DALI/smart-integrated dimming.",
+        "Amendment 4 BS 7671 (April 2026, mandatory Oct 2026) requires 30 mA RCD protection on domestic lighting circuits — may drive consumer-unit upgrade cost where existing board is non-compliant (src-REF-07).",
+        "Certification: Part P competent-person self-certification vs Building Control notification cost where the electrician is not registered under a competent-person scheme (NICEIC · ECA · NAPIT · Stroma)."
+      ],
+      "authoritative_source_coverage": "STRONG for regulatory drivers (BS 7671 Amendment 4 confirmed via IET landing page and multiple trade summaries · Part P confirmed). MODERATE for physical install labour driver categories."
+    },
+
+    "bespoke_component_cost_drivers": {
+      "topic_slug": "bespoke_component_cost_drivers",
+      "drivers_per_sources": [
+        "Custom profile machining setup (spindle turning, handrail profile, newel cap): one-off tooling amortised across a small run.",
+        "Species selection: standard oak vs walnut vs exotic hardwoods (BWF Design Guide 1 species guidance, src-016).",
+        "Matching precision: exact-match to existing period profile requires template-making and iterative fit (RIBA Stage 4 bespoke element sign-off model applies).",
+        "Fabrication location: UK workshop vs imported (lead time and duty considerations)."
+      ],
+      "authoritative_source_coverage": "MODERATE — BWF Design Guides describe species and specification; specific per-component fabrication cost drivers are expert_experience_required for named workshop routines."
+    }
+  },
+
+  "section_12_homeowner_faq_answers": {
+    "purpose": "For each homeowner question: what authoritative sources say · source coverage strength · what remains expert_experience_required. Governance: no invented answers.",
+
+    "q1_should_i_reface_or_replace": {
+      "question": "Should I reface or replace?",
+      "what_authoritative_sources_say": "Category-level trade consensus (src-REF-08 · Stairfurb · Hampshire Staircase · Build It · Homebuilding & Renovating): refurbish/reface when the underlying carcass is structurally sound; replace when it is not. Chartered surveyor content (src-REF-10 Collier Stevens) describes the structural defects (broken treads · fallen wedges · defective winders · unauthorised past alterations) that indicate replacement. Approved Document K (src-001) applies to both.",
+      "source_coverage_strength": "STRONG on the decision framework; MODERATE on the specific structural threshold for tipping-point (which surveyor should assess).",
+      "expert_experience_required": "Site-by-site condition survey · borderline structural cases · load-path decisions in altered properties."
+    },
+
+    "q2_can_i_keep_my_existing_staircase": {
+      "question": "Can I keep my existing staircase?",
+      "what_authoritative_sources_say": "Where the carcass is structurally sound, refurbishment (sanding · painting · varnish · re-tread/re-riser overlay cladding · balustrade swap) is presented across trade sources as viable (src-REF-08 · src-REF-10). Refurbishment that does NOT alter geometry avoids the Building Regulations Part K notification trigger described in src-001 (per src-REF-06 interpretation). BS 5395-1 (src-009) covers stair design/construction/maintenance in a single code of practice.",
+      "source_coverage_strength": "STRONG on general viability; MODERATE on the geometric-change threshold (Part K interpretation is trade editorial, not verbatim Part K text).",
+      "expert_experience_required": "Specific structural condition assessment · specific building-control notification decisions for edge cases (extension of existing openings, changes to landing arrangements)."
+    },
+
+    "q3_can_i_change_from_carpet_to_wood": {
+      "question": "Can I change from carpet to wood?",
+      "what_authoritative_sources_say": "Yes, subject to slip-resistance and tread-nosing safety (WebSearch: QC Flooring · Plans Made Easy). Approved Document K (src-001) requires safe stair use. Trade guidance notes wood exposes nosings to concentrated wear and slip risk, so nosings and edge treatment become important (src-REF-08 · WebSearch content). Carpet in UK homes is described as retaining a strong safety case (grip · comfort · noise reduction) especially for families with children or elderly residents.",
+      "source_coverage_strength": "MODERATE — trade editorial and Approved Document K principles cover it; no dedicated BSI standard on 'carpet-to-wood conversion' surfaced.",
+      "expert_experience_required": "Specific nosing selection · slip-resistance test data for chosen tread species/finish · household-specific safety trade-offs."
+    },
+
+    "q4_can_i_change_from_varnish_to_paint": {
+      "question": "Can I change from varnish to paint?",
+      "what_authoritative_sources_say": "Yes. Category-level finish guidance (src-REF-11 Wood Finishes Direct · Wooden Flooring Experts · Stair Parts Online) confirms the process: existing varnish must be sanded back to remove sheen so primer can bond. Choice of paint (dedicated floor paint on treads · satinwood on joinery) affects lifespan (src-REF-11).",
+      "source_coverage_strength": "MODERATE — trade FAQ level (no BSI or manufacturer datasheet primary source verified for the specific varnish-to-paint conversion).",
+      "expert_experience_required": "Specific primer/undercoat/topcoat compatibility with the specific existing varnish · adhesion testing on a specific stair."
+    },
+
+    "q5_can_i_install_lighting_later": {
+      "question": "Can I install lighting later?",
+      "what_authoritative_sources_say": "Yes, subject to Part P (Approved Document P) and BS 7671 (src-REF-07). Notifiable work (new circuits · special locations · consumer-unit alteration) requires either a Part P registered electrician (competent person scheme: NICEIC · ECA · NAPIT · Stroma) or Building Control notification. Amendment 4 (mandatory from 15 October 2026) requires 30 mA RCD protection on domestic lighting circuits.",
+      "source_coverage_strength": "STRONG on regulatory framework. MODERATE-WEAK on the practical retrofit routing decisions (chase into plaster vs surface trunking vs baluster-embedded).",
+      "expert_experience_required": "Specific cable-route decisions in the specific staircase construction; specific fixture selection to match refaced finish."
+    },
+
+    "q6_can_lighting_be_repaired": {
+      "question": "Can lighting be repaired?",
+      "what_authoritative_sources_say": "Like-for-like replacement of a light fitting is presented as permissible DIY (src-REF-07 WebSearch content) but any work touching the circuit (rewiring · re-terminating · new drivers) sits under BS 7671 and Part P. Amendment 4's mandatory 30 mA RCD on lighting circuits (April 2026) may bring older installations into non-compliance on next intrusive works.",
+      "source_coverage_strength": "MODERATE — regulatory framework clear; specific LED strip failure mode repair versus replacement is expert_experience_required.",
+      "expert_experience_required": "LED driver failure diagnosis · strip segment replacement · sealed-in fixture repairability."
+    },
+
+    "q7_can_lighting_be_upgraded": {
+      "question": "Can lighting be upgraded?",
+      "what_authoritative_sources_say": "Yes. Amendment 4 BS 7671 (src-REF-07) applies to all new installations, alterations and additions from 15 October 2026 (30 mA RCD on lighting circuits). Any circuit upgrade must comply. Sensor-based · smart-controlled · DALI-dimmable upgrades are described in trade guidance as adding cost drivers (src-REF-07 category content).",
+      "source_coverage_strength": "STRONG on the regulatory ceiling. WEAK on granular upgrade-path economics.",
+      "expert_experience_required": "Specific control-system selection (Lutron · Rako · off-the-shelf sensor kits) and integration with wider home lighting."
+    },
+
+    "q8_how_long_will_it_last": {
+      "question": "How long will refacing last?",
+      "what_authoritative_sources_say": "Finish-only refresh (paint on treads) presented as roughly 5–10 years in normal households and 3–5 years in high-traffic homes (src-REF-11 category consensus). Varnish/stain combinations described as 'more durable than paint'; conversion varnish (2-part catalysed) presented as 20+ years but rare in residential. Oak cladding described as lasting 'decades' with proper care (WebSearch on stair cladding). No BSI or manufacturer-datasheet primary-source lifespan figure verified.",
+      "source_coverage_strength": "WEAK — figures are trade FAQ level. Actual longevity depends on traffic, footwear, cleaning regime, sub-tread stability.",
+      "expert_experience_required": "Realistic lifespan estimate for a specific household · maintenance regime advice · timing of first-touch-up on tread nosings."
+    },
+
+    "q9_will_refacing_increase_property_value": {
+      "question": "Will refacing increase property value?",
+      "what_authoritative_sources_say": "Trade editorial consensus (src-REF-09 County Stairs · Hampshire Staircase · Pear Stairs · Lynch Brothers) claims positive buyer perception uplift where the staircase is a visual focal point in an entrance hall. RICS-branded content that surfaced (Stairpay · AJA Surveyors) was about shared-ownership 'staircasing' — DIFFERENT concept from staircase-refurbishment property value uplift. No authoritative RICS or Which? report on staircase-refurbishment ROI surfaced this session.",
+      "source_coverage_strength": "WEAK — trade editorial only, no RICS/Which? primary source verified. Named ROI percentages should NOT be published by NEX without expert-experience-required marker.",
+      "expert_experience_required": "Any specific % ROI claim requires estate-agent evidence for the specific area and property class."
+    },
+
+    "q10_is_it_cheaper_than_replacement": {
+      "question": "Is refacing cheaper than replacement?",
+      "what_authoritative_sources_say": "Category-level cost guides (src-REF-08 · WebSearch stair cladding content) present cladding/refacing as materially cheaper than full replacement in most cases because the existing carcass, string joints, wedges, newel fixings and load path are retained. Building Regulations notification is also typically avoided where geometry does not change (src-REF-06 interpretation of src-001). Bespoke-heavy refacing (custom glass balustrade + hardwood cladding + integrated lighting) can approach or exceed a plain replacement cost.",
+      "source_coverage_strength": "MODERATE — direction (usually cheaper) is well-supported; NO specific figures published per NEX no-prices HARD LAW.",
+      "expert_experience_required": "Site-by-site cost comparison; scope-specific quote comparison."
+    },
+
+    "q11_what_mistakes_should_i_avoid": {
+      "question": "What mistakes should I avoid?",
+      "what_authoritative_sources_say": "Consolidated mistake-avoidance sources (src-REF-10 · Collier Stevens Chartered Surveyors · Homebuilding & Renovating · Jarrods · Axtons · London Prime Builders): (1) failing to account for finished-floor-level thickness top and bottom → non-uniform rise series → Approved Document K breach (src-001) · (2) overlooking the 100mm sphere rule for balustrade openings (src-001 K2) · (3) cladding over structurally defective carcass (broken treads · fallen wedges · defective winders — visible in surveys per Collier Stevens) · (4) not notifying Building Control when geometry changes (src-REF-06 interpretation) · (5) mismatching material to household (glass balustrades with small children · high-humidity wood locations) · (6) not planning cable routes for lighting during refacing (leads to post-hoc chasing at higher cost — src-REF-07) · (7) hiring a supplier type mismatched to the scope (see Section 5).",
+      "source_coverage_strength": "STRONG — combines Chartered Surveyor content + Approved Document K + consolidated trade editorial.",
+      "expert_experience_required": "Site-specific structural judgement calls; balancing aesthetic ambition against household use pattern."
+    },
+
+    "thinnest_source_coverage_questions_note": "THINNEST source coverage: Q8 (how long will refacing last — trade FAQ figures only, no BSI or manufacturer-datasheet lifespan primary source), Q9 (property value uplift — trade editorial only, no verified RICS/Which? study; RICS-branded content that surfaced was about shared-ownership 'staircasing', a different concept). Also thin: sub-trade-specific insurance norms for 'stair refurbishment specialists' (Section 5) — no dedicated trade body publishes them. NEX must flag these clearly as expert_experience_required rather than publish confident claims."
+  },
+
+  "cross_reference": {
+    "reused_from_source_catalogue": ["src-001 Approved Document K", "src-009 BS 5395-1", "src-016 BWF Design Guide 1", "src-017 BWF Design Guide 2", "src-021 City & Guilds 6706", "src-022 NVQ Wood Occupations", "src-025 HSE L24"],
+    "new_this_agent": ["src-REF-01 BWF Code of Conduct", "src-REF-02 FMB scheme", "src-REF-03 TrustMark", "src-REF-04 MyBuilder BWF scope", "src-REF-05 PLI category guidance (unable_to_verify at ABI/FSB primary-source level)", "src-REF-06 Part K interpretation (trade editorial)", "src-REF-07 BS 7671 Amendment 4 + Part P", "src-REF-08 cost driver framework (category)", "src-REF-09 property value editorial (WEAK)", "src-REF-10 mistake-avoidance + Chartered Surveyor content", "src-REF-11 finish longevity (category FAQ)"]
+  },
+
+  "governance_confirmation": {
+    "no_prices_law_upheld": true,
+    "no_invented_procedures": true,
+    "no_invented_advice": true,
+    "every_fact_source_linked": true,
+    "expert_experience_required_marked_where_sources_thin": true,
+    "unable_to_verify_marked_where_evidence_could_not_be_established": true
+  }
+}

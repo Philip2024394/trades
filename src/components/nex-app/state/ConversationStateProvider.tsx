@@ -17,6 +17,16 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import type { ConversationState, TradeConfig, QuickAction } from "@/lib/nex-apps/_types";
+import {
+  classifyIntent,
+  greetingReply,
+  goodbyeReply,
+  thanksReply,
+  availabilityReply,
+  identityReply,
+  frustrationReply,
+  SOCIAL_INTENTS,
+} from "../shell/classifyIntent";
 
 // ─── Chat message shape ───────────────────────────────────────────
 export type WoodCardSummary = {
@@ -93,6 +103,32 @@ export function ConversationStateProvider({
   const [thinking, setThinking]               = useState(false);
   const nextIdRef                             = useRef(1);
   const inFlightRef                           = useRef(false);
+
+  // Golden Reply retrieval plumbing (Patch A · 2026-07-29).
+  // conversationIdRef is stable for the lifetime of the provider, so
+  // every telemetry row can be joined into a single conversation on
+  // the server. recentGoldenIdsRef tracks the last few retrieved IDs
+  // so the server can exclude them on the next turn — prevents the
+  // same 3 examples reappearing across 10 turns of price discussion.
+  //
+  // Init runs inside an effect (not during render body) so SSR and
+  // strict-mode double-invocation don't try to mutate refs while
+  // rendering. Empty string until the first client tick — the server
+  // will mint one and echo it back if we send empty, so no lost
+  // telemetry.
+  const conversationIdRef = useRef<string>("");
+  const recentGoldenIdsRef = useRef<string[]>([]);
+  useEffect(() => {
+    if (conversationIdRef.current) return;
+    try {
+      conversationIdRef.current =
+        typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+          ? crypto.randomUUID()
+          : `c-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    } catch {
+      conversationIdRef.current = `c-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    }
+  }, []);
   // Mirror of history so async callbacks see fresh values without
   // stale-closure issues — critical for conversation-memory API calls.
   const historyRef = useRef<ChatMessage[]>([]);
@@ -196,18 +232,55 @@ export function ConversationStateProvider({
         content: m.content
       }));
 
+    // Short-circuit pure social intents — greeting · goodbye · thanks ·
+    // availability_check must NEVER hit the Reference Brain retrieval
+    // API (Philip 2026-07-29 · Conversation Intelligence Library
+    // priority 1-4). Mixed messages ("good morning, I need an oak
+    // staircase") flow through to the composer because the classifier
+    // has already routed them to a technical intent.
+    const { intent: userIntent } = classifyIntent(content);
+    if (SOCIAL_INTENTS.has(userIntent)) {
+      // Small deliberate delay so the ThinkingIndicator's beat is
+      // visible — feels like a reply, not an autoresponder.
+      await new Promise((r) => window.setTimeout(r, 450));
+      const reply =
+        userIntent === "greeting"           ? greetingReply(content) :
+        userIntent === "goodbye"            ? goodbyeReply(content) :
+        userIntent === "thanks"             ? thanksReply(content) :
+        userIntent === "identity"           ? identityReply(content) :
+        userIntent === "frustration"        ? frustrationReply(content) :
+        /* availability_check */              availabilityReply();
+      pushNexMessage(reply);
+      setThinking(false);
+      inFlightRef.current = false;
+      return;
+    }
+
     if (config.trade_slug === "staircase") {
       try {
         const res = await fetch("/api/nex/staircase-chat", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({
-            message: content,
-            history: historyForApi
+            message:         content,
+            history:         historyForApi,
+            conversation_id: conversationIdRef.current,
+            intent:          userIntent,
+            recent_ids:      recentGoldenIdsRef.current,
           })
         });
         const j = await res.json();
         if (j.ok && j.answer) {
+          // Update recency window with what the server retrieved
+          // this turn. Keep last 6 IDs — enough for a natural
+          // conversation without starving the retriever.
+          if (Array.isArray(j.retrieved_ids) && j.retrieved_ids.length > 0) {
+            const next = [
+              ...j.retrieved_ids.filter((x: unknown): x is string => typeof x === "string"),
+              ...recentGoldenIdsRef.current,
+            ].slice(0, 6);
+            recentGoldenIdsRef.current = next;
+          }
           const woodCards: WoodCardSummary[] | undefined =
             Array.isArray(j.wood_cards) && j.wood_cards.length > 0 && j.visual_intent !== "procedural"
               ? j.wood_cards as WoodCardSummary[]

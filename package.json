@@ -16,7 +16,11 @@
     "knowledge:import":         "node scripts/knowledge/import.mjs",
     "knowledge:interactive":    "node scripts/knowledge/interactive.mjs",
     "knowledge:generate":       "node scripts/knowledge/generate.mjs",
-    "knowledge:health":         "node scripts/knowledge/health.mjs"
+    "knowledge:health":         "node scripts/knowledge/health.mjs",
+    "nex:embed-golden":         "node scripts/embed-golden-replies.mjs",
+    "nex:embed-golden:dry":     "node scripts/embed-golden-replies.mjs --dry-run",
+    "nex:eval":                 "node scripts/eval-nex-chat.mjs",
+    "nex:eval:dry":             "node scripts/eval-nex-chat.mjs --dry-run"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

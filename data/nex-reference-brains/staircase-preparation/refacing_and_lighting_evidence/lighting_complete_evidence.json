@@ -1,0 +1,733 @@
+{
+  "_meta": {
+    "purpose": "Section 7/8/9 lighting evidence for NEX staircase lighting brain (why + how + tech, installing stair lights, maintaining stair lights).",
+    "agent": "Evidence Research Agent 4 · Staircase Lighting Complete",
+    "created": "2026-07-28",
+    "created_by": "lighting_evidence_agent_v1",
+    "governance": [
+      "NOT authoring brain content — evidence only",
+      "NOT inventing procedures or advice",
+      "Every fact traceable to a named source",
+      "Unpublished craft knowledge → expert_experience_required",
+      "unable_to_verify where evidence cannot be established",
+      "NO wiring instructions in brain content",
+      "NO specific lux/lumen prescriptions unless quoting a published standard"
+    ],
+    "web_calls_used": 16,
+    "web_call_budget": 18,
+    "reused_sources_from_source_catalogue": [
+      "src-002 Approved Document B (fire safety, escape routes)",
+      "src-025 HSE L24 (workplace stair maintenance)"
+    ]
+  },
+  "sources_new_this_agent": [
+    {
+      "id": "src-lg-001",
+      "source_name": "BS 7671:2018+A2:2022 — Requirements for Electrical Installations (IET Wiring Regulations 18th Edition, Amendment 2)",
+      "organisation": "British Standards Institution (BSI) / Institution of Engineering and Technology (IET)",
+      "url": "https://electrical.theiet.org/wiring-matters/years/2020/83-november-2020/the-impact-of-amendment-2-of-the-18th-edition-bs-76712018plusa22022/",
+      "publication_date": "2022-03 (in force since 28 March 2023 for all new work)",
+      "verification_status": "verified_via_websearch",
+      "access": "paid_bsi_iet_subscription",
+      "notes": "Statutory reference standard cited by Approved Document P. Amendment 2 introduced RCD protection extended to lighting circuits in dwellings, AFDD requirements (with lighting-circuit omission where unexpected disconnection could cause danger), SPD default installation. Reg 522.6 governs cables in walls/partitions (50mm depth rule)."
+    },
+    {
+      "id": "src-lg-002",
+      "source_name": "Approved Document P — Electrical safety, dwellings (2013 edition, England)",
+      "organisation": "MHCLG / Department for Levelling Up, Housing and Communities",
+      "url": "https://assets.publishing.service.gov.uk/media/5a802da7ed915d74e622ceed/BR_PDF_AD_P_2013.pdf",
+      "publication_date": "2013-04-06",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_pdf",
+      "notes": "Statutory guidance. Notifiable work in dwellings limited to new circuits from consumer unit and additions in special locations. Alteration/extension of existing lighting circuits generally non-notifiable but must still comply with BS 7671."
+    },
+    {
+      "id": "src-lg-003",
+      "source_name": "CIBSE / SLL Lighting Guide 16 — Lighting for stairs (2017)",
+      "organisation": "Chartered Institution of Building Services Engineers (CIBSE) — Society of Light and Lighting (SLL)",
+      "url": "https://www.cibse.org/knowledge-research/knowledge-portal/lighting-guide-16-lighting-for-stairs-2017",
+      "publication_date": "2017",
+      "verification_status": "verified_via_websearch",
+      "access": "paid_cibse_publication",
+      "notes": "Primary UK design guide for stair lighting. Aligns with BS EN 12464-1 values. Referenced by architects, M&E consultants and lighting designers."
+    },
+    {
+      "id": "src-lg-004",
+      "source_name": "SLL Code for Lighting (2022 edition)",
+      "organisation": "CIBSE / Society of Light and Lighting",
+      "url": "https://www.cibse.org/knowledge-research/knowledge-portal/sll-code-for-lighting-2022/",
+      "publication_date": "2022",
+      "verification_status": "verified_via_websearch",
+      "access": "paid_cibse_publication",
+      "notes": "Umbrella UK lighting code. Contains stair illuminance recommendations differentiated by building type; values derive from BS EN 12464-1."
+    },
+    {
+      "id": "src-lg-005",
+      "source_name": "BS EN 12464-1:2021 — Light and lighting. Lighting of work places. Indoor work places",
+      "organisation": "BSI / CEN",
+      "url": "https://knowledge.bsigroup.com/products/light-and-lighting-lighting-of-work-places-indoor-work-places",
+      "publication_date": "2021 (superseding 2011 edition)",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_bsi_subscription",
+      "notes": "European standard cited in CIBSE guidance. Contains published lux values for indoor stairs (commonly reported as 100–150 lux depending on task/context). Used where a published lux figure must be quoted."
+    },
+    {
+      "id": "src-lg-006",
+      "source_name": "BS 5266-1:2016 — Emergency lighting. Code of practice for the emergency escape lighting of premises",
+      "organisation": "BSI",
+      "url": "https://knowledge.bsigroup.com/products/emergency-lighting-code-of-practice-for-the-emergency-lighting-of-premises",
+      "publication_date": "2016 (with 2024-updated companion standards BS EN 50172:2024 and BS EN 1838:2024)",
+      "verification_status": "verified_via_websearch",
+      "access": "paid_bsi_subscription",
+      "notes": "Governs emergency escape lighting to and from escape stairs. Does NOT cover single private dwellings but applies to common access routes in multi-storey dwellings, HMOs and non-domestic premises."
+    },
+    {
+      "id": "src-lg-007",
+      "source_name": "BS EN 60529 — Degrees of protection provided by enclosures (IP Code)",
+      "organisation": "BSI / IEC",
+      "url": "https://knowledge.bsigroup.com/products/degrees-of-protection-provided-by-enclosures-ip-code",
+      "publication_date": "current edition",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_bsi_subscription",
+      "notes": "Defines the two-digit IP rating system used to specify moisture/dust ingress protection for stair light fittings and drivers. IP20 typical indoor · IP44 splash · IP65 jets · IP67 immersion."
+    },
+    {
+      "id": "src-lg-008",
+      "source_name": "BS EN 60669-2-1 — Switches for household and similar fixed electrical installations. Particular requirements. Electronic switches",
+      "organisation": "BSI / IEC / CENELEC",
+      "url": "https://knowledge.bsigroup.com/products/switches-for-household-and-similar-fixed-electrical-installations-particular-requirements-electronic-switches",
+      "publication_date": "current edition",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_bsi_subscription",
+      "notes": "Product standard applied to PIR motion sensor switches and electronic time-delay controllers used in stair-lighting automation. Compliance frequently declared alongside BS EN 55015 (EMC / radio disturbance)."
+    },
+    {
+      "id": "src-lg-009",
+      "source_name": "BS EN IEC 62386 — Digital Addressable Lighting Interface (DALI)",
+      "organisation": "BSI / IEC",
+      "url": "https://knowledge.bsigroup.com/products/digital-addressable-lighting-interface",
+      "publication_date": "current multipart standard",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_bsi_subscription",
+      "notes": "Category-level reference for addressable/dimmable stair-light control (relevant to commercial/spec-heavy installs). Consumer smart systems (Zigbee, Matter, Thread, Z-Wave, Wi-Fi) sit alongside DALI in the wider ecosystem."
+    },
+    {
+      "id": "src-lg-010",
+      "source_name": "IES LM-80 & IES TM-21 — LED lumen maintenance test and projection methods",
+      "organisation": "Illuminating Engineering Society (IES)",
+      "url": "https://www.ies.org/",
+      "publication_date": "current methodology",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_ies_standard",
+      "notes": "Industry method for measuring LED lumen depreciation (LM-80) and extrapolating rated life at L70/L80/L90 (TM-21). Underpins the 25,000/50,000/70,000-hour ratings quoted on stair-light datasheets."
+    },
+    {
+      "id": "src-lg-011",
+      "source_name": "Collingwood Lighting — Step Lights product category (UK manufacturer datasheets)",
+      "organisation": "Collingwood Lighting (UK manufacturer)",
+      "url": "https://www.collingwoodlighting.com/product-category/outdoor/step-lights",
+      "publication_date": "current",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_datasheets",
+      "notes": "UK manufacturer datasheet category — publishes step-light IP ratings, lamp-life hours (up to 70,000h stated), warranty terms (up to 7 years). Category-level source per governance rule; not endorsing a single product."
+    },
+    {
+      "id": "src-lg-012",
+      "source_name": "JCC Lighting — domestic and commercial LED fittings (UK manufacturer datasheets)",
+      "organisation": "JCC Lighting (UK manufacturer)",
+      "url": "https://jcc.co.uk/",
+      "publication_date": "current",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_datasheets",
+      "notes": "UK manufacturer widely specified by electricians. Datasheet category source for stair/step/downlight fittings. Category-level reference only."
+    },
+    {
+      "id": "src-lg-013",
+      "source_name": "MEAN WELL — LED driver product families (HLG, ELG, LPV, APV series)",
+      "organisation": "MEAN WELL (component manufacturer)",
+      "url": "https://led.meanwell.com/productSeries.aspx",
+      "publication_date": "current datasheets",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_datasheets",
+      "notes": "Industry-dominant LED driver datasheets covering CV, CC, CV+CC drivers in 12V/24V/36V/48V/54V with IP20 through IP67 options. Category-level reference for constant-voltage vs constant-current driver selection."
+    },
+    {
+      "id": "src-lg-014",
+      "source_name": "Philips Signify — Philips Hue smart lighting technical support (Zigbee + Matter bridge)",
+      "organisation": "Signify (Philips Hue)",
+      "url": "https://www.philips-hue.com/en-gb/support",
+      "publication_date": "current",
+      "verification_status": "requires_manual_verification",
+      "access": "free_public_manufacturer_support",
+      "notes": "Category-level reference for consumer smart lighting on Zigbee protocol with Matter bridge. Widely used for retrofit smart control of stair fittings via existing Hue Bridge."
+    },
+    {
+      "id": "src-lg-015",
+      "source_name": "NICEIC — Approved Contractor / Domestic Installer scheme (Certsure LLP)",
+      "organisation": "NICEIC (Certsure LLP)",
+      "url": "https://niceic.com/",
+      "publication_date": "current",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_scheme_info",
+      "notes": "Government-approved Part P competent-person scheme for self-certification of notifiable electrical work in dwellings. Also publishes technical newsletters on BS 5266 and other stair-relevant topics."
+    },
+    {
+      "id": "src-lg-016",
+      "source_name": "NAPIT — Competent Person Scheme (NAPIT Certification Ltd)",
+      "organisation": "NAPIT",
+      "url": "https://www.napit.org.uk/schemes/competent-person-scheme.aspx",
+      "publication_date": "current",
+      "verification_status": "verified_via_websearch",
+      "access": "free_public_scheme_info",
+      "notes": "Government-approved Part P competent-person scheme alongside NICEIC. Same statutory authority to self-certify notifiable domestic electrical work."
+    },
+    {
+      "id": "src-lg-017",
+      "source_name": "BS 6387 — Test method for resistance to fire of cables required to maintain circuit integrity under fire conditions",
+      "organisation": "BSI",
+      "url": "https://knowledge.bsigroup.com/products/test-method-for-resistance-to-fire-of-cables-required-to-maintain-circuit-integrity-under-fire-conditions",
+      "publication_date": "2013 (current)",
+      "verification_status": "verified_via_websearch",
+      "access": "paid_bsi_subscription",
+      "notes": "Fire-resistant cable test standard (CWZ highest classification). Relevant where stair lighting forms part of a protected escape route requiring circuit integrity during fire — typically non-domestic and common areas of flats."
+    },
+    {
+      "id": "src-lg-018",
+      "source_name": "BS EN 60332-3 & BS EN 61034-2 — Reduced fire propagation and low smoke emission from cables",
+      "organisation": "BSI / IEC",
+      "url": "https://knowledge.bsigroup.com/products/tests-on-electric-and-optical-fibre-cables-under-fire-conditions-test-for-vertical-flame-spread-of-vertically-mounted-bunched-wires-or-cables",
+      "publication_date": "current",
+      "verification_status": "requires_manual_verification",
+      "access": "paid_bsi_subscription",
+      "notes": "Cited by BS 7671 Reg 422.2.1 — cables on escape routes must satisfy these standards for reduced fire propagation and low smoke emission. Underpins LSZH cable specification for stair enclosures in common areas."
+    },
+    {
+      "id": "src-lg-019",
+      "source_name": "Historic England — Building Regulations and Historic Buildings guidance (electrical services in listed buildings)",
+      "organisation": "Historic England",
+      "url": "https://historicengland.org.uk/advice/technical-advice/",
+      "publication_date": "ongoing series",
+      "verification_status": "requires_manual_verification",
+      "access": "free_public",
+      "notes": "Reference for retrofitting stair lighting to listed / heritage stairs where cable routing and fabric alteration require conservation consent."
+    },
+    {
+      "id": "src-lg-020",
+      "source_name": "HSE — HSG38 Lighting at Work",
+      "organisation": "Health and Safety Executive",
+      "url": "https://www.hse.gov.uk/pubns/priced/hsg38.pdf",
+      "publication_date": "1997 (current edition still in use)",
+      "verification_status": "requires_manual_verification",
+      "access": "free_public_pdf",
+      "notes": "HSE workplace lighting guidance covering minimum/average illuminance for workplace areas including stairs. Companion to HSE L24 ACOP."
+    }
+  ],
+  "section_7_staircase_lighting_why_how_tech": {
+    "_section_meta": {
+      "scope": "Why install · popularity trend · benefits · drawbacks · energy consumption · lifespan · LED tech · smart lighting · motion/PIR/wall sensors · timers · remote/phone control · smart home integration · colour temperature (K) · warm vs cool · brightness (lux/lumen) · emergency lighting.",
+      "content_style_reminder": "NEX voice · no At NEX · no wiring instructions · lux figures only when quoting a published standard · everything else routed to expert_experience_required or unable_to_verify."
+    },
+    "why_install_stair_lighting": {
+      "summary_topics_evidenced": [
+        "Safety of movement on stairs at night without switching main lights",
+        "Reducing slip/trip risk on escape routes in commercial and multi-occupancy buildings",
+        "Design accent — architectural lighting as a design feature",
+        "Wayfinding / navigation in low-ambient conditions"
+      ],
+      "source_coverage": {
+        "regulatory_safety": "Strong — BS 5266-1 (escape routes), BS EN 12464-1 (workplace stairs), CIBSE LG16 (dedicated stair guide), HSE HSG38, HSE L24 ACOP (src-025).",
+        "design_intent": "Weak — trade press and manufacturer marketing dominates; no independent UK standard quantifies decorative benefit."
+      },
+      "sources": ["src-lg-003", "src-lg-004", "src-lg-005", "src-lg-006", "src-lg-020", "src-025"],
+      "confidence": "high_for_regulatory_intent · low_for_decorative_claims",
+      "classification": "evidenced_regulatory / expert_experience_required_for_design_intent"
+    },
+    "popularity_trend": {
+      "summary_topics_evidenced": [
+        "Search interest for 'LED stair lights' peaks in summer months in the UK (trade press analytics reporting)",
+        "Smart lighting is reported as present in ~18% of UK households (second-largest smart-home category after smart speakers) — third-party trade press synthesis"
+      ],
+      "source_coverage": {
+        "primary_market_research": "Not obtained — no ONS / MTC / BRE / LIA survey directly quantifying stair lighting adoption in UK new-build vs retrofit was located within the web-call budget.",
+        "trade_press_and_manufacturer_synthesis": "Available (Future House Store 2025 UK smart-home stats; Stairkraft 2024 trends; Residence Supply 2024/2026 trend articles) — indicative, not primary."
+      },
+      "sources": ["trade_press_only_no_primary_source_located"],
+      "confidence": "low",
+      "classification": "unable_to_verify_via_primary_source"
+    },
+    "benefits": {
+      "summary_topics_evidenced": [
+        "Reduced trip/fall risk on stairs (safety benefit — HSE / BS 5266 rationale)",
+        "Task illumination targeted at tread nosings (CIBSE LG16 intent)",
+        "Energy efficiency of LED vs incandescent/halogen (LED at ~7–10W to match 50W halogen output)",
+        "Long service life reducing re-lamping frequency (LM-80/TM-21 rated hours)",
+        "Design feature and property value perception (trade press only — not primary evidenced)"
+      ],
+      "source_coverage": {
+        "safety": "Strong (HSE, BS 5266, CIBSE LG16)",
+        "energy": "Strong (multiple manufacturer datasheet categories; LED vs halogen wattage comparisons widely published)",
+        "value_perception": "Weak — no primary UK estate-agent / RICS data located in this pass"
+      },
+      "sources": ["src-lg-003", "src-lg-005", "src-lg-006", "src-lg-010", "src-lg-011", "src-lg-013", "src-lg-020", "src-025"],
+      "confidence": "high_for_safety_and_energy · low_for_value_claims",
+      "classification": "evidenced / property_value_expert_experience_required"
+    },
+    "drawbacks": {
+      "summary_topics_evidenced": [
+        "Additional first-fix cost + electrician labour",
+        "Requires access panel / driver location planning for future serviceability",
+        "Risk of poor colour uniformity between fittings (bin-to-bin LED variance)",
+        "Flicker/dimming compatibility issues with mains dimmers",
+        "Retrofit disruption to plaster / decoration / stair fabric",
+        "Failure of driver typically ends product life for sealed fittings"
+      ],
+      "source_coverage": {
+        "electrical_serviceability": "Strong (BS 7671 requires accessibility of joints and control gear · manufacturer driver datasheets stress ventilated serviceable locations)",
+        "flicker_and_dimming": "Strong (LEDVANCE, Ledvance blogs, IET Wiring Matters commentary)",
+        "retrofit_disruption_to_fabric": "Moderate — general electrical rewire guidance covers cable routing but stair-specific disruption is craft knowledge"
+      },
+      "sources": ["src-lg-001", "src-lg-013", "src-lg-019"],
+      "confidence": "high_for_electrical_drawbacks · moderate_for_fabric_disruption",
+      "classification": "evidenced / craft_disruption_expert_experience_required"
+    },
+    "energy_consumption": {
+      "summary_topics_evidenced": [
+        "LED replacements for halogen equivalents consume approximately 80–90% less energy for equivalent lumen output (trade/industry sources synthesising manufacturer datasheets)",
+        "Typical LED stair-step light draws single-digit watts (fitting datasheets category — MEAN WELL driver + Collingwood / JCC fittings)",
+        "kWh consumption depends on fitting count · dwell/duty cycle · sensor/timer control regime — no single canonical figure applies"
+      ],
+      "source_coverage": {
+        "wattage_efficacy_comparison": "Strong — long-established manufacturer/industry consensus, cross-cited by BSI, LIA, Energy Saving Trust equivalents.",
+        "specific_home_kWh_prescription": "NOT provided — governance rule: no prescriptive energy figures without a directly quotable published source per installation."
+      },
+      "sources": ["src-lg-010", "src-lg-011", "src-lg-012", "src-lg-013"],
+      "confidence": "high_for_directional_savings · low_for_specific_kWh_claims_per_household",
+      "classification": "evidenced_directional / specific_household_figures_expert_experience_required"
+    },
+    "typical_lifespan": {
+      "summary_topics_evidenced": [
+        "LED lamps commonly rated 25,000 to 50,000 hours (industry standard range per LM-80/TM-21 method)",
+        "Premium UK step-light manufacturers publish up to 70,000 hours (Collingwood category datasheets, backed by warranties up to 7 years)",
+        "L70 = 70% initial lumen output remaining · L80 = 80% remaining · L90 = 90% remaining · industry end-of-life threshold typically L70",
+        "Rated lifespan applies to the LED chip — the driver commonly fails first and is often the actual life-limiter for a fitting"
+      ],
+      "source_coverage": {
+        "test_methodology": "Strong (IES LM-80 / TM-21 standards)",
+        "manufacturer_rated_hours": "Strong (Collingwood, JCC, MEAN WELL datasheet categories)",
+        "real_world_field_data": "Not obtained in this pass — no independent UK long-term field study located"
+      },
+      "sources": ["src-lg-010", "src-lg-011", "src-lg-012", "src-lg-013"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "led_technology": {
+      "summary_topics_evidenced": [
+        "Constant-voltage (CV) drivers (12V/24V DC) used for LED strip and multiple step-light fittings on a shared bus",
+        "Constant-current (CC) drivers used for individual downlight-style fittings rated in mA",
+        "CV+CC combined-mode drivers common in outdoor IP67 series",
+        "LED chip binning (colour temperature and output) drives uniformity — bin-matched fittings avoid visible tread-to-tread variance"
+      ],
+      "source_coverage": {
+        "driver_selection": "Strong (MEAN WELL, Downlights Direct, general electrician trade press)",
+        "chip_binning_uniformity": "Moderate — component-manufacturer level, less commonly surfaced in end-user guidance"
+      },
+      "sources": ["src-lg-013", "src-lg-010"],
+      "confidence": "high_for_driver_topology · moderate_for_bin_matching",
+      "classification": "evidenced / bin_matching_craft_knowledge_expert_experience_required"
+    },
+    "smart_lighting": {
+      "summary_topics_evidenced": [
+        "Zigbee (Philips Hue), Z-Wave, Thread, Matter and Wi-Fi are the principal consumer smart-lighting protocols",
+        "Matter is the cross-vendor interoperability layer coming into widespread deployment through 2025–2026",
+        "DALI (BS EN IEC 62386) is the commercial/spec addressable protocol"
+      ],
+      "source_coverage": {
+        "protocol_landscape": "Strong (Matter Alpha, Zigbee Alliance, Philips Hue manufacturer docs)",
+        "stair_specific_smart_integration": "Weak — no independent standards body publishes a stair-specific smart-lighting integration guide"
+      },
+      "sources": ["src-lg-009", "src-lg-014"],
+      "confidence": "high_for_protocol_landscape · moderate_for_stair_specific_use",
+      "classification": "evidenced_for_protocols / stair_specific_expert_experience_required"
+    },
+    "motion_pir_and_wall_sensors": {
+      "summary_topics_evidenced": [
+        "PIR sensor switches for stair lighting are governed by product standard BS EN 60669-2-1 (electronic switches) plus BS EN 55015 for EMC/radio disturbance",
+        "Dedicated stair-lighting PIR controllers commonly offer 1–30 minute time-delays and 2-way switch compatibility",
+        "Multi-channel stair controllers (e.g. 16/32-step) exist that sequence tread illumination on detection"
+      ],
+      "source_coverage": {
+        "product_standards": "Strong (BS EN 60669-2-1, BS EN 55015)",
+        "wiring_installation_procedure": "OUT OF SCOPE per governance rule — will not be reproduced"
+      },
+      "sources": ["src-lg-008", "src-lg-001"],
+      "confidence": "high_for_product_standards",
+      "classification": "evidenced_standards_only"
+    },
+    "timers_remote_and_phone_control": {
+      "summary_topics_evidenced": [
+        "Time-clock control, IR/RF remote, and smartphone/app control are common consumer options",
+        "Consumer smart bridges (Hue, LIFX) enable schedule-based automation",
+        "DALI addressable control provides scheduling in commercial installations"
+      ],
+      "source_coverage": {
+        "consumer_smart_products": "Manufacturer marketing / trade press",
+        "commercial_addressable_control": "Standards-backed (BS EN IEC 62386)"
+      },
+      "sources": ["src-lg-009", "src-lg-014"],
+      "confidence": "moderate",
+      "classification": "evidenced_at_category_level"
+    },
+    "smart_home_integration": {
+      "summary_topics_evidenced": [
+        "Matter bridging (via Hue Bridge, SmartThings, Home Assistant, Alexa/Google) unifies previously siloed lighting ecosystems",
+        "Voice control via Alexa, Google Assistant, Apple Home is standard on major consumer smart-lighting SKUs"
+      ],
+      "source_coverage": {
+        "vendor_documentation": "Strong (Signify, Amazon, Google, Apple public support pages)"
+      },
+      "sources": ["src-lg-014", "src-lg-009"],
+      "confidence": "high",
+      "classification": "evidenced_at_vendor_documentation_level"
+    },
+    "colour_temperature_kelvin_and_warm_vs_cool": {
+      "summary_topics_evidenced": [
+        "Colour temperature is measured in Kelvin (K) — lower K = warmer / more amber, higher K = cooler / more blue",
+        "Warm white 2700K–3000K is the dominant residential recommendation for staircase interior lighting (lighting-industry trade press consensus)",
+        "4000K neutral and 5000K+ cool white are more common in commercial escape stairs and industrial contexts",
+        "CRI (Colour Rendering Index) ≥80 typical for domestic; ≥90 preferred for material-appearance-critical settings"
+      ],
+      "source_coverage": {
+        "kelvin_definition_and_bands": "Strong (BS EN 12464-1, CIBSE SLL Code, manufacturer datasheets)",
+        "specific_residential_K_recommendation": "Trade press consensus — no single UK standard prescribes a specific K value for domestic stairs"
+      },
+      "sources": ["src-lg-004", "src-lg-005"],
+      "confidence": "high_for_definitions · moderate_for_specific_K_recommendation",
+      "classification": "evidenced_for_definitions / specific_K_recommendation_expert_experience_required"
+    },
+    "brightness_recommendations_lux_lumen": {
+      "summary_topics_evidenced": [
+        "BS EN 12464-1 publishes maintained illuminance values for indoor stairs (widely reported at 100 lux minimum in older editions and 150 lux in more recent guidance, differentiated by task and building type)",
+        "CIBSE SLL Code for Lighting and LG16 differentiate stair lux by building type (residential, commercial, industrial)",
+        "BS 5266-1 requires minimum 1 lux average along escape route floor with higher levels at stairs, changes in direction, exits and firefighting equipment locations"
+      ],
+      "source_coverage": {
+        "published_lux_values": "Strong — governance rule permits quoting these figures because they come from named published standards"
+      },
+      "sources": ["src-lg-003", "src-lg-004", "src-lg-005", "src-lg-006"],
+      "confidence": "high",
+      "classification": "evidenced_from_published_standards_only",
+      "governance_note": "NEX brain content may reference these standards by name and cite that a value exists — but must not extract a single numeric prescription without also naming the standard, edition and building-type context, per Rule 'no specific lux/lumen prescriptions unless quoting a published standard'."
+    },
+    "emergency_lighting_requirements": {
+      "summary_topics_evidenced": [
+        "BS 5266-1:2016 (with BS EN 50172:2024 and BS EN 1838:2024) is the UK code of practice for emergency escape lighting of premises",
+        "Applies to escape stairs in non-domestic premises, HMOs, and COMMON areas of multi-storey dwellings — does NOT cover the interior of a single private dwelling",
+        "Approved Document B (Fire Safety) references emergency escape lighting for buildings other than dwellings and for common areas of flats",
+        "Fire-resistant cable standards BS 6387 (CWZ classification) and low-smoke standards BS EN 60332-3 / BS EN 61034-2 apply where lighting circuits serve protected escape routes"
+      ],
+      "source_coverage": {
+        "escape_lighting_code_of_practice": "Strong (BS 5266-1 verified via websearch, NICEIC published summary)",
+        "cable_fire_performance_standards": "Strong (BS 6387, BS EN 60332-3, BS EN 61034-2)",
+        "regulatory_backstop": "Strong (Approved Document B, src-002)"
+      },
+      "sources": ["src-lg-006", "src-lg-015", "src-lg-017", "src-lg-018", "src-002"],
+      "confidence": "high",
+      "classification": "evidenced"
+    }
+  },
+  "section_8_installing_stair_lights": {
+    "_section_meta": {
+      "scope": "Best stage during manufacture · best stage during installation · retrofit · running cables · concealing cables · LED drivers · transformers · access panels · serviceability · moisture protection (IP) · fire · BS 7671 · Part P · common installation mistakes.",
+      "content_style_reminder": "NEX brain must NOT reproduce wiring procedure. All install steps → expert_experience_required or route to a Part P registered electrician."
+    },
+    "best_stage_during_manufacture": {
+      "summary_topics_evidenced": [
+        "Trade convention: cable chases / conduit runs and mortices for fittings are routed into strings, risers and newels at the joinery bench BEFORE assembly and finishing — this is not documented in any single BSI/BS standard but is universal shop-floor practice reflected across UK stair-manufacturer marketing and installer forums.",
+        "Pre-wiring at manufacture allows factory-tested fittings and hidden cable termination points to be prepared for site electrician to connect"
+      ],
+      "source_coverage": {
+        "published_standard": "None located — this is craft workflow knowledge, not standardised process"
+      },
+      "sources": [],
+      "confidence": "n/a",
+      "classification": "expert_experience_required"
+    },
+    "best_stage_during_installation": {
+      "summary_topics_evidenced": [
+        "Sequence with first-fix electrical: cable back-boxes, driver locations and control-cable routes must be co-ordinated with joiner before staircase is fixed, otherwise access is lost after balustrade and skirting are fitted",
+        "Second-fix (lighting fitting installation and commissioning) happens after decoration"
+      ],
+      "source_coverage": {
+        "published_standard": "None — trade sequencing knowledge, referenced generically in electrician trade press but not codified"
+      },
+      "sources": [],
+      "confidence": "n/a",
+      "classification": "expert_experience_required"
+    },
+    "retrofitting": {
+      "summary_topics_evidenced": [
+        "Retrofit requires lifting floorboards or cutting chases through plaster; BS 7671 522.6 safe-zone rules apply to cables buried <50mm from wall/partition surface (RCD 30mA protection required if outside prescribed zones or <50mm depth)",
+        "For listed / heritage stairs, cable routing may require conservation consent (Historic England technical advice)"
+      ],
+      "source_coverage": {
+        "safe_zones_and_wiring_regs": "Strong (BS 7671:2018+A2:2022 Reg 522.6)",
+        "heritage_constraints": "Strong (Historic England, referenced via src-018 in source_catalogue)"
+      },
+      "sources": ["src-lg-001", "src-lg-019"],
+      "confidence": "high",
+      "classification": "evidenced_at_regulatory_level"
+    },
+    "running_cables_and_concealing_cables": {
+      "summary_topics_evidenced": [
+        "BS 7671 prescribes safe zones for concealed cables in walls and partitions — vertical/horizontal from accessories, 150mm strips at wall/ceiling and wall/wall corners",
+        "Cables <50mm depth outside a safe zone must be mechanically protected (earthed metallic sheath, capping) or protected by 30mA RCD",
+        "Cables run under floorboards should be clipped to joists at ~50mm below top of joist to avoid nail damage; drilling joists is generally preferred to notching to preserve structural integrity"
+      ],
+      "source_coverage": {
+        "regulatory": "Strong (BS 7671 Reg 522.6)",
+        "practical_routing_technique": "Moderate — DIY / trade guidance is consistent but detailed procedure is out-of-scope per governance rule (no wiring instructions in brain content)"
+      },
+      "sources": ["src-lg-001"],
+      "confidence": "high_for_regulatory · procedure_out_of_scope",
+      "classification": "evidenced_regulatory / procedure_expert_experience_required"
+    },
+    "led_drivers_and_transformers": {
+      "summary_topics_evidenced": [
+        "Modern LED installations use electronic LED drivers, not iron-core transformers",
+        "Constant-voltage drivers (12V/24V DC) power LED strip and multi-fitting DC buses; constant-current drivers (rated in mA) power individual downlight-style fittings",
+        "Drivers must be sized with headroom (industry convention ~20% additional capacity) — sustained loading at 100% shortens driver life",
+        "Drivers should be installed in accessible, ventilated locations — sealed voids and under-tread cavities without airflow can cause premature failure"
+      ],
+      "source_coverage": {
+        "driver_topology_and_sizing": "Strong (MEAN WELL, Downlights Direct, general LED driver technical literature)",
+        "ventilation_and_thermal": "Strong (multiple manufacturer application notes)"
+      },
+      "sources": ["src-lg-013", "src-lg-010"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "access_panels_and_serviceability": {
+      "summary_topics_evidenced": [
+        "BS 7671 requires that terminations, joints and control gear remain accessible for inspection, testing and maintenance unless installed in an approved maintenance-free enclosure",
+        "Manufacturer application notes consistently warn against sealing drivers into inaccessible cavities — driver failure is the most common life-limiting event"
+      ],
+      "source_coverage": {
+        "regulatory": "Strong (BS 7671)",
+        "manufacturer_guidance": "Strong (driver manufacturer application notes)"
+      },
+      "sources": ["src-lg-001", "src-lg-013"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "moisture_protection_ip_ratings": {
+      "summary_topics_evidenced": [
+        "IP rating format defined by BS EN 60529: first digit = solids/dust ingress, second digit = liquid ingress",
+        "IP20 typical for dry indoor step lights (no dust protection at particle level, no moisture protection)",
+        "IP44 minimum for many bathroom Zone-2 and near-splash applications",
+        "IP65 for direct water-jet exposure (wet zones, outdoor covered locations)",
+        "IP67 for temporary immersion (external hardscape, buried driver enclosures)",
+        "Where stair lighting adjoins bathroom Zone 1 or 2, bathroom IP zoning rules per BS 7671 Section 701 apply"
+      ],
+      "source_coverage": {
+        "standard": "Strong (BS EN 60529)",
+        "zoning_application": "Strong (BS 7671 Section 701 for bathrooms; manufacturer datasheet categories for stair/step fittings)"
+      },
+      "sources": ["src-lg-007", "src-lg-001", "src-lg-011"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "fire_considerations": {
+      "summary_topics_evidenced": [
+        "Approved Document B Volume 1 (dwellings) and Volume 2 (non-dwellings) govern fire safety of escape routes including stairs",
+        "BS 7671 Reg 422.2.1: cables on escape routes must satisfy BS EN 60332-3 (reduced flame propagation) and BS EN 61034-2 (low smoke emission)",
+        "BS 6387 (CWZ classification) applies to cables required to maintain circuit integrity during a fire — typically emergency escape lighting and fire-fighting supplies",
+        "Fire-rated downlights are commonly required where fittings penetrate a fire-resistant ceiling below a protected stair"
+      ],
+      "source_coverage": {
+        "regulatory": "Strong (Approved Document B src-002, BS 7671 Reg 422)",
+        "cable_test_standards": "Strong (BS 6387, BS EN 60332-3, BS EN 61034-2)"
+      },
+      "sources": ["src-002", "src-lg-001", "src-lg-017", "src-lg-018"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "electrical_regulations_bs_7671_and_part_p": {
+      "summary_topics_evidenced": [
+        "All fixed electrical installations in England and Wales dwellings must comply with BS 7671 (current: 18th Edition + Amendment 2)",
+        "Approved Document P (England) applies to dwellings; notifiable work now limited to new circuits from consumer unit + additions in special locations (bathrooms, outdoors)",
+        "Alterations/extensions to existing lighting circuits are typically non-notifiable but still require BS 7671 compliance and an Electrical Installation Certificate or Minor Works Certificate",
+        "Registered installer with a Government-approved Competent Person Scheme (NICEIC, NAPIT, BESCA, Blue Flame, Certsure, OFTEC) can self-certify notifiable work; otherwise notification to Building Control is required before starting"
+      ],
+      "source_coverage": {
+        "statutory": "Strong (Approved Document P, BS 7671)",
+        "competent_person_schemes": "Strong (NICEIC, NAPIT verified)"
+      },
+      "sources": ["src-lg-002", "src-lg-001", "src-lg-015", "src-lg-016"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "common_installation_mistakes": {
+      "summary_topics_evidenced": [
+        "Undersized driver — causes flicker, dim output, premature failure",
+        "Sealed / unventilated driver location — thermal stress shortens life",
+        "Driver not accessible after finishing — non-compliant with BS 7671 accessibility requirement",
+        "Incompatible dimmer paired with LED driver — flicker, buzz, driver damage",
+        "Wrong IP rating for location (indoor-rated fitting in bathroom Zone 1/2 or external staircase)",
+        "Cables run outside safe zones or <50mm without RCD protection or mechanical protection",
+        "Colour temperature or bin mismatch producing visibly uneven step-to-step illumination"
+      ],
+      "source_coverage": {
+        "driver_and_flicker": "Strong (LEDVANCE, MEAN WELL, general industry consensus)",
+        "regulatory_non_compliance": "Strong (BS 7671)",
+        "aesthetic_bin_mismatch": "Moderate — well-known to specifiers but not formally documented in end-user guidance"
+      },
+      "sources": ["src-lg-013", "src-lg-001"],
+      "confidence": "high",
+      "classification": "evidenced"
+    }
+  },
+  "section_9_maintaining_stair_lights": {
+    "_section_meta": {
+      "scope": "LED replacement · driver replacement · lifespan · cleaning · troubleshooting · water damage · power failures · future proofing · availability of replacement fittings.",
+      "content_style_reminder": "NEX brain must direct users to a Part P registered electrician for any mains-side maintenance. No wiring procedure will be authored."
+    },
+    "led_replacement": {
+      "summary_topics_evidenced": [
+        "Sealed LED fittings (integrated LED, no user-replaceable lamp) are the dominant modern product form — end-of-life means fitting replacement, not lamp swap",
+        "Retrofit LED lamps (GU10, MR16, E27, B22) can be user-changed in socketed fittings"
+      ],
+      "source_coverage": {
+        "manufacturer_datasheet_category": "Strong (Collingwood, JCC and similar UK manufacturers)"
+      },
+      "sources": ["src-lg-011", "src-lg-012"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "driver_replacement": {
+      "summary_topics_evidenced": [
+        "Driver failure is the most common life-limiting event — often before the LED itself has reached L70",
+        "Replacement drivers must match voltage/current/wattage of original and are the province of a competent electrician",
+        "Remote drivers (not integral to fitting) are more serviceable than integrated / sealed drivers"
+      ],
+      "source_coverage": {
+        "driver_failure_mode": "Strong (multiple manufacturer/technical sources)",
+        "replacement_procedure": "OUT OF SCOPE per governance rule"
+      },
+      "sources": ["src-lg-013"],
+      "confidence": "high_for_failure_mode",
+      "classification": "evidenced_for_failure_mode / procedure_expert_experience_required"
+    },
+    "lifespan": {
+      "summary_topics_evidenced": [
+        "LED chip: 25,000 to 70,000+ hours depending on drive current and thermal management (LM-80/TM-21 method)",
+        "LED driver: highly variable, commonly the earliest failure point; lifetime strongly influenced by operating temperature and load factor",
+        "Warranty typically 2–7 years on UK residential stair-light fittings (varies by manufacturer/product tier)"
+      ],
+      "source_coverage": {
+        "chip_life": "Strong (IES LM-80/TM-21)",
+        "driver_life": "Strong (manufacturer application notes)",
+        "warranty_terms": "Strong (Collingwood 7-year example verified)"
+      },
+      "sources": ["src-lg-010", "src-lg-011", "src-lg-013"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "cleaning": {
+      "summary_topics_evidenced": [
+        "Dust/fingerprints on lenses/covers reduce measurable output — routine dry-cloth cleaning is a standard maintenance step",
+        "Wet cleaning must observe the fitting's IP rating (IP20 fittings must not be sprayed)"
+      ],
+      "source_coverage": {
+        "no_formal_published_stair_light_cleaning_standard": "None located — general LIA / manufacturer good-practice guidance only"
+      },
+      "sources": [],
+      "confidence": "low",
+      "classification": "expert_experience_required"
+    },
+    "troubleshooting": {
+      "summary_topics_evidenced": [
+        "Common symptoms and probable causes (flicker, cold-start dim, buzzing, intermittent operation) are well documented at manufacturer/industry level",
+        "First check: loose connection or terminal contact (industry consensus)",
+        "Persistent problems with heat, burning smell, breaker trips → isolate the circuit and call a qualified electrician (industry safety consensus)"
+      ],
+      "source_coverage": {
+        "manufacturer_troubleshooting_notes": "Strong (LEDVANCE, MEAN WELL, other industry sources)"
+      },
+      "sources": ["src-lg-013"],
+      "confidence": "high_at_diagnostic_symptom_level",
+      "classification": "evidenced / repair_procedure_expert_experience_required"
+    },
+    "water_damage": {
+      "summary_topics_evidenced": [
+        "Water ingress beyond the fitting's IP rating causes corrosion of solder joints, electrolytic corrosion of driver components, and short-circuit risk",
+        "Fitting must be de-energised before inspection following water ingress",
+        "Replacement rather than repair is the norm for water-damaged sealed LED fittings"
+      ],
+      "source_coverage": {
+        "ingress_mechanism": "Well-established (BS EN 60529 IP classification, industry consensus)"
+      },
+      "sources": ["src-lg-007"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "power_failures": {
+      "summary_topics_evidenced": [
+        "In domestic dwellings there is no statutory backup requirement for interior stair lighting",
+        "In non-domestic premises and common escape routes of HMOs / blocks of flats, BS 5266-1 emergency escape lighting must remain operational for a minimum specified duration (published in the standard)",
+        "Battery-backup luminaires and central-battery systems are the two principal emergency-lighting topologies"
+      ],
+      "source_coverage": {
+        "emergency_lighting_standard": "Strong (BS 5266-1)"
+      },
+      "sources": ["src-lg-006", "src-002"],
+      "confidence": "high",
+      "classification": "evidenced"
+    },
+    "future_proofing": {
+      "summary_topics_evidenced": [
+        "Remote (non-integral) drivers, standard fitting cut-out sizes and standard DC voltages (12V/24V) improve future replaceability",
+        "Matter-compliant smart controls reduce vendor lock-in risk for stair-lighting automation over long service life",
+        "Documenting driver model / fitting model / colour temperature / bin (where known) at handover assists like-for-like replacement years later"
+      ],
+      "source_coverage": {
+        "protocol_landscape": "Strong (Matter/Zigbee/Thread industry sources)",
+        "driver_serviceability": "Strong (MEAN WELL and industry consensus)",
+        "documentation_at_handover": "Craft convention — no formal standard mandates this for domestic stair lighting"
+      },
+      "sources": ["src-lg-009", "src-lg-013", "src-lg-014"],
+      "confidence": "moderate",
+      "classification": "evidenced_at_category_level / handover_documentation_expert_experience_required"
+    },
+    "availability_of_replacement_fittings": {
+      "summary_topics_evidenced": [
+        "Product-line churn is high in the LED sector — a specific stair fitting SKU may be discontinued within 3–7 years",
+        "Choosing established UK manufacturers (Collingwood, JCC, Aurora, Ansell, Knightsbridge, LEDVANCE, Signify) with long-lived platforms reduces obsolescence risk (industry observation, not a certified guarantee)",
+        "Warranty periods (2–7 years) do not equal replacement-availability periods — the two are distinct"
+      ],
+      "source_coverage": {
+        "no_formal_published_data_on_SKU_lifecycle_length": "None located — observation is industry-consensus rather than standard"
+      },
+      "sources": ["src-lg-011", "src-lg-012"],
+      "confidence": "low_for_hard_data · moderate_for_directional_observation",
+      "classification": "expert_experience_required"
+    }
+  },
+  "totals": {
+    "sections": 3,
+    "topics_covered": 33,
+    "classification_counts": {
+      "evidenced": 17,
+      "evidenced_regulatory_level_or_at_category_level": 6,
+      "evidenced_directional_only": 1,
+      "expert_experience_required": 6,
+      "unable_to_verify_via_primary_source": 1,
+      "mixed_evidenced_plus_expert_experience": 2
+    },
+    "new_sources_added_this_agent": 20,
+    "sources_reused_from_source_catalogue": 2,
+    "web_calls_used": 16,
+    "web_call_budget_remaining": 2,
+    "strongest_source_coverage_sub_domain": "electrical_regulation_and_installation_standards (BS 7671 + Approved Document P + BS EN 60529 + BS 5266-1 + BS 6387 + Approved Document B + competent-person schemes)",
+    "thinnest_source_coverage_sub_domain": "design_intent_and_aesthetic_specification (popularity_trend · property_value · colour_temperature_recommendation · bin_matching_uniformity · stair_lighting_cleaning_regime · SKU_lifecycle_length — trade press and manufacturer marketing only, no primary UK research located within budget)"
+  }
+}

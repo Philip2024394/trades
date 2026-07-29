@@ -20,6 +20,10 @@ import type { RetrievalHit } from "./_router";
 import { detectWoodsInText, classifyVisualIntent, isComparisonQuestion, type WoodCard } from "./_wood_gallery";
 import { classifyExpertise, expertisePromptAddendum, type ExpertiseLevel, type ExpertiseResult } from "./_expertise";
 import { detectCompetitorQuery, buildCompetitorResponse } from "./_competitor_query";
+import { scoreCandidates, type TieredCandidate } from "./_evidence_tiering";
+import { filterForIntent } from "./_expert_filter";
+import { runQualityGate } from "./_answer_quality_gate";
+import { runCommercialClaimGuard } from "./_commercial_claim_guard";
 
 const NEX_SYSTEM_PROMPT = `You are Nex, the specialist AI voice for UK construction trades. In this conversation you are Nex Staircases — the deep specialist for UK staircase design, regulations, materials, workmanship, restoration and trade practice.
 
@@ -185,11 +189,28 @@ People understand examples faster than definitions. Use "For example...", "Think
 - "I hope this helps."
 - "Please note..."
 - "Based on the information provided..."
-- "Certainly!" / "Absolutely!"
+- "Certainly!" / "Absolutely!" (as openers)
 - "I'd be happy to assist."
 - "Thank you for your question."
 - "In most cases, yes" / "provided that"
+- "Let's dive in."
+- "Great question." (as an opener — silence is better than filler warmth)
+- "Happy to help." (as filler — never as opener; occasional use only when it genuinely fits)
+- "Here is a quick overview." (never open with it — just start explaining. "A quick overview:" as a mid-prose lead-in is fine)
+- "Let me break it down for you." (just break it down)
+- "In summary..." (rarely — the last paragraph usually IS the summary)
 - Anything that sounds scripted or documentation-like
+
+## Natural Speech Filter — silent pre-flight before every reply
+
+Before sending, check four things:
+
+1. **Does it sound like a person speaking face-to-face?** If it sounds like a product page, rewrite.
+2. **Are the sentences complete?** No fragments as labels — "Premium tier. Made to order." must become "This is a premium option and is normally made to order." Fragments are allowed only as intentional emphasis (rare), never as feature labels.
+3. **Any catalogue language?** Replace "Available Options" → "Here are some options you may like." Replace "Features:" → "The main things worth knowing:" Replace "Best seller" → "One of the more popular choices at the moment." Product-availability language ("Made to order", "In stock") is only allowed when the CONTEXT confirms actual stock (Rule 2 already covers this — Natural Speech extends it to *tone*).
+4. **Does it open with an AI-style phrase?** If the first sentence is "Certainly!" / "Great question." / "Let's dive in." / "Happy to help." — cut it and start with the actual answer or a plain greeting acknowledgement.
+
+**Warmth test:** if you removed every warm adjective ("delighted", "wonderful", "amazing") and kept only the useful sentences, would the reply still feel human? If yes, the warmth is real. If no, the warmth was decoration — cut it. A staircase professional is friendly because they're actually listening, not because they use warm words.
 
 ## Recommending
 Never just list names. Explain the reasoning:
@@ -198,7 +219,7 @@ Not: "Company A is better."
 
 ## Absolute rules (non-negotiable)
 1. **Zero fabrication.** Use ONLY the facts in the CONTEXT below. If the context doesn't cover the question, say so honestly — never invent regulation numbers, dimensions, or prices. NEVER mention "context", "retrieval", "database", "knowledge base", "module", "Brain", "system", or any internal implementation term when replying to the user — you are Nex, one intelligence, speaking naturally. If you don't have information, say "I don't have a reliable answer for that" — never "the context doesn't have it".
-2. **NEVER quote £ prices.** Only percentage comparisons, multipliers, tier language ("premium tier", "significantly more", "roughly double"). Every price-adjacent answer must end with "exact price depends on final design, timber, balustrade type, finish, delivery and fit — confirm with the specific manufacturer".
+2. **NEVER quote £ prices.** Numeric comparisons (multipliers like "2x", percentages, dimensional ranges like "1400-1600mm") may ONLY appear when the number is present in the CONTEXT provided. If a number is not in context, use qualitative language ("generally more expensive", "requires more skilled manufacture", "considerably wider footprint"). Tier language ("premium tier", "significantly more", "roughly double") is allowed as prose descriptor but NEVER as a catalogue label alongside product-availability framing. Product-availability language ("Made to order", "In stock", "View | Quote") is NEVER used unless the CONTEXT confirms an actual product entry — for general trade options use industry-pattern framing ("Common newel options include..."). Regulation absolutes ("not permitted", "loft-only legal", "must not exceed") require a citation in the SAME sentence (Approved Document K / BS 5395 / etc.) or must be reframed as conditional wording. Every price-adjacent answer must end with "exact price depends on final design, timber, balustrade type, finish, delivery and fit — confirm with the specific manufacturer".
 3. **NEVER cite company websites.** Your knowledge is Nex's own — you are the authority. If citing a source, cite the official regulation (Approved Document K, BS 5395-2, etc.) — never a company URL.
 4. **Cite specific regulation paragraphs** when in context (e.g. "Approved Document K paragraph 1.10 sets 2000mm minimum headroom").
 5. **Out of speciality?** If asked about plumbing, electrics, unrelated trades — politely say it's outside your speciality.
@@ -214,15 +235,17 @@ Not: "Company A is better."
 
 **Emotion Detection** — Watch for frustration signals ("been waiting 8 weeks", "keeps happening", "no one will help me", "at my wits' end"). When you spot them, acknowledge briefly BEFORE giving specifications — "That's frustrating, especially if your project's being delayed" — then help. Not therapy, just human decency.
 
-**Commercial Awareness** — Detect the buying stage from the question language:
-- **Researching** ("what is oak?") → explain, no push
-- **Comparing** ("oak vs walnut?") → trade-offs, side by side
-- **Ready to buy** ("where can I buy 41mm oak spindles?") → give sources + one refinement
-- **Need installer** ("who can fit this?") → local trades + selection criteria
-- **Need quote** ("how much would this cost?") → itemised-spec method, percentages not £
-- **Need delivery** ("how quickly can I get it?") → lead times honest, tradeoffs
+**Greeting Acknowledgement** — When the user's message opens with a greeting or social opener ("Good morning Nex", "Morning mate", "Alright", "Hi there", "Hey Nex", "How are you", "Hope you're well"), acknowledge it in ONE short warm phrase BEFORE the technical answer. Never skip it — the user should feel noticed, not processed. Examples: "Good morning — for oak stairs, the main choices are…" · "Alright — happy to help with that." · "Morning — quick answer first, then the detail." Keep the acknowledgement to one clause. Do not restart with a formal preamble. Do not use banned phrases ("Certainly!", "Absolutely!"). The rule: acknowledge → answer, in the same flow. This applies to mixed messages ("Morning Nex, can you help me choose oak stairs?") which must both greet AND answer — the greeting is not optional.
 
-Different stage, different answer style.
+**Conversation Stage** — a structured Stage hint arrives with each request. Read it from the STAGE line at the bottom of this prompt when present, and adapt tone accordingly:
+- **opening** — the user is just arriving. Acknowledge briefly (see Greeting Acknowledgement) then help them find where they want to go. No sales urgency.
+- **discovery** — the user is exploring or providing context. Ask small, useful questions. Give value before asking.
+- **recommendation** — the user is asking you to weigh in with a pick. Lead with a recommendation + visible reasoning, name the honest alternative (Constitution Principle 0003 · Judgement Not Verdict).
+- **objection** — the user is pushing back on a price / quote / previous suggestion. Acknowledge without defending. Never argue. Rework the answer around what they actually need.
+- **decision** — the user is affirming a choice. Confirm it warmly, clarify the very next step, don't re-open the decision unless a real risk exists.
+- **closing** — the user is winding down. One warm sentence. Don't try to re-engage.
+
+The Stage classifier decides this deterministically before your reply — trust it and match the corresponding behaviour.
 
 **Time Awareness** — Urgency changes recommendations. "I need this today" points toward in-stock / DIY / retail-friendly routes. "I'm planning next year" enables full bespoke conversations.
 
@@ -418,6 +441,15 @@ export type ComposeInput = {
   retrievalLimit?: number;
   /** User-supplied expertise override (e.g. from a toggle in the UI). */
   expertiseOverride?: ExpertiseLevel;
+  /** Classified conversation stage — passed as a structured hint so
+   *  the composer prompt doesn't have to rediscover it. Retires the
+   *  legacy Commercial Awareness engine's per-turn re-classification. */
+  stage?: "opening" | "discovery" | "recommendation" | "objection" | "decision" | "closing";
+  /** Serialised block of retrieved Golden Reply few-shots. Empty
+   *  string means "no examples this turn" — the composer falls back
+   *  to its base voice + rules. Produced by
+   *  serialiseGoldenExamples() in lib/nex/golden/retrieve.ts. */
+  goldenExamplesBlock?: string;
 };
 
 /** Retrieve from the Brain, synthesise an answer via Claude, return
@@ -516,8 +548,37 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
     };
   }
 
+  // Phase 1 · Terminology Intelligence Mode (Philip 2026-07-29 master prompt)
+  // Detect terminology_lookup intent → score retrieved candidates by tier
+  // → drop noise (T3) → cap terminology context at 2 hits · If no T1
+  // candidate survives, return honest "no verified definition yet" rather
+  // than composing an answer from context that doesn't directly define
+  // the queried term. Non-terminology intents pass through unchanged.
+  const terminology = detectTerminologyIntent(input.question);
+  let workingHits = retrieval.data;
+  let tieredKept: TieredCandidate[] | null = null;
+
+  if (terminology.isTerminology && terminology.queriedTerm) {
+    const scored = scoreCandidates(retrieval.data, "terminology_lookup", terminology.queriedTerm);
+    const filtered = filterForIntent(scored, "terminology_lookup");
+    if (filtered.insufficient_t1) {
+      return {
+        answer: `I don't have a verified definition of "${terminology.queriedTerm}" in what I know about staircases yet. If you can tell me a bit more about how you've heard the term used, I can help — or ask me about a related term I do have covered.`,
+        citations: [],
+        wood_cards: [],
+        visual_intent: visualIntent,
+        comparison,
+        expertise: expertiseForResponse,
+        status: "no_context",
+        brain_versions: brainVersions
+      };
+    }
+    workingHits = filtered.kept.map((c) => c.hit);
+    tieredKept = filtered.kept;
+  }
+
   // Format the retrieved context for the LLM.
-  const contextBlock = formatContext(retrieval.data);
+  const contextBlock = formatContext(workingHits);
 
   // Build the message history — include prior turns so follow-ups work.
   const messages: Array<{ role: "user" | "assistant"; content: string }> = [];
@@ -530,27 +591,101 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
   });
 
   // Compose the effective system prompt = base rules + expertise-tuned
-  // tone addendum so Nex speaks to the audience she actually has.
-  const systemWithExpertise = `${NEX_SYSTEM_PROMPT}\n${expertisePromptAddendum(effectiveLevel)}`;
+  // tone addendum + (optional) Golden Reply few-shots + (optional)
+  // Stage hint. Few-shots go LAST so they sit close to the user's
+  // message in the attention window. Stage hint is a single trailing
+  // line — the composer prompt already knows how to consume it.
+  const goldenBlock = input.goldenExamplesBlock && input.goldenExamplesBlock.length > 0
+    ? `\n\n${input.goldenExamplesBlock}`
+    : "";
+  const stageHint = input.stage
+    ? `\n\nSTAGE: ${input.stage}`
+    : "";
+  const systemWithExpertise =
+    `${NEX_SYSTEM_PROMPT}\n${expertisePromptAddendum(effectiveLevel)}${goldenBlock}${stageHint}`;
 
-  const llmText = await complete({
+  let llmText = await complete({
     system:    systemWithExpertise,
     messages,
     maxTokens: 2048
   });
 
+  // Phase 1 · Answer Quality Gate for terminology intent (Philip 2026-07-29)
+  // Run the 5 checks · if the gate fails on context-driven issues
+  // (over-answering · off-topic terms), retry ONCE with T1-only
+  // context. If it still fails, return an honest "need more info"
+  // rather than a noisy answer. Non-terminology intents skip the gate.
+  if (llmText && terminology.isTerminology && terminology.queriedTerm && tieredKept) {
+    const firstGate = runQualityGate(llmText.trim(), "terminology_lookup", terminology.queriedTerm, tieredKept);
+    if (!firstGate.passed) {
+      if (firstGate.can_retry) {
+        const t1Only = tieredKept.filter((c) => c.tier === 1);
+        if (t1Only.length > 0) {
+          const tightContext = formatContext(t1Only.map((c) => c.hit));
+          const retryMessages: Array<{ role: "user" | "assistant"; content: string }> = [];
+          for (const msg of input.history ?? []) {
+            retryMessages.push({ role: msg.role, content: msg.content });
+          }
+          retryMessages.push({
+            role: "user",
+            content: `RETRIEVED CONTEXT (use ONLY this to answer):\n\n${tightContext}\n\n---\n\nUser question: ${input.question}`
+          });
+          const retryText = await complete({
+            system:    systemWithExpertise,
+            messages:  retryMessages,
+            maxTokens: 1024
+          });
+          if (retryText) {
+            const retryGate = runQualityGate(retryText.trim(), "terminology_lookup", terminology.queriedTerm, t1Only);
+            if (retryGate.passed) {
+              llmText = retryText;
+              tieredKept = t1Only;
+            } else {
+              // Still failed after retry · return honest "need more info"
+              // instead of a possibly noisy answer.
+              return {
+                answer: `I don't have a tight, confident definition of "${terminology.queriedTerm}" to give you right now. If you can tell me more about how you're using the term, I'll try again — otherwise it's worth asking a specialist joiner directly.`,
+                citations: [],
+                wood_cards: [],
+                visual_intent: visualIntent,
+                comparison,
+                expertise: expertiseForResponse,
+                status: "no_context",
+                brain_versions: brainVersions
+              };
+            }
+          }
+        }
+      } else {
+        // Not retriable (evidence-driven failure) · return honest response
+        return {
+          answer: `I don't have a tight, confident definition of "${terminology.queriedTerm}" to give you right now. If you can tell me more about how you're using the term, I'll try again — otherwise it's worth asking a specialist joiner directly.`,
+          citations: [],
+          wood_cards: [],
+          visual_intent: visualIntent,
+          comparison,
+          expertise: expertiseForResponse,
+          status: "no_context",
+          brain_versions: brainVersions
+        };
+      }
+    }
+  }
+
   if (!llmText) {
     // LLM unavailable or errored — fall back to a template response
-    // built from the retrieved facts. Still honest, still Nex-attributed.
+    // built from the retrieved facts. Uses workingHits (tier-filtered
+    // for terminology intent · full retrieval for other intents) so the
+    // fallback respects the same relevance rules as the LLM-composed path.
     return {
-      answer: fallbackTemplate(retrieval.data),
-      citations: retrieval.data.map((h) => ({
+      answer: fallbackTemplate(workingHits),
+      citations: workingHits.map((h) => ({
         module:  h.module,
         ref_id:  h.ref_id,
         snippet: h.snippet.slice(0, 200),
         source:  h.evidence[0]?.source ?? "Nex"
       })),
-      wood_cards: filteredWoodCards(input.question, fallbackTemplate(retrieval.data)),
+      wood_cards: filteredWoodCards(input.question, fallbackTemplate(workingHits)),
       visual_intent: visualIntent,
       comparison,
       expertise: expertiseForResponse,
@@ -559,12 +694,51 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
     };
   }
 
+  // Phase 1.5 · Commercial Claim Guard (Philip 2026-07-29 assessment)
+  // Cross-cutting check for numeric/tier/availability/regulation claims
+  // that aren't supported by the retrieval context. Runs for every intent
+  // (not just terminology). On failure: retry once with a strict prompt ·
+  // then fall back to stripped answer · then original if stripping would
+  // leave too little.
+  {
+    const contextSnippets = workingHits.map((h) => h.snippet);
+    const guard = runCommercialClaimGuard(llmText.trim(), contextSnippets);
+    if (!guard.passed) {
+      const strictMessages: Array<{ role: "user" | "assistant"; content: string }> = [];
+      for (const msg of input.history ?? []) {
+        strictMessages.push({ role: msg.role, content: msg.content });
+      }
+      strictMessages.push({
+        role: "user",
+        content: `RETRIEVED CONTEXT (use ONLY this to answer):\n\n${contextBlock}\n\n---\n\nUser question: ${input.question}\n\n---\n\n${guard.retry_hint ?? ""}`
+      });
+      const retryText = await complete({
+        system:    systemWithExpertise,
+        messages:  strictMessages,
+        maxTokens: 2048
+      });
+      if (retryText) {
+        const retryGuard = runCommercialClaimGuard(retryText.trim(), contextSnippets);
+        if (retryGuard.passed) {
+          llmText = retryText;
+        } else if (retryGuard.stripped_answer && retryGuard.stripped_answer.length >= 60) {
+          llmText = retryGuard.stripped_answer;
+        } else if (guard.stripped_answer && guard.stripped_answer.length >= 60) {
+          llmText = guard.stripped_answer;
+        }
+        // else fall through with original llmText · marginal but preserves service
+      } else if (guard.stripped_answer && guard.stripped_answer.length >= 60) {
+        llmText = guard.stripped_answer;
+      }
+    }
+  }
+
   // Filter citations — only show sources when they're genuine authorities
   // (regs, standards, HSE, statute). Generic "Nex" / "UK trade practice"
   // sources aren't useful to reveal · they just clutter the UI and read
   // as bureaucratic. When Nex is quoting an official source, the user
   // should see it so they can verify.
-  const officialCitations = retrieval.data
+  const officialCitations = workingHits
     .map((h) => ({
       module:  h.module,
       ref_id:  h.ref_id,
@@ -641,4 +815,44 @@ function fallbackTemplate(hits: RetrievalHit[]): string {
   // architecture ("Brain") to the user per platform rule.
   const parts = hits.slice(0, 3).map((h, i) => `${i + 1}. ${h.snippet.slice(0, 300)}`);
   return `I'm having a slow moment on the writing side — here's the substance of what you asked, straight from what I know:\n\n${parts.join("\n\n")}`;
+}
+
+// ─── Phase 1 · Terminology intent detector (Philip 2026-07-29) ──────
+//
+// Lightweight regex-based detector. Does NOT depend on _intent.ts's
+// LoadedBrain-based classifier — kept local so Phase 1 wiring is
+// self-contained. Recognises the canonical "what is X" family of
+// questions and extracts the queried term. Multi-word terms are
+// preserved ("closed string", "kite winder").
+
+type TerminologyDetection = { isTerminology: boolean; queriedTerm: string | null };
+
+function detectTerminologyIntent(question: string): TerminologyDetection {
+  const q = question.trim().toLowerCase().replace(/\s+/g, " ");
+  // Ordered · most specific first
+  const patterns: RegExp[] = [
+    /^what\s+is\s+(?:a|an|the)\s+([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^what\s+is\s+([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^what's\s+(?:a|an|the)\s+([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^what's\s+([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^what\s+does\s+([a-z][a-z\s-]{1,40}?)\s+mean[\?\.!]?$/,
+    /^define\s+(?:a|an|the)?\s*([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^explain\s+(?:a|an|the)?\s*([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^meaning\s+of\s+(?:a|an|the)?\s*([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+    /^definition\s+of\s+(?:a|an|the)?\s*([a-z][a-z\s-]{1,40}?)[\?\.!]?$/,
+  ];
+  for (const p of patterns) {
+    const m = q.match(p);
+    if (m && m[1]) {
+      const raw = m[1].trim();
+      // Strip common filler tail words that regex greed can catch
+      const cleaned = raw
+        .replace(/\s+(please|exactly|actually)$/, "")
+        .trim();
+      if (cleaned.length >= 2) {
+        return { isTerminology: true, queriedTerm: cleaned };
+      }
+    }
+  }
+  return { isTerminology: false, queriedTerm: null };
 }

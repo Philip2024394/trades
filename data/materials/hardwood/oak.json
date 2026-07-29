@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "european-oak-par",
+    "name": "European Oak PAR",
+    "category": "hardwood",
+    "subcategory": null,
+    "species_id": "oak_european",
+    "default_unit": "board",
+    "finish": "par",
+    "typical_grades": ["prime", "character"],
+    "typical_applications": ["treads", "strings", "handrails", "newels", "wall_panelling"],
+    "synonyms": [
+      "european oak boards",
+      "oak par",
+      "oak boards",
+      "eu oak"
+    ],
+    "common_dimensions": {
+      "thicknesses_mm": [20, 25, 32, 38, 50, 63, 75],
+      "widths_mm": [100, 125, 150, 175, 200, 225, 250, 275, 300],
+      "lengths_mm": [1800, 2400, 3000, 3600, 4200]
+    },
+    "notes": null,
+    "sort_order": 10
+  },
+  {
+    "slug": "american-white-oak-par",
+    "name": "American White Oak PAR",
+    "category": "hardwood",
+    "subcategory": null,
+    "species_id": "oak_american_white",
+    "default_unit": "board",
+    "finish": "par",
+    "typical_grades": ["prime", "fas", "select"],
+    "typical_applications": ["treads", "strings", "handrails", "newels"],
+    "synonyms": [
+      "american oak",
+      "white oak",
+      "am white oak",
+      "awo par"
+    ],
+    "common_dimensions": {
+      "thicknesses_mm": [20, 25, 32, 38, 50],
+      "widths_mm": [100, 125, 150, 175, 200, 225, 250, 300],
+      "lengths_mm": [2400, 3000, 3600, 4200]
+    },
+    "notes": null,
+    "sort_order": 20
+  }
+]

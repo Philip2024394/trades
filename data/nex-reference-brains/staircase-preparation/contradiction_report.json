@@ -1,0 +1,720 @@
+{
+  "_meta": {
+    "purpose": "Contradictions, outdated info, ownership gaps, and citation gaps across captured content",
+    "governance_rule": "Find, never resolve. Cite exact quotes.",
+    "created": "2026-07-28",
+    "created_by": "contradiction_audit_agent",
+    "inputs_scanned": [
+      "C:/Users/Victus/trades/docs/brains/*.md (24 files)",
+      "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+      "C:/Users/Victus/trades/data/nex-reference-brains/staircase-founding-reference-brain-package-v0.1.0.json",
+      "C:/Users/Victus/trades/data/staircase-materials.json",
+      "C:/Users/Victus/trades/data/staircase-components.json",
+      "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+      "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_*.md (12 files)",
+      "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/feedback_nex_staircase_*.md (4 files)",
+      "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/feedback_nex_american_white_oak_approved_v1.md",
+      "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/feedback_nex_geometry_frozen_renderer_architecture_next.md"
+    ]
+  },
+  "findings": [
+    {
+      "id": "con-001",
+      "type": "conflicting_statement",
+      "severity": "high",
+      "topic_area": "regulations (Approved Doc K — balustrade sphere rule)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-brain-specification.md",
+        "line": 140,
+        "quote": "balustrade_spacing_max_mm: number;   // Sphere-90mm-rule per Part K"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 248,
+        "quote": "The balustrade must not allow a **100 mm sphere** to pass through any opening at any point on the flight or landing — measured **horizontally**, not perpendicular to the pitch. This is a requirement of Approved Document K in England"
+      },
+      "conflict_description": "The V1 Specification refers to a 'Sphere-90mm-rule per Part K' as the balustrade spacing maximum, while Philip's canonical knowledge document, the plan-sizes reference, and the founding reference brain package all state the value is a 100 mm sphere. Also cross-referenced: data/staircase-plan-sizes.json line 33 ('balustrade_max_gap_mm 100') and docs/staircase-plan-sizes-uk.md line 31 ('100mm sphere rule').",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-002",
+      "type": "conflicting_statement",
+      "severity": "high",
+      "topic_area": "regulations (Approved Doc K — minimum stair width)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 14,
+        "quote": "Approved Document K sets no maximum, and a minimum clear-width of 600 mm is permitted for a private stair — but 800–860 mm remains what is normally specified and built."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 38,
+        "quote": "| Width (private) | No legal minimum since 2010 revision | | Practical min 800mm, recommended 900mm |"
+      },
+      "conflict_description": "Philip's canonical knowledge document states a 600 mm minimum clear-width is permitted under Doc K for a private stair; the plan-sizes reference states there has been no legal minimum since the 2010 revision. Both cannot be true. Cross-reference: data/staircase-plan-sizes.json line 34 ('width_practical_min_mm 800, clause: no legal min since 2010 revision') also says no legal minimum.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-003",
+      "type": "conflicting_statement",
+      "severity": "high",
+      "topic_area": "regulations (Approved Doc K — version currently in force)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 16,
+        "quote": "Current version: **Approved Document K (2013 edition incorporating 2015 amendments)** — the current England published version."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-brain-specification.md",
+        "line": 183,
+        "quote": "version: string;                     // e.g. \"2013 with 2020 amendments\""
+      },
+      "conflict_description": "The plan-sizes reference cites '2013 edition incorporating 2015 amendments'; the V1 Specification example uses '2013 with 2020 amendments'. Also: data/staircase-country-packs/uk.json line 59 says '2013 edition currently active' with no amendment year. Three different amendment-year claims about the same document.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-004",
+      "type": "conflicting_statement",
+      "severity": "high",
+      "topic_area": "regulations (Doc K — balustrade child-safety sphere by jurisdiction)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-safety-liability-framework.md",
+        "line": 278,
+        "quote": "☑ 100mm sphere cannot pass (UK/US) / 125mm (AU)"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-brain-specification.md",
+        "line": 140,
+        "quote": "balustrade_spacing_max_mm: number;   // Sphere-90mm-rule per Part K"
+      },
+      "conflict_description": "The safety-liability framework states UK is 100 mm; the V1 Specification refers to a 90 mm rule 'per Part K'. Third data-point: data/staircase-plan-sizes.json line 33 ('balustrade_max_gap_mm 100 clause 1.39'). Three UK-Part-K sphere values captured in three files.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-005",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "geometry (spiral staircase minimum diameter)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 157,
+        "quote": "{ \"config\": \"doc_k_compliant_min\", \"diameter_mm\": 1400, \"footprint_m2\": 1.54 }"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 209,
+        "quote": "| Doc K compliant (with restrictions) | 1400-1500mm | **1.54-1.77 m²** |"
+      },
+      "conflict_description": "The JSON records a single Doc-K-compliant minimum spiral diameter of 1400 mm with footprint 1.54 m²; the human-readable reference gives a range 1400-1500 mm with footprint 1.54-1.77 m². The JSON does not include the upper bound, so downstream systems compute a smaller footprint than the doc suggests is compliant.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-006",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (baluster rail embedment depth)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_baluster_count_rule.md",
+        "line": 28,
+        "quote": "**Rail tenon depth:** **10mm INSIDE the baserail** at bottom + **10mm INSIDE the handrail** at top. So actual installed length = visible length + 20mm."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 236,
+        "quote": "When a baluster is fitted, its top and bottom ends slot approximately **10 mm inside** both the handrail groove and the baserail groove."
+      },
+      "conflict_description": "Both files state 10 mm embedment top and bottom (agree). NOTE — this row is retained as a false-positive candidate flagged then verified: statements agree numerically. Left in report for auditor visibility with severity downgraded from initial flag.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-007",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "materials (staircase width averages)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_stringer_dimensions_uk.md",
+        "line": 10,
+        "quote": "Typical range:** 800mm to 860mm\n- **Average:** ~865mm"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 14,
+        "quote": "A standard UK domestic staircase measures 800–860 mm across the outside faces of both stringers"
+      },
+      "conflict_description": "The stringer memory quotes 'Average ~865mm', which is OUTSIDE the stated typical range of 800-860 mm. The average as quoted cannot mathematically be higher than the maximum of the range. This is an internal inconsistency in the memory (also propagated into knowledge/staircase.json line 8454 and scripts/knowledge/_seed-staircase-batch37.mjs line 12).",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-008",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (housed-string wedge count per step)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/nex-reference-brains/staircase-founding-reference-brain-package-v0.1.0.json",
+        "line": 138,
+        "quote": "\"wedges\": \"9-12 inch pine, cut to suit each step's rise+going, width MUST stay inside string thickness, one wedge under step + one upward at riser per string end\""
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 78,
+        "quote": "One wedge sits under the tread and one is driven upward against the riser, at each string end (so four wedges per step in total: one under-tread and one riser-side, on each side of the flight)."
+      },
+      "conflict_description": "Canonical document specifies '4 wedges per step in total'. The founding reference brain package quotes 'one wedge under step + one upward at riser per string end' but does not multiply by two strings. Cross-reference: memory project_nex_staircase_riser_step_wedge_joints.md lines 42-43 uses inconsistent language: 'up to 4 per step + 2 per riser' vs 'total 4 per step'. The wedge count computation is ambiguous across sources.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-009",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (housed-string wedge count from riser-wedge memory)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_riser_step_wedge_joints.md",
+        "line": 43,
+        "quote": "1 tread + 1 riser + 4 wedges (2 per string end for tread + 2 for riser... actually per Philip's spec: 1 under step + 1 upward at riser × 2 strings = 4 wedges per step) + 2 angle blocks (glue blocks)"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_riser_step_wedge_joints.md",
+        "line": 53,
+        "quote": "Wedge count: 2 per tread end (both strings) + 2 per riser end (both strings) = up to 4 per step + 2 per riser"
+      },
+      "conflict_description": "Within a single memory file, two different wedge counts are given: line 43 says 4 wedges per step total; line 53 says 'up to 4 per step + 2 per riser' (implying up to 6). This appears to be self-contradicting within the same memory.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-010",
+      "type": "conflicting_statement",
+      "severity": "high",
+      "topic_area": "regulations (handrail height clause and range)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 175,
+        "quote": "Handrail height on a private stair must be at least **900 mm** measured vertically from the pitch line"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 28,
+        "quote": "\"handrail_height_min_mm\":          { \"value\": 900,                          \"clause\": \"TBC\" },\n    \"handrail_height_max_mm\":          { \"value\": 1000,                          \"clause\": \"TBC\" },"
+      },
+      "conflict_description": "Canonical document states 'at least 900 mm' (no upper bound). Plan-sizes JSON captures both min 900 mm AND max 1000 mm (implying a required range 900-1000). The safety-liability framework (line 272) says 'Comfortable height (900-1000mm above pitch line per Doc K UK domestic)'. Meanwhile plan-sizes-uk.md line 34 says '900-1000mm above pitch line' with '(clause TBC)'. It is unclear whether 1000 mm is a Doc K maximum or a comfort/trade convention, and no source cites the exact clause.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-011",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (top newel dimensioning — conflicting length briefings)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_newel_string_joint_rules.md",
+        "line": 39,
+        "quote": "**Bottom newel:** base sits on the floor, newel is 1100mm tall typical (top can attach to first section of handrail)."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-components.json",
+        "line": 396,
+        "quote": "\"dimensions\": { \"width\": 90, \"depth\": 90, \"height_range\": [1800, 3800] },"
+      },
+      "conflict_description": "Newel memory states bottom newel is '1100mm tall typical'. Component catalogue for NP-001 (Square newel) specifies height_range [1800, 3800] mm with height options [1800, 2100, 2400, 2700, 3000, 3300, 3800]. 1100 mm is well below the catalogue's minimum. It is unclear whether 1100 mm refers to a different measurement (e.g. above finished floor to top of first-tier handrail) or is genuinely inconsistent with the component catalogue.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-012",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "materials (glass balustrade panel minimum thickness)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 1498,
+        "quote": "Standard toughened safety glass — 10mm minimum on domestic balustrade panels."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-components.json",
+        "line": 536,
+        "quote": "\"dimensions\": { \"width_range\": [400, 1500], \"height\": 900, \"thickness\": 12 },\n      \"weight_kg_per_m2\": 30, \"timber_usage_m3\": 0, \"price_gbp\": null,\n      \"material_override\": \"toughened_laminated_glass\","
+      },
+      "conflict_description": "MAT-018 material description says 10mm minimum on domestic balustrade panels; component catalogue B-004 (Glass Panel baluster) fixes thickness to 12mm and material_override to 'toughened_laminated_glass' (not plain toughened). GP-001 (line 628) says thickness 10 with material_override 'toughened_glass_clear'. It is unclear whether the domestic minimum is 10 mm (toughened) or 12 mm (toughened-laminated).",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-013",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "design (design philosophy — never copy vs preset-based selection)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/feedback_nex_staircase_design_system_prompt.md",
+        "line": 18,
+        "quote": "Never produce the same staircase twice unless the customer specifically requests an exact match."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-components.json",
+        "line": 132,
+        "quote": "\"designer_presets\": {\n    \"description\": \"Curated starting-point configurations. Beginners choose a preset instead of a blank canvas. Advanced users tweak from the preset."
+      },
+      "conflict_description": "The design system prompt hard-law states never produce the same staircase twice. The component catalogue's 'designer_presets' block explicitly encourages selection of a fixed preset (PRESET-SCANDI, PRESET-LUX-MODERN, etc.) as a starting point. If two beginners each pick PRESET-SCANDI without modifying, they would receive the same staircase — a direct tension with the hard-law rule. Note: the preset system permits 'tweaking' which may resolve the tension, but the raw contradiction is present.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-014",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "materials (baluster material default vs the fixed 41mm hard rule)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/nex-reference-brains/staircase-founding-reference-brain-package-v0.1.0.json",
+        "line": 160,
+        "quote": "\"standard_baluster_sizes_mm\": [32, 41, 44, 50, 60],\n          \"current_uk_ireland_standard_mm\": 41,"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-components.json",
+        "line": 498,
+        "quote": "{ \"id\": \"B-001\", \"category\": \"balusters\", \"name\": \"Square Plain\",\n      ...\n      \"dimensions\": { \"width\": 40, \"depth\": 40, \"length_range\": [700, 950] },"
+      },
+      "conflict_description": "Founding reference brain package states current UK/Ireland standard baluster size is 41 mm (also confirmed in canonical knowledge line 202). Component catalogue baluster B-001 (Square Plain) has dimensions 40×40 mm — off by 1 mm from the stated standard. B-002 (Turned Traditional) at line 507 correctly uses diameter 41. It is unclear whether B-001 40 mm is a typographical error or a genuine alternative size that contradicts the standard.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-015",
+      "type": "conflicting_statement",
+      "severity": "low",
+      "topic_area": "materials (T&G plank width canonical value)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 1735,
+        "quote": "\"plank_width_mm\": 75,"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 266,
+        "quote": "**✓ Confirmed** as common trade default. Other widths (100, 125 mm) are available for larger installations or as a design choice."
+      },
+      "conflict_description": "Materials JSON hardcodes plank_width_mm at 75 (a single value); canonical document confirms 75 mm as the trade default but acknowledges 100 mm and 125 mm alternatives 'available for larger installations or as a design choice'. The JSON schema does not accommodate the documented alternatives.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-016",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (round starting step — single vs double + wall-support trigger)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_double_round_starting_step.md",
+        "line": 33,
+        "quote": "**Configurator option:** \"Round starting step\" — off (default) / single round / double round"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 327,
+        "quote": "Used **when the staircase is not supported by wall or partition on either side** — i.e. the flight opens into an open room rather than being enclosed by walls on the flanks."
+      },
+      "conflict_description": "The double-round-starting-step memory offers three configurator states (off/single/double) with no rule tying selection to wall-support presence. The canonical document treats the double round as triggered by not-supported-either-side. The founding reference brain package (line 171) uses '\"when\": \"used when staircase NOT wall-supported on either side\"' matching canonical. Question: is the double round a design choice (memory line 33) or a wall-support driven decision (canonical + package)?",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-017",
+      "type": "conflicting_statement",
+      "severity": "low",
+      "topic_area": "construction (angle block dimensions — length inconsistent)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_angle_blocks_rule.md",
+        "line": 12,
+        "quote": "angle blocks are chunky wooden blocks (typically ~60mm × 60mm cross-section × 90mm long)"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 109,
+        "quote": "Angle blocks are small triangular wooden blocks — approximately **60 × 60 × 90 mm**"
+      },
+      "conflict_description": "The angle-blocks memory describes 'chunky wooden blocks' (implying rectangular) with 60x60 cross-section x 90mm long. The canonical document describes them as 'small triangular wooden blocks'. Rectangular blocks are not triangular. The shape descriptor differs between sources.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-018",
+      "type": "unclear_ownership",
+      "severity": "medium",
+      "topic_area": "documentation ownership (staircase brain V1 spec authorship)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-brain-specification.md",
+        "line": 4,
+        "quote": "**Purpose:** the complete data model + schema + section breakdown for the Staircase Trade Brain."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-brain-specification.md",
+        "line": 5,
+        "quote": "**Author authorship gap:** this document specifies the STRUCTURE. The AUTHORITATIVE CONTENT (regulation citations, geometry formulas, material specifications, pricing rates) must be written by a **certified master staircase manufacturer or joiner**"
+      },
+      "conflict_description": "The V1 Specification document has no _source field, no named author signature, no capture-date reference. It self-declares that content should come from a certified master staircase manufacturer, but the document itself is uncredited. In contrast, the canonical knowledge doc (staircase-canonical-knowledge-from-philip-v1.md line 3) explicitly cites 'Philip's specifications delivered during the mat-002 3D preview build, 24–26 July 2026.'",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-019",
+      "type": "unclear_ownership",
+      "severity": "medium",
+      "topic_area": "documentation ownership (staircase safety liability framework authorship)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-safety-liability-framework.md",
+        "line": 1,
+        "quote": "# Staircase Safety & Liability Framework"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-safety-liability-framework.md",
+        "line": 6,
+        "quote": "**Not legal advice.** This framework describes industry practice and evidence discipline. NEX must always recommend qualified legal advice for active claims."
+      },
+      "conflict_description": "Framework contains liability triage decisions, insurance-coverage recommendations (e.g. '£1m minimum' for Public Liability, '£1-5m' for Product Liability), and defect-responsibility matrix, but no _source, no author signature, no captured trade-authority reference. The framework is professional-advice-adjacent content published without cited authorship.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-020",
+      "type": "unclear_ownership",
+      "severity": "medium",
+      "topic_area": "documentation ownership (staircase diagnosis engine spec authorship)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-diagnosis-engine-spec.md",
+        "line": 91,
+        "quote": "## Content coverage — V1 (100 problems)"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-diagnosis-engine-spec.md",
+        "line": 1,
+        "quote": "# Staircase Diagnosis Engine — Specification"
+      },
+      "conflict_description": "Diagnosis engine spec covers 100 diagnostic entries with safety_critical-tier decisions and 'when to call a professional' guidance for real customer symptoms. No _source, no author, no capture-date reference for who determined the 100 problems, their severity classification, or the diagnostic questions.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-021",
+      "type": "unclear_ownership",
+      "severity": "low",
+      "topic_area": "documentation ownership (staircase adversarial corpus authorship)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-adversarial-corpus.md",
+        "line": 87,
+        "quote": "| 2026-07-28 | Seed 45 questions | Chief Brain Engineer initial corpus |"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-adversarial-corpus.md",
+        "line": 1,
+        "quote": "# Staircase Brain · Adversarial Test Corpus v0.1"
+      },
+      "conflict_description": "The corpus attributes seed questions to 'Chief Brain Engineer initial corpus' with no named human or captured Philip briefing. Category 1 (Regulatory factual) contains 5 questions that assume specific answers exist under Doc K — if the seed questions were written without expert review, they may embed the same balustrade-sphere-value / stair-width-minimum errors flagged elsewhere in this report.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-022",
+      "type": "missing_citation",
+      "severity": "high",
+      "topic_area": "regulations (Doc K clause references marked TBC)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 28,
+        "quote": "\"handrail_height_min_mm\":          { \"value\": 900,                          \"clause\": \"TBC\" },\n    \"handrail_height_max_mm\":          { \"value\": 1000,                          \"clause\": \"TBC\" },\n    \"balustrade_height_stair_mm\":      { \"value\": 900,                          \"clause\": \"TBC\" },\n    \"balustrade_height_landing_mm\":    { \"value\": 1100,                         \"clause\": \"TBC\" },\n    \"balustrade_landing_drop_threshold_mm\": { \"value\": 600,                     \"clause\": \"TBC\" },"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_plan_size_reference.md",
+        "line": 36,
+        "quote": "**Handrail height and balustrade height still to verify against exact clause** — I know the numbers reliably (handrail 900-1000mm, balustrade 900mm/1100mm on stair/landing) but don't have the exact clause reference from Philip's list. Add these when confirmed."
+      },
+      "conflict_description": "Five Doc-K-cited values in the plan-sizes JSON are marked 'clause: TBC'. The memory acknowledges the clause references are missing. These values are cited as if from Doc K in other files (e.g. safety-liability-framework.md line 272 cites '900-1000mm above pitch line per Doc K UK domestic'), but the specific clause has never been captured.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-023",
+      "type": "missing_citation",
+      "severity": "medium",
+      "topic_area": "regulations (Doc K PDF URL and canonical publisher)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 9,
+        "quote": "\"canonical_pdf_url\": \"https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf\","
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 11,
+        "quote": "\"verification_note\": \"Numbers verified via canonical clause references (Philip 2026-07-25) + external HTML confirmation (tradecalculator.co.uk). PDF text not machine-readable from this environment; verbatim clause wording still to capture.\""
+      },
+      "conflict_description": "The PDF URL is captured as canonical but the note explicitly states 'verbatim clause wording still to capture' — meaning the actual Doc K text has not been read into the reference. Numbers are 'verified' partly via 'tradecalculator.co.uk' (a commercial third-party website), which contradicts the memory rule (feedback_nex_never_cite_company_sites.md) forbidding commercial-website citations for regulatory facts. Referenced but not verified.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-024",
+      "type": "missing_citation",
+      "severity": "medium",
+      "topic_area": "materials (Janka hardness / density values per species)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 116,
+        "quote": "\"hardness_janka_lbf\": 1290,\n      \"hardness_janka_n\": 5740,\n      \"density_kg_m3\": 750,"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 3,
+        "quote": "\"$schema_note\": \"NEX Stairplan MASTER MATERIAL LIBRARY — the single source of truth for every material used across the platform...\""
+      },
+      "conflict_description": "The 21-material library specifies precise Janka lbf, Janka N, and density_kg_m3 for every species (Oak 1290/5740/750, White Oak 1360/6050/770, Walnut 1010/4490/670, etc.) with no source field, no citation, no verification note. The values are used as authoritative but no reference (e.g. Wood Database, USDA Forest Products Lab, BS EN standard) is captured.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-025",
+      "type": "missing_citation",
+      "severity": "medium",
+      "topic_area": "materials (glass balustrade domestic minimum thickness)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 1498,
+        "quote": "Standard toughened safety glass — 10mm minimum on domestic balustrade panels."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 3,
+        "quote": "\"$schema_note\": \"NEX Stairplan MASTER MATERIAL LIBRARY — the single source of truth\""
+      },
+      "conflict_description": "The '10mm minimum on domestic balustrade panels' claim has no source, no BS EN reference (typically BS 6180 for balustrades / BS EN 12600 for impact classification), no captured Philip briefing, no clause reference. A safety-critical minimum thickness claim without a citation is a high-risk statement.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-026",
+      "type": "missing_citation",
+      "severity": "medium",
+      "topic_area": "materials (insurance coverage recommendations)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-safety-liability-framework.md",
+        "line": 158,
+        "quote": "Standard cover: £1m minimum, £2-5m typical for trade"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-safety-liability-framework.md",
+        "line": 172,
+        "quote": "Standard cover: £5m minimum (£10m typical)"
+      },
+      "conflict_description": "Insurance-coverage recommendations for Public Liability (£1m/£2-5m), Product Liability (£1-5m), Professional Indemnity (£250k-£2m), Employer's Liability (£5m/£10m) are quoted as specifics with no source (no FCA reference, no insurance-industry standard cited, no named broker). These are commercial recommendations without citation, adjacent to Philip's HARD LAW (feedback_nex_no_prices_unless_facts) which forbids specific figures without verifiable current-month facts.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-027",
+      "type": "missing_citation",
+      "severity": "low",
+      "topic_area": "regulations (utility stair rise/going/pitch values — no clause detail)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 39,
+        "quote": "\"rise_max_mm\":  { \"value\": 190, \"clause\": \"Table 1.1\" },\n    \"going_min_mm\": { \"value\": 250, \"clause\": \"Table 1.1\" },\n    \"pitch_max_deg\":{ \"value\": 38,  \"clause\": \"Table 1.1\" }"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 20,
+        "quote": "| Item | Value | Doc K clause | Notes |\n|---|---|---|---|"
+      },
+      "conflict_description": "Utility and common stair values are recorded in the plan-sizes JSON but not documented in the human-readable plan-sizes reference doc. The human-readable version tables only private-stair values. This is a missing-citation-in-the-visible-source case: the JSON has values that the docs do not carry, giving downstream authors no context.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-028",
+      "type": "outdated_info",
+      "severity": "medium",
+      "topic_area": "regulations (Approved Document K — currency of the 2013 edition)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 288,
+        "quote": "**Check the current published version before designing to it — this reference reflects the 2013 revision and does not track subsequent amendments.**"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 7,
+        "quote": "\"current_version\": \"Approved Document K (2013 edition incorporating 2015 amendments)\","
+      },
+      "conflict_description": "As of 2026-07-28 (audit date), the plan-sizes reference cites a 13-year-old document (2013) with amendments 11 years old (2015). The reference doc explicitly warns to 'check the current published version before designing to it' but does not itself track amendments. Any Doc K change in 2016-2026 is not reflected in this reference.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-029",
+      "type": "outdated_info",
+      "severity": "medium",
+      "topic_area": "regulations (publisher name for Approved Doc K)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 10,
+        "quote": "\"publisher\": \"Department for Levelling Up, Housing and Communities (gov.uk)\","
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 288,
+        "quote": "Primary source: **Approved Document K — Protection from falling, collision and impact**, currently published by the Department for Levelling Up, Housing and Communities on gov.uk."
+      },
+      "conflict_description": "Both files cite the publisher as 'Department for Levelling Up, Housing and Communities'. This department was renamed to 'Department for Housing, Communities and Local Government' or a successor department after 2024. As of the 2026 audit date, this publisher name is likely outdated. Not a contradiction between the two files (they agree), but an outdated attribution against the wider record.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-030",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (T&G reference image — plank width mismatch)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_backside_sheeting_options.md",
+        "line": 17,
+        "quote": "**URL:** `https://ik.imagekit.io/5vv5pw26q/ChatGPT Image Jul 26, 2026, 12_03_59 AM.png`"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 1725,
+        "quote": "\"canonical_reference_image\": \"https://ik.imagekit.io/5vv5pw26q/ChatGPT Image Jul 26, 2026, 12_03_59 AM.png\",\n      \"reference_notes\": \"Product-shot 3-quarter view of an oak T&G plank. Warm honey colour, chamfered visible edges, tongue-and-groove joint visible. Use ONLY this image for T&G references across brain, catalogue, marketing. Not for 3D texture tiling (perspective shot).\""
+      },
+      "conflict_description": "Both files reference the same canonical T&G image (agreement). Retained for auditor visibility because the image is described as showing 'an oak T&G plank' without dimensioning; the same materials.json line 1735 hardcodes plank_width_mm at 75. There is no evidence that the image depicts a 75 mm plank (the plank width in the image is not measured or dimensioned in either source). Cross-reference con-015.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-031",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (T&G expansion gap values in adjacent files)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-materials.json",
+        "line": 1736,
+        "quote": "\"expansion_gap_mm_each_end\": \"7-10\","
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/data/nex-reference-brains/staircase-founding-reference-brain-package-v0.1.0.json",
+        "line": 179,
+        "quote": "\"7-10mm expansion gap both ends\","
+      },
+      "conflict_description": "Both files agree on 7-10 mm at both ends (aligned). Kept in report to note that in materials.json this is a string ('7-10') and in the founding reference brain package this is a text description. Both are consistent with the canonical document line 296 ('7–10 mm expansion gaps at both ends') and memory line 48. No contradiction in the numeric range itself — flagged only for schema-shape inconsistency across sources.",
+      "expert_action_required": "verify"
+    },
+    {
+      "id": "con-032",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (top step going — divergent geometry rules)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_newel_string_joint_rules.md",
+        "line": 47,
+        "quote": "Philip's rule 2026-07-25: the last step at the top of a straight flight is called the \"**top step**\" and is only **100mm deep (going)** with a bullnose front."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 60,
+        "quote": "**Rule 3 — Rises = Goings + 1 (default).** You walk up each going and the final rise takes you from the top step onto the landing itself. So a flight with 12 goings has 13 risers. Exception: if the top tread is designed to sit LEVEL with the landing, rises = goings — but this must be specified at drawing stage."
+      },
+      "conflict_description": "Newel-joint memory describes a 'top step' 100 mm deep with bullnose front, at landing level (flush with landing floor). Plan-sizes reference describes two flight-top options: (1) rises = goings + 1 (top rise takes you to landing, no extra step) or (2) top tread sits level with landing (rises = goings). Neither of these matches the memory's separate 100 mm bullnose 'top step'. It is unclear whether the top step is (a) a distinct component, (b) an alias for the top tread, or (c) inconsistent with the plan-sizes reference.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-033",
+      "type": "conflicting_statement",
+      "severity": "low",
+      "topic_area": "construction (baluster 3D preview count vs formula)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_baluster_count_rule.md",
+        "line": 46,
+        "quote": "**Baluster count formula for a straight flight:**\n- Count = 2 × (number of steps) MINUS 1 for EACH step where a newel post sits\n- Example: 12-step flight with newels at first + last step position = 12*2 - 2 = 22 balusters minimum"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_baluster_count_rule.md",
+        "line": 58,
+        "quote": "24 balusters on each side of flight = 48 total (2 per step × 12 steps, extending across the full flight, not accounting for newel-at-step reduction which our current bottom/top newels don't overlap a step anyway)"
+      },
+      "conflict_description": "Within the same memory: formula gives 22 balusters per flight (12*2 - 2 newel positions). The 3D preview state note says 24 balusters per side. The comment concedes 'not accounting for newel-at-step reduction' — the preview does not match the memory's own stated rule.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-034",
+      "type": "conflicting_statement",
+      "severity": "low",
+      "topic_area": "construction (newel cross-section standard sizes — mismatched size lists)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 123,
+        "quote": "Newel posts are typically **75 mm, 90 mm, or 120 mm square** in cross-section. **90 mm** is the modern spec-standard size for most private stairs."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_handrail_baserail_baluster_sizing.md",
+        "line": 34,
+        "quote": "| **32mm** | ~32mm (slim balustrade — modern minimalist) | Standard (90mm) |\n| **41mm** | **41mm** — CURRENT UK/Ireland STANDARD | Standard (90mm) |\n| **44mm** | 44mm — traditional/older, standard before mass production | Standard (90mm-100mm) |\n| **50mm** | Larger (~50mm) | Sized up |\n| **60mm** | Largest (~60mm) | Sized up (110-140mm) |"
+      },
+      "conflict_description": "Canonical document lists three newel standard sizes: 75/90/120 mm. Handrail-baserail-baluster memory table lists newel sizes as 'Standard 90 mm' for 32/41/44 mm balusters, then 'Sized up (110-140mm)' for 60 mm balusters. The 110-140 mm range does not match the canonical 120 mm value, and 75 mm never appears in the memory table at all.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-035",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (newel scaling threshold — heavy baluster trigger)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 187,
+        "quote": "Nex Stairplan auto-scales the other three when the baluster crosses 44mm and warns the user of any mismatched sizing that the customer overrides."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 358,
+        "quote": "- [ ] Newel size proportional to baluster (auto-scale above 44 mm baluster)"
+      },
+      "conflict_description": "The canonical document says auto-scale 'when baluster crosses 44mm' (line 187) and 'above 44 mm' (line 358). The founding reference brain package (line 161) says 'For heavy balusters (50mm+) ALL FOUR components ... scale UP together'. 44 mm vs 50 mm as the scale-up trigger — two different thresholds within the same body of captured knowledge.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-036",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "regulations (loft/space-saver stair applicability under Doc K)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-plan-sizes.json",
+        "line": 25,
+        "quote": "\"alternating_tread_rules\":         { \"value\": \"loft only, restricted use\",  \"clause\": \"1.27-1.28\" }"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/staircase-plan-sizes-uk.md",
+        "line": 33,
+        "quote": "| Alternating-tread (space-saver) stairs | Loft-conversion allowance only | **Clauses 1.27-1.28** | Restricted use — not main staircase |"
+      },
+      "conflict_description": "Both agree on clauses 1.27-1.28 and loft-only allowance. Statements do NOT contradict — retained here because the founding reference brain package modules_json does not carry the alternating-tread rule at all, meaning the reference brain that will be loaded is missing a Doc K clause captured in the source. Coverage gap rather than direct conflict.",
+      "expert_action_required": "cite"
+    },
+    {
+      "id": "con-037",
+      "type": "conflicting_statement",
+      "severity": "medium",
+      "topic_area": "construction (tread thickness — standard rules and TR-002)",
+      "statement_a": {
+        "file": "C:/Users/Victus/trades/data/staircase-components.json",
+        "line": 613,
+        "quote": "{ \"id\": \"TR-002\", \"category\": \"treads\", \"name\": \"Standard (32mm)\",\n      \"3d_model_url\": \"/assets/glb/treads/TR-002-standard.glb\",\n      \"dimensions\": { \"thickness\": 32, \"width_range\": [700, 1100], \"depth_range\": [220, 280] },"
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 27,
+        "quote": "- **32 mm** — the standard cladding / housed-string dimension, used on the majority of private stairs.\n> - **38 mm** — mid-weight, suitable for cut strings or busier traffic.\n> - **50 mm** — heavy structural cut-string construction."
+      },
+      "conflict_description": "The canonical document '32 mm standard cladding / housed-string' explicitly refers to STRINGER thickness. The component catalogue TR-002 uses 'thickness 32' for TREAD. Both being '32 mm' is coincidental if that reading is correct. It is unclear whether the tread standard is intended to be 32 mm or whether the component catalogue conflates stringer thickness with tread thickness. Cross-reference: tread thickness is not captured in canonical, memory, or founding reference brain package — only in components.json.",
+      "expert_action_required": "reconcile"
+    },
+    {
+      "id": "con-038",
+      "type": "missing_citation",
+      "severity": "medium",
+      "topic_area": "construction (angle blocks purpose — squeak prevention claim)",
+      "statement_a": {
+        "file": "C:/Users/Victus/.claude/projects/C--Users-Victus/memory/project_nex_staircase_angle_blocks_rule.md",
+        "line": 18,
+        "quote": "**Why:** structural + acoustic — the tread-riser joint is a critical stress point; without angle blocks it flexes and creaks over time."
+      },
+      "statement_b": {
+        "file": "C:/Users/Victus/trades/docs/brains/staircase-canonical-knowledge-from-philip-v1.md",
+        "line": 110,
+        "quote": "They reinforce the joint against racking and eliminate squeaking under load."
+      },
+      "conflict_description": "The purpose claims for angle blocks (prevents squeaking) are stated as fact without citation to a trade study, BWF standard, or captured Philip audio note. The rule of 2 blocks under 1000 mm and 3 blocks over 1000 mm has no BS EN reference or industry-standard source captured, only Philip's briefing 2026-07-25.",
+      "expert_action_required": "cite"
+    }
+  ],
+  "aggregate": {
+    "total_findings": 38,
+    "by_type": {
+      "conflicting_statement": 22,
+      "outdated_info": 2,
+      "unclear_ownership": 4,
+      "missing_citation": 10
+    },
+    "by_severity": {
+      "high": 6,
+      "medium": 24,
+      "low": 8
+    }
+  }
+}

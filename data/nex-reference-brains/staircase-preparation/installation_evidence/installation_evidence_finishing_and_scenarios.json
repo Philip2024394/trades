@@ -1,0 +1,870 @@
+{
+  "_meta": {
+    "purpose": "Installation evidence catalogue · Agent B · finishing + inspection + scenarios (17 topics)",
+    "governance_rule": "Evidence only. Zero installation procedures authored. 'expert_author_required' where source pool runs dry.",
+    "scope": "Topics 1-17 covering finishing components (final_fixing · balustrade · handrail · newel · string) · inspection + sign-off + snagging · post-install failures · scenario installs (loft · renovation · historic · timber-floor · concrete-floor · steel-frame)",
+    "created": "2026-07-28",
+    "created_by": "installation_evidence_agent_B",
+    "web_calls_used": 12,
+    "web_calls_budget": 15,
+    "cross_reference_note": "Reuses source_catalogue.json entries by src-XXX ID where they cover the topic. New evidence entries introduce src IDs in the src-A26 onwards range to avoid collision with the master 25-entry catalogue.",
+    "governance_reminder": "Every 'what_source_discusses' is descriptive ('covers X'), NEVER prescriptive ('do X'). No installation instructions authored anywhere in this file."
+  },
+  "topics": {
+    "final_fixing": {
+      "topic_slug": "final_fixing",
+      "phase": "finishing",
+      "evidence": [
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs",
+          "publisher": "British Woodworking Federation (BWF) — Stair Scheme",
+          "document_title": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025 (latest revision)",
+          "section_or_clause": "Installation and fixing sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Guide covers domestic timber stair design, delivery, storage and installation stages including wall-string and newel fixings that complete permanent alignment.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs (A Guide to Safe Stair Installation)",
+          "publisher": "British Woodworking Federation (BWF) — Stair Scheme",
+          "document_title": "Installation Guide: Timber Stairs — A Guide to Safe Stair Installation",
+          "publication_date": "Current revision (BWF Stair Scheme)",
+          "section_or_clause": "Sections on temporary fixing, wall string fixings, assembly and completion",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Publisher-issued installation manual for timber stairs; addresses the sequence from delivery inspection through temporary fixing to final permanent fixing once alignment is confirmed.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A27",
+          "source_name": "LABC Warranty Technical Manual Version 11 — Section 9 Stairs",
+          "publisher": "LABC Warranty",
+          "document_title": "LABC Warranty Technical Manual Version 11 — Section 9: Stairs",
+          "publication_date": "Version 11 (current live edition Version 12 also cited)",
+          "section_or_clause": "Section 9 (Stairs) — fixings sub-sections",
+          "page_reference": null,
+          "url": "https://www.labcwarranty.co.uk/hubfs/Technical%20Manual%20V11%20-%20Thumbnails/Technical%20Manual%20V11%20-%20Section%20PDF%20Downloads/Section%209%20Stairs.pdf",
+          "what_source_discusses": "Warranty technical manual section covers functional requirements for stair location and fixing, including guidance updated in Version 11 to include fixings, concrete and steel stair guidance.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-024",
+          "source_name": "Screw and mechanical fixing datasheet category — timber-to-timber (BS EN 14592)",
+          "publisher": "Fastener manufacturer datasheets aligned to BS EN 14592",
+          "document_title": "Structural and joinery screw/dowel technical datasheets — timber fasteners per BS EN 14592",
+          "publication_date": "BS EN 14592 (current edition)",
+          "section_or_clause": "Manufacturer datasheet category — timber-to-timber structural fasteners",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Category-level datasheet source covering screws and dowels used to complete permanent fixings once alignment is verified.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "balustrade_installation": {
+      "topic_slug": "balustrade_installation",
+      "phase": "finishing",
+      "evidence": [
+        {
+          "source_id": "src-001",
+          "source_name": "Approved Document K — Protection from falling, collision and impact",
+          "publisher": "MHCLG / DLUHC (England)",
+          "document_title": "The Building Regulations 2010 — Approved Document K: Protection from falling, collision and impact (2013 edition incorporating amendments)",
+          "publication_date": "2013 (incorporating amendments)",
+          "section_or_clause": "K1 (stairs, ladders, ramps); K2 (protection from falling)",
+          "page_reference": null,
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+          "what_source_discusses": "Statutory guidance covering guarding provision, guard heights and openings applicable to balustrades on stairs and landings.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs",
+          "publisher": "British Woodworking Federation — Stair Scheme",
+          "document_title": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025",
+          "section_or_clause": "Balustrade and handrail sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Guide addresses on-site assembly of handrail, baserail and baluster components as part of the domestic stair balustrade system.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A28",
+          "source_name": "LABC — Replacing handrails and balustrades on stairs in the home",
+          "publisher": "Local Authority Building Control (LABC)",
+          "document_title": "LABC news / practitioner guidance article on replacing handrails and balustrades on stairs in the home",
+          "publication_date": "LABC current article",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.labc.co.uk/news/replacing-handrails-and-balustrades-on-stairs-in-the-home",
+          "what_source_discusses": "LABC practitioner guidance addressing scope of works and building regulation touchpoints when replacing or installing balustrades on domestic stairs.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-009",
+          "source_name": "BS 5395-1:2010 — Stairs. Code of practice for straight flights and winders",
+          "publisher": "British Standards Institution",
+          "document_title": "BS 5395-1:2010 Stairs — Part 1: Code of practice for the design of stairs with straight flights and winders",
+          "publication_date": "2010-02-28",
+          "section_or_clause": "Balustrade design clauses",
+          "page_reference": null,
+          "url": "https://knowledge.bsigroup.com/products/stairs-code-of-practice-for-the-design-of-stairs-with-straight-flights-and-winders",
+          "what_source_discusses": "British Standard code of practice referencing balustrade geometry and integration with the stair for domestic and general stair types.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "handrail_installation": {
+      "topic_slug": "handrail_installation",
+      "phase": "finishing",
+      "evidence": [
+        {
+          "source_id": "src-001",
+          "source_name": "Approved Document K",
+          "publisher": "MHCLG / DLUHC (England)",
+          "document_title": "Approved Document K: Protection from falling, collision and impact",
+          "publication_date": "2013",
+          "section_or_clause": "K1 handrail provision on stairs",
+          "page_reference": null,
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+          "what_source_discusses": "Statutory guidance addressing handrail provision on domestic stairs including wall-mounted handrails and continuous handrail requirements.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-004",
+          "source_name": "Approved Document M — Access to and use of buildings (Volume 1: Dwellings)",
+          "publisher": "MHCLG / DLUHC (England)",
+          "document_title": "Approved Document M Volume 1 — Dwellings",
+          "publication_date": "2015 (with 2016 amendments)",
+          "section_or_clause": "Accessible stair handrail provisions",
+          "page_reference": null,
+          "url": "https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m",
+          "what_source_discusses": "Accessibility guidance addresses handrail provision on accessible dwelling stairs including M4(1)/M4(2)/M4(3) categories.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1",
+          "publisher": "BWF",
+          "document_title": "BWF Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025",
+          "section_or_clause": "Handrail sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Design guide addresses handrail types, transitions and mounting for domestic timber stairs.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A28",
+          "source_name": "LABC — Replacing handrails and balustrades on stairs in the home",
+          "publisher": "LABC",
+          "document_title": "LABC practitioner article",
+          "publication_date": "Current",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.labc.co.uk/news/replacing-handrails-and-balustrades-on-stairs-in-the-home",
+          "what_source_discusses": "Building control practitioner article on scope and compliance touchpoints for handrail works.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "newel_fixing": {
+      "topic_slug": "newel_fixing",
+      "phase": "finishing",
+      "evidence": [
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025",
+          "section_or_clause": "Newel post sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Guide covers newel post types, base fixings to floor or string and newel-to-string connection detailing.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Installation Guide: Timber Stairs",
+          "publication_date": "Current",
+          "section_or_clause": "Assembly and permanent fixing sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Installer-facing guide addresses newel positioning, plumbing and securing to floor structure and string during assembly.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-024",
+          "source_name": "Screw and mechanical fixing datasheet category (BS EN 14592)",
+          "publisher": "Fastener manufacturer datasheets",
+          "document_title": "Timber fastener technical datasheets per BS EN 14592",
+          "publication_date": "Current",
+          "section_or_clause": "Timber-to-timber structural screws · dowels",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Datasheet category addressing structural fasteners suitable for newel post connections to strings, floors and joists.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "string_fixing": {
+      "topic_slug": "string_fixing",
+      "phase": "finishing",
+      "evidence": [
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1",
+          "publisher": "BWF",
+          "document_title": "BWF Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025",
+          "section_or_clause": "String sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Design guide covers wall string and outer string types, and connection principles to walls and newels.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Installation Guide: Timber Stairs",
+          "publication_date": "Current",
+          "section_or_clause": "Wall string fixings section",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Installer guide addresses wall-string fixing centres, screw sizes and penetration into wall substrates, and string-to-newel connection detailing.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A27",
+          "source_name": "LABC Warranty Technical Manual Version 11 — Section 9 Stairs",
+          "publisher": "LABC Warranty",
+          "document_title": "LABC Warranty Technical Manual V11 — Section 9",
+          "publication_date": "V11",
+          "section_or_clause": "Section 9 — fixings sub-section",
+          "page_reference": null,
+          "url": "https://www.labcwarranty.co.uk/hubfs/Technical%20Manual%20V11%20-%20Thumbnails/Technical%20Manual%20V11%20-%20Section%20PDF%20Downloads/Section%209%20Stairs.pdf",
+          "what_source_discusses": "Warranty manual covers string fixing to supporting structure and functional requirements for stair location.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "inspection": {
+      "topic_slug": "inspection",
+      "phase": "inspection",
+      "evidence": [
+        {
+          "source_id": "src-A29",
+          "source_name": "BWF Stair Scheme — Timber Staircases: The Site Manager's Checklist",
+          "publisher": "British Woodworking Federation — Stair Scheme",
+          "document_title": "Timber Staircases — The Site Manager's Checklist (v2)",
+          "publication_date": "Published on BWF Stair Scheme website (v2 revision)",
+          "section_or_clause": "Site manager checklist for post-install verification",
+          "page_reference": null,
+          "url": "https://stairs.bwf.org.uk/wp-content/uploads/2015/06/Timber-Stair-Checklist-site-managersv2-.pdf",
+          "what_source_discusses": "Checklist covers the final visual and measured verification items a site manager reviews before signing off a timber staircase installation.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A30",
+          "source_name": "NHBC Standards 2023 — Chapter 6.6 Staircases (compliance clause 6.6.1)",
+          "publisher": "National House Building Council (NHBC)",
+          "document_title": "NHBC Standards 2023 — Chapter 6.6 Staircases",
+          "publication_date": "2023 edition (current online reference)",
+          "section_or_clause": "6.6.1 Compliance; sitework sub-sections",
+          "page_reference": null,
+          "url": "https://nhbc-standards.co.uk/6-superstructure-excluding-roofs/6-6-staircases/6-6-1-compliance/",
+          "what_source_discusses": "Warranty standard chapter addresses tolerances and site-work compliance checks applicable to installed staircases in new-build dwellings. NHBC standard uses Chapter 6.6 for stairs (not 6.3 as some references cite).",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A27",
+          "source_name": "LABC Warranty Technical Manual V11 — Section 9 Stairs",
+          "publisher": "LABC Warranty",
+          "document_title": "LABC Warranty Technical Manual V11 — Section 9 Stairs",
+          "publication_date": "V11",
+          "section_or_clause": "Section 9",
+          "page_reference": null,
+          "url": "https://www.labcwarranty.co.uk/hubfs/Technical%20Manual%20V11%20-%20Thumbnails/Technical%20Manual%20V11%20-%20Section%20PDF%20Downloads/Section%209%20Stairs.pdf",
+          "what_source_discusses": "Warranty manual covers acceptable install tolerances (e.g. floor finishes affecting bottom rise) and inspection acceptance criteria.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "sign_off": {
+      "topic_slug": "sign_off",
+      "phase": "inspection",
+      "evidence": [
+        {
+          "source_id": "src-A29",
+          "source_name": "BWF Stair Scheme — Site Manager's Checklist",
+          "publisher": "BWF",
+          "document_title": "Timber Staircases — The Site Manager's Checklist (v2)",
+          "publication_date": "v2 revision on BWF Stair Scheme site",
+          "section_or_clause": "Handover / sign-off items",
+          "page_reference": null,
+          "url": "https://stairs.bwf.org.uk/wp-content/uploads/2015/06/Timber-Stair-Checklist-site-managersv2-.pdf",
+          "what_source_discusses": "Checklist supports the site manager signing off the completed staircase as part of handover.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A31",
+          "source_name": "BWF Stair Scheme — Timber Staircase: Procurement Guide for Housebuilders",
+          "publisher": "British Woodworking Federation — Stair Scheme",
+          "document_title": "The Timber Staircase — A Procurement Guide for Housebuilders",
+          "publication_date": "Published on BWF Stair Scheme site (Flightwise mirror)",
+          "section_or_clause": "Handover, warranty and quality management sections",
+          "page_reference": null,
+          "url": "https://www.flightwisejoinery.co.uk/wp-content/uploads/2023/03/Timber-Stair-Checklist-the-housebuilders-guidev2.pdf",
+          "what_source_discusses": "Procurement guide addresses quality management, handover documentation and housebuilder-side sign-off responsibilities.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-A30",
+          "source_name": "NHBC Standards Chapter 6.6 — Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Standards Chapter 6.6 Staircases",
+          "publication_date": "2023",
+          "section_or_clause": "Compliance and warranty acceptance clauses",
+          "page_reference": null,
+          "url": "https://nhbc-standards.co.uk/6-superstructure-excluding-roofs/6-6-staircases/6-6-1-compliance/",
+          "what_source_discusses": "Warranty standard chapter covers criteria for NHBC warranty sign-off of installed staircases.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "snagging": {
+      "topic_slug": "snagging",
+      "phase": "inspection",
+      "evidence": [
+        {
+          "source_id": "src-A29",
+          "source_name": "BWF Stair Scheme — Site Manager's Checklist",
+          "publisher": "BWF",
+          "document_title": "Timber Staircases — Site Manager's Checklist v2",
+          "publication_date": "v2",
+          "section_or_clause": "Snag items and remedial trigger points",
+          "page_reference": null,
+          "url": "https://stairs.bwf.org.uk/wp-content/uploads/2015/06/Timber-Stair-Checklist-site-managersv2-.pdf",
+          "what_source_discusses": "Checklist covers common snag conditions on a completed timber stair that trigger a return visit or remedial work before sign-off.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A32",
+          "source_name": "BWF Stair Scheme — 10 Top Tips for Successful Stair Installation",
+          "publisher": "British Woodworking Federation",
+          "document_title": "BWF Stair Scheme — 10 top tips for successful stair installation (fact card / news release)",
+          "publication_date": "Ongoing (news article + fact card)",
+          "section_or_clause": "Common failure themes and site-manager action points",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/latest-news/bwf-stair-scheme-provide-10-top-tips-for-successful-stair-installation-2/",
+          "what_source_discusses": "Trade-body communication summarising ten themes that commonly cause snagging on installed staircases when overlooked; supported by building control and inspection organisations.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A30",
+          "source_name": "NHBC Standards Chapter 6.6 — Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Standards Chapter 6.6",
+          "publication_date": "2023",
+          "section_or_clause": "Sitework compliance / tolerance clauses",
+          "page_reference": null,
+          "url": "https://nhbc-standards.co.uk/6-superstructure-excluding-roofs/6-6-staircases/6-6-1-compliance/",
+          "what_source_discusses": "Chapter defines tolerance limits that determine whether a defect is a snag or a non-compliance requiring formal rectification.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "common_installation_failures": {
+      "topic_slug": "common_installation_failures",
+      "phase": "post_install_failures",
+      "evidence": [
+        {
+          "source_id": "src-A32",
+          "source_name": "BWF Stair Scheme — 10 Top Tips",
+          "publisher": "BWF",
+          "document_title": "BWF Stair Scheme — 10 top tips for successful stair installation",
+          "publication_date": "Ongoing",
+          "section_or_clause": "Failure themes",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/latest-news/bwf-stair-scheme-provide-10-top-tips-for-successful-stair-installation-2/",
+          "what_source_discusses": "Fact card and news article group the recurring installation failure modes reported by installers, building control and inspection bodies (categories such as delivery / storage / preparation / fixing).",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Installation Guide: Timber Stairs — A Guide to Safe Stair Installation",
+          "publication_date": "Current",
+          "section_or_clause": "Failure-avoidance sections across delivery, storage, assembly, fixing",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Publisher guide categorises typical failure clusters including mis-alignment, loose fixings and incomplete wedging that arise when the safe installation sequence is not followed.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A30",
+          "source_name": "NHBC Standards Chapter 6.6",
+          "publisher": "NHBC",
+          "document_title": "NHBC Standards Chapter 6.6 Staircases",
+          "publication_date": "2023",
+          "section_or_clause": "Sitework clauses",
+          "page_reference": null,
+          "url": "https://nhbc-standards.co.uk/6-superstructure-excluding-roofs/6-6-staircases/6-6-1-compliance/",
+          "what_source_discusses": "Warranty standard identifies the compliance failure categories (tolerance, fixing, floor-finish rise variation) that trigger warranty non-conformance.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "squeaks_after_installation": {
+      "topic_slug": "squeaks_after_installation",
+      "phase": "post_install_failures",
+      "evidence": [
+        {
+          "source_id": "src-A32",
+          "source_name": "BWF Stair Scheme — 10 Top Tips",
+          "publisher": "BWF",
+          "document_title": "BWF Stair Scheme — 10 top tips for successful stair installation",
+          "publication_date": "Ongoing",
+          "section_or_clause": "Themes on squeaks and unstable stairs",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/latest-news/bwf-stair-scheme-provide-10-top-tips-for-successful-stair-installation-2/",
+          "what_source_discusses": "Trade-body communication explicitly notes that overlooked installation steps result in squeaky or unstable stairs — categorises cause themes.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-014",
+          "source_name": "TRADA Wood Information Sheets — Moisture in Timber",
+          "publisher": "TRADA",
+          "document_title": "TRADA Wood Information Sheet — Moisture in Timber (WIS 4-14)",
+          "publication_date": "2011 (WIS series)",
+          "section_or_clause": "Moisture content, shrinkage and movement sections",
+          "page_reference": null,
+          "url": "https://www.englishwoodlandstimber.co.uk/wp-content/uploads/2024/01/Trada-Moisture-in-Timber.pdf",
+          "what_source_discusses": "TRADA information sheet covers timber moisture content, shrinkage and in-service movement — the underlying category of causes for post-installation squeaks in timber joinery.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-020",
+          "source_name": "SPAB — Timber Stairs advice",
+          "publisher": "Society for the Protection of Ancient Buildings (SPAB)",
+          "document_title": "SPAB Advice — Timber Stairs",
+          "publication_date": "Ongoing",
+          "section_or_clause": "Advice page on timber stair defects and repair",
+          "page_reference": null,
+          "url": "https://www.spab.org.uk/advice/timber-stairs",
+          "what_source_discusses": "Heritage-carpentry advice page discusses timber stair defect categories including loose joints, shrinkage and separation that manifest as squeaks.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "movement_after_installation": {
+      "topic_slug": "movement_after_installation",
+      "phase": "post_install_failures",
+      "evidence": [
+        {
+          "source_id": "src-014",
+          "source_name": "TRADA — Moisture in Timber (WIS 4-14)",
+          "publisher": "TRADA",
+          "document_title": "Wood Information Sheet — Moisture in Timber",
+          "publication_date": "2011",
+          "section_or_clause": "Shrinkage, movement and equilibrium moisture content",
+          "page_reference": null,
+          "url": "https://www.englishwoodlandstimber.co.uk/wp-content/uploads/2024/01/Trada-Moisture-in-Timber.pdf",
+          "what_source_discusses": "Reference sheet covers seasonal moisture movement and equilibrium moisture content principles that govern timber joinery behaviour after installation.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A33",
+          "source_name": "TRADA — Timber in Joinery",
+          "publisher": "TRADA",
+          "document_title": "TRADA — Timber in Joinery (Wood Information Sheet)",
+          "publication_date": "Current WIS series",
+          "section_or_clause": "Joinery-in-service moisture specification",
+          "page_reference": null,
+          "url": "https://trada.co.uk/publications/download/id-71ad3ad0-ed28-48b7-a00e-99702713d19b/",
+          "what_source_discusses": "TRADA publication covers non-structural joinery uses of timber (windows, doors, staircases) and the importance of specifying timber at correct moisture content for in-service conditions.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-020",
+          "source_name": "SPAB — Timber Stairs advice",
+          "publisher": "SPAB",
+          "document_title": "SPAB Timber Stairs advice",
+          "publication_date": "Ongoing",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.spab.org.uk/advice/timber-stairs",
+          "what_source_discusses": "Discusses long-term movement categories including differential shrinkage, settlement in flanking walls and separation of treads/risers from strings.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "loft_conversion_installation": {
+      "topic_slug": "loft_conversion_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-001",
+          "source_name": "Approved Document K",
+          "publisher": "MHCLG / DLUHC",
+          "document_title": "Approved Document K: Protection from falling, collision and impact",
+          "publication_date": "2013",
+          "section_or_clause": "K1 stair geometry including loft-conversion allowances (going, rise, headroom)",
+          "page_reference": null,
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+          "what_source_discusses": "Statutory guidance covers stair geometry compliance including reduced-headroom allowance applicable in loft conversions and provision for alternating tread stairs where standard geometry cannot be accommodated.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-002",
+          "source_name": "Approved Document B Volume 1 — Dwellings",
+          "publisher": "MHCLG / DLUHC",
+          "document_title": "Approved Document B: Fire safety, Volume 1 — Dwellings (2019 edition incorporating amendments)",
+          "publication_date": "2019 (incorporating 2020, 2022 and later amendments)",
+          "section_or_clause": "B1 Means of warning and escape — protected stairway provisions for loft conversions to three-storey dwellings",
+          "page_reference": null,
+          "url": "https://assets.publishing.service.gov.uk/media/67d2bb074702aacd2251cb94/Approved_Document_B_volume_1_Dwellings_2019_edition_incorporating_2020_2022_and_2025_amendments_collated_with_2026_and_2029_amendments.pdf",
+          "what_source_discusses": "Statutory guidance addresses protected stairway provision, fire door protection and means of escape when a loft conversion creates a three-storey dwelling.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A34",
+          "source_name": "LABC Front Door — loft conversion staircase compliance article",
+          "publisher": "LABC (Local Authority Building Control)",
+          "document_title": "Will my loft conversion staircase comply with building regulations?",
+          "publication_date": "Current LABC Front Door article",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://labcfrontdoor.co.uk/projects/loft-conversions/will-my-loft-conversion-staircase-comply-with-building-regulations",
+          "what_source_discusses": "Building-control practitioner article addresses loft conversion staircase compliance touchpoints under Approved Documents K and B including space-saver / alternating tread provisions.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1",
+          "publisher": "BWF",
+          "document_title": "BWF Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025",
+          "section_or_clause": "Loft / space-saver sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "BWF design guide addresses domestic timber stair options including space-saver types in loft-conversion applications.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "renovation_installation": {
+      "topic_slug": "renovation_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Installation Guide: Timber Stairs",
+          "publication_date": "Current",
+          "section_or_clause": "Installation preparation sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Publisher-issued guide addresses preparation and fitting sequences applicable when replacing an existing staircase within a renovation.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A28",
+          "source_name": "LABC — Replacing handrails and balustrades on stairs",
+          "publisher": "LABC",
+          "document_title": "LABC news article",
+          "publication_date": "Current",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.labc.co.uk/news/replacing-handrails-and-balustrades-on-stairs-in-the-home",
+          "what_source_discusses": "Building control article addresses regulation touchpoints when carrying out replacement / renovation stair work in an existing dwelling.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-020",
+          "source_name": "SPAB — Timber Stairs",
+          "publisher": "SPAB",
+          "document_title": "SPAB Timber Stairs advice",
+          "publication_date": "Ongoing",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.spab.org.uk/advice/timber-stairs",
+          "what_source_discusses": "Advice covers assessment before altering / removing an old timber stair — including matching existing detail and understanding structural setting.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": "General renovation-install topics (structural survey before removal · matching profiles to existing) are cited in trade press but no single-source authoritative renovation-install manual exists. Certified installer author will bridge from the sources above."
+    },
+    "historic_building_installation": {
+      "topic_slug": "historic_building_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-A35",
+          "source_name": "Historic England — Listed Building Consent Advice Note 16",
+          "publisher": "Historic England",
+          "document_title": "Listed Building Consent — Historic England Advice Note 16 (HEAG304)",
+          "publication_date": "Current Advice Note",
+          "section_or_clause": "Listed Building Consent principles applicable to internal joinery including staircases",
+          "page_reference": null,
+          "url": "https://historicengland.org.uk/images-books/publications/listed-building-consent-advice-note-16/heag304-listed-building-consent/",
+          "what_source_discusses": "Historic England advice note covers Listed Building Consent principles and application requirements — the framework governing installation / alteration of staircases in listed buildings.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A36",
+          "source_name": "Historic England — I want to change the internal layout (advice page)",
+          "publisher": "Historic England",
+          "document_title": "Advice page: I want to change the internal layout (listed buildings)",
+          "publication_date": "Current",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://historicengland.org.uk/advice/your-home/improvement/change-internal-layout/",
+          "what_source_discusses": "Advice page addresses the significance of internal plan-form (partitions, staircases) and consent considerations when reconfiguring or replacing staircases in listed dwellings.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-020",
+          "source_name": "SPAB — Timber Stairs advice",
+          "publisher": "SPAB",
+          "document_title": "SPAB Advice — Timber Stairs",
+          "publication_date": "Ongoing",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.spab.org.uk/advice/timber-stairs",
+          "what_source_discusses": "SPAB advice covers retention over replacement, common defect categories in historic timber stairs and the principle of minimum intervention.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A37",
+          "source_name": "SPAB — Alterations and Extensions to Listed Buildings",
+          "publisher": "SPAB",
+          "document_title": "SPAB Advice — Alterations and Extensions to Listed Buildings",
+          "publication_date": "Ongoing",
+          "section_or_clause": null,
+          "page_reference": null,
+          "url": "https://www.spab.org.uk/advice/alterations-and-extensions-listed-buildings",
+          "what_source_discusses": "Guidance addresses the reversibility principle and treatment of historic internal features including staircases within listed-building alterations.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A38",
+          "source_name": "Historic England — Practical Building Conservation: Timber",
+          "publisher": "Historic England / Ashgate-Routledge",
+          "document_title": "Practical Building Conservation: Timber (volume in Historic England PBC series)",
+          "publication_date": "First edition (published by Ashgate-Routledge)",
+          "section_or_clause": "Non-Structural Timbers (joinery) chapter",
+          "page_reference": null,
+          "url": "https://historicengland.org.uk/images-books/publications/timber-conservation/",
+          "what_source_discusses": "Reference volume covering timber conservation including non-structural joinery repair and re-fixing methods applicable to historic staircases.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "timber_floor_installation": {
+      "topic_slug": "timber_floor_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-A26",
+          "source_name": "BWF Stair Scheme — Installation Guide: Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Installation Guide: Timber Stairs",
+          "publication_date": "Current",
+          "section_or_clause": "String and newel fixing sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Installer guide addresses fixings applicable where the supporting structure is a timber floor (trimmer joist bearing at top of flight, string fixings into timber).",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A27",
+          "source_name": "LABC Warranty Technical Manual V11 — Section 9 Stairs",
+          "publisher": "LABC Warranty",
+          "document_title": "LABC Warranty Technical Manual V11 — Section 9",
+          "publication_date": "V11",
+          "section_or_clause": "Fixings and supporting-structure sub-sections",
+          "page_reference": null,
+          "url": "https://www.labcwarranty.co.uk/hubfs/Technical%20Manual%20V11%20-%20Thumbnails/Technical%20Manual%20V11%20-%20Section%20PDF%20Downloads/Section%209%20Stairs.pdf",
+          "what_source_discusses": "Warranty manual addresses stair supporting-structure requirements — including landing / trimmer conditions for timber floors and floor finish variation limits.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A39",
+          "source_name": "NHBC Standards 2023 — Chapter 6.4 Timber and Concrete Upper Floors",
+          "publisher": "NHBC",
+          "document_title": "NHBC Standards Chapter 6.4 — Timber and concrete upper floors",
+          "publication_date": "2023 (with earlier editions online)",
+          "section_or_clause": "Chapter 6.4",
+          "page_reference": null,
+          "url": "https://nhbccampaigns.co.uk/landingpages/techzone/previous_versions/2011/Part6/section4/default.htm",
+          "what_source_discusses": "Chapter covers timber upper floor construction including trimmer joists at stair openings that receive the stair top string and landing bearings.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "concrete_floor_installation": {
+      "topic_slug": "concrete_floor_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-A40",
+          "source_name": "BS EN 1992-4:2018 — Design of fastenings for use in concrete",
+          "publisher": "British Standards Institution / CEN",
+          "document_title": "BS EN 1992-4:2018 Eurocode 2 — Design of concrete structures — Design of fastenings for use in concrete",
+          "publication_date": "2018",
+          "section_or_clause": "Post-installed bonded / mechanical fasteners in concrete",
+          "page_reference": null,
+          "url": "https://www.bsigroup.com/en-GB/products-and-services/standards/bs-en-1992-design-of-concrete-structures/",
+          "what_source_discusses": "Design standard covers fastenings in concrete (mechanical anchors, bonded / resin anchors) that apply when securing stair components to concrete floors.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-A27",
+          "source_name": "LABC Warranty Technical Manual V11 — Section 9 Stairs",
+          "publisher": "LABC Warranty",
+          "document_title": "LABC Warranty Technical Manual V11 — Section 9",
+          "publication_date": "V11",
+          "section_or_clause": "Concrete stair guidance sub-section (added in V11)",
+          "page_reference": null,
+          "url": "https://www.labcwarranty.co.uk/hubfs/Technical%20Manual%20V11%20-%20Thumbnails/Technical%20Manual%20V11%20-%20Section%20PDF%20Downloads/Section%209%20Stairs.pdf",
+          "what_source_discusses": "Warranty manual notes updated V11 content covering concrete stair guidance and functional requirements applicable when fixing stair components to concrete substrates.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A41",
+          "source_name": "Post-installed anchor manufacturer datasheet category (ETA / EAD approved to EN 1992-4)",
+          "publisher": "Various fixing manufacturers (Hilti, Fischer, Sika, Rawlplug, etc.) — European Technical Assessment (ETA) approvals",
+          "document_title": "Manufacturer ETA-approved anchor datasheets for resin-bonded and mechanical anchors in concrete",
+          "publication_date": "Current ETA revisions",
+          "section_or_clause": "Category-level source per governance rule",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Category-level datasheet source covering resin-bonded and mechanical anchors used to fix newel and string bases to concrete floors; datasheets align to BS EN 1992-4 design methodology.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "DPM (damp-proof membrane) and levelling detailing beneath a stair base on concrete is addressed in floor / substrate guidance (Approved Document C and manufacturer screed datasheets) rather than in staircase-specific literature. Certified expert author should bridge from BS EN 1992-4 + Doc C at authoring time."
+    },
+    "steel_frame_installation": {
+      "topic_slug": "steel_frame_installation",
+      "phase": "scenario",
+      "evidence": [
+        {
+          "source_id": "src-A42",
+          "source_name": "SCI Publication P102 — Connections Between Steel and Other Materials",
+          "publisher": "Steel Construction Institute (SCI)",
+          "document_title": "SCI P102 — Connections Between Steel and Other Materials (R G Ogden)",
+          "publication_date": "SCI publication (long-standing green-book series)",
+          "section_or_clause": "Timber-to-steel connection chapter(s)",
+          "page_reference": null,
+          "url": "https://www.steelconstruction.info/images/d/d6/SCI_P102.pdf",
+          "what_source_discusses": "SCI reference covers connections between structural steel and other materials including timber — applicable to timber-stair to steel-frame connections in mixed-material dwellings.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A43",
+          "source_name": "SCI Publication P372 — Acoustic Detailing for Steel Construction",
+          "publisher": "Steel Construction Institute (SCI)",
+          "document_title": "SCI P372 — Acoustic Detailing for Steel Construction",
+          "publication_date": "SCI publication",
+          "section_or_clause": "Acoustic isolation detailing for structural connections",
+          "page_reference": null,
+          "url": "https://www.steelconstruction.info/images/a/a2/SCI_P372.pdf",
+          "what_source_discusses": "SCI publication covers acoustic detailing principles for steel construction — applicable to acoustic isolation of timber stairs bearing on steel frames in residential contexts.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A44",
+          "source_name": "NHBC Standards 2025 — Chapter 11.3.13 Staircases (Modern Methods of Construction: Volumetric)",
+          "publisher": "NHBC",
+          "document_title": "NHBC Standards 2025 — 11.3.13 Staircases within volumetric systems",
+          "publication_date": "2025",
+          "section_or_clause": "11.3.13",
+          "page_reference": null,
+          "url": "https://nhbc-standards.co.uk/11-modern-methods-of-construction/11-3-volumetric-systems/11-3-13-staircases/",
+          "what_source_discusses": "NHBC MMC chapter addresses staircases within volumetric (light-steel-frame or hybrid) systems — the closest warranty-standard match for stair installs within steel-frame residential construction.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-A45",
+          "source_name": "Robust Details — separating floor / partition details for lightweight (timber / steel) construction",
+          "publisher": "Robust Details Limited",
+          "document_title": "Robust Details Handbook — lightweight separating floor solutions (E-FT series) and internal partition details",
+          "publication_date": "Current handbook (updated periodically)",
+          "section_or_clause": "Lightweight separating floor solutions and partition junction details",
+          "page_reference": null,
+          "url": "https://www.robustdetails.com/",
+          "what_source_discusses": "Robust Details covers pre-approved acoustic separating floor / partition solutions for timber and steel frame residential construction — relevant to how a stair is detailed against separating construction. Deemed-to-satisfy Building Regulations Part E when installed correctly.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "Structural Engineer sign-off (SE) of steel-supported stair connections is site-specific and not covered by a single published document; the SE calculation/design is project-authored. Certified expert author will note this reality when writing the module."
+    }
+  },
+  "aggregate": {
+    "topics_with_evidence": 17,
+    "topics_expert_author_required": 0,
+    "total_evidence_entries": 55,
+    "verified_entries": 42,
+    "requires_manual_verification_entries": 13,
+    "topics_with_gap_notes": 3,
+    "reused_source_ids_from_master_catalogue": [
+      "src-001",
+      "src-002",
+      "src-004",
+      "src-009",
+      "src-014",
+      "src-016",
+      "src-020",
+      "src-024"
+    ],
+    "new_source_ids_introduced": [
+      "src-A26",
+      "src-A27",
+      "src-A28",
+      "src-A29",
+      "src-A30",
+      "src-A31",
+      "src-A32",
+      "src-A33",
+      "src-A34",
+      "src-A35",
+      "src-A36",
+      "src-A37",
+      "src-A38",
+      "src-A39",
+      "src-A40",
+      "src-A41",
+      "src-A42",
+      "src-A43",
+      "src-A44",
+      "src-A45"
+    ]
+  }
+}

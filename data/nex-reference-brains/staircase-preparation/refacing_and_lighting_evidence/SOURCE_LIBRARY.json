@@ -1,0 +1,854 @@
+{
+  "_meta": {
+    "purpose": "Deduplicated source library across all Refacing & Lighting evidence agents",
+    "generated": "2026-07-28T09:04:55.738Z",
+    "total_sources": 76,
+    "verified": 3,
+    "requires_manual_verification": 25,
+    "other": 48
+  },
+  "sources": [
+    {
+      "source_id": "src-001",
+      "source_name": "Approved Document K",
+      "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+      "verification_status": "verified",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.when_refacing_not_recommended",
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact",
+        "evidence_agent_1::section_1_understanding_refacing.common_homeowner_mistakes",
+        "evidence_agent_2::section_3_styles.contemporary",
+        "evidence_agent_2::section_3_styles.modern",
+        "evidence_agent_2::section_3_styles.scandinavian",
+        "evidence_agent_2::section_3_styles.industrial",
+        "evidence_agent_2::section_3_styles.floating_appearance",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.risers.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.handrails.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.handrails.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.balusters.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.glass_panels.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.metal_balusters.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newel_caps.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.stair_runners.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.carpet.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-009",
+      "source_name": "BS 5395-1:2010 Stairs with straight flights and winders",
+      "url": "https://knowledge.bsigroup.com/products/stairs-code-of-practice-for-the-design-of-stairs-with-straight-flights-and-winders",
+      "verification_status": "verified",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-016",
+      "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs",
+      "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+      "verification_status": "verified",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.what_is_refacing",
+        "evidence_agent_1::section_1_understanding_refacing.reface_vs_replace_decision",
+        "evidence_agent_2::section_3_styles.traditional",
+        "evidence_agent_2::section_3_styles.contemporary",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.risers.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.risers.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.strings.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.strings.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.handrails.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newels.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.balusters.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_posts.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_posts.structural_implications"
+      ]
+    },
+    {
+      "source_id": "trade-press-13",
+      "source_name": "Abbott-Wade — Stainless Steel Staircase Design & Installation",
+      "url": "https://www.abbottwade.co.uk/steel-staircases/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.industrial"
+      ]
+    },
+    {
+      "source_id": "src-REF-03",
+      "source_name": "AHEC Sustainable American Hardwoods Species Guide",
+      "url": "https://www.americanhardwood.org/en/american-hardwood/species-guide",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.american_white_oak.appearance",
+        "evidence_agent_1::section_2_materials.american_white_oak.durability",
+        "evidence_agent_1::section_2_materials.american_white_oak.cost_drivers",
+        "evidence_agent_1::section_2_materials.walnut.appearance",
+        "evidence_agent_1::section_2_materials.walnut.maintenance",
+        "evidence_agent_1::section_2_materials.walnut.cost_drivers",
+        "evidence_agent_1::section_2_materials.maple.appearance",
+        "evidence_agent_1::section_2_materials.maple.durability",
+        "evidence_agent_1::section_2_materials.maple.cost_drivers",
+        "evidence_agent_1::section_2_materials.tulipwood.appearance",
+        "evidence_agent_1::section_2_materials.tulipwood.durability",
+        "evidence_agent_1::section_2_materials.tulipwood.cost_drivers"
+      ]
+    },
+    {
+      "source_id": "src-002",
+      "source_name": "Approved Document B Vol 1 — Dwellings",
+      "url": "https://www.gov.uk/government/publications/fire-safety-approved-document-b",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.wall_panelling.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.under_stair_panelling.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-003",
+      "source_name": "Approved Document B Volume 2 (non-dwellings — HMOs)",
+      "url": null,
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.carpet.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-005",
+      "source_name": "Approved Document E — Sound",
+      "url": "https://www.gov.uk/government/publications/resistance-to-sound-approved-document-e",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact"
+      ]
+    },
+    {
+      "source_id": "src-004",
+      "source_name": "Approved Document M Vol 1 — Dwellings",
+      "url": "https://www.gov.uk/government/publications/access-to-and-use-of-buildings-approved-document-m",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact"
+      ]
+    },
+    {
+      "source_id": "trade-press-02",
+      "source_name": "Bavari Stairs — Modern vs Traditional Staircase Designs",
+      "url": "https://www.bavari-stairs.com/post/modern-vs-traditional-staircase-designs",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.contemporary",
+        "evidence_agent_2::section_3_styles.modern"
+      ]
+    },
+    {
+      "source_id": "trade-press-33",
+      "source_name": "Binks Balustrades — BS 6180 Compliance for Glass Balustrades",
+      "url": "https://binksbalustrades.co.uk/b-s-6180/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.glass_panels.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-25",
+      "source_name": "Binks Balustrades — Handrail height on stairs UK guide",
+      "url": "https://binksbalustrades.co.uk/handrail-height-on-stairs-uk/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.handrails.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-REF-12",
+      "source_name": "Binks Balustrades — UK Height of Stair Handrails 2026",
+      "url": "https://binksbalustrades.co.uk/height-of-stair-handrails/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact",
+        "evidence_agent_1::section_2_materials.glass_components.appearance",
+        "evidence_agent_1::section_2_materials.glass_components.durability",
+        "evidence_agent_1::section_2_materials.glass_components.maintenance"
+      ]
+    },
+    {
+      "source_id": "trade-press-04",
+      "source_name": "Bisca — How Reclaimed Timber Can Make A Unique Staircase Design",
+      "url": "https://www.bisca.co.uk/staircase-blog/how-reclaimed-timber-can-make-a-unique-staircase-design/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.farmhouse"
+      ]
+    },
+    {
+      "source_id": "trade-press-35",
+      "source_name": "Black Country Metalworks — Stair Spindles Guide & FAQs",
+      "url": "https://www.blackcountrymetalworks.co.uk/stair-spindles-faq",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.metal_balusters.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-47",
+      "source_name": "BookaBuilder UK — Cost to Install a Stair Carpet 2026",
+      "url": "https://www.bookabuilderuk.com/blog/stair-carpet-cost-2026-supply-fit",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.stair_runners.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-29",
+      "source_name": "BookaBuilder UK — Fit Stair Spindles in a UK Home",
+      "url": "https://www.bookabuilderuk.com/blog/fit-stair-spindles-uk-evenly-securely",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.balusters.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-36",
+      "source_name": "British Ironwork Centre — Stair Spindles FAQs",
+      "url": "https://www.britishironworkcentre.co.uk/stair-spindle-faq/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.metal_balusters.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-06",
+      "source_name": "British Spirals & Castings — Difference Between Georgian, Victorian, Edwardian Railings",
+      "url": "https://www.britishsc.co.uk/difference-between-georgian-victorian-edwardian-railings/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.victorian",
+        "evidence_agent_2::section_3_styles.edwardian",
+        "evidence_agent_2::section_3_styles.georgian"
+      ]
+    },
+    {
+      "source_id": "src-011",
+      "source_name": "BS 5395-3:1985 Industrial type stairs",
+      "url": null,
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.industrial"
+      ]
+    },
+    {
+      "source_id": "src-012",
+      "source_name": "BS EN 14076:2013 Timber stairs — Terminology",
+      "url": null,
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.strings.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-REF-05",
+      "source_name": "BuildingConservation.com — Historic Timber Staircases: Management, Conservation and Repair",
+      "url": "https://www.buildingconservation.com/articles/timber-staircases/timber-staircases.htm",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.when_refacing_not_recommended",
+        "evidence_agent_1::section_1_understanding_refacing.structural_defects_hidden_by_refacing"
+      ]
+    },
+    {
+      "source_id": "src-REF-01",
+      "source_name": "BWF Stair Scheme public hub",
+      "url": "https://stairs.bwf.org.uk/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.what_is_refacing"
+      ]
+    },
+    {
+      "source_id": "trade-press-48",
+      "source_name": "Carpet Warehouse — How Do You Install Carpets On Stairs",
+      "url": "https://carpetwarehouse.co.uk/blogs/news/how-do-you-install-carpets-on-stairs-step-by-step-runner-guide",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.carpet.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-21",
+      "source_name": "Cheshire Mouldings — How To Renovate a Staircase Using Stair Parts",
+      "url": "https://www.cheshiremouldings.co.uk/news/renovate-staircase-using-stair-parts/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newel_caps.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-20",
+      "source_name": "Cheshire Mouldings — Stair Klad cladding",
+      "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.treads.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.risers.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "src-REF-06",
+      "source_name": "Cheshire Mouldings Stair Klad range",
+      "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.what_is_refacing",
+        "evidence_agent_1::section_1_understanding_refacing.parts_that_can_be_refaced",
+        "evidence_agent_1::section_1_understanding_refacing.typical_duration",
+        "evidence_agent_1::section_1_understanding_refacing.lifespan_after_refacing",
+        "evidence_agent_1::section_2_materials.veneered_products.appearance",
+        "evidence_agent_1::section_2_materials.veneered_products.cost_drivers",
+        "evidence_agent_1::section_2_materials.hardwood_overlays.appearance",
+        "evidence_agent_1::section_2_materials.hardwood_overlays.maintenance",
+        "evidence_agent_1::section_2_materials.hardwood_overlays.cost_drivers"
+      ]
+    },
+    {
+      "source_id": "trade-press-16",
+      "source_name": "Continox — 7 Floating Staircase Design Mistakes UK Homeowners Make",
+      "url": "https://continox.uk/7-common-mistakes-to-avoid-when-designing-floating-staircase/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.floating_appearance"
+      ]
+    },
+    {
+      "source_id": "trade-press-32",
+      "source_name": "Continox — Glass Balustrade Regulations UK 2026",
+      "url": "https://continox.uk/glass-balustrade-regulations/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.glass_panels.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.metal_balusters.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-REF-04",
+      "source_name": "Continox — Planning Permission for a New Staircase UK",
+      "url": "https://continox.uk/is-planning-permission-required-for-new-staircase-installations-uk-regulations/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.planning_permission",
+        "evidence_agent_1::section_1_understanding_refacing.building_regulations_impact",
+        "evidence_agent_1::section_1_understanding_refacing.property_value_impact"
+      ]
+    },
+    {
+      "source_id": "trade-press-30",
+      "source_name": "Continox — UK Staircase Building Regulations 2026 Part K Guide",
+      "url": "https://continox.uk/stair-staircase-regulations/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.balusters.structural_implications"
+      ]
+    },
+    {
+      "source_id": "trade-press-23",
+      "source_name": "DC Sons Joinery — Staircase Cladding",
+      "url": "https://dcsonsjoinery.co.uk/staircase-cladding-the-cost-effective-way-to-create-a-stunning-feature-in-your-home/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.strings.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-14",
+      "source_name": "Decor8 AI — Minimalist Staircase ideas",
+      "url": "https://www.decor8.ai/ideas/minimalist-staircase",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.minimalist"
+      ]
+    },
+    {
+      "source_id": "trade-press-10",
+      "source_name": "Dolle — Staircases in high quality and Scandinavian design",
+      "url": "https://www.dolle.com/staircases",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.scandinavian"
+      ]
+    },
+    {
+      "source_id": "src-REF-08",
+      "source_name": "Duffield Timber — European Oak vs American White Oak",
+      "url": "https://duffieldtimber.com/the-workbench/buyers-guides/european-oak-vs-american-white-oak",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.american_white_oak.appearance",
+        "evidence_agent_1::section_2_materials.american_white_oak.durability",
+        "evidence_agent_1::section_2_materials.european_oak.appearance",
+        "evidence_agent_1::section_2_materials.european_oak.durability",
+        "evidence_agent_1::section_2_materials.european_oak.maintenance"
+      ]
+    },
+    {
+      "source_id": "trade-press-22",
+      "source_name": "Fiximer — Stringer Cladding",
+      "url": "https://fiximer.co.uk/stringer-cladding/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.strings.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-31",
+      "source_name": "FOL Design — Glass Balustrade Regulations UK: Part K and BS 6180 Guide",
+      "url": "https://fol-design.co.uk/blog/glass-balustrade-regulations-uk",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.glass_panels.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.glass_panels.structural_implications"
+      ]
+    },
+    {
+      "source_id": "src-REF-11",
+      "source_name": "Hampshire Staircase refurbishment vs replacement guide",
+      "url": "https://hampshirestaircase.co.uk/staircase-refurbishment-vs-replacement-making-the-right-choice/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.what_is_refacing",
+        "evidence_agent_1::section_1_understanding_refacing.parts_that_can_be_refaced",
+        "evidence_agent_1::section_1_understanding_refacing.reface_vs_replace_decision",
+        "evidence_agent_1::section_1_understanding_refacing.when_refacing_not_recommended",
+        "evidence_agent_1::section_1_understanding_refacing.typical_duration",
+        "evidence_agent_1::section_1_understanding_refacing.disruption_level",
+        "evidence_agent_1::section_1_understanding_refacing.planning_permission",
+        "evidence_agent_1::section_1_understanding_refacing.property_value_impact",
+        "evidence_agent_1::section_1_understanding_refacing.advantages_disadvantages",
+        "evidence_agent_1::section_1_understanding_refacing.common_homeowner_mistakes",
+        "evidence_agent_1::section_2_materials.ash.appearance",
+        "evidence_agent_1::section_2_materials.ash.durability",
+        "evidence_agent_1::section_2_materials.ash.maintenance",
+        "evidence_agent_1::section_2_materials.walnut.appearance",
+        "evidence_agent_1::section_2_materials.walnut.durability",
+        "evidence_agent_1::section_2_materials.beech.appearance",
+        "evidence_agent_1::section_2_materials.beech.maintenance",
+        "evidence_agent_1::section_2_materials.maple.appearance",
+        "evidence_agent_1::section_2_materials.maple.maintenance",
+        "evidence_agent_1::section_2_materials.pine.appearance",
+        "evidence_agent_1::section_2_materials.pine.durability",
+        "evidence_agent_1::section_2_materials.pine.maintenance",
+        "evidence_agent_1::section_2_materials.tulipwood.maintenance",
+        "evidence_agent_1::section_2_materials.mdf.appearance",
+        "evidence_agent_1::section_2_materials.mdf.durability",
+        "evidence_agent_1::section_2_materials.mdf.maintenance",
+        "evidence_agent_1::section_2_materials.mdf.cost_drivers",
+        "evidence_agent_1::section_2_materials.veneered_products.durability",
+        "evidence_agent_1::section_2_materials.engineered_timber.appearance",
+        "evidence_agent_1::section_2_materials.engineered_timber.durability",
+        "evidence_agent_1::section_2_materials.engineered_timber.maintenance",
+        "evidence_agent_1::section_2_materials.engineered_timber.cost_drivers",
+        "evidence_agent_1::section_2_materials.hardwood_overlays.appearance",
+        "evidence_agent_1::section_2_materials.laminate_systems.appearance",
+        "evidence_agent_1::section_2_materials.laminate_systems.durability",
+        "evidence_agent_1::section_2_materials.laminate_systems.maintenance",
+        "evidence_agent_1::section_2_materials.laminate_systems.cost_drivers",
+        "evidence_agent_1::section_2_materials.vinyl_coverings.appearance",
+        "evidence_agent_1::section_2_materials.vinyl_coverings.durability",
+        "evidence_agent_1::section_2_materials.vinyl_coverings.maintenance",
+        "evidence_agent_1::section_2_materials.vinyl_coverings.cost_drivers",
+        "evidence_agent_1::section_2_materials.metal_components.appearance",
+        "evidence_agent_1::section_2_materials.metal_components.durability",
+        "evidence_agent_1::section_2_materials.metal_components.maintenance",
+        "evidence_agent_1::section_2_materials.metal_components.cost_drivers",
+        "evidence_agent_1::section_2_materials.glass_components.appearance",
+        "evidence_agent_1::section_2_materials.glass_components.cost_drivers"
+      ]
+    },
+    {
+      "source_id": "src-018",
+      "source_name": "Historic England technical advice",
+      "url": "https://historicengland.org.uk/advice/technical-advice/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.when_refacing_not_recommended",
+        "evidence_agent_1::section_1_understanding_refacing.structural_defects_hidden_by_refacing",
+        "evidence_agent_2::section_3_styles.traditional",
+        "evidence_agent_2::section_3_styles.victorian",
+        "evidence_agent_2::section_3_styles.edwardian",
+        "evidence_agent_2::section_3_styles.georgian"
+      ]
+    },
+    {
+      "source_id": "src-025",
+      "source_name": "HSE workplace stairs guidance L24",
+      "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.disruption_level",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_lighting.structural_implications"
+      ]
+    },
+    {
+      "source_id": "trade-press-42",
+      "source_name": "Ideal Home — Stair panelling ideas",
+      "url": "https://www.idealhome.co.uk/hallway/hallway-decor/stair-panelling-ideas",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.wall_panelling.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "src-REF-10",
+      "source_name": "iWood — Timber Durability Scale and Rating",
+      "url": "https://www.iwood.co.uk/timber-durability",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.lifespan_after_refacing"
+      ]
+    },
+    {
+      "source_id": "trade-press-09",
+      "source_name": "Janine Stone — Georgian, Victorian & Edwardian Homes guide",
+      "url": "https://www.janinestone.com/georgian-victorian-and-edwardian-homes",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.georgian"
+      ]
+    },
+    {
+      "source_id": "trade-press-19",
+      "source_name": "Jarrods — What are the building regulations for stairs",
+      "url": "https://www.jarrodsstaircases.co.uk/what-are-the-building-regulations-for-stairs/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.floating_appearance"
+      ]
+    },
+    {
+      "source_id": "trade-press-07",
+      "source_name": "Knight Frank — Identifying period homes",
+      "url": "https://www.knightfrank.co.uk/theview/homes/identifying-period-homes-how-to-tell-if-your-property-is-georgian-victorian-or-edwardian",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.victorian"
+      ]
+    },
+    {
+      "source_id": "trade-press-37",
+      "source_name": "Lighting Electricians — LED Staircase Lighting Regulations",
+      "url": "https://lightingelectricians.co.uk/news/led-staircase-lighting/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_lighting.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_lighting.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.led_systems.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.led_systems.structural_implications"
+      ]
+    },
+    {
+      "source_id": "trade-press-43",
+      "source_name": "LL Company — Staircase Wall Panelling: Shaker, Wainscoting",
+      "url": "https://llcompany.co.uk/collections/wall-panelling-stairs/modern-contemporary",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.under_stair_panelling.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-01",
+      "source_name": "M-Tech Engineering — Traditional Staircases",
+      "url": "https://www.mtechengineering.co.uk/traditional/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.traditional"
+      ]
+    },
+    {
+      "source_id": "src-REF-14",
+      "source_name": "Marble Bros — Bespoke Stone Staircase Design UK",
+      "url": "https://marble-bros.co.uk/bespoke-stone-staircases-london/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.stone_stair_cladding.appearance",
+        "evidence_agent_1::section_2_materials.stone_stair_cladding.durability",
+        "evidence_agent_1::section_2_materials.stone_stair_cladding.maintenance",
+        "evidence_agent_1::section_2_materials.stone_stair_cladding.cost_drivers"
+      ]
+    },
+    {
+      "source_id": "trade-press-05",
+      "source_name": "Mr Timbers — 7 Farmhouse Staircase Ideas Using Reclaimed Wood",
+      "url": "https://mrtimbers.com/farmhouse-staircase-ideas/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.farmhouse"
+      ]
+    },
+    {
+      "source_id": "trade-press-12",
+      "source_name": "MS Metal Fabrications — Steel for Metal Staircases",
+      "url": "https://www.msmetal.co.uk/metal-staircase/materials/steel/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.industrial"
+      ]
+    },
+    {
+      "source_id": "trade-press-41",
+      "source_name": "Naturewall — Stair Panelling Ideas",
+      "url": "https://www.naturewall.com/blogs/inspiration/stair-panelling-ideas-to-step-up-your-interiors",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.wall_panelling.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-08",
+      "source_name": "ORA Design — Identifying Georgian, Victorian and Edwardian Homes",
+      "url": "https://www.oradesign.co.uk/blog/identifying-georgian-victorian-and-edwardian-homes/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.edwardian"
+      ]
+    },
+    {
+      "source_id": "trade-press-34",
+      "source_name": "P&L Joinery — Square Metal Stair Spindles",
+      "url": "https://www.p-ljoinery.co.uk/spindles/p/square-bar-spindle",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.metal_balusters.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-17",
+      "source_name": "Paradigm Stairs — Floating & Cantilever Staircases UK",
+      "url": "https://paradigmstairs.co.uk/floating-stairs/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.floating_appearance"
+      ]
+    },
+    {
+      "source_id": "trade-press-11",
+      "source_name": "Plusmood — White Oak Staircase ideas",
+      "url": "https://plusmood.com/white-oak-staircase/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.scandinavian"
+      ]
+    },
+    {
+      "source_id": "trade-press-26",
+      "source_name": "Richard Burbidge — Newels / Newel Posts",
+      "url": "https://richardburbidge.com/shop/stairparts/newels",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newels.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newels.structural_implications",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newel_caps.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-24",
+      "source_name": "Richard Burbidge — Stair Balustrades product guide",
+      "url": "https://richardburbidge.com/product-guides/stair-balustrades",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.handrails.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-28",
+      "source_name": "Richard Burbidge — Stair Spindles product guide",
+      "url": "https://richardburbidge.com/product-guides/stair-spindles",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.balusters.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-03",
+      "source_name": "Siller Stairs — Modern Stairs collection",
+      "url": "https://www.stairs-siller.com/modern-stairs/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.modern",
+        "evidence_agent_2::section_3_styles.minimalist"
+      ]
+    },
+    {
+      "source_id": "src-020",
+      "source_name": "SPAB — Society for the Protection of Ancient Buildings technical advice",
+      "url": "https://www.spab.org.uk/advice",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.when_refacing_not_recommended",
+        "evidence_agent_1::section_1_understanding_refacing.structural_defects_hidden_by_refacing",
+        "evidence_agent_2::section_3_styles.traditional",
+        "evidence_agent_2::section_3_styles.victorian",
+        "evidence_agent_2::section_3_styles.georgian"
+      ]
+    },
+    {
+      "source_id": "trade-press-18",
+      "source_name": "Spiral UK — Floating Stairs UK and Cantilever Staircases",
+      "url": "https://www.spiral.uk.com/staircase-types/floating-stairs/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.floating_appearance"
+      ]
+    },
+    {
+      "source_id": "trade-press-15",
+      "source_name": "Staired — Floating Staircase features and design options",
+      "url": "https://staired.co.uk/floating-staircase/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_3_styles.floating_appearance"
+      ]
+    },
+    {
+      "source_id": "src-REF-07",
+      "source_name": "StairFurb oak stair cladding",
+      "url": "https://stairfurb.co.uk/product/oak-tread-riser-stair-cladding/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.what_is_refacing",
+        "evidence_agent_1::section_1_understanding_refacing.parts_that_can_be_refaced",
+        "evidence_agent_1::section_1_understanding_refacing.lifespan_after_refacing",
+        "evidence_agent_1::section_2_materials.american_white_oak.maintenance",
+        "evidence_agent_1::section_2_materials.veneered_products.appearance",
+        "evidence_agent_1::section_2_materials.veneered_products.maintenance",
+        "evidence_agent_1::section_2_materials.hardwood_overlays.durability"
+      ]
+    },
+    {
+      "source_id": "trade-press-39",
+      "source_name": "Stellar Lighting — LED Stair Lights with Motion Sensor",
+      "url": "https://www.stellarlighting.co.uk/stair-lighting",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_lighting.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.led_systems.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "src-024",
+      "source_name": "Timber fastener datasheets per BS EN 14592",
+      "url": null,
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newels.structural_implications"
+      ]
+    },
+    {
+      "source_id": "trade-press-27",
+      "source_name": "Timber Online — Stair Parts UK guide",
+      "url": "https://www.timberonline.co.uk/blogs/timber-advice/stair-parts-explained-a-uk-guide-to-newel-posts-baserails-handrails-and-spindles",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.newels.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_posts.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "src-REF-09",
+      "source_name": "Timbersource — Sapele",
+      "url": "https://www.timbersource.co.uk/blog/what-you-need-know-about-sapele-timber",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.sapele.appearance",
+        "evidence_agent_1::section_2_materials.sapele.durability",
+        "evidence_agent_1::section_2_materials.sapele.maintenance",
+        "evidence_agent_1::section_2_materials.sapele.cost_drivers",
+        "evidence_agent_1::section_2_materials.tulipwood.appearance"
+      ]
+    },
+    {
+      "source_id": "src-014",
+      "source_name": "TRADA Wood Information Sheets",
+      "url": "https://trada.co.uk/publications/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.american_white_oak.appearance",
+        "evidence_agent_1::section_2_materials.european_oak.appearance",
+        "evidence_agent_1::section_2_materials.european_oak.cost_drivers",
+        "evidence_agent_1::section_2_materials.ash.appearance",
+        "evidence_agent_1::section_2_materials.ash.cost_drivers",
+        "evidence_agent_1::section_2_materials.beech.appearance",
+        "evidence_agent_1::section_2_materials.beech.durability",
+        "evidence_agent_1::section_2_materials.beech.cost_drivers",
+        "evidence_agent_1::section_2_materials.pine.appearance",
+        "evidence_agent_1::section_2_materials.pine.cost_drivers",
+        "evidence_agent_1::section_2_materials.sapele.appearance"
+      ]
+    },
+    {
+      "source_id": "src-REF-02",
+      "source_name": "TRADA Wood Species Database — Tulipwood (via wooduchoose)",
+      "url": "https://www.wooduchoose.com/wood-database/tulipwood-poplar/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_2_materials.tulipwood.appearance"
+      ]
+    },
+    {
+      "source_id": "trade-press-44",
+      "source_name": "TRS Bespoke Interiors — Wall Panelling and Stairs",
+      "url": "https://trsbespokeinteriors.co.uk/bespoke-carpentry-joinery-services/wall-panelling-and-stairs/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.under_stair_panelling.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-38",
+      "source_name": "UK LED Lights — LED Strip Lights for Stairs",
+      "url": "https://www.ukledlights.co.uk/collections/led-strip-lights-for-stairs",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.feature_lighting.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.led_systems.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "src-REF-13",
+      "source_name": "UK Workshop community thread — staircase cladding treads and risers",
+      "url": "https://www.ukworkshop.co.uk/threads/staircase-renovation-cladding-treads-and-risers.128161/",
+      "verification_status": "requires_manual_verification",
+      "cited_from": [
+        "evidence_agent_1::section_1_understanding_refacing.common_homeowner_mistakes"
+      ]
+    },
+    {
+      "source_id": "trade-press-46",
+      "source_name": "Victorian Emporium — Stair Runner Carpets on Staircases with Turns",
+      "url": "https://www.thevictorianemporium.com/publications/tips/article/how_to_use_stair_runner_carpets_on_unusual_staircases",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.stair_runners.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-40",
+      "source_name": "Walls and Floors — Wall Panelling Guide: Types, Materials, Design Trends, UK Regulations",
+      "url": "https://www.wallsandfloors.co.uk/blog/wall-panelling/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.wall_panelling.commonality_of_replacement"
+      ]
+    },
+    {
+      "source_id": "trade-press-45",
+      "source_name": "Yazco Carpets — Complete Guide to Stair Carpets and Runners",
+      "url": "https://www.yazco.co.uk/blog/stair-carpet-runners-guide/",
+      "verification_status": "trade_reference",
+      "cited_from": [
+        "evidence_agent_2::section_4_elements_that_can_be_changed.stair_runners.commonality_of_replacement",
+        "evidence_agent_2::section_4_elements_that_can_be_changed.carpet.commonality_of_replacement"
+      ]
+    }
+  ]
+}

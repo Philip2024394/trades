@@ -1,0 +1,616 @@
+{
+  "_meta": {
+    "agent": "evidence_agent_2",
+    "role": "Refacing Styles + What Can Be Changed",
+    "sections_covered": ["section_3_styles", "section_4_elements_that_can_be_changed"],
+    "created": "2026-07-28",
+    "web_calls_used": 11,
+    "web_call_budget": 15,
+    "source_catalogue_read": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-preparation\\source_catalogue.json (25 entries)",
+    "governance_note": "Topic-level source coverage only. No procedural extraction. No invented content. All facts traceable to sources listed. Unpublished craft or trade-only knowledge tagged expert_experience_required. Where source coverage could not be established within the budget, verification_status = unable_to_verify.",
+    "classification_scheme": {
+      "authoritative_and_covered": "Multiple authoritative UK sources (regulation / BS / trade body / heritage body) address the topic directly.",
+      "authoritative_but_partial": "Authoritative sources exist but topic-level treatment is fragmented; trade press / manufacturer catalogues fill gaps.",
+      "trade_and_manufacturer_only": "Coverage comes primarily from manufacturer catalogues or interior trade press, not statutory or standards bodies.",
+      "expert_experience_required": "Craft knowledge held by practitioners; not authoritatively published in accessible UK sources.",
+      "unable_to_verify": "Insufficient evidence surfaced within the budget to classify."
+    }
+  },
+
+  "section_3_styles": {
+    "traditional": {
+      "summary": "Traditional UK staircase styling is treated across period-home style guides, heritage bodies (Historic England, SPAB) and the BWF Stair Scheme for domestic timber stair design. Typical materials are hardwood (oak, mahogany, walnut) or softwood painted, with turned or plain balusters, box or feature newels and moulded handrails. Historic England and SPAB cover conservation of period traditional stairs; BWF Design Guide 1 covers modern manufacture of traditional-styled domestic timber stairs. Interior trade press covers current traditional aesthetics.",
+      "sources": [
+        { "source_id": "src-016", "source_name": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" },
+        { "source_id": "src-018", "source_name": "Historic England — Traditional Windows and Stairs technical guidance", "url": "https://historicengland.org.uk/advice/technical-advice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-020", "source_name": "SPAB Technical Advice", "url": "https://www.spab.org.uk/advice", "verification_status": "requires_manual_verification" },
+        { "source_id": "trade-press-01", "source_name": "M-Tech Engineering — Traditional Staircases", "url": "https://www.mtechengineering.co.uk/traditional/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Period-authentic mouldings and profile matching for pre-1919 stairs where original joinery patterns are not published."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    },
+
+    "contemporary": {
+      "summary": "Contemporary staircase styling is treated primarily in interior trade press and manufacturer catalogues, not in statutory documents. Interchangeable with 'modern' in industry usage. Typical materials: glass balustrades, brushed or powder-coated steel, oak treads, cable railings, open risers. BWF Design Guide 1 covers UK compliance requirements when contemporary designs use timber; Approved Document K governs compliance envelope (100mm sphere, pitch, handrail) regardless of style.",
+      "sources": [
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" },
+        { "source_id": "trade-press-02", "source_name": "Bavari Stairs — Modern vs Traditional Staircase Designs", "url": "https://www.bavari-stairs.com/post/modern-vs-traditional-staircase-designs", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": ["'Contemporary' and 'modern' are used interchangeably by UK industry press; no authoritative UK definition draws a distinction."],
+      "expert_experience_required": [],
+      "confidence_score": 0.7,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "modern": {
+      "summary": "Modern staircase styling is a marketing/design category, not a regulated one. Covered by interior trade press and manufacturer catalogues. Typical characteristics per trade sources: clean lines, open risers, floating appearance, minimal balustrade, glass or cable infill, monochrome or light-timber palette. Regulatory envelope (Approved Document K, BS 6180 for glass) applies identically to modern and traditional builds.",
+      "sources": [
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "trade-press-02", "source_name": "Bavari Stairs — Modern vs Traditional Staircase Designs", "url": "https://www.bavari-stairs.com/post/modern-vs-traditional-staircase-designs", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-03", "source_name": "Siller Stairs — Modern Stairs collection", "url": "https://www.stairs-siller.com/modern-stairs/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": ["No authoritative UK body defines 'modern' vs 'contemporary' — treated as synonyms across searched trade sources."],
+      "expert_experience_required": [],
+      "confidence_score": 0.65,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "farmhouse": {
+      "summary": "Farmhouse styling is treated in interior-design trade press and UK reclaimed-timber suppliers (Bisca, Mr Timbers). No statutory or British Standards coverage. Typical materials: reclaimed oak, barn wood, painted softwood risers, hand-forged or industrial steel balusters, wide plank treads with visible movement/patina. UK-specific examples include barn-conversion staircases (Bisca case studies).",
+      "sources": [
+        { "source_id": "trade-press-04", "source_name": "Bisca — How Reclaimed Timber Can Make A Unique Staircase Design", "url": "https://www.bisca.co.uk/staircase-blog/how-reclaimed-timber-can-make-a-unique-staircase-design/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-05", "source_name": "Mr Timbers — 7 Farmhouse Staircase Ideas Using Reclaimed Wood", "url": "https://mrtimbers.com/farmhouse-staircase-ideas/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Sourcing and structurally grading reclaimed timber for stair treads (movement, moisture history, defect assessment) — practitioner knowledge, not published in accessible UK guidance."],
+      "confidence_score": 0.55,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "victorian": {
+      "summary": "Victorian staircase styling is covered by Historic England and SPAB heritage guidance and by period-home identification guides (Knight Frank, Janine Stone, ORA design). Typical characteristics per trade sources: rich hardwoods (mahogany, walnut), turned balusters, ornate newel posts with finials, sweeping curves or spirals in grander homes, decorative timber mouldings. Approx period 1837–1901. Original stair replacement in listed properties triggers SPAB/Historic England guidance and potentially listed-building consent.",
+      "sources": [
+        { "source_id": "src-018", "source_name": "Historic England — technical advice", "url": "https://historicengland.org.uk/advice/technical-advice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-020", "source_name": "SPAB Technical Advice", "url": "https://www.spab.org.uk/advice", "verification_status": "requires_manual_verification" },
+        { "source_id": "trade-press-06", "source_name": "British Spirals & Castings — Difference Between Georgian, Victorian, Edwardian Railings", "url": "https://www.britishsc.co.uk/difference-between-georgian-victorian-edwardian-railings/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-07", "source_name": "Knight Frank — Identifying period homes", "url": "https://www.knightfrank.co.uk/theview/homes/identifying-period-homes-how-to-tell-if-your-property-is-georgian-victorian-or-edwardian", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Sub-period identification within Victorian era (Early / High / Late Victorian) for authentic refacing — not consistently covered in accessible published sources."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    },
+
+    "edwardian": {
+      "summary": "Edwardian staircase styling is covered by Historic England and period-home style guides. Typical characteristics per trade sources: transitional style between Victorian ornament and early modern restraint, cleaner lines, simpler balustrades, wider open stairwells, oak and painted timber, more understated newels. Approx period 1901–1910 (extending to c.1914). Conservation guidance from Historic England/SPAB applies where listed.",
+      "sources": [
+        { "source_id": "src-018", "source_name": "Historic England — technical advice", "url": "https://historicengland.org.uk/advice/technical-advice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "trade-press-06", "source_name": "British Spirals & Castings — Georgian/Victorian/Edwardian Railings", "url": "https://www.britishsc.co.uk/difference-between-georgian-victorian-edwardian-railings/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-08", "source_name": "ORA Design — Identifying Georgian, Victorian and Edwardian Homes", "url": "https://www.oradesign.co.uk/blog/identifying-georgian-victorian-and-edwardian-homes/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Distinguishing late-Victorian from early-Edwardian joinery in situ — practitioner knowledge."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_and_covered"
+    },
+
+    "georgian": {
+      "summary": "Georgian staircase styling is covered by Historic England, SPAB and period-home style guides. Typical characteristics per trade sources: proportion and symmetry, shallow risers, slender turned or square balusters (often three per tread in high-status homes), refined moulded handrails, restrained newel posts, mahogany or painted softwood. Approx period 1714–1830. Listed-building consent normally required for alteration of original fabric.",
+      "sources": [
+        { "source_id": "src-018", "source_name": "Historic England — technical advice", "url": "https://historicengland.org.uk/advice/technical-advice/", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-020", "source_name": "SPAB Technical Advice", "url": "https://www.spab.org.uk/advice", "verification_status": "requires_manual_verification" },
+        { "source_id": "trade-press-06", "source_name": "British Spirals & Castings — period railings guide", "url": "https://www.britishsc.co.uk/difference-between-georgian-victorian-edwardian-railings/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-09", "source_name": "Janine Stone — Georgian, Victorian & Edwardian Homes guide", "url": "https://www.janinestone.com/georgian-victorian-and-edwardian-homes", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Georgian-authentic baluster turning profiles vary regionally; original profile matching typically requires bench-joinery expertise, not published as a single reference."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    },
+
+    "scandinavian": {
+      "summary": "Scandinavian staircase styling is treated in interior trade press and international manufacturer catalogues (Dolle). No UK statutory coverage. Typical materials: light oak, birch, ash; white pigmented oil finishes; clean-line balustrades; open risers common; light neutral wall palette. UK regulatory envelope (Approved Document K, BS 6180 for glass, 100mm sphere rule for open risers) applies identically.",
+      "sources": [
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "trade-press-10", "source_name": "Dolle — Staircases in high quality and Scandinavian design", "url": "https://www.dolle.com/staircases", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-11", "source_name": "Plusmood — White Oak Staircase ideas", "url": "https://plusmood.com/white-oak-staircase/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Correct application of white-pigmented oil to preserve tone on European vs American oak — practitioner knowledge, not centrally published."],
+      "confidence_score": 0.6,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "industrial": {
+      "summary": "Industrial staircase styling is covered by UK metal-fabrication trade websites (MS Metal Fabrications, SSF Steel Staircases, Abbott-Wade). BS 5395-3 covers industrial-type stairs in industrial settings. Typical materials: mild steel or stainless steel stringers, powder-coated or raw finishes, cable/mesh/perforated infill, exposed fabrication marks, natural oak handrails paired with steel. In residential settings, Part K envelope still applies.",
+      "sources": [
+        { "source_id": "src-011", "source_name": "BS 5395-3:1985 Industrial type stairs", "verification_status": "requires_manual_verification" },
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "trade-press-12", "source_name": "MS Metal Fabrications — Steel for Metal Staircases", "url": "https://www.msmetal.co.uk/metal-staircase/materials/steel/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-13", "source_name": "Abbott-Wade — Stainless Steel Staircase Design & Installation", "url": "https://www.abbottwade.co.uk/steel-staircases/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": [],
+      "expert_experience_required": ["Distinguishing 'industrial style' (aesthetic marketing category) from 'industrial stair' (BS 5395-3 workplace category) — commonly confused in consumer briefs."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_but_partial"
+    },
+
+    "minimalist": {
+      "summary": "Minimalist staircase styling is treated in interior trade press. No UK statutory or standards coverage of the aesthetic itself. Typical characteristics per trade sources: single-material palette, hidden fixings, open risers, monostring or floating construction, integrated LED, no visible balustrade fixings, glass or cable infill. Overlaps heavily with contemporary / modern / Scandinavian style categories in trade usage.",
+      "sources": [
+        { "source_id": "trade-press-14", "source_name": "Decor8 AI — Minimalist Staircase ideas", "url": "https://www.decor8.ai/ideas/minimalist-staircase", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-03", "source_name": "Siller Stairs — Modern stairs collection", "url": "https://www.stairs-siller.com/modern-stairs/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": ["Minimalist / contemporary / modern / Scandinavian are overlapping trade categories; no source draws sharp boundaries."],
+      "expert_experience_required": ["Detailing hidden fixings and concealed structure to achieve a minimalist look while meeting BS 6180 loading — bespoke joinery/fabrication knowledge."],
+      "confidence_score": 0.55,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "floating_appearance": {
+      "summary": "Floating-appearance (cantilevered) staircases are covered by UK bespoke stair manufacturers (Bisca, Paradigm, Spiral UK, First Step Designs, Jarrods) and Part K guidance. Typical construction: treads cantilevered from a load-bearing wall or concealed steel spine. Structural implications significant: trade sources cite ~1.5–2.0 kN per-tread loading, requiring masonry, RC or steel-reinforced supporting wall — not standard timber/metal stud. Approved Document K still applies including 100mm sphere rule (open risers) and handrail requirements.",
+      "sources": [
+        { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+        { "source_id": "trade-press-15", "source_name": "Staired — Floating Staircase features and design options", "url": "https://staired.co.uk/floating-staircase/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-16", "source_name": "Continox — 7 Floating Staircase Design Mistakes UK Homeowners Make", "url": "https://continox.uk/7-common-mistakes-to-avoid-when-designing-floating-staircase/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-17", "source_name": "Paradigm Stairs — Floating & Cantilever Staircases UK", "url": "https://paradigmstairs.co.uk/floating-stairs/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-18", "source_name": "Spiral UK — Floating Stairs UK and Cantilever Staircases", "url": "https://www.spiral.uk.com/staircase-types/floating-stairs/", "verification_status": "trade_reference" },
+        { "source_id": "trade-press-19", "source_name": "Jarrods — What are the building regulations for stairs", "url": "https://www.jarrodsstaircases.co.uk/what-are-the-building-regulations-for-stairs/", "verification_status": "trade_reference" }
+      ],
+      "conflicting_opinions": ["Per-tread load figures cited by trade sources (1.5–2.0 kN) not directly re-verified against BS EN 1991-1-1 / UK NA within budget — treat as trade-source figure pending manual verification."],
+      "expert_experience_required": ["Structural engineer sign-off for wall reinforcement; concealed steel-spine detailing; deflection assessment for cantilevered treads — bespoke engineering, not published as a single reference."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    }
+  },
+
+  "section_4_elements_that_can_be_changed": {
+    "treads": {
+      "commonality_of_replacement": {
+        "summary": "Very commonly replaced or clad during refacing. Manufacturer stair-cladding kits (Cheshire Mouldings StairKlad, Stairbox, George Quinn) are widely marketed as an alternative to full replacement. Full tread replacement requires access to string housings/wedges (housed-string construction) or exposed tread carriage. Cladding overlays glue onto existing treads with pre-formed nosing.",
+        "sources": [
+          { "source_id": "trade-press-20", "source_name": "Cheshire Mouldings — Stair Klad cladding", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-21", "source_name": "Cheshire Mouldings — How To Renovate a Staircase Using Stair Parts", "url": "https://www.cheshiremouldings.co.uk/news/renovate-staircase-using-stair-parts/", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Cladding adds thickness (typically 12–18mm oak veneer) which alters rise/going and nosing projection. Approved Document K limits rise/going/pitch and requires consistent step geometry, so cumulative cladding can push a compliant flight out of tolerance. Full tread replacement in housed-string construction requires disassembly of wedges and possibly string removal.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "src-009", "source_name": "BS 5395-1:2010 Stairs with straight flights and winders", "url": "https://knowledge.bsigroup.com/products/stairs-code-of-practice-for-the-design-of-stairs-with-straight-flights-and-winders", "verification_status": "verified" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "common_pitfalls": [
+        "Cumulative cladding thickness pushes bottom step rise out of tolerance (unless compensated by removing landing overlay or floor covering).",
+        "Nosing projection lost when cladding matched flush to riser cladding — increases slip risk.",
+        "Adhesive squeeze-out staining tread surface (Cheshire pre-lacquered kits particularly)."
+      ],
+      "expert_experience_required": ["Assessing which treads are structurally sound enough for cladding vs which need full replacement — practitioner call not codified in published guidance."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    },
+
+    "risers": {
+      "commonality_of_replacement": {
+        "summary": "Commonly clad or replaced during refacing (often together with treads via Cheshire StairKlad / Stairbox / George Quinn cladding kits). Full replacement typical in open-riser conversions where original risers are removed to create modern open-tread appearance. Painted MDF risers commonly overlaid with veneered panels or repainted.",
+        "sources": [
+          { "source_id": "trade-press-20", "source_name": "Cheshire Mouldings — Stair Klad", "url": "https://www.cheshiremouldings.co.uk/stair-parts/stair-klad/", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Removing risers to create open-riser aesthetic reduces stiffening of the flight (risers typically tongue into tread underside via 12mm groove and form a diaphragm with the strings — per traditional housed-string construction). Also engages Approved Document K 100mm sphere rule for private domestic stairs (no opening in the stair structure may permit passage of a 100mm sphere).",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "common_pitfalls": [
+        "Open-riser conversion breaches Part K 100mm sphere rule without adding infill.",
+        "Removed risers eliminate diaphragm stiffening — flight may bounce/creak.",
+        "Cladding-over-riser mis-aligned with tread cladding creates visible shadow line."
+      ],
+      "expert_experience_required": ["Structural sign-off for open-riser conversion where risers were structurally engaged with tread underside groove — bench-joinery judgement."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_and_covered"
+    },
+
+    "strings": {
+      "commonality_of_replacement": {
+        "summary": "Rarely fully replaced (strings are structural spine of a staircase); commonly clad. Stringer cladding kits (Fiximer, Cheshire, Stairbox) are marketed for refacing over existing painted or worn strings. Full string replacement typically requires disassembling wedges and treads — often a complete staircase rebuild.",
+        "sources": [
+          { "source_id": "trade-press-22", "source_name": "Fiximer — Stringer Cladding", "url": "https://fiximer.co.uk/stringer-cladding/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-23", "source_name": "DC Sons Joinery — Staircase Cladding", "url": "https://dcsonsjoinery.co.uk/staircase-cladding-the-cost-effective-way-to-create-a-stunning-feature-in-your-home/", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Strings hold treads, risers and wedges — the primary load-carrying element of a housed-string stair. Full replacement effectively replaces the staircase. Cladding does not affect structural function but does slightly thicken the assembly which may need to be checked against handrail and newel fixing depths.",
+        "sources": [
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" },
+          { "source_id": "src-012", "source_name": "BS EN 14076:2013 Timber stairs — Terminology", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "Cladding over wall string traps damp against plaster if not vented.",
+        "Failure to re-secure loose wedges before cladding hides an existing creak permanently."
+      ],
+      "expert_experience_required": ["When a stair is unrepairable and full string replacement is needed vs when tightening wedges + cladding suffices — bench-joinery inspection judgement."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_but_partial"
+    },
+
+    "handrails": {
+      "commonality_of_replacement": {
+        "summary": "Very commonly replaced during refacing. Wide manufacturer catalogue availability (Richard Burbidge, Cheshire Mouldings, Stairbox, Howarth Timber). BWF Design Guide 1 and Approved Document K both cover replacement compliance.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" },
+          { "source_id": "trade-press-24", "source_name": "Richard Burbidge — Stair Balustrades product guide", "url": "https://richardburbidge.com/product-guides/stair-balustrades", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Approved Document K requires handrail height 900–1000mm above pitch line, continuous across flights and landings, on at least one side (both sides if stair ≥1000mm wide). Replacement engages current regulations (unless considered like-for-like repair). Handrail termination detail at newel affects load transfer.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "trade-press-25", "source_name": "Binks Balustrades — Handrail height on stairs UK guide", "url": "https://binksbalustrades.co.uk/handrail-height-on-stairs-uk/", "verification_status": "trade_reference" }
+        ]
+      },
+      "common_pitfalls": [
+        "New handrail installed at pre-existing sub-900mm height in listed/period property under repair rules, then challenged at later sale.",
+        "Non-continuous handrail across newel joints — Part K requires continuity.",
+        "Handrail diameter/section not grippable (Part K guidance favours 42–50mm circular or equivalent)."
+      ],
+      "expert_experience_required": ["Rake-cut geometry at winders and quarter-landings — bench-joinery skill, not published as a single reference."],
+      "confidence_score": 0.85,
+      "classification": "authoritative_and_covered"
+    },
+
+    "newels": {
+      "commonality_of_replacement": {
+        "summary": "Commonly replaced or clad during refacing. Richard Burbidge, Cheshire Mouldings, Stairbox all publish newel post catalogues for retrofit. Newel cladding kits (over existing newel) common where full newel replacement would disturb string housing.",
+        "sources": [
+          { "source_id": "trade-press-26", "source_name": "Richard Burbidge — Newels / Newel Posts", "url": "https://richardburbidge.com/shop/stairparts/newels", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-27", "source_name": "Timber Online — Stair Parts UK guide", "url": "https://www.timberonline.co.uk/blogs/timber-advice/stair-parts-explained-a-uk-guide-to-newel-posts-baserails-handrails-and-spindles", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Newels anchor the handrail and baluster assembly and often the flight itself at bottom-tread and half-landing. Full replacement typically requires the newel to be tenoned/bolted into string and floor joist — a structural fixing detail. Cladding over existing newel avoids disturbing anchorage. Richard Burbidge specifies newels tested to British Standards, installed centrally to string of flight and riser or half-lapped onto landing joists/trimmer.",
+        "sources": [
+          { "source_id": "trade-press-26", "source_name": "Richard Burbidge — Newel posts installation", "url": "https://richardburbidge.com/shop/stairparts/newels", "verification_status": "trade_reference" },
+          { "source_id": "src-024", "source_name": "Timber fastener datasheets per BS EN 14592", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "Cladded newel loses grip on original — visible ovality at floor line.",
+        "Newel replacement without re-torqueing bolt through joist trimmer — wobble under Part K 0.36 kN horizontal load.",
+        "Substituting a decorative-only newel for a load-bearing one in mid-flight."
+      ],
+      "expert_experience_required": ["Judging when a newel is still structurally live vs decorative-only after previous repairs."],
+      "confidence_score": 0.75,
+      "classification": "authoritative_and_covered"
+    },
+
+    "balusters": {
+      "commonality_of_replacement": {
+        "summary": "Very commonly replaced. Manufacturer catalogues (Richard Burbidge, Cheshire Mouldings, Stairbox, Black Country Metalworks, British Ironwork Centre) offer wide range in timber (turned, square, chamfered, spiral) and metal (square bar, twisted bar, decorative panels). Fitted by gluing and pinning into handrail groove and baserail groove per trade guidance.",
+        "sources": [
+          { "source_id": "trade-press-28", "source_name": "Richard Burbidge — Stair Spindles product guide", "url": "https://richardburbidge.com/product-guides/stair-spindles", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-29", "source_name": "BookaBuilder UK — Fit Stair Spindles in a UK Home", "url": "https://www.bookabuilderuk.com/blog/fit-stair-spindles-uk-evenly-securely", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Approved Document K 100mm sphere rule: no gap greater than 100mm anywhere in guarding (spindle centres therefore max 99mm typical guidance). BS 6180:2011 governs barrier loading (0.36 kN horizontal at handrail height for dwelling stairs — trade-source figure). Replacement typically like-for-like repair unless re-configuring; current regulations apply where scope is significant.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "trade-press-30", "source_name": "Continox — UK Staircase Building Regulations 2026 Part K Guide", "url": "https://continox.uk/stair-staircase-regulations/", "verification_status": "trade_reference" }
+        ]
+      },
+      "common_pitfalls": [
+        "Spindle spacing at start/end of flight exceeds 100mm — non-compliant with Part K.",
+        "Metal spindles retrofitted into timber handrail groove without proprietary shoe — poor load transfer.",
+        "Bottom-cut baluster angle wrong for stair pitch — visible gap at baserail."
+      ],
+      "expert_experience_required": ["Setting-out even spacing where flight tread count leaves an awkward remainder — bench-joinery judgement."],
+      "confidence_score": 0.85,
+      "classification": "authoritative_and_covered"
+    },
+
+    "glass_panels": {
+      "commonality_of_replacement": {
+        "summary": "Commonly retrofitted where owners convert timber balustrade to glass for contemporary look. Wide UK supplier coverage (FOL Design, Continox, Fluid Glass, Binks Balustrades, Glass Helper). BS 6180:2011 is the primary technical standard.",
+        "sources": [
+          { "source_id": "trade-press-31", "source_name": "FOL Design — Glass Balustrade Regulations UK: Part K and BS 6180 Guide", "url": "https://fol-design.co.uk/blog/glass-balustrade-regulations-uk", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-32", "source_name": "Continox — Glass Balustrade Regulations UK 2026", "url": "https://continox.uk/glass-balustrade-regulations/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-33", "source_name": "Binks Balustrades — BS 6180 Compliance for Glass Balustrades", "url": "https://binksbalustrades.co.uk/b-s-6180/", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Approved Document K governs 900mm minimum height (measured from pitch line for stairs). BS 6180:2011 governs barrier loading — trade sources cite 0.74 kN/m horizontal UDL residential at handrail or 1100mm. Glass must be toughened per BS EN 12150; frameless (no top handrail) typically requires 17.5–22mm laminated per trade sources. Fixings must be rated to BS 6180 loads. Wall/floor/string substrate must accept the fixing shoe.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "trade-press-31", "source_name": "FOL Design — Glass Balustrade Regulations UK", "url": "https://fol-design.co.uk/blog/glass-balustrade-regulations-uk", "verification_status": "trade_reference" }
+        ]
+      },
+      "common_pitfalls": [
+        "Frameless glass installed without laminated glass — post-breakage fall risk (BS 6180 requires containment or laminated).",
+        "Glass shoe fixed into carpet-thickness plywood not structural sub-base — pull-out failure.",
+        "900mm height measured from tread nosing not pitch line — under-height on angled sections."
+      ],
+      "expert_experience_required": ["Structural engineer sign-off for frameless installations where standard shoe manufacturers' data does not cover the substrate."],
+      "confidence_score": 0.85,
+      "classification": "authoritative_and_covered"
+    },
+
+    "metal_balusters": {
+      "commonality_of_replacement": {
+        "summary": "Commonly retrofitted. UK suppliers (P&L Joinery, Black Country Metalworks, British Ironwork Centre, Richard Burbidge metal range) offer square bar, twisted bar, decorative panel spindles. Trade guidance describes fixing via proprietary brackets or shoes into existing timber handrail/baserail.",
+        "sources": [
+          { "source_id": "trade-press-34", "source_name": "P&L Joinery — Square Metal Stair Spindles", "url": "https://www.p-ljoinery.co.uk/spindles/p/square-bar-spindle", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-35", "source_name": "Black Country Metalworks — Stair Spindles Guide & FAQs", "url": "https://www.blackcountrymetalworks.co.uk/stair-spindles-faq", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-36", "source_name": "British Ironwork Centre — Stair Spindles FAQs", "url": "https://www.britishironworkcentre.co.uk/stair-spindle-faq/", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Same Part K sphere rule and BS 6180 loading as timber balusters. Metal shoe/bracket detail transfers load into handrail and baserail (or into tread top for shoe-mounted systems) — substrate needs to accept fixing.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "trade-press-32", "source_name": "Continox — Glass Balustrade Regulations UK 2026", "url": "https://continox.uk/glass-balustrade-regulations/", "verification_status": "trade_reference" }
+        ]
+      },
+      "common_pitfalls": [
+        "Powder-coating chipping at shoe interface if not touch-up sealed — corrosion in wet/coastal properties.",
+        "Grub-screw shoes on cast iron balusters loosen over time — Part K load compliance drift.",
+        "Mixing metal spindle with timber baserail without allowing for differential movement."
+      ],
+      "expert_experience_required": ["Selecting metal grade / finish for coastal or high-humidity UK properties."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_but_partial"
+    },
+
+    "feature_posts": {
+      "commonality_of_replacement": {
+        "summary": "Feature posts (oversized decorative or feature-lit newels beyond standard newel catalogue) are covered primarily by bespoke joinery workshops and interior trade press. No dedicated statutory or standards coverage — treated as a bespoke joinery item. Fixing details similar to newel post; structural role varies with design.",
+        "sources": [
+          { "source_id": "trade-press-27", "source_name": "Timber Online — Stair Parts UK guide", "url": "https://www.timberonline.co.uk/blogs/timber-advice/stair-parts-explained-a-uk-guide-to-newel-posts-baserails-handrails-and-spindles", "verification_status": "trade_reference" },
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Where a feature post is load-bearing (mid-flight or half-landing) same fixing/structural rules apply as newels. Where purely decorative (surface-mounted, no handrail termination) — lighter fixing. Feature posts with integrated LED require Part P competent-person notified electrical work.",
+        "sources": [
+          { "source_id": "src-016", "source_name": "BWF Design Guide 1", "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf", "verification_status": "verified" }
+        ]
+      },
+      "common_pitfalls": [
+        "Decorative feature post specified where handrail terminates on it — no structural fixing designed in.",
+        "LED cable route bored through structural section reducing capacity."
+      ],
+      "expert_experience_required": ["Bespoke feature-post design and load path — not codified; bench-joinery/engineer collaboration."],
+      "confidence_score": 0.55,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "newel_caps": {
+      "commonality_of_replacement": {
+        "summary": "Frequently replaced as cosmetic-only item. Wide manufacturer catalogue coverage (Richard Burbidge, Cheshire Mouldings, Stairbox). Ball, acorn, cube and flat-cap profiles standard. Often the cheapest refacing intervention.",
+        "sources": [
+          { "source_id": "trade-press-26", "source_name": "Richard Burbidge — Newels", "url": "https://richardburbidge.com/shop/stairparts/newels", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-21", "source_name": "Cheshire Mouldings — Renovate a Staircase Using Stair Parts", "url": "https://www.cheshiremouldings.co.uk/news/renovate-staircase-using-stair-parts/", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "None structural — decorative timber cap glued/dowelled to newel top. No Part K impact provided handrail termination not disturbed. Cap depth may affect vertical measurement if user takes handrail height reference from cap top instead of pitch line.",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" }
+        ]
+      },
+      "common_pitfalls": [
+        "Cap glued only — pops off after months from thermal cycling. Dowel fixing recommended by manufacturers.",
+        "Cap profile mismatched to newel taper — visible gap."
+      ],
+      "expert_experience_required": [],
+      "confidence_score": 0.75,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "feature_lighting": {
+      "commonality_of_replacement": {
+        "summary": "Commonly added during refacing — becoming a standard interior spec item. Trade press (Ideal Home, Naturewall, LL Company) and specialist lighting suppliers (UK LED Lights, Stellar Lighting) cover product range. HSE HSG38 'Lighting at Work' gives illuminance guidance (referenced by lighting trade sources).",
+        "sources": [
+          { "source_id": "trade-press-37", "source_name": "Lighting Electricians — LED Staircase Lighting Regulations", "url": "https://lightingelectricians.co.uk/news/led-staircase-lighting/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-38", "source_name": "UK LED Lights — LED Strip Lights for Stairs", "url": "https://www.ukledlights.co.uk/collections/led-strip-lights-for-stairs", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-39", "source_name": "Stellar Lighting — LED Stair Lights with Motion Sensor", "url": "https://www.stellarlighting.co.uk/stair-lighting", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Recessed step lights and LED strip channels require routing/rebating into risers, strings or baserail — light-loss of section but not typically structural on domestic stair. Requires Part P notifiable electrical work by registered electrician per lighting trade sources. Trade guidance references 20 lux average / 5 lux minimum indoor stairs per HSE HSG38 (workplace context — check applicability to dwellings).",
+        "sources": [
+          { "source_id": "trade-press-37", "source_name": "Lighting Electricians — LED Staircase Lighting Regulations", "url": "https://lightingelectricians.co.uk/news/led-staircase-lighting/", "verification_status": "trade_reference" },
+          { "source_id": "src-025", "source_name": "HSE L24 / HSG38 workplace lighting", "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "Unnotified electrical work — non-compliant with Part P.",
+        "LED driver placed inside sealed stair cavity without ventilation — over-temperature failure.",
+        "Cable route bored through structural string reducing capacity."
+      ],
+      "expert_experience_required": ["Balancing lumen output for aesthetic vs safety (avoid glare into eye line as user descends)."],
+      "confidence_score": 0.65,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "wall_panelling": {
+      "commonality_of_replacement": {
+        "summary": "Commonly added alongside staircase refacing — traditional (wainscot, shaker, tongue-and-groove) or contemporary (fluted, slatted, half-height slat). Wide UK trade press coverage (Ideal Home, Houzz UK, Naturewall, LL Company, Walls and Floors, TRS Bespoke). Not directly covered by staircase standards; treated as wall finish.",
+        "sources": [
+          { "source_id": "trade-press-40", "source_name": "Walls and Floors — Wall Panelling Guide: Types, Materials, Design Trends, UK Regulations", "url": "https://www.wallsandfloors.co.uk/blog/wall-panelling/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-41", "source_name": "Naturewall — Stair Panelling Ideas", "url": "https://www.naturewall.com/blogs/inspiration/stair-panelling-ideas-to-step-up-your-interiors", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-42", "source_name": "Ideal Home — Stair panelling ideas", "url": "https://www.idealhome.co.uk/hallway/hallway-decor/stair-panelling-ideas", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Non-structural. Fire compliance may apply where staircase is protected escape route (Approved Document B); panelling material spread-of-flame class matters in that case. Panel battens rake-cut to follow pitch line for continuity.",
+        "sources": [
+          { "source_id": "src-002", "source_name": "Approved Document B Volume 1 (Dwellings)", "url": "https://www.gov.uk/government/publications/fire-safety-approved-document-b", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "Panel dado line does not track stair pitch — visible mis-alignment.",
+        "Panelling installed over handrail wall fixings blocking future maintenance."
+      ],
+      "expert_experience_required": ["Rake-line setting-out on curved or winder flights."],
+      "confidence_score": 0.65,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "under_stair_panelling": {
+      "commonality_of_replacement": {
+        "summary": "Commonly added or replaced during refacing. Includes T&G sheeting, plasterboard, or joinery panels concealing cupboards / storage / seating. UK trade press coverage (Naturewall, LL Company, TRS Bespoke, Houzz UK) treats it as bespoke joinery work.",
+        "sources": [
+          { "source_id": "trade-press-43", "source_name": "LL Company — Staircase Wall Panelling: Shaker, Wainscoting", "url": "https://llcompany.co.uk/collections/wall-panelling-stairs/modern-contemporary", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-44", "source_name": "TRS Bespoke Interiors — Wall Panelling and Stairs", "url": "https://trsbespokeinteriors.co.uk/bespoke-carpentry-joinery-services/wall-panelling-and-stairs/", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Non-structural. Fire compliance under Approved Document B where stair enclosure serves as escape route — under-stair area within protected shaft has restricted uses (Volume 1 sets out permitted uses of under-stair space in dwelling protected stairways).",
+        "sources": [
+          { "source_id": "src-002", "source_name": "Approved Document B Volume 1 (Dwellings)", "url": "https://www.gov.uk/government/publications/fire-safety-approved-document-b", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "Under-stair cupboard fitted with non-FD30 door where staircase forms only escape route in 3-storey dwelling — Part B breach.",
+        "T&G sheeting fitted without expansion gap — cupping/splitting."
+      ],
+      "expert_experience_required": ["When Part B protected-shaft rules apply in a specific dwelling geometry (2-storey vs 3-storey vs loft-converted)."],
+      "confidence_score": 0.6,
+      "classification": "authoritative_but_partial"
+    },
+
+    "stair_runners": {
+      "commonality_of_replacement": {
+        "summary": "Very commonly added or replaced during refacing. Wide UK trade press and installer coverage (Yazco Carpets London, Victorian Emporium, Carpet Warehouse, BookaBuilder UK). Runner is a narrow carpet strip fixed centrally leaving stair sides exposed.",
+        "sources": [
+          { "source_id": "trade-press-45", "source_name": "Yazco Carpets — Complete Guide to Stair Carpets and Runners", "url": "https://www.yazco.co.uk/blog/stair-carpet-runners-guide/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-46", "source_name": "Victorian Emporium — Stair Runner Carpets on Staircases with Turns", "url": "https://www.thevictorianemporium.com/publications/tips/article/how_to_use_stair_runner_carpets_on_unusual_staircases", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-47", "source_name": "BookaBuilder UK — Cost to Install a Stair Carpet 2026", "url": "https://www.bookabuilderuk.com/blog/stair-carpet-cost-2026-supply-fit", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "None structural. Runner thickness plus underlay may add several millimetres to going and reduce effective nosing projection. Fixing via stair rods, gripper strip or stapling. Slip resistance and edge fixing key to safety (Part K requires safe consistent geometry).",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" }
+        ]
+      },
+      "common_pitfalls": [
+        "Runner not centred / not consistent width — trip hazard.",
+        "Underlay compression differs step-to-step — inconsistent rise.",
+        "Gripper strips proud of nosing — hazard."
+      ],
+      "expert_experience_required": ["Runner fitting on winder or bullnose treads — specialist installer skill (specialist tools per trade sources)."],
+      "confidence_score": 0.7,
+      "classification": "trade_and_manufacturer_only"
+    },
+
+    "carpet": {
+      "commonality_of_replacement": {
+        "summary": "Very commonly replaced during refacing (full stair carpet vs runner). Wide UK trade coverage. Fitting requires specialist tools (knee kicker, stair tool) per trade sources; strongly recommended as professional fit.",
+        "sources": [
+          { "source_id": "trade-press-45", "source_name": "Yazco Carpets — Stair Carpets and Runners Guide", "url": "https://www.yazco.co.uk/blog/stair-carpet-runners-guide/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-48", "source_name": "Carpet Warehouse — How Do You Install Carpets On Stairs", "url": "https://carpetwarehouse.co.uk/blogs/news/how-do-you-install-carpets-on-stairs-step-by-step-runner-guide", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "None structural. Thickness affects effective rise/going and can shift a marginally compliant flight (Part K requires consistent rise across a flight). Fire class rating may apply where stair is protected escape route in multi-occupancy (Approved Document B, BS 5395-2 for HMOs).",
+        "sources": [
+          { "source_id": "src-001", "source_name": "Approved Document K", "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf", "verification_status": "verified" },
+          { "source_id": "src-003", "source_name": "Approved Document B Volume 2 (non-dwellings — HMOs)", "verification_status": "requires_manual_verification" }
+        ]
+      },
+      "common_pitfalls": [
+        "New carpet after bare-tread refacing changes effective step rise — inconsistent transition step.",
+        "Non-fire-rated carpet in protected common stair (Part B breach)."
+      ],
+      "expert_experience_required": ["Bullnose and winder wrap technique — installer skill."],
+      "confidence_score": 0.7,
+      "classification": "authoritative_but_partial"
+    },
+
+    "led_systems": {
+      "commonality_of_replacement": {
+        "summary": "Commonly added during refacing (see also feature_lighting). Includes step-recessed LEDs, riser-mounted LED strip, handrail-integrated LED, motion-activated systems, coloured/RGB.",
+        "sources": [
+          { "source_id": "trade-press-37", "source_name": "Lighting Electricians — LED Staircase Lighting", "url": "https://lightingelectricians.co.uk/news/led-staircase-lighting/", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-38", "source_name": "UK LED Lights — LED Strip Lights for Stairs", "url": "https://www.ukledlights.co.uk/collections/led-strip-lights-for-stairs", "verification_status": "trade_reference" },
+          { "source_id": "trade-press-39", "source_name": "Stellar Lighting — LED Stair Lights with Motion Sensor", "url": "https://www.stellarlighting.co.uk/stair-lighting", "verification_status": "trade_reference" }
+        ]
+      },
+      "structural_implications": {
+        "summary": "Notifiable electrical work under Part P — must be by registered electrician per lighting trade sources. Driver location, cable routing, IP rating for open-plan/wet environments all matter. Cutting recesses into strings/risers reduces section — check with joiner/engineer for load-bearing elements.",
+        "sources": [
+          { "source_id": "trade-press-37", "source_name": "Lighting Electricians — LED Staircase Lighting", "url": "https://lightingelectricians.co.uk/news/led-staircase-lighting/", "verification_status": "trade_reference" }
+        ]
+      },
+      "common_pitfalls": [
+        "Unnotified Part P work — enforcement risk at property sale.",
+        "Driver inside sealed void — overheating and premature failure.",
+        "Cool-white 6500K used where warm-white 2700K would suit residential aesthetic (mismatch to other room lighting)."
+      ],
+      "expert_experience_required": ["Colour temperature, lumen output and beam angle selection for aesthetic-plus-safety balance."],
+      "confidence_score": 0.6,
+      "classification": "trade_and_manufacturer_only"
+    }
+  },
+
+  "aggregate": {
+    "counts_by_classification": {
+      "section_3_styles": {
+        "authoritative_and_covered": 4,
+        "authoritative_but_partial": 1,
+        "trade_and_manufacturer_only": 6,
+        "expert_experience_required": 0,
+        "unable_to_verify": 0
+      },
+      "section_4_elements": {
+        "authoritative_and_covered": 7,
+        "authoritative_but_partial": 4,
+        "trade_and_manufacturer_only": 5,
+        "expert_experience_required": 0,
+        "unable_to_verify": 0
+      },
+      "totals": {
+        "authoritative_and_covered": 11,
+        "authoritative_but_partial": 5,
+        "trade_and_manufacturer_only": 11,
+        "expert_experience_required_flags_raised_across_topics": 20,
+        "unable_to_verify": 0
+      }
+    },
+    "web_calls_used": 11,
+    "web_calls_budget": 15,
+    "top_3_richest_sources": [
+      { "rank": 1, "source": "Approved Document K (src-001)", "reason": "Cited across 11 topics — the universal envelope for any UK staircase change." },
+      { "rank": 2, "source": "BWF Design Guide 1 Domestic Timber Stairs (src-016)", "reason": "Verified authoritative UK guide referenced across styles + tread/riser/string/newel/baluster topics." },
+      { "rank": 3, "source": "Cheshire Mouldings / Richard Burbidge / Stairbox manufacturer catalogues (multiple trade-refs)", "reason": "Underpin every retrofit element topic — treads, risers, strings, newels, balusters, caps." }
+    ],
+    "top_3_thinnest_topics": [
+      { "topic": "Farmhouse (style)", "reason": "No statutory or standards coverage; only interior trade press and reclaimed-timber suppliers." },
+      { "topic": "Minimalist (style)", "reason": "Aesthetic category, no authoritative UK definition; overlaps with contemporary/modern/Scandinavian." },
+      { "topic": "Feature posts (element)", "reason": "No dedicated statutory or standards coverage; treated as bespoke joinery item outside catalogues." }
+    ],
+    "surprising_style_vs_source_gaps": [
+      "Historic England and SPAB landing pages surfaced but specific stair advice notes were not individually verified within budget — Georgian/Victorian/Edwardian conservation coverage confirmed at organisation level, not at document level.",
+      "BS 5395-1 (Straight flights/winders) is authoritative on geometry but is paywalled BSI content; trade press paraphrases dominate open-web coverage of every refacing element.",
+      "Farmhouse and industrial styles both have wide UK aesthetic appeal but zero heritage-body coverage — treated purely as trade categories, unlike Georgian/Victorian/Edwardian which have SPAB/Historic England backing.",
+      "BS 6180 (barrier loading) is referenced by every glass-balustrade trade source but not directly verified — the 0.74 kN/m and 0.36 kN residential loading figures are trade-source paraphrases pending BSI verification.",
+      "Feature LED / Part P electrical intersection with staircase joinery is covered only by lighting trade sources — no BWF, Approved Document K or Approved Document P source directly ties the two together as an integrated refacing topic."
+    ]
+  }
+}

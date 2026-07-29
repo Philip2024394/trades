@@ -1,0 +1,265 @@
+# Topics Classification · Direct-Authorable vs Expert-Required
+
+Every topic assigned to one of three buckets to guide authoring prioritisation.
+
+- **Directly authorable from published evidence:** 46
+- **Intermediate (partial published coverage · expert should verify):** 168
+- **Expert experience required (no published source · craft knowledge only):** 35
+
+## Directly authorable from published evidence (46)
+
+- **section_7_staircase_lighting_why_how_tech · why_install_stair_lighting** · confidence — · 0 sources · evidenced_regulatory / expert_experience_required_for_design_intent
+- **section_7_staircase_lighting_why_how_tech · benefits** · confidence — · 0 sources · evidenced / property_value_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · drawbacks** · confidence — · 0 sources · evidenced / craft_disruption_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · energy_consumption** · confidence — · 0 sources · evidenced_directional / specific_household_figures_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · typical_lifespan** · confidence — · 0 sources · evidenced
+- **section_7_staircase_lighting_why_how_tech · led_technology** · confidence — · 0 sources · evidenced / bin_matching_craft_knowledge_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · smart_lighting** · confidence — · 0 sources · evidenced_for_protocols / stair_specific_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · motion_pir_and_wall_sensors** · confidence — · 0 sources · evidenced_standards_only
+- **section_7_staircase_lighting_why_how_tech · timers_remote_and_phone_control** · confidence — · 0 sources · evidenced_at_category_level
+- **section_7_staircase_lighting_why_how_tech · smart_home_integration** · confidence — · 0 sources · evidenced_at_vendor_documentation_level
+- **section_7_staircase_lighting_why_how_tech · colour_temperature_kelvin_and_warm_vs_cool** · confidence — · 0 sources · evidenced_for_definitions / specific_K_recommendation_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · brightness_recommendations_lux_lumen** · confidence — · 0 sources · evidenced_from_published_standards_only
+- **section_7_staircase_lighting_why_how_tech · emergency_lighting_requirements** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · retrofitting** · confidence — · 0 sources · evidenced_at_regulatory_level
+- **section_8_installing_stair_lights · running_cables_and_concealing_cables** · confidence — · 0 sources · evidenced_regulatory / procedure_expert_experience_required
+- **section_8_installing_stair_lights · led_drivers_and_transformers** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · access_panels_and_serviceability** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · moisture_protection_ip_ratings** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · fire_considerations** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · electrical_regulations_bs_7671_and_part_p** · confidence — · 0 sources · evidenced
+- **section_8_installing_stair_lights · common_installation_mistakes** · confidence — · 0 sources · evidenced
+- **section_9_maintaining_stair_lights · led_replacement** · confidence — · 0 sources · evidenced
+- **section_9_maintaining_stair_lights · driver_replacement** · confidence — · 0 sources · evidenced_for_failure_mode / procedure_expert_experience_required
+- **section_9_maintaining_stair_lights · lifespan** · confidence — · 0 sources · evidenced
+- **section_9_maintaining_stair_lights · troubleshooting** · confidence — · 0 sources · evidenced / repair_procedure_expert_experience_required
+- **section_9_maintaining_stair_lights · water_damage** · confidence — · 0 sources · evidenced
+- **section_9_maintaining_stair_lights · power_failures** · confidence — · 0 sources · evidenced
+- **section_9_maintaining_stair_lights · future_proofing** · confidence — · 0 sources · evidenced_at_category_level / handover_documentation_expert_experience_required
+- **section_1_understanding_refacing · what_is_refacing** · confidence 0.8 · 5 sources · requires_manual_verification
+- **section_1_understanding_refacing · parts_that_can_be_refaced** · confidence 0.82 · 4 sources · requires_manual_verification
+- **section_1_understanding_refacing · reface_vs_replace_decision** · confidence 0.82 · 4 sources · requires_manual_verification
+- **section_1_understanding_refacing · when_refacing_not_recommended** · confidence 0.78 · 5 sources · requires_manual_verification
+- **section_1_understanding_refacing · structural_defects_hidden_by_refacing** · confidence 0.78 · 3 sources · expert_experience_required
+- **section_1_understanding_refacing · planning_permission** · confidence 0.8 · 3 sources · requires_manual_verification
+- **section_1_understanding_refacing · building_regulations_impact** · confidence 0.82 · 7 sources · verified
+- **section_1_understanding_refacing · advantages_disadvantages** · confidence 0.78 · 3 sources · requires_manual_verification
+- **section_1_understanding_refacing · common_homeowner_mistakes** · confidence 0.78 · 4 sources · requires_manual_verification
+- **section_2_materials · american_white_oak** · confidence 0.85 · 0 sources · verified
+- **section_2_materials · european_oak** · confidence 0.85 · 0 sources · verified
+- **section_2_materials · tulipwood** · confidence 0.85 · 0 sources · verified
+- **section_2_materials · metal_components** · confidence 0.82 · 0 sources · verified
+- **section_2_materials · glass_components** · confidence 0.85 · 0 sources · verified
+- **section_3_styles · traditional** · confidence 0.75 · 4 sources · authoritative_and_covered
+- **section_3_styles · victorian** · confidence 0.75 · 4 sources · authoritative_and_covered
+- **section_3_styles · georgian** · confidence 0.75 · 4 sources · authoritative_and_covered
+- **section_3_styles · floating_appearance** · confidence 0.75 · 6 sources · authoritative_and_covered
+
+## Intermediate — partial coverage (168)
+
+- **section_10_design_integration · glass_staircases_with_lighting** · confidence — · 0 sources · partial_source_coverage
+- **section_10_design_integration · floating_staircases_with_lighting** · confidence — · 0 sources · commercial_source_coverage
+- **section_10_design_integration · closed_string_staircases_with_lighting** · confidence — · 0 sources · partial_source_coverage
+- **section_10_design_integration · feature_walls_adjacent_to_stairs** · confidence — · 0 sources · commercial_source_coverage
+- **section_10_design_integration · under_stair_storage_with_lighting** · confidence — · 0 sources · commercial_source_coverage
+- **section_10_design_integration · open_risers_with_lighting** · confidence — · 0 sources · regulatory_only_coverage
+- **section_10_design_integration · carpet_runners_with_lighting** · confidence — · 0 sources · commercial_source_coverage
+- **section_10_design_integration · luxury_homes_lighting_integration** · confidence — · 0 sources · commercial_source_coverage
+- **section_10_design_integration · commercial_staircases_lighting** · confidence — · 0 sources · regulatory_source_coverage_strong
+- **section_11_safety · are_stair_lights_safe** · confidence — · 0 sources · regulatory_source_coverage
+- **section_11_safety · lighting_as_trip_hazard** · confidence — · 0 sources · regulatory_and_professional_guidance
+- **section_11_safety · glare** · confidence — · 0 sources · regulatory_source_coverage
+- **section_11_safety · colour_effects_temperature_contrast** · confidence — · 0 sources · regulatory_and_accessibility_source_coverage
+- **section_11_safety · flicker** · confidence — · 0 sources · regulatory_and_research_source_coverage
+- **section_11_safety · emergency_escape_lighting** · confidence — · 0 sources · regulatory_source_coverage_strong
+- **section_11_safety · fire_considerations** · confidence — · 0 sources · regulatory_source_coverage
+- **section_11_safety · maintenance_safety** · confidence — · 0 sources · regulatory_source_coverage
+- **section_11_safety · electrical_inspection_requirements** · confidence — · 0 sources · regulatory_source_coverage_strong
+- **section_11_safety · uk_stair_fall_statistics** · confidence — · 0 sources · regulatory_and_research_source_coverage_strong
+- **section_14_future_trends · wireless_lighting** · confidence — · 0 sources · commercial_source_coverage
+- **section_14_future_trends · rechargeable_systems** · confidence — · 0 sources · commercial_source_coverage_only
+- **section_14_future_trends · low_voltage_systems** · confidence — · 0 sources · commercial_and_trade_source_coverage
+- **section_14_future_trends · hidden_fixings** · confidence — · 0 sources · commercial_source_coverage
+- **section_14_future_trends · integrated_smart_home** · confidence — · 0 sources · trade_press_and_commercial_source_coverage
+- **section_14_future_trends · sustainable_materials** · confidence — · 0 sources · certification_source_coverage
+- **section_14_future_trends · anti_slip_technologies** · confidence — · 0 sources · commercial_source_coverage_strong
+- **section_1_understanding_refacing · typical_duration** · confidence 0.65 · 3 sources · requires_manual_verification
+- **section_1_understanding_refacing · disruption_level** · confidence 0.7 · 3 sources · requires_manual_verification
+- **section_2_materials · american_white_oak.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · american_white_oak.durability** · confidence — · 2 sources · unknown
+- **section_2_materials · american_white_oak.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · american_white_oak.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · european_oak.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · european_oak.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · european_oak.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · european_oak.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · ash** · confidence 0.8 · 0 sources · requires_manual_verification
+- **section_2_materials · ash.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · ash.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · ash.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · ash.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · walnut** · confidence 0.8 · 0 sources · requires_manual_verification
+- **section_2_materials · walnut.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · walnut.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · walnut.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · walnut.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · beech** · confidence 0.78 · 0 sources · requires_manual_verification
+- **section_2_materials · beech.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · beech.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · beech.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · beech.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · maple** · confidence 0.8 · 0 sources · requires_manual_verification
+- **section_2_materials · maple.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · maple.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · maple.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · maple.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · pine** · confidence 0.78 · 0 sources · requires_manual_verification
+- **section_2_materials · pine.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · pine.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · pine.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · pine.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · sapele** · confidence 0.78 · 0 sources · requires_manual_verification
+- **section_2_materials · sapele.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · sapele.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · sapele.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · sapele.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · tulipwood.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · tulipwood.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · tulipwood.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · tulipwood.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · mdf** · confidence 0.8 · 0 sources · requires_manual_verification
+- **section_2_materials · mdf.appearance** · confidence — · 1 sources · unknown
+- **section_2_materials · mdf.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · mdf.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · mdf.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · veneered_products** · confidence 0.82 · 0 sources · requires_manual_verification
+- **section_2_materials · veneered_products.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · veneered_products.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · veneered_products.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · veneered_products.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · engineered_timber** · confidence 0.82 · 0 sources · requires_manual_verification
+- **section_2_materials · engineered_timber.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · engineered_timber.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · engineered_timber.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · engineered_timber.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · hardwood_overlays** · confidence 0.82 · 0 sources · requires_manual_verification
+- **section_2_materials · hardwood_overlays.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · hardwood_overlays.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · hardwood_overlays.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · hardwood_overlays.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · laminate_systems** · confidence 0.75 · 0 sources · requires_manual_verification
+- **section_2_materials · laminate_systems.appearance** · confidence — · 1 sources · unknown
+- **section_2_materials · laminate_systems.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · laminate_systems.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · laminate_systems.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · vinyl_coverings** · confidence 0.75 · 0 sources · requires_manual_verification
+- **section_2_materials · vinyl_coverings.appearance** · confidence — · 2 sources · unknown
+- **section_2_materials · vinyl_coverings.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · vinyl_coverings.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · vinyl_coverings.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · stone_stair_cladding** · confidence 0.78 · 0 sources · requires_manual_verification
+- **section_2_materials · stone_stair_cladding.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · stone_stair_cladding.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · stone_stair_cladding.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · stone_stair_cladding.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · metal_components.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · metal_components.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · metal_components.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · metal_components.cost_drivers** · confidence — · 1 sources · unknown
+- **section_2_materials · glass_components.appearance** · confidence — · 3 sources · unknown
+- **section_2_materials · glass_components.durability** · confidence — · 1 sources · unknown
+- **section_2_materials · glass_components.maintenance** · confidence — · 1 sources · unknown
+- **section_2_materials · glass_components.cost_drivers** · confidence — · 1 sources · unknown
+- **section_3_styles · contemporary** · confidence 0.7 · 3 sources · trade_and_manufacturer_only
+- **section_3_styles · modern** · confidence 0.65 · 3 sources · trade_and_manufacturer_only
+- **section_3_styles · farmhouse** · confidence 0.55 · 2 sources · trade_and_manufacturer_only
+- **section_3_styles · edwardian** · confidence 0.7 · 3 sources · authoritative_and_covered
+- **section_3_styles · scandinavian** · confidence 0.6 · 3 sources · trade_and_manufacturer_only
+- **section_3_styles · industrial** · confidence 0.7 · 4 sources · authoritative_but_partial
+- **section_3_styles · minimalist** · confidence 0.55 · 2 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · treads** · confidence 0.75 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · treads.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · treads.structural_implications** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · risers** · confidence 0.7 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · risers.commonality_of_replacement** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · risers.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · strings** · confidence 0.7 · 0 sources · authoritative_but_partial
+- **section_4_elements_that_can_be_changed · strings.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · strings.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · handrails** · confidence 0.85 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · handrails.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · handrails.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · newels** · confidence 0.75 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · newels.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · newels.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · balusters** · confidence 0.85 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · balusters.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · balusters.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · glass_panels** · confidence 0.85 · 0 sources · authoritative_and_covered
+- **section_4_elements_that_can_be_changed · glass_panels.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · glass_panels.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · metal_balusters** · confidence 0.7 · 0 sources · authoritative_but_partial
+- **section_4_elements_that_can_be_changed · metal_balusters.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · metal_balusters.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · feature_posts** · confidence 0.55 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · feature_posts.commonality_of_replacement** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · feature_posts.structural_implications** · confidence — · 1 sources · unknown
+- **section_4_elements_that_can_be_changed · newel_caps** · confidence 0.75 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · newel_caps.commonality_of_replacement** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · newel_caps.structural_implications** · confidence — · 1 sources · unknown
+- **section_4_elements_that_can_be_changed · feature_lighting** · confidence 0.65 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · feature_lighting.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · feature_lighting.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · wall_panelling** · confidence 0.65 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · wall_panelling.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · wall_panelling.structural_implications** · confidence — · 1 sources · unknown
+- **section_4_elements_that_can_be_changed · under_stair_panelling** · confidence 0.6 · 0 sources · authoritative_but_partial
+- **section_4_elements_that_can_be_changed · under_stair_panelling.commonality_of_replacement** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · under_stair_panelling.structural_implications** · confidence — · 1 sources · unknown
+- **section_4_elements_that_can_be_changed · stair_runners** · confidence 0.7 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · stair_runners.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · stair_runners.structural_implications** · confidence — · 1 sources · unknown
+- **section_4_elements_that_can_be_changed · carpet** · confidence 0.7 · 0 sources · authoritative_but_partial
+- **section_4_elements_that_can_be_changed · carpet.commonality_of_replacement** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · carpet.structural_implications** · confidence — · 2 sources · unknown
+- **section_4_elements_that_can_be_changed · led_systems** · confidence 0.6 · 0 sources · trade_and_manufacturer_only
+- **section_4_elements_that_can_be_changed · led_systems.commonality_of_replacement** · confidence — · 3 sources · unknown
+- **section_4_elements_that_can_be_changed · led_systems.structural_implications** · confidence — · 1 sources · unknown
+
+## Expert experience required (35)
+
+- **section_10_design_integration · oak_staircases_with_lighting** · confidence — · 0 sources · partial_source_coverage_plus_expert_experience_required
+- **section_10_design_integration · painted_staircases_with_lighting** · confidence — · 0 sources · expert_experience_required
+- **section_10_design_integration · cut_string_staircases_with_lighting** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · customer_mistakes** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · design_regrets** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · lighting_positions_that_work_best** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · lighting_positions_to_avoid** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · refacing_mistakes** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · material_combinations_that_age_poorly** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · products_professionals_avoid** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · finishes_that_fail_prematurely** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · common_warranty_claims** · confidence — · 0 sources · expert_experience_required
+- **section_13_trade_experience · installation_shortcuts_that_cause_future_problems** · confidence — · 0 sources · expert_experience_required
+- **section_14_future_trends · modern_finishes** · confidence — · 0 sources · expert_experience_required
+- **section_14_future_trends · new_refacing_products_entering_market** · confidence — · 0 sources · expert_experience_required_plus_partial_commercial_source_coverage
+- **section_7_staircase_lighting_why_how_tech · why_install_stair_lighting** · confidence — · 0 sources · evidenced_regulatory / expert_experience_required_for_design_intent
+- **section_7_staircase_lighting_why_how_tech · popularity_trend** · confidence — · 0 sources · unable_to_verify_via_primary_source
+- **section_7_staircase_lighting_why_how_tech · benefits** · confidence — · 0 sources · evidenced / property_value_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · drawbacks** · confidence — · 0 sources · evidenced / craft_disruption_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · energy_consumption** · confidence — · 0 sources · evidenced_directional / specific_household_figures_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · led_technology** · confidence — · 0 sources · evidenced / bin_matching_craft_knowledge_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · smart_lighting** · confidence — · 0 sources · evidenced_for_protocols / stair_specific_expert_experience_required
+- **section_7_staircase_lighting_why_how_tech · colour_temperature_kelvin_and_warm_vs_cool** · confidence — · 0 sources · evidenced_for_definitions / specific_K_recommendation_expert_experience_required
+- **section_8_installing_stair_lights · best_stage_during_manufacture** · confidence — · 0 sources · expert_experience_required
+- **section_8_installing_stair_lights · best_stage_during_installation** · confidence — · 0 sources · expert_experience_required
+- **section_8_installing_stair_lights · running_cables_and_concealing_cables** · confidence — · 0 sources · evidenced_regulatory / procedure_expert_experience_required
+- **section_9_maintaining_stair_lights · driver_replacement** · confidence — · 0 sources · evidenced_for_failure_mode / procedure_expert_experience_required
+- **section_9_maintaining_stair_lights · cleaning** · confidence — · 0 sources · expert_experience_required
+- **section_9_maintaining_stair_lights · troubleshooting** · confidence — · 0 sources · evidenced / repair_procedure_expert_experience_required
+- **section_9_maintaining_stair_lights · future_proofing** · confidence — · 0 sources · evidenced_at_category_level / handover_documentation_expert_experience_required
+- **section_9_maintaining_stair_lights · availability_of_replacement_fittings** · confidence — · 0 sources · expert_experience_required
+- **section_1_understanding_refacing · when_refacing_not_recommended** · confidence 0.78 · 5 sources · requires_manual_verification
+- **section_1_understanding_refacing · structural_defects_hidden_by_refacing** · confidence 0.78 · 3 sources · expert_experience_required
+- **section_1_understanding_refacing · property_value_impact** · confidence 0.45 · 2 sources · unable_to_verify
+- **section_1_understanding_refacing · lifespan_after_refacing** · confidence 0.6 · 3 sources · requires_manual_verification

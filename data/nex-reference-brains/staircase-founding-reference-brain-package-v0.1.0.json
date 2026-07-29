@@ -1,0 +1,2452 @@
+{
+  "_meta": {
+    "purpose": "The Founding Reference Brain Package for the Staircase Brain — v0.1.0 · the FIRST version of what will become the world's most trusted professional reference for staircase design, manufacture, installation and compliance. Assembles captured knowledge into the shape hammerex_nex_brains + hammerex_nex_brain_versions expect. Every content field is derived from captured Philip briefings or citations — NO invented staircase facts (anti-fabrication HARD LAW). Modules with no captured content are marked _status:not_yet_authored so Coverage Map correctly reports them as missing.",
+    "package_type": "founding_reference_brain_package",
+    "package_version": "0.1.0",
+    "created": "2026-07-28",
+    "created_by": "chief_reference_brain_engineer",
+    "identity_approval_status": "DRAFT — see docs/brains/staircase-identity-draft-v0.1.md for Philip's approval checklist",
+    "load_status": "prepared · awaiting SQL apply + Philip's identity approval + author auth setup",
+    "milestone_significance": "The moment this package loads, the platform + reference brain + identity + version history + trust system exist together for the first time. Until now, only infrastructure existed. After load, there is an actual Brain."
+  },
+
+  "brain_row_upsert": {
+    "slug": "staircase",
+    "namespace": "nex-official/staircase",
+    "display_name": "Staircase Brain",
+    "description": "The reference brain for staircase design, manufacture, installation and compliance. Built to become the most trusted professional reference in its field.",
+    "category": "trade",
+    "trade": "staircase",
+    "owner_id": "philip",
+    "origin_org": "nex-official",
+    "primary_author_id": "philip",
+    "primary_author_name": "Philip O'Farrell",
+    "primary_author_creds": "Founder · NEX Living Brain Platform",
+    "maintainers": ["philip"],
+    "primary_country": "GB",
+    "supported_countries": ["GB"],
+    "supported_regions": ["England", "Wales", "Scotland", "Northern Ireland"],
+    "primary_language": "en-GB",
+    "languages": ["en-GB"],
+    "status": "draft",
+    "lifecycle_stage": "draft",
+    "certification_level": "self_certified",
+    "capabilities": {
+      "supports_chat":        true,
+      "supports_vision":      true,
+      "supports_voice":       false,
+      "supports_estimates":   false,
+      "supports_projects":    false,
+      "supports_marketplace": false,
+      "supports_memory":      true,
+      "supports_simulation":  true
+    },
+    "review_frequency_days": 90,
+    "exportable": true,
+
+    "mission": "To become the most trusted professional reference for staircase design, manufacture, installation, and compliance.",
+    "principles": [
+      "Safety first — Approved Document K, BS EN standards and safety-critical construction rules are non-negotiable, never softened for aesthetic requests.",
+      "Never fabricate — every technical claim cites its source (Doc K clause, BS EN reference, captured construction rule, named expert).",
+      "Explain reasoning — professionals accept guidance they can verify. Every answer shows why, not only what.",
+      "State confidence honestly using explicit bands. No fake certainty.",
+      "Prefer standards over opinion — Doc K, BS EN, industry norms and captured trade rules take precedence over personal preference.",
+      "Recommend qualified professionals when appropriate — a brain cannot substitute for a licensed installer, structural engineer or Building Control officer on safety-critical decisions.",
+      "Preserve craft integrity — proven construction rules are not violated for design requests.",
+      "Never guess — below-threshold confidence flags for human review. Silence is more trustworthy than fabrication."
+    ],
+    "promise": {
+      "will_do": [
+        "Explain how staircases are designed, made, and installed",
+        "Cite the source of every technical claim",
+        "State confidence honestly using explicit bands",
+        "Show reference images with transparent captions about their tier",
+        "Recommend qualified professionals when scope or safety exceeds knowledge",
+        "Preserve craft integrity by refusing designs that violate proven construction rules",
+        "Warn about known risks (e.g. softwood 32 mm strings bouncing at ≥900 mm width)"
+      ],
+      "will_not_do": [
+        "Guess when evidence is insufficient",
+        "Publish specific £/$/€ prices without verifiable current-month facts",
+        "Recommend copying a reference image directly",
+        "Answer for domains it doesn't own (garden staircases, kitchens, doors)",
+        "Substitute a generic recommendation for a code requirement",
+        "Present opinion as trade standard"
+      ]
+    }
+  },
+
+  "initial_certification_row": {
+    "brain_slug": "staircase",
+    "author_id": "philip",
+    "author_name": "Philip O'Farrell",
+    "credentials_text": "Founder · NEX Living Brain Platform · captured trade authority for staircase construction rules (housed-string, wedges, angle blocks, newel-string joints, baluster count, back-sheeting HARD RULE, plan-size reference)",
+    "years_experience": null,
+    "certified_by": "self",
+    "review_frequency_days": 180,
+    "is_primary": true,
+    "status": "active",
+    "_note": "Seed cert to unlock Level 3 · Certified. Should be replaced or supplemented by an independent master-tradesperson certification during Phase 3."
+  },
+
+  "initial_version": {
+    "version_semver": "0.1.0",
+    "authored_by": "philip",
+    "brain_api_version": "1.0",
+    "minimum_runtime_version": "1.0",
+    "portable": true,
+    "manifest_json": {
+      "name": "staircase",
+      "display_name": "Staircase Brain",
+      "version": "0.1.0",
+      "namespace": "nex-official/staircase",
+      "authored_by": "philip",
+      "modules": [
+        "materials", "construction", "manufacturing", "installation",
+        "design", "regulations", "maintenance", "fault_finding",
+        "estimating", "terminology", "safety", "tools"
+      ]
+    },
+    "modules_json": {
+
+      "materials": {
+        "_source": "data/staircase-materials.json (21-material master library) + feedback_nex_american_white_oak_approved_v1 + feedback_nex_staircase_sheeting_material_hard_rule",
+        "master_library_ref": "data/staircase-materials.json",
+        "material_count": 21,
+        "locked_values": {
+          "american_white_oak_lacquer_color": "0xf7e0b8",
+          "american_white_oak_lacquer_roughness": 0.30,
+          "_note": "Locked V1 per Philip 2026-07-26 · do not change without explicit instruction."
+        },
+        "hard_rules": [
+          "Back-of-staircase T&G sheeting MUST be the same material, colour and grain as the rest of the staircase. No alternative colour is acceptable."
+        ],
+        "authoring_gaps": [
+          "humidity/moisture behaviour per species",
+          "finish compatibility matrix",
+          "sustainability + FSC/PEFC data",
+          "reclaimed / historic timber notes"
+        ]
+      },
+
+      "construction": {
+        "_source": "project_nex_staircase_riser_step_wedge_joints + project_nex_staircase_angle_blocks_rule + project_nex_staircase_stringer_dimensions_uk + project_nex_staircase_handrail_baserail_baluster_sizing + project_nex_staircase_newel_string_joint_rules + project_nex_staircase_baluster_count_rule + project_nex_staircase_double_round_starting_step + project_nex_staircase_backside_sheeting_options",
+        "type": "housed_string_domestic",
+        "housed_string_rules": {
+          "riser_tongues_up_into_tread_underside_groove": "12mm — prevents back light-leak",
+          "step_and_riser_into_string_housings": "12-15mm both sides",
+          "wedges": "9-12 inch pine, cut to suit each step's rise+going, width MUST stay inside string thickness, one wedge under step + one upward at riser per string end"
+        },
+        "angle_blocks_rule": {
+          "under_1000mm_wide": "2 blocks per step (one near each string end)",
+          "over_1000mm_wide": "3 blocks per step (adds middle one)",
+          "block_size_typical": "60×60×90mm",
+          "purpose": "reinforce joint + prevent squeaking"
+        },
+        "stringer_dimensions_uk": {
+          "overall_width_over_strings_typical_mm": [800, 860],
+          "thickness_options_mm": {
+            "cladding_standard": 32,
+            "mid_weight": 38,
+            "structural_cut": 50,
+            "on_request": [40, 44]
+          },
+          "depth_standard_mm": 275,
+          "warning": "softwood 32mm strings can BOUNCE when 2 people pass; country of origin affects stiffness. Configurator should warn on softwood+32mm+≥900mm-wide combination and offer 38mm or hardwood alternatives."
+        },
+        "handrail_baserail_baluster_sizing": {
+          "system": "UK/Ireland grooved handrail (bottom groove) + grooved baserail (top groove); balusters slot into grooves; cut-to-length SLIPS lock spacing.",
+          "standard_baluster_sizes_mm": [32, 41, 44, 50, 60],
+          "current_uk_ireland_standard_mm": 41,
+          "hard_rule": "For heavy balusters (50mm+) ALL FOUR components (baluster + handrail + baserail + newel) scale UP together — proportional sizing."
+        },
+        "newel_string_joint_rules": [
+          "String thickness CENTERED on newel cross-section regardless of newel size (75/90/120mm)",
+          "String tenons ~50mm INTO newel (haunched mortice-and-tenon)",
+          "First tread bullnose 12mm haunched INSIDE newel at 25mm back from front edge",
+          "First riser haunched into newel back 45-50mm from newel edge"
+        ],
+        "baluster_count_rule": "2 balusters per step; where NEWEL POST is at step = 1 baluster only. Doc K max 100mm gap.",
+        "double_round_starting_step": {
+          "when": "used when staircase NOT wall-supported on either side",
+          "construction": "solid wood blocks + veneer wrapped/glued (no block marks); haunched 15-18mm INTO newel + screw-fixed through riser",
+          "shape_from_top": "D-shape, 2 stacked rounded steps",
+          "footprint": "passes OUT past newel outer edges"
+        },
+        "backside_sheeting_options": {
+          "options": ["unfinished", "T&G", "panelling", "plasterboard"],
+          "tg_rules": [
+            "7-10mm expansion gap both ends",
+            "HIDDEN pin through tongue side (next board covers pin)",
+            "2×2 battens on inner back",
+            "2-3 angle slips cover edges"
+          ]
+        },
+        "authoring_gaps": [
+          "cut-string construction (historic + modern feature)",
+          "curved handrail wreath geometry",
+          "winder construction rules",
+          "commercial-scale variants",
+          "steel-frame + timber-tread hybrid"
+        ]
+      },
+
+      "manufacturing": {
+        "_source": [
+          "captured incidentally in construction memory",
+          "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md",
+          "docs/brains/staircase-machines-vs-hand-tools-philip-2026-07-28.md"
+        ],
+        "_author": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "_founding_authorisation": {
+          "note": "Founding v0.1.0 content authored + authorised by the origin expert. Subsequent versions must pass F6 independent review."
+        },
+        "prior_captured": [
+          "angle block dimensions and placement",
+          "wedge dimensioning per step",
+          "veneer wrap on double round starting step to hide block marks"
+        ],
+
+        "workshop_organisation": {
+          "principle": "Every staircase deserves its own dedicated production area from the moment production begins until it is completed.",
+          "rationale": "Mixing components from multiple projects on the same bench or production floor creates unnecessary risk. Similar-looking strings, treads, risers, newel posts, balusters and handrails can easily be confused, especially when several staircases are being manufactured simultaneously.",
+          "hard_rule": "One project per production bay from start to finish.",
+          "benefits": [
+            "All components stay with the correct project",
+            "Drawings remain with the staircase they belong to",
+            "Hardware and fittings cannot become mixed",
+            "Quality inspections are easier to perform",
+            "Production progress is simple to monitor"
+          ],
+          "human_error_reduction": {
+            "principle": "The human brain performs best when it can focus on a single project. When several jobs become mixed together, mental overload occurs, increasing the likelihood of errors.",
+            "typical_errors_avoided": [
+              "Pick up the wrong string",
+              "Install the wrong tread",
+              "Read the incorrect set of drawings",
+              "Use incorrect fixing positions",
+              "Select hardware intended for another staircase"
+            ],
+            "note": "These mistakes are rarely caused by poor workmanship. More often, they result from poor workshop organisation."
+          },
+          "_source": "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        },
+
+        "production_zones": {
+          "principle": "Each staircase occupies its own production bay where every stage of manufacturing takes place. Each staircase progresses through the workshop in a controlled manner without interfering with other projects.",
+          "workflow_stages_in_order": [
+            "Timber preparation",
+            "CNC machining",
+            "Hand finishing",
+            "String preparation",
+            "Tread assembly",
+            "Dry assembly",
+            "Sanding",
+            "Final inspection",
+            "Packaging",
+            "Loading for delivery"
+          ],
+          "_source": "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        },
+
+        "dry_assembly": {
+          "principle": "One of the most valuable stages in staircase manufacturing is the complete dry assembly.",
+          "when_required": "Complex staircases — particularly those featuring multiple flights, winders, curved strings, landings or glass balustrades — should always be assembled inside the workshop before delivery.",
+          "confirms": [
+            "Every joint fits correctly",
+            "The staircase geometry is accurate",
+            "Treads align perfectly",
+            "Landings are level",
+            "Strings remain true",
+            "Handrails connect correctly",
+            "Newel posts line up precisely",
+            "Glass panels fit exactly as designed",
+            "No machining adjustments are required"
+          ],
+          "cost_rationale": "Finding a problem inside the workshop is far less expensive than discovering it during installation on site.",
+          "jigsaw_puzzle_framing": "A staircase is like a giant three-dimensional jigsaw puzzle. Each tread, riser, string, wedge, glue block, newel post, handrail and baluster must fit together perfectly. One incorrect measurement can affect the alignment of every component above it.",
+          "_source": "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        },
+
+        "workflow_split_percentage": {
+          "principle": "Machines provide speed and precision, while experienced joiners ensure every staircase fits together perfectly.",
+          "table": [
+            { "activity": "Timber preparation",           "machine_pct": 95, "hand_pct": 5 },
+            { "activity": "Cutting components",           "machine_pct": 95, "hand_pct": 5 },
+            { "activity": "Machining housings & joints",  "machine_pct": 90, "hand_pct": 10 },
+            { "activity": "Sanding & finishing",          "machine_pct": 70, "hand_pct": 30 },
+            { "activity": "Dry assembly",                 "machine_pct": 20, "hand_pct": 80 },
+            { "activity": "Quality inspection",           "machine_pct": 10, "hand_pct": 90 },
+            { "activity": "Packaging",                    "machine_pct": 20, "hand_pct": 80 },
+            { "activity": "Site installation",            "machine_pct": 15, "hand_pct": 85 }
+          ],
+          "overall": {
+            "machine_pct_range": [70, 80],
+            "hand_pct_range":    [20, 30]
+          },
+          "_source": "docs/brains/staircase-machines-vs-hand-tools-philip-2026-07-28.md"
+        },
+
+        "machines": [
+          { "name": "CNC Router",                "role": "Often the heart of a modern staircase workshop. Machines strings, housings, mortices, handrail joints, treads and custom profiles with exceptional accuracy.", "uses": ["Housed string routing", "Mortice cutting", "Winder machining", "Curved components", "Decorative machining", "Repeat production"] },
+          { "name": "Panel Saw",                 "role": "Large sheet materials and laminated timber are accurately cut before further processing.", "uses": ["MDF templates", "Jig manufacture", "Packing materials", "Engineered timber panels"] },
+          { "name": "Beam Saw",                  "role": "Used by larger factories to cut large timber panels quickly and accurately.", "uses": [] },
+          { "name": "Thickness Planer",          "role": "Produces consistent timber thickness throughout every staircase component.", "uses": ["Oak", "Pine", "Walnut", "Ash", "Beech", "Engineered hardwood"] },
+          { "name": "Surface Planer (Jointer)",  "role": "Creates perfectly flat faces and square edges before machining.", "uses": [] },
+          { "name": "Spindle Moulder",           "role": "One of the most versatile staircase machines.", "uses": ["Handrail profiles", "Base rails", "Mouldings", "Decorative edges", "String mouldings"] },
+          { "name": "Bandsaw",                   "role": "Essential for curved work and templates.", "uses": ["Curved strings", "Curved handrails", "Winder components", "Templates"] },
+          { "name": "Table Saw",                 "role": "Used for accurate ripping and crosscutting of solid timber.", "uses": [] },
+          { "name": "Sliding Mitre Saw",         "role": "Perfect for trimming and accurate angles.", "uses": ["Trimming", "Accurate angles", "Newel posts", "Handrails"] },
+          { "name": "Edge Sander",               "role": "Produces perfectly smooth edges.", "uses": ["Treads", "Risers", "Strings", "Landings"] },
+          { "name": "Wide Belt Sander",          "role": "Provides consistent sanding across large timber components before finishing.", "uses": [] },
+          { "name": "Oscillating Spindle Sander","role": "Used for sanding internal curves and profiles.", "uses": ["Internal curves", "Winders", "Decorative profiles"] },
+          { "name": "Mortiser",                  "role": "Cuts square mortices.", "uses": ["Newel posts", "Balustrades", "Handrail joints"] },
+          { "name": "Horizontal Borer",          "role": "Produces precise dowel holes throughout staircase components.", "uses": [] },
+          { "name": "Pillar Drill",              "role": "Used for accurate drilling.", "uses": ["Balusters", "Newel posts", "Handrail fixings"] },
+          { "name": "Dust Extraction System",    "role": "Perhaps the most overlooked machine in the workshop.", "uses": ["Improves air quality", "Protects machinery", "Reduces cleaning time", "Extends tool life", "Improves workplace safety"] },
+          { "name": "Air Compressor System",     "role": "Modern workshops usually install fixed compressed-air pipework with hose reels at every workstation.", "uses": ["Nail guns", "Staplers", "Blow guns", "Spray equipment", "Air sanders", "Clamping devices"] },
+          { "name": "Extraction Sanding Benches","role": "Used for final sanding while collecting airborne dust.", "uses": [] }
+        ],
+
+        "workshop_only_equipment_not_transportable": [
+          "Wide belt sanders",
+          "CNC routers",
+          "Large spindle moulders",
+          "Thickness planers",
+          "Edge sanders",
+          "Beam saws",
+          "Hydraulic presses",
+          "Dust extraction systems",
+          "Industrial assembly benches",
+          "Precision measuring equipment"
+        ],
+
+        "why_machines_cannot_replace_joiners": {
+          "principle": "No CNC machine can determine whether a staircase 'feels right' during assembly or identify subtle issues such as timber movement, grain matching or joint fit. These decisions rely on human expertise.",
+          "joiner_responsibilities": [
+            "Reading technical drawings",
+            "Checking dimensions",
+            "Selecting timber grain and colour",
+            "Matching components",
+            "Dry assembling the staircase",
+            "Correcting minor fitting issues",
+            "Quality inspection",
+            "Final sanding",
+            "Preparing the staircase for installation"
+          ],
+          "summary": "Machines produce the precision; people deliver the quality.",
+          "_source": "docs/brains/staircase-machines-vs-hand-tools-philip-2026-07-28.md"
+        },
+
+        "prior_authoring_gaps_remaining": [
+          "shop process descriptions (mortice-and-tenon jig setup, housing router setups, sanding schedule, finishing bench)",
+          "tolerance targets",
+          "pre-assembly checks",
+          "flat-pack vs pre-assembled decisions"
+        ]
+      },
+
+      "installation": {
+        "_source": [
+          "project_nex_staircase_backside_sheeting_options",
+          "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        ],
+        "_author_partial": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "captured": {
+          "backside_sheeting_install": "see construction.backside_sheeting_options.tg_rules",
+          "material_warnings": ["softwood 32mm strings can bounce when 2 people pass on stairs ≥900mm wide"]
+        },
+        "workshop_vs_site_work": {
+          "principle": "Extra care taken during manufacturing often saves many hours during installation. A staircase that has already been fully assembled and inspected in the workshop will install more quickly.",
+          "workshop_advantage": [
+            "Components are already matched",
+            "Fixings have been tested",
+            "Joint alignment has been confirmed",
+            "Any machining corrections have already been completed",
+            "Installers can work with confidence"
+          ],
+          "site_only_portable_equipment": [
+            "Mitre saws",
+            "Circular saws",
+            "Routers",
+            "Drills",
+            "Nail guns",
+            "Lasers",
+            "Hand tools"
+          ],
+          "hard_rule": "Site installers are not equipped to remanufacture staircase components. Completing precision work in the factory ensures installers can focus on fitting rather than repairing.",
+          "customer_impact_of_workshop_pre_assembly": [
+            "Lower installation costs",
+            "Fewer return visits",
+            "Reduced disruption for the customer",
+            "Better scheduling for future projects",
+            "Higher customer satisfaction"
+          ],
+          "_source": "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        },
+
+        "staircase_is_part_of_larger_project": {
+          "audience": "homeowner · project_owner · client",
+          "framing": "One of the most common misunderstandings during staircase installations is assuming that every detail surrounding the staircase falls under the responsibility of the staircase company. In reality, your staircase is only one component within a much larger construction project. Before manufacture begins, staircase companies are usually provided with site dimensions at a particular stage of construction. However, between manufacture and installation, many things may have changed. Even where measurements have been taken professionally, construction sites continue to evolve throughout the building process.",
+          "what_may_change_between_manufacture_and_install": [
+            "Flooring specifications",
+            "Wall build-ups",
+            "Plaster thicknesses",
+            "Staircase openings",
+            "Ceiling finishes",
+            "Decoration allowances",
+            "Structural alterations",
+            "Site tolerances between trades"
+          ],
+
+          "staircase_company_cannot_control_other_trades": {
+            "principle": "Professional staircase companies take responsibility for manufacturing and installing their product to the highest possible standard. What they cannot control are changes made elsewhere within the build.",
+            "examples_of_off_scope_changes": [
+              "A wall moved by 10 mm",
+              "Additional plaster build-up",
+              "Flooring specifications changing after manufacture",
+              "Alterations to staircase openings",
+              "Timber floor levels changing due to floor preparation"
+            ],
+            "combined_impact": "Individually, these may appear insignificant, but when combined they can affect the final installation considerably. Sometimes, the installation team may arrive on site and immediately identify challenges that simply did not exist when the staircase was manufactured. Their responsibility then becomes finding the most professional solution available."
+          },
+
+          "sometimes_no_perfect_solution": {
+            "principle": "Homeowners understandably expect perfection when investing in their homes. Professional staircase companies expect the same of themselves. However, construction occasionally presents situations where there is no perfect solution — only the best available one.",
+            "installer_tradeoffs": [
+              "The most attractive finish",
+              "The strongest fixing method",
+              "The least invasive alteration",
+              "The quickest installation method"
+            ],
+            "reality": "Occasionally, achieving all four simultaneously is simply impossible. Professional experience is knowing which solution provides the best overall result while maintaining both structural integrity and appearance. What may appear to be a compromise is often the product of years of specialist knowledge and careful consideration."
+          },
+
+          "important_question_to_ask_installer": {
+            "instead_of_asking": "Why isn't this perfect?",
+            "try_asking": "If this was your own staircase, how would you install it?",
+            "principle": "Professional installers take enormous pride in their work and their reputation. The answer to that question will often provide valuable insight into why particular decisions have been made. If they explain that this is the method they would use within their own home given the circumstances, it may provide reassurance that the solution presented is both practical and professional."
+          },
+
+          "professional_advice_should_never_feel_like_conflict": {
+            "principle": "It is perfectly acceptable to ask questions during installation. In fact, professional companies welcome them. Good communication protects everyone involved.",
+            "what_to_do_if_concerned": [
+              "Ask for an explanation",
+              "Ask to see the area causing the problem",
+              "Request photographs if appropriate",
+              "Ask what alternative solutions were considered",
+              "Seek specialist staircase advice if necessary"
+            ],
+            "closing_note": "These conversations should never become confrontational. Both parties are usually working towards exactly the same goal — a beautiful staircase finished to the highest possible standard."
+          },
+
+          "final_thought": "Construction projects are rarely the result of one trade working in isolation. Every completed staircase represents the combined efforts of designers, manufacturers, builders, plasterers, flooring installers, and specialist installation teams. Sometimes, the staircase company is solving problems they did not create simply because they are the final trade asked to bring everything together. Before assuming that an installation issue belongs solely to the staircase company, take the time to understand the wider construction picture. The very best results are achieved when professional advice is listened to, questions are encouraged, and solutions are found together.",
+
+          "key_points_homeowner_advice": [
+            "Your staircase is only one part of the overall construction project",
+            "Construction changes made after manufacture may affect installation",
+            "Professional installers are often solving site challenges created elsewhere within the build",
+            "There is not always a perfect solution — sometimes there is only the best possible one",
+            "Ask questions, seek specialist advice, and remain open to professional recommendations",
+            "Working together will almost always produce the best possible result"
+          ],
+
+          "nex_gold_standard": "Understanding the bigger picture is often the difference between seeing a problem and recognising a professional solution.",
+
+          "_source": "docs/brains/staircase-only-part-of-project-philip-2026-07-28.md"
+        },
+
+        "trade_skill_levels": {
+          "audience": "homeowner · project_owner · client · trade",
+          "nex_principle": "A staircase installer can be a carpenter, but not every staircase installer is a carpenter. It depends on the depth of their knowledge and what they are capable of doing. There are really five different skill levels.",
+
+          "five_skill_levels": [
+            {
+              "level": 1,
+              "title": "Staircase Fitter (Installer)",
+              "capabilities": [
+                "Can unload and assemble a staircase",
+                "Reads fitting drawings",
+                "Knows how to fix squeaks and movement",
+                "Can scribe skirts and trims",
+                "Knows how to level and plumb components",
+                "Understands fixing methods",
+                "Usually does not make staircases"
+              ],
+              "knowledge_levels_percentage": {
+                "installation": 90,
+                "joinery": 30,
+                "carpentry": 40
+              }
+            },
+            {
+              "level": 2,
+              "title": "Carpenter",
+              "framing": "A carpenter is expected to know far more than simply fitting staircases.",
+              "capabilities_and_knowledge": [
+                "Roofing",
+                "First fixing",
+                "Second fixing",
+                "Floors",
+                "Doors",
+                "Stud walls",
+                "Kitchens",
+                "Timber construction",
+                "Building regulations",
+                "Setting out",
+                "Structural loading",
+                "Timber movement",
+                "Different materials"
+              ],
+              "closing_note": "A carpenter can generally build most things from timber.",
+              "knowledge_levels_percentage": {
+                "installation": 80,
+                "carpentry": 100,
+                "joinery": 70
+              }
+            },
+            {
+              "level": 3,
+              "title": "Joiner",
+              "framing": "A joiner is different again. They are generally workshop based.",
+              "capabilities_and_knowledge": [
+                "Timber species",
+                "Moisture movement",
+                "Machinery",
+                "Construction methods",
+                "Laminations",
+                "Veneers",
+                "Grain matching",
+                "Finishing",
+                "Precision manufacturing"
+              ],
+              "closing_note": "They may never fit what they build.",
+              "knowledge_levels_percentage": {
+                "manufacturing": 100,
+                "installation": 30,
+                "carpentry": 50
+              }
+            },
+            {
+              "level": 4,
+              "title": "Staircase Manufacturer",
+              "framing": "This is where people become confused. Someone that manufactures staircases is usually a specialist joiner.",
+              "capabilities_and_knowledge": [
+                "Rise and going calculations",
+                "Winder geometry",
+                "Structural requirements",
+                "Timber movement",
+                "Material selection",
+                "Handrail geometry",
+                "CNC manufacturing",
+                "Traditional joinery",
+                "Building regulations",
+                "Manufacturing tolerances",
+                "Production methods"
+              ],
+              "closing_note": "They can spend twenty years learning nothing but staircases. Many cannot fit one particularly well because fitting is an entirely different skill set."
+            },
+            {
+              "level": 5,
+              "title": "Specialist Staircase Installer",
+              "framing": "This is the level most people don't appreciate.",
+              "capabilities_and_knowledge": [
+                "Building movement",
+                "Site tolerances",
+                "Plaster tolerances",
+                "Structural requirements",
+                "Packing methods",
+                "String line accuracy",
+                "Laser measurements",
+                "Load transfer",
+                "How houses are constructed",
+                "How to overcome site problems",
+                "Building regulations",
+                "Finish quality expectations"
+              ],
+              "closing_note": "They may install £50,000 staircases every week but never manufacture one. Their mindset is completely different."
+            }
+          ],
+
+          "three_question_framework": {
+            "principle": "They are three different questions requiring three different skills.",
+            "staircase_manufacturer_asks": "Can I build this?",
+            "staircase_installer_asks": "Will this fit?",
+            "carpenter_asks": "Can I make this from timber?"
+          },
+
+          "worked_example_12mm_wall_out_of_square": {
+            "scenario": "If a wall is 12 mm out of square",
+            "manufacturer_perspective": "The manufacturer has done nothing wrong.",
+            "carpenter_perspective": "The carpenter may decide to plane material.",
+            "staircase_installer_perspective": "The staircase installer may need to move the entire staircase, alter packings, re-level strings, adjust wall margins and remake trims.",
+            "closing_principle": "That knowledge only comes from installation experience."
+          },
+
+          "skill_comparison_table": [
+            { "trade": "Carpenter",              "manufacturing": "High",       "installation": "High",   "building_knowledge": "Very High" },
+            { "trade": "Joiner",                 "manufacturing": "Very High",  "installation": "Low",    "building_knowledge": "Medium" },
+            { "trade": "Staircase Manufacturer", "manufacturing": "Expert",     "installation": "Medium", "building_knowledge": "High" },
+            { "trade": "Staircase Installer",    "manufacturing": "Low-Medium", "installation": "Expert", "building_knowledge": "Very High" },
+            { "trade": "General Builder",        "manufacturing": "Medium",     "installation": "Medium", "building_knowledge": "High" }
+          ],
+
+          "installation_is_underestimated": {
+            "principle": "Staircase installation is often underestimated. Installing a high-end staircase in an imperfect building can require knowledge from several trades:",
+            "knowledge_areas_required": [
+              "Carpentry",
+              "Joinery",
+              "Structural construction",
+              "Plastering tolerances",
+              "Roofing and floor levels",
+              "Geometry",
+              "Building regulations",
+              "Timber movement",
+              "Problem solving"
+            ],
+            "closing_principle": "A staircase installer may spend years learning how to make a staircase fit buildings that are rarely square, level, or plumb. Conversely, an excellent staircase manufacturer may spend years learning timber selection, machining, and joinery techniques without ever developing those installation skills."
+          },
+
+          "_related_entries": [
+            "installation.manufacturing_vs_installation_teams",
+            "installation.specialist_advice_between_trades",
+            "terminology.trades"
+          ],
+          "_source": "docs/brains/staircase-trade-skill-levels-philip-2026-07-28.md"
+        },
+
+        "manufacturing_vs_installation_teams": {
+          "audience": "homeowner · project_owner · client",
+          "opening_question": "Why aren't the people who made my staircase the same people installing it?",
+          "framing": "At first glance, it seems like a perfectly reasonable question. After all, if someone spent weeks manufacturing your staircase, surely they would be the best people to install it? Surprisingly, the answer isn't always yes. Modern staircase manufacturing has become an extremely specialised industry. In reality, manufacturing and installation are often two completely different professions that simply happen to work towards the same finished result. Both require years of experience — but they require very different knowledge.",
+
+          "two_different_skill_sets": {
+            "principle": "Both professions are specialists — but their knowledge has developed in different directions.",
+            "manufacturing_specialist_knowledge": [
+              "Timber species",
+              "Colour matching",
+              "Grain selection",
+              "Material movement",
+              "Machining techniques",
+              "Joinery methods",
+              "Manufacturing tolerances",
+              "Finishing techniques",
+              "Traditional craftsmanship",
+              "Furniture-grade construction"
+            ],
+            "manufacturing_focus": "Creating a beautiful staircase before it ever leaves the workshop.",
+            "installation_specialist_knowledge": [
+              "Wall alignment",
+              "Floor levels",
+              "Staircase openings",
+              "Structural fixings",
+              "Building tolerances",
+              "Site conditions",
+              "Flooring allowances",
+              "Installation methods",
+              "Problem solving",
+              "Construction sequencing"
+            ],
+            "installation_focus": "Putting together what is often a very complicated three-dimensional jigsaw puzzle within your home."
+          },
+
+          "your_home_is_unique": {
+            "principle": "No two construction projects are ever completely identical. Before a staircase installer makes the first fixing, they are often considering questions such as:",
+            "installer_pre_fixing_questions": [
+              "Are the walls square?",
+              "Has the flooring specification changed?",
+              "Are the trimmers correctly positioned?",
+              "Is the landing level?",
+              "Has additional plaster been applied?",
+              "Will decorative mouldings affect installation?",
+              "What fixing methods are appropriate for these walls?"
+            ],
+            "closing_principle": "These are questions that installation teams deal with every single day. Professional staircase installers become experts in understanding how staircases interact with real construction environments."
+          },
+
+          "workshop_vs_construction_site": {
+            "workshop_environment": "The workshop is a carefully controlled environment. Materials are selected and prepared. Machinery is calibrated. Components are manufactured to precise tolerances and quality standards.",
+            "construction_site_reality": "Construction sites are entirely different.",
+            "site_conditions_installers_encounter": [
+              "Walls that are slightly off square",
+              "Flooring changes",
+              "Structural alterations",
+              "Building tolerances",
+              "Site access limitations",
+              "Unexpected construction issues"
+            ],
+            "installer_role": "Their role is to find professional solutions while maintaining both structural integrity and appearance. In many respects, installation requires equal amounts of craftsmanship and problem-solving."
+          },
+
+          "apprentices_follow_different_career_paths": {
+            "principle": "Many homeowners are surprised to learn that staircase companies often employ completely different teams for manufacturing and installation. This is usually because they are entirely different career paths.",
+            "workshop_path_appeal": "Some apprentices dream of working with traditional joinery machinery and developing furniture-making skills within the workshop.",
+            "installation_path_appeal": [
+              "Construction sites",
+              "Problem solving",
+              "Installation techniques",
+              "Working within different environments every week",
+              "Structural fixing methods",
+              "Site-based craftsmanship"
+            ],
+            "non_diminishing_framing": "Neither path is better than the other — they are simply different professions within the same industry. Most staircase installers have little desire to spend their careers operating workshop machinery, and equally many talented staircase makers have no ambition to spend their working lives travelling between construction sites. Professional staircase companies recognise these differences and allow individuals to develop within the specialist areas they are most passionate about."
+          },
+
+          "putting_together_the_jigsaw_puzzle": {
+            "principle": "Perhaps the simplest way of understanding staircase installation is to think of it as completing a very large and very expensive three-dimensional jigsaw puzzle. The workshop has spent weeks or sometimes months manufacturing every component. The installation team must then bring all of those individual pieces together while considering:",
+            "installation_considerations": [
+              "Your home's construction",
+              "Site tolerances",
+              "Structural requirements",
+              "Decorative finishes",
+              "Building regulations",
+              "Future flooring installations",
+              "The overall appearance of the completed staircase"
+            ],
+            "closing_principle": "No two installations are ever exactly the same."
+          },
+
+          "why_specialist_teams_produce_better_results": {
+            "principle": "Professional staircase companies separate manufacturing and installation because doing so allows both teams to become exceptionally skilled within their own disciplines.",
+            "rhetorical_cross_trade_questions": [
+              "Should the electrician also plaster the walls?",
+              "Should the plasterer install the kitchen?",
+              "Should the flooring installer undertake the structural calculations?"
+            ],
+            "closing_principle": "Construction works best when specialist trades focus upon what they do exceptionally well. The same philosophy applies within staircase companies. By allowing manufacturing teams to focus upon craftsmanship and installation teams to focus upon construction environments, homeowners benefit from the specialist knowledge of both professions."
+          },
+
+          "final_thought": "The people who made your staircase have spent years learning how to transform timber into beautiful furniture-grade components. The people installing your staircase have spent years learning how to make those components work perfectly within real homes and real construction projects. One creates the pieces. The other brings them together. Both possess specialist knowledge that has been developed through years of experience, and both play equally important roles in delivering the finished staircase within your home.",
+
+          "key_points_homeowner_advice": [
+            "Staircase manufacturing and installation are two different specialist professions",
+            "Workshop teams focus upon craftsmanship, materials, and manufacturing techniques",
+            "Installation teams focus upon construction environments, fixing methods, and problem solving",
+            "Different apprenticeship paths naturally develop different areas of expertise",
+            "Specialist teams almost always produce better results than expecting one person to know everything",
+            "Your staircase benefits from the combined knowledge of both professions"
+          ],
+
+          "nex_gold_standard": "Your staircase is not created by one person — it is the result of many skilled professionals, each contributing their specialist knowledge to deliver something that will remain within your home for generations to come.",
+
+          "_related_entries": [
+            "installation.specialist_advice_between_trades",
+            "installation.staircase_is_part_of_larger_project",
+            "installation.who_should_measure_the_staircase"
+          ],
+          "_source": "docs/brains/staircase-manufacturing-vs-installation-teams-philip-2026-07-28.md"
+        },
+
+        "specialist_advice_between_trades": {
+          "audience": "homeowner · project_owner · client",
+          "opening_common_statement": "My carpenter says it's wrong.",
+          "framing": "For homeowners, hearing this can naturally cause concern. After all, construction projects involve significant investments, and nobody wishes to discover that something within their home has been installed incorrectly. Before becoming alarmed, however, it is important to understand that construction projects involve many different specialist trades, each possessing their own knowledge, experience, and professional opinions. The key word here is specialist.",
+
+          "poor_workmanship_is_easy_to_identify": {
+            "principle": "Where a staircase has genuinely been installed incorrectly or the workmanship falls below acceptable standards, this can usually be identified relatively easily.",
+            "clear_examples": [
+              "Poor finishing",
+              "Loose components",
+              "Damaged materials",
+              "Incorrect dimensions",
+              "Visible manufacturing defects",
+              "Incomplete installations",
+              "Obvious structural concerns"
+            ],
+            "closing_principle": "These issues are generally quite clear and should always be discussed immediately with your staircase company. Professional companies welcome genuine concerns and will usually work quickly to investigate and resolve any problems identified."
+          },
+
+          "not_every_concern_means_something_wrong": {
+            "principle": "Construction projects are rarely straightforward. Walls move slightly. Floors vary in level. Plaster thickness changes. Flooring specifications evolve throughout the project. What may appear unusual to one trade may simply represent the correct solution to a particular site condition.",
+            "example_installer_decisions": [
+              "Use a cover slip",
+              "Pack fixing positions",
+              "Alter flooring allowances",
+              "Change fixing methods",
+              "Adjust decorative details"
+            ],
+            "closing_principle": "These decisions are often made because of conditions found on site rather than because something has been manufactured or installed incorrectly. Without understanding the complete picture, it can sometimes be difficult for another trade to understand why particular decisions have been made."
+          },
+
+          "every_trade_has_specialist_knowledge": {
+            "principle": "Professional carpenters are exceptionally skilled at what they do.",
+            "specialist_trade_scopes": [
+              "Electricians understand electrical installations",
+              "Plasterers understand finishes and wall preparation",
+              "Flooring specialists understand floor systems",
+              "Builders understand construction management",
+              "Staircase specialists understand staircase manufacture and installation"
+            ],
+            "closing_principle": "None of these trades diminish the knowledge of another. Construction projects are successful because specialist knowledge is shared and respected throughout the build. This is not intended to diminish the skills of any trade — it is intended to recognise that specialist trades exist because they possess specialist knowledge developed over many years of experience."
+          },
+
+          "there_may_be_information_you_cannot_see": {
+            "principle": "Occasionally, another trade may express concerns because they are considering future stages of the build.",
+            "reframe_example": {
+              "what_carpenter_says": "I don't think that's correct.",
+              "what_carpenter_may_actually_mean": [
+                "I'm concerned this could affect the flooring later.",
+                "I'm wondering how this detail will work once we install the wall panelling."
+              ]
+            },
+            "closing_principle": "These observations can often prove extremely valuable. Rather than treating differing opinions as disagreements, they should become opportunities for professional discussion between trades. Trade communication remains one of the most important parts of successful construction projects."
+          },
+
+          "two_question_protocol": {
+            "principle": "If another trade raises concerns regarding your staircase, use two questions in order.",
+            "ask_the_concerned_trade": "Could you explain specifically what concerns you?",
+            "then_ask_the_staircase_company": "Could you explain why this has been installed in this manner?",
+            "closing_principle": "Once both explanations have been provided, homeowners are usually in a much better position to understand the situation properly. Professional discussions should always be welcomed."
+          },
+
+          "daily_events_within_construction": {
+            "principle": "Situations like these occur every single day throughout the construction industry.",
+            "cross_trade_dialogue_examples": [
+              "Builders questioning flooring details",
+              "Electricians questioning plaster finishes",
+              "Flooring installers questioning wall levels",
+              "Staircase companies questioning staircase openings",
+              "Carpenters questioning decorative finishes"
+            ],
+            "closing_principle": "Construction projects involve many professional opinions coming together to achieve the best possible result. This should never automatically be interpreted as conflict between trades. More often than not, it simply represents professionals discussing how their work affects the next stage of the build."
+          },
+
+          "communication_produces_better_results": {
+            "principle": "The most successful projects are rarely those without problems — they are usually the projects where communication has been strongest throughout the build.",
+            "if_concerns_are_raised": [
+              "Ask questions",
+              "Remain level-headed",
+              "Seek specialist advice where appropriate",
+              "Encourage trades to communicate openly",
+              "Consider all professional opinions carefully before reaching conclusions"
+            ],
+            "closing_principle": "Professional advice should never become a cause for unnecessary conflict."
+          },
+
+          "final_thought": "If another trade advises that something may be wrong with your staircase, take the advice seriously — but also take it calmly. Listen carefully to the concerns raised and discuss them openly with your staircase company. In many situations there will be perfectly reasonable explanations based upon manufacturing requirements, site tolerances, or installation methods that may not be immediately obvious during construction. Equally, genuine concerns should never be ignored simply because they come from another trade. Professional observations are often extremely valuable and can help deliver better outcomes for everyone involved. Construction has always been a partnership between specialist trades working together. Every trade brings valuable knowledge to a project, and every trade occasionally benefits from the knowledge of another.",
+
+          "key_points_homeowner_advice": [
+            "Poor workmanship can usually be identified relatively easily",
+            "Specialist advice should always be considered within the context of the specialist trade involved",
+            "Professional opinions between trades are a normal part of construction projects",
+            "Trade communication almost always produces better results than assumptions",
+            "Listen carefully, ask questions, and remain open to professional explanations",
+            "The goal is never to determine who is right first — it is to determine what is right for the project"
+          ],
+
+          "nex_gold_standard": "The finest construction projects are not built by individual trades working alone. They are built by professionals sharing their knowledge, respecting one another's expertise, and working together towards a common goal.",
+
+          "_related_entries": [
+            "installation.client_communication",
+            "installation.holding_final_payment",
+            "installation.staircase_is_part_of_larger_project"
+          ],
+          "_source": "docs/brains/staircase-specialist-advice-between-trades-philip-2026-07-28.md"
+        },
+
+        "measurements_in_writing": {
+          "audience": "homeowner · project_owner · client",
+          "opening_trade_saying": "The shortest pencil is better than the longest memory.",
+          "framing": "Few things are more important within staircase manufacturing than accurate site measurements and clear communication. A staircase may take weeks to manufacture and can remain within your home for generations, so taking a little extra time during the measuring stage can prevent significant problems later. Whenever staircase measurements are provided by a homeowner, carpenter, builder, or another trade, they should always be supplied in writing and accompanied by clear supporting information. This protects everyone involved.",
+
+          "never_rely_upon_verbal_measurements": {
+            "principle": "Construction projects involve hundreds of conversations taking place over many weeks and sometimes many months.",
+            "what_can_happen_to_verbal_measurements": [
+              "Forgotten",
+              "Misheard",
+              "Mixed with another project",
+              "Written down incorrectly",
+              "Assumed rather than confirmed",
+              "Changed without being communicated"
+            ],
+            "closing_principle": "What was clearly understood today may become uncertain tomorrow. Staircase dimensions should never rely solely upon telephone conversations or verbal instructions wherever possible."
+          },
+
+          "always_send_official_confirmation": {
+            "acceptable_confirmation_methods": [
+              "Email",
+              "Written messages",
+              "Official quotations",
+              "Technical drawings",
+              "Approved site surveys",
+              "Staircase measurement forms"
+            ],
+            "screenshot_note": "Even something as simple as a screenshot can prove extremely valuable later. If measurements are being supplied through messaging applications such as WhatsApp, ensure that screenshots are taken and retained by both parties before manufacture begins.",
+            "what_permanent_record_captures": [
+              "Dimensions supplied",
+              "Dates measurements were provided",
+              "Any amendments requested",
+              "Questions raised before manufacture",
+              "Approved staircase specifications"
+            ],
+            "closing_principle": "Good record keeping protects both homeowners and staircase companies equally."
+          },
+
+          "include_more_than_just_numbers": {
+            "insufficient_example": "2800 mm x 920 mm",
+            "principle": "Simply sending dimensions alone is rarely sufficient information when manufacturing a bespoke staircase.",
+            "what_measurements_should_include": [
+              "Photographs",
+              "Simple sketches",
+              "Dimension lines",
+              "Ceiling heights",
+              "Wall positions",
+              "Staircase opening dimensions",
+              "Flooring information",
+              "Notes regarding plaster or wall finishes"
+            ],
+            "closing_principle": "The more information provided during the measuring stage, the fewer assumptions need to be made during manufacture."
+          },
+
+          "why_written_records_matter": {
+            "principle": "Occasionally, disagreements arise regarding dimensions supplied during a project.",
+            "without_written_records_it_is_difficult_to_establish": [
+              "Which measurements were provided",
+              "Whether dimensions were later changed",
+              "Who supplied the information",
+              "Whether allowances had been discussed",
+              "If amendments were approved before manufacture began"
+            ],
+            "with_written_records": "Written confirmation provides clarity for everyone involved. Rather than becoming a disagreement between two parties, the information simply speaks for itself.",
+            "objective": "The objective should never be to prove someone wrong — it should be to establish the facts quickly and professionally so that solutions can be found where necessary."
+          },
+
+          "protecting_homeowners_and_manufacturers": {
+            "misconception": "Many homeowners assume that written confirmations are intended to protect manufacturers.",
+            "reality": "They are equally important for protecting homeowners.",
+            "what_records_may_confirm": [
+              "Measurements supplied were incorrect",
+              "Measurements supplied were correct",
+              "Manufacturing dimensions differed from those provided",
+              "Amendments were requested before manufacture",
+              "Additional work was discussed and approved"
+            ],
+            "closing_principle": "Construction projects involve many conversations and decisions. Keeping important information in writing protects everyone involved throughout the process."
+          },
+
+          "few_extra_minutes_can_save_weeks": {
+            "principle": "Taking a few extra minutes to produce a simple sketch or email confirmation can prevent weeks of unnecessary delays and expense later.",
+            "what_professional_companies_prefer_receiving": [
+              "Clear dimensions",
+              "Supporting photographs",
+              "Written confirmations",
+              "Site sketches",
+              "Approved drawings",
+              "Detailed notes regarding the project"
+            ],
+            "closing_principle": "A bespoke staircase cannot simply be exchanged from stock if measurements prove incorrect after manufacture has begun. Accuracy at the beginning of the project remains one of the most important investments you can make."
+          },
+
+          "final_thought": "Verbal conversations remain an important part of every construction project, but they should never become the only record of important dimensions or decisions. Today's measurements can easily become tomorrow's forgotten conversation. Always confirm staircase measurements in writing and retain copies of all correspondence, drawings, screenshots, and approvals throughout the project. Doing so protects homeowners, manufacturers, installers, and everyone else involved in delivering a beautiful finished staircase.",
+
+          "key_points_homeowner_advice": [
+            "Never rely solely upon verbal staircase measurements",
+            "Always confirm dimensions by email, written message, or approved drawings",
+            "Include photographs, sketches, and supporting information whenever possible",
+            "Retain screenshots and copies of all measurement approvals",
+            "Written records protect both homeowners and staircase companies",
+            "Good communication prevents costly mistakes during manufacture and installation"
+          ],
+
+          "nex_gold_standard": "The most accurate staircase measurements are not simply those taken correctly — they are the ones that are clearly recorded, understood, and approved by everyone involved before manufacture begins.",
+
+          "_related_entries": ["installation.who_should_measure_the_staircase"],
+          "_source": "docs/brains/staircase-measurements-in-writing-philip-2026-07-28.md"
+        },
+
+        "who_should_measure_the_staircase": {
+          "audience": "homeowner · project_owner · client",
+          "nex_principle": "The company manufacturing your staircase should always take responsibility for the staircase measurements from start to finish whenever possible.",
+          "framing": "One of the most important stages of any bespoke staircase project happens long before manufacture ever begins — the site survey and staircase measurements. Unfortunately, it is also one of the areas where costly mistakes can occur. Homeowners are sometimes advised that their local carpenter, builder, or another tradesperson can provide the dimensions required to manufacture their staircase. While this may appear to save both time and money, it can introduce unnecessary risks into what is often one of the most expensive furniture features within the home.",
+
+          "why_measurements_matter": {
+            "principle": "A bespoke staircase is manufactured to millimetre tolerances. Unlike many other construction products, staircases cannot simply be cut shorter or made wider once they arrive on site.",
+            "what_measurements_affect": [
+              "Every tread",
+              "Every riser",
+              "Staircase geometry",
+              "Wall allowances",
+              "Floor finishes",
+              "Landing dimensions",
+              "Structural fixings",
+              "Handrail positions",
+              "Manufacturing tolerances",
+              "Installation methods"
+            ],
+            "risk_amplification": "A small measurement discrepancy at site survey stage can become a major manufacturing issue several weeks later."
+          },
+
+          "staircase_measuring_is_specialist_skill": {
+            "principle": "Professional carpenters are highly skilled tradespeople. Builders are experts in construction. Site managers understand how projects come together. However, staircase measuring remains a specialist discipline.",
+            "context": "Modern house building methods have changed considerably over recent decades. Many trades are no longer routinely involved with traditional staircase setting out and bespoke staircase manufacture.",
+            "questions_specialist_surveyors_consider": [
+              "Will flooring be installed before or after the staircase?",
+              "How much plaster build-up is expected?",
+              "Is the staircase opening square?",
+              "Are the trimmers correctly positioned?",
+              "Will wall tolerances affect installation?",
+              "Has sufficient clearance been allowed for handrails and volutes?",
+              "Are there any manufacturing allowances required?"
+            ],
+            "closing_note": "These are questions specialist staircase companies deal with every single day."
+          },
+
+          "who_is_responsible": {
+            "principle": "One of the greatest advantages of allowing the staircase company to undertake the site survey themselves is accountability.",
+            "no_uncertainty_regarding": [
+              "Measurements",
+              "Manufacturing dimensions",
+              "Installation requirements",
+              "Site tolerances",
+              "Responsibility should problems arise"
+            ],
+            "single_owner_framing": "The staircase company owns the process from beginning to end.",
+            "multi_party_measurement_scenario": [
+              "The homeowner measures the staircase",
+              "The builder confirms the dimensions",
+              "The carpenter submits the measurements",
+              "The staircase company manufactures the staircase",
+              "The installers arrive on site"
+            ],
+            "multi_party_problem": "If a problem occurs, determining responsibility immediately becomes considerably more difficult.",
+            "cleaner_alternative": "The staircase company measures, manufactures and installs the staircase. There is simply no confusion regarding responsibility."
+          },
+
+          "what_if_carpenter_is_measuring": {
+            "principle": "There are occasions where staircase companies work alongside trusted local carpenters and builders whom they know well. In these situations, both parties understand the information required and have established working relationships developed over many years. Where this relationship exists, measurements can often be managed successfully because expectations and responsibilities have been clearly defined.",
+            "caveat": "However, homeowners should avoid assuming that any carpenter will automatically understand the manufacturing requirements of a bespoke staircase simply because they work within construction. Specialist trades exist for a reason."
+          },
+
+          "consider_using_local_companies": {
+            "principle": "Price is naturally an important consideration when choosing a staircase company. Occasionally, homeowners are attracted by companies located many hundreds of miles away offering significantly lower prices. There is absolutely nothing wrong with obtaining quotations nationally, but it is worth considering the practicalities involved should problems arise.",
+            "questions_to_ask": [
+              "Who is undertaking the site survey?",
+              "Who is responsible for the measurements?",
+              "Who is returning if alterations are required?",
+              "How quickly can problems be resolved?",
+              "Are installation teams travelling significant distances?"
+            ],
+            "closing_note": "Sometimes a local specialist staircase company may offer significant advantages simply because they remain readily available throughout the project."
+          },
+
+          "when_measurements_go_wrong": {
+            "principle": "Unfortunately, staircase measurement errors can occasionally be extremely costly. Unlike flooring or doors, bespoke staircases cannot simply be exchanged from stock.",
+            "severe_consequences": [
+              "Major manufacturing alterations",
+              "Significant installation delays",
+              "Structural modifications",
+              "Partial remanufacture",
+              "Complete staircase rebuilds"
+            ],
+            "cost_reality": "The cost of rebuilding a bespoke staircase can sometimes approach the cost of manufacturing the original staircase itself. What initially appeared to be a saving during the measuring stage can quickly become the most expensive decision made during the project."
+          },
+
+          "your_staircase_is_furniture": {
+            "reframe": "Many homeowners understandably view staircases simply as part of the building structure. Professional staircase manufacturers view them rather differently. Your staircase is one of the largest bespoke furniture installations within your home. It has been designed, manufactured, finished, transported, and installed specifically for your property.",
+            "analogy_question": "Would you ask another trade to measure bespoke stone worktops or manufacture fitted furniture for your kitchen?",
+            "principle": "The same principles apply here."
+          },
+
+          "final_thought": "The simplest way to avoid unnecessary problems is also usually the best. Allow the staircase company to take responsibility for site measurements, manufacturing, installation, and final fitting. Keeping responsibility with one specialist company from beginning to end protects both the homeowner and the manufacturer. There is no confusion over dimensions, no uncertainty regarding accountability, and no unnecessary assumptions during manufacture. Your staircase may remain within your home for decades. Taking the time to ensure that it has been measured correctly from the very beginning is one of the best investments you can make.",
+
+          "single_company_scope": [
+            "Site measurements",
+            "Manufacturing",
+            "Installation",
+            "Final fitting"
+          ],
+
+          "key_points_homeowner_advice": [
+            "Staircase measuring is a specialist discipline",
+            "Whenever possible, your staircase company should take responsibility for site measurements",
+            "Local staircase specialists can provide significant advantages throughout the project",
+            "Clear accountability protects both homeowners and manufacturers",
+            "Small measurement errors can become extremely costly once manufacture has begun",
+            "Your staircase is bespoke fitted furniture — treat the measuring stage with the same importance as the finished product"
+          ],
+
+          "nex_gold_standard": "Good staircases begin long before the first tread is manufactured. They begin with accurate measurements, specialist knowledge, and clear responsibility from start to finish.",
+
+          "_source": "docs/brains/staircase-who-should-measure-philip-2026-07-28.md"
+        },
+
+        "holding_final_payment": {
+          "audience": "homeowner · project_owner · client",
+          "framing": "Finding something unexpected after your staircase has been installed can be worrying. For many homeowners, their first reaction is often, 'I won't pay the remaining balance until this is resolved.' Before making that decision, it is worth taking a step back and considering the situation carefully. The majority of staircase installations are completed professionally and to an exceptionally high standard. Occasionally, however, construction tolerances elsewhere within the property may require installers to find alternative solutions during installation. Walls may not be perfectly square, floors may not be perfectly level, or staircase openings may differ slightly from the original dimensions provided during manufacture. These situations are more common than many homeowners realise.",
+
+          "dont_jump_to_conclusions": {
+            "principle": "If your staircase company has advised you that a particular installation method was necessary, it is important to listen carefully to their explanation before immediately concluding that something has been installed incorrectly. Staircase installers deal with these situations every day.",
+            "what_installers_evaluate": [
+              "Wall alignment",
+              "Staircase wells",
+              "Trimmers",
+              "Floor levels",
+              "Structural fixings",
+              "Landing dimensions",
+              "Flooring allowances",
+              "Manufacturing tolerances",
+              "Safety requirements"
+            ],
+            "closing_note": "There are often reasons for particular installation decisions that may not be immediately obvious to the homeowner."
+          },
+
+          "is_it_reasonable_to_ask_for_time": {
+            "answer": "Yes.",
+            "principle": "If you genuinely remain concerned after discussing the matter with your staircase company, it is perfectly reasonable to ask whether they would allow the remaining payment to be released after 48 hours. A simple conversation is often all that is required.",
+            "what_48_hours_enables": [
+              "Consider the explanation provided",
+              "Obtain a second professional opinion",
+              "Review photographs or videos of the installation",
+              "Discuss the situation calmly and objectively"
+            ],
+            "closing_note": "Most reputable companies will appreciate that homeowners occasionally require reassurance before releasing their final payment. The important point is that this should always be approached respectfully and reasonably."
+          },
+
+          "seek_advice_from_right_professionals": {
+            "principle": "If you decide to seek a second opinion, ensure that you obtain advice from an established staircase company whenever possible.",
+            "what_to_send": [
+              "Clear photographs",
+              "Videos of the area concerned",
+              "Measurements if requested",
+              "A simple explanation of what concerns you",
+              "The explanation provided by your installation team"
+            ],
+            "closing_note": "Providing complete information allows another professional to offer meaningful advice."
+          },
+
+          "not_all_trades_have_same_knowledge": {
+            "framing": "Many homeowners will naturally ask a carpenter for their opinion first. While carpenters are highly skilled tradespeople, it is important to recognise that staircase installation is a specialist field.",
+            "trim_carpenter_typical_scope": [
+              "Doors",
+              "Flooring",
+              "Architraves",
+              "Kitchens",
+              "Skirting boards",
+              "Decorative joinery"
+            ],
+            "staircase_specialist_scope": "Professional staircase companies spend their careers manufacturing and installing staircases. A bespoke staircase is often better described as fitted furniture than general carpentry.",
+            "questions_best_asked_of_staircase_specialists": [
+              "Staircase geometry",
+              "Manufacturing tolerances",
+              "Wall discrepancies",
+              "Structural fixing methods",
+              "Installation solutions",
+              "Staircase regulations",
+              "Furniture-grade finishes"
+            ],
+            "closing_note": "That does not diminish the skills of any other trade — it simply recognises that every profession has its own specialist knowledge."
+          },
+
+          "holding_payment_should_never_be_first_step": {
+            "framing": "Unfortunately, withholding payment has become an increasingly common reaction whenever questions arise during construction projects. In most circumstances, it should not be the first response.",
+            "first_steps_in_order": [
+              "Discuss the matter with your staircase company",
+              "Ask questions about the installation",
+              "Understand why particular decisions have been made",
+              "Request time to consider the explanation if required",
+              "Seek specialist advice if concerns remain"
+            ],
+            "closing_note": "Only after meaningful discussions have taken place should decisions regarding payment ever become necessary. Professional companies take great pride in their workmanship and will almost always seek to resolve genuine concerns wherever possible."
+          },
+
+          "construction_is_partnership": {
+            "principle": "Staircase companies do not manufacture problems that occur elsewhere within the build. Their role is often to overcome them.",
+            "issues_installers_frequently_overcome": [
+              "Walls being off square",
+              "Flooring level changes",
+              "Altered staircase openings",
+              "Building tolerances",
+              "Plastering discrepancies",
+              "Structural considerations"
+            ],
+            "hidden_effort": "Frequently, the homeowner never sees the additional work involved because the solution simply becomes part of the finished staircase. Professional installers would much rather complete a straightforward installation than spend additional time overcoming construction challenges."
+          },
+
+          "final_thought": "If something doesn't sit comfortably with you after installation, don't panic and don't immediately assume the worst. Ask questions. Listen carefully to the explanations provided. Remain level-headed and give yourself time to consider the situation properly. If necessary, respectfully request a 48-hour period before releasing the final payment while you obtain specialist staircase advice. Most importantly, seek that advice from professionals whose expertise lies specifically within staircase manufacturing and installation. The best outcomes are usually achieved when homeowners and staircase companies work together rather than against one another.",
+
+          "key_points_homeowner_advice": [
+            "Never rush to conclusions immediately after installation",
+            "Discuss all concerns openly with your staircase company",
+            "Asking for 48 hours to obtain specialist advice is often reasonable",
+            "Seek staircase advice from staircase specialists whenever possible",
+            "Construction tolerances elsewhere within the build may affect the final installation",
+            "Professional staircase installation is a specialist field combining manufacturing, furniture installation, and construction knowledge",
+            "Communication will almost always achieve better results than conflict"
+          ],
+
+          "nex_gold_standard": "Your staircase is one of the most important furniture features within your home. Taking the time to understand both the installation and the advice provided will help ensure that the final result is one that everyone can be proud of.",
+
+          "_source": "docs/brains/staircase-holding-final-payment-philip-2026-07-28.md"
+        },
+
+        "client_communication": {
+          "audience": "homeowner · project_owner · client",
+          "nex_installation_advice": "Never judge a staircase before discussing any concerns with your installation team. Professional installers will always be happy to explain why particular decisions have been made.",
+          "framing": "There are few moments during a construction project more worrying than standing back and thinking, 'That staircase doesn't look right.' It is completely understandable to have questions when such an important feature of your home is being installed. Before jumping to conclusions, it is always best to stop, sit down, and discuss the area of the staircase that you feel is not up to the standard you expected. Construction is a process involving many trades, each relying upon the work completed before them. A staircase does not exist in isolation — it relies on walls being square, floors being level, staircase openings being correct, and accurate measurements throughout the build. Most importantly, every installation should begin with a level-headed conversation.",
+
+          "best_solution_begins_with_communication": {
+            "principle": "Professional staircase installers have many years of experience solving site challenges. They understand that homeowners want perfection and are proud of the homes they are building. If something concerns you, ask the question.",
+            "questions_to_ask": [
+              "Why has this been done this way?",
+              "Was there a problem with the walls or floors?",
+              "Is this the only solution available?",
+              "Are there alternative options?",
+              "Will the finished staircase look different once completed?"
+            ],
+            "closing_note": "Many concerns can be resolved in just a few minutes of discussion. What may appear unusual during installation is often completely normal once the staircase has been finished."
+          },
+
+          "installer_is_furniture_installer_not_carpenter": {
+            "principle": "One of the biggest misconceptions within construction is that staircase installation is simply carpentry work. It isn't. A bespoke staircase is much closer to furniture installation than general carpentry. Every component has been manufactured to precise dimensions and must work alongside multiple elements of the building itself.",
+            "installer_assesses": [
+              "Wall alignment",
+              "Staircase well dimensions",
+              "Trimmer positions",
+              "Floor levels",
+              "Ceiling heights",
+              "Landing dimensions",
+              "Flooring allowances",
+              "String clearances",
+              "Structural fixing requirements",
+              "Building tolerances"
+            ],
+            "framing": "Before the first fixing is ever made, professional installers will assess the entire staircase area. They are not simply fitting a staircase — they are finding the best possible solution for the conditions presented to them on site."
+          },
+
+          "when_everything_is_perfect": {
+            "principle": "When walls are square, floors are level, openings are correct, and measurements are accurate, staircase installations can progress very quickly. Professional staircase installers do not deliberately make installations more difficult. Quite the opposite.",
+            "reality": "The quickest, easiest, and most enjoyable installations are those where everything aligns perfectly. No installer wishes to spend additional hours making alterations, producing cover slips, packing walls, or finding solutions to site discrepancies. These situations require considerably more time, experience, and craftsmanship.",
+            "why_installs_take_longer": "When an installation takes longer than expected, it is usually because the team are working to achieve the highest possible standard despite the conditions they have encountered."
+          },
+
+          "sometimes_no_remaining_choice": {
+            "framing": "Construction sites are rarely perfect. Walls may be slightly off square. Floors may not be perfectly level. Staircase openings can vary slightly from the original drawings. Flooring specifications may have changed after manufacture. When this happens, your installation team must make professional decisions based upon their years of experience.",
+            "possible_solutions": [
+              "Cover slips",
+              "Packing and adjusting fixing positions",
+              "Minor alterations where appropriate",
+              "Flooring allowances",
+              "Wall adjustments",
+              "Alternative fixing methods"
+            ],
+            "principle": "These decisions are never made lightly. If installers can achieve a cleaner or simpler solution, they almost always will. When a more complex solution is required, it is generally because there is no remaining option that will provide both structural integrity and an acceptable finish."
+          },
+
+          "trust_experience_around_you": {
+            "principle": "Professional staircase installers have spent years dealing with situations that most homeowners will encounter only once in their lifetime. While it is important to ask questions, it is equally important to remain open to professional advice. Being level-headed during installation allows everyone involved to work together towards the best possible result.",
+            "partnership_of_trades": [
+              "Homeowners",
+              "Builders",
+              "Site managers",
+              "Architects",
+              "Plasterers",
+              "Flooring installers",
+              "Staircase manufacturers",
+              "Staircase installation teams"
+            ],
+            "success_note": "The most successful projects are those where every trade communicates openly and works together to overcome the occasional challenges that arise."
+          },
+
+          "questions_before_raising_concerns": {
+            "self_check_questions": [
+              "Has the staircase installation been completed?",
+              "Have I discussed my concerns with the installation team?",
+              "Have I been shown the problem they are trying to overcome?",
+              "Is the issue related to walls, floors, or the staircase itself?",
+              "Has an alternative solution been considered?",
+              "Will this still be visible once the installation is completed?"
+            ],
+            "closing_insight": "Sometimes what appears to be a staircase problem is actually a wall alignment or flooring issue that occurred several weeks earlier during construction."
+          },
+
+          "professional_pride_matters": {
+            "principle": "Professional staircase companies take enormous pride in their workmanship and reputation. No installer wishes to leave site knowing an installation falls below their standards. When additional time is spent finding solutions, it is almost always because the installation team are working towards the very best finish possible under the circumstances presented to them.",
+            "installer_evaluates_entire_area": [
+              "Staircase wells",
+              "Trimmers",
+              "Wall alignment",
+              "Floor levels",
+              "Structural fixings",
+              "Landings",
+              "Flooring finishes",
+              "Decorative details",
+              "Safety requirements",
+              "The overall appearance of the completed installation"
+            ],
+            "framing": "Every decision made during installation affects the finished result."
+          },
+
+          "final_thought": "If your staircase doesn't look quite right at first glance, don't panic and don't rush to conclusions. Take the time to sit down with your installation team and discuss any concerns openly and calmly. Ask questions, listen carefully to their advice, and work together to find the most suitable solution. Professional staircase installers are not simply fitting timber to walls — they are installing one of the most important furniture features within your home. Sometimes the perfect installation takes a little longer than expected. Sometimes the perfect solution is different from what was originally imagined. What matters most is achieving a staircase that is structurally sound, beautifully finished, and built to stand the test of time.",
+
+          "key_points_remember": [
+            "Stay level-headed throughout the installation process",
+            "Discuss concerns before drawing conclusions",
+            "Construction tolerances can affect staircase installations",
+            "Professional installers will always seek the best possible solution",
+            "Staircase installation is specialist furniture installation — not general carpentry",
+            "Trust experience, ask questions, and work together to achieve the highest possible standard"
+          ],
+
+          "nex_gold_standard": "The best results are almost always achieved when knowledge, craftsmanship, and communication come together.",
+
+          "_source": "docs/brains/staircase-when-it-doesnt-look-right-philip-2026-07-28.md"
+        },
+
+        "off_square_walls": {
+          "nex_principle": "Nothing in construction is ever 100 percent perfect. The goal is not perfection — it is achieving the best possible standard at every stage of the build.",
+          "framing": "One of the most common issues encountered during staircase installation is walls that are slightly off square. It is something every staircase manufacturer, installer, block layer, plasterer, site manager, and homeowner will come across at some point during construction. A construction site involves many different trades, each working to their own standards and tolerances while relying on the workmanship of the previous trade.",
+          "why_it_matters_more_for_some_stair_types": "When planning a staircase that will fit tightly against walls, particularly an L-shaped dogleg staircase or quarter-turn staircase, it is extremely important that the corners are as square as possible. Even small discrepancies can have a significant effect on the finished installation.",
+
+          "planning_before_staircase_arrives": {
+            "principle": "Homeowners, project owners, and site managers should discuss staircase locations with the block layer or bricklayer before work begins. If a staircase is being fitted into a corner, everyone involved should understand that the staircase area requires particular care during construction.",
+            "early_intervention_advantage": "At the early stages of a build, walls can easily be adjusted if required. If block walls are found to be dramatically out of square at a height of approximately two metres, rebuilding and correcting the work may only take a few hours. Making adjustments early in the project is almost always quicker, easier, and more cost-effective than attempting to resolve problems once the staircase arrives on site.",
+            "installation_tip": "The earlier an issue is identified, the easier and less expensive it will be to correct."
+          },
+
+          "plastering_stage": {
+            "principle": "After the block work is completed, the plasterers become the next important part of the process.",
+            "plasterer_responsibility": "If walls are slightly off square, plasterers should notify the site manager or homeowner where possible and use their build coat to achieve the best possible corners. In many cases, they can significantly improve wall alignment before decoration begins.",
+            "plasterer_limits": "Plasterers can only work within the limitations of the existing construction. Sometimes the amount of plaster required simply will not allow them to achieve perfectly square corners without causing additional problems elsewhere.",
+            "discrepancy_amplification": {
+              "principle": "Small measurements can become larger problems over distance.",
+              "example": "A corner showing only 1 cm out of square on a roofing square can become 2 cm, 3 cm, or even 4 cm over several metres of wall length. What appears to be a very small discrepancy during construction can become highly visible once a staircase is installed.",
+              "implication": "For this reason, achieving the best possible corner alignment should always be the goal."
+            }
+          },
+
+          "when_problem_reaches_staircase_company": {
+            "principle": "If the walls remain out of square once plastering has been completed, the issue is ultimately passed to the staircase manufacturer and installer.",
+            "available_options": [
+              "Add matching cover slips to conceal the discrepancy",
+              "Rebuild sections of the staircase opening",
+              "Pack and adjust fixing points during installation",
+              "Modify particular components where possible",
+              "Work closely with the customer to agree upon the most acceptable visual solution"
+            ],
+            "professional_responsibility": "Every staircase company has a responsibility to maintain both their workmanship standards and their reputation. Finding solutions that satisfy the customer while maintaining structural integrity is part of professional installation."
+          },
+
+          "handling_by_staircase_type": {
+            "quarter_landing": {
+              "flexibility": "Quarter landing staircases generally allow greater flexibility when walls are slightly off square."
+            },
+            "winder": {
+              "challenge": "Winder staircases can present more challenges because the changing angles and tapered treads make discrepancies more noticeable. Even small wall alignment issues may become visible once mouldings, strings, and plaster lines meet one another.",
+              "preferred_solution": "Cover slips are often the preferred solution. When carefully installed and overlapped down the side of the string, they can provide an excellent finish.",
+              "backing_block_technique": "Backing blocks can also be installed within larger gaps, allowing the staircase string to be securely fixed back to the wall using suitable anchor bolts through the string and into the blockwork. The result is a solid fixing while maintaining a professional appearance."
+            },
+            "straight_flight": {
+              "general_ease": "Straight flight staircases are generally easier to accommodate than L-shaped installations.",
+              "specific_challenge": "If the wall directly in front of the staircase is not aligned with the adjoining wall, the top of the staircase may not sit tightly against the trimming joist or staircase well opening. In most situations this is not considered a major issue and can usually be packed and adjusted during installation.",
+              "flooring_consideration": "The greater consideration is often the finished flooring. Timber flooring, laminate flooring, and other floor finishes installed at first floor level will follow the angle of the top step. Where minor adjustments are possible, the top tread may be trimmed slightly to provide a cleaner alignment between the staircase and the finished floor covering.",
+              "coordination_note": "Careful planning between the staircase installer and flooring contractor will usually provide the best results."
+            }
+          },
+
+          "team_effort_principle": {
+            "framing": "Every site owner, foreman, and project manager has an obligation to monitor the quality of the build throughout construction. While achieving absolute perfection is rarely possible, acceptable construction standards should never adversely affect the trade that follows. Every trade relies upon the previous one to provide the best possible starting point for their own work.",
+            "successful_installation_reality": "The most successful staircase installations are rarely the result of one trade alone — they are the result of block layers, plasterers, flooring installers, staircase manufacturers, and site managers all understanding how their work affects the next stage of construction."
+          },
+
+          "key_points_summary": [
+            "Nothing in construction is ever 100 percent perfect",
+            "Staircase corners should be checked as early as possible during construction",
+            "Small discrepancies can become significant over long wall lengths",
+            "Quarter landing staircases are generally easier to accommodate than winders when walls are off square",
+            "Cover slips and suitable fixing methods will resolve many installation issues",
+            "Early communication between trades is often the simplest and most cost-effective solution",
+            "Good staircase installations begin long before the staircase arrives on site"
+          ],
+
+          "nex_gold_standard": "The goal is not perfection, but achieving the highest possible standard at every stage of the build.",
+
+          "_source": "docs/brains/staircase-off-square-walls-philip-2026-07-28.md"
+        },
+
+        "van_organisation": {
+          "nex_principle": "The standards you set inside your installation van are usually the same standards you deliver inside your customer's home.",
+          "framing": "Your van is your mobile workshop, your stores department, your inventory system and your reputation on wheels. Every drawer, shelf and storage compartment has the potential to save valuable time during an installation. More importantly, it establishes professional standards that will remain with your business for decades. The finest staircase installations are rarely the result of good fortune. They are usually the result of good preparation.",
+
+          "time_is_money": {
+            "principle": "Time is your most expensive tool.",
+            "scenario_when_missing_fitting_appears_trivial": "It's only ten minutes down the road.",
+            "actual_cost_sequence": [
+              "Packing away expensive tools safely",
+              "Leaving the installation site",
+              "Travelling to the nearest hardware supplier",
+              "Purchasing the missing materials",
+              "Returning to site",
+              "Setting up once again before work can resume"
+            ],
+            "realistic_time_lost": "A forgotten fitting can easily cost one or two hours of productive installation time. Many staircase installations are completed in locations that aren't conveniently situated beside builders' merchants — new developments, luxury properties and country homes are frequently well off the beaten track. Ten minutes quickly becomes two hours.",
+            "nex_installation_tip": "Before leaving the workshop, ask yourself one question: 'What will stop this staircase being completed today?' If the answer is screws, fixings, brackets or fittings — take the spares."
+          },
+
+          "every_installation_presents_new_challenges": {
+            "principle": "No staircase drawing ever tells the entire story. Professional installers know there will almost always be something unexpected waiting on site.",
+            "common_examples": [
+              "Hidden wall returns",
+              "Stepped walls",
+              "Uneven plasterwork",
+              "Unexpected coving details",
+              "Additional packing requirements",
+              "Alternative fixing requirements",
+              "Different wall constructions",
+              "Restricted access areas",
+              "Minor dimensional discrepancies"
+            ],
+            "hard_rule": "Expect the unexpected. Prepare for the unknown.",
+            "differentiator": "The difference between experienced installers and inexperienced installers is rarely found in their tools — it's found in their preparation. Being organised doesn't mean carrying every tool ever manufactured. It means knowing precisely what you have available and exactly where to find it."
+          },
+
+          "organisation_creates_productivity": {
+            "scenario_disorganised": {
+              "apprentice": "Where are the anchor bolts?",
+              "installer": "I'm not sure. Check the toolbox. If they're not there, look in the bags.",
+              "outcome": "Ten minutes later they're still looking."
+            },
+            "scenario_organised": {
+              "installer": "Third drawer down. Second drawer from the left. Bring me two anchor bolts.",
+              "outcome": "Thirty seconds later, work continues."
+            },
+            "principle": "Both installations required exactly the same fitting. Only one team lost valuable time. Professional organisation removes uncertainty from the installation process. Those five or ten minutes saved throughout the day become hours saved every month and weeks saved throughout the year."
+          },
+
+          "apprentice_watches_everything": {
+            "principle": "Apprentices rarely become what we tell them to become. They usually become what they repeatedly observe.",
+            "what_apprentice_notices": [
+              "How you prepare for installations",
+              "How you organise your tools",
+              "How you communicate on site",
+              "How you solve unexpected problems",
+              "The standards you refuse to compromise on"
+            ],
+            "master_craftsman_quote": "Your apprentice may forget what you said, but they will never forget what you repeatedly did.",
+            "generational_transfer": "Professional standards have always been passed from master craftsmen to apprentices. Your installation van is simply another classroom. Years later, when asked why they organise their own vans so meticulously, they'll often reply: 'That's how my master always did it.'"
+          },
+
+          "customer_perception": {
+            "principle": "Customers may not understand staircase construction, but they immediately recognise professionalism.",
+            "when_rear_doors_open_customer_sees": [
+              "Clean shelving systems",
+              "Securely stored tools",
+              "Labelled fittings and fixings",
+              "Professional storage solutions",
+              "Efficient working practices",
+              "Pride in workmanship"
+            ],
+            "customer_reasoning": "If they take this much care looking after their tools, they'll probably take the same care with my staircase.",
+            "hard_rule": "Professionalism creates confidence long before work begins. Your installation van is often your first opportunity to demonstrate the standards your customer has invested in."
+          },
+
+          "daily_preparation_checklist": [
+            "Primary fixings",
+            "Secondary fixings",
+            "Spare screws and bolts",
+            "Wall anchors",
+            "Packers and wedges",
+            "Spare batteries",
+            "Extension leads",
+            "Hand tools",
+            "Power tools",
+            "PPE equipment",
+            "Dust extraction equipment",
+            "Installation drawings",
+            "Emergency repair materials"
+          ],
+
+          "five_drawer_rule": {
+            "principle": "Professional installers should be able to answer within 5 seconds:",
+            "questions": [
+              "Which drawer contains screws?",
+              "Which drawer contains anchor bolts?",
+              "Which drawer contains specialist fittings?",
+              "Which drawer contains electrical equipment?",
+              "Which drawer contains emergency installation materials?"
+            ],
+            "fail_condition": "If you cannot answer within five seconds, your organisation system requires improvement."
+          },
+
+          "apprentice_training_rule": {
+            "cycle": ["REMOVE IT", "USE IT", "RETURN IT", "READY FOR TOMORROW"],
+            "principle": "Teach apprentices to return every tool immediately after use. Simple habits eventually become professional standards."
+          },
+
+          "long_term_benefits": [
+            "Save valuable installation time",
+            "Reduce costly journeys to suppliers",
+            "Improve productivity",
+            "Increase professionalism",
+            "Improve apprentice training",
+            "Reduce unnecessary stress",
+            "Improve customer confidence",
+            "Establish better working habits",
+            "Increase installation efficiency",
+            "Create higher professional standards"
+          ],
+
+          "nex_gold_standard": "Organisation saves time. Preparation prevents problems. Professionalism creates confidence. The finest craftsmen understand that excellence begins long before the installation begins.",
+
+          "_source": "docs/brains/staircase-installation-van-organisation-philip-2026-07-28.md"
+        },
+
+        "authoring_gaps": [
+          "site prep checklist",
+          "install sequence (which flight first, when to fix newel bases)",
+          "snag list handling (post-install fault triage)",
+          "moisture equalisation on-site (acclimatisation window before install)",
+          "protection during other trades (wet trades, plastering, decoration)",
+          "handover checklist (paperwork, warranty, aftercare guidance)",
+          "warranty rules",
+          "off-square scenarios beyond corners (uneven floors, out-of-plumb walls, dropped openings)"
+        ]
+      },
+
+      "design": {
+        "_source": "feedback_nex_staircase_design_system_prompt + feedback_nex_design_philosophy_generation + project_nex_uk_property_type_awareness + project_nex_staircase_plan_size_reference",
+        "system_prompt_ref": "src/lib/nex/knowledge/staircaseDesignSystemPrompt.ts",
+        "core_principles": [
+          "Never produce the same staircase twice unless the customer specifically requests an exact match.",
+          "NEX NEVER copies a reference image — uses it only to understand style/craftsmanship/quality, then creates an ORIGINAL design."
+        ],
+        "five_future_trends": [
+          "Timber + Metal",
+          "Glass Integration",
+          "Lighting",
+          "Floating",
+          "Feature staircases"
+        ],
+        "property_type_awareness": {
+          "supported_uk_types": ["Victorian terrace", "1930s semi", "modern new-build", "Georgian townhouse", "cottage", "apartment"],
+          "paired_neighbour_mirror_rule": "right-side house = staircase on left, and vice versa, especially Victorian terraces (guess, not certainty)"
+        },
+        "plan_size_reference_ref": "trades/docs/staircase-plan-sizes-uk.md and trades/data/staircase-plan-sizes.json",
+        "staircase_lighting_overview": {
+          "audience": "homeowner · project_owner · client",
+          "framing": "Staircase lighting has become increasingly popular in both new homes and renovation projects. When well designed, it can improve safety, enhance the appearance of the staircase, and create a feature within the home. Lighting can be subtle and discreet or used to make a bold architectural statement, depending on the style of the staircase and the overall interior design.",
+
+          "where_can_be_installed": [
+            "LED lights recessed into each tread",
+            "LED strips beneath the nosing of each tread",
+            "Lighting fitted into the wall beside the staircase",
+            "Handrail lighting",
+            "Lighting beneath floating stair treads",
+            "Feature lighting around glass balustrades",
+            "Lights fitted beneath the staircase to illuminate the floor below"
+          ],
+          "placement_note": "The most suitable option depends on the staircase design and whether the lighting is being installed during manufacture or added later.",
+
+          "is_it_popular": {
+            "answer": "Yes.",
+            "context": "Modern LED technology has made staircase lighting more affordable, energy efficient and reliable than ever before.",
+            "reasons_homeowners_choose_it": [
+              "Improves visibility at night",
+              "Creates an attractive feature",
+              "Adds value to the overall interior design",
+              "Produces a welcoming atmosphere",
+              "Can highlight architectural details that may otherwise go unnoticed"
+            ],
+            "design_longevity_note": "Simple lighting designs often remain attractive for many years, whereas overly complex lighting schemes may date more quickly."
+          },
+
+          "is_it_dangerous": {
+            "principle": "When correctly designed and installed, staircase lighting is generally considered safe. The lighting itself is not normally the hazard. Problems are more likely to arise if the installation has been poorly designed or incorrectly fitted.",
+            "poor_install_examples": [
+              "Loose or exposed electrical wiring",
+              "Inadequate protection against moisture where required",
+              "Poor-quality electrical components",
+              "Incorrect installation of power supplies or transformers",
+              "Excessively bright lighting causing glare",
+              "Lighting that creates confusing shadows on the treads",
+              "Cables routed where they could become damaged"
+            ],
+            "qualified_installer_disclaimer": "Electrical work should be carried out in accordance with the relevant electrical regulations and, where required, by a suitably qualified electrician."
+          },
+
+          "can_lights_make_less_safe": {
+            "answer": "Yes, if poorly designed.",
+            "principle": "The purpose of staircase lighting is to improve visibility, not reduce it. Lighting should clearly define each tread and landing.",
+            "bad_practice_examples": "Very bright lights, coloured lighting, flashing effects or poorly positioned fittings may make it more difficult to judge the edge of each step, particularly for older people or those with reduced vision.",
+            "recommendation": "A simple, even lighting arrangement often provides the safest result."
+          },
+
+          "should_i_add_during_manufacture": {
+            "principle": "If you are having a new staircase made, it is often worth discussing lighting at the design stage.",
+            "manufacturer_preparation": "Many staircase manufacturers can prepare grooves, cable routes or concealed spaces for wiring before the staircase is manufactured. This can produce a cleaner appearance and reduce the need for alterations after installation.",
+            "retrofit_note": "Retrofitting lighting is also possible in many cases, although it may involve additional work to conceal cables and electrical components."
+          },
+
+          "maintenance": {
+            "principle": "LED lighting generally requires little maintenance.",
+            "periodic_checks": [
+              "All lights are operating correctly",
+              "Diffusers remain clean",
+              "Wiring has not been damaged",
+              "Drivers and transformers remain accessible if replacement is ever required"
+            ],
+            "fault_procedure": "If a fault develops, isolate the electrical supply and seek advice from a qualified electrician."
+          },
+
+          "expert_tip": {
+            "principle": "Think about staircase lighting as part of the overall design of your home, not as an afterthought.",
+            "best_lighting_definition": "The best staircase lighting is often the lighting you hardly notice — it quietly illuminates each step, enhances the staircase's design, and provides safe, comfortable visibility without glare or distraction.",
+            "closing_advice": "When planning a new staircase, ask your staircase manufacturer whether concealed lighting can be incorporated during manufacture. Doing so can often produce a neater installation and provide more design options than adding lighting after the staircase has been installed."
+          },
+
+          "_related_entries": ["design.staircase_lighting_timing_and_planning", "design.five_future_trends"],
+          "_source": "docs/brains/staircase-lighting-overview-philip-2026-07-28.md"
+        },
+
+        "staircase_lighting_timing_and_planning": {
+          "audience": "homeowner · project_owner · client",
+          "key_principle": "If you are planning to install staircase lighting, the best time to discuss it is during the staircase design stage, before the staircase is manufactured.",
+          "why_early_planning_helps": "Although lighting can often be added after installation, planning it from the beginning usually produces a cleaner finish, allows cables to be concealed, and reduces installation time and cost.",
+
+          "best_stage_to_install": {
+            "principle": "For most timber staircases, lighting is easiest to install before the underside (back) of the staircase is sheeted or enclosed.",
+            "what_is_possible_at_this_stage": [
+              "Electrical cables can be routed neatly",
+              "Holes for light fittings can be drilled accurately",
+              "LED channels can be fitted",
+              "Drivers and transformers can be positioned in accessible locations",
+              "Future maintenance can be considered before everything is closed"
+            ],
+            "post_enclosure_reality": "Once the staircase has been enclosed with plasterboard or timber sheeting, access becomes much more restricted and additional work may be required to install wiring."
+          },
+
+          "can_lights_be_replaced": {
+            "answer": "Yes.",
+            "principle": "Most modern staircase LED lights are designed so they can be removed from the front face of the fitting without dismantling the staircase.",
+            "replacement_procedure": [
+              "Carefully removed from the front",
+              "Disconnected from its connector",
+              "Replaced with a new fitting",
+              "Reinstalled into the same opening"
+            ],
+            "outcome": "The staircase itself usually does not need to be dismantled simply to replace a light.",
+            "planning_question": "When planning your staircase, it is worth asking the manufacturer what replacement fittings they use and whether matching lights are likely to remain available in the future."
+          },
+
+          "control_methods": {
+            "principle": "There are several control options available depending on your preference and budget.",
+            "common_control_methods": [
+              "Standard wall switch",
+              "Motion sensor that automatically turns the lights on when someone approaches",
+              "Remote control",
+              "Timer",
+              "Smart home control using compatible home automation systems",
+              "Mobile phone app, where supported by the lighting system"
+            ],
+            "popular_choice_note": "Many homeowners choose motion sensors because they provide lighting only when needed, making them convenient for night-time use while reducing unnecessary energy consumption."
+          },
+
+          "combining_control_methods": {
+            "answer": "Yes.",
+            "principle": "Many modern lighting systems allow more than one control method.",
+            "combined_example": [
+              "A wall switch for everyday operation",
+              "A motion sensor for automatic night-time use",
+              "A remote control for convenience",
+              "A timer to switch the lighting on during certain hours"
+            ],
+            "caveat": "The available options depend on the lighting system selected."
+          },
+
+          "should_i_tell_manufacturer": {
+            "answer": "Absolutely.",
+            "principle": "If lighting is part of your plans, tell your staircase manufacturer before manufacture begins.",
+            "what_manufacturer_can_do": [
+              "Prepare cable routes inside the staircase",
+              "Machine recesses for LED fittings",
+              "Provide concealed access for wiring",
+              "Coordinate with your electrician",
+              "Design the staircase so maintenance and future replacement of lighting is straightforward"
+            ],
+            "closing_principle": "Early planning often produces the neatest installation."
+          },
+
+          "expert_tip": {
+            "principle": "Think beyond today's installation and consider future maintenance.",
+            "specific_advice": "Ask where the LED drivers, transformers and control equipment will be located, and make sure they remain accessible if they ever need replacing.",
+            "closing_statement": "A beautifully lit staircase should also be practical to maintain throughout its lifetime."
+          },
+
+          "_related_entries": ["design.staircase_lighting_overview"],
+          "_source": "docs/brains/staircase-lighting-timing-and-planning-philip-2026-07-28.md"
+        },
+
+        "carpet_colour_selection": {
+          "audience": "homeowner · project_owner · client",
+          "nex_principle": "There is no single 'best' carpet colour for every staircase. The right choice depends on your home's interior, the amount of natural light, your lifestyle, and how much day-to-day maintenance you are prepared to do.",
+          "framing": "Your staircase is often one of the first features people see when entering a home, so the carpet should complement the overall design rather than stand out for the wrong reasons.",
+
+          "consider_size_of_space": {
+            "principle": "The size of your hallway and staircase can influence how different carpet colours affect the overall appearance.",
+            "lighter_colours": "Can make smaller hallways and staircases feel brighter and more spacious.",
+            "darker_colours": "Can create a more dramatic appearance and often suit larger, well-lit spaces.",
+            "natural_light_note": "The amount of natural light should also be considered, as colours can appear very different in bright and darker areas of the home."
+          },
+
+          "think_about_your_timber": {
+            "principle": "If your staircase has exposed timber, choose a carpet colour that complements rather than competes with it.",
+            "examples": [
+              "Natural oak often works well with warm neutral tones",
+              "Walnut can complement soft greys, creams and muted earth colours",
+              "Painted white staircases suit a wide range of colours depending on the surrounding décor"
+            ],
+            "no_fixed_rule": "The carpet should work with the timber, flooring and wall colours throughout the home."
+          },
+
+          "consider_everyday_living": {
+            "principle": "A beautiful carpet also needs to be practical.",
+            "high_use_context": "If your staircase experiences heavy daily use, has children, pets or is the main route through the house, remember that some colours will show dirt and wear more readily than others.",
+            "extremes_caveat": "Very light carpets may require more frequent cleaning, while very dark carpets can make dust, lint or pet hair more noticeable.",
+            "recommendation": "Mid-tone colours often provide a good balance between appearance and practicality."
+          },
+
+          "plain_or_patterned": {
+            "plain_advantages": "Plain carpets provide a clean, timeless appearance and are often easier to match with changing interior styles.",
+            "patterned_advantages": "Patterned carpets can add character and may help disguise everyday marks and wear, particularly on busy family staircases.",
+            "principle": "The choice should complement the style of your home rather than simply follow current trends."
+          },
+
+          "dont_choose_colour_alone": {
+            "principle": "Colour is only one part of the decision.",
+            "other_factors_to_consider": [
+              "The durability of the carpet",
+              "The type of fibre",
+              "The pile height",
+              "Slip resistance when fitted to stairs",
+              "Ease of cleaning",
+              "Whether the carpet is suitable for heavy foot traffic"
+            ],
+            "closing_principle": "A staircase receives significantly more concentrated wear than many other areas of the home."
+          },
+
+          "expert_tip": "Avoid choosing a carpet colour simply because it is fashionable. A staircase is a long-term feature of your home and replacing carpet can be a significant investment. Instead, choose a colour that complements your home's overall design, suits the available light, and matches the way you live. A well-chosen carpet should still look attractive many years after current decorating trends have changed.",
+
+          "related_topics_awaiting_authoring": [
+            "Should I Carpet My Staircase or Leave the Timber Exposed?",
+            "Full Carpet or Stair Runner?",
+            "Best Carpet for Heavy Family Use",
+            "Choosing Carpet for Homes with Pets",
+            "How Carpet Colour Affects the Appearance of Your Hallway",
+            "Matching Stair Carpet with Timber Flooring",
+            "Light vs Dark Stair Carpets · Pros and Cons",
+            "What Carpet Pile Is Best for Stairs?"
+          ],
+          "_related_topics_note": "Flagged by Philip 2026-07-28 for future authoring. AI cannot author these under Rule B. Runtime should return 'not yet authored · flagged for expert authoring' if asked about any of them.",
+
+          "_source": "docs/brains/staircase-carpet-colour-selection-philip-2026-07-28.md"
+        },
+
+        "free_standing_without_floor_newel": {
+          "audience": "homeowner · project_owner · client · trade",
+          "design_challenge": "On some free-standing staircases, a full-height newel post extending to the floor may not suit the desired appearance.",
+          "solution_availability": "Where the structural design allows, alternative support methods may be available.",
+
+          "concealed_steel_solution": {
+            "principle": "One possible solution is to use concealed structural steel, such as square hollow section (SHS) steel, positioned behind the staircase and extending beneath the landing.",
+            "fixing_approach": "The steel can be securely fixed to the floor structure and the wall, with the upper section concealed within the landing floor construction."
+          },
+
+          "concealment_methods": {
+            "vertical_section": "The vertical steel support can be hidden behind the staircase or enclosed using timber panelling, plasterboard, or other suitable finishes.",
+            "horizontal_section": "The landing structure conceals the horizontal section.",
+            "visual_outcome": "When completed, the structural support may be largely or completely hidden from view."
+          },
+
+          "suitability_depends_on": [
+            "The staircase design",
+            "The building structure",
+            "The loads that the support must carry"
+          ],
+
+          "qualified_engineer_disclaimer": "Structural calculations and connection details should be determined by the staircase manufacturer or an appropriately qualified structural engineer.",
+
+          "expert_tip": "If you prefer the appearance of a free-standing staircase without a floor-mounted newel post, discuss this with your staircase manufacturer during the design stage. Concealed structural supports are often easier and more cost-effective to incorporate before manufacture than to add after installation.",
+
+          "_source": "docs/brains/staircase-free-standing-without-floor-newel-philip-2026-07-28.md"
+        },
+
+        "under_stair_space_open_or_enclosed": {
+          "audience": "homeowner · project_owner · client",
+          "nex_principle": "There is no single right answer. The best option depends on the size of the room, the available space, and how the staircase will be used.",
+          "open_option_advantages": "In smaller rooms, leaving the area beneath the staircase open can create a greater sense of space, allowing more natural light to flow through the room and making the area feel larger.",
+          "enclosed_option_advantages_and_caveats": "Enclosing the space beneath the staircase with side panels or cupboards can provide valuable storage and create a cleaner, more integrated appearance. However, in some rooms, enclosing the underside of the staircase can make the space feel smaller or more enclosed.",
+          "factors_to_consider": [
+            "The size and proportions of the room",
+            "Whether additional storage is needed",
+            "The amount of natural light in the area",
+            "The overall interior design style",
+            "Whether an open or enclosed staircase better suits the surrounding space"
+          ],
+          "expert_tip": "Evaluate the room as a whole rather than the staircase in isolation. An open staircase may enhance the feeling of space in a compact room, while an enclosed staircase with built-in storage can be an excellent choice where storage is a higher priority. The best solution balances appearance, practicality, and the way the room will be used.",
+          "_source": "docs/brains/staircase-under-stair-space-open-or-enclosed-philip-2026-07-28.md"
+        },
+
+        "authoring_gaps": [
+          "traditional-property design guidance (currently biased toward contemporary)",
+          "rules for matching an existing stair when replacing a section",
+          "when to design vs when to preserve",
+          "dealing with over-designed client briefs"
+        ]
+      },
+
+      "regulations": {
+        "_source": [
+          "project_nex_staircase_plan_size_reference",
+          "project_nex_uk_property_type_awareness",
+          "docs/brains/staircase-building-regulations-faq-philip-2026-07-28.md"
+        ],
+        "_author_partial": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "primary_source": "Approved Document K (England 2013 revision)",
+        "captured": {
+          "plan_size_ref": "trades/docs/staircase-plan-sizes-uk.md",
+          "notes": "Doc K sets MINIMUMS not maximums. England 2013 as base; Wales/Scotland/NI have their own versions. Historic listed buildings may retain non-compliant originals."
+        },
+
+        "building_regulations_faq": {
+          "jurisdiction_default": "England / Wales default · Scotland and Northern Ireland differ in some respects",
+          "audience": "homeowner · project_owner · client · trade",
+
+          "can_i_order_non_compliant_staircase": {
+            "question": "Can I order a staircase that doesn't comply with Building Regulations?",
+            "short_answer": "Yes, but there is an important distinction between manufacturing and installation as part of regulated building work.",
+            "full_answer": "You can ask a staircase company to manufacture almost any design. There is generally no law preventing a company from making a bespoke staircase simply because it doesn't comply with current Building Regulations. However, there is an important distinction between manufacturing a staircase and installing it as part of building work that must comply with Building Regulations. If the staircase is intended for work that requires Building Regulations approval (for example, a new house, loft conversion, or many structural alterations), then the completed building work is normally expected to comply with the applicable regulations.",
+            "legitimate_non_standard_uses": [
+              "Furniture access",
+              "Display installations",
+              "Stage sets",
+              "Some historic buildings where different considerations apply"
+            ]
+          },
+
+          "is_the_company_automatically_at_fault": {
+            "question": "If the staircase is wrong, is the staircase company automatically at fault?",
+            "short_answer": "Not automatically. Responsibility depends on multiple factors.",
+            "responsibility_factors": [
+              "Who designed the staircase?",
+              "Who specified the dimensions?",
+              "Who took the site measurements?",
+              "What did the contract say?",
+              "Who installed it?",
+              "What information was provided to the manufacturer?",
+              "Was the company asked to manufacture something they advised against?"
+            ],
+            "worked_examples": [
+              "If you supplied the design and instructed the company to manufacture it exactly as drawn, responsibility may be different than if the company designed and specified the staircase.",
+              "If the company designed, manufactured, and installed it as a compliant staircase, they may bear greater responsibility if it fails to meet contractual or regulatory requirements.",
+              "If the company clearly warned that the design would not comply and you insisted on proceeding, that warning could become important evidence."
+            ],
+            "closing_note": "This is ultimately a legal question that depends on the facts and the contract."
+          },
+
+          "will_insurance_cover_non_compliant_staircase": {
+            "question": "Will home insurance cover a staircase that isn't built to regulations?",
+            "short_answer": "There is no universal answer.",
+            "insurance_depends_on": [
+              "the wording of your policy",
+              "the circumstances of any claim",
+              "whether the non-compliance is related to the loss",
+              "whether there was any misrepresentation when obtaining the policy"
+            ],
+            "worked_examples": [
+              "If a staircase contributed to someone's injury because it did not meet required standards, the insurer may investigate whether that affected coverage or liability.",
+              "If the staircase has nothing to do with the claim (for example, storm damage to the roof), Building Regulation compliance may have little or no relevance."
+            ],
+            "closing_note": "Whether a claim is paid is determined by the policy terms and the facts of the case, not simply by whether a staircase complies with Building Regulations."
+          },
+
+          "do_regs_only_apply_to_new_builds": {
+            "question": "Do Building Regulations only apply to new builds?",
+            "short_answer": "No.",
+            "full_answer": "Building Regulations have existed in various forms for many decades and apply to certain types of building work, not just new houses.",
+            "examples_of_work_covered": [
+              "new dwellings",
+              "loft conversions",
+              "many extensions",
+              "certain structural alterations",
+              "work requiring Building Control approval"
+            ],
+            "closing_note": "Many older houses have staircases that were perfectly acceptable when built but would not satisfy today's standards. That does not automatically make them illegal or require them to be replaced simply because standards have changed."
+          },
+
+          "from_what_year_do_they_apply": {
+            "question": "From what year do Building Regulations apply?",
+            "short_answer": "There isn't a single 'start year.'",
+            "england_wales_evolution": {
+              "framework_origin": "The modern regulatory framework stems from the Building Act 1984, with the Building Regulations 2010 consolidating later regulations.",
+              "approved_document_k_note": "Guidance such as Approved Document K has been revised multiple times, with standards changing over the years."
+            },
+            "correct_assessment_question": "What regulations applied when the work was carried out?",
+            "incorrect_assessment_question": "Does it meet today's standards?"
+          }
+        },
+
+        "structured_reasoning_framework": {
+          "principle": "These questions should be answered using a structured reasoning approach, not a blanket answer. Establish context before providing guidance.",
+          "context_questions_in_order": [
+            "What country/jurisdiction?",
+            "Is this an existing staircase or a new installation?",
+            "Who designed it?",
+            "Who manufactured it?",
+            "Who installed it?",
+            "What type of building work is involved (new build, loft conversion, renovation, replacement)?",
+            "Is the question about legal compliance, insurance, liability, or design?"
+          ],
+          "closing_principle": "Only after establishing that context should Nex provide guidance. That approach is more reliable than giving a single blanket answer because responsibility and compliance often depend on the specific facts of the project."
+        },
+
+        "authoring_gaps": [
+          "Doc B (fire escape) intersection",
+          "Doc M (accessibility) intersection",
+          "Doc E (sound) intersection",
+          "Scotland (Technical Handbook) equivalents · differ from Doc K",
+          "Wales/NI equivalents",
+          "Ireland Part K (TGD) equivalents",
+          "listed-building & conservation-area rules (LBC, Article 4)",
+          "HMO fire triggers",
+          "commercial + institutional variants"
+        ]
+      },
+
+      "maintenance": {
+        "_source": [
+          "docs/brains/staircase-maintenance-guide-philip-2026-07-28.md",
+          "docs/brains/staircase-maintenance-faq-philip-2026-07-28.md",
+          "docs/brains/staircase-scratches-paint-or-carpet-philip-2026-07-28.md"
+        ],
+        "_author": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "_founding_authorisation": {
+          "note": "Founding v0.1.0 content authored + authorised by the origin expert. Subsequent versions must pass F6 independent review."
+        },
+        "audience": "homeowner · project_owner · client",
+
+        "general_care_guide": {
+          "framing": "A well-built staircase can last for many decades when it is properly maintained. Regular cleaning and simple inspections can help preserve its appearance, reduce wear, and identify small issues before they become expensive repairs.",
+
+          "regular_cleaning": {
+            "principle": "Dust and grit act like fine sandpaper when walked across timber stairs. Regular vacuuming or sweeping removes abrasive particles that can gradually wear protective finishes.",
+            "wet_cleaning_rule": "Clean timber surfaces using a soft cloth that is only lightly dampened. Avoid soaking the timber, as excessive moisture can damage both the finish and the wood over time.",
+            "spill_rule": "Always wipe away spills as soon as possible, particularly on stair treads where water can penetrate joints and affect the finish."
+          },
+
+          "choosing_cleaning_products": {
+            "principle": "Not all furniture polishes and sprays are suitable for staircases.",
+            "problematic_ingredients": "Some furniture sprays leave an attractive temporary shine, but certain products contain silicones, solvents, waxes, or oils that can gradually break down lacquer or varnish finishes. Over time, this may dull the surface, soften the protective coating, or make future refinishing more difficult.",
+            "safe_practice": "Always follow the staircase manufacturer's maintenance recommendations. If no recommendations are available, test any cleaning product on an inconspicuous area before applying it across the entire staircase.",
+            "avoid": "Harsh chemicals, abrasive cleaners, or products intended for other surfaces unless they are specifically suitable for finished timber."
+          },
+
+          "protecting_the_finish": {
+            "principle": "The protective finish is the staircase's first defence against everyday wear.",
+            "protective_practices": [
+              "Keep stair treads free from grit and dirt",
+              "Wipe away water immediately",
+              "Avoid dragging furniture or heavy objects across the stairs",
+              "Use protective pads when moving large items",
+              "Trim pet claws where appropriate to reduce scratching",
+              "Replace worn carpet runners or stair protectors before they expose finished timber to excessive wear"
+            ],
+            "refinish_trigger": "If the finish begins to wear through in high-traffic areas, consider refinishing before bare timber becomes exposed."
+          },
+
+          "check_for_movement": {
+            "principle": "A staircase should feel solid under normal use.",
+            "periodic_checks": [
+              "Loose handrails",
+              "Loose newel posts",
+              "Movement in balustrades",
+              "Squeaking or springing treads",
+              "Gaps opening between treads, risers, or strings",
+              "Loose fixings or visible signs of movement"
+            ],
+            "closing_principle": "Small issues are often easier and less expensive to correct before they develop into larger structural problems."
+          },
+
+          "control_moisture_and_humidity": {
+            "principle": "Timber naturally expands and contracts as humidity changes throughout the year. Maintaining a reasonably stable indoor environment helps minimise seasonal movement.",
+            "avoid": "Exposing timber staircases to excessive moisture, leaks, or prolonged high humidity.",
+            "dry_condition_note": "Extremely dry conditions can increase shrinkage and the appearance of small gaps between components."
+          },
+
+          "protect_during_building_work": {
+            "principle": "If decorating or carrying out renovation work, protect the staircase from paint, plaster, dust, and impact damage.",
+            "covering_note": "Use breathable protective coverings where possible and avoid taping directly onto finished timber surfaces unless the tape is specifically designed for delicate finishes."
+          },
+
+          "inspect_finish_regularly": {
+            "frequency": "Inspect your staircase at least once or twice each year.",
+            "look_for": [
+              "Worn lacquer or varnish",
+              "Surface scratches",
+              "Chips or dents",
+              "Water marks",
+              "Areas where the protective coating has become thin"
+            ],
+            "closing_principle": "Addressing minor cosmetic damage early can significantly extend the life of the original finish."
+          },
+
+          "when_professional_advice_needed": {
+            "triggers": "Significant movement, excessive springing, structural cracking, loose structural joints, or other signs of deterioration.",
+            "recommendation": "Seek advice from the original staircase manufacturer or another suitably qualified staircase specialist before carrying out repairs.",
+            "diagnostic_principle": "Correctly identifying the cause of the problem is essential before selecting an appropriate repair."
+          },
+
+          "expert_tip": "The best staircase maintenance is preventative rather than reactive. Regular cleaning, gentle care, and periodic inspections will usually preserve both the appearance and performance of a timber staircase far better than waiting until visible damage occurs."
+        },
+
+        "homeowner_faq": {
+          "framing": "20 short-form maintenance topics for homeowners · each addressable individually by runtime intent detection.",
+          "topics": [
+            { "number": 1,  "question": "How Often Should I Maintain My Staircase?", "answer": "Most homeowners only notice their staircase when something goes wrong. A simple inspection every six months can identify loose fixings, worn finishes, movement, squeaks, or damage before repairs become more extensive. Annual cleaning and inspection should form part of every home's maintenance routine." },
+            { "number": 2,  "question": "Why Does My Staircase Squeak?", "answer": "Squeaks usually occur when two components move against each other under load. This movement may develop through natural timber movement, wear, loose fixings, seasonal moisture changes, or settlement. The source of the noise should always be identified before attempting repairs." },
+            { "number": 3,  "question": "Why Does My Staircase Feel Loose?", "answer": "A staircase should feel solid under normal use. If movement develops, it may indicate loose fixings, movement within joints, inadequate support, or changes within the surrounding building structure. Continued use without investigating the cause may allow the problem to worsen." },
+            { "number": 4,  "question": "Looking After Lacquered Timber Staircases", "answer": "Modern lacquer provides a durable protective finish, but it is not indestructible. Avoid abrasive cleaners and harsh chemicals. Some furniture sprays leave an attractive shine but contain solvents, waxes or silicones that may gradually soften or break down lacquer finishes over time. Always use products recommended for lacquered timber surfaces." },
+            { "number": 5,  "question": "Looking After Varnished Staircases", "answer": "Traditional varnish provides good protection but can wear in high traffic areas. As with lacquer, avoid furniture polishes that promise instant shine without confirming they are compatible with varnished timber. Some products may leave residues that affect the finish or complicate future refinishing." },
+            { "number": 6,  "question": "Caring for Painted Staircases", "answer": "Painted staircases should be cleaned using mild cleaning solutions and soft cloths. Avoid impact damage from heavy objects, as chipped paint exposes the timber beneath. Small chips are easier to repair than widespread paint failure." },
+            { "number": 7,  "question": "Protecting Staircases During Decorating", "answer": "Always cover staircases before decorating. Paint splashes, plaster dust and dropped tools can permanently damage finished timber. Use breathable protective coverings and avoid aggressive adhesive tapes directly on finished surfaces." },
+            { "number": 8,  "question": "Seasonal Timber Movement", "answer": "Timber naturally expands during humid weather and contracts during drier periods. Small seasonal changes are normal and should not automatically be considered a defect. Large gaps, excessive movement or structural changes should be investigated." },
+            { "number": 9,  "question": "Can I Steam Clean My Staircase?", "answer": "Steam cleaning is generally unsuitable for most finished timber staircases. Heat and moisture may affect finishes and encourage moisture penetration into joints. Follow the manufacturer's maintenance recommendations." },
+            { "number": 10, "question": "Preventing Wear on Stair Treads", "answer": "The front edge of each tread receives the greatest amount of foot traffic. Keeping shoes clean, removing grit regularly and repairing worn finishes early helps preserve both appearance and service life." },
+            { "number": 11, "question": "Can Sunlight Damage My Staircase?", "answer": "Direct sunlight may gradually alter the colour of natural timber. Some species darken while others lighten over time. Rugs, furniture and stair runners may leave colour differences where sunlight reaches exposed timber unevenly." },
+            { "number": 12, "question": "Looking After Stair Handrails", "answer": "Handrails are touched every day. Body oils, dirt and cleaning chemicals gradually affect finishes. Regular gentle cleaning helps preserve both appearance and hygiene." },
+            { "number": 13, "question": "Looking After Balustrades and Spindles", "answer": "Check balusters regularly for looseness or movement. Even slight movement should be investigated, particularly where children regularly use the staircase." },
+            { "number": 14, "question": "Protecting Your Staircase During House Moves", "answer": "Large furniture is one of the most common causes of staircase damage. Use protective blankets where practical and avoid dragging heavy items against strings, newel posts and handrails." },
+            { "number": 15, "question": "When Should a Staircase Be Refinished?", "answer": "Refinishing should normally take place before the protective coating has worn completely through. Once bare timber becomes exposed, staining, moisture penetration and deeper wear become more likely." },
+            { "number": 16, "question": "Can Pets Damage Timber Staircases?", "answer": "Pet claws may gradually scratch finished timber surfaces. Keeping claws trimmed and cleaning grit regularly helps reduce unnecessary wear." },
+            { "number": 17, "question": "Moisture Around Staircases", "answer": "Water should never be allowed to remain on timber surfaces. Leaks from bathrooms, windows or roofs should be repaired promptly to minimise the risk of swelling, staining or movement." },
+            { "number": 18, "question": "Should I Wax My Staircase?", "answer": "Not every staircase finish is suitable for wax. Applying wax over modern lacquer or varnish systems may create maintenance problems and could affect future refinishing. Always identify the existing finish before applying additional products." },
+            { "number": 19, "question": "How Long Should a Timber Staircase Last?", "answer": "A well-designed, correctly manufactured and properly maintained timber staircase can provide many decades of service. Regular maintenance is often more important than expensive repair work later." },
+            { "number": 20, "question": "Signs Your Staircase Needs Professional Attention", "answer": "Seek advice if you notice: excessive springing or bounce, significant structural movement, loose newel posts, loose handrails, cracks developing in structural members, persistent squeaking that becomes worse, visible separation of joints, water damage, signs of decay or insect attack, or any issue affecting the safe use of the staircase. Early investigation is usually less costly than major repairs after damage has progressed.",
+              "signs_to_watch_for_explicit": [
+                "Excessive springing or bounce",
+                "Significant structural movement",
+                "Loose newel posts",
+                "Loose handrails",
+                "Cracks developing in structural members",
+                "Persistent squeaking that becomes worse",
+                "Visible separation of joints",
+                "Water damage",
+                "Signs of decay or insect attack",
+                "Any issue affecting the safe use of the staircase"
+              ]
+            }
+          ]
+        },
+
+        "refacing_overview": {
+          "audience": "homeowner · project_owner · client",
+          "definition": "Refacing a staircase is the process of improving the appearance of an existing staircase by replacing or covering visible components while retaining most or all of the original structural framework.",
+          "value_proposition": "Rather than removing and replacing the entire staircase, refacing allows many staircases to achieve a completely new appearance at a lower cost and with less disruption, provided the existing staircase is structurally suitable.",
+
+          "parts_usually_replaced": [
+            "Treads",
+            "Risers",
+            "Handrails",
+            "Newel posts",
+            "Balusters (spindles)",
+            "Strings or string cladding",
+            "Newel caps",
+            "Decorative mouldings"
+          ],
+          "scope_note": "The amount of work depends on the condition of the existing staircase and the appearance you wish to achieve.",
+
+          "is_every_staircase_suitable": {
+            "answer": "Not always.",
+            "assessment_requirement": "Before deciding to reface a staircase, the existing structure should be assessed to ensure it is suitable.",
+            "when_refacing_inappropriate": "If the staircase has excessive movement, structural damage, significant wear, or design issues, repairing or replacing the staircase may be more appropriate than simply improving its appearance.",
+            "hard_rule": "Refacing should not be used to hide structural defects."
+          },
+
+          "benefits": [
+            "A completely updated appearance",
+            "Less disruption than replacing the entire staircase",
+            "Existing structural framework can often remain",
+            "A wide choice of timber species and finishes",
+            "Opportunity to modernise handrails, newel posts and balustrades"
+          ],
+          "typical_context": "Many homeowners choose to reface their staircase during wider home renovations to match new flooring, doors or interior décor.",
+
+          "can_i_change_the_style_completely": {
+            "answer": "In many cases, yes.",
+            "framing": "A traditional staircase may be updated with more contemporary handrails and balustrades, while maintaining the existing structural staircase.",
+            "options": "Depending on the design, it may also be possible to introduce glass panels, metal balusters, feature newel posts, or different timber species to achieve a completely different appearance.",
+            "caveat": "The available options depend on the construction of the original staircase."
+          },
+
+          "is_refacing_cheaper_than_new_staircase": {
+            "answer": "Often, but not always.",
+            "cost_effective_case": "If the existing staircase is in good structural condition, refacing can be a cost-effective way to transform its appearance.",
+            "cost_break_even_case": "However, if significant structural repairs are required before refacing can begin, the cost difference between refacing and replacement may become much smaller.",
+            "recommendation": "Each staircase should be assessed individually."
+          },
+
+          "expert_tip": {
+            "key_insight": "Refacing changes how a staircase LOOKS, not necessarily how it PERFORMS.",
+            "closing_principle": "Before investing in new finishes, ensure the existing staircase is structurally sound. Cosmetic improvements should enhance a good staircase, not disguise underlying structural problems."
+          },
+
+          "_related_entries": ["maintenance.refacing_materials", "maintenance.refacing_suppliers"],
+          "_source": "docs/brains/staircase-refacing-overview-philip-2026-07-28.md"
+        },
+
+        "refacing_materials": {
+          "audience": "homeowner · project_owner · client",
+          "framing": "Refacing a staircase offers an opportunity to completely change its appearance without necessarily replacing the entire staircase. A wide range of materials and finishes are available, allowing the staircase to complement both traditional and modern interiors.",
+          "material_choice_factors": "The best material depends on your budget, the style of your home, the condition of the existing staircase, and the finish you would like to achieve.",
+
+          "timber": {
+            "principle": "Timber remains the most popular choice for staircase refacing because it offers a natural appearance and can often be repaired or refinished in the future.",
+            "popular_species": [
+              "American White Oak",
+              "European Oak",
+              "Ash",
+              "Walnut",
+              "Pine",
+              "Beech",
+              "Sapele",
+              "Maple"
+            ],
+            "note": "Each timber has its own colour, grain pattern, hardness and finishing characteristics."
+          },
+
+          "engineered_timber": {
+            "principle": "Some manufacturers use engineered timber products with a real hardwood veneer.",
+            "characteristics": "These products can provide excellent stability and consistency while maintaining the appearance of solid timber.",
+            "caveat": "The suitability of engineered products depends on the intended use and the manufacturer's specification."
+          },
+
+          "painted_finishes": {
+            "principle": "Many homeowners choose to paint parts of their staircase rather than exposing the natural timber.",
+            "popular_combinations": [
+              "White strings with oak treads",
+              "White risers with natural oak treads",
+              "White newel posts with stained handrails",
+              "Fully painted staircases in contemporary colours"
+            ],
+            "typical_reason": "Painted finishes are often chosen to brighten hallways or achieve a more traditional or modern appearance."
+          },
+
+          "glass": {
+            "principle": "Glass can be incorporated into many staircase refacing projects by replacing traditional timber balusters with toughened safety glass.",
+            "advantage": "Glass panels can create a more open appearance and allow natural light to pass through the staircase.",
+            "suitability_caveat": "Whether glass is suitable depends on the staircase design and supporting structure."
+          },
+
+          "metal": {
+            "components_available": [
+              "Stainless steel balusters",
+              "Powder-coated steel balusters",
+              "Decorative metal spindles",
+              "Steel handrail details",
+              "Concealed structural steel where required"
+            ],
+            "typical_use": "Metal is commonly used to create contemporary staircase designs."
+          },
+
+          "stair_runners_and_carpet": {
+            "principle": "Some homeowners combine timber refacing with new carpet or stair runners.",
+            "benefits": "This can soften the appearance, reduce wear on the timber and complement the overall interior design."
+          },
+
+          "can_i_mix_materials": {
+            "answer": "Yes.",
+            "principle": "Many of today's staircases combine different materials to create a unique appearance.",
+            "examples": [
+              "Oak treads with white painted strings",
+              "Walnut handrails with glass balustrades",
+              "Timber treads with metal balusters",
+              "Painted staircases with timber feature handrails"
+            ],
+            "guiding_principle": "The choice should complement the style of your home rather than simply follow current trends."
+          },
+
+          "_related_entries": ["maintenance.refacing_overview", "maintenance.refacing_suppliers"],
+          "_source": "docs/brains/staircase-refacing-materials-philip-2026-07-28.md"
+        },
+
+        "refacing_suppliers": {
+          "audience": "homeowner · project_owner · client",
+          "principle": "The type of company you choose depends on the amount of work involved.",
+
+          "staircase_manufacturers": {
+            "role": "Many staircase manufacturers offer staircase refacing as part of their services.",
+            "best_when": "Structural alterations, new balustrades, replacement strings, or bespoke timber components are required.",
+            "advantage": "They can also manufacture matching parts that are not available off the shelf."
+          },
+
+          "specialist_staircase_refurbishment_companies": {
+            "role": "Some companies specialise entirely in staircase renovations and refacing.",
+            "scope": "These businesses focus on updating existing staircases and may offer complete design, manufacture and installation services."
+          },
+
+          "carpenters_and_joiners": {
+            "role": "Experienced carpenters or joiners may also carry out staircase refacing, particularly where the work involves replacing timber components, fitting new handrails or balustrades, or carrying out bespoke joinery.",
+            "criterion_that_matters_most": "Their experience with staircase construction is often more important than their job title, as staircases require accurate fitting and an understanding of structural components."
+          },
+
+          "which_is_the_best_choice": {
+            "answer": "There is no single answer.",
+            "cosmetic_project": "If the project is mainly cosmetic, an experienced carpenter, joiner or staircase refurbishment specialist may be suitable.",
+            "structural_project": "If structural changes, bespoke manufacturing or major alterations are required, a staircase manufacturer is often the most appropriate choice."
+          },
+
+          "expert_tip": {
+            "portfolio_check": "Before choosing a contractor, ask to see examples of previous staircase refacing projects similar to your own. Staircases combine structural performance with fine joinery, so experience with staircase work is usually more valuable than general carpentry experience.",
+            "quotation_check": "Also discuss exactly what is included in the quotation. Some companies only replace visible components, while others can redesign, manufacture and install an almost completely new staircase using parts of the existing structure where appropriate."
+          },
+
+          "_related_entries": ["maintenance.refacing_overview", "maintenance.refacing_materials", "installation.trade_skill_levels"],
+          "_source": "docs/brains/staircase-refacing-suppliers-philip-2026-07-28.md"
+        },
+
+        "scratches_repair_paint_or_carpet_decision": {
+          "framing": "Scratches are a common part of owning a timber staircase and, in many cases, they can be repaired without changing the staircase's overall appearance.",
+          "design_decision_principle": "Changing a staircase from a natural timber finish to a painted finish, or covering it with carpet, should normally be an interior design choice rather than a solution to surface damage. If you like the appearance of your timber staircase, it is often worth considering repair before deciding to hide it.",
+
+          "light_surface_scratches": {
+            "diagnostic": "The scratch has only damaged the protective lacquer or varnish and has not penetrated into the timber itself.",
+            "repair_approach": "A light sanding with a fine abrasive can remove minor surface marks and prepare the finish for a new protective top coat. To maintain a consistent appearance, the surrounding tread or affected section may also require light sanding before refinishing.",
+            "goal": "The aim is to blend the repaired area with the rest of the staircase rather than creating an obvious patch."
+          },
+
+          "deeper_scratches": {
+            "diagnostic": "The scratch has cut through the protective finish and into the timber.",
+            "repair_approach": "The damaged area may need to be sanded back until the scratch is removed before the finish is rebuilt. Depending on the depth of the damage, this may involve refinishing the entire tread or timber component to achieve an even colour and sheen.",
+            "closing_note": "Although this requires more time and effort, many deeper scratches can still be successfully repaired without replacing the timber."
+          },
+
+          "should_i_paint_it": {
+            "positive_case": "Painting can completely change the appearance of a staircase and is an excellent choice if it suits the overall interior design of your home.",
+            "caveat": "However, painting purely to hide scratches may not always be the best solution. Once painted, returning the staircase to its original natural timber appearance can involve considerable work.",
+            "recommendation": "If you already enjoy the look of the natural timber, repairing the finish is often worth considering before making a permanent design change."
+          },
+
+          "would_carpet_be_better": {
+            "positive_case": "Fitting carpet or a stair runner can hide existing cosmetic damage while also providing additional grip and reducing wear on the timber.",
+            "framing": "For some homeowners, this is a practical choice. For others, it changes the appearance of the staircase more than they would like.",
+            "recommendation": "The decision should be based on your preferred style, maintenance requirements, and how you use the staircase, rather than simply covering scratches."
+          },
+
+          "expert_tip": {
+            "key_insight": "A scratch usually indicates that the protective finish has been damaged, not necessarily the staircase itself.",
+            "decision_rules": [
+              "If the damage is only within the lacquer or varnish, repairs are often straightforward",
+              "If the timber beneath has been damaged, more extensive sanding and refinishing may be required"
+            ],
+            "closing_principle": "Before deciding to paint or carpet your staircase, consider whether the existing finish can be restored. Many scratched timber staircases can be successfully repaired with careful preparation, patience, and the correct finishing products while retaining their original natural appearance."
+          }
+        }
+      },
+      "fault_finding": {
+        "_status": "partially_authored",
+        "_source": ["docs/brains/staircase-springing-or-bounce-philip-2026-07-28.md"],
+        "_author_partial": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "expected_content_remaining": "five additional failure modes (tread split, wedge failure, squeaks, riser detachment, newel movement, finish cracking) each covering: symptom, likely causes, diagnostic order, repair vs replace, customer-communication guidance",
+
+        "springing_or_bounce": {
+          "symptom": "A staircase that springs or feels bouncy when walked on.",
+          "what_it_indicates": "Movement is occurring somewhere within the structure. This movement should not be present in a correctly designed and adequately supported staircase.",
+          "possible_causes_by_string_type": {
+            "closed_string": "Excessive movement in the string. This can occur if the string has insufficient stiffness for the loads it is carrying or if the staircase has not been adequately designed or supported for the application.",
+            "cut_string": "The string beneath the treads and risers does not provide sufficient structural support, allowing the staircase to flex under normal use."
+          },
+          "repair_principle": "The appropriate repair depends on the cause of the movement.",
+          "repair_options": [
+            {
+              "option": "Steel reinforcement plate along the inside face of the string",
+              "description": "Securely fixed to reduce deflection.",
+              "best_for": "Staircases with enclosed or backed strings where the reinforcement can be concealed.",
+              "limitations": "Concealing reinforcement can be more difficult on open-backed staircases."
+            },
+            {
+              "option": "Structural steel channel or similar reinforcement fitted beneath the string",
+              "description": "Provides additional strength for open-backed staircases.",
+              "best_for": "Open-backed staircases where inside-face reinforcement cannot be concealed.",
+              "limitations": "Can affect the appearance of the staircase and may not be suitable for every design."
+            },
+            {
+              "option": "Replacing the affected string",
+              "description": "May be the most appropriate solution where reinforcement is not practical or would compromise appearance / structural integrity.",
+              "refinishing_note": "Painted staircases can usually be blended successfully, whereas stained or varnished timber may show visible colour and grain differences between the original and replacement components."
+            }
+          ],
+          "important_caveat": "Springing can have several causes, including inadequate structural design, insufficient support, poor installation, loose joints, or deterioration over time. The source of the movement should be identified before selecting a repair method.",
+          "_source": "docs/brains/staircase-springing-or-bounce-philip-2026-07-28.md"
+        }
+      },
+      "estimating":    { "_status": "blocked", "blocked_by": "feedback_nex_no_prices_unless_facts HARD LAW", "unblock_strategy": "reframe as estimating METHOD not prices — needs Philip's directive to unblock" },
+      "terminology": {
+        "_status": "partially_authored",
+        "_source": ["docs/brains/staircase-trade-skill-levels-philip-2026-07-28.md"],
+        "_author_partial": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "captured_implicit": ["tread", "riser", "going", "rise", "string", "newel", "baluster", "baserail", "handrail", "wedge", "angle block", "housing", "mortice", "tenon", "wreath", "winder", "bullnose"],
+        "expected_content_remaining": "formal glossary of the implicit terms above · with definitions, synonyms, disambiguation notes",
+
+        "trades": {
+          "_source": "docs/brains/staircase-trade-skill-levels-philip-2026-07-28.md",
+          "_full_context": "installation.trade_skill_levels contains capabilities lists, knowledge percentages, and the skill comparison table",
+          "staircase_fitter": {
+            "aka": ["installer (basic)", "stair fitter"],
+            "definition": "A tradesperson who can unload and assemble a staircase, reads fitting drawings, and understands fixing methods. Usually does not make staircases. Distinguished from the Specialist Staircase Installer by depth of building-tolerances knowledge.",
+            "skill_level": 1
+          },
+          "carpenter": {
+            "definition": "A tradesperson expected to know far more than simply fitting staircases — including roofing, first + second fixing, floors, doors, stud walls, kitchens, timber construction, building regulations, setting out, structural loading, timber movement, and different materials. Can generally build most things from timber.",
+            "skill_level": 2
+          },
+          "joiner": {
+            "definition": "Generally workshop-based tradesperson who understands timber species, moisture movement, machinery, construction methods, laminations, veneers, grain matching, finishing and precision manufacturing. May never fit what they build.",
+            "skill_level": 3
+          },
+          "staircase_manufacturer": {
+            "aka": ["specialist joiner (staircase-scoped)"],
+            "definition": "Usually a specialist joiner. Understands rise and going calculations, winder geometry, structural requirements, timber movement, material selection, handrail geometry, CNC manufacturing, traditional joinery, building regulations, manufacturing tolerances, production methods. Can spend twenty years learning nothing but staircases. Many cannot fit one particularly well because fitting is an entirely different skill set.",
+            "skill_level": 4
+          },
+          "specialist_staircase_installer": {
+            "definition": "The level most people don't appreciate. Knows building movement, site tolerances, plaster tolerances, structural requirements, packing methods, string line accuracy, laser measurements, load transfer, how houses are constructed, how to overcome site problems, building regulations, and finish quality expectations. May install £50,000 staircases every week but never manufacture one. Mindset is completely different.",
+            "skill_level": 5
+          }
+        }
+      },
+      "safety": {
+        "_source": ["docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"],
+        "_author_partial": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "captured_implicit": ["Doc K deference on dimensions", "softwood 32mm bounce warning"],
+        "workshop_organisation_as_safety": {
+          "principle": "An organised workshop is also a safer workshop. Keeping each staircase within its designated area reduces clutter and minimises hazards.",
+          "benefits": [
+            "Clear walkways",
+            "Easier material handling",
+            "Less risk of damaging finished components",
+            "Faster identification of missing parts",
+            "Improved housekeeping",
+            "Safer lifting operations",
+            "Better visibility for supervisors"
+          ],
+          "summary": "Good organisation protects both employees and the product.",
+          "_source": "docs/brains/staircase-workshop-organisation-philip-2026-07-28.md"
+        },
+        "authoring_gaps": [
+          "on-site safety (working at height, edge protection)",
+          "tool safety (router, table saw, plunge)",
+          "finish safety (VOC, cure times before re-occupation)",
+          "customer safety post-handover (children under 5, mobility, pet gates)",
+          "dust management specifics (per-machine PPE + extraction)"
+        ]
+      },
+      "tools": {
+        "_source": ["docs/brains/staircase-machines-vs-hand-tools-philip-2026-07-28.md"],
+        "_author": "Philip O'Farrell",
+        "_authored_at": "2026-07-28",
+        "_founding_authorisation": {
+          "note": "Founding v0.1.0 content authored + authorised by the origin expert. Subsequent versions must pass F6 independent review."
+        },
+        "portable_power_tools": [
+          "Track saw",
+          "Circular saw",
+          "Trim router",
+          "Plunge router",
+          "Biscuit jointer",
+          "Domino joiner",
+          "Random orbital sander",
+          "Belt sander",
+          "Multi-tool",
+          "Cordless drill",
+          "Cordless impact driver",
+          "Angle grinder",
+          "Laser level"
+        ],
+        "hand_tools_by_category": {
+          "measuring": [
+            "Tape measures",
+            "Steel rules",
+            "Combination squares",
+            "Engineers' squares",
+            "Sliding bevels",
+            "Digital angle finders",
+            "Spirit levels",
+            "Chalk lines"
+          ],
+          "chisels": [
+            "Mortice chisels",
+            "Bevel-edge chisels",
+            "Paring chisels"
+          ],
+          "planes": [
+            "Block plane",
+            "Smoothing plane",
+            "Shoulder plane"
+          ],
+          "assembly": [
+            "Rubber mallets",
+            "Hammers",
+            "Screwdrivers",
+            "Clamps",
+            "Ratchet straps",
+            "Pry bars"
+          ],
+          "layout": [
+            "Pencils",
+            "Marking knives",
+            "Compass",
+            "Dividers",
+            "Story sticks"
+          ]
+        },
+        "workshop_benches_and_assembly_equipment": [
+          "Heavy assembly benches",
+          "Adjustable staircase jigs",
+          "Dry-fit assembly frames",
+          "Clamp stations",
+          "Mobile workbenches",
+          "Timber storage racks",
+          "Hardware storage",
+          "Dedicated project bays"
+        ],
+        "authoring_gaps": [
+          "consumables (abrasives grit progression, screws, glue types)",
+          "specialty jigs (housing router jig, tenoning jig, wreath template)",
+          "sharpening & maintenance schedules",
+          "budget vs pro tier per category"
+        ]
+      }
+
+    }
+  },
+
+  "load_instructions": {
+    "sequence": [
+      "1. Apply pending SQL migrations from data/.recovery-2026-07-27/APPLY_LIVING_BRAIN_MIGRATIONS.sql in Supabase Studio",
+      "2. Wire real auth into src/lib/nex/brains/_actor.ts (Chief Reference Brain Engineer Report #1 Finding F1)",
+      "3. Philip approves the identity draft at docs/brains/staircase-identity-draft-v0.1.md",
+      "4. Load this Founding Reference Brain Package via a one-off insert script that: upserts brain_row_upsert into hammerex_nex_brains, inserts initial_certification_row, inserts initial_version and sets brains.current_version_id",
+      "5. Verify /admin/brains/staircase renders the Command Centre with Identity panel populated, Coverage Map showing 5 authored + 7 gaps, Maturity Ladder at Level 3 (Certified) with Level 4 requirements displayed"
+    ],
+    "post_load_expected_state": {
+      "maturity_level": 3,
+      "maturity_level_name": "Certified",
+      "coverage_authored_expected": "7/12",
+      "coverage_overall_pct_estimate": "~50-60",
+      "identity_complete": true,
+      "certification_active": true,
+      "next_maturity_target": "Level 4 Production — requires lifecycle_stage flip to production (already gated by identity + trigger)",
+      "modules_enriched_2026_07_28": [
+        "manufacturing (workshop_organisation, production_zones, dry_assembly, workflow_split_percentage, 18 machines, workshop_only_equipment, why_machines_cannot_replace_joiners)",
+        "installation (workshop_vs_site_work, van_organisation — full NEX Knowledge Library entry; off_square_walls — planning/plastering/manufacturer options/staircase-type handling/team-effort framing; client_communication — homeowner-facing NEX Knowledge Library entry: general 'doesn't look right' guidance with 5 questions, 6 self-check questions, furniture-installer reframe, 8-trade partnership, professional pride framing; holding_final_payment — homeowner-facing NEX Knowledge Library entry on payment/dispute resolution: 48-hour approach, second-opinion protocol with 5-item info list, trim-carpenter vs staircase-specialist scope comparison, first-steps 5-step process, construction-as-partnership with 6 hidden issues, 7 key homeowner-advice points, NEX Gold Standard)",
+        "safety (workshop_organisation_as_safety)",
+        "tools (portable_power_tools, hand_tools_by_category, workshop_benches_and_assembly_equipment)"
+      ]
+    }
+  }
+}

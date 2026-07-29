@@ -3,6 +3,22 @@
 Auto-loaded at the start of every Claude Code session. Keep this file small and pointer-heavy — the real detail lives in `docs/`.
 
 ## ═══════════════════════════════════════════════════════════════
+## NEX PRODUCT CONSTITUTION · Read BEFORE writing any code
+## `docs/product-constitution/README.md` (overview)
+## `docs/product-constitution/principles/` (numbered principles)
+## ═══════════════════════════════════════════════════════════════
+##
+## The Product Constitution defines how NEX must FEEL to owners.
+## Architecture (ADRs) defines how NEX is BUILT. Both must be true
+## for anything to ship. Every owner-facing surface must pass the ten
+## quality-gate questions listed in the Constitution before merge.
+##
+## Principle 0001: NEX quietly runs the paperwork while the owner
+## runs the workshop. Applies to Materials, Calculator, Projects,
+## Purchasing, CRM, Manufacturing, Estimating, Scheduling, Deliveries,
+## Invoicing, and every future module. Zero exceptions.
+
+## ═══════════════════════════════════════════════════════════════
 ## NEX INTELLIGENCE CONSTITUTION · ADR-0028 · IMMUTABLE · TOP-LEVEL
 ## Identity REFRAMED by ADR-0034 (below). Loaded FIRST every session.
 ## ═══════════════════════════════════════════════════════════════

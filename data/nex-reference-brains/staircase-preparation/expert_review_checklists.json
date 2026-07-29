@@ -1,0 +1,1098 @@
+{
+  "_meta": {
+    "purpose": "Level 1 completeness checklists (68 topics x 10 questions)",
+    "created": "2026-07-28",
+    "created_by": "expert_review_checklist_agent_v2_level1",
+    "level_2_3_4_deferred": true
+  },
+  "checklists": {
+    "terminology_going": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is the measurement axis stated?",
+        "Is the unit of measurement stated?",
+        "Are the reference points from which it is measured named?",
+        "Is its relationship to adjacent terms cross-referenced?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_rise": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is the measurement axis stated?",
+        "Is the unit of measurement stated?",
+        "Are the reference points from which it is measured named?",
+        "Is its relationship to adjacent terms cross-referenced?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_pitch": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is the method of calculation stated?",
+        "Is the unit of measurement stated?",
+        "Are the input variables named?",
+        "Is its relationship to adjacent terms cross-referenced?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_string": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Are the variant types cross-referenced?",
+        "Are the materials it is commonly made from listed?",
+        "Are its dimensional conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_closed_string": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Is the distinguishing feature versus other string types stated?",
+        "Are related string terms cross-referenced?",
+        "Are the typical construction methods named?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_cut_string": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Is the distinguishing feature versus other string types stated?",
+        "Are related string terms cross-referenced?",
+        "Are the typical construction methods named?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_newel": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Are its location conventions on a staircase stated?",
+        "Are related balustrade terms cross-referenced?",
+        "Are its dimensional conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_baluster": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Are its spacing conventions stated?",
+        "Are related balustrade terms cross-referenced?",
+        "Are its dimensional conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_handrail": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Are its height conventions stated?",
+        "Are related balustrade terms cross-referenced?",
+        "Are its profile conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_volute": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its decorative or functional purpose stated?",
+        "Is its typical location on the staircase stated?",
+        "Are related handrail terms cross-referenced?",
+        "Is its geometric form described?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_swan_neck": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Is its typical location on the staircase stated?",
+        "Are related handrail terms cross-referenced?",
+        "Is its geometric form described?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_curtail_step": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Is its typical location on the staircase stated?",
+        "Are related starting-step terms cross-referenced?",
+        "Is its geometric form described?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_bullnose": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Is its typical location on the staircase stated?",
+        "Are related starting-step terms cross-referenced?",
+        "Is its geometric form described?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_winder": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Is its typical layout arrangement described?",
+        "Are related tread terms cross-referenced?",
+        "Are its geometric constraints stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_landing": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Are its dimensional conventions stated?",
+        "Are related layout terms cross-referenced?",
+        "Are the recognised landing types named?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_riser": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Is the unit of measurement stated?",
+        "Are related step terms cross-referenced?",
+        "Are its material conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_tread": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Is the unit of measurement stated?",
+        "Are related step terms cross-referenced?",
+        "Are its material conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_nosing": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its purpose stated?",
+        "Are its dimensional conventions stated?",
+        "Are related tread terms cross-referenced?",
+        "Are the recognised profile types named?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_balustrade": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Are its component parts named?",
+        "Are related terms cross-referenced?",
+        "Are its height conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "terminology_baserail": {
+      "level": 1,
+      "category": "terminology",
+      "questions": [
+        "Is a plain-language definition present?",
+        "Is its structural purpose stated?",
+        "Is its location on the balustrade stated?",
+        "Are related balustrade terms cross-referenced?",
+        "Are its profile conventions stated?",
+        "Are common mistakes or misuses listed?",
+        "Is at least one worked example given?",
+        "Is jurisdictional variation acknowledged where relevant?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_american_white_oak": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_european_oak": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_ash": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_sapele": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_walnut": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_yellow_pine": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_accoya": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the material identified by both trade and generic name?",
+        "Is its production or treatment process described?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute materials cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_beech": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_maple": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "materials_iroko": {
+      "level": 1,
+      "category": "materials",
+      "questions": [
+        "Is the species identified by both common and botanical name?",
+        "Is the region of origin stated?",
+        "Are its mechanical properties documented?",
+        "Are its typical uses in staircase construction stated?",
+        "Are its finishing characteristics described?",
+        "Are common defects or workability issues listed?",
+        "Is its sustainability or certification status noted?",
+        "Are related or substitute species cross-referenced?",
+        "Is at least one supplier or grading reference given?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_closed_string": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_cut_string": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_open_rise": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_mono_string": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_twin_string": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_steel": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical grade or specification stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_glass": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical glass specification stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_floating": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_curved": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_spiral": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "construction_helical": {
+      "level": 1,
+      "category": "construction",
+      "questions": [
+        "Is the construction method defined?",
+        "Is its structural principle stated?",
+        "Are the required components listed?",
+        "Are its typical material choices stated?",
+        "Are related construction methods cross-referenced?",
+        "Are common mistakes or failure modes listed?",
+        "Are its dimensional or geometric constraints stated?",
+        "Is at least one worked example given?",
+        "Is the applicable regulation cited?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_string_routing": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or machinery named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_housing": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or machinery named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_wedging": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or machinery named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_angle_blocks": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or machinery named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_glue_selection": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the recognised adhesive types named?",
+        "Are the selection criteria listed?",
+        "Are cure and clamp times stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are quality tolerances or bond strength criteria stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_cnc": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required machinery or software named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_hand_machining": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required hand tools named?",
+        "Are the required inputs listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_sanding_sequence": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or abrasives named?",
+        "Are the required grit progressions listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances or surface criteria stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_assembly_order": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required tools or fixtures named?",
+        "Are the required components listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or defects listed?",
+        "Are quality tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_factory_qa": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required inspection tools named?",
+        "Are the required checkpoints listed?",
+        "Is the inspection sequence stated?",
+        "Are common defects or reject criteria listed?",
+        "Are acceptance tolerances stated?",
+        "Are traceability or documentation requirements noted?",
+        "Are related manufacturing steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_packing": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in manufacture stated?",
+        "Are the required packing materials named?",
+        "Are the required components to be packed listed?",
+        "Is the sequence of operations stated?",
+        "Are common mistakes or damage modes listed?",
+        "Are labelling requirements stated?",
+        "Are health and safety considerations noted?",
+        "Are related logistics steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "manufacturing_transport": {
+      "level": 1,
+      "category": "manufacturing",
+      "questions": [
+        "Is the process defined?",
+        "Is its purpose in the delivery chain stated?",
+        "Are the required vehicles or handling equipment named?",
+        "Are the required loading arrangements listed?",
+        "Is the transport sequence stated?",
+        "Are common mistakes or damage modes listed?",
+        "Are handling tolerances stated?",
+        "Are health and safety considerations noted?",
+        "Are related logistics steps cross-referenced?",
+        "Is a citation or source attached?"
+      ]
+    },
+    "installation_new_build": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_extension": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_loft_conversion": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_renovation": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_historic": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are conservation constraints stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation or listing consent requirement cited?"
+      ]
+    },
+    "installation_steel_frame": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_concrete_floor": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_timber_floor": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_uneven_walls": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "installation_out_of_square": {
+      "level": 1,
+      "category": "installation",
+      "questions": [
+        "Is the installation scenario defined?",
+        "Are the site-condition prerequisites listed?",
+        "Are the required tools or fixings named?",
+        "Are the survey or measurement steps stated?",
+        "Is the installation sequence stated?",
+        "Are common mistakes or failure modes listed?",
+        "Are fixing tolerances stated?",
+        "Are related trades or hand-offs identified?",
+        "Are health and safety considerations noted?",
+        "Is the applicable regulation cited?"
+      ]
+    },
+    "regulations_england": {
+      "level": 1,
+      "category": "regulations",
+      "questions": [
+        "Is the jurisdiction stated?",
+        "Is the governing regulation named?",
+        "Is the effective version or edition stated?",
+        "Are the scope and applicability defined?",
+        "Are the enforcement authorities identified?",
+        "Are the compliance verification steps stated?",
+        "Are common non-compliance failure modes listed?",
+        "Are related jurisdictions cross-referenced?",
+        "Is the source citation attached?",
+        "Is a last-reviewed date recorded?"
+      ]
+    },
+    "regulations_wales": {
+      "level": 1,
+      "category": "regulations",
+      "questions": [
+        "Is the jurisdiction stated?",
+        "Is the governing regulation named?",
+        "Is the effective version or edition stated?",
+        "Are the scope and applicability defined?",
+        "Are the enforcement authorities identified?",
+        "Are the compliance verification steps stated?",
+        "Are common non-compliance failure modes listed?",
+        "Are related jurisdictions cross-referenced?",
+        "Is the source citation attached?",
+        "Is a last-reviewed date recorded?"
+      ]
+    },
+    "regulations_scotland": {
+      "level": 1,
+      "category": "regulations",
+      "questions": [
+        "Is the jurisdiction stated?",
+        "Is the governing regulation named?",
+        "Is the effective version or edition stated?",
+        "Are the scope and applicability defined?",
+        "Are the enforcement authorities identified?",
+        "Are the compliance verification steps stated?",
+        "Are common non-compliance failure modes listed?",
+        "Are related jurisdictions cross-referenced?",
+        "Is the source citation attached?",
+        "Is a last-reviewed date recorded?"
+      ]
+    },
+    "regulations_ireland": {
+      "level": 1,
+      "category": "regulations",
+      "questions": [
+        "Is the jurisdiction stated?",
+        "Is the governing regulation named?",
+        "Is the effective version or edition stated?",
+        "Are the scope and applicability defined?",
+        "Are the enforcement authorities identified?",
+        "Are the compliance verification steps stated?",
+        "Are common non-compliance failure modes listed?",
+        "Are related jurisdictions cross-referenced?",
+        "Is the source citation attached?",
+        "Is a last-reviewed date recorded?"
+      ]
+    },
+    "regulations_usa": {
+      "level": 1,
+      "category": "regulations",
+      "questions": [
+        "Is the jurisdiction stated?",
+        "Is the governing regulation named?",
+        "Is the effective version or edition stated?",
+        "Are the scope and applicability defined?",
+        "Are the enforcement authorities identified?",
+        "Are the compliance verification steps stated?",
+        "Are common non-compliance failure modes listed?",
+        "Are related jurisdictions or state variations cross-referenced?",
+        "Is the source citation attached?",
+        "Is a last-reviewed date recorded?"
+      ]
+    }
+  }
+}

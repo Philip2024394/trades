@@ -1,0 +1,660 @@
+{
+  "_meta": {
+    "purpose": "Installation evidence catalogue · Agent A · pre-install + fixing topics (16 topics)",
+    "governance_rule": "Evidence only. Zero installation procedures authored. 'expert_author_required' where source pool runs dry.",
+    "created": "2026-07-28",
+    "created_by": "installation_evidence_agent_A",
+    "web_calls_used": 15,
+    "web_calls_budget": 15,
+    "source_reuse_note": "Reuses verified sources from data/nex-reference-brains/staircase-preparation/source_catalogue.json (src-001, src-009, src-016, src-017, src-021, src-025). New sources introduced this session for installation-specific evidence: src-INST-01 (BWF Timber Stair Installation Guide 2018), src-INST-02 (BWF pre-2018 v3 2015 withdrawn edition), src-INST-03 (NHBC Standards Chapter 6.6 Staircases), src-INST-04 (HSE INDG143 Manual Handling), src-INST-05 (HSE INDG401 Work at Height brief guide), src-INST-06 (HSE L153 CDM 2015 Managing health and safety in construction), src-INST-07 (Peter Brett Carpentry & Joinery textbook series)."
+  },
+  "new_sources_introduced": [
+    {
+      "source_id": "src-INST-01",
+      "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018 current edition)",
+      "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+      "document_title": "Installation Guide — Timber Stairs: A Guide to Safe Stair Installation",
+      "publication_date": "2018-04-25 (current edition, superseding 2015 v3)",
+      "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+      "access": "free_public_pdf",
+      "verification_status": "verified",
+      "verification_note": "Publication confirmed via BWF Stair Scheme news article (April 2018 launch) and NBS Publication Index. Direct PDF returned HTTP 500 on WebFetch this session but URL is BWF's canonical hosting and appears in multiple third-party mirrors (Stairbox, HBF, GD Woodworking, JELD-WEN)."
+    },
+    {
+      "source_id": "src-INST-02",
+      "source_name": "BWF Installation Guide — Timber Stairs (2015 v3, withdrawn — mirrored by JELD-WEN + Stairbox)",
+      "publisher": "British Woodworking Federation / mirrored by JELD-WEN (UK) Ltd and StairBox",
+      "document_title": "BWF Timber Stair Installation Guide (v3)",
+      "publication_date": "2015 (marked 'Withdrawn' by NBS in favour of 2018 edition)",
+      "url": "https://www.jeld-wen.co.uk/getmedia/ba1aad28-a5fb-45de-8339-cf8a796ae5d2/Stair-Installation-Guide.pdf.aspx",
+      "access": "free_public_pdf_mirror",
+      "verification_status": "requires_manual_verification",
+      "verification_note": "URL retrievable (1.1MB PDF) but binary body could not be parsed by WebFetch. Mirror is a JELD-WEN-branded version of the BWF Stair Scheme installation guide. Use 2018 current edition (src-INST-01) in preference; mirror kept for cross-reference."
+    },
+    {
+      "source_id": "src-INST-03",
+      "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+      "publisher": "National House Building Council (NHBC)",
+      "document_title": "NHBC Technical Standards, Chapter 6.6 — Staircases",
+      "publication_date": "Annual editions; NHBC Standards 2026 edition applies to homes with foundations begun on or after 1 January 2026",
+      "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+      "access": "free_public_via_nhbc_standards_portal",
+      "verification_status": "verified",
+      "verification_note": "Chapter 6.6 subsection structure confirmed via New Build Inspections knowledgebase (6.6.1–6.6.17). Subsections 6.6.12 (Timber staircases), 6.6.15 (Proprietary units), 6.6.16 (Protection during construction) are the installation-relevant subsections. Note: NEX source_catalogue.json had NHBC referenced as 'Chapter 6' generally — this session confirms Chapter 6.6 specifically."
+    },
+    {
+      "source_id": "src-INST-04",
+      "source_name": "HSE INDG143 — Manual Handling at Work: A Brief Guide",
+      "publisher": "Health and Safety Executive (HSE)",
+      "document_title": "INDG143 (rev4): Manual handling at work — a brief guide, referencing Manual Handling Operations Regulations 1992 (MHOR)",
+      "publication_date": "2020-01 (rev4); ISBN 9780717667321",
+      "url": "https://www.hse.gov.uk/pubns/indg143.pdf",
+      "access": "free_public_pdf",
+      "verification_status": "verified",
+      "verification_note": "Verified via HSE.gov.uk. Companion detailed document is L23 (Manual Handling Operations Regulations 1992 — Guidance on Regulations)."
+    },
+    {
+      "source_id": "src-INST-05",
+      "source_name": "HSE INDG401 — The Work at Height Regulations 2005: A Brief Guide",
+      "publisher": "Health and Safety Executive (HSE)",
+      "document_title": "INDG401: The Work at Height Regulations 2005 — A Brief Guide",
+      "publication_date": "Latest revision on HSE.gov.uk",
+      "url": "https://www.hse.gov.uk/pubns/indg401.htm",
+      "access": "free_public_pdf",
+      "verification_status": "verified",
+      "verification_note": "Verified via HSE.gov.uk landing page. WAHR 2005 (SI 2005/735) is the underlying statutory instrument. Relevant to stair install where operatives use temporary platforms above the stair void."
+    },
+    {
+      "source_id": "src-INST-06",
+      "source_name": "HSE L153 — Managing Health and Safety in Construction (CDM 2015)",
+      "publisher": "Health and Safety Executive (HSE)",
+      "document_title": "L153: Managing health and safety in construction — Construction (Design and Management) Regulations 2015, Guidance on Regulations",
+      "publication_date": "2015 (with subsequent HSE updates)",
+      "url": "https://www.hse.gov.uk/pubns/books/l153.htm",
+      "access": "free_public_pdf",
+      "verification_status": "verified",
+      "verification_note": "Verified via HSE.gov.uk. CDM 2015 came into force 6 April 2015. Relevant to installation project coordination, principal contractor duties, RAMS for stair delivery/installation."
+    },
+    {
+      "source_id": "src-INST-07",
+      "source_name": "Peter Brett — Carpentry and Joinery textbook series (Job Knowledge & Site Practice)",
+      "publisher": "Nelson Thornes / Hodder Education (various editions)",
+      "document_title": "Carpentry and Joinery — Book One: Job Knowledge (3rd ed, 1408506505) and Carpentry and Joinery for Advanced Craft Students: Site Practice",
+      "publication_date": "Multiple editions from 1990s through 2011 (3rd ed of Book One)",
+      "url": "https://books.google.com/books/about/Carpentry_and_Joinery_for_Advanced_Craft.html?id=xqaF6sLhGXIC",
+      "access": "paid_textbook_purchase_and_library_reference",
+      "verification_status": "requires_manual_verification",
+      "verification_note": "Long-standing UK Level 2/3 carpentry apprentice textbook aligned to CGLI 585 syllabus and City & Guilds 6706. Covers stair installation, setting out, plumb, level, wedges within the site carpentry curriculum. Specific chapter/page mapping not verified this session."
+    }
+  ],
+  "topics": {
+    "site_preparation": {
+      "topic_slug": "site_preparation",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs: A Guide to Safe Stair Installation",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Before installation' (BWF Stair Scheme confirms guide covers 'before installation' checks)",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide contains a 'before installation' section addressing site readiness before a timber staircase arrives on-site, including protection of the stair from moisture from drying plaster/screed and confirming site conditions.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "National House Building Council",
+          "document_title": "NHBC Technical Standards, Chapter 6.6 — Staircases",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.2 Design and Specification Information; 6.6.16 Protection During Construction",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsections addressing pre-install specification/information handover and protection of the installed stair during subsequent construction trades on site.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-INST-06",
+          "source_name": "HSE L153 — CDM 2015 Guidance",
+          "publisher": "Health and Safety Executive",
+          "document_title": "L153: Managing health and safety in construction (CDM 2015)",
+          "publication_date": "2015",
+          "section_or_clause": "CDM 2015 designer + principal contractor duties",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/books/l153.htm",
+          "what_source_discusses": "Framework for pre-construction information exchange and site coordination applicable to stair delivery/installation project planning.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "delivery": {
+      "topic_slug": "delivery",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs: A Guide to Safe Stair Installation",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Checking delivery' (BWF confirms guide covers 'checking delivery')",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide contains a dedicated 'checking delivery' section covering receipt of stair components on site.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "storage": {
+      "topic_slug": "storage",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs: A Guide to Safe Stair Installation",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Storage' (BWF confirms guide covers 'storage' of stair components before installation)",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide contains a 'storage' section covering on-site storage of the stair before it is installed, with reference to moisture protection from drying plaster/screed.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "National House Building Council",
+          "document_title": "NHBC Technical Standards, Chapter 6.6 — Staircases",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.16 Protection During Construction",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsection addressing protection of stair components on site (relevant both to protection of stored components pre-install and installed stair post-install).",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "handling": {
+      "topic_slug": "handling",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-04",
+          "source_name": "HSE INDG143 — Manual Handling at Work: A Brief Guide",
+          "publisher": "Health and Safety Executive",
+          "document_title": "INDG143 (rev4): Manual handling at work — a brief guide",
+          "publication_date": "2020-01",
+          "section_or_clause": "Whole document; risk filters for lifting/lowering/carrying/pushing/pulling; MHOR 1992 regulations",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/indg143.pdf",
+          "what_source_discusses": "Statutory brief guide covering employer duties under Manual Handling Operations Regulations 1992 applicable to any lifting/carrying task, including large joinery items such as staircase assemblies.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs: A Guide to Safe Stair Installation",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Cross-referenced under 'working at height' / handling of stair components",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide references safe handling of stair components as part of the wider installation safety context.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "lifting": {
+      "topic_slug": "lifting",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-04",
+          "source_name": "HSE INDG143 — Manual Handling at Work: A Brief Guide",
+          "publisher": "Health and Safety Executive",
+          "document_title": "INDG143 (rev4)",
+          "publication_date": "2020-01",
+          "section_or_clause": "Risk filters for lifting and lowering; simple filter for handling while seated",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/indg143.pdf",
+          "what_source_discusses": "Provides the statutory framework and risk filter approach for lifting operations under MHOR 1992.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-025",
+          "source_name": "HSE — L24 Workplace (Health, Safety and Welfare) Regulations 1992 ACOP",
+          "publisher": "Health and Safety Executive",
+          "document_title": "L24 Workplace health, safety and welfare — ACOP",
+          "publication_date": "2013 (revised)",
+          "section_or_clause": "Workplace stair provisions",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf",
+          "what_source_discusses": "Companion workplace safety ACOP — applicable when the stair-install workplace is itself a construction site (interacts with CDM 2015).",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "No stair-specific 'lifting equipment' guidance found in web sources searched. LOLER 1998 (Lifting Operations and Lifting Equipment Regulations) applies where mechanical lifting is used but no stair-installation-specific ACOP was located. Installation module authors should consult LOLER if manufacturer specifies mechanical lifting for pre-assembled flights."
+    },
+    "access_planning": {
+      "topic_slug": "access_planning",
+      "phase": "pre_install",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Clearances' (BWF confirms guide covers 'clearances')",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide contains a 'clearances' section which is the closest equivalent to route/access planning for the stair from delivery point to install location.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-06",
+          "source_name": "HSE L153 — CDM 2015 Guidance",
+          "publisher": "Health and Safety Executive",
+          "document_title": "L153: Managing health and safety in construction (CDM 2015)",
+          "publication_date": "2015",
+          "section_or_clause": "Site coordination / temporary works considerations",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/books/l153.htm",
+          "what_source_discusses": "Framework guidance placing responsibility on principal contractor for site access arrangements.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": "No dedicated public technical publication was found for 'route from delivery point to installation location' specific to timber staircases. This is largely site-craft judgement addressed within BWF's 'clearances' framing and CDM 2015 site coordination duties. If Installation module requires more detail, mark as 'expert_author_required'."
+    },
+    "positioning_staircase": {
+      "topic_slug": "positioning_staircase",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Sections 'Fixings and assembly' + 'Clearances' (per BWF Stair Scheme summary)",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide covers assembly of the stair on site, which in installation practice includes the first-placement/dry-fit step.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-009",
+          "source_name": "BS 5395-1:2010 — Stairs. Code of practice for the design of stairs with straight flights and winders",
+          "publisher": "BSI",
+          "document_title": "BS 5395-1:2010",
+          "publication_date": "2010-02-28",
+          "section_or_clause": "General design + construction guidance",
+          "page_reference": null,
+          "url": "https://knowledge.bsigroup.com/products/stairs-code-of-practice-for-the-design-of-stairs-with-straight-flights-and-winders",
+          "what_source_discusses": "Code of practice covers design, construction and maintenance aspects of straight-flight stairs; construction section provides framework for on-site positioning within a broader specification context.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "temporary_support": {
+      "topic_slug": "temporary_support",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Temporary fixing of stairs' (BWF confirms guide covers 'temporary stair fixings')",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide contains a dedicated 'temporary fixing of stairs' section covering bracing/propping arrangements before permanent fixings are made.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "floor_fixing": {
+      "topic_slug": "floor_fixing",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Fixings and assembly' (BWF confirms guide covers 'fastening methods')",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide covers fixing methods for stair components including bottom-of-stair connections.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-024",
+          "source_name": "Screw and mechanical fixing datasheet category — timber-to-timber (BS EN 14592)",
+          "publisher": "Fastener manufacturer datasheets aligned to BS EN 14592",
+          "document_title": "Structural and joinery screw/dowel technical datasheets per BS EN 14592",
+          "publication_date": "BS EN 14592 (current edition)",
+          "section_or_clause": "Timber-to-timber and timber-to-masonry screw datasheets",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Manufacturer datasheet category covering CE-marked structural screws used to fix stair components including to timber floor substructure.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Technical Standards, Chapter 6.6",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.12 Timber and Wood-Based Product Staircases",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsection on timber staircase requirements including fixing methods to supporting floor structure.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "landing_fixing": {
+      "topic_slug": "landing_fixing",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Fixings and assembly'",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide covers top-of-stair connection to landing structure within its fixings and assembly section.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Technical Standards, Chapter 6.6",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.9 Landings; 6.6.12 Timber and Wood-Based Product Staircases",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsection 6.6.9 addresses landing requirements; 6.6.12 addresses fixing of timber staircases including connection to landing framing.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "wall_fixing": {
+      "topic_slug": "wall_fixing",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "British Woodworking Federation (BWF) Stair Scheme",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "Section 'Fixings and assembly' with reference to wall string fixings",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide addresses fixing of the wall string to timber stud or masonry walls as part of the assembly section.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Technical Standards, Chapter 6.6",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.12 Timber and Wood-Based Product Staircases",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsection covers wall-string fixing requirements including provision for noggings in stud walls and appropriate fixings to block/masonry walls.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-024",
+          "source_name": "Screw and mechanical fixing datasheet category — timber-to-timber (BS EN 14592)",
+          "publisher": "Fastener manufacturers per BS EN 14592",
+          "document_title": "Timber fastener datasheets per BS EN 14592",
+          "publication_date": "current",
+          "section_or_clause": "CE-marked structural screw ranges",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Datasheet category for CE-marked EN 14592 structural screws used for wall-string fixings into studwork and masonry.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "structural_interfaces": {
+      "topic_slug": "structural_interfaces",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-03",
+          "source_name": "NHBC Standards — Chapter 6.6 Staircases",
+          "publisher": "NHBC",
+          "document_title": "NHBC Technical Standards, Chapter 6.6",
+          "publication_date": "2026 edition current",
+          "section_or_clause": "6.6.6 Structural Design; 6.6.12 Timber Staircases; 6.6.13 Concrete Staircases; 6.6.14 Steel Staircases",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/technical/nhbc-standards",
+          "what_source_discusses": "Subsections cover structural design of staircases and material-specific interface requirements (timber, concrete, steel) including connections to trimmer joists and supporting structure.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-009",
+          "source_name": "BS 5395-1:2010 — Code of practice for design of straight-flight stairs and winders",
+          "publisher": "BSI",
+          "document_title": "BS 5395-1:2010",
+          "publication_date": "2010-02-28",
+          "section_or_clause": "Design and construction of stairs including structural support",
+          "page_reference": null,
+          "url": "https://knowledge.bsigroup.com/products/stairs-code-of-practice-for-the-design-of-stairs-with-straight-flights-and-winders",
+          "what_source_discusses": "UK code of practice addresses structural framework within which stair-to-structure interfaces are designed.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "BWF",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "'Fixings and assembly' section with reference to trimmer/newel interface",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide covers connections at the head of the stair including newel-to-trimmer joist interface.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "For non-timber substructure (structural steel or masonry trimmer opening) additional consultation with the structural engineer / manufacturer's installation instructions is standard practice — this is a design-and-engineer interface rather than a stair-install topic."
+    },
+    "alignment": {
+      "topic_slug": "alignment",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "BWF",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "'Fixings and assembly' / 'Clearances' sections",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide covers alignment considerations within assembly and clearances sections though not as a named standalone section.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-07",
+          "source_name": "Peter Brett — Carpentry and Joinery textbook series",
+          "publisher": "Nelson Thornes / Hodder Education",
+          "document_title": "Carpentry and Joinery — Job Knowledge + Site Practice volumes",
+          "publication_date": "Multiple editions",
+          "section_or_clause": "Stair construction / setting out chapters",
+          "page_reference": null,
+          "url": "https://books.google.com/books/about/Carpentry_and_Joinery_for_Advanced_Craft.html?id=xqaF6sLhGXIC",
+          "what_source_discusses": "UK apprentice-level textbook covering site carpentry principles including alignment, plumb and level as fundamental setting-out disciplines.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "Alignment is a site-craft discipline embedded across BWF assembly guidance and City & Guilds training rather than a discrete standalone publication topic."
+    },
+    "plumb": {
+      "topic_slug": "plumb",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-07",
+          "source_name": "Peter Brett — Carpentry and Joinery textbook series",
+          "publisher": "Nelson Thornes / Hodder Education",
+          "document_title": "Carpentry and Joinery — Job Knowledge + Site Practice volumes",
+          "publication_date": "Multiple editions",
+          "section_or_clause": "Setting-out / stair construction chapters",
+          "page_reference": null,
+          "url": "https://books.google.com/books/about/Carpentry_and_Joinery_for_Advanced_Craft.html?id=xqaF6sLhGXIC",
+          "what_source_discusses": "Standard UK carpentry apprentice textbook covering plumb verification as a fundamental setting-out principle applicable to newels and strings.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-021",
+          "source_name": "City & Guilds Level 2/3 Diploma in Site Carpentry / Bench Joinery (6706)",
+          "publisher": "City & Guilds",
+          "document_title": "Level 2/3 Diploma qualification specifications",
+          "publication_date": "current",
+          "section_or_clause": "Stair construction and installation units",
+          "page_reference": null,
+          "url": "https://www.cityandguilds.com/qualifications-and-apprenticeships/construction/construction/6706-site-carpentry-and-architectural-joinery",
+          "what_source_discusses": "Qualification specification includes stair install units where plumb verification of newels/strings is an assessed competency.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "Plumb verification is not published as a standalone technical topic in stair guidance — it is embedded in general site-carpentry training. Installation module authoring should cite City & Guilds 6706 units and Brett's textbook rather than seek a stair-specific standard."
+    },
+    "level": {
+      "topic_slug": "level",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-07",
+          "source_name": "Peter Brett — Carpentry and Joinery textbook series",
+          "publisher": "Nelson Thornes / Hodder Education",
+          "document_title": "Carpentry and Joinery — Job Knowledge + Site Practice volumes",
+          "publication_date": "Multiple editions",
+          "section_or_clause": "Setting-out / stair construction chapters",
+          "page_reference": null,
+          "url": "https://books.google.com/books/about/Carpentry_and_Joinery_for_Advanced_Craft.html?id=xqaF6sLhGXIC",
+          "what_source_discusses": "Textbook covers level verification of treads and landings as a fundamental site-carpentry discipline within stair construction.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-001",
+          "source_name": "Approved Document K — Protection from falling, collision and impact",
+          "publisher": "MHCLG / HM Government",
+          "document_title": "Approved Document K (2013 edition)",
+          "publication_date": "2013",
+          "section_or_clause": "K1 stair geometry — rise and going tolerances imply level treads",
+          "page_reference": null,
+          "url": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf",
+          "what_source_discusses": "Statutory guidance sets rise/going geometry which the installed stair must meet — indirectly requires level verification of installed treads.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-021",
+          "source_name": "City & Guilds Level 2/3 Diploma in Site Carpentry (6706)",
+          "publisher": "City & Guilds",
+          "document_title": "Level 2/3 qualification specifications",
+          "publication_date": "current",
+          "section_or_clause": "Stair install competency units",
+          "page_reference": null,
+          "url": "https://www.cityandguilds.com/qualifications-and-apprenticeships/construction/construction/6706-site-carpentry-and-architectural-joinery",
+          "what_source_discusses": "Level verification of installed stair components is an assessed competency within stair install units.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "As with plumb, level verification is embedded in general carpentry training rather than published as a standalone stair-specific technical topic."
+    },
+    "wedges_and_packing": {
+      "topic_slug": "wedges_and_packing",
+      "phase": "on_site_positioning_and_fixing",
+      "evidence": [
+        {
+          "source_id": "src-INST-01",
+          "source_name": "BWF Stair Scheme Installation Guide — Timber Stairs (2018)",
+          "publisher": "BWF",
+          "document_title": "Installation Guide — Timber Stairs",
+          "publication_date": "2018-04-25",
+          "section_or_clause": "'Fixings and assembly' section including wedge details",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/wp-content/uploads/bwf-stair-scheme-installation-guide-for-web.pdf",
+          "what_source_discusses": "Guide addresses assembly of the stair including tread/riser wedges within its assembly section.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs",
+          "publisher": "BWF",
+          "document_title": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025 revision",
+          "section_or_clause": "Housed-string construction detail",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Design guide illustrates housed-string construction where treads and risers are wedged into string housings, providing the design context that the installer verifies on site.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-023",
+          "source_name": "PVA adhesive datasheet category — D3/D4 wood adhesives (EN 204)",
+          "publisher": "Manufacturer datasheets per BS EN 204:2016",
+          "document_title": "D3/D4 PVA wood adhesive datasheets",
+          "publication_date": "BS EN 204:2016",
+          "section_or_clause": "Wedge and joint bonding applications",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "Manufacturer datasheet category for adhesives used in tread/riser/wedge bonding operations during stair assembly.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-INST-07",
+          "source_name": "Peter Brett — Carpentry and Joinery textbook series",
+          "publisher": "Nelson Thornes / Hodder Education",
+          "document_title": "Carpentry and Joinery volumes",
+          "publication_date": "Multiple editions",
+          "section_or_clause": "Stair construction chapters covering wedge and packing techniques",
+          "page_reference": null,
+          "url": "https://books.google.com/books/about/Carpentry_and_Joinery_for_Advanced_Craft.html?id=xqaF6sLhGXIC",
+          "what_source_discusses": "UK apprentice-level textbook covers wedge and packing techniques within stair construction chapters.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    }
+  },
+  "aggregate": {
+    "topics_with_evidence": 16,
+    "topics_expert_author_required": 0,
+    "total_evidence_entries": 36,
+    "verified_entries": 18,
+    "requires_manual_verification_entries": 18,
+    "topics_with_gap_notes": 6,
+    "phase_split": {
+      "pre_install": 6,
+      "on_site_positioning_and_fixing": 10
+    }
+  }
+}

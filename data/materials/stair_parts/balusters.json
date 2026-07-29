@@ -1,0 +1,50 @@
+[
+  {
+    "slug": "baluster-oak-32x32-stop-chamfer",
+    "name": "Oak Baluster · 32 × 32 · Stop Chamfer",
+    "category": "stair_part",
+    "subcategory": "baluster",
+    "species_id": "oak_european",
+    "default_unit": "unit",
+    "typical_grades": ["prime"],
+    "typical_applications": ["balustrade"],
+    "synonyms": ["32 stop chamfer oak", "oak spindles 32mm"],
+    "common_dimensions": {
+      "sections_mm": [[32, 32]],
+      "lengths_mm": [900, 1000, 1100]
+    },
+    "sort_order": 10
+  },
+  {
+    "slug": "baluster-oak-41x41-stop-chamfer",
+    "name": "Oak Baluster · 41 × 41 · Stop Chamfer",
+    "category": "stair_part",
+    "subcategory": "baluster",
+    "species_id": "oak_european",
+    "default_unit": "unit",
+    "typical_grades": ["prime"],
+    "typical_applications": ["balustrade"],
+    "synonyms": ["41 stop chamfer oak", "oak spindles 41mm"],
+    "common_dimensions": {
+      "sections_mm": [[41, 41]],
+      "lengths_mm": [900, 1000, 1100]
+    },
+    "sort_order": 20
+  },
+  {
+    "slug": "baluster-oak-50x50-stop-chamfer",
+    "name": "Oak Baluster · 50 × 50 · Stop Chamfer",
+    "category": "stair_part",
+    "subcategory": "baluster",
+    "species_id": "oak_european",
+    "default_unit": "unit",
+    "typical_grades": ["prime"],
+    "typical_applications": ["balustrade"],
+    "synonyms": ["50 stop chamfer oak", "oak spindles 50mm"],
+    "common_dimensions": {
+      "sections_mm": [[50, 50]],
+      "lengths_mm": [900, 1000, 1100]
+    },
+    "sort_order": 30
+  }
+]

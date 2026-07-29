@@ -1,0 +1,305 @@
+{
+  "_meta": {
+    "purpose": "Van organisation evidence catalogue · supports Philip-authored installation.van_organisation module · Layer 1 preparation only",
+    "governance_rule": "Evidence only. Zero authoring. Never invent sources. Descriptive, never prescriptive.",
+    "created": "2026-07-28",
+    "created_by": "installation_van_evidence_agent",
+    "philip_authored_primary_ref": "docs/brains/staircase-installation-van-organisation-philip-2026-07-28.md",
+    "web_calls_used": 11,
+    "web_call_budget": 15,
+    "cross_reference_note": "Reuses src-025 (HSE) from staircase-preparation/source_catalogue.json where applicable. New evidence IDs use src-VAN-XX prefix."
+  },
+  "topics": {
+    "manual_handling_from_vans": {
+      "topic_slug": "manual_handling_from_vans",
+      "phase": "regulatory_safety",
+      "evidence": [
+        {
+          "source_id": "src-VAN-01",
+          "source_name": "HSE INDG143 (rev4)",
+          "publisher": "Health and Safety Executive",
+          "document_title": "Manual handling at work: a brief guide",
+          "publication_date": "2020-01 (rev4)",
+          "section_or_clause": "Employer duties · risk filters for lifting, lowering and carrying · pushing and pulling illustrations · handling while seated",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/indg143.pdf",
+          "what_source_discusses": "Employer-facing summary of the problems associated with manual handling and the duties under the Manual Handling Operations Regulations 1992. Topics covered are directly applicable to lifting stair components in and out of a van interior, including risk-filter tables that scope when a full assessment is required.",
+          "verification_status": "verified"
+        },
+        {
+          "source_id": "src-VAN-02",
+          "source_name": "HSE L23 (4th edition)",
+          "publisher": "Health and Safety Executive",
+          "document_title": "Manual handling — Manual Handling Operations Regulations 1992, Guidance on Regulations",
+          "publication_date": "2016-09 (4th edition)",
+          "section_or_clause": "Part 1 regulations and brief guidance · Parts 2-4 detailed risk assessment guidance · Appendix risk filters",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/priced/l23.pdf",
+          "what_source_discusses": "Full statutory guidance on Manual Handling Operations Regulations 1992 as amended. Covers avoidance, assessment and reduction of injury risk from manual handling tasks including those associated with loading and unloading commercial vehicles. Appendix contains risk filters used to identify tasks that do not require detailed assessment.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "working_at_height_from_vans": {
+      "topic_slug": "working_at_height_from_vans",
+      "phase": "regulatory_safety",
+      "evidence": [
+        {
+          "source_id": "src-VAN-03",
+          "source_name": "HSE INDG401 (rev2)",
+          "publisher": "Health and Safety Executive",
+          "document_title": "Working at height: a brief guide",
+          "publication_date": "2014 (rev2)",
+          "section_or_clause": "Employer / duty-holder responsibilities under the Work at Height Regulations 2005 · planning, supervision, competent persons",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/indg401.pdf",
+          "what_source_discusses": "Brief guide covering what employers and those in control of work at height must do to comply with the Work at Height Regulations 2005. Applicable topic-wise to accessing high-mounted van shelving, roof racks and loading long stair components from van roof storage.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "lone_worker_safety_site_based_installers": {
+      "topic_slug": "lone_worker_safety_site_based_installers",
+      "phase": "regulatory_safety",
+      "evidence": [
+        {
+          "source_id": "src-VAN-04",
+          "source_name": "HSE INDG73 (rev4)",
+          "publisher": "Health and Safety Executive",
+          "document_title": "Protecting lone workers: how to manage the risks of working alone",
+          "publication_date": "2020-03 (rev4)",
+          "section_or_clause": "Sections on training, supervision, monitoring and support · work-related violence · manager keep-in-touch practices · mental health and wellbeing impact",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/indg73.pdf",
+          "what_source_discusses": "Guidance for anyone employing or engaging lone workers, including self-employed. Discusses hazard exposure of lone workers compared with team-based workers and the employer duty of care topics applicable to a solo staircase installer arriving at a domestic site with a stocked van.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "load_security_and_weight_distribution": {
+      "topic_slug": "load_security_and_weight_distribution",
+      "phase": "regulatory_safety",
+      "evidence": [
+        {
+          "source_id": "src-VAN-05",
+          "source_name": "DVSA / Department for Transport — Securing loads on HGVs and goods vehicles",
+          "publisher": "Driver and Vehicle Standards Agency (published on GOV.UK)",
+          "document_title": "Securing loads on HGVs and goods vehicles (guidance)",
+          "publication_date": "2015 original · updated 2024-12-09",
+          "section_or_clause": "Sections cover who guidance applies to · why load security matters · how to decide on a load securing system · what to do if a load becomes unstable during a journey · ways to secure loads · securing loads on different vehicle types · web lashings · lashing points · curtainsider tarpaulins · vehicle body strength",
+          "page_reference": null,
+          "url": "https://www.gov.uk/guidance/securing-loads-on-hgvs-and-goods-vehicles",
+          "what_source_discusses": "Official DVSA guidance replacing 'Safety of loads on vehicles: code of practice' and the earlier 'Load securing: vehicle operator guidance' publications. Covers load-security risk assessment, restraint system selection and vehicle body considerations applicable to transporting long timber flights, newel posts and handrail lengths in a goods vehicle.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": "DVSA guidance is written primarily for HGVs and goods vehicles above 3.5t; principles are transferable but a van-specific companion document is not published — Philip's field expertise on <3.5t stair-carrier practice is the primary primary source."
+    },
+    "workplace_transport_and_workplace_stairs_ACOP": {
+      "topic_slug": "workplace_transport_and_workplace_stairs_ACOP",
+      "phase": "regulatory_safety",
+      "evidence": [
+        {
+          "source_id": "src-025",
+          "source_name": "HSE L24 (reused from source_catalogue.json)",
+          "publisher": "Health and Safety Executive",
+          "document_title": "L24 Workplace health, safety and welfare — Workplace (Health, Safety and Welfare) Regulations 1992, Approved Code of Practice and guidance",
+          "publication_date": "2013 (revised)",
+          "section_or_clause": "ACOP L24 workplace transport routes · pedestrian/vehicle separation · loading areas",
+          "page_reference": null,
+          "url": "https://www.hse.gov.uk/pubns/priced/l24.pdf",
+          "what_source_discusses": "Workplace regulations ACOP with sections on vehicle movement, loading areas and pedestrian segregation topics applicable to a van being loaded/unloaded on a construction or domestic-refurbishment site. Cross-referenced from staircase-preparation/source_catalogue.json src-025.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "bwf_installer_guidance": {
+      "topic_slug": "bwf_installer_guidance",
+      "phase": "trade_industry",
+      "evidence": [
+        {
+          "source_id": "src-016",
+          "source_name": "BWF Stair Scheme — Design Guide 1: Domestic Timber Stairs (reused from source_catalogue.json)",
+          "publisher": "British Woodworking Federation — Stair Scheme",
+          "document_title": "BWF Stair Scheme Design Guide 1 — Domestic Timber Stairs",
+          "publication_date": "2025 (latest revision)",
+          "section_or_clause": "Design guide covering domestic timber stairs · manufactured to storage · site handling considerations",
+          "page_reference": null,
+          "url": "https://www.bwf.org.uk/app/uploads/2025/06/bwf-design-guide-1-domestic-timber-stairs-1.pdf",
+          "what_source_discusses": "Primary manufacturer-facing design guide for domestic timber stairs from the BWF Stair Scheme. Cross-referenced from source_catalogue.json src-016. Publication is design-focused; installer-facing van-organisation content is not the primary subject.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": "BWF Stair Scheme publications are design and manufacturing focused — no dedicated BWF van-organisation guide identified. Installer van practice sits below their publication scope."
+    },
+    "training_curricula_installer_preparation": {
+      "topic_slug": "training_curricula_installer_preparation",
+      "phase": "trade_industry",
+      "evidence": [
+        {
+          "source_id": "src-021",
+          "source_name": "City & Guilds 6706 — Site Carpentry and Architectural Joinery (reused from source_catalogue.json)",
+          "publisher": "City & Guilds",
+          "document_title": "Level 2/3 Diploma in Site Carpentry and Architectural Joinery (6706)",
+          "publication_date": "Current qualification specifications (revised periodically)",
+          "section_or_clause": "Site preparation units · tools and equipment handling units · stair construction and installation units within the site-carpentry pathway",
+          "page_reference": null,
+          "url": "https://www.cityandguilds.com/qualifications-and-apprenticeships/construction/construction/6706-site-carpentry-and-architectural-joinery",
+          "what_source_discusses": "Qualification specification covering site carpentry competencies including stair construction and installation units. Topic scope touches installer preparation activities but does not itself publish van organisation procedure content.",
+          "verification_status": "requires_manual_verification"
+        },
+        {
+          "source_id": "src-022",
+          "source_name": "CSkills Awards / NOCN NVQ Wood Occupations (reused from source_catalogue.json)",
+          "publisher": "CSkills Awards / NOCN Group / CITB",
+          "document_title": "NVQ Diploma Level 2/3 in Wood Occupations (Construction) — Bench Joinery / Site Carpentry pathways",
+          "publication_date": "Current qualification specifications",
+          "section_or_clause": "On-site assessment units covering safe systems of work · site preparation · material handling",
+          "page_reference": null,
+          "url": null,
+          "what_source_discusses": "On-site NVQ assessment specification alongside City & Guilds academic route, required for CSCS Blue/Gold Skilled Worker cards in carpentry/joinery. Curriculum-level coverage of on-site preparation applies; van-organisation content is not itself published.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "Neither UK carpentry/joinery training body publishes a dedicated van-organisation module — the topic is trade-craft rather than certified curriculum content, so Philip's field experience is the appropriate primary source."
+    },
+    "nhbc_install_adjacent_content": {
+      "topic_slug": "nhbc_install_adjacent_content",
+      "phase": "trade_industry",
+      "evidence": [
+        {
+          "source_id": "src-VAN-06",
+          "source_name": "NHBC Standards 2026 — Chapter 6.6 Staircases",
+          "publisher": "National House-Building Council",
+          "document_title": "NHBC Standards, Chapter 6.6 Staircases",
+          "publication_date": "Annual edition (2026 current)",
+          "section_or_clause": "Chapter 6.6 covers staircase design, materials, installation and protection during construction",
+          "page_reference": null,
+          "url": "https://www.nhbc.co.uk/binaries/content/assets/nhbc/tech-zone/nhbc-standards/",
+          "what_source_discusses": "NHBC warranty standards chapter on staircases addressing installation and protection topics. Chapter is design/build focused — van-organisation practice sits outside its scope but the chapter is the trade's primary quality reference for what leaves the van and is installed.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": null
+    },
+    "trade_press_van_fitout_articles": {
+      "topic_slug": "trade_press_van_fitout_articles",
+      "phase": "trade_industry",
+      "evidence": [],
+      "gap_note": "Trade press (Professional Builder · Housebuilder & Developer · The Woodworker) publish periodic van fit-out articles but no named single article was verifiable within the web-call budget. Governance rule bans citing unverified article titles. Marked expert_author_required — Philip's field observations of what published trade press typically covers are the appropriate primary source here."
+    },
+    "sortimo_van_racking_specification": {
+      "topic_slug": "sortimo_van_racking_specification",
+      "phase": "van_fitout_systems",
+      "evidence": [
+        {
+          "source_id": "src-VAN-07",
+          "source_name": "Sortimo Globelyst4 van racking system (UK)",
+          "publisher": "Sortimo International GmbH · UK operation mySortimo.co.uk",
+          "document_title": "Sortimo Globelyst4 product and specification pages",
+          "publication_date": "Current product generation (Globelyst4 is current, Globelyst M and earlier are prior generations)",
+          "section_or_clause": "Product pages covering aluminium space-frame construction · perforated wall accessory system · Sobogrip floor · crash-test performance · PUWER / DOT compliance statements",
+          "page_reference": null,
+          "url": "https://www.mysortimo.co.uk/en_UK/products/van-racking/globelyst4",
+          "what_source_discusses": "Manufacturer product specification for the Globelyst4 modular van racking system. Publishes topics covering aluminium frame construction, load capacity, crash-test performance up to specified loaded weights and g-force, drill-free installation via existing vehicle fixings, and UK regulatory compliance claims. Publication level is product spec, not installer procedure.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "bott_van_racking_specification": {
+      "topic_slug": "bott_van_racking_specification",
+      "phase": "van_fitout_systems",
+      "evidence": [
+        {
+          "source_id": "src-VAN-08",
+          "source_name": "Bott vario3 van racking system (UK)",
+          "publisher": "Bott Ltd (UK subsidiary of Bott GmbH & Co. KG)",
+          "document_title": "Bott vario3 van racking product and specification pages",
+          "publication_date": "Launched Germany 2019 · UK availability announced subsequently",
+          "section_or_clause": "Product pages covering aluminium construction · weight reduction versus prior generation · crash-test compliance · C-Lash restraint system · Systainer3 integration",
+          "page_reference": null,
+          "url": "https://www.bottltd.co.uk/vehicle-conversions/products-services/van-racking/bott-vario3",
+          "what_source_discusses": "Manufacturer product specification for the bott vario3 aluminium van racking system. Publishes topics covering lightweight aluminium construction, load-restraint (C-Lash) integration, tool-storage system (Systainer3) compatibility, and legally-compliant crash-test performance. Publication level is product spec, not installer procedure.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "modul_system_van_fitout": {
+      "topic_slug": "modul_system_van_fitout",
+      "phase": "van_fitout_systems",
+      "evidence": [
+        {
+          "source_id": "src-VAN-09",
+          "source_name": "Modul-System van racking (UK)",
+          "publisher": "Modul-System UK Ltd (formerly Tevo Ltd)",
+          "document_title": "Modul-System UK van racking product pages and racking-proposal PDF",
+          "publication_date": "Current product range",
+          "section_or_clause": "Sections covering ultra-high-strength steel construction · TÜV crash-test compliance · drill-free structural-adhesive bonding · CAD-based per-vehicle design · 3-year installation warranty",
+          "page_reference": null,
+          "url": "https://www.modul-system.co.uk/en/content/van-racking-systems-modul-system",
+          "what_source_discusses": "Manufacturer product specification for the Modul-System steel van racking range. Publishes topics covering material selection, crash-test standard compliance (European TÜV), drill-free installation approach using structural adhesive mounting points, and per-vehicle CAD design workflow. Publication level is product spec, not installer procedure.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": null
+    },
+    "van_guard_accessories_specification": {
+      "topic_slug": "van_guard_accessories_specification",
+      "phase": "van_fitout_systems",
+      "evidence": [
+        {
+          "source_id": "src-VAN-10",
+          "source_name": "Van Guard Accessories (UK)",
+          "publisher": "Van Guard Accessories Ltd (UK manufacturer · Made in Britain member)",
+          "document_title": "Van Guard product pages: bulkheads, ladder loading systems, roof racks and ULTI bars",
+          "publication_date": "Current product range",
+          "section_or_clause": "Product pages covering solid and punched steel bulkheads · BS ISO 27956:2009 test statement for solid bulkheads · Ladder Slide & Secure system · ULTILoader ladder-loading system · ULTI bar mounting platform",
+          "page_reference": null,
+          "url": "https://van-guard.co.uk/",
+          "what_source_discusses": "Manufacturer product specification for a UK-manufactured van accessory range. Publishes topics covering bulkhead types (solid vs punched) with BS ISO 27956:2009 test reference, ladder-loading mechanisms designed to address ground-level loading of roof-carried long items, and a common ULTI bar mounting platform. Directly relevant topic-wise to how long stair-string flights can be carried.",
+          "verification_status": "verified"
+        }
+      ],
+      "gap_note": "Rhino Products and Bri-Stor Systems were listed in the agent brief alongside Van Guard but were not individually verified within the web-call budget. Category is well-populated — one representative UK supplier (Van Guard) captured as evidence per governance rule against fabrication."
+    },
+    "fsb_tool_insurance_van_security": {
+      "topic_slug": "fsb_tool_insurance_van_security",
+      "phase": "insurance_commercial",
+      "evidence": [
+        {
+          "source_id": "src-VAN-11",
+          "source_name": "FSB Insurance Service — Tradesperson Insurance guidance",
+          "publisher": "FSB Insurance Service (Federation of Small Businesses insurance broker)",
+          "document_title": "Tradesperson Insurance: Protect Your Tools, Work & Income (blog guidance)",
+          "publication_date": "Current (undated blog post)",
+          "section_or_clause": "Sections covering tools-in-transit cover · van security recommendations · unique-identifier marking · serial-number and photograph records · cover levels reflecting van stock value",
+          "page_reference": null,
+          "url": "https://fsb-insurance-service.com/fsb-insurance-service-blog/public-employers-liability/tradesperson-insurance-protect-your-tools-work-income/",
+          "what_source_discusses": "Broker-published guidance topic-list covering tools-in-transit insurance considerations for tradespeople using vans. Discusses which risks the insurance market treats as material (out-of-sight storage, marked tools, serial-number registers) applicable to how installers should organise a stocked van from an insurance-compliance standpoint. Blog-tier publication rather than published guidance document — governance-marked accordingly.",
+          "verification_status": "requires_manual_verification"
+        }
+      ],
+      "gap_note": "FSB publishes member guidance via its insurance-broker arm rather than as a standalone code of practice. The named FSB Insurance Service blog page is the closest matching authoritative-adjacent source; a formal FSB code on van security was not identified."
+    },
+    "abi_trade_vehicle_tools_cover": {
+      "topic_slug": "abi_trade_vehicle_tools_cover",
+      "phase": "insurance_commercial",
+      "evidence": [],
+      "gap_note": "No specific Association of British Insurers publication on commercial-vehicle tools cover was identified via web search within the call budget. ABI publishes headline motor-insurance data and market commentary rather than trade-vehicle tool-cover guidance documents. Marked expert_author_required — the topic is better sourced from individual insurer policy wordings (per src-VAN-11 approach) than from an ABI umbrella publication."
+    }
+  },
+  "aggregate": {
+    "topics_with_evidence": 13,
+    "topics_expert_author_required": 2,
+    "total_evidence_entries": 13,
+    "verified_entries": 9,
+    "requires_manual_verification_entries": 4,
+    "topic_count": 15
+  }
+}

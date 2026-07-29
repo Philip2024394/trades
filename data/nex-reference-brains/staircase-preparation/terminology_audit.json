@@ -1,0 +1,812 @@
+{
+  "_meta": {
+    "purpose": "Terminology consistency audit across captured Staircase Brain content — surfaces every duplicate term, conflicting usage, undefined term, inconsistent naming, regional mix, and ambiguity found in the founding reference brain package, master libraries (materials + components + plan-sizes), Philip's canonical knowledge doc, brain specs, and captured project/feedback memories.",
+    "governance_rule": "Flag inconsistencies. Do NOT resolve them. Never assert which usage is correct. Every finding cites the exact file(s) and terms involved and offers OPTIONS for the expert to choose.",
+    "created": "2026-07-28",
+    "created_by": "terminology_audit_agent",
+    "scope_covered": [
+      "C:\\Users\\Victus\\trades\\docs\\brains\\ (all .md files)",
+      "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json",
+      "C:\\Users\\Victus\\trades\\data\\staircase-materials.json",
+      "C:\\Users\\Victus\\trades\\data\\staircase-components.json",
+      "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json",
+      "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\ (project_nex_staircase_* + feedback_nex_staircase_*)"
+    ]
+  },
+
+  "findings": [
+
+    {
+      "id": "term-001",
+      "type": "duplicate_terms",
+      "terms_involved": ["string", "stringer"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 20, "usage": "## 2. Stringers (housed strings) — heading uses BOTH terms interchangeably in the same title" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 34, "usage": "A standard raw stringer is around 275 mm deep... the string depth must be increased accordingly." },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 129, "usage": "The stringer thickness is centred on the newel cross-section" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 357, "usage": "Stringer thickness selected (32 / 38 / 50 mm)... softwood + 32 mm" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 2, "usage": "name: NEX Staircase stringer dimensions... but body switches to 'string thickness' and 'string housings'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 15, "usage": "## Stringer thickness (UK standard) followed by section 'Lamwood strings'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 11, "usage": "{ \"id\": \"strings\", \"label\": \"Strings\", \"prefix\": \"ST\" }" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 1337, "usage": "\"suitable_components\": [ \"stringers\", ... ] — MAT-016 uses plural 'stringers' while catalogue category uses 'strings'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 133, "usage": "suitable_components lists 'strings' for MAT-001" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 146, "usage": "\"stringer_dimensions_uk\" object key uses 'stringer' but nested keys use 'string': overall_width_over_strings_typical_mm" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\nex-staircase-knowledge-architecture.md", "line": 80, "usage": "component database list: 'string · tread · riser · newel · handrail...' uses 'string'" }
+      ],
+      "issue_description": "The load-bearing side member of a housed / cut staircase is referred to variably as 'string', 'stringer', 'strings', 'stringers' — sometimes both forms appear in the same sentence or the same document. Some sources treat them as synonyms; some readers may read 'string' as a shortened form and 'stringer' as the full term; component-catalogue key uses plural 'strings' but material metadata uses plural 'stringers'.",
+      "resolution_options": [
+        "Option A: standardise on 'string' throughout (matches UK joinery shop-floor speech)",
+        "Option B: standardise on 'stringer' throughout (matches structural / engineering usage and some US practice)",
+        "Option C: define both as synonyms in the terminology module with a note that either is acceptable across the brain",
+        "Option D: use 'string' as the canonical trade term but keep 'stringer' as an indexed alias for search"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-002",
+      "type": "duplicate_terms",
+      "terms_involved": ["baluster", "spindle"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\nex-staircase-knowledge-architecture.md", "line": 80, "usage": "component list explicitly names both: 'string · tread · riser · newel · handrail · spindle · glass panel · fixings · skirting · balustrade · landing · nosing · baserail'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\nex-staircase-knowledge-architecture.md", "line": 160, "usage": "UK 'spindle' = US 'baluster' = both = same object" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\country-packs-spec.md", "line": 94, "usage": "Terminology (baluster → US or AU; spindle → UK; stringer with 'run' → US)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\country-packs-spec.md", "line": 102, "usage": "'How wide should my baluster gap be?' (US/AU term)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\country-packs-spec.md", "line": 103, "usage": "'How wide should my spindle gap be?' (UK term) → answered using UK 100mm rule" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\photo-analysis-rules.md", "line": 92, "usage": "Painted string + turned spindles + oak or painted treads" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-diagnosis-engine-spec.md", "line": 97, "usage": "Noise / squeaks... rattling spindle" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-diagnosis-engine-spec.md", "line": 104, "usage": "Balustrade... Loose spindle in baserail" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 429, "usage": "Wobbly balustrade (loose fixings, spindle failure)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 9, "usage": "canonical component category is 'balusters' with prefix 'B' — no 'spindle' category" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 503, "usage": "notes: 'Plain square-section vertical spindle' — component category 'balusters' but description uses 'spindle'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 1339, "usage": "MAT-016 suitable_components lists 'stringers, spindles, balusters' as three separate items" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 277, "usage": "terminology captured_implicit lists 'baluster' but not 'spindle'" }
+      ],
+      "issue_description": "Two terms are used for the vertical infill member of the balustrade — 'baluster' (canonical in components.json, materials.json, canonical knowledge doc, plan-sizes doc) and 'spindle' (used in diagnosis engine, photo analysis, brain specification defect list, country pack, and even inside components.json descriptions where the category itself is 'balusters'). Country pack marks 'spindle' as UK-only and 'baluster' as US/AU, but the UK-authored canonical doc uses 'baluster' consistently — contradicting the country pack's own rule. MAT-016 lists 'spindles' AND 'balusters' AS SEPARATE items in the same suitable_components array, which could be read as two different products.",
+      "resolution_options": [
+        "Option A: canonical UK term is 'baluster' — treat 'spindle' as a synonym / retrieval alias only, purge from authored fields",
+        "Option B: canonical UK term is 'spindle' per country pack — rename catalogue category and rewrite canonical doc",
+        "Option C: keep both, tag every use with jurisdiction (UK-baluster / UK-spindle / US-baluster / AU-baluster) and let the country pack decide user-facing wording",
+        "Option D: define 'spindle' as a specific SUBSET of baluster (e.g. turned + slim) — treat them as distinct product-level entries with a hierarchical relationship"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-003",
+      "type": "duplicate_terms",
+      "terms_involved": ["baluster", "banister"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-diagnosis-engine.json", "line": 75, "usage": "customer_language: 'spindles rattle', 'balusters loose', 'clicking noise from banister'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-diagnosis-engine.json", "line": 252, "usage": "customer_language: 'shaky handrail', 'banister feels weak'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-diagnosis-engine.json", "line": 430, "usage": "customer_language: 'banister section moves together'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\directory-seeds\\birmingham\\staircase-banisters-and-balustrades-birmingham.json", "line": 23, "usage": "keywords: 'Oak Banisters', 'Walnut Banisters'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\directory-seeds\\crawley\\stair-and-banister-ltd-crawley.json", "line": 4, "usage": "business_name: 'Stair & Banister Ltd'" }
+      ],
+      "issue_description": "'Banister' appears in customer-language and directory seed data but not in any authored brain content, canonical knowledge doc, components catalogue, or founding reference brain. Undefined whether 'banister' refers to the handrail, the whole balustrade assembly, or an individual baluster — customers use it for all three. No disambiguation captured anywhere.",
+      "resolution_options": [
+        "Option A: treat 'banister' as CUSTOMER LANGUAGE ONLY — expand to 'balustrade assembly' internally, never author it into brain body content",
+        "Option B: publish a terminology-module entry defining 'banister' as a colloquial synonym for the whole balustrade assembly (handrail + baluster + baserail)",
+        "Option C: keep the term unbound and let per-conversation clarification pick which specific component the customer means",
+        "Option D: treat 'banister' as a synonym for 'handrail' specifically (matches some UK regional usage)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-004",
+      "type": "regional_variation",
+      "terms_involved": ["going", "run", "tread depth"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 97, "usage": "To keep the going (horizontal step-to-step distance) constant" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 244, "usage": "a 220 mm going with two balusters at 41 mm each" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 18, "usage": "\"going_min_mm\": { \"value\": 220, \"clause\": \"1.3 + Table 1.1\" }" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 52, "usage": "Nosing overhang (typical 22-25 mm bullnose) is NOT part of the going. Going is measured riser-front to riser-front." },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 71, "usage": "footprint_formula: 'number_of_goings': 'number_of_rises - 1'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\country-packs-spec.md", "line": 94, "usage": "Terminology (baluster → US or AU; spindle → UK; stringer with 'run' → US)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\photo-analysis-rules.md", "line": 179, "usage": "Exact dimensions (rise, going, headroom)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 277, "usage": "terminology captured_implicit lists 'going' but not 'run' or 'tread depth'" }
+      ],
+      "issue_description": "'Going' is the UK Approved Doc K term and is used consistently in captured content, but 'run' is flagged by country-packs-spec as the US equivalent and 'tread depth' is a common informal synonym. No captured content contains a definition of 'going' relative to 'run' or 'tread depth', so a US-audience answer or a homeowner asking about 'tread depth' will not resolve. The 'total_run_calculation' field in staircase-brain-specification uses 'run' in a UK document without noting the term switch.",
+      "resolution_options": [
+        "Option A: keep 'going' as canonical UK term, publish 'run' + 'tread depth' as synonyms in the terminology module with jurisdiction markers",
+        "Option B: adopt 'run' as universal and deprecate 'going' (would contradict Doc K citation practice)",
+        "Option C: use jurisdiction-tagged terms throughout ({UK: going, US: run}) and let the country pack surface the correct word",
+        "Option D: define all three explicitly, note that 'tread depth' is customer-language and 'run' is US-industry, keep 'going' for regulation citations"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-005",
+      "type": "conflicting_terminology",
+      "terms_involved": ["run", "flight length", "total_run"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 122, "usage": "total_run_calculation: { formula: string; // Number of steps × going + landing depth }" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 72, "usage": "\"flight_length\": \"number_of_goings * chosen_going\"" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 53, "usage": "Reduce RUN by 20-25 mm per architrave at doorways top/bottom of flight." },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\country-packs-spec.md", "line": 94, "usage": "'run' flagged as US term for a stringer property" }
+      ],
+      "issue_description": "'Run' is used in three different senses across captured content: (1) US regional synonym for 'going' per country-packs-spec, (2) total horizontal length of the flight per staircase-brain-specification 'total_run_calculation', (3) an installer-facing measurement to reduce per architrave in staircase-plan-sizes.json. Same word, three different referents, no disambiguation.",
+      "resolution_options": [
+        "Option A: retire 'run' entirely; use 'flight length' for the whole-flight measurement and 'going' for the single-step depth",
+        "Option B: keep 'total run' as the whole-flight measurement and drop the US-regional 'run = going' usage",
+        "Option C: define three distinct terms ('single-step going', 'total flight run', 'measurement-reduction allowance') and forbid reuse of 'run' outside those three",
+        "Option D: rename the plan-sizes field 'flight_length' → 'total_run_mm' to match staircase-brain-specification, and drop US-regional 'run' from the country pack"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-006",
+      "type": "duplicate_terms",
+      "terms_involved": ["step", "tread"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 2, "usage": "name: 'NEX Staircase riser-step-wedge joint...' — memory title uses 'step'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 9, "usage": "The RISER always grooves INTO the bottom of the STEP (tread) above it. — parenthetical treats them as equivalent" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 29, "usage": "1 wedge UNDER the step — driven upward from below to lock the TREAD firmly — uses both in adjacent lines" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 41, "usage": "## Total per-step count" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 45, "usage": "## Top step — Philip's rule the last step at the top of a straight flight is called the 'top step' and is only 100mm deep (going)" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_baluster_count_rule.md", "line": 10, "usage": "2 balusters per step as the standard rule" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_double_round_starting_step.md", "line": 26, "usage": "## Geometry (double = two stacked rounded steps)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 78, "usage": "Each tread and riser is locked into its housing with a pine wedge — canonical doc prefers 'tread'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 109, "usage": "Two blocks per step, one near each string" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-quote-engine.json (implied)", "line": 0, "usage": "cost per step patterns in brain-spec Section 6 use 'typical_cost_per_step_gbp'" }
+      ],
+      "issue_description": "'Step' and 'tread' are used interchangeably in captured content — a 'step' includes the tread + riser + associated joinery, while a 'tread' is strictly the horizontal walking surface. Philip's captured memories use both freely (sometimes in the same sentence via a parenthetical clarification like 'STEP (tread)'). The 'top step' is called a step but described as a going measurement. Angle blocks are '2 per step'; wedges are 'per tread end + per riser end'. Rule wording changes: 'baluster count' uses 'per step', 'wedge count' uses 'per string end' and 'per tread'. No captured content defines the boundary between the two terms.",
+      "resolution_options": [
+        "Option A: define 'step' = full assembly (tread + riser), 'tread' = walking surface only; enforce that count-rules use 'step' and dimension-rules use 'tread' or 'riser'",
+        "Option B: use only 'tread' throughout, treat 'step' as colloquial customer-language only",
+        "Option C: use 'step' for count-per-step rules (angle blocks, balusters) and 'tread' + 'riser' when the specific component is meant; add a glossary note",
+        "Option D: publish both with a co-definition table and let each rule cite which term applies"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-007",
+      "type": "duplicate_terms",
+      "terms_involved": ["angle block", "glue block"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_angle_blocks_rule.md", "line": 2, "usage": "NEX Staircase angle blocks (glue blocks) construction rule — treats them as synonyms" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_angle_blocks_rule.md", "line": 7, "usage": "**UK trade rule for angle blocks (aka glue blocks) per step:**" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 43, "usage": "+ 2 angle blocks (glue blocks)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 107, "usage": "## 4. Angle blocks (glue blocks) — parenthetical alias" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 140, "usage": "'angle_blocks_rule' is the field name — 'glue block' does not appear as a canonical key" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-authoring-backlog-v0.1.md", "line": 58, "usage": "captured_implicit lists 'angle block' only, no 'glue block'" }
+      ],
+      "issue_description": "'Angle block' is the primary term across canonical content but 'glue block' appears as an aka in every source that mentions it. The founding reference brain uses only 'angle_blocks' as a key; the authoring backlog captured_implicit terminology list mentions only 'angle block'. No source defines whether these are two different products or one product with two names, and if the latter, which is the canonical trade term.",
+      "resolution_options": [
+        "Option A: canonical term is 'angle block'; 'glue block' is a retrieval synonym in the terminology module",
+        "Option B: canonical term is 'glue block' (matches older joinery texts); 'angle block' is the modern synonym",
+        "Option C: define both — 'angle block' refers to shape (triangular), 'glue block' refers to method (adhered) — as two attributes of the same object, always naming both together",
+        "Option D: keep aka pattern (angle block a.k.a. glue block) in every user-facing answer for the first occurrence, then use canonical term"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-008",
+      "type": "conflicting_terminology",
+      "terms_involved": ["baserail", "base_rail", "base rail", "baserails", "bottom rail"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 27, "usage": "profile_driven examples: 'handrails, cover_slips, base_rails, mouldings' — uses 'base_rails' with underscore, plural" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 135, "usage": "suitable_components lists 'base_rails' (MAT-001 European Oak)" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_handrail_baserail_baluster_sizing.md", "line": 2, "usage": "handrail_baserail_baluster_sizing — single word 'baserail'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_handrail_baserail_baluster_sizing.md", "line": 19, "usage": "**BASERAIL** — the newer-design bottom rail" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 179, "usage": "### 6.3 Baserail — bottom rail of the balustrade" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 181, "usage": "The baserail is the horizontal rail that sits on top of the string" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-diagnosis-engine.json", "line": 104, "usage": "'Loose spindle in baserail' — uses 'baserail'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-diagnosis-engine-spec.md", "line": 104, "usage": "'Loose spindle in baserail' — spec matches data" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 408, "usage": "NP-001 connections: 'baserail_socket' — uses 'baserail' as single word" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 158, "usage": "handrail_baserail_baluster_sizing.hard_rule mentions 'baserail'; overall system uses 'grooved baserail (top groove)'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 22, "usage": "categories list has NO 'baserails' category — only 'handrails, newel_posts, newel_caps, balusters, strings, treads, risers, glass_panels, glass_fixings, cover_slips, volutes, turnouts, curtail_steps, led_strips, winder_wedges, landings'. Baserail is referenced in metadata but has no dedicated catalogue category"
+      ],
+      "issue_description": "The horizontal rail below the balustrade is spelled 'baserail' (one word) in most authored content and memories, 'base_rails' (underscore, plural) in JSON keys for materials/components, and 'bottom rail' in the definition line of the canonical doc. The components catalogue does NOT include 'baserails' as a top-level category — only 'handrails' — even though the founding reference brain, canonical doc, materials library and memories all treat baserail as a first-class component with its own dimensions, groove and socket type. Field-level inconsistency: NP-001 has 'baserail_socket' (single-word) while materials JSON has 'base_rails' (underscore, plural).",
+      "resolution_options": [
+        "Option A: standardise on 'baserail' (one word) everywhere; migrate JSON keys and add a 'baserails' category to the components catalogue",
+        "Option B: standardise on 'base rail' (two words) in user-facing text and 'base_rail' in JSON keys (matches other snake_case fields)",
+        "Option C: keep both forms — 'baserail' for the specific grooved UK/Ireland profile, 'base rail' as generic — with a definition note",
+        "Option D: add 'baserails' to the components category list and fix the plural/singular + underscore/no-underscore drift as a schema-hygiene pass"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-009",
+      "type": "duplicate_terms",
+      "terms_involved": ["closed string", "housed string"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 560, "usage": "ST-001 name: 'Closed String' — notes: 'Solid string with treads and risers housed inside grooves. UK default for wall-side of staircase.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 148, "usage": "MAT-001 compatible_styles: 'closed_string, open_string, cut_string'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 21, "usage": "## 2. Stringers (housed strings) — canonical doc heading" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 26, "usage": "**32 mm** — the standard cladding / housed-string dimension" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 2, "usage": "(housed string) — memory title" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 12, "usage": "Housed-string construction (housed strings house both treads and risers)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 134, "usage": "\"type\": \"housed_string_domestic\"" },
+        { "file": "C:\\Users\\Victus\\trades\\src\\lib\\nex\\intent-router.ts", "line": 59, "usage": "keywords list has 'closed string' but not 'housed string' — retrieval will miss housed-string queries" },
+        { "file": "C:\\Users\\Victus\\trades\\src\\lib\\nex\\brain-loader.ts", "line": 29, "usage": "brain-loader keywords include 'closed string' + 'cut string' but not 'housed string'" }
+      ],
+      "issue_description": "The canonical construction type is called 'housed string' in every Philip memory + canonical doc + founding reference brain, but the components catalogue calls the same product 'Closed String' (ST-001) with a note that treads/risers ARE housed inside grooves. Retrieval code (intent-router, brain-loader) indexes 'closed string' but NOT 'housed string' — so a user searching using the canonical trade term will not match. It is unclear whether 'closed string' and 'housed string' are the same thing or whether 'closed' refers to visual appearance and 'housed' refers to construction joinery.",
+      "resolution_options": [
+        "Option A: 'housed string' = construction method (dado housing); 'closed string' = visual appearance (uncut top edge). Same product can be both — define as orthogonal attributes",
+        "Option B: they are synonyms — rename the component to 'Closed / Housed String' and add 'housed' to retrieval keyword lists",
+        "Option C: canonical term is 'housed string' (matches trade authority); rename catalogue entry ST-001 and update all retrieval keyword lists",
+        "Option D: canonical term is 'closed string' for user-facing surfaces (customer-friendly) and 'housed string' as technical alias for professionals"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-010",
+      "type": "duplicate_terms",
+      "terms_involved": ["cut string", "open string"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 567, "usage": "ST-002 name: 'Cut String' notes: 'String cut in stepped profile showing tread edges from the side. Show-side of open staircase.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 148, "usage": "MAT-001 compatible_styles: 'closed_string, open_string, cut_string' — lists both open_string AND cut_string as distinct styles" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 249, "usage": "MAT-002 lists 'closed_string, open_string, mono_string' — but NOT 'cut_string' — inconsistent with MAT-001" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 268, "usage": "compatibility rule references 'open-riser design uses cut string or central spine' — treats cut string and open string as different" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 186, "usage": "authoring_gaps: 'cut-string construction (historic + modern feature)' — hyphenated form" },
+        { "file": "C:\\Users\\Victus\\trades\\src\\lib\\nex\\intent-router.ts", "line": 59, "usage": "keywords: 'cut string' + 'closed string' — NO 'open string'" }
+      ],
+      "issue_description": "Three related but potentially distinct terms — 'cut string', 'open string', 'closed string' — appear inconsistently across the material master library. MAT-001 lists cut_string + open_string + closed_string as three separate compatible styles. MAT-002 lists open_string + closed_string + mono_string but omits cut_string. Components catalogue defines ST-001 (Closed) and ST-002 (Cut) but has no 'Open String' entry, even though 'open_string' appears as a compatibility style. Unclear whether 'open string' = 'cut string' or 'open string' = 'the visible show-side string on any staircase' (distinct meaning). Compatibility rule text mixes 'open-riser' with 'cut string' making it unclear whether open-riser design REQUIRES cut string or whether open string means open-riser.",
+      "resolution_options": [
+        "Option A: define three orthogonal properties: (1) construction (housed vs cut), (2) side (wall-side vs show-side), (3) riser (closed-riser vs open-riser) — remove overlapping style tags",
+        "Option B: canonicalise as 'cut string' (US/UK synonymous for the stepped-profile string) and drop 'open string' from all data files",
+        "Option C: publish a disambiguation entry: 'open string' = US term for cut string in some sources, = show-side string in others — define which meaning NEX uses",
+        "Option D: add an 'Open String' catalogue entry (ST-nnn) if MAT-001 treats it as distinct, or remove 'open_string' from all material compatibility lists"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-011",
+      "type": "inconsistent_naming",
+      "terms_involved": ["mopstick", "mopstick handrail"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 349, "usage": "HR-002 name: 'Traditional Mopstick' notes: 'The classic British handrail profile — flat bottom for wall fixing'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 260, "usage": "compatibility rule MOP-GLASS: 'Traditional Mopstick handrail (HR-002)...'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 0, "usage": "canonical knowledge doc contains NO reference to 'mopstick' — describes handrail profiles generically as 'grooved handrail (bottom groove)'" }
+      ],
+      "issue_description": "'Mopstick' is a canonical British handrail profile named in components.json but is entirely absent from the canonical knowledge doc, founding reference brain terminology list, and authoring backlog. Its cross_section is described as 'circular flat-bottomed' — different from the 'rounded/domed top surface... straight sides' description in the handrail_baserail memory. Homeowner reading canonical doc will not find the term used in the catalogue.",
+      "resolution_options": [
+        "Option A: add 'mopstick' to the terminology module with a definition and photo reference",
+        "Option B: rename HR-002 to 'Traditional Flat-Bottomed Round Handrail' — deprecate the trade jargon in user-facing labels",
+        "Option C: keep 'mopstick' as the catalogue name and cross-reference it in the canonical knowledge doc's §6 handrail section",
+        "Option D: verify whether the canonical doc's 'grooved handrail' IS the mopstick or is a different profile entirely; catalogue currently has no grooved handrail entry"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-012",
+      "type": "undefined_terms",
+      "terms_involved": ["mortice", "tenon", "haunched", "haunch", "housing", "dado"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 17, "usage": "haunched mortice-and-tenon joint — technical term used without a definition anywhere in captured content" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 24, "usage": "12mm haunched inside the newel post's inner face" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 30, "usage": "first riser haunched into the newel back ~45-50mm" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 25, "usage": "The housing is dado-cut (rectangular groove) — 'dado' used without definition" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 21, "usage": "Housing depth: 12mm to 15mm — 'housing' used without definition" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 72, "usage": "the housings are cut before assembly — no definition of 'housing'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 135, "usage": "haunched mortice-and-tenon joint" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 277, "usage": "terminology captured_implicit lists 'housing, mortice, tenon' but the entire terminology module is marked '_status: not_yet_authored'" }
+      ],
+      "issue_description": "The joinery vocabulary — mortice, tenon, haunched (verb + adjective), haunch (noun), housing, dado — is used across construction memories and canonical docs but is not defined anywhere in captured content. The founding reference brain explicitly lists these in the terminology captured_implicit list and marks the terminology module 'not_yet_authored'. A homeowner or apprentice reading a construction memory has no lookup to understand 'haunched 12mm into the newel'.",
+      "resolution_options": [
+        "Option A: prioritise authoring the terminology module before releasing v0.2 — every technical term in captured content must have a definition entry",
+        "Option B: publish a minimum viable glossary (5-10 terms: mortice, tenon, haunch, housing, dado, wedge, going, rise, nosing, pitch) as the first release of the terminology module",
+        "Option C: link each undefined term to an external authoritative reference (BS EN 942, BWF glossary, Approved Doc K glossary) instead of authoring in-brain",
+        "Option D: enforce a rule that every construction memory MUST include a footnote glossary of the technical terms it introduces"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-013",
+      "type": "ambiguity",
+      "terms_involved": ["balustrade", "banister", "balustrade assembly"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_handrail_baserail_baluster_sizing.md", "line": 9, "usage": "## Two-part balustrade rail system — describes handrail + baserail as the two rails of 'the balustrade'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 168, "usage": "UK and Ireland balustrades typically use a grooved handrail... — 'balustrades' plural referring to whole assemblies" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 32, "usage": "\"balustrade_height_stair_mm\": 900 — refers to the whole assembly height" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 33, "usage": "\"balustrade_height_landing_mm\": 1100" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 35, "usage": "\"balustrade_max_gap_mm\": 100 — 100mm sphere rule applies to gaps between balusters WITHIN the balustrade" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 336, "usage": "HR-004 style_tags: 'bonds beautifully onto glass balustrade top edges' — 'glass balustrade' as a subtype" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 244, "usage": "MAT-002 compatible_styles: 'glass_balustrades, metal_balusters' — 'balustrades' (whole assemblies) alongside 'balusters' (individual members)" }
+      ],
+      "issue_description": "'Balustrade' is used to mean at least three things depending on context: (1) the entire vertical safety assembly on the flight/landing edge (handrail + balusters + baserail + newels), (2) the horizontal height regulation dimension in plan-sizes, (3) a subtype (e.g. 'glass balustrade' = a whole balustrade made of glass panels, but described in the same style_tags array as 'metal_balusters' which are individual members). The 'balustrade_max_gap_mm' field is technically about gaps between balusters, not the balustrade itself — potentially ambiguous.",
+      "resolution_options": [
+        "Option A: define 'balustrade' precisely = entire vertical safety assembly (handrail + balusters + baserail + newels + fixings); rename plan-sizes fields to 'guarding_height_mm' or 'handrail_height_mm' where they refer to specific components",
+        "Option B: adopt Approved Doc K's term 'guarding' for the safety assembly and reserve 'balustrade' for the aesthetic/design language usage",
+        "Option C: keep 'balustrade' as canonical but audit every JSON field to ensure the referenced dimension truly applies to the whole assembly",
+        "Option D: publish a co-definition — 'balustrade = the guarding assembly'; 'balusters = the vertical members within it'; 'balustrade_max_gap_mm = max gap between adjacent balusters in the balustrade' — with explicit disambiguation notes"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-014",
+      "type": "inconsistent_naming",
+      "terms_involved": ["slip", "slips", "filler slip", "cover slip", "angle slip", "cover_slip"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_handrail_baserail_baluster_sizing.md", "line": 27, "usage": "SLIPS (small cut-to-length spacer strips) fit in the groove — used generically for handrail/baserail spacers" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 51, "usage": "cover the raw edges on both sides with 2-3 ANGLE SLIPS — used for T&G sheeting edges" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 169, "usage": "cut-to-length filler slips (also called spacer strips)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 181, "usage": "Filler slips (short lengths of the same section) fill the groove between balusters" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 311, "usage": "Cover the raw sheeting edges on both sides of the flight with 2–3 angle slips" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 15, "usage": "categories includes 'cover_slips' (prefix CS)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 143, "usage": "MAT-001 suitable_components lists 'cover_slips'" }
+      ],
+      "issue_description": "'Slip' appears with at least four different qualifiers naming what could be four different (or the same) products: 'slips' (generic — spacer between balusters in the rail groove), 'filler slips' (baserail/handrail spacer, canonical doc), 'spacer strips' (canonical doc says 'also called'), 'angle slips' (T&G edge cover, entirely different function), 'cover_slips' (components catalogue category, function unspecified — could be either angle slips or filler slips or something else). Components catalogue category name is 'cover_slips' but no memory or brain doc uses that exact phrase.",
+      "resolution_options": [
+        "Option A: publish three distinct terms with definitions — 'filler slip' (in-groove baluster spacer), 'angle slip' (T&G edge cover), 'cover slip' (rename in catalogue to match one of the two above)",
+        "Option B: audit CS-* catalogue entries to determine what 'cover_slip' actually means, then either merge into filler/angle slips or keep as third distinct product with a definition",
+        "Option C: standardise on 'slip' + qualifier in every reference — never bare 'slip'",
+        "Option D: rename the catalogue category 'cover_slips' to match Philip's canonical term ('filler_slips' if in-groove, 'angle_slips' if edge cover)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-015",
+      "type": "conflicting_terminology",
+      "terms_involved": ["bullnose", "nosing", "bullnose overhang", "nosing overhang"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 84, "usage": "The tread bullnose projects forward past the face of the riser below by the nosing dimension — uses bullnose AND nosing in same sentence" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 34, "usage": "20–25 mm bullnose overhang" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 52, "usage": "Nosing overhang (typical 22-25 mm bullnose) is NOT part of the going" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 619, "usage": "TR-003 name: 'Bullnose (rounded front)' dimensions: nosing_radius: 22" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 623, "usage": "TR-003 notes: 'Bullnose profile at the front edge — softer look than a square nosing.' — treats bullnose as a subtype of nosing" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 140, "usage": "MAT-001 suitable_components lists 'bullnose_steps' and 'landing_nosings' as separate items" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 71, "usage": "**Bullnose overhang three trade values:** 20mm / 25mm / 28mm" }
+      ],
+      "issue_description": "'Bullnose' and 'nosing' overlap in meaning but are not consistently distinguished. Some sources use them synonymously (bullnose = the overhang dimension of the nosing); others treat 'bullnose' as a shape (rounded) that is one style of 'nosing' (square, bullnose, pencil-round). Plan-sizes json parenthetically equates them ('Nosing overhang (typical 22-25 mm bullnose)'). Materials JSON treats 'bullnose_steps' as distinct from 'landing_nosings'. TR-003 catalogue entry describes bullnose as a nosing profile. No canonical decision on whether 'bullnose' = specific shape OR = the overhang measurement.",
+      "resolution_options": [
+        "Option A: 'nosing' = the overhang of the tread front edge (always exists on every tread); 'bullnose' = one shape of nosing (rounded); 'square nosing' + 'pencil-round nosing' + 'bullnose nosing' are the three shape variants",
+        "Option B: 'bullnose' = the overhang measurement; 'nosing' = the physical projecting edge — enforce this split throughout",
+        "Option C: canonicalise 'nosing' as the technical term (matches BS EN and Doc K); treat 'bullnose' as a shape modifier only",
+        "Option D: audit each field name (bullnose_overhang_mm vs nosing_overhang_mm etc.) and pick one convention; publish definitions for the three shape variants (square / pencil-round / bullnose)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-016",
+      "type": "ambiguity",
+      "terms_involved": ["top step", "landing", "top tread"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 45, "usage": "## Top step — Philip's rule: last step at top of straight flight is called 'top step' and is only 100mm deep (going) with bullnose front. Sits at landing level (top face flush with landing floor)." },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 49, "usage": "Nex Stairplan generates every straight flight with: 12 regular treads (220mm going each) + 1 top step (100mm going) + 13 risers" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_double_round_starting_step.md", "line": 30, "usage": "Top step (step 2): smaller radius, sits on top of step 1 — 'top step' in the double round context means step 2 of two stacked rounded starting steps" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 52, "usage": "Exception: if top tread is designed level with landing, rises = goings — uses 'top tread' not 'top step'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 189, "usage": "landing_footprints_by_width — landings sized independently" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 0, "usage": "canonical knowledge doc §5 does NOT mention the 'top step' concept at all — memory rule not surfaced in canonical doc" }
+      ],
+      "issue_description": "'Top step' refers to at least two distinct things in captured content: (1) the last-step-with-bullnose-flush-with-landing rule in Philip's newel-string joint memory (100mm going, at landing level), (2) the second step in a double round starting step (the smaller upper D-shape). Neither is the same as 'top tread' in staircase-plan-sizes.json (which is the highest normal tread of the flight). The 'top step' concept in the newel-string memory is entirely absent from the canonical knowledge doc despite Philip authoring both.",
+      "resolution_options": [
+        "Option A: define three distinct terms — 'top tread' (highest regular tread), 'landing edge nosing' (bullnose flush with landing floor, Philip's 100mm rule), 'upper stacked starting step' (second D-shape) — never reuse 'top step'",
+        "Option B: reserve 'top step' for the flush-with-landing bullnose element and use 'upper step of double round' for the starting-step context",
+        "Option C: surface the 'top step' rule into the canonical knowledge doc so terminology aligns across sources; add jurisdiction note (Philip's shop practice vs. Doc K)",
+        "Option D: verify whether the 'top step' + landing-flush-bullnose pattern is UK-wide trade practice or Philip-specific shop practice; if the latter, tag as such"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-017",
+      "type": "inconsistent_naming",
+      "terms_involved": ["oak", "European Oak", "American White Oak", "White Oak", "'oak'"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 88, "usage": "MAT-001 name: 'European Oak' common_names: ['Oak', 'European Oak', 'English Oak', 'Quercus robur', 'Quercus petraea']" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 190, "usage": "MAT-002 name: 'American White Oak' common_names: ['White Oak', 'American White Oak', 'Quercus alba']" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_sheeting_material_hard_rule.md", "line": 14, "usage": "when a customer picks flight species (e.g. American White Oak), sheeting locks to the same" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 27, "usage": "**Lamwood** is now the default UK choice for oak staircase strings — bare 'oak' without species" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 15, "usage": "Product-shot quality (3-quarter view of a clean oak T&G plank) — bare 'oak'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 1731, "usage": "staircase_backing_options.tng_sheeting.species: 'Oak (species interchangeable — walnut, ash, pine also available)' — bare 'Oak' as top-level species" }
+      ],
+      "issue_description": "'Oak' with no qualifier is used across memories and the canonical T&G product spec without indicating whether European Oak (MAT-001) or American White Oak (MAT-002) is meant. The two species have different colour, density, machinability, cost band and style compatibility scores in the master library. Sheeting hard-rule locks sheeting species to flight species, so bare 'oak' in customer-facing content risks a spec mismatch if the customer thinks 'oak' = one thing but Nex configures a different one.",
+      "resolution_options": [
+        "Option A: forbid bare 'oak' in all authored content; always qualify (European Oak / American White Oak / oak — species TBD)",
+        "Option B: define 'oak' at NEX default = one specific MAT-ID and document that default; permit bare 'oak' only when defaulting is explicit",
+        "Option C: publish an 'oak' terminology entry with the two species side-by-side and a decision-tree for which to pick",
+        "Option D: keep bare 'oak' as an accepted user-facing generic but always require a species clarification before quoting/rendering"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-018",
+      "type": "duplicate_terms",
+      "terms_involved": ["Nex", "NEX", "nex"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 4, "usage": "'Nex can quote directly' — capitalisation as 'Nex' throughout canonical doc (~35 instances)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\nex-staircase-knowledge-architecture.md", "line": 1, "usage": "# NEX Staircase Knowledge Architecture — filename lowercase, heading uppercase" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\nex-staircase-knowledge-architecture.md", "line": 3, "usage": "Purpose: Principles for how NEX should reason... — body uses uppercase 'NEX'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_design_system_prompt.md", "line": 4, "usage": "**HARD LAW · IMMUTABLE — Philip 2026-07-27.** The definitive system prompt for NEX — memory uses uppercase 'NEX'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 2, "usage": "name: NEX Staircase riser-step-wedge... — memory titles use uppercase 'NEX' but body uses 'Nex Stairplan' (title case)" },
+        { "file": "C:\\Users\\Victus\\trades\\CLAUDE.md", "line": 8, "usage": "**YOU ARE THE MASTER KNOWLEDGE ENGINE OF NEX** — constitution uses uppercase 'NEX'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 0, "usage": "founding reference brain body text uses lowercase 'nex-official' + display_name 'Staircase Brain' — no 'Nex' or 'NEX' prefix" }
+      ],
+      "issue_description": "The brand name is written as 'Nex' (title case) in the canonical knowledge doc + memory bodies referring to 'Nex Stairplan', but as 'NEX' (uppercase) in memory titles + newer feedback memories + the constitution + newer architecture docs. Recent HARD LAW memories use 'NEX' consistently; older Philip-authored canonical content uses 'Nex'. Directory paths use 'nex-*' lowercase. Which is the canonical brand casing for user-facing content?",
+      "resolution_options": [
+        "Option A: 'NEX' (all-caps) is canonical for the AI system per newest constitutional memories; migrate all older 'Nex' content to 'NEX'",
+        "Option B: 'Nex' (title case) is canonical for user-facing prose per canonical knowledge doc; 'NEX' is the acronym form used only in ADR titles and internal docs",
+        "Option C: publish a house-style rule: 'NEX' when the system name stands alone / is emphasised, 'Nex' when embedded in prose product names like 'Nex Stairplan'",
+        "Option D: canonicalise 'NEX Living Brain Platform' as the full form + 'Nex' as short prose form + 'nex-' as directory/slug prefix"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-019",
+      "type": "inconsistent_naming",
+      "terms_involved": ["Doc K", "Approved Doc K", "Approved Document K", "Part K", "Building Regulations Part K", "UK Part K"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 7, "usage": "'current_version': 'Approved Document K (2013 edition incorporating 2015 amendments)'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 203, "usage": "sources.primary: 'Approved Document K — Protection from falling...'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_baluster_count_rule.md", "line": 39, "usage": "Building Regulations and child safety... PASSES Doc K" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_plan_size_reference.md", "line": 18, "usage": "Approved Document K (2013 edition incorporating 2015 amendments)... Approved Doc K citation confidence" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 175, "usage": "the minimum required by Approved Document K in England (Building Regulations)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 174, "usage": "Purpose: UK Part K compliance + related standards. section title: approved_document_k" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 40, "usage": "adjacent trades: building_regulations_uk" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 51, "usage": "principles: 'Approved Document K, BS EN standards and safety-critical construction rules...'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 257, "usage": "primary_source: 'Approved Document K (England 2013 revision)'" }
+      ],
+      "issue_description": "The England building regulation for staircases is variously named 'Doc K', 'Approved Doc K', 'Approved Document K', 'Part K', 'UK Part K', 'Building Regulations Part K'. All refer to the same document but the citations are inconsistent — some memories say 'Doc K', canonical doc says 'Approved Document K', brain-specification uses 'UK Part K' + 'approved_document_k' key, adjacent-trade slug is 'building_regulations_uk'. Regulation-citation consistency is a Trust Question item — inconsistent naming risks appearing sloppy to a professional reader.",
+      "resolution_options": [
+        "Option A: canonical full form 'Approved Document K (England 2013 revision, 2015 amendments)' on first mention; 'Doc K' as short form after; forbid 'Part K' (which is common but technically wrong for the current England edition — Wales's is a separate document)",
+        "Option B: canonical short form 'Doc K' throughout user-facing content, 'Approved Document K' only in citations",
+        "Option C: publish a house-style rule with a single canonical name per regulation family and forbid the others",
+        "Option D: audit every 'Part K' reference — verify whether the author meant England Doc K, Wales Doc K, Scotland Technical Handbook §4, or NI Technical Booklet H; standardise per jurisdiction"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-020",
+      "type": "inconsistent_naming",
+      "terms_involved": ["timber", "wood", "hardwood", "softwood"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 62, "usage": "categories: 'timber_hardwood', 'timber_softwood', 'timber_engineered', 'timber_paint_grade' — 'timber' as canonical prefix" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 335, "usage": "'available_timbers': ['MAT-001', 'MAT-002', ...] — 'timbers' as canonical field name" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 528, "usage": "B-003 metal baluster: 'timber_usage_m3: 0' — 'timber' used even for metal (0 kg of timber)" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 246, "usage": "Materials module organised as 'wood', 'metal', 'concrete' — uses 'wood' not 'timber'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 267, "usage": "wood: species (Oak · Pine · Ash · Beech · Sapele · Walnut) — 'wood' as category" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_double_round_starting_step.md", "line": 15, "usage": "Solid blocks of wood — the whole step is machined from solid stock" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 26, "usage": "Lamwood (laminated wood) — 'wood' in the definition of a product spelled 'wood'" }
+      ],
+      "issue_description": "'Timber' is canonical in the master library (materials.json + components.json — categories, field names, master keys) but the brain specification and Philip's memories use 'wood' for the same concept. Materials JSON has 'timber_hardwood', brain spec has 'wood'. Master field 'timber_usage_m3' is used even on metal balusters (where it's always 0), suggesting the field is really 'material usage' but named 'timber'. No source defines the semantic difference between 'wood' and 'timber' — trade usage sometimes distinguishes ('wood' = raw / natural, 'timber' = commercially prepared) but no capture reflects this.",
+      "resolution_options": [
+        "Option A: canonicalise 'timber' for JSON/schema keys and commercially-oriented content; canonicalise 'wood' for material science / customer-friendly content — publish the boundary in the terminology module",
+        "Option B: canonicalise 'timber' throughout; migrate 'wood' occurrences in brain specification; rename 'timber_usage_m3' → 'material_usage_m3' for non-wood components",
+        "Option C: canonicalise 'wood' throughout; migrate JSON keys from 'timber_hardwood' → 'wood_hardwood'",
+        "Option D: adopt trade convention — 'timber' when specifying dimensioned building material, 'wood' when discussing species / character — with examples in the terminology module"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-021",
+      "type": "ambiguity",
+      "terms_involved": ["private stair", "domestic stair", "utility stair", "common stair"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 13, "usage": "doc_k_key_numbers_private_stair — private stair definition: 'one dwelling only' clause 1.2" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 37, "usage": "doc_k_key_numbers_utility_stair: 'Utility stairs used in institutional/commercial settings — tighter than private-stair limits.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 43, "usage": "doc_k_key_numbers_common_stair: 'Common stairs serve multiple dwellings (communal flat-block hallway stair). Same limits as utility'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 187, "usage": "private_stair_rules, utility_stair_rules, common_stair_rules, non_domestic_stair_rules — four categories" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 447, "usage": "typical_installation_hours: straight_stair_domestic, quarter_turn_stair_domestic — uses 'domestic' not 'private'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 484, "usage": "basic_straight_wood_domestic_gbp — 'domestic' again" }
+      ],
+      "issue_description": "Approved Doc K uses four terms with specific meanings ('private stair', 'utility stair', 'common stair', 'general access stair' in some editions). Captured content uses 'private stair' for the Doc K category, then switches to 'domestic' in adjacent brain specification pricing/hours fields. Unclear whether 'domestic' = 'private + common' (both are in dwellings) or 'domestic' = 'private' (single dwelling). No capture disambiguates.",
+      "resolution_options": [
+        "Option A: use Doc K's exact four terms ('private', 'utility', 'common', 'general access') throughout; forbid 'domestic' as a Doc K classification (it belongs to the wider Building Regs family but not to Doc K stair categories)",
+        "Option B: keep 'domestic' as an umbrella that includes both 'private' and 'common' stairs (both in dwellings), but publish the definition explicitly",
+        "Option C: rename brain-specification pricing fields '*_domestic_gbp' → '*_private_gbp' or '*_dwelling_gbp' to remove ambiguity",
+        "Option D: define all four Doc K terms + 'domestic' in the terminology module with a table showing when each applies"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-022",
+      "type": "inconsistent_naming",
+      "terms_involved": ["winder", "winder tread", "wedge-shaped tread", "tapered tread", "kite winder"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 24, "usage": "winder_rules: walking-line going ≥220mm, clause 1.9-1.12" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 104, "usage": "quarter_turn_winder — Same 90-degree change but with wedge-shaped winder steps" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 128, "usage": "half_turn_winder — 180-degree change with winder steps rather than a half-landing" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-diagnosis-engine-spec.md", "line": 107, "usage": "Dimensions / regs: 'winder tread taper too aggressive'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 429, "usage": "typical_installation_hours: 'winder_stair_domestic'" },
+        { "file": "C:\\Users\\Victus\\trades\\src\\lib\\nex\\intent-router.ts", "line": 59, "usage": "keywords include 'winder' and 'kite winder' — 'kite winder' appears only in retrieval keywords, not in captured content elsewhere" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 187, "usage": "authoring_gaps: 'winder construction rules' — module admits winders are not yet authored" }
+      ],
+      "issue_description": "Winders are referenced across content but the specific vocabulary is inconsistent: 'winder' alone, 'winder tread', 'winder step', 'wedge-shaped step/tread', 'tapered tread', 'kite winder'. The founding reference brain admits winder construction rules are not yet authored. 'Kite winder' (a specific three-tread turn arrangement) appears only in retrieval keywords with no captured definition or context. Diagnosis engine uses 'winder tread taper' as a defect symptom without a captured definition of what 'taper' means or a max acceptable taper.",
+      "resolution_options": [
+        "Option A: prioritise authoring the winder module; define 'winder tread' as canonical, note 'kite winder' as a specific 3-tread arrangement, deprecate 'wedge-shaped tread' as informal",
+        "Option B: publish a minimum viable winder-terminology page (winder, winder tread, winder step, kite winder, walking line) before adding any more retrieval keywords",
+        "Option C: remove 'kite winder' from retrieval keywords until it has a captured definition (currently a search word with no destination content)",
+        "Option D: canonicalise 'winder' as sufficient in most contexts; use 'kite winder' only for the specific 3-tread arrangement with an example diagram"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-023",
+      "type": "ambiguity",
+      "terms_involved": ["floating staircase", "cantilever", "mono string", "open riser"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 180, "usage": "floating_cantilever: 'Treads project directly from a load-bearing wall or hidden steel spine.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 574, "usage": "ST-003 name: 'Mono String (central spine)' notes: 'Central steel spine — treads cantilever both sides.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 582, "usage": "ST-004 name: 'Floating (hidden steel)' notes: 'Hidden in wall structure — treads cantilever off.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 267, "usage": "Closed strings with open-riser floating treads is a structural contradiction — closed string carries riser boards; open-riser design uses cut string or central spine." },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 0, "usage": "canonical knowledge doc contains NO section for floating / cantilever / mono-string construction" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_design_system_prompt.md", "line": 52, "usage": "5 Future Trends #4: 'Floating Staircases — cantilevered treads · mono-string · concealed steel · open risers · shadow-gap detailing'" }
+      ],
+      "issue_description": "Four adjacent terms — 'floating staircase', 'cantilever staircase', 'mono string', 'open riser' — appear together in most references but their relationships are unclear. Are 'floating' and 'cantilever' the same visual effect (treads with no visible support) achieved by different structures (mono string, hidden wall steel, individual bracket per tread)? Is a mono-string staircase automatically 'floating'? Can you have a floating staircase with closed risers? Design-system-prompt lumps them as a single trend; canonical knowledge doc omits the topic entirely; compatibility rule in components.json requires cut string OR central spine for open-riser, implying open-riser and cut-string can co-exist without being 'floating'.",
+      "resolution_options": [
+        "Option A: define four orthogonal properties — (1) visual effect (floating vs conventional), (2) support method (mono-string / hidden wall-fix / cantilever bracket / cut string), (3) riser (open vs closed), (4) balustrade attachment — enforce that each design specifies each property independently",
+        "Option B: publish a taxonomy where 'floating' is the visual result and 'mono-string', 'hidden-wall cantilever', 'cut string with open riser' are three concrete construction methods that can produce it",
+        "Option C: prioritise authoring the canonical doc's missing floating/cantilever section before releasing v0.2",
+        "Option D: consult a structural-engineer author to resolve the boundary between 'floating', 'cantilever', 'mono-string' — this is safety-critical (structural sign-off) not just terminological"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-024",
+      "type": "inconsistent_naming",
+      "terms_involved": ["configurator", "Nex Stairplan", "Stairplan", "Nex configurator"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 46, "usage": "## Nex Stairplan implementation — 'Nex Stairplan' as product name" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 58, "usage": "Nex Stairplan implementation — Configurator: Under-stair finish option — uses both 'Nex Stairplan' AND 'Configurator' as related but distinct terms" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_sheeting_material_hard_rule.md", "line": 14, "usage": "**Nex configurator:** do not offer alternative species/finish — lowercase 'configurator'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 2, "usage": "Naming convention: 'Digital Staircase Catalogue' or 'component catalogue' — never 'GLB library'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 108, "usage": "'The first premium collection to ship with Stairplan V1' — uses bare 'Stairplan' without 'Nex' prefix" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 195, "usage": "'Stairplan positions itself as the UK's biggest staircase component library' — bare 'Stairplan' again" }
+      ],
+      "issue_description": "The staircase product/tool is referred to as 'Nex Stairplan' (Philip's memories), 'Stairplan' (components catalogue metadata), 'Nex configurator' (feedback memory), 'the configurator' (project memories), 'Configurator' (some sentences with capital C). Same tool, multiple names. Components catalogue metadata explicitly restricts one naming convention ('Digital Staircase Catalogue or component catalogue — never GLB library') but does not codify the product name.",
+      "resolution_options": [
+        "Option A: canonicalise 'Nex Stairplan' as the product name; 'configurator' as the noun for the interactive UI within it; 'component catalogue' for the underlying data library",
+        "Option B: standardise on bare 'Stairplan' throughout; drop 'Nex Stairplan' as redundant if the platform context is already NEX",
+        "Option C: publish a product-vocabulary reference: 'NEX Living Brain Platform' (whole platform) > 'NEX Stairplan' (staircase product) > 'Configurator' (interactive UI) > 'Component Catalogue' (data)",
+        "Option D: audit every memory + doc + catalogue metadata and consolidate on one canonical product name + one canonical UI name"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-025",
+      "type": "inconsistent_naming",
+      "terms_involved": ["T&G", "T&G sheeting", "tongue-and-groove", "TnG", "back-sheeting", "backside sheeting", "back-of-staircase sheeting", "staircase backing"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 2, "usage": "memory title: back-side sheeting options (T&G / panelling / plasterboard)" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_backside_sheeting_options.md", "line": 9, "usage": "**Tongue-and-Groove (T&G) sheeting** — timber planks..." },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_sheeting_material_hard_rule.md", "line": 2, "usage": "NEX Staircase back-sheeting must match staircase material — 'back-sheeting' hyphenated" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 254, "usage": "## 8. Tongue-and-groove (T&G) sheeting for the back of the staircase" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 289, "usage": "The T&G sheeting on the back of the staircase" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 1725, "usage": "staircase_backing_options.tng_sheeting — key 'tng_sheeting' (no ampersand — ASCII-safe) — but header comment uses 'T&G'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 122, "usage": "hard_rules: 'Back-of-staircase T&G sheeting MUST...' — 'Back-of-staircase' compound" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 177, "usage": "backside_sheeting_options.options: ['unfinished', 'T&G', 'panelling', 'plasterboard'] — 'T&G' bare as an option key" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 213, "usage": "backside_sheeting_install: 'see construction.backside_sheeting_options.tg_rules' — 'tg_rules' (no ampersand OR n)" }
+      ],
+      "issue_description": "The material and its installation location have at least 8 forms across captured content — 'T&G' (canonical acronym), 'T&G sheeting' (with product word), 'tongue-and-groove' (spelled out), 'TnG' (implied by 'tng_sheeting' JSON key), 'tg_rules' (only 'tg', no 'n'), 'back-sheeting' (hyphenated), 'backside sheeting' (two words), 'back-of-staircase sheeting' (compound), 'staircase backing' (canonical doc §8.1). JSON keys avoid the ampersand (invalid in some contexts) but choose different ampersand-substitutions ('tng' vs 'tg').",
+      "resolution_options": [
+        "Option A: standardise user-facing on 'tongue-and-groove sheeting' (first use) then 'T&G sheeting' (subsequent uses); standardise JSON keys on 'tongue_and_groove' or 'tng' — pick one",
+        "Option B: standardise location term as 'back-of-staircase' throughout; deprecate 'backside' as sounding informal",
+        "Option C: fix the 'tg_rules' vs 'tng_sheeting' inconsistency inside the founding reference brain — decide whether the ASCII substitution is 'tg', 'tng', or 'tongue_and_groove'",
+        "Option D: publish a component-naming rule for hyphenation + ampersand-substitution in JSON schema (e.g. always spell out 'tongue_and_groove' in keys)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-026",
+      "type": "ambiguity",
+      "terms_involved": ["landing", "half-landing", "quarter-landing", "landing area", "landing footprint"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 73, "usage": "footprint_formula.landing_area: 'flight_width * flight_width' — implies landing is a square with side = flight width" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 90, "usage": "quarter_turn_landing — Two flights at 90 degrees, joined by a small landing" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 115, "usage": "half_turn_landing — Two parallel flights heading opposite directions, joined by a half-landing (~2x flight width)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 189, "usage": "landing_footprints_by_width: {width_mm: 800, min_landing_area_m2: 0.64} — assumes 800×800 = 0.64 landing" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 22, "usage": "categories: 'landings' with prefix 'LG'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 141, "usage": "MAT-001 suitable_components: 'landing_nosings' — landing has nosings, so treated as an extension of tread" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 45, "usage": "top step... sits at landing level (top face flush with landing floor)" }
+      ],
+      "issue_description": "'Landing' is used to mean at least three things: (1) the horizontal platform between two flights (canonical geometric meaning, plan-sizes.json), (2) the floor surface at the top of a straight flight (Philip's 'top step... at landing level' — this is the upper floor, not a mid-flight platform), (3) the component category in the catalogue (LG-*, purpose unclear). 'Half-landing' is defined implicitly as ~2× flight width but the min_landing_area_m2 table doesn't distinguish landing type — a quarter-turn landing at 800mm width is 0.64 m² but a half-landing at 800mm would be ~1.28 m² (not 0.64).",
+      "resolution_options": [
+        "Option A: define three distinct terms — 'landing' (any horizontal platform in the flight system), 'intermediate landing' (mid-flight), 'floor landing' (top or bottom), 'half-landing' (specific 180°-turn platform, ~2× flight width) — with dimensioned examples",
+        "Option B: rename LG-* catalogue category to specify what a 'landing' component IS — is it a landing tread board? a whole platform? a nosing?",
+        "Option C: fix landing_footprints_by_width to distinguish half-landing from quarter-landing (currently under-specifies)",
+        "Option D: publish a landing typology diagram in the terminology module (intermediate landing, half-landing, quarter-landing, floor landing, winder landing area)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-027",
+      "type": "inconsistent_naming",
+      "terms_involved": ["rise", "step height", "riser height"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 16, "usage": "rise_min_mm: 150, rise_max_mm: 220 — 'rise' as canonical term" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json", "line": 50, "usage": "Rule 1: Rise is FINISHED-floor to FINISHED-floor — 'Rise' capitalised, refers to whole-flight rise" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-diagnosis-engine-spec.md", "line": 107, "usage": "Dimensions / regs: 'Uneven step heights · headroom hit'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 100, "usage": "rise_calculation: formula: string, typical_range mm, regulatory_max — 'rise' as single-step and whole-flight metric" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md", "line": 33, "usage": "cut to suit the specific rise and going of THIS staircase — 'rise' as per-step" }
+      ],
+      "issue_description": "'Rise' is used with two distinct meanings: (1) the height of a single step (riser dimension, ~150-220mm per Doc K), (2) the total floor-to-floor height (plan-sizes Rule 1). 'Step height' appears in diagnosis symptoms without a definition. 'Riser height' does not appear as a distinct term but could be inferred as the physical dimension of the riser board (which is the same as the single-step rise). Some homeowners will say 'step height' meaning either single-step rise or the whole thing.",
+      "resolution_options": [
+        "Option A: use 'individual rise' (per-step) and 'total rise' or 'floor-to-floor height' (whole flight) — never bare 'rise' in dimension contexts",
+        "Option B: 'rise' = single step (matches Doc K); 'floor-to-floor height' = total dimension; publish the distinction",
+        "Option C: define 'step height', 'riser height', 'individual rise', 'total rise', 'floor-to-floor height' all as synonyms OR as distinct terms — pick one and enforce",
+        "Option D: audit staircase-plan-sizes.json Rule 1 wording — 'Rise is FINISHED-floor to FINISHED-floor' suggests 'rise' = total (contradicts rise_min/max = per-step)"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-028",
+      "type": "duplicate_terms",
+      "terms_involved": ["cap", "newel cap", "finial", "acorn finial", "ball cap"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 8, "usage": "categories: 'newel_caps' with prefix 'NC'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 459, "usage": "NC-001 name: 'Ball Cap' notes: 'Turned ball finial — the classic Georgian/Victorian topping.' — is it a 'cap' or a 'finial'?" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 486, "usage": "NC-004 name: 'Acorn Finial' — filed under 'newel_caps' category but named as 'finial' not 'cap'" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_newel_string_joint_rules.md", "line": 53, "usage": "## Newel cap style catalogue: Moulded style cap / Simple pyramid cap / Ball cap / Flat cap / Acorn cap — 'Acorn cap' NOT 'Acorn Finial'" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 146, "usage": "### 5.5 Newel cap — flat American white oak — describes 114 × 30 × 114 mm timber slab" }
+      ],
+      "issue_description": "The catalogue category is 'newel_caps' but individual entries mix 'Cap' and 'Finial' as component names: NC-001 'Ball Cap' has notes calling it a 'ball finial'; NC-004 is named 'Acorn Finial' even though it lives under 'newel_caps'. Philip's memory canonicalises the same acorn item as 'Acorn cap'. Trade-wise, a 'finial' is typically a decorative topper (turned/carved shape) and a 'cap' is a flat / functional cover — but the catalogue treats them as one category. No definition captured.",
+      "resolution_options": [
+        "Option A: canonicalise 'newel cap' as the umbrella term (matches catalogue category); rename 'Acorn Finial' → 'Acorn Cap' and 'Turned ball finial' notes → 'Turned ball cap' — consistent naming",
+        "Option B: split the category into 'newel_caps' (flat/functional covers: flat, pyramid) and 'newel_finials' (decorative toppers: ball, acorn) — reprefix accordingly",
+        "Option C: publish 'cap' and 'finial' as distinct terms with definitions; audit each NC-* entry to reclassify",
+        "Option D: keep 'newel cap' as the category label but publish trade note that 'finial' is a specific decorative sub-shape of cap"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-029",
+      "type": "inconsistent_naming",
+      "terms_involved": ["glass balustrade", "glass panel", "glass infill", "frameless glass"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 13, "usage": "categories: 'glass_panels' with prefix 'GP'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 534, "usage": "B-004 category: 'balusters' name: 'Glass Panel' — glass panel is filed under BOTH 'balusters' (B-004) AND 'glass_panels' (GP-001-004)" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 626, "usage": "GP-001 name: 'Clear Toughened' notes: '10mm toughened safety glass — the default modern-staircase spec.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 244, "usage": "MAT-002 compatible_styles: 'glass_balustrades'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 336, "usage": "HR-004 notes: 'bonds beautifully onto glass balustrade top edges'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 1489, "usage": "MAT-018 suitable_components: 'balustrade_panels, glass_treads_laminated_only'" }
+      ],
+      "issue_description": "The same glass element appears in the catalogue under two DIFFERENT categories with two DIFFERENT canonical IDs — B-004 (category: 'balusters', name: 'Glass Panel') and GP-001 through GP-004 (category: 'glass_panels'). Retrieval and BOM generation may double-count or mis-count. Materials JSON compatibility uses 'glass_balustrades' (plural whole assemblies) and 'balustrade_panels' (individual panels) as if distinct. No captured rule states when to use B-004 vs GP-* for a given design.",
+      "resolution_options": [
+        "Option A: deprecate B-004 (glass baluster in 'balusters' category) and reference glass strictly via GP-* — glass is not a baluster",
+        "Option B: deprecate GP-* entries and reference glass strictly via B-004 as a baluster subtype — one catalogue location per component",
+        "Option C: keep both if they mean different things — publish a definition ('B-004 = glass balustrade acting as baluster + rail infill; GP-* = glass panel as separate assembly component') — with a note in each entry",
+        "Option D: rename the top-level category from 'glass_panels' to something that removes overlap with 'balusters' (e.g. 'glass_balustrade_panels') and specify that individual balusters made of glass are still catalogued under 'balusters'"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-030",
+      "type": "conflicting_terminology",
+      "terms_involved": ["mono string", "central spine", "spine", "steel spine"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 574, "usage": "ST-003 name: 'Mono String (central spine)' notes: 'Central steel spine — treads cantilever both sides.'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 1341, "usage": "MAT-016 suitable_components: 'stringers, spindles, balusters, glass_fixings, central_spine, cantilever_brackets, handrails'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 269, "usage": "compatibility rule: 'open-riser design uses cut string or central spine' — 'central spine' as design pattern" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_design_system_prompt.md", "line": 52, "usage": "5 Future Trends #4: 'mono-string · concealed steel'" }
+      ],
+      "issue_description": "The same structural element is called 'mono string' (single stringer supporting treads on both sides), 'central spine' (same thing, viewed as a beam), 'steel spine' (same thing, specifying material), 'spine' (bare). Materials JSON lists 'stringers' AND 'central_spine' as separate suitable_components for MAT-016 (steel) — implying they are distinct products. Retrieval could easily confuse a customer asking for 'mono string' vs 'central spine' as if they were different.",
+      "resolution_options": [
+        "Option A: canonicalise 'mono string' as UK trade term (matches catalogue name) and 'central spine' as visual/structural description — always name mono string when specifying a component, always describe it as a central spine when explaining to customers",
+        "Option B: 'mono string' = timber; 'central spine' = steel — publish this as the distinction (and audit MAT-016 to confirm the spine is not a stringer subtype)",
+        "Option C: treat all four as synonyms for one item; consolidate suitable_components list to a single term",
+        "Option D: verify with a structural authority whether these are one item or two — if they are two (e.g. mono-string spans between newels; spine spans stair-length), publish the distinction"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-031",
+      "type": "ambiguity",
+      "terms_involved": ["deposit", "stage payment", "final payment", "final balance"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-brain-specification.md", "line": 495, "usage": "quotation_rules: typical_deposit_pct, typical_stage_payments, typical_variation_allowance_pct, warranty_offered_years" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_adversarial_robustness.md", "line": 11, "usage": "Examples of maker misdirection: '...the deposit is non-refundable no matter what'" }
+      ],
+      "issue_description": "Payment terminology is invoked in adversarial-robustness content (deposits) and in brain-spec quotation_rules but no captured content defines 'deposit' vs 'stage payment' vs 'final balance' vs 'materials deposit' vs 'design deposit'. Homeowner adversarial defense depends on knowing which type of deposit a maker is claiming is non-refundable. Terminology module status: not_yet_authored (per founding reference brain).",
+      "resolution_options": [
+        "Option A: prioritise a payment-terminology sub-module — deposit types, refundability tests, stage-payment schedules — as safety-critical for the adversarial-robustness use case",
+        "Option B: link every payment term to Consumer Rights Act 2015 / Consumer Contracts Regulations definitions rather than authoring in-brain",
+        "Option C: publish a 4-tier definition (design deposit / materials deposit / stage payment / final balance) with typical percentages per tier and refundability rules per tier",
+        "Option D: mark payment terminology as V2 scope — flag that adversarial-robustness answers cannot be authored until this vocabulary lands"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-032",
+      "type": "regional_variation",
+      "terms_involved": ["housed string", "closed stringer", "wall string", "outer string", "show string"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 565, "usage": "ST-001 notes: 'UK default for wall-side of staircase.' — 'wall-side' as position, no term for the other-side string" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 573, "usage": "ST-002 notes: 'Show-side of open staircase.' — 'show-side' as position for the visible string" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 0, "usage": "canonical knowledge doc has NO section defining 'wall string', 'outer string', 'show string', 'inner string' — position-vocabulary missing" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_stringer_dimensions_uk.md", "line": 7, "usage": "measured OVER THE STRINGS (outside-to-outside of both stringers) — implies both strings without naming their positions" }
+      ],
+      "issue_description": "A staircase has two strings — the one against the wall and the one on the open side. UK trade uses 'wall string', 'outer string', 'show string' (open-side, visible), 'inner string' (opposite). Captured content uses 'wall-side' and 'show-side' as positions but never names the string on each side, and no captured content defines whether 'inner' means adjacent-to-wall or adjacent-to-flight. Retrieval queries like 'my outer string is bouncing' cannot be answered because 'outer' is undefined.",
+      "resolution_options": [
+        "Option A: publish 4 position terms — 'wall string' (adjacent to wall), 'open string' (opposite wall), 'show string' (visible show side, typically = open string on domestic), 'inner/outer string' (relative to the staircase's inside curve on curved stairs)",
+        "Option B: use only 'wall string' + 'show string' (two-term system), skip inner/outer",
+        "Option C: adopt US convention 'inside stringer' + 'outside stringer' if the audience is mixed UK+US — resolves via country pack",
+        "Option D: audit existing components/materials data — pick one convention and update ST-* notes to use canonical position term instead of ad-hoc 'wall-side' / 'show-side'"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-033",
+      "type": "duplicate_terms",
+      "terms_involved": ["volute", "monkey tail volute", "curtail step", "starting step", "bullnose starting step", "double round starting step"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-components.json", "line": 16, "usage": "categories: 'volutes' (VL), 'turnouts' (TN), 'curtail_steps' (CT) — three distinct starting-detail categories" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\feedback_nex_staircase_design_system_prompt.md", "line": 40, "usage": "Traditional Homes... monkey tail volutes · bullnose starting steps" },
+        { "file": "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_double_round_starting_step.md", "line": 2, "usage": "double round starting steps — a distinct starting-step type" },
+        { "file": "C:\\Users\\Victus\\trades\\docs\\brains\\staircase-canonical-knowledge-from-philip-v1.md", "line": 325, "usage": "## 9. Double round starting step — canonical section, mentions no 'volute' / 'curtail' / 'monkey tail'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 277, "usage": "terminology captured_implicit lists 'wreath' but not 'volute', 'monkey tail', 'curtail', 'turnout'" }
+      ],
+      "issue_description": "The starting-step / handrail-turn family has at least 6 terms — 'volute' (spiral handrail scroll), 'monkey tail volute' (specific volute style), 'curtail step' (rounded first step with volute above), 'starting step' (generic), 'bullnose starting step', 'double round starting step' — some in the catalogue, some in design-system memories, some in the canonical doc. The relationships between them are not captured: is 'curtail step' = 'bullnose starting step' with a volute? Is 'monkey tail volute' a subset of 'volute'? Is 'turnout' a synonym for 'volute' or a distinct component?",
+      "resolution_options": [
+        "Option A: publish a starting-step taxonomy — 'starting step' as umbrella; sub-types 'straight bullnose', 'single round bullnose', 'double round', 'curtail' (with volute), 'D-end'; sub-types of volute — 'monkey tail', 'closed', 'open'",
+        "Option B: prioritise authoring the traditional-detail sub-module — canonical doc §9 covers only 'double round'; volute + curtail + turnout have catalogue entries but no captured trade rules",
+        "Option C: cross-link catalogue categories 'volutes / turnouts / curtail_steps' with definitions and reference photos",
+        "Option D: consult a heritage-joinery author to define the boundaries between these six terms — probably historic and regional, so multiple correct answers likely"
+      ],
+      "expert_decision_required": true
+    },
+
+    {
+      "id": "term-034",
+      "type": "conflicting_terminology",
+      "terms_involved": ["colour", "color"],
+      "locations": [
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 100, "usage": "MAT-001 appearance.colour: 'Warm golden-brown...' — UK spelling 'colour'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 200, "usage": "MAT-002 appearance.colour: 'Light golden brown with warm honey tones' — UK spelling" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 122, "usage": "hard_rules: 'MUST be the same material, colour and grain' — UK spelling" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\staircase-materials.json", "line": 116, "usage": "MAT-001 locked_values: 'american_white_oak_lacquer_color: 0xf7e0b8' — key uses US spelling 'color'" },
+        { "file": "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json", "line": 117, "usage": "\"american_white_oak_lacquer_color\": \"0xf7e0b8\" — key uses US spelling" }
+      ],
+      "issue_description": "UK spelling 'colour' is used in user-facing prose across materials.json descriptions, hard rules, and canonical doc. But the JSON key 'american_white_oak_lacquer_color' uses US spelling 'color'. Same JSON file, same object, both spellings present. Unclear whether JSON keys follow US convention (many web/CSS/hex-color conventions do) while prose follows UK, or whether the mix is unintentional.",
+      "resolution_options": [
+        "Option A: adopt UK 'colour' throughout including JSON keys (rename 'color' → 'colour' in migration); consistent with primary_country GB",
+        "Option B: keep prose UK-spelling but adopt US 'color' in JSON keys as web-standard convention; document the split rule",
+        "Option C: standardise on US 'color' throughout including prose (matches CSS/hex-color/international-web convention); loses UK brand voice",
+        "Option D: allow both in prose (either is acceptable) but pick one for JSON keys — rename to match"
+      ],
+      "expert_decision_required": true
+    }
+
+  ],
+
+  "aggregate": {
+    "total_findings": 34,
+    "by_type": {
+      "duplicate_terms": 10,
+      "conflicting_terminology": 5,
+      "undefined_terms": 1,
+      "inconsistent_naming": 10,
+      "regional_variation": 2,
+      "ambiguity": 6
+    },
+    "files_with_richest_terminology_consistency": [
+      "C:\\Users\\Victus\\trades\\data\\staircase-plan-sizes.json — regulatory citations use consistent Doc K vocabulary and clause references (best example)",
+      "C:\\Users\\Victus\\trades\\data\\staircase-materials.json — internal ID convention (MAT-###) is consistent; category vocabulary consistent within categories"
+    ],
+    "files_with_poorest_terminology_consistency": [
+      "C:\\Users\\Victus\\trades\\data\\staircase-components.json — MULTIPLE issues: baluster / spindle mixed, stringer / string mixed within same file, glass appears in two categories (B-004 + GP-*), acorn 'Finial' filed under 'newel_caps', baserail referenced but not a category, 'Stairplan' + 'Nex Stairplan' ambiguous",
+      "C:\\Users\\Victus\\.claude\\projects\\C--Users-Victus\\memory\\project_nex_staircase_riser_step_wedge_joints.md — 'step' vs 'tread' interchange with parenthetical equivalence ('STEP (tread)'); wedge count formula uses both interchangeably in adjacent lines",
+      "C:\\Users\\Victus\\trades\\data\\nex-reference-brains\\staircase-founding-reference-brain-package-v0.1.0.json — mixes 'stringer' + 'string' at the same nesting level; 'tng_sheeting' vs 'tg_rules' inconsistent ampersand-substitution; terminology module admitted as not_yet_authored while other modules reference undefined terms"
+    ]
+  }
+}
