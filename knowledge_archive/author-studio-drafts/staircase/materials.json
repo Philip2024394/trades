@@ -1,0 +1,3810 @@
+{
+  "brain_slug": "staircase",
+  "module": "materials",
+  "author_id": "phillipofarrell@gmail.com",
+  "version": "0.1.0",
+  "payload": {
+    "header": {
+      "version": "0.1.0",
+      "authored_by": "phillipofarrell@gmail.com",
+      "authored_at": "2026-07-23T14:43:18.778Z",
+      "regions": []
+    },
+    "materials": [
+      {
+        "id": "cand.materials_mat.jrv_c9",
+        "family": "engineered board",
+        "name": "MDF (treads and risers)",
+        "grades": [],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "cand.materials_mat.cd_c16",
+        "family": "sheet_timber",
+        "name": "MDF tread",
+        "grades": [],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.jxqe",
+        "family": "softwood",
+        "name": "European Redwood (Scandinavian Pine / Red Deal)",
+        "grades": [
+          "Joinery Grade",
+          "Fifths / Sixths",
+          "Unsorted",
+          "V-Grade"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "MDF risers",
+          "PVA D3 adhesive",
+          "water-based stain",
+          "paint finish"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The default UK staircase softwood. Warm reddish tone from resin content, straight grain, easy to machine and finish. Ideal for painted stairs, budget builds, and new-build production stairs. Reasonable stability once dry, but knots are common on lower grades — pay the small premium for Joinery Grade if the timber is visible under a clear finish."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.92p4",
+        "family": "softwood",
+        "name": "European Whitewood (Spruce / White Deal)",
+        "grades": [
+          "Joinery Grade",
+          "Unsorted",
+          "Utility"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "MDF risers",
+          "PVA D3 adhesive",
+          "paint finish"
+        ],
+        "incompatible_with": [
+          "dark stain on visible surfaces (stains blotchily)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pale cream colour, harder than redwood but knottier and less stable. Common on production stairs where cost matters and the stair will be painted or carpeted. Struggles under dark stain — the softwood cell structure absorbs unevenly and shows blotches. Best kept for painted work."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.zu20",
+        "family": "softwood",
+        "name": "Western Hemlock",
+        "grades": [
+          "Clear",
+          "Prime",
+          "No.1 Common"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "clear lacquer",
+          "light stain",
+          "PVA D3 adhesive"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Nearly knot-free softwood, uniform pale straw colour, close grain. The step-up from redwood when the client wants a clean look but not the price of hardwood. Machines cleanly, takes stain more evenly than pine, and holds a paint finish beautifully. Widely used on mid-range stair kits and popular for painted white staircases."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.6mlq",
+        "family": "softwood",
+        "name": "Douglas Fir",
+        "grades": [
+          "Clear",
+          "Prime",
+          "Structural"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "oil finish",
+          "clear lacquer",
+          "dark stain"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Reddish-brown softwood with a bold straight grain, harder and denser than redwood or hemlock. Increasingly used on architectural staircases where a soft-wood look with hard-wood performance is wanted. Excellent under oil finish. Sourced from UK, Europe, and North America — check origin, quality varies significantly."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.ck7n",
+        "family": "softwood",
+        "name": "Southern Yellow Pine (SYP)",
+        "grades": [
+          "Clear",
+          "No.1 Common",
+          "Structural"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "heavy footfall stairs",
+          "clear lacquer"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Dense, hard softwood with a strong yellow-to-red-brown grain. Considerably harder than European pine and often used on larger bespoke and commercial builds. High resin content — can bleed through paint if not sealed properly. Often specified for cottage-style and log-cabin staircases where the visible grain is a feature."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.jvxc",
+        "family": "hardwood",
+        "name": "European Oak (Quercus robur / petraea)",
+        "grades": [
+          "Prime",
+          "QB1",
+          "Character",
+          "Rustic"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "oil finish",
+          "hardwax oil",
+          "2-pack lacquer",
+          "PU adhesive"
+        ],
+        "incompatible_with": [
+          "direct steel fixings without stainless (tannin corrodes steel)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The UK's default premium staircase hardwood. Warm yellow-brown, prominent open grain with medullary rays on quarter-sawn boards. Very hard, wears beautifully, takes oil and hardwax finishes with a rich glow. Only pitfall: tannin content reacts with ferrous metals — always use stainless or brass fixings on exposed positions or the timber will show black stains within months."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.uozo",
+        "family": "hardwood",
+        "name": "American White Oak (Quercus alba)",
+        "grades": [
+          "FAS",
+          "Select",
+          "No.1 Common"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "oil finish",
+          "clear lacquer",
+          "PU adhesive"
+        ],
+        "incompatible_with": [
+          "ferrous fixings in exposed positions"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Lighter and more uniform than European oak, straighter grain, slightly denser. Commonly used on production staircases where consistency across boards matters. Excellent under clear lacquer or hardwax oil. Slightly less expensive than European oak on a per-cube basis but visually less characterful — fewer medullary rays, less variation."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.2lvz",
+        "family": "hardwood",
+        "name": "American Red Oak (Quercus rubra)",
+        "grades": [
+          "FAS",
+          "Select",
+          "No.1 Common"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "oil finish",
+          "clear lacquer"
+        ],
+        "incompatible_with": [
+          "exterior use",
+          "damp locations"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pinkish-red tint, coarser and more porous than white oak. Less expensive than white oak. Sometimes used on interior stairs when a warmer red-brown look is wanted. Not suitable for anywhere damp — the porous grain absorbs water and stains readily. Interior only."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.2f8v",
+        "family": "hardwood",
+        "name": "European Ash (Fraxinus excelsior)",
+        "grades": [
+          "Prime",
+          "Select",
+          "Character"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "clear lacquer",
+          "hardwax oil",
+          "screws (holds fixings very well)"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Very light cream-to-blonde colour, bold striking grain, excellent shock resistance. Popular on modern and contemporary stairs where a bright open look is wanted. Superb for balustrades and spindles — the close grain holds screws and dowels tightly, which is why ash was traditional for tool handles. Slightly less UK stock lately owing to ash dieback disease — check availability early."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.tyvu",
+        "family": "hardwood",
+        "name": "European Beech (Fagus sylvatica)",
+        "grades": [
+          "Prime",
+          "Steamed",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "clear lacquer",
+          "PU adhesive"
+        ],
+        "incompatible_with": [
+          "damp environments",
+          "unstable humidity"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pale pink to reddish-tan (steamed beech is warmer, unsteamed is cooler). Very hard and dense but notoriously unstable — moves significantly with humidity, prone to cupping and twisting. Used on treads where a hard-wearing pale surface is wanted. Best in fully climate-controlled homes. Not for anywhere with humidity swings."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.fhvi",
+        "family": "hardwood",
+        "name": "American Black Walnut (Juglans nigra)",
+        "grades": [
+          "FAS",
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "hardwax oil",
+          "2-pack lacquer",
+          "dark contrasting with pale oak"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Rich chocolate-brown with a purple-black tint, straight grain occasionally with figuring. The luxury benchmark for a UK staircase — every high-end bespoke workshop keeps it in stock. Machines cleanly, takes finish beautifully, and darkens slightly with age. Commonly used for handrails, newel caps, and feature treads while the balance of the stair is a paler timber. Expensive per cube."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.3uxz",
+        "family": "hardwood",
+        "name": "European Walnut (Juglans regia)",
+        "grades": [
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "hardwax oil",
+          "2-pack lacquer"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Wilder grain and more figuring than American Black Walnut, colour ranges from grey-brown to chocolate with dark streaks. Used on artisan and highly figured bespoke work. Boards are narrower and shorter than American — check availability of the sizes needed. Considerably more expensive than American walnut."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.c6yn",
+        "family": "hardwood",
+        "name": "Sapele (Entandrophragma cylindricum)",
+        "grades": [
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "dark stain",
+          "hardwax oil",
+          "PU adhesive"
+        ],
+        "incompatible_with": [
+          "exterior use without protection"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Reddish-brown African hardwood with an interlocked ribbon grain that gives distinctive stripes under quarter-sawn cuts. Very hard-wearing, excellent for busy commercial and high-traffic residential stairs. Commonly used as a modern mahogany substitute at a lower price. Marketed as 'mahogany' in some UK yards — Sapele is not true mahogany but works similarly for staircase purposes."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.3vf9",
+        "family": "hardwood",
+        "name": "Iroko (Milicia excelsa)",
+        "grades": [
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "oil finish",
+          "exterior applications"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Yellow-gold to darker brown African hardwood, often called 'African teak' — similar look and durability, half the price. Excellent moisture resistance, so used for external staircases and internal wet-area stairs. Contains silica which blunts blades quickly — expect higher tooling costs. Colour deepens significantly with UV exposure."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.sfb5",
+        "family": "hardwood",
+        "name": "American Tulipwood (Poplar / Yellow Poplar)",
+        "grades": [
+          "FAS",
+          "Prime",
+          "Paint Grade"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "paint finish",
+          "MDF pairing on painted stairs"
+        ],
+        "incompatible_with": [
+          "clear finish (natural green streaks look poor)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pale cream to yellow-green heartwood with occasional dark green or purple streaks. Very stable and machines cleanly, but the natural colour is unattractive so it's almost exclusively used for painted stairs — takes primer and paint beautifully. The go-to hardwood alternative to redwood on painted bespoke work. Slightly harder than pine so wears better under paint."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.4hfe",
+        "family": "hardwood",
+        "name": "Hard Maple (Acer saccharum / Rock Maple)",
+        "grades": [
+          "FAS",
+          "Select",
+          "No.1 Common"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "clear lacquer",
+          "light stain via gel stain only"
+        ],
+        "incompatible_with": [
+          "oil-based dark stains (blotches badly)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Very pale cream to white with a fine even grain, extremely hard and wear-resistant. Used for treads on high-footfall stairs where a bright modern look is wanted. Blotches badly under oil stain — always use gel stain if darkening. Slight yellow ambering over time under UV. Popular on Nordic-style and Scandinavian design stairs."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.kb5j",
+        "family": "hardwood",
+        "name": "American Cherry (Prunus serotina)",
+        "grades": [
+          "FAS",
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "oil finish",
+          "clear lacquer"
+        ],
+        "incompatible_with": [
+          "stains that mask the natural colour"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pinkish-red-brown that darkens significantly with UV exposure to a deep reddish brown over 6-12 months. Fine straight grain, moderate hardness. Traditional American cherry-look bespoke — increasingly rare in UK stairs now but still specified for period reproductions. Never stain — the reason to specify cherry is the natural colour transformation."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.t4wi",
+        "family": "hardwood",
+        "name": "Wenge (Millettia laurentii)",
+        "grades": [
+          "Prime",
+          "Select"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "oil finish",
+          "2-pack lacquer",
+          "contrasting with pale timbers"
+        ],
+        "incompatible_with": [
+          "direct hand-planing without safety precautions (dust is a known sensitiser)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Very dark chocolate-black African hardwood with distinctive contrasting fine black lines through a warmer brown matrix. Used as a feature timber on ultra-luxury bespoke stairs, typically as a contrast to pale oak or ash. Dust is a known respiratory sensitiser — always machine with extraction and wear a proper mask. CITES status changing — check current import legality before quoting."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.9r29",
+        "family": "modified_wood",
+        "name": "Accoya (acetylated Radiata Pine)",
+        "grades": [
+          "Standard",
+          "Class 1"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "exterior stairs",
+          "wet area stairs",
+          "glulam"
+        ],
+        "incompatible_with": [
+          "ferrous fixings (must use stainless steel)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Radiata Pine treated by acetylation (vinegar-based process) that permanently changes the cell wall so the timber becomes dimensionally stable and rot-resistant. Class 1 durability rating — 50-year above-ground warranty. Used on external staircases and internal wet-area stairs. 3-4 times less swelling than untreated timber. Machines like softwood. Requires stainless or non-ferrous fixings — the acetic acid content will corrode standard steel."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.6qp8",
+        "family": "modified_wood",
+        "name": "Thermowood (thermally modified pine/spruce)",
+        "grades": [
+          "Thermo-D",
+          "Thermo-S"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "exterior stairs",
+          "oil finish"
+        ],
+        "incompatible_with": [
+          "high-impact use (thermal treatment reduces impact strength)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Finnish process heat-treating pine or spruce to 200°C+ in the absence of oxygen. Reduces moisture uptake by around 40%, improves rot resistance, and darkens the timber to a warm brown tone. Less expensive than Accoya, less durable — around 25-year expected life external. Impact strength is reduced by the heat treatment so avoid on stairs subject to heavy dropped loads."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.6a2w",
+        "family": "engineered_timber",
+        "name": "LVL (Laminated Veneer Lumber)",
+        "grades": [
+          "Kerto S",
+          "Kerto Q",
+          "Kerto T"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "long unsupported strings",
+          "structural stair beams",
+          "PU adhesive"
+        ],
+        "incompatible_with": [
+          "exposed decorative use (industrial look)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Peeled veneers glued together with grain running parallel. Very high strength for its weight, dimensionally stable, no natural defects. Used on staircase strings where the stair spans a long unsupported run — a floating stair, a stair with no intermediate landing. Almost always concealed behind a decorative timber cladding since the visible glue lines don't suit a domestic finish."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.wnnf",
+        "family": "engineered_timber",
+        "name": "Glulam (Glue-laminated timber)",
+        "grades": [
+          "GL24h",
+          "GL28h",
+          "GL32h"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "curved strings",
+          "helical stair beams",
+          "long-span landings"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Solid timber laminations glued into structural beams that can be curved, arched, or long-spanned. The workhorse of curved bespoke stairs — the string is glulam, formed to the exact curve on a jig. Available in softwood (spruce, larch) or hardwood (oak, ash). Accoya glulam now increasingly specified for durable curved external stairs."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.8c8a",
+        "family": "sheet_material",
+        "name": "MDF (Medium Density Fibreboard)",
+        "grades": [
+          "Standard",
+          "MR (Moisture Resistant)",
+          "FR (Fire Retardant)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "paint finish",
+          "primer coats",
+          "trade-range stair kits"
+        ],
+        "incompatible_with": [
+          "clear finish",
+          "any wet location",
+          "areas without primed edges"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Uniform wood-fibre board bonded under heat and pressure. The go-to sheet material for painted stair components — smooth surface with no grain to show through paint. Common uses: 22mm treads on trade-range stair kits, 12mm risers, spandrel panels under the stair, painted skirt boards. Edges must be primed and sealed before painting or they'll absorb paint unevenly. Never for structural use."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.uz1p",
+        "family": "sheet_material",
+        "name": "Moisture-Resistant MDF (MR MDF)",
+        "grades": [
+          "V313",
+          "MR"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "kitchens",
+          "utility rooms",
+          "damp-adjacent stairs"
+        ],
+        "incompatible_with": [
+          "direct water contact"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "MDF with a moisture-resistant resin (usually green-dyed for identification). Handles humidity swings much better than standard MDF. Used on stair components that may see condensation — utility rooms, kitchens, coastal properties. Still not waterproof, so not for external or genuinely wet locations. Sightly more expensive than standard MDF."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.hq0i",
+        "family": "sheet_material",
+        "name": "Birch Plywood",
+        "grades": [
+          "BB/BB",
+          "BB/CP",
+          "S/BB",
+          "Marine"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "clear lacquer showing the ply edge as a feature",
+          "modern industrial aesthetics",
+          "risers"
+        ],
+        "incompatible_with": [
+          "traditional joinery aesthetics"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Multi-layer plywood made from birch veneers, valued for consistent light colour, tight face, and clean cut edges showing the laminated stripes. Increasingly used as a decorative material on modern staircases — visible birch ply treads with exposed ply edges are a strong contemporary look. Common thicknesses: 12mm for risers, 22mm for treads on light-use stairs, 30mm+ for structural."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.cmci",
+        "family": "sheet_material",
+        "name": "Hardwood Plywood (Oak / Sapele / Walnut faced)",
+        "grades": [
+          "A/B",
+          "B/BB"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "decorative spandrel panels",
+          "cabinet-work under stairs",
+          "matching solid-timber staircase"
+        ],
+        "incompatible_with": [
+          "exposed edges without lipping"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Plywood with a decorative hardwood veneer face (usually 0.6mm or 1.5mm). Used where a solid-timber look is wanted at plywood price — spandrel panels, cupboard doors, and cabinet linings under the stair. Face veneer must be matched to the staircase's solid components. Edges need solid-timber lipping to hide the ply core."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.61rc",
+        "family": "sheet_material",
+        "name": "Softwood Plywood (WBP / Structural)",
+        "grades": [
+          "WBP",
+          "Structural C+/C"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "concealed structural use",
+          "temporary treads during construction",
+          "under-tread bracing"
+        ],
+        "incompatible_with": [
+          "visible finished surfaces"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Less expensive plywood with softwood face and core, WBP (Weather and Boil Proof) grade uses waterproof glue. Used behind the scenes on staircases — bracing under treads, structural gussets at newel connections, temporary protection boards during other trades. Never as a visible finished surface on a decent stair."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.kfk9",
+        "family": "sheet_material",
+        "name": "OSB (Oriented Strand Board)",
+        "grades": [
+          "OSB/3",
+          "OSB/4"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "under-tread structural bracing",
+          "temporary construction protection",
+          "loft floor decking around new stair opening"
+        ],
+        "incompatible_with": [
+          "decorative use",
+          "any visible position"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Chipped-timber strand board, less expensive than plywood, no decorative use. Occasionally used on staircase installs for the surrounding structural work — decking a loft floor around a new stair opening, bracing an under-stair void. Not a decorative sheet. Almost never appears in the finished visible staircase."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.0oml",
+        "family": "sheet_material",
+        "name": "Chipboard / Particleboard",
+        "grades": [
+          "P2",
+          "P3",
+          "P5"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "high",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "floor decking around stair",
+          "concealed carcassing"
+        ],
+        "incompatible_with": [
+          "treads",
+          "risers",
+          "any structural stair role",
+          "damp environments"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Affordable wood-chip board with resin binder. Not appropriate for staircase treads or risers — insufficient strength and fails badly when wet. Only appears around a stair as floor decking on the landing (typically P5 tongue-and-groove) or in concealed carcassing under the stair. Never as a stair structural component."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.0l0u",
+        "family": "sheet_material",
+        "name": "Blockboard",
+        "grades": [
+          "Interior",
+          "Marine"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "wide stair treads",
+          "long landings",
+          "traditional joinery cores"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Solid softwood strips edge-jointed and sandwiched between veneers. Historically used for wide stair treads and landings where solid timber would move too much. Still specified on traditional bespoke work when a stable wide panel is needed. Largely replaced by LVL and multi-ply for structural roles, but still valued for wide stable panels with a decorative veneer face."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry46wqu.ptvn",
+        "family": "sheet_material",
+        "name": "Melamine-Faced Chipboard (MFC)",
+        "grades": [
+          "MFC white",
+          "MFC decor"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "under-stair cupboard interiors",
+          "flat-pack storage systems"
+        ],
+        "incompatible_with": [
+          "visible stair components",
+          "structural stair use"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Chipboard faced with a melamine plastic coating. Used exclusively for the interiors of under-stair storage cupboards — cupboard shelves, drawer boxes, cabinet backs. Never for the stair itself. Wipes clean, comes in white and various wood-effect decors, easy to work with."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry46wqu.eniu",
+        "family": "hardwood",
+        "name": "Genuine Mahogany (Swietenia macrophylla)",
+        "grades": [
+          "Prime",
+          "FAS"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "hardwax oil",
+          "traditional French polish",
+          "period restoration"
+        ],
+        "incompatible_with": [
+          "new commercial supply (CITES Appendix II restricted)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The traditional Georgian and Victorian staircase hardwood. Deep reddish-brown, straight grain, extremely stable. Now CITES-restricted — genuine mahogany can only be supplied with documented legal source, prices are very high, and lead times are long. Reclaimed mahogany from restoration projects is the most common source for modern work. Most modern 'mahogany' staircases are actually Sapele."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.hfj3",
+        "family": "spray_finish",
+        "name": "Morrells 2K Polyurethane Lacquer (VLi range)",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss",
+          "Wet-Look 700"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "softwood staircases",
+          "MDF staircases",
+          "hardwood staircases",
+          "sanding sealer basecoat"
+        ],
+        "incompatible_with": [
+          "waterborne primers underneath without full flash-off",
+          "damp substrates"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "UK trade market-leader for 2-pack polyurethane spray lacquer on joinery. Fast-curing, mixed with catalyst before spraying (typically 10:1 or 4:1 ratio depending on product), pot life 4-8 hours once mixed. Outstanding abrasion, chemical, and water resistance — the standard specification when spec asks for '2K PU spray finish'. Manufactured in Stockport UK. Available in matt, satin, gloss and the 700 wet-look topcoat used for high-gloss dark stairs."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.xsb1",
+        "family": "spray_finish",
+        "name": "Milesi LGA Polyurethane Lacquer",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "softwood",
+          "hardwood",
+          "MDF",
+          "veneer",
+          "solid wood"
+        ],
+        "incompatible_with": [
+          "waterborne primer without proper drying"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Italian-made 2K polyurethane lacquer widely used in UK spray-shops. Marketed on versatility — works across softwood, hardwood, MDF, veneer, and solid wood substrates. High filling power (fewer coats to build the film), excellent chemical and physical resistance. Slightly higher cost than Morrells but preferred by some spray-shops for the deeper film build in a single pass."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.cobo",
+        "family": "spray_finish",
+        "name": "Sayerlack Polyurethane Coatings",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "joinery",
+          "furniture",
+          "staircases"
+        ],
+        "incompatible_with": [
+          "direct-to-metal use"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Italian brand, widely stocked by UK trade suppliers like Movac. Full range of 2K PU sealers and topcoats for interior joinery. Common on staircase spray-shops that also do kitchen and furniture spraying — same product family covers the whole workload."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.qe7m",
+        "family": "spray_finish",
+        "name": "Morrells Induro XL2 Flooring Lacquer",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "stair treads",
+          "high-traffic domestic",
+          "commercial"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Waterborne 1K flooring-grade lacquer used on stair treads that will take heavy footfall. BREEAM-listed, low VOC (important for occupied buildings and refinishing in-situ). Formulated specifically for the abuse a floor or tread takes — the finish stair treads get spec'd with when 2K solvent isn't practical because of occupancy."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.kgxv",
+        "family": "spray_finish",
+        "name": "Bona Mega EVO Waterborne Lacquer",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "hardwood stair treads",
+          "domestic use",
+          "engineered wood"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Bona's next-generation 1K waterborne with self-crosslinking technology that activates on application — gives 2K-like durability from a 1K product. Popular for in-situ stair refinishing because no catalyst mixing, single-pack, low odour. Widely stocked by flooring specialists. Used where the tread has to be walked on within 24 hours."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.78ur",
+        "family": "spray_finish",
+        "name": "Sikkens Cetol BL Unitop",
+        "grades": [
+          "Satin"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "interior wood staircases",
+          "hardwood + softwood"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Waterborne 1K interior topcoat from Sikkens. Non-yellowing satin finish — significant on white or pale-timber staircases where solvent-based lacquer would tint the finish yellow over years. Popular on painted staircases as a protective clear over a coloured basecoat."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.b8bh",
+        "family": "spray_finish",
+        "name": "General Finishes Enduro Pre-Cat Lacquer",
+        "grades": [
+          "Flat",
+          "Satin",
+          "Semi-Gloss",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "MDF",
+          "hardwood",
+          "softwood",
+          "sanding sealer basecoat"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Water-based pre-catalysed lacquer — factory-catalysed, no on-site mixing, similar durability to 2K PU on interior joinery. Used with General Finishes Sanding Sealer as basecoat, then 2 topcoats. Sand between coats with 220-320 grit foam pad or 400-grit paper. Popular on stair-spraying jobs where the sprayer wants 2K-style durability without the mixing complexity."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.hheh",
+        "family": "spray_finish",
+        "name": "2K Acid Catalysed Lacquer (traditional joinery lacquer)",
+        "grades": [
+          "Matt",
+          "Satin",
+          "Gloss"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "interior joinery",
+          "traditional workshop finishes"
+        ],
+        "incompatible_with": [
+          "kitchens (formaldehyde emission concerns)",
+          "occupied buildings during application"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The old-school workshop lacquer — acid-catalysed with a formaldehyde-based resin. Very hard finish, excellent clarity, affordable. Falling out of favour because of formaldehyde emissions during and after cure — many spray-shops have moved to 2K PU. Still used on production joinery where workshop conditions handle the ventilation. Not for use in occupied buildings during application."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.jsit",
+        "family": "spray_finish",
+        "name": "2K High-Build Acrylic Urethane Primer",
+        "grades": [
+          "White",
+          "Grey",
+          "Tintable"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "MDF",
+          "primed timber",
+          "sanded softwood",
+          "sanded hardwood"
+        ],
+        "incompatible_with": [
+          "greasy surfaces",
+          "unsanded gloss surfaces"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "2-component acrylic urethane primer, high build, easy-sand. The mandatory basecoat under a 2K PU topcoat on any painted staircase. Fills fine defects, sanded flat, then the topcoat lays down mirror-smooth. Typically applied at 100-150 microns wet film thickness, sanded with 320-400 grit before topcoat. Two coats standard, three on stairs with heavy MDF-edge exposure."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.49nl",
+        "family": "spray_finish",
+        "name": "Sanding Sealer (nitrocellulose or acrylic)",
+        "grades": [
+          "NC (nitrocellulose)",
+          "Acrylic waterborne"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "clear-finish stair treads",
+          "as basecoat under lacquer"
+        ],
+        "incompatible_with": [
+          "cold or humid site conditions (nitro variant)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The basecoat under a clear-finish stair — seals the timber grain, stops the topcoat sinking in, sands to a silky smooth surface for the topcoat to lay over. Nitrocellulose sanding sealer dries fast (30 mins to sand) and cuts back beautifully but is solvent-heavy. Acrylic waterborne sanding sealer is the modern alternative — slower to dry but low odour. Two coats before topcoat is standard on hardwood treads."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.86xd",
+        "family": "spray_equipment",
+        "name": "HVLP (High Volume Low Pressure) spray system",
+        "grades": [
+          "Fuji Q4 turbine",
+          "Fuji Q5 turbine",
+          "SATA HVLP compressor gun"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "small detailed work",
+          "spindles",
+          "newel posts",
+          "finish sanding-sealer + topcoat"
+        ],
+        "incompatible_with": [
+          "large flat surfaces (slow throughput)",
+          "very high viscosity lacquer without thinning"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The go-to spray system for staircase detail work. Turbine-driven or compressor-driven, low overspray, excellent fine finish, transfer efficiency around 65-75%. Fuji Q4/Q5 turbines are the professional joinery choice — no external compressor needed, single unit. Perfect for spindles, newel posts, and finishing coats where control matters. Slow on big flat panels — use AAA for those."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.w4x2",
+        "family": "spray_equipment",
+        "name": "Airless spray system",
+        "grades": [
+          "Graco Ultra 495",
+          "Graco 695",
+          "Wagner Control Pro"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "primer coats on large flat panels",
+          "high-throughput production"
+        ],
+        "incompatible_with": [
+          "fine finish coats (heavy atomisation)",
+          "small detail work"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "High-pressure pump forces material through a small tip — no compressed air used. Very fast, thick films in one pass, ideal for priming large stairs or production runs. Downside: heavy atomisation makes a slightly rougher finish than HVLP or AAA — usually needs sanding between coats. Rarely used for the final topcoat on a visible staircase; used on the primer or on production doors and panels."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuei.cdmv",
+        "family": "spray_equipment",
+        "name": "AAA (Air-Assisted Airless) spray system",
+        "grades": [
+          "Graco Merkur",
+          "Graco Finish Pro AAA"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "production staircase spraying",
+          "large flat panels",
+          "topcoat on hardwood treads"
+        ],
+        "incompatible_with": [
+          "very small workshops (compressor + pump footprint)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Combines airless pump for high throughput with compressed air at the tip for atomisation control. Result: near-HVLP finish quality at 2-3x the speed. The choice for medium-to-large spray-shops that run staircases through in volume. Transfer efficiency around 70-80%, very low overspray, exceptional film build in one pass. Higher equipment cost than HVLP or airless alone."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iukx.hl1n",
+        "family": "sheet_material",
+        "name": "Pine Softwood V-Groove T&G Board (15mm x 118mm)",
+        "grades": [
+          "Redwood",
+          "Whitewood",
+          "Knotty Pine"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "staircase spandrel cladding",
+          "hallway feature walls",
+          "under-stair cupboard walls"
+        ],
+        "incompatible_with": [
+          "fire-rated protected stairway (needs plasterboard behind)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The traditional softwood tongue and groove board for cladding under a staircase or against the well side. Standard trade size 15mm thick x 118mm face width (4¾\" x ¾\"). V-groove joint gives shadow lines that hide seasonal timber movement. Boards install horizontally or vertically against battens fixed to the stair carriage or wall. Paint, stain, or clear finish. Doesn't provide fire resistance on its own — needs plasterboard behind on any protected stairway."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.gbqi",
+        "family": "sheet_material",
+        "name": "MDF T&G Wall Panelling (15mm & 18mm)",
+        "grades": [
+          "Standard MDF",
+          "Moisture Resistant MDF"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "stair well feature walls",
+          "staircase spandrel",
+          "hallway panelling"
+        ],
+        "incompatible_with": [
+          "exposed to direct moisture",
+          "structural stair application"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "UK-manufactured pre-primed MDF tongue and groove panels. Standard sizes 15mm and 18mm thick, board face widths from 95mm to 145mm, lengths up to 2440mm. Ships sanded and primed twice, ready for final paint. Sharp uniform profile, no knots, no grain to show through paint. The default modern choice for staircase panelling because the finish is factory-quality before it even leaves the yard."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.81ne",
+        "family": "sheet_material",
+        "name": "Staircase Wainscoting Panel Kit (MDF)",
+        "grades": [
+          "Standard MDF",
+          "MR MDF"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "staircase well walls",
+          "landing walls",
+          "hallway continuation"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pre-cut MDF wainscoting kits sized to fit staircase walls — typical panel size 1215mm x 606mm. Kits include stiles, rails, and dado rail cut to the pitch of the stair. Panels flow continuously up the stairwell with a consistent dado height, giving a period-property look on modern homes. Primed and ready for two topcoats of paint. Nailed or glued to plaster wall with grab adhesive plus panel pins into studs."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.09xp",
+        "family": "sheet_material",
+        "name": "Shaker MDF Wall Panel Kit (9mm strips)",
+        "grades": [
+          "Standard MDF",
+          "MR MDF"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "stair well walls",
+          "landing",
+          "modern feature panelling"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Loose-component shaker panelling — stiles and rails made from 9mm moisture-resistant MDF strips, applied directly to the wall to form flat rectangular panels. Less expensive and lighter than pre-made shaker kits, allows the panel dimensions to be set exactly to the stair rise and going. The go-to for a bespoke shaker-look staircase panelling job on a modest budget. Painted to blend with wall or contrast for feature."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.wz19",
+        "family": "sheet_material",
+        "name": "Victorian / Georgian Raised & Fielded MDF Panel",
+        "grades": [
+          "Standard MDF",
+          "MR MDF"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "period-property staircases",
+          "Victorian house restorations"
+        ],
+        "incompatible_with": [
+          "modern minimalist schemes"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Raised and fielded panels with a beaded edge detail — the traditional formal panelling look. Suits Victorian, Georgian, and period-property staircases where a plain shaker would look wrong. Comes as pre-assembled panels or as component strips. Higher spec, higher cost, needs skilled paint prep because every bevel and bead shows every brush mark."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.nci8",
+        "family": "sheet_material",
+        "name": "Modern Fluted / Slat MDF Panel",
+        "grades": [
+          "Standard MDF",
+          "MR MDF",
+          "Real Wood Veneered"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "contemporary staircases",
+          "hotel and commercial stair wells",
+          "modern feature walls"
+        ],
+        "incompatible_with": [
+          "period properties"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Vertical fluted or slat panels — the contemporary staircase look. Available in painted MDF or veneered in real oak, walnut, or ash. Common face widths 40-60mm per flute. Adds strong vertical rhythm to a stair well and makes the space feel taller. Popular in hotels and modern new-builds. Ships in panel sizes 2440 x 1220mm or as continuous strip."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.al7y",
+        "family": "sheet_material",
+        "name": "Standard Plasterboard (12.5mm)",
+        "grades": [
+          "Standard",
+          "Moisture Resistant (green)",
+          "Sound"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "staircase underside",
+          "well wall lining",
+          "landing ceiling"
+        ],
+        "incompatible_with": [
+          "protected stairway alone (needs fire-line or double layer)",
+          "wet locations"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The default plasterboard thickness for domestic staircase lining — underside of the stair, well walls, landing ceiling. Fixed to timber studs or battens at 400-600mm centres with drywall screws. Standard board takes plaster skim (3.2mm two-coat skim is standard). NOT sufficient for a protected stairway on its own — needs fire-line board or a double layer with staggered joints."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.rjrx",
+        "family": "sheet_material",
+        "name": "Fire-line Plasterboard (12.5mm & 15mm)",
+        "grades": [
+          "12.5mm FL",
+          "15mm FL",
+          "Knauf Fireboard",
+          "Gyproc Fireline (pink)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "protected stairways",
+          "loft-conversion escape stair",
+          "HMO stair enclosure"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Pink-coloured plasterboard with a glass-fibre reinforced core — designed for fire resistance. Single layer of 12.5mm gives 30 minutes (FD30-equivalent for surfaces), 15mm gives 60 minutes. The specified board for a protected stairway on any loft conversion, HMO, or three-storey dwelling. Common trade brands: Knauf Fireboard, Gyproc Fireline. Skim finish over the pink board eliminates need for double-boarding on most domestic 30-minute requirements."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.dbmf",
+        "family": "sheet_material",
+        "name": "Moisture Resistant Plasterboard (12.5mm)",
+        "grades": [
+          "Standard MR (green)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "bathrooms adjacent to stair",
+          "kitchen-open staircases",
+          "utility rooms"
+        ],
+        "incompatible_with": [
+          "direct water contact",
+          "external use"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Green-faced plasterboard with additives that make it moisture-resistant. Used on stair walls where humidity is a factor — a stair adjacent to a bathroom, an open-plan kitchen stair, a utility-room-facing landing. Handles the humidity that would soften standard plasterboard over years. Still not waterproof. Cost similar to standard board so used routinely as a precaution."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.uc0l",
+        "family": "sheet_material",
+        "name": "Bonding Coat Plaster (Thistle Bond-It / Bonding)",
+        "grades": [
+          "Thistle Bonding Coat",
+          "Bond-It"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "undercoat on plasterboard",
+          "levelling substrate before skim"
+        ],
+        "incompatible_with": [
+          "direct topcoat use (needs skim over it)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The undercoat plaster used to build up thickness on plasterboard or to fill unevenness before the skim coat. Applied 8-11mm thick. Sets in 2-3 hours, ready to skim within 24 hours. Rarely needed on straight plasterboard-to-skim work but essential where the plasterboard sits over an uneven substrate — for example lining an old stair well where the timber battens aren't perfectly plane."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.ypg4",
+        "family": "sheet_material",
+        "name": "Multi-Finish Plaster (skim coat)",
+        "grades": [
+          "Thistle Multi-Finish",
+          "Board Finish"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "plasterboard finish",
+          "bonding coat overcoat",
+          "final decorating surface"
+        ],
+        "incompatible_with": [
+          "direct application to unprepared board without PVA seal"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The final smooth 2-3mm skim coat over plasterboard or bonding coat. Two passes: first pass fills and levels, second pass polishes with the trowel to a mirror finish. Sets in 90-120 minutes, dries fully in a few days depending on ventilation. Once dry, the plaster is decorated with a mist coat of thinned emulsion before topcoats. Never paint fresh plaster directly with a normal paint — the top layer of plaster will lift off."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.0dw1",
+        "family": "sheet_material",
+        "name": "Cheshire Mouldings / Richard Burbidge Stair Mouldings",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "trimmer face finishing",
+          "landing nosing",
+          "skirting to stair strings",
+          "architrave"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The two dominant UK stair-mouldings brands. Cheshire Mouldings and Richard Burbidge cover skirting, architrave, panel moulding, dado rail, nosings and stair-part accessories in pine, oak, and sapele. The go-to source when a stair install needs mouldings to finish the trimmer face, the well edge, or the landing nosing to match existing joinery. Available from most builders' merchants and specialist stair yards."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.c6r8",
+        "family": "sheet_material",
+        "name": "Landing Nosing / Bullnose",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele",
+          "Anti-slip aluminium"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "landing edge at head of flight",
+          "top of stair well opening"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The moulding that closes off and defines the edge where the landing floor meets the top of the stair. Matches the tread nosing profile for visual continuity. Bullnose (rounded), pencil-round, ovolo, or square-chamfered. Cut into the landing joist face and fixed with pins into the trimmer joist below. Should project the same distance over the trimmer face as the stair nosings project over their risers — usually 15-25mm."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4iuky.0gf2",
+        "family": "sheet_material",
+        "name": "Trimmer Joist Facing Board",
+        "grades": [
+          "Pine",
+          "MDF primed",
+          "Oak",
+          "matching stair timber"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "stair well opening face",
+          "top-of-flight trimmer"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The board that covers the front face of the trimmer joist at the top of a stair well — the piece the eye sees when looking up at a landing edge from below. Usually 22mm timber or 18mm MDF, cut to depth of the trimmer joist. Sits behind the landing nosing and above the last riser. Painted white on a painted stair, matched to the stair timber on a natural-finish stair. Provides a clean line where the stair meets the landing."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.swmx",
+        "family": "starting_step",
+        "name": "Single Bullnose Starting Step",
+        "grades": [
+          "Pine",
+          "Oak",
+          "MDF for painted",
+          "Ash",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "closed-string stairs",
+          "cut-string stairs",
+          "narrow hallways",
+          "wall-hugging stairs"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The most popular starting step in the UK. A first tread with one rounded curved end — that end projects sideways beyond the string, so the newel post sits on the projection. The other end runs into the wall. Creates a wider footprint at the foot of the stair (safer, more comfortable to step onto), sets the newel back one step (makes the hall feel more spacious), and adds structural strength to the newel because it's anchored into the tread projection. Available in whole-step form (complete tread + riser) or as a bullnose riser to fit a standard tread."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.01y7",
+        "family": "starting_step",
+        "name": "Double Bullnose Starting Step (Double End Bullnose)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "free-standing stairs",
+          "central-newel stairs",
+          "wide hallways"
+        ],
+        "incompatible_with": [
+          "narrow hallways",
+          "stairs against a wall"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A first tread with both ends rounded and curved — projections either side. Used where the stair stands free of any wall so both sides of the starting step are on view. The two newel posts sit on the two projections. More dramatic than a single bullnose but needs the hall width to carry it — a double bullnose in a narrow hallway looks cramped. Standard trade sizes: 300mm rise x 830mm across in pine, oak, ash, sapele, or American black walnut."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.5zmh",
+        "family": "starting_step",
+        "name": "Single Curtail Step",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "scroll-terminated handrails",
+          "monkey volute handrails",
+          "high-end traditional stairs"
+        ],
+        "incompatible_with": [
+          "straight-terminated handrails",
+          "modern minimalist stairs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The step that matches a scroll or volute handrail. Where a bullnose meets the front face of the newel, a curtail wraps around the newel — the curve in the step matches the curve in the handrail volute above it, creating a continuous flowing shape from tread through newel through handrail to volute. More elaborate and more expensive than a bullnose. Designed specifically for the Monkey's Tail / volute finish — use one without the other and the effect is lost."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.amch",
+        "family": "starting_step",
+        "name": "Double Curtail Step (Double Go Curtail)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "wide hallways",
+          "grand entrance staircases",
+          "period property restorations"
+        ],
+        "incompatible_with": [
+          "narrow hallways",
+          "small footprints"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The most elaborate starting-step option. A first tread with curtail curves wrapping around newels on both ends — pairs with volute or scroll handrails on both sides. Only workable in a wide hallway or open entrance space. Often paired with a second Single Curtail step above it (double curtail bottom + single curtail second step) to build a grand feature at the foot of the stair. Rarely seen on modern builds; common on Georgian and Victorian restoration work."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.i7q7",
+        "family": "starting_step",
+        "name": "D-End Starting Step",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "curved staircases",
+          "splayed staircases",
+          "stairs where the balustrade returns"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Different geometry from a bullnose. The tread passes beyond the newel post, then the balustrade returns back into the side of the newel — so from above the tread reads as a 'D' shape stuck onto the end of a regular tread. Common on curved and splayed staircases. Often the D-end is carried up multiple treads (2-3 stacked D-ends) to give the whole starting section a curved edge that flows into the rise of the stair. More architecturally deliberate than a bullnose."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.or1r",
+        "family": "starting_step",
+        "name": "Arched Bullnose Starting Step",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "Georgian restorations",
+          "high-end bespoke",
+          "stairs with visible starting-step face"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs",
+          "tight hallways"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The variant where the front face of the bullnose isn't a plain curve — it's an ogee or arched segment, giving the starting step a more architectural feature-look. The nosing profile matches the arch. Higher fabrication skill needed because the curve is compound (nosing profile + arched face + timber grain running through) — usually specified only on bespoke work. Georgian country-house staircases regularly used this variant."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.lydt",
+        "family": "starting_step",
+        "name": "Splayed Starting Step",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "angled hallway approaches",
+          "corner-entry stairs"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A starting step that's angled rather than curved — one or both ends splay outwards at 45° (or another angle) rather than following a bullnose curve. Used where the stair approach isn't straight-on to the hallway — for example the stair pitches into the room from a diagonal direction. Less expensive than a bullnose or curtail because there's no curved cut. Common on Victorian house restorations where the original entrance geometry isn't square."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.6tuc",
+        "family": "starting_step",
+        "name": "Double Starting Steps (Two Feature Steps)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 10,
+        "compatible_with": [
+          "grand entrance halls",
+          "high-ceiling foyers",
+          "houses with visible stair"
+        ],
+        "incompatible_with": [
+          "small terraced hallways"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Two feature treads stacked at the foot of the stair — usually a double bullnose or double curtail at the very bottom, then a single bullnose or single curtail above it. The second step is set back by the going, so the eye sees a stepped-back curve rising up the stair. Increases the visual grandeur of the entrance and gives the newel post a much taller and more anchored appearance. Adds cost — two bespoke feature steps instead of one."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.qhqa",
+        "family": "starting_step",
+        "name": "Wall-String Bullnose Riser (bullnose add-on)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "standard flight upgrades",
+          "retrofit feature steps",
+          "budget bespoke"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The economical route to a bullnose starting step. Rather than a complete new whole-step, this is a bullnose riser (300mm rise x standard widths, single-end or double-end curved) that fits under an existing standard tread — the standard tread is extended out onto the riser projection. Less expensive than a whole-step, easier to fit into an existing stair, and gives the finished visual result of a bullnose starting step. Sold as trade parts in matching timbers."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.79oc",
+        "family": "starting_step",
+        "name": "Scotia Cove Moulding (bullnose under-nose)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Ash",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "all bullnose and curtail starting steps",
+          "traditional stair fitting"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The small concave cove moulding fitted under the front nosing of a starting step (or any tread). Adds a decorative shadow-line detail under the nose curve, and — more practically — hides any small gap or minor imperfection between the tread and riser. Standard trade profile, cut on-site to fit around the bullnose or curtail curve. Not required by regs but expected on every proper traditional bullnose fit."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry4nnnx.k75a",
+        "family": "starting_step",
+        "name": "Square-Edge Starting Step (Modern Alternative)",
+        "grades": [
+          "Oak",
+          "Ash",
+          "Walnut",
+          "Sapele",
+          "primed MDF"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "contemporary staircases",
+          "modern minimalist design",
+          "square-newel stairs"
+        ],
+        "incompatible_with": [
+          "traditional or period-property stairs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The modern-design counterpoint to a bullnose. A first tread that projects wider than the standard treads, but with a square 90° corner rather than a curve. Newel sits on the projection like a bullnose, but the sharp geometry reads contemporary rather than traditional. Suits a square-profile newel and a straight handrail termination. Increasingly common on modern new-builds where the client wants the wider-footprint benefit of a starting step without the traditional bullnose look."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53ryf.fqtm",
+        "family": "structural_component",
+        "name": "Stair Tread (standard trade thicknesses)",
+        "grades": [
+          "22mm laminated",
+          "22mm MDF",
+          "32mm solid softwood",
+          "40mm solid hardwood (bespoke)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "all standard string configurations",
+          "housed joints 12mm deep"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Standard trade tread thicknesses in UK joinery. 22mm laminated timber or 22mm MDF — the volume default on production trade-range stairs (carpeted or painted). 32mm solid softwood — mid-range bespoke, natural finish or stained. 40mm solid hardwood — the go-to bespoke thickness on premium oak, ash, walnut and sapele stairs, gives the substantial feel and lasts decades under heavy footfall. Housed 12mm into each string (or 0.4x string thickness, whichever is greater)."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53ryf.aajy",
+        "family": "structural_component",
+        "name": "Stair Riser (standard trade thicknesses)",
+        "grades": [
+          "9mm plywood (production)",
+          "12mm hardwood plywood",
+          "15mm MDF (painted)",
+          "22mm solid timber (bespoke)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "standard tread rebates",
+          "9mm or 22mm rebate options on production treads"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Standard trade riser thicknesses. 9mm plywood or MDF is the production-stair default (invisible under paint or carpet). 12mm hardwood ply where visible ply edge is a feature. 15mm MDF on painted bespoke where extra rigidity is wanted. 22mm solid timber on top-end all-hardwood stairs where riser matches tread species. Fixed into rebates in the tread above and screw-block bracing to the tread below."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53ryf.jvv1",
+        "family": "structural_component",
+        "name": "Stair String (standard trade thicknesses)",
+        "grades": [
+          "32mm closed string (production)",
+          "38mm closed string (bespoke)",
+          "48mm cut string"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "housed tread joints 12mm+",
+          "wedged and glued housings"
+        ],
+        "incompatible_with": [
+          "strings under 32mm (causes squeaks and structural flex)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The string is the diagonal piece the treads sit in. 32mm is the trade minimum — anything thinner flexes and causes squeaks. 38mm on bespoke closed-string work for a more substantial feel. 48mm on cut-string stairs (where the string is cut to the tread profile with the tread ends visible) — the extra thickness stops the cut sections weakening the string. Housed 12mm or 0.4x string thickness (whichever greater) to receive treads."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53ryf.wjq0",
+        "family": "structural_component",
+        "name": "Bespoke Machined Tread (thickness on order)",
+        "grades": [
+          "25mm",
+          "32mm",
+          "40mm",
+          "45mm",
+          "50mm+"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "floating stairs",
+          "cantilevered treads",
+          "feature stairs"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "For bespoke work, treads can be machined to any thickness — the standard bespoke workshop can supply 25mm through to 50mm+ in solid hardwood or edge-jointed timber. Thicker treads used on: floating / cantilevered stairs where the tread carries its own weight without a riser (typically 50mm+ oak or ash), open-riser feature stairs (40-50mm), and any stair where the visual weight of a thick tread is part of the design. Thickness has to be specified at drawing stage — it changes the going calculation and the housing depth in the string."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53ryf.ty65",
+        "family": "structural_component",
+        "name": "Bespoke Cut String (Machined to Tread Profile)",
+        "grades": [
+          "48mm+ solid timber"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "cut-string stair design",
+          "period property restorations",
+          "visible tread ends"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "On a cut-string staircase, the string is cut to follow the profile of every tread and riser — tread ends visible on the outside of the string. Machined to the exact geometry at workshop stage. Requires solid timber at 48mm+ (not laminated) because the profile cuts weaken the string across its cross-section. High material waste factor (~15%) because the offcuts have no reuse value. Cost significantly higher than a closed-string equivalent — but the finished look is the Georgian / Victorian classic."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.s5rv",
+        "family": "balustrade_component",
+        "name": "32mm Stair Spindle (standard flight spindle)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Hemlock",
+          "Ash",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "standard domestic stair flights",
+          "closed-string stairs",
+          "cut-string stairs",
+          "Cheshire Mouldings + Richard Burbidge fittings"
+        ],
+        "incompatible_with": [
+          "heavy-load commercial balustrades (use 41mm+)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The industry standard spindle cross-section for domestic UK staircase flights. 32mm x 32mm square before turning or profiling. Stock trade sizes typically 900mm long, cut to fit at the site. Available in Georgian, Colonial, Traditional, Victorian, fluted, plain square, and stop-chamfer styles from both Richard Burbidge and Cheshire Mouldings. Sits on the tread (or base rail) at the bottom, into the handrail at the top. Every hardware supplier and builders' merchant stocks this size."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.ptjv",
+        "family": "balustrade_component",
+        "name": "41mm Stair Spindle (heavy / feature spindle)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Hemlock",
+          "Ash",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "grand entrance stairs",
+          "feature balustrades",
+          "wider spindle spacings"
+        ],
+        "incompatible_with": [
+          "narrow domestic stairs (looks heavy)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The heavier trade spindle — 41mm x 41mm square before profiling. Used on grand feature stairs, on stairs with turned traditional balustrades where the extra mass reads as more substantial, and on stairs where wider spindle spacing is wanted (fewer spindles at 41mm still meet the 100mm sphere rule than at 32mm). Both Cheshire Mouldings and Richard Burbidge produce full ranges in 41mm. Standard lengths 900mm and 1100mm."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.b5vh",
+        "family": "balustrade_component",
+        "name": "900mm Spindle (standard flight length)",
+        "grades": [
+          "32mm",
+          "41mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "stair flights",
+          "900mm minimum handrail height on flight"
+        ],
+        "incompatible_with": [
+          "landings needing 1100mm handrail height"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The trade-standard spindle length for stair FLIGHTS. Meets the 900mm minimum domestic handrail height requirement (measured from pitch line to top of handrail). The spindle sits on the tread nosing (or base rail), passes through 900mm to the underside of the handrail, and is bevel-cut at both ends to sit flat on the tread and to match the handrail pitch. Cut to fit on site — the 900mm nominal length usually leaves 20-40mm of trim."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.miat",
+        "family": "balustrade_component",
+        "name": "1100mm Spindle (landing length)",
+        "grades": [
+          "32mm",
+          "41mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "landings",
+          "guarding around stair well openings",
+          "commercial landings"
+        ],
+        "incompatible_with": [
+          "stair flights (too long)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The trade-standard spindle length for LANDINGS. Meets the 1100mm minimum landing guarding height for any drop over 600mm (domestic and commercial). The spindle sits on the landing floor (or base rail), passes through 1100mm to the underside of the horizontal handrail running along the well edge. Order in the same style and cross-section as the flight spindles so they visually match at the newel-post transition. If you order the wrong length here, you can't just re-cut a 900mm spindle to fit — you'll be short."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.myxa",
+        "family": "balustrade_component",
+        "name": "Metal Stair Spindle (steel / wrought iron)",
+        "grades": [
+          "Plain bar 12mm",
+          "Twisted bar 12mm",
+          "Baroque scroll",
+          "Antique brass finish"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "modern industrial stairs",
+          "period-style traditional stairs (twisted / scroll)",
+          "glass-panel alternative"
+        ],
+        "incompatible_with": [
+          "100mm sphere rule violation when spacing not calculated correctly"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Metal spindles come in plain 12mm round or square bar, twisted (traditional), or ornate scrolled patterns. Available from Richard Burbidge Trademark Metal Spindles range and other UK suppliers in black, chrome, brass and antique finishes. Sits into shoes at top and bottom, fixed to the tread and handrail. The narrow cross-section (12mm vs 32mm timber) means you need MORE spindles per metre to hit the 100mm sphere rule — always calculate spacing at design stage, not on install day."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.sgsx",
+        "family": "balustrade_component",
+        "name": "Base Rail (spindle-mounting timber)",
+        "grades": [
+          "32mm",
+          "41mm",
+          "oak",
+          "pine",
+          "sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "cut-string stairs",
+          "landings with continuous base",
+          "stairs where spindles don't sit on treads"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The horizontal timber that carries the spindles along the stair or landing when they don't sit directly on the tread. Matched in profile to the handrail above (grooved to receive the spindle base). Standard on cut-string stairs where the spindles can't sit on the tread edges, and on all landings where the spindles sit on the base rail rather than on the floor. Same timber as the handrail for visual coherence."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry53s22.csku",
+        "family": "balustrade_component",
+        "name": "Spindle Fillet (spacer strip)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "matching balustrade timber"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "all spindle installations",
+          "grooved handrails + base rails"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The small timber strip that fills the groove in the handrail or base rail BETWEEN spindles. Sets the spindle spacing precisely and hides the groove where no spindle sits. Cut to length on site to give the exact centres needed to meet the 100mm sphere rule. Two fillets per bay (one above, one below the spindle) — or a single fillet on stairs where the spindles pass through into the tread. Matched to the balustrade timber."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.zg2d",
+        "family": "structural_component",
+        "name": "Closed String (Standard)",
+        "grades": [
+          "Pine 32mm",
+          "Redwood 32mm",
+          "Whitewood 32mm",
+          "Oak 38mm",
+          "MDF 38mm painted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "all standard flights",
+          "carpeted stairs",
+          "painted stairs",
+          "production builds"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Solid side panel running the full length of the flight. Treads and risers are housed in routed slots inside the string, secured with hardwood wedges and glue blocks from behind. Tread ends completely hidden — the outside face of the string is one continuous timber surface from bottom nosing to top. Fastest to build, most affordable to price, strongest and quietest under foot. The UK trade default and the go-to on 90% of production and mid-range stairs. Standard trade thickness 32mm in softwood, 38mm in hardwood or bespoke."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.ia2r",
+        "family": "structural_component",
+        "name": "Cut String (Traditional)",
+        "grades": [
+          "Oak 48mm",
+          "Sapele 48mm",
+          "Ash 48mm",
+          "Pine 48mm painted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "cut-string design",
+          "period property stairs",
+          "feature entrance stairs"
+        ],
+        "incompatible_with": [
+          "laminated timber (must be solid)",
+          "budget production builds"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The string is cut to follow the exact profile of every tread and riser — tread ends visible from the side of the stair, projecting past the string with a return nosing mitred round the end. Signals prestige — has done since the Georgian era. Treads sit ON TOP of the string rather than housed into it. Spindles fix directly into the top of each tread. Trade minimum thickness 48mm because the profile cuts remove significant material across the string section. Solid timber only (laminated will delaminate through the cuts). Waste factor ~15% because the offcut zigzags have no reuse."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.gzjn",
+        "family": "structural_component",
+        "name": "Mitred Cut String",
+        "grades": [
+          "Oak 48mm",
+          "Sapele 48mm",
+          "Ash 48mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "high",
+        "waste_factor_pct": 18,
+        "compatible_with": [
+          "bespoke period restoration",
+          "grand entrance staircases"
+        ],
+        "incompatible_with": [
+          "budget builds",
+          "workshops without traditional joinery skills"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The premium cut-string variant. Riser faces are mitred so the riser timber comes through to the outside face of the string as a continuous line. Tread is cut with extra length to allow the return nosing to project past the string, then mitred flush with the string face. Result: a clean flowing line of tread-nosing-riser-tread visible from the side, no visible joint lines. Highest joinery skill required, highest cost — but the visual finish is the mark of a real cabinet-maker staircase. Georgian and Victorian country-house standard."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.0ksl",
+        "family": "structural_component",
+        "name": "Bracketed Cut String",
+        "grades": [
+          "Oak 48mm",
+          "Sapele 48mm",
+          "Pine 48mm painted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 15,
+        "compatible_with": [
+          "Victorian restorations",
+          "Edwardian houses",
+          "decorative traditional stairs"
+        ],
+        "incompatible_with": [
+          "modern minimalist designs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Cut-string variant with decorative brackets fitted under each tread nosing on the outside face of the string. Recreates the classic Victorian and Edwardian decorative staircase look. The riser mitres into the bracket, and the bracket sits against the string face. Combines with scotia cove moulding under each nosing for a full traditional finish. Standard bracket profiles: carved acanthus leaf, plain scroll, geometric fretwork. Every stair yard supplies the brackets as pre-machined parts to be applied to the cut string on install."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.gc2q",
+        "family": "structural_component",
+        "name": "Open String (Floating / Cantilevered)",
+        "grades": [
+          "LVL structural core",
+          "Steel plate",
+          "Glulam"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "floating stairs",
+          "cantilevered treads",
+          "modern minimalist design",
+          "open-riser feature stairs"
+        ],
+        "incompatible_with": [
+          "traditional or period designs",
+          "family homes with young children (open-riser safety)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "No visible string on one or both sides — treads cantilever from a hidden LVL or steel core, or the balustrade sits directly on top of the treads without any string beneath. The modern floating-stair look. Requires structural engineering calculation because each tread carries its own load without the support a traditional string provides. If open riser, must meet the 100mm sphere rule between treads (child safety). Almost always specified with a full-glass or metal balustrade to keep the airy look."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.i64a",
+        "family": "structural_component",
+        "name": "Wall String (Concealed)",
+        "grades": [
+          "Pine 32mm",
+          "Whitewood 32mm",
+          "MDF 32mm painted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "stairs with a wall on one side",
+          "any string type paired with a decorative outer string"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The string fixed against the wall side of the stair — hidden by skirting or plastered up to. Almost always closed string regardless of what the outer (visible) string is, because there's no aesthetic reason to spend on a cut string on a face nobody sees. Standard 32mm softwood is fine here even on premium bespoke stairs where the outer string is 48mm oak cut-string. This is where budget savings are made without any visible compromise."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry5e51l.zgbj",
+        "family": "structural_component",
+        "name": "Outer String (Visible / Balustrade Side)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "Ash",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "closed string configuration",
+          "cut string configuration",
+          "any visible face"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The string on the balustrade side of the stair — the one everyone sees. This is where budget goes: the visible string in the top-tier timber, in the design (closed / cut / mitred / bracketed) that suits the house. Standard trade heights 225mm for a straight staircase, 275mm for a stair with pitched-line runs, 300mm+ for grand entrance stairs. The outer string dictates most of the stair's visual character."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.jtc6",
+        "family": "handrail_fitting",
+        "name": "Volute (Scroll)",
+        "grades": [
+          "Left-hand",
+          "Right-hand",
+          "Pine",
+          "Oak",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "curtail starting steps",
+          "monkey volute handrails",
+          "traditional bespoke stairs"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs",
+          "straight bullnose starting steps"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The most decorative handrail termination — a spiral scroll that curls at the very bottom of the staircase handrail. Also known as monkey volute, starting volute, monkey's tail, or scroll and easer. Available left-hand or right-hand depending on which side of the stair the handrail starts. Always paired with a matching curtail step below — the curve of the step mirrors the spiral of the volute so they read as one continuous shape. The visual signature of grand traditional staircases."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.86cf",
+        "family": "handrail_fitting",
+        "name": "Turnout",
+        "grades": [
+          "Left-hand",
+          "Right-hand",
+          "Pine",
+          "Oak",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "bullnose starting steps",
+          "traditional and modern stairs"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A curved handrail fitting that turns the handrail out to the side — creating a graceful bend at the bottom rather than a plain end into the newel. Less elaborate than a volute (no spiral, just a smooth curve). Sits nicely with a bullnose starting step where the newel is at the back of the projection. Standard trade fitting from every UK stair-parts range."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.yn6f",
+        "family": "handrail_fitting",
+        "name": "Starting Easing (Up-Ramp / Up-Easing)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "all handrail types",
+          "transitions from flight to newel top"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The simplest handrail fitting. A short curved piece that transitions the handrail smoothly from the steep pitch of the flight to a horizontal connection at the top of a newel post. Also called an up-ramp or up-easing. Every stair has one at the top and often another at the bottom — without them the rail meets the newel at an awkward angle. Standard trade part matched to every handrail profile."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.1nzj",
+        "family": "handrail_fitting",
+        "name": "Ramp (Handrail Transition)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "Ash"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "level-to-pitched handrail transitions",
+          "landings meeting flights"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The curved section joining a pitched handrail (down the flight) to a level handrail (across a landing). Different from an up-ramp: this handles pitch-to-level transition at a landing. Cut on-site to the specific pitch and landing height, or supplied as a pre-machined trade fitting for common domestic pitches. Essential for a continuous handrail system — without it the pitched and level rails meet at a knuckle and the rail can't be gripped through the turn."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.vik7",
+        "family": "handrail_fitting",
+        "name": "Wreath (Curved Handrail Section)",
+        "grades": [
+          "Oak bespoke",
+          "Sapele bespoke",
+          "Walnut bespoke"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "high",
+        "waste_factor_pct": 20,
+        "compatible_with": [
+          "curved staircases",
+          "helical stairs",
+          "sweeping bespoke"
+        ],
+        "incompatible_with": [
+          "straight domestic stairs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A curved handrail section that follows a curved staircase or wraps around a landing well opening. Machined from a solid billet of timber (never laminated) — the wreath is one of the most demanding pieces of joinery in the whole trade. High waste factor (~20%) because the curved shape has to be cut from a much larger blank. Bespoke workshops specialise in wreath making. On a curved staircase the wreathed handrail can add substantial cost to the whole project — always confirm final numbers with the manufacturer after full design is locked."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605a4.rdt9",
+        "family": "handrail_fitting",
+        "name": "Rail Bolt (Zipbolt / Standard Rail Bolt)",
+        "grades": [
+          "Standard rail bolt",
+          "Zipbolt (concealed)",
+          "M8",
+          "M10"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "handrail scarf joints",
+          "handrail-to-newel joints",
+          "fitting joins on site"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The hidden fixing that joins two handrail sections or joins a handrail to a newel post. Standard rail bolt: threaded rod with a nut, tightened from a pocket cut into the underside of the rail. Zipbolt: modern concealed bolt with a hex drive accessible from the underside — much easier to tighten in tight positions. Every handrail join on a fitted stair uses one of these — the joint is glued for stiffness and bolted for strength."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.vam6",
+        "family": "newel_component",
+        "name": "Solid Newel Post (Turned or Square)",
+        "grades": [
+          "Pine 90mm",
+          "Pine 100mm",
+          "Oak 90mm",
+          "Oak 100mm",
+          "Sapele 100mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "all balustrade types",
+          "handrail termination",
+          "through-bolting"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Newel post cut from a single solid timber billet. No hollow interior. Because it's solid, the outside can be turned on a lathe for decorative bulbs, chamfered on faces for a modern look, or left plain square. Standard trade sizes 90mm square (domestic) and 100mm square (grand or heavier). Turned newels are for traditional interiors; square chamfered for modern. Every UK stair-parts brand keeps both in stock in pine, oak, and sapele."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.jzv6",
+        "family": "newel_component",
+        "name": "Box Newel Post (Hollow Square)",
+        "grades": [
+          "Pine 90mm",
+          "Oak 90mm",
+          "MDF 90mm painted",
+          "Oak 100mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "decorative traditional stairs",
+          "painted stairs",
+          "modern square styles"
+        ],
+        "incompatible_with": [
+          "turned decorative profiles (has to be square)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A newel post built up from four boards forming a hollow square section. Less expensive than solid because it uses less timber. Because it's hollow, it can't be turned on a lathe — always square-faced, sometimes with applied bead or panel moulding for decoration. Traditionally the hollow was used to store house plans during construction, capped off with the newel cap when the build finished. Every UK stair-parts range covers box newels in pine, oak, MDF (for painted work), and hardwood options."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.q1t6",
+        "family": "newel_component",
+        "name": "Half-Newel (Wall-Mounted)",
+        "grades": [
+          "Pine 90mm",
+          "Oak 90mm",
+          "MDF 90mm painted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "stairs with a wall on one side",
+          "handrail termination against a wall"
+        ],
+        "incompatible_with": [
+          "free-standing newel positions"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A newel post split down the middle so it sits flat against a wall — used where the handrail needs to terminate against a wall rather than into a free-standing newel post. Looks as though the newel is half-sunk into the wall itself. Matches the full-newel profile on the balustrade side so the two visually pair. Standard trade part in pine, oak, and MDF (for painted work). Fixed through the flat back into masonry or studs."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.poaq",
+        "family": "newel_component",
+        "name": "Pin Newel (No Base Square)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "retrofit installations",
+          "existing staircase with base already fitted",
+          "cost-conscious upgrades"
+        ],
+        "incompatible_with": [
+          "new stairs with no existing base"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A newel post that doesn't include the bottom square (base) — supplied as just the shaft with a pin (tenon or dowel) at the bottom for fixing into an existing base post. Less expensive and less work than a full newel because you're not paying for or fitting a new base. Common on retrofits and upgrades where an existing newel base is being kept. Equally as strong as a full newel once fixed. Same trade sizes as full newels."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.fwk9",
+        "family": "newel_component",
+        "name": "Full Newel (Base + Shaft in One Piece)",
+        "grades": [
+          "Pine",
+          "Oak",
+          "Sapele",
+          "American Black Walnut"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "new bespoke stairs",
+          "primary anchoring newel positions"
+        ],
+        "incompatible_with": [
+          "retrofits with existing base"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "A newel post cut from a single timber billet that includes the bottom square (base) integral to the shaft — no join at the base. Structurally the strongest option because there's no weak point where a pin newel joins its base. Standard on new bespoke stairs where the newel is being fitted from scratch. Costs more than a pin newel because more timber is used and machining is longer."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605fn.9ypc",
+        "family": "newel_component",
+        "name": "Newel Drop (Decorative Underhang)",
+        "grades": [
+          "Pine turned",
+          "Oak turned",
+          "Sapele turned",
+          "Bespoke carved"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "traditional stairs",
+          "Georgian and Victorian restorations",
+          "landing newels visible from below"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The decorative turned piece that hangs beneath a newel post — visible from the room below the landing when the newel projects through the floor. Traditional feature on Victorian and Georgian staircases where the landing newel is seen from the hallway below. Standard trade profiles: acorn, ball, urn, teardrop. Optional but distinctive — turns a plain box newel bottom into a feature. Rarely seen on modern builds."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605mv.qjts",
+        "family": "non_timber_staircase",
+        "name": "Precast Concrete Stair",
+        "grades": [
+          "Fair face smooth",
+          "Exposed aggregate",
+          "Timber-inset tread",
+          "Stone-inset tread"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "commercial buildings",
+          "high-density residential",
+          "external stairs",
+          "fire escape stairs"
+        ],
+        "incompatible_with": [
+          "light-frame domestic construction (weight)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Reinforced concrete stair manufactured off-site in a fibreglass mould, then craned in as a single flight or as separate treads and landings. Fire-resistant, extremely durable, low maintenance. Fair-face (smooth) finish for interior use, exposed-aggregate for external. Treads can be inset with timber or stone for a warmer look. Standard in commercial, blocks of flats, industrial, and any escape stair situation where fire performance matters. Weight is the constraint — needs a structure that can carry it, which excludes most timber-framed domestic."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605mv.6g5g",
+        "family": "non_timber_staircase",
+        "name": "Steel Stringer + Timber Tread",
+        "grades": [
+          "Powder-coated black",
+          "Galvanised",
+          "Stainless"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "modern industrial design",
+          "loft conversions",
+          "commercial fit-outs"
+        ],
+        "incompatible_with": [
+          "traditional or period-property designs"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Steel plate or box-section string carrying timber treads bolted to it. Combines the visual lightness of steel (thin profile) with the warmth of timber underfoot. Standard modern-industrial look. String can be a single central spine, twin outer strings, or hidden inside a mezzanine floor plate. Timber treads typically 40-50mm oak, ash or walnut. Fabricated by a metalwork shop then delivered to the joiner for tread fit. Structural engineer sign-off on the steel section required."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605mv.dwzh",
+        "family": "non_timber_staircase",
+        "name": "Cantilevered Concrete Stair",
+        "grades": [
+          "In-situ cast",
+          "Precast"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "luxury commercial",
+          "high-end residential",
+          "sculptural feature stairs"
+        ],
+        "incompatible_with": [
+          "retrofit into standard timber-frame homes"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Concrete treads cantilevering from a structural wall — no visible support, appears to float. The most dramatic staircase construction available. Requires the supporting wall to be structural masonry or reinforced concrete deep enough to anchor the cantilever moment. Structural engineer input mandatory. Common on high-end residential and commercial architecture where the stair itself is a sculptural feature. Not retrofittable into most existing homes because the wall needs to be built to carry it from the start."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605mv.my91",
+        "family": "non_timber_staircase",
+        "name": "Glass Tread + Riser Stair",
+        "grades": [
+          "Toughened laminated",
+          "Structural laminated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "ultra-modern residential",
+          "commercial reception areas",
+          "steel stringer construction"
+        ],
+        "incompatible_with": [
+          "family homes with young children (visibility upward)",
+          "traditional interiors"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Structural glass treads (toughened + laminated for safety) fitted to steel or concealed supports. Combined with glass balustrade for the fully transparent look. The premium visual statement — expensive, technically demanding, glass has to be specified to structural grade (BS 6180 for balustrade, EN 12600 impact test for treads). Consideration for family homes: treads visible from below when someone climbs — not everyone is comfortable with that. Anti-slip surface treatment required on the tread face by regulation."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry605mv.cl10",
+        "family": "non_timber_staircase",
+        "name": "Composite Steel + Glass + Timber Stair",
+        "grades": [
+          "Bespoke fabricated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 8,
+        "compatible_with": [
+          "luxury residential",
+          "hospitality fit-outs",
+          "commercial showpiece stairs"
+        ],
+        "incompatible_with": [
+          "standard bespoke joinery workshops (needs multi-trade fabrication)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The hybrid: steel structural frame carrying timber treads, glass balustrade panels standoff-fixed, wire or steel handrail. Combines the strengths of each material — steel for span, timber for warmth underfoot, glass for openness, minimal visual weight. Fabricated across multiple workshops (steel shop, joiner, glazier) then site-assembled. Coordination-heavy — one project manager has to hold all three trades together. Cost is very high because of the multi-trade fabrication. Always confirm the specific price with the specialist company after design lock."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.jh2z",
+        "family": "fixing_component",
+        "name": "Tread Wedge (Housed String Construction)",
+        "grades": [
+          "Hardwood beech wedge",
+          "Softwood pine wedge"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "closed string staircases",
+          "housed tread joints",
+          "traditional wedge-and-glue construction"
+        ],
+        "incompatible_with": [
+          "cut string (treads sit on top, no housing to wedge)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The hardwood wedge driven into the housing behind each tread and riser on a closed-string staircase. Wedges from the back into the routed slot in the string, tight against the tread's back edge, glued in place. When wedges loosen over decades, the tread starts to move slightly under load — that's what creates the classic stair squeak. Standard trade part in beech or pine, sold in bags. Every workshop building a housed-string stair uses hundreds."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.7vn1",
+        "family": "fixing_component",
+        "name": "Glue Block (Tread-to-Riser Bracing)",
+        "grades": [
+          "25mm x 25mm x 100mm",
+          "50mm x 50mm x 150mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "all timber staircases",
+          "tread-riser corner reinforcement"
+        ],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Small softwood blocks glued and screwed into the internal corner where each tread meets its riser from behind. Braces the joint against flex, stops squeaks, and adds significant stiffness to the whole stair. Typical size 25-50mm square, 100-150mm long, with 4 countersunk screw holes drilled through. Every modern mass-produced staircase uses glue blocks; traditional wedge-and-glue construction can substitute or complement them. When glue blocks come loose (dried glue, cracked block), the stair starts squeaking — re-gluing is the standard fix."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.y401",
+        "family": "fixing_component",
+        "name": "Newel Through-Bolt (M12 Studding + Coach Bolt)",
+        "grades": [
+          "M12 x 200mm studding",
+          "M12 coach bolt",
+          "Stainless for external"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "all newel post fixings",
+          "trimmer joist anchoring",
+          "solid timber floor block"
+        ],
+        "incompatible_with": [
+          "plasterboard-only fixings (must anchor into solid timber)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "The single most important fixing on any staircase. M12 threaded studding or coach bolt through the newel base into the trimmer joist or a solid timber block bolted under the floor. Torqued to hold the newel rigid — any looseness here transfers up through the entire balustrade. Standard trade sizes 150-250mm depending on floor depth. Stainless for external stairs or damp locations."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.3e8y",
+        "family": "balustrade_infill",
+        "name": "Frameless Glass Balustrade Panel",
+        "grades": [
+          "17.52mm toughened laminated",
+          "21.52mm toughened laminated",
+          "structural glass grade"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "modern minimalist staircases",
+          "channel-fix or standoff-fix",
+          "compliant with BS 6180:2011"
+        ],
+        "incompatible_with": [
+          "areas with high impact risk",
+          "unfinished plaster fix positions"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Toughened and laminated structural glass panel forming the balustrade infill with no visible frame. Standard spec for frameless without a handrail: at least 17.52mm laminated glass. Fixed either into a heavy-duty aluminium channel bolted to the floor (fully concealed base fix), or with cylindrical stainless steel standoff point fixings holding the glass to the side of the staircase. Must meet BS 6180:2011 loading and Approved Doc K guarding height (900mm on flight, 1100mm on landing)."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.ek1l",
+        "family": "balustrade_infill",
+        "name": "Wire / Cable Balustrade",
+        "grades": [
+          "3mm stainless cable",
+          "5mm stainless cable",
+          "black-coated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "modern industrial design",
+          "external stairs",
+          "stairs with tensioned frame"
+        ],
+        "incompatible_with": [
+          "family homes with young children (ladder-like climbing risk)",
+          "100mm sphere rule struggles at wide spacings"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Horizontal stainless steel cables tensioned between newel posts or vertical intermediate posts, forming a see-through balustrade. Popular in modern industrial and coastal architecture. The 100mm sphere rule is tight — cables must be closely spaced (typically 80-100mm centres vertically) and correctly tensioned to prevent a sphere passing through. Horizontal cables also read as a ladder to young children — the reason many family designers won't use horizontal cable balustrades in a house with under-5s."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.yw67",
+        "family": "balustrade_infill",
+        "name": "Perforated Metal Sheet Balustrade",
+        "grades": [
+          "Powder-coated steel",
+          "Corten weathering steel",
+          "Bronze"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "contemporary architectural stairs",
+          "commercial fit-outs",
+          "large panel infills"
+        ],
+        "incompatible_with": [
+          "traditional interiors"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Metal sheet panels perforated with geometric patterns, used as balustrade infill between newel posts or in a rigid frame. Contemporary architectural look. Perforation hole sizes must be small enough that a 100mm sphere cannot pass — usually 20-50mm max hole diameter with tight spacing. Available in powder-coated steel (any RAL colour), Corten weathering steel (rust patina finish), and bronze. Cut to size by the metalwork shop then delivered for on-site fit."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.jhst",
+        "family": "balustrade_infill",
+        "name": "Solid Timber Infill Panel",
+        "grades": [
+          "Oak",
+          "Pine painted",
+          "MDF painted",
+          "Beaded T&G"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "cottage-style stairs",
+          "traditional barn conversions",
+          "period interior designs"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs",
+          "commercial escape stairs (fire performance)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Solid timber or T&G panel infill between top rail and base rail — no spindles, no gaps. The most traditional balustrade type, common in cottage, barn conversion, and rustic interiors. Automatically passes the 100mm sphere rule because there are no gaps. Painted white for classic cottage look or clear-finished oak for a natural barn-conversion feel. Doesn't provide fire performance so not for commercial escape stairs, but perfectly compliant for domestic staircases."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry630mw.uh7j",
+        "family": "balustrade_infill",
+        "name": "Traditional Georgian Ironwork Balustrade",
+        "grades": [
+          "Wrought iron",
+          "Cast iron",
+          "Powder-coated steel imitation"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "Georgian restorations",
+          "listed building work",
+          "grand entrance stairs"
+        ],
+        "incompatible_with": [
+          "modern designs",
+          "budget builds"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Ornate ironwork balustrade panels — the Georgian and Regency country-house classic. Scrollwork, S-curves, floral patterns, or geometric bar arrangements between newel posts. Wrought iron (traditional, hand-forged), cast iron (mass-produced from moulds), or modern powder-coated steel replicas for cost savings. Fitted between timber or stone treads with iron shoes at both ends. Restoration work only tends to use these — new builds rarely spec them because of cost and the required matching aesthetic."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79mx8.1wub",
+        "family": "metal_spiral_staircase",
+        "name": "Steel Spiral Staircase Kit (Powder-Coated)",
+        "grades": [
+          "1100mm dia",
+          "1200mm dia",
+          "1300mm dia",
+          "1400mm dia",
+          "1500mm dia",
+          "1600mm dia"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "loft access",
+          "mezzanine access",
+          "modern industrial interiors",
+          "warehouse conversions"
+        ],
+        "incompatible_with": [
+          "Category A BS 5395-2 primary stair use at 1100-1300mm diameters (below 600mm clear tread width)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Mild steel spiral staircase kit, laser-cut treads with non-slip tread plate pattern, central steel column, matching tubular handrail. Standard trade colours: white, light grey, black, dark grey — all powder-coated in RAL finishes. Tread rise is adjustable on site using shim rings on the central column (each shim adds roughly 5mm rise). Kit configuration allows clockwise or anticlockwise rotation to suit the room layout. Fast to install compared to wooden spirals — a competent DIY-er can put one together in a weekend, professional installer in a day."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79n4s.lt8w",
+        "family": "loft_access",
+        "name": "Aluminium Concertina Loft Ladder",
+        "grades": [
+          "Standard",
+          "Heavy duty",
+          "Fire rated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "small hatch openings (550x700mm+)",
+          "occasional storage access",
+          "tight loft entry points"
+        ],
+        "incompatible_with": [
+          "heavy loft users (regularly carrying loads up)",
+          "primary access to habitable loft rooms"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Scissor-style folding aluminium ladder that expands when pulled down and collapses into a compact stack inside the loft hatch when not in use. Smallest footprint of any loft ladder type — fits into openings other ladders can't. Very lightweight aluminium construction. Downsides: less rigid feel underfoot than fixed ladders, more moving joints to maintain, not ideal for anyone carrying loads up regularly. Perfect for occasional storage access."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79n4s.w1rs",
+        "family": "loft_access",
+        "name": "Timber Folding Loft Ladder",
+        "grades": [
+          "Pine standard",
+          "Insulated",
+          "Fire rated FD30"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "standard hatch openings",
+          "insulated loft applications",
+          "protected stairway compliance"
+        ],
+        "incompatible_with": [
+          "very small hatches (needs longer opening than concertina)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Timber ladder in typically 3-section folding format, complete with matching timber hatch (often pre-insulated). Solid feel underfoot, quiet operation, warm aesthetic. Widely specified for loft conversions because the timber hatch can be fire-rated FD30 to meet protected-stairway rules on 3-storey properties. Standard trade brands supply as complete unit — ladder + hatch + frame + trim ring, one-day install for a competent joiner. Slightly larger fitted footprint than concertina."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79n4s.1yko",
+        "family": "loft_access",
+        "name": "Aluminium Telescopic (Sliding) Loft Ladder",
+        "grades": [
+          "Standard",
+          "Heavy duty",
+          "Wall-mounted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "limited floor space below the hatch",
+          "vertical wall installations",
+          "tight rooms"
+        ],
+        "incompatible_with": [
+          "large loft hatches (looks over-slim)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Aluminium ladder in sliding telescopic sections that extend straight down with the sections locking into each other. Smallest deployed footprint on the room floor because it descends vertically rather than folding outward. Ideal for narrow rooms where a folding ladder would foul furniture or a wall. Sturdy and durable — no folding joints to maintain. Can also mount to a wall for stationary access to a mezzanine."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79n4s.ai5p",
+        "family": "loft_access",
+        "name": "Electric Loft Ladder",
+        "grades": [
+          "Standard 240V",
+          "Remote controlled",
+          "Smart-home integrated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "elderly or reduced-mobility users",
+          "high ceilings where manual pull is difficult",
+          "luxury installations"
+        ],
+        "incompatible_with": [
+          "budget projects",
+          "installations without accessible mains supply"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Motorised loft ladder that lowers and retracts at the press of a button (wall switch or remote). Solves the reach problem for high ceilings and the effort problem for anyone with reduced mobility. Requires a 240V mains supply at the ceiling — electrician needs to first-fix the wiring before the loft goes on. Higher cost than manual ladders, more moving parts, requires occasional servicing. Popular in high-end residential and any home where the primary user isn't comfortable with a manual pull."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry79n4s.pgux",
+        "family": "loft_access",
+        "name": "Fire-Rated Loft Hatch (FD30/FD60)",
+        "grades": [
+          "FD30 (30 minute)",
+          "FD60 (60 minute)",
+          "Bespoke sizes to 1200x900mm"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "protected stairway loft access",
+          "3-storey dwellings",
+          "HMO conversions"
+        ],
+        "incompatible_with": [
+          "standard 2-storey dwellings without loft habitable conversion"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Fire-rated loft hatch designed to maintain the protected stairway compartmentation on any 3-storey house, loft conversion, or HMO. Standard FD30 gives 30-minute fire resistance (the domestic standard); FD60 for higher-risk buildings. Manufactured as a fully-sealed unit — intumescent seals around the frame, self-closing hinges, cold smoke seal. Even if the loft is only used for storage, on a 3-storey property the hatch has to be fire-rated to keep the escape route intact. Available bespoke up to 1200x900mm for larger openings."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7mnma.ecqc",
+        "family": "metal_staircase",
+        "name": "Straight Steel Staircase (Structural Frame)",
+        "grades": [
+          "S235 mild steel",
+          "S275 structural",
+          "S355 higher strength"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 3,
+        "compatible_with": [
+          "mezzanine access",
+          "loft conversions",
+          "warehouse conversions",
+          "modern industrial homes",
+          "commercial fit-outs"
+        ],
+        "incompatible_with": [
+          "period property restorations",
+          "traditional cottage interiors"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Straight steel staircase built as a welded or bolted structural frame — twin outer steel strings, single central spine (mono-string), or plate-side stringers. Typical steel grades S235/S275 for domestic, S355 for longer spans. Powder-coated after fabrication in RAL colours or hot-dip galvanised for external. Combined with timber, concrete, or steel-plate treads. Fabrication is a metalwork specialist trade, not a joinery job — always structural engineer sign-off on the calc."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7mnma.k40w",
+        "family": "metal_staircase",
+        "name": "Wrought Iron Traditional Staircase Balustrade",
+        "grades": [
+          "Hand-forged",
+          "Machine-forged",
+          "Cast iron equivalent"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "Georgian restorations",
+          "Regency townhouses",
+          "listed building work",
+          "grand entrance stairs"
+        ],
+        "incompatible_with": [
+          "modern minimalist stairs",
+          "budget builds"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Ornate hand-forged iron balustrade — scrolls, floral patterns, S-curves, geometric motifs — the classical Georgian and Regency staircase look. Hand-forged by traditional blacksmiths for restoration and one-off luxury; machine-forged for repeat volume; cast iron for identical mass-production. Modern powder-coated steel replicas exist at lower cost for less strict restorations. Fixed with iron shoes into timber or stone treads. Restoration work only tends to specify these because of cost and matching aesthetic requirements."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7mnma.mzgg",
+        "family": "metal_staircase",
+        "name": "Stainless Steel Staircase Components",
+        "grades": [
+          "304 (interior)",
+          "316 (external/marine)",
+          "Mirror polished",
+          "Brushed satin"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 3,
+        "compatible_with": [
+          "contemporary residential",
+          "commercial premium",
+          "external stairs",
+          "coastal locations"
+        ],
+        "incompatible_with": [
+          "traditional interiors",
+          "budget projects"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Stainless steel for staircase strings, handrails, balustrade posts, cable balustrade, and fixings. Grade 304 for interior; grade 316 (marine grade with higher molybdenum content) for external and coastal. Available in mirror-polished (high-shine reflective) or brushed satin (matte industrial). Doesn't rust in normal use, doesn't need repainting, cleans with a damp cloth. Higher material cost than powder-coated mild steel but much longer maintenance cycle. Standard on high-end contemporary residential."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7mnma.5prv",
+        "family": "metal_staircase",
+        "name": "Bronze Staircase Components (Luxury)",
+        "grades": [
+          "Traditional bronze cast",
+          "Bronze-plated steel"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "ultra-luxury residential",
+          "hotel commercial",
+          "listed building restoration"
+        ],
+        "incompatible_with": [
+          "standard budget projects"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Solid or plated bronze for balustrade posts, handrail caps, decorative brackets, and feature staircase highlights. Warm gold-brown patina that develops beautifully over decades. Traditional bronze is cast in the metalworker's foundry; bronze-plated steel gives similar appearance at lower cost. Very high material cost — usually specified only where the client wants a specific look no other metal delivers. Historic country-house restoration and ultra-luxury modern residential are the main markets."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7onvo.b14g",
+        "family": "glass_balustrade",
+        "name": "Toughened Laminated Glass Balustrade Panel",
+        "grades": [
+          "17.52mm (10.10.4 laminate)",
+          "21.52mm (12.10.4)",
+          "25.52mm (extra heavy)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "frameless installations",
+          "channel fix",
+          "standoff point fix",
+          "external balustrade"
+        ],
+        "incompatible_with": [
+          "areas with severe impact risk",
+          "budget projects"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Two panes of toughened glass sandwiched with a PVB (polyvinyl butyral) interlayer that holds broken glass together if either pane cracks. Standard structural spec for frameless balustrade WITHOUT top handrail is 17.52mm (two 10mm toughened panes plus 0.4mm PVB). Heavier specs used for wider spans, external, or higher barrier loads. Meets BS 6180:2011 loading (0.36-0.74 kN/m depending on use), EN 12150 (toughened glass), and EN 14449 (laminated glass) standards."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7onvo.ihha",
+        "family": "glass_balustrade",
+        "name": "Toughened Glass Balustrade Panel (Non-Laminated)",
+        "grades": [
+          "10mm toughened",
+          "12mm toughened",
+          "15mm toughened"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "framed balustrade with top rail",
+          "internal use only",
+          "budget-conscious specifications"
+        ],
+        "incompatible_with": [
+          "frameless without top handrail",
+          "external use",
+          "high-impact locations"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Single-pane toughened glass, roughly 5x the strength of annealed float glass. When it fails, breaks into small dice-like cubes (safer than shards but the panel is instantly gone). ALWAYS needs a top handrail as a secondary barrier — Approved Doc K requires a continuous top rail when toughened-only glass is used, in case the glass suddenly fails. Less expensive than laminated but limited applications. Not suitable for frameless installations."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7onvo.1tp7",
+        "family": "glass_fitting",
+        "name": "Aluminium Base Channel (Glass Balustrade Fix)",
+        "grades": [
+          "Anodised",
+          "Powder-coated",
+          "Marine grade"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 3,
+        "compatible_with": [
+          "frameless glass balustrade",
+          "landing edges",
+          "stair strings"
+        ],
+        "incompatible_with": [
+          "standoff design intent"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Heavy aluminium extrusion bolted along the balustrade line, glass panels drop in from above and lock with wedges or bonded rubber gaskets. Fully conceals the base fixing — clean single line where the glass meets the floor or string. Standard trade profile with matching cover cladding to hide the aluminium body. Fastest install of the frameless options."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7onvo.m19f",
+        "family": "glass_fitting",
+        "name": "Standoff Point Fixing (Glass Balustrade)",
+        "grades": [
+          "Stainless 316",
+          "Brass",
+          "Powder-coated"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "side-fixed glass panels",
+          "cantilevered glass",
+          "design-feature installations"
+        ],
+        "incompatible_with": [
+          "hidden-fix design intent"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Cylindrical stainless steel or brass fitting that holds the glass panel away from the stair string or trimmer joist face. Bolt through the stair structure, gasket, glass panel, cover cap. Standoffs become a visible design feature — the polished stainless disks showing where the glass is held. Typically 4 standoffs per panel, calculated for the specific glass thickness and panel size."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7qndo.ytxe",
+        "family": "concrete_staircase_finish",
+        "name": "Fair Face Concrete Finish",
+        "grades": [
+          "Smooth fair-face",
+          "Textured fair-face",
+          "Sandblasted"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "contemporary interiors",
+          "commercial reception areas",
+          "loft conversions"
+        ],
+        "incompatible_with": [
+          "traditional interiors",
+          "high-slip requirements without treatment"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Concrete finished smooth from the formwork, no additional treatment beyond sealing. Shows the natural grey tone of the concrete mix, sometimes with visible board marks or formwork joints as design features. Requires quality formwork on the pour (any defect shows forever). Sealed with a penetrating concrete sealer to reduce staining and dust. Anti-slip treatment (etching, applied grip strip) mandatory on treads if used as staircase surface."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7qndo.p2gg",
+        "family": "concrete_staircase_finish",
+        "name": "Exposed Aggregate Concrete Finish",
+        "grades": [
+          "Fine aggregate",
+          "Coarse aggregate",
+          "Coloured aggregate"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "external staircases",
+          "commercial entrances",
+          "high-slip requirements",
+          "industrial premises"
+        ],
+        "incompatible_with": [
+          "polished interior aesthetic"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Concrete finish where the surface cement is washed or brushed away while still curing, exposing the stone aggregate underneath. Natural anti-slip texture, gorgeous variation in colour and pattern depending on aggregate choice, industrial-honest aesthetic. Standard on external steps and entrance stairs where the anti-slip performance is genuinely useful. Colour options run from natural grey through to specified coloured aggregates (blue slate, red granite chips, marble)."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7qndp.jizu",
+        "family": "concrete_staircase_finish",
+        "name": "Polished Concrete Finish",
+        "grades": [
+          "Salt and pepper (fine grind)",
+          "Medium exposure",
+          "Full aggregate (deep grind)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "luxury contemporary interiors",
+          "commercial premium",
+          "polished concrete floor continuation"
+        ],
+        "incompatible_with": [
+          "exterior use (slippery when wet)",
+          "traditional interiors"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Mechanically ground and polished through progressive diamond pad grits (typically 50→100→200→400→800→1500→3000) to a high-sheen mirror finish. Reveals the aggregate structure of the concrete depending on grind depth. Sealed with a densifier chemistry rather than a surface coating so the finish is genuinely part of the concrete, not a film. Standard on premium commercial and modern luxury residential where concrete is a design feature. Anti-slip treatment required on wet-use stair treads."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mry7qndp.gpnb",
+        "family": "concrete_staircase_finish",
+        "name": "Terrazzo Tread Finish",
+        "grades": [
+          "Traditional in-situ",
+          "Precast terrazzo tile",
+          "Bespoke colour mix"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 5,
+        "compatible_with": [
+          "luxury residential",
+          "commercial reception",
+          "hospitality",
+          "art deco restoration"
+        ],
+        "incompatible_with": [
+          "budget projects"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Cement matrix with marble, granite, or glass aggregate chips, poured and cured then ground to a smooth polished surface. Available as in-situ pour (any pattern, colour, and shape) or as precast terrazzo tiles bonded to a concrete substrate. Historically popular in 1920s-30s art deco projects; back in fashion for luxury contemporary and hospitality. Endless colour and aggregate variation. Very hard wearing, easy to clean, and lasts effectively forever. Higher cost than plain concrete finish but visually much richer."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mryb4m82.ng5h",
+        "family": "wood_finish_prep",
+        "name": "Shellac Knotting Solution",
+        "grades": [
+          "Patent Shellac (brown, traditional)",
+          "White Shellac (bleached, for pale finishes)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 0,
+        "compatible_with": [
+          "all bare timber before painting or clear finish",
+          "pine and softwoods especially",
+          "any wood with visible knots"
+        ],
+        "incompatible_with": [
+          "already-finished timber (needs to be bare wood)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Small bottle, weird name, disproportionately useful. Fast-drying shellac dissolved in alcohol, painted onto every knot and resinous section on bare timber BEFORE the first coat of paint or lacquer. Job: seals the natural resin inside the knot so it can't bleed through the finish over the coming years and stain everything a yellow-brown. Two thin coats brushed on, let dry between (10-15 minutes each), then paint or lacquer as normal. Patent shellac (brown-tinted) for painted work — the tint disappears under paint. White (bleached) shellac for clear or pale-stained finishes so nothing shows through. Every stair fitter has a bottle in the van. Costs almost nothing, saves years of yellow bleed-through on painted pine staircases."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mryb4m82.ppei",
+        "family": "softwood",
+        "name": "White Deal Pine (Scandinavian / Baltic softwood)",
+        "grades": [
+          "Joinery Grade",
+          "Fifths / Sixths",
+          "Unsorted",
+          "V-Grade"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 12,
+        "compatible_with": [
+          "painted staircases",
+          "cream / white / off-white paint schemes",
+          "traditional turned balustrades with hardwood handrail",
+          "modern square balustrade with glass panels"
+        ],
+        "incompatible_with": [
+          "clear finish (knots and grain read too rustic)",
+          "dark stain (blotches unevenly on softwood)"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Popular UK staircase softwood, blonde to pale straw colour, moderate knot density that reads as characterful when painted white or cream but rustic when left natural. Softer than hardwood — dents from pointy shoes, stones caught in shoe soles, and dropped tools show up. Standard build pattern: white deal treads and strings painted, balustrade in matching paint or plain white, handrail in contrasting hardwood (oak, sapele) for durability and grip character. Popular because of price and availability — one of the most stocked staircase timbers in every UK builders' merchant."
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.mat.mrych9xg.k3su",
+        "family": "engineered_timber",
+        "name": "LamWood (Finger-Jointed / Edge-Glued Engineered Pine)",
+        "grades": [
+          "A/A (clear both faces)",
+          "A/B (one clear face)",
+          "B/B (utility)"
+        ],
+        "pack_sizes": [],
+        "defect_risk": "low",
+        "waste_factor_pct": 3,
+        "compatible_with": [
+          "staircase strings",
+          "treads",
+          "risers",
+          "landing boards",
+          "painted or clear-finished stairs"
+        ],
+        "incompatible_with": [
+          "visible feature use where a single-tree grain pattern is essential"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Engineered pine board made by cutting small pieces of natural pine, removing every knot and defect, and glue-laminating the clean sections back together into full-size boards. Called finger-jointed (visible zig-zag joints along the length) or edge-glued (parallel joints along the edge) depending on process. Result: pine appearance and workability, but with no knots, exceptional dimensional stability, and consistent quality across every board. Costs more per board than solid knotty pine, but delivers less waste for the manufacturer (no knot working-around), faster machining, and predictable quality. Trade-standard stock in modern staircase workshops — a lot of the 'pine string 32mm x 250mm' spec you'll see on quotes is actually LamWood, not solid pine."
+          }
+        ],
+        "confidence": "high"
+      }
+    ]
+  },
+  "updated_at": "2026-07-24T07:42:46.796Z"
+}

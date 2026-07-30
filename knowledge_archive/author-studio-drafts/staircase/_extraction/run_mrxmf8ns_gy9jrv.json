@@ -1,0 +1,502 @@
+{
+  "run_id": "run_mrxmf8ns_gy9jrv",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "f9aadc21798883cf",
+  "input_length": 2710,
+  "llm_model": "claude-opus-4-7",
+  "created_at": "2026-07-23T14:42:59.608Z",
+  "candidates": [
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c0",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c0",
+        "statement": "For new staircases, full-width carpet provides a warm appearance, improves comfort underfoot and significantly increases slip resistance, which can make it an excellent choice for families with young children or elderly occupants where additional safety is important.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "For new staircases, full-width carpet provides a warm appearance, improves comfort underfoot and significantly increases slip resistance. This can make it an excellent choice for families with young children or elderly o..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "For new staircases, full-width carpet provides a warm appearance, improves comfort underfoot and significantly increases slip resistance. This can make it an excellent choice for families with young children or elderly occupants where additional safety is important.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:02.138Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:30.333Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:02.138Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c1",
+        "statement": "Once a full-width carpet has been installed, fixing methods such as gripper rods or other fixing systems may leave marks or fixing holes in the timber. If the carpet is removed years later, these areas may remain visible.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "However, homeowners should understand that once a full-width carpet has been installed, fixing methods such as gripper rods or other fixing systems may leave marks or fixing holes in the timber. If the carpet is removed ..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "However, homeowners should understand that once a full-width carpet has been installed, fixing methods such as gripper rods or other fixing systems may leave marks or fixing holes in the timber. If the carpet is removed years later, these areas may remain visible.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:04.629Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:31.807Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:04.629Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c2",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c2",
+        "statement": "Timber naturally changes colour as it ages. Areas protected beneath carpet receive less light and air exposure than exposed timber, so when carpet is removed after many years, the previously covered timber may appear noticeably lighter than the surrounding exposed wood.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Timber naturally changes colour as it ages. Areas protected beneath carpet receive less light and air exposure than exposed timber. As a result, when carpet is removed after many years, the previously covered timber may ..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Timber naturally changes colour as it ages. Areas protected beneath carpet receive less light and air exposure than exposed timber. As a result, when carpet is removed after many years, the previously covered timber may appear noticeably lighter than the surrounding exposed wood.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:05.984Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:32.698Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:05.984Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c3",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c3",
+        "statement": "Many homeowners choose to enjoy the appearance of their new timber staircase for a period before installing carpet, since once carpet is fitted much of the natural timber becomes hidden from view.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Many homeowners choose to enjoy the appearance of their new timber staircase for a period before installing carpet. Once carpet is fitted, much of the natural timber becomes hidden from view."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Many homeowners choose to enjoy the appearance of their new timber staircase for a period before installing carpet. Once carpet is fitted, much of the natural timber becomes hidden from view.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:07.675Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:33.580Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:07.675Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c4",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c4",
+        "statement": "Centre stair runners offer an alternative to full-width carpet. They expose more of the staircase while still providing additional grip and creating an attractive traditional appearance. However, the timber beneath the runner will also age differently from the exposed areas over time.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Centre stair runners offer an alternative to full-width carpet. They expose more of the staircase while still providing additional grip and creating an attractive traditional appearance. However, the timber beneath the r..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Centre stair runners offer an alternative to full-width carpet. They expose more of the staircase while still providing additional grip and creating an attractive traditional appearance. However, the timber beneath the runner will also age differently from the exposed areas over time.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:09.199Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:34.518Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:09.199Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c5",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c5",
+        "statement": "Matching the staircase carpet with hallway and landing flooring can create a continuous visual flow throughout the home.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Matching the staircase carpet with hallway and landing flooring can create a continuous visual flow throughout the home."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Matching the staircase carpet with hallway and landing flooring can create a continuous visual flow throughout the home.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:10.904Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:35.479Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:10.904Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c6",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.jrv_c6",
+        "statement": "Where a staircase will be fully carpeted, some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate. This can reduce overall project costs without affecting the finished appearance once carpet has been installed. Material selection should always be discussed with the staircase manufacturer.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Where a staircase will be fully carpeted, some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate. This can reduce overall project c..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "professional_recommendation"
+      },
+      "source_span": "Where a staircase will be fully carpeted, some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate. This can reduce overall project costs without affecting the finished appearance once carpet has been installed. Material selection should always be discussed with the staircase manufacturer.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:12.889Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:36.324Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:12.889Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c7",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "Centre stair runner",
+        "definition": "A carpet that runs down the centre of a staircase, exposing more of the staircase while still providing additional grip and creating an attractive traditional appearance.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Centre stair runners offer an alternative to full-width carpet. They expose more of the staircase while still providing additional grip and creating an attractive traditional appearance."
+          }
+        ]
+      },
+      "source_span": "Centre stair runners offer an alternative to full-width carpet. They expose more of the staircase while still providing additional grip and creating an attractive traditional appearance.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:14.656Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:37.501Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:14.656Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c8",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "Gripper rod",
+        "definition": "A fixing system used to secure carpet to a staircase; these fixings may leave marks or fixing holes in the timber that can remain visible if the carpet is later removed.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "fixing methods such as gripper rods or other fixing systems may leave marks or fixing holes in the timber"
+          }
+        ]
+      },
+      "source_span": "fixing methods such as gripper rods or other fixing systems may leave marks or fixing holes in the timber",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:16.472Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:38.510Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:16.472Z"
+    },
+    {
+      "id": "run_mrxmf8ns_gy9jrv_c9",
+      "brain_slug": "staircase",
+      "kind": "materials.mat",
+      "payload": {
+        "id": "cand.materials_mat.jrv_c9",
+        "family": "engineered board",
+        "name": "MDF (treads and risers)",
+        "grades": [],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate"
+          }
+        ],
+        "confidence": "medium"
+      },
+      "source_span": "some manufacturers may offer MDF treads and risers as a more economical option while retaining hardwood structural components where appropriate",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:42:59.608Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "f9aadc21798883cf"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:43:18.623Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:43:39.836Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:43:18.623Z"
+    }
+  ]
+}

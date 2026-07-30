@@ -1,0 +1,16 @@
+{
+  "brain_slug": "staircase",
+  "module": "pricing_model",
+  "author_id": "phillipofarrell@gmail.com",
+  "version": "0.1.0",
+  "payload": {
+    "header": {
+      "version": "0.1.0",
+      "authored_by": "phillipofarrell@gmail.com",
+      "authored_at": "2026-07-23T22:15:00.000Z",
+      "regions": ["UK"]
+    },
+    "rules": []
+  },
+  "updated_at": "2026-07-23T22:15:00.000Z"
+}

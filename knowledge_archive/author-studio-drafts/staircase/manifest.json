@@ -1,0 +1,23 @@
+{
+  "brain_slug": "staircase",
+  "module": "manifest",
+  "author_id": "phillipofarrell@gmail.com",
+  "version": "0.2.0",
+  "interim_author_notice": "Workflow module (0.2.0) is interim-Authored by Claude Opus 4.7 as of 2026-07-24 pending founding Staircase Author hire. All other modules remain Philip's authorship.",
+  "payload": {
+    "slug": "staircase",
+    "name": "Nex Staircases",
+    "category": "trade",
+    "version": "0.2.0",
+    "status": "published",
+    "primary_author_id": "phillipofarrell@gmail.com",
+    "primary_author_name": "Nex",
+    "primary_author_creds": null,
+    "supported_countries": ["UK"],
+    "supported_regions": null,
+    "published_at": null,
+    "last_reviewed_at": null,
+    "v1_modules_present": ["craft", "materials", "defects", "regulations", "workflow"]
+  },
+  "updated_at": "2026-07-24T07:15:00.000Z"
+}

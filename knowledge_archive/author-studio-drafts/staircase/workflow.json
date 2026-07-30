@@ -1,0 +1,259 @@
+{
+  "brain_slug": "staircase",
+  "module": "workflow",
+  "author_id": "claude-opus-4-7-interim-2026-07-24",
+  "version": "0.2.0",
+  "interim_author_notice": "Content authored by Claude (Opus 4.7) as interim Author 2026-07-24 pending founding Staircase Author hire (see docs/recruitment/STAIRCASE_AUTHOR_JOB_POSTING_V1.md). All items prefixed 'interim_' for easy discovery + replacement. Sources restricted to Crown copyright material (Approved Doc K), BS-standard references (name + section only, no verbatim quotation), and general UK trade practice marked as such. Real Author should review, retain what's accurate, rewrite in their own voice, and take authorship.",
+  "payload": {
+    "header": {
+      "version": "0.2.0",
+      "authored_by": "claude-opus-4-7-interim-2026-07-24",
+      "authored_at": "2026-07-24T07:00:00.000Z",
+      "regions": ["UK"]
+    },
+    "playbooks": [
+      {
+        "id": "interim_measure_stair_opening_newbuild",
+        "title": "Measure a staircase opening for a new-build private stair",
+        "applies_to": ["private_dwelling", "new_build", "single_family"],
+        "steps": [
+          { "order": 1, "action": "Measure the total floor-to-floor rise from finished floor to finished floor, top-to-top. Note where a finish (carpet, hardwood, tile) will change the level and account for it.", "notes": "Small errors here compound over 13-16 risers." },
+          { "order": 2, "action": "Measure the stair opening length and width available in the upper floor. Note obstructions (joists, beams, ducts) inside the opening.", "notes": "A drop in ceiling void inside the opening changes headroom later." },
+          { "order": 3, "action": "Measure headroom clearance from the pitch line of the intended stair to the underside of the trimmer or ceiling above.", "notes": "Approved Doc K asks for 2m minimum in most cases. Loft conversions allow reduced headroom under §1.16-1.18." },
+          { "order": 4, "action": "Check the going distance (horizontal run) the opening allows. Confirm the stair type (straight, L-shape, U-shape, winder) actually fits.", "notes": "If run is short you may need winders or a space-saver — both have separate rules." },
+          { "order": 5, "action": "Record floor thicknesses (upper and lower) — you'll need these when working out riser count.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 3, "verify": "You have three numbers: total rise (mm), opening length (mm), opening width (mm). Missing any means you can't design the stair." },
+          { "after_step": 5, "verify": "Sketch the opening from above with all measurements marked. If someone else took over the job now, could they design from your notes?" }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · Protection from falling, collision and impact · 2013 edition (as amended) · §1.1-1.18", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k", "note": "Crown copyright · Open Government Licence" },
+          { "source": "General UK trade practice · interim-Author interpretation · verify with founding Author" }
+        ],
+        "confidence": "high",
+        "audience_level": 3,
+        "classification": "industry_good_practice"
+      },
+      {
+        "id": "interim_calculate_rise_and_going_private",
+        "title": "Calculate rise and going within Approved Doc K limits — private stair",
+        "applies_to": ["private_dwelling"],
+        "steps": [
+          { "order": 1, "action": "Take your total floor-to-floor rise in mm. Divide by an estimated riser count (start with 13, 14 or 15 — most domestic stairs land here).", "notes": "" },
+          { "order": 2, "action": "The result is your individual riser height. Approved Doc K limits private stair rise to 150-220mm. If your figure sits outside this, change the riser count and divide again.", "notes": "13 risers = high steep stair. 16 risers = shallow gentle stair. Feel is the tell." },
+          { "order": 3, "action": "Choose a going that suits — minimum 220mm for private stairs. Common comfortable going is 220-250mm.", "notes": "Wider going eases the walk but eats floor plan space." },
+          { "order": 4, "action": "Apply the twice-rise-plus-going check: 2R + G should fall between 550mm and 700mm.", "notes": "This ratio predicts how the stair feels underfoot — outside 550-700 it walks awkwardly." },
+          { "order": 5, "action": "Confirm the pitch stays below 42° (private stair maximum). Pitch = arctan(R/G).", "notes": "Most compliant rise/going combos land at 35-40° pitch." }
+        ],
+        "checkpoints": [
+          { "after_step": 2, "verify": "Riser height is between 150mm and 220mm. If not, the stair is non-compliant — change the riser count." },
+          { "after_step": 4, "verify": "2R + G is between 550mm and 700mm. If not, adjust going or riser height." },
+          { "after_step": 5, "verify": "Pitch is at most 42°. Ideally lower for comfort." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §1.1 (private stair rise/going/pitch limits)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" }
+        ],
+        "confidence": "high",
+        "audience_level": 3,
+        "classification": "industry_good_practice"
+      },
+      {
+        "id": "interim_design_winder_set_approved_doc_k",
+        "title": "Design a winder set to Approved Doc K rules",
+        "applies_to": ["private_dwelling", "winders"],
+        "steps": [
+          { "order": 1, "action": "Confirm the space needs winders — a straight or half-turn flight is easier if the plan allows it.", "notes": "Winders are used when horizontal run is short but you still want a full-height stair." },
+          { "order": 2, "action": "Plan the winder positions. Approved Doc K allows kite winders (typically 3 winders forming a quarter turn), but no more than 2 consecutive turns of winders in one flight without a landing between.", "notes": "" },
+          { "order": 3, "action": "Measure the going of each winder at 270mm from the narrow end. This is the compliance point, not the middle of the tread.", "notes": "" },
+          { "order": 4, "action": "Check the minimum going at the inside edge of every winder — this must be at least 50mm.", "notes": "Very narrow inner edges make winders feel unsafe underfoot even if compliant." },
+          { "order": 5, "action": "Confirm the going at the 270mm point is at least equal to the going of the straight flight the winders join.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 4, "verify": "Every winder has ≥50mm going at inside edge and ≥220mm going at 270mm from narrow end (private stair)." },
+          { "after_step": 5, "verify": "Winder going at measurement point equals or exceeds the straight-flight going." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §1.5-1.9 (winders)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" }
+        ],
+        "confidence": "high",
+        "audience_level": 4,
+        "classification": "industry_good_practice",
+        "risk_level": "medium",
+        "safety_note": "Non-compliant winders are a common cause of home stair falls. If in doubt, defer to a qualified joiner or building control officer."
+      },
+      {
+        "id": "interim_alternating_tread_legality_check",
+        "title": "Alternating-tread (space-saver) stair — legality check before you fit",
+        "applies_to": ["private_dwelling", "loft_conversion", "space_saver"],
+        "steps": [
+          { "order": 1, "action": "Confirm the stair serves ONLY a loft or roof-space conversion — alternating-tread stairs are not permitted as the main stair to any storey.", "notes": "This is the single biggest compliance trap on space-savers." },
+          { "order": 2, "action": "Confirm the loft the stair serves contains ONE habitable room (or a habitable room plus a bathroom / WC, but not two habitable rooms).", "notes": "" },
+          { "order": 3, "action": "Confirm there is no reasonable alternative to a space-saver in the available floor plan — Approved Doc K expects a conventional stair where one will fit.", "notes": "" },
+          { "order": 4, "action": "Confirm handrails are provided on both sides for the full flight length.", "notes": "Non-negotiable for alternating-tread compliance." },
+          { "order": 5, "action": "Confirm the pattern of alternating treads is preserved (foot pattern must match — you always start on the same foot).", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 3, "verify": "You have written confirmation that the stair serves a single habitable room in a loft, and that a conventional stair will not fit. If not, do not fit." },
+          { "after_step": 4, "verify": "Both handrails ordered and marked for install." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §1.10-1.15 (alternating-tread stairs)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" }
+        ],
+        "confidence": "high",
+        "audience_level": 3,
+        "classification": "safety_advice",
+        "risk_level": "high",
+        "safety_note": "Alternating-tread stairs in the wrong context are a serious safety issue. Merchants and homeowners regularly ask about these — always check the legality gate first."
+      },
+      {
+        "id": "interim_set_out_cut_string",
+        "title": "Set out and mark a cut string",
+        "applies_to": ["cut_string", "workshop"],
+        "steps": [
+          { "order": 1, "action": "Confirm the design: rise, going, tread thickness, string thickness, nosing overhang and any tread projection past the string.", "notes": "" },
+          { "order": 2, "action": "Make or bring a pitch board — a right-angled template matching rise × going. This is your marking gauge.", "notes": "One pitch board is used for every tread on both strings." },
+          { "order": 3, "action": "Mark the top of the string with the plumb line for the upper newel, then walk the pitch board down the string, marking each tread and riser line in turn.", "notes": "Work from a datum line parallel to the string edge — never freehand." },
+          { "order": 4, "action": "Mark the nosing profile at each tread position — the cut string is 'stepped' with the treads sitting on top.", "notes": "" },
+          { "order": 5, "action": "Verify the total step count matches your design and that the bottom cut leaves you at floor level once the tread is fitted.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 3, "verify": "Every tread and riser line marked. Count matches the design." },
+          { "after_step": 5, "verify": "String cut lines terminate correctly at both ends. Dry-fit before committing to the second string." }
+        ],
+        "evidence": [
+          { "source": "General UK trade practice · interim-Author interpretation · verify with founding Author" },
+          { "source": "BS 5395-1:2010 · Stairs · Code of practice for the design of stairs with straight flights and winders · referenced only", "note": "BSI copyright · full text via BSI subscription" }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "industry_good_practice"
+      },
+      {
+        "id": "interim_install_straight_flight_first_fix",
+        "title": "Install a straight flight — first fix",
+        "applies_to": ["straight_flight", "install", "first_fix"],
+        "steps": [
+          { "order": 1, "action": "Recheck opening dimensions against the stair before lifting it in — a stair that binds in the opening will need trimming that's much easier to do on the ground.", "notes": "" },
+          { "order": 2, "action": "Set the bottom newel in position but not yet fixed — you use it as an alignment reference.", "notes": "" },
+          { "order": 3, "action": "Walk the flight into the opening. On tight fits, take the handrail off first.", "notes": "Two people minimum for anything over 10 treads." },
+          { "order": 4, "action": "Glue the housings, drive the wedges in each tread and riser from behind. Wedges go in with grain running the length of the string — cross-grain wedges split.", "notes": "PVA is standard; PU where damp exposure is possible." },
+          { "order": 5, "action": "Fix top string to the trimmer with screws and/or angle brackets to design. Fix bottom string to floor with concealed fixings.", "notes": "" },
+          { "order": 6, "action": "Set the newels plumb (both directions), fix with newel bolts through the string.", "notes": "" },
+          { "order": 7, "action": "Fit the temporary balustrade or barrier immediately — an unbalustraded flight is a fall hazard the moment it's stood up.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 4, "verify": "All wedges driven, glue squeezed evenly at every joint, no gaps visible from behind." },
+          { "after_step": 6, "verify": "Newels plumb both axes. Flight rocks nowhere when walked up." },
+          { "after_step": 7, "verify": "Fall protection in place before leaving site." }
+        ],
+        "evidence": [
+          { "source": "General UK trade practice · interim-Author interpretation · verify with founding Author" }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "repair_procedure",
+        "risk_level": "medium",
+        "safety_note": "Never leave an installed but unbalustraded flight without temporary fall protection."
+      },
+      {
+        "id": "interim_fit_handrail_to_approved_doc_k",
+        "title": "Fit a handrail at Approved Doc K heights",
+        "applies_to": ["handrail", "private_dwelling"],
+        "steps": [
+          { "order": 1, "action": "Establish the pitch line of the stair — draw a line touching the front edge of each nosing.", "notes": "Handrail height is measured from this line, not from the tread surface." },
+          { "order": 2, "action": "Mark handrail height between 900mm and 1000mm above the pitch line for private stairs. Landings guard rail follows the guarding rule (900mm domestic).", "notes": "" },
+          { "order": 3, "action": "If flight width exceeds 1m, install a handrail on both sides. Below 1m width, one handrail is sufficient (typically on the open side).", "notes": "" },
+          { "order": 4, "action": "Fit brackets or newel connections at spacings that keep the rail rigid under horizontal loading (0.36 kN/m for domestic). Typical bracket spacing 600-900mm.", "notes": "" },
+          { "order": 5, "action": "Check the handrail is continuous — no gaps at newels, and the top and bottom termination is safe to grip.", "notes": "Bullnose or curtail continuations at the base tread ease the transition to a wreath or scroll." }
+        ],
+        "checkpoints": [
+          { "after_step": 3, "verify": "Handrails on both sides confirmed if width >1m." },
+          { "after_step": 4, "verify": "Rail deflects little to no visible amount under a firm push." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §1.34-1.36 (handrails)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" },
+          { "source": "BS 6180 · Barriers in and about buildings · referenced only for loading requirements", "note": "BSI copyright · full text via BSI subscription" }
+        ],
+        "confidence": "high",
+        "audience_level": 3,
+        "classification": "industry_good_practice"
+      },
+      {
+        "id": "interim_fit_compliant_balustrade_100mm_rule",
+        "title": "Fit a compliant balustrade — the 100mm sphere rule",
+        "applies_to": ["balustrade", "guarding"],
+        "steps": [
+          { "order": 1, "action": "Measure the required guarding height — 900mm minimum for a single-family dwelling (measured from the pitch line for stair flights, from the floor for landings and balconies). 1100mm minimum for any other building type or for balconies and external stairs.", "notes": "" },
+          { "order": 2, "action": "Space spindles so that a 100mm sphere cannot pass through any gap in the guarding — spindle-to-spindle, spindle-to-newel, and any horizontal rail spacing.", "notes": "The 100mm figure is designed around what a small child could push a head through." },
+          { "order": 3, "action": "Confirm the balustrade construction resists a horizontal load of 0.36 kN/m (domestic) or higher (per BS 6180 for other categories) applied at the top of the barrier.", "notes": "" },
+          { "order": 4, "action": "For glass balustrade panels, ensure the glass is safety glass (BS EN 12600 impact-classified) and the framing meets BS 6180 loading and BS 6262 glazing rules.", "notes": "Frameless glass balustrades need additional structural consideration." },
+          { "order": 5, "action": "Confirm the balustrade is continuous from top newel to bottom newel with no unguarded gaps at intermediate landings.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 2, "verify": "Test with a 100mm sphere (or a 100mm ball / 100mm-diameter cardboard disc) — it should not pass through any gap." },
+          { "after_step": 3, "verify": "Balustrade resists a firm horizontal push at rail height without visible movement." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §2.1-2.7 (guarding)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" },
+          { "source": "BS 6180 · Barriers in and about buildings · referenced for loading requirements", "note": "BSI copyright" },
+          { "source": "BS 6262 · Glazing for buildings · referenced for glass balustrade framing", "note": "BSI copyright" }
+        ],
+        "confidence": "high",
+        "audience_level": 3,
+        "classification": "safety_advice",
+        "risk_level": "high",
+        "safety_note": "Balustrade compliance is a life-safety issue. Non-compliant balustrades in domestic properties are a common finding in surveys of pre-1980s stairs — bring up to current regs whenever a major renovation gives the opportunity."
+      },
+      {
+        "id": "interim_retrofit_balustrade_old_stair",
+        "title": "Retrofit a balustrade to bring an old stair up to current regs",
+        "applies_to": ["renovation", "balustrade", "retrofit"],
+        "steps": [
+          { "order": 1, "action": "Assess the existing balustrade — measure current spindle gaps, current height, and current fixings. Any gap greater than 100mm, or height below the current minimum, needs correction.", "notes": "" },
+          { "order": 2, "action": "Decide replace vs supplement. Old spindles that are structurally sound can sometimes be supplemented with additional spindles to close 100mm gaps; heavily worn or damaged spindles need full replacement.", "notes": "Heritage properties may have listed-status considerations — check before removing original balustrades." },
+          { "order": 3, "action": "If replacing, match the style to the property — mixing Victorian turned spindles with modern square profile is jarring and reduces the retrofit's value.", "notes": "" },
+          { "order": 4, "action": "Fix new spindles to string and handrail with the appropriate concealed fixings. Adhesive-only spindle fixings fail in service — mechanically fix.", "notes": "" },
+          { "order": 5, "action": "Verify the 100mm sphere rule at every gap in the final balustrade before completing the job.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 2, "verify": "Written record of pre-work condition (photos + measurements) so the client understands what changed and why." },
+          { "after_step": 5, "verify": "100mm sphere test passed across full length." }
+        ],
+        "evidence": [
+          { "source": "Approved Document K · §2.1-2.7 (guarding)", "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k" },
+          { "source": "General UK trade practice · interim-Author interpretation · verify with founding Author" }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "professional_recommendation",
+        "risk_level": "medium",
+        "safety_note": "Historic property retrofits may need to balance safety improvement with heritage character — for listed buildings consult a heritage surveyor first."
+      },
+      {
+        "id": "interim_diagnose_and_fix_squeaking_tread",
+        "title": "Diagnose and fix a squeaking tread",
+        "applies_to": ["repair", "squeak", "renovation"],
+        "steps": [
+          { "order": 1, "action": "Walk the stair slowly one tread at a time. Isolate exactly which tread squeaks and where on the tread the noise triggers (front, back, one side).", "notes": "A helper on the stair while you listen from below or above is faster than working alone." },
+          { "order": 2, "action": "Identify the cause — most squeaks come from tread-to-riser movement (loose wedges or angle blocks) or tread-to-string movement (loose housing). Front-edge squeaks are usually nosing-to-riser; back-edge squeaks are usually tread-to-riser.", "notes": "" },
+          { "order": 3, "action": "If you have access from below (open under-stair): re-glue and re-wedge any loose wedges, replace failed angle blocks, glue and screw where required.", "notes": "Cleanest fix — original construction remains visible." },
+          { "order": 4, "action": "If you only have access from above (finished under-stair or plastered soffit): drill pilots through the tread into the riser or string and pull the joint tight with counterbored screws + timber plugs to match grain direction of the tread.", "notes": "Second-best fix — visible plugs need care to hide in the finish." },
+          { "order": 5, "action": "Walk the tread again to confirm the squeak is gone. Some squeaks migrate — a fixed tread reveals the next weakest joint.", "notes": "" }
+        ],
+        "checkpoints": [
+          { "after_step": 2, "verify": "You've named the cause before touching a tool. Random repairs on the wrong joint don't fix squeaks." },
+          { "after_step": 5, "verify": "Tread is silent under full body weight, applied at the identified squeak point." }
+        ],
+        "evidence": [
+          { "source": "General UK trade practice · interim-Author interpretation · verify with founding Author" }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "repair_procedure",
+        "risk_level": "low"
+      }
+    ]
+  },
+  "updated_at": "2026-07-24T07:00:00.000Z"
+}

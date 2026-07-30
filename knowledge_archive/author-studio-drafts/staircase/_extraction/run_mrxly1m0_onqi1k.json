@@ -1,0 +1,756 @@
+{
+  "run_id": "run_mrxly1m0_onqi1k",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "c6d1bb483cf1130f",
+  "input_length": 3638,
+  "llm_model": "claude-opus-4-7",
+  "created_at": "2026-07-23T14:29:37.320Z",
+  "candidates": [
+    {
+      "id": "run_mrxly1m0_onqi1k_c0",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c0",
+        "statement": "Brush painting is generally the more economical option for finishing a staircase, but the final quality depends heavily on the preparation carried out before the paint is applied.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Brush painting is generally the more economical option. However, the final quality depends heavily on the preparation carried out before the paint is applied."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Brush painting is generally the more economical option. However, the final quality depends heavily on the preparation carried out before the paint is applied.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:29:40.410Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:29.909Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:29:40.410Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c1",
+        "statement": "Sanding, sealing exposed end grain, preparing turned spindles and ensuring every surface is clean all contribute far more to the finished appearance than simply applying paint.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Sanding, sealing exposed end grain, preparing turned spindles and ensuring every surface is clean all contribute far more to the finished appearance than simply applying paint."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 3,
+        "classification": "industry_good_practice"
+      },
+      "source_span": "Sanding, sealing exposed end grain, preparing turned spindles and ensuring every surface is clean all contribute far more to the finished appearance than simply applying paint.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:08.693Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:34.295Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:08.693Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c2",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c2",
+        "statement": "Spray finishing is normally more expensive because it requires specialist equipment, dedicated spray facilities or extensive masking, and experienced operators.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Spray finishing is normally more expensive because it requires specialist equipment, dedicated spray facilities or extensive masking, and experienced operators."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Spray finishing is normally more expensive because it requires specialist equipment, dedicated spray facilities or extensive masking, and experienced operators.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:10.829Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:36.736Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:10.829Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c3",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c3",
+        "statement": "Many professional staircase finishers prefer two-pack lacquer systems, which combine lacquer with a hardener to create a durable finish suitable for internal staircases.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Many professional staircase finishers prefer two-pack lacquer systems, which combine lacquer with a hardener to create a durable finish suitable for internal staircases."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "industry_good_practice"
+      },
+      "source_span": "Many professional staircase finishers prefer two-pack lacquer systems, which combine lacquer with a hardener to create a durable finish suitable for internal staircases.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:12.715Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:38.346Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:12.715Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c4",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "Two-pack lacquer",
+        "definition": "A lacquer system that combines lacquer with a hardener to create a durable finish suitable for internal staircases.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "two-pack lacquer systems, which combine lacquer with a hardener to create a durable finish suitable for internal staircases."
+          }
+        ]
+      },
+      "source_span": "two-pack lacquer systems, which combine lacquer with a hardener to create a durable finish suitable for internal staircases.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:14.462Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:39.325Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:14.462Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c5",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c5",
+        "statement": "During spraying, the lacquer may appear to leave a white mist or cloudy appearance. In most cases this disappears as the coating cures, leaving a smooth, glass-like finish.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "During spraying, the lacquer may appear to leave a white mist or cloudy appearance. In most cases this disappears as the coating cures, leaving a smooth, glass-like finish."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "During spraying, the lacquer may appear to leave a white mist or cloudy appearance. In most cases this disappears as the coating cures, leaving a smooth, glass-like finish.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:16.441Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:40.313Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:16.441Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c6",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c6",
+        "statement": "One of the advantages of spray finishing is its ability to seal difficult areas, including open grain timber, much more evenly than brush application.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "One of the advantages of spray finishing is its ability to seal difficult areas, including open grain timber, much more evenly than brush application."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "One of the advantages of spray finishing is its ability to seal difficult areas, including open grain timber, much more evenly than brush application.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:18.245Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:41.100Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:18.245Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c7",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c7",
+        "statement": "A well-prepared staircase finished by brush can often outperform a poorly prepared sprayed staircase.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "A well-prepared staircase finished by brush can often outperform a poorly prepared sprayed staircase."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "A well-prepared staircase finished by brush can often outperform a poorly prepared sprayed staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:20.296Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:42.178Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:20.296Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c8",
+      "brain_slug": "staircase",
+      "kind": "defects.defect",
+      "payload": {
+        "id": "cand.defects_defect.i1k_c8",
+        "name": "Spray overspray on surrounding surfaces",
+        "applies_to": [],
+        "symptoms": [
+          ""
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "One disadvantage of spray finishing is overspray. Even with careful masking, fine airborne particles may settle on surrounding furniture or surfaces. This usually causes no permanent damage and can normally be removed wi..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "One disadvantage of spray finishing is overspray. Even with careful masking, fine airborne particles may settle on surrounding furniture or surfaces. This usually causes no permanent damage and can normally be removed with appropriate cleaning once the finish has fully cured.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:22.542Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:44.551Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:22.542Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c9",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.i1k_c9",
+        "statement": "A highly polished lacquer finish may feel more slippery than a brush-painted finish, particularly before carpets or stair runners are installed. Homeowners should consider safety, especially in households with children or elderly occupants.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "A highly polished lacquer finish may also feel more slippery than a brush-painted finish, particularly before carpets or stair runners are installed. Homeowners should consider safety, especially in households with child..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "safety_advice",
+        "safety_note": "Slippery finish risk — consider stair runners or carpet, particularly with children or elderly occupants."
+      },
+      "source_span": "A highly polished lacquer finish may also feel more slippery than a brush-painted finish, particularly before carpets or stair runners are installed. Homeowners should consider safety, especially in households with children or elderly occupants.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:27.498Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:46.470Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:27.498Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c10",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.1k_c10",
+        "statement": "Many internal door lacquer systems are suitable for staircases when applied correctly and with the recommended number of coats. Two-pack finishing systems are widely used because of their durability and wear resistance.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Many internal door lacquer systems are suitable for staircases when applied correctly and with the recommended number of coats. Two-pack finishing systems are widely used because of their durability and wear resistance."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "industry_good_practice"
+      },
+      "source_span": "Many internal door lacquer systems are suitable for staircases when applied correctly and with the recommended number of coats. Two-pack finishing systems are widely used because of their durability and wear resistance.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:29.870Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:47.599Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:29.870Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c11",
+      "brain_slug": "staircase",
+      "kind": "workflow.playbook",
+      "payload": {
+        "id": "cand.workflow_playbook.1k_c11",
+        "title": "Preparing a staircase before finishing",
+        "applies_to": [],
+        "steps": [
+          "Sand the staircase thoroughly.",
+          "Seal exposed end grain.",
+          "Prepare turned spindles.",
+          "Ensure every surface is clean.",
+          "Wipe the staircase thoroughly to remove sanding dust and loose timber fibres.",
+          "Where compatible, use a suitable cleaning solvent recommended for the finishing system to remove fine dust from the timber grain — always follow the manufacturer's guidance regarding compatible cleaning products.",
+          "Confirm preparation is complete before beginning the finishing process."
+        ],
+        "checkpoints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Before any painting or spraying begins, it is good practice to wipe the staircase thoroughly to remove sanding dust and loose timber fibres. In the Author's professional experience, using a suitable cleaning solvent reco..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 3,
+        "classification": "industry_good_practice",
+        "risk_level": "low"
+      },
+      "source_span": "Before any painting or spraying begins, it is good practice to wipe the staircase thoroughly to remove sanding dust and loose timber fibres. In the Author's professional experience, using a suitable cleaning solvent recommended for the finishing system can help produce a cleaner finish by removing fine dust from the timber grain before coating. Always follow the manufacturer's guidance regarding compatible cleaning products.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "rejected",
+      "admin_status": "unreviewed",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:33.423Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:37.507Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:46.176Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:31:08.440Z",
+          "notes": "Author Notes",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:32:23.191Z",
+          "notes": "Author",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "rejected",
+          "at": "2026-07-23T14:33:25.881Z",
+          "notes": "Author",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:33:25.881Z",
+      "author_notes": "Author"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c12",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.1k_c12",
+        "statement": "Spray finishing generally provides a higher quality factory-style appearance, while brush painting remains the most common choice for domestic properties because of its lower cost and easier application.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Spray finishing generally provides a higher quality factory-style appearance, while brush painting remains the most common choice for domestic properties because of its lower cost and easier application."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Spray finishing generally provides a higher quality factory-style appearance, while brush painting remains the most common choice for domestic properties because of its lower cost and easier application.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:43.579Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:48.394Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:43.579Z"
+    },
+    {
+      "id": "run_mrxly1m0_onqi1k_c13",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.1k_c13",
+        "statement": "The choice between brush painting and spray finishing depends on budget, desired appearance, project type, durability requirements and the experience of the person carrying out the work.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "The choice between the two methods depends on budget, desired appearance, project type, durability requirements and the experience of the person carrying out the work."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "The choice between the two methods depends on budget, desired appearance, project type, durability requirements and the experience of the person carrying out the work.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:29:37.320Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "c6d1bb483cf1130f"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:30:48.730Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T14:40:49.118Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:30:48.730Z"
+    }
+  ]
+}

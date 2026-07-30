@@ -1,10 +1,16 @@
-// Brain Registry — the public API surface for interacting with the
-// filesystem-loaded Brains. All server-side.
+// Brain Registry — the public API surface for interacting with published
+// Reference Brains. All server-side.
+//
+// Post ADR-0042: the underlying loader has been severed from the
+// filesystem (`brains/**/brain.json` and `.author-studio-drafts/`) and
+// currently returns an empty registry. The Supabase read to
+// `hammerex_nex_brain_versions` will be wired in when the first module
+// (Terminology) publishes — Author-Driven Rule (ADR-0041).
 //
 // Every consumer (Intent Router, Chat API, Composer, Admin dashboard)
-// goes through this — never touches the loader directly. That way we
-// can swap the loader implementation (filesystem vs DB vs mixed)
-// without breaking consumers.
+// goes through this — never touches the loader directly. Consumers
+// must gracefully handle an empty registry (which they already do,
+// e.g. `brain-chat/route.ts` returns 503 `no_brains_available`).
 
 import "server-only";
 import { readFileSync, existsSync } from "node:fs";
@@ -44,15 +50,20 @@ export function getGeneralBrain(): BrainDescriptor | null {
 // ─── Write / lifecycle API ────────────────────────────────────────
 
 export function registerBrain(_manifest: BrainManifest): void {
-  // V1: manifests are filesystem-sourced. Programmatic registration is
-  // spec'd for V2 (dynamic Brain hot-loading). Not implemented at V1
-  // deliberately — every registered Brain must be traceable to a
-  // brain.json on disk so it can be reviewed + version-controlled.
-  throw new Error("registerBrain: not implemented at V1 — drop a brain.json into brains/ and call reloadBrains()");
+  // Post ADR-0042: filesystem registration is severed. Brains enter the
+  // runtime only through the Sole Authoritative Path — Layer 1 evidence
+  // → Layer 2 draft → review → certification → publication into
+  // `hammerex_nex_brain_versions`. Programmatic registration would
+  // create a parallel truth path (rejected · see ADR-0042).
+  throw new Error("registerBrain: not supported — brains must publish to hammerex_nex_brain_versions via the Sole Authoritative Path (see ADR-0042)");
 }
 
 export function unregisterBrain(_slug: string): void {
-  throw new Error("unregisterBrain: not implemented at V1 — remove/rename the brain.json and call reloadBrains()");
+  // Post ADR-0042: `hammerex_nex_brain_versions` is immutable (BEFORE
+  // DELETE trigger enforces this). Un-registration would mean deleting
+  // a published brain version, which is not permitted. Superseding
+  // versions is the correct mechanism.
+  throw new Error("unregisterBrain: not supported — brain versions are immutable (see ADR-0042 + BEFORE DELETE trigger)");
 }
 
 export function reloadBrains(): number {

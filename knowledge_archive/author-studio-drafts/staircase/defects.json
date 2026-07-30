@@ -1,0 +1,684 @@
+{
+  "brain_slug": "staircase",
+  "module": "defects",
+  "author_id": "phillipofarrell@gmail.com",
+  "version": "0.2.0",
+  "interim_author_notice": "5 original defects authored by Philip retained unchanged (IDs prefixed 'cand.defects_defect.'). 15 additional defects appended 2026-07-24 by Claude Opus 4.7 as interim Author (IDs prefixed 'interim_defect_'). Real Staircase Author should review the interim additions and take authorship.",
+  "payload": {
+    "header": {
+      "version": "0.2.0",
+      "authored_by": "phillipofarrell@gmail.com + claude-opus-4-7-interim-2026-07-24",
+      "authored_at": "2026-07-24T07:20:00.000Z",
+      "regions": [
+        "UK"
+      ]
+    },
+    "defects": [
+      {
+        "id": "cand.defects_defect.i1k_c8",
+        "name": "Spray overspray on surrounding surfaces",
+        "applies_to": [],
+        "symptoms": [
+          ""
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "One disadvantage of spray finishing is overspray. Even with careful masking, fine airborne particles may settle on surrounding furniture or surfaces. This usually causes no permanent damage and can normally be removed wi..."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "cand.defects_defect.bcd_c9",
+        "name": "Squeaking staircase tread",
+        "applies_to": [],
+        "symptoms": [
+          "Squeaking sound when standing on tread",
+          "Slight movement in the centre of the tread",
+          "Friction where the riser fits into the tread groove",
+          "Slight movement or flex in centre of tread under load"
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "One common cause is slight movement in the centre of the tread. Timber naturally expands and contracts over time, and because the tread is restrained at each side by the strings, small amounts of movement can occur. The ..."
+          },
+          {
+            "source": "Nex",
+            "note": "A squeaking staircase step is one of the most common staircase problems and, in many cases, can be repaired without replacing the staircase."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "cand.defects_defect.cd_c10",
+        "name": "Loose or failed angle block",
+        "applies_to": [],
+        "symptoms": [
+          "Movement between tread and riser",
+          "Squeak on loading",
+          "Loose or detached block on underside inspection"
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "If the glue has failed or the block has become loose, movement can develop between the tread and riser."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "cand.defects_defect.cd_c11",
+        "name": "Loose staircase wedge",
+        "applies_to": [],
+        "symptoms": [
+          "Squeak from tread or riser at the string",
+          "Movement at the wall string"
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Another common cause of squeaks is movement where wedges secure the tread or riser into the string. This frequently occurs on the wall string because it is fixed firmly to the building while the timber staircase naturall..."
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_worn_nosings",
+        "name": "Worn nosings",
+        "applies_to": [
+          "tread",
+          "nosing",
+          "high_traffic_stair"
+        ],
+        "symptoms": [
+          "Rounded or chipped front edge on treads",
+          "Splintering along the leading edge of the tread",
+          "Faded or worn finish concentrated at the nosing",
+          "Reduced grip underfoot at the step edge"
+        ],
+        "causes": [
+          "Cumulative foot traffic over years — softer timbers wear faster",
+          "Grit brought in on shoes acting as an abrasive",
+          "Original finish worn through, exposing bare timber"
+        ],
+        "fixes": [
+          "Light wear — sand back the nosing radius, reseal with matching finish",
+          "Moderate wear on softwood — nosing capping (a hardwood cover strip glued and pinned over the worn edge)",
+          "Severe wear or split — replace the tread or fit a full replacement nosing routed to match the string groove"
+        ],
+        "severity": "functional",
+        "vision_hints": [
+          "Concentrated wear pattern on the front edge of treads",
+          "Visible colour change or bare timber at nosing",
+          "Chips or missing corners along the tread front"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_loose_newel_post",
+        "name": "Loose newel post",
+        "applies_to": [
+          "newel",
+          "handrail_system",
+          "safety_critical_joint"
+        ],
+        "symptoms": [
+          "Newel visibly moves side-to-side when the handrail is pushed",
+          "Gap opening at the base of the newel where it meets floor or bottom step",
+          "Handrail feels 'live' rather than solid when leant on",
+          "Creaking from newel joint under load"
+        ],
+        "causes": [
+          "Failed newel bolt through the string (most common)",
+          "Split or crushed timber at the newel-to-string joint",
+          "Original short-fixings where a full-length newel bolt was needed",
+          "Base fixings worked loose over years of use"
+        ],
+        "fixes": [
+          "Replace newel bolt with a longer/larger diameter through-bolt if the joint allows",
+          "If timber split, cut back to sound timber, glue and clamp, and re-bolt through fresh timber",
+          "For base-fixing failure, drill deeper anchors into the substrate (masonry or subfloor as appropriate)"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Visible gap at newel base",
+          "Rotation marks or scoring at newel-to-string joint",
+          "Splintering or crushing at bolt location"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          },
+          {
+            "source": "Approved Document K · §2.3 (barrier loading requirements — a loose newel compromises balustrade compliance)",
+            "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_split_string",
+        "name": "Split string",
+        "applies_to": [
+          "string",
+          "structural_member"
+        ],
+        "symptoms": [
+          "Visible crack running along the length of the string",
+          "Movement between the string and adjacent treads/risers",
+          "Widening gap between string and wall (wall string) or between string and newel (outer string)",
+          "Creaking or cracking sounds when the stair is used"
+        ],
+        "causes": [
+          "Overloading (heavy furniture moves, structural settlement)",
+          "Original timber knot or grain defect propagating with age",
+          "Damp cycling causing repeated expansion/contraction",
+          "Failed structural fixing above (e.g. loose trimmer) transferring load into the string"
+        ],
+        "fixes": [
+          "Surface crack: rout out, glue and clamp, splice-fit a repair patch, refinish",
+          "Deep crack through string thickness: reinforce with a steel or hardwood plate bolted through, then cosmetic repair",
+          "Severe or full-length split affecting the tread housings: replace the string (major job, often requires stair removal)"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Linear crack visible on inside or outside face of string",
+          "Widening gap at ends of crack",
+          "Rust staining if steel fixings inside the crack"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_handrail_loose_at_fixing",
+        "name": "Handrail loose at bracket or newel",
+        "applies_to": [
+          "handrail",
+          "handrail_bracket",
+          "newel_connection"
+        ],
+        "symptoms": [
+          "Handrail moves visibly when pushed sideways or downward",
+          "Gap opening between handrail and its fixing point",
+          "Rotation of the handrail around its long axis",
+          "Handrail no longer provides a secure grip when needed for support"
+        ],
+        "causes": [
+          "Bracket screws worked loose in the wall or newel",
+          "Wall plug failure (common in plasterboard fixings without proper anchors)",
+          "Handrail-to-newel joint (rebate or scarf) has opened up",
+          "Handrail-to-bracket connection screws stripped"
+        ],
+        "fixes": [
+          "Wall bracket loose: remove, upsize the fixings, use appropriate wall plugs (metal cavity anchors for plasterboard, expanding wall plugs for masonry)",
+          "Newel joint loose: strip back, re-glue with structural adhesive, add a concealed dowel or pocket screw",
+          "Bracket stripped: relocate the bracket 100-200mm along the rail into sound timber and infill/refinish the original hole"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Bracket rotation or misalignment",
+          "Cracks in wall plaster around bracket fixings",
+          "Gap between handrail and its receiving joint"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · §1.34-1.36 (handrails)",
+            "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k"
+          },
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_balustrade_movement_under_load",
+        "name": "Balustrade movement under load",
+        "applies_to": [
+          "balustrade",
+          "guarding",
+          "spindles"
+        ],
+        "symptoms": [
+          "Whole balustrade rocks when pushed at the top rail",
+          "Visible flex in individual spindles under lateral pressure",
+          "Failure of the balustrade to feel solid — occupants avoid leaning on it",
+          "Rattle at the top or bottom of spindles when the balustrade is loaded"
+        ],
+        "causes": [
+          "Insufficient fixing between handrail/top rail and newel",
+          "Loose or missing spindle-to-string fixings",
+          "Failed adhesive-only spindle fixings (adhesive-only is not adequate for balustrade loading)",
+          "Undersized handrail cross-section for the span between newels"
+        ],
+        "fixes": [
+          "Add fixings at every spindle top and bottom (concealed dowel + adhesive, or pocket screw)",
+          "Reinforce handrail-to-newel joint with additional through-fixings",
+          "For undersized handrail: replace with a larger cross-section rated for domestic barrier loading (0.36 kN/m horizontal)",
+          "In severe cases: strip and rebuild the balustrade to current guarding compliance"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Visible movement of balustrade under camera-tracked push test",
+          "Adhesive residue around spindle bases (indicates adhesive-only fixing)",
+          "Cracks or gaps at handrail-to-newel joint"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · §2.1-2.7 (guarding, loading requirements)",
+            "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k"
+          },
+          {
+            "source": "BS 6180 · Barriers in and about buildings · referenced for loading requirements",
+            "note": "BSI copyright · full text via BSI subscription"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_spindle_rattle",
+        "name": "Spindle rattle in top or bottom rail",
+        "applies_to": [
+          "spindles",
+          "balustrade"
+        ],
+        "symptoms": [
+          "Audible rattle from one or more spindles when the stair is walked or the balustrade is touched",
+          "Slight rotational movement of the spindle in its housing",
+          "Gap visible around the top or bottom of the spindle where it enters the rail"
+        ],
+        "causes": [
+          "Timber shrinkage — the spindle diameter has reduced slightly, leaving it loose in its socket",
+          "Failed adhesive at spindle housing",
+          "Original loose fit that was masked by fresh finish but has since worked loose"
+        ],
+        "fixes": [
+          "Remove spindle (lift out of top rail groove and out of bottom rail housing), clean the joint, re-glue with a wood glue that fills the joint (PVA + sawdust of the same timber, or a gap-filling PU adhesive)",
+          "For persistent looseness: wrap a thin sliver of matching veneer around the spindle end to take up the gap before re-fitting",
+          "Multiple rattling spindles across a run: consider environmental cause (heating change, humidity) — treat all at once"
+        ],
+        "severity": "cosmetic",
+        "vision_hints": [
+          "Gap visible around spindle where it meets the rail",
+          "Slight tilt off vertical when spindle is loose",
+          "Concentric ring of dust around loose spindle base"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_damp_rotted_string_end",
+        "name": "Damp-rotted string end",
+        "applies_to": [
+          "string",
+          "external_stair",
+          "poorly_ventilated_understair"
+        ],
+        "symptoms": [
+          "Softening or discolouration of the string at the bottom, particularly where it meets masonry or concrete floor",
+          "Timber crumbles when pressed with a screwdriver point",
+          "Visible fungal growth or musty smell at the string end",
+          "Loss of finish + darkening of timber near the affected area"
+        ],
+        "causes": [
+          "Rising damp through the substrate the string sits on",
+          "Water ingress from an external door or window not far from the stair",
+          "Poor ventilation to a closed-in understair void",
+          "Prolonged spillage or standing water at the bottom step"
+        ],
+        "fixes": [
+          "Identify and stop the moisture source first — repairing rotted timber over ongoing damp will fail",
+          "Cut back the rotted section to sound timber (typically 100-200mm past visible rot)",
+          "Splice a new hardwood section into the string with a scarf joint (typically 4:1 ratio) glued and mechanically fixed",
+          "Refinish the repaired section and consider a moisture-resistant coating for the ground-level portion"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Colour change at string base",
+          "Visible fungal growth (white, black, or brown surface deposits)",
+          "Deformation or sag of the bottom of the string"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_nosing_detachment",
+        "name": "Separately-fitted nosing detaching",
+        "applies_to": [
+          "nosing",
+          "tread",
+          "stair_cladding"
+        ],
+        "symptoms": [
+          "Visible gap between the nosing profile and the front edge of the tread",
+          "Movement of the nosing when pressed",
+          "Nosing comes away when someone catches it with a foot"
+        ],
+        "causes": [
+          "Adhesive-only fixing has failed with age or moisture",
+          "Original nail or pin fixings have worked loose",
+          "Impact damage (heavy object dropped, foot catch)"
+        ],
+        "fixes": [
+          "Remove the nosing completely — do not try to force it back into place over old adhesive",
+          "Clean the mating surfaces down to bare timber on both nosing and tread",
+          "Refit with a modern PU or hybrid adhesive AND mechanical fixings (pinned from the top with matching-timber plugs, or screwed through the top with counterbored plugs)",
+          "If the nosing itself is damaged: fabricate or purchase a matching replacement"
+        ],
+        "severity": "functional",
+        "vision_hints": [
+          "Visible gap under the nosing edge",
+          "Nosing tilted forward or downward",
+          "Adhesive residue visible on removed nosing"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_broken_cracked_tread",
+        "name": "Broken or cracked tread",
+        "applies_to": [
+          "tread"
+        ],
+        "symptoms": [
+          "Visible crack across the tread width",
+          "Tread flexes or gives underfoot at the crack line",
+          "Splintering or missing material at the crack",
+          "Audible crack sound when the tread is loaded"
+        ],
+        "causes": [
+          "Undersized tread thickness for the span (older stairs with slim treads on wide flights)",
+          "Grain defect or knot in the original timber that has propagated",
+          "Impact damage (heavy furniture drop, blow from a hard object)",
+          "Damp cycle fatigue on external or damp-exposed stairs"
+        ],
+        "fixes": [
+          "Immediate — block off the stair to prevent use until repair is complete",
+          "Assess whether the tread can be repaired (surface crack in sound thicker timber) or must be replaced (crack through the full thickness or wide flight)",
+          "Repair route: rout out crack, glue with structural adhesive, clamp, reinforce underside with a steel plate or timber batten if required",
+          "Replacement route: remove the tread from between the strings (may require partial string disassembly), fit a new matching tread"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Linear crack across tread width",
+          "Sag or step in tread level compared to neighbouring treads",
+          "Splinters or missing chunks"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_excessive_tread_deflection",
+        "name": "Excessive tread deflection",
+        "applies_to": [
+          "tread",
+          "wide_flight_stair"
+        ],
+        "symptoms": [
+          "Tread visibly bounces or dips under normal loading",
+          "Squeak accompanies the deflection",
+          "Deflection felt underfoot but no visible crack (yet)",
+          "Worse in the centre of wide-flight treads"
+        ],
+        "causes": [
+          "Tread material undersized for the span (common on wider stairs with softwood treads)",
+          "Timber has moved and lost stiffness with age or moisture cycling",
+          "Original design used a lighter grade than intended",
+          "Additional loading the stair wasn't designed for (heavy piano moves, safe installations upstairs)"
+        ],
+        "fixes": [
+          "Confirm the deflection is elastic (returns to level) and not permanent sag — permanent sag suggests structural fatigue and requires tread replacement",
+          "For elastic deflection: add support underneath — a mid-span carriage timber running under the treads, or an additional string reinforcement",
+          "For permanent sag or repeated deflection: replace with thicker or higher-grade timber tread material"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Sag visible when tread is unloaded (edge alignment across the flight)",
+          "Bounce visible in slow-motion video of stair use",
+          "Concentrated wear pattern in the centre of the tread"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_insufficient_balustrade_height",
+        "name": "Insufficient balustrade height (regulation gap)",
+        "applies_to": [
+          "balustrade",
+          "renovation",
+          "older_property"
+        ],
+        "symptoms": [
+          "Handrail or top rail measures less than 900mm above the pitch line (private dwelling) or less than 1100mm above the floor (other building types or balconies)",
+          "Homeowners feel the balustrade is 'too low' to lean on comfortably",
+          "Building control flags the balustrade during renovation approval"
+        ],
+        "causes": [
+          "Stair predates the current Approved Doc K height requirements",
+          "Original design met a superseded regulation",
+          "Non-compliant retrofit — someone shortened the balustrade for aesthetic reasons"
+        ],
+        "fixes": [
+          "Extend the existing balustrade upward with a matching top-rail addition, or replace with a taller balustrade",
+          "For a single-family home, minor breaches may be tolerated by building control if the stair is not being altered — but any major renovation triggers current regs",
+          "Where the balustrade shape must be preserved (heritage property), consult a conservation officer before altering"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Handrail visibly at hip-height rather than at low-torso height",
+          "Occupants photographed leaning over the rail"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · §2.1 (guarding heights)",
+            "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_spindle_gap_over_100mm",
+        "name": "Spindle gaps exceeding the 100mm sphere rule",
+        "applies_to": [
+          "balustrade",
+          "spindles",
+          "older_property",
+          "renovation"
+        ],
+        "symptoms": [
+          "Gaps between spindles, between end spindles and newels, or between horizontal rails greater than 100mm",
+          "A 100mm-diameter ball, disc or child's head can pass through the gap"
+        ],
+        "causes": [
+          "Stair predates the current Approved Doc K guarding requirements",
+          "Missing spindles never replaced",
+          "Aesthetic 'minimalist' balustrade that ignored the 100mm rule",
+          "Original design used horizontal spacing greater than 100mm"
+        ],
+        "fixes": [
+          "Add additional spindles to close each gap below 100mm — usually 100mm centre-to-centre spacing works for standard-diameter spindles",
+          "For missing individual spindles: replace like-for-like",
+          "For heritage properties where original spindle count cannot be added to: seek conservation officer approval for a discrete infill (e.g. glass panel behind original balustrade)"
+        ],
+        "severity": "safety_critical",
+        "vision_hints": [
+          "Wide visible gaps between vertical members",
+          "Missing spindles",
+          "Horizontal-rail-only balustrades (a ladder pattern children can climb)"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · §2.4 (100mm sphere rule)",
+            "url": "https://www.gov.uk/government/publications/protection-from-falling-collision-and-impact-approved-document-k"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "interim_defect_cupped_or_twisted_treads",
+        "name": "Cupped or twisted treads",
+        "applies_to": [
+          "tread",
+          "solid_timber_tread",
+          "engineered_timber_tread"
+        ],
+        "symptoms": [
+          "Tread surface is no longer flat — hollowed across width (cupping) or one corner high (twist)",
+          "Uneven wear pattern on the finished surface",
+          "Slight instability underfoot",
+          "Visible when a straight edge is laid across the tread"
+        ],
+        "causes": [
+          "Moisture imbalance between top and bottom faces of the tread — the drier face pulls into a curve",
+          "Original tread cut with pith or reaction wood present",
+          "One side finished, the other side bare timber — different vapour exchange rates",
+          "Environmental humidity swings, particularly with underfloor heating fitted after the stair"
+        ],
+        "fixes": [
+          "For minor cupping: sand back the high edges and refinish (accept some loss of tread thickness)",
+          "For moderate cupping/twist: remove the tread, allow to acclimatise flat and weighted for 2-4 weeks in the target environment, refit if it flattens; discard if not",
+          "For solid timber replacements: prefer quarter-sawn or engineered treads which are far more dimensionally stable",
+          "Address environmental cause if identified (balance humidity, seal underside)"
+        ],
+        "severity": "functional",
+        "vision_hints": [
+          "Visible curve across tread width when a straight edge is placed",
+          "Uneven finish sheen (dips catch light differently)",
+          "Gap between straight edge and tread surface at the centre or corner"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_gap_tread_to_riser",
+        "name": "Gap between tread and riser",
+        "applies_to": [
+          "tread",
+          "riser"
+        ],
+        "symptoms": [
+          "Visible daylight or dust-line where the tread meets the riser at the back of the tread",
+          "Debris and grit accumulating in the gap",
+          "Squeaking accompanies loading in some cases",
+          "The gap appears seasonally (opens in dry heated periods, closes in damp)"
+        ],
+        "causes": [
+          "Original joint (usually a housing or a butt with adhesive + pin) has failed",
+          "Timber shrinkage over years or from a heating change",
+          "Failed angle blocks behind the joint contributing to movement",
+          "Poor original assembly — insufficient adhesive or missing pin"
+        ],
+        "fixes": [
+          "Small cosmetic gap: fill with matching coloured wood filler + touch up finish",
+          "Moderate gap with movement: reinforce from behind if access — add or replace angle blocks, add adhesive to the joint",
+          "Significant gap with structural movement: strip the tread, clean the joint, re-fit with fresh adhesive and mechanical fixings"
+        ],
+        "severity": "functional",
+        "vision_hints": [
+          "Fine gap visible at the back of the tread",
+          "Dust deposit line at the joint",
+          "Slight vertical misalignment between tread rear and riser top"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      },
+      {
+        "id": "interim_defect_flaking_paint_or_varnish",
+        "name": "Flaking paint or failed varnish on stair components",
+        "applies_to": [
+          "finish",
+          "tread",
+          "string",
+          "handrail",
+          "balustrade"
+        ],
+        "symptoms": [
+          "Paint peeling in strips or flakes, particularly at nosings and tread edges",
+          "Varnish clouding, cracking or lifting from the timber",
+          "Rough patchy finish where fresh timber is exposed under failed coating",
+          "Sticky or gummy feel to old varnish that hasn't cured properly"
+        ],
+        "causes": [
+          "Incompatible coats — oil-based over water-based or vice versa without a proper primer",
+          "Applied to timber that was too wet or too dry, or to a contaminated surface",
+          "UV degradation — varnish on a sunlit stair breaks down faster than on a shaded one",
+          "Foot traffic wearing through the finish, then moisture ingress lifting the surrounding intact area"
+        ],
+        "fixes": [
+          "Strip fully back to bare timber (mechanical sanding or chemical stripper depending on scale)",
+          "Assess the underlying timber — repair any splits, worn nosings or damaged edges before refinishing",
+          "Apply an appropriate primer + top coat system rated for high-traffic stair treads (typically 2K polyurethane or high-solids polish)",
+          "Do not refinish over failing coatings — the new coat will fail with the old"
+        ],
+        "severity": "cosmetic",
+        "vision_hints": [
+          "Flake pattern along tread edges",
+          "Colour change or bare timber visible under lifted finish",
+          "Sheen mismatch where finish has been touched up unsuccessfully"
+        ],
+        "evidence": [
+          {
+            "source": "General UK trade practice · interim-Author interpretation · verify with founding Author"
+          }
+        ],
+        "confidence": "medium"
+      }
+    ]
+  },
+  "updated_at": "2026-07-24T07:42:46.805Z"
+}

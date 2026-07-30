@@ -1,0 +1,1034 @@
+{
+  "run_id": "run_mrxmnkbs_vuc8ss",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "fe9c433f7932872e",
+  "input_length": 2987,
+  "llm_model": "claude-opus-4-7",
+  "created_at": "2026-07-23T14:49:27.976Z",
+  "candidates": [
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c0",
+      "brain_slug": "staircase",
+      "kind": "defects.defect",
+      "payload": {
+        "id": "cand.defects_defect.8ss_c0",
+        "name": "Squeaking staircase tread",
+        "applies_to": [],
+        "symptoms": [
+          "Squeaking sound when standing on tread",
+          "Slight movement or flex in centre of tread under load"
+        ],
+        "causes": [],
+        "fixes": [],
+        "severity": "functional",
+        "vision_hints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "A squeaking staircase step is one of the most common staircase problems and, in many cases, can be repaired without replacing the staircase."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "A squeaking staircase step is one of the most common staircase problems and, in many cases, can be repaired without replacing the staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:30.238Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:24.214Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:30.238Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c1",
+        "statement": "Timber naturally expands and contracts over time, and because the tread is restrained at each side by the strings, small amounts of movement can occur.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Timber naturally expands and contracts over time, and because the tread is restrained at each side by the strings, small amounts of movement can occur."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "Timber naturally expands and contracts over time, and because the tread is restrained at each side by the strings, small amounts of movement can occur.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:33.912Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:25.358Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:33.912Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c2",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c2",
+        "statement": "The centre of the tread may lift or flex slightly, creating friction where the riser fits into the tread groove, which often produces the familiar squeaking sound.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "The centre of the tread may lift or flex slightly, creating friction where the riser fits into the tread groove. This friction often produces the familiar squeaking sound."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "expert_observation"
+      },
+      "source_span": "The centre of the tread may lift or flex slightly, creating friction where the riser fits into the tread groove. This friction often produces the familiar squeaking sound.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:35.762Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:26.482Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:35.762Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c3",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c3",
+        "statement": "Squeaks frequently occur on the wall string because it is fixed firmly to the building while the timber staircase naturally moves over time.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "This frequently occurs on the wall string because it is fixed firmly to the building while the timber staircase naturally moves over time."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 3,
+        "classification": "expert_observation"
+      },
+      "source_span": "This frequently occurs on the wall string because it is fixed firmly to the building while the timber staircase naturally moves over time.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:37.724Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:27.140Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:37.724Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c4",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c4",
+        "statement": "In the Author's experience, MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "In the Author's experience, MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "expert_observation"
+      },
+      "source_span": "In the Author's experience, MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:39.496Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:27.788Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:39.496Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c5",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c5",
+        "statement": "Not every squeaking staircase indicates poor manufacturing; timber is a natural material and movement over time is normal. Changes in moisture, heating and humidity can all contribute to minor movement.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Not every squeaking staircase indicates poor manufacturing. Timber is a natural material and movement over time is normal. Changes in moisture, heating and humidity can all contribute to minor movement."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 1,
+        "classification": "expert_observation"
+      },
+      "source_span": "Not every squeaking staircase indicates poor manufacturing. Timber is a natural material and movement over time is normal. Changes in moisture, heating and humidity can all contribute to minor movement.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:41.258Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:28.425Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:41.258Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c6",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "cand.craft_fact.8ss_c6",
+        "statement": "Correct grain direction in timber plugs helps reduce their visibility after finishing.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Correct grain direction in timber plugs helps reduce their visibility after finishing."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "industry_good_practice"
+      },
+      "source_span": "Correct grain direction in timber plugs helps reduce their visibility after finishing.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:43.368Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:29.577Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:43.368Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c7",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "Angle block",
+        "definition": "A small block fitted beneath a staircase tread, between the tread and riser, which may be glued, pinned or screwed in place depending on the manufacturer.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Inspect the angle blocks beneath the tread. Depending on the staircase manufacturer, these may be glued, pinned or screwed in place."
+          }
+        ]
+      },
+      "source_span": "Inspect the angle blocks beneath the tread. Depending on the staircase manufacturer, these may be glued, pinned or screwed in place.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:45.148Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:31.176Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:45.148Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c8",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "String (staircase)",
+        "definition": "The side member of a staircase that restrains the treads at each side; the wall string is the string fixed firmly to the building.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "the tread is restrained at each side by the strings"
+          }
+        ]
+      },
+      "source_span": "the tread is restrained at each side by the strings",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:47.053Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:32.277Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:47.053Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c9",
+      "brain_slug": "staircase",
+      "kind": "craft.glossary",
+      "payload": {
+        "term": "Wedge (staircase)",
+        "definition": "A shaped timber component used to secure the tread or riser into the string.",
+        "aliases": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "movement where wedges secure the tread or riser into the string"
+          }
+        ]
+      },
+      "source_span": "movement where wedges secure the tread or riser into the string",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:48.816Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:33.281Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:48.816Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c10",
+      "brain_slug": "staircase",
+      "kind": "workflow.playbook",
+      "payload": {
+        "id": "cand.workflow_playbook.ss_c10",
+        "title": "",
+        "applies_to": [],
+        "steps": [
+          {
+            "order": 0,
+            "action": "Identify the source of the movement that is creating the noise before attempting any repair."
+          },
+          {
+            "order": 1,
+            "action": "Where access is available beneath the staircase, ask another person to stand on the squeaking tread while you inspect the underside with a torch."
+          },
+          {
+            "order": 2,
+            "action": "Mark the back of the riser with a pencil to help identify movement between the tread and riser during loading."
+          },
+          {
+            "order": 3,
+            "action": "Inspect the angle blocks beneath the tread for loose, failed or missing fixings (glued, pinned or screwed depending on manufacturer)."
+          },
+          {
+            "order": 4,
+            "action": "Check the wedges securing the tread or riser into the strings, particularly the wall string, for movement."
+          }
+        ],
+        "checkpoints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Where access is available beneath the staircase, ask another person to stand on the squeaking tread while you inspect the underside with a torch. Marking the back of the riser with a pencil can help identify movement bet..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 2,
+        "classification": "diagnostic_procedure",
+        "risk_level": "low"
+      },
+      "source_span": "Where access is available beneath the staircase, ask another person to stand on the squeaking tread while you inspect the underside with a torch. Marking the back of the riser with a pencil can help identify movement between the tread and riser during loading.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:51.723Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:53.426Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:53.747Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:53.989Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:54.194Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:54.440Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:54.700Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:54.930Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:55.117Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:35.922Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:55.117Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c11",
+      "brain_slug": "staircase",
+      "kind": "workflow.playbook",
+      "payload": {
+        "id": "cand.workflow_playbook.ss_c11",
+        "title": "",
+        "applies_to": [],
+        "steps": [
+          {
+            "order": 0,
+            "action": "Remove any loose material from the area beneath the tread."
+          },
+          {
+            "order": 1,
+            "action": "Apply a suitable wood adhesive."
+          },
+          {
+            "order": 2,
+            "action": "Secure a replacement timber block between the tread and riser using screws of the correct length."
+          },
+          {
+            "order": 3,
+            "action": "Ensure the screws do not penetrate the finished tread surface."
+          }
+        ],
+        "checkpoints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "a common repair is to remove any loose material, apply a suitable wood adhesive and secure a replacement timber block between the tread and riser using screws of the correct length, ensuring they do not penetrate the fin..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "repair_procedure",
+        "safety_note": "Structural damage or uncertainty should be assessed by a qualified staircase professional.",
+        "risk_level": "medium"
+      },
+      "source_span": "a common repair is to remove any loose material, apply a suitable wood adhesive and secure a replacement timber block between the tread and riser using screws of the correct length, ensuring they do not penetrate the finished tread surface.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:57.206Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:57.647Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:57.877Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:58.097Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:58.368Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:58.674Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:59.020Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:49:59.246Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:38.653Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:49:59.246Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c12",
+      "brain_slug": "staircase",
+      "kind": "workflow.playbook",
+      "payload": {
+        "id": "cand.workflow_playbook.ss_c12",
+        "title": "",
+        "applies_to": [],
+        "steps": [
+          {
+            "order": 0,
+            "action": "Remove the loose wedges."
+          },
+          {
+            "order": 1,
+            "action": "Obtain correctly sized replacement timber wedges from a staircase manufacturer or accurately reproduce them from suitable timber."
+          },
+          {
+            "order": 2,
+            "action": "Bond the replacement wedges in place with a suitable adhesive."
+          }
+        ],
+        "checkpoints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Loose wedges can often be removed and replaced with correctly sized timber wedges bonded with suitable adhesive. Replacement wedges are commonly available from staircase manufacturers or can be accurately reproduced from..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "repair_procedure",
+        "safety_note": "Structural damage or uncertainty should be assessed by a qualified staircase professional.",
+        "risk_level": "medium"
+      },
+      "source_span": "Loose wedges can often be removed and replaced with correctly sized timber wedges bonded with suitable adhesive. Replacement wedges are commonly available from staircase manufacturers or can be accurately reproduced from suitable timber.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:00.995Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:01.240Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:01.461Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:01.731Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:40.822Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:50:01.731Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c13",
+      "brain_slug": "staircase",
+      "kind": "workflow.playbook",
+      "payload": {
+        "id": "cand.workflow_playbook.ss_c13",
+        "title": "",
+        "applies_to": [],
+        "steps": [
+          {
+            "order": 0,
+            "action": "Where the underside of the staircase is enclosed by plasterboard or other finishes, plan to carry out repairs from above."
+          },
+          {
+            "order": 1,
+            "action": "Drill small pilot holes at carefully chosen positions."
+          },
+          {
+            "order": 2,
+            "action": "Use carefully positioned screws to secure the loose components."
+          },
+          {
+            "order": 3,
+            "action": "Fit matching timber plugs into the screw holes, aligning grain direction to reduce visibility."
+          },
+          {
+            "order": 4,
+            "action": "Trim the plugs flush and finish to minimise the appearance of the repair."
+          }
+        ],
+        "checkpoints": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Where the underside of the staircase is enclosed by plasterboard or other finishes, repairs may need to be carried out from above. Small pilot holes can be drilled and carefully positioned screws used to secure loose com..."
+          }
+        ],
+        "confidence": "medium",
+        "audience_level": 4,
+        "classification": "repair_procedure",
+        "safety_note": "Structural damage or uncertainty should be assessed by a qualified staircase professional.",
+        "risk_level": "medium"
+      },
+      "source_span": "Where the underside of the staircase is enclosed by plasterboard or other finishes, repairs may need to be carried out from above. Small pilot holes can be drilled and carefully positioned screws used to secure loose components. Matching timber plugs can then be fitted and trimmed flush to minimise the appearance of the repair.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:04.108Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:04.413Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:04.654Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:04.837Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:43.025Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:50:04.837Z"
+    },
+    {
+      "id": "run_mrxmnkbs_vuc8ss_c14",
+      "brain_slug": "staircase",
+      "kind": "materials.mat",
+      "payload": {
+        "id": "cand.materials_mat.ss_c14",
+        "family": "engineered board",
+        "name": "MDF tread",
+        "grades": [],
+        "pack_sizes": [],
+        "defect_risk": "medium",
+        "waste_factor_pct": 10,
+        "compatible_with": [],
+        "incompatible_with": [],
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "In the Author's experience, MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause."
+          }
+        ],
+        "confidence": "medium"
+      },
+      "source_span": "In the Author's experience, MDF treads can behave differently from softwood or hardwood construction, although every staircase should be assessed individually before determining the cause.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "claude-opus-4-7",
+        "proposed_at": "2026-07-23T14:49:27.976Z",
+        "prompt_version": "extract.v1.3.2026-07-23",
+        "input_hash": "fe9c433f7932872e"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T14:50:06.675Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:44.468Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T14:50:06.675Z"
+    }
+  ]
+}

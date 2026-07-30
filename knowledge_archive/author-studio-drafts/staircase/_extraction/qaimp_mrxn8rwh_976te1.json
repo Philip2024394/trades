@@ -1,0 +1,923 @@
+{
+  "run_id": "qaimp_mrxn8rwh_976te1",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "c47aebc6b1a76321",
+  "input_length": 5601,
+  "llm_model": "direct_import",
+  "created_at": "2026-07-23T15:05:57.567Z",
+  "candidates": [
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c0",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.0",
+        "statement": "A squeaking staircase step is usually caused by movement between two timber components rubbing together. As timber naturally expands and contracts with changes in humidity and temperature, small gaps can develop over time. When weight is applied to the tread, friction between the tread, riser, wedges or fixings can create the familiar squeaking noise. A squeak does not automatically mean the staircase has been poorly manufactured; it is often part of the natural movement of timber.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why is my staircase step squeaking when I stand on it?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why is my staircase step squeaking when I stand on it?\nA: A squeaking staircase step is usually caused by movement between two timber components rubbing together. As timber naturally expands and contracts with changes in humidity and temperature, small gaps can develop over time. When weight is applied to the tread, friction between the tread, riser, wedges or fixings can create the familiar squeaking noise. A squeak does not automatically mean the staircase has been poorly manufactured; it is often part of the natural movement of timber.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:06.497Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:06:52.323Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:06.497Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.1",
+        "statement": "One of the most common causes is slight movement between the tread and the riser. The tread may flex very slightly in the centre while remaining fixed at both ends by the staircase strings. This movement creates friction inside the groove where the riser fits into the tread, producing the squeaking sound.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What is the most common cause of a squeaking staircase step?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What is the most common cause of a squeaking staircase step?\nA: One of the most common causes is slight movement between the tread and the riser. The tread may flex very slightly in the centre while remaining fixed at both ends by the staircase strings. This movement creates friction inside the groove where the riser fits into the tread, producing the squeaking sound.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:10.448Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:06:54.650Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:10.448Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c2",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.2",
+        "statement": "Yes. Timber is a natural material that constantly responds to its environment. Changes in humidity, heating, seasonal weather and moisture levels cause timber to expand and contract. Even well-manufactured staircases can develop small movements over time that result in squeaks.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can timber movement cause staircase squeaks?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can timber movement cause staircase squeaks?\nA: Yes. Timber is a natural material that constantly responds to its environment. Changes in humidity, heating, seasonal weather and moisture levels cause timber to expand and contract. Even well-manufactured staircases can develop small movements over time that result in squeaks.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:12.284Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:06:56.581Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:12.284Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c3",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.3",
+        "statement": "Not necessarily. Most squeaks are caused by natural timber movement rather than manufacturing faults. Before assuming there is a defect, the staircase should be inspected to identify exactly where the movement is occurring.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Does a squeaking staircase mean it was badly made?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Does a squeaking staircase mean it was badly made?\nA: Not necessarily. Most squeaks are caused by natural timber movement rather than manufacturing faults. Before assuming there is a defect, the staircase should be inspected to identify exactly where the movement is occurring.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:13.889Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:06:58.165Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:13.889Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c4",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.4",
+        "statement": "If you have access beneath the staircase, ask someone to stand on the squeaking step while you inspect the underside with a torch. Marking the back of the riser with a pencil can help you see whether the tread moves against the riser during loading.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "How can I find where the squeak is coming from?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: How can I find where the squeak is coming from?\nA: If you have access beneath the staircase, ask someone to stand on the squeaking step while you inspect the underside with a torch. Marking the back of the riser with a pencil can help you see whether the tread moves against the riser during loading.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:15.587Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:06:59.726Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:15.587Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c5",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.5",
+        "statement": "Angle blocks are small timber blocks fixed beneath the tread where it meets the riser. They reinforce the joint and reduce movement. Depending on the manufacturer, they may be glued, pinned or screwed into position.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What are angle blocks on a staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What are angle blocks on a staircase?\nA: Angle blocks are small timber blocks fixed beneath the tread where it meets the riser. They reinforce the joint and reduce movement. Depending on the manufacturer, they may be glued, pinned or screwed into position.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:17.212Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:00.737Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:17.212Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c6",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.6",
+        "statement": "Yes. If an angle block becomes loose or the adhesive fails over time, movement develops between the tread and riser. This movement frequently creates squeaking noises when the step is loaded.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can loose angle blocks cause squeaks?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can loose angle blocks cause squeaks?\nA: Yes. If an angle block becomes loose or the adhesive fails over time, movement develops between the tread and riser. This movement frequently creates squeaking noises when the step is loaded.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:18.832Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:01.513Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:18.832Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c7",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.7",
+        "statement": "Remove any loose adhesive or damaged material, apply a suitable wood adhesive, then refit or replace the angle block using screws of the correct length. Care should be taken to ensure the screws do not penetrate through the finished surface of the tread.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "How do I repair a loose angle block?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: How do I repair a loose angle block?\nA: Remove any loose adhesive or damaged material, apply a suitable wood adhesive, then refit or replace the angle block using screws of the correct length. Care should be taken to ensure the screws do not penetrate through the finished surface of the tread.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:20.464Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:02.610Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:20.464Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c8",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.8",
+        "statement": "Wedges are tapered timber pieces driven into joints during staircase assembly. They tighten the connection between the treads, risers and strings and help keep the staircase rigid.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What are staircase wedges?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What are staircase wedges?\nA: Wedges are tapered timber pieces driven into joints during staircase assembly. They tighten the connection between the treads, risers and strings and help keep the staircase rigid.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:22.731Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:03.422Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:22.731Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c9",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.9",
+        "statement": "Yes. Over time, wedges can shrink, loosen or lose adhesion. This allows slight movement between the staircase components, often creating squeaks.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can loose wedges cause staircase squeaks?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can loose wedges cause staircase squeaks?\nA: Yes. Over time, wedges can shrink, loosen or lose adhesion. This allows slight movement between the staircase components, often creating squeaks.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:24.857Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:04.351Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:24.857Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c10",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.10",
+        "statement": "Remove the loose wedge if necessary, clean away any old adhesive and fit a correctly sized replacement wedge using a suitable wood glue. Replacement wedges can often be obtained from staircase manufacturers or made from suitable timber.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "How do I repair loose staircase wedges?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: How do I repair loose staircase wedges?\nA: Remove the loose wedge if necessary, clean away any old adhesive and fit a correctly sized replacement wedge using a suitable wood glue. Replacement wedges can often be obtained from staircase manufacturers or made from suitable timber.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:27.078Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:15.334Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:27.078Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c11",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.11",
+        "statement": "The wall string is securely fixed to the building structure, while the timber staircase naturally expands and contracts over time. This difference in movement often concentrates stress on the wall side, making it a common location for squeaks.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do squeaks often occur on the wall side of the staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do squeaks often occur on the wall side of the staircase?\nA: The wall string is securely fixed to the building structure, while the timber staircase naturally expands and contracts over time. This difference in movement often concentrates stress on the wall side, making it a common location for squeaks.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:29.091Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:16.465Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:29.091Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c12",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.12",
+        "statement": "If the underside is enclosed by plasterboard or other finishes, repairs may need to be carried out from above. Carefully positioned pilot holes and screws can often secure loose components. Matching timber plugs can then be fitted to conceal the repairs.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What if I cannot access underneath my staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What if I cannot access underneath my staircase?\nA: If the underside is enclosed by plasterboard or other finishes, repairs may need to be carried out from above. Carefully positioned pilot holes and screws can often secure loose components. Matching timber plugs can then be fitted to conceal the repairs.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:30.703Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:17.324Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:30.703Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c13",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.13",
+        "statement": "Timber plugs hide screw holes while maintaining the appearance of the staircase. Using plugs cut from the same timber species with the grain running in the correct direction helps make the repair less visible.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why are timber plugs used after repairs?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why are timber plugs used after repairs?\nA: Timber plugs hide screw holes while maintaining the appearance of the staircase. Using plugs cut from the same timber species with the grain running in the correct direction helps make the repair less visible.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:32.706Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:18.276Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:32.706Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c14",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.14",
+        "statement": "Different materials behave differently. In the Author's experience, MDF treads may respond differently to movement compared with solid softwood or hardwood, although every staircase should be assessed individually before diagnosing the cause.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Are MDF staircase treads more likely to squeak?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Are MDF staircase treads more likely to squeak?\nA: Different materials behave differently. In the Author's experience, MDF treads may respond differently to movement compared with solid softwood or hardwood, although every staircase should be assessed individually before diagnosing the cause.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:34.265Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:18.960Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:34.265Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c15",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.15",
+        "statement": "Yes. High humidity causes timber to absorb moisture and expand, while dry conditions and heating cause timber to lose moisture and shrink. These seasonal changes can create movement that leads to squeaking joints.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can humidity cause staircase squeaks?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can humidity cause staircase squeaks?\nA: Yes. High humidity causes timber to absorb moisture and expand, while dry conditions and heating cause timber to lose moisture and shrink. These seasonal changes can create movement that leads to squeaking joints.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:35.942Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:19.642Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:35.942Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c16",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.16",
+        "statement": "It can. Rapid changes in temperature and humidity caused by central heating may dry timber too quickly, increasing shrinkage and movement. Maintaining a stable indoor environment helps reduce excessive timber movement.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can central heating make my staircase squeak?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can central heating make my staircase squeak?\nA: It can. Rapid changes in temperature and humidity caused by central heating may dry timber too quickly, increasing shrinkage and movement. Maintaining a stable indoor environment helps reduce excessive timber movement.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:37.763Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:20.926Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:37.763Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c17",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.17",
+        "statement": "A minor squeak is not usually a structural problem, but it is worth investigating. If movement increases over time, repairing it early can prevent additional wear and reduce the chance of larger joints becoming loose.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Should I repair a squeaky staircase immediately?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Should I repair a squeaky staircase immediately?\nA: A minor squeak is not usually a structural problem, but it is worth investigating. If movement increases over time, repairing it early can prevent additional wear and reduce the chance of larger joints becoming loose.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:39.695Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:21.669Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:39.695Z"
+    },
+    {
+      "id": "qaimp_mrxn8rwh_976te1_c18",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.976te1.18",
+        "statement": "Correct diagnosis. Before attempting any repair, identify exactly where the movement is occurring. Repairing the wrong joint may not solve the problem and could result in unnecessary work.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What is the most important step before repairing a squeaky staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What is the most important step before repairing a squeaky staircase?\nA: Correct diagnosis. Before attempting any repair, identify exactly where the movement is occurring. Repairing the wrong joint may not solve the problem and could result in unnecessary work.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:05:57.567Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c47aebc6b1a76321"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:06:42.149Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:07:22.345Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:06:42.149Z"
+    }
+  ]
+}

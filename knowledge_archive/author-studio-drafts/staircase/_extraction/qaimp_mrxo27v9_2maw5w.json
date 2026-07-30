@@ -1,0 +1,1355 @@
+{
+  "run_id": "qaimp_mrxo27v9_2maw5w",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "87faf0d906c5e109",
+  "input_length": 7566,
+  "llm_model": "direct_import",
+  "created_at": "2026-07-23T15:28:51.285Z",
+  "candidates": [
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c0",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.0",
+        "statement": "Risers connect one tread to the next and help strengthen the staircase by reducing tread movement. They also improve safety by preventing feet from passing through the staircase. Some modern staircases use open risers for a lighter appearance, but these must still comply with local building regulations.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do staircases have risers?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do staircases have risers?\nA: Risers connect one tread to the next and help strengthen the staircase by reducing tread movement. They also improve safety by preventing feet from passing through the staircase. Some modern staircases use open risers for a lighter appearance, but these must still comply with local building regulations.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:28:55.061Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:42.075Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:28:55.061Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.1",
+        "statement": "A closed-string staircase hides the ends of the treads and risers inside the string, giving a clean appearance and generally making it quicker to manufacture. An open-string staircase exposes the tread ends and often includes decorative brackets, requiring more hand finishing and craftsmanship.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What is the difference between an open-string and closed-string staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What is the difference between an open-string and closed-string staircase?\nA: A closed-string staircase hides the ends of the treads and risers inside the string, giving a clean appearance and generally making it quicker to manufacture. An open-string staircase exposes the tread ends and often includes decorative brackets, requiring more hand finishing and craftsmanship.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:28:55.273Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:43.611Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:28:55.273Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c2",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.2",
+        "statement": "The strings are the structural backbone of the staircase. They support the treads and risers and transfer the load safely to the floor and landing. A well-made staircase depends on accurately manufactured strings.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why are staircase strings so important?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why are staircase strings so important?\nA: The strings are the structural backbone of the staircase. They support the treads and risers and transfer the load safely to the floor and landing. A well-made staircase depends on accurately manufactured strings.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:28:57.250Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:45.036Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:28:57.250Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c3",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.3",
+        "statement": "Strength comes from accurate joint construction, quality timber, strong adhesive bonds, secure wedges, proper fixings and correct installation. Each component works together to distribute loads safely throughout the staircase.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What makes a staircase strong?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What makes a staircase strong?\nA: Strength comes from accurate joint construction, quality timber, strong adhesive bonds, secure wedges, proper fixings and correct installation. Each component works together to distribute loads safely throughout the staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:28:58.618Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:46.510Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:28:58.618Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c4",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.4",
+        "statement": "Yes. During colder months, heating systems often reduce indoor humidity, causing timber to shrink slightly. This movement can increase the chance of squeaks or small gaps appearing between components.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can timber staircases creak more in winter?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can timber staircases creak more in winter?\nA: Yes. During colder months, heating systems often reduce indoor humidity, causing timber to shrink slightly. This movement can increase the chance of squeaks or small gaps appearing between components.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:00.113Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:47.868Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:00.113Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c5",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.5",
+        "statement": "Screws provide mechanical fixing, while modern wood adhesives create extremely strong bonded joints. Together they produce a stronger, longer-lasting staircase than either method alone.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do staircase manufacturers use glue as well as screws?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do staircase manufacturers use glue as well as screws?\nA: Screws provide mechanical fixing, while modern wood adhesives create extremely strong bonded joints. Together they produce a stronger, longer-lasting staircase than either method alone.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:02.108Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:49.317Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:02.108Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c6",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.6",
+        "statement": "Excess moisture causes timber to swell, while drying causes shrinkage. Repeated movement can create gaps, cracks and loose joints. Controlling moisture is one of the most important factors in maintaining a staircase.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why is moisture the biggest enemy of timber staircases?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why is moisture the biggest enemy of timber staircases?\nA: Excess moisture causes timber to swell, while drying causes shrinkage. Repeated movement can create gaps, cracks and loose joints. Controlling moisture is one of the most important factors in maintaining a staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:03.346Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:50.507Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:03.346Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c7",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.7",
+        "statement": "Minor adjustments may be possible, but significant design changes are often difficult and expensive once production has begun. Finalising the design before manufacturing starts helps avoid unnecessary delays and costs.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can I change my staircase after it has been manufactured?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can I change my staircase after it has been manufactured?\nA: Minor adjustments may be possible, but significant design changes are often difficult and expensive once production has begun. Finalising the design before manufacturing starts helps avoid unnecessary delays and costs.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:04.652Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:51.379Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:04.652Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c8",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.8",
+        "statement": "Staircases are manufactured to fit a specific opening. Even small measurement errors can result in fitting problems, expensive alterations or complete remanufacture.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why should staircase measurements always be checked twice?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why should staircase measurements always be checked twice?\nA: Staircases are manufactured to fit a specific opening. Even small measurement errors can result in fitting problems, expensive alterations or complete remanufacture.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:05.993Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:52.207Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:05.993Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c9",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.9",
+        "statement": "Hardwood generally costs more because the timber itself is more expensive, machining is slower, tooling wears faster and finishing often requires additional care. Many hardwood species also offer greater durability and a premium appearance.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why are hardwood staircases more expensive?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why are hardwood staircases more expensive?\nA: Hardwood generally costs more because the timber itself is more expensive, machining is slower, tooling wears faster and finishing often requires additional care. Many hardwood species also offer greater durability and a premium appearance.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:07.592Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:52.849Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:07.592Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c10",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.10",
+        "statement": "A newel post provides structural support for the handrail and balustrade while also acting as an important design feature. Properly fixed newel posts help reduce movement throughout the staircase.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What is the purpose of a newel post?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What is the purpose of a newel post?\nA: A newel post provides structural support for the handrail and balustrade while also acting as an important design feature. Properly fixed newel posts help reduce movement throughout the staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:09.071Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:53.486Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:09.071Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c11",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.11",
+        "statement": "Handrails provide support and balance while using the staircase. They also connect the balustrade system together, helping distribute loads across the staircase.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why are handrails important?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why are handrails important?\nA: Handrails provide support and balance while using the staircase. They also connect the balustrade system together, helping distribute loads across the staircase.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:10.642Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:54.100Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:10.642Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c12",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.12",
+        "statement": "Correct spacing improves safety by reducing the risk of children passing through the balustrade while also meeting building regulations.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do staircase balusters need correct spacing?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do staircase balusters need correct spacing?\nA: Correct spacing improves safety by reducing the risk of children passing through the balustrade while also meeting building regulations.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:12.255Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:54.688Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:12.255Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c13",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.13",
+        "statement": "No. A staircase should be designed and installed to its full strength from the beginning. While timber settles naturally, wear and environmental conditions generally increase maintenance requirements rather than improve strength.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can a staircase become stronger over time?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can a staircase become stronger over time?\nA: No. A staircase should be designed and installed to its full strength from the beginning. While timber settles naturally, wear and environmental conditions generally increase maintenance requirements rather than improve strength.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:13.944Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:55.232Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:13.944Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c14",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.14",
+        "statement": "Small problems often become larger if ignored. Loose joints, cracked treads or damaged handrails place additional stress on surrounding components and may increase repair costs later.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why should damaged staircase components be repaired quickly?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why should damaged staircase components be repaired quickly?\nA: Small problems often become larger if ignored. Loose joints, cracked treads or damaged handrails place additional stress on surrounding components and may increase repair costs later.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:15.655Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:55.728Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:15.655Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c15",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.15",
+        "statement": "Bespoke staircases require custom design, unique manufacturing processes, additional setup time and more skilled craftsmanship. They cannot benefit from the efficiencies of repeated production.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do bespoke staircases cost more than standard staircases?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do bespoke staircases cost more than standard staircases?\nA: Bespoke staircases require custom design, unique manufacturing processes, additional setup time and more skilled craftsmanship. They cannot benefit from the efficiencies of repeated production.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:17.271Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:56.262Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:17.271Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c16",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.16",
+        "statement": "Yes, but different timber species expand, contract and accept finishes differently. Careful planning is required to ensure appearance and long-term performance remain consistent.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can I mix different timber species in one staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can I mix different timber species in one staircase?\nA: Yes, but different timber species expand, contract and accept finishes differently. Careful planning is required to ensure appearance and long-term performance remain consistent.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:18.770Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:56.760Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:18.770Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c17",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.17",
+        "statement": "Sanding removes machining marks, smooths the timber surface and improves adhesion of primers, paints and lacquers. Good preparation is essential for achieving a professional finish.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why is sanding important before finishing a staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why is sanding important before finishing a staircase?\nA: Sanding removes machining marks, smooths the timber surface and improves adhesion of primers, paints and lacquers. Good preparation is essential for achieving a professional finish.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:20.187Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:57.218Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:20.187Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c18",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.18",
+        "statement": "The quality of the final finish depends largely on the preparation. Filling, sanding, cleaning and sealing the timber correctly helps produce a smoother and more durable painted surface.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do painted staircases need good preparation?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do painted staircases need good preparation?\nA: The quality of the final finish depends largely on the preparation. Filling, sanding, cleaning and sealing the timber correctly helps produce a smoother and more durable painted surface.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:21.628Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:57.577Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:21.628Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c19",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.19",
+        "statement": "Yes. Most painted staircases can be repainted after cleaning, repairing any damage and preparing the surface correctly. Following the paint manufacturer's recommendations will achieve the best results.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can I repaint my staircase later?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can I repaint my staircase later?\nA: Yes. Most painted staircases can be repainted after cleaning, repairing any damage and preparing the surface correctly. Following the paint manufacturer's recommendations will achieve the best results.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:23.114Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:57.944Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:23.114Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c20",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.20",
+        "statement": "Seasonal changes affect temperature and humidity, which influence timber movement. A staircase may sound quieter during humid periods and slightly noisier during dry conditions.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why does my staircase sound different in different seasons?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why does my staircase sound different in different seasons?\nA: Seasonal changes affect temperature and humidity, which influence timber movement. A staircase may sound quieter during humid periods and slightly noisier during dry conditions.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:24.602Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:58.415Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:24.602Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c21",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.21",
+        "statement": "Light use is normally acceptable once the staircase has been securely installed. However, if adhesives, finishes or sealers have recently been applied, allow sufficient curing time according to the manufacturer's instructions.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Should I use the staircase immediately after installation?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Should I use the staircase immediately after installation?\nA: Light use is normally acceptable once the staircase has been securely installed. However, if adhesives, finishes or sealers have recently been applied, allow sufficient curing time according to the manufacturer's instructions.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:26.103Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:59.241Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:26.103Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c22",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.22",
+        "statement": "Final floor coverings affect finished floor levels. Knowing whether carpet, timber flooring or tiles will be installed helps ensure the staircase is manufactured to the correct finished height.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Why do staircase manufacturers ask about floor finishes?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Why do staircase manufacturers ask about floor finishes?\nA: Final floor coverings affect finished floor levels. Knowing whether carpet, timber flooring or tiles will be installed helps ensure the staircase is manufactured to the correct finished height.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:27.343Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:29:59.785Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:27.343Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c23",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.23",
+        "statement": "Yes. Paint, plaster dust, excessive moisture and accidental damage during decorating can all affect an unfinished staircase. Protecting the staircase during building work helps maintain its appearance.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "Can decorating affect a staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: Can decorating affect a staircase?\nA: Yes. Paint, plaster dust, excessive moisture and accidental damage during decorating can all affect an unfinished staircase. Protecting the staircase during building work helps maintain its appearance.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:28.929Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:30:00.298Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:28.929Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c24",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.24",
+        "statement": "Choose a reputable manufacturer, confirm all measurements carefully, discuss lead times, understand the materials being used and ask about storage, finishing and installation recommendations. A well-planned staircase project is usually the most successful.\n\n💎 A unique section for the Staircase Brain: \"Philip's Trade Tips\"\n\nThese are short pieces of memorable wisdom that make Nex feel like it's learning from a master craftsman.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What is the most important advice when buying a staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What is the most important advice when buying a staircase?\nA: Choose a reputable manufacturer, confirm all measurements carefully, discuss lead times, understand the materials being used and ask about storage, finishing and installation recommendations. A well-planned staircase project is usually the most successful.\n\n💎 A unique section for the Staircase Brain: \"Philip's Trade Tips\"\n\nThese are short pieces of memorable wisdom that make Nex feel like it's learning from a master craftsman.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:30.261Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:30:02.732Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:30.261Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c25",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.25",
+        "statement": "Rushing the installation before the house is dry. Timber and moisture are never good partners. Give the building time to dry before introducing one of the most important timber features in the home.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What's the biggest mistake homeowners make with a new staircase?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What's the biggest mistake homeowners make with a new staircase?\nA: Rushing the installation before the house is dry. Timber and moisture are never good partners. Give the building time to dry before introducing one of the most important timber features in the home.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:32.316Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:30:03.862Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:32.316Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c26",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.26",
+        "statement": "Timber is a natural material. It was once a living tree and will always respond to its environment. Understanding this helps explain why movement, colour changes and seasonal adjustments are normal.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What's one thing every staircase owner should remember?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What's one thing every staircase owner should remember?\nA: Timber is a natural material. It was once a living tree and will always respond to its environment. Understanding this helps explain why movement, colour changes and seasonal adjustments are normal.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:33.673Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:30:04.542Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:33.673Z"
+    },
+    {
+      "id": "qaimp_mrxo27v9_2maw5w_c27",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.2maw5w.27",
+        "statement": "Ask questions. A good staircase manufacturer will happily explain why something is recommended. Understanding the reasons behind the advice helps avoid costly mistakes later.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What's one piece of advice you give every customer?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What's one piece of advice you give every customer?\nA: Ask questions. A good staircase manufacturer will happily explain why something is recommended. Understanding the reasons behind the advice helps avoid costly mistakes later.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:28:51.285Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "87faf0d906c5e109"
+      },
+      "status": "accepted",
+      "admin_status": "approved",
+      "review_history": [
+        {
+          "actor": {
+            "kind": "author",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "accepted",
+          "at": "2026-07-23T15:29:35.268Z",
+          "brain_version": "current"
+        },
+        {
+          "actor": {
+            "kind": "brain_admin",
+            "id": "phillipofarrell@gmail.com"
+          },
+          "action": "approve",
+          "at": "2026-07-23T15:30:05.237Z",
+          "brain_version": "current"
+        }
+      ],
+      "reviewed_at": "2026-07-23T15:29:35.268Z"
+    }
+  ]
+}

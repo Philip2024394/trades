@@ -1,0 +1,1407 @@
+{
+  "brain_slug": "staircase",
+  "module": "regulations",
+  "author_id": "phillipofarrell@gmail.com",
+  "version": "0.1.0",
+  "payload": {
+    "header": {
+      "version": "0.1.0",
+      "authored_by": "phillipofarrell@gmail.com",
+      "authored_at": "2026-07-23T22:15:00.000Z",
+      "regions": [
+        "UK"
+      ]
+    },
+    "regulations": [
+      {
+        "id": "direct.reg.mrxpwl6v.caki",
+        "country": "UK",
+        "title": "Approved Document K · Protection from Falling, Collision and Impact",
+        "requirement": "Approved Document K sets the minimum legal safety standards for domestic staircase design in England. It covers rise, going, pitch, headroom, handrails, balustrades, spindle gaps, landings and protection from falls. First published in 2013, updated periodically, and now kept under review by the Building Safety Regulator following the Building Safety Act 2022.",
+        "applies_to": [
+          "private_dwelling",
+          "new_build",
+          "alteration"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K, England"
+          }
+        ],
+        "confidence": "high",
+        "section": "K1"
+      },
+      {
+        "id": "direct.reg.mrxpwlbd.yilk",
+        "country": "UK",
+        "title": "Maximum staircase pitch · private dwelling",
+        "requirement": "For most private staircases in new homes in England, the maximum pitch is 42 degrees. Steeper than this and it starts feeling more like a ladder than a staircase.",
+        "applies_to": [
+          "private_dwelling",
+          "new_build"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwlgc.m1ta",
+        "country": "UK",
+        "title": "Rise and going · private dwelling",
+        "requirement": "For most new private staircases in England: maximum rise 220mm, minimum rise around 150mm, minimum going (tread depth) 220mm. Every step in the same flight must be the same — consistency is the safety feature.",
+        "applies_to": [
+          "private_dwelling",
+          "new_build"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwlk7.aqni",
+        "country": "UK",
+        "title": "Handrail height · private dwelling",
+        "requirement": "On the flight of a domestic staircase, the top of the handrail should sit between 900mm and 1000mm above the pitch line. Chosen because it provides comfortable support for most adults while reducing the risk of falling.",
+        "applies_to": [
+          "private_dwelling"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwloj.jdh3",
+        "country": "UK",
+        "title": "Handrail height · commercial guarding",
+        "requirement": "Commercial buildings use the same 900-1000mm handrail height on the flight itself. Guarding around landings, balconies and open edges is usually 1100mm — the priority there is preventing falls, not just providing support while walking.",
+        "applies_to": [
+          "commercial",
+          "assembly_building"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwlrr.2y9w",
+        "country": "UK",
+        "title": "Handrails on both sides · width trigger",
+        "requirement": "In most homes, a staircase up to 1 metre wide can have a handrail on one side. Once the staircase exceeds around 1000mm in width, handrails are generally required on both sides. Commercial buildings routinely have both sides handrailed.",
+        "applies_to": [
+          "private_dwelling",
+          "commercial"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwlvz.nc6j",
+        "country": "UK",
+        "title": "Spindle gaps · 100mm sphere rule",
+        "requirement": "The size of openings in guarding is restricted so young children cannot pass through or become trapped. The well-known 100mm sphere rule is the practical check on many domestic balustrades — if a 100mm sphere passes through the gap, the spacing may not comply for new work.",
+        "applies_to": [
+          "private_dwelling",
+          "new_build"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwlz7.y89f",
+        "country": "UK",
+        "title": "Minimum headroom · domestic staircase",
+        "requirement": "For most new domestic staircases, the minimum headroom is 2 metres measured vertically above the pitch line. Nobody enjoys climbing stairs wondering if they will hit their head, and the regulations agree.",
+        "applies_to": [
+          "private_dwelling",
+          "new_build"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxpwm2n.8z60",
+        "country": "UK",
+        "title": "Assembly buildings · pubs, bars, nightclubs",
+        "requirement": "Pubs, bars, restaurants, theatres and nightclubs are treated as assembly buildings because they hold large numbers of people. Guidance commonly recommends maximum rise 180mm and minimum going 280mm. Wider staircases, lower risers, deeper treads, handrails designed for heavy public use, and additional fire escape considerations all apply. Emergency evacuation is a major factor in their design.",
+        "applies_to": [
+          "assembly_building"
+        ],
+        "evidence": [
+          {
+            "source": "Nex",
+            "note": "Approved Document K"
+          }
+        ],
+        "confidence": "high"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.oly1",
+        "country": "UK",
+        "title": "2R+G formula (rise-going relationship)",
+        "requirement": "On any stair the sum of twice the rise plus the going (2R + G) must be between 550mm and 700mm. Get this wrong and the stair feels either cramped or too stretched to climb comfortably — the formula is what keeps the rhythm right for the human body.",
+        "applies_to": [
+          "design",
+          "compliance",
+          "quote-checking"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 edition · paragraph 1.7",
+            "note": "https://assets.publishing.service.gov.uk/media/60d5bdcde90e07716f516cfd/Approved_Document_K.pdf"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · Diagram 1.2 / paragraph 1.7"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.80lk",
+        "country": "UK",
+        "title": "Semi-public (common) stair dimensions",
+        "requirement": "Common stairs in blocks of flats and shared areas: max rise 190mm, min going 250mm, max pitch 38°. That's the middle band between a private house stair and a fully public one.",
+        "applies_to": [
+          "design",
+          "blocks-of-flats",
+          "shared-access"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · Table 1.1 · semi-public category",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · Table 1.1"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.k73a",
+        "country": "UK",
+        "title": "Institutional and assembly stair dimensions",
+        "requirement": "For hospitals, schools, public buildings and assembly spaces: max rise 150mm, min going 280mm, max pitch 33°. Shallower and more generous than a domestic stair because these places carry crowds and users who may be unfamiliar with the layout.",
+        "applies_to": [
+          "design",
+          "commercial",
+          "public-buildings"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · Table 1.1 · institutional/assembly category",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · Table 1.1"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.07y2",
+        "country": "UK",
+        "title": "Winder tread going measurement",
+        "requirement": "On winder (tapered) treads, going is measured at the pitch line — typically 270mm in from the narrow end of the tread. At that point the going has to meet the same limits as a straight tread. Consecutive winders keep the same going. Where a flight mixes straight and winder treads, the winder going at the pitch line must be equal to or greater than the straight-tread going.",
+        "applies_to": [
+          "design",
+          "winders",
+          "quarter-turns",
+          "half-turns"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.24",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.24"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.rhmy",
+        "country": "UK",
+        "title": "Landing gradient and guarding",
+        "requirement": "Landings must be level. Only exception: a landing at the top or bottom of a flight formed by the ground can slope up to 1:60 maximum, and only if the surface is paved or otherwise permanently firm. Any flight or landing with a drop of more than 600mm on either side needs guarding.",
+        "applies_to": [
+          "design",
+          "landings",
+          "safety"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.28",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.28"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.w15y",
+        "country": "UK",
+        "title": "Alternating tread / paddle staircase — loft conversions only",
+        "requirement": "Alternating tread (paddle) stairs are only permitted in a loft conversion, and only where a conventional stair cannot fit. They can serve one habitable room, plus optionally a bathroom or WC — never more. Treads must alternate handed, be uniform, and the stair should have handrails on both sides. Not suitable for young children, elderly users, or anyone unfamiliar with the layout.",
+        "applies_to": [
+          "loft-conversion",
+          "space-saver",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraphs 1.29-1.30",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraphs 1.29-1.30"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.j2le",
+        "country": "UK",
+        "title": "Spiral and helical staircases — reference standard",
+        "requirement": "Spiral and helical staircases in England and Wales should be designed to BS 5395-2:1984. The British Standard sets out 5 categories by location and use — private, semi-public, public, industrial, and specialist — with different minimum going and maximum rise for each.",
+        "applies_to": [
+          "spiral",
+          "helical",
+          "design",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-2:1984 · referenced in Approved Document K",
+            "note": "https://knowledge.bsigroup.com/products/stairs-ladders-and-walkways-code-of-practice-for-the-design-of-helical-and-spiral-stairs"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · references BS 5395-2:1984"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.n9qu",
+        "country": "UK",
+        "title": "Spiral going measurement — inner, centre, outer",
+        "requirement": "On a spiral or helical stair, going is measured at three points on every tread: the centre, and 270mm in from each edge (inner and outer). Take twice the rise plus the centre going — that total must sit between 480mm and 800mm. It's the spiral-specific version of the 2R+G formula.",
+        "applies_to": [
+          "spiral",
+          "helical",
+          "design"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-2:1984 · going measurement rule",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-2:1984"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.eq67",
+        "country": "UK",
+        "title": "Spiral Category A (small private) minimum dimensions",
+        "requirement": "For a small private spiral stair (Category A): minimum inner going 120mm, minimum centre going 145mm, maximum outer going 350mm, rise per tread 170-220mm, minimum clear width 600mm. Anything smaller than this and you're outside the standard.",
+        "applies_to": [
+          "spiral",
+          "private",
+          "design"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-2:1984 · Category A dimensions",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-2:1984 · Category A"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.e9za",
+        "country": "UK",
+        "title": "Spiral stair headroom",
+        "requirement": "Every point along a spiral or helical stair needs at least 2000mm of clear headroom above the pitch line. Miss this and someone hits their head on the landing above.",
+        "applies_to": [
+          "spiral",
+          "helical",
+          "design",
+          "headroom"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-2:1984",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-2:1984"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.q402",
+        "country": "UK",
+        "title": "Balustrade sphere test — child safety",
+        "requirement": "In any area used by children, the widest gap between balusters must not allow a 100mm sphere to pass through. That's the standard test — if a 100mm ball squeezes between the spindles, so does a child's head.",
+        "applies_to": [
+          "balustrade",
+          "child-safety",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · Diagram 3.1 + BS 5395-2",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + BS 5395-2"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.6kh4",
+        "country": "UK",
+        "title": "Handrail requirement — one side vs both",
+        "requirement": "Every flight with three or more rises needs a handrail on at least one side. If the stair is more than 1000mm wide, handrails have to go on both sides. Applies to public buildings under Doc M; Doc K carries the same principle for other stairs.",
+        "applies_to": [
+          "handrail",
+          "design",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M Vol 2 · handrail requirements",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M + Approved Document K"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.s0ua",
+        "country": "UK",
+        "title": "Handrail height — Approved Document M",
+        "requirement": "The grippable part of the handrail should sit 850-1000mm above the pitch line of the flight. Handrail should extend 300mm beyond the top and bottom nosings so users have something to hold at the transition.",
+        "applies_to": [
+          "handrail",
+          "design",
+          "accessibility"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M Vol 2 · handrail height",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M · Vol 2"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.dmch",
+        "country": "UK",
+        "title": "Handrail profile — Approved Document M",
+        "requirement": "Handrail profile should be either circular 40-50mm diameter, or oval 50mm wide. It must not stick out into the width of the stair by more than 100mm, and there needs to be at least 50mm clearance between the handrail and the wall so a hand can wrap right round.",
+        "applies_to": [
+          "handrail",
+          "profile",
+          "accessibility"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M Vol 2 · handrail profile",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M · Vol 2"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.p3mn",
+        "country": "UK",
+        "title": "Secondary low handrail for short-stature users",
+        "requirement": "Where full accessibility is required, a second handrail should be provided at 600mm above the pitch line — for children and people of short stature. Common in schools, care settings, and inclusive design projects.",
+        "applies_to": [
+          "handrail",
+          "accessibility",
+          "children"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M Vol 2",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M · Vol 2"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.j869",
+        "country": "UK",
+        "title": "Stair nosing contrast (public buildings)",
+        "requirement": "Outside of dwellings, step nosings must use visually contrasting material at least 55mm wide on both the tread and the riser. Nosings must not protrude over the tread below by more than 25mm — protrusion catches toes and trips people. BS 8300-2:2018 recommends at least a 30-point difference in Light Reflectance Value (LRV) between the nosing and the tread.",
+        "applies_to": [
+          "nosing",
+          "public-buildings",
+          "accessibility"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · Table 2.1 + BS 8300-2:2018",
+            "note": "gov.uk PDF + BSI"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + BS 8300-2:2018"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.sz4s",
+        "country": "UK",
+        "title": "Stair nosing contrast — common flat access",
+        "requirement": "In common access areas of flats: contrasting nosing material 50-65mm on the tread, 30-55mm on the riser. Slightly narrower band than fully public buildings, but the same principle — a visible edge on every step.",
+        "applies_to": [
+          "nosing",
+          "flats",
+          "common-access"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · common access provisions",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.65hv",
+        "country": "UK",
+        "title": "Stair nosing anti-slip Pendulum Test Value",
+        "requirement": "Slip resistance is measured by Pendulum Test Value. A wet PTV above 36 is considered suitable for stairs (people mostly walk straight). Where users are turning or pushing — for example pushing a wheelchair — a wet PTV above 40 is preferred. Applies to nosings, treads, and any wet-exposed stair surface.",
+        "applies_to": [
+          "anti-slip",
+          "nosing",
+          "safety"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + BS 7976 pendulum test",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + BS 7976"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.j0pg",
+        "country": "SCT",
+        "title": "Scottish stair rise + going rule",
+        "requirement": "Same 2R+G principle as England: the sum of the going plus twice the rise should be between 550mm and 700mm. Example given in the handbook — a minimum going of 250mm gives a rise of at least 150mm. All rises in one flight must be uniform.",
+        "applies_to": [
+          "scotland",
+          "design",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Scottish Building Standards Technical Handbook 2022 · Domestic · Section 4.3",
+            "note": "https://www.gov.scot/publications/building-standards-technical-handbook-2022-domestic/4-safety/4-3-stairs-ramps/"
+          }
+        ],
+        "confidence": "high",
+        "section": "Building Standards Technical Handbook 2022 · Domestic · Section 4.3"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.6cd5",
+        "country": "SCT",
+        "title": "Scottish private vs public stair pitch",
+        "requirement": "The pitch of a private stair flight is allowed to be steeper than a public flight in Scotland — same logic as in England. Rationale in the handbook: occupants know their own stair through regular use, so a steeper pitch is safer for them than for a visitor to a public building.",
+        "applies_to": [
+          "scotland",
+          "private",
+          "public",
+          "pitch"
+        ],
+        "evidence": [
+          {
+            "source": "Scottish Building Standards · Section 4.3 · geometry",
+            "note": "gov.scot"
+          }
+        ],
+        "confidence": "high",
+        "section": "Building Standards Technical Handbook · Section 4.3"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.jw78",
+        "country": "UK",
+        "title": "Protected stairway — fire resistance",
+        "requirement": "A protected stairway is a stair enclosed by fire-resisting construction and fire doorsets, so people escaping down it are shielded from a fire in the surrounding rooms. In loft conversions and multi-storey dwellings, the escape stair typically has to be a protected stairway.",
+        "applies_to": [
+          "fire-safety",
+          "escape-route",
+          "loft-conversion",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 · protected stairway",
+            "note": "https://assets.publishing.service.gov.uk/media/67d02386f5aaff610c9f5f06/Approved_Document_B__fire_safety__volume_1_-_Dwellings__2019_edition_incorporating_2020_and_2022_amendments.pdf"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1 (Dwellings)"
+      },
+      {
+        "id": "direct.reg.mrxrc9gq.fxk7",
+        "country": "UK",
+        "title": "Smoke alarm requirement in new dwellings",
+        "requirement": "Every new dwellinghouse should have smoke alarms fitted to BS 5839-6 at Grade D2 Category LD3 as a minimum. Directly relevant to stair design because the smoke alarm at the head of the stair is normally what protects the escape route.",
+        "applies_to": [
+          "fire-safety",
+          "new-build",
+          "escape-route"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 · paragraph 1.1",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1 · paragraph 1.1"
+      },
+      {
+        "id": "direct.reg.mry43cgq.ckk4",
+        "country": "UK",
+        "title": "Private stair core dimensions",
+        "requirement": "For a private stair in a single-family dwelling (the standard house stair): maximum rise 220mm, minimum going 220mm, maximum pitch 42°. These are the ceiling values — most well-designed stairs sit around 190-200mm rise and 240-260mm going.",
+        "applies_to": [
+          "design",
+          "domestic",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 edition · Table 1.1",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · Table 1.1 · private stair"
+      },
+      {
+        "id": "direct.reg.mry43cgq.637j",
+        "country": "UK",
+        "title": "Stair headroom over the flight",
+        "requirement": "Minimum headroom over the whole staircase is 2000mm (2m) measured vertically from the pitch line and from any landing. In a loft conversion, this can be relaxed to 1900mm at the centre of the stair and 1800mm at the side — the only headroom concession in the whole document, and only for loft conversions.",
+        "applies_to": [
+          "design",
+          "headroom",
+          "loft-conversion"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.10 + loft-conversion diagram",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.10"
+      },
+      {
+        "id": "direct.reg.mry43cgq.r48u",
+        "country": "UK",
+        "title": "Guarding height on stairs and landings",
+        "requirement": "Balustrade or guarding on a domestic stair flight must be at least 900mm above the pitch line. On any landing, or on the top of a landing in a domestic setting, 900mm minimum. On external balconies, roof terraces, and raised decking, 1100mm minimum from finished floor level. Non-domestic buildings use 1100mm on landings as well.",
+        "applies_to": [
+          "balustrade",
+          "guarding",
+          "landings"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + BS 6180:2011",
+            "note": "gov.uk PDF + BSI"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + BS 6180:2011"
+      },
+      {
+        "id": "direct.reg.mry43cgq.7582",
+        "country": "UK",
+        "title": "Balustrade horizontal load — domestic",
+        "requirement": "Internal domestic balustrades must resist a horizontal uniformly distributed line load of 0.36 kN/m applied at the handrail height, plus a point load of 0.25 kN. Residential glass balustrades — 0.74 kN/m at handrail height. Commercial and public balustrades carry higher loads. This is what the fixings, newel posts, and balustrade infill together have to withstand.",
+        "applies_to": [
+          "balustrade",
+          "loading",
+          "structural"
+        ],
+        "evidence": [
+          {
+            "source": "BS 6180:2011 + BS EN 1991-1-1",
+            "note": "British Standards + Eurocode"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 6180:2011 · residential + BS EN 1991-1-1"
+      },
+      {
+        "id": "direct.reg.mry43cgq.eecn",
+        "country": "UK",
+        "title": "Open-riser sphere test",
+        "requirement": "In an open-riser stair, the opening between two treads must not allow a 100mm sphere to pass. Same rule as the balustrade — the sphere test that protects children from getting a head, foot, or arm trapped. Rules out wide open-riser gaps in family homes.",
+        "applies_to": [
+          "open-riser",
+          "child-safety",
+          "design"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.13",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.13"
+      },
+      {
+        "id": "direct.reg.mry43cgq.c122",
+        "country": "UK",
+        "title": "Consecutive rises limit",
+        "requirement": "Maximum number of rises in a single flight without a landing: 36 for utility stairs, 16 for institutional and assembly stairs. Domestic stairs don't have a hard rise limit but if the total climb is more than about 3 metres a landing at half-height is standard practice for safety and to break up the climb.",
+        "applies_to": [
+          "design",
+          "flight-length",
+          "landings"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.16",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.16"
+      },
+      {
+        "id": "direct.reg.mry43cgq.63xp",
+        "country": "UK",
+        "title": "Landing minimum length",
+        "requirement": "The unobstructed length of a landing must be at least the width of the stair. Additionally, the clear length must be at least 1200mm from any door swinging onto it — so a door opens without hitting the top step. Landings at the top and bottom of a flight are treated the same.",
+        "applies_to": [
+          "landing",
+          "design",
+          "doors"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + NI Technical Booklet H · landings",
+            "note": "gov.uk + buildingcontrol-ni.com"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + Technical Booklet H (NI)"
+      },
+      {
+        "id": "direct.reg.mry43cgq.s6zu",
+        "country": "UK",
+        "title": "BS 5395-1:2010 — straight private stairs",
+        "requirement": "BS 5395-1:2010 is the Code of Practice for the design of straight stairs used by the general public — the sister document to BS 5395-2 (spirals) and BS 5395-3 (industrial). Where the Approved Documents give minimum compliance, BS 5395-1 gives design guidance on comfort, headroom, handrail ergonomics, and stair pitch bands.",
+        "applies_to": [
+          "straight-stair",
+          "design",
+          "reference-standard"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-1:2010 · Code of Practice for straight stairs",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-1:2010"
+      },
+      {
+        "id": "direct.reg.mry43cgq.pawj",
+        "country": "UK",
+        "title": "BS 5395-3 — industrial stairs",
+        "requirement": "BS 5395-3 is the Code of Practice for the design of industrial stairs — steel or checkered-plate stairs in factories, service areas, and plant rooms. Different geometry limits from domestic (much steeper allowed, up to 45° or 55° for service access). Not for use in dwellings or public buildings.",
+        "applies_to": [
+          "industrial",
+          "steel-stair",
+          "service-access"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-3 · industrial stairs Code of Practice",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-3"
+      },
+      {
+        "id": "direct.reg.mry43cgq.pbih",
+        "country": "UK",
+        "title": "BS 585-1:1989 — wood stairs specification (obsolescent)",
+        "requirement": "BS 585-1 specifies materials and construction for domestic timber stairs with closed risers, including plywood risers and treads, edge-jointed timber, and glue-laminated components. Applies to single-family dwelling stairs only. Does not apply to open-riser stairs, stairs wider than 1220mm, or single flights with a total going over 3800mm. Declared obsolescent by BSI in 2004 — but the technical content is still widely referenced by joiners and building control officers.",
+        "applies_to": [
+          "wood-stair",
+          "domestic",
+          "reference-standard"
+        ],
+        "evidence": [
+          {
+            "source": "BS 585-1:1989 · BSI · declared obsolescent 2004",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 585-1:1989"
+      },
+      {
+        "id": "direct.reg.mry43cgq.v41n",
+        "country": "UK",
+        "title": "BS 585-2:1985 — wood stair performance",
+        "requirement": "BS 585-2 is the performance specification for domestic wood-based stairs — load tests, deflection limits, and structural criteria the stair must pass regardless of construction method. Used with BS 585-1 for material specification. Both parts declared obsolescent but still the reference standard many building inspectors expect.",
+        "applies_to": [
+          "wood-stair",
+          "performance",
+          "load-test"
+        ],
+        "evidence": [
+          {
+            "source": "BS 585-2:1985 · BSI",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 585-2:1985"
+      },
+      {
+        "id": "direct.reg.mry43cgq.extr",
+        "country": "UK",
+        "title": "BS 6180:2011 — barriers in and about buildings",
+        "requirement": "BS 6180:2011 is the Code of Practice for barriers — balustrades, guardrails, and any barrier preventing a fall from height. Specifies design load values, height requirements, and glass grades for balustrade infill. Referenced directly by Approved Document K for structural verification of any stair balustrade.",
+        "applies_to": [
+          "balustrade",
+          "structural",
+          "reference-standard"
+        ],
+        "evidence": [
+          {
+            "source": "BS 6180:2011 · barriers in and about buildings",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 6180:2011"
+      },
+      {
+        "id": "direct.reg.mry43cgq.4lep",
+        "country": "UK",
+        "title": "Approved Doc M — ambulant disabled stair",
+        "requirement": "An ambulant disabled stair (for people who can walk but have limited mobility) has extra requirements on top of the standard public-stair rules: rise between 150-170mm, going between 250-300mm (both narrower than the max allowed for regular public), landings no more than 12 rises apart, and contrasting nosings both tread and riser. This is the accessible-stair spec that's now standard on almost all new commercial and public work.",
+        "applies_to": [
+          "accessibility",
+          "commercial",
+          "public-buildings"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M Vol 2 · paragraph 1.34",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M · Vol 2 · paragraph 1.34"
+      },
+      {
+        "id": "direct.reg.mry43cgq.5r8c",
+        "country": "UK",
+        "title": "Approved Doc M — tactile hazard warning surface",
+        "requirement": "Public-building stairs need a corduroy (ridged) tactile hazard warning surface at the top of the stair, 800mm deep, starting 400mm back from the first descending nosing. It warns visually-impaired users a stair is ahead. Not required at the bottom (going up you can see the stair). Rarely needed on domestic stairs but if a house is being fitted for a visually-impaired resident, worth offering.",
+        "applies_to": [
+          "accessibility",
+          "public-buildings",
+          "tactile"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document M + BS 8300-2:2018",
+            "note": "gov.uk PDF + BSI"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document M + BS 8300-2"
+      },
+      {
+        "id": "direct.reg.mry43cgq.y8jx",
+        "country": "UK",
+        "title": "Approved Doc B — minimum escape stair width",
+        "requirement": "For common stairs in blocks of flats, a stair that's an acceptable width for everyday use also serves as an escape stair. If the stair also serves as a firefighting stair, minimum width is 1100mm. Stair width is measured as the clear width between the walls or balustrades. Non-firefighting escape stairs in Volume 2 (non-dwellings) size to the occupancy load with tabulated widths.",
+        "applies_to": [
+          "escape-stair",
+          "firefighting",
+          "flats"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 + Vol 2",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1 + Vol 2"
+      },
+      {
+        "id": "direct.reg.mry43cgq.jbik",
+        "country": "WLS",
+        "title": "Welsh Approved Document K",
+        "requirement": "Wales publishes its own Approved Documents through the Welsh Government. Core stair geometry currently mirrors England — 2R+G between 550-700mm, private stair max rise 220mm and min going 220mm, max pitch 42° — but Wales diverges from England on Part L (energy) and increasingly on Part M. Always check the current Welsh Approved Document K for the project location, not the England version.",
+        "applies_to": [
+          "wales",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Welsh Government · Approved Documents",
+            "note": "gov.wales"
+          }
+        ],
+        "confidence": "high",
+        "section": "Building Regulations 2010 (Wales) · Approved Document K"
+      },
+      {
+        "id": "direct.reg.mry43cgq.5o45",
+        "country": "NIR",
+        "title": "NI Technical Booklet H · geometry",
+        "requirement": "In Northern Ireland the equivalent of Approved Document K is Technical Booklet H (Stairs, Ramps, Guarding and Protection from Impact). Core geometry mirrors England: 2R+G between 550-700mm, all steps in a flight the same rise and same going, private stair max pitch 42°. Landing width at least the stair width, unobstructed length at least 1200mm clear of any door swing.",
+        "applies_to": [
+          "northern-ireland",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "NI Technical Booklet H · October 2012",
+            "note": "https://www.buildingcontrol-ni.com/assets/pdf/TechnicalBookletH2012.pdf"
+          }
+        ],
+        "confidence": "high",
+        "section": "Building Regulations (NI) 2012 · Technical Booklet H"
+      },
+      {
+        "id": "direct.reg.mry43cgq.93as",
+        "country": "SCT",
+        "title": "Scottish landing + handrail specifics",
+        "requirement": "Scottish handrail rule: every stair with two or more risers needs a handrail on at least one side; both sides if the stair is more than 1000mm wide. Handrail height 840-1000mm above pitch line. Landing minimum width equal to the stair width. Guarding height 900mm on stairs and 1100mm on any landing that overlooks a drop.",
+        "applies_to": [
+          "scotland",
+          "handrail",
+          "landing",
+          "guarding"
+        ],
+        "evidence": [
+          {
+            "source": "Scottish Building Standards Technical Handbook · Section 4.3",
+            "note": "gov.scot"
+          }
+        ],
+        "confidence": "high",
+        "section": "Scottish Building Standards · Section 4.3"
+      },
+      {
+        "id": "direct.reg.mry43cgq.bceh",
+        "country": "UK",
+        "title": "Workplace stairs · Regulation 17 (1992)",
+        "requirement": "Workplaces must organise pedestrian traffic routes — which includes any stairs, staircase, fixed ladder, doorway, gateway, loading bay or ramp — so people can circulate safely. Every stair in a workplace must be securely fenced to a minimum 900mm, with a handrail on at least one side unless that obstructs the traffic route. Traffic routes must be suitable, sufficient in number, correctly positioned and adequately signed.",
+        "applies_to": [
+          "workplace",
+          "commercial",
+          "hse"
+        ],
+        "evidence": [
+          {
+            "source": "Workplace (Health, Safety and Welfare) Regulations 1992 · Reg 17",
+            "note": "https://www.legislation.gov.uk/uksi/1992/3004/regulation/17/made"
+          }
+        ],
+        "confidence": "high",
+        "section": "Workplace (Health, Safety and Welfare) Regulations 1992 · Regulation 17"
+      },
+      {
+        "id": "direct.reg.mry43cgq.1oox",
+        "country": "UK",
+        "title": "HSE L24 · workplace stair Approved Code of Practice",
+        "requirement": "The HSE's L24 Approved Code of Practice sets out how to comply with the 1992 Workplace Regulations. On stairs specifically: keep in good repair, keep clear of obstruction, provide handrails, ensure adequate lighting, ensure slip-resistant surface. Failure to comply is admissible in criminal prosecution — L24 is what HSE inspectors work from when they attend workplace incidents involving stair falls.",
+        "applies_to": [
+          "workplace",
+          "hse",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "HSE L24 · Approved Code of Practice",
+            "note": "https://www.hse.gov.uk/pubns/books/l24.htm"
+          }
+        ],
+        "confidence": "high",
+        "section": "HSE L24 · Workplace ACOP"
+      },
+      {
+        "id": "direct.reg.mry43cgq.zn3r",
+        "country": "UK",
+        "title": "HHSRS · falls on stairs hazard",
+        "requirement": "HHSRS is the risk-based assessment system local authorities use to inspect housing. 'Falls on stairs and steps' is a formally categorised hazard. Landlords and letting agents can be served with an Improvement Notice or Prohibition Order if a stair is judged to present a Category 1 hazard (serious risk of injury). Applies to all rented housing — private and social — plus HMOs.",
+        "applies_to": [
+          "housing",
+          "rented",
+          "landlord",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Housing Health and Safety Rating System · Housing Act 2004",
+            "note": "gov.uk"
+          }
+        ],
+        "confidence": "high",
+        "section": "Housing Health and Safety Rating System (2004)"
+      },
+      {
+        "id": "direct.reg.mry43cgq.oqmk",
+        "country": "UK",
+        "title": "Planning (Listed Buildings and Conservation Areas) Act 1990",
+        "requirement": "The Act that makes Listed Building Consent legally required. Any works to a Listed Building that affect its character — including replacing or significantly altering a staircase — need Listed Building Consent from the local authority before work begins. Carrying out unauthorised works is a criminal offence with unlimited fine and up to two years imprisonment. Applies to Grade I, Grade II*, and Grade II listed buildings across England and Wales; Scotland and NI have equivalent legislation.",
+        "applies_to": [
+          "listed-building",
+          "consent",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Planning (Listed Buildings and Conservation Areas) Act 1990",
+            "note": "https://www.legislation.gov.uk/ukpga/1990/9/contents"
+          }
+        ],
+        "confidence": "high",
+        "section": "Planning (Listed Buildings and Conservation Areas) Act 1990"
+      },
+      {
+        "id": "direct.reg.mry43cgq.47ie",
+        "country": "UK",
+        "title": "BS 5395-2 Categories B-E · spiral use bands",
+        "requirement": "Beyond Category A (small private) the spiral standard defines four more bands. Category B: larger private + occasional public use — minimum 800mm clear width. Category C: general public use — 1000mm clear width. Category D: assembly/public — 1500mm. Category E: means of escape — geometry and fire resistance dictated by Approved Document B. Every category has different rise/going/clear-width minimums; always check the correct category before quoting a spiral for anything other than a small private stair.",
+        "applies_to": [
+          "spiral",
+          "helical",
+          "commercial",
+          "public-buildings"
+        ],
+        "evidence": [
+          {
+            "source": "BS 5395-2:1984 · Category tables B/C/D/E",
+            "note": "British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "BS 5395-2:1984 · Categories B, C, D, E"
+      },
+      {
+        "id": "direct.reg.mry43cgq.y0f9",
+        "country": "UK",
+        "title": "Fire Safety Order 2005 · applies to common stairs",
+        "requirement": "The Fire Safety Order 2005 sits on top of Building Regulations for any building that isn't a single private dwelling. Any common stair — flats, HMOs, workplaces, public buildings — falls under the Order as an escape route. The 'responsible person' (usually the freeholder or employer) must carry out a Fire Risk Assessment covering the stair, keep it clear of obstructions, and maintain fire doors and lighting. Enforced by local Fire Authority with power to prosecute.",
+        "applies_to": [
+          "fire-safety",
+          "common-stair",
+          "flats",
+          "hmo",
+          "commercial"
+        ],
+        "evidence": [
+          {
+            "source": "Regulatory Reform (Fire Safety) Order 2005",
+            "note": "https://www.legislation.gov.uk/uksi/2005/1541/contents/made"
+          }
+        ],
+        "confidence": "high",
+        "section": "Regulatory Reform (Fire Safety) Order 2005"
+      },
+      {
+        "id": "direct.reg.mry4ssva.8e61",
+        "country": "UK",
+        "title": "Fire slabs — protected stairway construction spec",
+        "requirement": "Where a stairway must be protected (loft conversion, three-storey dwelling, HMO, block of flats), the enclosure has to give 30 minutes fire resistance. Standard construction: single layer of 12.5mm fire-line plasterboard (pink board, Knauf Fireboard or Gyproc Fireline) with skim finish, on both sides of a timber stud frame. Alternative achieving the same 30 minutes: two layers of standard 12.5mm plasterboard with staggered joints. All joints taped, all penetrations fire-sealed. Applies to walls, ceiling under the stair, and any partition enclosing the stairwell.",
+        "applies_to": [
+          "fire-safety",
+          "protected-stairway",
+          "loft-conversion",
+          "three-storey",
+          "hmo"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 · protected stairway enclosure",
+            "note": "gov.uk PDF + Knauf/Gyproc trade guidance"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1 · protected stairway"
+      },
+      {
+        "id": "direct.reg.mry4ssva.xaal",
+        "country": "UK",
+        "title": "Fire slabs — three-storey dwelling trigger",
+        "requirement": "When a house becomes three storeys (a two-storey house with a loft conversion counts), the ENTIRE staircase from ground to top floor becomes a protected stairway. Fire-line plasterboard is required on: the underside of the stair, all walls forming the stairwell enclosure at every level, and any partition wall between the stair and a habitable room. Every door off the stair on any level must upgrade to FD30 self-closing. The trigger is the third storey — not just the loft addition.",
+        "applies_to": [
+          "fire-safety",
+          "three-storey",
+          "loft-conversion",
+          "whole-house-upgrade"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 · protected stairway in dwellings",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1"
+      },
+      {
+        "id": "direct.reg.mry4ssva.8ykw",
+        "country": "UK",
+        "title": "Fire slabs — under-stair cupboard exception",
+        "requirement": "Small under-stair cupboards with low fire risk don't automatically need a fire-rated door. The Approved Document B guidance is: it may not be necessary to provide fire doorsets on cupboards if they are small and the fire risk is low. But if the under-stair cupboard houses a boiler, electrical consumer unit, meter, or storage of combustibles (paint, solvents, cleaning products), the door must be FD30 and the cupboard walls fire-lined. Standard practice: line every under-stair cupboard in a protected stairway with fire-line plasterboard as default.",
+        "applies_to": [
+          "fire-safety",
+          "under-stair",
+          "cupboard",
+          "boiler-cupboard"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B · Vol 1 · FAQ on cupboards",
+            "note": "gov.uk guidance"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1 · cupboards"
+      },
+      {
+        "id": "direct.reg.mry4ssva.3nu5",
+        "country": "UK",
+        "title": "Fire slabs — where 60 minutes is required",
+        "requirement": "Standard domestic protected stairway needs 30 minutes fire resistance. 60 minutes (achieved with 15mm fire-line plasterboard or double layer of 12.5mm) is required for: buildings four storeys or higher, flats above the third storey, fire-fighting stairs in commercial buildings, and any stairway where the escape distance or occupancy triggers the higher rating under Volume 2. In domestic new-build the 30-minute standard covers almost everything; the 60-minute jump only bites on larger conversions.",
+        "applies_to": [
+          "fire-safety",
+          "commercial",
+          "flats",
+          "high-rise"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 2 · fire resistance periods",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 2"
+      },
+      {
+        "id": "direct.reg.mry4ssva.yx1s",
+        "country": "UK",
+        "title": "Fire slabs — no requirement on standard two-storey",
+        "requirement": "A standard two-storey single-family dwelling with no loft conversion has NO requirement for fire-line plasterboard on the staircase back, sides, or underside. Standard 12.5mm plasterboard with skim is fully compliant, and even that isn't structurally required — a plain T&G softwood spandrel or a plaster-on-lath finish is legal. The fire-line requirement only kicks in when the property becomes three storeys, a flat, an HMO, or a workplace/commercial building.",
+        "applies_to": [
+          "fire-safety",
+          "two-storey",
+          "standard-dwelling"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 1 · dwellinghouses",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 1"
+      },
+      {
+        "id": "direct.reg.mry4ssva.9duq",
+        "country": "UK",
+        "title": "Stair headroom — measurement + minimum",
+        "requirement": "Minimum clear headroom over the full length of a staircase is 2000mm (2 metres), measured VERTICALLY from the pitch line and from every landing to any obstruction above. The pitch line is the imaginary line joining the front edges of the tread nosings. 2000mm applies at every point along the flight — including at the top where the stair passes under the trimmer joist. Any dip below 2000mm anywhere along the pitch line is a fail, unless the loft-conversion concession applies.",
+        "applies_to": [
+          "headroom",
+          "design",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.10 + Diagram 1.3",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.10"
+      },
+      {
+        "id": "direct.reg.mry4ssva.g665",
+        "country": "UK",
+        "title": "Headroom — trimmer joist is the usual failure point",
+        "requirement": "On upper-floor staircases, the trimmer joist at the head of the stair opening is where headroom most commonly fails. The trimmer sits above the top few risers, and if the finished ceiling line drops below the joist bottom (typical in older houses with shallow floor zones), the 2000mm minimum measured to the trimmer soffit is often breached. Any staircase design must plot the trimmer position against the pitch line and check headroom at that specific point before signing off the layout.",
+        "applies_to": [
+          "headroom",
+          "trimmer",
+          "layout",
+          "design"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · pitch-line measurement + practical joinery",
+            "note": "gov.uk PDF + UK trade"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.10 · practical application"
+      },
+      {
+        "id": "direct.reg.mry4ssva.gj2t",
+        "country": "UK",
+        "title": "Headroom — loft conversion concession",
+        "requirement": "For loft conversions ONLY — the single relaxation Doc K allows on headroom. Where a converted loft has to be accessed by a stair and no other practicable option exists, headroom can drop to 1900mm at the CENTRE of the stair and 1800mm at the SIDE of the stair (that is, at the wall where the stair meets a pitched ceiling). Applies only in loft conversions into previously non-habitable roof space. Never applied to main house stairs or new-build.",
+        "applies_to": [
+          "headroom",
+          "loft-conversion",
+          "concession"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · loft conversion Diagram 1.4",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · loft conversion exception"
+      },
+      {
+        "id": "direct.reg.mry4ssva.6zjt",
+        "country": "UK",
+        "title": "Stair width — how it's measured (definition)",
+        "requirement": "Stair width in Approved Document K is defined as the CLEAR WIDTH BETWEEN THE WALLS OR BALUSTRADES. That means: measured at right angles to the direction of travel, between any obstruction on each side — wall, string upstand, handrail, or balustrade. Not measured between wall centres, not between joist edges, and not string-to-string. The handrail or balustrade counts as the width limit if it projects. If there's a wall on one side and a balustrade on the other, measure between them. Both sides walled — between wall faces at balustrade or upstand height.",
+        "applies_to": [
+          "stair-width",
+          "measurement",
+          "design"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 edition · definitions section",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · definitions"
+      },
+      {
+        "id": "direct.reg.mry4ssva.l0ic",
+        "country": "UK",
+        "title": "Private stair — no minimum width in Doc K",
+        "requirement": "Approved Document K sets NO absolute minimum stair width for a private domestic stair in a single-family dwelling. In practice: the practical minimum most builders and building inspectors accept is around 600mm for a loft conversion secondary stair, and 800mm for a primary household stair. Anything narrower and the stair becomes hard to use and hard to fit around the standard 900mm door opening. Common bespoke domestic stair widths are 850-1000mm.",
+        "applies_to": [
+          "stair-width",
+          "private",
+          "domestic"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · absence of minimum for private stairs",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · private stair"
+      },
+      {
+        "id": "direct.reg.mry4ssva.ij10",
+        "country": "UK",
+        "title": "Semi-public / common flat stair — 1000mm minimum",
+        "requirement": "Common stairs in blocks of flats and semi-public buildings: minimum stair width 1000mm (clear width between walls or balustrades), or 900mm if the stair serves only a single dwelling on that floor level. If the stair is also a fire-fighting stair, minimum jumps to 1100mm.",
+        "applies_to": [
+          "stair-width",
+          "flats",
+          "common-stair",
+          "semi-public"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + Doc B · common flat stairs",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + Approved Document B"
+      },
+      {
+        "id": "direct.reg.mry4ssva.t1mp",
+        "country": "UK",
+        "title": "Commercial / non-domestic — 1200mm baseline",
+        "requirement": "For commercial and non-domestic buildings the baseline minimum stair width is 1200mm clear (between walls or balustrades). Actual width scales with occupancy load: a 1000mm-wide flight handles roughly 80 persons per minute for escape, scaling roughly linearly. Very high occupancy (assembly, retail, offices with large open floorplates) commonly needs 1500-1800mm. If a single stair exceeds 2000mm wide, a central handrail is required to divide it into ≤1000mm sections so escaping crowds have something to hold either side.",
+        "applies_to": [
+          "stair-width",
+          "commercial",
+          "escape",
+          "occupancy"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document B Vol 2 + BS 9999 · escape stair widths",
+            "note": "gov.uk PDF + British Standards"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document B · Vol 2 + BS 9999"
+      },
+      {
+        "id": "direct.reg.mry4ssva.d1yp",
+        "country": "UK",
+        "title": "Central handrail on wide stairs",
+        "requirement": "Any stair over 1800mm wide in Doc M work — or 2000mm wide in commercial escape work under Doc B — must have a central handrail dividing the width into sections. Each section must not exceed the width limits above (1000mm typical). The central handrail gives escapees and users something to hold whether they're on the left or right half of the stair, and stops crowds swaying in the middle during escape.",
+        "applies_to": [
+          "stair-width",
+          "central-handrail",
+          "wide-stair",
+          "commercial"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + M · central handrail rule",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + Approved Document M"
+      },
+      {
+        "id": "direct.reg.mry53s55.dxfy",
+        "country": "UK",
+        "title": "Kite winder — going measured at pitch line",
+        "requirement": "On any winder tread (including all treads in a kite winder box), the going is measured at the pitch line — typically 270mm in from the narrow end of the tread. At that point, the going must be at least 220mm on a private stair (same as a straight tread). All winders in the box must have the same going at the pitch line. Where a stair mixes straight and winder treads, the winder going at the pitch line must be equal to or greater than the straight-tread going.",
+        "applies_to": [
+          "kite-winder",
+          "winder",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 1.24",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 1.24 (winder treads)"
+      },
+      {
+        "id": "direct.reg.mry53s55.3uig",
+        "country": "UK",
+        "title": "Kite winder — minimum tread width at narrow end",
+        "requirement": "The narrow end of any winder tread (kite winder or single winder) must be at least 50mm wide. This prevents the taper closing to a point that's unsafe to stand on and impossible to get a foot on to. On a 3-tread kite winder in a typical UK domestic stair the narrow end is usually 50-70mm, and the wide end 200-300mm depending on the stair width.",
+        "applies_to": [
+          "kite-winder",
+          "winder",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · winder minimum width",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · winder tread"
+      },
+      {
+        "id": "direct.reg.mry53s55.iku2",
+        "country": "UK",
+        "title": "Kite winder — number of treads in a 90° turn",
+        "requirement": "Part K doesn't specify a minimum number of winder treads, but in practice a kite winder box needs at least 3 tapered treads to make a comfortable 90° turn. A 2-tread winder box has acute taper angles that are difficult to walk safely and hard to make compliant on the pitch-line going measurement — building control often refuses them. Four treads is the recommended comfortable minimum for a 90° turn. Three treads is the trade standard for a domestic kite winder.",
+        "applies_to": [
+          "kite-winder",
+          "design",
+          "layout"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + UK trade design practice",
+            "note": "gov.uk PDF + industry"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · practical guidance"
+      },
+      {
+        "id": "direct.reg.mry53s55.9d7w",
+        "country": "UK",
+        "title": "100mm sphere rule — precise spindle spacing",
+        "requirement": "In any area used by children, the gap between spindles must not allow a 100mm sphere to pass through. Measured as the CLEAR gap (open space between adjacent spindles), not centre-to-centre. On an angled stair flight, the sphere test applies horizontally — the horizontal projection of the diagonal gap is what must be under 100mm. Trade practice: design for 99mm maximum clear gap to allow for site tolerances. Building inspectors carry actual 100mm spheres to test on completion.",
+        "applies_to": [
+          "balustrade",
+          "spindle-spacing",
+          "child-safety",
+          "compliance"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K · 2013 · paragraph 3.2 + diagrams",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K · paragraph 3.2"
+      },
+      {
+        "id": "direct.reg.mry53s55.8evf",
+        "country": "UK",
+        "title": "Spindle spacing calculation",
+        "requirement": "To calculate spindle count for a balustrade run: measure between newel posts to get effective length. Subtract the total spindle width you'll use (spindle count x spindle cross-section) from effective length. Divide the remainder by (spindle count + 1) to get the clear gap. Adjust spindle count until the gap is at or below 99mm. Rule of thumb for 32mm spindles: roughly one spindle per 120mm run — a 2400mm handrail run typically takes 20 spindles at 32mm to comply.",
+        "applies_to": [
+          "balustrade",
+          "spindle-spacing",
+          "calculation"
+        ],
+        "evidence": [
+          {
+            "source": "Approved Document K + UK stair-fitting practice",
+            "note": "gov.uk PDF"
+          }
+        ],
+        "confidence": "high",
+        "section": "Approved Document K + trade practice"
+      }
+    ],
+    "rules": []
+  },
+  "updated_at": "2026-07-24T03:03:38.619Z"
+}

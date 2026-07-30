@@ -1,0 +1,67 @@
+{
+  "run_id": "qaimp_mrxneuw7_jjqdvl",
+  "brain_slug": "staircase",
+  "author_id": "phillipofarrell@gmail.com",
+  "input_hash": "c2b528e5adf502b5",
+  "input_length": 393,
+  "llm_model": "direct_import",
+  "created_at": "2026-07-23T15:10:41.382Z",
+  "candidates": [
+    {
+      "id": "qaimp_mrxneuw7_jjqdvl_c0",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.jjqdvl.0",
+        "statement": "A tread is held by wedges glued into the strings, plus angle blocks beneath. Any of these can loosen over time and cause movement.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "What holds a staircase tread in place?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: What holds a staircase tread in place?\nA: A tread is held by wedges glued into the strings, plus angle blocks beneath. Any of these can loosen over time and cause movement.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:10:41.382Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c2b528e5adf502b5"
+      },
+      "status": "pending",
+      "admin_status": "unreviewed",
+      "review_history": []
+    },
+    {
+      "id": "qaimp_mrxneuw7_jjqdvl_c1",
+      "brain_slug": "staircase",
+      "kind": "craft.fact",
+      "payload": {
+        "id": "qa.fact.jjqdvl.1",
+        "statement": "Timber staircases should be acclimatised in the room where they will be fitted for at least 48 hours before installation, especially in newly\n  plastered homes.",
+        "evidence": [
+          {
+            "source": "phillipofarrell@gmail.com · own experience",
+            "note": "When should timber be acclimatised on site?"
+          }
+        ],
+        "confidence": "medium",
+        "classification": "expert_observation"
+      },
+      "source_span": "Q: When should timber be acclimatised on site?\nA: Timber staircases should be acclimatised in the room where they will be fitted for at least 48 hours before installation, especially in newly\n  plastered homes.",
+      "needs_author_source": false,
+      "provenance": {
+        "llm_model": "direct_import",
+        "proposed_at": "2026-07-23T15:10:41.382Z",
+        "prompt_version": "qa_import.v1.2026-07-23",
+        "input_hash": "c2b528e5adf502b5"
+      },
+      "status": "pending",
+      "admin_status": "unreviewed",
+      "review_history": []
+    }
+  ]
+}
