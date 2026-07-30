@@ -36,7 +36,53 @@ The four-question shape is what makes this module Reference-Brain-grade and not 
 
 AI has populated **only** the traceability field (`Where it appears in existing evidence`) because that is organisational work permitted under Rule B. The four trade-content questions are **left as authoring slots** for Philip O'Farrell. Any AI-authored trade content here would violate Rule B and cannot enter a Reference Brain.
 
-Voice recording works — a two-sentence answer per question is enough. Runtime JSON I can then compose from the authored answers (composition, not authorship) and hand back for expert review.
+## The two-sentence rule (Philip 2026-07-30 · HARD LAW · Rule B compliance mechanism)
+
+**Every four-question answer is 2 sentences maximum.**
+
+- WHAT IS IT? — 2 sentences
+- WHAT DOES IT DO? — 2 sentences
+- WHAT DO HOMEOWNERS CALL IT? — 2 sentences
+- COMMONLY CONFUSED WITH? — 2 sentences
+
+**Total per term: 8 sentences.**
+**Total v1 module: 88 sentences of expert-authored trade content across 11 terms.**
+
+Philip verbatim: *"The expert knowledge should remain extremely pure. Everything else becomes NEX composed."*
+
+Short expert authorship is what makes the source Rule B compliant. Mind areas compose from this pure source into multiple runtime modes (Professional / Homeowner / Educational / Discovery / Learning / Visual / Expert) — that composition is NEX's job, not the author's. If the author writes 8 or 14 or 17 sentences per question, the source stops being pure and the composition modes lose their integrity.
+
+**Gatekeeper role (Chief Reference Brain Engineer):** if any answer arrives over 2 sentences, ask Philip to compress before it enters the scaffold. Not style — governance.
+
+Voice recording works — two short sentences per question is the target. Runtime JSON I can then compose from the authored answers (composition, not authorship) and hand back for expert review.
+
+## Why the fourth question is not just a definition slot (Philip 2026-07-30)
+
+Philip verbatim: *"You're not building terminology anymore. You're building relationship intelligence."*
+
+The COMMONLY CONFUSED WITH field turns every entry into a graph node. When authored across all 11 terms, the graph emerges automatically — no separate graph-building work required. Mind areas (Wisdom · Discovery · Curiosity) walk this graph at runtime to teach relationships, not just facts.
+
+The graph shape already implied by the v1 scope:
+
+```
+              GOING
+                 |
+              confused
+                 |
+    -------------------------------
+    |               |             |
+  RISE            TREAD         RISER
+    |               |             |
+    -------------------------------
+                 |
+               related
+                 |
+              NOSING
+                 |
+             regulations
+```
+
+That five-term cluster (rise ↔ riser ↔ going ↔ tread ↔ nosing) is the module's single most valuable pedagogical unit. Philip's justifying question for promoting rise + going to Tier-1 — *"What's the difference between rise, riser and going?"* — is answered by the graph, not by any single definition.
 
 ## Confirmation Register · Gate 2 status (Philip 2026-07-30 · six items resolved)
 
@@ -59,10 +105,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 1 · tread
 
 - **Canonical form:** `tread`
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
-- **Commonly confused with?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L146 (installation sequence), L155–L159 (*"the tread is the reference, not gravity"*), L186 (tread inserted into string housing), L440–L442 (tread covers)
   - `customer-faq-staircase.md` L43 (approval checklist), L80 (natural variation), L140 (post-install inspection), L254 (DIY boundary: replace treads = ⚠ Advanced)
@@ -74,9 +120,9 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 2 · riser
 
 - **Canonical form:** `riser`
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
 - **Commonly confused with?** _awaiting expert input · note: rise/riser/going trio is the most-confused cluster · see also Term 10 (rise) and Term 11 (going)_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L148 (installation sequence), L440–L442 (riser covers)
@@ -89,10 +135,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 3 · string
 
 - **Canonical form:** `string` (UK usage · US convention is `stringer`)
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
-- **Commonly confused with?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L140 (fit string · first step in installation sequence), L184 (string housing · tread inserted), L262 (fit onto string tenon), L440 (string cladding / string cover)
   - `customer-faq-staircase.md` L72 (LED lighting position · *wall string* — sub-type), L254 (replace treads = fit-to-string all matters)
@@ -106,9 +152,9 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 
 - **Canonical form:** `newel` (short form · `newel post` = synonym per Philip 2026-07-30)
 - **What is it?** _awaiting expert input · already partially framed in evidence: "the structural anchor for the handrail and balustrade" (installation-techniques L33)_
-- **What does it do?** _awaiting expert input_
+- **What does it do?** _awaiting expert input · 2 sentences_
 - **What do homeowners call it?** _awaiting expert input · source files use `newel` and `newel post` interchangeably_
-- **Commonly confused with?** _awaiting expert input_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L33 (structural anchor · full Parts 1–3 dedicated to newel work), L46–L295 (removal + installation techniques), L104 (through newel · bolted to floor joist), L127 (box newel over existing core · spigot system), L240 (through newel · fixing type in NEX assessment)
   - `customer-faq-staircase.md` L43, L46, L98 (replace newel caps · popular renovation), L250 (replace newel caps = DIY yes · decorative), L255 (replace newel posts = professional recommended · structural)
@@ -122,9 +168,9 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 
 - **Canonical form:** `baluster` (parent term per Philip 2026-07-30 · `spindle` = synonym / note under this entry)
 - **What is it?** _awaiting expert input · safety framing already implicit: "a timber balustrade is a safety feature — balusters must be securely fixed and correctly spaced" (installation-techniques L302)_
-- **What does it do?** _awaiting expert input_
+- **What does it do?** _awaiting expert input · 2 sentences_
 - **What do homeowners call it?** _awaiting expert input · **known homeowner term: spindle** (also captured for confusion)_
-- **Commonly confused with?** _awaiting expert input_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L76 (removed before newel work), L300–L354 (Part 5 · full baluster fitting section), L302 (safety feature · secure fixing · correct spacing), L310–L313 (four fitting systems: grooved handrail + baserail · handrail without grooves · metal spindle system · glass panel system), L326 (100mm sphere rule · UK building reg reference)
   - `customer-faq-staircase.md` L46 (showroom comparison item), L98 (replace balusters = popular renovation), L140 (balusters straight · post-install check), L148 (keep one spare baluster), L251 (replace balusters = DIY usually · match spindle spacing)
@@ -136,10 +182,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 6 · handrail
 
 - **Canonical form:** `handrail`
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
-- **Commonly confused with?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L71 (remove handrail assembly first · installation Part 1 Step 1), L100 (handrail → newel → floor joist load path), L217 (check handrail alignment before final fix), L310–L311 (grooved vs non-grooved handrail as balustrade infill logic), L349 (handrail top of balustrade sketch), L561 (handrail-to-newel connection methods · mortise · dowel · handrail bolts · Zipbolt · hidden bracket)
   - `customer-faq-staircase.md` L43 (approval item), L46 (showroom comparison), L72 (LED under handrail), L98 (replace handrail = popular renovation), L140 (handrail secure · post-install check), L186 (F22 · why handrail is smoother than tread · sanded finer because touched daily), L253 (replace handrail = ⚠ moderate difficulty · handrail is what people touch daily), L305–L311 (replace-handrail project brief)
@@ -153,9 +199,9 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 
 - **Canonical form:** `landing`
 - **What is it?** _awaiting expert input · used in three overlapping senses across source: intermediate flat area between flights · top-floor arrival area · design feature area_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
-- **Commonly confused with?** _awaiting expert input_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` (implicit throughout multi-flight installation contexts)
   - `customer-faq-staircase.md` L72 (LED lighting at landing), L110 (photograph the landing in a dispute)
@@ -168,10 +214,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 8 · winder
 
 - **Canonical form:** `winder`
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
-- **Commonly confused with?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
+- **Commonly confused with?** _awaiting expert input · 2 sentences_
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L26 (reference image: `staircase-install-winder-fitting.jpg` · kite winder treads visible · *"winder installation involves more coordination than a straight flight because each winder step's geometry depends on the others"*)
   - `customer-faq-staircase.md` (implicit in staircase-shape references)
@@ -183,9 +229,9 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 9 · nosing · PROMOTED (Philip 2026-07-30 · Tier-1)
 
 - **Canonical form:** `nosing`
-- **What is it?** _awaiting expert input_
-- **What does it do?** _awaiting expert input_
-- **What do homeowners call it?** _awaiting expert input_
+- **What is it?** _awaiting expert input · 2 sentences_
+- **What does it do?** _awaiting expert input · 2 sentences_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
 - **Commonly confused with?** _awaiting expert input · note: rise/riser/going/tread/nosing form the most-confused geometric cluster (Philip 2026-07-30)_
 - **Where it appears in existing evidence:**
   - `customer-faq-staircase.md` L180 (F19 · *"protect treads · nosings · handrails · walls"* — furniture-carrying protection)
@@ -199,7 +245,7 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 - **Canonical form:** `rise`
 - **What is it?** _awaiting expert input · closest existing framing: "step height" (staircase-design-principles.md L122)_
 - **What does it do?** _awaiting expert input · closest existing framing: "determines walking comfort and appearance" together with going (staircase-design-principles.md L122)_
-- **What do homeowners call it?** _awaiting expert input_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
 - **Commonly confused with?** _awaiting expert input · **critical: rise vs riser** — Philip 2026-07-30 flagged this as the single biggest terminology education opportunity in the module_
 - **Where it appears in existing evidence:**
   - `staircase-design-principles.md` L122 (*"The relationship between rise (step height) and going (step depth) determines walking comfort and appearance"* — the only explicit definition in the source files)
@@ -213,7 +259,7 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 - **Canonical form:** `going`
 - **What is it?** _awaiting expert input · closest existing framing: "step depth" (staircase-design-principles.md L122)_
 - **What does it do?** _awaiting expert input · closest existing framing: paired with rise, "determines walking comfort and appearance" (staircase-design-principles.md L122) · candidate: "determines stepping space" per Philip's Gate-2 exemplar_
-- **What do homeowners call it?** _awaiting expert input_
+- **What do homeowners call it?** _awaiting expert input · 2 sentences_
 - **Commonly confused with?** _awaiting expert input · Philip's Gate-2 exemplar suggests: tread depth · riser height · rise measurement_
 - **Where it appears in existing evidence:**
   - `staircase-design-principles.md` L122 (paired with rise in the geometry paragraph)
