@@ -709,8 +709,8 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
   if (!loadResult.ok) {
     const knownTerms = terminologyModule ? listCoveredTerms(terminologyModule) : [];
     const answer = knownTerms.length > 0
-      ? `I cannot answer this truthfully today. My current Reference Brain coverage is staircase terminology, covering these ${knownTerms.length} terms: ${knownTerms.join(", ")}. If your question relates to one of them, ask me about it directly. Otherwise, the knowledge required to answer this question has not yet earned permission to exist within my Reference Brain.`
-      : `I cannot answer this truthfully today. No published governed staircase knowledge has yet earned permission to exist within my Reference Brain.`;
+      ? `I cannot answer this truthfully today. My current Reference Brain coverage is staircase terminology, covering these ${knownTerms.length} terms: ${knownTerms.join(", ")}. If your question relates to one of them, ask me about it directly. Otherwise, NEX does not yet have verified permission to answer this question.`
+      : `I cannot answer this truthfully today. NEX does not yet have verified permission to answer this question.`;
     return {
       answer,
       citations: [],
