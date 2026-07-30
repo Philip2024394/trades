@@ -24,6 +24,12 @@ import { scoreCandidates, type TieredCandidate } from "./_evidence_tiering";
 import { filterForIntent } from "./_expert_filter";
 import { runQualityGate } from "./_answer_quality_gate";
 import { runCommercialClaimGuard } from "./_commercial_claim_guard";
+import {
+  loadTerminologyModule,
+  matchTerminology,
+  composeTerminologyAnswer,
+  listCoveredTerms
+} from "./_terminology_serve";
 
 const NEX_SYSTEM_PROMPT = `You are Nex, the specialist AI voice for UK construction trades. In this conversation you are Nex Staircases — the deep specialist for UK staircase design, regulations, materials, workmanship, restoration and trade practice.
 
@@ -654,14 +660,59 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
     };
   }
 
+  // ─── Terminology direct-serve (Path B.1 · Philip 2026-07-30) ────────
+  //
+  // Reality earned permission for the smallest possible representation
+  // of the 88 authored atoms (11 terms × 4 questions × 2 sentences).
+  // This block bypasses the full V1 loader chain and reads the
+  // Terminology draft JSON directly · Rule B compliant composition ·
+  // no trade content authored by AI.
+  //
+  // If terminology matches: return the composed atoms.
+  // If no match: fall through to truthful gap-naming (below at line
+  // formerly "Something's not quite right my end"), which now names the
+  // covered terms honestly per NEX Master Constitutional Prompt v1.0.
+  const terminologyModule = await loadTerminologyModule(input.brain_slug);
+  if (terminologyModule) {
+    const match = matchTerminology(terminologyModule, input.question);
+    if (match.kind === "canonical" || match.kind === "alias") {
+      const answer = composeTerminologyAnswer(match.term);
+      return {
+        answer,
+        citations: match.term.evidence.map((e) => ({
+          text:      e.source,
+          source_id: match.term.term,
+          score:     1
+        })) as ComposedAnswer["citations"],
+        wood_cards: [],
+        visual_intent: visualIntent,
+        comparison,
+        expertise: expertiseForResponse,
+        status: "answered",
+        brain_versions: { [input.brain_slug]: terminologyModule.header.version }
+      };
+    }
+  }
+
   // Lazy-load the trade content into the runtime registry if not
-  // already there. If loading fails, respond naturally — never expose
-  // internal architecture ("Brain", "module", etc.) to the user per
-  // platform rule.
+  // already there. If loading fails (which it currently always does
+  // post-ADR-0042 sever · empty registry state), respond truthfully
+  // per NEX Master Constitutional Prompt v1.1 — determine truthfully
+  // why the question cannot be answered. NEX has no desire to answer
+  // every question. NEX has a desire to understand why it cannot.
+  //
+  // Rule A protection: name only what NEX actually knows and does
+  // not know. Do NOT invent specific missing categories NEX has no
+  // way to verify. Do NOT claim observations are being stored (Stage
+  // 2 not yet built).
   const loadResult = await ensureBrainLoaded(input.brain_slug);
   if (!loadResult.ok) {
+    const knownTerms = terminologyModule ? listCoveredTerms(terminologyModule) : [];
+    const answer = knownTerms.length > 0
+      ? `I cannot answer this truthfully today. My current Reference Brain coverage is staircase terminology, covering these ${knownTerms.length} terms: ${knownTerms.join(", ")}. If your question relates to one of them, ask me about it directly. Otherwise, the knowledge required to answer this question has not yet earned permission to exist within my Reference Brain.`
+      : `I cannot answer this truthfully today. No published governed staircase knowledge has yet earned permission to exist within my Reference Brain.`;
     return {
-      answer: "Something's not quite right my end — give me a moment and try that again.",
+      answer,
       citations: [],
       wood_cards: [],
       visual_intent: visualIntent,

@@ -64,7 +64,7 @@ export function PlatformHero() {
           <div className="h-14 w-[160px] overflow-hidden" aria-label="NEX">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/nex-app/staircase/nex-logo.png"
+              src="/staircase-images/nex-logo.png"
               alt="NEX"
               className="h-full w-full"
               style={{ objectFit: "cover", objectPosition: "center" }}

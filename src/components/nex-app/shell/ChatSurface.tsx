@@ -935,7 +935,7 @@ export function NexAvatar({ size = 32 }: { size?: number }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src="/nex-app/staircase/nex-avatar.png"
+      src="/staircase-images/nex-avatar.png"
       alt="Nex"
       width={size}
       height={size}
