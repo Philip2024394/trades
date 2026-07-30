@@ -1,0 +1,93 @@
+# ─── Right-hand mirror of straight_closed_11t_left_handrail_turned.yaml (Philip 2026-07-30) ─────────
+# Deterministic mirror of the left-hand canonical.
+# All attributes preserved except handrail + shoe rail side (left -> right).
+# Image URL uses ImageKit horizontal-flip transform (tr:fl-h) - no separate
+# render required. Single URL per file, deterministic, no image generation.
+#
+# NEX Staircase Component Library — Assembly 11 (11-tread, TURNED balusters)
+#
+# Part of the SHELL_STRAIGHT_CLOSED + RIGHT_HANDRAIL family. Same
+# handrail / newels / shoe rail / material as its siblings — only
+# the shell variant AND the baluster style change (turned, not square).
+#
+# Fills a gap in the continuous 1-14 sequence · same TURNED baluster
+# style as Assemblies 07, 08, 09.
+#
+# golden_reference: false — reference example, not a golden validation
+# point (Philip's golden set is 1, 4, 8, 10, 13, 16 treads).
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_11T_RIGHT_HANDRAIL_TURNED
+mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_11T_LEFT_HANDRAIL_TURNED   # left-hand canonical this right-hand file mirrors
+assembly_type:              static_reference
+golden_reference:           false
+created_at:                 2026-07-30T10:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+verified_by:                philip
+verified_at:                2026-07-30
+verification_note:          Right-hand mirror visually verified. ImageKit tr:fl-h transform confirmed correct across all 14 assemblies in the batch.
+
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+# SHELL_STRAIGHT_CLOSED_11 carries treads=11, risers=12 per the
+# engineering invariant (risers = treads + 1 · every single flight
+# terminates on a riser against the trimmer · Philip 2026-07-30).
+# Classification aligns with the invariant this time — 11T/12R.
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_11
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               right
+    mirrored:               true
+
+# ─── Newels (FLAT caps) ──────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               right
+
+# ─── Balusters (fitted, auto quantity, TURNED classic profile) ──
+balusters:
+  fitted:                       true
+  component_id:                 BALUSTER_TURNED_CLASSIC_01
+  style:                        turned_classic
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Material (Principle 7 · reference) ──────────────────────────
+material_ref:                 OAK_EUROPEAN_CLEAR_01
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/tr:fl-h/ChatGPT%20Image%20Jul%2030,%202026,%2012_26_47%20AM.png
+
+# ─── Semantic tags (Principle 10) ────────────────────────────────
+tags:
+  - assembly
+  - straight_flight
+  - closed_string
+  - right_handrail
+  - 11_tread
+  - turned_balusters
+  - domestic
+  - oak
+  - traditional
+
+notes:
+  - 11-tread version of the SHELL_STRAIGHT_CLOSED + right-handrail
+    pattern with TURNED (not square) balusters. Same baluster style
+    as Assemblies 07, 08, 09.
+  - Fills the 11T gap in the continuous 1-14 sequence.

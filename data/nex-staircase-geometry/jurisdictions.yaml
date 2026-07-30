@@ -1,0 +1,135 @@
+# NEX Geometry Module — Jurisdiction rules
+#
+# Regulation-anchored parameters the Geometry Module reads when
+# validating a staircase design against a specific building's location.
+#
+# HARD LAW (from the Master Doc): every numeric limit MUST carry its
+# source. Never store a bare number. Two source categories:
+#
+#   regulation: cited to a specific Approved Document / Technical
+#               Guidance Document / British Standard. Trust > workshop.
+#   practical:  workshop convention, common design range. Informational
+#               only — never a fail. Documented so the solver can
+#               distinguish "hard limit" from "unusual range".
+#
+# Add new jurisdictions here, never in code. If regulations diverge
+# between two jurisdictions, only this file changes — the solver stays
+# jurisdiction-agnostic.
+
+version: 1
+last_updated: 2026-07-29
+maintainer: philip
+
+jurisdictions:
+
+  england:
+    display_name: "England (Building Regulations)"
+    primary_regulation_document: "Approved Document K — Stairs, ladders, and ramps"
+    building_types:
+      dwelling:
+        rise_mm:
+          max:
+            value: 220
+            source: regulation
+            citation: "Approved Document K, staircase geometry for dwellings"
+          min:
+            value: 150
+            source: practical
+            citation: "workshop convention; not regulated"
+        going_mm:
+          min:
+            value: 220
+            source: regulation
+            citation: "Approved Document K, staircase geometry for dwellings"
+          max:
+            value: 300
+            source: practical
+            citation: "workshop convention; not regulated"
+        pitch_deg:
+          max:
+            value: 42
+            source: regulation
+            citation: "Approved Document K, staircase geometry for dwellings"
+        headroom_mm:
+          min:
+            value: 2000
+            source: regulation
+            citation: "Approved Document K, minimum headroom for staircases"
+        consistency:
+          all_rises_equal: true
+          all_goings_equal: true
+          source: regulation
+          citation: "Approved Document K, requirement for consistent geometry"
+        flight:
+          # Added 2026-07-29 (Patch 3): legal vs best-practice split for flight length.
+          max_consecutive_risers:
+            value: 36
+            source: regulation
+            citation: "Approved Document K — change of direction / landing required beyond 36 consecutive risers"
+          recommended_max_risers:
+            value: 16
+            source: practical
+            citation: "Design best practice for domestic straight flights — beyond 16 risers a landing or turn is typical"
+
+  republic_of_ireland:
+    display_name: "Republic of Ireland (Building Regulations)"
+    primary_regulation_document: "Technical Guidance Document K — Stairways, Ladders, Ramps and Guards"
+    building_types:
+      dwelling:
+        rise_mm:
+          max:
+            value: 220
+            source: regulation
+            citation: "Technical Guidance Document K (Ireland), staircase geometry for dwellings"
+          min:
+            value: 150
+            source: practical
+            citation: "workshop convention; not regulated"
+        going_mm:
+          min:
+            value: 220
+            source: regulation
+            citation: "Technical Guidance Document K (Ireland), staircase geometry for dwellings"
+          max:
+            value: 300
+            source: practical
+            citation: "workshop convention; not regulated"
+        pitch_deg:
+          max:
+            value: 42
+            source: regulation
+            citation: "Technical Guidance Document K (Ireland), staircase geometry for dwellings"
+        headroom_mm:
+          min:
+            value: 2000
+            source: regulation
+            citation: "Technical Guidance Document K (Ireland), staircase geometry for dwellings"
+        consistency:
+          all_rises_equal: true
+          all_goings_equal: true
+          source: regulation
+          citation: "Technical Guidance Document K (Ireland), requirement for consistent geometry"
+        flight:
+          # Added 2026-07-29 (Patch 3): Ireland is stricter than England here.
+          max_consecutive_risers:
+            value: 16
+            source: regulation
+            citation: "Technical Guidance Document K (Ireland) — no more than 16 risers in any one flight; landing required beyond"
+          recommended_max_risers:
+            value: 16
+            source: practical
+            citation: "Matches Irish regulation — no separate best-practice threshold"
+
+  # Future jurisdictions (add when a real project needs them):
+  #   scotland          — Technical Handbook (Domestic), Section 4 Safety
+  #   wales             — Approved Document K (Wales)
+  #   northern_ireland  — Technical Booklet H
+  #
+  # Same building_types shape. Regulation values first-class; practical
+  # ranges second-class. Same solver logic reads them all.
+
+# ─── Non-dwelling building types (deferred) ─────────────────────────
+#
+# For each jurisdiction above, `non_domestic`, `assembly`, and
+# `loft_only` categories have DIFFERENT rise / going / pitch limits.
+# Populate when a real project needs them — never speculatively.

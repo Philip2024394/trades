@@ -1,0 +1,76 @@
+# NEX Staircase Component Library — Assembly 09 (9-tread)
+#
+# Part of the SHELL_STRAIGHT_CLOSED + LEFT_HANDRAIL family. Same
+# handrail / newels / shoe rail / material as its siblings — only
+# the shell variant (and, where noted, the baluster component) changes.
+#
+# golden_reference: false  — this assembly is a reference example, not a golden validation point for the future
+# parametric Render Assembly Module (Phase 3).
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_9T_LEFT_HANDRAIL_TURNED
+assembly_type:              static_reference
+golden_reference:           false
+created_at:                 2026-07-29T19:45:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_09
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               left
+    mirrored:               false
+
+# ─── Newels (FLAT caps) ──────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               left
+
+# ─── Balusters ───────────────────────────────────────────────────
+balusters:
+  fitted:                       true
+  component_id:                 BALUSTER_TURNED_CLASSIC_01
+  style:                        turned_classic
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Material (Principle 7 · reference) ──────────────────────────
+material_ref:                 OAK_EUROPEAN_CLEAR_01
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2003_19_06%20PM.png?updatedAt=1785313166452
+
+# ─── Semantic tags (Principle 10) ────────────────────────────────
+tags:
+  - assembly
+  - straight_flight
+  - closed_string
+  - left_handrail
+  - 9_tread
+  - turned_classic_balusters
+  - domestic
+  - oak
+  - traditional
+
+
+notes:
+  - 9-tread version of the SHELL_STRAIGHT_CLOSED + left-handrail
+    pattern with turned_classic balusters.
+

@@ -1,0 +1,141 @@
+# NEX Staircase Component Library — Family record
+#
+# The SHELL_STRAIGHT_CLOSED family. Every variant in this family (01,
+# 02, 03, …) inherits the properties below. Changing a property here
+# propagates to every variant automatically.
+#
+# Master doc: docs/nex/staircase-component-library.md §Family / Variant architecture
+
+family_id:                  SHELL_STRAIGHT_CLOSED
+family_name:                Straight, Closed-String Both Sides
+component_type:             shell
+
+# ─── Structural fingerprint (identical across every variant) ───────
+layout:                     straight_flight
+hand:                       none
+construction:               housed_closed
+string_configuration:       closed_both_sides
+open_risers:                false
+
+# ─── Structural rules (apply the same way at any tread count) ─────
+top_landing_connection:
+  enabled:                        true
+  reduced_tread:                  true
+  sits_on_trimmer:                true
+  final_riser_against_trimmer:    true
+  flooring_allowance:             configurable
+  carpet_allowance:               configurable
+
+  # Family-level engineering knowledge (added 2026-07-29 · Shells 4-6).
+  # Lets NEX answer customer questions like "can you rebate the top tread
+  # for 12mm laminate?" without needing per-variant image analysis.
+  typical_depth_range_mm:
+    min:                          75
+    max:                          100
+
+  machining_supported:
+    - timber_floor
+    - laminate_floor
+    - tile_floor
+    - carpet_floor
+
+bottom_detail_default:
+  type:                     standard_start
+
+landing_default:
+  included:                 false
+
+balustrade_supported:       true
+handrail_supported:         true
+
+# ─── Workshop capacity (Rule B — human-curated only) ──────────────
+# TYPE-LEVEL capacity: what categories of thing this family accepts.
+# Populated by Philip based on workshop capability, NOT inferred
+# from any image. AI never adds entries to these lists.
+
+# Materials the family can be manufactured in.
+materials_supported:
+  - oak
+  - walnut
+  - ash
+  - painted
+
+# Handrail mount positions this family accepts.
+# Added 2026-07-29 (from Shell 3 revision).
+handrail_positions_supported:
+  - left
+  - right
+  - both
+
+# Balustrade type categories this family accepts.
+# Added 2026-07-29 (from Shell 3 revision).
+balustrade_types_supported:
+  - timber
+  - glass
+  - stainless
+  - mixed
+
+# ─── Design envelope (added 2026-07-29 · Shells 07-10) ────────────
+# Practical + absolute geometric limits within which every variant
+# of this family lives. Family-invariant — same ranges for 1T through
+# 20T. Geometry Module reads this when matching customer rise/going/
+# width against candidate variants of this family. Values populated
+# by Philip based on UK domestic closed-string workshop practice.
+design_envelope:
+  rise_mm:
+    recommended:
+      min:                  170
+      max:                  190
+    absolute:
+      min:                  150
+      max:                  220
+  going_mm:
+    recommended:
+      min:                  240
+      max:                  280
+    absolute:
+      min:                  220
+      max:                  300
+  width_mm:
+    min:                    600
+    max:                    1200
+
+# ─── Connection interfaces (added 2026-07-29 · Shells 12-13) ──────
+# How this family terminates at top and bottom. Family-invariant —
+# every variant of SHELL_STRAIGHT_CLOSED lands on floor-or-landing at
+# the bottom and terminates against trimmer-or-landing at the top.
+# Lets the assembly engine validate structural compatibility without
+# AI reasoning about it.
+interfaces:
+  lower_connection:
+    accepts:
+      - floor
+      - landing
+  upper_connection:
+    accepts:
+      - trimmer
+      - landing
+
+# ─── Instance-level compatibility (Phase 2 deferred) ──────────────
+# Specific component_ids validated together. Populated once the
+# non-shell catalogue has enough entries for real ambiguity.
+compatible_handrails:       []
+compatible_newels:          []
+compatible_balusters:       []
+
+# ─── Provenance (Rule C) ───────────────────────────────────────────
+created_at:                 2026-07-29T15:50:00Z
+created_by:                 philip
+revision:                   5                          # bumped 2026-07-29 from Shells 12-13 (connection interfaces added)
+review_status:              locked
+last_revised_at:            2026-07-29T17:20:00Z
+
+notes:
+  - Traditional UK timber staircase family — closed strings both sides,
+    housed joinery, standard start, no landing.
+  - Every variant differs only in tread count and derived envelope.
+  - Materials list captures what the workshop can build the family in,
+    not what any specific image shows.
+  - Revision 2 (2026-07-29 · from Shell 3) — added handrail_positions_supported
+    and balustrade_types_supported. Family-level capacity, human-curated per
+    Rule B.

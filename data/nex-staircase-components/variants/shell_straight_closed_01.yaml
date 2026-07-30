@@ -1,0 +1,38 @@
+# NEX Staircase Component Library — Shell 1 (variant · restructured)
+#
+# Revision 2: schema restructured from flat to Family/Variant per
+# Schema Evolution Log entry 2 (2026-07-29 · from Shell 2). Same
+# physical component, same ID — the immutability rule works exactly
+# as designed. Family-level fields moved to
+# families/shell_straight_closed.yaml.
+
+component_id:               SHELL_STRAIGHT_CLOSED_01
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   2
+classified_at:              2026-07-29T15:30:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2003_46_13%20PM.png?updatedAt=1785314802418
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     1
+risers:                     2
+
+# Floor-height envelope will be populated in Phase 2 by the
+# Geometry Module (derived from risers × [min_rise, max_rise] per
+# building type). Leaving unset — never guess.
+# floor_height_envelope: <deferred to Phase 2>
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T15:45:00Z
+locked_by:                  philip
+
+notes:
+  - Single walking tread. Two risers (bottom leading up, top against trimmer).
+  - GOLD STANDARD reference — established the shell metadata schema and
+    the Family / Variant architecture (via Shell 2 discovery).
+  - Revision 2 reflects the schema restructure. Same physical component
+    as revision 1; same component_id per immutability rule.

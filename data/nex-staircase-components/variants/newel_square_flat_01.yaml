@@ -1,0 +1,42 @@
+# NEX Staircase Component Library — NEWEL_SQUARE_FLAT_01
+#
+# First-ever NEWEL component. Square-section newel with flat cap.
+# Introduced as part of Assembly 01 (straight_closed_1t_left_handrail).
+#
+# Philip's assembly classification specified:
+#   profile: square
+#   caps: flat
+#   quantity in assembly: start=1, finish=1
+
+component_id:               NEWEL_SQUARE_FLAT_01
+component_type:             newel
+revision:                   1
+classified_at:              2026-07-29T18:00:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_43_31%20PM.png?updatedAt=1785311027083
+
+# ─── Profile identity ────────────────────────────────────────────
+profile:                    square
+section_mm:                 90        # 90×90mm — typical UK domestic
+cap_style:                  flat
+
+# Same newel design works at both bottom (start) and top (finish).
+usable_positions:
+  - start
+  - finish
+
+# ─── Compatibility ───────────────────────────────────────────────
+compatible_shell_families:
+  - SHELL_STRAIGHT_CLOSED
+
+# ─── Review ──────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              reviewed   # awaiting Philip's lock
+
+notes:
+  - Square-section newel post, flat cap treatment.
+  - Section 90×90mm estimated from reference render — Philip should confirm
+    against workshop drawings before locking.
+  - Same design used at both start (bottom) and finish (top) newel
+    positions in Assembly 01.

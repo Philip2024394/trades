@@ -1,0 +1,94 @@
+# ─── Right-hand mirror of straight_closed_8t_left_handrail_turned.yaml (Philip 2026-07-30) ─────────
+# Deterministic mirror of the left-hand canonical.
+# All attributes preserved except handrail + shoe rail side (left -> right).
+# Image URL uses ImageKit horizontal-flip transform (tr:fl-h) - no separate
+# render required. Single URL per file, deterministic, no image generation.
+#
+# NEX Staircase Component Library — Assembly 08 (turned balusters)
+#
+# The COMPONENT SUBSTITUTION milestone Philip named. Same shell,
+# handrail, newels, and shoe rail as Assemblies 03/04/06 — but the
+# baluster component swaps from BALUSTER_SQUARE_41 → BALUSTER_TURNED_CLASSIC_01.
+# Confirms the modular reuse architecture works: swap one component,
+# get a different visual style, without touching the rest.
+#
+# Assembly ID carries the _TURNED suffix to distinguish from the
+# forthcoming ASSEMBLY_STRAIGHT_CLOSED_8T_RIGHT_HANDRAIL (which would
+# use square balusters — same shell + tread count, different infill).
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_8T_RIGHT_HANDRAIL_TURNED
+mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_8T_LEFT_HANDRAIL_TURNED   # left-hand canonical this right-hand file mirrors
+assembly_type:              static_reference
+golden_reference:           true
+created_at:                 2026-07-29T19:15:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+verified_by:                philip
+verified_at:                2026-07-30
+verification_note:          Right-hand mirror visually verified. ImageKit tr:fl-h transform confirmed correct across all 14 assemblies in the batch.
+
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_08
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               right
+    mirrored:               true
+
+# ─── Newels ──────────────────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               right
+
+# ─── Balusters — TURNED (this is the substitution) ───────────────
+balusters:
+  fitted:                       true
+  component_id:                 BALUSTER_TURNED_CLASSIC_01
+  style:                        turned_classic
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Material ────────────────────────────────────────────────────
+material_ref:                 OAK_EUROPEAN_CLEAR_01
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/tr:fl-h/ChatGPT%20Image%20Jul%2029,%202026,%2003_04_22%20PM.png?updatedAt=1785312283506
+
+# ─── Semantic tags ───────────────────────────────────────────────
+tags:
+  - assembly
+  - straight_flight
+  - closed_string
+  - right_handrail
+  - 8_tread
+  - turned_balusters
+  - domestic
+  - oak
+  - traditional
+  - decorative
+
+notes:
+  - THE COMPONENT SUBSTITUTION MILESTONE. Same structural family as
+    Assemblies 03/04/06 — shell + handrail + newels + shoe rail all
+    identical — but the baluster swaps SQUARE → TURNED.
+  - Confirms the modular reuse architecture: swap ONE component, get
+    a different style, no other changes.
+  - Future: Assembly 08 with SQUARE balusters would be a sibling
+    ASSEMBLY_STRAIGHT_CLOSED_8T_RIGHT_HANDRAIL — same shell, different
+    infill. Both are valid; customer picks style at configuration time.

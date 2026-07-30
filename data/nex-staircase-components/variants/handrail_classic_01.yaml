@@ -1,0 +1,47 @@
+# NEX Staircase Component Library — HANDRAIL_CLASSIC_01
+#
+# First-ever HANDRAIL component. Classic rounded profile in oak.
+# Introduced as part of Assembly 01 (straight_closed_1t_left_handrail).
+#
+# No family/variant split for handrails yet — different profiles
+# (classic vs modern vs ornate) share nothing structurally. Add a
+# family layer only when a real profile tree emerges.
+
+component_id:               HANDRAIL_CLASSIC_01
+component_type:             handrail
+revision:                   1
+classified_at:              2026-07-29T18:00:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_43_31%20PM.png?updatedAt=1785311027083
+
+# ─── Profile identity ────────────────────────────────────────────
+profile_name:               classic_rounded
+cross_section_shape:        rectangular
+section_mm:
+  width:                    58
+  height:                   45
+
+# Left version can be mirrored to right — halves the catalogue.
+# Philip 2026-07-29: "supports_mirroring: true".
+supports_mirroring:         true
+
+# ─── Terminal treatments ─────────────────────────────────────────
+terminal_start:             wall_end
+terminal_finish:            wall_end
+
+# ─── Compatibility ───────────────────────────────────────────────
+compatible_shell_families:
+  - SHELL_STRAIGHT_CLOSED
+
+# ─── Review ──────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              reviewed   # awaiting Philip's lock
+
+notes:
+  - Classic rounded handrail profile — traditional UK domestic style.
+  - Rectangular cross-section 58mm × 45mm (typical UK spec).
+  - Both terminal treatments = wall_end. Additional variants (scrolled,
+    volute, wreathed) get their own HANDRAIL_CLASSIC_02, _03, etc.
+  - Section dimensions estimated from the reference render — should be
+    confirmed by Philip against actual workshop drawings before locking.

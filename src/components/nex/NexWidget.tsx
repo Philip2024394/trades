@@ -38,6 +38,12 @@ type Msg = {
   /** In-flight tool label shown under the streaming reply. Null when
    *  no tool is running. */
   toolStatus?:    string | null;
+  /** Ship A · Instant Acknowledgement Layer (Philip 2026-07-30).
+   *  Sub-10ms presence hint from the stream's `presence_hint` event.
+   *  Rendered while content is empty; disappears the moment the first
+   *  text delta arrives. Winning metric: "How long after asking does
+   *  a person feel NEX is with them?" */
+  presenceHint?:  string | null;
 };
 
 type Props = {
@@ -240,9 +246,12 @@ export function NexWidget({ surface, canteenSlug, greeting, quickPrompts }: Prop
           const line = buf.slice(0, nl).trim();
           buf = buf.slice(nl + 1);
           if (!line) continue;
-          let evt: { type: string; delta?: string; name?: string; ok?: boolean; ui?: UiCard; conversation_id?: string; message_id?: string; model_used?: string; error?: string; cap?: number };
+          let evt: { type: string; delta?: string; name?: string; ok?: boolean; ui?: UiCard; conversation_id?: string; message_id?: string; model_used?: string; error?: string; cap?: number; text?: string };
           try { evt = JSON.parse(line); } catch { continue; }
-          if (evt.type === "text" && evt.delta) {
+          if (evt.type === "presence_hint" && evt.text) {
+            // Ship A · sub-10ms · make NEX feel present before the composer even starts
+            setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, presenceHint: evt.text ?? null } : m));
+          } else if (evt.type === "text" && evt.delta) {
             setMessages((prev) => prev.map((m, i) => i === asstIdx ? { ...m, content: m.content + evt.delta } : m));
           } else if (evt.type === "tool_start" && evt.name) {
             toolStatus = evt.name;
@@ -412,7 +421,16 @@ export function NexWidget({ surface, canteenSlug, greeting, quickPrompts }: Prop
                 ) : (
                   <div>
                     <div className="max-w-[85%] rounded-2xl bg-neutral-100 px-3 py-2 text-[13px] text-neutral-900 whitespace-pre-wrap">
-                      {m.content || (m.toolStatus ? "" : <span className="text-neutral-400">…</span>)}
+                      {m.content ? (
+                        m.content
+                      ) : m.presenceHint ? (
+                        // Ship A · Instant Acknowledgement (Philip 2026-07-30)
+                        // Softer weight signals "presence" · disappears when first
+                        // text delta arrives · never overwrites final content.
+                        <span className="italic text-neutral-600">{m.presenceHint}</span>
+                      ) : m.toolStatus ? "" : (
+                        <span className="text-neutral-400">…</span>
+                      )}
                       {m.toolStatus && (
                         <span className="mt-1 block text-[10px] italic text-neutral-500">
                           checking {m.toolStatus.replace(/_/g, " ")}…

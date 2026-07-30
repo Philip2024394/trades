@@ -1,0 +1,542 @@
+{
+  "schema_version": "1.0",
+  "last_updated": "2026-07-30",
+  "purpose": "Translation layer — human phrase → trade concept — NOT an answer database. This file exists to close the gap between how homeowners describe things and how the trade names them. Every entry is expert-authored per Rule B. AI may cluster/dedupe/spot patterns, but the final translation ALWAYS comes from a named staircase expert.",
+
+  "two_file_architecture_philip_2026_07_30": {
+    "this_file": "How people think and speak — TRANSLATION layer. Answers: 'what does a homeowner mean when they say this?' Broad + shallow. Every trade concept the industry uses, with expert-authored people_say lists. Never contains full answers.",
+    "trade_terminology_ts": "What an expert knows — RESPONSE layer at src/lib/nex/reflex/trade-terminology.ts. Narrow + deep. Subset of concepts where full definition + trade_insight have been expert-authored. Delivers the actual Reflex Brain answer.",
+    "why_two_files": "Search engine knows 'riser = vertical part of stair.' NEX should know 'a homeowner might call this the upright bit between the steps · in staircase terms that's the riser · the riser affects the visual character of the staircase because it controls how closed or open the stair feels.' That second sentence needs the response layer. The first bit needs the translation layer. Both matter. Neither alone is enough."
+  },
+
+  "governance": {
+    "rule_b_no_ai_authored": "AI extracts hypotheses. Expert approves. No AI-authored trade content ever enters this file.",
+    "rule_c_attributable_origin": "Every entry carries authored_by + verified_at. Provenance is traceable to a named human.",
+    "anti_scrape_rule": "NEX does NOT scrape the internet to populate this map. Own customer conversations + expert authoring are the ONLY approved sources.",
+    "approved_data_sources_ranked": [
+      "1. Own customer conversations (highest value · always available · properly consented · full context)",
+      "2. Search queries (external · manual authoring aid only · never automated ingest)",
+      "3. Forums (external · manual authoring aid only · never automated ingest)",
+      "4. YouTube comments (external · manual authoring aid only · never automated ingest)"
+    ],
+    "the_moat": "Google has definitions. NEX has TRANSLATIONS — expert-approved, growing with observation, private to NEX. Every phrase Philip approves is one Google cannot copy."
+  },
+
+  "response_style_options": {
+    "explain_naturally_introduce_trade_term": "Give the plain answer first, name the trade term inside the flow. Never lead with 'the technical term is X.' Example: 'That's called the tread — the horizontal part of the step you walk on.'",
+    "explain_naturally_note_variants": "Give the plain answer and mention the main variants without listing every option. Example: 'That's a string — the side board that holds the steps. There are two common types: closed strings and cut strings.'",
+    "explain_naturally_connect_to_what_customer_described": "Reflect back the customer's phrasing in the reply so they feel heard, then introduce the trade term. Example: 'The wooden bit on the side of your stairs is called the string. If it's coming loose...'"
+  },
+
+  "concepts": {
+    "tread": {
+      "trade_term": "tread",
+      "people_say": [
+        "wood bit you walk on",
+        "wooden bit you walk on",
+        "wooden part you stand on",
+        "part you stand on",
+        "part you step on",
+        "bit your foot goes on",
+        "part your foot goes on",
+        "walking surface",
+        "surface of the step",
+        "step you walk on",
+        "flat part of the stair",
+        "flat part of the step",
+        "step top",
+        "top of the step",
+        "horizontal bit of the stair",
+        "horizontal part of the stair",
+        "front edge of stair",
+        "walking board"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "newel_post": {
+      "trade_term": "newel post",
+      "people_say": [
+        "big post at the bottom",
+        "big post at the top",
+        "big post at bottom of stairs",
+        "post at the bottom of the stair",
+        "post at the top of the stair",
+        "post at the turn",
+        "post that holds the handrail",
+        "post which holds the handrail",
+        "holds the handrail up",
+        "handrail post",
+        "vertical post on the stair",
+        "main upright on the staircase",
+        "corner post on the stair",
+        "big wooden post on the stair",
+        "starting post of the stair",
+        "stair post",
+        "upright staircase post"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "winder": {
+      "trade_term": "winder",
+      "people_say": [
+        "step that turns",
+        "step in a corner",
+        "wedge shaped step",
+        "wedge shape step",
+        "corner step",
+        "triangle steps around corner",
+        "steps that go round",
+        "steps that curve"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "string": {
+      "trade_term": "string",
+      "people_say": [
+        "side boards holding steps",
+        "side wood holding the steps",
+        "side wood holding the stairs",
+        "side board holding steps",
+        "wood running up the side",
+        "wooden bit on the side of my stairs",
+        "side of the staircase",
+        "sides that hold the steps up",
+        "long board on the side of the stair",
+        "side panel of the stairs",
+        "board the steps sit in"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Full definition + trade_insight authored 2026-07-30 by Philip in test batch. Live in trade-terminology.ts."
+    },
+
+    "volute": {
+      "trade_term": "volute",
+      "people_say": [
+        "spiral bit at bottom of handrail",
+        "spiral bit at the bottom of the handrail",
+        "curly end of the handrail",
+        "handrail that curls round the bottom post",
+        "swirl at the end of the handrail",
+        "decorative end of the handrail",
+        "coil at the bottom of the banister"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Full definition + trade_insight authored 2026-07-30 by Philip in test batch. Live in trade-terminology.ts."
+    },
+
+    "riser": {
+      "trade_term": "riser",
+      "people_say": [
+        "vertical bit between steps",
+        "vertical bit between stairs",
+        "upright bit between stairs",
+        "upright bit between steps",
+        "vertical board on the stairs",
+        "front face of the step",
+        "bit you see when looking at the stairs from the side",
+        "upright part between each step",
+        "vertical part between each tread"
+      ],
+      "common_confusions": [
+        "people confuse riser with tread",
+        "people call the whole step a tread"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "nosing": {
+      "trade_term": "nosing",
+      "people_say": [
+        "front edge sticking out",
+        "front edge sticking out on the step",
+        "lip sticking out",
+        "overhang on the step",
+        "front edge of the step",
+        "front of the step",
+        "front edge of the stair",
+        "edge that sticks out on the step"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "baluster_or_spindle": {
+      "trade_term": "baluster (also called spindle)",
+      "people_say": [
+        "little wooden sticks holding the handrail",
+        "wooden sticks holding the handrail",
+        "vertical sticks on the staircase",
+        "little posts under the handrail",
+        "wooden bars between the stair and the rail",
+        "posts holding up the rail",
+        "vertical bits under the handrail"
+      ],
+      "common_confusions": [
+        "regional variation: some areas say spindle, some say baluster · both correct"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "handrail": {
+      "trade_term": "handrail",
+      "people_say": [
+        "rail you hold going upstairs",
+        "rail going up the wall",
+        "thing you hold",
+        "wooden rail on the wall",
+        "rail on the side of the stairs",
+        "thing you grip when going up",
+        "long rail along the staircase"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "landing": {
+      "trade_term": "landing",
+      "people_say": [
+        "flat area halfway up stairs",
+        "flat bit halfway up the stairs",
+        "flat platform between flights",
+        "flat area between staircases",
+        "flat bit at the top of the stairs",
+        "resting spot on the stairs",
+        "flat section in the staircase"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": true,
+      "reflex_entry_file": "src/lib/nex/reflex/trade-terminology.ts",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30"
+    },
+
+    "trimmer": {
+      "trade_term": "trimmer",
+      "people_say": [
+        "wood around the hole in my floor",
+        "frame supporting the stairs opening",
+        "timber around the staircase opening",
+        "what supports the stair opening upstairs"
+      ],
+      "nex_response_style": "explain_naturally_introduce_trade_term",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Tier 1 · Translation authored 2026-07-30 by Philip. Full definition + trade_insight pending Philip's authoring. Philip 2026-07-30 rationale: 'A homeowner rarely knows trimmer, but it is a critical installation concept.'"
+    },
+
+    "closed_string": {
+      "trade_term": "closed string",
+      "people_say": [
+        "stairs with the sides covering the steps",
+        "the steps disappear into the side boards",
+        "traditional staircase sides"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Tier 2 · Translation authored 2026-07-30 by Philip. Full definition + trade_insight pending Philip's authoring."
+    },
+
+    "cut_string": {
+      "trade_term": "cut string",
+      "people_say": [
+        "the steps sticking out at the side",
+        "where you can see the shape of every step",
+        "decorative staircase side"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Tier 2 · Translation authored 2026-07-30 by Philip. Full definition + trade_insight pending Philip's authoring."
+    },
+
+    "housed_string": {
+      "trade_term": "housed string",
+      "people_say": [
+        "steps fitted into grooves on the side",
+        "hidden step edges"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Tier 2 · Translation authored 2026-07-30 by Philip. Full definition + trade_insight pending Philip's authoring."
+    },
+
+    "dogleg_or_half_landing": {
+      "trade_term": "dogleg staircase / half landing",
+      "people_say": [
+        "stairs that turn halfway",
+        "stairs that go up then turn around",
+        "stairs with a flat bit in the middle",
+        "u-shaped staircase",
+        "stairs that double back on themselves",
+        "flat part halfway up the stairs"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Two related but distinct concepts (dogleg = the layout · half landing = the flat bit at the turn). Philip may want to split into two concepts when full definitions are authored."
+    },
+
+    "stairwell_or_floor_opening": {
+      "trade_term": "stairwell / floor opening",
+      "people_say": [
+        "wall opening for stairs",
+        "hole in the floor for the stairs",
+        "gap in the floor above the stairs",
+        "space where the stairs come up",
+        "opening upstairs where the stairs finish",
+        "trimmed opening"
+      ],
+      "nex_response_style": "explain_naturally_note_variants",
+      "reflex_entry_exists": false,
+      "reflex_entry_status": "awaiting_expert_definition",
+      "authored_by": "Philip O'Farrell",
+      "verified_at": "2026-07-30",
+      "note": "Distinct trade concepts (stairwell = the vertical space · floor opening = the trimmed hole in the upper floor · trimmer = the joist framing the opening). Philip may want to split when authoring full definitions."
+    }
+  },
+
+  "symptoms_step_2_2026_07_30": {
+    "purpose": "Diagnostic language layer — how homeowners describe a PROBLEM (not a part). Parallel to concepts. The audit named this as the single biggest interpretation-link gap. Each symptom has: people_say (customer phrases · pending expert validation from real conversations) · router_signal (which brain-router.ts signal detects it) · brain_destination (routing target) · probable_causes_by_expert (EMPTY · awaiting Philip's authoring · Rule B honoured).",
+    "philip_locked_rule": "AI extracts symptom SHAPES from router patterns. Philip authors probable_causes. No AI-generated diagnostic judgement enters this file. Router-pattern people_say entries are seed suggestions extracted from the regex families in src/lib/nex/router/brain-router.ts · they became live patterns because Philip approved the router-file shape · but they should still be re-validated against real customer conversations when they arrive.",
+    "routing_note": "Every symptom below routes to Expert brain UNLESS an emotion signal also fires — emotion overrides everything (Philip 2026-07-30 · locked in router precedence). So 'my stairs creak and I'm scared they'll collapse' → Emotion, not Expert.",
+    "symptoms": {
+      "squeaks_or_creaks": {
+        "trade_symptom": "squeaks or creaks",
+        "router_signal": "diagnosis_squeak",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "my stairs creak",
+          "the stairs squeak",
+          "makes a noise when I walk on it",
+          "the third step creaks",
+          "creaky stairs",
+          "squeaky sound when going upstairs",
+          "one step makes a noise",
+          "noisy stair"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes"
+      },
+      "movement_or_flex": {
+        "trade_symptom": "movement / flex / bounce",
+        "router_signal": "diagnosis_movement",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "you can feel it bounce",
+          "the stairs bounce a bit",
+          "the balustrade shakes when you hold it",
+          "the handrail feels wobbly",
+          "the newel post is loose",
+          "you can feel the step move",
+          "the step gives way when I stand on it",
+          "the stairs feel unstable",
+          "the whole staircase moves"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes",
+        "note": "Movement + safety phrases ('I'm scared it'll collapse') will trigger emotion override — router routes to Emotion first. That's correct behaviour."
+      },
+      "separation_or_gaps": {
+        "trade_symptom": "separation / gaps / lifting",
+        "router_signal": "diagnosis_separation",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "there's a gap opening up",
+          "the tread is lifting off",
+          "the riser is coming away",
+          "the stair is pulling away from the wall",
+          "the string is separating",
+          "the nosing has come away",
+          "gap between the tread and the riser",
+          "the step is coming apart"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes"
+      },
+      "damage_or_decay": {
+        "trade_symptom": "damage / decay / rot / sagging",
+        "router_signal": "diagnosis_damage",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "there's a soft spot on the tread",
+          "the wood is rotting under the stairs",
+          "one of the steps is cracked",
+          "the string has a split in it",
+          "the step is sagging in the middle",
+          "the tread has sunk down",
+          "soft wood on the stair",
+          "cracked riser"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes",
+        "note": "Damage + safety phrasing can trigger emotion override. Router routes correctly · this scaffolding just names the shape."
+      },
+      "uneven_or_inconsistent": {
+        "trade_symptom": "uneven / inconsistent steps",
+        "router_signal": "diagnosis_uneven",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "the stairs are uneven",
+          "one step feels higher than the others",
+          "one step is lower than the rest",
+          "the stairs are not level",
+          "one step feels different",
+          "the stairs slope to one side",
+          "the treads are out of level"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes"
+      },
+      "finish_failure": {
+        "trade_symptom": "paint / varnish / finish failing",
+        "router_signal": "diagnosis_finish_failure",
+        "brain_destination": "expert",
+        "people_say_seed": [
+          "the paint is peeling on my stairs",
+          "the varnish is coming off",
+          "paint is flaking on the risers",
+          "the finish is worn through in the middle of the tread",
+          "the lacquer is cracking",
+          "the coating has chipped off"
+        ],
+        "probable_causes_by_expert": [],
+        "awaiting_expert_causes": true,
+        "seeded_by": "extracted from router pattern · Philip 2026-07-30 · pending expert authoring of causes"
+      }
+    },
+    "authoring_queue_for_philip": {
+      "instruction": "For each symptom above, author the probable_causes_by_expert array. Each cause should carry: cause (short label) · explanation (one plain-English sentence a homeowner understands) · fix_direction (short trade guidance · one sentence · never step-by-step DIY instructions). Once populated, set awaiting_expert_causes: false and add authored_by + verified_at. When the Expert Brain is later formalised, these become the diagnostic knowledge the composer draws from when BRAIN: expert fires on a diagnosis_* signal.",
+      "priority_order_suggested": [
+        "1. squeaks_or_creaks — highest homeowner search volume · most common Expert routing target",
+        "2. movement_or_flex — safety-adjacent · Expert must be crisp because Emotion will often override to Safety",
+        "3. separation_or_gaps — very common on older staircases · easy to diagnose from photo",
+        "4. damage_or_decay — installer / repair conversations · fewer but higher-stakes",
+        "5. uneven_or_inconsistent — often a survey question · overlaps with regulations (Part K)",
+        "6. finish_failure — lower urgency · finish is a cosmetic / maintenance decision"
+      ],
+      "what_ai_may_do": "Cluster incoming customer phrases into these 6 symptom buckets · flag phrases that don't fit any bucket (that's a new symptom worth naming) · never invent a cause · never rank causes without expert approval.",
+      "what_ai_may_not_do": "Author probable_causes_by_expert entries · fabricate what a symptom 'usually means' · guess a fix · say 'this is probably X' without an expert-authored cause backing the statement."
+    }
+  },
+
+  "authoring_queue": {
+    "priority_ranked_2026_07_30": {
+      "tier_1_highest_homeowner_confusion": [
+        "riser",
+        "nosing",
+        "string",
+        "baluster / spindle",
+        "handrail",
+        "landing",
+        "trimmer"
+      ],
+      "tier_2_more_trade_specific": [
+        "housed string",
+        "cut string",
+        "closed string",
+        "double string",
+        "pitch line"
+      ],
+      "tier_3_feature_and_detail_terms": [
+        "bullnose step",
+        "curtail step",
+        "gooseneck"
+      ],
+      "priority_rationale": "Tier 1 words are what people encounter when buying or renovating — highest ROI for the moat. Tier 2 are more trade-internal (fine for the Core 100 milestone but lower urgency). Tier 3 are decorative details customers rarely mention by name — nice-to-have. Ship tier 1 concepts first."
+    },
+    "flat_list_for_backwards_compat": [
+      "riser",
+      "nosing",
+      "string",
+      "baluster / spindle",
+      "handrail",
+      "landing",
+      "trimmer",
+      "housed string",
+      "cut string",
+      "closed string",
+      "double string",
+      "pitch line",
+      "bullnose step",
+      "curtail step",
+      "gooseneck"
+    ],
+    "instructions_for_expert_authoring": [
+      "1. Pick a concept from the queue above (or observe a miss in a real conversation).",
+      "2. List 5-10 real human phrasings a homeowner would use to describe it. Prefer shape/location/problem descriptions over 'what is X?' — homeowners rarely know the name.",
+      "3. List 1-3 common_confusions the expert has seen customers make (e.g. 'people confuse riser with tread'). Optional but strongly encouraged — expert catches nuance a definition can't.",
+      "4. Set nex_response_style from response_style_options above (or add a new one if genuinely needed).",
+      "5. Set authored_by + verified_at.",
+      "6. If full definition + trade_insight exist in trade-terminology.ts, set reflex_entry_exists: true. If not, set reflex_entry_status: 'awaiting_expert_definition' and note what's needed.",
+      "7. Never let AI generate the people_say or common_confusions entries. Extract from real observed conversations OR draw from your own expert knowledge of how customers actually talk."
+    ],
+    "high_value_phrase_patterns_philip_2026_07_30": [
+      "'what is the bit called...'",
+      "'what is the wood piece...'",
+      "'what is the thing holding...'",
+      "'why is this part...'",
+      "'can I replace...'",
+      "'can this be changed...'",
+      "NOTE: Homeowners rarely know trade names. They describe shape · location · problem. The highest-value people_say entries are the ones that DON'T contain the trade term. If a candidate phrase already contains the trade term (e.g. 'what is a riser?'), it's already caught by the existing term/alias match — don't bloat people_say with it."
+    ]
+  },
+
+  "usage_notes": {
+    "how_runtime_uses_this_file": "V1: source of truth for expert-authored translations. V2 (future): Reflex Brain loads this at build time and merges people_say entries into trade-terminology.ts customer_phrases[]. V3 (future): Composer uses this map to translate customer phrasing to trade terms BEFORE routing to Wisdom Brain, so the Wisdom prompt sees the professional vocabulary while preserving the customer's actual wording for context.",
+    "why_two_files_coexist": "trade-terminology.ts is the runtime-loaded typed structure with full expert entries (definition + trade_insight). human-language-map.json is the broader translation asset — every concept the trade uses, even ones without full Reflex entries yet. The map is broad + shallow; the terminology is narrow + deep. Both are expert-authored. Neither is AI-generated."
+  }
+}

@@ -1,0 +1,50 @@
+# NEX Staircase Component Library — BALUSTER_SQUARE_41
+#
+# First-ever BALUSTER component. Plain square-profile timber baluster,
+# 41mm section. Standard UK domestic spec. Referenced by Assemblies
+# 03, 04, 06 (square-baluster infill).
+
+component_id:               BALUSTER_SQUARE_41
+component_type:             baluster
+version:                    "1.0.0"
+revision:                   1
+classified_at:              2026-07-29T19:00:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_59_20%20PM.png?updatedAt=1785311978035
+
+# ─── Profile identity ────────────────────────────────────────────
+profile:                    square
+section_mm:                 41
+standard_length_mm:         900       # typical UK domestic pre-cut length
+
+# ─── Compatibility ───────────────────────────────────────────────
+compatible_shell_families:
+  - SHELL_STRAIGHT_CLOSED
+
+compatible_shoe_rails:
+  - SHOE_RAIL_CLASSIC_01
+
+compatible_handrails:
+  - HANDRAIL_CLASSIC_01
+
+# ─── Semantic tags (Principle 10) ────────────────────────────────
+tags:
+  - timber
+  - baluster
+  - square
+  - traditional
+  - domestic
+  - uk
+
+# ─── Review ──────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              reviewed   # awaiting Philip's lock
+
+notes:
+  - First-ever baluster component.
+  - Plain 41mm square profile — the "SQUARE_41" variant name is
+    literal (profile SQUARE, section 41mm).
+  - Section 41mm is UK-standard for domestic square balusters.
+  - Standard length 900mm typical — assemblies calculate the actual
+    required length from handrail-to-shoe-rail spacing at render time.

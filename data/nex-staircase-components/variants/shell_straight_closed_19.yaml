@@ -1,0 +1,32 @@
+# NEX Staircase Component Library — Shell 19 (variant)
+#
+# 19-tread straight closed-string shell. Pattern-derived + locked 2026-07-29.
+
+component_id:               SHELL_STRAIGHT_CLOSED_19
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   1
+classified_at:              2026-07-29T17:20:00Z
+
+source_image_refs:          []   # pattern-derived — no per-variant image
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     19
+risers:                     20
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T17:20:00Z
+locked_by:                  philip
+lock_basis:                 pattern_derivation
+
+notes:
+  - 19 walking treads, 20 risers.
+  - Pattern-derived from proven SHELL_STRAIGHT_CLOSED family (Shells 01-13
+    visually validated). Philip explicit family-complete signal 2026-07-29 —
+    "higher tread counts are no longer introducing any new construction,
+    they are just additional repetitions of the same module."
+  - Structural properties inherit from family record (locked · rev 5).
+  - If a real render surfaces later, attach it and bump revision — the
+    lock stays valid, the image just enriches provenance.

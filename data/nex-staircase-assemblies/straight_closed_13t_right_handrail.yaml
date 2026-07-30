@@ -1,0 +1,90 @@
+# ─── Right-hand mirror of straight_closed_13t_left_handrail.yaml (Philip 2026-07-30) ─────────
+# Deterministic mirror of the left-hand canonical.
+# All attributes preserved except handrail + shoe rail side (left -> right).
+# Image URL uses ImageKit horizontal-flip transform (tr:fl-h) - no separate
+# render required. Single URL per file, deterministic, no image generation.
+#
+# NEX Staircase Component Library — Assembly 13 (13-tread)
+#
+# Part of the SHELL_STRAIGHT_CLOSED + RIGHT_HANDRAIL family. Same
+# handrail / newels / shoe rail / material as its siblings — only
+# the shell variant (and, where noted, the baluster component) changes.
+#
+# golden_reference: true  — this assembly is a first-class validation point for the future
+# parametric Render Assembly Module (Phase 3).
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_13T_RIGHT_HANDRAIL
+mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_13T_LEFT_HANDRAIL   # left-hand canonical this right-hand file mirrors
+assembly_type:              static_reference
+golden_reference:           true
+created_at:                 2026-07-29T19:45:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+verified_by:                philip
+verified_at:                2026-07-30
+verification_note:          Right-hand mirror visually verified. ImageKit tr:fl-h transform confirmed correct across all 14 assemblies in the batch.
+
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_13
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               right
+    mirrored:               true
+
+# ─── Newels (FLAT caps) ──────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               right
+
+# ─── Balusters ───────────────────────────────────────────────────
+balusters:
+  fitted:                       true
+  component_id:                 BALUSTER_SQUARE_41
+  style:                        square
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Material (Principle 7 · reference) ──────────────────────────
+material_ref:                 OAK_EUROPEAN_CLEAR_01
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/tr:fl-h/ChatGPT%20Image%20Jul%2029,%202026,%2002_40_03%20PM.png?updatedAt=1785310823577
+
+# ─── Semantic tags (Principle 10) ────────────────────────────────
+tags:
+  - assembly
+  - straight_flight
+  - closed_string
+  - right_handrail
+  - 13_tread
+  - square_balusters
+  - domestic
+  - oak
+  - traditional
+  - golden_reference
+  - validation_suite
+
+notes:
+- INFERRED from progression table (Philip listed 13T as validated but    without an explicit YAML classification). Philip should confirm image    assignment and baluster style — swap or reclassify if wrong.
+  - 13-tread version of the SHELL_STRAIGHT_CLOSED + right-handrail
+    pattern with square balusters.
+  - GOLDEN REFERENCE — first-class validation point for the parametric
+    Render Assembly Module (Phase 3). Intermediate generated tread counts
+    will be verified against this render.

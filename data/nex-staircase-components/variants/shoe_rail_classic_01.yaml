@@ -1,0 +1,37 @@
+# NEX Staircase Component Library — SHOE_RAIL_CLASSIC_01
+#
+# First-ever SHOE_RAIL component. Standard UK domestic profile —
+# grooved along the top face to receive baluster tenons.
+#
+# Shoe rail was added as a 10th component type on 2026-07-29 when
+# Philip's Assembly 02 classification referenced `SR01`. First real
+# proof the 9-type lock had a legitimate gap.
+
+component_id:               SHOE_RAIL_CLASSIC_01
+component_type:             shoe_rail
+revision:                   1
+classified_at:              2026-07-29T18:30:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_48_32%20PM.png?updatedAt=1785311333361
+
+# ─── Profile identity ────────────────────────────────────────────
+profile:                    grooved_for_spindles
+section_mm:
+  width:                    55        # typical UK domestic
+  height:                   27
+
+# ─── Compatibility ───────────────────────────────────────────────
+compatible_shell_families:
+  - SHELL_STRAIGHT_CLOSED
+
+# ─── Review ──────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              reviewed   # awaiting Philip's lock
+
+notes:
+  - Standard grooved shoe rail — the bottom rail balusters plug into.
+  - Section 55×27mm estimated from render + typical UK spec — Philip
+    should confirm against workshop drawings before locking.
+  - Same shoe rail component fits both left and right positions (the
+    ASSEMBLY declares which sides it's fitted on).

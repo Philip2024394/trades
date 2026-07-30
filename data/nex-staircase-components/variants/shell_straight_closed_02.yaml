@@ -1,0 +1,38 @@
+# NEX Staircase Component Library — Shell 2 (variant)
+#
+# Two-tread straight closed-string shell. Revealed the Family/Variant
+# architecture — Schema Evolution Log entry 2 (2026-07-29).
+
+component_id:               SHELL_STRAIGHT_CLOSED_02
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   1
+classified_at:              2026-07-29T15:50:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2003_48_22%20PM.png?updatedAt=1785314923069
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     2
+risers:                     3
+
+# floor_height_envelope: <deferred to Phase 2>
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T16:00:00Z
+locked_by:                  philip
+
+notes:
+  - Two walking treads, three risers.
+  - Same structural family as Shell 1 — only the counts change.
+  - This shell revealed the Family/Variant architecture. Philip observed
+    that every variant of "straight closed" shares 90% of its metadata
+    with every other, and proposed splitting family properties from
+    variant properties. Adopted 2026-07-29.
+  - materials_supported [oak, walnut, ash, painted] moved to the family
+    record (SHELL_STRAIGHT_CLOSED) since it's a workshop capacity
+    statement that applies across every variant.
+  - Architecture proven at 2T. Ready for Shell 3 (3T) to confirm the
+    variant pattern is boring-and-repeatable.

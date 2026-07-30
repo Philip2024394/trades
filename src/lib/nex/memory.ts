@@ -7,6 +7,9 @@
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { completeJson } from "@/lib/llm/anthropic";
 import type { NexSurface } from "./tools/types";
+import { extractMeaning } from "./living-memory/meaning-extractor";
+import { writeMemories } from "./living-memory/writer";
+import type { MemoryUserSurface } from "./living-memory/types";
 
 const REFRESH_EVERY = 8;                        // refresh after every 8 new messages
 const MODEL_HAIKU   = "claude-haiku-4-5-20251001";
@@ -120,6 +123,60 @@ export async function refreshUserMemory(surface: NexSurface, userKey: string, co
         refreshed_at:             new Date().toISOString(),
         message_count_at_refresh: count ?? 0
       }, { onConflict: "surface,user_key" });
+
+    // ────────────────────────────────────────────────────────────────
+    // LAYER 2 · NEX Memory Intelligence (Philip 2026-07-30 · Ship 2c)
+    // ────────────────────────────────────────────────────────────────
+    // Layer 1 (above) answered "what happened?"
+    // Layer 2 (this block) asks: "does this deserve to become part of
+    // this person's journey?"
+    //
+    // The extractor most often returns ZERO candidates. That is correct.
+    // Silence is the default output. Only turns carrying real meaning
+    // survive into hammerex_nex_memories.
+    //
+    // Runs in the same fire-and-forget path as the summariser above ·
+    // never blocks the reply. Failures logged, memory left untouched.
+    if (surface === "merchant" || surface === "homeowner") {
+      try {
+        const existingSummaries: string[] = [];
+        if (previous?.summary) existingSummaries.push(previous.summary);
+        if (previous?.salient_facts) {
+          for (const [k, v] of Object.entries(previous.salient_facts)) {
+            existingSummaries.push(`${k}: ${JSON.stringify(v).slice(0, 200)}`);
+          }
+        }
+
+        const extracted = await extractMeaning({
+          user_surface: surface as MemoryUserSurface,
+          user_key: userKey,
+          transcript: recent.map((r, i) => ({
+            role: r.role === "assistant" ? "assistant" : "user",
+            content: (r.content ?? "").slice(0, 800),
+            turnNumber: i,
+          })),
+          existing_memory_summaries: existingSummaries,
+        });
+
+        if (extracted.candidates.length > 0) {
+          await writeMemories(
+            surface as MemoryUserSurface,
+            userKey,
+            extracted.candidates,
+          );
+        }
+
+        // Observability · dropped candidates matter as much as committed ones
+        // (they tell us the Soul gates are working).
+        if (extracted.dropped.length > 0) {
+          console.info(
+            `[nex/living-memory] ${surface}:${userKey} · ${extracted.candidates.length} committed · ${extracted.dropped.length} dropped`,
+          );
+        }
+      } catch (e) {
+        console.error("[nex/living-memory] Layer 2 extraction failed", e);
+      }
+    }
   } catch (e) {
     // eslint-disable-next-line no-console
     console.error("[nex/memory] refresh failed", e);

@@ -1,0 +1,78 @@
+# NEX Staircase Component Library — Assembly 05 (5-tread)
+#
+# Part of the SHELL_STRAIGHT_CLOSED + LEFT_HANDRAIL family. Same
+# handrail / newels / shoe rail / material as its siblings — only
+# the shell variant changes.
+#
+# golden_reference: false — reference example, not a golden validation
+# point (Philip's golden set is 1, 4, 8, 10, 13, 16 treads).
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_5T_LEFT_HANDRAIL
+assembly_type:              static_reference
+golden_reference:           false
+created_at:                 2026-07-30T10:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed
+
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+# SHELL_STRAIGHT_CLOSED_05 carries treads=5, risers=6 per the
+# engineering invariant (risers = treads + 1 · every single flight
+# terminates on a riser against the trimmer · Philip 2026-07-30).
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_05
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               left
+    mirrored:               false
+
+# ─── Newels (FLAT caps) ──────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               left
+
+# ─── Balusters (fitted, auto quantity, square profile) ──────────
+balusters:
+  fitted:                       true
+  component_id:                 BALUSTER_SQUARE_41
+  style:                        square
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Material (Principle 7 · reference) ──────────────────────────
+material_ref:                 OAK_EUROPEAN_CLEAR_01
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/Untitledfdsdfddd-removebg-preview.png?updatedAt=1785342836255
+
+# ─── Semantic tags (Principle 10) ────────────────────────────────
+tags:
+  - assembly
+  - straight_flight
+  - closed_string
+  - left_handrail
+  - 5_tread
+  - square_balusters
+  - domestic
+  - oak
+  - traditional
+
+notes:
+  - 5-tread version of the SHELL_STRAIGHT_CLOSED + left-handrail
+    pattern with square balusters. Same as Assemblies 03/04/06/10 —
+    only the shell variant changes.

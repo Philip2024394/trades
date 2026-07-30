@@ -1,0 +1,37 @@
+# NEX Staircase Component Library — Shell 3 (variant)
+#
+# Three-tread straight closed-string shell. Confirms the Family/Variant
+# architecture is boring-and-repeatable — success case.
+
+component_id:               SHELL_STRAIGHT_CLOSED_03
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   1
+classified_at:              2026-07-29T16:10:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2010_07_14%20PM.png
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     3
+risers:                     4
+
+# floor_height_envelope: <deferred to Phase 2>
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T16:20:00Z
+locked_by:                  philip
+
+notes:
+  - Three walking treads, four risers.
+  - Same structural family as Shells 1 and 2 — only counts change.
+  - Capacity fields (handrail_positions_supported / balustrade_types_supported /
+    materials_supported) that Philip provided at variant level in the
+    classification have been moved to the family record where they belong.
+    This matches Philip's earlier statement that "every shell in a family
+    shares... Compatible handrail types, Compatible balustrade types,
+    Compatible newel types". Family/Variant boundary preserved.
+  - Confirmed the pattern is boring-and-repeatable. Shell 4-N will follow
+    the same shape at increasing tread counts.

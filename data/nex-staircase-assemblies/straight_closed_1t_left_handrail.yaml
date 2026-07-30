@@ -1,0 +1,78 @@
+# NEX Staircase Component Library — Assembly 01 (first ever)
+#
+# The first StaircaseAssembly reference. Documents how a specific shell
+# composes with a specific handrail + two newels + baluster spec to
+# produce a canonical rendered example.
+#
+# This is a `static_reference` assembly — human-curated, canonical,
+# consumed by the Render Assembly Module (Phase 3) as a truth-standard
+# for how "1-tread straight closed shell with a left handrail" should
+# look when assembled.
+#
+# NOT a `customer_configuration` (those are machine-produced when a
+# customer picks specific components for their project).
+#
+# Master Doc §Select-and-Assemble principle explains the wider pattern.
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_1T_LEFT_HANDRAIL
+assembly_type:              static_reference
+golden_reference:           true
+created_at:                 2026-07-29T18:00:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed   # awaiting Philip's lock
+
+# ─── Shell ───────────────────────────────────────────────────────
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_01
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               left
+    mirrored:               false      # HANDRAIL_CLASSIC_01 IS the left version;
+                                       # right side (if needed) would set mirrored: true
+
+# ─── Newels ──────────────────────────────────────────────────────
+newels:
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_FLAT_01
+    at:                     finish
+    quantity:               1
+
+# ─── Balusters — deliberately NOT fitted, with reason ────────────
+# Philip 2026-07-29: "Rather than just storing the number of balusters,
+# I'd store why there are none. That way NEX doesn't think the render
+# is missing parts." This is the pattern.
+balusters:
+  fitted:                   false
+  reason:                   insufficient_spacing_between_newels
+  spacing_rule_mm:          99        # UK domestic max baluster gap (typical)
+
+# ─── Shoe rail ───────────────────────────────────────────────────
+# Migrated 2026-07-29 (Assembly 02) from boolean `shoe_rail: true` to
+# structured array — shoe rail is a first-class component with its
+# own ID + position now.
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               left
+
+# ─── Materials ───────────────────────────────────────────────────
+materials:
+  - oak
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_43_31%20PM.png?updatedAt=1785311027083
+
+notes:
+  - First-ever assembly reference. Establishes the pattern.
+  - Baluster fitted:false + reason lets NEX explain the absence to
+    customers rather than appearing incomplete.
+  - When we build the Render Assembly Module (Phase 3), this file is
+    the canonical "how it should look" reference for its combination.
+  - Section dimensions on the handrail (58×45mm) and newel (90mm) are
+    estimated from the render — should be confirmed against workshop
+    drawings before Philip's lock.

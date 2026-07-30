@@ -1,0 +1,87 @@
+# NEX Staircase Materials Library — OAK_EUROPEAN_CLEAR_01
+#
+# First-ever material component (Philip Principle 7 · Assembly 03).
+# European Oak, clear grade — the workshop default for domestic
+# staircases in the SHELL_STRAIGHT_CLOSED family.
+#
+# All downstream modules (renderer, BOM, CNC, quoter, Reference Brain
+# customer chat) reference this record instead of embedding "oak" as
+# a bare string.
+
+component_id:               OAK_EUROPEAN_CLEAR_01
+component_type:             material
+version:                    "1.0.0"
+revision:                   1
+classified_at:              2026-07-29T19:00:00Z
+
+source_image_refs:          []   # material is a data record, not an image
+
+# ─── Kind + species ──────────────────────────────────────────────
+kind:                       timber
+species_or_alloy:           European Oak (Quercus robur / Quercus petraea)
+
+# ─── Physical properties ─────────────────────────────────────────
+# Values ESTIMATED from general timber references. Rule C — Philip
+# should confirm against supplier data before locking. Marked as
+# estimates in `source_notes` below.
+density_kg_m3:              720
+
+hardness:
+  value:                    4980
+  scale:                    janka_N
+
+# ─── Appearance ─────────────────────────────────────────────────
+grain:                      "Prominent open grain; medium to coarse texture"
+texture:                    "Coarse, ring-porous, visible medullary rays on quarter-sawn"
+natural_colour:             "Pale to medium honey brown, warm undertone, ages darker with UV"
+
+# ─── Finish + stain compatibility ───────────────────────────────
+finish_compatibility:
+  - clear_lacquer
+  - oil
+  - hardwax_oil
+  - stain
+  - lime_wax
+
+stain_compatibility:
+  - clear
+  - light_oak
+  - medium_oak
+  - dark_oak
+  - walnut_tone
+  - grey
+
+# ─── Supplier ───────────────────────────────────────────────────
+supplier:                   "Multiple UK / EU suppliers — kiln-dried FSC-certified stock available"
+
+# ─── Semantic tags (Principle 10) ───────────────────────────────
+tags:
+  - timber
+  - oak
+  - european
+  - clear
+  - hardwood
+  - domestic
+  - traditional
+  - staircase
+  - uk
+
+# ─── Provenance ─────────────────────────────────────────────────
+confidence:                 0.90       # numeric values are estimates
+review_status:              reviewed   # awaiting Philip's lock
+
+source_notes: >
+  Density and Janka hardness values are typical industry references
+  for European Oak, not measured from a specific batch. Philip should
+  confirm against workshop supplier data before locking. Colour, grain,
+  and finish compatibility descriptors are qualitative and reflect
+  general workshop practice.
+
+notes:
+  - First material component. Establishes the Principle 7 pattern:
+    materials are first-class references, not embedded strings.
+  - Assemblies now use `material_ref: OAK_EUROPEAN_CLEAR_01` instead
+    of `materials: [oak]`. Old-form materials list kept in schema for
+    backwards compatibility with Assemblies 01 + 02.
+  - Additional material components (American White Oak, Ash, Walnut,
+    Painted MDF, etc.) added as real projects require them.

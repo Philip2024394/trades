@@ -1,0 +1,94 @@
+# NEX Staircase Component Library — Assembly 02
+#
+# 2-tread version of the SHELL_STRAIGHT_CLOSED + left-handrail pattern.
+# Second static assembly reference. Extends the pattern established
+# by Assembly 01 with three additions:
+#   - Different newel (pyramid cap · NEWEL_SQUARE_PYRAMID_01)
+#   - First shoe rail (SHOE_RAIL_CLASSIC_01)
+#   - Baluster spec transitions from "not fitted" (Assembly 01) to
+#     "fitted: true, quantity: auto" — Render Assembly Module (Phase 3)
+#     will derive the actual count from the spacing rule + handrail length
+#
+# NOT a bundled shell family. This assembly composes independent
+# component records via FK references. Same Option B architecture as
+# Assembly 01.
+
+assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_2T_LEFT_HANDRAIL
+assembly_type:              static_reference
+created_at:                 2026-07-29T18:30:00Z
+created_by:                 philip
+revision:                   1
+review_status:              reviewed   # awaiting Philip's lock
+
+# The whole assembly can be mirrored to produce a right-handrail
+# version. Halves the assembly-reference catalogue for symmetric layouts.
+supports_mirroring:         true
+
+# ─── Shell ───────────────────────────────────────────────────────
+shell:
+  component_id:             SHELL_STRAIGHT_CLOSED_02
+
+# ─── Handrails ───────────────────────────────────────────────────
+handrails:
+  - component_id:           HANDRAIL_CLASSIC_01
+    position:               left
+    mirrored:               false
+
+# ─── Newels ──────────────────────────────────────────────────────
+# Note: Assembly 02 uses PYRAMID caps (different component from
+# Assembly 01's FLAT caps).
+newels:
+  - component_id:           NEWEL_SQUARE_PYRAMID_01
+    at:                     start
+    quantity:               1
+  - component_id:           NEWEL_SQUARE_PYRAMID_01
+    at:                     finish
+    quantity:               1
+
+# ─── Shoe rails ──────────────────────────────────────────────────
+shoe_rails:
+  - component_id:           SHOE_RAIL_CLASSIC_01
+    position:               left
+
+# ─── Balusters ───────────────────────────────────────────────────
+# Philip's classification for Assembly 02: fitted, timber_spindle
+# family (which doesn't exist yet), square style, quantity auto,
+# max gap 99mm.
+#
+# `component_family_intent` names the family the render module should
+# select from once BALUSTER_TIMBER_SPINDLE exists. Until then, the
+# render module falls back to a placeholder.
+#
+# `quantity: auto` means the render module derives count from spacing
+# rule + finished handrail length at render time — this is the
+# parametric behaviour Philip described.
+balusters:
+  fitted:                       true
+  component_family_intent:      BALUSTER_TIMBER_SPINDLE
+  style:                        square
+  quantity:                     auto
+  spacing_rule_mm:              99
+  spacing_rule_citation:        "Approved Document K — 100mm sphere test (UK domestic guarding); 99mm max baluster gap by convention"
+
+# ─── Materials ───────────────────────────────────────────────────
+materials:
+  - oak
+
+# ─── Source ──────────────────────────────────────────────────────
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2002_48_32%20PM.png?updatedAt=1785311333361
+
+notes:
+  - Second assembly reference — 2-tread version of the closed-string
+    + left-handrail pattern.
+  - Introduces PYRAMID-cap newels (different component from Assembly 01's
+    FLAT-cap newels), first SHOE_RAIL component, and the "fitted: true
+    with auto quantity" baluster pattern.
+  - The parametric baluster count is a Phase 3 Render Assembly Module
+    concern — the assembly declares INTENT (family + style + spacing rule);
+    the render module fills in the actual quantity at render time.
+  - Section dimensions estimated from renders — Philip should confirm:
+      · handrail 58×45mm (Assembly 01)
+      · newel 90×90mm (Assemblies 01 + 02)
+      · shoe rail 55×27mm (Assembly 02)
+    before Philip's lock on any of them.

@@ -27,6 +27,7 @@ import { getMerchantSlug } from "@/lib/merchantSession";
 import { getHomeownerFromCookie } from "@/lib/homeowners/auth";
 import { askNex } from "@/lib/nex/agent";
 import { getUserMemory, refreshUserMemory, shouldRefresh, conversationIdsForUser } from "@/lib/nex/memory";
+import { tryReflex } from "@/lib/nex/reflex/reflex-brain";
 import type { AnthropicMessage } from "@/lib/llm/anthropic";
 
 export const runtime = "nodejs";
@@ -231,6 +232,42 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     content:         message || "(sent a photo)",
     context_snapshot: validatedImage ? { has_image: true, image_media_type: validatedImage.media_type } : null
   });
+
+  // ────────────────────────────────────────────────────────────────
+  // REFLEX BRAIN · Consciousness Layer Tier 1 (Philip 2026-07-30)
+  // ────────────────────────────────────────────────────────────────
+  // Ship C parity · same reflex short-circuit as converse/stream. If the
+  // message is a pure reflex (greeting/thanks/closing or a terminology
+  // question the expert glossary covers), skip context/memory/Anthropic
+  // entirely. Sub-100ms path.
+  const reflex = !validatedImage ? tryReflex(message) : null;
+  if (reflex) {
+    const { data: reflexMsg } = await supabaseAdmin
+      .from("hammerex_mate_messages")
+      .insert({
+        conversation_id: convId,
+        role:            "assistant",
+        content:         reflex.text,
+        model:           "reflex-brain",
+        cost_pence:      0,
+        context_snapshot: { reflex_category: reflex.category, reflex_intent: reflex.intent },
+      })
+      .select("id").single();
+
+    if (!uncapped && surface !== "visitor") {
+      await bumpUsage(user.key, 0).catch(() => undefined); // reflex is free
+    }
+
+    return NextResponse.json({
+      ok:              true,
+      conversation_id: convId,
+      message_id:      reflexMsg?.id ?? null,
+      answer:          reflex.text,
+      usage:           { inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheCreationTokens: 0 },
+      cost_pence:      0,
+      model_used:      "reflex-brain",
+    });
+  }
 
   // Ask Nex
   const extras: { slug?: string; homeownerId?: string; canteenSlug?: string } = {};

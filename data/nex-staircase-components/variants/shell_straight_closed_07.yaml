@@ -1,0 +1,30 @@
+# NEX Staircase Component Library — Shell 07 (variant)
+#
+# 7-tread straight closed-string shell. Image validated 2026-07-29.
+
+component_id:               SHELL_STRAIGHT_CLOSED_07
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   1
+classified_at:              2026-07-29T17:00:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2029,%202026,%2004_26_50%20PM.png?updatedAt=1785317231385
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     7
+risers:                     8
+
+# floor_height_envelope: <deferred to Phase 2 · derivable from
+# family.design_envelope.rise_mm × risers>
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T17:20:00Z
+locked_by:                  philip
+
+notes:
+  - 7 walking treads, 8 risers.
+  - Image validated. All structural properties inherit from family record.
+  - Same pattern as Shells 01-06 — boring case, family unchanged.

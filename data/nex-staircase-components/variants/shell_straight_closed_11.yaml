@@ -1,0 +1,28 @@
+# NEX Staircase Component Library — Shell 11 (variant)
+#
+# 11-tread straight closed-string shell. Image validated + locked 2026-07-29.
+# Completes the image-validated set (01-13) for the SHELL_STRAIGHT_CLOSED family.
+
+component_id:               SHELL_STRAIGHT_CLOSED_11
+component_type:             shell
+family_id:                  SHELL_STRAIGHT_CLOSED
+revision:                   2                          # bumped 2026-07-29 (draft → locked with image)
+classified_at:              2026-07-29T17:40:00Z
+
+source_image_refs:
+  - https://ik.imagekit.io/5vv5pw26q/Untitledfsdfsdf-removebg-preview.png
+
+# ─── The only fields that vary within the family ───────────────────
+treads:                     11
+risers:                     12
+
+# ─── Review ────────────────────────────────────────────────────────
+confidence:                 1.00
+review_status:              locked
+locked_at:                  2026-07-29T17:40:00Z
+locked_by:                  philip
+
+notes:
+  - 11 walking treads, 12 risers.
+  - Image validated. All structural properties inherit from family record.
+  - Completes the image-validated set (01-13) for this family.

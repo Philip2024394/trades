@@ -21,6 +21,8 @@ import type { KnowledgeHit } from "@/lib/knowledge/search";
 import { toolsForSurface } from "./tools/registry";
 import { runAgentic, type NexToolCall, type NexUiCard } from "./runtime";
 import { getUserMemory, memoryToText } from "./memory";
+import { retrieveRelevantMemories, livingMemoryToText } from "./living-memory/retrieval";
+import type { MemoryUserSurface } from "./living-memory/types";
 
 const MODEL_HAIKU = "claude-haiku-4-5-20251001";
 const MODEL_OPUS  = "claude-opus-4-7";
@@ -104,24 +106,39 @@ export async function askNex(params: AskNexParams): Promise<AskNexResult> {
   // attached.
   const model   = params.image ? MODEL_OPUS : pickModel(params.question);
 
-  // Parallel: context builder + cross-session memory read
-  const [ctx, memory] = await Promise.all([
+  // Parallel: context builder + cross-session memory read (Layer 1) +
+  // living memory retrieval (Layer 2 · Philip 2026-07-30 Ship 2c ·
+  // "the magic is not I remember — it's I remembered at exactly the
+  // right moment"). Living memory only fires for merchant/homeowner
+  // surfaces · visitors don't have persistent memory (privacy).
+  const canUseLivingMemory = params.surface === "merchant" || params.surface === "homeowner";
+  const [ctx, memory, livingMemories] = await Promise.all([
     buildNexContext(params.surface, params.question, {
       slug:         params.extras.slug         ?? "",
       homeownerId:  params.extras.homeownerId  ?? "",
       canteenSlug:  params.extras.canteenSlug  ?? ""
     } as never),
-    getUserMemory(params.surface, params.userKey)
+    getUserMemory(params.surface, params.userKey),
+    canUseLivingMemory
+      ? retrieveRelevantMemories({
+          user_surface: params.surface as MemoryUserSurface,
+          user_key: params.userKey,
+          conversation_window: params.question,
+        }).catch((): [] => [])
+      : Promise.resolve([]),
   ]);
 
   const systemBase = buildSystemPrompt(params.surface);
   const cachedSystem = systemBase;
-  const memoryBlock = memoryToText(memory);
+  const memoryBlock       = memoryToText(memory);
+  const livingMemoryBlock = livingMemoryToText(livingMemories);
   const freshSystem  = [
     `${ctx.userLabel}.`,
     "",
     memoryBlock,
     memoryBlock ? "" : null,
+    livingMemoryBlock,
+    livingMemoryBlock ? "" : null,
     "CONTEXT (real data on this user right now — cite these numbers when relevant):",
     JSON.stringify(ctx.systemFacts, null, 2),
     "",
