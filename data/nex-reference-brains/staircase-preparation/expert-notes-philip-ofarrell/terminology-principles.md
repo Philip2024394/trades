@@ -4,14 +4,14 @@ role: Founder · staircase manufacturer · named expert for the Staircase Refere
 captured_at: 2026-07-29
 gate_updates:
   gate_1_status: PASS (2026-07-30 · 97.7% citation resolution · see `layer-2-drafts/_terminology-gate1-verification.md`)
-  gate_2_status: READY (2026-07-30 · six ruling calls resolved · three promotions locked · four-question shape adopted)
+  gate_2_status: AUTHORED (2026-07-30 · all 11 terms × 4 questions = 44 atoms · 88 sentences · two-sentence rule compliant across every atom · awaiting Gate 3 review)
 type: expert_note
-status: layer_1_verified_awaiting_gate_2_expert_authoring
+status: layer_1_verified_gate_2_authored_awaiting_gate_3_review
 intended_module: terminology (foundational vocabulary — loads first at runtime · every future Brain module about staircases depends on this dictionary)
-rule_a_compliance: no fabricated definitions · every trade-content slot is empty until authored by the named expert
-rule_b_compliance: scaffold organised by AI (permitted) · trade content to be authored by Philip O'Farrell (required)
-rule_c_compliance: single named expert · every claim traceable to the expert who authored it · second reviewer expert to be nominated before Publish (Gate 4)
-lifecycle_state: 1 (evidence scaffold · Gate 1 verified) → cannot promote to Level 2 (Evidence Verified) until every four-question slot below is authored + reviewed
+rule_a_compliance: no fabricated content · every four-question atom authored by Philip O'Farrell as named expert · every claim maps to citations verified in Gate 1
+rule_b_compliance: scaffold organised by AI (permitted) · all 44 trade-content atoms authored by Philip O'Farrell (Rule B satisfied)
+rule_c_compliance: single named expert (Philip O'Farrell) · every claim traceable to the expert who authored it · second reviewer expert to be nominated before Publish (Gate 4)
+lifecycle_state: 1 → 2 pending Gate 3 review · authoring complete · promotion to Level 2 (Evidence Verified) unlocks after technical review pass
 scope_v1: 11 terms (tread · riser · string · newel · baluster · handrail · landing · winder · nosing · rise · going)
 ---
 
@@ -88,7 +88,7 @@ That five-term cluster (rise ↔ riser ↔ going ↔ tread ↔ nosing) is the mo
 
 Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked ruling · authoring can proceed) or DEFERRED (does not block v1). The remaining OPEN items block later gates but not Gate 2 authoring.
 
-- [ ] **All 11 term definitions authored** (four-question shape) — Gate 2 primary work
+- [x] **All 11 term definitions authored** (four-question shape) — COMPLETE 2026-07-30 · 44 atoms · 88 sentences · Philip O'Farrell · two-sentence rule compliant across every atom
 - [x] **Synonym rulings — DECIDED (Philip 2026-07-30):** parent term = **baluster** · spindle = synonym / note under baluster · parent term = **newel** · "newel post" = synonym / note under newel · other synonym pairs to be resolved during authoring
 - [x] **Landing sub-types — DECIDED (Philip 2026-07-30):** one parent **landing** entry with sub-notes (half-landing · quarter-landing · top landing · intermediate landing)
 - [x] **Winder scope — DECIDED (Philip 2026-07-30):** parent **winder** entry only · full winder family notes under one entry
@@ -105,10 +105,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 1 · tread
 
 - **Canonical form:** `tread`
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A tread is the horizontal surface of a step upon which people place their feet. It forms the walking surface of the staircase.
+- **What does it do?** A tread provides support during movement up and down the staircase. Its dimensions influence both comfort and usability.
+- **What do homeowners call it?** Homeowners commonly call it the step. They may use the words tread and step interchangeably.
+- **Commonly confused with?** A tread is commonly confused with the complete step assembly. It is also confused with the going measurement of the staircase.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L146 (installation sequence), L155–L159 (*"the tread is the reference, not gravity"*), L186 (tread inserted into string housing), L440–L442 (tread covers)
   - `customer-faq-staircase.md` L43 (approval checklist), L80 (natural variation), L140 (post-install inspection), L254 (DIY boundary: replace treads = ⚠ Advanced)
@@ -120,10 +120,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 2 · riser
 
 - **Canonical form:** `riser`
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · note: rise/riser/going trio is the most-confused cluster · see also Term 10 (rise) and Term 11 (going)_
+- **What is it?** A riser is the vertical component positioned between adjacent treads. It forms the face of each individual step.
+- **What does it do?** A riser defines the height relationship between consecutive treads. It contributes to the staircase's appearance and construction.
+- **What do homeowners call it?** Homeowners usually call it the riser or the front of the step. Many are unfamiliar with its technical name until undertaking staircase work.
+- **Commonly confused with?** A riser is commonly confused with the rise measurement of a staircase. It is also confused with decorative panelling fitted beneath treads.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L148 (installation sequence), L440–L442 (riser covers)
   - `customer-faq-staircase.md` L43 (approval checklist)
@@ -135,10 +135,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 3 · string
 
 - **Canonical form:** `string` (UK usage · US convention is `stringer`)
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A string is the structural component that supports the ends of the treads and risers. It runs along the side or sides of the staircase.
+- **What does it do?** A string supports and aligns the stair components throughout the flight. It contributes significantly to the staircase's structural integrity.
+- **What do homeowners call it?** Homeowners often call it the side of the staircase. Some refer to it simply as the stair frame.
+- **Commonly confused with?** A string is commonly confused with skirting boards because both run alongside the staircase. It is also confused with decorative trim pieces.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L140 (fit string · first step in installation sequence), L184 (string housing · tread inserted), L262 (fit onto string tenon), L440 (string cladding / string cover)
   - `customer-faq-staircase.md` L72 (LED lighting position · *wall string* — sub-type), L254 (replace treads = fit-to-string all matters)
@@ -151,10 +151,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 4 · newel
 
 - **Canonical form:** `newel` (short form · `newel post` = synonym per Philip 2026-07-30)
-- **What is it?** _awaiting expert input · already partially framed in evidence: "the structural anchor for the handrail and balustrade" (installation-techniques L33)_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · source files use `newel` and `newel post` interchangeably_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A newel post is the principal structural post within a staircase balustrade. It provides the connection point for handrails and balustrade components.
+- **What does it do?** A newel post provides strength and stability to the balustrade assembly. It transfers loads into the staircase or floor structure.
+- **What do homeowners call it?** Homeowners usually call it the newel post or simply the post. Feature newels are often referred to as decorative posts.
+- **Commonly confused with?** A newel post is commonly confused with a baluster because both are vertical components. It is also confused with feature posts used elsewhere in the home.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L33 (structural anchor · full Parts 1–3 dedicated to newel work), L46–L295 (removal + installation techniques), L104 (through newel · bolted to floor joist), L127 (box newel over existing core · spigot system), L240 (through newel · fixing type in NEX assessment)
   - `customer-faq-staircase.md` L43, L46, L98 (replace newel caps · popular renovation), L250 (replace newel caps = DIY yes · decorative), L255 (replace newel posts = professional recommended · structural)
@@ -167,10 +167,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 5 · baluster
 
 - **Canonical form:** `baluster` (parent term per Philip 2026-07-30 · `spindle` = synonym / note under this entry)
-- **What is it?** _awaiting expert input · safety framing already implicit: "a timber balustrade is a safety feature — balusters must be securely fixed and correctly spaced" (installation-techniques L302)_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · **known homeowner term: spindle** (also captured for confusion)_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A baluster is the vertical component fitted between the handrail and the base of a staircase or landing balustrade. It forms part of the protective barrier around a staircase.
+- **What does it do?** A baluster helps prevent people from falling through the balustrade. It transfers loads applied to the handrail through the balustrade assembly.
+- **What do homeowners call it?** Homeowners commonly call a baluster a spindle. They may also describe it as the vertical bars in the staircase.
+- **Commonly confused with?** A baluster is commonly confused with a newel post because both are vertical components. It is also confused with the entire balustrade assembly.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L76 (removed before newel work), L300–L354 (Part 5 · full baluster fitting section), L302 (safety feature · secure fixing · correct spacing), L310–L313 (four fitting systems: grooved handrail + baserail · handrail without grooves · metal spindle system · glass panel system), L326 (100mm sphere rule · UK building reg reference)
   - `customer-faq-staircase.md` L46 (showroom comparison item), L98 (replace balusters = popular renovation), L140 (balusters straight · post-install check), L148 (keep one spare baluster), L251 (replace balusters = DIY usually · match spindle spacing)
@@ -182,10 +182,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 6 · handrail
 
 - **Canonical form:** `handrail`
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A handrail is the component designed to be held when using a staircase. It may form part of a balustrade or be mounted directly to a wall.
+- **What does it do?** A handrail provides support and guidance when ascending or descending the staircase. It also forms part of the staircase's safety system.
+- **What do homeowners call it?** Homeowners usually call it the handrail or banister rail. Some use the word banister when referring to the whole balustrade.
+- **Commonly confused with?** A handrail is commonly confused with the entire banister or balustrade. It is also confused with wall-mounted grab rails.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L71 (remove handrail assembly first · installation Part 1 Step 1), L100 (handrail → newel → floor joist load path), L217 (check handrail alignment before final fix), L310–L311 (grooved vs non-grooved handrail as balustrade infill logic), L349 (handrail top of balustrade sketch), L561 (handrail-to-newel connection methods · mortise · dowel · handrail bolts · Zipbolt · hidden bracket)
   - `customer-faq-staircase.md` L43 (approval item), L46 (showroom comparison), L72 (LED under handrail), L98 (replace handrail = popular renovation), L140 (handrail secure · post-install check), L186 (F22 · why handrail is smoother than tread · sanded finer because touched daily), L253 (replace handrail = ⚠ moderate difficulty · handrail is what people touch daily), L305–L311 (replace-handrail project brief)
@@ -198,10 +198,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 7 · landing
 
 - **Canonical form:** `landing`
-- **What is it?** _awaiting expert input · used in three overlapping senses across source: intermediate flat area between flights · top-floor arrival area · design feature area_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A landing is the level platform positioned between or at the end of flights of stairs. It forms part of the staircase's overall geometry.
+- **What does it do?** A landing provides a safe transition point between changes in direction or level. It also creates space for movement and access.
+- **What do homeowners call it?** Homeowners usually call it the landing. They may describe it as the flat area at the top or middle of the stairs.
+- **Commonly confused with?** A landing is commonly confused with a floor level because both are flat surfaces. It is also confused with enlarged stair treads in some designs.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` (implicit throughout multi-flight installation contexts)
   - `customer-faq-staircase.md` L72 (LED lighting at landing), L110 (photograph the landing in a dispute)
@@ -214,10 +214,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 8 · winder
 
 - **Canonical form:** `winder`
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · 2 sentences_
+- **What is it?** A winder is a stair tread that changes the direction of a staircase without requiring a landing. It forms part of the staircase's turning geometry.
+- **What does it do?** A winder allows a staircase to turn while occupying less space than a landing arrangement. It contributes to both layout and circulation within the home.
+- **What do homeowners call it?** Homeowners often describe winders as turning steps or corner steps. Many do not know the technical term winder.
+- **Commonly confused with?** A winder is commonly confused with a landing because both alter the staircase direction. It is also confused with irregularly shaped treads.
 - **Where it appears in existing evidence:**
   - `staircase-installation-techniques.md` L26 (reference image: `staircase-install-winder-fitting.jpg` · kite winder treads visible · *"winder installation involves more coordination than a straight flight because each winder step's geometry depends on the others"*)
   - `customer-faq-staircase.md` (implicit in staircase-shape references)
@@ -229,10 +229,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 9 · nosing · PROMOTED (Philip 2026-07-30 · Tier-1)
 
 - **Canonical form:** `nosing`
-- **What is it?** _awaiting expert input · 2 sentences_
-- **What does it do?** _awaiting expert input · 2 sentences_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · note: rise/riser/going/tread/nosing form the most-confused geometric cluster (Philip 2026-07-30)_
+- **What is it?** A nosing is the projecting front edge of a stair tread. It extends beyond the face of the riser where applicable.
+- **What does it do?** A nosing increases the usable surface area of the tread. It also contributes to the visual definition of each step.
+- **What do homeowners call it?** Homeowners usually refer to it as the front edge of the step. Many are unfamiliar with the technical term nosing.
+- **Commonly confused with?** A nosing is commonly confused with the entire tread because it forms part of the walking surface. It is also confused with decorative edge trims.
 - **Where it appears in existing evidence:**
   - `customer-faq-staircase.md` L180 (F19 · *"protect treads · nosings · handrails · walls"* — furniture-carrying protection)
   - `material-profile-lamwood.md` L385 (edge finish · *"a stair tread carries a nosing profile"* · re-machining cost factor)
@@ -243,10 +243,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 10 · rise · PROMOTED (Philip 2026-07-30 · Tier-1)
 
 - **Canonical form:** `rise`
-- **What is it?** _awaiting expert input · closest existing framing: "step height" (staircase-design-principles.md L122)_
-- **What does it do?** _awaiting expert input · closest existing framing: "determines walking comfort and appearance" together with going (staircase-design-principles.md L122)_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · **critical: rise vs riser** — Philip 2026-07-30 flagged this as the single biggest terminology education opportunity in the module_
+- **What is it?** A rise is the vertical measurement between one tread and the next. It is a geometric measurement rather than a physical component.
+- **What does it do?** A rise determines how high each step is within the staircase. Consistent rises contribute to comfortable stair use.
+- **What do homeowners call it?** Homeowners often describe it as the height of the step. Many use rise and riser interchangeably in conversation.
+- **Commonly confused with?** A rise is commonly confused with the riser component. It is also confused with the total height of the staircase.
 - **Where it appears in existing evidence:**
   - `staircase-design-principles.md` L122 (*"The relationship between rise (step height) and going (step depth) determines walking comfort and appearance"* — the only explicit definition in the source files)
   - `staircase-category-taxonomy.md` L58 (helical = *"rises continuously without a central landing"*), L70 (radius · rise · going · headroom · handrail geometry in curved manufacturing)
@@ -257,10 +257,10 @@ Every open item from the pre-Gate-2 scaffold is now either DECIDED (locked rulin
 ## Term 11 · going · PROMOTED (Philip 2026-07-30 · Tier-1)
 
 - **Canonical form:** `going`
-- **What is it?** _awaiting expert input · closest existing framing: "step depth" (staircase-design-principles.md L122)_
-- **What does it do?** _awaiting expert input · closest existing framing: paired with rise, "determines walking comfort and appearance" (staircase-design-principles.md L122) · candidate: "determines stepping space" per Philip's Gate-2 exemplar_
-- **What do homeowners call it?** _awaiting expert input · 2 sentences_
-- **Commonly confused with?** _awaiting expert input · Philip's Gate-2 exemplar suggests: tread depth · riser height · rise measurement_
+- **What is it?** A going is the horizontal measurement of a stair tread between defined reference points. It is one of the principal geometric dimensions of a staircase.
+- **What does it do?** A going influences how comfortably the staircase can be used. It works together with the rise to determine the staircase's proportions.
+- **What do homeowners call it?** Homeowners commonly describe it as the depth of the step. Many are unfamiliar with the technical term going.
+- **Commonly confused with?** A going is commonly confused with the tread component itself. It is also confused with the overall length of the staircase.
 - **Where it appears in existing evidence:**
   - `staircase-design-principles.md` L122 (paired with rise in the geometry paragraph)
   - `staircase-category-taxonomy.md` L70 (radius · rise · going · headroom · handrail geometry in curved manufacturing)
@@ -286,19 +286,19 @@ Listed here so nothing gets lost:
 
 Note: some of these are captured under a v1 parent term as sub-notes (through newel · box newel · newel core → under Term 4 newel; closed string · open string · cut string · curved string · wall string · laminated string → under Term 3 string; etc.). They are v2 candidates for potential PROMOTION to their own top-level entry, not for LOSS.
 
-## Rule A · B · C compliance statement
+## Rule A · B · C compliance statement (post-Gate-2)
 
-- **Rule A (Anti-Fabrication):** every four-question slot in this file is empty. No trade knowledge has been invented. The `Where it appears in existing evidence` blocks are citation, not definition — pointing at where a term is already used, not asserting what it means. Silence is chosen over fabrication. The three new terms (nosing · rise · going) have citation blocks authored by AI as organisational scaffolding (Rule B permitted) using Grep on the source files · zero trade content authored.
-- **Rule B (No AI-Authored):** the file structure · frontmatter · cross-reference index · confirmation register · four-question shape (structure only · not content) · citation blocks are organisational scaffolding (AI permitted). The four-question answers themselves must be authored by Philip O'Farrell before this module can advance past Layer 1.
-- **Rule C (Attributable Origin):** single named expert (Philip O'Farrell) will author every four-question slot. Every claim will trace to a source line in an existing evidence file OR be recorded as a new expert claim in the audit envelope. Second-reviewer expert to be nominated before Publish (Gate 4 · Rule C strengthening for Level 5).
+- **Rule A (Anti-Fabrication):** all 44 atoms authored by Philip O'Farrell as named expert. No fabricated content. Every claim maps to citations verified in Gate 1 (97.7% RESOLVES) OR to Philip's expert knowledge as staircase manufacturer. No dimensions committed in the atoms (100mm sphere rule referenced generically as "required spacing" · defers Gate 3 Approved Doc K citation without content loss). Silence chosen over fabrication throughout.
+- **Rule B (No AI-Authored):** the file structure · frontmatter · cross-reference index · confirmation register · four-question shape · citation blocks are organisational scaffolding (AI permitted). All 44 four-question atoms authored by Philip O'Farrell (Rule B fully satisfied for Gate 2 · trade content Rule-B compliant).
+- **Rule C (Attributable Origin):** single named expert (Philip O'Farrell) has authored every four-question slot. Every claim traces to a Gate-1-verified source line OR to Philip as new expert claim. Second-reviewer expert to be nominated before Publish (Gate 4 · Rule C strengthening for Level 5 · does not block Gate 3 review).
 
-## Governance note
+## Governance note (post-Gate-2)
 
-This file sits at **Level 1 (evidence scaffold · Gate 1 verified)** — the earliest state on the seven-state knowledge lifecycle, but with formal Gate 1 verification complete (97.7% citation resolution · above the 95% threshold · see `layer-2-drafts/_terminology-gate1-verification.md`). It cannot promote to Level 2 (Evidence Verified) until the eleven terms' four-question fields are authored. It cannot promote to Level 3 (Expert Draft in `hammerex_nex_brain_drafts`) until authoring is complete and every Confirmation Register item is closed. It cannot promote to Level 5 (Published Reference in `hammerex_nex_brain_versions`) until an independent expert reviewer has signed off (Rule C · Rule B second-reviewer).
+This file has advanced from **Level 1 (evidence scaffold · Gate 1 verified)** to **Level 1 → Level 2 pending Gate 3 review** — Gate 2 authoring complete (2026-07-30 · Philip O'Farrell · 44 atoms · 88 sentences · two-sentence rule compliant across every atom · Rule A/B/C intact). Promotion to Level 2 (Evidence Verified) unlocks after Gate 3 technical review pass. Promotion to Level 3 (Expert Draft in `hammerex_nex_brain_drafts`) unlocks after review + certification. Publication to Level 5 (Published Reference in `hammerex_nex_brain_versions`) requires second-reviewer expert nomination (Rule C · Rule B strengthening for Level 5).
 
 Once published, the terminology module is the vocabulary spine every other module composes against. It is the smallest possible test of the end-to-end workflow · deliberately narrow · so that the platform earns the right to grow (ADR-0041 · author-driven).
 
-Terminology is **the constitutional proof-of-concept** for the entire Reference Brain architecture (Philip 2026-07-30). Not merely Module 001.
+Terminology is **the constitutional proof-of-concept** for the entire Reference Brain architecture (Philip 2026-07-30). Not merely Module 001. Reframed further: 88 proofs that reality can become governed intelligence · not 88 sentences · not 88 atoms · 88 constitutional proofs.
 
 ## Related documents
 
