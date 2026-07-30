@@ -98,4 +98,8 @@ The Constitution can grow — new principles land as new markdown files under `p
 
 - Auto-memory: `feedback_nex_design_principle_tech_disappears.md` (Claude keeps this reflected in memory across sessions)
 - Architecture: `docs/DECISIONS/` — read the ADRs for the technical rules
+- Companion architecture governance:
+  - [ADR-0040 · Prime Sentence + Professional Test](../DECISIONS/0040-prime-sentence-and-professional-test.md) — *"most trusted professional reference"* (capstone)
+  - [ADR-0041 · Author-Driven Platform Evolution](../DECISIONS/0041-author-driven-platform-evolution.md) — platform grows only from authoring reality
+  - [ADR-0042 · Reference Brain Sole Authoritative Path](../DECISIONS/0042-reference-brain-sole-authoritative-path.md) — one path for Reference Brain content · nothing else authoritative
 - CLAUDE.md — top-level agent instructions must never contradict the Constitution
