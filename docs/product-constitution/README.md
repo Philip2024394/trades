@@ -102,4 +102,5 @@ The Constitution can grow — new principles land as new markdown files under `p
   - [ADR-0040 · Prime Sentence + Professional Test](../DECISIONS/0040-prime-sentence-and-professional-test.md) — *"most trusted professional reference"* (capstone)
   - [ADR-0041 · Author-Driven Platform Evolution](../DECISIONS/0041-author-driven-platform-evolution.md) — platform grows only from authoring reality
   - [ADR-0042 · Reference Brain Sole Authoritative Path](../DECISIONS/0042-reference-brain-sole-authoritative-path.md) — one path for Reference Brain content · nothing else authoritative
+  - [ADR-0043 · Reality Over Speculation](../DECISIONS/0043-reality-over-speculation.md) — every not-yet-build decision names its specific unlock signal · sharpens ADR-0041 working language
 - CLAUDE.md — top-level agent instructions must never contradict the Constitution
