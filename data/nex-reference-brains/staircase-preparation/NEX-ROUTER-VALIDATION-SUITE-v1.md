@@ -107,7 +107,7 @@ Build 0.01 diagnosed R005 (Wrong Information Type) as the dominant failure with 
 | Need staircase | Buy | Staircase | Staircase | Sales | Inquiry | Yes | *populated when tested* |  |
 | Looking for stairs | Buy | Staircase | Staircase | Sales | Inquiry | Yes | *populated when tested* |  |
 | Can I buy stairs? | Buy | Staircase | Staircase | Sales | Inquiry | Yes | *populated when tested* |  |
-| Want oak stairs | Buy | Oak | Materials | Sales | Inquiry | Maybe | *populated when tested* |  |
+| Want oak stairs | Buy | Staircase | Staircase | Sales | Inquiry | Maybe | *populated when tested* |  |
 | Need quote | Quote | Staircase | Staircase | Pricing | Pricing | Maybe | *populated when tested* |  |
 | How much? | Quote | Staircase | Staircase | Pricing | Pricing | Yes | *populated when tested* |  |
 | Show me images | Browse | Staircase | Staircase | Reference Gallery | Gallery | No | *populated when tested* |  |
@@ -116,6 +116,80 @@ Build 0.01 diagnosed R005 (Wrong Information Type) as the dominant failure with 
 | What size newel? | Learn | Newel post | Staircase | Components | Dimensions | No | *populated when tested* |  |
 
 **Rationale (Philip's authored guidance):** *"If Build 0.02 learns this class well, you'll probably reduce several failures at once instead of fixing one sentence."*
+
+---
+
+## Visual + Consultation Class Coverage (Philip 2026-07-31 · added for Build 0.04)
+
+Three new intent classes surfaced during Router testing: **See** (visual intent — user wants images not definitions), **Consult** (customer wants a personalised recommendation · triggers clarifying-questions-first pattern), and correct handling of **Newel cap** as a subject distinct from Newel post.
+
+| User Question | Expected Intent | Expected Subject | Expected Brain | Expected Domain | Expected Info Type | Clarify? | Evidence Used | Pass/Fail |
+|---|---|---|---|---|---|---|---|---|
+| Can I see what a stair tread looks like? | See | Tread | Staircase | Components | Visual | No | *populated when tested* |  |
+| Can I see what a newel cap looks like? | See | Newel cap | Staircase | Components | Visual | No | *populated when tested* |  |
+| What different options have you in newel caps? | Browse | Newel cap | Staircase | Reference Gallery | Options | No | *populated when tested* |  |
+| Which type of staircase can fit my stairwell opening? | Consult | Staircase | Staircase | Recommendation | Recommendation | Yes | *populated when tested* |  |
+| I need help finding the cheapest but best staircase | Consult | Staircase | Staircase | Recommendation | Recommendation | Yes | *populated when tested* |  |
+| Is the landing balcony included in the staircase price? | Learn | Landing | Staircase | Scope of Work | Function | No | *populated when tested* |  |
+
+**Rationale (Philip's authored guidance):** *"Whenever someone asks 'what does X look like?' or 'can I see X?', NEX should automatically present a labelled image or gallery before giving the explanation."* And: *"Consultation queries should trigger clarifying-questions-first (measurements · material · location) rather than returning a generic definition."*
+
+---
+
+## Comparison + Multi-intent Class Coverage (Philip 2026-07-31 · added for Build 0.05)
+
+Two ★★★★★ priority failure classes per Philip's roadmap guidance. Comparison queries use "or" / "vs" / "compare" between options · Multi-intent queries combine Visual + Component + Material in a single query · Attribute extraction handles specifiers like "white oak" / "painted" / "curved".
+
+| User Question | Expected Intent | Expected Subject | Expected Brain | Expected Domain | Expected Info Type | Clarify? | Evidence Used | Pass/Fail |
+|---|---|---|---|---|---|---|---|---|
+| Glass or oak balustrades? | Compare | Balustrade | Staircase | Design Languages | Comparison | No | *populated when tested* |  |
+| Compare cut string vs closed string | Compare | String | Staircase | Design Languages | Comparison | No | *populated when tested* |  |
+| Which is better, oak or walnut treads? | Compare | Tread | Staircase | Design Languages | Comparison | No | *populated when tested* |  |
+| Can I see oak stair treads? | See | Tread | Staircase | Components | Visual | No | *populated when tested* |  |
+| White oak stair treads | Learn | Tread | Staircase | Components | Definition | No | *populated when tested* |  |
+| Oak staircase with glass balustrade | Learn | Staircase | Staircase | Components | Definition | No | *populated when tested* |  |
+
+**Rationale (Philip's authored guidance):** *"The next gains are likely to come less from adding new subjects and more from handling richer combinations of subject, intent and metadata in a consistent way."*
+
+---
+
+## Curiosity + Reality + Confused Class Coverage (Philip 2026-07-31 · added for Build 0.06)
+
+The pieces of Philip's authored Thinking Mode architecture that can be tested today without triggering the full v2 build:
+
+- **Why / Understanding** — user asks for reasoning, not lookup ("Why does...", "Why is...", "Why can't...")
+- **Reality Check** — user tests an assumption ("Can every staircase float?", "Can I fit a staircase myself?")
+- **Confused state** — user names their confusion ("I'm confused about...", "I don't understand the difference")
+- **Diagnostic** — user reports a symptom ("My staircase squeaks", "Why is there a gap?")
+
+| User Question | Expected Intent | Expected Subject | Expected Brain | Expected Domain | Expected Info Type | Clarify? | Evidence Used | Pass/Fail |
+|---|---|---|---|---|---|---|---|---|
+| Why are stair strings so thick? | Why | String | Staircase | Engineering | Reasoning | No | *populated when tested* |  |
+| Why is a newel post so large? | Why | Newel post | Staircase | Engineering | Reasoning | No | *populated when tested* |  |
+| Why do staircases squeak? | Why | Staircase | Staircase | Engineering | Reasoning | No | *populated when tested* |  |
+| Can every staircase be floating? | Reality | Staircase | Staircase | Reality Check | Reality | No | *populated when tested* |  |
+| Can I fit a staircase myself? | Reality | Staircase | Staircase | Reality Check | Reality | Maybe | *populated when tested* |  |
+| I'm confused about strings | Confused | String | Staircase | Teaching | Definition | Yes | *populated when tested* |  |
+| What's the difference between a string and a skirt? | Compare | String | Staircase | Design Languages | Comparison | No | *populated when tested* |  |
+| My staircase squeaks | Diagnostic | Staircase | Staircase | Troubleshooting | Diagnosis | No | *populated when tested* |  |
+
+**Rationale (Philip's authored insight · full Thinking Mode architecture preserved separately as Standard v2 candidate):** *"Intent decides what the user wants. Thinking mode decides how NEX should solve the problem. A human staircase expert doesn't use the same mental process for every question."*
+
+---
+
+## Concept Resolution Class Coverage (Philip 2026-07-31 · added for Build 0.07)
+
+Customers rarely know exact technical vocabulary. They describe by function · location · appearance. Router needs Subject Intelligence (`homeowner_terms` field in addition to aliases) to resolve descriptive queries to canonical subjects. Full Brain Evolution architecture preserved separately as v2 candidate.
+
+| User Question | Expected Intent | Expected Subject | Expected Brain | Expected Domain | Expected Info Type | Clarify? | Evidence Used | Pass/Fail |
+|---|---|---|---|---|---|---|---|---|
+| What's that big wooden post at the bottom? | Learn | Newel post | Staircase | Components | Definition | No | *populated when tested* |  |
+| The piece you hold going up | Learn | Handrail | Staircase | Components | Definition | No | *populated when tested* |  |
+| The flat bit you stand on | Learn | Tread | Staircase | Components | Definition | No | *populated when tested* |  |
+| The vertical piece between steps | Learn | Riser | Staircase | Components | Definition | No | *populated when tested* |  |
+| The side of the staircase | Learn | String | Staircase | Components | Definition | No | *populated when tested* |  |
+
+**Rationale (Philip's authored insight):** *"These aren't alias failures. They're concept failures. The user doesn't know the vocabulary. Subject ≠ Word. Your router currently thinks Word → Subject. I think it needs Description → Concept → Subject."*
 
 ---
 

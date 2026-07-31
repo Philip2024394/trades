@@ -55,23 +55,51 @@
 
   <h1>NEX Router Build Dashboard</h1>
   <div class="subtitle">Every engineering session has one objective: reduce the failures.</div>
-  <div class="meta">Real Router Build 0.02 output (pattern-based classifier · deterministic · no LLM). Regenerate: <code style="background:#1e293b;color:#cbd5e1;padding:2px 6px;border-radius:3px;">node scripts/nex-router-build-002.mjs</code></div>
+  <div class="meta">Real Router Build 0.07 output (pattern + Subject Intelligence with homeowner_terms · deterministic · no LLM). Regenerate: <code style="background:#1e293b;color:#cbd5e1;padding:2px 6px;border-radius:3px;">node scripts/nex-router-build-007.mjs</code></div>
 
   <div class="build-header">
-    <h2>Router Build 0.02</h2>
-    <span class="build-tag">2026-07-31 · pattern-based · targets R005 as class</span>
+    <h2>Router Build 0.07</h2>
+    <span class="build-tag">2026-07-31 · Subject Intelligence · concept resolution · Brain Evolution v2 candidate preserved</span>
+  </div>
+
+  <!-- Per-Dimension Accuracy (Build 0.07) -->
+  <div class="card" style="margin-bottom:24px;">
+    <h3>Per-Dimension Accuracy (Build 0.07)</h3>
+    <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;">Subject Intelligence (homeowner_terms) lifted every dimension. Concept resolution proven.</div>
+    <table class="codes" style="width:100%;">
+      <tr><td>Brain</td><td>100.0%</td><td style="width:55%;"><div style="background:#4ade80;height:22px;width:100%;border-radius:3px;color:#14532d;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████████ 100%  ← solved</div></td></tr>
+      <tr><td>Clarify</td><td style="color:#4ade80;">97.8% ↑</td><td><div style="background:#4ade80;height:22px;width:98%;border-radius:3px;color:#14532d;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████████ 98%</div></td></tr>
+      <tr><td>Intent</td><td style="color:#4ade80;">93.5% ↑</td><td><div style="background:#4ade80;height:22px;width:94%;border-radius:3px;color:#14532d;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████████ 94%</div></td></tr>
+      <tr><td>Domain</td><td style="color:#4ade80;">91.3% ↑</td><td><div style="background:#84cc16;height:22px;width:91%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">█████████ 91%</div></td></tr>
+      <tr><td>InfoType</td><td style="color:#4ade80;">89.1% ↑</td><td><div style="background:#a3e635;height:22px;width:89%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">█████████ 89%</div></td></tr>
+      <tr><td>Subject</td><td style="color:#4ade80;">82.6% ↑</td><td><div style="background:#facc15;height:22px;width:83%;border-radius:3px;color:#78350f;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 82.6%</div></td></tr>
+      <tr style="border-top:2px solid #334155;"><td style="font-weight:700;">Overall</td><td style="font-weight:700; color:#4ade80;">71.7% ↑</td><td><div style="background:#4ade80;height:22px;width:72%;border-radius:3px;color:#14532d;padding:2px 8px;font-weight:700;box-sizing:border-box;">███████ 71.7%  (was 65.9%)</div></td></tr>
+    </table>
+  </div>
+
+  <div class="card" style="margin-bottom:24px; background:#064e3b; border-color:#10b981;">
+    <h3 style="color:#a7f3d0;">Regression Detection (v0.07 vs v0.06)</h3>
+    <table class="codes">
+      <tr><td>Still Passed</td><td>Passed v006 → still passes v007</td><td style="color:#4ade80;">28</td></tr>
+      <tr><td>Improved</td><td>Failed v006 → now passes v007</td><td style="color:#4ade80;font-weight:700;">+5 ✓</td></tr>
+      <tr><td>Regressed</td><td>Passed v006 → now fails v007</td><td style="color:#4ade80;font-weight:700;">0 ✓ clean</td></tr>
+      <tr><td>Still Failed</td><td>Failed v006 → still fails v007</td><td style="color:#fbbf24;">13</td></tr>
+      <tr><td style="font-weight:700;">Net Gain</td><td>Improved − Regressed</td><td style="color:#4ade80;font-weight:700;">+5</td></tr>
+      <tr><td>Homeowner-term matches</td><td>5 questions resolved via concept, not alias</td><td style="color:#4ade80;font-weight:700;">Subject Intelligence proven ✓</td></tr>
+    </table>
+    <div class="sub" style="margin-top:12px;color:#a7f3d0;">All 5 descriptive concept-resolution rows passed via homeowner_terms. Zero regressions. Word→Subject router evolving into Description→Concept→Subject. Full Brain Evolution architecture preserved as v2 candidate.</div>
   </div>
 
   <!-- PRIMARY KPI (Philip 2026-07-31): failure-code bars first · pass rate secondary -->
   <div class="card" style="margin-bottom:24px;">
     <h3>Failure Code Bars (PRIMARY KPI)</h3>
-    <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;">Every build should make these bars smaller. When the top bar reaches zero, the next-highest bar becomes the focus.</div>
+    <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;">Every build should make these bars smaller. Build 0.03 introduced Subject Dictionary · fixed some R002 cases · exposed 1 regression.</div>
     <table class="codes" style="width:100%;">
-      <tr><td>R002</td><td>Wrong subject</td><td style="width:60%;"><div style="background:#f87171;height:22px;width:100%;border-radius:3px;color:#7f1d1d;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 4  ← top</div></td></tr>
-      <tr><td>R005</td><td>Wrong info type</td><td><div style="background:#fb923c;height:22px;width:100%;border-radius:3px;color:#7c2d12;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 4  ← was top in 0.01 (still 4)</div></td></tr>
-      <tr><td>R004</td><td>Wrong domain</td><td><div style="background:#fbbf24;height:22px;width:75%;border-radius:3px;color:#78350f;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████ 3</div></td></tr>
+      <tr><td>R002</td><td>Wrong subject</td><td style="width:60%;"><div style="background:#f87171;height:22px;width:75%;border-radius:3px;color:#7f1d1d;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████ 3  ← was 4</div></td></tr>
+      <tr><td>R004</td><td>Wrong domain</td><td><div style="background:#fb923c;height:22px;width:75%;border-radius:3px;color:#7c2d12;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████ 3</div></td></tr>
+      <tr><td>R005</td><td>Wrong info type</td><td><div style="background:#fbbf24;height:22px;width:100%;border-radius:3px;color:#78350f;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 4  ← top</div></td></tr>
       <tr><td>R001</td><td>Wrong intent</td><td><div style="background:#facc15;height:22px;width:50%;border-radius:3px;color:#713f12;padding:2px 8px;font-weight:700;box-sizing:border-box;">████ 2</div></td></tr>
-      <tr><td>R003</td><td>Wrong brain</td><td><div style="background:#84cc16;height:22px;width:25%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">██ 1</div></td></tr>
+      <tr><td>R003</td><td>Wrong brain</td><td><div style="background:#84cc16;height:22px;width:50%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">████ 2  ← was 1</div></td></tr>
       <tr><td>R006</td><td>Missing clarify</td><td><div style="background:#84cc16;height:22px;width:25%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">██ 1</div></td></tr>
       <tr class="zero"><td>R007</td><td>Wrong evidence</td><td><div style="color:#475569;padding:2px 8px;font-style:italic;">0 · N/A (no retrieval layer yet)</div></td></tr>
       <tr class="zero"><td>R008</td><td>Contradicted evidence</td><td><div style="color:#475569;padding:2px 8px;font-style:italic;">0 · N/A (no composition layer yet)</div></td></tr>
@@ -79,8 +107,8 @@
   </div>
 
   <div class="top-failure">
-    <div class="lbl">Top Failure (Build 0.02)</div>
-    <div class="msg">Wrong subject (R002) — 4 cases · e.g. "Can I buy stairs?" ("stairs" not matched as Staircase — subject pattern gap)</div>
+    <div class="lbl">Top Failure (Build 0.03)</div>
+    <div class="msg">Wrong info type (R005) — 4 cases · Subject Dictionary reduced R002 from 4→3 but longest-alias-match broke "Want oak stairs" (R003 rose 1→2)</div>
   </div>
 
   <div class="grid">
@@ -88,26 +116,28 @@
     <div class="card">
       <h3>Validation Questions</h3>
       <div class="pass-fail-row">
-        <div class="item"><div class="n pass">12</div><div class="lbl">Passed</div></div>
-        <div class="item"><div class="n fail">9</div><div class="lbl">Failed</div></div>
+        <div class="item"><div class="n pass">33</div><div class="lbl">Passed</div></div>
+        <div class="item"><div class="n fail">13</div><div class="lbl">Failed</div></div>
       </div>
-      <div class="sub">Of 21 total · Suite (6 starter + 10 R005-class) + derived (5)</div>
+      <div class="sub">Of 46 total · Suite (41) + derived (5) · +5 Concept Resolution rows in this build</div>
     </div>
 
     <div class="card">
       <h3>Pass Rate</h3>
-      <div class="big" style="color:#fbbf24;">57.1%</div>
-      <div class="sub">Target ≥95% · <strong style="color:#fbbf24;">BELOW target</strong> · <strong style="color:#4ade80;">+11.6% vs Build 0.01</strong></div>
+      <div class="big" style="color:#4ade80;">71.7%</div>
+      <div class="sub">Target ≥95% · <strong style="color:#fbbf24;">BELOW target</strong> · <strong style="color:#4ade80;">+10.8% vs v0.06 baseline (against updated Suite) · highest overall to date</strong></div>
     </div>
 
     <div class="card">
-      <h3>Build-to-Build Delta</h3>
+      <h3>Build Progression</h3>
       <table class="codes">
-        <tr><td>Pass rate</td><td>45.5% → 57.1%</td><td style="color:#4ade80;">+11.6%</td></tr>
-        <tr><td>Total tested</td><td>11 → 21</td><td style="color:#94a3b8;">+10</td></tr>
-        <tr><td>R005 count</td><td>4 → 4</td><td style="color:#fbbf24;">no change</td></tr>
-        <tr><td>R002 count</td><td>1 → 4</td><td style="color:#f87171;">+3 (new top)</td></tr>
-        <tr><td>Passed count</td><td>5 → 12</td><td style="color:#4ade80;">+7</td></tr>
+        <tr><td>v0.01</td><td>11 · pattern only</td><td>45.5%</td></tr>
+        <tr><td>v0.02</td><td>21 · R005 patterns</td><td>57.1%</td></tr>
+        <tr><td>v0.03</td><td>21 · Subject Dictionary</td><td>57.1%</td></tr>
+        <tr><td>v0.04</td><td>27 · See/Consult</td><td>63.0%</td></tr>
+        <tr><td>v0.05</td><td>33 · Compare + per-dim</td><td>60.6%</td></tr>
+        <tr><td>v0.06</td><td>41 · Why + Reality + Confused</td><td>65.9%</td></tr>
+        <tr><td style="color:#4ade80;font-weight:700;">v0.07</td><td style="color:#4ade80;">46 · Subject Intelligence</td><td style="color:#4ade80;font-weight:700;">71.7%</td></tr>
       </table>
     </div>
 
