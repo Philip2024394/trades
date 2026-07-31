@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NEX Router Build Dashboard — v1</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 32px; min-height: 100vh; }
+  .container { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; color: #f8fafc; }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+  .meta { color: #64748b; font-size: 12px; margin-bottom: 32px; font-style: italic; }
+
+  .build-header { display: flex; align-items: baseline; gap: 14px; padding-bottom: 16px; border-bottom: 1px solid #334155; margin-bottom: 24px; }
+  .build-header h2 { font-size: 30px; margin: 0; color: #f1f5f9; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .build-header .build-tag { background: #334155; color: #cbd5e1; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 24px; }
+  .card { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 20px; }
+  .card h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #94a3b8; margin: 0 0 12px; font-weight: 600; }
+  .card .big { font-size: 42px; font-weight: 700; color: #f1f5f9; line-height: 1; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .card .big.pass-rate { color: #4ade80; }
+  .card .sub { color: #94a3b8; font-size: 12px; margin-top: 8px; }
+
+  .pass-fail-row { display: flex; gap: 20px; margin-top: 12px; }
+  .pass-fail-row .item { flex: 1; }
+  .pass-fail-row .item .n { font-size: 32px; font-weight: 700; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .pass-fail-row .item .n.pass { color: #4ade80; }
+  .pass-fail-row .item .n.fail { color: #f87171; }
+  .pass-fail-row .item .lbl { font-size: 11px; text-transform: uppercase; color: #94a3b8; letter-spacing: 0.1em; margin-top: 4px; }
+
+  table.codes { width: 100%; border-collapse: collapse; }
+  table.codes td { padding: 8px 12px; border-bottom: 1px solid #334155; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
+  table.codes td:first-child { color: #cbd5e1; font-weight: 600; width: 80px; }
+  table.codes td:nth-child(2) { color: #94a3b8; }
+  table.codes td:last-child { color: #f1f5f9; text-align: right; font-size: 16px; font-weight: 700; }
+  table.codes tr.zero td:last-child { color: #475569; }
+  table.codes tr.top-fail td:last-child { color: #f87171; }
+
+  .top-failure { background: #7f1d1d; border: 1px solid #b91c1c; color: #fecaca; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px; }
+  .top-failure .lbl { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; margin-bottom: 6px; }
+  .top-failure .msg { font-size: 15px; font-weight: 500; }
+
+  .kpi-strip { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px; display: flex; flex-wrap: wrap; gap: 20px; }
+  .kpi-strip .kpi { color: #cbd5e1; font-size: 13px; }
+  .kpi-strip .kpi .arrow.up { color: #4ade80; }
+  .kpi-strip .kpi .arrow.down { color: #f87171; }
+
+  .footer { color: #64748b; font-size: 11px; margin-top: 32px; padding-top: 16px; border-top: 1px solid #1e293b; }
+  .footer code { background: #1e293b; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #cbd5e1; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>NEX Router Build Dashboard</h1>
+  <div class="subtitle">Every engineering session has one objective: reduce the failures.</div>
+  <div class="meta">Real Router Build 0.02 output (pattern-based classifier · deterministic · no LLM). Regenerate: <code style="background:#1e293b;color:#cbd5e1;padding:2px 6px;border-radius:3px;">node scripts/nex-router-build-002.mjs</code></div>
+
+  <div class="build-header">
+    <h2>Router Build 0.02</h2>
+    <span class="build-tag">2026-07-31 · pattern-based · targets R005 as class</span>
+  </div>
+
+  <!-- PRIMARY KPI (Philip 2026-07-31): failure-code bars first · pass rate secondary -->
+  <div class="card" style="margin-bottom:24px;">
+    <h3>Failure Code Bars (PRIMARY KPI)</h3>
+    <div style="font-size:11px;color:#94a3b8;margin-bottom:14px;">Every build should make these bars smaller. When the top bar reaches zero, the next-highest bar becomes the focus.</div>
+    <table class="codes" style="width:100%;">
+      <tr><td>R002</td><td>Wrong subject</td><td style="width:60%;"><div style="background:#f87171;height:22px;width:100%;border-radius:3px;color:#7f1d1d;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 4  ← top</div></td></tr>
+      <tr><td>R005</td><td>Wrong info type</td><td><div style="background:#fb923c;height:22px;width:100%;border-radius:3px;color:#7c2d12;padding:2px 8px;font-weight:700;box-sizing:border-box;">████████ 4  ← was top in 0.01 (still 4)</div></td></tr>
+      <tr><td>R004</td><td>Wrong domain</td><td><div style="background:#fbbf24;height:22px;width:75%;border-radius:3px;color:#78350f;padding:2px 8px;font-weight:700;box-sizing:border-box;">██████ 3</div></td></tr>
+      <tr><td>R001</td><td>Wrong intent</td><td><div style="background:#facc15;height:22px;width:50%;border-radius:3px;color:#713f12;padding:2px 8px;font-weight:700;box-sizing:border-box;">████ 2</div></td></tr>
+      <tr><td>R003</td><td>Wrong brain</td><td><div style="background:#84cc16;height:22px;width:25%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">██ 1</div></td></tr>
+      <tr><td>R006</td><td>Missing clarify</td><td><div style="background:#84cc16;height:22px;width:25%;border-radius:3px;color:#365314;padding:2px 8px;font-weight:700;box-sizing:border-box;">██ 1</div></td></tr>
+      <tr class="zero"><td>R007</td><td>Wrong evidence</td><td><div style="color:#475569;padding:2px 8px;font-style:italic;">0 · N/A (no retrieval layer yet)</div></td></tr>
+      <tr class="zero"><td>R008</td><td>Contradicted evidence</td><td><div style="color:#475569;padding:2px 8px;font-style:italic;">0 · N/A (no composition layer yet)</div></td></tr>
+    </table>
+  </div>
+
+  <div class="top-failure">
+    <div class="lbl">Top Failure (Build 0.02)</div>
+    <div class="msg">Wrong subject (R002) — 4 cases · e.g. "Can I buy stairs?" ("stairs" not matched as Staircase — subject pattern gap)</div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h3>Validation Questions</h3>
+      <div class="pass-fail-row">
+        <div class="item"><div class="n pass">12</div><div class="lbl">Passed</div></div>
+        <div class="item"><div class="n fail">9</div><div class="lbl">Failed</div></div>
+      </div>
+      <div class="sub">Of 21 total · Suite (6 starter + 10 R005-class) + derived (5)</div>
+    </div>
+
+    <div class="card">
+      <h3>Pass Rate</h3>
+      <div class="big" style="color:#fbbf24;">57.1%</div>
+      <div class="sub">Target ≥95% · <strong style="color:#fbbf24;">BELOW target</strong> · <strong style="color:#4ade80;">+11.6% vs Build 0.01</strong></div>
+    </div>
+
+    <div class="card">
+      <h3>Build-to-Build Delta</h3>
+      <table class="codes">
+        <tr><td>Pass rate</td><td>45.5% → 57.1%</td><td style="color:#4ade80;">+11.6%</td></tr>
+        <tr><td>Total tested</td><td>11 → 21</td><td style="color:#94a3b8;">+10</td></tr>
+        <tr><td>R005 count</td><td>4 → 4</td><td style="color:#fbbf24;">no change</td></tr>
+        <tr><td>R002 count</td><td>1 → 4</td><td style="color:#f87171;">+3 (new top)</td></tr>
+        <tr><td>Passed count</td><td>5 → 12</td><td style="color:#4ade80;">+7</td></tr>
+      </table>
+    </div>
+
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi"><span class="arrow up">↑</span> Knowledge Quality</div>
+    <div class="kpi"><span class="arrow up">↑</span> Router Accuracy</div>
+    <div class="kpi"><span class="arrow up">↑</span> Customer Satisfaction</div>
+    <div class="kpi"><span class="arrow down">↓</span> Hallucinations</div>
+    <div class="kpi"><span class="arrow down">↓</span> False Retrievals</div>
+    <div class="kpi"><span class="arrow down">↓</span> Unnecessary Clarifications</div>
+  </div>
+
+  <div class="footer">
+    Format authored by Philip O'Farrell · 2026-07-31. Composes with <code>NEX-ROUTER-VALIDATION-SUITE-v1.md</code> (defines pass/fail per row) and <code>NEX-ROUTER-TRACE-FORMAT-v1.md</code> (per-question diagnostic). Every Router build produces one dashboard render · no debate · no opinion · just measurable improvement.<br><br>
+    <strong>Not for customers.</strong> Engineering-only view. Customers see natural language responses or clarifying questions.
+  </div>
+
+</div>
+
+</body>
+</html>

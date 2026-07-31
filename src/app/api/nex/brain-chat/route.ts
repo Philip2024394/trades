@@ -87,7 +87,8 @@ export async function POST(req: NextRequest) {
       comparison:     result.comparison,
       expertise:      result.expertise,
       status:         result.status,
-      brain_versions: result.brain_versions
+      brain_versions: result.brain_versions,
+      presentation:   result.presentation,
     });
   } catch (err) {
     return NextResponse.json(

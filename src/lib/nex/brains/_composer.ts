@@ -28,8 +28,14 @@ import {
   loadTerminologyModule,
   matchTerminology,
   composeTerminologyAnswer,
+  composeTerminologyPresentation,
   listCoveredTerms
 } from "./_terminology_serve";
+import { renderPresentedAnswerAsText } from "./_presentation";
+import { findBestModule, composeModuleMatchPresentation } from "./_module_serve";
+import { detectRefusalIntent, composeRefusalIntent } from "./_boundary_intent";
+import { respondBySubject, composeSubjectIntentPresentation } from "./_subject_intent";
+import { detectAndRetrieveTypeProfile, composeTypeProfileAnswer, composeTypeProfilePresentation } from "./_type_profile_intent";
 
 const NEX_SYSTEM_PROMPT = `You are Nex, the specialist AI voice for UK construction trades. In this conversation you are Nex Staircases — the deep specialist for UK staircase design, regulations, materials, workmanship, restoration and trade practice.
 
@@ -584,6 +590,9 @@ export type ComposedAnswer = {
   expertise: ExpertiseResult; // detected user expertise + confidence + signals
   status: "answered" | "no_context" | "llm_unavailable";
   brain_versions: Record<string, string>;
+  /** Progressive-disclosure structured payload (Philip 2026-07-31 · 4 answer levels).
+   *  Optional · present when the answer path supports it (currently type-profile). */
+  presentation?: import("./_presentation").PresentedAnswer;
 };
 
 export type ComposeInput = {
@@ -660,6 +669,59 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
     };
   }
 
+  // ─── Boundary intent detection (routing repair · Philip 2026-07-30 activation) ──
+  //
+  // User intent MUST win over keyword matching. If a question is one of the
+  // 15 Canonical Refusal Registry categories, refuse with the specific
+  // constitutional reason BEFORE any retrieval attempt. This prevents
+  // Terminology terms inside refusal-shape questions from returning
+  // definitions where the user asked for regulations/compliance/certainty.
+  const refusalIntent = detectRefusalIntent(input.question);
+  if (refusalIntent) {
+    return {
+      answer: composeRefusalIntent(refusalIntent),
+      citations: [],
+      wood_cards: [],
+      visual_intent: visualIntent,
+      comparison,
+      expertise: expertiseForResponse,
+      status: "no_context",
+      brain_versions: {}
+    };
+  }
+
+  // ─── Type-profile intent (routing repair · Philip 2026-07-31) ──
+  //
+  // Runs BEFORE Terminology direct-serve. When a query contains a
+  // multi-word staircase-type subject (e.g. "closed string staircase",
+  // "open riser", "space saver"), route directly to type_profiles
+  // BEFORE single-word Terminology canonicals ("string", "riser")
+  // preempt the correct answer.
+  //
+  // Rule B: phrases are derived only from Philip's authored profile
+  // names + "Also Known As" aliases. Falls through cleanly when no
+  // multi-word type subject matches.
+  const typeProfileHit = await detectAndRetrieveTypeProfile(input.brain_slug, input.question);
+  if (typeProfileHit) {
+    const presentation = composeTypeProfilePresentation(typeProfileHit);
+    return {
+      answer: composeTypeProfileAnswer(typeProfileHit),
+      citations: typeProfileHit.atoms.slice(0, 8).map(x => ({
+        module:  x.module_slug,
+        ref_id:  x.atom.source_ref ?? "unknown",
+        snippet: x.atom.text.slice(0, 200),
+        source:  x.module_slug,
+      })) as ComposedAnswer["citations"],
+      wood_cards: [],
+      visual_intent: visualIntent,
+      comparison,
+      expertise: expertiseForResponse,
+      status: "answered",
+      brain_versions: { [`${input.brain_slug}:type_profiles`]: "0.1.0-canonical" },
+      presentation,
+    };
+  }
+
   // ─── Terminology direct-serve (Path B.1 · Philip 2026-07-30) ────────
   //
   // Reality earned permission for the smallest possible representation
@@ -676,9 +738,9 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
   if (terminologyModule) {
     const match = matchTerminology(terminologyModule, input.question);
     if (match.kind === "canonical" || match.kind === "alias") {
-      const answer = composeTerminologyAnswer(match.term);
+      const presentation = composeTerminologyPresentation(match.term);
       return {
-        answer,
+        answer: renderPresentedAnswerAsText(presentation),
         citations: match.term.evidence.map((e) => ({
           text:      e.source,
           source_id: match.term.term,
@@ -689,9 +751,68 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
         comparison,
         expertise: expertiseForResponse,
         status: "answered",
-        brain_versions: { [input.brain_slug]: terminologyModule.header.version }
+        brain_versions: { [input.brain_slug]: terminologyModule.header.version },
+        presentation,
       };
     }
+  }
+
+  // ─── Subject-Intent knowledge routing (Philip 2026-07-30 architectural correction) ─
+  //
+  // Human asks: "what staircase is available?"
+  // Wrong thinking: "does the word AVAILABLE appear in atoms?"
+  // Right thinking: subject=STAIRCASE, intent=DISCOVERY, serve authored staircase knowledge.
+  //
+  // NEX doesn't retrieve words. NEX serves authored knowledge.
+  //
+  // Rule A: subjects are derived only from Philip's authored vocabulary
+  // (Terminology canonicals + aliases + module TERMS keywords).
+  const subjectResp = await respondBySubject(input.brain_slug, input.question);
+  if (subjectResp) {
+    const presentation = composeSubjectIntentPresentation(subjectResp);
+    return {
+      answer: renderPresentedAnswerAsText(presentation),
+      citations: subjectResp.atoms.slice(0, 6).map(a => ({
+        module:  a.module_slug,
+        ref_id:  a.atom.source_ref ?? "unknown",
+        snippet: a.atom.text.slice(0, 200),
+        source:  a.module_slug,
+      })) as ComposedAnswer["citations"],
+      wood_cards: [],
+      visual_intent: visualIntent,
+      comparison,
+      expertise: expertiseForResponse,
+      status: "answered",
+      brain_versions: {
+        [`${input.brain_slug}:subject_intent`]: "0.1.0-activation",
+      },
+      presentation,
+    };
+  }
+
+  // ─── Non-Terminology module direct-serve (Path B.1 extension · Philip 2026-07-30 activation) ─
+  //
+  // Safety-net keyword retrieval kept for queries where subject-intent
+  // detection didn't find an authored subject. Rule B compliant.
+  const moduleMatch = await findBestModule(input.brain_slug, input.question);
+  if (moduleMatch) {
+    const presentation = composeModuleMatchPresentation(moduleMatch, input.question);
+    return {
+      answer: renderPresentedAnswerAsText(presentation),
+      citations: moduleMatch.matches.map(m => ({
+        module:  moduleMatch.module_slug,
+        ref_id:  m.atom.source_ref ?? "unknown",
+        snippet: m.atom.text.slice(0, 200),
+        source:  moduleMatch.module_slug,
+      })) as ComposedAnswer["citations"],
+      wood_cards: [],
+      visual_intent: visualIntent,
+      comparison,
+      expertise: expertiseForResponse,
+      status: "answered",
+      brain_versions: { [`${input.brain_slug}:${moduleMatch.module_slug}`]: "0.1.0-activation" },
+      presentation,
+    };
   }
 
   // Lazy-load the trade content into the runtime registry if not
@@ -709,7 +830,7 @@ export async function composeStaircaseAnswer(input: ComposeInput): Promise<Compo
   if (!loadResult.ok) {
     const knownTerms = terminologyModule ? listCoveredTerms(terminologyModule) : [];
     const answer = knownTerms.length > 0
-      ? `I cannot answer this truthfully today. My current Reference Brain coverage is staircase terminology, covering these ${knownTerms.length} terms: ${knownTerms.join(", ")}. If your question relates to one of them, ask me about it directly. Otherwise, NEX does not yet have verified permission to answer this question.`
+      ? `I cannot answer this truthfully today. My current Reference Brain covers staircase terminology (${knownTerms.length} canonical terms: ${knownTerms.join(", ")}) plus six governed modules (Types · Materials · Components · Installation · Design · Customer FAQ). Your question does not match any of them clearly — try rephrasing, or ask about a specific topic within those modules. Otherwise, NEX does not yet have verified permission to answer this question.`
       : `I cannot answer this truthfully today. NEX does not yet have verified permission to answer this question.`;
     return {
       answer,

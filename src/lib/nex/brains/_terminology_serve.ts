@@ -22,6 +22,7 @@ import "server-only";
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { TerminologyModuleSchema, type TerminologyModule, type TerminologyTerm } from "./_schema/terminology";
+import { composeTeaching, type TeachingInput, type PresentedAnswer, type PresentationSection, extractBullets } from "./_presentation";
 
 const DRAFTS_ROOT = ".author-studio-drafts";
 
@@ -110,4 +111,62 @@ export function composeTerminologyAnswer(term: TerminologyTerm): string {
  *  Master constitutional prompt: "smallest truthful gap." */
 export function listCoveredTerms(module: TerminologyModule): string[] {
   return module.terms.map((t) => t.term);
+}
+
+/** Adapt a Terminology term into TeachingInput. Teaching Intelligence takes it
+ *  from there. Rule B compliant: only reorganises Philip's authored 4-question
+ *  atoms · never invents. */
+export function terminologyToTeaching(term: TerminologyTerm): TeachingInput {
+  const primary_definition = term.what_is_it;
+  const purpose_bullets = extractBullets(term.what_does_it_do);
+  const fact_bullets = purpose_bullets.length > 0 ? purpose_bullets : [term.what_does_it_do];
+
+  const glance_rows: Array<{ label: string; value: string }> = [];
+  if (term.aliases.length > 0) {
+    glance_rows.push({ label: "Also called", value: term.aliases.join(" · ") });
+  }
+  if (term.confused_with.length > 0) {
+    glance_rows.push({ label: "Commonly confused with", value: term.confused_with.join(" · ") });
+  }
+
+  const common_questions = [
+    `What is a ${term.term}?`,
+    `What does a ${term.term} do?`,
+    `What do homeowners call a ${term.term}?`,
+    `What is a ${term.term} commonly confused with?`,
+  ];
+
+  const all_sections: PresentationSection[] = [
+    { title: "What it is",           bullets: [term.what_is_it],                  truncated: false, full_count: 1, atom_type: "definition" },
+    { title: "What it does",         bullets: [term.what_does_it_do],             truncated: false, full_count: 1, atom_type: "function" },
+    { title: "What homeowners call it", bullets: [term.what_do_homeowners_call_it], truncated: false, full_count: 1, atom_type: "homeowner_language" },
+    { title: "Commonly confused with", bullets: [term.commonly_confused_with],    truncated: false, full_count: 1, atom_type: "confusion" },
+  ];
+
+  const learn_more_topics: string[] = [];
+  if (term.confused_with.length > 0) learn_more_topics.push("Related components");
+  learn_more_topics.push("Materials");
+  learn_more_topics.push("Installation");
+  learn_more_topics.push("Design considerations");
+
+  return {
+    subject_name:                      term.term.charAt(0).toUpperCase() + term.term.slice(1),
+    subject_subtitle:                  term.aliases[0] ?? null,
+    primary_definition,
+    fact_bullets,
+    glance_rows,
+    advantages:                        [],
+    disadvantages_and_considerations:  [term.commonly_confused_with],
+    compatible_options:                [],
+    related_topics:                    term.confused_with,
+    common_questions,
+    all_sections,
+    learn_more_topics,
+    image_url:                         null,
+  };
+}
+
+/** Compose a Terminology answer as a PresentedAnswer via Teaching Intelligence. */
+export function composeTerminologyPresentation(term: TerminologyTerm): PresentedAnswer {
+  return composeTeaching(terminologyToTeaching(term));
 }

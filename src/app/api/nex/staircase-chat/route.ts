@@ -152,6 +152,7 @@ export async function POST(req: NextRequest) {
       expertise:       result.expertise,
       status:          result.status,
       brain_versions:  result.brain_versions,
+      presentation:    result.presentation,
       conversation_id: conversationId,
       stage,
       retrieved_ids:   retrievedIds,
