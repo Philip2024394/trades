@@ -65,6 +65,13 @@ export function NexSectionsNav() {
     };
   }, [open]);
 
+  // Philip 2026-08-02 · hide the sections drawer on the Staircase Library
+  // page. The library is an immersive full-screen viewer with its own
+  // top-left Home button; the drawer would compete visually with the
+  // Home + floating Nex affordances. Early return AFTER all hooks to
+  // preserve the Rules-of-Hooks order.
+  if (pathname?.startsWith("/nex-app/staircase-library")) return null;
+
   return (
     <>
       {/* Fixed top-right trigger button — visible on every /nex-app/* page.

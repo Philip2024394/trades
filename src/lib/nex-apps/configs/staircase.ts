@@ -32,12 +32,16 @@ export const staircaseConfig: TradeConfig = {
       chat_intro: "Approved Doc K covers stair regs — I can pull the sections most relevant to your project." },
     { label: "Installation Guide",  target_state: "discover", canvas_variant: "installation",
       chat_intro: "Step-by-step from measurement to first-fit — where do you want to start?" },
-    { label: "Inspiration",         target_state: "discover", canvas_variant: "gallery",
+    // Philip 2026-08-02 · repurposed · was "Inspiration" · now full-screen swipe gallery.
+    { label: "Staircase Library",   target_state: "discover", canvas_variant: "gallery",
+      href: "/nex-app/staircase-library",
       chat_intro: "Design ideas to get you thinking — anything catching your eye?" },
     { label: "AI Assistant",        target_state: "discover",
       chat_intro: "Ask me anything about staircases — designs, regs, timber, prices, or your project." },
-    { label: "Suppliers",           target_state: "compare", canvas_variant: "suppliers",
-      chat_intro: "Trusted staircase merchants and parts suppliers — want me to shortlist by region?" }
+    // Philip 2026-08-02 · repurposed · was "Suppliers" · now points at the existing Pinterest-style Trade Centre.
+    { label: "Trade Centre",        target_state: "compare", canvas_variant: "suppliers",
+      href: "/nex-app/centre",
+      chat_intro: "Browse inspiration, products, companies, projects and professionals in the Trade Centre." }
   ],
 
   featured_projects_title: "Recent staircases",

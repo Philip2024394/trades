@@ -1,0 +1,10 @@
+{
+  "topics": [],
+  "knowledge_gaps": [],
+  "notes_processed": "No validated customer questions provided; empty batch processed.",
+  "extraction": {
+    "extracted_count": 0,
+    "raw_question_marks": 0,
+    "match": true
+  }
+}

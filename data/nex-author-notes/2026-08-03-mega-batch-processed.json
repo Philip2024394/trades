@@ -1,0 +1,3297 @@
+{
+  "topics": [
+    {
+      "topic": "Material Durability in Extreme Environments",
+      "customer_intents": [
+        {
+          "n": 1,
+          "text": "Can the metal finish withstand high-humidity environments like indoor pool rooms?"
+        },
+        {
+          "n": 2,
+          "text": "Is the staircase engineered to resist coastal salt-spray corrosion?"
+        },
+        {
+          "n": 6,
+          "text": "Can the materials withstand extreme temperature swings in uninsulated cabins?"
+        },
+        {
+          "n": 7,
+          "text": "Is the adhesive used waterproof and rated for constant high humidity?"
+        },
+        {
+          "n": 9,
+          "text": "Is the powder coating rated against fading from intense, direct desert UV rays?"
+        },
+        {
+          "n": 10,
+          "text": "Can the structure handle heavy flooding or standing water without rotting?"
+        },
+        {
+          "n": 103,
+          "text": "Will the metal components rust if the basement floods for several days?"
+        }
+      ],
+      "retrieval_tags": [
+        "durability",
+        "corrosion",
+        "humidity",
+        "UV",
+        "flooding",
+        "environmental-resistance"
+      ],
+      "related_questions": [
+        "What protective coatings are applied to metal components?",
+        "How often should I inspect for rust or water damage?",
+        "Are there maintenance steps to extend durability in harsh climates?"
+      ],
+      "classifications": [
+        {
+          "n": 1,
+          "domain": "technical"
+        },
+        {
+          "n": 2,
+          "domain": "technical"
+        },
+        {
+          "n": 6,
+          "domain": "technical"
+        },
+        {
+          "n": 7,
+          "domain": "technical"
+        },
+        {
+          "n": 9,
+          "domain": "technical"
+        },
+        {
+          "n": 10,
+          "domain": "technical"
+        },
+        {
+          "n": 103,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Pest & Biological Resistance",
+      "customer_intents": [
+        {
+          "n": 5,
+          "text": "Will subterranean termites or wood-boring beetles attack this specific wood species?"
+        },
+        {
+          "n": 46,
+          "text": "Can pet urine stain or permanently discolor the wood or metal finish?"
+        },
+        {
+          "n": 155,
+          "text": "Will cats be tempted to use the expensive soft-wood newel posts as a scratching post?"
+        }
+      ],
+      "retrieval_tags": [
+        "pests",
+        "termites",
+        "wood-boring",
+        "pet-damage",
+        "biological-resistance"
+      ],
+      "related_questions": [
+        "Is the wood treated with insecticide or pest-repellent?",
+        "What wood species are naturally pest-resistant?",
+        "Can protective coatings prevent pet damage?"
+      ],
+      "classifications": [
+        {
+          "n": 5,
+          "domain": "technical"
+        },
+        {
+          "n": 46,
+          "domain": "technical"
+        },
+        {
+          "n": 155,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Fire Safety & Emergency Egress",
+      "customer_intents": [
+        {
+          "n": 3,
+          "text": "What is the fire-resistance rating (in hours) of the structural core?"
+        },
+        {
+          "n": 101,
+          "text": "Can the staircase structure survive a major house fire without collapsing?"
+        },
+        {
+          "n": 102,
+          "text": "Is the design rated to withstand blast or high-impact shockwaves?"
+        },
+        {
+          "n": 104,
+          "text": "Can the staircase be used as a structural anchor point for emergency evacuation ropes?"
+        },
+        {
+          "n": 106,
+          "text": "How does the staircase handle heavy smoke buildup (does it trap or channel it upstairs)?"
+        },
+        {
+          "n": 107,
+          "text": "Are the steps coated with an absolute zero-flame-spread finish?"
+        },
+        {
+          "n": 108,
+          "text": "Can the handrail support the weight of multiple people escaping simultaneously in a panic?"
+        },
+        {
+          "n": 109,
+          "text": "Is there an option for glow-in-the-dark or photo-luminescent non-slip step edges?"
+        },
+        {
+          "n": 268,
+          "text": "What is the fire-resistance rating of your metal and glass components?"
+        }
+      ],
+      "retrieval_tags": [
+        "fire-safety",
+        "fire-rating",
+        "egress",
+        "emergency",
+        "flame-spread",
+        "evacuation"
+      ],
+      "related_questions": [
+        "Does the staircase meet commercial fire codes?",
+        "Are emergency lighting options available?",
+        "What certifications does the staircase hold for fire safety?"
+      ],
+      "classifications": [
+        {
+          "n": 3,
+          "domain": "regulation"
+        },
+        {
+          "n": 101,
+          "domain": "regulation"
+        },
+        {
+          "n": 102,
+          "domain": "regulation"
+        },
+        {
+          "n": 104,
+          "domain": "regulation"
+        },
+        {
+          "n": 106,
+          "domain": "regulation"
+        },
+        {
+          "n": 107,
+          "domain": "regulation"
+        },
+        {
+          "n": 108,
+          "domain": "regulation"
+        },
+        {
+          "n": 109,
+          "domain": "regulation"
+        },
+        {
+          "n": 268,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Seismic & Structural Resilience",
+      "customer_intents": [
+        {
+          "n": 4,
+          "text": "How does the staircase perform in high-seismic or earthquake-prone zones?"
+        }
+      ],
+      "retrieval_tags": [
+        "seismic",
+        "earthquake",
+        "structural-resilience",
+        "lateral-loads"
+      ],
+      "related_questions": [
+        "Is the staircase anchored to resist lateral movement?",
+        "What engineering standards apply to seismic zones?",
+        "Are there reinforcement options for earthquake-prone areas?"
+      ],
+      "classifications": [
+        {
+          "n": 4,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Slip Hazards & Frost/Ice Safety",
+      "customer_intents": [
+        {
+          "n": 8,
+          "text": "Will the steps become dangerously slick during heavy frost or freezing rain?"
+        },
+        {
+          "n": 31,
+          "text": "What type of slip-resistance testing certification (ASTM) does the finish hold?"
+        }
+      ],
+      "retrieval_tags": [
+        "slip-resistance",
+        "frost",
+        "ice",
+        "ASTM",
+        "traction",
+        "safety-testing"
+      ],
+      "related_questions": [
+        "What non-slip treatments are available?",
+        "Can anti-slip tape be applied to existing treads?",
+        "How does the finish perform in wet conditions?"
+      ],
+      "classifications": [
+        {
+          "n": 8,
+          "domain": "technical"
+        },
+        {
+          "n": 31,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Cultural & Feng Shui Considerations",
+      "customer_intents": [
+        {
+          "n": 11,
+          "text": "Does the total number of steps align with local cultural luck traditions?"
+        },
+        {
+          "n": 12,
+          "text": "Does a staircase facing the front door violate Feng Shui principles?"
+        },
+        {
+          "n": 13,
+          "text": "Can the design be modified to avoid an auspiciously \"empty\" space underneath?"
+        }
+      ],
+      "retrieval_tags": [
+        "feng-shui",
+        "cultural",
+        "luck",
+        "design-customization"
+      ],
+      "related_questions": [
+        "Can the staircase layout be adjusted for cultural preferences?",
+        "Are there design options to address spiritual concerns?"
+      ],
+      "classifications": [
+        {
+          "n": 11,
+          "domain": "business"
+        },
+        {
+          "n": 12,
+          "domain": "business"
+        },
+        {
+          "n": 13,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Heritage & Historical Preservation",
+      "customer_intents": [
+        {
+          "n": 14,
+          "text": "Is it possible to use specific native woods to respect regional heritage?"
+        },
+        {
+          "n": 15,
+          "text": "Does the staircase style respect historical preservation guidelines for landmark homes?"
+        },
+        {
+          "n": 16,
+          "text": "Can the balustrade replicate historic hand-forged European patterns?"
+        },
+        {
+          "n": 118,
+          "text": "Can the manufacturer exactly replicate a hand-carved Victorian baluster from a photo?"
+        },
+        {
+          "n": 119,
+          "text": "Is it possible to match the specific patina of 150-year-old reclaimed heart pine?"
+        },
+        {
+          "n": 120,
+          "text": "Will modern hidden metal brackets violate local historical society guidelines?"
+        },
+        {
+          "n": 121,
+          "text": "Can you source authentic wrought iron made using traditional blacksmithing methods?"
+        },
+        {
+          "n": 122,
+          "text": "How do we adapt a historically steep layout to meet modern safety codes without losing its look?"
+        },
+        {
+          "n": 123,
+          "text": "Can the new staircase be finished using authentic shellac or milk paint finishes?"
+        },
+        {
+          "n": 124,
+          "text": "Are the wood species choices legally compliant with historic preservation acts?"
+        },
+        {
+          "n": 125,
+          "text": "Can the handrail utilize a traditional continuous volute or scroll at the bottom?"
+        }
+      ],
+      "retrieval_tags": [
+        "historical",
+        "heritage",
+        "preservation",
+        "authentic",
+        "period-correct",
+        "native-wood"
+      ],
+      "related_questions": [
+        "What documentation is needed for historical society approval?",
+        "Can you provide period-accurate finishes and materials?",
+        "Are there restrictions on modern modifications?"
+      ],
+      "classifications": [
+        {
+          "n": 14,
+          "domain": "visual"
+        },
+        {
+          "n": 15,
+          "domain": "regulation"
+        },
+        {
+          "n": 16,
+          "domain": "visual"
+        },
+        {
+          "n": 118,
+          "domain": "visual"
+        },
+        {
+          "n": 119,
+          "domain": "visual"
+        },
+        {
+          "n": 120,
+          "domain": "regulation"
+        },
+        {
+          "n": 121,
+          "domain": "manufacturing"
+        },
+        {
+          "n": 122,
+          "domain": "regulation"
+        },
+        {
+          "n": 123,
+          "domain": "visual"
+        },
+        {
+          "n": 124,
+          "domain": "regulation"
+        },
+        {
+          "n": 125,
+          "domain": "visual"
+        }
+      ]
+    },
+    {
+      "topic": "Architectural Style & Aesthetic Impact",
+      "customer_intents": [
+        {
+          "n": 17,
+          "text": "Does the open-riser look conflict with traditional architectural privacy?"
+        },
+        {
+          "n": 18,
+          "text": "Will a hyper-modern floating staircase hurt the value of a rustic farmhouse?"
+        }
+      ],
+      "retrieval_tags": [
+        "aesthetics",
+        "style-compatibility",
+        "home-value",
+        "design-impact"
+      ],
+      "related_questions": [
+        "What design styles are available?",
+        "How does the staircase affect home resale value?",
+        "Can the design be customized to match my home's architecture?"
+      ],
+      "classifications": [
+        {
+          "n": 17,
+          "domain": "visual"
+        },
+        {
+          "n": 18,
+          "domain": "visual"
+        }
+      ]
+    },
+    {
+      "topic": "Dynamic Load & Vibration Performance",
+      "customer_intents": [
+        {
+          "n": 19,
+          "text": "What is the precise deflection frequency of the staircase under rapid pacing?"
+        },
+        {
+          "n": 20,
+          "text": "Does the structural design cause a trampoline effect when a heavy person runs up?"
+        },
+        {
+          "n": 21,
+          "text": "What is the dynamic load capacity compared to the static load capacity?"
+        }
+      ],
+      "retrieval_tags": [
+        "dynamic-load",
+        "vibration",
+        "deflection",
+        "trampoline-effect",
+        "structural-performance"
+      ],
+      "related_questions": [
+        "What is the maximum safe load rating?",
+        "How does the staircase respond to rapid movement?",
+        "Are there engineering specifications for dynamic loads?"
+      ],
+      "classifications": [
+        {
+          "n": 19,
+          "domain": "technical"
+        },
+        {
+          "n": 20,
+          "domain": "technical"
+        },
+        {
+          "n": 21,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Center of Gravity & Helical Staircase Physics",
+      "customer_intents": [
+        {
+          "n": 22,
+          "text": "How does the center of gravity shift on a tight helical staircase?"
+        }
+      ],
+      "retrieval_tags": [
+        "center-of-gravity",
+        "helical",
+        "spiral",
+        "physics",
+        "balance"
+      ],
+      "related_questions": [
+        "Is a spiral staircase safe for all users?",
+        "How does the tight pitch affect balance?",
+        "Are there handrail recommendations for spiral stairs?"
+      ],
+      "classifications": [
+        {
+          "n": 22,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Accessibility & Ergonomic Design",
+      "customer_intents": [
+        {
+          "n": 23,
+          "text": "Does the step geometry reduce tripping risks for people with poor depth perception?"
+        },
+        {
+          "n": 24,
+          "text": "What is the optimal handrail grip cross-section for maximum human holding power?"
+        },
+        {
+          "n": 25,
+          "text": "Is the pitch angle gentle enough to prevent vertigo when walking down?"
+        },
+        {
+          "n": 60,
+          "text": "Can contrast-colored nosing strips be added for visually impaired users?"
+        },
+        {
+          "n": 61,
+          "text": "Is the tread surface compatible with high-traction rubber cane tips?"
+        },
+        {
+          "n": 126,
+          "text": "Does the staircase meet ADA (Americans with Disabilities Act) graspability standards?"
+        },
+        {
+          "n": 266,
+          "text": "Do your parts comply with ADA accessibility grip requirements?"
+        }
+      ],
+      "retrieval_tags": [
+        "accessibility",
+        "ADA",
+        "ergonomic",
+        "grip",
+        "visually-impaired",
+        "mobility-aids"
+      ],
+      "related_questions": [
+        "What accessibility features are standard?",
+        "Can the staircase be modified for wheelchair access?",
+        "Are there options for users with mobility limitations?"
+      ],
+      "classifications": [
+        {
+          "n": 23,
+          "domain": "technical"
+        },
+        {
+          "n": 24,
+          "domain": "technical"
+        },
+        {
+          "n": 25,
+          "domain": "technical"
+        },
+        {
+          "n": 60,
+          "domain": "regulation"
+        },
+        {
+          "n": 61,
+          "domain": "regulation"
+        },
+        {
+          "n": 126,
+          "domain": "regulation"
+        },
+        {
+          "n": 266,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Structural Stress & Fastener Engineering",
+      "customer_intents": [
+        {
+          "n": 26,
+          "text": "How much shear stress is applied to the wall bolts by a cantilevered tread?"
+        },
+        {
+          "n": 92,
+          "text": "Are the assembly screws zinc-plated, ceramic-coated, or stainless steel?"
+        },
+        {
+          "n": 95,
+          "text": "Do the anchor bolts use chemical epoxy or mechanical expansion sleeves?"
+        },
+        {
+          "n": 100,
+          "text": "Is there a specific torque specification for tightening the structural bolts?"
+        }
+      ],
+      "retrieval_tags": [
+        "fasteners",
+        "bolts",
+        "shear-stress",
+        "torque",
+        "corrosion-resistance"
+      ],
+      "related_questions": [
+        "What fastener materials are used?",
+        "How should bolts be maintained?",
+        "Are replacement fasteners available?"
+      ],
+      "classifications": [
+        {
+          "n": 26,
+          "domain": "technical"
+        },
+        {
+          "n": 92,
+          "domain": "technical"
+        },
+        {
+          "n": 95,
+          "domain": "technical"
+        },
+        {
+          "n": 100,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Building Code Compliance & Occupancy Inspection",
+      "customer_intents": [
+        {
+          "n": 27,
+          "text": "What documentation is required to pass a strict municipal occupancy inspection?"
+        },
+        {
+          "n": 28,
+          "text": "Has this exact model ever failed a local safety compliance audit?"
+        },
+        {
+          "n": 32,
+          "text": "Are the glass panels officially stamped with safety tempering credentials?"
+        },
+        {
+          "n": 34,
+          "text": "Can the staircase be fully retrofitted if building codes change next year?"
+        },
+        {
+          "n": 262,
+          "text": "Will this exact baluster shoe style pass a municipal building inspection?"
+        },
+        {
+          "n": 271,
+          "text": "Are structural engineer stamped drawings available for your modern part kits?"
+        }
+      ],
+      "retrieval_tags": [
+        "building-code",
+        "compliance",
+        "inspection",
+        "certification",
+        "documentation"
+      ],
+      "related_questions": [
+        "What certifications does the staircase hold?",
+        "Are engineer drawings provided?",
+        "What happens if the staircase fails inspection?"
+      ],
+      "classifications": [
+        {
+          "n": 27,
+          "domain": "regulation"
+        },
+        {
+          "n": 28,
+          "domain": "regulation"
+        },
+        {
+          "n": 32,
+          "domain": "regulation"
+        },
+        {
+          "n": 34,
+          "domain": "regulation"
+        },
+        {
+          "n": 262,
+          "domain": "regulation"
+        },
+        {
+          "n": 271,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Liability & Insurance",
+      "customer_intents": [
+        {
+          "n": 29,
+          "text": "Does the manufacturer carry product liability insurance for structural failures?"
+        },
+        {
+          "n": 30,
+          "text": "Who is legally responsible if a third-party installer miscalculates the rise?"
+        },
+        {
+          "n": 33,
+          "text": "Will my homeowner's insurance premium increase based on an open-riser design?"
+        }
+      ],
+      "retrieval_tags": [
+        "liability",
+        "insurance",
+        "responsibility",
+        "warranty",
+        "legal"
+      ],
+      "related_questions": [
+        "What is covered under the warranty?",
+        "Who is responsible for installation errors?",
+        "Are there liability disclaimers?"
+      ],
+      "classifications": [
+        {
+          "n": 29,
+          "domain": "business"
+        },
+        {
+          "n": 30,
+          "domain": "business"
+        },
+        {
+          "n": 33,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Tread & Riser Construction Details",
+      "customer_intents": [
+        {
+          "n": 35,
+          "text": "Are the treads mortised into the stringers, or do they sit on brackets?"
+        },
+        {
+          "n": 36,
+          "text": "Does the design use hidden internal tension rods to prevent sagging?"
+        },
+        {
+          "n": 37,
+          "text": "Are there visible weld beads, or are all joints ground completely smooth?"
+        },
+        {
+          "n": 38,
+          "text": "Is the handrail attached using blind fasteners for a completely seamless look?"
+        },
+        {
+          "n": 39,
+          "text": "How are the stringer segments joined together if they arrive split?"
+        },
+        {
+          "n": 40,
+          "text": "Are the risers dadoed into the underside of the treads to stop rubbing?"
+        },
+        {
+          "n": 41,
+          "text": "What type of wood biscuits or dowels are used to reinforce glued corners?"
+        },
+        {
+          "n": 42,
+          "text": "Are the metal-to-wood connections isolated with nylon washers to stop squeaks?"
+        },
+        {
+          "n": 172,
+          "text": "What is the difference between a standard tread and a starting step?"
+        },
+        {
+          "n": 173,
+          "text": "Are these treads made of solid wood or are they engineered/veneered?"
+        },
+        {
+          "n": 174,
+          "text": "What thickness should I choose for a floating staircase tread?"
+        },
+        {
+          "n": 175,
+          "text": "Do the treads come pre-finished, or do I need to stain them on-site?"
+        },
+        {
+          "n": 176,
+          "text": "Can I order treads with a non-slip groove or texture pre-cut into them?"
+        },
+        {
+          "n": 177,
+          "text": "What is the return on a tread, and do I need left, right, or double returns?"
+        },
+        {
+          "n": 178,
+          "text": "Can these wood treads handle the claws of large pets without scratching?"
+        },
+        {
+          "n": 179,
+          "text": "Do you sell matching wood risers, or do people usually paint them white?"
+        },
+        {
+          "n": 180,
+          "text": "Can I cut a standard tread down on-site, or will it ruin the structure?"
+        },
+        {
+          "n": 181,
+          "text": "Are the tread noses rounded (bullnose) or square for a modern look?"
+        },
+        {
+          "n": 182,
+          "text": "What type of wood species is most durable for high-traffic steps?"
+        },
+        {
+          "n": 183,
+          "text": "Do you offer extra-deep treads for custom winder configurations?"
+        },
+        {
+          "n": 184,
+          "text": "Can these treads be installed directly over an existing concrete staircase?"
+        },
+        {
+          "n": 185,
+          "text": "Is plywood acceptable to use as a structural riser backing?"
+        }
+      ],
+      "retrieval_tags": [
+        "tread",
+        "riser",
+        "construction",
+        "mortise",
+        "bracket",
+        "solid-wood",
+        "engineered"
+      ],
+      "related_questions": [
+        "What materials are available for treads?",
+        "Can treads be customized?",
+        "How are treads attached to stringers?"
+      ],
+      "classifications": [
+        {
+          "n": 35,
+          "domain": "technical"
+        },
+        {
+          "n": 36,
+          "domain": "technical"
+        },
+        {
+          "n": 37,
+          "domain": "technical"
+        },
+        {
+          "n": 38,
+          "domain": "technical"
+        },
+        {
+          "n": 39,
+          "domain": "technical"
+        },
+        {
+          "n": 40,
+          "domain": "technical"
+        },
+        {
+          "n": 41,
+          "domain": "technical"
+        },
+        {
+          "n": 42,
+          "domain": "technical"
+        },
+        {
+          "n": 172,
+          "domain": "technical"
+        },
+        {
+          "n": 173,
+          "domain": "technical"
+        },
+        {
+          "n": 174,
+          "domain": "technical"
+        },
+        {
+          "n": 175,
+          "domain": "visual"
+        },
+        {
+          "n": 176,
+          "domain": "technical"
+        },
+        {
+          "n": 177,
+          "domain": "technical"
+        },
+        {
+          "n": 178,
+          "domain": "technical"
+        },
+        {
+          "n": 179,
+          "domain": "visual"
+        },
+        {
+          "n": 180,
+          "domain": "installation"
+        },
+        {
+          "n": 181,
+          "domain": "visual"
+        },
+        {
+          "n": 182,
+          "domain": "technical"
+        },
+        {
+          "n": 183,
+          "domain": "technical"
+        },
+        {
+          "n": 184,
+          "domain": "installation"
+        }
+      ]
+    },
+    {
+      "topic": "Durability Against Impact & Wear",
+      "customer_intents": [
+        {
+          "n": 43,
+          "text": "Can the treads withstand the impact of dropped cast-iron cookware?"
+        },
+        {
+          "n": 44,
+          "text": "Will dragging heavy luggage up the stairs chip the nose profiles?"
+        },
+        {
+          "n": 151,
+          "text": "Can the tread nosing withstand the scraping wheels of a heavy appliance dolly?"
+        },
+        {
+          "n": 249,
+          "text": "What finish holds up best against high-traffic shoe scuffs on tread noses?"
+        }
+      ],
+      "retrieval_tags": [
+        "impact-resistance",
+        "wear",
+        "durability",
+        "nose-profile",
+        "high-traffic"
+      ],
+      "related_questions": [
+        "What is the expected lifespan of the finish?",
+        "Can damaged areas be repaired?",
+        "Are protective coatings available?"
+      ],
+      "classifications": [
+        {
+          "n": 43,
+          "domain": "technical"
+        },
+        {
+          "n": 44,
+          "domain": "technical"
+        },
+        {
+          "n": 151,
+          "domain": "technical"
+        },
+        {
+          "n": 249,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Cleaning & Maintenance",
+      "customer_intents": [
+        {
+          "n": 45,
+          "text": "What commercial chemical cleaners will completely strip the clear coat?"
+        },
+        {
+          "n": 47,
+          "text": "How easily can embedded scuff marks from black-soled boots be removed?"
+        },
+        {
+          "n": 48,
+          "text": "Will vacuum cleaner attachments scratch the paint on the risers?"
+        },
+        {
+          "n": 49,
+          "text": "Is the metal railing resistant to oil and sweat from dirty hands?"
+        },
+        {
+          "n": 50,
+          "text": "How do you remove stubborn candle wax or gum from raw wood treads?"
+        },
+        {
+          "n": 79,
+          "text": "What specific cleaning products does the manufacturer officially ban?"
+        },
+        {
+          "n": 245,
+          "text": "How do I clean a matte black powder-coated iron baluster?"
+        }
+      ],
+      "retrieval_tags": [
+        "cleaning",
+        "maintenance",
+        "care",
+        "finish-protection",
+        "stain-removal"
+      ],
+      "related_questions": [
+        "What cleaning products are safe to use?",
+        "How often should the staircase be cleaned?",
+        "Can finishes be restored if damaged?"
+      ],
+      "classifications": [
+        {
+          "n": 45,
+          "domain": "business"
+        },
+        {
+          "n": 47,
+          "domain": "business"
+        },
+        {
+          "n": 48,
+          "domain": "business"
+        },
+        {
+          "n": 49,
+          "domain": "business"
+        },
+        {
+          "n": 50,
+          "domain": "business"
+        },
+        {
+          "n": 79,
+          "domain": "business"
+        },
+        {
+          "n": 245,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Integrated Lighting & Electrical",
+      "customer_intents": [
+        {
+          "n": 51,
+          "text": "Can the stairs feature embedded emergency backup lighting for power outages?"
+        },
+        {
+          "n": 52,
+          "text": "Is there space inside the stringer to hide wireless internet routers?"
+        },
+        {
+          "n": 53,
+          "text": "Can a standard 110V/220V wall outlet be integrated directly into a landing?"
+        },
+        {
+          "n": 54,
+          "text": "Are the step light fixtures flush-mounted to prevent tripping hazards?"
+        },
+        {
+          "n": 55,
+          "text": "Can the lighting be integrated with smart home motion-activated pathing?"
+        },
+        {
+          "n": 56,
+          "text": "Is the wiring protected from being chewed by mice or household pets?"
+        },
+        {
+          "n": 57,
+          "text": "Can the LED channels be dimmed via a physical wall slider?"
+        },
+        {
+          "n": 167,
+          "text": "How do you achieve a \"zero-shadow\" look using fully recessed under-tread lighting?"
+        },
+        {
+          "n": 201,
+          "text": "Can I get a handrail pre-drilled for low-voltage LED strip lighting?"
+        },
+        {
+          "n": 269,
+          "text": "Do you sell under-tread LED channel tracks separately?"
+        }
+      ],
+      "retrieval_tags": [
+        "lighting",
+        "LED",
+        "electrical",
+        "smart-home",
+        "emergency-lighting"
+      ],
+      "related_questions": [
+        "What lighting options are available?",
+        "Can lighting be added after installation?",
+        "Are there smart home integration options?"
+      ],
+      "classifications": [
+        {
+          "n": 51,
+          "domain": "technical"
+        },
+        {
+          "n": 52,
+          "domain": "technical"
+        },
+        {
+          "n": 53,
+          "domain": "technical"
+        },
+        {
+          "n": 54,
+          "domain": "technical"
+        },
+        {
+          "n": 55,
+          "domain": "technical"
+        },
+        {
+          "n": 56,
+          "domain": "technical"
+        },
+        {
+          "n": 57,
+          "domain": "technical"
+        },
+        {
+          "n": 167,
+          "domain": "visual"
+        },
+        {
+          "n": 201,
+          "domain": "technical"
+        },
+        {
+          "n": 269,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Accessibility Modifications & Future-Proofing",
+      "customer_intents": [
+        {
+          "n": 58,
+          "text": "Can a modular ramp system be temporarily laid over the steps later?"
+        },
+        {
+          "n": 59,
+          "text": "Are the handrails sturdy enough to support heavy adult lifting poles?"
+        },
+        {
+          "n": 62,
+          "text": "Can the entire staircase be uninstalled and moved to a new home?"
+        },
+        {
+          "n": 63,
+          "text": "Will the stairs accommodate a future heavy motorized cargo lift?"
+        },
+        {
+          "n": 64,
+          "text": "How easily can the balustrade height be raised to meet future eldercare needs?"
+        }
+      ],
+      "retrieval_tags": [
+        "accessibility",
+        "future-proofing",
+        "mobility-aids",
+        "modular",
+        "adaptability"
+      ],
+      "related_questions": [
+        "Can the staircase be modified later?",
+        "Are there options for aging-in-place?",
+        "Can accessibility features be added post-installation?"
+      ],
+      "classifications": [
+        {
+          "n": 58,
+          "domain": "installation"
+        },
+        {
+          "n": 59,
+          "domain": "technical"
+        },
+        {
+          "n": 62,
+          "domain": "installation"
+        },
+        {
+          "n": 63,
+          "domain": "technical"
+        },
+        {
+          "n": 64,
+          "domain": "installation"
+        }
+      ]
+    },
+    {
+      "topic": "Custom Layout & Geometric Constraints",
+      "customer_intents": [
+        {
+          "n": 65,
+          "text": "Can the staircase wrap around a non-standard 45-degree corner wall?"
+        },
+        {
+          "n": 66,
+          "text": "Is a ceiling-suspended staircase option possible for floating floors?"
+        },
+        {
+          "n": 67,
+          "text": "Can the stairs squeeze past a low-hanging structural roof beam?"
+        },
+        {
+          "n": 68,
+          "text": "Is it possible to design a staircase with a variable pitch angle?"
+        },
+        {
+          "n": 69,
+          "text": "Can the staircase bridge across a split-level floor with uneven heights?"
+        },
+        {
+          "n": 70,
+          "text": "How does a custom winder step handle an un-square 92-degree room corner?"
+        },
+        {
+          "n": 71,
+          "text": "Can the staircase start wide at the bottom and taper sharply at the top?"
+        },
+        {
+          "n": 140,
+          "text": "How do you maintain perfect alignment across a continuous four-story spiral staircase?"
+        },
+        {
+          "n": 141,
+          "text": "Can the staircase be engineered to wrap around a central masonry chimney?"
+        },
+        {
+          "n": 142,
+          "text": "How does an asymmetrical winder layout affect the rhythm of a person's stride?"
+        },
+        {
+          "n": 143,
+          "text": "Can the staircase transition from a straight run to a spiral midway through?"
+        },
+        {
+          "n": 144,
+          "text": "How is the intermediate landing supported if there are no walls underneath it?"
+        },
+        {
+          "n": 145,
+          "text": "Can the staircase cantilever off a radiused or curved concrete structural wall?"
+        },
+        {
+          "n": 146,
+          "text": "What is the maximum number of vertical feet a single stringer can span without columns?"
+        }
+      ],
+      "retrieval_tags": [
+        "custom-layout",
+        "geometry",
+        "winder",
+        "spiral",
+        "cantilever",
+        "constraints"
+      ],
+      "related_questions": [
+        "What are the space requirements?",
+        "Can the staircase be customized for unusual layouts?",
+        "What are the geometric limitations?"
+      ],
+      "classifications": [
+        {
+          "n": 65,
+          "domain": "technical"
+        },
+        {
+          "n": 66,
+          "domain": "technical"
+        },
+        {
+          "n": 67,
+          "domain": "technical"
+        },
+        {
+          "n": 68,
+          "domain": "technical"
+        },
+        {
+          "n": 69,
+          "domain": "technical"
+        },
+        {
+          "n": 70,
+          "domain": "technical"
+        },
+        {
+          "n": 71,
+          "domain": "technical"
+        },
+        {
+          "n": 140,
+          "domain": "technical"
+        },
+        {
+          "n": 141,
+          "domain": "technical"
+        },
+        {
+          "n": 142,
+          "domain": "technical"
+        },
+        {
+          "n": 143,
+          "domain": "technical"
+        },
+        {
+          "n": 144,
+          "domain": "technical"
+        },
+        {
+          "n": 145,
+          "domain": "technical"
+        },
+        {
+          "n": 146,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Furniture & Large Item Clearance",
+      "customer_intents": [
+        {
+          "n": 147,
+          "text": "Will a standard king-size box spring clear the ceiling when turning the landing corner?"
+        },
+        {
+          "n": 148,
+          "text": "Can the handrail or balustrade sections be easily unbolted temporarily to move large items?"
+        },
+        {
+          "n": 149,
+          "text": "Is the open-riser gap narrow enough to prevent an expensive laptop from slipping through?"
+        },
+        {
+          "n": 152,
+          "text": "Is there enough clearance to carry a long ladder up the staircase safely?"
+        }
+      ],
+      "retrieval_tags": [
+        "clearance",
+        "furniture-moving",
+        "dimensions",
+        "gap-size"
+      ],
+      "related_questions": [
+        "What are the exact dimensions of the staircase?",
+        "Can sections be removed for moving large items?",
+        "What is the width of open-riser gaps?"
+      ],
+      "classifications": [
+        {
+          "n": 147,
+          "domain": "technical"
+        },
+        {
+          "n": 148,
+          "domain": "technical"
+        },
+        {
+          "n": 149,
+          "domain": "technical"
+        },
+        {
+          "n": 152,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Pet Safety & Compatibility",
+      "customer_intents": [
+        {
+          "n": 150,
+          "text": "Will a robot vacuum cleaner get stuck on the specific thickness of the bottom step?"
+        },
+        {
+          "n": 153,
+          "text": "Is the tread finish too slippery for older dogs with joint or hip issues?"
+        },
+        {
+          "n": 154,
+          "text": "Can a custom, matching pet gate be built directly into the balustrade structure?"
+        },
+        {
+          "n": 156,
+          "text": "Are the open risers dangerous for small, toy-breed dogs who might slip through?"
+        },
+        {
+          "n": 157,
+          "text": "Does the sound of footsteps on a metal stringer scare or startle sensitive pets?"
+        },
+        {
+          "n": 158,
+          "text": "Can a tiny \"pet lane\" or carpeted ramp be integrated alongside the main steps?"
+        },
+        {
+          "n": 263,
+          "text": "Do you sell matching baby gate adaptation kits for your newel posts?"
+        }
+      ],
+      "retrieval_tags": [
+        "pet-safety",
+        "pet-gate",
+        "traction",
+        "open-riser",
+        "pet-friendly"
+      ],
+      "related_questions": [
+        "Are there pet-safe design options?",
+        "Can gates be integrated into the design?",
+        "What surfaces are safest for pets?"
+      ],
+      "classifications": [
+        {
+          "n": 150,
+          "domain": "technical"
+        },
+        {
+          "n": 153,
+          "domain": "technical"
+        },
+        {
+          "n": 154,
+          "domain": "technical"
+        },
+        {
+          "n": 156,
+          "domain": "technical"
+        },
+        {
+          "n": 157,
+          "domain": "technical"
+        },
+        {
+          "n": 158,
+          "domain": "technical"
+        },
+        {
+          "n": 263,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Wood Moisture & Warping Prevention",
+      "customer_intents": [
+        {
+          "n": 159,
+          "text": "Is the exact moisture content of the wood guaranteed at the time of delivery?"
+        },
+        {
+          "n": 186,
+          "text": "How do I prevent wooden treads from warping or cupping over time?"
+        }
+      ],
+      "retrieval_tags": [
+        "moisture-content",
+        "warping",
+        "cupping",
+        "wood-stability"
+      ],
+      "related_questions": [
+        "What moisture levels are acceptable?",
+        "How should wood be acclimated before installation?",
+        "What environmental conditions prevent warping?"
+      ],
+      "classifications": [
+        {
+          "n": 159,
+          "domain": "technical"
+        },
+        {
+          "n": 186,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Testing & Certification",
+      "customer_intents": [
+        {
+          "n": 160,
+          "text": "What specific laboratory testing facility certified the load limits of this staircase?"
+        }
+      ],
+      "retrieval_tags": [
+        "testing",
+        "certification",
+        "laboratory",
+        "load-limits"
+      ],
+      "related_questions": [
+        "What certifications does the staircase hold?",
+        "Who conducted the testing?",
+        "Are test reports available?"
+      ],
+      "classifications": [
+        {
+          "n": 160,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Warranty & Repair Coverage",
+      "customer_intents": [
+        {
+          "n": 161,
+          "text": "Does the warranty cover the cost of labor to replace a defect, or just the part?"
+        },
+        {
+          "n": 162,
+          "text": "What is the precise legal definition of a \"cosmetic blemish\" in the vendor's policy?"
+        }
+      ],
+      "retrieval_tags": [
+        "warranty",
+        "coverage",
+        "labor",
+        "defects",
+        "cosmetic"
+      ],
+      "related_questions": [
+        "What is the warranty period?",
+        "What is covered under warranty?",
+        "How are claims processed?"
+      ],
+      "classifications": [
+        {
+          "n": 161,
+          "domain": "business"
+        },
+        {
+          "n": 162,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Engineering & Inspection Documentation",
+      "customer_intents": [
+        {
+          "n": 163,
+          "text": "Who pays for the structural engineer if the city inspector rejects the submitted drawings?"
+        },
+        {
+          "n": 164,
+          "text": "Is there a formal arbitration clause in the purchase contract if a dispute happens?"
+        },
+        {
+          "n": 165,
+          "text": "Can I get a certified copy of the factory weld inspection reports?"
+        }
+      ],
+      "retrieval_tags": [
+        "engineering",
+        "inspection",
+        "documentation",
+        "dispute-resolution"
+      ],
+      "related_questions": [
+        "What documentation is provided?",
+        "Are engineer drawings included?",
+        "What happens if inspection fails?"
+      ],
+      "classifications": [
+        {
+          "n": 163,
+          "domain": "business"
+        },
+        {
+          "n": 164,
+          "domain": "business"
+        },
+        {
+          "n": 165,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Visual Design & Aesthetic Finishes",
+      "customer_intents": [
+        {
+          "n": 166,
+          "text": "Can the stringer be completely painted out to match the wall color perfectly?"
+        },
+        {
+          "n": 168,
+          "text": "Can the steps be mirrored on the underside to make the staircase look like it's floating?"
+        },
+        {
+          "n": 169,
+          "text": "Is it possible to create a forced-perspective design that makes the stairs look wider than they are?"
+        },
+        {
+          "n": 170,
+          "text": "Can the balustrades use vertical tension cables that mimic a giant musical harp?"
+        },
+        {
+          "n": 171,
+          "text": "Can the wood treads be stained to create a gradient color shift from dark to light?"
+        }
+      ],
+      "retrieval_tags": [
+        "visual-design",
+        "aesthetics",
+        "color",
+        "finish",
+        "appearance"
+      ],
+      "related_questions": [
+        "What finish options are available?",
+        "Can custom colors be matched?",
+        "What visual effects are possible?"
+      ],
+      "classifications": [
+        {
+          "n": 166,
+          "domain": "visual"
+        },
+        {
+          "n": 168,
+          "domain": "visual"
+        },
+        {
+          "n": 169,
+          "domain": "visual"
+        },
+        {
+          "n": 170,
+          "domain": "visual"
+        },
+        {
+          "n": 171,
+          "domain": "visual"
+        }
+      ]
+    },
+    {
+      "topic": "Handrail Profiles & Specifications",
+      "customer_intents": [
+        {
+          "n": 187,
+          "text": "Is this handrail profile legally code-compliant for grip/graspability?"
+        },
+        {
+          "n": 188,
+          "text": "Do you sell unslotted handrails, or do they all have a groove for balusters?"
+        },
+        {
+          "n": 189,
+          "text": "How do I connect two pieces of handrail together seamlessly?"
+        },
+        {
+          "n": 190,
+          "text": "What size plow or groove do I need for my specific balusters?"
+        },
+        {
+          "n": 191,
+          "text": "Do you provide matching handrail fittings like volutes, turnouts, and goosenecks?"
+        },
+        {
+          "n": 192,
+          "text": "Can I bend a standard wood handrail to fit a curved staircase?"
+        },
+        {
+          "n": 193,
+          "text": "How many wall brackets do I need for a 12-foot wall-mounted handrail?"
+        },
+        {
+          "n": 194,
+          "text": "Are the handrail brackets strong enough to support a heavy adult?"
+        },
+        {
+          "n": 195,
+          "text": "Do you offer modern, minimalist matte black metal handrails?"
+        },
+        {
+          "n": 196,
+          "text": "How do I choose between an integrated handrail and a wall-mounted rail?"
+        },
+        {
+          "n": 197,
+          "text": "Does the handrail need to return into the wall at the top and bottom?"
+        },
+        {
+          "n": 198,
+          "text": "Are your wood handrails finger-jointed or solid single pieces of lumber?"
+        },
+        {
+          "n": 199,
+          "text": "What is the standard height to mount a handrail from the tread nose?"
+        },
+        {
+          "n": 200,
+          "text": "Do you offer leather-wrapped or textured modern handrails?"
+        }
+      ],
+      "retrieval_tags": [
+        "handrail",
+        "profile",
+        "grip",
+        "code-compliant",
+        "fittings",
+        "brackets"
+      ],
+      "related_questions": [
+        "What handrail styles are available?",
+        "How are handrails attached?",
+        "What are the code requirements?"
+      ],
+      "classifications": [
+        {
+          "n": 187,
+          "domain": "regulation"
+        },
+        {
+          "n": 188,
+          "domain": "technical"
+        },
+        {
+          "n": 189,
+          "domain": "technical"
+        },
+        {
+          "n": 190,
+          "domain": "technical"
+        },
+        {
+          "n": 191,
+          "domain": "technical"
+        },
+        {
+          "n": 192,
+          "domain": "technical"
+        },
+        {
+          "n": 193,
+          "domain": "technical"
+        },
+        {
+          "n": 194,
+          "domain": "technical"
+        },
+        {
+          "n": 195,
+          "domain": "visual"
+        },
+        {
+          "n": 196,
+          "domain": "technical"
+        },
+        {
+          "n": 197,
+          "domain": "regulation"
+        },
+        {
+          "n": 198,
+          "domain": "technical"
+        },
+        {
+          "n": 199,
+          "domain": "regulation"
+        },
+        {
+          "n": 200,
+          "domain": "visual"
+        }
+      ]
+    },
+    {
+      "topic": "Baluster Types & Installation",
+      "customer_intents": [
+        {
+          "n": 202,
+          "text": "What is the legal spacing requirement between balusters?"
+        },
+        {
+          "n": 203,
+          "text": "Can I mix wood and iron balusters on the same staircase?"
+        },
+        {
+          "n": 204,
+          "text": "Do iron balusters require specialized tools to cut to length on-site?"
+        },
+        {
+          "n": 205,
+          "text": "What is the difference between a pin-top and a square-top wood baluster?"
+        },
+        {
+          "n": 206,
+          "text": "Do I need shoes or knuckles for the bottom of my metal balusters?"
+        },
+        {
+          "n": 207,
+          "text": "Are these iron balusters solid metal or hollow tubing?"
+        },
+        {
+          "n": 208,
+          "text": "How do I install balusters if my staircase has an open stringer?"
+        },
+        {
+          "n": 209,
+          "text": "Do you offer adjustable angled shoes for balusters on a pitch?"
+        },
+        {
+          "n": 210,
+          "text": "Can I use horizontal cable infills instead of vertical balusters?"
+        },
+        {
+          "n": 211,
+          "text": "How many balusters should I order per step to meet building codes?"
+        },
+        {
+          "n": 212,
+          "text": "Do the metal balusters rust if used on an outdoor deck or porch?"
+        },
+        {
+          "n": 213,
+          "text": "Are there decorative pattern balusters (like baskets or twists) that match?"
+        },
+        {
+          "n": 214,
+          "text": "How are wood balusters anchored securely into the tread?"
+        },
+        {
+          "n": 215,
+          "text": "Can I get glass panels instead of individual spindles?"
+        },
+        {
+          "n": 216,
+          "text": "Do hollow metal balusters rattle or ring when the stairs are used?"
+        }
+      ],
+      "retrieval_tags": [
+        "baluster",
+        "spindle",
+        "spacing",
+        "installation",
+        "cable-infill",
+        "glass-panel"
+      ],
+      "related_questions": [
+        "What baluster styles are available?",
+        "How are balusters attached?",
+        "What are the spacing requirements?"
+      ],
+      "classifications": [
+        {
+          "n": 202,
+          "domain": "regulation"
+        },
+        {
+          "n": 203,
+          "domain": "technical"
+        },
+        {
+          "n": 204,
+          "domain": "installation"
+        },
+        {
+          "n": 205,
+          "domain": "technical"
+        },
+        {
+          "n": 206,
+          "domain": "technical"
+        },
+        {
+          "n": 207,
+          "domain": "technical"
+        },
+        {
+          "n": 208,
+          "domain": "installation"
+        },
+        {
+          "n": 209,
+          "domain": "technical"
+        },
+        {
+          "n": 210,
+          "domain": "technical"
+        },
+        {
+          "n": 211,
+          "domain": "regulation"
+        },
+        {
+          "n": 212,
+          "domain": "technical"
+        },
+        {
+          "n": 213,
+          "domain": "visual"
+        },
+        {
+          "n": 214,
+          "domain": "installation"
+        },
+        {
+          "n": 215,
+          "domain": "technical"
+        },
+        {
+          "n": 216,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Newel Posts & Structural Anchoring",
+      "customer_intents": [
+        {
+          "n": 217,
+          "text": "What is the difference between a starting newel and a landing newel?"
+        },
+        {
+          "n": 218,
+          "text": "How do I securely anchor a newel post to a concrete subfloor?"
+        },
+        {
+          "n": 219,
+          "text": "Do you sell decorative post caps, or are they built into the newel?"
+        },
+        {
+          "n": 220,
+          "text": "What size newel post is best for a small, narrow hallway?"
+        },
+        {
+          "n": 221,
+          "text": "Is a box newel sturdier than a traditional turned round newel post?"
+        },
+        {
+          "n": 222,
+          "text": "Do I need a half-newel post where the handrail meets the wall?"
+        },
+        {
+          "n": 223,
+          "text": "What mounting hardware kit do you recommend for a rock-solid post?"
+        },
+        {
+          "n": 224,
+          "text": "Can a box newel post be shortened from the bottom on-site?"
+        },
+        {
+          "n": 225,
+          "text": "Are your newel posts completely solid, or are they hollow inside?"
+        },
+        {
+          "n": 226,
+          "text": "How do I match the style of my newel post to my modern home decor?"
+        },
+        {
+          "n": 227,
+          "text": "Do you sell matching wood plugs to hide the bolt holes in the post?"
+        },
+        {
+          "n": 228,
+          "text": "Can I integrate an electrical outlet into a hollow box newel post?"
+        },
+        {
+          "n": 229,
+          "text": "What is the standard height for a structural starting newel?"
+        },
+        {
+          "n": 230,
+          "text": "How does a pin-top newel interact with an over-the-post handrail system?"
+        },
+        {
+          "n": 231,
+          "text": "Is an iron newel post safer than a structural wooden one?"
+        }
+      ],
+      "retrieval_tags": [
+        "newel",
+        "post",
+        "anchoring",
+        "mounting",
+        "structural"
+      ],
+      "related_questions": [
+        "What newel styles are available?",
+        "How are newels anchored?",
+        "Can newels be customized?"
+      ],
+      "classifications": [
+        {
+          "n": 217,
+          "domain": "technical"
+        },
+        {
+          "n": 218,
+          "domain": "installation"
+        },
+        {
+          "n": 219,
+          "domain": "technical"
+        },
+        {
+          "n": 220,
+          "domain": "technical"
+        },
+        {
+          "n": 221,
+          "domain": "technical"
+        },
+        {
+          "n": 222,
+          "domain": "technical"
+        },
+        {
+          "n": 223,
+          "domain": "installation"
+        },
+        {
+          "n": 224,
+          "domain": "installation"
+        },
+        {
+          "n": 225,
+          "domain": "technical"
+        },
+        {
+          "n": 226,
+          "domain": "visual"
+        },
+        {
+          "n": 227,
+          "domain": "technical"
+        },
+        {
+          "n": 228,
+          "domain": "technical"
+        },
+        {
+          "n": 229,
+          "domain": "regulation"
+        },
+        {
+          "n": 230,
+          "domain": "technical"
+        },
+        {
+          "n": 231,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Stringers & Skirt Boards",
+      "customer_intents": [
+        {
+          "n": 232,
+          "text": "Do you sell pre-cut stair stringers, or do they have to be built custom?"
+        },
+        {
+          "n": 233,
+          "text": "What thickness of plywood or MDF should I use for my stair risers?"
+        },
+        {
+          "n": 234,
+          "text": "What is a skirt board, and do I need it on both sides of the stairs?"
+        },
+        {
+          "n": 235,
+          "text": "Can I get a metal mono-stringer pre-fabricated for a DIY build?"
+        },
+        {
+          "n": 236,
+          "text": "How do I hide the gap between my drywall and the open stair stringer?"
+        },
+        {
+          "n": 237,
+          "text": "Is an engineered wood stringer less likely to squeak than solid lumber?"
+        },
+        {
+          "n": 238,
+          "text": "Do you sell false tread kits to make carpeted stairs look like solid wood?"
+        },
+        {
+          "n": 239,
+          "text": "What type of construction adhesive stops stair parts from rubbing and squeaking?"
+        },
+        {
+          "n": 240,
+          "text": "Can a winder stringer be split into modular pieces for shipping?"
+        },
+        {
+          "n": 241,
+          "text": "How do I accurately measure the pitch angle for custom skirt boards?"
+        }
+      ],
+      "retrieval_tags": [
+        "stringer",
+        "skirt-board",
+        "riser",
+        "mono-stringer",
+        "pitch"
+      ],
+      "related_questions": [
+        "What stringer options are available?",
+        "Can stringers be customized?",
+        "How are stringers attached?"
+      ],
+      "classifications": [
+        {
+          "n": 232,
+          "domain": "technical"
+        },
+        {
+          "n": 233,
+          "domain": "technical"
+        },
+        {
+          "n": 234,
+          "domain": "technical"
+        },
+        {
+          "n": 235,
+          "domain": "technical"
+        },
+        {
+          "n": 236,
+          "domain": "installation"
+        },
+        {
+          "n": 237,
+          "domain": "technical"
+        },
+        {
+          "n": 238,
+          "domain": "technical"
+        },
+        {
+          "n": 239,
+          "domain": "technical"
+        },
+        {
+          "n": 240,
+          "domain": "manufacturing"
+        },
+        {
+          "n": 241,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Wood Finishing & Stain Selection",
+      "customer_intents": [
+        {
+          "n": 242,
+          "text": "Is white oak or red oak better for color-matching my flooring?"
+        },
+        {
+          "n": 243,
+          "text": "What type of primer stops wood knots from bleeding through white paint?"
+        },
+        {
+          "n": 244,
+          "text": "Can I use clear polyurethane over exotic wood parts without ambering?"
+        },
+        {
+          "n": 248,
+          "text": "Can I stain maple stair parts evenly, or will they turn out blotchy?"
+        },
+        {
+          "n": 250,
+          "text": "Will sunlight through a window fade my walnut wood stair components?"
+        },
+        {
+          "n": 251,
+          "text": "Do you provide custom color-matching services for pre-finished parts?"
+        }
+      ],
+      "retrieval_tags": [
+        "finish",
+        "stain",
+        "paint",
+        "wood-species",
+        "color-matching"
+      ],
+      "related_questions": [
+        "What finish options are available?",
+        "Can finishes be customized?",
+        "How do I maintain the finish?"
+      ],
+      "classifications": [
+        {
+          "n": 242,
+          "domain": "visual"
+        },
+        {
+          "n": 243,
+          "domain": "visual"
+        },
+        {
+          "n": 244,
+          "domain": "visual"
+        },
+        {
+          "n": 248,
+          "domain": "visual"
+        },
+        {
+          "n": 250,
+          "domain": "visual"
+        },
+        {
+          "n": 251,
+          "domain": "visual"
+        }
+      ]
+    },
+    {
+      "topic": "Environmental & Health Considerations",
+      "customer_intents": [
+        {
+          "n": 80,
+          "text": "Does the wood finish emit high levels of volatile organic compounds (VOCs)?"
+        },
+        {
+          "n": 81,
+          "text": "Is the adhesive formaldehyde-free to protect indoor air quality?"
+        },
+        {
+          "n": 82,
+          "text": "Can the manufacturer provide a complete material transparency report?"
+        },
+        {
+          "n": 83,
+          "text": "Are the metal components made from recycled structural steel scrap?"
+        },
+        {
+          "n": 84,
+          "text": "Is the factory powered by renewable energy sources?"
+        },
+        {
+          "n": 85,
+          "text": "What is the total carbon footprint estimate for shipping this staircase?"
+        },
+        {
+          "n": 138,
+          "text": "Does the engineered wood tread use non-toxic, soy-based binding resins?"
+        }
+      ],
+      "retrieval_tags": [
+        "VOC",
+        "formaldehyde",
+        "sustainability",
+        "eco-friendly",
+        "carbon-footprint",
+        "health"
+      ],
+      "related_questions": [
+        "Are the materials non-toxic?",
+        "Is the staircase eco-friendly?",
+        "What is the environmental impact?"
+      ],
+      "classifications": [
+        {
+          "n": 80,
+          "domain": "business"
+        },
+        {
+          "n": 81,
+          "domain": "business"
+        },
+        {
+          "n": 82,
+          "domain": "business"
+        },
+        {
+          "n": 83,
+          "domain": "business"
+        },
+        {
+          "n": 84,
+          "domain": "business"
+        },
+        {
+          "n": 85,
+          "domain": "business"
+        },
+        {
+          "n": 138,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Old Staircase Removal & Site Preparation",
+      "customer_intents": [
+        {
+          "n": 86,
+          "text": "Will cutting out the old staircase compromise the house's structural tie-ins?"
+        },
+        {
+          "n": 87,
+          "text": "How do you handle uninsulated wall cavities exposed by the old stairs?"
+        },
+        {
+          "n": 88,
+          "text": "Can the new stairs hide old, un-reroutable plumbing lines in the wall?"
+        },
+        {
+          "n": 89,
+          "text": "What dust-containment systems are used during the messy removal process?"
+        },
+        {
+          "n": 90,
+          "text": "Will removing the old stringers tear the drywall on adjacent rooms?"
+        },
+        {
+          "n": 91,
+          "text": "Is an asbestos check required before cutting into the old stair framing?"
+        }
+      ],
+      "retrieval_tags": [
+        "removal",
+        "demolition",
+        "site-prep",
+        "asbestos",
+        "dust-control"
+      ],
+      "related_questions": [
+        "What is involved in removing the old staircase?",
+        "How is the site prepared?",
+        "What safety precautions are taken?"
+      ],
+      "classifications": [
+        {
+          "n": 86,
+          "domain": "installation"
+        },
+        {
+          "n": 87,
+          "domain": "installation"
+        },
+        {
+          "n": 88,
+          "domain": "installation"
+        },
+        {
+          "n": 89,
+          "domain": "installation"
+        },
+        {
+          "n": 90,
+          "domain": "installation"
+        },
+        {
+          "n": 91,
+          "domain": "installation"
+        }
+      ]
+    },
+    {
+      "topic": "Material Specifications & Adhesives",
+      "customer_intents": [
+        {
+          "n": 93,
+          "text": "What specific brand of construction adhesive prevents wood-on-metal noise?"
+        },
+        {
+          "n": 94,
+          "text": "Are the glass clamp gaskets made of silicone, EPDM, or standard rubber?"
+        },
+        {
+          "n": 96,
+          "text": "Is the metal primer zinc-rich to prevent deep creeping rust under paint?"
+        },
+        {
+          "n": 97,
+          "text": "What grit of sandpaper is required for the final on-site finish rub?"
+        },
+        {
+          "n": 98,
+          "text": "Are the handrail splice joints connected with internal alignment biscuits?"
+        },
+        {
+          "n": 99,
+          "text": "Can the tread grain orientation be flipped to maximize warp resistance?"
+        }
+      ],
+      "retrieval_tags": [
+        "adhesive",
+        "gasket",
+        "primer",
+        "material-specs",
+        "grain-orientation"
+      ],
+      "related_questions": [
+        "What materials are used in construction?",
+        "Are specific brands recommended?",
+        "What are the material specifications?"
+      ],
+      "classifications": [
+        {
+          "n": 93,
+          "domain": "technical"
+        },
+        {
+          "n": 94,
+          "domain": "technical"
+        },
+        {
+          "n": 96,
+          "domain": "technical"
+        },
+        {
+          "n": 97,
+          "domain": "technical"
+        },
+        {
+          "n": 98,
+          "domain": "technical"
+        },
+        {
+          "n": 99,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Commercial & Institutional Applications",
+      "customer_intents": [
+        {
+          "n": 127,
+          "text": "Is the tread width sufficient for public or multi-family evacuation regulations?"
+        },
+        {
+          "n": 128,
+          "text": "Can the staircase handle a continuous commercial traffic load of thousands of steps daily?"
+        },
+        {
+          "n": 129,
+          "text": "Are the glass panels rated as commercial-grade structural balustrades?"
+        },
+        {
+          "n": 130,
+          "text": "Can a heavy-duty brass kickplate be integrated onto the bottom riser?"
+        },
+        {
+          "n": 131,
+          "text": "Do you offer institutional-grade anti-vandalism finishes for the metalwork?"
+        },
+        {
+          "n": 132,
+          "text": "Is the staircase design certified for public building egress requirements?"
+        }
+      ],
+      "retrieval_tags": [
+        "commercial",
+        "institutional",
+        "public-building",
+        "egress",
+        "high-traffic"
+      ],
+      "related_questions": [
+        "Is the staircase suitable for commercial use?",
+        "What certifications apply to public buildings?",
+        "Can it handle heavy traffic?"
+      ],
+      "classifications": [
+        {
+          "n": 127,
+          "domain": "regulation"
+        },
+        {
+          "n": 128,
+          "domain": "technical"
+        },
+        {
+          "n": 129,
+          "domain": "technical"
+        },
+        {
+          "n": 130,
+          "domain": "technical"
+        },
+        {
+          "n": 131,
+          "domain": "technical"
+        },
+        {
+          "n": 132,
+          "domain": "regulation"
+        }
+      ]
+    },
+    {
+      "topic": "Advanced Materials & Composites",
+      "customer_intents": [
+        {
+          "n": 133,
+          "text": "Can the treads be made from ultra-high-performance concrete (UHPC) for a thin profile?"
+        },
+        {
+          "n": 134,
+          "text": "Is it possible to use aviation-grade carbon fiber for an ultra-lightweight floating look?"
+        },
+        {
+          "n": 135,
+          "text": "How does the expansion rate of a polymer-composite tread compare to a steel frame?"
+        },
+        {
+          "n": 136,
+          "text": "Will an acrylic or resin balustrade yellow or crack under intense ultraviolet skylight?"
+        },
+        {
+          "n": 137,
+          "text": "Are the metal components treated with an anti-microbial or self-cleaning coating?"
+        },
+        {
+          "n": 139,
+          "text": "Can the glass panels feature built-in smart-glass technology that frosts at the flip of a switch?"
+        }
+      ],
+      "retrieval_tags": [
+        "composite",
+        "UHPC",
+        "carbon-fiber",
+        "smart-glass",
+        "advanced-materials"
+      ],
+      "related_questions": [
+        "What material options are available?",
+        "Can advanced materials be used?",
+        "What are the benefits of composite materials?"
+      ],
+      "classifications": [
+        {
+          "n": 133,
+          "domain": "technical"
+        },
+        {
+          "n": 134,
+          "domain": "technical"
+        },
+        {
+          "n": 135,
+          "domain": "technical"
+        },
+        {
+          "n": 136,
+          "domain": "technical"
+        },
+        {
+          "n": 137,
+          "domain": "technical"
+        },
+        {
+          "n": 139,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Security & Surveillance Integration",
+      "customer_intents": [
+        {
+          "n": 110,
+          "text": "Can a hidden surveillance camera be seamlessly drilled into the newel post?"
+        },
+        {
+          "n": 111,
+          "text": "Is there an integrated compartment to hide a security alarm control panel?"
+        },
+        {
+          "n": 112,
+          "text": "Can pressure-sensitive smart pads be installed under the treads to detect intruders?"
+        },
+        {
+          "n": 113,
+          "text": "Is the under-stair storage door compatible with biometric or smart-lock handles?"
+        },
+        {
+          "n": 114,
+          "text": "Can laser tripwires or motion sensors be fully recessed into the stringers?"
+        },
+        {
+          "n": 115,
+          "text": "Will the metal framework interfere with whole-house Wi-Fi or smart home mesh signals?"
+        },
+        {
+          "n": 116,
+          "text": "Can the staircase lighting automatically flash red if the home security alarm triggers?"
+        },
+        {
+          "n": 117,
+          "text": "Is there a way to run secure, armored data cables through the handrail conduit?"
+        }
+      ],
+      "retrieval_tags": [
+        "security",
+        "surveillance",
+        "smart-home",
+        "biometric",
+        "motion-sensor"
+      ],
+      "related_questions": [
+        "Can security features be integrated?",
+        "Is the staircase compatible with smart home systems?",
+        "What surveillance options are available?"
+      ],
+      "classifications": [
+        {
+          "n": 110,
+          "domain": "technical"
+        },
+        {
+          "n": 111,
+          "domain": "technical"
+        },
+        {
+          "n": 112,
+          "domain": "technical"
+        },
+        {
+          "n": 113,
+          "domain": "technical"
+        },
+        {
+          "n": 114,
+          "domain": "technical"
+        },
+        {
+          "n": 115,
+          "domain": "technical"
+        },
+        {
+          "n": 116,
+          "domain": "technical"
+        },
+        {
+          "n": 117,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Installation Support & Documentation",
+      "customer_intents": [
+        {
+          "n": 73,
+          "text": "Is there a physical printed manual included, or is it strictly digital?"
+        },
+        {
+          "n": 74,
+          "text": "Does the vendor provide a dedicated helpline for live installation troubleshooting?"
+        },
+        {
+          "n": 75,
+          "text": "What is the exact replacement timeline for a part broken during assembly?"
+        },
+        {
+          "n": 76,
+          "text": "Can I request a specific crew leader for the on-site installation?"
+        },
+        {
+          "n": 77,
+          "text": "Will the company verify my architect's CAD drawings before cutting wood?"
+        },
+        {
+          "n": 259,
+          "text": "Are the installation manuals for your modular kits available online?"
+        },
+        {
+          "n": 260,
+          "text": "What specific size drill bits are needed for your newel mounting kits?"
+        }
+      ],
+      "retrieval_tags": [
+        "installation-support",
+        "documentation",
+        "manual",
+        "helpline",
+        "troubleshooting"
+      ],
+      "related_questions": [
+        "What support is available during installation?",
+        "Are manuals provided?",
+        "Can I get technical support?"
+      ],
+      "classifications": [
+        {
+          "n": 73,
+          "domain": "business"
+        },
+        {
+          "n": 74,
+          "domain": "business"
+        },
+        {
+          "n": 75,
+          "domain": "business"
+        },
+        {
+          "n": 76,
+          "domain": "business"
+        },
+        {
+          "n": 77,
+          "domain": "business"
+        },
+        {
+          "n": 259,
+          "domain": "business"
+        },
+        {
+          "n": 260,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Bulk Orders & Trade Discounts",
+      "customer_intents": [
+        {
+          "n": 78,
+          "text": "Is there a discount if I order multiple identical staircases for a development?"
+        },
+        {
+          "n": 261,
+          "text": "Do you offer trade or builder discounts for bulk part orders?"
+        }
+      ],
+      "retrieval_tags": [
+        "bulk-order",
+        "discount",
+        "trade",
+        "builder",
+        "development"
+      ],
+      "related_questions": [
+        "Are volume discounts available?",
+        "What are the terms for bulk orders?",
+        "Are there contractor discounts?"
+      ],
+      "classifications": [
+        {
+          "n": 78,
+          "domain": "sales"
+        },
+        {
+          "n": 261,
+          "domain": "sales"
+        }
+      ]
+    },
+    {
+      "topic": "Wood Damage & Defect Handling",
+      "customer_intents": [
+        {
+          "n": 72,
+          "text": "What happens if the wood splits two months after installation finishes?"
+        },
+        {
+          "n": 255,
+          "text": "What happens if a wood handrail arrives warped or bowed from transit?"
+        }
+      ],
+      "retrieval_tags": [
+        "defect",
+        "damage",
+        "warranty",
+        "replacement",
+        "wood-splitting"
+      ],
+      "related_questions": [
+        "What is covered if the wood cracks?",
+        "How are defects handled?",
+        "What is the replacement process?"
+      ],
+      "classifications": [
+        {
+          "n": 72,
+          "domain": "business"
+        },
+        {
+          "n": 255,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Shipping & Packaging",
+      "customer_intents": [
+        {
+          "n": 253,
+          "text": "Do you ship fragile glass balustrades in protective wooden crates?"
+        },
+        {
+          "n": 258,
+          "text": "How heavy is a solid 3-inch thick floating tread for shipping rates?"
+        }
+      ],
+      "retrieval_tags": [
+        "shipping",
+        "packaging",
+        "crate",
+        "weight",
+        "fragile"
+      ],
+      "related_questions": [
+        "How is the staircase shipped?",
+        "What is the shipping cost?",
+        "How is it packaged for protection?"
+      ],
+      "classifications": [
+        {
+          "n": 253,
+          "domain": "manufacturing"
+        },
+        {
+          "n": 258,
+          "domain": "manufacturing"
+        }
+      ]
+    },
+    {
+      "topic": "DIY Installation & Professional Assembly",
+      "customer_intents": [
+        {
+          "n": 254,
+          "text": "Can I install this entire stair part kit myself, or do I need a carpenter?"
+        }
+      ],
+      "retrieval_tags": [
+        "DIY",
+        "installation",
+        "professional",
+        "assembly"
+      ],
+      "related_questions": [
+        "Can I install this myself?",
+        "Do I need a professional installer?",
+        "What tools are required?"
+      ],
+      "classifications": [
+        {
+          "n": 254,
+          "domain": "installation"
+        }
+      ]
+    },
+    {
+      "topic": "Installation Templates & Measurement Tools",
+      "customer_intents": [
+        {
+          "n": 256,
+          "text": "Do you provide 1-to-1 scale paper templates for drilling baluster holes?"
+        }
+      ],
+      "retrieval_tags": [
+        "template",
+        "measurement",
+        "drilling",
+        "scale"
+      ],
+      "related_questions": [
+        "What measurement tools are provided?",
+        "Are templates included?",
+        "How do I ensure accurate installation?"
+      ],
+      "classifications": [
+        {
+          "n": 256,
+          "domain": "installation"
+        }
+      ]
+    },
+    {
+      "topic": "Returns & Restocking",
+      "customer_intents": [
+        {
+          "n": 257,
+          "text": "Can I return unused balusters if I ordered too many for my project?"
+        }
+      ],
+      "retrieval_tags": [
+        "returns",
+        "restocking",
+        "refund"
+      ],
+      "related_questions": [
+        "What is the return policy?",
+        "Can I return unused parts?",
+        "What are the restocking fees?"
+      ],
+      "classifications": [
+        {
+          "n": 257,
+          "domain": "sales"
+        }
+      ]
+    },
+    {
+      "topic": "Protective Coatings & Outdoor Use",
+      "customer_intents": [
+        {
+          "n": 246,
+          "text": "Are your outdoor stair parts pressure-treated against wood rot?"
+        },
+        {
+          "n": 247,
+          "text": "Do you offer FSC-certified eco-friendly sustainable wood parts?"
+        }
+      ],
+      "retrieval_tags": [
+        "outdoor",
+        "pressure-treated",
+        "eco-friendly",
+        "FSC-certified"
+      ],
+      "related_questions": [
+        "Are outdoor options available?",
+        "What protective treatments are applied?",
+        "Are sustainable materials available?"
+      ],
+      "classifications": [
+        {
+          "n": 246,
+          "domain": "technical"
+        },
+        {
+          "n": 247,
+          "domain": "business"
+        }
+      ]
+    },
+    {
+      "topic": "Accent Lighting & Decorative Hardware",
+      "customer_intents": [
+        {
+          "n": 265,
+          "text": "Can I buy accent lighting brackets that attach directly to the stringer?"
+        }
+      ],
+      "retrieval_tags": [
+        "accent-lighting",
+        "brackets",
+        "decorative"
+      ],
+      "related_questions": [
+        "What lighting accessories are available?",
+        "Can brackets be added?",
+        "What decorative options exist?"
+      ],
+      "classifications": [
+        {
+          "n": 265,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Carpet Runners & Decorative Elements",
+      "customer_intents": [
+        {
+          "n": 264,
+          "text": "Is a carpet runner rod purely decorative, or does it hold the carpet down?"
+        }
+      ],
+      "retrieval_tags": [
+        "carpet-runner",
+        "decorative",
+        "functional"
+      ],
+      "related_questions": [
+        "Can carpet runners be added?",
+        "What decorative elements are available?",
+        "How are runners installed?"
+      ],
+      "classifications": [
+        {
+          "n": 264,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "HVAC & Utility Integration",
+      "customer_intents": [
+        {
+          "n": 267,
+          "text": "Can I get a matching wooden register grill built into the bottom riser?"
+        }
+      ],
+      "retrieval_tags": [
+        "HVAC",
+        "register",
+        "utility",
+        "integration"
+      ],
+      "related_questions": [
+        "Can utilities be integrated into the staircase?",
+        "What options are available?",
+        "How are utilities hidden?"
+      ],
+      "classifications": [
+        {
+          "n": 267,
+          "domain": "technical"
+        }
+      ]
+    },
+    {
+      "topic": "Attic Access & Tight Spaces",
+      "customer_intents": [
+        {
+          "n": 270,
+          "text": "Can these stair parts be adapted for a tight attic access hatch?"
+        }
+      ],
+      "retrieval_tags": [
+        "attic-access",
+        "tight-space",
+        "hatch"
+      ],
+      "related_questions": [
+        "Can the staircase fit in tight spaces?",
+        "Are compact options available?",
+        "How are space constraints handled?"
+      ],
+      "classifications": [
+        {
+          "n": 270,
+          "domain": "technical"
+        }
+      ]
+    }
+  ],
+  "knowledge_gaps": [
+    "Specific fire-resistance ratings (hours) for structural cores",
+    "Exact seismic performance standards and certifications",
+    "Detailed deflection frequency specifications under dynamic loads",
+    "Precise handrail grip cross-section ergonomic data",
+    "Specific ASTM slip-resistance certifications held",
+    "Exact shear stress calculations for cantilevered treads",
+    "Torque specifications for structural bolts",
+    "Product liability insurance coverage details",
+    "Installer qualifications and crew leader availability",
+    "Exact replacement timelines for broken parts",
+    "Specific construction adhesive brands recommended",
+    "Gasket material specifications (silicone vs. EPDM)",
+    "Zinc-rich primer specifications",
+    "Moisture content guarantees at delivery",
+    "Laboratory testing facility certifications",
+    "Warranty labor coverage definitions",
+    "Legal definitions of 'cosmetic blemish'",
+    "Dispute resolution and arbitration procedures",
+    "Factory weld inspection report availability",
+    "Feng Shui design modification capabilities",
+    "Native wood sourcing options",
+    "Historical society approval processes",
+    "Authentic blacksmithing sourcing capabilities",
+    "Shellac and milk paint finish availability",
+    "Smart-glass technology integration feasibility",
+    "Surveillance camera integration methods",
+    "Biometric lock compatibility",
+    "Laser tripwire and motion sensor integration",
+    "Wi-Fi interference testing results",
+    "Security lighting automation capabilities",
+    "Armored data cable routing options",
+    "Hand-carved Victorian baluster replication capabilities",
+    "Reclaimed heart pine patina matching",
+    "UHPC tread manufacturing capabilities",
+    "Carbon fiber staircase feasibility",
+    "Polymer-composite expansion rate data",
+    "Acrylic/resin UV resistance testing",
+    "Anti-microbial coating specifications",
+    "Soy-based resin specifications",
+    "Dust-containment system details",
+    "Asbestos testing requirements",
+    "Specific adhesive brand recommendations",
+    "Grain orientation optimization methods",
+    "Commercial traffic load ratings",
+    "Commercial-grade glass panel specifications",
+    "Brass kickplate integration options",
+    "Anti-vandalism finish options",
+    "Public building egress certifications",
+    "Expansion rate comparisons (polymer vs. steel)",
+    "UV resistance testing for acrylic balustrades",
+    "VOC emission levels",
+    "Formaldehyde-free adhesive options",
+    "Material transparency report availability",
+    "Recycled steel sourcing",
+    "Renewable energy factory operations",
+    "Carbon footprint calculations",
+    "Structural tie-in compromise risks",
+    "Uninsulated cavity handling procedures",
+    "Plumbing line concealment options",
+    "Dust-containment system specifications",
+    "Drywall damage prevention methods",
+    "Asbestos check requirements",
+    "Ceramic-coated fastener availability",
+    "EPDM gasket specifications",
+    "Chemical epoxy vs. mechanical expansion sleeve details",
+    "Sandpaper grit recommendations",
+    "Internal alignment biscuit specifications",
+    "Tread grain orientation optimization",
+    "Specific torque specifications",
+    "Blast/shockwave resistance ratings",
+    "Smoke channeling behavior",
+    "Zero-flame-spread coating specifications",
+    "Panic evacuation weight capacity",
+    "Glow-in-the-dark/photoluminescent options",
+    "Helical staircase center-of-gravity calculations",
+    "Tripping risk reduction data",
+    "Optimal handrail grip dimensions",
+    "Vertigo prevention pitch angles",
+    "Contrast-colored nosing availability",
+    "Cane tip compatibility testing",
+    "Uninstallation and relocation feasibility",
+    "Motorized cargo lift accommodation",
+    "Balustrade height adjustment methods",
+    "45-degree corner wrapping capabilities",
+    "Ceiling-suspended staircase options",
+    "Low-hanging beam clearance solutions",
+    "Variable pitch angle design feasibility",
+    "Split-level bridging capabilities",
+    "Un-square corner winder handling",
+    "Tapered staircase design feasibility",
+    "Wood splitting post-installation warranty",
+    "Printed manual availability",
+    "Live helpline availability",
+    "CAD drawing verification process",
+    "Multiple staircase bulk discounts",
+    "Specific cleaning product bans",
+    "Emergency backup lighting options",
+    "Router hiding space availability",
+    "Wall outlet integration methods",
+    "Flush-mounted light fixture specifications",
+    "Smart home motion-activated lighting",
+    "Wiring protection from pests",
+    "LED dimming control options",
+    "Modular ramp system compatibility",
+    "Heavy lifting pole support capacity",
+    "Unbolting procedures for large items",
+    "Laptop-safe open-riser gap dimensions",
+    "Robot vacuum compatibility",
+    "Pet traction surface specifications",
+    "Pet gate integration options",
+    "Pet-safe design options",
+    "Warping prevention methods",
+    "Wood species durability rankings",
+    "Extra-deep winder tread availability",
+    "Concrete staircase overlay compatibility",
+    "Plywood riser acceptability",
+    "Handrail code compliance verification",
+    "Unslotted handrail availability",
+    "Seamless handrail connection methods",
+    "Baluster plow/groove sizing",
+    "Handrail fitting availability (volutes, turnouts, goosenecks)",
+    "Wood handrail bending capabilities",
+    "Wall bracket spacing calculations",
+    "Handrail bracket weight capacity",
+    "Modern matte black handrail availability",
+    "Integrated vs. wall-mounted handrail comparison",
+    "Handrail return requirements",
+    "Finger-jointed vs. solid handrail options",
+    "Standard handrail mounting height",
+    "Leather-wrapped handrail options",
+    "LED strip lighting pre-drilling",
+    "Baluster spacing code requirements",
+    "Wood and iron baluster mixing",
+    "Iron baluster cutting tools",
+    "Pin-top vs. square-top baluster differences",
+    "Baluster shoe/knuckle specifications",
+    "Solid vs. hollow iron baluster options",
+    "Open stringer baluster installation",
+    "Angled baluster shoe availability",
+    "Horizontal cable infill options",
+    "Balusters per step code requirements",
+    "Outdoor metal baluster rust resistance",
+    "Decorative pattern baluster availability",
+    "Wood baluster anchoring methods",
+    "Glass panel alternatives",
+    "Hollow metal baluster rattle prevention",
+    "Starting vs. landing newel differences",
+    "Concrete subfloor newel anchoring",
+    "Decorative post cap availability",
+    "Newel post sizing for narrow hallways",
+    "Box vs. round newel sturdiness comparison",
+    "Half-newel post requirements",
+    "Newel mounting hardware recommendations",
+    "Box newel post shortening feasibility",
+    "Solid vs. hollow newel post options",
+    "Modern newel post style options",
+    "Wood plug availability for bolt holes",
+    "Electrical outlet integration in newels",
+    "Standard starting newel height",
+    "Pin-top newel handrail interaction",
+    "Iron vs. wooden newel safety comparison",
+    "Pre-cut stringer availability",
+    "Plywood/MDF riser thickness recommendations",
+    "Skirt board necessity and placement",
+    "Metal mono-stringer pre-fabrication",
+    "Drywall gap concealment methods",
+    "Engineered vs. solid lumber stringer squeaking",
+    "False tread kit availability",
+    "Construction adhesive brand recommendations",
+    "Winder stringer modular shipping",
+    "Pitch angle measurement methods",
+    "White oak vs. red oak color matching",
+    "Primer for knot bleed-through",
+    "Clear polyurethane ambering prevention",
+    "Matte black powder-coat cleaning",
+    "Pressure-treated outdoor stair parts",
+    "FSC-certified wood availability",
+    "Maple stain blotching prevention",
+    "High-traffic finish durability",
+    "Walnut wood UV fade resistance",
+    "Custom color-matching services",
+    "Included fasteners and brackets",
+    "Glass balustrade shipping crates",
+    "DIY installation feasibility",
+    "Warped handrail handling",
+    "Baluster hole drilling templates",
+    "Unused baluster return policy",
+    "Floating tread weight specifications",
+    "Online manual availability",
+    "Newel mounting kit drill bit sizes",
+    "Trade/builder discount availability",
+    "Specific cleaning product recommendations",
+    "Accent lighting bracket options",
+    "Carpet runner rod functionality",
+    "HVAC register grill integration",
+    "Attic access hatch adaptation"
+  ],
+  "notes_processed": "Batch of 271 validated customer questions covering staircase design, materials, safety, installation, aesthetics, accessibility, and commercial applications; organized into 60 semantic topics with classifications across 7 domains (technical, business, sales, regulation, visual, installation, manufacturing).",
+  "extraction": {
+    "extracted_count": 271,
+    "raw_question_marks": 271,
+    "match": true
+  }
+}

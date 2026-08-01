@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "brain": "kitchen",
+  "bucket": "vision_scans",
+  "purpose": "Raw vision-analysis text for kitchen images. Gets processed into structured records for the Pending Review bucket.",
+  "isolation_note": "ADR-0033 · Kitchen Brain only. Never surfaces to customers. Never touched by staircase code paths.",
+  "updated_at": "2026-08-01T00:00:00.000Z",
+  "scans": []
+}

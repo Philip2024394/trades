@@ -9,6 +9,11 @@ rule_a_compliance: no fabrication · authored by named expert
 rule_b_compliance: authored by named expert · not AI-authored · regulatory references kept neutral per Philip 2026-07-31 authoring principle
 rule_c_compliance: every claim traceable to Philip O'Farrell
 template_note: gold-standard staircase-type-profile template
+brain: Staircase
+subject: Straight Flight Double Cut String Staircase
+domain: Components
+intent: Learn
+information_type: Definition
 ---
 
 # Straight Flight Double Cut String Staircase

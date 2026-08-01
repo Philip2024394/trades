@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "brain": "kitchen",
+  "bucket": "components",
+  "purpose": "Kitchen components reference library (hinges, drawer runners, handles, appliance connectors, plinths, etc.). Specialty family within the Kitchen Brain, parallel to the Components/Fixings families in the Staircase Brain.",
+  "isolation_note": "ADR-0033 · Kitchen Brain only. Never touched by staircase code paths.",
+  "updated_at": "2026-08-01T00:00:00.000Z",
+  "records": []
+}

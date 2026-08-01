@@ -4,9 +4,10 @@
 // Master Trade Template v1.1 §3.4. Each tile is a state-transition
 // intent, not a link.
 
+import { useRouter } from "next/navigation";
 import {
   Box, PencilRuler, Calculator, Layers, Puzzle, ClipboardCheck, FileText,
-  Lightbulb, MessageSquare, ShoppingCart, type LucideIcon
+  Lightbulb, MessageSquare, ShoppingCart, Images, Store, type LucideIcon
 } from "lucide-react";
 import { useConversationState } from "../state/ConversationStateProvider";
 import type { QuickAction } from "@/lib/nex-apps/_types";
@@ -21,9 +22,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
   "Components":         Puzzle,
   "Building Codes":     ClipboardCheck,   // clipboard with tick, per mockup
   "Installation Guide": FileText,          // document with lines, not open book
-  "Inspiration":        Lightbulb,
+  "Inspiration":        Lightbulb,         // legacy · retained for backwards-compat
+  "Staircase Library":  Images,            // Philip 2026-08-02 · full-screen swipe gallery
   "AI Assistant":       MessageSquare,     // speech bubble
-  "Suppliers":          ShoppingCart      // cart, not storefront
+  "Suppliers":          ShoppingCart,      // legacy · retained for backwards-compat
+  "Trade Centre":       Store              // Philip 2026-08-02 · Pinterest-style browse
 };
 
 function iconFor(label: string): LucideIcon {
@@ -41,8 +44,10 @@ const DESCRIPTION_MAP: Record<string, string> = {
   "Building Codes":     "Regulations & safety standards",
   "Installation Guide": "Step-by-step instructions",
   "Inspiration":        "Design ideas & styles",
+  "Staircase Library":  "Swipe through the full gallery",
   "AI Assistant":       "Ask anything about staircases",
-  "Suppliers":          "Find trusted suppliers"
+  "Suppliers":          "Find trusted suppliers",
+  "Trade Centre":       "Browse products, companies & projects"
 };
 
 function descriptionFor(label: string): string {
@@ -50,8 +55,16 @@ function descriptionFor(label: string): string {
 }
 
 export function QuickActionsGrid() {
+  const router = useRouter();
   const { config, activateQuickAction } = useConversationState();
   const actions = config.quick_actions;
+
+  // Philip 2026-08-02 · tiles with an href navigate instead of running a
+  // state transition. Used for Staircase Library and Trade Centre.
+  function handleActivate(action: QuickAction) {
+    if (action.href) { router.push(action.href); return; }
+    activateQuickAction(action);
+  }
   const cols = actions.length >= 10 ? 5 : actions.length >= 8 ? 4 : 3;
 
   // Split into rows so a divider can sit between them (per canonical
@@ -82,7 +95,7 @@ export function QuickActionsGrid() {
                 <QuickActionTile
                   key={action.label}
                   action={action}
-                  onActivate={() => activateQuickAction(action)}
+                  onActivate={() => handleActivate(action)}
                 />
               ))}
             </div>

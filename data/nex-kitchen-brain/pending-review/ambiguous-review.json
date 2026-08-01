@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "brain": "kitchen",
+  "bucket": "ambiguous_review",
+  "purpose": "Images with BOTH kitchen and staircase signals in existing metadata. Philip decides brain assignment. Never customer-visible until Philip's decision. Created 2026-08-01 by scripts/kitchen-brain-metadata-audit.mjs.",
+  "isolation_note": "ADR-0033 · scaffold only · not queried by any live path.",
+  "updated_at": "2026-08-01T14:18:19.203Z",
+  "images": [
+    {
+      "id": "NEX-KITCHEN-AMBIG-000001",
+      "url": "https://ik.imagekit.io/9mrgsv2rp/2e1ba8395051fdc3b2d5f8b2dbd2cb3ad.jpg",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "Staircase-related (workshop / process / context / material) reference. The image shows a CNC woodworking router machining a curved profile into a solid timber board. The cutting tool appears to be following a programmed toolpath, producing a smooth, accurate groove. This type of machining is commonly used in staircase manufacturing, furniture production, cabinet making, and bespoke joinery where repeatable precision is essential. CNC Wood Router – Precision Timber Machining A CNC (Computer Numerical Control) wood router is one of the most important machines in modern woodworking. It uses computer-controlled movements to cut, shape, engrave, drill, and profile timber with exceptional accuracy. From a single component to high-volume production, CNC routers deliver consistent results while reducing waste and production time. Whether manufacturing staircase components, cabinet doors, furniture, wall panels, or custom joinery, CNC technology has transformed how timber products are designed and produced. What Can a CNC Router Make? A CNC router can produce thousands of different timber components, including: Stair strings Treads and risers Curved handrails Newel posts Balusters Door frames Cabinet doors Raised panel doors Wall panelling Acoustic slat panels Kitchen cabinet components Furniture parts Shelving Signage Decorative carvings Architectural mouldings MDF templates Jigs and routing templates Materials That Can Be Machined CNC routers work with a wide range of materials, including: American White Oak European Oak Ash Walnut Maple Beech Pine Cedar Birch plywood MDF Veneered MDF Particleboard High-pressure laminate Acrylic Plastic composites Advantages of CNC Machining Using a CNC router offers many benefits over traditional hand machining: Extremely high accuracy Consistent repeatability Faster production times Reduced material waste Complex shapes produced with ease Improved safety by reducing manual cutting Digital files can be reused indefinitely Smooth, clean finishes requiring minimal sanding Typical CNC Operations A CNC router can perform many machining tasks on a single component: Profiling Pocketing Grooving Rebating Mortising Drilling Engraving Edge shaping V-grooving Dado cutting Tenon machining Decorative carving Radius cutting 3D relief carving Common Industries Using CNC Routers Staircase manufacturing Kitchen manufacturing Furniture production Shop fitting Architectural joinery Exhibition display manufacturing Sign making Interior fit-out Boat building Caravan manufacturing Timber frame construction CNC Router Sizes Machines are available in a range of bed sizes: Working Area Typical Use 600 × 900 mm Hobby and small workshops 1200 × 1200 mm Cabinet components 1300 × 2500 mm Standard sheet processing 1500 × 3000 mm Commercial joinery 2000 × 4000 mm Industrial production Large-format routers can machine a full 2440 × 1220 mm (8 × 4 ft) sheet in one setup. Router Spindle Options Typical spindle power includes: 1.5 kW 2.2 kW 3.0 kW 5.5 kW 7.5 kW 9.0 kW 12 kW (industrial) Variable spindle speeds usually range from 8,000 to 24,000 RPM, depending on the material and cutting tool. Popular Router Bits The quality of a CNC-machined component depends heavily on the cutting tool used. Common router bits include: Straight cutters Compression bits Spiral up-cut bits Spiral down-cut bits Ball nose cutters V-groove cutters Cove cutters Round-over bits Chamfer bits Ogee profile cutters Raised panel cutters Dovetail cutters Solid carbide tooling is preferred for its long life and clean cutting performance. CAD and CAM Software Before machining begins, a design is created in CAD (Computer-Aided Design) software. CAM (Computer-Aided Manufacturing) software then generates the toolpaths and converts them into machine code (G-code) that the CNC router follows. This digital workflow allows complex components to be reproduced with consistent accuracy. CNC in Staircase Manufacturing For staircase manufacturers, CNC routers can machine: Housed stair strings Curved stringers Tread housings Winder treads Bullnose steps Newel post joints Handrail fittings Decorative brackets Stair wall panelling MDF routing templates Once a design is programmed, identical parts can be produced repeatedly with minimal variation, making CNC routers invaluable for both bespoke and production work. Why CNC Matters CNC technology combines craftsmanship with precision engineering. It allows manufacturers to create complex timber components faster, more accurately, and with less waste than traditional manual methods. While skilled joinery is still essential for assembly and finishing, CNC machining has become the backbone of modern staircase, furniture, and architectural woodworking production. Layout: winder staircase (shaped treads to turn). Layout: spiral staircase. Layout: straight staircase. Oak is a durable hardwood commonly used for premium internal staircases. American Black Walnut is a dark chocolate-brown premium hardwood favoured for luxury internal staircases. Pine is a cost-effective softwood commonly used for painted staircases. Ash is a pale hardwood with bold grain, often painted or stained. The newel post anchors the balustrade at each change of direction or termination.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen, cabinet, hob · staircase signal: staircase, stair, step, steps, tread",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000002",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2003_28_10%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "oak",
+          "staircase",
+          "handrail",
+          "newel",
+          "modern",
+          "warm"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nChatGPT Image Jul 25, 2026, 03_28_10 PM.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n- scripts\\knowledge\\_seed-staircase-batch15.mjs\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: What staircase style suits a warm modern family home?\n\nOak treads and closed risers with SLIM BLACK METAL BALUSTERS, square oak or black-metal newels, and a black or oak handrail with clean lines. Style: modern, warm, timeless — reads as considered without going cold. Pairs naturally with black door handles, modern painted-Shaker or slab kitchens, neutral walls, and oak flooring. The black metal picks up on other black details around the house and ties the whole hallway together without shouting.\n\nCaption: The classic warm-modern combination: oak treads on closed risers, slim black metal round-section balusters between black metal top and bottom rails, and a black handrail. Pairs with the oak flooring, the black-framed art, and the modern kitchen at the end of the hallway to read as one consistent interior.\n\nAlt: Modern straight-flight staircase with warm oak treads and closed risers, slim black metal round-section balusters, black handrail and base rail, LED wall lights recessed at low level, warm oak flooring, black-framed abstract art on the wall, modern kitchen visible at end of hallway\n\nQ: What staircase style suits a warm modern family home?\n\nCaption: The classic warm-modern combination: oak treads on closed risers, slim black metal round-section balusters between black metal top and bottom rails, and a black handrail. Pairs with the oak flooring, the black-framed art, and the modern kitchen at the end of the hallway to read as one consistent interior.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen, kitchens · staircase signal: staircase, stair, tread, treads, riser",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000003",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2006_04_47%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "hardwood",
+          "timber",
+          "staircase",
+          "modern",
+          "workshop",
+          "manufacturing"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nChatGPT Image Jul 26, 2026, 06_04_47 PM.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: What is the final delivery route from UK port to staircase workshop?\n\nOnce cleared, the timber moves into large timber storage yards organised by species, thickness, width, grade, customer, and destination. Modern inventory systems allow each pack to be traced. The timber is then loaded onto articulated lorries for delivery — one truck may carry enough hardwood for several complete staircases, hundreds of internal doors, a large flooring project, kitchen manufacturing, or furniture production.\n\nCaption: Once cleared from the port, timber travels by road across the UK to timber merchants and joinery workshops. A single UK importer can move several hundred packs per week during peak demand.\n\nAlt: Black Volvo FH Globetrotter TIMBER IMPORTER articulated truck loaded with a pack of graded sawn boards on the UK M1 motorway, motorway sign showing Leeds 36 · Sheffield 60 · Nottingham 89 · London 176.\n\nQ: What is the final delivery route from UK port to staircase workshop?\n\nCaption: Once cleared from the port, timber travels by road across the UK to timber merchants and joinery workshops. A single UK importer can move several hundred packs per week during peak demand.",
+        "subject_domain": "hero-banner"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000004",
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitleddasdadvvvsdsdsdasdsds.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "glass",
+          "staircase",
+          "modern",
+          "luxury"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nUntitleddasdadvvvsdsdsdasdsds.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n- scripts\\brain\\add-batch-19.mjs\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: Why is an under-stair wine cellar so popular in modern homes?\n\nThe space is compact, cool, out of direct sunlight and adjacent to open-plan kitchen and dining — the exact conditions a wine cellar needs. It turns dead volume into a design feature that guests notice the moment they walk in. Common in luxury homes, open-plan kitchens and entertaining spaces.\n\nCaption: Concept render: full wine cellar built into the under-stair volume\n\nAlt: Glass-fronted under-stair wine cellar with backlit bottle display\n\nQ: Why is an under-stair wine cellar so popular in modern homes?\n\nCaption: Concept render: full wine cellar built into the under-stair volume",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen, kitchens · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000005",
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitleddasdadvvvsdsd.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "glass",
+          "staircase",
+          "modern"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nUntitleddasdadvvvsdsd.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n- scripts\\brain\\add-batch-19.mjs\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: Can the under-stair area become a bar rather than a wine cellar?\n\nYes — very popular in modern entertaining homes. Includes a wine fridge, glass storage, mixer shelving and a small countertop. Requires the same power and plumbing planning as a small kitchen appliance run, so it needs to be designed in before the staircase is installed, not retrofitted.\n\nCaption: Concept render: bar built into the under-stair volume\n\nAlt: Under-stair bar with wine fridge, glassware and counter\n\nQ: Can the under-stair area become a bar rather than a wine cellar?\n\nCaption: Concept render: bar built into the under-stair volume",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen, countertop, fridge, kitchen appliance · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000006",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_39_43%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nL-Shape Two-Tone Staircase with Tongue-and-Groove Under-Stair Storage\n\nCategory:\nCustomer Education > Staircase Types > Bespoke Feature > Under-Stair Integrated Joinery > L-Shape Two-Tone + T&G Storage\n\nSub Category:\nL-shaped quarter-landing double bullnose staircase — classic two-tone finish (oak treads, handrails, newel posts + painted white strings, risers, balusters). Under-stair void enclosed with bespoke tongue-and-groove panelling and a hidden flush access door. Sibling of the wine-cellar variants.\n\nRecommendation Type:\nEDUCATIONAL — sibling treatment variation for the \"Under-Stair Wine Cellars and Storage Staircases\" article\n\nBelongs In:\nstaircase_brain · staircase_kind: full · internal · traditional two-tone tier\n\nEducational Article:\ndata/nex-customer-education/under-stair-wine-cellar-and-storage-staircases.md\n\nSibling Treatment Variations:\n  · https://ik.imagekit.io/5vv5pw26q/Untitledsdsddsdsd.png (straight-flight wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_46_11%20PM.png (L-shape wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_41_53%20PM.png (L-shape double bullnose wine cabinet)\n\nIMAGE DESCRIPTION\n\nTraditional L-shaped quarter-landing staircase with timeless two-tone finish. Oak treads, handrails and newel posts paired with painted white strings, risers, and balusters. Double bullnose starting step. Substantial square newel posts. Continuous oak balustrade with white square balusters. Open gallery landing on the upper floor for natural light and views. Under-stair void enclosed with bespoke tongue-and-groove panelling — full-height access door integrated into the panelling for flush appearance. The angled panelling follows the line of the staircase for a bespoke fitted look. Suitable for both modern and traditional homes.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet · staircase signal: staircase, stair, step, tread, treads",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000007",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_11_51%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "timber",
+          "staircase",
+          "floating",
+          "modern",
+          "premium",
+          "photorealistic",
+          "warm",
+          "eye-level"
+        ],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nUnder-Stair Home Office\n\nCategory:\nCustomer Education > Under-Stair Ideas > Home Office\n\nSub Category:\nBespoke built-in workspace beneath the staircase\n\nPrimary Style:\nAspirational interior reference\n\nSecondary Style:\nEducational article illustration\n\nPhotographic Style:\nArchitectural interior photography\n\nRecommendation Type:\nEDUCATIONAL — inspiration for transforming under-stair space into a productive home office\n\nEducational Article:\ndata/nex-customer-education/under-stair-home-office.md\n\nIMAGE DESCRIPTION\n\nAn under-stair space transformed into a compact bespoke home office. Combines a built-in desk, floating shelves, drawer storage, cable management, task lighting, and integrated cabinetry that follows the staircase geometry. Used in the customer-education article \"Create a Home Office Under Your Staircase\" as the primary reference image demonstrating the design pattern.\n\nOBJECT DETECTION\n\nPRIMARY OBJECTS\n- Built-in desk\n- Floating shelves\n- Drawer storage\n- Cabinetry following stair geometry\n- Task lighting\n- Charging / cable management\n\nSECONDARY OBJECTS\n- Office chair\n- Monitor / laptop\n- Books / decor accessories\n\nBACKGROUND OBJECTS\n- Adjacent hallway or living context\n\nMATERIAL ANALYSIS\n\nPrimary Material:\nTimber cabinetry (coordinated with staircase) with painted or matte finish accents\n\nCAMERA INFORMATION\n\nImage Orientation:\nPortrait\n\nCamera Position:\nEye Level\n\nView:\nInterior architectural feature view\n\nComposition:\nFocused feature composition on the office nook\n\nLIGHTING\n\nPrimary Lighting:\nWarm interior ambient light with LED task lighting\n\nQUALITY\n\nRealism:\nUltra photorealistic\n\nRendering:\nArchitectural interior visualisation\n\nSETTING\n\nPrimary Setting:\nUnder-stair area in a modern home\n\nAI REPRODUCTION RULES\n\nMUST KEEP\n- Bespoke built-in workspace that follows the staircase geometry\n- Practical office essentials (desk, storage, lighting, cable management)\n- Clean integrated appearance\n- Sense that the space was purpose-built rather than added afterwards\n\nDO NOT CHANGE\n- Educational purpose\n- Productive workspace framing\n\nALLOWED MODIFICATIONS\nUsers may change:\n- Cabinetry finish / colour\n- Staircase style above\n- Decor accessories\n\nMASTER AI PROMPT\n\nUltra photorealistic interior architectural render of a bespoke under-stair home office — built-in desk · floating shelves · drawer storage · cable management · warm LED task lighting · cabinetry that follows the staircase geometry above · clean integrated appearance · premium interior visualisation. Used as the primary reference for the \"Create a Home Office Under Your Staircase\" education article.",
+        "subject_domain": "hero-banner"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet, cabinetry · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000008",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2001_58_46%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "staircase"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nChatGPT Image Jul 26, 2026, 01_58_46 PM.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n- scripts\\brain\\add-batch-19.mjs\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: What are pull-out drawers as an under-stair storage system?\n\nInstead of hinged doors, the full width of the under-stair volume is fitted with large drawers on heavy-duty runners. Everything inside slides forward for full access — no more crouching into a dark cupboard fishing for what is at the back. Used for shoes, blankets, toys, kitchen overflow.\n\nCaption: Concept render: pull-out drawer under-stair storage\n\nAlt: Full-width pull-out drawers under staircase\n\nQ: What are pull-out drawers as an under-stair storage system?\n\nCaption: Concept render: pull-out drawer under-stair storage",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: kitchen · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000009",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2001_37_39%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "staircase"
+        ],
+        "description": "IMAGE IDENTITY\nImage Name:\nChatGPT Image Jul 26, 2026, 01_37_39 PM.png\n\nCategory:\nstaircase\n\nReferenced in:\n- knowledge\\staircase.json\n- scripts\\brain\\add-batch-19.mjs\n\nSource Origin:\nimagekit-nex-era\n\nPrimary Style:\nStaircase Reference Image\n\nIMAGE DESCRIPTION\nQ: Can a staircase side wall become a media / TV wall?\n\nYes, particularly in open-plan homes where the staircase divides the living area. The side becomes a TV or media wall with recessed lighting, integrated cabinets and hidden cable management. The two functions — circulation and entertainment — share the same wall rather than fighting for it.\n\nCaption: Concept render: TV wall on staircase side\n\nAlt: Media wall integrated into staircase side\n\nQ: Can a staircase side wall become a media / TV wall?\n\nCaption: Concept render: TV wall on staircase side",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet, cabinets · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000010",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2012_28_47%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "IMAGE IDENTITY\nImage Name: Three-Panel Raised and Fielded Timber Back Panel — Design Detail\nCategory: Customer Education > Staircase Types > Bespoke Feature > Back / Rear Panel > Three-Panel Raised & Fielded\nSub Category: Traditional three-panel raised-and-fielded joinery design suitable as the back / rear panel of a staircase. Solid outer frame (stiles + rails) with three equal-width raised and fielded panels + decorative moulded panel beads + symmetrical proportions.\nRecommendation Type: EDUCATIONAL — sibling detail view of the raised-and-fielded back-panel treatment\nBelongs In: staircase_brain · staircase_kind: full · internal · bespoke joinery tier\nEducational Article: data/nex-customer-education/staircase-back-panel-three-panel-raised-fielded.md\n\nSibling Treatment Variation:\nhttps://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2012_40_08%20PM.png (same treatment applied to full rear face of a straight-flight staircase)\nhttps://ik.imagekit.io/5vv5pw26q/Untitledsdfsdfdff-removebg-preview.png (alternative back-treatment: T&G sheeting)\n\nIMAGE DESCRIPTION\nDetail view of a three-panel raised and fielded timber panel, showing the traditional joinery adapted for use as a staircase back / rear panel. Design components: solid outer frame (stiles + rails) · three equal-width raised and fielded panels · decorative moulded panel beads surrounding each panel · symmetrical proportions. Vertical panels make the staircase appear taller. Suited to oak / walnut / mahogany / maple / painted hardwood staircases. Timeless proportions complement traditional AND transitional interiors. Same joinery discipline as internal doors · wall panelling · cabinetry · library joinery · traditional entrance halls. Moulded profiles create subtle shadow lines that add depth and craftsmanship. When manufactured from the same timber as the staircase (treads, strings, newel posts, handrails, side panels) the finished staircase reads as one integrated piece of bespoke furniture.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet, cabinetry · staircase signal: staircase, stair, tread, treads, newel",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000011",
+      "url": "https://ik.imagekit.io/9mrgsv2rp/6ebb220443f27e32ff75fe3df3c433a7.jpg",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "Staircase-related (workshop / process / context / material) reference. Choosing the Best Loft Ladder Door Size One of the most important decisions when installing a loft ladder is selecting the correct loft hatch size. A hatch that is too small can make it difficult to carry boxes, suitcases, or bulky items into the attic, while one that is too large may require additional structural work and reduce the amount of insulation around the opening. The ideal loft hatch should provide comfortable access while maintaining excellent thermal performance through a well-insulated door and airtight seals. What Will You Be Storing in Your Loft? Before choosing a loft ladder, think about what you will be taking into the attic. Light Household Storage Ideal hatch size: 550 × 1100 mm Suitable for: Christmas decorations Small storage boxes Suitcases Empty luggage Lightweight seasonal items General Family Storage Ideal hatch size: 600 × 1200 mm This is one of the most popular sizes because it provides enough room to comfortably carry most household items. Suitable for: Plastic storage boxes Camping equipment Folding chairs Children's toys Sports equipment Vacuum cleaners Small furniture Large Storage Items Ideal hatch size: 700 × 1200 mm Perfect if you regularly move larger items into the loft. Suitable for: Flat-pack furniture Large storage tubs Bicycles (partially dismantled) Golf clubs Prams Folding tables Large suitcases Loft Conversions and Regular Access Ideal hatch size: 700 × 1400 mm Best for: Frequent access Hobby rooms Home offices Plant rooms Large storage spaces Common Loft Hatch Sizes Hatch Opening Best For 550 × 1100 mm Small storage 600 × 1100 mm General storage 600 × 1200 mm Most homes (recommended) 700 × 1200 mm Larger items 700 × 1300 mm Frequent access 700 × 1400 mm Premium installations For most homeowners, a 600 × 1200 mm insulated loft hatch provides the best balance of access, energy efficiency, and ease of installation. Why an Insulated Loft Door Is So Important Many people focus on the ladder itself, but the loft door is equally important. Heat naturally rises, and an uninsulated loft hatch can become a weak point in your home's thermal envelope. A quality insulated loft hatch helps to: Reduce heat loss Improve energy efficiency Prevent cold draughts Reduce condensation Lower heating costs Improve comfort in the rooms below Modern loft doors are typically filled with rigid insulation and fitted with compression seals to create an airtight fit when closed. Where Does Heat Escape? A common misconception is that heat only escapes through the roof. In reality, heat can be lost through many parts of a building if they are not properly insulated. Heat can escape through: Roof spaces and loft hatches External walls Ceiling voids Internal partitions without insulation Floors above unheated garages Around loft hatch frames Pipe and cable penetrations Gaps around doors and windows Because warm air rises, an uninsulated loft hatch can allow valuable heat to escape into the attic, where it serves no useful purpose. Loft Floor Insulation If your loft is used only for storage, insulation is usually installed between and above the ceiling joists, not under the roof. This keeps the heated living space warm while allowing the loft to remain cooler. Typical insulation thicknesses include: 100 mm (older homes) 200 mm 270 mm (commonly recommended in many modern homes) 300 mm for enhanced thermal performance When boarding a loft for storage, raised boarding systems can be used so the insulation is not compressed, helping it maintain its effectiveness. Features of a Modern Insulated Loft Door A high-quality loft hatch typically includes: Rigid insulation core Draught-proof perimeter seals Durable timber or steel frame Flush white finish Concealed hinges Secure locking mechanism Smooth-opening spring system Easy-to-use operating pole Choosing the Right Ladder Consider the following before buying: Ceiling height Loft opening size Available floor space below Roof space above the hatch Maximum load capacity Frequency of use Type of items you intend to store Is a Larger Hatch Always Better? Not necessarily. While a larger opening makes it easier to carry bulky items, it may require more structural work and can add cost. A hatch that is oversized for your needs may also reduce the amount of uninterrupted insulation around the opening. For most homes, 600 × 1200 mm offers an excellent compromise between accessibility, insulation, and installation simplicity. Summary An insulated loft ladder and hatch are a smart investment for any home. By choosing the correct hatch size based on how you plan to use your attic, you can improve safety, make storage more practical, and help reduce heat loss. If your loft is mainly for storing seasonal items and household belongings, a 600 × 1200 mm insulated loft hatch with a spring-assisted timber ladder is an excellent all-round choice. Combined with properly installed loft floor insulation and good draught sealing,.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: hob · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000012",
+      "url": "https://ik.imagekit.io/9mrgsv2rp/69992c1fb23b510468da304a7d2f57bb.jpg",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "Staircase-related (workshop / process / context / material) reference. The Complete Guide to Loft Ladders Safe, Convenient Access to Your Loft A loft ladder is one of the most practical home improvements you can install. It transforms an unused attic into an easily accessible storage area, home office, hobby room, or even additional living space. Instead of balancing on a portable ladder every time you need something from the loft, a permanently installed loft ladder provides safe, convenient, and reliable access at the pull of a handle. Modern loft ladders are designed to fold neatly into the ceiling when not in use, leaving only a flush insulated hatch visible. With improved insulation, stronger materials, and easy-to-use spring-assisted mechanisms, today's loft ladders are safer, quieter, and more energy-efficient than ever before. What Is a Loft Ladder? A loft ladder is a permanently installed folding, telescopic, or sliding staircase that provides access from a room below into a loft or attic space. It is mounted inside a ceiling opening and folds away into the roof space when not in use. Most loft ladder kits include: Folding ladder Insulated loft hatch Timber mounting frame Spring-assisted lifting mechanism Steel hinges and pivot arms Operating pole Handrail Locking catch Installation fixings Why Install a Loft Ladder? Installing a loft ladder offers many advantages: Safe access to roof storage Eliminates the need for portable ladders Saves floor space Increases storage accessibility Improves home convenience Helps keep the loft insulated Adds value to your property Quick and easy to operate For many homeowners, a loft ladder is an affordable upgrade that makes everyday life easier. Types of Loft Ladders Timber Folding Loft Ladder The most popular option for residential homes. Features Strong timber construction Three or four folding sections Insulated trapdoor Quiet operation Traditional appearance Excellent value Ideal for: Family homes New builds Loft storage Renovation projects Aluminium Loft Ladder Manufactured from lightweight aluminium. Advantages include: Corrosion resistant Lightweight Low maintenance Easy to operate Long service life Perfect for garages, workshops, and modern homes. Telescopic Loft Ladder The ladder slides into itself. Benefits include: Compact storage Small ceiling opening Modern design Smooth operation Ideal where roof space is limited. Concertina (Scissor) Loft Ladder Constructed from steel or aluminium. Suitable for: Small loft openings Commercial buildings Frequent use Extremely compact when folded. Electric Loft Ladder Luxury models can be operated by remote control. Features include: Motorized opening Automatic closing Soft start Premium finish Ideal for accessibility Standard Loft Ladder Sizes Modern loft ladders are manufactured to suit a variety of ceiling heights. Ceiling Height Recommended Ladder 2.20 m Standard folding 2.40 m Standard folding 2.60 m Standard folding 2.80 m Extended 3.00 m Four-section 3.20–3.50 m Extra-long model Common Loft Opening Sizes Opening Size 550 × 1100 mm 600 × 1100 mm 600 × 1200 mm 700 × 1200 mm 700 × 1300 mm 700 × 1400 mm The 600 × 1200 mm opening is one of the most widely used in residential homes. Insulated Loft Hatch Nearly all modern loft ladders include an insulated ceiling hatch. The hatch helps: Reduce heat loss Prevent cold draughts Improve energy efficiency Reduce condensation Create an airtight seal Typical Hatch Thickness 26 mm 36 mm 46 mm 56 mm 66 mm insulated premium hatch Many premium models include continuous rubber seals around the frame for enhanced insulation. Spring-Assisted Opening Modern loft ladders use heavy-duty spring mechanisms to balance the weight of the ladder. Advantages include: Smooth opening Controlled closing Less lifting effort Improved safety Longer hinge life The springs support much of the ladder's weight, making it easy for most adults to operate. Operating Pole Every loft ladder includes a long operating pole. The pole allows you to: Unlock the hatch Lower the ladder Fold the ladder sections Push the ladder back into the ceiling Lock the hatch securely This means there's no need to climb on a chair or step ladder to reach the ceiling hatch. Handrails Most quality loft ladders include a handrail. Benefits include: Extra climbing support Improved safety Easier access when carrying light items Greater confidence for older users Many premium models also offer a second handrail. Weight Capacity Ladder Type Maximum Load Standard 150 kg Heavy Duty 160 kg Professional 200 kg Always check the manufacturer's rating before use. Safety Features Modern loft ladders incorporate: Anti-slip treads Heavy-duty hinges Locking catches Spring balancing Wide ladder strings Adjustable feet Insulated hatch Continuous handrails Stable climbing angle Materials Loft ladders are commonly manufactured from: Timber Scandinavian Pine Spruce Laminated Pine Hardwood (premium) Metal Aluminium Galvanized Steel Powder-coated Steel Who In. Pine is a cost-effective softwood commonly used for painted staircases.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: hob · staircase signal: staircase, stair, step, tread, treads",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000013",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2012_13_43%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [
+          "timber",
+          "staircase",
+          "premium",
+          "photorealistic",
+          "manufacturing",
+          "warm",
+          "eye-level"
+        ],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nUnder-Stair Feature Example (reclassification reference)\n\nCategory:\nCustomer Education > Under-Stair Ideas > Reclassification Reference\n\nSub Category:\nUnder-stair joinery feature that establishes the staircase-family classification rule\n\nPrimary Style:\nAspirational interior reference\n\nSecondary Style:\nEducational reclassification reference\n\nPhotographic Style:\nArchitectural interior photography\n\nRecommendation Type:\nEDUCATIONAL — under-stair joinery is part of the staircase family (Philip 2026-07-27 HARD LAW)\n\nBelongs In:\nstaircase_brain (under-stair features classification rule)\n\nIMAGE DESCRIPTION\n\nAn under-stair joinery feature used as the reference image that established the NEX under-stair classification rule: under-stair office · cabinets · playhouse · wine rack · seating · feature panels · storage · reading nook all belong to the staircase family and classify to staircase_brain. Joinery shops that manufacture staircases routinely deliver under-stair features alongside the staircase itself, so the intelligence must co-locate.\n\nOBJECT DETECTION\n\nPRIMARY OBJECTS\n- Under-stair joinery feature integrated into the staircase geometry\n- Staircase above\n- Interior finishes\n\nSECONDARY OBJECTS\n- Adjacent hallway or living context\n- Ambient lighting\n- Decor styling\n\nBACKGROUND OBJECTS\n- Interior environment\n\nMATERIAL ANALYSIS\n\nPrimary Material:\nTimber joinery (coordinated with staircase)\n\nCAMERA INFORMATION\n\nImage Orientation:\nPortrait\n\nCamera Position:\nEye Level\n\nView:\nInterior architectural feature view\n\nComposition:\nFeature composition on the under-stair joinery\n\nLIGHTING\n\nPrimary Lighting:\nWarm interior ambient light\n\nQUALITY\n\nRealism:\nUltra photorealistic\n\nRendering:\nArchitectural interior visualisation\n\nSETTING\n\nPrimary Setting:\nResidential under-stair area\n\nAI REPRODUCTION RULES\n\nMUST KEEP\n- Under-stair joinery feature clearly integrated with the staircase above\n- Sense of purpose-built joinery rather than free-standing furniture\n- Coordinated appearance with the staircase family\n\nDO NOT CHANGE\n- Under-stair classification framing (this row is a reference example for the rule)\n- Educational purpose\n\nALLOWED MODIFICATIONS\nUsers may change:\n- Timber species / finish\n- Feature type (office / cabinets / seating / storage / etc.)\n- Interior styling\n\nMASTER AI PROMPT\n\nUltra photorealistic interior architectural render of a bespoke under-stair joinery feature — integrated with the staircase geometry above · coordinated timber / finish palette · warm interior ambient light · premium interior visualisation. Used as the reclassification reference image that established the NEX under-stair-features-belong-to-staircase-family HARD LAW.",
+        "subject_domain": "hero-banner"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet, cabinets · staircase signal: staircase, stair",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000014",
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitledsdsddsdsd.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nStraight-Flight Staircase with Bespoke Under-Stair Wine Cellar\n\nCategory:\nCustomer Education > Staircase Types > Bespoke Feature > Under-Stair Integrated Joinery > Straight-Flight + Wine Cellar\n\nSub Category:\nStraight-flight closed-string staircase with the triangular under-stair void transformed into a climate-controlled wine display and storage cabinet. Sibling treatment variation with the L-shape wine variants and the L-shape T&G storage variant.\n\nPrimary Style:\nAspirational contemporary + traditional-proportions luxury reference\n\nRecommendation Type:\nEDUCATIONAL — sibling treatment variation for the \"Under-Stair Wine Cellars and Storage Staircases\" article\n\nBelongs In:\nstaircase_brain · staircase_kind: full · internal · closed-string bespoke tier\n\nEducational Article:\ndata/nex-customer-education/under-stair-wine-cellar-and-storage-staircases.md\n\nSibling Treatment Variations:\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_46_11%20PM.png (L-shape quarter-landing wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_41_53%20PM.png (L-shape double bullnose wine cabinet)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_39_43%20PM.png (L-shape two-tone with T&G under-stair storage)\n\nIMAGE DESCRIPTION\n\nA straight-flight closed-string staircase framed by two substantial square newel posts. Slim black metal balusters with hardwood handrail. Walnut or dark oak finish. The triangular under-stair void is transformed into a bespoke wine cellar with diamond wine racks, horizontal bottle storage, display shelves for premium bottles, glassware storage, lower storage drawers, integrated timber shelving, and warm LED lighting throughout. The cabinetry follows the exact angle of the staircase. Timber grain matches the staircase. Shelving aligns with the stair pitch. The staircase and cabinetry are designed as one architectural composition — a piece of handcrafted furniture that defines the entrance hall.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet, cabinetry · staircase signal: staircase, stair, newel, baluster, balusters",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000015",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_46_11%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nL-Shaped Quarter-Landing Staircase with Under-Stair Wine Cellar\n\nCategory:\nCustomer Education > Staircase Types > Bespoke Feature > Under-Stair Integrated Joinery > L-Shape + Wine Cellar\n\nSub Category:\nL-shaped quarter-landing staircase with under-stair wine cellar. Sibling of the straight-flight wine variant.\n\nRecommendation Type:\nEDUCATIONAL — sibling treatment variation for the \"Under-Stair Wine Cellars and Storage Staircases\" article\n\nBelongs In:\nstaircase_brain · staircase_kind: full · internal\n\nEducational Article:\ndata/nex-customer-education/under-stair-wine-cellar-and-storage-staircases.md\n\nSibling Treatment Variations:\n  · https://ik.imagekit.io/5vv5pw26q/Untitledsdsddsdsd.png (straight-flight wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_41_53%20PM.png (L-shape double bullnose wine cabinet)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_39_43%20PM.png (L-shape two-tone with T&G under-stair storage)\n\nIMAGE DESCRIPTION\n\nL-shaped quarter-landing staircase with under-stair wine cellar. Closed-string construction. Substantial square newel posts. Continuous timber balustrade flowing from the starting step to the upper gallery. The under-stair triangular void houses a bespoke wine cellar with diamond racks, horizontal bottle storage, glass display shelving, illuminated compartments, base cupboards, warm integrated LED lighting. Rather than concealing the space beneath the staircase, the design celebrates it as an architectural feature. The staircase becomes both a circulation route and a premium interior feature.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet · staircase signal: staircase, stair, step, newel, balustrade",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    },
+    {
+      "id": "NEX-KITCHEN-AMBIG-000016",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_41_53%20PM.png",
+      "added_at": "2026-08-01T14:18:19.203Z",
+      "existing_metadata": {
+        "title": null,
+        "tags": [],
+        "description": "IMAGE IDENTITY\n\nImage Name:\nL-Shape Double Bullnose Staircase with Under-Stair Wine Cabinet\n\nCategory:\nCustomer Education > Staircase Types > Bespoke Feature > Under-Stair Integrated Joinery > L-Shape Double Bullnose + Wine Cabinet\n\nSub Category:\nL-shaped quarter-landing staircase with double bullnose starting step and under-stair wine cabinet. Sibling of the straight-flight wine variant and the L-shape T&G storage variant.\n\nRecommendation Type:\nEDUCATIONAL — sibling treatment variation for the \"Under-Stair Wine Cellars and Storage Staircases\" article\n\nBelongs In:\nstaircase_brain · staircase_kind: full · internal\n\nEducational Article:\ndata/nex-customer-education/under-stair-wine-cellar-and-storage-staircases.md\n\nSibling Treatment Variations:\n  · https://ik.imagekit.io/5vv5pw26q/Untitledsdsddsdsd.png (straight-flight wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_46_11%20PM.png (L-shape quarter-landing wine cellar)\n  · https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2026,%202026,%2002_39_43%20PM.png (L-shape two-tone with T&G under-stair storage)\n\nIMAGE DESCRIPTION\n\nL-shaped quarter-landing staircase with a double bullnose starting step — the first two treads curved and extended beyond the line of the staircase for an inviting entrance. Walnut or dark-oak finish. Closed-string construction. Substantial square newel posts at each change of direction. Continuous timber balustrade. Under-stair wine cabinet with diamond racks, horizontal bottle storage, glass display shelving, illuminated compartments, base cupboards, warm integrated LED lighting. Feature bullnose starting step softens the appearance and creates a premium handcrafted look.",
+        "subject_domain": "staircase"
+      },
+      "classification_reason": "both kitchen and staircase signals present · keywords in text: cabinet · staircase signal: staircase, stair, step, tread, treads",
+      "decision_pending": true,
+      "notes": "Image contains BOTH kitchen and staircase signals in existing metadata (e.g. open-plan kitchen with staircase visible). Philip decides brain assignment. Do not classify automatically."
+    }
+  ]
+}

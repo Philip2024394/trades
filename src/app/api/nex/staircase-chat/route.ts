@@ -32,6 +32,14 @@ import {
   intentToFamily,
 } from "@/lib/nex/golden/retrieve";
 import { logNexChatReply } from "@/lib/nex/golden/telemetry";
+// Runtime Core v1 bridge · feature-flagged via NEX_STAIRCASE_RUNTIME_ENABLED
+// When flag is off (default), bridge is inert · zero behavior change.
+import { tryStaircaseRuntimeBridge } from "@/lib/nex/staircase-bridge";
+// Staircase Advisor v0 · feature-flagged via NEX_STAIRCASE_ADVISOR_ENABLED
+// When flag is off (default), advisor is inert · zero behavior change.
+// When ON: advisor runs BEFORE the runtime bridge · takes priority on
+// decision-request messages · falls through to bridge otherwise.
+import { tryStaircaseAdvisor } from "@/lib/nex/staircase-advisor";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -45,12 +53,14 @@ export async function POST(req: NextRequest) {
   }
 
   let body: {
-    message?:            unknown;
-    history?:            unknown;
-    expertise_override?: unknown;
-    conversation_id?:    unknown;
-    intent?:             unknown;
-    recent_ids?:         unknown;
+    message?:                unknown;
+    history?:                unknown;
+    expertise_override?:     unknown;
+    conversation_id?:        unknown;
+    intent?:                 unknown;
+    recent_ids?:             unknown;
+    // Philip 2026-08-02 · Staircase Library floating-Nex context bridge.
+    focused_design_context?: unknown;
   };
   try {
     body = await req.json();
@@ -86,7 +96,16 @@ export async function POST(req: NextRequest) {
   }
 
   // ─── Golden Reply pipeline ─────────────────────────────────────
-  const message = body.message.trim();
+  // Philip 2026-08-02 · Staircase Library floating-Nex context bridge.
+  // When the caller (Staircase Library) supplies focused_design_context,
+  // prepend a small inline hint to the message so the composer + advisor
+  // understand which staircase the customer is currently viewing. Keeps
+  // the raw message clean for topic memory · injects context transparently.
+  let message = body.message.trim();
+  if (typeof body.focused_design_context === "string" && body.focused_design_context.trim().length > 0) {
+    const ctx = body.focused_design_context.trim().slice(0, 400);
+    message = `[Currently viewing in Staircase Library: ${ctx}]\n\n${message}`;
+  }
   const conversationId =
     typeof body.conversation_id === "string" && body.conversation_id.length > 0
       ? body.conversation_id
@@ -98,6 +117,77 @@ export async function POST(req: NextRequest) {
   const recentIds: string[] = Array.isArray(body.recent_ids)
     ? body.recent_ids.filter((x): x is string => typeof x === "string").slice(0, 12)
     : [];
+
+  // ── Staircase Advisor v0 · pre-bridge intercept (feature-flagged) ──
+  // Flag OFF (default): advisor inactive · zero behavior change.
+  // Flag ON: advisor runs FIRST. Trigger patterns match decision-request
+  // messages ("help me choose", "I don't know what staircase", etc.).
+  // If not triggered, returns null and control passes to the runtime bridge.
+  // Advisor uses only Philip-authored evidence (Section 8 contract) and
+  // known-limitation branches (Replacement · Extension) return a polite
+  // handoff message rather than a fabricated recommendation.
+  if (process.env.NEX_STAIRCASE_ADVISOR_ENABLED === "1") {
+    const advised = await tryStaircaseAdvisor({
+      message,
+      conversationId,
+      stage,
+    });
+    if (advised !== null) {
+      await logNexChatReply({
+        conversation_id:       conversationId,
+        brain_slug:            "staircase",
+        intent:                clientIntent,
+        intent_matched:        clientIntent !== "general",
+        intent_family:         intentFamily,
+        stage,
+        retrieved_ids:         [],
+        user_message_length:   message.length,
+        response_length:       (advised.answer ?? "").length,
+        had_greeting:          false,
+        top_cosine:            0,
+        retrieval_gated:       false,
+        served_by:             "staircase-advisor-v0",
+        runtime_core_strategy: `advisor-${advised.advisor.action}`,
+      });
+      return NextResponse.json(advised);
+    }
+  }
+
+  // ── Runtime Core v1 bridge · pre-composer intercept (feature-flagged) ──
+  // Flag OFF (default): bridge inactive · zero behavior change.
+  // Flag ON: bridge tries Runtime Core v1 first. If Runtime Core has a
+  // high-confidence customer-facing answer, that answer is returned and
+  // composeStaircaseAnswer is skipped. If Runtime Core returns null
+  // (unknown / low confidence), falls through to existing composer flow.
+  if (process.env.NEX_STAIRCASE_RUNTIME_ENABLED === "1") {
+    const bridged = await tryStaircaseRuntimeBridge({
+      message,
+      conversationId,
+      stage,
+    });
+    if (bridged !== null) {
+      // Log telemetry with served_by marker so we can distinguish
+      // bridge-served vs composer-served answers in the audit trail.
+      await logNexChatReply({
+        conversation_id:     conversationId,
+        brain_slug:          "staircase",
+        intent:              clientIntent,
+        intent_matched:      clientIntent !== "general",
+        intent_family:       intentFamily,
+        stage,
+        retrieved_ids:       [],
+        user_message_length: message.length,
+        response_length:     (bridged.answer ?? "").length,
+        had_greeting:        false,
+        top_cosine:          0,
+        retrieval_gated:     false,
+        served_by:           "runtime-core-v1",
+        runtime_core_strategy: bridged.runtime_core.strategy,
+      });
+      return NextResponse.json(bridged);
+    }
+    // bridge returned null → fall through to existing composer flow
+  }
 
   // Retrieval never throws — returns empty result if embeddings are
   // missing, the API key is not set, or the top match falls below
@@ -127,6 +217,8 @@ export async function POST(req: NextRequest) {
     // never waits on the DB write. Awaited so the request stays open
     // until it's flushed (Node fetch), but the try/catch in
     // logNexChatReply guarantees silent failure.
+    // Composer served the reply · Advisor + Runtime Core both missed · this is
+    // a GAP. Capture the message text so admin can see what to author next.
     await logNexChatReply({
       conversation_id:     conversationId,
       brain_slug:          "staircase",
@@ -137,9 +229,10 @@ export async function POST(req: NextRequest) {
       retrieved_ids:       retrievedIds,
       user_message_length: message.length,
       response_length:     (result.answer ?? "").length,
-      had_greeting:        false, // client sets this via body extension later
+      had_greeting:        false,
       top_cosine:          retrieval.top_cosine,
       retrieval_gated:     retrieval.gated,
+      user_message:        message,
     });
 
     return NextResponse.json({

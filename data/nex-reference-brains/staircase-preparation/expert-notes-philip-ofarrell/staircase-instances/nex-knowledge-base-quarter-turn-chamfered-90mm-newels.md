@@ -28,6 +28,11 @@ composition_tension_notes: |
   1. First authored SPECIFIC dimension without "approximately" qualifier — "90 × 90 mm solid timber newel posts" is stated as a specification, not an estimate. Composes with the Component Recognition Reference's "90 × 90 mm section (visual estimate)" and the cut-string overhang's "approximately 25 mm (varies by manufacturer)" — three different levels of dimensional certainty now in the dataset. Governance question: should dimensional-certainty levels become a first-class field (specification / typical / visual-estimate)?
   2. Two-tone finish combination introduces a new class of design feature that spans multiple components — governance question: should cross-component finish combinations be a first-class multi-tag?
   3. Stair runner carpet introduces soft furnishings ON the staircase (distinct from Interior Integration surrounding-room content) — governance question: is on-staircase-soft-furnishing a first-class field?
+brain: Staircase
+subject: Chamfered Newel Post
+domain: Components
+intent: Learn
+information_type: Definition
 ---
 
 # NEX Knowledge Base

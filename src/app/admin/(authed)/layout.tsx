@@ -37,6 +37,7 @@ const NAV_ITEMS: { href: string; label: string; live: boolean; redZone?: boolean
   { href: "/admin/nex/research", label: "Research", live: true },
   { href: "/admin/nex/weekly", label: "Weekly", live: true },
   { href: "/admin/nex/teach", label: "Teach", live: true },
+  { href: "/nex-authoring", label: "Authoring (open)", live: true },
   { href: "/admin/nex/backup", label: "Backup", live: true },
   { href: "/admin/nex/marketing", label: "Marketing", live: true },
   { href: "/admin/nex/character", label: "Character", live: true },

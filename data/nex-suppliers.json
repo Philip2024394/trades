@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:00:00.000Z",
+  "note": "Supplier registry for the Business Brain · Supplier Preparation Workflow v1 (Philip 2026-08-02). Each record represents a professional Nex can prepare a brief for. New records added via admin endpoint (not yet built). Enquiries are matched by country + trade + capabilities.",
+  "suppliers": [
+    {
+      "supplier_id": "NEX-SUPPLIER-000001",
+      "name": "Nex Stairplan",
+      "trade": ["staircase_manufacturer", "staircase_designer", "staircase_installer"],
+      "countries": ["UK", "IE"],
+      "capabilities": [
+        "straight_flight", "quarter_turn", "half_turn", "curved", "spiral", "floating",
+        "oak", "walnut", "ash", "painted_timber", "engineered_timber",
+        "glass_balustrade", "stainless_steel", "timber_balustrade",
+        "bespoke_manufacture", "cad_design", "site_survey"
+      ],
+      "notes": "Primary Nex partner · full staircase design, manufacture and installation across UK + Ireland.",
+      "handoff_message": "I'll pass this brief directly to a Nex Stairplan designer. They'll review the details and come back to you with an accurate response — usually within one working day.",
+      "active": true,
+      "verified": true,
+      "priority": "primary"
+    }
+  ],
+  "generic_fallbacks": {
+    "US": "I don't yet have a partnered US staircase manufacturer in my directory. For now I can prepare a professional brief you can send to any US stair specialist — the brief itself makes their response much more accurate.",
+    "CA": "I don't yet have a partnered Canadian manufacturer in my directory. I can still prepare a professional brief you can send to a local Canadian stair specialist.",
+    "AU": "I don't yet have a partnered Australian manufacturer in my directory. I can still prepare a professional brief you can send to a local Australian stair specialist.",
+    "NZ": "I don't yet have a partnered NZ manufacturer in my directory. I can still prepare a professional brief you can send to a local NZ stair specialist."
+  }
+}

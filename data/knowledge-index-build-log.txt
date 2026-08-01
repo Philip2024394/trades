@@ -1,0 +1,31 @@
+NEX Knowledge Index Build Log
+=============================
+Generator:         nex-knowledge-index-builder-v1
+Version:           v1 · phase 3
+Generated at:      2026-07-31T21:17:08.167Z
+Source root:       C:\Users\Victus\trades\data\nex-reference-brains
+Files processed:   218
+Payload hash:      26650a5c28c314a589e76bf24f88fda570e63e81b5a89e064d927722f1196b62
+
+Status counts
+-------------
+  complete             20
+  incomplete           176
+  no_frontmatter       22
+  parse_error          0
+
+Router-field coverage
+---------------------
+  brain                27/218  (12.4%)
+  subject              24/218  (11.0%)
+  domain               31/218  (14.2%)
+  intent               25/218  (11.5%)
+  information_type     25/218  (11.5%)
+
+Missing-field totals (from incomplete articles)
+-----------------------------------------------
+  brain                191
+  subject              194
+  domain               187
+  intent               193
+  information_type     193

@@ -22,7 +22,11 @@ export function PlatformBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
 
-  const isHome     = pathname === "/nex-app";
+  // Philip 2026-08-02 · Path B · Home = Staircase Brain "discover" (brain-first).
+  // isHome matches either the redirect-source (/nex-app) or the target route so
+  // the tab stays highlighted through the redirect hop and while on the brain surface.
+  const isHome     = pathname === "/nex-app"
+    || pathname?.startsWith("/nex-app/brains/staircase");
   const isChats    = pathname?.startsWith("/nex-app/messages");
   const isTools    = pathname?.startsWith("/nex-app/tools");
   const isProfile  = pathname?.startsWith("/nex-app/profile");
@@ -38,7 +42,7 @@ export function PlatformBottomNav() {
       }}
       aria-label="Primary"
     >
-      <NavItem icon={Home}          label="Home"    active={!!isHome}    href="/nex-app" />
+      <NavItem icon={Home}          label="Home"    active={!!isHome}    href="/nex-app/brains/staircase?state=discover" />
       <NavItem icon={MessageCircle} label="Chats"   active={!!isChats}   href="/nex-app/messages" notificationDot />
 
       {/* Centre NEX button — orange, elevated, opens the AI chat entry */}

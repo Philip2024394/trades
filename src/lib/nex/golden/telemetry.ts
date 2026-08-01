@@ -20,6 +20,9 @@ export type ChatReplyEvent = {
   had_greeting:         boolean;  // classifier's mixed-intent hint
   top_cosine:           number;   // raw cosine of best candidate (before bonuses); 0 if none scored
   retrieval_gated:      boolean;  // true when threshold caused retrieved_ids=[]
+  served_by?:           "runtime-core-v1" | "composer" | "staircase-advisor-v0";  // pipeline marker · defaults to "composer" if omitted
+  runtime_core_strategy?: string;  // strategy name when served_by === "runtime-core-v1" · action name when advisor-v0
+  user_message?:        string;    // Philip 2026-08-01 · captured for gap-logging when composer serves the reply
 };
 
 /** Fire-and-forget. Awaited so tests can synchronise, but any error
@@ -48,6 +51,9 @@ export async function logNexChatReply(event: ChatReplyEvent): Promise<void> {
         had_greeting:        event.had_greeting,
         top_cosine:          event.top_cosine,
         retrieval_gated:     event.retrieval_gated,
+        served_by:           event.served_by ?? "composer",
+        runtime_core_strategy: event.runtime_core_strategy,
+        user_message:        event.user_message,
       },
     });
   } catch {

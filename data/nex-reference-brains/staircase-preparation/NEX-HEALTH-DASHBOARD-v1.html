@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NEX Health Dashboard v1 — Engineering KPIs</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", Roboto, sans-serif; background: #0f172a; color: #e2e8f0; margin: 0; padding: 32px; min-height: 100vh; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 22px; margin: 0 0 4px; color: #f8fafc; }
+  .subtitle { color: #94a3b8; font-size: 13px; margin-bottom: 24px; }
+  .meta { color: #64748b; font-size: 12px; margin-bottom: 24px; font-style: italic; }
+
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #cbd5e1; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 1px solid #334155; }
+
+  table.kpi { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+  table.kpi th { background: #334155; color: #cbd5e1; padding: 10px 14px; text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+  table.kpi td { padding: 12px 14px; border-bottom: 1px solid #334155; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; color: #e2e8f0; }
+  table.kpi td:first-child { color: #f1f5f9; font-weight: 600; font-family: -apple-system, sans-serif; }
+  table.kpi tr:last-child td { border-bottom: none; }
+
+  .status-good     { color: #4ade80; font-weight: 700; }
+  .status-onway    { color: #a3e635; font-weight: 700; }
+  .status-fair     { color: #facc15; font-weight: 700; }
+  .status-work     { color: #fb923c; font-weight: 700; }
+  .status-target   { color: #64748b; font-style: italic; }
+  .status-perfect  { color: #22d3ee; font-weight: 700; }
+
+  .protected-strip { background: #1e293b; border: 1px solid #334155; border-left: 3px solid #22d3ee; padding: 14px 20px; margin-bottom: 24px; }
+  .protected-strip h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: #22d3ee; margin: 0 0 8px; }
+  .protected-strip .pill { display: inline-block; background: #0f4b58; color: #a5f3fc; padding: 3px 10px; border-radius: 10px; font-size: 11px; margin-right: 6px; margin-top: 4px; font-family: ui-monospace, monospace; }
+
+  .footer { color: #64748b; font-size: 11px; margin-top: 32px; padding-top: 16px; border-top: 1px solid #1e293b; }
+  .footer code { background: #1e293b; padding: 2px 6px; border-radius: 3px; font-family: ui-monospace, "SF Mono", Menlo, monospace; color: #cbd5e1; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>NEX Health Dashboard v1</h1>
+  <div class="subtitle">Engineering KPIs across the whole system · not just per-build.</div>
+  <div class="meta">Format authored by Philip O'Farrell · 2026-07-31. Composes with <code style="background:#1e293b;color:#cbd5e1;padding:2px 6px;border-radius:3px;">NEX-ROUTER-BUILD-DASHBOARD-v1.html</code> (per-build view) and <code style="background:#1e293b;color:#cbd5e1;padding:2px 6px;border-radius:3px;">NEX-COGNITIVE-MODEL-v1.md</code> (the contract).</div>
+
+  <!-- Protected Assets Strip -->
+  <div class="protected-strip">
+    <h3>Protected Assets (Philip 2026-07-31 · never change casually)</h3>
+    <span class="pill">Standard v1</span>
+    <span class="pill">Cognitive Model v1</span>
+    <span class="pill">Validation Suite</span>
+    <span class="pill">Dashboards (historical trend)</span>
+    <span class="pill">Governance Process</span>
+  </div>
+
+  <!-- Router Accuracy KPIs -->
+  <h2>Router Accuracy</h2>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Current (v0.07)</th><th>Target</th><th>Status</th></tr>
+    <tr><td>Overall routing accuracy</td><td>71.7%</td><td>90%</td><td class="status-fair">on the way</td></tr>
+    <tr><td>Subject accuracy</td><td>82.6%</td><td>95%</td><td class="status-onway">gap 12.4%</td></tr>
+    <tr><td>Intent accuracy</td><td>93.5%</td><td>98%</td><td class="status-onway">gap 4.5%</td></tr>
+    <tr><td>Domain accuracy</td><td>91.3%</td><td>98%</td><td class="status-onway">gap 6.7%</td></tr>
+    <tr><td>Information Type accuracy</td><td>89.1%</td><td>95%</td><td class="status-onway">gap 5.9%</td></tr>
+    <tr><td>Clarify accuracy</td><td>97.8%</td><td>99%+</td><td class="status-good">near target</td></tr>
+    <tr><td>Brain accuracy</td><td>100.0%</td><td>—</td><td class="status-perfect">solved</td></tr>
+  </table>
+
+  <!-- Governance KPIs -->
+  <h2>Governance & Stability</h2>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr>
+    <tr><td>Regression count (v0.07)</td><td>0</td><td>0</td><td class="status-good">clean</td></tr>
+    <tr><td>Regression count (across all builds)</td><td>1 total (v0.06 · governance-resolved)</td><td>near-zero</td><td class="status-good">healthy</td></tr>
+    <tr><td>Validation suite size</td><td>46 rows · 7 classes</td><td>growing continuously</td><td class="status-good">healthy growth</td></tr>
+    <tr><td>Router builds since v0.01</td><td>7 (v0.01 → v0.07)</td><td>—</td><td class="status-good">shipped</td></tr>
+    <tr><td>Standard v1 modifications</td><td>0</td><td>0 (protected)</td><td class="status-perfect">unmodified</td></tr>
+    <tr><td>v2 candidates (preserved · not built)</td><td>8</td><td>each with reality signal</td><td class="status-good">disciplined</td></tr>
+  </table>
+
+  <!-- Coverage KPIs -->
+  <h2>Subject Intelligence Coverage</h2>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr>
+    <tr><td>Canonical subjects in dictionary</td><td>27</td><td>All major staircase components</td><td class="status-onway">core done</td></tr>
+    <tr><td>Concept resolution coverage (subjects with homeowner_terms)</td><td>5 (Newel post · Handrail · Tread · Riser · String)</td><td>50+ subjects</td><td class="status-work">early</td></tr>
+    <tr><td>Homeowner terminology entries</td><td>~35 phrases</td><td>500+ across all subjects</td><td class="status-work">early</td></tr>
+    <tr><td>Material extraction (multi-value)</td><td>6 materials</td><td>All staircase materials</td><td class="status-onway">core done</td></tr>
+    <tr><td>Aliases per subject (average)</td><td>~4</td><td>as many as reality demands</td><td class="status-target">empirical</td></tr>
+  </table>
+
+  <!-- Intent + Domain Coverage -->
+  <h2>Router Vocabulary</h2>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr>
+    <tr><td>Intent values enumerated</td><td>15 (Learn · See · Consult · Compare · Buy · Quote · Service · Advise · Explain · Browse · Why · Reality · Confused · Diagnostic · Consult)</td><td>evolve as reality demands</td><td class="status-good">healthy</td></tr>
+    <tr><td>Info Type values enumerated</td><td>14 (Definition · Types · Dimensions · Options · Cost · Gallery · Comparison · Function · Best Practice · Recommendation · Visual · Reasoning · Reality · Diagnosis · Inquiry)</td><td>evolve as reality demands</td><td class="status-good">healthy</td></tr>
+    <tr><td>Knowledge Domains</td><td>15+ (Classification · Components · Materials · Installation · Design · Workshop · Reference Gallery · Customer FAQ · Sales · Pricing · Recommendation · Engineering · Reality Check · Teaching · Troubleshooting · Scope of Work · Species)</td><td>evolve as reality demands</td><td class="status-good">healthy</td></tr>
+    <tr><td>Brains (currently active)</td><td>2 (Staircase · Materials)</td><td>6+ (Tool · Timber · Joinery · Interior · Construction · Loft Ladder etc. · awaits Reality signal)</td><td class="status-target">reality-driven</td></tr>
+  </table>
+
+  <!-- Response Confidence KPIs (partial · full metric awaits Composer layer) -->
+  <h2>Response Confidence (partial · Composer not yet built)</h2>
+  <table class="kpi">
+    <tr><th>Metric</th><th>Current</th><th>Target</th><th>Status</th></tr>
+    <tr><td>Router Confidence emitted per query</td><td>Yes (aggregate + per-dimension)</td><td>—</td><td class="status-good">built</td></tr>
+    <tr><td>Low-Confidence → Clarify enforcement</td><td>Yes (Runtime Contract)</td><td>—</td><td class="status-good">built</td></tr>
+    <tr><td>Average Router confidence</td><td>~86% (across passing rows)</td><td>&gt;90%</td><td class="status-onway">on the way</td></tr>
+    <tr><td>Unknown query rate</td><td>~14% (queries below CONFIDENCE_THRESHOLD)</td><td>&lt;5%</td><td class="status-work">room to improve</td></tr>
+    <tr><td>Knowledge Confidence (source · verification · approval)</td><td>—</td><td>every fact carries confidence</td><td class="status-target">v2 candidate</td></tr>
+  </table>
+
+  <!-- Cognitive Quality Index (Generation 3 KPI) -->
+  <h2>Cognitive Quality Index · CQI (Philip 2026-07-31 · Generation 3 north star · not yet measured)</h2>
+  <table class="kpi">
+    <tr><th>Dimension</th><th>Target</th><th>Current</th><th>Measurement Path</th></tr>
+    <tr><td>Understanding</td><td>95%</td><td class="status-onway">71.7% (approximation from overall Router pass rate)</td><td class="status-target">Router accuracy proxy</td></tr>
+    <tr><td>Subject Resolution</td><td>95%</td><td class="status-onway">82.6%</td><td>Per-dim Subject accuracy</td></tr>
+    <tr><td>Clarification Quality</td><td>98%</td><td class="status-good">97.8% (Clarify decision accuracy)</td><td>Per-dim Clarify accuracy</td></tr>
+    <tr><td>Reasoning Accuracy</td><td>90%</td><td class="status-target">not measurable yet · awaits Reasoning Engine (v2 candidate)</td><td class="status-target">Generation 3</td></tr>
+    <tr><td>Confidence Calibration</td><td>95%</td><td class="status-target">not measured · awaits calibration study (compare Router Confidence vs actual correctness)</td><td class="status-target">requires labelled outcomes</td></tr>
+    <tr><td>Evidence Traceability</td><td>100%</td><td class="status-target">partial · Validation Suite is traceable · runtime evidence-selection awaits Retrieval layer</td><td class="status-target">Generation 3</td></tr>
+    <tr><td>Teaching Effectiveness</td><td>90%</td><td class="status-target">not measurable yet · awaits Adaptive Teaching module (v2 candidate)</td><td class="status-target">Generation 3</td></tr>
+    <tr><td>Cognitive Efficiency</td><td>95%</td><td class="status-target">not measurable yet · awaits Executive Controller (Generation 3 · v2 candidate)</td><td class="status-target">Generation 3</td></tr>
+    <tr><td>Governance Compliance</td><td>100%</td><td class="status-perfect">100% · Standard v1 unmodified · 9 v2 candidates disciplined · zero silent architectural changes</td><td>audit-based</td></tr>
+  </table>
+  <div class="protected-strip" style="border-left-color:#facc15; margin-top:12px;">
+    <h3 style="color:#facc15;">CQI Reframe (Philip 2026-07-31)</h3>
+    <div style="color:#e2e8f0; font-size:12px; line-height:1.6;">
+      Generation 2 measured <em>routing quality</em> (single pass rate). Generation 3 measures <em>thinking quality</em> (nine dimensions). Overall CQI is the geometric mean of the nine dimensions once each is measurable. Currently 3 of 9 measured · 6 await Generation 3 builds. Aligns with the philosophy: <strong>use the right processing at the right time</strong>.
+    </div>
+  </div>
+
+  <!-- Repository Structure -->
+  <h2>Repository Structure (Philip 2026-07-31 · three-layer natural organization)</h2>
+  <table class="kpi">
+    <tr><th>Layer</th><th>Contents</th><th>Purpose</th></tr>
+    <tr><td class="status-perfect">FOUNDATION</td><td>Standard v1 · Cognitive Model v1 · Validation Suite · Governance</td><td>What is stable</td></tr>
+    <tr><td class="status-good">IMPLEMENTATION</td><td>Router Builds · Subject Intelligence · Patterns · Reports</td><td>What is production-ready</td></tr>
+    <tr><td class="status-onway">RESEARCH</td><td>Thinking Modes · Brain Evolution · Confidence Layer · Estimator · Voice · Multilingual · Knowledge Graph · Nine Capabilities · Generation 3 Cognitive Efficiency</td><td>What is under investigation</td></tr>
+  </table>
+
+  <div class="footer">
+    <strong>Update this dashboard after every Router build.</strong> Historical trend is a protected asset — future contributors should be able to see v0.01 → v0.07 → v1.0 → v2.0 progression.<br><br>
+    Regenerate with new build data by editing this file directly · or (future) via <code>scripts/regenerate-nex-health-dashboard.mjs</code> once metrics are automated.<br><br>
+    <strong>Not for customers.</strong> Engineering-only view. Customer-facing quality is measured by Trust Metric (*"Would you trust NEX to answer 100 conversations by itself?"*) · not raw KPIs.
+  </div>
+
+</div>
+
+</body>
+</html>

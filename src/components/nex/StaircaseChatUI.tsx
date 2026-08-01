@@ -17,6 +17,39 @@ type Citation = {
   source:  string;
 };
 
+// Philip 2026-08-01 · Visual Brain attachment shape returned by the Advisor API
+// (matches AdvisorImageAttachment in src/lib/nex/staircase-advisor/index.ts).
+// One entry = one confirmed staircase design · UI renders a thumbnail gallery
+// inline with the Nex response.
+type VisualBrainImageState = "concept" | "reference" | "manufacturer" | "customer_project";
+
+type VisualBrainAttachment = {
+  design_id:            string;
+  title?:               string;
+  design_family?:       string;
+  image_id?:            string;
+  url:                  string;
+  additional_views?:    string[];
+  view_types?:          string[];
+  caption:              string;
+  staircase_type:       string;
+  design_style:         string;
+  confidence:           number;
+  matched_attributes:   string[];
+  // Philip 2026-08-02 · Visual Brain Connection v1 · transparency layer
+  image_state?:         VisualBrainImageState;
+  image_state_badge?:   string;
+  transparency_caption?: string;
+};
+
+// Visual style per image state — colour signals honesty tier.
+const IMAGE_STATE_BADGE_STYLE: Record<VisualBrainImageState, { bg: string; fg: string }> = {
+  concept:          { bg: "#fef3c7", fg: "#92400e" }, // amber · "not a real product"
+  reference:        { bg: "#e0e7ff", fg: "#3730a3" }, // indigo · "style direction"
+  manufacturer:     { bg: "#dcfce7", fg: "#166534" }, // green · "real supplied product"
+  customer_project: { bg: "#f3e8ff", fg: "#6b21a8" }, // purple · "real installation"
+};
+
 type WoodCard = {
   id:         string;
   name:       string;
@@ -51,6 +84,7 @@ type Message = {
   citations?:      Citation[];
   woodsMentioned?: WoodCard[];
   woodsToShow?:    WoodCard[];
+  visualBrain?:    VisualBrainAttachment[];   // Philip 2026-08-01 · confirmed staircase designs rendered inline
   status?:         string;
 };
 
@@ -76,6 +110,19 @@ export function StaircaseChatUI() {
       content: "Welcome to Nex Staircases. You're now with my staircase specialist — I can help with design, stairparts, timber choices, regulations, product comparisons, supplier guidance, and technical advice from first ideas through to installation. What can I help you with today?"
     }
   ]);
+  // Philip 2026-08-01 · Conversation ID persistence.
+  // BEFORE THIS FIX: the request body omitted conversation_id, so the server
+  // minted a fresh UUID for every user message. That silently discarded every
+  // piece of Advisor state (last_user_query, install_location, next_decision_required,
+  // design_enquiry_context) between turns — making every conversation-continuity
+  // fix invisible in the browser. Now the component mints ONE UUID on mount
+  // and reuses it for every turn. If the server ever mints a different id
+  // (defensive), we accept the server value on the next turn.
+  const [conversationId, setConversationId] = useState<string>(() =>
+    (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function")
+      ? crypto.randomUUID()
+      : `conv-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+  );
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -142,7 +189,8 @@ export function StaircaseChatUI() {
         body: JSON.stringify({
           message: trimmed,
           history,
-          expertise_override: expertiseOverride
+          expertise_override: expertiseOverride,
+          conversation_id: conversationId,     // Philip 2026-08-01 · persist Advisor state across turns
         })
       });
       const data = await res.json();
@@ -150,6 +198,11 @@ export function StaircaseChatUI() {
         setError(data.error ?? "Something went wrong. Try again.");
         setLoading(false);
         return;
+      }
+      // Defensive · adopt whatever conversation_id the server confirms
+      // (usually the one we sent). Handles server-mint / mid-session rotation.
+      if (typeof data.conversation_id === "string" && data.conversation_id.length > 0 && data.conversation_id !== conversationId) {
+        setConversationId(data.conversation_id);
       }
 
       const woodsMentioned: WoodCard[] = data.wood_cards ?? [];
@@ -191,6 +244,7 @@ export function StaircaseChatUI() {
           citations: data.citations,
           woodsMentioned,
           woodsToShow,
+          visualBrain: Array.isArray(data.visual_brain) ? data.visual_brain : undefined,
           status: data.status
         }
       ]);
@@ -303,6 +357,15 @@ export function StaircaseChatUI() {
               <div className="mt-3 flex flex-wrap gap-3 justify-start">
                 {msg.woodsToShow.map((w) => (
                   <WoodCardTile key={w.id} card={w} onEyeClick={() => openFullscreen(w.id)} />
+                ))}
+              </div>
+            )}
+
+            {/* Visual Brain gallery · Philip 2026-08-01 · confirmed staircase designs */}
+            {msg.role === "assistant" && msg.visualBrain && msg.visualBrain.length > 0 && (
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {msg.visualBrain.map((v) => (
+                  <VisualBrainTile key={v.design_id} attachment={v} />
                 ))}
               </div>
             )}
@@ -680,5 +743,78 @@ function FullscreenGallery({
         </div>
       )}
     </div>
+  );
+}
+
+// Philip 2026-08-01 · Visual Brain tile · renders ONE confirmed staircase design
+// inline with a Nex response. Shows the hero image + one-sentence caption. Click
+// opens the full-resolution image in a new tab (lightbox modal is a follow-up).
+function VisualBrainTile({ attachment }: { attachment: VisualBrainAttachment }) {
+  // Philip 2026-08-02 · Visual Brain Connection v1 · transparency layer.
+  // Every tile shows: (1) top-right badge naming the image state, and
+  // (2) a small transparency caption directly under the image so the
+  // customer knows what they are looking at (concept · reference ·
+  // manufacturer · customer project). Falls back to "concept" (safest)
+  // if state is missing — matches server-side default in imagesToAttachments.
+  const state: VisualBrainImageState = attachment.image_state ?? "concept";
+  const badgeText = attachment.image_state_badge ?? "Concept";
+  const transparency = attachment.transparency_caption
+    ?? "Nex generated design concept — showing possible appearance.";
+  const badgeStyle = IMAGE_STATE_BADGE_STYLE[state];
+
+  return (
+    <a
+      href={attachment.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex flex-col rounded-xl overflow-hidden border border-[#e6ddc7] bg-white shadow-sm hover:shadow-md transition-shadow"
+    >
+      <div className="relative w-full aspect-[4/3] overflow-hidden bg-[#f5eedb]">
+        {/* Using plain img to avoid Next/Image domain-config overhead here.
+            ImageKit URLs are already CDN-optimised · loading="lazy" for below-fold tiles. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={attachment.url}
+          alt={attachment.title ?? attachment.staircase_type}
+          loading="lazy"
+          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+        />
+        {/* Transparency badge · always rendered · signals image state at a glance */}
+        <div
+          className="absolute top-2 left-2 rounded-full text-[10px] font-semibold px-2 py-0.5 shadow-sm"
+          style={{ backgroundColor: badgeStyle.bg, color: badgeStyle.fg }}
+          title={transparency}
+        >
+          {badgeText}
+        </div>
+        {attachment.additional_views && attachment.additional_views.length > 0 && (
+          <div className="absolute top-2 right-2 rounded-full bg-black/60 text-white text-[10px] px-2 py-0.5 backdrop-blur">
+            +{attachment.additional_views.length} view{attachment.additional_views.length > 1 ? "s" : ""}
+          </div>
+        )}
+        {attachment.design_family && (
+          <div className="absolute bottom-2 left-2 rounded-full bg-white/90 text-[#166534] text-[10px] font-semibold px-2 py-0.5 shadow-sm">
+            {attachment.design_family}
+          </div>
+        )}
+      </div>
+      <div className="p-3 space-y-1">
+        {attachment.title && (
+          <div className="text-sm font-semibold text-[#2a3a2a] line-clamp-1">
+            {attachment.title}
+          </div>
+        )}
+        <div className="text-xs text-[#5a6b5a] line-clamp-3">
+          {attachment.caption}
+        </div>
+        {/* Prescribed transparency caption · Philip 2026-08-02 · verbatim from IMAGE_STATE_CAPTION */}
+        <div
+          className="text-[10px] italic pt-1 border-t border-[#f0e8d0]"
+          style={{ color: badgeStyle.fg }}
+        >
+          {transparency}
+        </div>
+      </div>
+    </a>
   );
 }

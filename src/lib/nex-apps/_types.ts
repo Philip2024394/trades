@@ -42,6 +42,10 @@ export type QuickAction = {
   canvas_variant?: string;    // e.g. "gallery" for Discover, "timbers" for Compare
   chat_intro?: string;        // Nex message to send when chip clicked
   filter?: Record<string, unknown>;   // pre-applied filter for Compare state
+  // Philip 2026-08-02 · optional href · when present, the tile navigates
+  // to this route instead of running a state transition. Used to point
+  // "Staircase Library" and "Trade Centre" tiles at their destinations.
+  href?: string;
 };
 
 // ─── Regulatory hook (per Configure state §2.3) ──────────────────

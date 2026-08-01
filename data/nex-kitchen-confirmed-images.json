@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "brain": "kitchen",
+  "updated_at": "2026-08-01T13:46:24.007Z",
+  "confirmed": [
+    {
+      "design_id": "NEX-KITCHEN-000001",
+      "title": "Kitchen Design Concept · Island Layout · Perspective Render with Design Process",
+      "design_family": "Modern",
+      "primary_brain": "kitchen",
+      "url": "https://ik.imagekit.io/5vv5pw26q/Untitledxcxcdvdfsdfdfdsasddsfsdfdfsdfasdssdsasdd.png",
+      "view_types": [
+        "hero"
+      ],
+      "kitchen_type": "island layout with seating · L or U-shape base plus wall units · tall appliance housing",
+      "layout": "base cabinets · wall cabinets · tall appliance housing · central island with seating · integrated oven and appliances · sink and mixer tap · pendant lighting",
+      "materials": [
+        "cabinet carcass and door timber",
+        "worktop (stone/quartz/timber · to specify)",
+        "appliance stainless steel",
+        "flooring (to specify)",
+        "wall finish (to specify)"
+      ],
+      "cabinet_style": "modern flat-front · base + wall + tall housings · integrated appliances",
+      "worktop": "modern flush worktop across island and perimeter runs",
+      "appliances": [
+        "integrated oven",
+        "integrated cooker",
+        "extractor over cooker",
+        "sink with mixer tap",
+        "island prep zone"
+      ],
+      "lighting": "pendant lighting over the island · task and ambient layers indicated on the plan",
+      "design_style": "modern contemporary kitchen design · professional design process illustration",
+      "project_suitability": [
+        "modern_home",
+        "open_plan_home",
+        "family_home",
+        "kitchen_renovation",
+        "new_build_kitchen"
+      ],
+      "related_articles": [],
+      "customer_description": "A professional kitchen design concept presented as a detailed perspective architectural drawing alongside a photorealistic finished rendering. Shows a modern kitchen with a central island with seating, base and wall cabinets, tall appliance housings, integrated oven and appliances, and pendant lighting. This is the typical design process used by kitchen designers before a kitchen is manufactured and installed — measured dimensions, design notes, architectural plans and technical drawings all visible.",
+      "designer_notes": "FIRST record in the Kitchen Visual Brain scaffold. Per ADR-0033 Brain Isolation, this library is separate from the staircase Confirmed Design Library and is not queried by any customer surface yet. Schema mirrors staircase library shape but replaces staircase-specific fields (balustrade_style · handrail_style · newel_style) with kitchen-domain fields (kitchen_type · cabinet_style · worktop · appliances · lighting). This image doubles as a DESIGN-PROCESS reference (drafting tools · plans · perspective render together) not just a finished-kitchen concept. When Kitchen Centre launches, this record is ready to migrate into the Kitchen Advisor retrieval path.",
+      "confirmed_by": "Philip O'Farrell",
+      "confirmed_at": "2026-08-01T13:46:24.007Z"
+    }
+  ]
+}

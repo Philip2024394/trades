@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "brain": "kitchen",
+  "bucket": "pending_review",
+  "purpose": "AI-extracted metadata from kitchen vision scans awaiting Philip's approval. On approval, records migrate to the Confirmed Library.",
+  "isolation_note": "ADR-0033 · Kitchen Brain only. Never surfaces to customers. Never touched by staircase code paths.",
+  "updated_at": "2026-08-01T00:00:00.000Z",
+  "images": []
+}
