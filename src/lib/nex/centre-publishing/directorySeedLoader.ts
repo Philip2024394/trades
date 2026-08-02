@@ -53,36 +53,135 @@ type DirectorySeed = {
 
 const SEEDS_ROOT = path.join(process.cwd(), "data", "directory-seeds");
 
-// Philip 2026-08-02 · rotating pool of NEX-owned portrait staircase
-// images used when a seed has no cover_image AND the matcher hasn't
-// hit. Previously a single image made every unmatched card look
-// identical. Every URL here comes from the confirmed staircase library
-// (Nex001-Nex029), filtered to portraits (aspect 0.45-0.80) so they
-// crop cleanly at every card ratio. ADR-0022-compliant — all NEX-owned.
-// Each seed gets a stable pick via hash on seed.id so a merchant always
-// shows the same image, but different merchants show different images.
-const INTERIM_STAIRCASE_POOL = [
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_16_11%20AM.png",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_21_15%20AM.png",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_27_08%20AM.png",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_19_59%20AM.png",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2012_05_37%20AM.png",
-  "https://ik.imagekit.io/5vv5pw26q/Untitledxcxcdvdfsdfdfdsasddsfsdfdfsdfasdssdsasdddsfsdfdssdsddasdasd.png",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_35_12%20AM.png?updatedAt=1785609336679",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_17_34%20AM.png?updatedAt=1785608276930",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_12_10%20AM.png?updatedAt=1785615152201",
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_29_45%20AM.png?updatedAt=1785612608208",
-] as const;
+// Philip 2026-08-02 · AI Merchant Image Intelligence v1 · trade-aware pool.
+//
+// IMMUTABLE RULE (Philip 2026-08-02): Nex must NEVER assign an image at
+// random. The assigned image must match the merchant's actual trade and
+// specialisation. A glass-staircase specialist gets glass. An oak
+// manufacturer gets oak. A commercial company gets commercial work.
+// A traditional joiner gets traditional. Never assign a floating
+// staircase to a closed-string oak specialist.
+//
+// Every URL here comes from the confirmed staircase library
+// (Nex001-Nex029), filtered to portraits (aspect 0.45-0.80). Each
+// entry carries a tag list describing what the image ACTUALLY depicts
+// (materials · style · structure · features). At match time we score
+// each candidate against the merchant's text (name + description +
+// services + tags + category + primary_trade) and pick the best match.
+// Highest score wins; ties break deterministically on seed.id.
+//
+// This is v1 of a larger vision · full spec in memory
+// (project_nex_ai_merchant_image_intelligence_2026_08_02.md):
+// eventually per-image analytics · scheduled rotation · A/B testing ·
+// merchant dashboards · AI recommendations · membership progression.
+const INTERIM_STAIRCASE_POOL: ReadonlyArray<{ url: string; tags: readonly string[] }> = [
+  {
+    // Nex005 · Industrial · walnut · stainless-steel cable · helical spiral bespoke
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_16_11%20AM.png",
+    tags: ["walnut", "hardwood", "steel", "cable", "stainless", "industrial", "contemporary", "helical", "spiral", "bespoke", "sculptural"],
+  },
+  {
+    // Nex011 · Contemporary oak · matte black steel · quarter-turn dog-leg
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_21_15%20AM.png",
+    tags: ["oak", "timber", "steel", "black", "painted", "contemporary", "luxury", "quarter turn", "quarter-turn", "dog leg", "dog-leg", "half turn", "half-turn"],
+  },
+  {
+    // Nex013 · Contemporary · cable balustrade · open-riser · timber side string
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_27_08%20AM.png",
+    tags: ["walnut", "oak", "timber", "hardwood", "cable", "stainless", "contemporary", "minimalist", "straight", "open riser", "open-riser"],
+  },
+  {
+    // Nex014 · Contemporary · frameless glass · brushed steel illuminated risers
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_19_59%20AM.png",
+    tags: ["walnut", "oak", "timber", "glass", "frameless", "stainless", "steel", "led", "illuminated", "contemporary", "minimalist", "luxury", "straight", "closed string", "closed-string"],
+  },
+  {
+    // Nex020 · Ultra-luxury sculptural double-curved · black steel · walnut · frameless curved glass
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2012_05_37%20AM.png",
+    tags: ["walnut", "oak", "timber", "steel", "glass", "frameless", "curved", "helical", "sculptural", "luxury", "biophilic", "bespoke", "hospitality", "commercial", "atrium"],
+  },
+  {
+    // Nex024 · Modern floating · timber treads · frameless glass · LED base
+    url: "https://ik.imagekit.io/5vv5pw26q/Untitledxcxcdvdfsdfdfdsasddsfsdfdfsdfasdssdsasdddsfsdfdssdsddasdasd.png",
+    tags: ["timber", "oak", "walnut", "ash", "hardwood", "glass", "frameless", "floating", "cantilever", "modern", "contemporary", "minimalist", "led", "luxury"],
+  },
+  {
+    // Nex025 · Contemporary straight · black mono-stringer · timber treads · frameless glass
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_35_12%20AM.png?updatedAt=1785609336679",
+    tags: ["timber", "oak", "walnut", "steel", "black", "glass", "frameless", "contemporary", "modern", "industrial", "luxury", "straight", "mono stringer", "mono-stringer", "open riser", "open-riser"],
+  },
+  {
+    // Nex026 · Contemporary straight · black side-stringer · dark walnut · frameless glass
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_17_34%20AM.png?updatedAt=1785608276930",
+    tags: ["walnut", "timber", "oak", "steel", "black", "glass", "frameless", "contemporary", "modern", "luxury", "straight", "floating", "open riser", "open-riser"],
+  },
+  {
+    // Nex027 · Classic quarter-turn oak · feature landing · closed-string · painted risers
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_12_10%20AM.png?updatedAt=1785615152201",
+    tags: ["oak", "timber", "hardwood", "painted", "white", "traditional", "classic", "transitional", "family", "quarter turn", "quarter-turn", "closed string", "closed-string", "joinery", "domestic", "residential", "renovation"],
+  },
+  {
+    // Nex028 · Modern oak open-riser · steel stringer · vertical oak slat balustrade
+    url: "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_29_45%20AM.png?updatedAt=1785612608208",
+    tags: ["oak", "timber", "hardwood", "steel", "black", "modern", "scandinavian", "minimalist", "contemporary", "straight", "open riser", "open-riser", "floating"],
+  },
+];
 
-/** Deterministic per-seed pool pick · stable across reloads. */
-function pickInterimStaircase(seedId: string): string {
-  let h = 0;
-  for (let i = 0; i < seedId.length; i++) {
-    h = ((h << 5) - h) + seedId.charCodeAt(i);
-    h |= 0;
+/**
+ * Trade-aware pool pick · Philip 2026-08-02.
+ *
+ * Priority order per the AI Image Intelligence rule:
+ *   1. (upstream) Merchant's own uploaded project images
+ *   2. (upstream) Merchant's approved hero image
+ *   3. THIS FUNCTION · Nex-assigned image matching the merchant's trade
+ *   4. Never assign unrelated images just to fill a card
+ *
+ * Scores each pool image by counting how many of its tags appear in the
+ * merchant's business text. Highest score wins. Ties break deterministically
+ * on seed.id so a merchant always shows the same image (brand recognition).
+ * When nothing scores > 0, falls back to a deterministic hash across the
+ * whole pool — still stable per merchant, still all staircase imagery.
+ */
+function pickInterimStaircase(seedId: string, seed?: DirectorySeed): string {
+  const hash = (() => {
+    let h = 0;
+    for (let i = 0; i < seedId.length; i++) {
+      h = ((h << 5) - h) + seedId.charCodeAt(i);
+      h |= 0;
+    }
+    return Math.abs(h);
+  })();
+
+  if (seed) {
+    const merchantText = [
+      seed.business_name,
+      seed.description ?? "",
+      (seed.services ?? []).join(" "),
+      (seed.tags ?? []).join(" "),
+      seed.category ?? "",
+      seed.primary_trade ?? "",
+    ].join(" ").toLowerCase();
+
+    const scored = INTERIM_STAIRCASE_POOL.map((img) => {
+      let hits = 0;
+      for (const tag of img.tags) {
+        if (merchantText.includes(tag.toLowerCase())) hits++;
+      }
+      return { url: img.url, score: hits };
+    });
+    scored.sort((a, b) => b.score - a.score);
+
+    const topScore = scored[0]?.score ?? 0;
+    if (topScore > 0) {
+      // Break ties deterministically among equally-scored images so a
+      // merchant always shows the same image but the pool distributes evenly.
+      const tied = scored.filter((s) => s.score === topScore);
+      return tied[hash % tied.length].url;
+    }
   }
-  const idx = Math.abs(h) % INTERIM_STAIRCASE_POOL.length;
-  return INTERIM_STAIRCASE_POOL[idx];
+
+  // No seed context OR nothing matched · pure hash pick across the pool.
+  return INTERIM_STAIRCASE_POOL[hash % INTERIM_STAIRCASE_POOL.length].url;
 }
 
 // Curated NEX-D-XXX → hero image URL overrides. Filled in as Philip
@@ -264,10 +363,13 @@ export async function loadDirectorySeedsAsFeedItems(): Promise<CentreFeedItem[]>
       // matcher failure never crashes the feed — fall through to placeholder
     }
 
-    // 3. Interim placeholder · rotates through the confirmed-library pool
-    // so unmatched seeds show varied staircase imagery. Stable per seed.
+    // 3. Trade-aware pool pick · Philip 2026-08-02 · AI Image Intelligence v1.
+    // Passes the seed context so the pool image is chosen by matching the
+    // merchant's business text against per-image trade tags (glass · oak ·
+    // steel · traditional · commercial · etc.). Falls back to a
+    // deterministic hash pick when nothing scores.
     byImportAsc[i].item.hero_image_url = applyCardCrop(
-      pickInterimStaircase(byImportAsc[i].seed.id)
+      pickInterimStaircase(byImportAsc[i].seed.id, byImportAsc[i].seed)
     );
   }
 
