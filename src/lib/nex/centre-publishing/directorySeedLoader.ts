@@ -53,13 +53,37 @@ type DirectorySeed = {
 
 const SEEDS_ROOT = path.join(process.cwd(), "data", "directory-seeds");
 
-// Interim generic staircase placeholder used when a seed has no
-// cover_image yet. Same NEX-owned hero art already visible at the
-// top of /nex-app/centre — proven to load and ADR-0022-compliant
-// (NEX-owned generated asset, option (c) in §4). Replaced per-card
-// as Philip curates NEX-D-XXX → specific-image mappings.
-const INTERIM_STAIRCASE_PLACEHOLDER =
-  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Jul%2025,%202026,%2012_12_45%20AM.png";
+// Philip 2026-08-02 · rotating pool of NEX-owned portrait staircase
+// images used when a seed has no cover_image AND the matcher hasn't
+// hit. Previously a single image made every unmatched card look
+// identical. Every URL here comes from the confirmed staircase library
+// (Nex001-Nex029), filtered to portraits (aspect 0.45-0.80) so they
+// crop cleanly at every card ratio. ADR-0022-compliant — all NEX-owned.
+// Each seed gets a stable pick via hash on seed.id so a merchant always
+// shows the same image, but different merchants show different images.
+const INTERIM_STAIRCASE_POOL = [
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_16_11%20AM.png",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_21_15%20AM.png",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_27_08%20AM.png",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2001_19_59%20AM.png",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2012_05_37%20AM.png",
+  "https://ik.imagekit.io/5vv5pw26q/Untitledxcxcdvdfsdfdfdsasddsfsdfdfsdfasdssdsasdddsfsdfdssdsddasdasd.png",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_35_12%20AM.png?updatedAt=1785609336679",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_17_34%20AM.png?updatedAt=1785608276930",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_12_10%20AM.png?updatedAt=1785615152201",
+  "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_29_45%20AM.png?updatedAt=1785612608208",
+] as const;
+
+/** Deterministic per-seed pool pick · stable across reloads. */
+function pickInterimStaircase(seedId: string): string {
+  let h = 0;
+  for (let i = 0; i < seedId.length; i++) {
+    h = ((h << 5) - h) + seedId.charCodeAt(i);
+    h |= 0;
+  }
+  const idx = Math.abs(h) % INTERIM_STAIRCASE_POOL.length;
+  return INTERIM_STAIRCASE_POOL[idx];
+}
 
 // Curated NEX-D-XXX → hero image URL overrides. Filled in as Philip
 // sends back curated matches from the manifest. Any listing NOT in
@@ -240,9 +264,10 @@ export async function loadDirectorySeedsAsFeedItems(): Promise<CentreFeedItem[]>
       // matcher failure never crashes the feed — fall through to placeholder
     }
 
-    // 3. Interim placeholder
+    // 3. Interim placeholder · rotates through the confirmed-library pool
+    // so unmatched seeds show varied staircase imagery. Stable per seed.
     byImportAsc[i].item.hero_image_url = applyCardCrop(
-      INTERIM_STAIRCASE_PLACEHOLDER
+      pickInterimStaircase(byImportAsc[i].seed.id)
     );
   }
 
