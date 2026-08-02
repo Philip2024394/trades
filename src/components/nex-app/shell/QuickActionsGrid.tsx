@@ -7,26 +7,38 @@
 import { useRouter } from "next/navigation";
 import {
   Box, PencilRuler, Calculator, Layers, Puzzle, ClipboardCheck, FileText,
-  Lightbulb, MessageSquare, ShoppingCart, Images, Store, type LucideIcon
+  Lightbulb, MessageSquare, ShoppingCart, Images, Store, BookOpen,
+  type LucideIcon
 } from "lucide-react";
 import { useConversationState } from "../state/ConversationStateProvider";
 import type { QuickAction } from "@/lib/nex-apps/_types";
 
-// Icon mapping — deterministic lookup by tile label. Chosen to match
-// the canonical Staircase home mockup icons as closely as Lucide allows.
+// Icon mapping — deterministic lookup by tile label. Legacy tile labels
+// (Plan & Calculate · Cost Estimator · Materials · Components · Installation
+// Guide · Inspiration · Suppliers · AI Assistant · Staircase Library ·
+// Building Codes) are retained here for backwards-compat with older configs
+// but no longer appear on the Staircase home (Philip 2026-08-02 · 6-tile
+// grid). Active labels: Trade Centre · Stairs Library · Stair Regulations
+// · Stair Terminology · 3D Design · Nex Chat.
 const ICON_MAP: Record<string, LucideIcon> = {
+  // Active v3 labels
+  "Trade Centre":       Store,
+  "Stairs Library":     Images,
+  "Stair Regulations":  ClipboardCheck,
+  "Stair Terminology":  BookOpen,          // book icon · glossary/terminology reference
   "3D Design":          Box,
-  "Plan & Calculate":   PencilRuler,      // matches the ruler+pencil in mockup
+  "Nex Chat":           MessageSquare,
+  // Legacy labels · retained for backwards-compat with older configs
+  "Plan & Calculate":   PencilRuler,
   "Cost Estimator":     Calculator,
   "Materials":          Layers,
   "Components":         Puzzle,
-  "Building Codes":     ClipboardCheck,   // clipboard with tick, per mockup
-  "Installation Guide": FileText,          // document with lines, not open book
-  "Inspiration":        Lightbulb,         // legacy · retained for backwards-compat
-  "Staircase Library":  Images,            // Philip 2026-08-02 · full-screen swipe gallery
-  "AI Assistant":       MessageSquare,     // speech bubble
-  "Suppliers":          ShoppingCart,      // legacy · retained for backwards-compat
-  "Trade Centre":       Store              // Philip 2026-08-02 · Pinterest-style browse
+  "Building Codes":     ClipboardCheck,
+  "Installation Guide": FileText,
+  "Inspiration":        Lightbulb,
+  "Staircase Library":  Images,
+  "AI Assistant":       MessageSquare,
+  "Suppliers":          ShoppingCart,
 };
 
 function iconFor(label: string): LucideIcon {
@@ -36,7 +48,14 @@ function iconFor(label: string): LucideIcon {
 // Short two-line description per tile — matches mockup copy where
 // possible; auto-derived from the target state otherwise.
 const DESCRIPTION_MAP: Record<string, string> = {
+  // Active v3 labels
+  "Trade Centre":       "Browse verified trades & products",
+  "Stairs Library":     "Swipe through the full gallery",
+  "Stair Regulations":  "Rules, heights & safety by region",
+  "Stair Terminology":  "What every stair term really means",
   "3D Design":          "Visualize in 3D",
+  "Nex Chat":           "Ask Nex anything about staircases",
+  // Legacy labels · retained for backwards-compat with older configs
   "Plan & Calculate":   "Dimensions, rise, run & more",
   "Cost Estimator":     "Get instant estimates",
   "Materials":          "Wood, metal, glass & more",
@@ -47,7 +66,6 @@ const DESCRIPTION_MAP: Record<string, string> = {
   "Staircase Library":  "Swipe through the full gallery",
   "AI Assistant":       "Ask anything about staircases",
   "Suppliers":          "Find trusted suppliers",
-  "Trade Centre":       "Browse products, companies & projects"
 };
 
 function descriptionFor(label: string): string {

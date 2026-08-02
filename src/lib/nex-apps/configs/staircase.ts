@@ -15,33 +15,37 @@ export const staircaseConfig: TradeConfig = {
 
   hero_prompt: "What are you working on today?",
 
-  // 10-tile quick-actions grid per Master Trade Template v1.1 §3.4 + canonical Staircase home mockup.
-  // Tile order follows the mockup: row 1 (5 tiles), row 2 (5 tiles).
+  // 6-tile quick-actions grid · Philip 2026-08-02.
+  // Reduced from 10 → 6 to focus on the surfaces the Nex knowledge foundation
+  // actually powers today. Order per Philip's directive: Trade Centre first,
+  // Nex Chat last. Removed: Plan & Calculate · Cost Estimator · Materials ·
+  // Components · Installation Guide. Renamed: Staircase Library → Stairs
+  // Library · Building Codes → Stair Regulations · AI Assistant → Nex Chat.
+  // NEW: Stair Terminology (surfaces the Terminology Brain content).
   quick_actions: [
-    { label: "3D Design",           target_state: "configure", canvas_variant: "visualiser",
-      chat_intro: "Let's shape it up in 3D — what style are you thinking of?" },
-    { label: "Plan & Calculate",    target_state: "configure",
-      chat_intro: "Rise, going, headroom — tell me the floor-to-floor height and I'll walk you through the numbers." },
-    { label: "Cost Estimator",      target_state: "price",
-      chat_intro: "Staircase pricing depends on a few things — let me walk you through the tiers." },
-    { label: "Materials",           target_state: "compare", canvas_variant: "timbers",
-      chat_intro: "Here are the timbers we work with most — tap any to shortlist, or ask me which suits your project." },
-    { label: "Components",          target_state: "compare", canvas_variant: "components",
-      chat_intro: "Stringers, treads, spindles, balustrades — what part are you looking at?" },
-    { label: "Building Codes",      target_state: "discover", canvas_variant: "regulations",
-      chat_intro: "Approved Doc K covers stair regs — I can pull the sections most relevant to your project." },
-    { label: "Installation Guide",  target_state: "discover", canvas_variant: "installation",
-      chat_intro: "Step-by-step from measurement to first-fit — where do you want to start?" },
-    // Philip 2026-08-02 · repurposed · was "Inspiration" · now full-screen swipe gallery.
-    { label: "Staircase Library",   target_state: "discover", canvas_variant: "gallery",
-      href: "/nex-app/staircase-library",
-      chat_intro: "Design ideas to get you thinking — anything catching your eye?" },
-    { label: "AI Assistant",        target_state: "discover",
-      chat_intro: "Ask me anything about staircases — designs, regs, timber, prices, or your project." },
-    // Philip 2026-08-02 · repurposed · was "Suppliers" · now points at the existing Pinterest-style Trade Centre.
+    // Trade Centre · marketplace positioning (not directory).
     { label: "Trade Centre",        target_state: "compare", canvas_variant: "suppliers",
       href: "/nex-app/centre",
-      chat_intro: "Browse inspiration, products, companies, projects and professionals in the Trade Centre." }
+      chat_intro: "Browse verified trade professionals, staircase companies and premium products in the Trade Centre." },
+    // Stairs Library · full-screen swipe gallery.
+    { label: "Stairs Library",      target_state: "discover", canvas_variant: "gallery",
+      href: "/nex-app/staircase-library",
+      chat_intro: "Design ideas to get you thinking — anything catching your eye?" },
+    // Was "Building Codes" · staircase-specific regulation reference
+    // (regional layer applies · UK Part K, IRC, NCC etc.).
+    { label: "Stair Regulations",   target_state: "discover", canvas_variant: "regulations",
+      chat_intro: "Rise, going, handrail height, headroom — tell me your country and project type and I'll walk you through the relevant regulations." },
+    // NEW · surfaces the Terminology Brain content (stair · stairs · staircase
+    // · flight · shell · stairwell · balustrade etymology + how different
+    // tradespeople speak).
+    { label: "Stair Terminology",   target_state: "discover",
+      chat_intro: "Ask me what a term means — dog-leg, monkey volute, base rail, stringer, balustrade — and I'll explain where the word comes from and what it does." },
+    { label: "3D Design",           target_state: "configure", canvas_variant: "visualiser",
+      chat_intro: "Let's shape it up in 3D — what style are you thinking of?" },
+    // Was "AI Assistant" · rebranded as the Nex Chat entry point aligned
+    // with the Trade Centre / merchant chat vocabulary.
+    { label: "Nex Chat",            target_state: "discover",
+      chat_intro: "Ask me anything about staircases — designs, regulations, timber, materials, installation, or your project." }
   ],
 
   featured_projects_title: "Recent staircases",
