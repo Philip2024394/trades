@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "layer": "component",
+  "component_id": "base-rail",
+  "component_label": "Base Rail · Shoe Rail · Infill Slip",
+  "note": "Layer 2 · COMPONENT · Base Rail Brain (Philip 2026-08-02). Covers base rail, shoe rail (regional name), infill slip, groove-and-slip system, load path contribution, glass system application. Cross-links to baluster, handrail, newel. Rule A · verbatim.",
+  "cross_brain_links": [
+    "baluster",
+    "handrail",
+    "newel",
+    "balustrade-glass"
+  ],
+  "qa": [
+    {
+      "q": "What is a base rail on a staircase?",
+      "a": "A base rail is the horizontal timber fitted beneath the balusters. It normally sits between newel posts, on a landing, on a balcony, or on top of a string depending on the staircase design. Its main purposes are to support the balusters, keep them aligned, provide a fixing point, improve appearance, and create a continuous lower rail."
+    },
+    {
+      "q": "Why is it called a base rail?",
+      "a": "Because it forms the base of the balustrade. Think of the balustrade as a frame — handrail at the top, balusters in the middle, base rail at the bottom. The base rail is literally the bottom rail of that assembly."
+    },
+    {
+      "q": "What is a shoe rail?",
+      "a": "A shoe rail is another name for the base rail. The name comes from traditional joinery — the base rail acts like a shoe that the balusters sit inside, supporting and locating the bottom of each baluster. Base rail is the more widely used technical term today; shoe rail remains common in some regions and among certain manufacturers, particularly in North America."
+    },
+    {
+      "q": "Are base rail and shoe rail exactly the same thing?",
+      "a": "In many residential staircase companies, yes — the two names are used interchangeably. In some systems, 'base rail' refers to the timber rail itself while 'shoe rail' may describe a rail specifically designed to receive glass or balusters. The exact terminology varies between manufacturers and regions. Nex understands the context rather than assuming a universal definition."
+    },
+    {
+      "q": "What is an infill slip on a staircase balustrade?",
+      "a": "An infill slip is a narrow strip of timber inserted into the groove of the base rail after the balusters have been installed. It fills the remaining gap in the groove, creating a neat finished appearance and helping to secure the balusters."
+    },
+    {
+      "q": "Why does a balustrade need an infill slip?",
+      "a": "Without it, the groove would remain visible, balusters could have more movement within the groove, and the finished appearance would be less refined. The infill slip closes the groove, helps lock the balusters into position, conceals the fixing detail and provides a cleaner finish. It is both functional and decorative."
+    },
+    {
+      "q": "Is the infill slip the structural fixing that holds the balustrade together?",
+      "a": "No. The infill slip is not the primary structural fixing. The balustrade's overall strength comes from the complete system — newel posts provide the main anchorage, the handrail ties the balusters together, and the base rail locates their lower ends. The infill slip mainly retains the balusters within the groove and creates a clean finish."
+    },
+    {
+      "q": "Why is a continuous groove used instead of drilling individual holes for each baluster?",
+      "a": "Because a continuous groove is easier to machine, simpler to install, allows small spacing adjustments during assembly, and produces a cleaner appearance once the infill slip is fitted. Traditional spindle moulders and modern CNC machines can both produce this feature efficiently. This method has been used in staircase joinery for generations."
+    },
+    {
+      "q": "What size is a staircase base rail?",
+      "a": "There is no universal size — dimensions vary depending on baluster size, staircase style, manufacturer, timber species and design requirements. Common residential timber base rails are often designed to suit 32mm, 35mm or 41mm balusters. Overall rail dimensions vary between manufacturers and profile designs — no single fixed size is an industry standard."
+    },
+    {
+      "q": "How does the base rail system actually work during assembly?",
+      "a": "Machine the base rail → machine the continuous groove → leave the groove open → install and align the balusters into the groove → fit the handrail → check spacing and alignment → fit the infill slip. If the infill slip were installed first, the balusters could not be inserted into the groove. The sequence is deliberate."
+    },
+    {
+      "q": "Is the base rail structural or decorative?",
+      "a": "Both. It is a functional joinery component that supports alignment and assembly AND contributes to the balustrade's appearance. Its exact dimensions, profile and construction vary according to the staircase design, materials and the manufacturer's preferred methods. It is not 'only decorative' — it plays a real engineering role in locating the balusters."
+    },
+    {
+      "q": "Why is the groove in the base rail described as a datum?",
+      "a": "In engineering, a datum is a consistent reference point. The groove acts as a datum for the balusters — every baluster begins from the same reference line. This helps achieve consistent spacing, uniform height and straight alignment, contributing to manufacturing accuracy."
+    },
+    {
+      "q": "How does the base rail reduce cumulative error along a balustrade?",
+      "a": "Imagine fitting twenty balusters individually without a continuous groove — a very small positioning error on each baluster could accumulate along the balustrade. The grooved base rail helps control this by providing a continuous reference that keeps the balusters aligned during assembly."
+    },
+    {
+      "q": "How does the base rail fit into the balustrade load path?",
+      "a": "When someone leans on a handrail, the force travels through the balustrade: handrail → balusters → base rail → string or landing → newel posts → structure of the building. The base rail helps transfer and distribute loads within the assembled system, but the primary anchorage is normally provided by the newel posts and their fixings."
+    },
+    {
+      "q": "Why do some modern staircases have no visible base rail?",
+      "a": "Contemporary designs sometimes conceal or eliminate the traditional base rail — for example glass held in a recessed channel, steel balustrades with welded connections, or floating staircases with hidden fixings. Although the appearance changes, the engineering requirement remains the same: the balustrade still needs a secure method of locating and supporting its infill elements."
+    },
+    {
+      "q": "Do glass balustrades use a base rail?",
+      "a": "Glass balustrades may use a grooved base rail. Instead of individual balusters, the groove receives laminated glass, toughened laminated glass, or glazing packers and gaskets depending on the system. The principle is similar — the rail supports and locates the infill panel, whether it is timber or glass."
+    },
+    {
+      "q": "Why does a base rail have a specific profile shape?",
+      "a": "Base rails are produced in many profiles — square, chamfered, ogee, traditional moulded, contemporary minimal. The visible profile usually matches the style of the handrail, newel posts and staircase to create a consistent design language. Historically, mouldings such as ogee, ovolo and chamfer became popular because they reflected the design language of their period."
+    },
+    {
+      "q": "Is a base rail required on every staircase?",
+      "a": "No. Not all staircases use a traditional timber base rail. Structural glass systems, steel balustrades, cable balustrades and some contemporary minimalist designs use different methods of supporting and locating their infill elements. The underlying principle remains the same — every balustrade requires a secure method of supporting and aligning its safety components."
+    },
+    {
+      "q": "How can you tell the quality of a base rail installation?",
+      "a": "By details: straight and even rail lines · consistent baluster spacing · neat infill slip joints · smooth profile transitions · accurate mitres at corners. These details reflect the care taken during manufacture and assembly. The base rail is one of the elements experienced staircase makers judge closely."
+    },
+    {
+      "q": "Was the grooved base rail invented for CNC machinery?",
+      "a": "No — the groove and infill slip system was developed long before CNC machinery existed. Traditional joiners using spindle moulders, routers and hand tools relied on this method because it was accurate, repeatable and practical. Modern CNC machines can produce the same system with greater automation, but they refined an established joinery principle rather than inventing it."
+    }
+  ],
+  "updated_at": "2026-08-02T01:44:51.123Z"
+}

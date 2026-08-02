@@ -101,11 +101,83 @@ export async function POST(req: NextRequest) {
   // prepend a small inline hint to the message so the composer + advisor
   // understand which staircase the customer is currently viewing. Keeps
   // the raw message clean for topic memory · injects context transparently.
-  let message = body.message.trim();
+  const rawMessage = body.message.trim();
+  let message = rawMessage;
+  let focusedDesignId: string | null = null;
   if (typeof body.focused_design_context === "string" && body.focused_design_context.trim().length > 0) {
     const ctx = body.focused_design_context.trim().slice(0, 400);
-    message = `[Currently viewing in Staircase Library: ${ctx}]\n\n${message}`;
+    message = `[Currently viewing in Staircase Library: ${ctx}]\n\n${rawMessage}`;
+    const m = ctx.match(/design_id=([A-Z0-9-]+)/i);
+    if (m) focusedDesignId = m[1];
   }
+
+  // Philip 2026-08-02 · Staircase Library · 4-layer authored Q&A.
+  // Priority: IMAGE → COMPONENT → FAMILY → UNIVERSAL. First match wins ·
+  // authored answer returned VERBATIM (Rule A · no LLM synthesis · Philip's
+  // words only). Empty answer slots are skipped inside the matcher.
+  //
+  // GATE (Philip 2026-08-02): supplier intent + country signals bypass
+  // the layered Q&A · they belong to the Advisor / Supplier Workflow.
+  // If the customer is asking for a supplier connection ("can someone
+  // build this"), that IS a workflow trigger · we skip Q&A and let the
+  // Advisor handle it. Same for country announcements ("I'm in Ireland").
+  //
+  // Philip 2026-08-02 · WORKFLOW-IN-FLIGHT GATE: once a supplier enquiry
+  // is being collected for this conversation, EVERY subsequent customer
+  // message is a workflow answer, not a knowledge question. Even if the
+  // answer ("oak and glass balustrade") contains a term that matches a
+  // Universal-QA definition, the workflow owns the turn. Prevents the
+  // "balustrade" definition from intercepting a materials answer.
+  {
+    const [{ matchLayeredQa }, { isSupplierIntent }, { detectCountry }, { peekEnquiry }] = await Promise.all([
+      import("@/lib/nex/images/design-qa"),
+      import("@/lib/nex/business-brain/supplier-intent"),
+      import("@/lib/nex/staircase-advisor/regional-terminology"),
+      import("@/lib/nex/business-brain/enquiry-state"),
+    ]);
+    const convForGate = typeof body.conversation_id === "string" && body.conversation_id.length > 0
+      ? body.conversation_id
+      : null;
+    const inFlightEnquiry = convForGate ? peekEnquiry(convForGate) : null;
+    const enquiryInFlight = inFlightEnquiry !== null
+      && (inFlightEnquiry.step === "collecting" || inFlightEnquiry.step === "explaining");
+    const skipQa = enquiryInFlight || isSupplierIntent(rawMessage) || detectCountry(rawMessage) !== null;
+    const qaHit = skipQa ? null : matchLayeredQa(focusedDesignId ?? "", rawMessage);
+    if (qaHit) {
+      const conversationIdForQa =
+        typeof body.conversation_id === "string" && body.conversation_id.length > 0
+          ? body.conversation_id
+          : randomUUID();
+      const layerLabel = qaHit.layer === "image"     ? "design-qa"
+                       : qaHit.layer === "component" ? "component-qa"
+                       : qaHit.layer === "materials" ? "materials-qa"
+                       : qaHit.layer === "family"    ? "family-qa"
+                       :                                "universal-qa";
+      return NextResponse.json({
+        ok:              true,
+        answer:          qaHit.entry.a,
+        citations: [{
+          module:  layerLabel,
+          ref_id:  qaHit.layer_ref ?? focusedDesignId ?? "universal",
+          snippet: qaHit.entry.q,
+          source:  `${layerLabel}-authored`,
+        }],
+        wood_cards:      [],
+        visual_intent:   "neutral",
+        comparison:      false,
+        expertise:       { level: "unknown", confidence: 0.3, signals: [], score: 0 },
+        status:          `answered_by_${layerLabel.replace("-", "_")}`,
+        brain_versions:  { "images:design-qa": "2.0-layered" },
+        conversation_id: conversationIdForQa,
+        stage:           "library_qa",
+        retrieved_ids:   [`${layerLabel}:${qaHit.layer_ref ?? focusedDesignId ?? "universal"}`],
+        match_score:     qaHit.score,
+        layer:           qaHit.layer,
+        layer_ref:       qaHit.layer_ref,
+      });
+    }
+  }
+
   const conversationId =
     typeof body.conversation_id === "string" && body.conversation_id.length > 0
       ? body.conversation_id

@@ -177,6 +177,19 @@ export async function listCentreFeedItems(
             ? (merchant.website as string) ?? null
             : null,
         merchant_verification_level: verificationLevel,
+        // Philip 2026-08-02 · Trade Center v2 · membership + profile fields.
+        // Real values sourced from hammerex_trade_off_listings columns when
+        // present. Instagram + facebook use nex_show_* opt-in flags where
+        // available. Star rating comes from google_rating on the merchant
+        // record; null when absent (no fabrication).
+        merchant_tier:                (merchant.tier as string) ?? null,
+        merchant_google_rating:       (merchant.google_rating as number) ?? null,
+        merchant_google_review_count: (merchant.google_review_count as number) ?? null,
+        merchant_services:            (merchant.hammerex_standard_products as string[]) ?? [],
+        merchant_years_in_trade:      (merchant.years_in_trade as number) ?? null,
+        merchant_photos:              (merchant.photos as string[]) ?? [],
+        merchant_instagram:           (merchant.instagram as string) ?? null,
+        merchant_facebook:            (merchant.facebook as string) ?? null,
         distance_km: distanceKm,
         region_match_score:
           distanceKm != null ? Math.max(0, 100 - Math.round(distanceKm)) : null,

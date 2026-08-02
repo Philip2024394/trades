@@ -1,0 +1,75 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:04:15.210Z",
+  "layer": "family",
+  "family_id": "open-riser",
+  "label": "Open-riser staircase",
+  "description": "No solid riser between treads · lets light through · modern appearance · regulatory considerations vary by country.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is an open-riser staircase?",
+      "a": "An open-riser staircase has no closed vertical board between the treads. The space between each tread is open, allowing light through and giving the staircase a lighter visual appearance. It is a deliberate design choice, not a missing part."
+    },
+    {
+      "q": "Are open-riser staircases legal?",
+      "a": ""
+    },
+    {
+      "q": "Are open risers safe for children?",
+      "a": ""
+    },
+    {
+      "q": "Can pets use open-riser staircases?",
+      "a": ""
+    },
+    {
+      "q": "Can I convert open risers to closed risers later?",
+      "a": ""
+    },
+    {
+      "q": "Can it have open risers?",
+      "a": ""
+    },
+    {
+      "q": "Are open risers intimidating to some users?",
+      "a": ""
+    },
+    {
+      "q": "Are open risers allowed?",
+      "a": ""
+    },
+    {
+      "q": "Can dogs use open risers?",
+      "a": ""
+    },
+    {
+      "q": "Are open risers noisy?",
+      "a": ""
+    },
+    {
+      "q": "Can dogs use open risers safely?",
+      "a": ""
+    },
+    {
+      "q": "Is an open-riser staircase legal?",
+      "a": ""
+    },
+    {
+      "q": "Can someone slip through the open risers?",
+      "a": ""
+    },
+    {
+      "q": "Can I change from open risers to closed risers?",
+      "a": ""
+    },
+    {
+      "q": "Are open-riser staircases safe?",
+      "a": "Yes when correctly designed. They follow the same fundamental staircase principles as closed-riser stairs, with additional consideration for opening dimensions (a person must not be able to pass through the gap between treads). Local building regulations control the allowable openings."
+    },
+    {
+      "q": "Do open-riser staircases need more structure than closed-riser stairs?",
+      "a": "Often yes. Removing the closed riser removes a stiffening component, so the remaining stringer or steel structure often needs to be thicker or stronger. A wide open-riser staircase may require approximately a 60% increase in stringer thickness, or up to double the thickness in some designs, depending on span, material and engineering."
+    }
+  ]
+}

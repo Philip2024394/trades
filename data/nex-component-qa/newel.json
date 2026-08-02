@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "newel",
+  "label": "Newel post",
+  "description": "The vertical post at the start / end / turn of a staircase. Structural anchor for handrail + balustrade.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a newel post?",
+      "a": "A newel post is the main structural upright of a staircase balustrade. It anchors the handrail, controls direction changes, terminates the balustrade at each end, and transfers loads into the building structure. It is not simply a decorative upright — it is the anchor of the balustrade system."
+    },
+    {
+      "q": "What are typical newel post sizes?",
+      "a": ""
+    },
+    {
+      "q": "What timbers are used for newel posts?",
+      "a": ""
+    },
+    {
+      "q": "How is a newel post fixed?",
+      "a": ""
+    },
+    {
+      "q": "What is the purpose of a newel post?",
+      "a": "A newel provides handrail support, direction change, termination point, visual balance, and structural stability. Newels are commonly used at the top, bottom, and turning points of stair balustrades because they provide the structural fixing points for the handrail system."
+    },
+    {
+      "q": "What are the main newel post locations on a staircase?",
+      "a": "The main newel positions are the starting newel (bottom of the staircase, controls entry appearance and handrail beginning), the top or landing newel (transition from slope to level and connection to the balcony), the corner newel (where the direction changes on L-shaped, U-shaped or balcony corners), and intermediate newels (used on long runs, commercial applications, or where extra support is needed)."
+    },
+    {
+      "q": "Why is the top newel one of the most important parts of a staircase?",
+      "a": "Because it is responsible for supporting the handrail change of direction, stabilising the balustrade, connecting the staircase to the balcony, transferring loads into the structure, and creating the visual finish of the staircase. The top newel is often the point where the staircase becomes part of the upper-floor architecture."
+    },
+    {
+      "q": "Why are newels more important than balusters?",
+      "a": "Newels are larger structural posts designed to carry and transfer forces. Balusters mainly fill the space between supports and prevent falls. The main strength of the balcony and balustrade system comes from the newels and their fixings."
+    },
+    {
+      "q": "Where is the strongest place to fix a newel post?",
+      "a": "The strongest fixing is into the structural part of the staircase opening — the trimmer, stair opening edge, or structural floor member — rather than only into decorative flooring. The strength comes from the building structure, not the visible floor covering."
+    },
+    {
+      "q": "Why should a newel post be cut down over the landing edge?",
+      "a": "Extending the newel down over the landing edge and fixing it into the trimmer provides a stronger structural connection. The strength comes from the building structure, not from the finished floor surface alone."
+    },
+    {
+      "q": "Is fixing a newel only into the finished floor strong enough?",
+      "a": "Usually this is not considered best practice because finished flooring may not provide enough structural support. A newel should transfer loads into the underlying structure — the visible floor is often only a finish (carpet, engineered flooring, laminate, tiles) which is not structural."
+    },
+    {
+      "q": "Why can hidden metal centre-bar newel fixing be risky?",
+      "a": "A concealed metal bar system can work when properly engineered, but it may hide weaknesses. Without correct depth, fixing and structural support, the post may appear stronger than it actually is. Hidden does not automatically mean stronger, safer or better."
+    },
+    {
+      "q": "Why should the top newel be larger than a normal baluster?",
+      "a": "A newel is not a decorative spindle — it is a structural post. Balusters fill the opening and support spacing. The newel anchors the system, receives handrail forces, resists movement, and transfers loads into the structure. A balcony without properly fixed newels is only appearance."
+    },
+    {
+      "q": "Can a balcony be built without newel posts?",
+      "a": "Some modern systems can use engineered glass clamps, metal frames, or hidden structural systems. However, traditional timber staircase balconies normally rely on newel posts because they provide visible support and strong fixing points."
+    },
+    {
+      "q": "Should every corner of a balcony have a newel post?",
+      "a": "Normally a change of direction requires a strong support point. Corners create additional forces because the handrail changes direction. A corner newel provides stability and a secure joint."
+    },
+    {
+      "q": "What happens when a newel is fixed incorrectly?",
+      "a": "Movement at the base, a loose handrail, cracking around flooring, squeaking, and a customer who feels unsafe. The correct principle is that the finished floor covers a structural trimmer, and the newel fixes into the trimmer — not into the finished floor alone."
+    },
+    {
+      "q": "What does 'plumb' mean for a newel post?",
+      "a": "A component is plumb when it is perfectly vertical. A newel post should normally stand vertically unless the design specifically requires another angle. A leaning newel indicates a problem — either in the newel itself, its fixing, or the staircase structure."
+    },
+    {
+      "q": "Why might a newel post look out of plumb?",
+      "a": "Several causes: the newel itself may be twisted (natural timber movement · poor storage · moisture change · internal stress) or bowed (curved along its length); the stringer may be out of plumb (the string controls the staircase line — a leaning string makes the newel appear leaning); the floor may not be level; the fixing may be loose or not fully seated; the staircase structure may have moved (timber movement · settlement · weak connection); or there may be manufacturing tolerance issues (inaccurate cutting · incorrect machining · poor joint preparation)."
+    },
+    {
+      "q": "How does a professional check a newel post for alignment?",
+      "a": "The inspection sequence is: (1) check the newel itself — is it straight, twisted, bowed? (2) check the fixing — is the base secure, seated correctly, well connected? (3) check the staircase structure — is the string straight, the tread line correct, the staircase level? (4) check the handrail — does it flow correctly with smooth transitions?"
+    },
+    {
+      "q": "Why can a twisted newel post make the handrail look wrong?",
+      "a": "A twisted timber newel may have one face aligned correctly while another face appears rotated. When viewed from the top, a correct newel is square; a twisted one appears as a diamond. Even if the base is fixed correctly, the twist can make the handrail joint or balustrade appear uneven."
+    },
+    {
+      "q": "What is a bowed newel post?",
+      "a": "A bowed newel curves along its length. Even with a correct base fixing, a bowed newel can make the handrail appear uneven because the mid-section deviates from a straight vertical line."
+    },
+    {
+      "q": "Should I immediately adjust a newel that leans?",
+      "a": "No. Do not immediately adjust the newel without checking the cause. If the stringer is wrong and the newel is forced straight, other parts of the balustrade may become misaligned. The cause must be diagnosed first, then corrected at its source."
+    },
+    {
+      "q": "Why is a starting newel important?",
+      "a": "The starting newel is the first visual feature of the staircase and the anchoring point for the handrail. It controls staircase entry appearance, the handrail beginning, the first baluster arrangement, and provides the structural fixing for the entire balustrade run."
+    },
+    {
+      "q": "Why is a corner newel important on a balcony?",
+      "a": "A corner creates a change of direction. The handrail is now resisting forces from two directions — pushing, pulling and twisting. A corner newel provides the strong joint required for that change and keeps the balcony rigid."
+    },
+    {
+      "q": "Why do luxury staircases use larger newels?",
+      "a": "Not only for strength. A larger newel provides visual importance, architectural balance, craftsmanship appearance, and stronger transition points. A generously proportioned newel signals that the staircase was designed as one complete piece."
+    },
+    {
+      "q": "What is the newel post priority order?",
+      "a": "Structure first, handrail connection second, appearance third. A newel that looks beautiful but is poorly fixed is a failed newel. A newel that is correctly anchored, well connected to the handrail, and visually balanced is a successful newel."
+    }
+  ]
+}

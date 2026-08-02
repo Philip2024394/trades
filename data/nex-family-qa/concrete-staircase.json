@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "concrete-staircase",
+  "family_label": "Concrete staircase (structural core)",
+  "note": "Layer 3 · FAMILY · Concrete Staircase Brain (Philip 2026-08-02). Applies to any design tagged with families: [concrete-staircase]. Covers structural concrete, cast-in-situ vs precast, waist slab, reinforcement, overlays, cladding, moisture and the 13-step build process. Rule A · verbatim.",
+  "qa": [
+    {
+      "q": "What is a concrete staircase?",
+      "a": "A concrete staircase is a staircase where the primary structural support is made from reinforced concrete. It may be cast in-situ (poured on site), precast (manufactured in a factory) or built from modular concrete sections. Concrete forms the structure that carries the loads."
+    },
+    {
+      "q": "Do concrete staircases follow different geometry rules?",
+      "a": "No. The rise, going, pitch, headroom and safety principles apply to every staircase — timber, steel, concrete, stone, glass or composite. Only the structural material and construction method change. The mathematics remains the same."
+    },
+    {
+      "q": "What is a cast in-situ concrete staircase?",
+      "a": "Cast in-situ means the staircase is built on site. The process is: set out the staircase → build formwork → install reinforcement → pour concrete → compact concrete → cure concrete → remove formwork → apply finishes. Advantages: custom shapes, continuous structure, ideal for large buildings."
+    },
+    {
+      "q": "What is a precast concrete staircase?",
+      "a": "A precast staircase is manufactured in a factory and delivered to site for installation. Advantages: consistent quality, faster installation, factory-controlled production, reduced site labour. Similar in philosophy to factory-manufactured timber staircases — the controlled environment improves quality control."
+    },
+    {
+      "q": "What is reinforced concrete on a staircase?",
+      "a": "Concrete is excellent in compression but much weaker in tension or bending. Steel reinforcement bars are cast into the concrete to carry tensile forces. Together they form reinforced concrete — concrete for compression, steel for tension. Reinforcement position and quantity are engineered to suit the staircase design."
+    },
+    {
+      "q": "Why do concrete staircases feel so solid?",
+      "a": "Because of high mass, continuous structure, minimal vibration and strong structural support. They typically feel rigid, heavy, stable and quiet — but this only holds when the reinforcement, formwork and pouring are correctly executed. A poorly engineered concrete stair is not automatically strong."
+    },
+    {
+      "q": "Do concrete staircases squeak?",
+      "a": "Concrete itself does not normally squeak. If noise occurs on a concrete staircase, it usually comes from timber overlays, loose finishes, handrails or balustrades — movement at fixings rather than in the concrete structure itself."
+    },
+    {
+      "q": "What is a concrete waist slab?",
+      "a": "The waist slab is the structural concrete beneath the steps — the 'backbone' of the staircase. It supports the treads, risers, live loads and its own self-weight. Individual concrete steps are not usually independent blocks; the entire staircase acts as one reinforced structural unit with each step transferring load into the continuous waist slab."
+    },
+    {
+      "q": "What is monolithic concrete construction?",
+      "a": "Monolithic means the staircase is poured as one continuous piece. Advantages: fewer joints, excellent rigidity, reduced movement, long lifespan. Many cast-in-situ stairs use monolithic construction."
+    },
+    {
+      "q": "Are landings part of the concrete staircase structure?",
+      "a": "Yes. A landing is not simply a flat platform — it connects flights, distributes loads, braces the staircase and transfers loads into surrounding walls or beams. Landings are integral to the structural system, not additions."
+    },
+    {
+      "q": "What is formwork on a concrete staircase?",
+      "a": "Formwork (also called shuttering) is the temporary mould that shapes the wet concrete. It includes side forms, soffit support, riser boards, landing forms and temporary bracing. It must be rigid enough to support the weight of fresh concrete without moving. The quality of the formwork directly determines the quality of the finished concrete — poor formwork produces poor concrete."
+    },
+    {
+      "q": "Why is concrete curing important?",
+      "a": "Concrete does not become fully strong immediately after pouring. It gains strength over time through curing. Good curing helps durability, strength and crack resistance. The curing method and duration depend on the concrete mix, weather conditions and project requirements."
+    },
+    {
+      "q": "Can a concrete staircase be modified after casting?",
+      "a": "It is much harder than modifying a timber staircase. Changing the rise, going, landing position or width usually requires structural work. Unlike timber, concrete cannot easily be trimmed or reshaped after curing — decisions made at the setting-out stage are effectively permanent."
+    },
+    {
+      "q": "What are the advantages of a concrete staircase?",
+      "a": "Excellent structural strength, durability, fire resistance, reduced vibration, long lifespan, suitable for heavy loads, and low structural movement compared with timber. These qualities make concrete staircases common in high-traffic environments like apartment buildings, hotels, offices, hospitals and schools."
+    },
+    {
+      "q": "What are the limitations of a concrete staircase?",
+      "a": "Heavy weight, requires structural support, difficult to modify after construction, more complex repairs, and changes usually require significant work. The strength and permanence that make concrete valuable also make it less flexible than timber."
+    },
+    {
+      "q": "What is the fire performance of concrete staircases?",
+      "a": "Concrete is non-combustible and generally performs well in fire compared with many other materials. This is one reason concrete staircases are common in apartment buildings, hospitals, schools, commercial buildings and public infrastructure. Overall fire performance depends on the complete structural design, reinforcement cover and applicable building regulations."
+    },
+    {
+      "q": "Can a concrete staircase be renovated?",
+      "a": "Yes. Common upgrades include timber overlays, new stone finishes, glass balustrades, stainless steel balustrades, modern handrails and LED lighting. Many old concrete staircases are transformed into premium feature staircases without replacing the underlying structure."
+    },
+    {
+      "q": "What is a concrete stair overlay?",
+      "a": "An overlay (also called cladding or lining) is when new finished materials — European Oak, American White Oak, walnut, ash, engineered timber, stone, porcelain or quartz — are fixed over an existing structural concrete staircase. The concrete remains the structure; the overlay becomes the visible staircase. Nex remembers this: many 'oak staircases' are actually oak-clad concrete staircases."
+    },
+    {
+      "q": "Why do premium homes clad concrete stairs with oak?",
+      "a": "To transform plain structural concrete into a luxury staircase, protect the concrete edges from wear, match the interior finish language (flooring · doors · wall panelling), and enable easier future refurbishment (the structural stair is unaffected). The concrete does the work; the oak does the appearance."
+    },
+    {
+      "q": "Does a concrete overlay change the load path?",
+      "a": "No. The overlay is not normally structural — it provides appearance, walking surface, finish and comfort. The concrete continues to carry the structural loads. This is one reason overlays can be replaced or refreshed without touching the structure."
+    },
+    {
+      "q": "Should the concrete shell be surveyed before manufacturing overlays?",
+      "a": "Yes. Professional staircase companies never manufacture from architectural drawings alone. Before machining timber, they normally verify total rise, stair width, tread depth, landing dimensions, wall positions and finished floor levels of the actual concrete. Concrete can vary from drawings — always measure the actual staircase."
+    },
+    {
+      "q": "Are two concrete staircases in identical houses actually identical?",
+      "a": "Not usually. Even when built from the same architectural drawings, small differences in casting, plaster thickness, floor finishes and site tolerances mean every staircase is slightly different. Bespoke overlays should be measured for the individual staircase, not copied from a neighbour."
+    },
+    {
+      "q": "Can timber overlays hide small concrete imperfections?",
+      "a": "Yes — for small variations. Timber can square up slightly uneven edges, create clean nosings, provide consistent visual lines and conceal minor casting marks. But timber should NEVER be used to disguise major structural defects — incorrect rise, incorrect landing height, major twist or significant out-of-level construction require structural correction before the overlay is installed."
+    },
+    {
+      "q": "Why are the first and last risers so important on a concrete overlay?",
+      "a": "The finished first and last risers must account for timber tread thickness, flooring finishes, adhesive thickness, carpet, stone or other transitions. Concrete contractors and staircase manufacturers must coordinate carefully — failure to coordinate creates inconsistent riser heights that the customer will notice."
+    },
+    {
+      "q": "Does moisture affect a concrete overlay?",
+      "a": "Yes. Concrete can retain moisture long after it appears dry. Fixing timber onto excessively damp concrete can cause adhesive failure, timber movement, staining, swelling or finish problems. Drying time varies with slab thickness, environment, mix and ventilation — always follow the project specification and verify conditions before installing timber onto concrete."
+    },
+    {
+      "q": "What is a shadow gap on a stair overlay?",
+      "a": "A shadow gap is a designed gap between overlay elements (e.g. tread and wall, or tread and riser) that creates clean visual lines, hides small construction tolerances and produces a floating appearance. It is an intentional design feature, not a gap left by poor workmanship."
+    },
+    {
+      "q": "How is a concrete staircase built in 13 steps?",
+      "a": "Design → set out → build formwork → check formwork → install reinforcement → final inspection → place concrete → compact concrete → finish surface → cure concrete → remove formwork → inspect staircase → apply finishes. Each step depends on the previous one — errors at the setting-out stage repeat through every riser above."
+    },
+    {
+      "q": "Can 'oak staircase' actually mean a concrete staircase?",
+      "a": "Often yes. Many customers describe their staircase by its visible finish — 'oak staircase' or 'glass staircase' — when the actual structural system is reinforced concrete with an oak overlay and a glass balustrade. Both descriptions are correct customer language; Nex understands the layered reality behind it. The reinforced concrete carries the loads; the oak cladding provides the finish; the glass provides fall protection; the handrail provides user support — together they form one complete staircase system."
+    }
+  ],
+  "updated_at": "2026-08-02T01:22:08.153Z"
+}

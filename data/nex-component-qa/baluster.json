@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "baluster",
+  "label": "Baluster / spindle",
+  "description": "Vertical infill between handrail and tread. Steel, timber, or replaced with glass panels / cable systems.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a baluster?",
+      "a": "A baluster is the vertical member between the base rail or tread and the handrail. Its purpose is to prevent falls, support the handrail, maintain spacing, and contribute to the stiffness of the balustrade system."
+    },
+    {
+      "q": "What is the maximum baluster spacing allowed?",
+      "a": ""
+    },
+    {
+      "q": "Can balusters be replaced with glass panels?",
+      "a": ""
+    },
+    {
+      "q": "Can I use vertical balusters instead of horizontal rods?",
+      "a": ""
+    },
+    {
+      "q": "Can children climb through the balustrade?",
+      "a": ""
+    },
+    {
+      "q": "Are vertical bars safer?",
+      "a": ""
+    },
+    {
+      "q": "Can children climb this balustrade?",
+      "a": ""
+    },
+    {
+      "q": "What is the main job of a baluster?",
+      "a": "A baluster provides safety by preventing falls, supports the handrail, maintains spacing, and contributes to the stiffness of the balustrade system."
+    },
+    {
+      "q": "Are all balusters structural?",
+      "a": "Not always. Some decorative balusters mainly fill the opening, while others are designed as structural supports. The design determines whether the strength comes primarily from the balusters or from the newels and rails alone."
+    },
+    {
+      "q": "Are thin turned balusters as strong as square balusters?",
+      "a": "Not automatically. A correctly designed turned baluster can be strong, but square balusters usually have more consistent material thickness and better resistance to twisting and bending. Strength depends on material, cross-section, length, fixing method, dowel diameter, dowel depth, glue connection, spacing and handrail connection — the shape alone does not determine strength."
+    },
+    {
+      "q": "What is the advantage of square balusters?",
+      "a": "Square balusters provide consistent strength, easier fixing, better alignment, modern appearance, and greater resistance to twisting. They give clean architectural lines and stronger visual weight — common in contemporary oak stairs, painted staircases and commercial designs."
+    },
+    {
+      "q": "What is the advantage of turned balusters?",
+      "a": "Turned balusters provide traditional character, decorative appearance, softer visual style and visible craftsmanship. They suit Victorian styles, Georgian designs, classic oak staircases and heritage restoration."
+    },
+    {
+      "q": "Where is the weakest point of a baluster?",
+      "a": "The weakest points are usually the connections — the top handrail joint, the bottom fixing point, and any narrow turned sections where material has been reduced. The weakest area of a turned baluster is often the smallest diameter section, which controls the overall strength."
+    },
+    {
+      "q": "Why can a decorative turned baluster become weak?",
+      "a": "Excessive turning removes material. Thin necks, sharp transitions, or small-diameter sections concentrate stress. When sideways force is applied, the weakest thin area receives the highest stress and can fail first."
+    },
+    {
+      "q": "Where should a turned baluster keep extra thickness?",
+      "a": "In the bottom fixing area, the top fixing area, any narrow turning sections, and the transitions between decorative and structural zones. Decoration belongs between structural zones — it should never remove material from a load-carrying section."
+    },
+    {
+      "q": "Should turned balusters maintain a minimum thickness?",
+      "a": "Yes. The turning design should maintain enough timber thickness through structural areas. Decorative shaping should not reduce the strength of the baluster."
+    },
+    {
+      "q": "Are gradual curves better than sharp reductions on a turned baluster?",
+      "a": "Yes. A gradual transition spreads forces more evenly through the timber. Sudden thin sections create stress concentration points and become weak areas under sideways force."
+    },
+    {
+      "q": "What is a dowel-ended baluster?",
+      "a": "A dowel-ended baluster has a reduced round projection that fits into a drilled hole in the tread, landing, base rail or handrail. The strength comes from the dowel diameter, insertion depth, glue surface area and tightness of fit."
+    },
+    {
+      "q": "What determines the strength of a dowel connection?",
+      "a": "Strength depends on the dowel diameter, insertion depth, timber quality, glue surface area, accuracy of drilling, and the tightness of the fit."
+    },
+    {
+      "q": "Why can a small dowel create a weak connection?",
+      "a": "Because the dowel transfers all sideways forces through a small area. If the dowel is too small, too shallow, or poorly fixed, movement can develop over time."
+    },
+    {
+      "q": "Is glue alone enough to fix a baluster?",
+      "a": "Glue helps create the connection, but a professional staircase relies on correct mechanical fit, adequate depth, and structural design. Glue should not compensate for poor fixing."
+    },
+    {
+      "q": "Why do balcony balusters loosen over time?",
+      "a": "Common causes include timber movement, seasonal expansion and contraction, insufficient glue area, poor fitting, and repeated sideways loading."
+    },
+    {
+      "q": "What affects baluster spacing?",
+      "a": "Spacing affects safety, appearance and proportion. Too much spacing gives weak visual protection and an unsafe appearance. Too little spacing gives a heavy appearance and reduced elegance. Standard practice controls openings so a person — especially a child — cannot pass through, and many regions reference a maximum opening around 100mm as a guiding principle. Actual requirements depend on country, building type and regulation."
+    },
+    {
+      "q": "Why do commercial staircases prefer square or robust balusters?",
+      "a": "Because public users create unpredictable loads and repeated impact. Commercial designers avoid wide gaps, flexible balusters and decorative-only systems. A commercial balustrade should feel solid — square steel balusters, stainless rods, engineered glass and robust timber sections are common choices."
+    },
+    {
+      "q": "Why can too many thin balusters still feel weak?",
+      "a": "A designer may think more balusters equals stronger — not always. If every spindle has a weak fixing, the system can still move. Strength comes from correct fixing, correct material, and correct connections, not only from quantity."
+    },
+    {
+      "q": "Can a thin turned spindle be stronger than a thicker square one?",
+      "a": "It depends on material, design and fixing. A well-made turned spindle with good timber and strong joints may perform well, but removing too much material during turning reduces its strength. The fixing and material grade matter more than the raw thickness."
+    }
+  ]
+}

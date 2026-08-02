@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "balustrade-glass",
+  "label": "Glass balustrade panel",
+  "description": "Toughened laminated glass panel used in place of vertical balusters. Frameless or channel-fixed.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a glass balustrade panel?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass toughened or laminated?",
+      "a": ""
+    },
+    {
+      "q": "How thick are structural glass panels?",
+      "a": ""
+    },
+    {
+      "q": "Can a glass panel be replaced individually?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass safe?",
+      "a": ""
+    },
+    {
+      "q": "How thick is the glass?",
+      "a": ""
+    },
+    {
+      "q": "Can the glass be tinted?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass shatterproof?",
+      "a": ""
+    },
+    {
+      "q": "Can the glass be replaced?",
+      "a": ""
+    },
+    {
+      "q": "What is a glass balustrade?",
+      "a": "A glass balustrade is a balustrade system where glass panels are used instead of traditional timber or metal balusters. The glass is not the structure by itself — the complete system is the balustrade, including handrail, glass panel, clamps or channel or posts, base fixing, and the building structure beneath. Nex describes this as a 'glass balustrade system', never as 'glass attached to the floor'."
+    },
+    {
+      "q": "What are the main types of glass balustrade systems?",
+      "a": "The three main types are (1) post-and-glass systems with visible vertical posts, glass panels, clamps and a handrail; (2) frameless glass systems with a base channel, structural glass and an optional handrail; and (3) glass with timber newels — oak or hardwood newels flanking glass panels, common in premium homes because it combines traditional and modern language."
+    },
+    {
+      "q": "Is a glass balustrade weaker because it looks thinner?",
+      "a": "No. Engineered glass systems can be extremely strong. Strength comes from the glass specification, clamps, channels and structural fixing, not from the visible weight of the material."
+    },
+    {
+      "q": "Why is glass usually laminated on a staircase?",
+      "a": "Because safety glass systems are designed to remain safer after damage. Laminated glass contains layers that help hold the panel together. Glass in a staircase is an engineered safety component — not ordinary window glass."
+    },
+    {
+      "q": "Why is glass thickness important?",
+      "a": "Glass thickness depends on panel size, support method, loading requirements, building type and fixing system. A large unsupported glass panel requires different consideration than a small framed panel."
+    },
+    {
+      "q": "Does a glass balcony mean no newel posts?",
+      "a": "Not always. Framed glass systems use posts, clamps and handrail supports. Frameless glass systems use concealed channels, base shoes and engineered fixings. The structure is often hidden, but it still exists."
+    },
+    {
+      "q": "How does a glass balustrade transfer force?",
+      "a": "The force travels from the person pushing the handrail, down through the glass panels or supports, into the clamps or base channel, and finally into the floor structure. Every connection matters — a weakness at any point makes the whole system feel loose."
+    },
+    {
+      "q": "Why are base channels important on a frameless glass balustrade?",
+      "a": "The base channel holds the glass and transfers forces into the structure. Poor installation causes movement, glass vibration and an unsafe feeling. Correct installation feels rigid, stable and secure."
+    },
+    {
+      "q": "Why should glass balustrades be installed by specialists?",
+      "a": "Because errors can involve incorrect glass specification, wrong fixing depth, poor anchoring, incorrect alignment or unsafe connections — and the finished appearance can hide installation problems."
+    },
+    {
+      "q": "Can a glass balustrade hide weak fixing?",
+      "a": "Yes. A clean frameless appearance can hide the structural details. Nex always considers base fixing, glass support, connection points and load transfer — not just the visible glass."
+    },
+    {
+      "q": "Why do many glass balustrades still have a handrail?",
+      "a": "Because the handrail provides user confidence, a comfortable grip, a finishing detail and additional protection. Even if the glass is engineered strong, people naturally look for something to hold."
+    },
+    {
+      "q": "Why are glass balustrades popular in modern staircases?",
+      "a": "Because glass allows uninterrupted views, natural light, a floating appearance and minimalist design. It creates a more open feeling and makes spaces look larger — especially in double-height halls, luxury homes and modern renovations. A minimal appearance never means minimal engineering."
+    },
+    {
+      "q": "Why can a glass balustrade look weaker than timber?",
+      "a": "Because glass is visually transparent — the eye sees open space, thin edges and minimal supports. Strength actually comes from the glass specification, the fixing system and the structural connection, not from the visible weight of the material."
+    },
+    {
+      "q": "Can curved glass be used on a balustrade?",
+      "a": "Yes, but glass does not naturally bend unless specially manufactured. Solutions include segmented flat glass panels, curved laminated glass, a curved handrail, or multiple fixing points. The design must follow the staircase geometry precisely."
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "riser",
+  "label": "Riser",
+  "description": "The vertical face between treads. Solid (closed) or absent (open).",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a riser?",
+      "a": "The riser is the vertical face between two treads. It affects the staircase appearance, the walking comfort, and the overall stair proportion."
+    },
+    {
+      "q": "What is the difference between open and closed risers?",
+      "a": ""
+    },
+    {
+      "q": "Can I convert from open to closed risers later?",
+      "a": ""
+    },
+    {
+      "q": "What is a closed riser?",
+      "a": "A closed riser is a solid vertical board between steps. It creates a traditional, enclosed appearance, reduces visibility underneath, and gives cleaner architectural lines. Common in family homes and traditional staircases."
+    },
+    {
+      "q": "What is an open riser?",
+      "a": "An open riser stair has no vertical board between the treads — the gap allows light to pass through the staircase, creates a larger visual space, and gives a floating appearance. It is a deliberate design choice, not simply a missing part. Common in modern designs."
+    },
+    {
+      "q": "Should the riser match the tread?",
+      "a": "Not always. Many premium staircases use a solid hardwood tread (like oak) with a painted MDF riser — the oak provides durability where feet contact, and the painted riser provides a smooth, easy-to-refresh contrasting face. The riser can match the tread or contrast with it depending on the design intent."
+    },
+    {
+      "q": "What materials are used for stair risers?",
+      "a": "Common materials include MDF (very popular for painted risers — smooth finish, no knots, stable), solid timber matching the tread, plywood (used where extra strength is needed), painted timber, glass (for modern designs), and metal (feature stairs). MDF is the most common riser material on painted staircases because it delivers a factory-quality painted finish."
+    },
+    {
+      "q": "Are MDF risers acceptable on a staircase?",
+      "a": "Yes. Painted MDF risers are very common. Because risers are not walked on, they experience much less wear than treads, making MDF a practical choice in many staircase designs."
+    },
+    {
+      "q": "Are open riser staircases safe?",
+      "a": "Open riser staircases are used in many modern homes and follow the same design and safety principles as closed-riser stairs — with additional consideration for gap dimensions to prevent children passing through. Local building regulations control the allowable openings, so the design must be checked against your regulations."
+    }
+  ]
+}

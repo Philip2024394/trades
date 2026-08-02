@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "updated_at": "2026-08-01T18:48:07.993Z",
+  "updated_at": "2026-08-02T01:44:51.123Z",
   "confirmed": [
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2005_11_27%20AM.png",
@@ -36,7 +36,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_43_30%20AM.png",
@@ -70,7 +75,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_36_25%20AM.png",
@@ -105,7 +115,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_28_20%20AM.png",
@@ -141,7 +156,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_16_11%20AM.png",
@@ -177,7 +197,394 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "qa": [
+        {
+          "q": "What type of staircase is this?",
+          "a": ""
+        },
+        {
+          "q": "Is it a helical staircase?",
+          "a": ""
+        },
+        {
+          "q": "What style is this staircase?",
+          "a": ""
+        },
+        {
+          "q": "Can this design fit my house?",
+          "a": ""
+        },
+        {
+          "q": "Would this work in a small space?",
+          "a": ""
+        },
+        {
+          "q": "Is this suitable for a luxury home?",
+          "a": ""
+        },
+        {
+          "q": "Would this suit an open-plan kitchen/living area?",
+          "a": ""
+        },
+        {
+          "q": "What supports this staircase?",
+          "a": ""
+        },
+        {
+          "q": "Is everything supported by the centre column?",
+          "a": ""
+        },
+        {
+          "q": "Is the outside steel structural or decorative?",
+          "a": ""
+        },
+        {
+          "q": "Is the staircase self-supporting?",
+          "a": ""
+        },
+        {
+          "q": "How strong is the centre column?",
+          "a": ""
+        },
+        {
+          "q": "Does it require wall support?",
+          "a": ""
+        },
+        {
+          "q": "Does the handrail strengthen the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Why doesn't it wobble?",
+          "a": ""
+        },
+        {
+          "q": "What weight can it carry?",
+          "a": ""
+        },
+        {
+          "q": "Can several people stand on it at once?",
+          "a": ""
+        },
+        {
+          "q": "What timber is used?",
+          "a": ""
+        },
+        {
+          "q": "Is this oak or walnut?",
+          "a": ""
+        },
+        {
+          "q": "Can I have oak instead?",
+          "a": ""
+        },
+        {
+          "q": "Can I have walnut?",
+          "a": ""
+        },
+        {
+          "q": "Can I use ash or maple?",
+          "a": ""
+        },
+        {
+          "q": "Can I use engineered timber?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel be white, bronze or stainless instead of black?",
+          "a": ""
+        },
+        {
+          "q": "Can I combine oak and black steel?",
+          "a": ""
+        },
+        {
+          "q": "What steel thickness is normally used?",
+          "a": ""
+        },
+        {
+          "q": "Is the handrail solid timber?",
+          "a": ""
+        },
+        {
+          "q": "How is the curved handrail made?",
+          "a": ""
+        },
+        {
+          "q": "Is the handrail laminated or steam-bent?",
+          "a": ""
+        },
+        {
+          "q": "Can the handrail profile be changed?",
+          "a": ""
+        },
+        {
+          "q": "Can I replace the metal rails with glass?",
+          "a": ""
+        },
+        {
+          "q": "Can I use cable balustrades instead?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the outer guard?",
+          "a": ""
+        },
+        {
+          "q": "Are the horizontal rails safe for children?",
+          "a": ""
+        },
+        {
+          "q": "Are the treads solid oak?",
+          "a": ""
+        },
+        {
+          "q": "Can the treads be thicker?",
+          "a": ""
+        },
+        {
+          "q": "Can the treads float more?",
+          "a": ""
+        },
+        {
+          "q": "Can I have closed risers?",
+          "a": ""
+        },
+        {
+          "q": "Can damaged treads be replaced individually?",
+          "a": ""
+        },
+        {
+          "q": "Are the LEDs built in?",
+          "a": ""
+        },
+        {
+          "q": "Can the lighting change colour or use RGB?",
+          "a": ""
+        },
+        {
+          "q": "Can the lighting be dimmed?",
+          "a": ""
+        },
+        {
+          "q": "Are the LEDs replaceable if one fails?",
+          "a": ""
+        },
+        {
+          "q": "Can the lights be motion-activated?",
+          "a": ""
+        },
+        {
+          "q": "What minimum floor opening is required?",
+          "a": ""
+        },
+        {
+          "q": "How much floor space does this staircase need?",
+          "a": ""
+        },
+        {
+          "q": "What ceiling height is suitable?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit in a loft conversion?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit into an existing ceiling opening?",
+          "a": ""
+        },
+        {
+          "q": "What headroom is required?",
+          "a": ""
+        },
+        {
+          "q": "Does the ceiling opening have to be circular, or can it be square?",
+          "a": ""
+        },
+        {
+          "q": "Can this be installed after the house is built?",
+          "a": ""
+        },
+        {
+          "q": "Does the floor need strengthening?",
+          "a": ""
+        },
+        {
+          "q": "How long does installation take?",
+          "a": ""
+        },
+        {
+          "q": "Does it arrive in one piece or sections?",
+          "a": ""
+        },
+        {
+          "q": "How is it transported? Will it fit through my front door?",
+          "a": ""
+        },
+        {
+          "q": "Will walls need to be removed to install it?",
+          "a": ""
+        },
+        {
+          "q": "Can it be dismantled and moved later?",
+          "a": ""
+        },
+        {
+          "q": "Is this safe for children?",
+          "a": ""
+        },
+        {
+          "q": "Can elderly people use it?",
+          "a": ""
+        },
+        {
+          "q": "Does the spiral make people dizzy?",
+          "a": ""
+        },
+        {
+          "q": "Can anti-slip strips be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Does this meet UK building regulations?",
+          "a": ""
+        },
+        {
+          "q": "Does this comply with California / US regulations?",
+          "a": ""
+        },
+        {
+          "q": "What balustrade spacing is allowed?",
+          "a": ""
+        },
+        {
+          "q": "Can this be made wider or narrower?",
+          "a": ""
+        },
+        {
+          "q": "Can I reduce the diameter?",
+          "a": ""
+        },
+        {
+          "q": "Can it turn the opposite way?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the centre column?",
+          "a": ""
+        },
+        {
+          "q": "Can the outer string be timber instead of steel?",
+          "a": ""
+        },
+        {
+          "q": "Can I add storage underneath?",
+          "a": ""
+        },
+        {
+          "q": "Can I add a landing?",
+          "a": ""
+        },
+        {
+          "q": "Which part costs the most?",
+          "a": ""
+        },
+        {
+          "q": "Is curved steel expensive to manufacture?",
+          "a": ""
+        },
+        {
+          "q": "Is oak more expensive than ash?",
+          "a": ""
+        },
+        {
+          "q": "Would walnut increase the price significantly?",
+          "a": ""
+        },
+        {
+          "q": "Would glass balustrade increase the price?",
+          "a": ""
+        },
+        {
+          "q": "How long is the lead time?",
+          "a": ""
+        },
+        {
+          "q": "How is this manufactured?",
+          "a": ""
+        },
+        {
+          "q": "Is this made in one piece or sections?",
+          "a": ""
+        },
+        {
+          "q": "How is the curved steel produced?",
+          "a": ""
+        },
+        {
+          "q": "Is it CNC manufactured?",
+          "a": ""
+        },
+        {
+          "q": "How long does manufacture take?",
+          "a": ""
+        },
+        {
+          "q": "How do I clean and maintain the timber?",
+          "a": ""
+        },
+        {
+          "q": "How often should the timber be refinished or re-oiled?",
+          "a": ""
+        },
+        {
+          "q": "Can scratched treads be repaired?",
+          "a": ""
+        },
+        {
+          "q": "How do I maintain the powder coating?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel rust?",
+          "a": ""
+        },
+        {
+          "q": "Is this a real installation or a concept image?",
+          "a": ""
+        },
+        {
+          "q": "Can this exact staircase be built?",
+          "a": ""
+        },
+        {
+          "q": "What would need to change for my house?",
+          "a": ""
+        },
+        {
+          "q": "Can I compare manufacturers?",
+          "a": ""
+        }
+      ],
+      "design_notes": "OVERALL TYPE\nContemporary premium spiral staircase with a central steel column · 360° rotation over multiple turns · designed as an architectural centrepiece in an open-plan luxury residence.\n\nSTRUCTURE\nCentral column: large diameter steel tube (approx 250-350mm) · powder-coated matt black · anchored into structural floor · extends continuously through ceiling opening · supports every tread individually · this is the primary structural member.\nOuter curved band/string: heavy curved steel ribbon wrapping around the staircase · continuous spiral · smooth fabricated appearance · black powder-coated finish · provides structural stiffness · hides tread brackets · gives floating appearance.\nFixings: exact internal fixings not visible from image · likely welded steel fabrication with each tread individually bolted or welded to the centre column.\n\nTREADS\nSolid hardwood · dark stained · walnut appearance (could also be stained oak) · thick contemporary profile approx 50-70mm · wedge-shaped spiral treads · rounded exposed front nosing · open risers · floating appearance.\n\nDIMENSIONS (estimated · CANNOT be confirmed from image alone)\nRise: 170-190mm (comfortable domestic spiral proportions).\nGoing (walking line): 220-260mm.\nOverall diameter: approx 2100-2400mm (larger than compact kit spirals · more luxurious feel).\nApprox two-storey height.\n\nBALUSTRADE\nSlim steel uprights (approx 20-30mm square) · multiple horizontal steel rods as infill (5-7 rails · likely 8-12mm dia stainless or powder-coated steel) · minimal visual obstruction · complies with modern residential safety spacing.\nNote: NO glass panels present in the image.\n\nHANDRAIL\nContinuous curved timber handrail · circular/rounded ergonomic profile · smooth uninterrupted sweep following the spiral perfectly · likely manufactured from laminated curved timber (cannot be confirmed from image) · continuous from bottom to top.\n\nLIGHTING\nWarm white LED strip lighting beneath every tread · creates floating tread illusion + night lighting + architectural ambience · feature lighting also at base of column · likely hidden in routed channels · cable routing not visible.\n\nFINISHES\nTimber: natural oil or matte lacquer. Steel: fine textured matt black powder coat. Lighting: warm white.\n\nCEILING OPENING\nLarge circular aperture · matches the staircase geometry · flush ceiling finish · finished with clean circular trim.\n\nBASE\nCircular matching timber platform (visual termination · floor protection · completes symmetry).\n\nMANUFACTURING METHOD (typical for this class · not off-the-shelf)\nCAD modelling → laser-cut steel components → roll curved steel skirt → fabricate centre column → CNC-machine timber treads → machine LED channels → manufacture curved handrail (laminated or steam-bent) → powder-coat steel → finish timber → trial-assemble in workshop → deliver in sections → install centre column → install treads → install balustrade → install handrail → connect lighting → final alignment + inspection.\nEstimated build time: 6-10 weeks.\nEstimated install time: 2-4 days.\n\nMANUFACTURING COMPLEXITY\nVery High. Requires CNC router · beam saw · wide-belt sander · metal bandsaw · tube roller · MIG/TIG welder · powder coating plant · spray booth. Not a single-workshop off-the-shelf item.\n\nADVANTAGES\nExceptional architectural impact · space-efficient footprint for the visual drama · open airy appearance · premium materials · excellent visual flow · integrated feature lighting · high-end contemporary aesthetic · becomes the centrepiece of the home.\n\nDESIGN CHALLENGES\nPrecise structural engineering · curved steel fabrication · curved handrail manufacture · accurate site measurements · complex installation sequence · LED wiring through rotating geometry · building code compliance for spiral stairs · transportation of large curved components.\n\nSUITABLE APPLICATIONS\nResidential luxury homes · architect-designed houses · boutique commercial spaces · open-plan kitchen/living areas · double-height entrance halls · new-builds and high-end renovations.\n\nWHAT IS VISIBLE VS INFERRED\nVisible: overall configuration · black steel column · dark timber treads · curved outer skirt · horizontal-rod balustrade · timber handrail · LED tread lighting · circular ceiling opening.\nInferred (CANNOT confirm from image): exact timber species · exact steel grade/thickness · exact rise/going/diameter · exact fixing method · whether handrail is laminated or steam-bent.\nNex should be explicit about this distinction when answering customer questions.",
+      "families": [
+        "spiral",
+        "open-riser",
+        "steel-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "baluster",
+        "lighting-led",
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_09_14%20AM.png",
@@ -215,7 +622,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2004_03_15%20AM.png",
@@ -253,7 +665,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_53_08%20AM.png",
@@ -294,7 +711,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000009",
@@ -319,7 +741,12 @@
       "customer_description": "placeholder",
       "designer_notes": "placeholder",
       "confirmed_by": "Philip O'Farrell",
-      "confirmed_at": "2026-08-01T14:46:53.204Z"
+      "confirmed_at": "2026-08-01T14:46:53.204Z",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_26_24%20AM.png",
@@ -370,7 +797,12 @@
         "front",
         "detail"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2003_21_15%20AM.png",
@@ -409,7 +841,12 @@
       "view_types": [
         "hero"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "image_id": "NEX-EXTRA-WIDE-STEP",
@@ -461,7 +898,12 @@
         "detail",
         "entry-sequence"
       ],
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000013",
@@ -501,7 +943,12 @@
       "designer_notes": "Defining features: (1) large structural timber string as sole visual anchor · (2) ceiling-mounted stainless cable balustrade for maximum transparency · (3) continuous under-tread LED · (4) independent slim wall handrail. No newel posts by design. Sits within double-height open-plan interior with dining beneath.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:26:16.679Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000014",
@@ -543,7 +990,12 @@
       "designer_notes": "Defining features: (1) monolithic timber string · (2) brushed steel risers reflecting warm LED · (3) frameless glass with exposed point-fix standoffs as deliberate design feature · (4) walnut cap handrail. Sits within double-height open-plan interior with dining beneath.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:26:16.679Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000015",
@@ -599,7 +1051,12 @@
       "designer_notes": "Image Set · 4 views merged: (1) hero-with-lights-on-full context · (2) close detail with lighting on · (3) lighting-off daytime · (4) lighting-on evening. IMPORTANT · lighting-off + lighting-on pair should be shown together whenever a customer asks 'does staircase lighting make a real difference'. Defining features: walnut closed-string · illuminated feature newel · matte black perforated balustrade · framed geometric under-stair panel with concealed LED · black risers for step definition · warm LED palette throughout.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:26:16.679Z",
-      "priority": "recommended"
+      "priority": "recommended",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000016",
@@ -643,7 +1100,12 @@
       "designer_notes": "Defining features: (1) brushed stainless-steel risers (rare · distinctive premium detail) · (2) brushed stainless-steel perforated balustrade panels (not black — matches the risers) · (3) steel-capped illuminated walnut newel · (4) fully enclosed decorative walnut under-stair panel. Under-skirt LED + illuminated newel + reflective risers give multi-layer lighting. Suited to luxury contemporary homes and boutique offices where the staircase is a focal architectural feature.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:32:07.787Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000017",
@@ -686,7 +1148,12 @@
       "designer_notes": "Defining features: (1) oak strings + handrail (light warmth) contrasted with (2) matte black perforated balustrade panels, (3) matte black risers, and (4) illuminated oak newel with black metalwork. Under-stair enclosure uses a FRAMED MOULDING panel (distinguishes this design from the shaker-panel variant NEX-DESIGN-000018). Modern architectural render · panel brackets are decorative rather than typical of a real-world install.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:32:07.787Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000018",
@@ -728,7 +1195,12 @@
       "designer_notes": "Defining features vs sibling design NEX-DESIGN-000017: (a) SHAKER-style raised under-stair panels (not framed moulding) · (b) under-tread LED emphasised (illuminates the risers below rather than the risers being metallic) · (c) lighter Scandinavian oak tone. Architectural render · noted observation: panel brackets shown are decorative — real-world install would typically use groove/rebate fixings into the top and base rails.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:32:07.787Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000019",
@@ -773,7 +1245,12 @@
       "designer_notes": "Defining features: (1) grand SWEEPING S-shaped single curved flight · (2) cylindrical timber starting newel + bullnose step (no traditional square newels) · (3) frameless glass with continuous curved timber cap rail (no intermediate posts) · (4) INDOOR JAPANESE GARDEN beneath the flight — rare high-luxury signature detail · (5) multi-layer lighting (under-tread + under-stair curve + pendant + cove + downlights + landscape uplighting). Premium custom staircase requiring CNC-machined curved timber, laminated curved strings, bent glass and specialist installation. Architectural render (uniform grain / perfectly even LED / idealised reflections) — treat as a design concept.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:34:52.811Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000020",
@@ -818,7 +1295,1128 @@
       "designer_notes": "Defining features: (1) OPPOSING double-curved flights merging into a central landing (distinct from the single-flight sweep of NEX-DESIGN-000019) · (2) black steel stringers (not timber) · (3) cylindrical living-garden atrium with green wall as the structural centrepiece the staircase wraps around · (4) frameless CURVED low-iron glass · (5) raised sculptural base platform with integrated planting. Classified as design_family=Biophilic because the integrated planting is a defining design element, not an accent. Extreme construction complexity: custom-engineered steel framework, CNC-machined curved timber, bent glass, structural engineering for long unsupported curves. Architectural render (perfectly symmetric curves, idealised LED, flawless glass reflections) — treat as a design concept.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:34:52.811Z",
-      "priority": "standard"
+      "priority": "standard",
+      "qa": [
+        {
+          "q": "What style of staircase is this?",
+          "a": ""
+        },
+        {
+          "q": "What is this type of staircase called?",
+          "a": ""
+        },
+        {
+          "q": "Can this exact staircase be built?",
+          "a": ""
+        },
+        {
+          "q": "Can it be customised?",
+          "a": ""
+        },
+        {
+          "q": "Can I make it larger?",
+          "a": ""
+        },
+        {
+          "q": "Can I make it smaller?",
+          "a": ""
+        },
+        {
+          "q": "Can I change the shape?",
+          "a": ""
+        },
+        {
+          "q": "Can it turn the opposite direction?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove one of the curves?",
+          "a": ""
+        },
+        {
+          "q": "Can I make it more modern?",
+          "a": ""
+        },
+        {
+          "q": "Can I make it more traditional?",
+          "a": ""
+        },
+        {
+          "q": "Can I add lighting?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the lighting?",
+          "a": ""
+        },
+        {
+          "q": "Can it have closed risers?",
+          "a": ""
+        },
+        {
+          "q": "Does it have to look exactly like this?",
+          "a": ""
+        },
+        {
+          "q": "Who can build this staircase?",
+          "a": ""
+        },
+        {
+          "q": "Is this handmade?",
+          "a": ""
+        },
+        {
+          "q": "Is it machine made?",
+          "a": ""
+        },
+        {
+          "q": "Is it manufactured in sections?",
+          "a": ""
+        },
+        {
+          "q": "Can it be assembled on site?",
+          "a": ""
+        },
+        {
+          "q": "Can it be delivered fully built?",
+          "a": ""
+        },
+        {
+          "q": "Can it be built inside an existing house?",
+          "a": ""
+        },
+        {
+          "q": "Can it be built while I am living in the house?",
+          "a": ""
+        },
+        {
+          "q": "How long does it take to manufacture?",
+          "a": ""
+        },
+        {
+          "q": "How long does installation take?",
+          "a": ""
+        },
+        {
+          "q": "Is every staircase made to order?",
+          "a": ""
+        },
+        {
+          "q": "Can this be prefabricated?",
+          "a": ""
+        },
+        {
+          "q": "Can it be flat packed?",
+          "a": ""
+        },
+        {
+          "q": "What parts are manufactured in the factory?",
+          "a": ""
+        },
+        {
+          "q": "What work is completed on site?",
+          "a": ""
+        },
+        {
+          "q": "What holds this staircase up?",
+          "a": ""
+        },
+        {
+          "q": "Is it self-supporting?",
+          "a": ""
+        },
+        {
+          "q": "Does it need a central support?",
+          "a": ""
+        },
+        {
+          "q": "Does it need steel inside?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel hidden?",
+          "a": ""
+        },
+        {
+          "q": "How strong is it?",
+          "a": ""
+        },
+        {
+          "q": "How much weight can it carry?",
+          "a": ""
+        },
+        {
+          "q": "Can several people stand on it?",
+          "a": ""
+        },
+        {
+          "q": "Does it move when you walk?",
+          "a": ""
+        },
+        {
+          "q": "Will it wobble?",
+          "a": ""
+        },
+        {
+          "q": "Will the handrails move?",
+          "a": ""
+        },
+        {
+          "q": "Does it squeak?",
+          "a": ""
+        },
+        {
+          "q": "How is it fixed to the floor?",
+          "a": ""
+        },
+        {
+          "q": "How is it fixed upstairs?",
+          "a": ""
+        },
+        {
+          "q": "Does it need extra structural supports?",
+          "a": ""
+        },
+        {
+          "q": "Does the house need strengthening?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed in my home?",
+          "a": ""
+        },
+        {
+          "q": "My doors are too narrow. Can it still be installed?",
+          "a": ""
+        },
+        {
+          "q": "Does it come in pieces?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit through a window?",
+          "a": ""
+        },
+        {
+          "q": "Can it be craned in?",
+          "a": ""
+        },
+        {
+          "q": "Does the ceiling opening need enlarging?",
+          "a": ""
+        },
+        {
+          "q": "Will installers cut the floor opening?",
+          "a": ""
+        },
+        {
+          "q": "Will builders need to modify my house?",
+          "a": ""
+        },
+        {
+          "q": "Can it replace my existing staircase?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed after decorating?",
+          "a": ""
+        },
+        {
+          "q": "How disruptive is installation?",
+          "a": ""
+        },
+        {
+          "q": "Do I need a concrete floor?",
+          "a": ""
+        },
+        {
+          "q": "Can it sit on timber flooring?",
+          "a": ""
+        },
+        {
+          "q": "Is a timber joist floor suitable?",
+          "a": ""
+        },
+        {
+          "q": "Does it need special foundations?",
+          "a": ""
+        },
+        {
+          "q": "Can it sit on suspended timber floors?",
+          "a": ""
+        },
+        {
+          "q": "Can it be fixed to steel beams?",
+          "a": ""
+        },
+        {
+          "q": "Does the upstairs floor need reinforcing?",
+          "a": ""
+        },
+        {
+          "q": "What materials are used?",
+          "a": ""
+        },
+        {
+          "q": "Can I have oak instead?",
+          "a": ""
+        },
+        {
+          "q": "Can I use walnut?",
+          "a": ""
+        },
+        {
+          "q": "Can I use ash?",
+          "a": ""
+        },
+        {
+          "q": "Can I use glass treads?",
+          "a": ""
+        },
+        {
+          "q": "Can I use stone treads?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel be powder coated?",
+          "a": ""
+        },
+        {
+          "q": "Can it be stainless steel?",
+          "a": ""
+        },
+        {
+          "q": "Can the sides be covered with timber?",
+          "a": ""
+        },
+        {
+          "q": "Can they be wrapped in stone?",
+          "a": ""
+        },
+        {
+          "q": "Can they be clad in brass?",
+          "a": ""
+        },
+        {
+          "q": "Can they be upholstered?",
+          "a": ""
+        },
+        {
+          "q": "Can they be painted?",
+          "a": ""
+        },
+        {
+          "q": "Is it toughened?",
+          "a": ""
+        },
+        {
+          "q": "Is it laminated?",
+          "a": ""
+        },
+        {
+          "q": "Can it be frosted?",
+          "a": ""
+        },
+        {
+          "q": "Can I have bronze glass?",
+          "a": ""
+        },
+        {
+          "q": "Can I have smoked glass?",
+          "a": ""
+        },
+        {
+          "q": "Does the glass scratch?",
+          "a": ""
+        },
+        {
+          "q": "Can broken glass be replaced?",
+          "a": ""
+        },
+        {
+          "q": "Can glass shatter?",
+          "a": ""
+        },
+        {
+          "q": "What happens if glass breaks?",
+          "a": ""
+        },
+        {
+          "q": "Is low-iron glass worth the extra cost?",
+          "a": ""
+        },
+        {
+          "q": "Can it be timber?",
+          "a": ""
+        },
+        {
+          "q": "Can it be metal?",
+          "a": ""
+        },
+        {
+          "q": "Can it be leather wrapped?",
+          "a": ""
+        },
+        {
+          "q": "Do I need a handrail?",
+          "a": ""
+        },
+        {
+          "q": "Can the handrail have lighting?",
+          "a": ""
+        },
+        {
+          "q": "Will the handrail feel solid?",
+          "a": ""
+        },
+        {
+          "q": "How is the handrail fixed?",
+          "a": ""
+        },
+        {
+          "q": "Which handrail feels most comfortable?",
+          "a": ""
+        },
+        {
+          "q": "Can handrails wrap around corners seamlessly?",
+          "a": ""
+        },
+        {
+          "q": "Can I change the steps?",
+          "a": ""
+        },
+        {
+          "q": "Can I replace the treads later?",
+          "a": ""
+        },
+        {
+          "q": "Can I use thicker treads?",
+          "a": ""
+        },
+        {
+          "q": "Can I add anti-slip inserts?",
+          "a": ""
+        },
+        {
+          "q": "Can I stain them darker?",
+          "a": ""
+        },
+        {
+          "q": "Can I refinish them later?",
+          "a": ""
+        },
+        {
+          "q": "Can treads overhang or float?",
+          "a": ""
+        },
+        {
+          "q": "Can the underside be finished?",
+          "a": ""
+        },
+        {
+          "q": "Can tread lighting be recessed?",
+          "a": ""
+        },
+        {
+          "q": "Can I add risers?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the risers?",
+          "a": ""
+        },
+        {
+          "q": "Can risers be glass?",
+          "a": ""
+        },
+        {
+          "q": "Can they be timber?",
+          "a": ""
+        },
+        {
+          "q": "Can risers have lighting?",
+          "a": ""
+        },
+        {
+          "q": "Which is safer, open or closed risers?",
+          "a": ""
+        },
+        {
+          "q": "Is the wiring hidden?",
+          "a": ""
+        },
+        {
+          "q": "What happens if the LEDs fail?",
+          "a": ""
+        },
+        {
+          "q": "Can the lights be dimmed?",
+          "a": ""
+        },
+        {
+          "q": "Can I choose different colours?",
+          "a": ""
+        },
+        {
+          "q": "Can smart home systems control the lights?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be made without lighting?",
+          "a": ""
+        },
+        {
+          "q": "Is this staircase safe?",
+          "a": ""
+        },
+        {
+          "q": "Is it safe for children?",
+          "a": ""
+        },
+        {
+          "q": "Is it safe for elderly people?",
+          "a": ""
+        },
+        {
+          "q": "Is it safe for pets?",
+          "a": ""
+        },
+        {
+          "q": "Is it slippery?",
+          "a": ""
+        },
+        {
+          "q": "Can anti-slip strips be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Does it comply with regulations?",
+          "a": ""
+        },
+        {
+          "q": "Can balusters be added?",
+          "a": ""
+        },
+        {
+          "q": "Is glass safer than balusters?",
+          "a": ""
+        },
+        {
+          "q": "Is it noisy? Does it echo?",
+          "a": ""
+        },
+        {
+          "q": "Is it difficult to clean?",
+          "a": ""
+        },
+        {
+          "q": "How do I clean the glass?",
+          "a": ""
+        },
+        {
+          "q": "Does the steel rust?",
+          "a": ""
+        },
+        {
+          "q": "Does timber require oiling?",
+          "a": ""
+        },
+        {
+          "q": "Can damaged treads be replaced?",
+          "a": ""
+        },
+        {
+          "q": "Can scratches be repaired?",
+          "a": ""
+        },
+        {
+          "q": "How long does it last?",
+          "a": ""
+        },
+        {
+          "q": "What warranty is offered?",
+          "a": ""
+        },
+        {
+          "q": "Does this increase house value?",
+          "a": ""
+        },
+        {
+          "q": "Is it worth the investment?",
+          "a": ""
+        },
+        {
+          "q": "Do buyers like feature staircases?",
+          "a": ""
+        },
+        {
+          "q": "Does it make a home easier to sell?",
+          "a": ""
+        },
+        {
+          "q": "Is it considered luxury?",
+          "a": ""
+        },
+        {
+          "q": "Will this comply with building regulations?",
+          "a": ""
+        },
+        {
+          "q": "Does it comply where I live?",
+          "a": ""
+        },
+        {
+          "q": "Will I need approval?",
+          "a": ""
+        },
+        {
+          "q": "Will an engineer be required?",
+          "a": ""
+        },
+        {
+          "q": "Can the manufacturer advise on regulations?",
+          "a": ""
+        },
+        {
+          "q": "What affects the price?",
+          "a": ""
+        },
+        {
+          "q": "Is glass more expensive?",
+          "a": ""
+        },
+        {
+          "q": "Is curved steel expensive?",
+          "a": ""
+        },
+        {
+          "q": "Can I reduce the cost?",
+          "a": ""
+        },
+        {
+          "q": "Is installation included?",
+          "a": ""
+        },
+        {
+          "q": "Can you work within my budget?",
+          "a": ""
+        },
+        {
+          "q": "What budget should I allow?",
+          "a": ""
+        },
+        {
+          "q": "Can I build it in stages?",
+          "a": ""
+        },
+        {
+          "q": "Why is one staircase more expensive than another?",
+          "a": ""
+        },
+        {
+          "q": "Why are curved staircases more expensive?",
+          "a": ""
+        },
+        {
+          "q": "Why does glass increase the price?",
+          "a": ""
+        },
+        {
+          "q": "Why do bespoke staircases cost more?",
+          "a": ""
+        },
+        {
+          "q": "How can I reduce the cost?",
+          "a": ""
+        },
+        {
+          "q": "What changes would make it cheaper?",
+          "a": ""
+        },
+        {
+          "q": "Can I install it myself to save money?",
+          "a": ""
+        },
+        {
+          "q": "Can I buy the staircase without installation?",
+          "a": ""
+        },
+        {
+          "q": "How many quotations should I get?",
+          "a": ""
+        },
+        {
+          "q": "Can you help me compare quotations?",
+          "a": ""
+        },
+        {
+          "q": "What should be included in a quotation?",
+          "a": ""
+        },
+        {
+          "q": "Should engineering be included?",
+          "a": ""
+        },
+        {
+          "q": "Should installation be included?",
+          "a": ""
+        },
+        {
+          "q": "Should delivery be included?",
+          "a": ""
+        },
+        {
+          "q": "Should VAT or sales tax be included?",
+          "a": ""
+        },
+        {
+          "q": "Do manufacturers require a deposit?",
+          "a": ""
+        },
+        {
+          "q": "When do I normally pay?",
+          "a": ""
+        },
+        {
+          "q": "Is staged payment common?",
+          "a": ""
+        },
+        {
+          "q": "Can I finance a staircase?",
+          "a": ""
+        },
+        {
+          "q": "Are there hidden costs?",
+          "a": ""
+        },
+        {
+          "q": "Are structural alterations extra?",
+          "a": ""
+        },
+        {
+          "q": "Is crane hire included?",
+          "a": ""
+        },
+        {
+          "q": "Are surveys included?",
+          "a": ""
+        },
+        {
+          "q": "Are engineer's fees included?",
+          "a": ""
+        },
+        {
+          "q": "Does a faster lead time cost more?",
+          "a": ""
+        },
+        {
+          "q": "Will ordering early save money?",
+          "a": ""
+        },
+        {
+          "q": "Do commercial staircases cost more?",
+          "a": ""
+        },
+        {
+          "q": "Why won't you give me a price?",
+          "a": ""
+        },
+        {
+          "q": "Who makes staircases like this?",
+          "a": ""
+        },
+        {
+          "q": "Can I get multiple quotations?",
+          "a": ""
+        },
+        {
+          "q": "Can I see previous projects?",
+          "a": ""
+        },
+        {
+          "q": "Can I speak to previous customers?",
+          "a": ""
+        },
+        {
+          "q": "Do they manufacture in-house or outsource?",
+          "a": ""
+        },
+        {
+          "q": "Are they insured?",
+          "a": ""
+        },
+        {
+          "q": "Who is responsible if something goes wrong?",
+          "a": ""
+        },
+        {
+          "q": "Has this staircase actually been built?",
+          "a": ""
+        },
+        {
+          "q": "Is this based on a real project?",
+          "a": ""
+        },
+        {
+          "q": "Can someone manufacture this exact design?",
+          "a": ""
+        },
+        {
+          "q": "What would need changing before it could be built?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me similar staircases?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me a cheaper version?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me one in oak?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me one with glass?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me a straight version?",
+          "a": ""
+        },
+        {
+          "q": "Can you show me one for a smaller house?",
+          "a": ""
+        },
+        {
+          "q": "How is it packaged?",
+          "a": ""
+        },
+        {
+          "q": "Is insurance included?",
+          "a": ""
+        },
+        {
+          "q": "What if something arrives damaged?",
+          "a": ""
+        },
+        {
+          "q": "Who pays shipping?",
+          "a": ""
+        },
+        {
+          "q": "Do I need a site survey?",
+          "a": ""
+        },
+        {
+          "q": "Who carries out the survey?",
+          "a": ""
+        },
+        {
+          "q": "How accurate do measurements need to be?",
+          "a": ""
+        },
+        {
+          "q": "Can I measure it myself?",
+          "a": ""
+        },
+        {
+          "q": "What happens if measurements are wrong?",
+          "a": ""
+        },
+        {
+          "q": "Can plans be used instead?",
+          "a": ""
+        },
+        {
+          "q": "Do I need architectural drawings?",
+          "a": ""
+        },
+        {
+          "q": "What photographs should I provide?",
+          "a": ""
+        },
+        {
+          "q": "Is the survey free?",
+          "a": ""
+        },
+        {
+          "q": "Can my old staircase be removed?",
+          "a": ""
+        },
+        {
+          "q": "Who removes it?",
+          "a": ""
+        },
+        {
+          "q": "How long does removal take?",
+          "a": ""
+        },
+        {
+          "q": "Is it messy?",
+          "a": ""
+        },
+        {
+          "q": "Will walls or floors be damaged?",
+          "a": ""
+        },
+        {
+          "q": "Can I use my old staircase until installation day?",
+          "a": ""
+        },
+        {
+          "q": "Do I need temporary access upstairs?",
+          "a": ""
+        },
+        {
+          "q": "Will my walls support this staircase?",
+          "a": ""
+        },
+        {
+          "q": "Does it need load-bearing walls?",
+          "a": ""
+        },
+        {
+          "q": "Can hidden steel be added?",
+          "a": ""
+        },
+        {
+          "q": "Does the engineer design the supports?",
+          "a": ""
+        },
+        {
+          "q": "What if my floor is not level?",
+          "a": ""
+        },
+        {
+          "q": "Will the staircase settle over time?",
+          "a": ""
+        },
+        {
+          "q": "Does my ceiling opening need changing?",
+          "a": ""
+        },
+        {
+          "q": "Who cuts the opening?",
+          "a": ""
+        },
+        {
+          "q": "Will dust be created?",
+          "a": ""
+        },
+        {
+          "q": "Can the opening be enlarged or made smaller?",
+          "a": ""
+        },
+        {
+          "q": "What shape should the opening be?",
+          "a": ""
+        },
+        {
+          "q": "Can lighting be built into the opening?",
+          "a": ""
+        },
+        {
+          "q": "Is solid timber better?",
+          "a": ""
+        },
+        {
+          "q": "Is engineered timber better?",
+          "a": ""
+        },
+        {
+          "q": "Will oak change colour?",
+          "a": ""
+        },
+        {
+          "q": "Does walnut fade?",
+          "a": ""
+        },
+        {
+          "q": "Can timber crack?",
+          "a": ""
+        },
+        {
+          "q": "Will knots appear?",
+          "a": ""
+        },
+        {
+          "q": "Is every tread unique?",
+          "a": ""
+        },
+        {
+          "q": "Can I choose the grain?",
+          "a": ""
+        },
+        {
+          "q": "Can I match my flooring, doors or kitchen?",
+          "a": ""
+        },
+        {
+          "q": "What humidity is recommended?",
+          "a": ""
+        },
+        {
+          "q": "What thickness is the steel?",
+          "a": ""
+        },
+        {
+          "q": "Is it welded or bolted?",
+          "a": ""
+        },
+        {
+          "q": "Can welds be hidden?",
+          "a": ""
+        },
+        {
+          "q": "Does powder coating scratch?",
+          "a": ""
+        },
+        {
+          "q": "Can damaged powder coating be repaired?",
+          "a": ""
+        },
+        {
+          "q": "Will the steel rust near the sea?",
+          "a": ""
+        },
+        {
+          "q": "Is marine-grade stainless available?",
+          "a": ""
+        },
+        {
+          "q": "Is it comfortable barefoot?",
+          "a": ""
+        },
+        {
+          "q": "Does timber feel warm?",
+          "a": ""
+        },
+        {
+          "q": "Is steel cold underfoot?",
+          "a": ""
+        },
+        {
+          "q": "Will high heels damage timber?",
+          "a": ""
+        },
+        {
+          "q": "Can dogs and pets climb it comfortably?",
+          "a": ""
+        },
+        {
+          "q": "Is it suitable for everyday family use?",
+          "a": ""
+        },
+        {
+          "q": "Is timber treated for fire?",
+          "a": ""
+        },
+        {
+          "q": "Does steel require fire protection?",
+          "a": ""
+        },
+        {
+          "q": "Does glass resist fire?",
+          "a": ""
+        },
+        {
+          "q": "Can acoustic insulation be added?",
+          "a": ""
+        },
+        {
+          "q": "Is this suitable in earthquake zones?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed outdoors?",
+          "a": ""
+        },
+        {
+          "q": "Is UV protection needed?",
+          "a": ""
+        },
+        {
+          "q": "Can it cope with coastal environments?",
+          "a": ""
+        },
+        {
+          "q": "Can this be installed in hotels?",
+          "a": ""
+        },
+        {
+          "q": "Can offices use this design?",
+          "a": ""
+        },
+        {
+          "q": "Are commercial regulations different?",
+          "a": ""
+        },
+        {
+          "q": "Can heavier-duty versions be built?",
+          "a": ""
+        },
+        {
+          "q": "Can manufacturers quote for large developments?",
+          "a": ""
+        },
+        {
+          "q": "Can my architect modify the design?",
+          "a": ""
+        },
+        {
+          "q": "Can CAD or BIM files be supplied?",
+          "a": ""
+        },
+        {
+          "q": "When is the design final?",
+          "a": ""
+        },
+        {
+          "q": "Is there a warranty?",
+          "a": ""
+        },
+        {
+          "q": "What does the warranty cover?",
+          "a": ""
+        },
+        {
+          "q": "What voids the warranty?",
+          "a": ""
+        },
+        {
+          "q": "Is the timber FSC certified?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel recyclable?",
+          "a": ""
+        },
+        {
+          "q": "What is the carbon footprint?",
+          "a": ""
+        }
+      ],
+      "design_notes": "OVERALL TYPE\nBespoke sculptural double-curved feature staircase · classifiable as a helical staircase, luxury architectural staircase, premium commercial feature stair, or grand entrance staircase. Unlike a spiral, every tread is individually engineered. Designed as a piece of architecture and interior sculpture · the centrepiece of a luxury home, hotel, corporate headquarters or prestige commercial building.\n\nDESIGN STYLE\nModern Luxury · Contemporary Architecture · Minimalist Structural Design · High-End Residential · Luxury Hotel Style · Corporate Reception Style · Architect Designed · Statement Staircase.\n\nDESIGN INTENT\nNot simply moving people between floors · sculptural feature that immediately attracts attention on entry · sweeping curves, open central space, glass balustrades and concealed lighting create openness and luxury while allowing natural light to travel throughout the building.\n\nSTRUCTURAL FEATURES\nTwin sweeping curved structural steel stringers · continuous flowing handrail geometry · frameless structural glass balustrades · open-riser construction · hidden structural supports · integrated LED tread lighting · feature landscaping beneath the staircase · sculptural landing transition · large architectural opening through the floor. Every curve appears to be designed as one continuous flowing movement.\n\nMATERIALS (typical options)\nStructure: fabricated structural steel, laser-cut plate steel, rolled steel sections, hidden welded framework, powder-coated finish.\nTreads: European oak · American white oak · walnut · ash · engineered hardwood · stone treads · porcelain · glass treads (optional).\nBalustrades: toughened laminated structural glass · low-iron ultra-clear glass · curved glass (where required) · polished stainless fittings · hidden glass channels.\nHandrails: timber · steel · bronze · brass · stainless steel · leather-wrapped · custom hardwood.\n\nLIGHTING\nLED strip beneath every tread · handrail lighting · landing lighting · feature floor lighting · landscape lighting · architectural ceiling lighting · hidden driver systems · smart home integration · motion sensors · dimmable scenes.\n\nENGINEERING COMPLEXITY (Very High)\nNot standard. Requires structural calculations · architectural drawings · 3D CAD modelling · finite element analysis · steel fabrication drawings · glass engineering · load calculations · building regulation compliance · manufacturing tolerances · professional installation. Every component usually manufactured specifically for one building.\n\nMANUFACTURING METHOD (typical)\n3D scanning · laser measurement · CAD modelling · CNC machining · steel rolling · curved plate fabrication · robotic welding · hand finishing · timber CNC machining · glass templating · factory trial assembly · protective packaging · professional installation.\n\nSUITABLE BUILDINGS\nLuxury homes · modern villas · architectural self-build projects · hotels · corporate headquarters · executive offices · prestige showrooms · luxury apartment developments · waterfront properties · high-end restaurants · museums · boutique retail spaces.\n\nAPPROXIMATE DIMENSIONS (illustrative · not manufacturing specs)\nFloor to floor: 2500-4500 mm · overall width: 1200-2500 mm · overall diameter (if circular): 3000-8000 mm · minimum ceiling opening: designed specifically for each project · landing width: usually matches or exceeds stair width.\n\nSTRUCTURAL ENGINEERING CONSIDERATIONS\nDead load · live load · dynamic movement · torsional forces · glass loading · handrail loading · steel deflection · connection forces · anchor bolt loading · floor loading · ceiling loading. Every country has different structural requirements.\n\nBUILDING REGULATION AREAS\nMaximum rise · minimum going · headroom · handrail height · guarding · baluster spacing · glass requirements · slip resistance · fire escape requirements · accessibility rules. Vary between countries and local authorities.\n\nINSTALLATION SEQUENCE (typical)\n1. Site survey → 2. Laser measurement → 3. Structural engineering approval → 4. Manufacturing → 5. Factory trial assembly → 6. Delivery → 7. Crane or specialist lifting → 8. Main steel installation → 9. Structural fixing → 10. Glass installation → 11. Timber tread installation → 12. Lighting installation → 13. Final alignment → 14. Quality inspection → 15. Building control inspection (where required).\n\nMANUFACTURING TOLERANCES\nExtremely tight. Even a few mm affects glass alignment · handrail joints · lighting lines · curved steel · landing transitions · overall appearance. Manufacturers normally use laser measurements rather than tape measures.\n\nMAINTENANCE\nCleaning glass · cleaning timber · inspecting fixings · checking handrail rigidity · checking lighting · refinishing timber when required · inspecting silicone joints · lubricating concealed fixings where specified.\n\nLIFESPAN\nWith proper design, engineering and maintenance can last many decades. Individual components (timber finishes, lighting drivers, glass panels) may be replaced over time without replacing the complete staircase.\n\nTRANSPORT + ACCESS\nRarely delivered as a single unit · normally transported as steel sections, timber tread packs, glass panels, handrail sections, lighting components, fixings · assembled on site. Access restriction options: smaller fabricated sections, bolted site connections, temporary glazing removal, crane lifting, roof access, large opening before final glazing. Every property assessed individually.\n\nWHAT IS VISIBLE VS INFERRED\nVisible: overall sculptural curved geometry · frameless glass balustrades · integrated LED tread lighting · sculptural landing transition · large architectural floor opening · landscaped feature underneath.\nInferred (CANNOT confirm from image): exact steel grade/thickness · exact fixing method · exact timber species · exact glass specification · engineering calculations · installation access solutions for a specific property.\n\nIMPORTANT TRANSPARENCY STATEMENT (Philip verbatim)\nThis image should be treated as a design concept or architectural reference, not as a construction drawing. Many specialist manufacturers are capable of producing staircases with a very similar appearance, but every project must be redesigned and engineered specifically for the property where it will be installed. No reputable manufacturer will build directly from an inspiration image alone.",
+      "families": [
+        "helical",
+        "open-riser",
+        "glass-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "balustrade-glass",
+        "fixings-glass",
+        "lighting-led",
+        "landing",
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000021",
@@ -864,7 +2462,12 @@
       "designer_notes": "NOT a staircase design record · this is a COMPONENTS-family reference for hand-carved stair parts. Excluded from customer default queries by design_family='Components' filter · only surfaces when the caller explicitly opts in via findConfirmedImages({..., families: ['Components']}). Router will later add Component-Intent detection (queries containing 'carved · bracket · scroll · appliqué · restoration · Victorian bracket · newel carving · baluster carving · period stair parts'). Trade Center integration point: image + text signals routes for supplier discovery.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:40:01.459Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000022",
@@ -914,7 +2517,12 @@
       "designer_notes": "NOT a staircase design record · this is a FIXINGS-family reference for functional installation hardware (separate from decorative Components carvings/brackets/scrolls). Excluded from customer default queries by design_family='Fixings' being outside CUSTOMER_DEFAULT_FAMILIES · only surfaces when the caller explicitly opts in via findConfirmedImages({..., families: ['Fixings']}). Router will later add Fixings-Intent detection for queries containing 'which screws · fixings · fasteners · wood screw size · pilot hole · rail bolt · newel post fixing · riser tread fixing · handrail connector · staircase installation hardware'. Sample sizes referenced in the vision text: 30mm timber riser-to-tread joints (thinner timber) · 40mm MDF tread/riser · 5.0x35mm fully threaded countersunk for MDF/plywood risers with adhesive. Hardwood staircases require pilot holes to prevent splitting. Trade Center integration point: image + text routes to hardware supplier discovery.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T13:52:08.639Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000023",
@@ -983,7 +2591,12 @@
       "designer_notes": "NOT a staircase design record · this is a MATERIALS-family reference for sheet materials and staircase-adjacent building supplies (separate from decorative Components carvings and functional Fixings hardware). Excluded from customer default queries by design_family='Materials' being outside CUSTOMER_DEFAULT_FAMILIES · only surfaces when the caller explicitly opts in via findConfirmedImages({..., families: ['Materials']}). Router will later add Materials-Intent detection for queries containing 'T&G · tongue and groove · MDF · plywood · sheet material · under-stair · under-stair storage · boarding · box in · close in · panel · moulding · skirting · architrave · scotia · quadrant'. Trade Center integration point: image + text routes to sheet-materials and timber-merchant supplier discovery.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T14:11:35.560Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000024",
@@ -1028,7 +2641,12 @@
       "designer_notes": "FIRST Floating-family record · closes the coverage gap flagged in the 20-design distribution report. Style commonly specified in luxury new-builds, architect-designed properties, and high-end renovations. Requires careful structural design (steel + wall reinforcement) · best planned early in new build or major renovation. If a true floating staircase isn't practical, similar appearance can be achieved via alternative structural designs. Companion knowledge article: nex-knowledge-base-modern-floating-glass-staircase.md.",
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T14:21:28.416Z",
-      "priority": "standard"
+      "priority": "standard",
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000025",
@@ -1079,7 +2697,1081 @@
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T18:48:07.993Z",
       "priority": "standard",
-      "image_state": "concept"
+      "image_state": "concept",
+      "qa": [
+        {
+          "q": "Can this staircase fit my home?",
+          "a": ""
+        },
+        {
+          "q": "Can it be made smaller?",
+          "a": ""
+        },
+        {
+          "q": "Can it be made wider?",
+          "a": ""
+        },
+        {
+          "q": "Can it be mirrored?",
+          "a": ""
+        },
+        {
+          "q": "Can it turn the opposite direction?",
+          "a": ""
+        },
+        {
+          "q": "Can it have a landing?",
+          "a": ""
+        },
+        {
+          "q": "Can it continue to another floor?",
+          "a": ""
+        },
+        {
+          "q": "Can I add glass later?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the balusters?",
+          "a": ""
+        },
+        {
+          "q": "Can the curve be tighter or more open?",
+          "a": ""
+        },
+        {
+          "q": "Can it become an oval shape instead of circular?",
+          "a": ""
+        },
+        {
+          "q": "Can I reduce the number of steps?",
+          "a": ""
+        },
+        {
+          "q": "Can I increase the width?",
+          "a": ""
+        },
+        {
+          "q": "Can the first step be made larger?",
+          "a": ""
+        },
+        {
+          "q": "Can I have a feature starting step?",
+          "a": ""
+        },
+        {
+          "q": "Can the landing be changed?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase continue to a third floor?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase become the centrepiece of my home?",
+          "a": ""
+        },
+        {
+          "q": "Will this suit a modern home?",
+          "a": ""
+        },
+        {
+          "q": "Will this suit a traditional home?",
+          "a": ""
+        },
+        {
+          "q": "Will this staircase make my entrance look bigger?",
+          "a": ""
+        },
+        {
+          "q": "Can I combine two different staircase designs?",
+          "a": ""
+        },
+        {
+          "q": "Can I copy this staircase exactly?",
+          "a": ""
+        },
+        {
+          "q": "How are the treads fixed?",
+          "a": ""
+        },
+        {
+          "q": "Can it be assembled on site?",
+          "a": ""
+        },
+        {
+          "q": "Does it arrive fully welded?",
+          "a": ""
+        },
+        {
+          "q": "Will it fit through my front door?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed before the roof is finished?",
+          "a": ""
+        },
+        {
+          "q": "What if access is restricted?",
+          "a": ""
+        },
+        {
+          "q": "Can it be manufactured in sections?",
+          "a": ""
+        },
+        {
+          "q": "Is this staircase fixed to the wall?",
+          "a": ""
+        },
+        {
+          "q": "Is this staircase free standing?",
+          "a": ""
+        },
+        {
+          "q": "What actually holds this staircase up?",
+          "a": ""
+        },
+        {
+          "q": "Is it made from metal or wood?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel hidden?",
+          "a": ""
+        },
+        {
+          "q": "What supports the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Does it need a concrete floor?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed onto timber joists?",
+          "a": ""
+        },
+        {
+          "q": "Will extra steelwork be required?",
+          "a": ""
+        },
+        {
+          "q": "Is the staircase engineered?",
+          "a": ""
+        },
+        {
+          "q": "Can it carry heavy loads?",
+          "a": ""
+        },
+        {
+          "q": "Does it wobble?",
+          "a": ""
+        },
+        {
+          "q": "Will it vibrate?",
+          "a": ""
+        },
+        {
+          "q": "Does it squeak?",
+          "a": ""
+        },
+        {
+          "q": "Is the staircase rigid?",
+          "a": ""
+        },
+        {
+          "q": "Will the treads bounce?",
+          "a": ""
+        },
+        {
+          "q": "How much weight can one tread carry?",
+          "a": ""
+        },
+        {
+          "q": "Can several people stand on it together?",
+          "a": ""
+        },
+        {
+          "q": "Is it suitable for commercial use?",
+          "a": ""
+        },
+        {
+          "q": "Is it safe for children?",
+          "a": ""
+        },
+        {
+          "q": "Will the staircase move?",
+          "a": ""
+        },
+        {
+          "q": "Will the handrail flex?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel slippery?",
+          "a": ""
+        },
+        {
+          "q": "Can anti-slip inserts be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase meet local building regulations?",
+          "a": ""
+        },
+        {
+          "q": "Is it safe for pets?",
+          "a": ""
+        },
+        {
+          "q": "Can elderly people use this safely?",
+          "a": ""
+        },
+        {
+          "q": "Can extra handrails be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Can child gates be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Can glass make it safer?",
+          "a": ""
+        },
+        {
+          "q": "How long does installation take?",
+          "a": ""
+        },
+        {
+          "q": "Does installation create much mess?",
+          "a": ""
+        },
+        {
+          "q": "Does the ceiling opening need enlarging?",
+          "a": ""
+        },
+        {
+          "q": "Can the installer create the floor opening?",
+          "a": ""
+        },
+        {
+          "q": "Who measures the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Who checks the structure?",
+          "a": ""
+        },
+        {
+          "q": "Who signs off the installation?",
+          "a": ""
+        },
+        {
+          "q": "Is a crane required?",
+          "a": ""
+        },
+        {
+          "q": "Can it be carried upstairs?",
+          "a": ""
+        },
+        {
+          "q": "Does it fit through standard doors?",
+          "a": ""
+        },
+        {
+          "q": "Does the staircase arrive painted?",
+          "a": ""
+        },
+        {
+          "q": "Will welding happen inside my house?",
+          "a": ""
+        },
+        {
+          "q": "Is everything bolted together?",
+          "a": ""
+        },
+        {
+          "q": "How much noise will installation create?",
+          "a": ""
+        },
+        {
+          "q": "Can I stay in the house during installation?",
+          "a": ""
+        },
+        {
+          "q": "Does the steel require maintenance?",
+          "a": ""
+        },
+        {
+          "q": "Can the timber be refinished?",
+          "a": ""
+        },
+        {
+          "q": "Can damaged treads be replaced?",
+          "a": ""
+        },
+        {
+          "q": "Can lighting be upgraded?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be repainted?",
+          "a": ""
+        },
+        {
+          "q": "How do I clean the steel?",
+          "a": ""
+        },
+        {
+          "q": "How do I clean the timber?",
+          "a": ""
+        },
+        {
+          "q": "Does the staircase need servicing?",
+          "a": ""
+        },
+        {
+          "q": "Should bolts be checked?",
+          "a": ""
+        },
+        {
+          "q": "How often should finishes be maintained?",
+          "a": ""
+        },
+        {
+          "q": "How thick is the steel?",
+          "a": ""
+        },
+        {
+          "q": "What grade of steel is normally used?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel fabricated from plate or box section?",
+          "a": ""
+        },
+        {
+          "q": "Are the welds visible?",
+          "a": ""
+        },
+        {
+          "q": "Are the welds polished?",
+          "a": ""
+        },
+        {
+          "q": "How is the curved steel manufactured?",
+          "a": ""
+        },
+        {
+          "q": "Can aluminium be used instead?",
+          "a": ""
+        },
+        {
+          "q": "Can stainless steel be used?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel be galvanised?",
+          "a": ""
+        },
+        {
+          "q": "Is powder coating better than paint?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel rust?",
+          "a": ""
+        },
+        {
+          "q": "How long should the steel last?",
+          "a": ""
+        },
+        {
+          "q": "Is solid timber better than engineered timber?",
+          "a": ""
+        },
+        {
+          "q": "Will oak crack?",
+          "a": ""
+        },
+        {
+          "q": "Will walnut fade?",
+          "a": ""
+        },
+        {
+          "q": "Can the timber colour match my flooring?",
+          "a": ""
+        },
+        {
+          "q": "Can reclaimed timber be used?",
+          "a": ""
+        },
+        {
+          "q": "Are thicker treads stronger?",
+          "a": ""
+        },
+        {
+          "q": "Is the glass toughened?",
+          "a": ""
+        },
+        {
+          "q": "Is it laminated?",
+          "a": ""
+        },
+        {
+          "q": "How thick is the glass?",
+          "a": ""
+        },
+        {
+          "q": "Can the glass be tinted?",
+          "a": ""
+        },
+        {
+          "q": "Can it be smoked or bronze?",
+          "a": ""
+        },
+        {
+          "q": "Can the glass be curved?",
+          "a": ""
+        },
+        {
+          "q": "Can glass be replaced if broken?",
+          "a": ""
+        },
+        {
+          "q": "Is one handrail enough?",
+          "a": ""
+        },
+        {
+          "q": "Can I have two handrails?",
+          "a": ""
+        },
+        {
+          "q": "Can I use horizontal rails?",
+          "a": ""
+        },
+        {
+          "q": "Can I replace the bars with glass?",
+          "a": ""
+        },
+        {
+          "q": "Can the balustrade be removed later?",
+          "a": ""
+        },
+        {
+          "q": "Can decorative metal panels be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Can timber balusters be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Does the builder need to prepare anything?",
+          "a": ""
+        },
+        {
+          "q": "Does the opening need trimming?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be installed before plastering?",
+          "a": ""
+        },
+        {
+          "q": "Should it be installed after flooring?",
+          "a": ""
+        },
+        {
+          "q": "Who installs it first — electrician, plasterer, decorator or flooring?",
+          "a": ""
+        },
+        {
+          "q": "How heavy is the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Can my floor support it?",
+          "a": ""
+        },
+        {
+          "q": "Does it require extra foundations?",
+          "a": ""
+        },
+        {
+          "q": "Does the base need strengthening?",
+          "a": ""
+        },
+        {
+          "q": "Will it damage suspended timber floors?",
+          "a": ""
+        },
+        {
+          "q": "Can it sit directly on floor tiles?",
+          "a": ""
+        },
+        {
+          "q": "Does the base need concrete?",
+          "a": ""
+        },
+        {
+          "q": "Can it sit on engineered timber flooring?",
+          "a": ""
+        },
+        {
+          "q": "Will this staircase fit in my house?",
+          "a": ""
+        },
+        {
+          "q": "How much floor space will it need?",
+          "a": ""
+        },
+        {
+          "q": "How much headroom is required?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit into an existing stairwell?",
+          "a": ""
+        },
+        {
+          "q": "Can it replace my current staircase?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed without changing the layout?",
+          "a": ""
+        },
+        {
+          "q": "Will I lose much living space?",
+          "a": ""
+        },
+        {
+          "q": "Can I move walls to fit it?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase become smaller without looking cramped?",
+          "a": ""
+        },
+        {
+          "q": "Can it be designed around my windows?",
+          "a": ""
+        },
+        {
+          "q": "Will it block natural light?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed in a loft conversion?",
+          "a": ""
+        },
+        {
+          "q": "Can it work in a narrow hallway?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit into a townhouse?",
+          "a": ""
+        },
+        {
+          "q": "Can it fit inside an apartment?",
+          "a": ""
+        },
+        {
+          "q": "Does my architect need to redesign the opening?",
+          "a": ""
+        },
+        {
+          "q": "Can you work from my architect's plans?",
+          "a": ""
+        },
+        {
+          "q": "Can you work from hand sketches?",
+          "a": ""
+        },
+        {
+          "q": "Can you work from BIM models?",
+          "a": ""
+        },
+        {
+          "q": "Do I need structural calculations?",
+          "a": ""
+        },
+        {
+          "q": "Who provides the engineering drawings?",
+          "a": ""
+        },
+        {
+          "q": "Can the builder build around the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Should the staircase be measured before plastering?",
+          "a": ""
+        },
+        {
+          "q": "Should it be measured after flooring?",
+          "a": ""
+        },
+        {
+          "q": "Who coordinates the installation?",
+          "a": ""
+        },
+        {
+          "q": "Is every staircase made from scratch?",
+          "a": ""
+        },
+        {
+          "q": "Is anything kept in stock?",
+          "a": ""
+        },
+        {
+          "q": "Can you make an exact copy?",
+          "a": ""
+        },
+        {
+          "q": "Can you improve this design?",
+          "a": ""
+        },
+        {
+          "q": "Can I combine ideas from several staircases?",
+          "a": ""
+        },
+        {
+          "q": "Can I send inspiration photos?",
+          "a": ""
+        },
+        {
+          "q": "Can I approve drawings before manufacture?",
+          "a": ""
+        },
+        {
+          "q": "Will I receive 3D drawings?",
+          "a": ""
+        },
+        {
+          "q": "Will I receive shop drawings?",
+          "a": ""
+        },
+        {
+          "q": "Has this staircase been engineered?",
+          "a": ""
+        },
+        {
+          "q": "Will it meet local building regulations?",
+          "a": ""
+        },
+        {
+          "q": "Is it structurally certified?",
+          "a": ""
+        },
+        {
+          "q": "Can calculations be supplied?",
+          "a": ""
+        },
+        {
+          "q": "Can my engineer review the design?",
+          "a": ""
+        },
+        {
+          "q": "Can changes be made after engineering?",
+          "a": ""
+        },
+        {
+          "q": "What safety factors are used?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be earthquake engineered?",
+          "a": ""
+        },
+        {
+          "q": "Can it be designed for hurricane zones?",
+          "a": ""
+        },
+        {
+          "q": "Can it be designed for coastal environments?",
+          "a": ""
+        },
+        {
+          "q": "Can powder coating be repaired?",
+          "a": ""
+        },
+        {
+          "q": "Can scratches be touched up?",
+          "a": ""
+        },
+        {
+          "q": "Will sunlight change the timber colour?",
+          "a": ""
+        },
+        {
+          "q": "Does oak darken with age?",
+          "a": ""
+        },
+        {
+          "q": "Can I choose any paint colour?",
+          "a": ""
+        },
+        {
+          "q": "Can I match my kitchen, flooring or doors?",
+          "a": ""
+        },
+        {
+          "q": "Will it squeak?",
+          "a": ""
+        },
+        {
+          "q": "Does steel creak?",
+          "a": ""
+        },
+        {
+          "q": "Can rubber isolation pads be fitted?",
+          "a": ""
+        },
+        {
+          "q": "Will footsteps echo?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be made quieter?",
+          "a": ""
+        },
+        {
+          "q": "Will children running upstairs make lots of noise?",
+          "a": ""
+        },
+        {
+          "q": "Is it suitable for young children?",
+          "a": ""
+        },
+        {
+          "q": "Can elderly people use this safely?",
+          "a": ""
+        },
+        {
+          "q": "Can anti-slip strips be added?",
+          "a": ""
+        },
+        {
+          "q": "Can I change the balustrade later?",
+          "a": ""
+        },
+        {
+          "q": "Can I upgrade to glass later?",
+          "a": ""
+        },
+        {
+          "q": "Can I replace timber with stone?",
+          "a": ""
+        },
+        {
+          "q": "Can I replace the handrail?",
+          "a": ""
+        },
+        {
+          "q": "Can lighting be added later?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the lighting?",
+          "a": ""
+        },
+        {
+          "q": "Can I repaint the steel?",
+          "a": ""
+        },
+        {
+          "q": "Can I relocate the staircase if I renovate?",
+          "a": ""
+        },
+        {
+          "q": "Is there a structural warranty?",
+          "a": ""
+        },
+        {
+          "q": "Is the paint guaranteed?",
+          "a": ""
+        },
+        {
+          "q": "Is the timber guaranteed?",
+          "a": ""
+        },
+        {
+          "q": "What happens if something moves?",
+          "a": ""
+        },
+        {
+          "q": "Who do I contact if I have a problem?",
+          "a": ""
+        },
+        {
+          "q": "Does it arrive fully assembled?",
+          "a": ""
+        },
+        {
+          "q": "Is it wrapped?",
+          "a": ""
+        },
+        {
+          "q": "Is it insured during transport?",
+          "a": ""
+        },
+        {
+          "q": "Can it be delivered internationally?",
+          "a": ""
+        },
+        {
+          "q": "Can it be transported to an island?",
+          "a": ""
+        },
+        {
+          "q": "What if access is difficult?",
+          "a": ""
+        },
+        {
+          "q": "Will roads need closing?",
+          "a": ""
+        },
+        {
+          "q": "Does a crane need planning permission?",
+          "a": ""
+        },
+        {
+          "q": "Can installation happen over a weekend?",
+          "a": ""
+        },
+        {
+          "q": "Will electricity be required?",
+          "a": ""
+        },
+        {
+          "q": "Will flooring need protecting?",
+          "a": ""
+        },
+        {
+          "q": "Who manages the project?",
+          "a": ""
+        },
+        {
+          "q": "Who orders materials?",
+          "a": ""
+        },
+        {
+          "q": "Who arranges installation?",
+          "a": ""
+        },
+        {
+          "q": "Who checks quality?",
+          "a": ""
+        },
+        {
+          "q": "Who is responsible if dimensions are wrong?",
+          "a": ""
+        },
+        {
+          "q": "Is it worth spending more on the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Which timber holds its value best?",
+          "a": ""
+        },
+        {
+          "q": "Is black steel going out of fashion?",
+          "a": ""
+        },
+        {
+          "q": "Is the timber sustainably sourced?",
+          "a": ""
+        },
+        {
+          "q": "Is FSC timber available?",
+          "a": ""
+        },
+        {
+          "q": "Can recycled steel be used?",
+          "a": ""
+        },
+        {
+          "q": "Is powder coating environmentally friendly?",
+          "a": ""
+        },
+        {
+          "q": "Can reclaimed timber be incorporated?",
+          "a": ""
+        },
+        {
+          "q": "What is the expected lifespan?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be recycled?",
+          "a": ""
+        },
+        {
+          "q": "Is the staircase covered during installation?",
+          "a": ""
+        },
+        {
+          "q": "Is public liability included?",
+          "a": ""
+        },
+        {
+          "q": "Do you have completed projects nearby?",
+          "a": ""
+        },
+        {
+          "q": "Can I visit a previous installation?",
+          "a": ""
+        },
+        {
+          "q": "Can I tour the factory?",
+          "a": ""
+        },
+        {
+          "q": "Can I meet the people making it?",
+          "a": ""
+        },
+        {
+          "q": "Do you have customer testimonials?",
+          "a": ""
+        },
+        {
+          "q": "Can I see different timber samples?",
+          "a": ""
+        },
+        {
+          "q": "Who specialises in this type of staircase?",
+          "a": ""
+        },
+        {
+          "q": "Which manufacturers build curved staircases?",
+          "a": ""
+        },
+        {
+          "q": "Which companies work with architects?",
+          "a": ""
+        },
+        {
+          "q": "Which suppliers work nationwide?",
+          "a": ""
+        },
+        {
+          "q": "Can you recommend someone near me?",
+          "a": ""
+        },
+        {
+          "q": "Are there manufacturers in my country?",
+          "a": ""
+        },
+        {
+          "q": "Are there installers in my city?",
+          "a": ""
+        },
+        {
+          "q": "Who can survey my property?",
+          "a": ""
+        },
+        {
+          "q": "Who can provide a quotation?",
+          "a": ""
+        },
+        {
+          "q": "Can you introduce me to multiple companies?",
+          "a": ""
+        },
+        {
+          "q": "Can I compare different manufacturers?",
+          "a": ""
+        },
+        {
+          "q": "Is this an expensive staircase?",
+          "a": ""
+        },
+        {
+          "q": "Why is this staircase expensive?",
+          "a": ""
+        },
+        {
+          "q": "Why does a curved staircase cost more?",
+          "a": ""
+        },
+        {
+          "q": "Is there a cheaper version?",
+          "a": ""
+        },
+        {
+          "q": "Can I make it more affordable?",
+          "a": ""
+        },
+        {
+          "q": "Can I build it in stages?",
+          "a": ""
+        },
+        {
+          "q": "What affects the price?",
+          "a": ""
+        },
+        {
+          "q": "How long before manufacture starts?",
+          "a": ""
+        },
+        {
+          "q": "What is the manufacturing lead time?",
+          "a": ""
+        },
+        {
+          "q": "Can it be exported overseas?",
+          "a": ""
+        },
+        {
+          "q": "Can it be shipped in containers?",
+          "a": ""
+        },
+        {
+          "q": "Is there a warranty?",
+          "a": ""
+        },
+        {
+          "q": "What maintenance is recommended?",
+          "a": ""
+        },
+        {
+          "q": "How often should timber be treated?",
+          "a": ""
+        },
+        {
+          "q": "Can scratches be repaired?",
+          "a": ""
+        },
+        {
+          "q": "Can the finish be changed later?",
+          "a": ""
+        },
+        {
+          "q": "What if I move house?",
+          "a": ""
+        }
+      ],
+      "design_notes": "OVERALL TYPE\nContemporary curved mono-stringer feature staircase · combines modern structural steel engineering with natural timber finishes · designed as an architectural focal point rather than a way of moving between floors. Begins with a generous curved entrance before sweeping through a smooth continuous radius to the upper floor · elegant flowing shape creates a welcoming entrance and lets the staircase become part of the interior architecture. Unlike a traditional staircase with strings on both sides, this design uses a single curved steel mono-stringer that supports the timber treads.\n\nSTAIRCASE TYPE TAGS\nCurved staircase · mono-stringer staircase · feature staircase · architectural staircase · open-riser staircase · bespoke manufactured staircase · steel and timber staircase.\n\nSTYLE TAGS\nContemporary · modern · luxury residential · architect-designed · minimalist · premium interior feature.\n\nPRIMARY STRUCTURE\nFabricated curved steel mono-stringer · welded steel plate sections rolled and fabricated to follow the exact staircase geometry · carries the entire load of the staircase and transfers it into the floor structure at both levels · normally manufactured in a factory before being transported for installation.\n\nTREADS\nThick hardwood timber treads · possible species: European oak · American white oak · walnut · ash · maple · Accoya · engineered oak. Finishes: natural oil · clear lacquer · satin finish · matt finish · dark stain · smoked oak · black stained timber.\n\nRISERS\nOpen risers in this example. Advantages: lighter appearance · more daylight · increased visual space · modern design. Closed risers can normally be manufactured if required.\n\nBALUSTRADE\nVertical steel balusters in this example. Possible alternatives: frameless glass · stainless steel · cable balustrade · timber spindles · decorative metalwork · bronze · brass · mixed materials.\n\nHANDRAIL\nFollows the curved geometry of the staircase · manufactured to match the exact curve. Possible materials: solid oak · walnut · ash · stainless steel · bronze · leather-wrapped · painted timber.\n\nFINISH\nSteel: black architectural finish in this example. Options: powder-coated · wet painted · textured finish · satin black · white · bronze · custom RAL colours.\n\nLIGHTING\nCan be incorporated. Examples: tread lighting · LED under each tread · concealed handrail lighting · stringer lighting · floor lighting · wall lighting · feature pendant lighting.\n\nMANUFACTURING METHOD (typical)\n3D CAD modelling → CNC laser cutting → steel fabrication → curved steel rolling → welding → timber CNC machining → finishing → factory trial assembly → quality inspection.\n\nINSTALLATION\nNormally supplied in large fabricated sections. Depending on access: complete assembly · two sections · three sections · multiple bolt-together modules. Large staircases often require cranes or lifting equipment · smaller versions can usually be assembled inside the property.\n\nSTRUCTURAL SUPPORT\nRequires suitable structural support at both levels. Depends on: concrete floor · steel frame · timber floor joists · engineered floor system · building design. A structural engineer normally confirms the fixing method.\n\nCAN THIS STAIRCASE BE MANUFACTURED?\nYes. Not simply an AI fantasy design. A skilled staircase manufacturer with curved steel fabrication capability can manufacture a staircase very similar to this. The final design would be engineered specifically for the building, measurements and local building regulations.\n\nCUSTOMISATION\nAlmost every part can normally be customised: width · rise · going · overall height · radius · timber species · colour · steel finish · handrail · balustrade · lighting · open or closed risers · landing configuration · left or right turn.\n\nTYPICAL APPLICATIONS\nLuxury homes · entrance halls · contemporary houses · architect-designed homes · villas · duplex apartments · penthouses · boutique hotels · commercial reception areas.\n\nWHAT IS VISIBLE VS INFERRED\nVisible: single curved mono-stringer geometry · black architectural steel finish · thick timber treads · open-riser construction · vertical steel balusters · continuous curved handrail following the stringer sweep.\nInferred (CANNOT confirm from image): exact steel grade/thickness · exact timber species · exact fixing method into floor/upper level · whether stringer is plate steel or box section · exact welded vs bolted connections at treads · engineering calculations for a specific building.\nNex should be explicit about this distinction when answering customer questions.",
+      "families": [
+        "mono-stringer-curved",
+        "open-riser",
+        "steel-balustrade"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "handrail",
+        "baluster",
+        "balcony",
+        "survey",
+        "base-rail",
+        "installation"
+      ]
     },
     {
       "design_id": "NEX-DESIGN-000026",
@@ -1126,7 +3818,599 @@
       "confirmed_by": "Philip O'Farrell",
       "confirmed_at": "2026-08-01T18:48:07.993Z",
       "priority": "standard",
-      "image_state": "concept"
+      "image_state": "concept",
+      "qa": [
+        {
+          "q": "Will the glass wobble?",
+          "a": ""
+        },
+        {
+          "q": "Can the glass break?",
+          "a": ""
+        },
+        {
+          "q": "Can the glass scratch?",
+          "a": ""
+        },
+        {
+          "q": "Is the glass clear or low-iron?",
+          "a": ""
+        },
+        {
+          "q": "Can I have tinted glass?",
+          "a": ""
+        },
+        {
+          "q": "Can the glass have no visible bolts?",
+          "a": ""
+        },
+        {
+          "q": "Will fingerprints show?",
+          "a": ""
+        },
+        {
+          "q": "Does the glass need polishing?",
+          "a": ""
+        },
+        {
+          "q": "Can children damage the glass?",
+          "a": ""
+        },
+        {
+          "q": "How do I clean the glass?",
+          "a": ""
+        },
+        {
+          "q": "Are the treads solid wood?",
+          "a": ""
+        },
+        {
+          "q": "Can I make the treads thicker?",
+          "a": ""
+        },
+        {
+          "q": "Can one step be replaced?",
+          "a": ""
+        },
+        {
+          "q": "Does every tread support weight on its own?",
+          "a": ""
+        },
+        {
+          "q": "Can I have live-edge timber?",
+          "a": ""
+        },
+        {
+          "q": "Is the lighting built into the staircase?",
+          "a": ""
+        },
+        {
+          "q": "Does lighting make a big difference?",
+          "a": ""
+        },
+        {
+          "q": "Can lighting be motion-activated?",
+          "a": ""
+        },
+        {
+          "q": "Can lighting be controlled by smart home systems?",
+          "a": ""
+        },
+        {
+          "q": "What holds this staircase up?",
+          "a": ""
+        },
+        {
+          "q": "Is it fixed to the wall?",
+          "a": ""
+        },
+        {
+          "q": "Does it need a structural wall?",
+          "a": ""
+        },
+        {
+          "q": "Can I suspend the staircase from the ceiling?",
+          "a": ""
+        },
+        {
+          "q": "Can it be built without a wall?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase carry furniture upstairs?",
+          "a": ""
+        },
+        {
+          "q": "What timber is best?",
+          "a": ""
+        },
+        {
+          "q": "Will the timber crack?",
+          "a": ""
+        },
+        {
+          "q": "Can I have thicker treads?",
+          "a": ""
+        },
+        {
+          "q": "Does timber require maintenance?",
+          "a": ""
+        },
+        {
+          "q": "Can damaged treads be refinished?",
+          "a": ""
+        },
+        {
+          "q": "Is the steel painted?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel rust?",
+          "a": ""
+        },
+        {
+          "q": "Can I choose stainless steel instead?",
+          "a": ""
+        },
+        {
+          "q": "Can the steel be hidden completely?",
+          "a": ""
+        },
+        {
+          "q": "Will the steel require maintenance?",
+          "a": ""
+        },
+        {
+          "q": "Does this staircase need engineering drawings?",
+          "a": ""
+        },
+        {
+          "q": "Can changes be made after drawings are approved?",
+          "a": ""
+        },
+        {
+          "q": "Does my floor need strengthening?",
+          "a": ""
+        },
+        {
+          "q": "Does the upstairs floor need strengthening?",
+          "a": ""
+        },
+        {
+          "q": "Is this staircase suitable for children?",
+          "a": ""
+        },
+        {
+          "q": "Can pets use it?",
+          "a": ""
+        },
+        {
+          "q": "Can anti-slip finishes be added?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed in an existing house?",
+          "a": ""
+        },
+        {
+          "q": "Will my walls be damaged?",
+          "a": ""
+        },
+        {
+          "q": "Will builders need to remove windows?",
+          "a": ""
+        },
+        {
+          "q": "Can it be installed before the house is finished?",
+          "a": ""
+        },
+        {
+          "q": "How long does installation take?",
+          "a": ""
+        },
+        {
+          "q": "Will there be a lot of dust?",
+          "a": ""
+        },
+        {
+          "q": "Will the installer measure my house?",
+          "a": ""
+        },
+        {
+          "q": "What if my measurements are wrong?",
+          "a": ""
+        },
+        {
+          "q": "Will the staircase arrive fully assembled?",
+          "a": ""
+        },
+        {
+          "q": "Can it be dismantled in the future?",
+          "a": ""
+        },
+        {
+          "q": "Can this staircase be built?",
+          "a": ""
+        },
+        {
+          "q": "Can it be customised?",
+          "a": ""
+        },
+        {
+          "q": "Is every staircase made to order?",
+          "a": ""
+        },
+        {
+          "q": "Are there standard sizes?",
+          "a": ""
+        },
+        {
+          "q": "Is it handmade?",
+          "a": ""
+        },
+        {
+          "q": "Where is it manufactured?",
+          "a": ""
+        },
+        {
+          "q": "Will this style go out of fashion?",
+          "a": ""
+        },
+        {
+          "q": "Can I match my interior?",
+          "a": ""
+        },
+        {
+          "q": "Will this staircase suit a modern home?",
+          "a": ""
+        },
+        {
+          "q": "Will this staircase suit a traditional home?",
+          "a": ""
+        },
+        {
+          "q": "Will this staircase add value to my home?",
+          "a": ""
+        },
+        {
+          "q": "Is this considered a luxury staircase?",
+          "a": ""
+        },
+        {
+          "q": "Will it become the focal point of my house?",
+          "a": ""
+        },
+        {
+          "q": "Can this replace my existing staircase?",
+          "a": ""
+        },
+        {
+          "q": "Will I lose floor space?",
+          "a": ""
+        },
+        {
+          "q": "Can I remove the glass later?",
+          "a": ""
+        },
+        {
+          "q": "Can I add a handrail later?",
+          "a": ""
+        },
+        {
+          "q": "Can the staircase be painted later?",
+          "a": ""
+        },
+        {
+          "q": "Can you introduce me to a manufacturer?",
+          "a": ""
+        },
+        {
+          "q": "Can I send this image to a manufacturer?",
+          "a": ""
+        },
+        {
+          "q": "Is this an actual staircase or an AI image?",
+          "a": ""
+        },
+        {
+          "q": "Can this exact staircase actually be built?",
+          "a": ""
+        },
+        {
+          "q": "Can someone really make this?",
+          "a": ""
+        },
+        {
+          "q": "How do I know if this design is realistic?",
+          "a": ""
+        }
+      ],
+      "design_notes": "OVERALL TYPE\nContemporary straight-flight floating staircase with exposed cantilever-style timber treads and a full-height frameless structural glass balustrade. Minimalist and architectural · allows natural light to pass through the staircase while creating a clean, open appearance.\n\nCONSTRUCTION FEATURES\nSolid hardwood treads · hidden structural steel supports · frameless toughened laminated glass · stainless steel glass fixing bolts · concealed steel landing connection · open-riser construction · flush wall finish · integrated architectural lighting. The glass balustrade runs continuously from the lower floor to the upper landing, producing an uninterrupted transparent safety barrier. LED feature lighting has been incorporated into both the surrounding architecture and the staircase itself, highlighting each tread during evening use.\n\nGLASS BALUSTRADE\nTypically toughened laminated safety glass · if struck hard enough to break, normally cracks rather than exploding into sharp shards · the laminated interlayer helps hold the broken pieces together · the panel often remains in place long enough to allow safe replacement. Individual panels can usually be replaced without rebuilding the entire staircase · replacement method depends on the fixing system.\n\nFLOATING TREADS\nAppear to float because the structural support is HIDDEN · in reality every tread is supported by concealed steel engineering. Likely solid oak, engineered oak, walnut, ash or another hardwood · exact species cannot be confirmed from image alone. Tread thickness can normally be changed on a bespoke build (may alter appearance and engineering).\n\nLIGHTING\nImage suggests integrated architectural lighting AROUND the staircase rather than lighting built into each tread. Many manufacturers can also incorporate: LED strips beneath treads · concealed handrail lighting · wall lighting · motion sensors · smart-home control.\n\nSTRUCTURE\nFrom the image, the staircase may use concealed structural steel fixed into the adjacent wall or a hidden steel spine. The exact engineering CANNOT be confirmed from an image alone. Some floating staircases rely heavily on wall fixings, while others use concealed steel structures that transfer the load elsewhere. Often requires reinforced masonry · reinforced concrete · structural steel framing · or specially engineered timber walls. The supporting structure depends on the staircase design.\n\nCAN THIS STAIRCASE BE BUILT?\nYes. This style of staircase is manufactured by specialist staircase companies around the world · not simply an AI concept. Every staircase is individually engineered to suit the building, measurements and local regulations.\n\nCUSTOMISATION\nAlmost every part can usually be customised: timber species · tread thickness · glass type · glass tint · steel colour · tread width · staircase width · number of steps · landing design · lighting · handrail style · fixing methods · finish.\n\nINSTALLATION\nMany bespoke staircases arrive in sections and are assembled on site. Practicality depends on: access through doors · ceiling height · structural support · delivery route · available lifting equipment. Site survey normally carried out before manufacture.\n\nGLASS OPTIONS\nClear · low-iron ultra-clear (much clearer than standard toughened, especially edge-on) · grey tint · bronze tint · smoked · frosted · acid-etched · decorative printed. Fixing systems: base shoe channel · concealed channel · embedded channel · side-mounted fixings · stainless steel stand-offs · hidden structural fixings.\n\nTIMBER OPTIONS\nEuropean oak · American white oak · walnut · ash · maple · beech · engineered timber · live-edge timber (possible with some manufacturers). Timber naturally expands and contracts slightly with seasonal humidity · proper manufacturing and installation minimise movement.\n\nSTEEL FINISHES\nPowder-coated (durable · many colours) · painted · stainless steel (greater corrosion resistance · different appearance and cost). Indoor staircases should not rust when correctly prepared and finished · coastal environments may require specialist coatings.\n\nFLOATING FAMILY CHARACTERISTICS\nMany floating staircases hide almost all of the steel structure · others intentionally expose it as part of the design. Each tread is designed as part of the complete staircase structure · loads transferred through concealed structural elements into the building. Individual tread replacement often possible depending on manufacturing method.\n\nSAFETY\nOpen-riser staircases are legal in many countries provided they comply with local building regulations · maximum opening between treads varies by country. Anti-slip options include: coatings · textured finishes · grooved treads · rubber inserts · metal inserts. Structural glass balustrades are extremely safe when correctly designed and installed.\n\nWHAT IS VISIBLE VS INFERRED\nVisible: straight-flight geometry · floating tread appearance · full-height frameless glass balustrade · continuous glass to upper landing · integrated architectural LED lighting · flush wall finish · open risers.\nInferred (CANNOT confirm from image): exact structural method (wall-fixed vs. hidden steel spine vs. concealed cantilever) · exact timber species · exact glass thickness or fixing method · exact steel grade · engineering calculations for a specific building · whether tread lighting is present or just architectural surround lighting.\nNex should be explicit about this distinction when answering customer questions.",
+      "families": [
+        "floating-cantilever",
+        "straight-flight",
+        "open-riser",
+        "glass-balustrade",
+        "feature-lighting"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "balustrade-glass",
+        "fixings-glass",
+        "lighting-led",
+        "landing",
+        "balcony",
+        "survey",
+        "base-rail",
+        "installation"
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000027",
+      "title": "Classic Quarter-Turn Oak Staircase · Feature Landing",
+      "design_family": "Traditional",
+      "primary_brain": "staircase",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_12_10%20AM.png?updatedAt=1785615152201",
+      "additional_views": [
+        "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_08_27%20AM.png?updatedAt=1785614928027"
+      ],
+      "view_types": [
+        "hero",
+        "alt"
+      ],
+      "staircase_type": "traditional quarter-turn (L-shape) with intermediate landing · closed-string · oak treads · painted risers and strings",
+      "layout": "wide bottom step · straight flight from hallway · generous quarter landing · 90° turn left · continues to first floor",
+      "materials": [
+        "solid oak stair treads",
+        "white painted risers",
+        "white painted strings",
+        "large painted square hardwood newel posts",
+        "painted timber square balusters",
+        "hardwood handrails stained to match treads",
+        "MDF or timber wall panelling"
+      ],
+      "balustrade_style": "painted square balusters · equal spacing · timber handrail · matching landing balustrade",
+      "handrail_style": "stained hardwood matching treads",
+      "newel_style": "large square painted hardwood feature newel posts",
+      "design_style": "traditional · transitional · family home · feature entrance",
+      "project_suitability": [
+        "family_home",
+        "traditional_home",
+        "transitional_home",
+        "new_build",
+        "renovation",
+        "period_property",
+        "entrance_hall"
+      ],
+      "priority": "standard",
+      "related_articles": [],
+      "customer_description": "A traditional closed-string staircase combining classic joinery with modern interior styling. Wide entrance, generous intermediate landing, 90-degree quarter turn before continuing to the upper floor. Solid oak treads, white painted risers and strings, painted square newels and balusters, hardwood handrails stained to match the treads. Creates a grand entrance while remaining practical for everyday family living.",
+      "designer_notes": "Timeless traditional style suitable for both traditional and modern homes because colours and finishes can easily be changed. Closed string with concealed tread ends. Landing acts as structural rest point + turn point. Under-stair area readily convertible to cupboards / cloakroom / wine storage / display.",
+      "confirmed_by": "Philip O'Farrell",
+      "confirmed_at": "2026-08-01T23:14:12.057Z",
+      "image_state": "concept",
+      "families": [
+        "straight-flight",
+        "steel-balustrade",
+        "timber-balustrade"
+      ],
+      "components": [
+        "stringer",
+        "tread",
+        "riser",
+        "newel",
+        "handrail",
+        "baluster",
+        "landing",
+        "balcony",
+        "survey",
+        "base-rail",
+        "installation"
+      ],
+      "design_notes": "OVERALL TYPE\nTraditional / transitional quarter-turn (L-shaped) staircase with intermediate landing. Fully supported closed-string construction — NOT floating, NOT cantilevered. Once installed, becomes part of the building structure.\n\nDIRECTION OF TRAVEL\nWide bottom step → straight flight from the hallway → generous quarter landing → 90° turn left → continues to first floor. Landing provides comfortable pause during the climb and makes the staircase easier to use than a continuous straight flight.\n\nSTRUCTURAL DESIGN\nFully supported timber staircase using traditional construction methods. Support provided by: closed timber strings · floor structure · landing platform · upper floor connections · newel posts · handrail system.\n\nMATERIALS (as shown)\nOak stair treads · white painted risers · white painted strings · large painted hardwood newel posts (square feature) · painted timber square balusters · hardwood handrails stained to match the treads · MDF or timber wall panelling · painted finish throughout.\n\nNEWEL POSTS\nLarge square feature newel posts define the staircase. Structural support · handrail fixing points · balustrade strength · decorative appearance. Substantial size gives timeless appearance.\n\nBALUSTRADES\nSquare painted balusters · equal spacing · timber handrail · matching landing balustrade. Alternatives available in bespoke work: glass · metal · oak · wrought iron · contemporary square profiles · traditional turned spindles.\n\nTREADS\nThick hardwood treads · comfortable walking depth · hardwood wear surface · square front nosings · traditional appearance · long service life. Oak is one of the most popular choices because it is durable and can be refinished.\n\nRISERS\nClosed painted risers · traditional appearance · no gaps between steps · reduced visibility underneath · cleaner architectural lines · more suitable for many family homes.\n\nSTRINGS\nClosed strings (NOT cut string) · tread ends concealed inside the side strings · greater traditional appearance · cleaner finish · easy to decorate · strong construction.\n\nLANDING\nImportant structural component. Changes direction · connects both staircase flights · provides a resting point · makes furniture movement easier · reduces the visual length of the staircase.\n\nUNDER-STAIR AREA\nBecause this is a closed-string staircase, the area underneath can often be converted into: storage · cupboards · cloakroom · wine storage · utility cupboard · display area.\n\nWALL PANELLING\nDecorative wall mouldings complement the staircase. Not part of the staircase itself but help create a premium entrance hall.\n\nLIGHTING (as shown)\nWall lights illuminate the staircase evenly. Additional options: LED tread lighting · handrail lighting · motion sensors · pendant lighting · feature chandeliers.\n\nCUSTOMISATION (typical bespoke options)\nTimber species · paint colours · tread colour · handrail colour · newel style · baluster style · starting step · landing size · stair width · rise and pitch (within building regulations) · wall panelling · lighting · storage beneath.\n\nSUITABILITY\nCommonly chosen by families because it offers: full-width treads · closed risers · strong handrails · wide landing · traditional construction · comfortable walking angle. Final suitability depends on compliance with local building regulations and the requirements of the property.\n\nCAN THIS STAIRCASE BE MANUFACTURED TODAY?\nYes. Uses well-established staircase construction techniques. An experienced staircase manufacturer should be able to build a staircase of this style, adapting the dimensions, materials and details to suit your home and local building regulations.\n\nWHAT IS VISIBLE VS INFERRED\nVisible: closed-string construction · quarter landing · oak treads · white painted risers/strings/newels/balusters · matching landing balustrade · square feature newel posts · wall panelling · wall lighting.\nInferred (cannot confirm from image alone): exact rise / going / overall width · timber species used specifically for newels vs handrail vs treads · specific paint colour codes · installation method into the wall / floor structure · engineering calculations for specific building.\nNex should be explicit about this distinction when answering customer questions.",
+      "qa": [
+        {
+          "q": "Is this a bespoke staircase?",
+          "a": "It can be built as a completely bespoke staircase or adapted from a manufacturer's standard range."
+        },
+        {
+          "q": "Can I replace the black balusters with glass?",
+          "a": "Yes. In many cases the balustrade design can be changed while keeping the main staircase structure."
+        },
+        {
+          "q": "Can I have oak newel posts instead?",
+          "a": "Usually yes. Many manufacturers offer painted, oak, walnut, ash and other timber options."
+        },
+        {
+          "q": "Can I remove the landing?",
+          "a": "Not usually without redesigning the entire staircase. The landing is an integral part of this layout."
+        },
+        {
+          "q": "Is this style likely to go out of fashion?",
+          "a": "Traditional oak and painted staircases have remained popular for generations. Because the colours and balustrades can be updated over time, this style has excellent long-term appeal."
+        },
+        {
+          "q": "Is this staircase suitable for families?",
+          "a": "Yes. This style is commonly chosen by families because it offers full-width treads, closed risers, strong handrails, a wide landing, traditional construction and a comfortable walking angle. Final suitability depends on compliance with local building regulations and the requirements of the property."
+        },
+        {
+          "q": "Can this staircase be manufactured today?",
+          "a": "Yes. This design uses well-established staircase construction techniques. An experienced staircase manufacturer should be able to build a staircase of this style, adapting the dimensions, materials and details to suit your home and local building regulations."
+        },
+        {
+          "q": "Can Nex guarantee this exact staircase can be built?",
+          "a": "Nex will never guess or make promises it cannot verify. This style uses recognised staircase construction methods and is achievable by experienced manufacturers. If your project includes unique structural requirements or custom engineering, Nex can, with your permission, prepare your project and connect you with an experienced staircase manufacturer to confirm the best solution."
+        },
+        {
+          "q": "What colour are the risers in this image?",
+          "a": ""
+        },
+        {
+          "q": "What colour are the newel posts?",
+          "a": ""
+        },
+        {
+          "q": "What direction does this staircase turn?",
+          "a": ""
+        },
+        {
+          "q": "Is the landing wide?",
+          "a": ""
+        },
+        {
+          "q": "Are the treads stained darker than the handrail?",
+          "a": ""
+        },
+        {
+          "q": "What wall panelling is visible?",
+          "a": ""
+        },
+        {
+          "q": "Is this a closed-string staircase?",
+          "a": ""
+        }
+      ],
+      "material_ids": [
+        "oak",
+        "mdf"
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000028",
+      "title": "Modern Oak Open-Riser Staircase · Steel Stringer · Vertical Timber Slat Balustrade",
+      "design_family": "Modern",
+      "primary_brain": "staircase",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_29_45%20AM.png?updatedAt=1785612608208",
+      "additional_views": [],
+      "view_types": [
+        "hero"
+      ],
+      "staircase_type": "straight flight · open riser · steel side string · vertical oak slat balustrade · upper landing return",
+      "layout": "straight flight rising from lower floor to first-floor landing · open risers throughout · vertical timber slats form both stair balustrade and landing guard as one continuous feature",
+      "materials": [
+        "solid oak or engineered oak treads (35–45mm)",
+        "powder-coated black steel side string (plate or box section)",
+        "solid oak square balusters (40×40mm to 50×50mm typical)",
+        "oak slatted landing guardrail matching stair balustrade",
+        "hardwax oil or clear matt lacquer finish on oak"
+      ],
+      "balustrade_style": "vertical oak slat screen · equal spacing (~80–100mm centres) · same rhythm continues around landing edge and balcony · floor-to-ceiling sections",
+      "handrail_style": "minimal / integrated · possible oak top rail · black steel handrail · or timber cap integrated into balustrade",
+      "newel_style": "not a traditional newel-post design · slim black steel string acts as structural anchor",
+      "design_style": "modern · warm minimalism · Scandinavian · open plan · floating · architectural feature",
+      "project_suitability": [
+        "luxury_residential",
+        "new_build",
+        "open_plan_home",
+        "modern_home",
+        "double_height_hallway",
+        "architectural_project"
+      ],
+      "priority": "recommended",
+      "related_articles": [],
+      "customer_description": "A luxury modern open-riser staircase that combines warm oak with slim black steel. Straight flight rising from the lower floor to an upper landing. Open risers let light through and give the staircase a floating appearance. The balustrade is a series of vertical oak slats that continue around the upper landing to create one continuous architectural feature. The steel side string is deliberately slim to keep the visual focus on the oak.",
+      "designer_notes": "Premium look achieved not by using expensive materials everywhere but by combining slim structure (steel) with high-quality visible material (oak). The repeated vertical timber rhythm turns the staircase into an architectural feature rather than only a way of moving between floors. Baluster spacing typically 80–100mm centres to comply with regulations.",
+      "confirmed_by": "Philip O'Farrell",
+      "confirmed_at": "2026-08-01T23:55:12.138Z",
+      "image_state": "concept",
+      "families": [
+        "straight-flight",
+        "open-riser",
+        "timber-balustrade"
+      ],
+      "components": [
+        "tread",
+        "stringer",
+        "baluster",
+        "handrail",
+        "landing",
+        "balcony",
+        "survey",
+        "base-rail",
+        "installation"
+      ],
+      "design_notes": "NEX PREMIUM STAIRCASE VISION ANALYSIS · Modern Open-Riser Oak Staircase with Feature Balustrade\n\nOVERALL DESIGN\nHigh-end contemporary open-plan staircase inside a modern home. The staircase combines natural oak timber, black steel structural elements, vertical timber slat balustrades, open riser construction, large double-height hallway and minimal architectural styling. The design language is warm minimalism / Scandinavian modern architecture.\n\nSTAIRCASE CONFIGURATION\nStraight flight staircase with intermediate landing / upper gallery connection. The staircase rises from the lower floor to a first-floor landing area. Features: open risers · floating appearance · no traditional closed stringer boxing · slim side support design.\n\nTREADS\nAppear to be oak timber treads with a natural light oak finish. Thick solid appearance, visible timber grain, warm natural colour. Likely construction: solid oak, or engineered oak tread with hardwood top layer. Approximate 35–45mm tread thickness.\n\nRISERS\nThis is an open riser staircase — there are no solid vertical riser boards between steps. The gap allows light flow through the staircase, larger visual space and a floating appearance.\n\nSTAIR STRING / STRUCTURE\nThe staircase appears to use a black steel side string. Visible black metal structure runs along the stair edge. Purpose: carries tread loads, creates a slim modern profile, contrasts against oak. Possible construction: powder-coated steel plate string, or steel box section frame.\n\nBALUSTRADE DESIGN — VERTICAL TIMBER SLATS\nThe dominant feature. Construction: multiple vertical oak battens, equal spacing, floor-to-ceiling height sections. Creates safety barrier, architectural screen, privacy without blocking light.\n\nBALUSTER SPECIFICATION\nApproximate material: oak timber. Shape: square section. Size estimate: 40mm × 40mm to 50mm × 50mm. Spacing: around 80–100mm centres. Finish: clear lacquer or hardwax oil.\n\nLANDING BALUSTRADE\nThe upper floor uses the same vertical timber rhythm. The balustrade continues around the landing edge, stair opening and balcony area. This creates one continuous architectural feature.\n\nHANDRAIL\nMinimal or integrated handrail design. Possible: oak top rail · black steel handrail · timber cap integrated into the balustrade.\n\nMATERIALS BREAKDOWN\nStructure: steel string/frame · engineered timber support.\nVisible components: oak treads · oak square timber balusters · oak slat landing guard · powder-coated black steel.\n\nMANUFACTURING METHOD (CNC / Factory Process)\nEngineer staircase dimensions → cut oak treads → machine timber balusters → fabricate steel string → powder coat steel → assemble sections → install on site.\n\nJOINERY DETAILS\nTimber balusters fixed using hidden metal rods, dowels, screws from concealed side, or structural adhesive. Oak treads fixed using adhesive bonding, mechanical fixing, or hidden brackets.\n\nDESIGN STYLE CLASSIFICATION\nNEX Design Category: Modern Architectural Oak Open Riser Staircase.\nTags: luxury residential · minimalist · Scandinavian · open plan · floating staircase · timber slat balustrade · steel and oak combination.\n\nRECOMMENDED NEX MATERIAL SPECIFICATION\nTreads: engineered oak / solid oak.\nStrings: powder-coated steel.\nBalusters: solid oak square posts.\nLanding guard: oak slats.\nFixings: hidden mechanical + adhesive.\nFinish: hardwax oil / clear lacquer.\n\nNEX DESIGN NOTES\nThis staircase achieves its premium look by combining heavy natural material (oak treads and balusters) with a light structural appearance (slim black steel support). The key design feature is the repeated vertical timber rhythm, which turns the staircase into an architectural feature rather than only a method of moving between floors.\n\nDETAILED CONSTRUCTION, MATERIALS, ENGINEERING & MANUFACTURING BREAKDOWN\n\nPROJECT TYPE\nLuxury Residential Open-Riser Staircase + Mezzanine Balustrade System. Not designed as a simple stair — an architectural feature element that connects the lower living space with the upper floor while creating a visual divider between spaces. The staircase becomes part of the interior architecture.\n\n1. STAIRCASE GEOMETRY — Flight Type\nStraight flight · open risers · side-mounted string structure · upper landing return · balcony continuation.\n\n2. OPEN RISER CONSTRUCTION\nAdvantages: allows light through · makes the room feel larger · creates floating appearance · modern architectural look.\n\n3. OAK TREAD CONSTRUCTION\nOption 1: solid oak, 35–45mm thick.\nOption 2: engineered oak tread — 4–6mm oak wear layer on multi-layer timber core with stable backing. Engineered oak is often better than solid oak because it is more stable, has less cupping, less cracking, and is better for underfloor heating environments.\n\n4. TREAD EDGE DETAIL\nSquare edge (modern appearance) or slight 2–5mm radius (less sharp, better paint/oil durability, more comfortable).\n\n5. STEEL STRINGER SYSTEM\nSteel plate string 8–12mm thick powder-coated black, OR steel box section (e.g. 100×50mm or 120×60mm). Allows slim appearance · longer spans · open visual design · less timber bulk.\n\n6. OAK BALUSTRADE SYSTEM\nThe vertical slats perform two functions: safety barrier and architectural screen.\nBaluster manufacturing: solid oak (best option, sections 40×40mm / 45×45mm / 50×50mm) or oak veneer over engineered core (more stable, lower cost, less timber movement).\n\n7. BALUSTER SPACING\nModern staircase requirements normally control spacing. Typical 80–100mm gaps for safety, visual rhythm and child protection. This design uses a tight vertical rhythm.\n\n8. LANDING GUARDRAIL DESIGN\nThe upper balcony uses the same timber size, spacing and finish as the stair balustrade — creating a continuous architectural feature rather than mismatched stair/landing styles.\n\n9. CONNECTION DETAILS\nOak tread to steel string: hidden brackets (steel plate welded under tread), threaded rods (inserted into oak), or adhesive bonding (structural adhesive + mechanical fixing).\nOak baluster fixing: bottom fixing via steel pins, threaded rods or concealed screws. Top fixing via routed handrail groove or hidden fixing channel.\n\n10. FINISH SPECIFICATION\nHardwax oil: natural appearance, easy repair, shows grain. Examples: natural oak, clear matt finish.\nLacquer: more resistant, easier maintenance, but harder to repair locally.\n\n11. MANUFACTURING PROCESS\nStep 1: site measurement (laser survey of floor levels, opening size, ceiling height).\nStep 2: CAD design (3D staircase model, steel drawings, cutting lists).\nStep 3: steel fabrication (cut · weld · grind · powder coat).\nStep 4: timber manufacturing (cut · plane · sand · machine profiles · finish).\nStep 5: assembly (components checked before delivery).\nStep 6: installation (steel first · treads · balusters · handrail · final finish).\n\n12. NEX PREMIUM MATERIAL SPECIFICATION\nStyle: Modern Oak Open Riser Steel Stair.\nStructural layer: powder-coated steel string · structural fixings · engineered support brackets.\nWalking layer: 40mm engineered oak treads.\nVertical layer: 45mm oak square balusters.\nLanding protection: oak slatted guardrail.\nFinish: clear matt hardwax oil.\n\n13. COST LEVEL CLASSIFICATION\nStandard ££: oak treads + simple balustrade.\nPremium £££: oak + custom steel + factory finish.\nLuxury ££££: bespoke steel fabrication, engineered oak, CNC timber components, architectural detailing.\n\nNEX INTELLIGENCE NOTE\nThis staircase demonstrates an important design principle: the structure is hidden and slim, the materials people touch are premium, the repeated timber elements create the architectural identity. The expensive appearance comes from consistent spacing, high-quality oak, precise fabrication and clean junctions — not from using expensive materials everywhere.",
+      "qa": [
+        {
+          "q": "What type of staircase is this?",
+          "a": "This is a modern open-riser staircase with a black steel side string, oak treads and a vertical oak slat balustrade continuing around the upper landing."
+        },
+        {
+          "q": "Is this staircase floating?",
+          "a": "It has a floating APPEARANCE. It is not truly cantilevered — the treads are carried by a slim black steel side string. The open risers and slim structure create the floating look."
+        },
+        {
+          "q": "What is the balustrade made from?",
+          "a": "Solid oak square balusters, typically 40×40mm to 50×50mm, spaced at around 80–100mm centres, running floor-to-ceiling. The same rhythm continues around the upper landing."
+        },
+        {
+          "q": "Can this staircase be built with a different timber?",
+          "a": "Yes. The oak in this design could be replaced with walnut, ash, or other hardwoods depending on the manufacturer's material options. The steel colour can also be changed."
+        },
+        {
+          "q": "Can this staircase be built today?",
+          "a": "Yes. This design uses well-established modern staircase construction techniques (steel side stringer + engineered oak treads + timber slat balustrade). An experienced staircase manufacturer should be able to build a staircase of this style, adapting the dimensions, materials and details to suit your home and local building regulations."
+        },
+        {
+          "q": "What colour is the steel in this image?",
+          "a": ""
+        },
+        {
+          "q": "How many balusters are shown between the stair and the landing?",
+          "a": ""
+        },
+        {
+          "q": "Is there a visible handrail on this staircase?",
+          "a": ""
+        },
+        {
+          "q": "Is the ceiling above this staircase double height?",
+          "a": ""
+        },
+        {
+          "q": "What direction does this staircase travel?",
+          "a": ""
+        }
+      ],
+      "material_ids": [
+        "oak",
+        "steel"
+      ]
+    },
+    {
+      "design_id": "NEX-DESIGN-000029",
+      "title": "Pending description · Philip to author",
+      "design_family": "Unclassified",
+      "primary_brain": "staircase",
+      "url": "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2006_32_10%20AM.png",
+      "additional_views": [],
+      "view_types": [
+        "hero"
+      ],
+      "staircase_type": "",
+      "layout": "",
+      "materials": [],
+      "balustrade_style": "",
+      "handrail_style": "",
+      "newel_style": "",
+      "design_style": "",
+      "project_suitability": [],
+      "priority": "hidden",
+      "related_articles": [],
+      "customer_description": "",
+      "designer_notes": "Awaiting Philip's design description before this record can be published. Universal Q&A still applies for any question routed to this design.",
+      "confirmed_by": "Philip O'Farrell",
+      "confirmed_at": "2026-08-01T23:55:12.268Z",
+      "image_state": "concept",
+      "families": [],
+      "components": [
+        "survey",
+        "base-rail",
+        "installation"
+      ],
+      "design_notes": "",
+      "qa": []
     }
   ]
 }

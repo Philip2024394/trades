@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "dog-leg",
+  "family_label": "Dog-leg staircase",
+  "qa": [
+    {
+      "q": "What is a dog-leg staircase?",
+      "a": "A dog-leg staircase is a two-flight staircase with opposite directions and a half landing between them, creating approximately a 180-degree turn. The name comes from the side profile of the staircase — the shape resembles a dog's rear leg when viewed from the side. Common in houses, offices, apartments and commercial buildings."
+    },
+    {
+      "q": "Where does the term dog-leg come from?",
+      "a": "From the side profile of the staircase. When viewed from the side, the shape of the two flights and the connecting landing resembles the bent shape of a dog's rear leg. Traditional craftsmen used everyday visual comparisons to name staircase shapes."
+    },
+    {
+      "q": "Is every U-shaped staircase a dog-leg?",
+      "a": "Most dog-leg staircases are U-shaped, but not every U-shaped stair is traditionally called a dog-leg. The term specifically describes the two-flight + half-landing arrangement that produces the leg-shaped side profile. Curved U-turns and open-well U-shapes are usually named differently."
+    }
+  ],
+  "updated_at": "2026-08-02T01:04:15.210Z"
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "winder",
+  "family_label": "Winder staircase",
+  "qa": [
+    {
+      "q": "What is a winder staircase?",
+      "a": "A winder staircase changes direction using tapered (kite-shaped) steps instead of a landing. The step 'winds' around the corner — the tread is wider at one side and narrower at the other. Common on quarter-turn and half-turn stairs where space is tight and a full landing would be too large."
+    },
+    {
+      "q": "Why do designers use winders?",
+      "a": "Advantages: they save space compared to a landing, create a smoother continuous direction change and reduce the total staircase footprint. Considerations: they require careful calculation — the narrow side of each winder tread must remain safely usable for the foot."
+    },
+    {
+      "q": "What is a kite winder?",
+      "a": "A kite winder is a tapered tread whose shape resembles a kite when viewed from above. It is the specific step shape used at a corner turn on a winder staircase. Depending on how the turn is set out, the corner may be formed by one, two or three kite winders."
+    },
+    {
+      "q": "What is the difference between a winder and a landing?",
+      "a": "A landing is a flat rectangular walking area that turns the staircase in one step. A winder is a tapered turning step that spreads the direction change across multiple steps. Landings feel more spacious and provide a rest; winders save space and create a continuous climb."
+    }
+  ],
+  "updated_at": "2026-08-02T01:04:15.210Z"
+}

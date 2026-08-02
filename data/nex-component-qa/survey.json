@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "layer": "component",
+  "component_id": "survey",
+  "component_label": "Staircase Survey · Site Measurement · Datum · Verification",
+  "note": "Layer 2 · COMPONENT · Survey Brain (Philip 2026-08-02). Foundation of every staircase project. Every stage that follows — design, manufacturing, installation, finishing — depends on the quality of the survey. Rule A · every answer verbatim.",
+  "cross_brain_links": [
+    "installation",
+    "geometry",
+    "concrete-staircase"
+  ],
+  "qa": [
+    {
+      "q": "What is a staircase survey?",
+      "a": "A staircase survey is a detailed inspection and measurement of the building before manufacture begins. Its purpose is to understand the building, the structure, the available space, access, floor levels and customer requirements. The survey provides the information used to create the manufacturing drawings — every stage that follows (design, manufacturing, installation, finishing) depends on its quality."
+    },
+    {
+      "q": "Why is the survey the most important stage of a staircase project?",
+      "a": "Because a staircase is only as accurate as the survey it is built from. Every later stage — design, manufacturing, installation and finishing — depends on the quality of the survey. The survey is not simply measuring a stair opening; it is collecting all the information needed to design a staircase that fits safely, accurately and efficiently. If the survey is wrong, every later stage is affected."
+    },
+    {
+      "q": "What is the surveyor's job?",
+      "a": "The surveyor is responsible for collecting accurate information — never guessing. If something cannot be confirmed on site, it should be investigated before manufacturing begins. Incorrect assumptions are one of the most common causes of manufacturing errors."
+    },
+    {
+      "q": "What does a surveyor check before entering the building?",
+      "a": "Before taking a single measurement, the surveyor should understand what staircase has been ordered, whether it's new build or renovation, the material (timber · steel · concrete), the shape (straight · quarter-turn · winder · curved), the balustrade (glass · timber · steel), whether the design is already approved, whether drawings are available and whether the customer has requested changes. Understanding the project first determines what information is required."
+    },
+    {
+      "q": "What is the first thing a surveyor should confirm on site?",
+      "a": "Whether the structural works are complete enough to survey accurately. Has the stair opening been formed? Are structural beams installed? Are floor joists complete? Is the landing structure finished? Surveying too early may result in inaccurate information."
+    },
+    {
+      "q": "What is a survey datum?",
+      "a": "A datum is a consistent reference point used throughout the survey — commonly the finished ground floor level, the structural floor level or the finished first floor level. Every important measurement should relate back to the same reference. Without a consistent datum, measurements become inconsistent and errors compound through the design."
+    },
+    {
+      "q": "Why are finished floor levels critical to a staircase survey?",
+      "a": "Because the staircase connects finished floors, not just structural floors. The critical question is 'what WILL the finished floor level be?' — not 'what is the floor level today?' Future finishes (timber flooring, carpet, tiles, engineered flooring, vinyl, underlay) can significantly change the finished floor height. Measure the FINAL surface, or record clearly what future build-ups still need to be added."
+    },
+    {
+      "q": "What is the most critical dimension in a staircase survey?",
+      "a": "The finished floor level to finished floor level height. This measurement determines the total rise, the individual riser heights and the staircase geometry. An incorrect floor-to-floor height affects every step in the staircase."
+    },
+    {
+      "q": "How does a surveyor check that a stair opening is square?",
+      "a": "By measuring the length, width and both diagonals of the opening. If the diagonals differ significantly, the opening is not square. Do not assume the opening is perfectly rectangular — measure it. This helps the designer understand the actual shape rather than the intended one."
+    },
+    {
+      "q": "What should a surveyor check about the walls beside a staircase?",
+      "a": "Plumb, straightness, thickness, projections, columns and any services running in them. The staircase must fit the actual walls, not the assumed walls. A wall that leans can affect the fit and appearance of the finished staircase."
+    },
+    {
+      "q": "Should surveyors just measure, or also observe?",
+      "a": "Observe as carefully as they measure. Experienced surveyors constantly notice fresh plaster, unfinished flooring, exposed services, temporary supports, structural alterations and signs of movement. Observation often identifies problems before measurements do — the tape measure gives numbers, but the eyes give context."
+    },
+    {
+      "q": "Why are photographs part of a professional survey?",
+      "a": "Measurements tell you the size; photographs tell you the story. Good survey photographs cover the overall room, the stair opening, the ceiling, the walls, the floor, the access route, the existing staircase (if applicable) and any unusual details. They help designers and workshop staff understand the site without visiting."
+    },
+    {
+      "q": "Should a surveyor rely on memory?",
+      "a": "No. Professional surveyors record dimensions, notes, sketches and photographs. Even experienced surveyors do not rely on memory alone — a staircase may not be manufactured for several weeks after the survey, and details can blur."
+    },
+    {
+      "q": "What are common survey mistakes?",
+      "a": "Measuring to unfinished floors instead of finished floor levels · forgetting floor coverings · assuming walls are square · missing steel beams · overlooking pipes or cables · measuring from different reference points · incomplete photographs · surveying before the building is ready. Many staircase problems originate from mistakes at this early stage."
+    },
+    {
+      "q": "Are two houses built from the same plans identical for surveying?",
+      "a": "No — never assume they are. Even houses built from the same plans differ because of construction tolerances, settlement, alterations, flooring choices, plaster thickness and customer changes. Every staircase should be surveyed on its own merits unless there is verified information showing otherwise."
+    },
+    {
+      "q": "What should a surveyor look for that has changed since drawings?",
+      "a": "Moved walls · lowered ceilings · additional boxing · thicker plaster · different flooring · relocated doors · structural alterations. Recognising changes since the drawings were produced is one of the most valuable survey skills — these changes may require revisions to the staircase design."
+    },
+    {
+      "q": "Should a surveyor think about installation while measuring?",
+      "a": "Yes. Experienced surveyors imagine bringing the finished staircase into the building. Can the strings fit through the front door? Can the handrail turn the hallway corner? Is there enough space to rotate a landing section? Will glass panels fit through the opening? If access is impossible, the manufacturing strategy may need to change — planning delivery routes during the survey is essential."
+    },
+    {
+      "q": "Should a surveyor also think like a designer?",
+      "a": "Yes. The surveyor should also consider handrail height, headroom, sight lines, customer preferences and building proportions. The survey is about creating a staircase that both fits and looks appropriate — not just one that meets the dimensions."
+    },
+    {
+      "q": "How does a surveyor record uncertainty in a survey?",
+      "a": "Professional surveyors distinguish between CONFIRMED ('I measured this'), ESTIMATED ('this is based on current information') and UNKNOWN ('this cannot be confirmed until later'). Unknown information should never be presented as fact. Recording uncertainty honestly is more professional than pretending certainty."
+    },
+    {
+      "q": "Why do experienced surveyors measure twice?",
+      "a": "Because a common workshop principle is 'measure twice, record once'. If two measurements disagree, stop and find out why before recording anything. Never average two conflicting measurements — investigate the cause."
+    },
+    {
+      "q": "Should a surveyor chain small measurements together?",
+      "a": "Where possible, also take an overall measurement rather than adding four or five small ones. Small errors accumulate — 1200 + 800 + 950 + 1100 might total something different from a single direct measurement of the same distance. A direct overall measurement often reveals accumulated errors."
+    },
+    {
+      "q": "Why should survey measurements always be cross-checked?",
+      "a": "Because professional surveyors rarely rely on a single measurement. Length + width + both diagonals of a stair opening reveal whether it's square. Cross-checks catch mistakes that single measurements miss."
+    },
+    {
+      "q": "What is the difference between structural and decorative dimensions on a staircase survey?",
+      "a": "Structural dimensions (concrete · masonry · timber structure) are the load-bearing elements the staircase must fit against. Decorative finishes (skirting · architraves · trims) can usually be modified more easily. Where appropriate, surveyors distinguish the two so designers know what is fixed and what can be adjusted."
+    },
+    {
+      "q": "Should survey notes include labels?",
+      "a": "Yes. Avoid writing just '2450' — record 'Floor opening length = 2450 mm'. Every dimension should identify what it represents. This reduces the risk of misinterpretation weeks later when the drawing is being produced."
+    },
+    {
+      "q": "Should customers' guessed measurements be used for manufacturing?",
+      "a": "No. Customers sometimes say 'It's about 3 metres' or 'It's roughly 900 wide' — these estimates can be useful during early discussions but manufacturing should rely on verified survey measurements, not approximations."
+    },
+    {
+      "q": "What does a surveyor check before leaving the site?",
+      "a": "Measurements, sketches, photographs and notes. The key question is 'could someone else manufacture this staircase using only the information I've collected?' If the answer is no, additional information may be needed. The survey is complete only when questions are answered — not when the tape measure is packed away."
+    },
+    {
+      "q": "Should a surveyor design the staircase on site?",
+      "a": "No. The surveyor provides the information needed for design; the designer determines rise and going, staircase geometry, string design, handrail layout and component dimensions. In some companies the same person performs both roles, but they are still separate responsibilities."
+    },
+    {
+      "q": "What should a surveyor do if the customer asks for a design change on site?",
+      "a": "Record the request and follow the company's design approval process. The surveyor should not treat significant design changes as survey notes alone, because they may affect pricing, engineering and manufacturing. The customer request is captured; the change goes through the normal approval workflow."
+    },
+    {
+      "q": "Should a surveyor hide problems they discover?",
+      "a": "No. Professional surveyors do not ignore issues in the hope they disappear. If they discover insufficient headroom, restricted access, structural conflicts or uncertain dimensions, they record the issue clearly and communicate it promptly. Early communication gives the team time to develop a solution."
+    },
+    {
+      "q": "Why should a surveyor consider delivery during the survey?",
+      "a": "Because one of the first questions an experienced surveyor asks is 'how will we get this staircase into the building?' They consider front door width, hallway turns, ceiling height, narrow corridors, tight stairwells, scaffolding, external access and crane access if required. Sometimes the delivery route determines how the staircase must be manufactured — in sections rather than as one piece."
+    },
+    {
+      "q": "Why should a surveyor also look above and below the staircase?",
+      "a": "Above: beams, sloping ceilings, roof trusses, dormers, bulkheads, lighting, smoke detectors, sprinkler systems — anything that may influence headroom or installation. Below: what supports the staircase (timber joists · concrete slab · steel framework · existing stair support). Understanding the supporting structure helps determine suitable fixing methods."
+    },
+    {
+      "q": "Should a surveyor talk to the customer during the survey?",
+      "a": "Yes. Surveying is not only measuring. It also involves understanding what the customer likes, how they use the home, future flooring choices, preferred finishes, whether there are children or pets and maintenance expectations. A staircase should suit both the building and the people using it."
+    },
+    {
+      "q": "Why do good survey notes save the company time?",
+      "a": "Because they support estimating, design, manufacturing, finishing, logistics, installation and aftercare. Poor surveys create questions ('What does this measurement refer to?' · 'Which wall is this?' · 'Is the floor finished?' · 'Can you return to site?'). A well-documented survey reduces uncertainty and helps every stage progress smoothly."
+    },
+    {
+      "q": "What is a surveyor thinking backwards from installation?",
+      "a": "They imagine the last day of the project. Will the installer have enough room? Can the staircase be assembled easily? Where will the joints be? Will the glass go in after the timber? Can tools be used comfortably? Is there enough working space? Thinking backwards helps identify issues long before manufacturing begins."
+    },
+    {
+      "q": "Should every measurement on a staircase survey have a purpose?",
+      "a": "Yes. Professional surveyors know why they are taking each measurement. Floor-to-floor height determines total rise. Opening length determines available going. Opening width influences staircase width and clearance. Wall position affects strings, handrails and fixings. Every measurement should answer a design question."
+    },
+    {
+      "q": "Which staircase dimensions are critical vs supporting?",
+      "a": "Critical measurements directly influence geometry and structural fit — finished floor-to-floor height, stair opening dimensions, landing positions. Supporting measurements provide context — skirting thickness, door swing, radiator positions. Both matter, but critical dimensions deserve the highest level of verification."
+    },
+    {
+      "q": "Why should a surveyor never rush?",
+      "a": "One of the biggest causes of survey mistakes is rushing. A professional surveyor works at a steady pace — five extra minutes spent checking can prevent weeks of delay in manufacturing. Time spent surveying carefully is rarely wasted."
+    },
+    {
+      "q": "What should a surveyor do if something on site looks wrong?",
+      "a": "Investigate. Experienced surveyors trust their instincts enough to stop and check. A floor that appears to slope more than expected, a stair opening that seems unusually narrow, a wall that appears out of plumb, drawings that don't match the building — the correct response is not to guess but to understand why. If it doesn't look right, verify before writing the number down."
+    },
+    {
+      "q": "Should a surveyor be afraid to ask builders questions?",
+      "a": "No — asking questions demonstrates thoroughness, not inexperience. Professional surveyors regularly ask 'has the floor finish been decided?' · 'is this wall complete?' · 'will this beam remain exposed?' · 'is this opening final?' Clarifying uncertainty early reduces later problems."
+    },
+    {
+      "q": "For whom should survey notes be written?",
+      "a": "For someone who has never visited the site. Imagine another designer or installer opening the survey file months later. Would they understand what was measured, what was observed and what remains uncertain? Survey notes should be clear enough that another experienced colleague can continue the project without needing the original surveyor to explain them."
+    },
+    {
+      "q": "Are all survey tools the same across companies?",
+      "a": "No. Some surveyors use tape measures, laser distance meters, spirit levels and digital levels; others combine traditional methods with modern equipment. The objective is consistent, reliable information — not any particular tool. The choice depends on the project, the surveyor's experience and the practices of the staircase company. There is no single correct surveying method, only the requirement to gather accurate information suitable for designing and building the staircase."
+    }
+  ],
+  "updated_at": "2026-08-02T01:44:51.123Z"
+}

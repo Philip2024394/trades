@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.041Z",
+  "layer": "family",
+  "family_id": "feature-lighting",
+  "label": "Integrated feature lighting (cross-cutting)",
+  "description": "Any staircase with integrated LED tread lighting, handrail lighting, or architectural feature lighting. Cuts across geometry and balustrade families.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What lighting is used in feature staircases?",
+      "a": ""
+    },
+    {
+      "q": "Can the lighting be dimmed?",
+      "a": ""
+    },
+    {
+      "q": "Can the lighting change colour?",
+      "a": ""
+    },
+    {
+      "q": "How is the wiring hidden?",
+      "a": ""
+    },
+    {
+      "q": "Can the lighting be replaced if it fails?",
+      "a": ""
+    },
+    {
+      "q": "Can lighting be added later?",
+      "a": ""
+    },
+    {
+      "q": "Can smart home systems control the lighting?",
+      "a": ""
+    }
+  ]
+}

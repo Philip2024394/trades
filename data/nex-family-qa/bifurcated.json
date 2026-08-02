@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "bifurcated",
+  "family_label": "Bifurcated staircase",
+  "qa": [
+    {
+      "q": "What is a bifurcated staircase?",
+      "a": "A bifurcated staircase is a grand staircase where one flight divides into two — either a lower flight that splits at a landing into two upper flights, or two lower flights that meet at a landing and continue as one upper flight. Common in hotels, mansions, museums and public buildings where a ceremonial entrance is required."
+    },
+    {
+      "q": "Where does the word 'bifurcated' come from?",
+      "a": "From Latin: bi = two, furca = fork. Together they mean 'to divide into two branches'. A bifurcated staircase divides the flow of movement into two directions, so the name literally describes what the staircase does."
+    },
+    {
+      "q": "What is a grand double staircase?",
+      "a": "A grand double staircase is a symmetrical bifurcated staircase where two flights rise or descend as mirror images. Common in ceremonial entrances — hotels, museums, luxury homes — because the symmetry creates a strong architectural presence at the point of arrival."
+    }
+  ],
+  "updated_at": "2026-08-02T01:04:15.210Z"
+}

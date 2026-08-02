@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.040Z",
+  "layer": "family",
+  "family_id": "timber-balustrade",
+  "label": "Timber balustrade (cross-cutting)",
+  "description": "Any staircase with timber spindles or newels. Cuts across geometry families.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What timber is used for spindles and newels?",
+      "a": ""
+    },
+    {
+      "q": "Can I have square or turned spindles?",
+      "a": ""
+    },
+    {
+      "q": "Can timber balusters be painted?",
+      "a": ""
+    }
+  ]
+}

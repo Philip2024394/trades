@@ -161,6 +161,34 @@ export type ConfirmedImage = {
   image_state?:         ImageState;            // concept (default) | reference | manufacturer | customer_project
   provenance_note?:     string;                // optional free-text · e.g. "supplied by Richard Burbidge · 2024-11" · admin-only
 
+  // Philip 2026-08-02 · per-design authored Q&A layer for the Staircase
+  // Library floating chat · when the customer's message matches one of these
+  // questions, Nex returns the authored answer VERBATIM (Rule A · no LLM
+  // synthesis). Unmatched questions fall through to the composer. Empty
+  // `a` = slot awaiting authoring; empty answers are skipped at match time.
+  qa?: Array<{
+    q:      string;   // Question text · used for keyword-overlap matching
+    a:      string;   // Authored answer · returned verbatim when matched
+    facts?: string[]; // Optional supplementary facts · surfaced to composer as evidence when partial matches occur
+  }>;
+
+  // Philip 2026-08-02 · 4-layer Q&A architecture · families and components
+  // tag the design for Layer 3 (family Q&A) and Layer 2 (component brain Q&A)
+  // lookups. See data/nex-families.json for the taxonomy. A design can belong
+  // to multiple families (e.g. a floating-cantilever with a glass-balustrade).
+  families?:     string[];   // family_ids · matches data/nex-family-qa/{family_id}.json
+  components?:   string[];   // component_ids · matches data/nex-component-qa/{component_id}.json
+  // Philip 2026-08-02 · Materials Brain · substance-level Q&A layer.
+  // material_ids matches data/nex-materials-qa/{material_id}.json.
+  // Walked BETWEEN Component and Family in the layer priority order.
+  material_ids?: string[];
+
+  // Optional free-form "extra information" Philip provides per design.
+  // Fed to the composer as evidence context on unauthored questions so
+  // even the fallback path uses Philip's authored knowledge rather than
+  // LLM invention.
+  design_notes?: string;
+
   // Knowledge Brain links (v2 · explicit connection)
   related_articles:     string[];              // article slugs · knowledge_links
 

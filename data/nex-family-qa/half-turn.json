@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "half-turn",
+  "family_label": "Half-turn staircase (U-shape)",
+  "qa": [
+    {
+      "q": "What is a half-turn staircase?",
+      "a": "A half-turn staircase changes direction by 180 degrees — the two flights run parallel but in opposite directions. Also called a U-shaped staircase or a switchback. The two flights are joined by a half landing where the direction reverses."
+    },
+    {
+      "q": "What is the difference between a half-turn and a dog-leg staircase?",
+      "a": "A dog-leg staircase is a specific type of half-turn — two straight flights in opposite directions with a half landing between them. The name 'dog-leg' comes from the side profile resembling a dog's rear leg. Most dog-leg staircases are half-turn staircases; not all half-turn stairs are traditionally called dog-legs."
+    },
+    {
+      "q": "Why are half-turn staircases common in houses and offices?",
+      "a": "Because they fit efficiently into a compact rectangular footprint — the two parallel flights double back on each other, so the staircase climbs the full floor height in about half the linear floor length of a straight flight."
+    },
+    {
+      "q": "What is an open-well half-turn staircase?",
+      "a": "A half-turn staircase where the space between the two flights (the 'well') is left open rather than boxed in. The open well may contain a glass balustrade, timber balustrade or decorative feature, and it lets light and sightlines travel through the staircase."
+    }
+  ],
+  "updated_at": "2026-08-02T01:04:15.210Z"
+}

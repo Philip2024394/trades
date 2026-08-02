@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.036Z",
+  "layer": "family",
+  "family_id": "mono-stringer-straight",
+  "label": "Straight mono-stringer staircase",
+  "description": "Single straight steel stringer running down the centre. Modern minimalist. Common in open-plan interiors.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a straight mono-stringer staircase?",
+      "a": ""
+    },
+    {
+      "q": "How is a straight mono-stringer supported?",
+      "a": ""
+    },
+    {
+      "q": "Can a straight mono-stringer be free-standing?",
+      "a": ""
+    }
+  ]
+}

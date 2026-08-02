@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "layer": "materials",
+  "material_id": "plywood",
+  "material_label": "Plywood",
+  "qa": [
+    {
+      "q": "Is plywood stronger than MDF?",
+      "a": ""
+    },
+    {
+      "q": "What is birch plywood?",
+      "a": ""
+    },
+    {
+      "q": "Can plywood be used for a staircase landing?",
+      "a": ""
+    },
+    {
+      "q": "Can plywood be painted?",
+      "a": ""
+    },
+    {
+      "q": "What thicknesses of plywood are used for stairs?",
+      "a": ""
+    }
+  ],
+  "note": "Layer 3 · MATERIALS · substance-level Q&A. A design tagged with this material_id will consult this file whenever the customer's question is not a specific image/component question. Rule A · Philip authored, never fabricated. Empty `a` = slot awaiting authoring · skipped at match time.",
+  "updated_at": "2026-08-02T00:11:24.475Z"
+}

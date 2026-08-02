@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.035Z",
+  "layer": "family",
+  "family_id": "mono-stringer-curved",
+  "label": "Curved mono-stringer staircase",
+  "description": "Single curved fabricated steel stringer carrying the treads. Follows a smooth continuous radius. Contemporary feature.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a curved mono-stringer staircase?",
+      "a": ""
+    },
+    {
+      "q": "How is a curved mono-stringer engineered?",
+      "a": ""
+    },
+    {
+      "q": "How is the curved steel plate manufactured?",
+      "a": ""
+    },
+    {
+      "q": "Can a curved mono-stringer be self-supporting?",
+      "a": ""
+    },
+    {
+      "q": "How thick is the steel in a curved mono-stringer?",
+      "a": ""
+    }
+  ]
+}

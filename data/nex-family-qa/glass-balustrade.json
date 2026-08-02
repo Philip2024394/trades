@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.039Z",
+  "layer": "family",
+  "family_id": "glass-balustrade",
+  "label": "Glass balustrade (cross-cutting)",
+  "description": "Any staircase with a structural glass balustrade. Toughened laminated safety glass typical. Cuts across all geometry families.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "Is a glass balustrade safe?",
+      "a": ""
+    },
+    {
+      "q": "What glass is used for a staircase balustrade?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass laminated?",
+      "a": ""
+    },
+    {
+      "q": "Is the glass toughened?",
+      "a": ""
+    },
+    {
+      "q": "How thick is a structural glass balustrade panel?",
+      "a": ""
+    },
+    {
+      "q": "Can a glass balustrade panel be replaced individually?",
+      "a": ""
+    },
+    {
+      "q": "Can I have tinted or low-iron glass?",
+      "a": ""
+    },
+    {
+      "q": "What fixing systems are used for glass balustrades?",
+      "a": ""
+    }
+  ]
+}

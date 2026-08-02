@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "layer": "materials",
+  "material_id": "hpl",
+  "material_label": "HPL (High Pressure Laminate)",
+  "qa": [
+    {
+      "q": "What is HPL?",
+      "a": "HPL stands for High Pressure Laminate. Products like Formica and compact laminate are common examples. HPL is normally used as a surface layer over MDF, plywood or particle board. It is very hard, scratch-resistant, water-resistant and available in a huge colour range. Typical uses are kitchen doors, worktops and stair side panels."
+    }
+  ],
+  "note": "Layer 3 · MATERIALS · substance-level Q&A. A design tagged with this material_id will consult this file whenever the customer's question is not a specific image/component question. Rule A · Philip authored, never fabricated. Empty `a` = slot awaiting authoring · skipped at match time.",
+  "updated_at": "2026-08-02T00:11:24.475Z"
+}

@@ -1,0 +1,207 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:04:15.210Z",
+  "layer": "component",
+  "component_id": "stringer",
+  "label": "Stringer",
+  "description": "The structural side or centre support carrying the treads. Mono, twin, cut, closed, or box variants.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a stringer?",
+      "a": "The stringer is the supporting side member of a staircase. It carries the treads, risers and loads. It is the backbone of the staircase and defines how the staircase transfers force into the building structure."
+    },
+    {
+      "q": "What is the difference between a mono-stringer and twin stringers?",
+      "a": ""
+    },
+    {
+      "q": "What is a cut string vs a closed string?",
+      "a": ""
+    },
+    {
+      "q": "How thick is the steel in a mono-stringer?",
+      "a": ""
+    },
+    {
+      "q": "How is the steel stringer made?",
+      "a": ""
+    },
+    {
+      "q": "What is a closed string staircase?",
+      "a": "A closed string staircase has a solid side board that conceals the tread ends. The side appears solid and traditional. Common in houses, renovations and carpet stairs. Often used with painted stairs where a clean enclosed appearance is preferred."
+    },
+    {
+      "q": "What is a cut string staircase?",
+      "a": "A cut string staircase has a shaped side board that follows the step profile — the tread ends are visible from the side. This is a decorative construction with a premium appearance, commonly used on oak stairs and luxury homes. It shows craftsmanship because the tread ends become part of the visible design."
+    },
+    {
+      "q": "What is a mono stringer staircase?",
+      "a": "A mono stringer staircase uses a single central steel support that carries the treads from below. It creates a floating modern appearance and is common in contemporary designs, often paired with open risers and glass balustrades."
+    },
+    {
+      "q": "What is a twin stringer staircase?",
+      "a": "A twin stringer staircase uses two parallel structural supports carrying the treads between them. It has an industrial style, handles stronger spans, and is common in steel staircase applications and commercial designs."
+    },
+    {
+      "q": "Can a staircase have no visible stringer?",
+      "a": "Yes. Floating stairs, concealed steel structures and cantilever stairs may hide the stringer entirely — but the support still exists. Floating appearance never means no structure; it means the structure is visually reduced or concealed."
+    },
+    {
+      "q": "Why does stringer design affect appearance?",
+      "a": "Because it changes visual weight, openness, and whether the staircase reads as modern or traditional. A closed string feels enclosed and classic; a cut string feels crafted; a mono string feels floating and modern; a twin string feels industrial."
+    },
+    {
+      "q": "Can a staircase between walls still have a stringer?",
+      "a": "Yes. A staircase between two walls may appear simple, but the strings can still be structural or decorative. Plasterboard or wall finish does not automatically mean there is no stringer — the timber support may run behind the finish."
+    },
+    {
+      "q": "Can a stringer be structural, decorative, or both?",
+      "a": "Yes to all three. An exposed timber string on a cut-string staircase is both structural and decorative. A concealed steel spine is structural but hidden. A decorative cover added over an existing structure is purely decorative. The visible material is not always the structural material."
+    },
+    {
+      "q": "What materials can a stringer be made from?",
+      "a": "Common structural stringers include C24 softwood, laminated timber (glulam), engineered timber, powder-coated steel plate, steel box section, and structural plywood for engineered systems. MDF is not recommended as a structural string but can be used as a decorative cover over a real string."
+    },
+    {
+      "q": "Why is the stringer called the backbone of the staircase?",
+      "a": "Because it carries the treads, transfers load to the structure, defines the staircase pitch and controls the line of the balustrade. A leaning or twisted stringer misaligns everything mounted on it — newels, balusters, handrail — so it is the first alignment reference in a staircase system."
+    },
+    {
+      "q": "Can the stringer make a newel post look out of plumb?",
+      "a": "Yes. The stringer controls the staircase line — if the string is leaning or incorrectly positioned, the newel mounted on it will also appear incorrect. Before adjusting a leaning newel, the stringer must be checked first."
+    },
+    {
+      "q": "How does a floating staircase get its support?",
+      "a": "Floating stairs use hidden structure: a concealed steel spine, wall brackets fixed into a reinforced wall, a hidden frame within the wall assembly, or a cantilever structure with steel embedded in the wall. The appearance is minimal, but the engineering is significant."
+    },
+    {
+      "q": "Is the stringer just decoration?",
+      "a": "No. A stringer can be structural, decorative, or both. Its role depends on the staircase construction method. A cut string on an oak staircase is both structural and decorative. A concealed steel spine is structural but hidden. A decorative cover added over an existing structure is purely decorative. The visible material is not always the structural material."
+    },
+    {
+      "q": "What is a saw-tooth stringer profile?",
+      "a": "A saw-tooth or cut-profile stringer has the top edge cut in a stepped pattern to receive the treads and risers. The staircase step profile becomes visible from the side. It is the manufacturing method behind a cut-string staircase — the cutting exposes the stair rhythm as part of the design."
+    },
+    {
+      "q": "How does staircase geometry control the stringer?",
+      "a": "The stringer follows the calculated staircase angle — it is created from rise, going and pitch. The geometry comes first; the material comes second. If the stair calculation gives a 190mm riser and 260mm going, the stringer must be manufactured to that exact rhythm. String dimensions follow staircase geometry, not the other way around."
+    },
+    {
+      "q": "What is a common closed-string width on a traditional staircase?",
+      "a": "Common closed-string widths are approximately 8.5 inches or 9 inches. These sizes are widely used because they provide a balance between structural support, appearance, material efficiency and traditional proportions. This is a common quality standard used by staircase manufacturers, not a universal building rule — final dimensions can vary from project to project."
+    },
+    {
+      "q": "Why is a cut string wider than a closed string?",
+      "a": "Because the cut string follows the step profile — the top edge is cut away to reveal the tread ends. To maintain strength, visual proportion, fixing area and structural integrity after that cutting, the original board must start wider. Cut string widths commonly increase to approximately 14 to 17 inches depending on riser height, tread going, staircase design and material choice."
+    },
+    {
+      "q": "How does rise and going affect stringer width?",
+      "a": "A staircase with higher risers creates deeper step cuts, and longer goings create longer step projections. Both make the cut-string design deeper below the step profile, so the string design may need to be adjusted. String dimensions follow staircase geometry — not the other way around."
+    },
+    {
+      "q": "Why do open-riser staircases often need thicker stringers?",
+      "a": "An open-riser staircase removes the closed riser board — one visible component is gone, so the remaining components must provide more of the stiffness, stability and visual balance. A wide open-riser staircase may require approximately a 60% increase in string thickness, or in some designs up to double the thickness, depending on material, span, design and engineering. Removing components does not always mean less material."
+    },
+    {
+      "q": "Do double-side cut strings need extra thickness?",
+      "a": "A double-side cut string staircase can require increased thickness because both sides carry visual and structural responsibility. The strings become visible features and structural components together, so proportions need to be larger to remain balanced and strong."
+    },
+    {
+      "q": "Do the same string dimensions behave the same in every material?",
+      "a": "No. Solid oak is strong with premium appearance but has natural movement. Engineered timber is more dimensionally stable and consistent. MDF and decorative boards behave differently again and are usually not equivalent to structural timber. Steel has high strength with a completely different design approach. String size must be chosen for the material — the same dimensions can perform very differently."
+    },
+    {
+      "q": "Are stringer dimensions a building rule?",
+      "a": "No. Common stringer dimensions represent quality standards used by staircase manufacturers, not universal building rules. Final sizing depends on the individual staircase design, span, material behaviour and structural requirements. A manufacturer may increase thickness where the staircase is wider, the string is more exposed, the design has fewer supports, or the staircase carries more visible load."
+    },
+    {
+      "q": "What causes a stringer to bow?",
+      "a": "A bowed string means the string is no longer perfectly straight. Possible causes include timber movement, insufficient thickness, incorrect storage, moisture imbalance and excessive loading. The effect is steps that may appear uneven, balusters that no longer line up and a handrail that appears curved even where it should be straight."
+    },
+    {
+      "q": "What is a twisted stringer?",
+      "a": "A twist means the string rotates along its length — one side of the staircase may appear higher or lower. It is different from a bow (which is a curve along the length). Possible causes include timber stress, incorrect fixing and uneven support. Effect: uneven step contact and a handrail that never feels level along the run."
+    },
+    {
+      "q": "Can a staircase have the correct angle but still be out of level?",
+      "a": "Yes. A staircase can have the correct pitch (rise/going ratio) but still have alignment problems if the string is not level across its width. Possible results include uneven tread contact, handrail irregularity and uncomfortable walking."
+    },
+    {
+      "q": "How does the tread connect to the stringer?",
+      "a": "The tread must connect correctly to the string — it should transfer load INTO the string, not simply sit on top of it. Problems arise from loose fitting, poor glue joints, incorrect fixing or insufficient support. Traditional joinery uses housed treads (fitted into a groove cut in the string) with wedges and glue blocks for a movement-free connection."
+    },
+    {
+      "q": "How does the riser connect to the stringer?",
+      "a": "The riser helps lock the staircase geometry. In traditional stairs, tread + riser + string work together as a unit. Removing or changing one element affects the whole system. Housed strings receive both the tread and the riser in matched grooves, with wedges tightening the joint from behind."
+    },
+    {
+      "q": "Does an open-riser stair still need the stringer to support the treads?",
+      "a": "Yes. Removing the vertical riser board does not remove the load path — the string, frame or steel structure must still carry each tread. Open does not mean unsupported. The remaining components (stringer, brackets, welds) become more critical because the closed riser no longer contributes to stiffness."
+    },
+    {
+      "q": "Why do mono-stringer staircases look simple but require careful engineering?",
+      "a": "Mono-string stairs concentrate all the load into a single central steel spine. The engineering is concentrated into steel thickness, connection plates, anchors, weld quality and support points. The appearance is minimal; the structural work behind it is not."
+    },
+    {
+      "q": "Does 'floating staircase' mean no stringer?",
+      "a": "No. The structure may be concealed, transferred into walls or carried by hidden steel components — but it exists. Nex must not assume floating means unsupported. Floating appearance never means no structure; it means the structure is visually reduced or concealed."
+    },
+    {
+      "q": "Why should a newel not be adjusted before checking the stringer?",
+      "a": "Because if the string is wrong and the newel is forced straight, other parts of the balustrade become misaligned. If a newel appears leaning, Nex checks the newel itself first, then the fixing, then whether the string is aligned, then the landing and floor. Never adjust the newel before finding the cause."
+    },
+    {
+      "q": "Can baluster spacing become inconsistent because of stringer alignment?",
+      "a": "Yes. Balusters follow the staircase geometry — the stringer sets the reference line. If the string line is incorrect, the baluster spacing above it can appear inconsistent even when each baluster is correctly located on its own."
+    },
+    {
+      "q": "What is the correct installation sequence for a stringer-based staircase?",
+      "a": "Confirm building dimensions → check floor levels → position stringers → secure structural connections → install treads and risers → install balustrade → check alignment. Structure first, appearance second — installing the balustrade before confirming staircase accuracy produces leaning newels, uneven rails and poor transitions."
+    },
+    {
+      "q": "Why can a staircase move and squeak?",
+      "a": "Squeaking is usually caused by movement between components. Possible sources include a loose tread connection, stringer movement, incorrect fixing and timber shrinkage. A staircase should not only look correct — it must feel solid. Diagnosis is about finding WHERE the movement is occurring, not simply blaming the tread."
+    },
+    {
+      "q": "Can an old staircase move naturally without being a structural problem?",
+      "a": "Yes. Older staircases can move because of seasonal timber movement, aged fixings, wear and settlement. Nex distinguishes normal ageing from structural concern — some movement is expected, but growing gaps or increasing noise justify investigation. Nex will not recommend a cosmetic repair for a structural problem."
+    },
+    {
+      "q": "What are the connection points a stringer transfers load through?",
+      "a": "Top (connection to upper floor), bottom (connection to lower floor), intermediate supports or fixings, and step (tread connection). A weak connection at any of these points can reduce the performance of an otherwise strong stringer."
+    },
+    {
+      "q": "Why is the top stringer connection critical?",
+      "a": "Because it connects to the landing, floor structure and trimmer area — it must resist downward loads, movement and sideways forces. The stringer is the first structural element carrying the staircase journey into the upper floor."
+    },
+    {
+      "q": "Why is the bottom stringer connection important?",
+      "a": "It affects stability, movement and squeaking. A staircase should feel solid when the user steps onto the first tread. Poor bottom fixing manifests as flex, a hollow sound, or gradual squeaking over time."
+    },
+    {
+      "q": "Do balustrade forces travel through the stringer?",
+      "a": "Often yes. Newel posts fixed to the stringer transfer handrail forces into it, so the stringer is not only carrying the treads — it also anchors part of the balustrade system. This is why premium staircases pay close attention to the string-to-newel connection."
+    },
+    {
+      "q": "What is a false stringer?",
+      "a": "A false stringer appears like a structural string but may be decorative — a side board added over the true structure rather than carrying load itself. Not every visible board on a staircase side carries the staircase load. Nex checks whether the string is structural or a covering before assuming its role."
+    },
+    {
+      "q": "What is a housed string?",
+      "a": "A housed string has the treads and risers housed into grooves cut into the string. It is a traditional joinery method. The tread and riser fit into matched grooves, held tight with wedges and glue blocks — this creates a strong, quiet, movement-free joint that carries the tread ends invisibly."
+    },
+    {
+      "q": "What are glue blocks on a staircase?",
+      "a": "Small timber blocks added underneath joints to reduce movement, strengthen connections and prevent squeaks. Common locations include tread-to-riser joints, corners and returns. A quiet staircase usually indicates accurate fitting, good preparation and correct fixing — glue blocks help achieve all three."
+    },
+    {
+      "q": "Why do stringers need edge finishing?",
+      "a": "A visible stringer requires high finishing quality — straightness, smooth edges, consistent thickness and matching timber grain. Common edge treatments include square edge, rounded edge, chamfer or decorative profile. The edge affects shadow lines, touch quality and the premium appearance of the staircase."
+    },
+    {
+      "q": "Why can a small stringer manufacturing error become highly visible?",
+      "a": "Because a staircase repeats the same step rhythm many times. A small manufacturing error at one riser or tread position, repeated over 13 or 14 steps, becomes a wave in the handrail line or a shift in baluster spacing that the eye catches immediately. Cut-string accuracy is especially critical because every step follows the same visible pattern."
+    }
+  ]
+}

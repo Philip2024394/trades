@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:04:15.210Z",
+  "layer": "family",
+  "family_id": "straight-flight",
+  "label": "Straight-flight staircase",
+  "description": "Simple straight run between floors. Cross-cutting geometry family (a straight-flight can also be a mono-stringer or floating cantilever).",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a straight-flight staircase?",
+      "a": "A straight-flight staircase moves in one continuous direction with no turns — the simplest possible staircase layout. Also called a single-flight or straight-run staircase. Common in loft conversions, modern homes and commercial access stairs where floor space allows an uninterrupted run."
+    },
+    {
+      "q": "What is the typical span of a straight-flight staircase?",
+      "a": ""
+    },
+    {
+      "q": "How is a straight-flight installed?",
+      "a": ""
+    },
+    {
+      "q": "Can a straight-flight staircase have a landing?",
+      "a": "Yes. A straight staircase can have a top landing (arrival point), a bottom landing (entry platform) or an intermediate landing (long commercial stairs may add a rest landing without changing direction). A landing does not automatically make a staircase a turning staircase — it is still a straight flight if the direction does not change."
+    },
+    {
+      "q": "What is a double-flight straight staircase?",
+      "a": "Two straight flights continuing in the same direction with an intermediate landing between them. Used where the floor height is large or the total travel distance is long. The intermediate landing provides a rest point without changing direction."
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "layer": "materials",
+  "material_id": "acrylic",
+  "material_label": "Acrylic (Perspex / PMMA)",
+  "qa": [
+    {
+      "q": "What is acrylic?",
+      "a": "Acrylic is a plastic sheet made from polymethyl methacrylate (PMMA). It is a transparent or coloured alternative to glass, is around 10–20 times more impact resistant than glass, lightweight, and UV-resistant grades are available. It can be laser cut, CNC machined and polished."
+    },
+    {
+      "q": "Can acrylic be used for a stair balustrade?",
+      "a": "Yes. Acrylic balustrade panels are very popular — clear, frosted or coloured — and can be used for decorative stair inserts and lighting features. Acrylic is not suitable for stair treads, structural strings, or any load-bearing parts."
+    }
+  ],
+  "note": "Layer 3 · MATERIALS · substance-level Q&A. A design tagged with this material_id will consult this file whenever the customer's question is not a specific image/component question. Rule A · Philip authored, never fabricated. Empty `a` = slot awaiting authoring · skipped at match time.",
+  "updated_at": "2026-08-02T00:11:24.475Z"
+}

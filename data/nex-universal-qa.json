@@ -1,0 +1,1104 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:38:40.196Z",
+  "layer": "universal",
+  "note": "Layer 1 · UNIVERSAL Q&A · applies to every staircase in the world regardless of type / family / manufacturer. Author each answer ONCE · every design gets it automatically. Do NOT put design-specific or family-specific answers here. When a question is authored, Nex uses this answer whenever no more specific (image · family · component) match exists. Empty `a` slots are skipped by the matcher.",
+  "qa": [
+    {
+      "q": "Is a staircase structural?",
+      "a": ""
+    },
+    {
+      "q": "Can a staircase be assembled on site?",
+      "a": ""
+    },
+    {
+      "q": "How long does manufacturing normally take?",
+      "a": ""
+    },
+    {
+      "q": "Can this be shipped internationally?",
+      "a": ""
+    },
+    {
+      "q": "Can I install a staircase myself?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the timber species?",
+      "a": ""
+    },
+    {
+      "q": "Can I paint the steel later?",
+      "a": ""
+    },
+    {
+      "q": "What maintenance is required?",
+      "a": ""
+    },
+    {
+      "q": "Does timber move naturally?",
+      "a": ""
+    },
+    {
+      "q": "Will timber crack over time?",
+      "a": ""
+    },
+    {
+      "q": "Can staircases be dismantled?",
+      "a": ""
+    },
+    {
+      "q": "Can the staircase be modified later?",
+      "a": ""
+    },
+    {
+      "q": "What is oak?",
+      "a": ""
+    },
+    {
+      "q": "What is walnut?",
+      "a": ""
+    },
+    {
+      "q": "What is toughened glass?",
+      "a": ""
+    },
+    {
+      "q": "What is laminated glass?",
+      "a": ""
+    },
+    {
+      "q": "What is powder-coated steel?",
+      "a": ""
+    },
+    {
+      "q": "Are open-riser staircases legal?",
+      "a": ""
+    },
+    {
+      "q": "Is a staircase safe for children?",
+      "a": ""
+    },
+    {
+      "q": "Is a staircase safe for elderly people?",
+      "a": ""
+    },
+    {
+      "q": "Can pets use the staircase?",
+      "a": ""
+    },
+    {
+      "q": "How long does a staircase last?",
+      "a": ""
+    },
+    {
+      "q": "Will my house insurance change?",
+      "a": ""
+    },
+    {
+      "q": "Do I need building regulations approval?",
+      "a": ""
+    },
+    {
+      "q": "Do I need structural drawings?",
+      "a": ""
+    },
+    {
+      "q": "Will I receive drawings before manufacture?",
+      "a": ""
+    },
+    {
+      "q": "How is a bespoke staircase delivered?",
+      "a": ""
+    },
+    {
+      "q": "What happens if a staircase arrives damaged?",
+      "a": ""
+    },
+    {
+      "q": "Is a warranty provided?",
+      "a": ""
+    },
+    {
+      "q": "How much does this staircase cost?",
+      "a": ""
+    },
+    {
+      "q": "Can you give me a rough estimate?",
+      "a": ""
+    },
+    {
+      "q": "Why can't you tell me the price?",
+      "a": ""
+    },
+    {
+      "q": "Are you hiding the cost?",
+      "a": ""
+    },
+    {
+      "q": "Can you at least give me a ballpark figure?",
+      "a": ""
+    },
+    {
+      "q": "Can you tell me if my budget is realistic?",
+      "a": ""
+    },
+    {
+      "q": "Why do you ask so many questions before discussing price?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex help me get a quotation?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex find someone who builds this?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex recommend a manufacturer?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex prepare an enquiry for me?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex introduce me to multiple manufacturers?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex negotiate prices?",
+      "a": ""
+    },
+    {
+      "q": "Are you an AI?",
+      "a": ""
+    },
+    {
+      "q": "Is this a real staircase or an AI concept?",
+      "a": ""
+    },
+    {
+      "q": "Can you guarantee this staircase will be built exactly?",
+      "a": ""
+    },
+    {
+      "q": "Can this staircase actually be made?",
+      "a": "Yes. The images in the Nex Library are design concepts and inspiration, but they are based on real staircase construction methods. Many of these staircases can be manufactured by experienced bespoke staircase companies. Some designs may need small engineering adjustments to suit your home, local building regulations or manufacturing methods, but the overall style and appearance can usually be achieved. If specialist engineering is required, Nex can — with your permission — help connect you with a suitable staircase manufacturer to review the design."
+    },
+    {
+      "q": "Is this just an AI picture?",
+      "a": "The image is a visual design concept, not a photograph of an existing installation. Its purpose is to help you explore styles, materials and layouts that could be suitable for your home. Many modern staircase manufacturers regularly build staircases inspired by design concepts like these."
+    },
+    {
+      "q": "Can someone really build this staircase?",
+      "a": "In many cases, yes. Professional staircase manufacturers build bespoke staircases every day. Every project is individually designed, engineered and manufactured for the customer's property. The final staircase may include engineering adjustments to meet structural requirements and building regulations while keeping the same overall appearance."
+    },
+    {
+      "q": "Is this impossible to manufacture?",
+      "a": "Not necessarily. Some concepts are straightforward to manufacture. Others may require more advanced engineering, specialist fabrication or custom materials. Rather than guessing, Nex can help have the design reviewed by an experienced staircase manufacturer if technical confirmation is needed."
+    },
+    {
+      "q": "Why doesn't the finished staircase look exactly like the image?",
+      "a": "Every home is different. Factors such as floor-to-floor height, room size, ceiling opening, structural supports, local building regulations and customer preferences all influence the final design. The aim is normally to capture the same overall style while adapting it for your property."
+    },
+    {
+      "q": "Can I build exactly what I see?",
+      "a": "Sometimes yes. Sometimes small changes are needed. The closer the image is to practical construction methods, the closer the finished staircase can usually be to the concept. If changes are required, they are normally structural rather than visual."
+    },
+    {
+      "q": "How do I know if this design is possible?",
+      "a": "Some designs can be assessed immediately. More complex designs may need review by an experienced staircase designer or structural engineer. If required, Nex can — with your permission — prepare your project information and connect you with a suitable specialist for confirmation."
+    },
+    {
+      "q": "What if no company has built one like this before?",
+      "a": "That doesn't necessarily mean it cannot be built. Many bespoke staircase companies create completely new designs every year. Experienced manufacturers often combine proven engineering with new architectural styles to produce unique staircases."
+    },
+    {
+      "q": "Is Nex guaranteeing this staircase can be built?",
+      "a": "No. Nex does not guarantee that every design can be manufactured exactly as shown. Nex explains what is generally possible based on staircase construction principles. Where specialist engineering or manufacturer confirmation is needed, Nex will say so honestly rather than guess."
+    },
+    {
+      "q": "Who decides if the staircase is structurally safe?",
+      "a": "The staircase manufacturer and, where required, qualified engineers. They are responsible for ensuring the staircase is suitable for manufacture and complies with the relevant structural and building requirements for your location."
+    },
+    {
+      "q": "Can Nex speak to a manufacturer for me?",
+      "a": "Yes. With your permission, Nex can prepare your project brief and connect you with a suitable staircase manufacturer or specialist to discuss your design and answer technical questions."
+    },
+    {
+      "q": "What if the manufacturer says changes are needed?",
+      "a": "That is completely normal. Small adjustments may be recommended to improve strength, safety, installation, manufacturing efficiency, or compliance with local regulations. The overall appearance can often remain very close to the original concept."
+    },
+    {
+      "q": "Has this exact staircase been built before?",
+      "a": "Not always. Some library designs are inspired by existing staircase styles, while others explore new design ideas. Even if an identical staircase has not been built before, experienced bespoke manufacturers may still be able to produce a very similar result."
+    },
+    {
+      "q": "Why does Nex show designs that haven't been built yet?",
+      "a": "The purpose of the Nex Library is to inspire homeowners and help them explore possibilities. Many architectural projects begin as concepts before becoming real buildings or products. The library helps customers communicate their ideas clearly before a manufacturer develops the final engineered design."
+    },
+    {
+      "q": "What if I'm worried it's only AI?",
+      "a": "That's a sensible question. Nex is designed to separate design inspiration from engineering reality. If a question can be answered confidently, Nex will answer it. If a question requires manufacturer-specific engineering or construction confirmation, Nex will say: \"I don't want to guess. With your permission, I can help prepare your project and ask a suitable staircase manufacturer to confirm the technical details.\" That approach keeps the advice accurate while helping you turn a concept into a real staircase."
+    },
+    {
+      "q": "Can this design really be built?",
+      "a": "Many people look at a staircase like this and assume it's \"just AI.\" In reality, every staircase begins as an idea. Before it exists, it is simply a drawing, a sketch or a digital concept. The difference between an idea and a real staircase is the knowledge, engineering and craftsmanship used to build it. With the right design team and experienced manufacturers, many concept staircases can become real projects."
+    },
+    {
+      "q": "This looks impossible.",
+      "a": "It may look unusual, but unusual does not always mean impossible. Modern staircase manufacturers use advanced engineering, CNC machining, laser cutting, 3D modelling and precision fabrication to build designs that would have been extremely difficult to produce many years ago. Some concepts can be built exactly as shown, while others may need small engineering changes to suit your home and local building regulations. If specialist confirmation is needed, Nex can help connect you with an experienced manufacturer."
+    },
+    {
+      "q": "People say AI designs can't be built.",
+      "a": "That is a common misunderstanding. AI can generate ideas, but it does not manufacture staircases. Experienced designers, engineers and skilled craftsmen turn ideas into real products. Many of the world's most impressive buildings, bridges and staircases started as concepts long before they became reality."
+    },
+    {
+      "q": "Has anything like this ever happened before?",
+      "a": "Yes. Throughout history, many designs were once considered impossible until new skills, materials and technology made them practical. Curved glass buildings, floating staircases, long-span bridges and complex architectural roofs all began as ambitious ideas before becoming everyday construction projects. Innovation happens because skilled people find solutions."
+    },
+    {
+      "q": "Could this become a real staircase?",
+      "a": "In many cases, yes. The image represents a design vision. The manufacturer then determines the safest and most practical engineering solution to achieve that vision. Sometimes the staircase can be built almost exactly as shown. Sometimes small structural adjustments are recommended while keeping the same overall appearance."
+    },
+    {
+      "q": "What if nobody has built this exact staircase before?",
+      "a": "That doesn't automatically mean it cannot be built. Every year, bespoke staircase companies create designs they have never built before. Experienced manufacturers often enjoy challenging projects because they allow them to demonstrate their design and engineering capabilities."
+    },
+    {
+      "q": "How does an idea become a real staircase?",
+      "a": "The process usually follows these stages: (1) a design concept or inspiration · (2) measurements taken from your property · (3) structural engineering where required · (4) detailed manufacturing drawings · (5) customer approval · (6) precision manufacturing · (7) delivery and installation. Every bespoke staircase in the world started somewhere along this journey."
+    },
+    {
+      "q": "Is Nex promising every AI image can be built?",
+      "a": "No. Nex will never promise something it cannot verify. If a staircase uses recognised construction methods, Nex can explain how it would normally be manufactured. If a design contains features that require specialist engineering or manufacturer confirmation, Nex will tell you honestly. Rather than guessing, Nex can — with your permission — prepare your project and ask an experienced staircase manufacturer to review the concept."
+    },
+    {
+      "q": "Why does Nex show ambitious designs?",
+      "a": "Because imagination drives innovation. Many of today's iconic staircases would once have been considered too difficult or too expensive to build. As manufacturing technology improves, new materials become available and skilled craftspeople develop better techniques, more ambitious designs become achievable. The purpose of the Nex Library is to inspire possibilities while remaining honest about what still requires expert engineering."
+    },
+    {
+      "q": "Can skilled manufacturers build things that seem impossible?",
+      "a": "Often, yes. History shows that many remarkable structures were once thought to be beyond reach until experienced designers and engineers developed the knowledge to build them. Nex believes great design begins with imagination, but every successful project also depends on skilled people, careful engineering and quality workmanship. That's why, whenever technical confirmation is needed, Nex prefers to involve experienced manufacturers rather than make assumptions."
+    },
+    {
+      "q": "Can a one-off staircase really be manufactured?",
+      "a": "Yes. Every bespoke staircase starts as a one-off project. Unlike mass-produced products, bespoke staircases are designed around a specific property and customer. Manufacturers regularly produce staircases they have never built before."
+    },
+    {
+      "q": "Has anyone built this exact staircase?",
+      "a": "Possibly, but not necessarily. Many staircases are unique and built only once for a particular home. The important question is not whether an identical staircase exists, but whether experienced designers and manufacturers have the skills to build it safely. If confirmation is required, Nex can prepare your project for review by a specialist."
+    },
+    {
+      "q": "What if the design needs changing?",
+      "a": "That is perfectly normal. During the design process a manufacturer may recommend changes to improve strength, installation, comfort or compliance with local building regulations. Their goal is to keep the appearance as close as possible to your chosen design while ensuring it performs correctly."
+    },
+    {
+      "q": "Why doesn't Nex simply say yes or no?",
+      "a": "Because honesty matters. Some questions require engineering calculations, structural assessment or knowledge of manufacturing methods that depend on your property. Rather than guessing, Nex prefers to involve qualified professionals whenever specialist advice is needed."
+    },
+    {
+      "q": "Can modern manufacturing produce shapes like this?",
+      "a": "Yes. Today's staircase manufacturers can use CNC machining, laser cutting, robotic welding, curved timber laminating, precision glass processing and advanced CAD software to manufacture designs that were once extremely difficult to produce. The final solution always depends on the project's engineering requirements."
+    },
+    {
+      "q": "What if the manufacturer says something needs changing?",
+      "a": "That doesn't mean your idea has failed. It simply means they have found a safer or more practical way to achieve the same overall appearance. Many successful bespoke staircases go through several design revisions before manufacturing begins."
+    },
+    {
+      "q": "Does every staircase have to follow the image exactly?",
+      "a": "No. The image is your inspiration. The finished staircase can usually be customised to suit your room, measurements, preferred materials and budget while keeping the same overall style."
+    },
+    {
+      "q": "Could future technology make even more designs possible?",
+      "a": "Absolutely. Construction methods continue to improve every year. New materials, stronger glass, better steel fabrication, improved timber engineering and more advanced manufacturing techniques allow designers to create staircases that would have been difficult to build in the past. Innovation never stands still."
+    },
+    {
+      "q": "Why do manufacturers enjoy challenging staircases?",
+      "a": "Complex projects allow skilled companies to demonstrate their experience and craftsmanship. Many specialist staircase manufacturers take pride in producing unique designs that showcase their engineering capabilities."
+    },
+    {
+      "q": "What happens if no manufacturer wants the project?",
+      "a": "That is uncommon, but it can happen if a design is outside a company's capabilities or current workload. Nex can continue looking for manufacturers with different skills or experience until suitable specialists are found, where available."
+    },
+    {
+      "q": "Can Nex guarantee the staircase will be built?",
+      "a": "No. Only the manufacturer responsible for the project can confirm what they are prepared to manufacture. Nex helps explain designs, prepare project information and connect you with suitable specialists, but it never guarantees engineering decisions."
+    },
+    {
+      "q": "Can a manufacturer improve my idea?",
+      "a": "Very often. Customers usually arrive with an inspiration image. Experienced staircase designers frequently suggest improvements that make the staircase stronger, easier to build, more comfortable to use or more visually striking."
+    },
+    {
+      "q": "Does every manufacturer build the same way?",
+      "a": "No. Two experienced companies may produce a staircase that looks almost identical while using different internal structures, fixing methods or manufacturing techniques. There is often more than one correct engineering solution."
+    },
+    {
+      "q": "Why do experienced staircase makers matter?",
+      "a": "A staircase combines structural engineering, precision manufacturing and fine joinery. Experience helps manufacturers solve challenges before they become problems, resulting in a safer installation and a better finished product."
+    },
+    {
+      "q": "Could this become a signature feature of my home?",
+      "a": "Many bespoke staircases become the focal point of a property. A well-designed staircase can transform an entrance hall, improve first impressions and become one of the most memorable architectural features in the home."
+    },
+    {
+      "q": "Is Nex replacing staircase designers?",
+      "a": "No. Nex is designed to help you explore ideas, understand options and prepare your project. Professional designers, engineers and manufacturers remain an essential part of creating a real staircase."
+    },
+    {
+      "q": "What if experts disagree?",
+      "a": "That can happen. Different manufacturers sometimes recommend different engineering approaches based on their experience. Nex encourages customers to compare professional opinions before making a final decision."
+    },
+    {
+      "q": "Can something beautiful also be practical?",
+      "a": "Yes. The best staircase designs combine appearance with everyday usability. Good design considers comfort, safety, maintenance, durability and long-term performance — not just how the staircase looks."
+    },
+    {
+      "q": "Why does Nex ask questions before introducing a manufacturer?",
+      "a": "Because good preparation saves time. The more information you provide about your home, measurements, preferred materials and design goals, the easier it is for manufacturers to understand your project and provide meaningful advice."
+    },
+    {
+      "q": "What if my dream staircase seems impossible?",
+      "a": "Many remarkable projects began as ambitious ideas. The purpose of Nex is not to dismiss creative designs, but to explore them responsibly. If a concept appears technically challenging, Nex can help gather the right information and, with your permission, involve experienced manufacturers to assess what is possible."
+    },
+    {
+      "q": "Can I use my own builder to install the staircase?",
+      "a": "Yes, some manufacturers will supply the staircase only, allowing your own builder or carpenter to install it. Others prefer their own installation teams to ensure the staircase is fitted correctly and to maintain any warranty. Always confirm this before ordering."
+    },
+    {
+      "q": "Do I have to buy the staircase from the company that designed it?",
+      "a": "Not necessarily. Some customers obtain drawings and quotations from several manufacturers before deciding who to use. Always check who owns the design and whether drawings can be shared with another company."
+    },
+    {
+      "q": "Can one company design it and another company build it?",
+      "a": "Sometimes yes. However, responsibility should be clearly agreed. If one company designs the staircase and another manufactures it, make sure everyone is working from the latest approved drawings."
+    },
+    {
+      "q": "What information will the staircase company need from me?",
+      "a": "They may ask for: floor-to-floor height, ceiling height, structural opening size, building plans, photographs, videos, site address, access information, preferred style, budget guidance and desired completion date."
+    },
+    {
+      "q": "Do I need planning permission for a new staircase?",
+      "a": "In many situations, replacing or installing an internal staircase does not require planning permission, but building regulations or local approval may still apply. Requirements vary by location."
+    },
+    {
+      "q": "Who checks that the staircase meets regulations?",
+      "a": "Normally this is handled by the staircase designer, structural engineer where required, and the relevant building control authority according to local regulations."
+    },
+    {
+      "q": "Can my staircase be built before the house is finished?",
+      "a": "Yes. Many staircases are manufactured while the building work is progressing, although final dimensions are often confirmed during a site survey before production."
+    },
+    {
+      "q": "Should decorating be finished before the staircase is installed?",
+      "a": "Many people install the staircase before final decorating so any minor marks or adjustments can be completed first. Every project is different."
+    },
+    {
+      "q": "Can the staircase be removed years later?",
+      "a": "Most staircases can be removed, although this often requires dismantling and may involve building work because the staircase forms part of the home's structure."
+    },
+    {
+      "q": "Can I move the staircase to another house?",
+      "a": "Usually not without significant redesign. A staircase is normally manufactured specifically for one property and one set of measurements."
+    },
+    {
+      "q": "Will the staircase be numbered for installation?",
+      "a": "Many bespoke staircase manufacturers label individual components to simplify assembly on site."
+    },
+    {
+      "q": "Does the staircase arrive fully assembled?",
+      "a": "That depends on its size. Smaller staircases may arrive largely assembled. Large bespoke staircases often arrive in sections that are assembled inside the property."
+    },
+    {
+      "q": "Can bad weather delay delivery?",
+      "a": "Yes. Transport schedules can occasionally change due to severe weather, traffic restrictions or access issues."
+    },
+    {
+      "q": "Should I inspect the staircase before signing for delivery?",
+      "a": "Yes. If possible, check for visible transport damage and report any concerns immediately according to the supplier's delivery procedure."
+    },
+    {
+      "q": "What if something is damaged during delivery?",
+      "a": "Notify the supplier as soon as possible and follow their reporting process. Photographs are often helpful."
+    },
+    {
+      "q": "Should I insure the staircase before it is installed?",
+      "a": "Some home insurance policies may not cover building materials before installation. It is worth checking with your insurer if the staircase will be stored on site."
+    },
+    {
+      "q": "Can I choose a local staircase company?",
+      "a": "Many customers prefer local manufacturers because site visits and after-sales support may be easier. Others are happy to use specialist companies that travel nationally."
+    },
+    {
+      "q": "How far will staircase companies travel?",
+      "a": "Some work within a single region, while others undertake projects across the country or internationally. Nex can help identify companies that serve your location."
+    },
+    {
+      "q": "What if I don't know which staircase style is best?",
+      "a": "That is exactly what Nex is designed to help with. By understanding your home, available space, lifestyle and preferences, Nex can narrow the options before introducing you to suitable manufacturers."
+    },
+    {
+      "q": "Can Nex recommend one manufacturer over another?",
+      "a": "Nex aims to help you find suitable manufacturers based on your project and location. The final choice is always yours."
+    },
+    {
+      "q": "Can Nex tell me if something is technically possible?",
+      "a": "Nex can explain known construction principles and recognised staircase designs. If your project involves unusual engineering or bespoke structural details, Nex will clearly say when specialist confirmation is needed and, with your permission, connect you with an experienced manufacturer or engineer rather than guessing."
+    },
+    {
+      "q": "Why doesn't Nex just give me a fixed answer?",
+      "a": "Because every home is different. Dimensions, structure, local regulations, engineering requirements and manufacturing methods all vary. Nex would rather provide honest guidance and connect you with the right expert than give an answer that could be inaccurate."
+    },
+    {
+      "q": "What is OSB?",
+      "a": "OSB (Oriented Strand Board) is made from large wood strands arranged in layers and compressed with resin. The strands are oriented in different directions to improve strength. Common grades are OSB/1 (general indoor use), OSB/2 (dry structural use), OSB/3 (moisture-resistant structural board) and OSB/4 (heavy-duty structural use). OSB is stronger than MDF in many structural situations because the long wood strands handle shear forces, structural loading and fixings better than MDF. It is a construction board, not usually a finishing board."
+    },
+    {
+      "q": "Can OSB be used for a staircase?",
+      "a": "OSB is well suited to hidden staircase work — structural boxing, temporary stair construction, under-stair structures, wall panels and hidden supports. It is not suited to painted risers (unless heavily prepared), handrails, or any visible premium staircase parts because the surface is rough and shows chips and texture. Edges can also swell if wet."
+    },
+    {
+      "q": "What is acrylic?",
+      "a": "Acrylic is a plastic sheet made from polymethyl methacrylate (PMMA). It is a transparent or coloured alternative to glass, is around 10–20 times more impact resistant than glass, lightweight, and UV-resistant grades are available. It can be laser cut, CNC machined and polished."
+    },
+    {
+      "q": "Can acrylic be used for a stair balustrade?",
+      "a": "Yes. Acrylic balustrade panels are very popular — clear, frosted or coloured — and can be used for decorative stair inserts and lighting features. Acrylic is not suitable for stair treads, structural strings, or any load-bearing parts."
+    },
+    {
+      "q": "What is HPL?",
+      "a": "HPL stands for High Pressure Laminate. Products like Formica and compact laminate are common examples. HPL is normally used as a surface layer over MDF, plywood or particle board. It is very hard, scratch-resistant, water-resistant and available in a huge colour range. Typical uses are kitchen doors, worktops and stair side panels."
+    },
+    {
+      "q": "What is compact laminate?",
+      "a": "Compact laminate is a premium solid laminate sheet, typically 6mm, 8mm, 10mm or 12mm thick. It is waterproof, extremely durable and self-supporting. Common uses include toilet partitions, commercial interiors and high-use areas."
+    },
+    {
+      "q": "Will MDF paint the same as solid wood?",
+      "a": "MDF usually produces a very smooth painted finish because it has no visible grain. Solid timber has a natural grain pattern that can sometimes show through paint, depending on the species and finish. When both are professionally prepared and painted in the same colour, many people cannot tell the difference from a normal viewing distance. Up close, solid timber may still show subtle grain texture, while MDF generally appears smoother."
+    },
+    {
+      "q": "Why do many painted staircases use MDF?",
+      "a": "Many painted staircases use MDF for selected painted components because it offers a very smooth painted finish, a consistent surface, no knots, no grain raising, stable flat panels and excellent machining quality. It is common to find MDF used for painted risers, painted strings, painted fascia panels, decorative mouldings and wall panelling. This is an established practice within the staircase industry."
+    },
+    {
+      "q": "Is MDF suitable for a staircase?",
+      "a": "Yes, when used appropriately. MDF has been used successfully in staircases for many years, particularly for painted components. The suitability depends on which component it is used for, the grade of MDF, the design, the environment and the manufacturer's construction methods. Many high-quality painted staircases include MDF alongside solid timber."
+    },
+    {
+      "q": "Should treads be MDF?",
+      "a": "Solid timber or engineered timber treads are generally preferred because they receive the greatest wear from foot traffic. While MDF may be suitable for some decorative parts of a staircase, walking surfaces are commonly manufactured from stronger timber-based materials designed for repeated use."
+    },
+    {
+      "q": "Are MDF risers acceptable?",
+      "a": "Yes. Painted MDF risers are very common. Because risers are not normally walked on, they experience much less wear than treads, making MDF a practical choice in many staircase designs."
+    },
+    {
+      "q": "Can staircase strings be made from MDF?",
+      "a": "Yes. Many painted closed-string staircases use MDF strings successfully. The choice depends on staircase design, span, loading, construction method and the manufacturer's engineering. Where structural performance is critical, manufacturers may use engineered timber, plywood or solid timber instead."
+    },
+    {
+      "q": "Will an MDF bullnose step wear out?",
+      "a": "The answer depends on how it is constructed. If the bullnose is manufactured correctly using suitable materials and finishes, it can provide many years of service. However, the front edge of any staircase receives frequent contact from shoes, vacuum cleaners and everyday use. Over time, all materials — including timber — may show signs of wear. If you are considering an MDF bullnose, ask the manufacturer how it is constructed and finished."
+    },
+    {
+      "q": "Can MDF chip?",
+      "a": "Like many manufactured boards, MDF edges can be damaged by heavy impacts. Good painting systems and careful everyday use help protect the surface, but no painted material is completely immune to knocks."
+    },
+    {
+      "q": "How are MDF edges sealed?",
+      "a": "Professional manufacturers normally prepare MDF edges carefully before painting. Typical preparation may include sanding, edge sealing, priming, filling where required, additional primer coats, and a final paint finish. The exact process varies between manufacturers, but proper edge preparation is important for achieving a durable painted finish."
+    },
+    {
+      "q": "Does MDF absorb moisture?",
+      "a": "Standard MDF is generally more sensitive to prolonged moisture exposure than many hardwoods. However, interior staircases are normally installed in dry indoor environments, moisture-resistant grades of MDF are available for appropriate applications, and good sealing and painting help protect MDF surfaces. If your staircase is for an unusually humid environment, discuss suitable materials with the manufacturer."
+    },
+    {
+      "q": "Will MDF swell if it gets wet?",
+      "a": "Excessive water exposure can damage many building materials, including MDF. A professionally painted interior staircase should not normally be exposed to prolonged moisture. If flooding or significant water damage occurs, affected components should be inspected."
+    },
+    {
+      "q": "Is solid oak always better than MDF?",
+      "a": "Not necessarily. Each material has strengths. Solid timber offers natural grain, traditional appearance, refinishing potential and high durability. MDF offers a smooth painted finish, stable flat panels, no knots and a consistent appearance. The best choice depends on the component, the desired finish and the design."
+    },
+    {
+      "q": "Can you tell if a staircase is MDF?",
+      "a": "Not always. A professionally manufactured and painted MDF component can be very difficult to distinguish from painted timber once installed."
+    },
+    {
+      "q": "Will my staircase company mix materials?",
+      "a": "Yes. Many bespoke staircases combine different materials to achieve the best balance of appearance, strength and cost. A common combination is oak treads, oak handrails, MDF painted strings, MDF painted risers, hardwood newel posts and hardwood balusters. Using different materials for different components is common practice."
+    },
+    {
+      "q": "Should I insist on solid timber everywhere on my staircase?",
+      "a": "Not necessarily. Rather than focusing on one material throughout, it is often more useful to ask why a particular material has been chosen for each component. A reputable manufacturer should be able to explain the reasoning behind their specification."
+    },
+    {
+      "q": "What if I'm unsure about the material specification of my staircase?",
+      "a": "Nex will explain the general advantages and limitations of common staircase materials, but it won't guess whether one manufacturer's specification is better than another without evidence. If you would like independent clarification, Nex can, with your permission, help prepare your questions and connect you with an experienced staircase manufacturer to explain why a particular material has been recommended for your project."
+    },
+    {
+      "q": "Can I buy MDF stair risers from a building supplier?",
+      "a": "Usually yes for risers. Most building suppliers sell MDF sheets that can be cut into stair risers — 9mm, 12mm, 15mm or 18mm thickness in 2440×1220mm sheets. MDF stair TREADS are not normally sold as a finished product because MDF is not ideal as a walking surface. A tread receives foot impact, point loading from heels, dirt and moisture, and edge wear. Better tread materials are oak, beech, ash, engineered timber and laminated hardwood."
+    },
+    {
+      "q": "Will glue stick to MDF?",
+      "a": "Yes. MDF actually has very good glue adhesion. Common adhesives include PVA wood glue (D3 or D4 waterproof), PU glue (very strong and moisture resistant) and construction adhesive (for fixing risers and decorative panels). Preparation matters: clean the surface, remove dust, apply the correct adhesive, clamp or hold firmly and allow full curing time. The face of MDF bonds extremely well; the edges are more absorbent and may need sealing first."
+    },
+    {
+      "q": "Why do some people say MDF is a cheap material?",
+      "a": "For three main reasons. First, MDF has no natural wood value — solid oak has grain, character, natural variation and premium appearance, whereas MDF is made from wood fibres, so people associate it with flat-pack furniture and budget cabinets. Second, cheap MDF products give it a bad reputation — low-quality MDF furniture often fails because thin MDF is used with poor edge sealing, cheap screws and poor assembly, and people remember failures. Third, traditional joiners prefer timber because it feels natural, can be repaired and shows visible craftsmanship. In reality MDF is a specialised engineered material — a well-designed staircase using MDF in the correct places can last decades."
+    },
+    {
+      "q": "Can MDF be used as a landing board?",
+      "a": "Generally no, not as the structural landing board. A landing board carries people standing on it, turning loads, furniture movement and long-term weight, so it needs structural strength. Better materials are solid timber, glulam or engineered timber, structural-grade plywood, timber floor boards or structural panels designed for flooring. MDF can be used as a decorative finished surface over a structural landing, but not as the load-carrying board itself."
+    },
+    {
+      "q": "Can MDF be used to cover the back of stairs?",
+      "a": "Yes, MDF is commonly used for the staircase underside — covering the underside of stair flights, creating a smooth painted ceiling underneath stairs, or closing the rear of open risers. Typical thicknesses are 9mm, 12mm or 18mm. The MDF is only a covering panel, not carrying the stairs. The structure should still be timber strings, steel frame or concrete."
+    },
+    {
+      "q": "Can MDF be used for a staircase well trimmer?",
+      "a": "No. A staircase well trimmer is a structural component supporting the floor opening, joists, landing structure and stair loads. MDF is not suitable because it has lower structural strength, does not hold heavy fixings as well as timber, moisture can weaken it, and it is not designed for structural framing. Use C24 structural timber, laminated timber, glulam or steel sections instead."
+    },
+    {
+      "q": "How does MDF compare to plywood in cost and strength?",
+      "a": "Plywood is stronger than MDF, but MDF is significantly cheaper. As an approximate 18mm sheet (2440×1220mm) comparison: standard MDF is the base price, moisture-resistant MDF 120–160% of that, plywood 180–300%, birch plywood 250–400%, OSB 120–180%, chipboard 70–100%, solid timber board 250–600%+, laminated timber panel 200–400%. These are typical industry ranges, not fixed prices — actual cost depends on country, thickness, grade and supplier."
+    },
+    {
+      "q": "What is the professional rule for choosing staircase materials?",
+      "a": "Use MDF where you want beauty and a painted finish. Use plywood, timber or steel where you need strength. That is why many expensive staircases still contain MDF — it is not because they are cheap, it is because MDF performs extremely well in the correct location."
+    },
+    {
+      "q": "How many installers are needed?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex generate similar designs with different materials or layouts?",
+      "a": ""
+    },
+    {
+      "q": "Approximately how much does this staircase cost?",
+      "a": ""
+    },
+    {
+      "q": "Will the timber shrink or move over time?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex prepare an enquiry brief for me?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the steel colour?",
+      "a": ""
+    },
+    {
+      "q": "How much would something like this cost?",
+      "a": ""
+    },
+    {
+      "q": "Is my budget realistic?",
+      "a": ""
+    },
+    {
+      "q": "Is there a manufacturer near me?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex recommend someone?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex introduce me to a supplier?",
+      "a": ""
+    },
+    {
+      "q": "Can I visit a showroom?",
+      "a": ""
+    },
+    {
+      "q": "Can I see one before buying?",
+      "a": ""
+    },
+    {
+      "q": "Can I visit a factory?",
+      "a": ""
+    },
+    {
+      "q": "Can I speak to a manufacturer directly?",
+      "a": ""
+    },
+    {
+      "q": "How do I choose the right manufacturer?",
+      "a": ""
+    },
+    {
+      "q": "Is this an AI image?",
+      "a": ""
+    },
+    {
+      "q": "Can it be shipped internationally?",
+      "a": ""
+    },
+    {
+      "q": "Will I receive drawings before production?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex estimate the likely cost?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex compare staircase styles?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex explain the pros and cons?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex tell me what questions I should ask a manufacturer?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex prepare my enquiry?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex recommend a staircase style for my home?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex explain the installation process?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex find similar staircases?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex save my favourite designs?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex compare two staircase images?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex generate a specification from an image?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex prepare questions for my architect?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex connect me with a manufacturer?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex remember my project?",
+      "a": ""
+    },
+    {
+      "q": "Can Nex help me through the whole staircase journey?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the timber?",
+      "a": ""
+    },
+    {
+      "q": "How much does the staircase weigh?",
+      "a": ""
+    },
+    {
+      "q": "How many installers are required?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the colour later?",
+      "a": ""
+    },
+    {
+      "q": "What happens if timber shrinks?",
+      "a": ""
+    },
+    {
+      "q": "How is the staircase delivered?",
+      "a": ""
+    },
+    {
+      "q": "Do I need scaffolding?",
+      "a": ""
+    },
+    {
+      "q": "Will this increase my property's value?",
+      "a": ""
+    },
+    {
+      "q": "Does a feature staircase make a house easier to sell?",
+      "a": ""
+    },
+    {
+      "q": "Will my home insurance change?",
+      "a": ""
+    },
+    {
+      "q": "Do I need to tell my insurer?",
+      "a": ""
+    },
+    {
+      "q": "Can I see one before ordering?",
+      "a": ""
+    },
+    {
+      "q": "Will the timber shrink?",
+      "a": ""
+    },
+    {
+      "q": "Will I receive drawings before it's built?",
+      "a": ""
+    },
+    {
+      "q": "Can I approve the design first?",
+      "a": ""
+    },
+    {
+      "q": "Who builds staircases like this?",
+      "a": ""
+    },
+    {
+      "q": "Is this image still a staircase if part of it is cropped?",
+      "a": "Yes. A staircase remains a staircase whether or not the full image is visible. Nex identifies the staircase from the visible construction — the treads, risers, structure, handrail and balustrade — not from whether the camera captured every part of it. Cropped or partial images are still staircases when the visible elements clearly identify the design."
+    },
+    {
+      "q": "Does a staircase need a balcony to be complete?",
+      "a": "No. A staircase without a balcony is still a complete staircase. A balcony is an optional continuation of the staircase around an open landing or gallery edge. A staircase enclosed between walls or finishing into a closed corridor may have no balcony — it is still a full staircase."
+    },
+    {
+      "q": "Why can't Nex identify the whole staircase from the photo?",
+      "a": "Because the photo captures only part of the installation. Nex analyses the visible elements first — style, materials, construction details — and then explains what may continue beyond the frame. A wider view would confirm the complete layout, but the visible section is still a valid staircase."
+    },
+    {
+      "q": "Can Nex analyse a single newel post or handrail image?",
+      "a": "Yes. A newel post, handrail connection, or isolated balustrade section is a strong staircase-component indicator. Nex recognises it as a likely staircase component and asks for a wider view only if the complete configuration matters for the customer's question."
+    },
+    {
+      "q": "Is a staircase under construction still a staircase?",
+      "a": "Yes. Unfinished staircases — plywood steps, exposed shells, structural timber before finishing — are staircases. Nex identifies them as staircases under construction rather than rejecting them because the final materials are not yet visible."
+    },
+    {
+      "q": "Why does Nex not say 'this is not the full staircase'?",
+      "a": "Because that phrasing suggests the staircase does not exist. A cropped image is not a rejection — it is a partial view. Nex prefers to describe the visible staircase elements and, where useful, note that the complete installation may continue beyond the frame. Analysing visible evidence first is more helpful than emphasising missing areas."
+    },
+    {
+      "q": "How is a staircase angle calculated?",
+      "a": "The staircase angle (also called pitch) is calculated from the relationship between rise (the vertical height climbed) and going (the horizontal distance travelled). The formula is Angle = tan⁻¹(Rise ÷ Going). For example, a floor height of 3000mm over a horizontal run of 3600mm gives 3000 ÷ 3600 = 0.833, and tan⁻¹(0.833) ≈ 40°."
+    },
+    {
+      "q": "What is stair rise?",
+      "a": "Rise is the vertical height of each step, or the total vertical distance the staircase must climb from finished floor to finished floor. A comfortable staircase balances riser height with tread depth and stair angle."
+    },
+    {
+      "q": "What is stair going?",
+      "a": "Going is the horizontal depth where the foot lands on each step, or the total horizontal distance the staircase travels. Rise and going together define the staircase angle."
+    },
+    {
+      "q": "What is stair pitch?",
+      "a": "Stair pitch is the angle of the staircase — the slope between the horizontal floor and the sloping stair line. It is created by the relationship between rise and going: steeper pitch means a more compact staircase with more effort to climb; shallower pitch means a more comfortable staircase that needs more floor space."
+    },
+    {
+      "q": "What is a typical residential staircase angle?",
+      "a": "A standard residential staircase is typically in the range of approximately 35°–42°, which feels comfortable and is common in homes. Very steep stairs (around 45° and above) feel compact and almost ladder-like. Gentle stairs (approximately 30°–35°) feel luxurious but need more space. Very shallow stairs (below 30°) are ramp-like and take a large footprint. Final acceptable pitch depends on local building regulations."
+    },
+    {
+      "q": "Can Nex tell me the exact angle of a staircase from a photo?",
+      "a": "No. A photo alone cannot give exact degrees unless there is a known reference. Nex will not say a staircase is exactly a specific angle without measurements. Nex can estimate whether the pitch appears steep, standard or gentle from the visible relationship between tread depth and riser height, but exact figures require site measurements."
+    },
+    {
+      "q": "Do all staircase types use the same geometry?",
+      "a": "Yes. All staircases — straight, quarter turn, half turn, spiral, helical, open riser, floating, steel, timber, glass, concrete — use the same underlying geometry: rise, going and pitch. The shape and construction change; the mathematical relationship does not. The staircase type packages the geometry differently, but the rise-going-pitch principle is universal."
+    },
+    {
+      "q": "Do curved staircases use different rise and going calculations?",
+      "a": "No. The shape changes, but the principles remain the same. A curved staircase still needs the correct vertical rise between floors and the correct walking-line going to be comfortable and safe. For curved stairs the going is measured along the walking line, not simply the inside edge — the tread depth at the centre of the walking path is what controls comfort."
+    },
+    {
+      "q": "What is staircase headroom?",
+      "a": "Headroom is the vertical clear distance measured above the staircase walking line — from the tread nosing (pitch line) upward to the lowest obstruction (ceiling · floor edge · beam · bulkhead). Headroom follows the person walking up the staircase, not the staircase itself, so the measurement is taken along the route of travel."
+    },
+    {
+      "q": "How is staircase headroom measured?",
+      "a": "Establish the staircase geometry (number of risers · tread going · pitch angle · position), identify the walking line (normally the centre of a straight staircase), then measure vertically upward from the pitch line to any obstruction above at every point along the staircase. The staircase can have good headroom at the bottom and fail higher up, so the whole path must be checked."
+    },
+    {
+      "q": "Why does headroom matter?",
+      "a": "Because a staircase is not only about fitting steps between two floors — it must allow a person to walk up without their head contacting ceilings, beams, floor structures, bulkheads or architectural features. Headroom is the invisible connection between staircase geometry and architectural structure."
+    },
+    {
+      "q": "Where do headroom problems usually appear?",
+      "a": "Most commonly near the top of the staircase — the person has risen the maximum amount while still under the floor structure. Other common trouble spots are under a beam, under the floor opening edge, and at landings where the person changes direction. The 'headroom control point' is the location where the staircase comes closest to the structure above."
+    },
+    {
+      "q": "Why do headroom problems happen?",
+      "a": "Common causes: the stair opening is too small (the floor opening does not allow enough space); the stair angle is too steep (the staircase rises faster under the floor); the stair position has moved during construction; the building has changed (thicker flooring · dropped ceilings · added beams · new insulation)."
+    },
+    {
+      "q": "How can headroom be improved?",
+      "a": "Possible solutions include increasing the opening length (allows the staircase to travel further before reaching the upper floor), reducing the staircase angle (creates a shallower climb), adjusting the tread and riser relationship (changes geometry), or modifying the building structure (moving a beam · adjusting the opening). Any solution must protect comfort, safety and structure. Never make steps uneven, excessively increase riser height, or reduce tread depth too much — these create trip risks and unsafe walking."
+    },
+    {
+      "q": "What information does a staircase manufacturer need before making a staircase?",
+      "a": "Floor-to-floor height, number of risers, riser height, tread going, total run, stair width, opening size, headroom, landing position, wall positions, and finished floor thicknesses. A photo provides style and design inspiration — a site survey provides the dimensions, structure and installation reality needed for manufacturing."
+    },
+    {
+      "q": "Can a staircase be manufactured from a picture alone?",
+      "a": "No. A staircase is not manufactured from a picture alone. A picture provides style, design and inspiration. A site survey provides the dimensions, structure and installation reality. Rise, going, opening size, headroom, wall positions and finished floor levels must all be measured on site before the staircase can be manufactured."
+    },
+    {
+      "q": "Do finished floor levels affect staircase calculations?",
+      "a": "Yes. Stair calculations begin and end at the FINAL finished floor levels — not the concrete slab or unfinished floor. Adding a thick carpet, underlay, timber flooring or tiles changes the finished level, which changes the first riser, last riser and headroom. Correct measurements must be based on the final finished surfaces."
+    },
+    {
+      "q": "What is a stair trimmer?",
+      "a": "A trimmer is the structural member around a staircase opening — it supports the landing edge, the staircase connection, and the floor opening. The staircase does not exist separately from the building; it transfers loads into the floor structure through the trimmer. When a newel post is 'cut down' over the landing edge, the trimmer is the structural element that provides the strong fixing."
+    },
+    {
+      "q": "Where does the term 'dog-leg staircase' come from?",
+      "a": "The name comes from the side profile of the staircase. A traditional two-flight staircase with a half landing between them resembles the shape of a dog's rear leg when viewed from the side. Traditional craftsmen used everyday visual comparisons to name staircase shapes."
+    },
+    {
+      "q": "What is a monkey volute?",
+      "a": "A monkey volute is a decorative spiral at the bottom end of a handrail. The name comes from the curled shape resembling a monkey's curled tail. Traditional craftsmen used animal references to describe decorative shapes. The monkey volute finishes the handrail, creates a smooth starting point, and transitions into the first newel."
+    },
+    {
+      "q": "What is a volute on a staircase?",
+      "a": "A volute is a decorative spiral handrail ending — the word comes from Latin voluta meaning 'to turn' or 'to roll'. Used on grand staircases, traditional timber stairs and curved handrail designs."
+    },
+    {
+      "q": "What is a swan neck handrail?",
+      "a": "A swan neck handrail is a curved rising transition where the handrail resembles the elegant shape of a swan's neck. Used when two different handrail heights need to meet — for example where a landing rail joins a stair rail — the swan neck creates a smooth height transition."
+    },
+    {
+      "q": "What is a gooseneck handrail?",
+      "a": "A gooseneck is a rising curved handrail section named because the shape resembles the neck of a goose. Used to connect a lower stair handrail to a higher landing handrail with a smooth height transition. Gooseneck and swan neck are similar terms — different manufacturers may use them slightly differently."
+    },
+    {
+      "q": "What is a bullnose step?",
+      "a": "A bullnose step has a rounded front edge, similar in shape to the nose of a bull. Commonly used for first step features, curved tread edges and decorative entrances. Where a square-edge step reads as modern, a bullnose reads as traditional or period."
+    },
+    {
+      "q": "What is a winder in staircase terminology?",
+      "a": "A winder is a tapered turning step used to change staircase direction without a full landing. The step 'winds' around the corner — the name describes the movement. The tread is wider at the outside of the turn and narrower at the inside."
+    },
+    {
+      "q": "What is a kite winder?",
+      "a": "A kite winder is a tapered turning step whose shape resembles a kite when viewed from above. It is one of the common tread shapes used at a corner turn on a winder staircase."
+    },
+    {
+      "q": "Where does the word 'baluster' come from?",
+      "a": "From the Italian word 'balaustra', meaning wild pomegranate flower. Early balusters were shaped to resemble the flower, and the name stayed. A baluster is the vertical member that supports the handrail and prevents falls through the open side of the staircase."
+    },
+    {
+      "q": "What is a balustrade?",
+      "a": "A balustrade is the complete railing system — the assembly of balusters, handrail and newel posts working together. Nex never describes a balustrade as only 'the spindles' — the balustrade is the complete safety system."
+    },
+    {
+      "q": "What does 'stringer' mean?",
+      "a": "The word 'stringer' comes from the idea that it 'strings' or carries the staircase together — it connects the steps into one continuous structure. The stringer is the supporting side member of a staircase that carries the treads, risers and loads."
+    },
+    {
+      "q": "What is a monkey tail handrail?",
+      "a": "A monkey tail is a decorative handrail ending whose curled shape resembles a monkey's curled tail. Similar to a monkey volute. Common on traditional timber staircases, period restoration projects and feature staircases where a crafted decorative termination is required."
+    },
+    {
+      "q": "What is a snake rail?",
+      "a": "A snake rail is a flowing curved handrail whose path resembles the movement of a snake. The name describes the movement, not the material — a snake rail can be timber, metal or laminated. Used for curved staircases and sweeping balustrades."
+    },
+    {
+      "q": "What is a lamb's tongue handrail ending?",
+      "a": "A lamb's tongue is a decorative handrail ending shaped like the split curve of a lamb's tongue. Traditional craftsmen used animal references to describe decorative shapes. Used for decorative finishing and smooth hand transitions on classical staircases."
+    },
+    {
+      "q": "What is an ogee handrail profile?",
+      "a": "'Ogee' comes from architectural moulding terminology and describes an S-shaped curve. An ogee handrail combines two opposite curves in one continuous profile. Used in decorative handrails, mouldings and traditional interiors."
+    },
+    {
+      "q": "What is a torus moulding?",
+      "a": "From the Latin word meaning 'a swelling or rounded moulding'. A torus is a rounded convex profile used on newels and decorative timber details on traditional staircases."
+    },
+    {
+      "q": "What is an astragal moulding?",
+      "a": "An astragal is a small rounded bead-like architectural moulding. Used historically on doors, furniture and staircase details as a decorative bead line."
+    },
+    {
+      "q": "What is a dado rail on a staircase?",
+      "a": "A dado is the lower section of a wall. A dado rail is a horizontal rail that traditionally protected and decorated the lower wall. On a staircase, it may follow the stair angle up the wall to provide a decorative transition and protect the wall from wear."
+    },
+    {
+      "q": "What is a housed string?",
+      "a": "A housed string has the treads and risers housed into grooves cut into the string. It is a traditional joinery method. The tread and riser fit into matched grooves and are held tight with wedges and glue blocks — a strong, quiet, movement-free connection."
+    },
+    {
+      "q": "What is a wreathed handrail?",
+      "a": "A wreathed handrail is a handrail built around a curve or turn — 'wreath' meaning a curved form. Used on curved stairs, spiral transitions and complex staircases. Manufacture often requires laminated timber, specialist bending or CNC machining."
+    },
+    {
+      "q": "What are glue blocks on a staircase?",
+      "a": "Small timber blocks added underneath joints to reduce movement, strengthen connections and prevent squeaks. Common locations: tread-to-riser joints, corners and returns. A quiet staircase usually indicates accurate fitting, good preparation and correct fixing — glue blocks contribute to all three."
+    },
+    {
+      "q": "Where does the word 'tread' come from?",
+      "a": "From the action 'to tread' — meaning to step or walk on. The tread is the horizontal walking surface of a staircase."
+    },
+    {
+      "q": "Where does the word 'riser' come from?",
+      "a": "From 'to rise'. The riser is the vertical height between two treads. Together with the going (horizontal distance), the riser creates the staircase angle."
+    },
+    {
+      "q": "Where does the term 'going' come from in staircase terminology?",
+      "a": "From 'going forward' — it describes the horizontal movement of the foot. The going controls comfort, walking rhythm and staircase pitch."
+    },
+    {
+      "q": "What is the pitch line of a staircase?",
+      "a": "An imaginary line connecting the front edges of the stair treads — the line showing the angle of ascent. It represents the walking path and is used for staircase calculations, headroom checks and design drawings."
+    },
+    {
+      "q": "What is a stairwell?",
+      "a": "The stairwell is the space in the building that contains the staircase. It is not the staircase itself. The staircase sits inside the stairwell. Some people also use 'stairwell' to mean the whole staircase area — context normally makes the meaning clear."
+    },
+    {
+      "q": "What is a well hole on a staircase?",
+      "a": "The well hole is the opening through the upper floor that allows the staircase to pass through. It sets the boundary for the staircase geometry — the size of the well controls how much horizontal run and headroom are available."
+    },
+    {
+      "q": "Where does the word 'spiral staircase' come from?",
+      "a": "Named because the staircase follows a spiral curve — similar to spiral shells, coils and natural growth patterns. The movement rotates around a centre point."
+    },
+    {
+      "q": "Where does the word 'helical staircase' come from?",
+      "a": "From 'helix' — a three-dimensional curve found in nature (DNA · spiral shells · plant growth). A helical staircase rises while continuously curving."
+    },
+    {
+      "q": "Where does the word 'bifurcated' come from?",
+      "a": "From Latin: bi = two, furca = fork. Together they mean 'to divide into two branches'. A bifurcated staircase splits into two directions."
+    },
+    {
+      "q": "What is a newel post?",
+      "a": "The word 'newel' comes from old architectural terminology. A newel is the main vertical post supporting the handrail, balustrade and staircase transitions. Common positions are starting newel, landing newel, intermediate newel and finishing newel."
+    },
+    {
+      "q": "What is a turned newel post?",
+      "a": "'Turned' means shaped on a lathe — the timber rotates while being carved. A turned newel has decorative round profiles. Used on traditional and Victorian staircases."
+    },
+    {
+      "q": "What is a square newel post?",
+      "a": "A square newel remains square in cross-section rather than being turned on a lathe. Common on modern stairs and contemporary oak designs where clean architectural lines are preferred."
+    },
+    {
+      "q": "What is an acorn newel post?",
+      "a": "An acorn newel has a top decoration shaped like an acorn. Common on traditional Victorian staircases and classic timber stairs."
+    },
+    {
+      "q": "What is a ball newel?",
+      "a": "A ball newel has a spherical decorative top — a decorative feature rather than a structural requirement."
+    },
+    {
+      "q": "What is a pilaster newel?",
+      "a": "A pilaster is a decorative flat column attached to a wall. A pilaster newel is a newel that appears integrated into a wall or side structure, styled like a pilaster."
+    },
+    {
+      "q": "What is a finial on a staircase?",
+      "a": "A finial is an ornamental finishing piece — historically used on furniture, architecture and staircases. Examples include carved newel tops and decorative rail endings."
+    },
+    {
+      "q": "What is a dropped finial?",
+      "a": "A dropped finial is a decorative ending that curves downward at the end of a handrail. The name comes from the visible drop at the end of the rail."
+    },
+    {
+      "q": "What is an easing on a staircase handrail?",
+      "a": "An easing is a curved handrail section that allows the hand to move naturally between directions. The word means 'to make a transition smoother'. Used for level turns, stair turns and changing handrail angles."
+    },
+    {
+      "q": "What is a cut string staircase?",
+      "a": "A cut string staircase has the string cut to follow the shape of the steps — the step profile is visible from the side. The name describes the manufacturing method: the string is cut so the tread ends become part of the visible design."
+    },
+    {
+      "q": "What is a closed string staircase?",
+      "a": "A closed string staircase has the steps enclosed between two solid side boards — the string closes the side of the staircase and hides the tread ends. Common in traditional houses, carpet stairs and painted staircases."
+    },
+    {
+      "q": "Is my 'oak staircase' actually made of solid oak all the way through?",
+      "a": "Not always. Many premium staircases described as 'oak' are actually structural concrete or engineered timber staircases with an oak overlay — the customer sees oak treads, oak handrails and oak newels, but the load-carrying structure underneath may be reinforced concrete, steel or engineered timber. This is normal high-quality practice — the reinforced structure carries the loads while the oak provides the visible architecture. Nex separates the STRUCTURE from the FINISH: both are correct ways to describe the same staircase."
+    },
+    {
+      "q": "What are the three layers of every staircase?",
+      "a": "Layer 1 · Geometry — rise, going, pitch, headroom, walking line (universal). Layer 2 · Construction — stringers, steel supports, brackets, walls, frames, reinforced concrete (structural build). Layer 3 · Appearance — timber, glass, balusters, handrails, finishes (visible design). Layer 1 is the same for every staircase type; Layers 2 and 3 are where straight-flight, spiral, helical, floating, timber, steel, glass and concrete staircases differ."
+    },
+    {
+      "q": "What is the difference between the structural staircase and the architectural finish?",
+      "a": "The structural staircase is what carries the loads — reinforced concrete, timber stringers, steel spine, or a combination. The architectural finish is what the customer sees — oak cladding, glass balustrade, painted MDF risers, stone treads, LED lighting. The two are engineered together but serve different purposes. A well-designed staircase respects both — the structure remains sound while the finish delivers the intended appearance."
+    },
+    {
+      "q": "How can a customer tell if a staircase is well built?",
+      "a": "Nex will not claim from a photo alone. Signs of quality include consistent step rhythm, aligned vertical lines, smooth handrail transitions, correctly proportioned newels, consistent materials, realistic construction and a solid feel when walking. But visual signs are not the whole picture — fixing depth, structural support and hidden connections determine whether the staircase performs well long-term. For a specific staircase, Nex can, with your permission, prepare your questions and connect you with an experienced staircase professional to inspect it."
+    },
+    {
+      "q": "Is 'follow the movement' a real diagnostic principle?",
+      "a": "Yes — it is used by experienced staircase manufacturers. If a handrail moves, ask what supports it. If a baluster moves, ask what it is fixed into. If a newel moves, ask what is supporting the newel. If a tread moves, ask what is supporting the tread. By following the load path and the movement path together, the true cause is often found without unnecessary repairs. This is one of the key differences between replacing parts and solving staircase problems permanently."
+    },
+    {
+      "q": "Is a CNC-made staircase worse than a hand-made one?",
+      "a": "Not automatically. Both traditional hand craftsmanship and CNC (Computer Numerical Control) manufacturing can produce outstanding staircases. Most premium manufacturers combine both — CNC for repeatable precision, experienced craftsmen for assembly, fitting, finishing and installation. Judge the staircase by design, workmanship and quality control, not by whether a component was cut by hand or by machine."
+    },
+    {
+      "q": "Why do bespoke staircases take so many weeks?",
+      "a": "Because the staircase moves through a full production schedule — survey, drawings, material ordering, timber acclimatisation, machining, dry-fit, sanding, finishing (with drying and curing periods), quality control, packaging, delivery and installation. Lead time is not the same as manufacturing time. A typical bespoke timber staircase takes about 4–8 weeks from confirmed order to installation; curved and specialist stairs can take significantly longer."
+    },
+    {
+      "q": "Do all staircase manufacturers work the same way?",
+      "a": "No. Manufacturing methods, workshop layouts, machinery, joinery techniques, finishing systems and installation approaches vary between companies. Many methods are equally valid if they consistently produce a high-quality staircase. The end result is what matters — structural integrity, accuracy, appearance, finish quality, durability, installation quality and customer satisfaction — not the specific machinery used."
+    },
+    {
+      "q": "Should I choose a company because they use CNC?",
+      "a": "Not by itself. CNC is a manufacturing tool that improves efficiency and repeatability, but it does not replace skilled craftsmanship. Choose a company by the quality of their finished staircases, their experience, their willingness to survey properly, the clarity of their drawings and how they handle communication. CNC in the wrong hands still produces poor staircases; hand craftsmanship in skilled hands still produces exceptional ones."
+    },
+    {
+      "q": "When is a staircase project actually finished?",
+      "a": "When the customer is satisfied — not when the last screw is installed. A complete staircase project includes the final inspection, the customer walk-through, care instructions, maintenance advice, warranty documentation and aftercare. Long-term customer satisfaction is part of the overall quality process, and reputable companies treat handover as a beginning rather than an end."
+    },
+    {
+      "q": "What do customers mean when they say 'my stairs'?",
+      "a": "They almost always mean the complete staircase — not the individual steps. 'Stairs' is the everyday word most customers use ('we're replacing our stairs' · 'our stairs squeak' · 'can you quote for oak stairs?'). Nex understands 'stairs' as 'staircase' automatically, and mirrors the customer's own word back to them rather than correcting them."
+    },
+    {
+      "q": "What is a flight of stairs?",
+      "a": "A flight is one uninterrupted run of steps between landings. A staircase with a lower flight, a landing, and an upper flight is ONE staircase with TWO flights — not two staircases. Installers often refer to 'Flight 1' or 'Flight 2' to name a specific run within the same staircase."
+    },
+    {
+      "q": "Is a staircase the same thing as stairs?",
+      "a": "In everyday language, usually yes. Customers say 'stairs'; technical people say 'staircase'. A staircase is the complete assembled system — strings, treads, risers, landings, newel posts, handrails, balusters, glass, balconies, structural supports and everything else that forms the stair. 'Stairs' is the same physical thing described in customer language."
+    },
+    {
+      "q": "What is a stair opening?",
+      "a": "The stair opening is the structural hole in the floor where the staircase passes through — sometimes called the stairwell opening, stair aperture or stair void. It sets the boundary for the staircase geometry: the size of the opening controls how much horizontal run and headroom are available."
+    },
+    {
+      "q": "How many staircases is a house with 'lower stairs and upper stairs'?",
+      "a": "Usually one staircase with two flights, if the flights are connected by a landing. A house has multiple staircases only when there are separate stair systems that do not connect — for example a main staircase, a rear/kitchen staircase and a basement staircase are three separate staircases. Two flights joined by a landing is one staircase."
+    },
+    {
+      "q": "What is the difference between a step and a tread?",
+      "a": "A step is one walking position — it consists of one tread and the rise to the next tread. A tread is only the horizontal timber (or concrete, steel, stone) that the foot stands on. Customers count 'steps'; manufacturers usually count treads and risers separately during production. In casual conversation they often mean the same thing."
+    },
+    {
+      "q": "Why does Nex not correct customers who say 'stairs' instead of 'staircase'?",
+      "a": "Because 'stairs' is the correct everyday word customers use and a good staircase professional understands they are talking about the whole staircase. Correcting the customer's language feels pedantic and unnecessary. Nex mirrors the customer's word — internally understanding the technical distinction, externally speaking their language."
+    }
+  ]
+}

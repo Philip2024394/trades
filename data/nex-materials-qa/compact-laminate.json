@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "layer": "materials",
+  "material_id": "compact-laminate",
+  "material_label": "Compact Laminate",
+  "qa": [
+    {
+      "q": "What is compact laminate?",
+      "a": "Compact laminate is a premium solid laminate sheet, typically 6mm, 8mm, 10mm or 12mm thick. It is waterproof, extremely durable and self-supporting. Common uses include toilet partitions, commercial interiors and high-use areas."
+    }
+  ],
+  "note": "Layer 3 · MATERIALS · substance-level Q&A. A design tagged with this material_id will consult this file whenever the customer's question is not a specific image/component question. Rule A · Philip authored, never fabricated. Empty `a` = slot awaiting authoring · skipped at match time.",
+  "updated_at": "2026-08-02T00:11:24.475Z"
+}

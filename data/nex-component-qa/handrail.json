@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "handrail",
+  "label": "Handrail",
+  "description": "The continuous graspable rail alongside the flight. Timber, steel, brass, bronze, or leather-wrapped.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a handrail?",
+      "a": "The handrail is the component designed for the human hand to follow and support movement. It provides guidance, comfort, safety, and visual connection. It is the part of the staircase where the user physically interacts with the design."
+    },
+    {
+      "q": "What handrail materials are available?",
+      "a": ""
+    },
+    {
+      "q": "What handrail height is required?",
+      "a": ""
+    },
+    {
+      "q": "How is a curved handrail manufactured?",
+      "a": ""
+    },
+    {
+      "q": "Can I have LED lighting in the handrail?",
+      "a": ""
+    },
+    {
+      "q": "Can the handrail be metal instead of timber?",
+      "a": ""
+    },
+    {
+      "q": "Can I change the handrail?",
+      "a": ""
+    },
+    {
+      "q": "Is the handrail comfortable?",
+      "a": ""
+    },
+    {
+      "q": "Can I remove the handrail?",
+      "a": ""
+    },
+    {
+      "q": "Can the handrail be thinner?",
+      "a": ""
+    },
+    {
+      "q": "Can the handrail be square?",
+      "a": ""
+    },
+    {
+      "q": "Can the handrail be stainless steel?",
+      "a": ""
+    },
+    {
+      "q": "Can LED lighting be built into the handrail?",
+      "a": ""
+    },
+    {
+      "q": "What are the common handrail profiles?",
+      "a": "Common profiles include the mopstick (round, comfortable, traditional grip), oval (soft-handed, transitional), pyramid (traditional joinery detail), square (modern, matches square balusters), and contemporary rectangular (architectural, minimal, modern staircases). Materials range from oak, walnut and ash to painted timber and modern metal."
+    },
+    {
+      "q": "What is a mopstick handrail?",
+      "a": "A mopstick is a rounded handrail profile that provides a comfortable grip and a traditional appearance. It is commonly used on classic oak staircases and painted staircases."
+    },
+    {
+      "q": "What is a square handrail?",
+      "a": "A square handrail has a rectangular profile with flat faces, giving a modern architectural appearance. It matches naturally with square balusters and is common on contemporary staircases."
+    },
+    {
+      "q": "Why does handrail size matter?",
+      "a": "Because it affects grip comfort, appearance, strength and proportion. A very thin handrail may look elegant but feel weak. A very thick handrail may overpower the staircase. Premium design balances comfort with visual proportion."
+    },
+    {
+      "q": "Should the handrail flow continuously from staircase to balcony?",
+      "a": "Where possible, yes. A premium staircase design allows the handrail to flow continuously from the staircase, through the top newel post, and around the balcony. This creates a connected architectural line and improves user comfort. The user's hand follows one uninterrupted path from bottom step to landing return."
+    },
+    {
+      "q": "Why should a handrail flow continuously?",
+      "a": "Because the user follows one uninterrupted path. The eye also follows the line. When the handrail is interrupted with a random ending, the staircase feels unfinished. When it transitions smoothly through the top newel into the balcony, the staircase feels like one designed feature."
+    },
+    {
+      "q": "What is a wall-mounted handrail?",
+      "a": "A wall-mounted handrail is used where the staircase is between walls or where one side has no balustrade. It is fixed with brackets into the wall structure rather than terminating into a newel."
+    },
+    {
+      "q": "How does the handrail transition at the top of a staircase?",
+      "a": "The angled stair handrail transitions into a horizontal landing handrail. The top newel post acts as the structural and visual bridge between the two directions."
+    },
+    {
+      "q": "What makes a poor handrail transition?",
+      "a": "A random or interrupted ending, misaligned joints, gaps, uneven junctions, or a handrail that stops abruptly at the top newel without continuing into the balcony."
+    },
+    {
+      "q": "What makes a good handrail transition?",
+      "a": "A smooth transition, correct alignment, continuous flow, and a clear anchor at the top newel that carries the rail into the horizontal balcony run."
+    },
+    {
+      "q": "Should the balcony handrail match the staircase handrail?",
+      "a": "Usually yes. An oak staircase pairs with an oak handrail and oak newels. A stainless staircase pairs with a stainless handrail and stainless supports. A black steel staircase pairs with a black steel handrail. Material continuity keeps the staircase feeling designed as one piece."
+    },
+    {
+      "q": "Should the handrail return to a newel or wall?",
+      "a": "In traditional timber staircases, usually yes. The handrail normally terminates into a newel post, corner post or wall return. Modern systems may use glass channels, metal posts or concealed endings — the termination must still be secure."
+    },
+    {
+      "q": "Why does the handrail feel important on a glass balcony?",
+      "a": "Because the glass is visually light. The handrail provides the touch point, direction, comfort and finishing line. Even if the glass is engineered strong, people naturally look for something to hold — the handrail creates the human connection."
+    },
+    {
+      "q": "What does the handrail profile control on a staircase?",
+      "a": "It controls grip comfort, staircase character (traditional / modern / architectural), material continuity, and the way the eye reads the staircase. Different profiles create different staircase personalities — a mopstick reads as traditional, a square rail reads as modern."
+    },
+    {
+      "q": "Can a curved handrail be manufactured?",
+      "a": "Yes. Curved handrails are specialist joinery work. They may require laminating, bending, steam bending, or segmented construction. Straight handrails are easier to manufacture; curved handrails need experienced staircase makers."
+    }
+  ]
+}

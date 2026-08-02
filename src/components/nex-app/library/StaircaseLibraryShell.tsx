@@ -457,39 +457,27 @@ export function StaircaseLibraryShell({ designs }: { designs: LibraryDesign[] })
         <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center">
           <div className="flex flex-col items-center gap-3">
             <div
-              className="rounded-full px-3 py-3 backdrop-blur"
+              className="rounded-2xl p-2 backdrop-blur"
               style={{
                 background: "rgba(0,0,0,0.55)",
                 boxShadow: "0 10px 30px -8px rgba(0,0,0,0.5)",
               }}
             >
-              <svg
-                width="72"
-                height="72"
-                viewBox="0 0 72 72"
-                fill="none"
-                style={{ animation: "nex-swipe-hint 2.4s ease-in-out infinite" }}
+              {/* Philip 2026-08-02 · real hand image replaces the earlier SVG
+                  glove · same slide-left animation via the nex-swipe-hint
+                  keyframes defined below · pointer-events none so it never
+                  blocks the swipe gesture. */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2005_31_59%20AM.png?updatedAt=1785612000000"
+                alt=""
                 aria-hidden="true"
-              >
-                {/* Wristband — reads as glove cuff */}
-                <rect x="18" y="52" width="36" height="12" rx="3"
-                      fill="#d97706" stroke="#000" strokeWidth="1.6" />
-                {/* Palm */}
-                <rect x="20" y="28" width="30" height="26" rx="7"
-                      fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-                {/* Thumb */}
-                <ellipse cx="15" cy="34" rx="5" ry="8"
-                         fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-                {/* Fingers · left-to-right */}
-                <rect x="22" y="10" width="6" height="20" rx="3"
-                      fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-                <rect x="30" y="6"  width="6" height="24" rx="3"
-                      fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-                <rect x="38" y="8"  width="6" height="22" rx="3"
-                      fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-                <rect x="46" y="14" width="6" height="16" rx="3"
-                      fill="#f59e0b" stroke="#000" strokeWidth="1.6" />
-              </svg>
+                width={112}
+                height={112}
+                className="rounded-xl object-contain"
+                style={{ animation: "nex-swipe-hint 2.4s ease-in-out infinite" }}
+                draggable={false}
+              />
             </div>
             <div
               className="rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white"

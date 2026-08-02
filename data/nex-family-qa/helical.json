@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:04:15.210Z",
+  "layer": "family",
+  "family_id": "helical",
+  "label": "Helical staircase (bespoke sculptural)",
+  "description": "Sweeping double-curved sculptural staircase without a central column. Each tread individually engineered. Grand entrance / feature centrepiece.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a helical staircase?",
+      "a": "A helical staircase is a continuous curved flight without a central column. The word 'helix' describes a three-dimensional curve — the same shape as DNA, spiral shells and certain plant growth patterns. Each tread is individually engineered because the curve is not carried by a fixed central axis."
+    },
+    {
+      "q": "How does a helical staircase differ from a spiral?",
+      "a": ""
+    },
+    {
+      "q": "How is a helical staircase engineered?",
+      "a": ""
+    },
+    {
+      "q": "How is curved steel rolled for a helical staircase?",
+      "a": ""
+    },
+    {
+      "q": "How is the curved handrail manufactured for a helical?",
+      "a": ""
+    },
+    {
+      "q": "Where does the word 'helical' come from?",
+      "a": "From 'helix' — a three-dimensional curve found in nature (DNA · spiral shells · plant growth). A helical staircase rises while continuously curving, giving it the name."
+    },
+    {
+      "q": "What is a double helix or grand curved staircase?",
+      "a": "A double helix or grand curved staircase uses multiple sweeping curves — often two staircases that mirror each other. Common in hotels, luxury homes and public buildings as a statement staircase. Requires complex structure and high craftsmanship."
+    },
+    {
+      "q": "What is an oval staircase?",
+      "a": "An oval staircase is a curved layout where the plan is a stretched circle. It gives a softer flow than straight stairs and a wider visual field of view, with a premium architectural appearance."
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "measured_at": "2026-08-01T20:49:03.037Z",
-  "total": 36,
-  "measured": 36,
+  "measured_at": "2026-08-02T00:03:37.747Z",
+  "total": 40,
+  "measured": 40,
   "failed": 0,
   "dimensions": {
     "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%201,%202026,%2005_11_27%20AM.png": {
@@ -215,6 +215,30 @@
       "format": "jpeg"
     },
     "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2001_17_34%20AM.png?updatedAt=1785608276930": {
+      "ok": true,
+      "width": 853,
+      "height": 1844,
+      "format": "jpeg"
+    },
+    "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_12_10%20AM.png?updatedAt=1785615152201": {
+      "ok": true,
+      "width": 853,
+      "height": 1844,
+      "format": "jpeg"
+    },
+    "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2003_08_27%20AM.png?updatedAt=1785614928027": {
+      "ok": true,
+      "width": 1122,
+      "height": 1402,
+      "format": "jpeg"
+    },
+    "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2002_29_45%20AM.png?updatedAt=1785612608208": {
+      "ok": true,
+      "width": 852,
+      "height": 1846,
+      "format": "jpeg"
+    },
+    "https://ik.imagekit.io/5vv5pw26q/ChatGPT%20Image%20Aug%202,%202026,%2006_32_10%20AM.png": {
       "ok": true,
       "width": 853,
       "height": 1844,

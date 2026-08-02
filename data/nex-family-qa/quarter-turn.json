@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "layer": "family",
+  "family_id": "quarter-turn",
+  "family_label": "Quarter-turn staircase (L-shape)",
+  "qa": [
+    {
+      "q": "What is a quarter-turn staircase?",
+      "a": "A quarter-turn staircase changes direction by 90 degrees, usually with an intermediate landing or a set of winder treads. Also called an L-shaped staircase. The lower flight rises, then the direction changes 90 degrees, and the upper flight continues to the arrival point."
+    },
+    {
+      "q": "Why are quarter-turn staircases popular in homes?",
+      "a": "Because they use less linear floor space than a straight flight, the intermediate landing provides a natural rest and pause point, and the 90° turn allows the staircase to fit neatly against walls in typical rooms."
+    },
+    {
+      "q": "Where can the turn happen on a quarter-turn staircase?",
+      "a": "Any of three positions: bottom turn L (turn happens immediately after starting), middle turn L (turn happens halfway), or top turn L (turn happens near arrival). The position affects how the staircase reads in the room."
+    },
+    {
+      "q": "What is the difference between a quarter-turn landing stair and a winder?",
+      "a": "A quarter-turn with a landing uses a flat rectangular landing to achieve the 90° change of direction. A quarter-turn with winders uses tapered (kite-shaped) treads that turn the direction one step at a time. Winders save space; landings feel more comfortable to walk."
+    }
+  ],
+  "updated_at": "2026-08-02T01:04:15.210Z"
+}

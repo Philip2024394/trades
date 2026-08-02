@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-01T22:49:32.039Z",
+  "layer": "family",
+  "family_id": "steel-balustrade",
+  "label": "Steel balustrade (cross-cutting)",
+  "description": "Any staircase with steel balusters, horizontal rods, or cable systems. Cuts across geometry families.",
+  "note": "Layer 3 · FAMILY Q&A · applies to every staircase in this family. Author once · every image tagged with this family_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What are the balusters made from?",
+      "a": ""
+    },
+    {
+      "q": "Can the balusters be replaced with glass?",
+      "a": ""
+    },
+    {
+      "q": "What baluster spacing is required?",
+      "a": ""
+    },
+    {
+      "q": "Can I have horizontal steel rails instead of vertical balusters?",
+      "a": ""
+    }
+  ]
+}

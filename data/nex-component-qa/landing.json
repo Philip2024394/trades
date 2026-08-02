@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "landing",
+  "label": "Landing",
+  "description": "The horizontal platform at the top / turn of a staircase. Structural connection to upper floor.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a staircase landing?",
+      "a": "A landing is the floor area where a staircase arrives or changes direction. It provides a rest point, allows direction changes, makes furniture movement easier, and connects the staircase to the upper floor. A landing is not wasted space — it is where staircase movement changes."
+    },
+    {
+      "q": "Does the landing need extra structural support?",
+      "a": ""
+    },
+    {
+      "q": "Can the landing shape be customised?",
+      "a": ""
+    },
+    {
+      "q": "What are the main types of staircase landings?",
+      "a": "Half landing (changes direction halfway between floors), top landing (arrival point at the upper floor), and balcony landing (open edge protected by a balustrade). Each has a different structural and design role."
+    },
+    {
+      "q": "What is a half landing?",
+      "a": "A half landing changes the direction of the staircase halfway up. It is common on U-shaped and L-shaped stairs and provides both a comfortable rest point and a natural point to turn the staircase."
+    },
+    {
+      "q": "What is the difference between a landing and a balcony?",
+      "a": "The landing is the floor area where the staircase arrives. The balcony is the protected open edge of that landing. A landing may exist without a balcony — but a balcony exists because the landing has an exposed edge that needs protection."
+    },
+    {
+      "q": "What materials are used for a staircase landing structure?",
+      "a": "Structural plywood (18–22mm), solid timber floor boards, glulam beams, and engineered timber panels are common. MDF is NOT recommended as the structural landing board because it does not carry loads like structural timber or plywood. MDF may be used as a decorative finished surface over a structural landing, but not as the load-carrying board."
+    },
+    {
+      "q": "Is the landing part of the staircase?",
+      "a": "Yes. The landing is part of the staircase — not separate from it. It may include a balcony, glass guarding, and a handrail continuation. The staircase does not finish at the top step; it continues through the landing."
+    },
+    {
+      "q": "Why is the landing edge important on a balcony?",
+      "a": "Because the landing edge is where the balcony transfers forces into the building structure. It may contain a trimmer, joist, steel support or concrete slab — the balustrade fixing must connect into this structure, not just the finished floor."
+    },
+    {
+      "q": "What is a gallery landing?",
+      "a": "A gallery landing is a larger open landing overlooking another space — commonly a hallway or double-height entrance. Common in luxury homes, entrance halls and hotels — the balcony around a gallery landing becomes an architectural feature framing the space below."
+    }
+  ]
+}

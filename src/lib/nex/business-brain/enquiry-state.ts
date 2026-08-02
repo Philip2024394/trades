@@ -99,6 +99,16 @@ export function persistEnquiry(enquiry: SupplierEnquiry): void {
   ENQUIRY_STORE.set(enquiry.conversation_id, enquiry);
 }
 
+/**
+ * Read-only peek · returns the enquiry for a conversation without creating
+ * one. Used by the chat route to gate layered Q&A when a supplier workflow
+ * is in flight (Philip 2026-08-02 · balustrade-vs-workflow regression fix).
+ */
+export function peekEnquiry(conversationId: string): SupplierEnquiry | null {
+  gcExpired();
+  return ENQUIRY_STORE.get(conversationId) ?? null;
+}
+
 /** Test-only helper · exposes the store for assertions. Do not use in prod paths. */
 export function _debugAllEnquiries(): Map<string, SupplierEnquiry> {
   return ENQUIRY_STORE;

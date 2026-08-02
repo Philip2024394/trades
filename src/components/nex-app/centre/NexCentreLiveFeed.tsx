@@ -32,9 +32,11 @@ import {
   ChevronRight,
   MapPin,
   Megaphone,
+  MessageSquare,
   ShoppingBag,
   SlidersHorizontal,
   Sparkles,
+  Star,
   Tag,
   Users,
   Wrench,
@@ -532,7 +534,7 @@ export function NexCentreLiveFeed() {
                   <ProductCard
                     key={`p-${tile.offer_id}`}
                     item={tile}
-                    onOpen={() => openProduct(tile)}
+                    onViewDetails={() => openMerchant(tile)}
                   />
                 );
               }
@@ -559,7 +561,7 @@ export function NexCentreLiveFeed() {
           <EmptyState
             query={debouncedQuery}
             fallback={emptyFallback}
-            onOpen={openProduct}
+            onOpen={openMerchant}
           />
         )}
 
@@ -807,23 +809,53 @@ function HeroChip({
 
 // Deterministic size bucket for masonry variety.
 //
+// Philip 2026-08-02 · Trade Center v2 · tier + promotion drive card size.
 // Business intent: the image aspect ratio IS a commercial lever.
-// Promoted cards always render TALL (3/5) — the biggest, most eye-
-// catching slot. Non-promoted cards deterministically hash to a size
-// (70% short, 25% medium, 5% tall) so the free feed still surprises
-// without giving every free card the premium slot. Deterministic ==
-// stable per card, no reshuffle on scroll.
+// PAID-TIER merchants (starter / professional / business / works) OR
+// legacy `is_promoted` records get the full-height featured card (3/5).
+// FREE-TIER merchants deterministically hash into (70% short · 25% medium ·
+// 5% tall) so free members still get regular visibility and an occasional
+// surprise slot — the feed doesn't feel like only paid members exist.
+const PAID_TIERS = new Set([
+  "starter", "professional", "business", "works",
+  // Legacy hammerex_trade_off_listings tier values that also represent paid state
+  "app_trial", "app_paid", "app_verified", "verified", "verified_plus",
+]);
+function isPaidTier(item: CentreFeedItem): boolean {
+  return (item.merchant_tier != null && PAID_TIERS.has(item.merchant_tier)) || item.is_promoted;
+}
 function cardAspect(item: CentreFeedItem): string {
-  if (item.is_promoted) return "3 / 5"; // tallest — paid slot
+  if (isPaidTier(item)) return "3 / 5"; // tallest — paid featured slot
   let h = 0;
   for (let i = 0; i < item.offer_id.length; i++) {
     h = ((h << 5) - h) + item.offer_id.charCodeAt(i);
     h |= 0;
   }
   const bucket = Math.abs(h) % 100;
-  if (bucket < 70) return "3 / 4"; // 70% short
-  if (bucket < 95) return "4 / 5"; // 25% medium
-  return "2 / 3"; // 5% tall — occasional free-tier surprise
+  if (bucket < 70) return "3 / 4"; // 70% short  — free tier baseline
+  if (bucket < 95) return "4 / 5"; // 25% medium — free tier occasional
+  return "2 / 3"; // 5% tall — free tier surprise
+}
+
+// Compact star-rating row · only rendered when a rating value exists
+// (no fabricated 5-star badges on merchants we don't have data for).
+function StarRating({
+  rating, count,
+}: {
+  rating: number | null;
+  count: number | null;
+}) {
+  if (rating == null) return null;
+  const rounded = Math.round(rating * 10) / 10;
+  return (
+    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-black/70">
+      <Star className="h-3 w-3 fill-amber-400 text-amber-400" strokeWidth={0} />
+      {rounded.toFixed(1)}
+      {count != null && count > 0 && (
+        <span className="text-black/40">({count})</span>
+      )}
+    </span>
+  );
 }
 
 // Small gray verification pill — subtle by design. Trust level is
@@ -852,24 +884,30 @@ function VerifiedPip({
 
 function ProductCard({
   item,
-  onOpen,
+  onViewDetails,
 }: {
   item: CentreFeedItem;
-  onOpen: () => void;
+  onViewDetails: () => void;
 }) {
   const price = formatPrice(item.price_pence);
   const location =
     item.merchant_city ?? item.merchant_postcode_prefix ?? "UK";
   const aspect = cardAspect(item);
   const topCategory = item.category_path[0];
+  // Philip 2026-08-02 · Trade Centre v3 · users tapping an image ask
+  // "who built that?" — route to the merchant profile, not the product
+  // sheet. The product sheet is still reachable from the merchant profile.
+  const merchantName = item.merchant_display_name ?? item.brand_name;
 
   return (
     <article className="group mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition-shadow hover:shadow-md">
-      {/* Whole image is clickable (Pinterest pattern) */}
+      {/* Whole image is clickable — image tap opens the MERCHANT profile
+          (Trade Centre v3 · Philip 2026-08-02). "Who built that?" wins over
+          "show me product details". */}
       <button
         type="button"
-        onClick={onOpen}
-        aria-label={`Open ${item.name}`}
+        onClick={onViewDetails}
+        aria-label={`View ${merchantName}`}
         className="relative block w-full overflow-hidden"
         style={{ aspectRatio: aspect }}
       >
@@ -903,10 +941,10 @@ function ProductCard({
       </button>
 
       <div className="p-3">
-        {/* Title */}
+        {/* Title · also routes to merchant profile (Trade Centre v3). */}
         <button
           type="button"
-          onClick={onOpen}
+          onClick={onViewDetails}
           className="block w-full text-left text-sm font-semibold leading-tight text-black line-clamp-2 hover:underline"
         >
           {item.name}
@@ -929,6 +967,16 @@ function ProductCard({
           </div>
         )}
 
+        {/* Star rating · only rendered when merchant has one (no fabricated data). */}
+        {item.merchant_google_rating != null && (
+          <div className="mt-1.5">
+            <StarRating
+              rating={item.merchant_google_rating}
+              count={item.merchant_google_review_count}
+            />
+          </div>
+        )}
+
         {/* Meta pills — all small gray, uniform weight */}
         <div className="mt-1.5 flex flex-wrap items-center gap-1">
           <VerifiedPip level={item.merchant_verification_level} />
@@ -942,6 +990,18 @@ function ProductCard({
             {location}
           </span>
         </div>
+
+        {/* Philip 2026-08-02 · Trade Center v2 · orange "View Details" primary CTA.
+            Every card (free + paid) gets this button — the slide-up panel is the
+            same for both, only the card sizing above changes. */}
+        <button
+          type="button"
+          onClick={onViewDetails}
+          className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-full bg-orange-500 py-2 text-[11px] font-semibold text-white shadow-sm transition hover:bg-orange-600"
+        >
+          <MessageSquare className="h-3 w-3" strokeWidth={2.5} />
+          View Details
+        </button>
       </div>
     </article>
   );
@@ -1091,7 +1151,7 @@ function EmptyState({
             <ProductCard
               key={item.offer_id}
               item={item}
-              onOpen={() => onOpen(item)}
+              onViewDetails={() => onOpen(item)}
             />
           ))}
         </Masonry>

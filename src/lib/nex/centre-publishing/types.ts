@@ -44,6 +44,23 @@ export type CentreFeedItem = {
   merchant_phone: string | null;
   merchant_website: string | null;
   merchant_verification_level: MerchantVerificationLevel;
+  // Philip 2026-08-02 · Trade Center feed v2 · membership + profile fields.
+  // Tier drives card sizing: paid tiers get the full-height featured card,
+  // free tier gets the mixed small/medium hash. Sourced from
+  // hammerex_trade_off_listings.tier · null on directory-seed listings
+  // (they're not on any paid plan yet).
+  merchant_tier: string | null;
+  // Star rating shown only when populated (Google-sourced on directory
+  // seeds · not fabricated). Free-tier merchants with ratings still show
+  // them if we have real data.
+  merchant_google_rating: number | null;
+  merchant_google_review_count: number | null;
+  // Extra profile data for the View Details slide-up panel.
+  merchant_services: string[];
+  merchant_years_in_trade: number | null;
+  merchant_photos: string[];       // up to 5 project thumbnails rendered
+  merchant_instagram: string | null;
+  merchant_facebook: string | null;
   // Ranking signals
   distance_km: number | null; // populated when query includes a postcode
   region_match_score: number | null; // populated when query includes a postcode

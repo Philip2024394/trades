@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "layer": "materials",
+  "material_id": "osb",
+  "material_label": "OSB (Oriented Strand Board)",
+  "qa": [
+    {
+      "q": "What is OSB?",
+      "a": "OSB (Oriented Strand Board) is made from large wood strands arranged in layers and compressed with resin. The strands are oriented in different directions to improve strength. Common grades are OSB/1 (general indoor use), OSB/2 (dry structural use), OSB/3 (moisture-resistant structural board) and OSB/4 (heavy-duty structural use). OSB is stronger than MDF in many structural situations because the long wood strands handle shear forces, structural loading and fixings better than MDF. It is a construction board, not usually a finishing board."
+    },
+    {
+      "q": "Can OSB be used for a staircase?",
+      "a": "OSB is well suited to hidden staircase work — structural boxing, temporary stair construction, under-stair structures, wall panels and hidden supports. It is not suited to painted risers (unless heavily prepared), handrails, or any visible premium staircase parts because the surface is rough and shows chips and texture. Edges can also swell if wet."
+    }
+  ],
+  "note": "Layer 3 · MATERIALS · substance-level Q&A. A design tagged with this material_id will consult this file whenever the customer's question is not a specific image/component question. Rule A · Philip authored, never fabricated. Empty `a` = slot awaiting authoring · skipped at match time.",
+  "updated_at": "2026-08-02T00:11:24.475Z"
+}

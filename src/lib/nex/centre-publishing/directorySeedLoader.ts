@@ -140,6 +140,19 @@ function seedToFeedItem(seed: DirectorySeed): CentreFeedItem {
     merchant_website: seed.website,
     merchant_verification_level: verification,
 
+    // Philip 2026-08-02 · Trade Center feed v2 · membership + profile fields.
+    // Directory seeds are not on any paid plan · tier stays null (=free).
+    // Rating comes from the Google-sourced field on the seed; null when
+    // not available. No fabrication.
+    merchant_tier:                null,
+    merchant_google_rating:       seed.google_rating,
+    merchant_google_review_count: seed.google_review_count,
+    merchant_services:            seed.services ?? [],
+    merchant_years_in_trade:      null,       // not present on seed schema · TODO from claim workflow
+    merchant_photos:              seed.photos ?? [],
+    merchant_instagram:           null,       // not present on seed schema
+    merchant_facebook:            null,       // not present on seed schema
+
     distance_km: null,
     region_match_score: null,
     is_promoted: false,

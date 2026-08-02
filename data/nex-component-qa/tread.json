@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T00:51:56.466Z",
+  "layer": "component",
+  "component_id": "tread",
+  "label": "Tread",
+  "description": "The horizontal step surface. Timber, stone or glass depending on design.",
+  "note": "Layer 2 · COMPONENT BRAIN Q&A · applies to every staircase where this component is present. Cross-references the deeper knowledge articles in data/nex-reference-brains/. Author once · every image tagged with this component_id gets it automatically. Empty `a` slots are skipped.",
+  "qa": [
+    {
+      "q": "What is a tread?",
+      "a": "The tread is the horizontal surface where the foot lands on a staircase. It receives the greatest wear from foot traffic and is one of the most important components in terms of appearance, comfort and durability."
+    },
+    {
+      "q": "How thick are staircase treads?",
+      "a": ""
+    },
+    {
+      "q": "What timber is used for staircase treads?",
+      "a": ""
+    },
+    {
+      "q": "Can treads be replaced individually?",
+      "a": ""
+    },
+    {
+      "q": "Can treads be sanded and refinished?",
+      "a": ""
+    },
+    {
+      "q": "How thick are the treads?",
+      "a": ""
+    },
+    {
+      "q": "Can I fit carpet on the treads afterwards?",
+      "a": ""
+    },
+    {
+      "q": "How many treads will I need?",
+      "a": ""
+    },
+    {
+      "q": "What are the common tread materials?",
+      "a": "Common tread materials include solid hardwood (oak, walnut, ash, beech — premium, durable, refinishable), engineered timber (hardwood top layer on a stable engineered core — less movement, more economical), laminated timber (strips glued together — strong and stable), and glass (specialist engineered laminated construction with correct structural support). MDF is normally not recommended for the walking surface."
+    },
+    {
+      "q": "What is solid oak used for on a staircase tread?",
+      "a": "Solid oak treads are the premium choice — natural grain, high durability, can be refinished. Thickness matters (typically 32–45mm). Solid oak can move slightly with humidity, so acclimatisation before fitting is important."
+    },
+    {
+      "q": "What is engineered oak?",
+      "a": "Engineered oak has a 4–6mm oak wear layer on a multi-layer timber core with a stable backing. It is more dimensionally stable than solid oak, has less cupping and cracking, and performs better in environments with underfloor heating or humidity changes. The visible surface still appears as solid oak."
+    },
+    {
+      "q": "Should treads be made from MDF?",
+      "a": "Solid timber or engineered timber treads are generally preferred because they receive the greatest wear from foot traffic. While MDF may be suitable for some decorative parts of a staircase, walking surfaces are commonly manufactured from stronger timber-based materials designed for repeated use."
+    },
+    {
+      "q": "Why does tread thickness matter?",
+      "a": "Because it affects strength, deflection under load, screw and dowel holding, edge durability, and the visual weight of the staircase. A thin tread can flex or squeak under load; an overly thick tread can look heavy. Common structural thicknesses range from 32–45mm for solid oak treads."
+    },
+    {
+      "q": "Why do staircases squeak?",
+      "a": "A squeak usually means movement — two surfaces moving against each other. Common causes include a loose tread, timber shrinkage, insufficient glue, loose fixings, insufficient tolerances between tread and stringer, or movement between tread and riser. It is normally a fixing or timber-movement issue, not simply age."
+    },
+    {
+      "q": "Why do treads crack?",
+      "a": "Possible causes include moisture changes, weak or unsuitable timber, unsupported areas, and insufficient thickness for the span. Solid timber moves naturally with humidity — good acclimatisation and correct thickness reduce the risk."
+    },
+    {
+      "q": "What causes tread movement?",
+      "a": "Movement can come from timber expanding and contracting with humidity, loose fixings between tread and stringer, insufficient adhesive at joints, or inadequate wedges. Prevention involves correct material acclimatisation, tight machining, quality adhesive and correct fixing."
+    },
+    {
+      "q": "What is stair nosing?",
+      "a": "The nosing is the front edge of the tread. It affects foot placement, appearance and durability. Common styles include square (modern), bullnose (rounded traditional edge) and waterfall (timber flows continuously over the front, common in luxury stairs)."
+    },
+    {
+      "q": "Why is stair nosing important?",
+      "a": "Because it receives repeated foot impact, cleaning wear and edge damage. A well-formed nosing protects the tread edge and provides visual definition to each step. Sharp or thin nosings are vulnerable to chipping, impact damage and moisture entry."
+    },
+    {
+      "q": "Why can a sharp nosing fail?",
+      "a": "Because thin edges are vulnerable to chipping, impact damage and moisture entry. A slight radius (2–5mm round-over) is often used on modern stairs to improve durability without changing the appearance dramatically."
+    },
+    {
+      "q": "What is a waterfall nosing?",
+      "a": "A waterfall nosing is where the timber flows continuously over the front edge of the tread, creating a smooth uninterrupted line. It is common in luxury staircases and gives the tread a solid one-piece appearance."
+    },
+    {
+      "q": "Can oak on a staircase be refinished?",
+      "a": "Yes. Solid oak treads can be sanded and refinished multiple times over their lifetime. Engineered oak can be refinished depending on the thickness of the wear layer — a 4–6mm layer allows a limited number of refinishes."
+    }
+  ]
+}

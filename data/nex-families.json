@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-02T01:22:08.153Z",
+  "note": "Staircase family taxonomy for the Nex 4-layer Q&A architecture (Philip 2026-08-02). Every confirmed image record carries a `families` array listing the families it belongs to. A design can belong to multiple families (e.g. a floating cantilever with a glass balustrade belongs to BOTH `floating-cantilever` AND `glass-balustrade`).",
+  "families": [
+    {
+      "family_id": "spiral",
+      "label": "Spiral staircase (central-column)",
+      "description": "Full-circular spiral around a central steel column. Every tread supported by the column. Traditional 360° rotation."
+    },
+    {
+      "family_id": "helical",
+      "label": "Helical staircase (bespoke sculptural)",
+      "description": "Sweeping double-curved sculptural staircase without a central column. Each tread individually engineered. Grand entrance / feature centrepiece."
+    },
+    {
+      "family_id": "mono-stringer-curved",
+      "label": "Curved mono-stringer staircase",
+      "description": "Single curved fabricated steel stringer carrying the treads. Follows a smooth continuous radius. Contemporary feature."
+    },
+    {
+      "family_id": "mono-stringer-straight",
+      "label": "Straight mono-stringer staircase",
+      "description": "Single straight steel stringer running down the centre. Modern minimalist. Common in open-plan interiors."
+    },
+    {
+      "family_id": "floating-cantilever",
+      "label": "Floating cantilever staircase",
+      "description": "Treads appear to float · concealed structural steel fixed into wall or hidden frame · open riser · often paired with frameless glass balustrade."
+    },
+    {
+      "family_id": "straight-flight",
+      "label": "Straight-flight staircase",
+      "description": "Simple straight run between floors. Cross-cutting geometry family (a straight-flight can also be a mono-stringer or floating cantilever)."
+    },
+    {
+      "family_id": "open-riser",
+      "label": "Open-riser staircase",
+      "description": "No solid riser between treads · lets light through · modern appearance · regulatory considerations vary by country."
+    },
+    {
+      "family_id": "glass-balustrade",
+      "label": "Glass balustrade (cross-cutting)",
+      "description": "Any staircase with a structural glass balustrade. Toughened laminated safety glass typical. Cuts across all geometry families."
+    },
+    {
+      "family_id": "steel-balustrade",
+      "label": "Steel balustrade (cross-cutting)",
+      "description": "Any staircase with steel balusters, horizontal rods, or cable systems. Cuts across geometry families."
+    },
+    {
+      "family_id": "timber-balustrade",
+      "label": "Timber balustrade (cross-cutting)",
+      "description": "Any staircase with timber spindles or newels. Cuts across geometry families."
+    },
+    {
+      "family_id": "feature-lighting",
+      "label": "Integrated feature lighting (cross-cutting)",
+      "description": "Any staircase with integrated LED tread lighting, handrail lighting, or architectural feature lighting. Cuts across geometry and balustrade families."
+    },
+    {
+      "family_id": "quarter-turn",
+      "label": "Quarter-turn staircase (L-shape)",
+      "description": "Two straight flights with a 90° change of direction, usually joined by an intermediate landing."
+    },
+    {
+      "family_id": "half-turn",
+      "label": "Half-turn staircase (U-shape)",
+      "description": "Two straight flights with a 180° change of direction, joined by a half landing. Also called a switchback."
+    },
+    {
+      "family_id": "dog-leg",
+      "label": "Dog-leg staircase",
+      "description": "Two straight parallel flights in opposite directions with a half landing between them. The side profile resembles a dog's rear leg, which is where the name comes from."
+    },
+    {
+      "family_id": "bifurcated",
+      "label": "Bifurcated staircase",
+      "description": "A grand staircase where one lower flight divides into two upper flights (or vice versa). From Latin bi + furca = 'two forks'. Common in hotels and grand entrances."
+    },
+    {
+      "family_id": "winder",
+      "label": "Winder staircase (tapered-tread turn)",
+      "description": "Direction change achieved with tapered/kite-shaped steps instead of a landing. Saves space and creates a continuous turn."
+    },
+    {
+      "family_id": "concrete-staircase",
+      "label": "Concrete staircase (structural core)",
+      "description": "Staircase whose primary structural support is reinforced concrete — cast in-situ or precast. The concrete forms the structural shell; finishes (timber overlays · stone · tile · glass balustrade) provide the visible architecture. Same universal geometry rules apply as any other staircase — only the structural method changes."
+    }
+  ],
+  "components": [
+    {
+      "component_id": "tread",
+      "label": "Tread",
+      "description": "The horizontal step surface. Timber, stone or glass depending on design."
+    },
+    {
+      "component_id": "riser",
+      "label": "Riser",
+      "description": "The vertical face between treads. Solid (closed) or absent (open)."
+    },
+    {
+      "component_id": "stringer",
+      "label": "Stringer",
+      "description": "The structural side or centre support carrying the treads. Mono, twin, cut, closed, or box variants."
+    },
+    {
+      "component_id": "newel",
+      "label": "Newel post",
+      "description": "The vertical post at the start / end / turn of a staircase. Structural anchor for handrail + balustrade."
+    },
+    {
+      "component_id": "handrail",
+      "label": "Handrail",
+      "description": "The continuous graspable rail alongside the flight. Timber, steel, brass, bronze, or leather-wrapped."
+    },
+    {
+      "component_id": "baluster",
+      "label": "Baluster / spindle",
+      "description": "Vertical infill between handrail and tread. Steel, timber, or replaced with glass panels / cable systems."
+    },
+    {
+      "component_id": "balustrade-glass",
+      "label": "Glass balustrade panel",
+      "description": "Toughened laminated glass panel used in place of vertical balusters. Frameless or channel-fixed."
+    },
+    {
+      "component_id": "lighting-led",
+      "label": "LED tread / accent lighting",
+      "description": "Integrated LED strip lighting under treads, along stringers, or in handrails."
+    },
+    {
+      "component_id": "landing",
+      "label": "Landing",
+      "description": "The horizontal platform at the top / turn of a staircase. Structural connection to upper floor."
+    },
+    {
+      "component_id": "fixings-glass",
+      "label": "Glass fixings (bolts / standoffs / channels)",
+      "description": "Stainless steel bolts, standoffs, or channel systems that fix structural glass panels to the staircase or floor."
+    }
+  ]
+}
