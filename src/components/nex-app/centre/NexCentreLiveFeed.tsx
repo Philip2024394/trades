@@ -858,6 +858,32 @@ function StarRating({
   );
 }
 
+// Philip 2026-08-02 · Trade Centre v3 · aspect-aware ImageKit crop.
+// The feed picks staircase imagery per merchant (matcher + interim
+// placeholder), but the server-side crop bakes ar-3-4 into every URL.
+// Cards render at DIFFERENT aspects (paid=3/5 · free hash-based 3/4 ·
+// 4/5 · 2/3) so a single baked crop over-stretches on the taller slots.
+// This helper rewrites the ImageKit `tr=ar-X-Y` param to match the
+// card's actual aspect so the staircase always fits cleanly — no
+// letterboxing, no double-cropping via object-cover. No-op for
+// non-ImageKit URLs.
+function cropForAspect(url: string | null, aspect: string): string | null {
+  if (!url) return null;
+  if (!url.includes("ik.imagekit.io")) return url;
+  const arParam = "ar-" + aspect.replace(/\s+/g, "").replace("/", "-");
+  // If URL already has tr=..., replace the ar-X-Y segment. If ar param
+  // isn't present in the tr= string, append it. Preserves other tr= flags
+  // (w-, fo-, q-) that the server-side crop baked in.
+  if (url.includes("tr=")) {
+    if (/ar-\d+-\d+/.test(url)) {
+      return url.replace(/ar-\d+-\d+/, arParam);
+    }
+    return url.replace(/tr=/, `tr=${arParam},`);
+  }
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}tr=w-800,${arParam},fo-auto,q-90`;
+}
+
 // Small gray verification pill — subtle by design. Trust level is
 // signalled by the dot colour, not a loud coloured background.
 function VerifiedPip({
@@ -898,6 +924,9 @@ function ProductCard({
   // "who built that?" — route to the merchant profile, not the product
   // sheet. The product sheet is still reachable from the merchant profile.
   const merchantName = item.merchant_display_name ?? item.brand_name;
+  // Rewrite the ImageKit crop to match THIS card's aspect so the staircase
+  // photo fits cleanly · no letterboxing · no browser-side stretching.
+  const heroImageUrl = cropForAspect(item.hero_image_url, aspect);
 
   return (
     <article className="group mb-3 break-inside-avoid overflow-hidden rounded-2xl border border-black/5 bg-white shadow-sm transition-shadow hover:shadow-md">
@@ -911,9 +940,9 @@ function ProductCard({
         className="relative block w-full overflow-hidden"
         style={{ aspectRatio: aspect }}
       >
-        {item.hero_image_url ? (
+        {heroImageUrl ? (
           <img
-            src={item.hero_image_url}
+            src={heroImageUrl}
             alt={item.name}
             loading="lazy"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
