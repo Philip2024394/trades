@@ -96,7 +96,8 @@ export type GraphEdge = {
 export type WorkerType =
   | "knowledge-context"    // Retrieves related existing records before authoring
   | "voice-context"        // Assembles brand terms + voice guide for the topic
-  | "knowledge-extractor"  // Authors new drafts (with knowledge + voice context)
+  | "learning-context"     // Retrieves past feedback (approvals, edits, rejections)
+  | "knowledge-extractor"  // Authors new drafts (with all three context bundles)
   | "quality-checker"      // Gates drafts against the Constitution
   | "memory-guardian";     // Batch auditor
 

@@ -111,6 +111,7 @@ type Toast = { kind: "info" | "error" | "success"; message: string } | null;
 const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; color: string }> = {
   "knowledge-context":   { label: "Knowledge Context",   icon: ScanSearch,   color: TOKEN.info },
   "voice-context":       { label: "Voice & Brand",       icon: Feather,      color: TOKEN.accentDark },
+  "learning-context":    { label: "Learning Context",    icon: History,      color: TOKEN.success },
   "knowledge-extractor": { label: "Knowledge Extractor", icon: BrainCircuit, color: TOKEN.accent },
   "quality-checker":     { label: "Quality Checker",     icon: FileCheck,    color: TOKEN.success },
   "memory-guardian":     { label: "Memory Guardian",     icon: Shield,       color: TOKEN.warning },
@@ -287,6 +288,12 @@ export function NexBrainShell() {
 
         <WorkerPoolSection status={status} loading={loading} />
 
+        <ReviewQueueSection
+          records={records}
+          onReviewed={refresh}
+          onToast={showToast}
+        />
+
         <RecordsSection records={records} loading={loading} />
       </div>
 
@@ -329,8 +336,9 @@ function Hero({ backend, llm }: { backend: "filesystem" | "supabase"; llm: LlmVe
         NEX Manager
       </h1>
       <p className="mt-3 max-w-2xl text-[15px] leading-relaxed md:text-base" style={{ color: TOKEN.textMid }}>
-        Three-role architecture · Knowledge Extractor · Quality Checker · Memory Guardian.
-        The manager routes; the workers author, verify, and audit.
+        Five specialist workers · Knowledge Context · Voice & Brand · Learning Context ·
+        Knowledge Extractor · Quality Checker · plus Memory Guardian (batch).
+        NEX writes with memory, voice, and learning from your decisions.
       </p>
     </header>
   );
@@ -530,7 +538,7 @@ function WorkerPoolSection({ status, loading }: { status: Status | null; loading
       <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
         Real-time workers (Extractor + Checker) plus the batch Memory Guardian (Phase 1.5).
       </p>
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
         {(pool.length ? pool : PLACEHOLDER_POOL).map((w) => (
           <WorkerCard key={w.worker_type} pool={w} loading={loading} />
         ))}
@@ -542,6 +550,7 @@ function WorkerPoolSection({ status, loading }: { status: Status | null; loading
 const PLACEHOLDER_POOL: Status["worker_pool"] = [
   { worker_type: "knowledge-context",   jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "voice-context",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
+  { worker_type: "learning-context",    jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "knowledge-extractor", jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "quality-checker",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "memory-guardian",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
@@ -591,6 +600,206 @@ function MetricPill({ label, value, tone, loading }: { label: string; value: num
 }
 
 // ── Records section ──────────────────────────────────────────────────
+
+// ── Review Queue (approve / reject / edit) ──────────────────────────
+//
+// Every action here becomes signal for the Learning Context Worker.
+
+function ReviewQueueSection({
+  records,
+  onReviewed,
+  onToast,
+}: {
+  records: KnowledgeRecord[];
+  onReviewed: () => void;
+  onToast: (t: { kind: "info" | "error" | "success"; message: string }) => void;
+}) {
+  const pending = records.filter(
+    (r) => r.status === "UNDER_REVIEW" || r.status === "DRAFT"
+  );
+
+  return (
+    <section className="mt-12">
+      <div className="mb-4 flex items-baseline justify-between">
+        <div>
+          <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+            Review Queue
+          </h2>
+          <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+            Every decision here feeds the Learning Context Worker on the next authoring run.
+          </p>
+        </div>
+        <span
+          className="rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-widest"
+          style={{
+            background: pending.length > 0 ? "#FED7AA" : TOKEN.card,
+            borderColor: pending.length > 0 ? "#F97316" : TOKEN.border,
+            color: pending.length > 0 ? "#9A3412" : TOKEN.textSoft,
+          }}
+        >
+          {pending.length} pending
+        </span>
+      </div>
+      {pending.length === 0 ? (
+        <div className="rounded-2xl border p-6 text-center" style={{ background: TOKEN.card, borderColor: TOKEN.border }}>
+          <CheckCircle2 size={22} strokeWidth={1.6} style={{ color: TOKEN.success }} className="mx-auto" />
+          <div className="mt-2 text-[13px]" style={{ color: TOKEN.textSoft }}>
+            No records awaiting review.
+          </div>
+        </div>
+      ) : (
+        <ul className="flex flex-col gap-2">
+          {pending.slice(0, 20).map((r) => (
+            <ReviewRow key={r.id} record={r} onReviewed={onReviewed} onToast={onToast} />
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+
+function ReviewRow({
+  record,
+  onReviewed,
+  onToast,
+}: {
+  record: KnowledgeRecord;
+  onReviewed: () => void;
+  onToast: (t: { kind: "info" | "error" | "success"; message: string }) => void;
+}) {
+  const [editOpen, setEditOpen] = useState(false);
+  const [editText, setEditText] = useState(record.summary);
+  const [lesson, setLesson] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  async function submit(action: "approve" | "reject" | "edit") {
+    setBusy(true);
+    try {
+      const body: Record<string, unknown> = {
+        record_id: record.record_id,
+        action,
+        lesson: lesson || undefined,
+      };
+      if (action === "edit") {
+        body.correction = editText;
+        body.severity = "moderate";
+      }
+      const res = await fetch("/api/nex/brain/review", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const j = await res.json();
+      if (j.ok) {
+        onToast({
+          kind: action === "approve" ? "success" : action === "reject" ? "info" : "info",
+          message:
+            action === "approve"
+              ? `Approved · ${record.record_id}`
+              : action === "reject"
+                ? `Rejected · ${record.record_id}`
+                : `Edit saved · ${record.record_id}`,
+        });
+        setEditOpen(false);
+        setLesson("");
+        onReviewed();
+      } else {
+        onToast({ kind: "error", message: `${action} failed: ${j.error ?? "unknown"}` });
+      }
+    } catch (err) {
+      console.error("[review]", err);
+      onToast({ kind: "error", message: `${action} failed` });
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <li className="rounded-2xl border p-4" style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}>
+      <div className="flex flex-wrap items-center gap-2">
+        <StatusChip status={record.status} />
+        <span className="text-[11px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+          {record.primary_audience}
+        </span>
+        <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
+          · {record.category}
+        </span>
+      </div>
+      <div className="mt-1.5 text-[14px] font-semibold" style={{ color: TOKEN.text }}>
+        {record.title}
+      </div>
+      <div className="mt-1 line-clamp-3 text-[12px]" style={{ color: TOKEN.textMid }}>
+        {record.summary}
+      </div>
+
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <input
+          type="text"
+          placeholder="Lesson for the next author (optional)"
+          value={lesson}
+          onChange={(e) => setLesson(e.target.value)}
+          className="min-w-0 flex-1 rounded-full border px-3 py-1.5 text-[12px] outline-none"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.text }}
+          disabled={busy}
+        />
+        <button
+          type="button"
+          onClick={() => submit("approve")}
+          disabled={busy}
+          className="inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-[12px] font-bold text-white disabled:opacity-50"
+          style={{ background: TOKEN.success }}
+        >
+          <CheckCircle2 size={12} strokeWidth={2.4} />
+          Approve
+        </button>
+        <button
+          type="button"
+          onClick={() => setEditOpen((o) => !o)}
+          disabled={busy}
+          className="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-semibold disabled:opacity-50"
+          style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.text }}
+        >
+          <Feather size={12} strokeWidth={2.4} />
+          {editOpen ? "Cancel edit" : "Edit"}
+        </button>
+        <button
+          type="button"
+          onClick={() => submit("reject")}
+          disabled={busy}
+          className="inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-semibold disabled:opacity-50"
+          style={{ background: "#FEE2E2", borderColor: "#EF4444", color: "#991B1B" }}
+        >
+          <AlertTriangle size={12} strokeWidth={2.4} />
+          Reject
+        </button>
+      </div>
+
+      {editOpen && (
+        <div className="mt-3">
+          <textarea
+            value={editText}
+            onChange={(e) => setEditText(e.target.value)}
+            className="w-full rounded-2xl border p-3 text-[13px] outline-none"
+            style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.text, minHeight: 90 }}
+            disabled={busy}
+          />
+          <div className="mt-2 flex justify-end">
+            <button
+              type="button"
+              onClick={() => submit("edit")}
+              disabled={busy || !editText.trim()}
+              className="inline-flex items-center gap-1 rounded-full px-4 py-1.5 text-[12px] font-bold text-white disabled:opacity-50"
+              style={{ background: TOKEN.accent }}
+            >
+              {busy ? <Loader2 size={12} strokeWidth={2.4} className="animate-spin" /> : <Feather size={12} strokeWidth={2.4} />}
+              Save correction
+            </button>
+          </div>
+        </div>
+      )}
+    </li>
+  );
+}
 
 function RecordsSection({ records, loading }: { records: KnowledgeRecord[]; loading: boolean }) {
   return (

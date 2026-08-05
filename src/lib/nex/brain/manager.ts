@@ -18,6 +18,7 @@ import * as path from "node:path";
 import { brainStore, nowIso } from "./storage";
 import { runKnowledgeContext } from "./workers/knowledge-context";
 import { runVoiceContext } from "./workers/voice-context";
+import { runLearningContext } from "./workers/learning-context";
 import { runKnowledgeExtractor } from "./workers/knowledge-extractor";
 import { runQualityChecker } from "./workers/quality-checker";
 import type { BrainStatus, WorkerJob } from "./types";
@@ -65,9 +66,9 @@ export async function dispatchNewInboxItems(): Promise<{
   const store = brainStore();
   const inboxItems = await readInboxIndex();
 
-  // Which inbox_item_ids already entered the pipeline? Any of the three
-  // upstream worker types (context, voice-context, extractor) means the
-  // item has started its journey. Cheap dedup by walking the jobs table.
+  // Which inbox_item_ids already entered the pipeline? Any of the four
+  // upstream worker types (context, voice, learning, extractor) means
+  // the item has started its journey. Cheap dedup by walking the jobs table.
   const jobRows = await readFsJobsSnapshot();
   const alreadyQueuedIds = new Set(
     jobRows
@@ -75,6 +76,7 @@ export async function dispatchNewInboxItems(): Promise<{
         (j) =>
           j.worker_type === "knowledge-context" ||
           j.worker_type === "voice-context" ||
+          j.worker_type === "learning-context" ||
           j.worker_type === "knowledge-extractor"
       )
       .map((j) => j.input_ref)
@@ -158,25 +160,29 @@ export async function dispatchNewInboxItems(): Promise<{
 // 2 · Run one cycle: drain up to N of each worker in order.
 // Returns a report suitable for the /brain/run-once endpoint.
 //
-// Four-stage drain matches the doctrine:
-//   knowledge-context → gather memory from the corpus
-//   voice-context     → gather brand + voice guidance
-//   knowledge-extractor → author new drafts using both bundles
-//   quality-checker   → gate against the Constitution
+// Five-stage drain matches the doctrine:
+//   knowledge-context   → gather memory from the corpus
+//   voice-context       → gather brand + voice guidance
+//   learning-context    → gather past feedback (edits/approvals/rejections)
+//   knowledge-extractor → author new drafts using all three bundles
+//   quality-checker     → gate against the Constitution
 export async function runOneCycle(options: {
   context_batch?: number;
   voice_batch?: number;
+  learning_batch?: number;
   extractor_batch?: number;
   checker_batch?: number;
 } = {}): Promise<CycleReport> {
   const contextBatch = options.context_batch ?? 3;
   const voiceBatch = options.voice_batch ?? 3;
+  const learningBatch = options.learning_batch ?? 3;
   const extractorBatch = options.extractor_batch ?? 3;
   const checkerBatch = options.checker_batch ?? 6;
 
   const start = Date.now();
   const contextsAssembled: Array<{ inbox_item_id: string; related_count: number }> = [];
   const voiceGuides: Array<{ inbox_item_id: string; brand_terms: string[]; audience: string; content_class: string }> = [];
+  const learningBundles: Array<{ inbox_item_id: string; examples_count: number; overall_lesson: string }> = [];
   const extracted: string[] = [];
   const extractionErrors: string[] = [];
   const checkedRecords: Array<{ record_id: string; decision: string; confidence: number }> = [];
@@ -193,7 +199,7 @@ export async function runOneCycle(options: {
     }
   }
 
-  // 2 · Voice context — enqueues extractor jobs on success
+  // 2 · Voice context — enqueues learning-context jobs on success
   for (let i = 0; i < voiceBatch; i += 1) {
     const outcome = await runVoiceContext();
     if (!outcome.job) break;
@@ -207,7 +213,20 @@ export async function runOneCycle(options: {
     }
   }
 
-  // 3 · Extractor — reads BOTH bundles from job payload
+  // 3 · Learning context — enqueues extractor jobs on success
+  for (let i = 0; i < learningBatch; i += 1) {
+    const outcome = await runLearningContext();
+    if (!outcome.job) break;
+    if (outcome.bundle) {
+      learningBundles.push({
+        inbox_item_id: outcome.bundle.inbox_item_id,
+        examples_count: outcome.bundle.examples.length,
+        overall_lesson: outcome.bundle.overall_lesson,
+      });
+    }
+  }
+
+  // 4 · Extractor — reads ALL THREE bundles from job payload
   for (let i = 0; i < extractorBatch; i += 1) {
     const outcome = await runKnowledgeExtractor();
     if (!outcome.job) break;
@@ -218,7 +237,7 @@ export async function runOneCycle(options: {
     }
   }
 
-  // 4 · Checker
+  // 5 · Checker
   for (let i = 0; i < checkerBatch; i += 1) {
     const outcome = await runQualityChecker();
     if (!outcome.job) break;
@@ -236,6 +255,7 @@ export async function runOneCycle(options: {
     duration_ms: Date.now() - start,
     contexts_assembled: contextsAssembled,
     voice_guides: voiceGuides,
+    learning_bundles: learningBundles,
     extracted_record_ids: extracted,
     extraction_errors: extractionErrors,
     checked_records: checkedRecords,
@@ -306,6 +326,7 @@ export type CycleReport = {
   duration_ms: number;
   contexts_assembled: Array<{ inbox_item_id: string; related_count: number }>;
   voice_guides: Array<{ inbox_item_id: string; brand_terms: string[]; audience: string; content_class: string }>;
+  learning_bundles: Array<{ inbox_item_id: string; examples_count: number; overall_lesson: string }>;
   extracted_record_ids: string[];
   extraction_errors: string[];
   checked_records: Array<{ record_id: string; decision: string; confidence: number }>;

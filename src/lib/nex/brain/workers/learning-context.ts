@@ -1,0 +1,344 @@
+// NEX Brain · Learning Context Worker
+//
+// Philip 2026-08-06 doctrine · milestone #3 (self-improvement loop):
+// "Learning from your approved edits" — every correction, approval, edit,
+// or rejection is a signal. The system should USE those signals to
+// improve future authoring.
+//
+// The Learning Context Worker is the third retrieval specialist in the
+// pipeline (after Knowledge Context and Voice Context). Its job:
+//
+//   Receive the topic + inbox content + prior bundles.
+//   Read recent knowledge_feedback rows (approvals, edits, rejections,
+//     corrections, voice_drift flags).
+//   Score by relevance to the current topic (keyword overlap on the
+//     feedback's domain/topic_tags/question/nex_answer).
+//   Return the top N most relevant as a learning_bundle.
+//   Enqueue the Extractor with all three bundles attached.
+//
+// The bundle format is designed for direct injection as few-shot
+// examples in the Extractor's prompt: "PAST DECISIONS BY PHILIP · when
+// Groq produced X, Philip approved / edited / rejected."
+//
+// Feedback types the worker uses:
+//   · approval        → "keep doing this" reinforcement examples
+//   · edit            → "you produced X, Philip changed to Y" — the
+//                        highest-signal type; each edit contains the
+//                        specific improvement Philip wanted
+//   · rejection       → "this pattern was wrong" avoidance examples
+//   · correction      → specific claim was wrong; here's the right answer
+//   · voice_drift     → tone/voice needed adjustment
+//   · gap             → NEX didn't know something; note the gap
+//
+// Pipeline position (v3):
+//
+//   inbox_item
+//        │
+//        ▼
+//   knowledge-context      (records NEX already knows)
+//        │
+//        ▼
+//   voice-context          (brand terms + audience + tone)
+//        │
+//        ▼
+//   learning-context       ← THIS worker · past human decisions
+//        │
+//        ▼
+//   knowledge-extractor    (authors with ALL THREE bundles)
+//        │
+//        ▼
+//   quality-checker
+
+import { brainStore, nowIso } from "../storage";
+import type {
+  KnowledgeFeedback,
+  KnowledgeSource,
+  WorkerJob,
+  WorkerResult,
+} from "../types";
+import type { ContextBundle } from "./knowledge-context";
+import type { VoiceGuide } from "./voice-context";
+
+const WORKER_ID = `learning-context@${process.pid}`;
+
+const RECENT_WINDOW_DAYS = 30;
+const MAX_BUNDLE_SIZE = 8;
+const CANDIDATE_POOL_SIZE = 50; // fetch this many then rank
+
+export type LearningExample = {
+  kind: KnowledgeFeedback["feedback_kind"];
+  severity: KnowledgeFeedback["severity"];
+  question?: string | null;
+  nex_answer?: string | null;
+  correction?: string | null;
+  lesson?: string | null;
+  record_id?: string | null;
+  domain?: string | null;
+  topic_tags?: string[];
+  submitted_by?: string | null;
+  created_at: string;
+  relevance_score: number;
+};
+
+export type LearningBundle = {
+  inbox_item_id: string;
+  input_source: KnowledgeSource;
+  method: "keyword-v1";
+  window_days: number;
+  candidates_scanned: number;
+  examples: LearningExample[];
+  overall_lesson: string; // one-line synthesis when possible
+};
+
+// ── Main entry ───────────────────────────────────────────────────────
+
+export async function runLearningContext(options: {
+  lease_seconds?: number;
+} = {}): Promise<{ job: WorkerJob | null; result?: WorkerResult; bundle?: LearningBundle }> {
+  const store = brainStore();
+  const job = await store.claimNextJob("learning-context", WORKER_ID, options.lease_seconds ?? 30);
+  if (!job) return { job: null };
+
+  try {
+    const inboxItemId = job.input_ref;
+    const source = (job.input_payload?.source as KnowledgeSource | undefined) ?? "raw-research";
+    const title = String(job.input_payload?.title ?? "untitled");
+    const contentPath = job.input_payload?.contentPath as string | undefined;
+    const inlineContent = job.input_payload?.content as string | undefined;
+    const url = job.input_payload?.url as string | undefined;
+    const contextBundle = job.input_payload?.context_bundle as ContextBundle | undefined;
+    const voiceGuide = job.input_payload?.voice_guide as VoiceGuide | undefined;
+
+    // Get scannable text — title + first 20K of content + related record titles
+    const contentPreview = (inlineContent ?? "").slice(0, 20_000);
+    const contextTitles = (contextBundle?.records ?? []).map((r) => r.title).join(" ");
+    const scanText = `${title}\n${contentPreview}\n${contextTitles}`;
+    const topicKeywords = extractTopicKeywords(scanText);
+    const relatedRecordIds = new Set((contextBundle?.records ?? []).map((r) => r.record_id));
+
+    // Fetch a candidate pool of recent feedback
+    const allFeedback = await store.listFeedback({ limit: CANDIDATE_POOL_SIZE });
+    const cutoffMs = Date.now() - RECENT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+    const recent = allFeedback.filter(
+      (f) => new Date(f.created_at).getTime() >= cutoffMs
+    );
+
+    // Score by relevance
+    const scored: LearningExample[] = recent.map((f) => ({
+      kind: f.feedback_kind,
+      severity: f.severity,
+      question: f.question ?? null,
+      nex_answer: f.nex_answer ?? null,
+      correction: f.correction ?? null,
+      lesson: f.lesson ?? null,
+      record_id: f.record_id ?? null,
+      domain: f.domain ?? null,
+      topic_tags: f.topic_tags ?? [],
+      submitted_by: f.submitted_by ?? null,
+      created_at: f.created_at,
+      relevance_score: scoreFeedback(f, topicKeywords, relatedRecordIds, source),
+    }));
+
+    // Sort by relevance desc + severity boost
+    scored.sort((a, b) => b.relevance_score - a.relevance_score);
+    const examples = scored.filter((e) => e.relevance_score > 0).slice(0, MAX_BUNDLE_SIZE);
+
+    const overallLesson = summariseLesson(examples);
+
+    const bundle: LearningBundle = {
+      inbox_item_id: inboxItemId,
+      input_source: source,
+      method: "keyword-v1",
+      window_days: RECENT_WINDOW_DAYS,
+      candidates_scanned: recent.length,
+      examples,
+      overall_lesson: overallLesson,
+    };
+
+    // Log the result
+    const result = await store.insertResult({
+      job_id: job.id,
+      worker_type: "learning-context",
+      worker_id: WORKER_ID,
+      output_kind: "learning_bundle",
+      output_payload: bundle as unknown as Record<string, unknown>,
+      overall_confidence: examples.length > 0 ? Math.min(1, examples[0].relevance_score / 20) : 0.5,
+      llm_provider: "no-llm",
+      llm_model: null,
+      llm_tokens_in: null,
+      llm_tokens_out: null,
+      llm_ms: null,
+      flags: examples.length === 0
+        ? recent.length === 0
+          ? ["no-feedback-in-window"]
+          : ["no-relevant-feedback"]
+        : [],
+    });
+
+    // Enqueue the Extractor with ALL THREE bundles attached
+    await store.enqueueJob({
+      worker_type: "knowledge-extractor",
+      priority: sourcePriority(source),
+      input_kind: "inbox_item",
+      input_ref: inboxItemId,
+      input_payload: {
+        source,
+        title,
+        contentPath: contentPath ?? null,
+        content: inlineContent ?? null,
+        url: url ?? null,
+        context_bundle: contextBundle,
+        voice_guide: voiceGuide,
+        learning_bundle: bundle,
+      },
+    });
+
+    // Mark selected feedback rows as applied so we can see the loop
+    // completing (feedback → prompt influence → future improvements)
+    for (const ex of examples) {
+      // Find the original by matching creation timestamp (fs backend has
+      // no query-by-id shortcut here, but the shape is enough).
+      const original = allFeedback.find((f) => f.created_at === ex.created_at && f.feedback_kind === ex.kind);
+      if (original && !original.applied_to_prompts) {
+        await store.markFeedbackApplied(original.id);
+      }
+    }
+
+    await store.insertAudit({
+      entity_type: "worker_jobs",
+      entity_id: inboxItemId,
+      action: "learning-bundle-assembled",
+      actor: WORKER_ID,
+      before_state: null,
+      after_state: {
+        candidates_scanned: recent.length,
+        examples_selected: examples.length,
+        window_days: RECENT_WINDOW_DAYS,
+      },
+      notes: `Learning bundle produced with ${examples.length}/${recent.length} feedback examples relevant to topic`,
+    });
+
+    await store.completeJob(job.id, result.id);
+    return { job, result, bundle };
+  } catch (err) {
+    const message = (err as Error).message;
+    console.error("[learning-context] failed:", message);
+    await store.failJob(job.id, message);
+    return { job };
+  }
+}
+
+// ── Scoring ──────────────────────────────────────────────────────────
+
+function scoreFeedback(
+  f: KnowledgeFeedback,
+  topicKeywords: Set<string>,
+  relatedRecordIds: Set<string>,
+  source: KnowledgeSource
+): number {
+  let score = 0;
+
+  // Direct record match — feedback about a record the current topic
+  // touches is highly relevant.
+  if (f.record_id && relatedRecordIds.has(f.record_id)) score += 15;
+
+  // Domain match (e.g. current dump about staircases, past feedback
+  // about staircases)
+  if (f.domain) {
+    const domainLower = f.domain.toLowerCase();
+    for (const kw of topicKeywords) {
+      if (domainLower.includes(kw)) {
+        score += 5;
+        break;
+      }
+    }
+  }
+
+  // Topic-tag match
+  if (f.topic_tags) {
+    for (const tag of f.topic_tags) {
+      if (topicKeywords.has(tag.toLowerCase())) score += 4;
+    }
+  }
+
+  // Content match on question / nex_answer / correction / lesson
+  const contentBlob = [
+    f.question ?? "",
+    f.nex_answer ?? "",
+    f.correction ?? "",
+    f.lesson ?? "",
+  ]
+    .join(" ")
+    .toLowerCase();
+  let contentHits = 0;
+  for (const kw of topicKeywords) {
+    if (contentBlob.includes(kw)) contentHits += 1;
+  }
+  score += Math.min(10, contentHits * 2);
+
+  // Severity boost — critical and moderate corrections matter more
+  if (f.severity === "critical") score += 6;
+  else if (f.severity === "moderate") score += 2;
+
+  // Kind boost — edits are the highest signal (Philip explicitly rewrote
+  // what Groq produced); rejections are strong avoid signal
+  if (f.feedback_kind === "edit") score += 5;
+  else if (f.feedback_kind === "rejection") score += 3;
+  else if (f.feedback_kind === "correction") score += 4;
+
+  // Source-tier match boost
+  if (f.context && typeof f.context === "object") {
+    const fSource = (f.context as { source?: string }).source;
+    if (fSource === source) score += 3;
+  }
+
+  return score;
+}
+
+function extractTopicKeywords(text: string): Set<string> {
+  const stop = new Set(["the", "a", "and", "or", "of", "in", "on", "to", "for", "is", "are", "was", "with", "as", "by", "at", "an", "this", "that", "it", "be"]);
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s\-]+/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length >= 4 && w.length <= 24 && !stop.has(w))
+      .slice(0, 200)
+  );
+}
+
+// ── Synthesis ────────────────────────────────────────────────────────
+
+function summariseLesson(examples: LearningExample[]): string {
+  if (examples.length === 0) {
+    return "No prior human feedback yet relevant to this topic. Author from scratch using the other context bundles.";
+  }
+  const kindsCount = examples.reduce<Record<string, number>>((acc, e) => {
+    acc[e.kind] = (acc[e.kind] ?? 0) + 1;
+    return acc;
+  }, {});
+  const parts: string[] = [];
+  if (kindsCount.edit) parts.push(`${kindsCount.edit} past edit${kindsCount.edit === 1 ? "" : "s"} to emulate`);
+  if (kindsCount.approval) parts.push(`${kindsCount.approval} approved pattern${kindsCount.approval === 1 ? "" : "s"} to reinforce`);
+  if (kindsCount.rejection) parts.push(`${kindsCount.rejection} rejected pattern${kindsCount.rejection === 1 ? "" : "s"} to avoid`);
+  if (kindsCount.correction) parts.push(`${kindsCount.correction} specific correction${kindsCount.correction === 1 ? "" : "s"}`);
+  if (kindsCount.voice_drift) parts.push(`${kindsCount.voice_drift} voice-drift warning${kindsCount.voice_drift === 1 ? "" : "s"}`);
+  if (kindsCount.gap) parts.push(`${kindsCount.gap} noted knowledge gap${kindsCount.gap === 1 ? "" : "s"}`);
+  return parts.join(" · ") || "Prior human feedback available.";
+}
+
+// ── Priority mapping (mirrors manager.ts) ───────────────────────────
+
+function sourcePriority(source: KnowledgeSource): number {
+  switch (source) {
+    case "gov-standards":      return 1;
+    case "chatgpt-approved":   return 2;
+    case "claude-generated":   return 2;
+    case "customer-qa":        return 3;
+    case "raw-research":       return 4;
+    case "internet-article":   return 5;
+    case "personal-ideas":     return 6;
+    case "needs-verification": return 7;
+    default:                   return 5;
+  }
+}

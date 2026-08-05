@@ -422,6 +422,7 @@ class FilesystemStore implements BrainStore {
     const workerTypes: WorkerType[] = [
       "knowledge-context",
       "voice-context",
+      "learning-context",
       "knowledge-extractor",
       "quality-checker",
       "memory-guardian",

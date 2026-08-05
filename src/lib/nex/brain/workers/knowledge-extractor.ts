@@ -90,6 +90,16 @@ You will be given a CONTEXT bundle listing existing records NEX has already auth
 
 A good outcome looks like: 1-2 focused new records + 5-15 typed edges to existing records + a note in overall_notes about what the source added over the existing corpus.
 
+CRITICAL — NEX LEARNS FROM HUMAN FEEDBACK (Past Decisions):
+You will be given a LEARNING BUNDLE listing recent decisions Philip made on prior drafts:
+  · edits    → "you produced X, Philip changed to Y" — highest-signal; emulate what Philip wrote
+  · approvals → "this pattern was correct" — reinforce
+  · rejections → "this pattern was wrong" — avoid the shape
+  · corrections → specific factual fixes to remember
+  · voice_drift → tone/audience mismatches to avoid repeating
+
+Weight past decisions heavily. If Philip corrected a similar record last week, your new record MUST reflect that correction. The learning bundle is how NEX compounds — every past decision informs the next author.
+
 CRITICAL — NEX HAS A VOICE (Voice & Brand Guide):
 You will be given a VOICE GUIDE listing:
   · Applicable NEX brand terms (NexString™, Nex Newel™ Split Base Design, Connected Staircase™, NEX Premium™)
@@ -115,6 +125,7 @@ RULES:
 9. When CONTEXT records exist, aim for MORE typed edges than new claims. That is the healthy authoring ratio.
 10. Follow the voice tone principles for the given primary audience. Match the audience — homeowner content is warm and conversational, engineer content is expert-defensible.
 11. Add brand terms to the record's nex_concepts array WHERE they are applicable per the guide. Add industry equivalents to industry_concepts. Never mix these.
+12. When the LEARNING BUNDLE contains relevant edits or corrections, your output MUST reflect what Philip changed. Do not repeat a pattern Philip already rejected. Do not re-word a phrase Philip already rewrote.
 
 OUTPUT SCHEMA (return this JSON, nothing else):
 {
@@ -227,7 +238,29 @@ export async function runKnowledgeExtractor(options: {
       console.warn(`[knowledge-extractor] no voice guide attached for inbox item ${inboxItemId}`);
     }
 
-    // 3 · Call the LLM with the Golden Rule system prompt + both bundles
+    const learningBundle = job.input_payload?.learning_bundle as
+      | {
+          examples: Array<{
+            kind: string;
+            severity: string;
+            question?: string | null;
+            nex_answer?: string | null;
+            correction?: string | null;
+            lesson?: string | null;
+            domain?: string | null;
+            topic_tags?: string[];
+            created_at: string;
+          }>;
+          overall_lesson: string;
+          candidates_scanned: number;
+          window_days: number;
+        }
+      | undefined;
+    if (!learningBundle) {
+      console.warn(`[knowledge-extractor] no learning bundle attached for inbox item ${inboxItemId}`);
+    }
+
+    // 3 · Call the LLM with the Golden Rule system prompt + all three bundles
     const userMessage = buildUserMessage({
       inbox_id: inboxItemId,
       source,
@@ -235,6 +268,7 @@ export async function runKnowledgeExtractor(options: {
       content,
       context: contextBundle,
       voice: voiceGuide,
+      learning: learningBundle,
     });
 
     const { data, raw } = await completeJson<ExtractorOutput>(
@@ -398,6 +432,22 @@ function buildUserMessage(input: {
     brand_use_policy: string;
     voice_tone_principles: string[];
   };
+  learning?: {
+    examples: Array<{
+      kind: string;
+      severity: string;
+      question?: string | null;
+      nex_answer?: string | null;
+      correction?: string | null;
+      lesson?: string | null;
+      domain?: string | null;
+      topic_tags?: string[];
+      created_at: string;
+    }>;
+    overall_lesson: string;
+    candidates_scanned: number;
+    window_days: number;
+  };
 }): string {
   // Truncate very long content to keep within reasonable token budgets.
   const CONTENT_LIMIT = 80_000;
@@ -409,6 +459,7 @@ function buildUserMessage(input: {
 
   const contextBlock = renderContext(input.context);
   const voiceBlock = renderVoiceGuide(input.voice);
+  const learningBlock = renderLearning(input.learning);
 
   return `INBOX ITEM METADATA
 inbox_id: ${input.inbox_id}
@@ -428,10 +479,62 @@ ${contextBlock}
 
 ${voiceBlock}
 
+${learningBlock}
+
 RAW CONTENT:
 ${content}
 
-TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Apply the VOICE GUIDE — use NEX brand terms where the content class permits, use industry terms where it demands precision. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records. Respond with ONLY the JSON object.`;
+TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Apply the VOICE GUIDE — use NEX brand terms where the content class permits, use industry terms where it demands precision. Apply the LEARNING BUNDLE — never repeat a pattern Philip corrected, always emulate patterns Philip approved. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records. Respond with ONLY the JSON object.`;
+}
+
+function renderLearning(
+  learning?: {
+    examples: Array<{
+      kind: string;
+      severity: string;
+      question?: string | null;
+      nex_answer?: string | null;
+      correction?: string | null;
+      lesson?: string | null;
+      domain?: string | null;
+      topic_tags?: string[];
+      created_at: string;
+    }>;
+    overall_lesson: string;
+    candidates_scanned: number;
+    window_days: number;
+  }
+): string {
+  if (!learning || learning.examples.length === 0) {
+    return `LEARNING BUNDLE — past decisions by Philip:
+  (no relevant prior feedback yet — author from scratch using the other bundles)`;
+  }
+  const lines: string[] = [];
+  lines.push(`LEARNING BUNDLE — past decisions by Philip (${learning.examples.length} example${learning.examples.length === 1 ? "" : "s"}):`);
+  lines.push(``);
+  lines.push(`Synthesis: ${learning.overall_lesson}`);
+  lines.push(``);
+  lines.push(`Weight these examples heavily. Do NOT repeat patterns Philip corrected.`);
+  lines.push(`DO emulate patterns Philip approved.`);
+  lines.push(``);
+  for (const ex of learning.examples) {
+    const date = ex.created_at.slice(0, 10);
+    lines.push(`━━━ ${ex.kind.toUpperCase()} (severity: ${ex.severity}, ${date}) ━━━`);
+    if (ex.domain) lines.push(`Domain: ${ex.domain}`);
+    if (ex.topic_tags && ex.topic_tags.length > 0) {
+      lines.push(`Topics: ${ex.topic_tags.slice(0, 6).join(", ")}`);
+    }
+    if (ex.question) lines.push(`Question: ${trim(ex.question, 300)}`);
+    if (ex.nex_answer) lines.push(`NEX said: ${trim(ex.nex_answer, 300)}`);
+    if (ex.correction) lines.push(`Philip corrected to: ${trim(ex.correction, 300)}`);
+    if (ex.lesson) lines.push(`Lesson: ${trim(ex.lesson, 240)}`);
+    lines.push(``);
+  }
+  return lines.join("\n");
+}
+
+function trim(s: string, max: number): string {
+  return s.length > max ? s.slice(0, max) + "…" : s;
 }
 
 function renderVoiceGuide(

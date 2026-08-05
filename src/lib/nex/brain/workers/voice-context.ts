@@ -178,9 +178,11 @@ export async function runVoiceContext(options: {
       flags: applicable.length === 0 ? ["no-brand-terms-applicable"] : [],
     });
 
-    // Enqueue Extractor with BOTH bundles attached
+    // Enqueue Learning Context with the accumulated bundles.
+    // Learning Context will retrieve past feedback + enqueue the
+    // Extractor with all three bundles attached.
     await store.enqueueJob({
-      worker_type: "knowledge-extractor",
+      worker_type: "learning-context",
       priority: sourcePriority(source),
       input_kind: "inbox_item",
       input_ref: inboxItemId,
