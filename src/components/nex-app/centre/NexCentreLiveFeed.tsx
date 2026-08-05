@@ -28,22 +28,26 @@ import {
   useState,
 } from "react";
 import {
-  Building2,
   ChevronRight,
+  DoorOpen,
+  Grid3x3,
+  Layers,
   MapPin,
   Megaphone,
   MessageSquare,
-  ShoppingBag,
   SlidersHorizontal,
   Sparkles,
   Star,
-  Tag,
-  Users,
-  Wrench,
+  UtensilsCrossed,
   X,
 } from "lucide-react";
+import Link from "next/link";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
 import { DiagramCard } from "./DiagramCard";
+import {
+  listOpenProjects,
+  PROJECTS_UPDATED_EVENT,
+} from "@/lib/nex/projects/customer-store";
 import type { BrainEntry } from "@/lib/nex/knowledge/retrieve";
 import { NexBottomSheet } from "./NexBottomSheet";
 import { ProductDetailsSheet } from "./ProductDetailsSheet";
@@ -309,6 +313,34 @@ export function NexCentreLiveFeed() {
     return n;
   }, [filters]);
 
+  // Philip 2026-08-02 · Project Object v2 (Supabase-backed · async).
+  // Watches the server-backed project store so the header can surface a
+  // "My Projects · N" chip whenever the user has any open project. Hidden
+  // entirely when N === 0 so the chip never adds noise for first-time
+  // visitors. Refreshes on the same-tab custom event + on window focus
+  // (cheap cross-tab approximation until Realtime lands in v2.5).
+  const [openProjectCount, setOpenProjectCount] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    const refresh = async () => {
+      try {
+        const open = await listOpenProjects();
+        if (!cancelled) setOpenProjectCount(open.length);
+      } catch (err) {
+        console.error("[centre-header][openProjects]", err);
+      }
+    };
+    void refresh();
+    const handler = () => { void refresh(); };
+    window.addEventListener(PROJECTS_UPDATED_EVENT, handler);
+    window.addEventListener("focus", handler);
+    return () => {
+      cancelled = true;
+      window.removeEventListener(PROJECTS_UPDATED_EVENT, handler);
+      window.removeEventListener("focus", handler);
+    };
+  }, []);
+
   return (
     <div className="relative min-h-screen bg-[#faf7f2]">
       {/* ═════════════════════════════════════════════════════════════
@@ -327,6 +359,21 @@ export function NexCentreLiveFeed() {
               Live
             </div>
             <div className="flex-1" />
+            {openProjectCount > 0 && (
+              // Philip 2026-08-02 · Continue chip (was "My Projects").
+              // "People rarely want to start something new — they usually want
+              // to continue something they've already begun." Home shortcut
+              // uses this framing; the list page itself is titled "Projects".
+              <Link
+                href="/nex-app/projects"
+                className="inline-flex flex-col items-center rounded-2xl border border-orange-300 bg-white px-3 py-1 text-orange-800 hover:bg-orange-50"
+              >
+                <span className="text-[11px] font-semibold leading-tight">Continue</span>
+                <span className="text-[9px] leading-tight text-orange-700/80">
+                  {openProjectCount} active {openProjectCount === 1 ? "project" : "projects"}
+                </span>
+              </Link>
+            )}
             <button
               type="button"
               onClick={() => setShowFilters((v) => !v)}
@@ -479,37 +526,34 @@ export function NexCentreLiveFeed() {
             </div>
           )}
 
-          {/* Quick-filter chips */}
+          {/* Trade-domain chips — Philip 2026-08-05. Reframed from entity types
+              (Products/Suppliers/Services/Projects/Deals) to trade domains
+              (Staircase/Kitchen/Doors/Flooring) so the filter composes with
+              the Brain architecture: each chip corresponds to a NEX Brain. */}
           <div className="scrollbar-none mt-3 flex gap-2 overflow-x-auto">
             <HeroChip
-              icon={ShoppingBag}
-              label="Products"
-              active={filters.category === "Products"}
-              onClick={() => toggleHeroChip("Products")}
+              icon={Layers}
+              label="Staircase"
+              active={filters.category === "Staircase"}
+              onClick={() => toggleHeroChip("Staircase")}
             />
             <HeroChip
-              icon={Users}
-              label="Suppliers"
-              active={filters.category === "Suppliers"}
-              onClick={() => toggleHeroChip("Suppliers")}
+              icon={UtensilsCrossed}
+              label="Kitchen"
+              active={filters.category === "Kitchen"}
+              onClick={() => toggleHeroChip("Kitchen")}
             />
             <HeroChip
-              icon={Wrench}
-              label="Services"
-              active={filters.category === "Services"}
-              onClick={() => toggleHeroChip("Services")}
+              icon={DoorOpen}
+              label="Doors"
+              active={filters.category === "Doors"}
+              onClick={() => toggleHeroChip("Doors")}
             />
             <HeroChip
-              icon={Building2}
-              label="Projects"
-              active={filters.category === "Projects"}
-              onClick={() => toggleHeroChip("Projects")}
-            />
-            <HeroChip
-              icon={Tag}
-              label="Deals"
-              active={filters.category === "Deals"}
-              onClick={() => toggleHeroChip("Deals")}
+              icon={Grid3x3}
+              label="Flooring"
+              active={filters.category === "Flooring"}
+              onClick={() => toggleHeroChip("Flooring")}
             />
           </div>
         </div>

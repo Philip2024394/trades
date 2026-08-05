@@ -73,7 +73,11 @@ function filterMock(
     out = out.filter((i) => i.price_pence <= (opts.max_price_pence as number));
   }
   const offset = opts.offset ?? 0;
-  const limit = Math.min(opts.limit ?? 40, 100);
+  // Philip 2026-08-05 · undefined = "no per-source cap" (the intent
+  // in the merge phase). Previously fell back to 40 · which silently
+  // dropped every seed past #40 for any high-count trade (Kitchen has
+  // 181 seeded merchants). Explicit numeric limits still cap at 100.
+  const limit = opts.limit === undefined ? out.length : Math.min(opts.limit, 100);
   return out.slice(offset, offset + limit);
 }
 
@@ -133,9 +137,19 @@ export async function GET(req: NextRequest) {
     });
     const merged: CentreFeedItem[] = [...filteredDirectory, ...dbItems];
 
-    // Cold-start fallback: if BOTH the DB and directory came back
-    // empty, use the mock feed so the page never looks abandoned.
-    if (merged.length === 0) {
+    // Cold-start fallback: only fire when there is truly nothing to
+    // show — no real data AND no active filter. If the user filtered
+    // (category / query / price band), returning random mock items
+    // that happened to match the filter is misleading — an active
+    // filter on an empty domain must produce an honest empty state
+    // so the UI can show "no results for X · try these instead."
+    // Philip 2026-08-05 · trade-domain badges surface Doors/Flooring
+    // before those seeds exist · truthful empty > misleading match.
+    const hasActiveFilter =
+      !!query || !!category ||
+      typeof min_price_pence === "number" ||
+      typeof max_price_pence === "number";
+    if (merged.length === 0 && !hasActiveFilter) {
       const mockItems = filterMock(MOCK_CENTRE_FEED, {
         query,
         category,
