@@ -36,11 +36,16 @@ const REGISTRY: Record<BrandingKey, Entry> = {
       "NexString™ (our branded enclosed outer string design, traditionally known as a closed string staircase)",
   },
   "split-newel": {
-    brand: "NEX Split Newel™",
-    brandPlain: "NEX Split Newel",
+    // Nex Newel™ is the branded family; Split Base Design is the first
+    // specific design within it (Philip 2026-08-05, refined from the
+    // earlier "NEX Split Newel™" standalone framing). Future Nex Newel™
+    // designs (Turned, Fluted, Metal-Clad, Illuminated, Cantilever) will
+    // each receive their own key alongside this one.
+    brand: "Nex Newel™ Split Base Design",
+    brandPlain: "Nex Newel Split Base",
     technical: "split newel post",
     explanation:
-      "NEX Split Newel™ (our branded two-part timber newel with a stainless steel spacer)",
+      "Nex Newel™ Split Base Design (our branded two-part timber newel with a stainless steel spacer)",
   },
 };
 
