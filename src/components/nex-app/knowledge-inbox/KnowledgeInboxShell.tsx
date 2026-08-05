@@ -6,11 +6,21 @@
 //   · Hero + subtitle
 //   · Seven statistic cards (Items Waiting · Processing · Needs Review ·
 //     Completed Today · Records Created · Records Updated · FAQs Generated)
+//   · Knowledge Source picker (eight tiers · determines processing pipeline)
 //   · Five capture surfaces (Drag & Drop · Quick Dump · URL Import ·
 //     Voice Notes · Image Analysis) — one inbox, many mouths
-//   · Inbox Queue with per-item status chip + row actions
+//   · Inbox Queue with per-item status chip + source chip + row actions
 //   · Large "Process Inbox" CTA
 //   · Processing Report overlay
+//
+// Knowledge Source doctrine (Philip 2026-08-06):
+//   The source of a fact determines HOW hard NEX has to work on it.
+//   ChatGPT Approved and Claude Generated content is trusted-curated —
+//   import, link, index, done. Raw Research needs full extraction. Internet
+//   Articles are treated cautiously. Government / Standards become
+//   high-authority references. Customer Q&A drives FAQ generation and
+//   gap analysis. Personal Ideas are kept separate from industry knowledge.
+//   Each source has its own PROCESSING WORKFLOW encoded in SOURCE_META.
 //
 // v1 is UI-first: capture surfaces write to an in-memory queue and the
 // Process Inbox button runs a simulated pipeline. Every seam that would
@@ -26,19 +36,27 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
+  BookOpen,
+  BrainCircuit,
+  Bot,
   CheckCircle2,
   ChevronRight,
   Clock,
   Cloud,
   FileText,
   Flame,
+  Globe,
+  HelpCircle,
   History,
   Image as ImageIcon,
   Inbox,
+  Landmark,
+  Lightbulb,
   Link as LinkIcon,
   Loader2,
   Mic,
   RefreshCcw,
+  ShieldAlert,
   Sparkles,
   Trash2,
   Upload,
@@ -61,11 +79,25 @@ type InboxStatus =
   | "review"    // orange — flagged for human review
   | "processed"; // green  — merged into a record
 
+// Knowledge Source — determines how NEX processes the item.
+// Not every upload requires the same amount of work: the source
+// picks the workflow. Philip 2026-08-06.
+type KnowledgeSource =
+  | "chatgpt-approved"    // 🟢 trusted-curated, do NOT rewrite
+  | "claude-generated"    // 🔵 already golden-rule, just link
+  | "raw-research"        // 🟡 extract + build + FAQ + cross-ref
+  | "internet-article"    // 🟠 cautious, verify before promoting
+  | "needs-verification"  // 🔴 hold for human review
+  | "gov-standards"       // ⚫ high-authority reference; update affected records
+  | "customer-qa"         // 🟣 drives FAQ generation + gap analysis
+  | "personal-ideas";     // 🟤 keep separate from industry knowledge
+
 type InboxItem = {
   id: string;
   title: string;
   kind: InboxKind;
   status: InboxStatus;
+  source: KnowledgeSource;
   createdAt: number;
   meta?: string;         // e.g. filename, url, byte size, duration
   previewText?: string;  // first 200 chars for the preview drawer
@@ -115,6 +147,119 @@ const STATUS_STYLE: Record<InboxStatus, { label: string; bg: string; fg: string;
   processed:  { label: "Processed",   bg: "#D1FAE5", fg: "#065F46", dot: "#10B981" },
 };
 
+// ── Knowledge Source palette + workflow metadata (Philip 2026-08-06) ─
+//
+// dot        — the coloured indicator in the picker + queue chip
+// tint       — the soft background tint when the source is selected
+// pipeline   — the exact processing recipe fired by the classifier
+// examples   — surfaces on the picker tile so intent is obvious
+// scrutiny   — how much verification the pipeline applies
+
+type SourceMeta = {
+  label: string;
+  dot: string;
+  tint: string;
+  fg: string;
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  pipeline: string;
+  examples: string;
+  scrutiny: "trusted" | "curated" | "extract" | "cautious" | "hold" | "authoritative" | "gap-driven" | "sandbox";
+};
+
+const SOURCE_META: Record<KnowledgeSource, SourceMeta> = {
+  "chatgpt-approved": {
+    label: "ChatGPT Approved",
+    dot: "#10B981",
+    tint: "#D1FAE5",
+    fg: "#065F46",
+    icon: Bot,
+    pipeline: "Import → Classify → Link → Index → Done. Never rewrite.",
+    examples: "Q&A collections · material guides · buying guides",
+    scrutiny: "trusted",
+  },
+  "claude-generated": {
+    label: "Claude Generated",
+    dot: "#3B82F6",
+    tint: "#DBEAFE",
+    fg: "#1D4ED8",
+    icon: BrainCircuit,
+    pipeline: "Already Golden-Rule. Import + link, no reprocessing.",
+    examples: "Records I authored in a Claude session",
+    scrutiny: "curated",
+  },
+  "raw-research": {
+    label: "Raw Research",
+    dot: "#F59E0B",
+    tint: "#FEF3C7",
+    fg: "#92400E",
+    icon: BookOpen,
+    pipeline: "Read → Analyse → Verify → Build Records → FAQ → Link.",
+    examples: "Books · PDFs · trade manuals · manufacturer docs",
+    scrutiny: "extract",
+  },
+  "internet-article": {
+    label: "Internet Article",
+    dot: "#F97316",
+    tint: "#FFE7CE",
+    fg: "#9A3412",
+    icon: Globe,
+    pipeline: "Extract with caution. Verify claims before promoting.",
+    examples: "Blogs · industry posts · news stories",
+    scrutiny: "cautious",
+  },
+  "needs-verification": {
+    label: "Needs Verification",
+    dot: "#EF4444",
+    tint: "#FEE2E2",
+    fg: "#991B1B",
+    icon: ShieldAlert,
+    pipeline: "Hold. No promotion until human review approves.",
+    examples: "Anything I flagged as suspicious",
+    scrutiny: "hold",
+  },
+  "gov-standards": {
+    label: "Government / Standards",
+    dot: "#1F2937",
+    tint: "#E5E7EB",
+    fg: "#111827",
+    icon: Landmark,
+    pipeline: "Verify → Update affected records → Notify downstream.",
+    examples: "Approved Doc K · BS · TRADA · FSC · PEFC · CITES",
+    scrutiny: "authoritative",
+  },
+  "customer-qa": {
+    label: "Customer Q&A",
+    dot: "#A855F7",
+    tint: "#F3E8FF",
+    fg: "#6B21A8",
+    icon: HelpCircle,
+    pipeline: "Generate FAQs · surface gaps in the knowledge base.",
+    examples: "Support emails · forum questions · call notes",
+    scrutiny: "gap-driven",
+  },
+  "personal-ideas": {
+    label: "Personal Ideas",
+    dot: "#78350F",
+    tint: "#FDE68A",
+    fg: "#78350F",
+    icon: Lightbulb,
+    pipeline: "Store separately. Never mix with industry records.",
+    examples: "Business · feature · NEX concept · architecture",
+    scrutiny: "sandbox",
+  },
+};
+
+const SOURCE_ORDER: KnowledgeSource[] = [
+  "chatgpt-approved",
+  "claude-generated",
+  "raw-research",
+  "internet-article",
+  "needs-verification",
+  "gov-standards",
+  "customer-qa",
+  "personal-ideas",
+];
+
 // ── Accepted file extensions (per Philip's spec) ─────────────────────
 
 const ACCEPT_ATTR = [
@@ -136,6 +281,7 @@ const SEED_ITEMS: InboxItem[] = [
     title: "Q&A batch · walnut vs oak decision points",
     kind: "text",
     status: "waiting",
+    source: "chatgpt-approved",
     createdAt: Date.now() - 1000 * 60 * 42,
     meta: "18 questions",
     previewText:
@@ -146,6 +292,7 @@ const SEED_ITEMS: InboxItem[] = [
     title: "Approved Doc K — 2013 edition (with 2020 amendments).pdf",
     kind: "file",
     status: "review",
+    source: "gov-standards",
     createdAt: Date.now() - 1000 * 60 * 60 * 3,
     meta: "PDF · 2.1 MB",
     previewText:
@@ -156,6 +303,7 @@ const SEED_ITEMS: InboxItem[] = [
     title: "gov.uk · Ash Dieback update — DEFRA guidance",
     kind: "url",
     status: "processed",
+    source: "gov-standards",
     createdAt: Date.now() - 1000 * 60 * 60 * 26,
     meta: "gov.uk · fetched",
     previewText:
@@ -166,6 +314,7 @@ const SEED_ITEMS: InboxItem[] = [
     title: "Voice note — Signature tier newel discussion",
     kind: "voice",
     status: "processing",
+    source: "personal-ideas",
     createdAt: Date.now() - 1000 * 60 * 12,
     meta: "audio · 4m 22s",
     previewText: "Transcribing…",
@@ -175,6 +324,7 @@ const SEED_ITEMS: InboxItem[] = [
     title: "Photograph — turned oak baluster reference",
     kind: "image",
     status: "waiting",
+    source: "raw-research",
     createdAt: Date.now() - 1000 * 60 * 5,
     meta: "JPG · 1.4 MB",
     previewText: "Awaiting image analysis…",
@@ -249,6 +399,7 @@ function simulateProcessing(items: InboxItem[]): ProcessingReport {
 
 export function KnowledgeInboxShell() {
   const [items, setItems] = useState<InboxItem[]>(SEED_ITEMS);
+  const [activeSource, setActiveSource] = useState<KnowledgeSource>("chatgpt-approved");
   const [quickDump, setQuickDump] = useState("");
   const [urlBuffer, setUrlBuffer] = useState("");
   const [dragActive, setDragActive] = useState(false);
@@ -289,7 +440,8 @@ export function KnowledgeInboxShell() {
       const arr = Array.from(fileList);
       if (!arr.length) return;
       // TODO(api): POST each file to /api/nex/knowledge-inbox/upload
-      // and use the server-assigned id; v1 stores locally.
+      // (with source metadata) and use the server-assigned id; v1
+      // stores locally.
       const created: InboxItem[] = arr.map((f) => {
         const kind =
           forcedKind ??
@@ -308,6 +460,7 @@ export function KnowledgeInboxShell() {
           title: f.name,
           kind,
           status: "waiting",
+          source: activeSource,
           createdAt: Date.now(),
           meta,
           previewText:
@@ -320,7 +473,7 @@ export function KnowledgeInboxShell() {
       });
       addItems(created);
     },
-    [addItems]
+    [addItems, activeSource]
   );
 
   const handleQuickDumpSave = useCallback(
@@ -333,6 +486,7 @@ export function KnowledgeInboxShell() {
         title: first || "Note",
         kind: "text",
         status: "waiting",
+        source: activeSource,
         createdAt: Date.now(),
         meta: `${text.length.toLocaleString()} chars`,
         previewText: text.slice(0, 220),
@@ -344,7 +498,7 @@ export function KnowledgeInboxShell() {
         setTimeout(() => runProcessInbox(), 100);
       }
     },
-    [addItems, quickDump]
+    [addItems, quickDump, activeSource]
   );
 
   const handleUrlImport = useCallback(() => {
@@ -356,20 +510,23 @@ export function KnowledgeInboxShell() {
       .map((u) => u.trim())
       .filter((u) => u.length > 0);
     if (!urls.length) return;
-    // TODO(api): POST { urls } to /api/nex/knowledge-inbox/urls
-    // so the crawler can fetch, store, and hash for dedupe.
+    // TODO(api): POST { urls, source } to /api/nex/knowledge-inbox/urls
+    // so the crawler can fetch, store, hash for dedupe, and apply the
+    // source-specific pipeline (cautious for internet-article,
+    // authoritative for gov-standards, etc.).
     const created: InboxItem[] = urls.map((u) => ({
       id: makeId("url"),
       title: u.replace(/^https?:\/\//, "").slice(0, 80),
       kind: "url",
       status: "waiting",
+      source: activeSource,
       createdAt: Date.now(),
       meta: "URL · queued for fetch",
       previewText: u,
     }));
     addItems(created);
     setUrlBuffer("");
-  }, [addItems, urlBuffer]);
+  }, [addItems, urlBuffer, activeSource]);
 
   // ── Drag & drop plumbing ───────────────────────────────────────────
 
@@ -455,6 +612,9 @@ export function KnowledgeInboxShell() {
           totalsRecordsUpdated={totalsRecordsUpdated}
           totalsFaqsGenerated={totalsFaqsGenerated}
         />
+
+        {/* ── Knowledge Source picker ──────────────────────────────── */}
+        <SourcePicker active={activeSource} onSelect={setActiveSource} />
 
         {/* ── Capture surfaces ─────────────────────────────────────── */}
         <section className="mt-10 grid grid-cols-1 gap-5 lg:grid-cols-2">
@@ -555,6 +715,164 @@ export function KnowledgeInboxShell() {
         {isProcessing ? <ProcessingBanner /> : null}
       </AnimatePresence>
     </div>
+  );
+}
+
+// ── Knowledge Source picker ──────────────────────────────────────────
+//
+// Sits above the capture surfaces. Every item created downstream carries
+// the currently-selected source. The picker also surfaces the processing
+// pipeline for the active source so Philip can see how NEX will handle
+// what he's about to drop in. Selection persists until explicitly changed.
+
+function SourcePicker({
+  active,
+  onSelect,
+}: {
+  active: KnowledgeSource;
+  onSelect: (s: KnowledgeSource) => void;
+}) {
+  const meta = SOURCE_META[active];
+  const ActiveIcon = meta.icon;
+  return (
+    <section className="mt-8">
+      <div className="mb-3 flex items-baseline justify-between">
+        <h2
+          className="text-[17px] font-black tracking-tight"
+          style={{ color: TOKEN.text }}
+        >
+          Knowledge Source
+        </h2>
+        <span
+          className="text-[11px] uppercase tracking-[0.24em]"
+          style={{ color: TOKEN.textSoft }}
+        >
+          Source determines the workflow
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+        {SOURCE_ORDER.map((s) => (
+          <SourceButton
+            key={s}
+            source={s}
+            active={s === active}
+            onClick={() => onSelect(s)}
+          />
+        ))}
+      </div>
+
+      {/* Selected-source pipeline explainer */}
+      <motion.div
+        key={active}
+        initial={{ opacity: 0, y: 4 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.18 }}
+        className="mt-3 flex items-start gap-3 rounded-2xl border p-4"
+        style={{
+          background: meta.tint,
+          borderColor: TOKEN.border,
+        }}
+      >
+        <div
+          className="grid h-10 w-10 flex-none place-items-center rounded-xl"
+          style={{
+            background: TOKEN.card,
+            color: meta.fg,
+            boxShadow: TOKEN.shadowSm,
+          }}
+        >
+          <ActiveIcon size={18} strokeWidth={2} />
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className="text-[11px] font-bold uppercase tracking-[0.2em]"
+              style={{ color: meta.fg }}
+            >
+              {meta.label}
+            </span>
+            <span
+              className="rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
+              style={{
+                background: TOKEN.card,
+                borderColor: TOKEN.border,
+                color: TOKEN.textMid,
+              }}
+            >
+              {meta.scrutiny}
+            </span>
+          </div>
+          <div
+            className="mt-1 text-[13px] font-semibold"
+            style={{ color: TOKEN.text }}
+          >
+            {meta.pipeline}
+          </div>
+          <div
+            className="mt-1 text-[12px]"
+            style={{ color: TOKEN.textMid }}
+          >
+            Typical: {meta.examples}
+          </div>
+        </div>
+      </motion.div>
+    </section>
+  );
+}
+
+function SourceButton({
+  source,
+  active,
+  onClick,
+}: {
+  source: KnowledgeSource;
+  active: boolean;
+  onClick: () => void;
+}) {
+  const meta = SOURCE_META[source];
+  const Icon = meta.icon;
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className="flex items-center gap-2 rounded-2xl border px-3 py-2.5 text-left transition-all"
+      style={{
+        background: active ? meta.tint : TOKEN.card,
+        borderColor: active ? meta.dot : TOKEN.border,
+        boxShadow: active ? TOKEN.shadowMd : TOKEN.shadowSm,
+      }}
+    >
+      <span
+        className="grid h-8 w-8 flex-none place-items-center rounded-xl"
+        style={{
+          background: active ? TOKEN.card : TOKEN.divider,
+          color: meta.fg,
+        }}
+      >
+        <Icon size={15} strokeWidth={2} />
+      </span>
+      <span className="min-w-0 flex-1">
+        <span
+          className="flex items-center gap-1.5 text-[12px] font-bold"
+          style={{ color: TOKEN.text }}
+        >
+          <span
+            aria-hidden
+            className="inline-block h-2 w-2 rounded-full"
+            style={{ background: meta.dot }}
+          />
+          {meta.label}
+        </span>
+        <span
+          className="mt-0.5 block truncate text-[11px]"
+          style={{ color: TOKEN.textSoft }}
+        >
+          {meta.scrutiny}
+        </span>
+      </span>
+    </button>
   );
 }
 
@@ -1194,6 +1512,7 @@ function InboxRow({
               />
               {style.label}
             </span>
+            <SourceChip source={item.source} />
             <span
               className="text-[10px] font-semibold uppercase tracking-widest"
               style={{ color: TOKEN.textSoft }}
@@ -1240,6 +1559,25 @@ function InboxRow({
         </div>
       </div>
     </motion.li>
+  );
+}
+
+// Small source chip used inside the queue row and the preview drawer.
+function SourceChip({ source }: { source: KnowledgeSource }) {
+  const meta = SOURCE_META[source];
+  return (
+    <span
+      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+      style={{ background: meta.tint, color: meta.fg }}
+      title={meta.pipeline}
+    >
+      <span
+        aria-hidden
+        className="inline-block h-1.5 w-1.5 rounded-full"
+        style={{ background: meta.dot }}
+      />
+      {meta.label}
+    </span>
   );
 }
 
@@ -1336,6 +1674,7 @@ function PreviewDrawer({
           >
             {style.label}
           </span>
+          <SourceChip source={item.source} />
           <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
             {humanTime(item.createdAt)}
           </span>
