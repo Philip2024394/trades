@@ -604,6 +604,7 @@ export function NexCentreLiveFeed() {
         ) : (
           <EmptyState
             query={debouncedQuery}
+            category={filters.category}
             fallback={emptyFallback}
             onOpen={openMerchant}
           />
@@ -1200,13 +1201,36 @@ function AdCard({ tile }: { tile: AdTile }) {
 
 function EmptyState({
   query,
+  category,
   fallback,
   onOpen,
 }: {
   query: string;
+  category: string;
   fallback: CentreFeedItem[];
   onOpen: (item: CentreFeedItem) => void;
 }) {
+  // Philip 2026-08-05 · D1-a principle: a capability may exist before it
+  // has content, but the interface must never pretend it has content.
+  // When the user has filtered to a trade domain that has no merchants
+  // yet (Doors, Flooring, etc.), do NOT surface random fallback items —
+  // that would read as "we found something" when we haven't. Show the
+  // truthful empty state and redirect the user to Ask NEX, which knows
+  // the domain even without merchants.
+  if (category && fallback.length > 0) {
+    return (
+      <div className="mx-auto mt-10 max-w-sm rounded-2xl border border-black/5 bg-white p-6 text-center">
+        <Sparkles className="mx-auto h-7 w-7 text-orange-500" />
+        <div className="mt-3 text-base font-semibold text-black">
+          No {category} merchants in NEX yet.
+        </div>
+        <div className="mt-1 text-xs leading-relaxed text-black/60">
+          Ask NEX about {category.toLowerCase()} above — we know the domain
+          even where we don't yet have merchants.
+        </div>
+      </div>
+    );
+  }
   if (fallback.length > 0) {
     return (
       <div>
