@@ -38,11 +38,11 @@ Every layer builds on the layers below. Authoring proceeds bottom-up per the tre
 
 | Cluster | Target | Complete | Coverage | Gap |
 |---|---|---|---|---|
-| **Materials** | ~25 | 2 | 8% | 23 |
+| **Materials** | ~25 (core) · scaling to worldwide library | 3 | 12% | 22 |
 | **Regulations** | ~20 | 1 | 5% | 19 |
 | **Processes** | ~40 | 1 | 2.5% | 39 |
 | **Hardware** | (embedded in Components) | — | — | — |
-| **Foundation Total** | **~85** | **4** | **4.7%** | **81** |
+| **Foundation Total** | **~85** | **5** | **5.9%** | **80** |
 
 **Milestone:** Foundation Complete = ~85 records → begin Component authoring.
 
@@ -130,5 +130,6 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 | 2026-08-06 | Initial dashboard authored after Approved Doc K commit `4fc80df` | Baseline: 4 records (2 Foundation + 2 Business OS) |
 | 2026-08-06 | American White Oak authored · Materials Sprint 1 position 1/6 | Materials 1 → 2 · Foundation 2 → 3 · Total 4 → 5 |
 | 2026-08-06 | Kiln Drying authored · Processes Sprint 1a position 1/2 · first Process record | Processes 0 → 1 · Foundation 3 → 4 · Total 5 → 6 |
+| 2026-08-06 | European Oak authored · Materials Sprint 1 position 2/6 · first record under expanded global template + FAQ Automation Rule + Authoritative Sources whitelist | Materials 2 → 3 · Foundation 4 → 5 · Total 6 → 7 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
