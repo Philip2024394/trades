@@ -2,9 +2,17 @@
 //
 // The boundary between "which backend" and "what the app calls".
 //
-// Backend selection:
-//   · SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY present → Supabase
-//   · otherwise                                        → filesystem (dev)
+// Backend selection (Philip 2026-08-06 production migration):
+//   · NEX_BRAIN_BACKEND=supabase AND the Supabase env vars present
+//                                                    → Supabase
+//   · otherwise                                      → filesystem (dev)
+//
+// Env vars checked (either set works):
+//   Primary  — NEX_SUPABASE_URL + NEX_SUPABASE_SERVICE_ROLE_KEY
+//   Fallback — NEXT_PUBLIC_NEX_SUPABASE_URL (existing Nex project URL)
+//              + NEX_SUPABASE_SERVICE_ROLE_KEY
+//   Generic  — SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY (for a fresh
+//              standalone brain project if Philip prefers to isolate)
 //
 // Both backends implement the same BrainStore interface. Every worker,
 // route, and UI reads/writes through this module — nobody else touches
@@ -24,9 +32,9 @@
 //     knowledge_feedback.json    ← the moat
 //     audit_log.json
 //
-// Once you paste db/migrations/001_nex_brain_schema.sql into a fresh
-// Supabase project and set SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY,
-// this module transparently switches. No changes elsewhere.
+// Supabase tables are the same 11 from db/migrations/001_nex_brain_schema.sql.
+// They coexist with existing Nex tables (nex_projects, nex_images, etc.)
+// because names don't collide.
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -52,15 +60,30 @@ import type {
 // ── Backend selection ────────────────────────────────────────────────
 //
 // Explicit opt-in: NEX_BRAIN_BACKEND=supabase must be set (in addition
-// to the standard SUPABASE_* env vars) to activate the Supabase backend.
+// to the Supabase env vars) to activate the Supabase backend.
 // This prevents accidental activation when the repo already has
-// SUPABASE_URL configured for other features (Philip's existing setup).
-// Default is always the filesystem backend — safe for dev.
+// SUPABASE_URL configured for other features. Default is always the
+// filesystem backend — safe for dev.
+
+function resolveSupabaseUrl(): string | undefined {
+  return (
+    process.env.NEX_SUPABASE_URL ||
+    process.env.NEXT_PUBLIC_NEX_SUPABASE_URL ||
+    process.env.SUPABASE_URL
+  );
+}
+
+function resolveSupabaseServiceRoleKey(): string | undefined {
+  return (
+    process.env.NEX_SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+}
 
 function isSupabaseConfigured(): boolean {
   return (
     process.env.NEX_BRAIN_BACKEND === "supabase" &&
-    Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY)
+    Boolean(resolveSupabaseUrl() && resolveSupabaseServiceRoleKey())
   );
 }
 
@@ -530,56 +553,529 @@ class FilesystemStore implements BrainStore {
 // Supabase backend
 // =====================================================================
 //
-// Lazy-imported so the app boots without the @supabase/supabase-js
-// dependency being installed. When Philip runs `npm i @supabase/supabase-js`
-// AND sets SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY, this backend
-// activates automatically.
+// Uses @supabase/supabase-js with the service-role key so worker writes
+// bypass Row-Level Security. Same 11 tables as the filesystem backend;
+// same contract. Every method is a thin wrapper around one or two
+// Supabase client calls.
+
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 class SupabaseStore implements BrainStore {
-  // Placeholder — implementation lands the moment @supabase/supabase-js
-  // is installed. The interface above is the exact contract to satisfy.
-  // Every method is a thin wrapper around the Supabase client:
-  //   - inserts → `.from('table').insert(...).select().single()`
-  //   - lists   → `.from('table').select(...).eq(...).limit(...)`
-  //   - claimNextJob → RPC call to the claim_next_job() function from
-  //     the migration; that function does the SKIP LOCKED atomic claim.
-  //   - status  → single query against the `nex_brain_status` view.
-  //
-  // For now: throw a friendly error so we can't accidentally use it
-  // before it's wired.
+  private readonly client: SupabaseClient;
 
-  private explain(method: string): never {
-    throw new Error(
-      `[nex-brain.storage] Supabase backend not yet wired (called ${method}). ` +
-        `Run \`npm i @supabase/supabase-js\` then implement SupabaseStore.` +
-        ` The filesystem backend is active in the meantime.`
-    );
+  constructor() {
+    const url = resolveSupabaseUrl();
+    const key = resolveSupabaseServiceRoleKey();
+    if (!url || !key) {
+      throw new Error(
+        "[nex-brain.storage] SupabaseStore instantiated without credentials. " +
+          "Set NEX_SUPABASE_URL (or NEXT_PUBLIC_NEX_SUPABASE_URL / SUPABASE_URL) " +
+          "and NEX_SUPABASE_SERVICE_ROLE_KEY (or SUPABASE_SERVICE_ROLE_KEY)."
+      );
+    }
+    this.client = createClient(url, key, {
+      auth: { persistSession: false, autoRefreshToken: false },
+      db: { schema: "public" },
+    });
   }
 
-  insertRecord(): Promise<KnowledgeRecord> { this.explain("insertRecord"); }
-  getRecord(): Promise<KnowledgeRecord | null> { this.explain("getRecord"); }
-  listRecords(): Promise<KnowledgeRecord[]> { this.explain("listRecords"); }
-  updateRecordStatus(): Promise<KnowledgeRecord | null> { this.explain("updateRecordStatus"); }
-  insertVersion(): Promise<RecordVersion> { this.explain("insertVersion"); }
-  insertEdge(): Promise<GraphEdge> { this.explain("insertEdge"); }
-  listEdges(): Promise<GraphEdge[]> { this.explain("listEdges"); }
-  enqueueJob(): Promise<WorkerJob> { this.explain("enqueueJob"); }
-  claimNextJob(): Promise<WorkerJob | null> { this.explain("claimNextJob"); }
-  completeJob(): Promise<void> { this.explain("completeJob"); }
-  failJob(): Promise<void> { this.explain("failJob"); }
-  countJobs(): Promise<number> { this.explain("countJobs"); }
-  insertResult(): Promise<WorkerResult> { this.explain("insertResult"); }
-  insertSource(): Promise<Source> { this.explain("insertSource"); }
-  insertConfidence(): Promise<ConfidenceScore> { this.explain("insertConfidence"); }
-  listConfidence(): Promise<ConfidenceScore[]> { this.explain("listConfidence"); }
-  insertContradiction(): Promise<Contradiction> { this.explain("insertContradiction"); }
-  listOpenContradictions(): Promise<Contradiction[]> { this.explain("listOpenContradictions"); }
-  insertDeprecation(): Promise<Deprecation> { this.explain("insertDeprecation"); }
-  insertFeedback(): Promise<KnowledgeFeedback> { this.explain("insertFeedback"); }
-  listFeedback(): Promise<KnowledgeFeedback[]> { this.explain("listFeedback"); }
-  markFeedbackApplied(): Promise<void> { this.explain("markFeedbackApplied"); }
-  insertAudit(): Promise<AuditEntry> { this.explain("insertAudit"); }
-  status(): Promise<BrainStatus> { this.explain("status"); }
+  // ── Records ────────────────────────────────────────────────────────
+
+  async insertRecord(input: Omit<KnowledgeRecord, "id" | "created_at">): Promise<KnowledgeRecord> {
+    const { data, error } = await this.client
+      .from("knowledge_records")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertRecord failed: ${error.message}`);
+    return data as KnowledgeRecord;
+  }
+
+  async getRecord(record_id: string): Promise<KnowledgeRecord | null> {
+    const { data, error } = await this.client
+      .from("knowledge_records")
+      .select("*")
+      .eq("record_id", record_id)
+      .maybeSingle();
+    if (error) throw new Error(`getRecord failed: ${error.message}`);
+    return (data as KnowledgeRecord | null) ?? null;
+  }
+
+  async listRecords(filter?: { status?: KnowledgeRecord["status"]; limit?: number }): Promise<KnowledgeRecord[]> {
+    let query = this.client
+      .from("knowledge_records")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (filter?.status) query = query.eq("status", filter.status);
+    query = query.limit(filter?.limit ?? 100);
+    const { data, error } = await query;
+    if (error) throw new Error(`listRecords failed: ${error.message}`);
+    return (data as KnowledgeRecord[]) ?? [];
+  }
+
+  async updateRecordStatus(record_id: string, status: KnowledgeRecord["status"], reviewer?: string): Promise<KnowledgeRecord | null> {
+    const patch: Record<string, unknown> = {
+      status,
+      last_reviewed_at: nowIso(),
+    };
+    if (reviewer) patch.reviewed_by = reviewer;
+    if (status === "DEPRECATED" || status === "SUPERSEDED") patch.deprecated_at = nowIso();
+    const { data, error } = await this.client
+      .from("knowledge_records")
+      .update(patch)
+      .eq("record_id", record_id)
+      .select()
+      .maybeSingle();
+    if (error) throw new Error(`updateRecordStatus failed: ${error.message}`);
+    return (data as KnowledgeRecord | null) ?? null;
+  }
+
+  // ── Versions ───────────────────────────────────────────────────────
+
+  async insertVersion(input: Omit<RecordVersion, "id" | "changed_at">): Promise<RecordVersion> {
+    const { data, error } = await this.client
+      .from("record_versions")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertVersion failed: ${error.message}`);
+    return data as RecordVersion;
+  }
+
+  // ── Edges ──────────────────────────────────────────────────────────
+
+  async insertEdge(input: Omit<GraphEdge, "id" | "created_at">): Promise<GraphEdge> {
+    // UNIQUE(from_record_id, to_record_id, edge_type) — upsert on conflict.
+    const { data, error } = await this.client
+      .from("graph_edges")
+      .upsert(input as never, {
+        onConflict: "from_record_id,to_record_id,edge_type",
+        ignoreDuplicates: false,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(`insertEdge failed: ${error.message}`);
+    return data as GraphEdge;
+  }
+
+  async listEdges(from_record_id?: string): Promise<GraphEdge[]> {
+    let query = this.client.from("graph_edges").select("*");
+    if (from_record_id) query = query.eq("from_record_id", from_record_id);
+    const { data, error } = await query;
+    if (error) throw new Error(`listEdges failed: ${error.message}`);
+    return (data as GraphEdge[]) ?? [];
+  }
+
+  // ── Jobs (the queue) ───────────────────────────────────────────────
+
+  async enqueueJob(input: Omit<WorkerJob, "id" | "status" | "attempts" | "created_at" | "updated_at">): Promise<WorkerJob> {
+    const row = {
+      ...input,
+      status: "waiting",
+      attempts: 0,
+    };
+    const { data, error } = await this.client
+      .from("worker_jobs")
+      .insert(row as never)
+      .select()
+      .single();
+    if (error) throw new Error(`enqueueJob failed: ${error.message}`);
+    return data as WorkerJob;
+  }
+
+  async claimNextJob(worker_type: WorkerType, worker_id: string, lease_seconds = 60): Promise<WorkerJob | null> {
+    // Prefer the SKIP LOCKED RPC from the migration for true safe
+    // concurrency. Fall back to a best-effort update if the RPC
+    // is missing (e.g. schema not fully migrated yet).
+    const { data, error } = await this.client.rpc("claim_next_job", {
+      p_worker_type: worker_type,
+      p_worker_id: worker_id,
+      p_lease_seconds: lease_seconds,
+    });
+    if (error) {
+      // If the function doesn't exist, do a fallback single-row claim.
+      // Not truly SKIP LOCKED but adequate for low-concurrency dev.
+      if (/function .*claim_next_job/i.test(error.message)) {
+        const { data: candidate } = await this.client
+          .from("worker_jobs")
+          .select("*")
+          .eq("worker_type", worker_type)
+          .eq("status", "waiting")
+          .order("priority", { ascending: true })
+          .order("created_at", { ascending: true })
+          .limit(1)
+          .maybeSingle();
+        if (!candidate) return null;
+        const now = nowIso();
+        const leaseIso = new Date(Date.now() + lease_seconds * 1000).toISOString();
+        const { data: updated, error: updErr } = await this.client
+          .from("worker_jobs")
+          .update({
+            status: "assigned",
+            assigned_worker_id: worker_id,
+            assigned_at: now,
+            lease_expires_at: leaseIso,
+            attempts: ((candidate as WorkerJob).attempts ?? 0) + 1,
+            updated_at: now,
+          })
+          .eq("id", (candidate as WorkerJob).id)
+          .eq("status", "waiting") // optimistic concurrency
+          .select()
+          .maybeSingle();
+        if (updErr) throw new Error(`claimNextJob fallback update failed: ${updErr.message}`);
+        return (updated as WorkerJob | null) ?? null;
+      }
+      throw new Error(`claimNextJob failed: ${error.message}`);
+    }
+    return (data as WorkerJob | null) ?? null;
+  }
+
+  async completeJob(job_id: string, result_id: string): Promise<void> {
+    const now = nowIso();
+    const { error } = await this.client
+      .from("worker_jobs")
+      .update({ status: "completed", result_id, updated_at: now, completed_at: now })
+      .eq("id", job_id);
+    if (error) throw new Error(`completeJob failed: ${error.message}`);
+  }
+
+  async failJob(job_id: string, error_msg: string): Promise<void> {
+    const now = nowIso();
+    const { error } = await this.client
+      .from("worker_jobs")
+      .update({ status: "failed", last_error: error_msg.slice(0, 500), updated_at: now, completed_at: now })
+      .eq("id", job_id);
+    if (error) throw new Error(`failJob failed: ${error.message}`);
+  }
+
+  async countJobs(worker_type: WorkerType, status: JobStatus): Promise<number> {
+    const { count, error } = await this.client
+      .from("worker_jobs")
+      .select("id", { count: "exact", head: true })
+      .eq("worker_type", worker_type)
+      .eq("status", status);
+    if (error) throw new Error(`countJobs failed: ${error.message}`);
+    return count ?? 0;
+  }
+
+  // ── Results ────────────────────────────────────────────────────────
+
+  async insertResult(input: Omit<WorkerResult, "id" | "created_at">): Promise<WorkerResult> {
+    const { data, error } = await this.client
+      .from("worker_results")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertResult failed: ${error.message}`);
+    return data as WorkerResult;
+  }
+
+  // ── Sources ────────────────────────────────────────────────────────
+
+  async insertSource(input: Omit<Source, "id" | "created_at">): Promise<Source> {
+    const { data, error } = await this.client
+      .from("sources")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertSource failed: ${error.message}`);
+    return data as Source;
+  }
+
+  // ── Confidence ─────────────────────────────────────────────────────
+
+  async insertConfidence(input: Omit<ConfidenceScore, "id" | "created_at">): Promise<ConfidenceScore> {
+    // UNIQUE(record_id, claim_key) — upsert on conflict.
+    const { data, error } = await this.client
+      .from("confidence_scores")
+      .upsert(input as never, {
+        onConflict: "record_id,claim_key",
+        ignoreDuplicates: false,
+      })
+      .select()
+      .single();
+    if (error) throw new Error(`insertConfidence failed: ${error.message}`);
+    return data as ConfidenceScore;
+  }
+
+  async listConfidence(record_id: string): Promise<ConfidenceScore[]> {
+    const { data, error } = await this.client
+      .from("confidence_scores")
+      .select("*")
+      .eq("record_id", record_id);
+    if (error) throw new Error(`listConfidence failed: ${error.message}`);
+    return (data as ConfidenceScore[]) ?? [];
+  }
+
+  // ── Contradictions ─────────────────────────────────────────────────
+
+  async insertContradiction(input: Omit<Contradiction, "id" | "detected_at">): Promise<Contradiction> {
+    const { data, error } = await this.client
+      .from("contradictions")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertContradiction failed: ${error.message}`);
+    return data as Contradiction;
+  }
+
+  async listOpenContradictions(): Promise<Contradiction[]> {
+    const { data, error } = await this.client
+      .from("contradictions")
+      .select("*")
+      .eq("status", "open")
+      .order("detected_at", { ascending: false });
+    if (error) throw new Error(`listOpenContradictions failed: ${error.message}`);
+    return (data as Contradiction[]) ?? [];
+  }
+
+  // ── Deprecations ───────────────────────────────────────────────────
+
+  async insertDeprecation(input: Omit<Deprecation, "id" | "deprecated_at">): Promise<Deprecation> {
+    const { data, error } = await this.client
+      .from("deprecations")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertDeprecation failed: ${error.message}`);
+    return data as Deprecation;
+  }
+
+  // ── Feedback (the moat) ────────────────────────────────────────────
+
+  async insertFeedback(
+    input: Omit<KnowledgeFeedback, "id" | "created_at" | "applied_to_prompts">
+  ): Promise<KnowledgeFeedback> {
+    const row = { ...input, applied_to_prompts: false };
+    const { data, error } = await this.client
+      .from("knowledge_feedback")
+      .insert(row as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertFeedback failed: ${error.message}`);
+    return data as KnowledgeFeedback;
+  }
+
+  async listFeedback(filter?: { record_id?: string; unapplied_only?: boolean; limit?: number }): Promise<KnowledgeFeedback[]> {
+    let query = this.client
+      .from("knowledge_feedback")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (filter?.record_id) query = query.eq("record_id", filter.record_id);
+    if (filter?.unapplied_only) query = query.eq("applied_to_prompts", false);
+    query = query.limit(filter?.limit ?? 100);
+    const { data, error } = await query;
+    if (error) throw new Error(`listFeedback failed: ${error.message}`);
+    return (data as KnowledgeFeedback[]) ?? [];
+  }
+
+  async markFeedbackApplied(id: string): Promise<void> {
+    const { error } = await this.client
+      .from("knowledge_feedback")
+      .update({ applied_to_prompts: true, applied_at: nowIso() })
+      .eq("id", id);
+    if (error) throw new Error(`markFeedbackApplied failed: ${error.message}`);
+  }
+
+  // ── Audit log ──────────────────────────────────────────────────────
+
+  async insertAudit(input: Omit<AuditEntry, "id" | "created_at">): Promise<AuditEntry> {
+    const { data, error } = await this.client
+      .from("audit_log")
+      .insert(input as never)
+      .select()
+      .single();
+    if (error) throw new Error(`insertAudit failed: ${error.message}`);
+    return data as AuditEntry;
+  }
+
+  // ── Status snapshot ────────────────────────────────────────────────
+
+  async status(): Promise<BrainStatus> {
+    // Fetch counts + last-activity in parallel. Each call is a small
+    // count/select rather than a full scan.
+    const dayAgoIso = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const weekAgoIso = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
+    const [
+      jobsWaiting,
+      jobsInFlightAssigned,
+      jobsInFlightRunning,
+      jobsCompleted24h,
+      jobsFailed24h,
+      recordsAuth,
+      recordsUnderReview,
+      recordsDraft,
+      contradictionsOpen,
+      gapMarkersOpen,
+      llmResults24h,
+      feedbackTotal,
+      feedback7d,
+      feedbackUnapplied,
+      workerPool,
+    ] = await Promise.all([
+      this.countRows("worker_jobs", { status: "waiting" }),
+      this.countRows("worker_jobs", { status: "assigned" }),
+      this.countRows("worker_jobs", { status: "running" }),
+      this.countRows("worker_jobs", { status: "completed" }, { completed_at_gte: dayAgoIso }),
+      this.countRows("worker_jobs", { status: "failed" }, { updated_at_gte: dayAgoIso }),
+      this.countRows("knowledge_records", { status: "AUTHORITATIVE" }),
+      this.countRows("knowledge_records", { status: "UNDER_REVIEW" }),
+      this.countRows("knowledge_records", { status: "DRAFT" }),
+      this.countRows("contradictions", { status: "open" }),
+      this.countRows("graph_edges", { is_gap_marker: true }),
+      this.client.from("worker_results").select("llm_tokens_in,llm_tokens_out", { count: "exact" }).gte("created_at", dayAgoIso),
+      this.countRows("knowledge_feedback"),
+      this.countRows("knowledge_feedback", {}, { created_at_gte: weekAgoIso }),
+      this.countRows("knowledge_feedback", { applied_to_prompts: false }),
+      this.workerPoolHealth(dayAgoIso),
+    ]);
+
+    let llmTokens24h = 0;
+    let llmCalls24h = 0;
+    if (!llmResults24h.error && llmResults24h.data) {
+      llmCalls24h = llmResults24h.count ?? llmResults24h.data.length;
+      for (const r of llmResults24h.data as Array<{ llm_tokens_in?: number | null; llm_tokens_out?: number | null }>) {
+        llmTokens24h += (r.llm_tokens_in ?? 0) + (r.llm_tokens_out ?? 0);
+      }
+    }
+
+    return {
+      backend: "supabase",
+      jobs_waiting: jobsWaiting,
+      jobs_in_flight: jobsInFlightAssigned + jobsInFlightRunning,
+      jobs_completed_24h: jobsCompleted24h,
+      jobs_failed_24h: jobsFailed24h,
+      records_authoritative: recordsAuth,
+      records_under_review: recordsUnderReview,
+      records_draft: recordsDraft,
+      contradictions_open: contradictionsOpen,
+      gap_markers_open: gapMarkersOpen,
+      llm_tokens_24h: llmTokens24h,
+      llm_calls_24h: llmCalls24h,
+      feedback_total_lifetime: feedbackTotal,
+      feedback_last_7d: feedback7d,
+      feedback_unapplied: feedbackUnapplied,
+      worker_pool: workerPool,
+    };
+  }
+
+  // Helper — count rows matching arbitrary eq filters plus optional
+  // range filters like { completed_at_gte: iso }.
+  private async countRows(
+    table: string,
+    eq: Record<string, unknown> = {},
+    range: Record<string, string> = {}
+  ): Promise<number> {
+    let query = this.client.from(table).select("id", { count: "exact", head: true });
+    for (const [k, v] of Object.entries(eq)) {
+      query = query.eq(k, v as never);
+    }
+    for (const [k, v] of Object.entries(range)) {
+      // suffixes: _gte, _lte, _gt, _lt
+      const m = k.match(/(.+?)_(gte|lte|gt|lt)$/);
+      if (!m) continue;
+      const [, col, op] = m;
+      if (op === "gte") query = query.gte(col, v as never);
+      else if (op === "lte") query = query.lte(col, v as never);
+      else if (op === "gt") query = query.gt(col, v as never);
+      else if (op === "lt") query = query.lt(col, v as never);
+    }
+    const { count, error } = await query;
+    if (error) {
+      // Table missing → return 0 rather than crash the whole status snapshot.
+      console.warn(`[nex-brain.storage.supabase] countRows(${table}) failed:`, error.message);
+      return 0;
+    }
+    return count ?? 0;
+  }
+
+  // Build per-worker health from the jobs + results tables.
+  private async workerPoolHealth(dayAgoIso: string): Promise<WorkerPoolHealth[]> {
+    const workerTypes: WorkerType[] = [
+      "knowledge-context",
+      "voice-context",
+      "learning-context",
+      "knowledge-extractor",
+      "quality-checker",
+      "memory-guardian",
+    ];
+
+    const results: WorkerPoolHealth[] = [];
+    for (const wt of workerTypes) {
+      const [waiting, inFlightAssigned, inFlightRunning, completed24h, failed24h, lastCompleted, inFlightRow, results24h] = await Promise.all([
+        this.countRows("worker_jobs", { worker_type: wt, status: "waiting" }),
+        this.countRows("worker_jobs", { worker_type: wt, status: "assigned" }),
+        this.countRows("worker_jobs", { worker_type: wt, status: "running" }),
+        this.countRows("worker_jobs", { worker_type: wt, status: "completed" }, { completed_at_gte: dayAgoIso }),
+        this.countRows("worker_jobs", { worker_type: wt, status: "failed" }, { updated_at_gte: dayAgoIso }),
+        this.client
+          .from("worker_jobs")
+          .select("id,input_ref,completed_at,assigned_at,status")
+          .eq("worker_type", wt)
+          .eq("status", "completed")
+          .order("completed_at", { ascending: false })
+          .limit(1)
+          .maybeSingle(),
+        this.client
+          .from("worker_jobs")
+          .select("input_ref,assigned_at")
+          .eq("worker_type", wt)
+          .in("status", ["assigned", "running"])
+          .order("assigned_at", { ascending: false })
+          .limit(1)
+          .maybeSingle(),
+        this.client
+          .from("worker_results")
+          .select("llm_ms,output_kind,output_payload,overall_confidence")
+          .eq("worker_type", wt)
+          .gte("created_at", dayAgoIso)
+          .order("created_at", { ascending: false })
+          .limit(1),
+      ]);
+
+      const last = lastCompleted.data as { completed_at?: string } | null;
+      const inFlight = inFlightRow.data as { input_ref?: string; assigned_at?: string } | null;
+      const latestResult = (results24h.data as Array<{ llm_ms?: number; output_kind?: string; output_payload?: Record<string, unknown>; overall_confidence?: number }> | null)?.[0] ?? null;
+
+      let lastResultSummary: string | null = null;
+      if (latestResult) {
+        if (latestResult.output_kind === "record_draft") {
+          const ids = (latestResult.output_payload as { draft_record_ids?: string[] } | undefined)?.draft_record_ids ?? [];
+          lastResultSummary = `${ids.length} draft${ids.length === 1 ? "" : "s"} authored`;
+        } else if (latestResult.output_kind === "quality_report") {
+          const decision = (latestResult.output_payload as { decision?: string } | undefined)?.decision ?? "-";
+          const conf = latestResult.overall_confidence ?? 0;
+          lastResultSummary = `${decision.toLowerCase()} · ${(conf * 100).toFixed(0)}%`;
+        } else if (latestResult.output_kind === "context_bundle") {
+          const b = latestResult.output_payload as { records?: unknown[]; gaps?: string[] } | undefined;
+          lastResultSummary = `${(b?.records ?? []).length} related · ${(b?.gaps ?? []).length} gaps`;
+        } else if (latestResult.output_kind === "voice_guide") {
+          const g = latestResult.output_payload as { applicable_brand_terms?: unknown[]; primary_audience?: string } | undefined;
+          lastResultSummary = `${(g?.applicable_brand_terms ?? []).length} brand · ${g?.primary_audience ?? "-"}`;
+        } else if (latestResult.output_kind === "learning_bundle") {
+          const b = latestResult.output_payload as { examples?: unknown[]; candidates_scanned?: number } | undefined;
+          lastResultSummary = `${(b?.examples ?? []).length} lessons · ${b?.candidates_scanned ?? 0} scanned`;
+        } else if (latestResult.output_kind) {
+          lastResultSummary = latestResult.output_kind;
+        }
+      }
+
+      results.push({
+        worker_type: wt,
+        jobs_waiting: waiting,
+        jobs_in_flight: inFlightAssigned + inFlightRunning,
+        jobs_completed_24h: completed24h,
+        jobs_failed_24h: failed24h,
+        last_activity_at: last?.completed_at ?? null,
+        current_job_ref: inFlight?.input_ref ?? null,
+        current_job_since: inFlight?.assigned_at ?? null,
+        avg_ms_last_24h: latestResult?.llm_ms ?? null,
+        last_result_summary: lastResultSummary,
+      });
+    }
+    return results;
+  }
 }
 
 // ── Singleton accessor ───────────────────────────────────────────────

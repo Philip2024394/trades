@@ -65,17 +65,30 @@ should see 11 tables:
 
    ```env
    NEX_BRAIN_BACKEND=supabase
-   SUPABASE_URL=https://xxxx.supabase.co
-   SUPABASE_ANON_KEY=eyJ...
-   SUPABASE_SERVICE_ROLE_KEY=eyJ...
+   # If you already have the Nex Supabase project configured, reuse it:
+   #   NEXT_PUBLIC_NEX_SUPABASE_URL is probably already set — good
+   #   You still need to add the service-role key below.
+   NEX_SUPABASE_SERVICE_ROLE_KEY=eyJ...
+
+   # OR — if you want a fresh dedicated brain project, use these instead:
+   # NEX_SUPABASE_URL=https://xxxx.supabase.co
+   # NEX_SUPABASE_SERVICE_ROLE_KEY=eyJ...
+
+   # Legacy generic vars are also accepted:
+   # SUPABASE_URL=https://xxxx.supabase.co
+   # SUPABASE_SERVICE_ROLE_KEY=eyJ...
    ```
 
 5. Save the file.
 
 **The `NEX_BRAIN_BACKEND=supabase` line is the explicit opt-in.**
 Without it, the brain uses the filesystem backend even if the
-`SUPABASE_*` vars are set (they may exist for other features in the
+Supabase vars are set (they may exist for other features in the
 project).
+
+**URL resolution order:** `NEX_SUPABASE_URL` → `NEXT_PUBLIC_NEX_SUPABASE_URL` → `SUPABASE_URL`.
+**Service-role key order:** `NEX_SUPABASE_SERVICE_ROLE_KEY` → `SUPABASE_SERVICE_ROLE_KEY`.
+The first configured value in each list wins.
 
 **Never commit `.env.local` to git.** It's already in `.gitignore`.
 
