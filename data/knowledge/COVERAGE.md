@@ -40,9 +40,9 @@ Every layer builds on the layers below. Authoring proceeds bottom-up per the tre
 |---|---|---|---|---|
 | **Materials** | ~25 | 2 | 8% | 23 |
 | **Regulations** | ~20 | 1 | 5% | 19 |
-| **Processes** | ~40 | 0 | 0% | 40 |
+| **Processes** | ~40 | 1 | 2.5% | 39 |
 | **Hardware** | (embedded in Components) | — | — | — |
-| **Foundation Total** | **~85** | **3** | **3.5%** | **82** |
+| **Foundation Total** | **~85** | **4** | **4.7%** | **81** |
 
 **Milestone:** Foundation Complete = ~85 records → begin Component authoring.
 
@@ -129,5 +129,6 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 |---|---|---|
 | 2026-08-06 | Initial dashboard authored after Approved Doc K commit `4fc80df` | Baseline: 4 records (2 Foundation + 2 Business OS) |
 | 2026-08-06 | American White Oak authored · Materials Sprint 1 position 1/6 | Materials 1 → 2 · Foundation 2 → 3 · Total 4 → 5 |
+| 2026-08-06 | Kiln Drying authored · Processes Sprint 1a position 1/2 · first Process record | Processes 0 → 1 · Foundation 3 → 4 · Total 5 → 6 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
