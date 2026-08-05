@@ -111,6 +111,7 @@ type LlmProviderReport = {
   provider: "groq" | "gemini" | "anthropic" | "mock";
   status: "healthy" | "degraded" | "circuit-open" | "unconfigured" | "idle";
   configured: boolean;
+  capabilities: Array<"text" | "vision" | "audio" | "json_mode" | "tool_use" | "long_context">;
   consecutive_failures: number;
   circuit_open_ms_remaining: number | null;
   last_success_at: number | null;
@@ -489,6 +490,7 @@ function ProviderPill({ report, isActive }: { report?: LlmProviderReport; isActi
   const title = [
     `Status: ${report.status}`,
     `Configured: ${report.configured ? "yes" : "no"}`,
+    `Capabilities: ${report.capabilities.join(", ")}`,
     `Consecutive failures: ${report.consecutive_failures}`,
     report.circuit_open_ms_remaining
       ? `Circuit reopens in ${Math.ceil(report.circuit_open_ms_remaining / 1000)}s`

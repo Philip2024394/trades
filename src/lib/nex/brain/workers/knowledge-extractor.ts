@@ -271,12 +271,20 @@ export async function runKnowledgeExtractor(options: {
       learning: learningBundle,
     });
 
+    // Provider preference: Groq is best at fast structured JSON at
+    // 70B parameter scale for the Golden Rule extraction pattern.
+    // Requires json_mode capability. Fallback chain still applies.
     const { data, raw } = await completeJson<ExtractorOutput>(
       [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: userMessage },
       ],
-      { temperature: 0.3, max_tokens: 8192 }
+      {
+        temperature: 0.3,
+        max_tokens: 8192,
+        prefer_provider: "groq",
+        requires_capability: "json_mode",
+      }
     );
 
     // 3 · Write each candidate record + its claims + edges + source

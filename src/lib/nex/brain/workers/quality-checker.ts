@@ -336,12 +336,21 @@ nex_concepts:      ${(record.nex_concepts ?? []).join(", ") || "(none)"}
 REVIEW INSTRUCTION: assess voice, tone-audience match, plausibility, and any contradictions. Respond with ONLY the JSON object.`;
 
   try {
+    // Quality Checker prefers Groq for the same reason as the
+    // Extractor — fast structured JSON gate. Different model context
+    // from the Extractor (via independent complete() call) satisfies
+    // the "independent verifier" constitutional principle.
     const { data } = await completeJson<CheckReport["llm_verdict"] & Record<string, unknown>>(
       [
         { role: "system", content: systemPrompt },
         { role: "user", content: userPrompt },
       ],
-      { temperature: 0.2, max_tokens: 1024 }
+      {
+        temperature: 0.2,
+        max_tokens: 1024,
+        prefer_provider: "groq",
+        requires_capability: "json_mode",
+      }
     );
     return {
       voice_score: clamp01(Number(data?.voice_score ?? 0.7)),

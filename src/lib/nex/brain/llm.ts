@@ -21,6 +21,30 @@
 
 export type LlmProvider = "groq" | "gemini" | "anthropic" | "mock";
 
+// Capabilities each worker can require of a provider. If a worker
+// declares requires_capability, providers lacking that capability are
+// filtered out of the chain automatically for that call.
+export type LlmCapability =
+  | "text"          // basic text completion (all providers)
+  | "vision"        // accepts image inputs
+  | "audio"         // accepts audio inputs (transcription / analysis)
+  | "json_mode"     // reliable structured JSON output
+  | "tool_use"      // function/tool calling
+  | "long_context"; // 200K+ token context window
+
+// Which capabilities each provider offers. Update this as new providers
+// or model tiers are added.
+const PROVIDER_CAPABILITIES: Record<LlmProvider, LlmCapability[]> = {
+  // Groq: fast text + JSON, no vision (as of Llama 3.3 / DeepSeek line)
+  groq:      ["text", "json_mode", "tool_use"],
+  // Gemini 1.5 Flash: vision + 1M-token context + JSON
+  gemini:    ["text", "vision", "audio", "json_mode", "long_context", "tool_use"],
+  // Anthropic Claude Haiku: vision + tools + JSON + 200K context
+  anthropic: ["text", "vision", "json_mode", "tool_use", "long_context"],
+  // Mock: deterministic stand-in for everything so tests never block
+  mock:      ["text", "vision", "audio", "json_mode", "tool_use", "long_context"],
+};
+
 export type LlmMessage = { role: "system" | "user" | "assistant"; content: string };
 
 export type LlmCallOptions = {
@@ -29,6 +53,14 @@ export type LlmCallOptions = {
   max_tokens?: number;
   json_mode?: boolean;
   timeout_ms?: number;
+  // Provider intelligence (Philip 2026-08-06): workers declare which
+  // provider is best-suited AND / OR which capability is required.
+  //   prefer_provider     — move to head of chain if configured + healthy
+  //   requires_capability — filter chain to providers offering this cap
+  // Both are hints — the chain still falls back to any working provider
+  // if the preferred / capable one is down.
+  prefer_provider?: LlmProvider;
+  requires_capability?: LlmCapability;
 };
 
 export type LlmCallResult = {
@@ -98,27 +130,54 @@ function providerConfigured(p: LlmProvider): boolean {
   }
 }
 
-// Compute the provider chain from LLM_PROVIDER_CHAIN env var, falling
-// back to the "best available first" default. Mock is always last.
-function providerChain(): LlmProvider[] {
+// Compute the provider chain from LLM_PROVIDER_CHAIN env var, applying
+// per-call options (requires_capability filter, prefer_provider reorder).
+// Mock is always the last resort.
+function providerChain(options: {
+  requires_capability?: LlmCapability;
+  prefer_provider?: LlmProvider;
+} = {}): LlmProvider[] {
   const raw = process.env.LLM_PROVIDER_CHAIN;
   const seed = raw
     ? raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) as LlmProvider[]
     : ["groq", "gemini", "anthropic"];
-  const chain: LlmProvider[] = [];
+
+  let chain: LlmProvider[] = [];
   for (const p of seed) {
     if ((["groq", "gemini", "anthropic", "mock"] as string[]).includes(p) && providerConfigured(p)) {
       chain.push(p);
     }
   }
   if (!chain.includes("mock")) chain.push("mock"); // always the safety net
+
+  // Capability filter — drop providers that can't do the required job.
+  if (options.requires_capability) {
+    chain = chain.filter((p) =>
+      PROVIDER_CAPABILITIES[p].includes(options.requires_capability!)
+    );
+    // Guarantee mock is present so we never end up with an empty chain.
+    if (!chain.includes("mock")) chain.push("mock");
+  }
+
+  // Preference — move to head of chain if configured, capable, healthy.
+  if (
+    options.prefer_provider &&
+    chain.includes(options.prefer_provider) &&
+    !isCircuitOpen(options.prefer_provider)
+  ) {
+    chain = [options.prefer_provider, ...chain.filter((p) => p !== options.prefer_provider)];
+  }
+
   return chain;
 }
 
-// Which is the currently-active primary provider? (Chain head after
-// skipping any with an open circuit.)
-export function activeProvider(): LlmProvider {
-  const chain = providerChain();
+// Which is the currently-active primary provider for a given options
+// context? (Chain head after skipping any with an open circuit.)
+export function activeProvider(options: {
+  requires_capability?: LlmCapability;
+  prefer_provider?: LlmProvider;
+} = {}): LlmProvider {
+  const chain = providerChain(options);
   for (const p of chain) if (!isCircuitOpen(p)) return p;
   return chain[chain.length - 1]; // fall back to mock if everything is open
 }
@@ -172,6 +231,7 @@ export type ProviderReport = {
   provider: LlmProvider;
   status: ProviderStatus;
   configured: boolean;
+  capabilities: LlmCapability[];
   consecutive_failures: number;
   circuit_open_ms_remaining: number | null;
   last_success_at: number | null;
@@ -205,6 +265,7 @@ export function providerReports(): { chain: LlmProvider[]; active: LlmProvider; 
       provider: p,
       status,
       configured,
+      capabilities: PROVIDER_CAPABILITIES[p],
       consecutive_failures: h.consecutive_failures,
       circuit_open_ms_remaining: h.circuit_open_until ? Math.max(0, h.circuit_open_until - Date.now()) : null,
       last_success_at: h.last_success_at,
@@ -226,7 +287,10 @@ export async function complete(
   messages: LlmMessage[],
   options: LlmCallOptions = {}
 ): Promise<LlmCallResult> {
-  const chain = providerChain();
+  const chain = providerChain({
+    requires_capability: options.requires_capability,
+    prefer_provider: options.prefer_provider,
+  });
   const errors: string[] = [];
 
   for (const provider of chain) {
