@@ -420,6 +420,7 @@ class FilesystemStore implements BrainStore {
       new Date(iso).getTime() >= cutoff;
 
     const workerTypes: WorkerType[] = [
+      "knowledge-context",
       "knowledge-extractor",
       "quality-checker",
       "memory-guardian",

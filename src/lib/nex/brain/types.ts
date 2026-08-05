@@ -94,9 +94,10 @@ export type GraphEdge = {
 // ── Worker jobs + results ────────────────────────────────────────────
 
 export type WorkerType =
-  | "knowledge-extractor"
-  | "quality-checker"
-  | "memory-guardian";
+  | "knowledge-context"    // Retrieves related existing records before authoring
+  | "knowledge-extractor"  // Authors new drafts (with context from Context Worker)
+  | "quality-checker"      // Gates drafts against the Constitution
+  | "memory-guardian";     // Batch auditor
 
 export type JobStatus =
   | "waiting"

@@ -2,18 +2,27 @@
 //
 // Real-time worker. Pulls one "extract from inbox item" job, sends the
 // inbox item's content to the LLM with the NEX Golden Rule template
-// system prompt, parses the structured output into one or more
-// candidate KnowledgeRecord drafts, writes them (status = DRAFT),
+// system prompt PLUS the context bundle produced by the upstream
+// Knowledge Context Worker (Philip 2026-08-06 · "NEX writes with
+// memory, not in isolation"), parses the structured output into one
+// or more candidate KnowledgeRecord drafts, writes them (status = DRAFT),
 // writes typed graph edges + per-claim confidence rows + source
 // lineage, then enqueues a quality-check job for each new draft.
 //
 // The Extractor does NOT commit records as AUTHORITATIVE — that is
 // the Quality Checker's job. It authors the draft and hands off.
 //
+// Corpus-awareness contract (v2 · post-Context-Worker):
+//   input_payload.context_bundle contains up to 10 related existing
+//   records. The Extractor MUST prefer typed edges to those over
+//   re-authoring their content. Only NEW information becomes a new
+//   record; overlapping information becomes an edge.
+//
 // Contract:
 //   input_kind = 'inbox_item'
-//   input_ref  = the inbox item's id (from data/knowledge-inbox/*)
-//   input_payload = optional snapshot of the item (title, source, content)
+//   input_ref  = the inbox item's id
+//   input_payload = { source, title, contentPath|content|url,
+//                     context_bundle: ContextBundle }
 
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
@@ -73,15 +82,26 @@ type ExtractorOutput = {
 
 const SYSTEM_PROMPT = `You are the NEX Knowledge Extractor — a specialist worker in the NEX AI-managed knowledge system for the UK trades industry (staircases, kitchens, doors, flooring). Your ONE job is to extract structured, governed knowledge from raw source material and emit valid JSON that conforms exactly to the schema below.
 
+CRITICAL — NEX ALREADY KNOWS THINGS:
+You will be given a CONTEXT bundle listing existing records NEX has already authored. Your job is NOT to re-author what NEX already knows. Your job is to:
+  (a) IDENTIFY overlaps with existing records → create TYPED EDGES to them rather than re-authoring their content
+  (b) IDENTIFY genuinely NEW information not covered by existing records → author a focused new record for that specific angle
+  (c) IDENTIFY gaps flagged in the context (keywords with no existing coverage) → these are candidates for new records
+
+A good outcome looks like: 1-2 focused new records + 5-15 typed edges to existing records + a note in overall_notes about what the source added over the existing corpus.
+
+A BAD outcome looks like: re-authoring content that already exists in one of the CONTEXT records. If the input says "walnut is a premium hardwood" and CONTEXT contains materials_american_black_walnut_v1, you MUST link to that record with a typed edge, NOT write a new "walnut is premium" record.
+
 RULES:
 1. You are NOT answering the user. You are authoring knowledge records.
 2. Never fabricate. If a fact is not clearly established, mark it "design_opinion" or "experimental_concept" with low confidence.
 3. Every claim gets: classification, confidence_band (high/medium/low), confidence_score (0.0-1.0), source_type, rationale.
-4. Every edge must be typed (composes_material, regulated_by, used_for, part_of, references, etc.).
+4. Every edge must be typed. Valid edge types include: composes_material, composes_with, composes_from, regulated_by, used_for, part_of, references, extends, becomes, alternative_to, alternative_for, compared_with, replaces, sustainability_alert_from.
 5. Industry concepts stay separate from NEX concepts (never mix in the same claim).
 6. Never use "At NEX, we…" phrasing.
 7. Prefer splitting into multiple focused records over one giant record.
 8. Sustainability alerts (ash dieback, CITES status, etc.) must be surfaced when relevant.
+9. When CONTEXT records exist, aim for MORE typed edges than new claims. That is the healthy authoring ratio.
 
 OUTPUT SCHEMA (return this JSON, nothing else):
 {
@@ -152,12 +172,33 @@ export async function runKnowledgeExtractor(options: {
       throw new Error(`Extractor received empty content for inbox item ${inboxItemId}`);
     }
 
-    // 2 · Call the LLM with the Golden Rule system prompt
+    // 2 · Read the context bundle from the job payload (produced by the
+    // upstream Knowledge Context Worker). If it's missing — because the
+    // job was enqueued before the Context Worker existed, or someone
+    // bypassed the pipeline — proceed without context but log a warning.
+    const contextBundle = job.input_payload?.context_bundle as
+      | { records: Array<{
+          record_id: string;
+          title: string;
+          category: string;
+          summary: string;
+          nex_concepts: string[];
+          industry_concepts: string[];
+          primary_audience: string;
+          sample_edges: Array<{ edge_type: string; to: string }>;
+        }>; gaps: string[]; keywords: string[] }
+      | undefined;
+    if (!contextBundle) {
+      console.warn(`[knowledge-extractor] no context bundle attached for inbox item ${inboxItemId}`);
+    }
+
+    // 3 · Call the LLM with the Golden Rule system prompt + context
     const userMessage = buildUserMessage({
       inbox_id: inboxItemId,
       source,
       title: inboxTitle,
       content,
+      context: contextBundle,
     });
 
     const { data, raw } = await completeJson<ExtractorOutput>(
@@ -292,16 +333,31 @@ function buildUserMessage(input: {
   source: KnowledgeSource;
   title: string;
   content: string;
+  context?: {
+    records: Array<{
+      record_id: string;
+      title: string;
+      category: string;
+      summary: string;
+      nex_concepts: string[];
+      industry_concepts: string[];
+      primary_audience: string;
+      sample_edges: Array<{ edge_type: string; to: string }>;
+    }>;
+    gaps: string[];
+    keywords: string[];
+  };
 }): string {
   // Truncate very long content to keep within reasonable token budgets.
-  // The Knowledge Inbox may hold multi-MB dumps; the Extractor works
-  // on chunks up to ~80KB per call.
   const CONTENT_LIMIT = 80_000;
   const content =
     input.content.length > CONTENT_LIMIT
       ? input.content.slice(0, CONTENT_LIMIT) +
         `\n\n[…truncated at ${CONTENT_LIMIT.toLocaleString()} chars — Manager will re-enqueue remainder]`
       : input.content;
+
+  // Render the context bundle so Groq sees exactly what NEX already knows.
+  const contextBlock = renderContext(input.context);
 
   return `INBOX ITEM METADATA
 inbox_id: ${input.inbox_id}
@@ -317,8 +373,64 @@ SOURCE-SPECIFIC HANDLING NOTES:
 - customer-qa → Use to generate FAQ candidates and identify knowledge gaps.
 - personal-ideas → Store as NEX_concept only; never mix with industry claims.
 
+${contextBlock}
+
 RAW CONTENT:
 ${content}
 
-TASK: Extract structured knowledge records per the schema. Aim for 1-5 focused records rather than 1 giant record. Every claim must have classification + confidence. Every relationship to another record must be a typed edge. Respond with ONLY the JSON object.`;
+TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records — that is the healthy authoring ratio when NEX already knows this territory. Respond with ONLY the JSON object.`;
+}
+
+function renderContext(
+  ctx?: {
+    records: Array<{
+      record_id: string;
+      title: string;
+      category: string;
+      summary: string;
+      nex_concepts: string[];
+      industry_concepts: string[];
+      primary_audience: string;
+      sample_edges: Array<{ edge_type: string; to: string }>;
+    }>;
+    gaps: string[];
+    keywords: string[];
+  }
+): string {
+  if (!ctx || ctx.records.length === 0) {
+    return `CONTEXT (records NEX already knows about):
+  (none returned — this may be a new topic for NEX)`;
+  }
+  const lines: string[] = [];
+  lines.push(`CONTEXT — records NEX already knows about (${ctx.records.length}):`);
+  lines.push("");
+  lines.push("You MUST NOT re-author these. Use typed edges to link to them instead.");
+  lines.push("");
+  for (const r of ctx.records) {
+    lines.push(`━━━ ${r.record_id} ━━━`);
+    lines.push(`Title:            ${r.title}`);
+    lines.push(`Category:         ${r.category}`);
+    lines.push(`Primary audience: ${r.primary_audience}`);
+    const summary = r.summary.replace(/\s+/g, " ").slice(0, 300);
+    lines.push(`Summary:          ${summary}${r.summary.length > 300 ? "…" : ""}`);
+    if (r.nex_concepts.length > 0) {
+      lines.push(`NEX concepts:     ${r.nex_concepts.slice(0, 8).join(", ")}`);
+    }
+    if (r.industry_concepts.length > 0) {
+      lines.push(`Industry concepts:${r.industry_concepts.slice(0, 8).join(", ")}`);
+    }
+    if (r.sample_edges.length > 0) {
+      lines.push(
+        `Sample edges:     ${r.sample_edges
+          .map((e) => `${e.edge_type}→${e.to}`)
+          .join(", ")}`
+      );
+    }
+    lines.push("");
+  }
+  if (ctx.gaps.length > 0) {
+    lines.push(`GAP KEYWORDS (not covered by any existing record — candidates for new authoring):`);
+    lines.push(`  ${ctx.gaps.slice(0, 20).join(", ")}`);
+  }
+  return lines.join("\n");
 }
