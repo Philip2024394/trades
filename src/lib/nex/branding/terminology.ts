@@ -14,7 +14,11 @@
 // use it whenever a customer surface needs to acknowledge the industry
 // vocabulary for context, honesty, or expert-audience clarity.
 
-export type BrandingKey = "closed-string" | "split-newel";
+export type BrandingKey =
+  | "closed-string"
+  | "split-newel"
+  | "connected-staircase"
+  | "nex-premium";
 
 type Entry = {
   /** First mention on a page · always with the ™ symbol. */
@@ -46,6 +50,31 @@ const REGISTRY: Record<BrandingKey, Entry> = {
     technical: "split newel post",
     explanation:
       "Nex Newel™ Split Base Design (our branded two-part timber newel with a stainless steel spacer)",
+  },
+  "connected-staircase": {
+    // The NEX product-family brand covering all coordinated staircase
+    // designs across every tier (Essentials, Classic, Heritage,
+    // Contemporary, Signature). Philip 2026-08-05. Used in Trade Centre
+    // categorisation, marketing surfaces, and brain content whenever
+    // the staircase family framing is surfaced to customers.
+    brand: "Connected Staircase™",
+    brandPlain: "Connected Staircase",
+    technical: "staircase product family",
+    explanation:
+      "Connected Staircase™ (our coordinated staircase family — staircases designed to compose with the home's flooring, walls, lighting and joinery rather than stand apart from them)",
+  },
+  "nex-premium": {
+    // Presentation-layer brand — NOT a tier. Any Connected Staircase™
+    // tier can be presented through NEX Premium™ specifications
+    // (architectural-grade materials, solid brass rods, wool runners,
+    // high-CRI lighting, precision installation tolerances). Philip
+    // 2026-08-05. Used as a header ("NEX Premium™ Vision Scan") on the
+    // highest-specification presentations.
+    brand: "NEX Premium™",
+    brandPlain: "NEX Premium",
+    technical: "premium specification layer",
+    explanation:
+      "NEX Premium™ (our premium presentation layer — architectural-grade materials, precision installation, and layered specifications that can be applied to any Connected Staircase™ tier)",
   },
 };
 
