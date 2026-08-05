@@ -9,6 +9,7 @@
 
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_9T_LEFT_HANDRAIL_TURNED
 assembly_type:              static_reference
+handrail_variant:           left_handrail
 golden_reference:           false
 created_at:                 2026-07-29T19:45:00Z
 created_by:                 philip

@@ -429,20 +429,103 @@ export interface ShoeRailComponent extends ComponentBase {
   readonly compatible_shell_families?: readonly string[];
 }
 
-// ─── Assembly reference (added 2026-07-29 · Assembly 01) ─────────
+// ─── Reference Assembly + Customer Configuration ─────────────────
 //
-// A StaircaseAssembly documents a specific composition of shell +
-// handrail + newels + balusters. Two use cases:
-//   - assembly_type: "static_reference" — canonical example images
-//     the Render Module and marketing use as the "this is how it
-//     looks" record. Human-curated.
-//   - assembly_type: "customer_configuration" — actual customer
-//     projects where NEX has selected the components for them.
-//     Machine-produced (with human sign-off before order).
+// Philip 2026-08-05 · TYPE-LEVEL SEPARATION.
+// Two distinct concepts share a compositional shape but MEAN different
+// things — so they get distinct types rather than one interface with a
+// discriminator. Ages better as the customer flow adds pricing / hardware
+// picks / material overrides / project lifecycle.
 //
-// Lives at data/nex-staircase-assemblies/*.yaml.
+//   StaircaseReferenceAssembly    · factory standard · NEX-owned ·
+//                                   never edited per-customer · truth-
+//                                   standard for the Render Assembly
+//                                   Module + marketing gallery. Lives
+//                                   at data/nex-staircase-assemblies/*.yaml.
+//
+//   StaircaseCustomerConfiguration · user build · Customer + Project owned
+//                                   · layered over ONE reference assembly ·
+//                                   carries the customer's material picks
+//                                   (carpet · walnut · chrome · LED · paint)
+//                                   + hardware choices + lifecycle
+//                                   (draft → quoted → approved → in_production
+//                                   → fitted → cancelled). Never a reference-
+//                                   quality record — every field is user-
+//                                   supplied and can change until locked.
+//
+// `AssemblyType` remains for backward compat; new code should discriminate
+// by type rather than by field.
+//
+// ─── Handrail variant priority (Philip 2026-08-05) ───────────────
+//
+// Directive: for EVERY shell family, generate the Reference Assemblies in
+// this order — earlier variants unlock more render value per hour of work.
+//
+//   1 · bare              — shell only, no rail (fastest ROI)
+//   2 · left_handrail     — left-side handrail + shoe rail + balusters + newels
+//   3 · right_handrail    — mirror of left (ImageKit tr:fl-h, no new render)
+//   4 · double_handrail   — both sides (composed from left + right)
+//   5 · glass_one_side    — glass balustrade one side, timber rail other
+//   6 · glass_both_sides  — glass balustrade both sides
+//   7 · open_string       — open-string shell variant (new construction type)
+//
+// Do NOT jump to open string before double_handrail + glass variants land.
 
 export type AssemblyType = "static_reference" | "customer_configuration";
+
+/** Handrail-variant progression per shell (Philip 2026-08-05). Every
+ *  reference assembly declares which variant it is so the roadmap can
+ *  track coverage per (family_id, tread_count) cell. */
+export type HandrailVariantKind =
+  | "bare"
+  | "left_handrail"
+  | "right_handrail"
+  | "double_handrail"
+  | "glass_one_side"
+  | "glass_both_sides"
+  | "open_string";
+
+/** Order in which handrail variants should ship per shell — priority is
+ *  wide coverage (many shells × many variants) before depth (exotic
+ *  variants on one shell). */
+export const HANDRAIL_VARIANT_PRIORITY: readonly HandrailVariantKind[] = [
+  "bare",
+  "left_handrail",
+  "right_handrail",
+  "double_handrail",
+  "glass_one_side",
+  "glass_both_sides",
+  "open_string",
+];
+
+/** Structural family roadmap (Philip 2026-08-05). Once every existing shell
+ *  has variants 1–6 above, growth moves HERE — new construction types
+ *  rather than more tread counts on straight closed. The 13-ish tread cap
+ *  on straight closed aligns with UK domestic practice; longer flights
+ *  should introduce an intermediate landing anyway (Approved Doc K). */
+export type StructuralFamilyKind =
+  | "straight_closed_string"        // shipped 2026-07 (SHELL_STRAIGHT_CLOSED)
+  | "quarter_landing"               // NEXT
+  | "half_landing_u_shaped"
+  | "winder"
+  | "kite_winder"
+  | "double_winder"
+  | "dog_leg"
+  | "open_string"
+  | "cut_string"
+  | "cut_string_with_brackets";
+
+export const STRUCTURAL_FAMILY_ROADMAP: readonly StructuralFamilyKind[] = [
+  "quarter_landing",
+  "half_landing_u_shaped",
+  "winder",
+  "kite_winder",
+  "double_winder",
+  "dog_leg",
+  "open_string",
+  "cut_string",
+  "cut_string_with_brackets",
+];
 
 /** How a specific handrail attaches to a specific shell within an assembly. */
 export interface AssemblyHandrailAttachment {
@@ -482,9 +565,22 @@ export interface AssemblyBalusterSpec {
   readonly spacing_rule_citation?: string;    // e.g. Approved Doc K reference
 }
 
-export interface StaircaseAssembly {
+/** Factory-standard staircase Reference Assembly. NEX-owned. Never edited
+ *  per-customer. Serves as the truth-standard the Render Assembly Module
+ *  measures against + the marketing gallery renders from.
+ *
+ *  Renamed 2026-08-05 (was `StaircaseAssembly`) — see the Reference /
+ *  Configuration split doctrine above. `StaircaseAssembly` remains as a
+ *  deprecated alias below so nothing breaks. */
+export interface StaircaseReferenceAssembly {
   readonly assembly_id: string;
+  /** Always `"static_reference"` on this type. Kept for backwards compat
+   *  with existing YAML that carries the field explicitly. */
   readonly assembly_type: AssemblyType;
+  /** Which handrail-variant slot this assembly fills for its shell.
+   *  Optional today (existing YAML predates the enum) — required on new
+   *  assemblies going forward. */
+  readonly handrail_variant?: HandrailVariantKind;
   readonly created_at: string;
   readonly created_by: string;
   readonly revision: number;
@@ -523,6 +619,77 @@ export interface StaircaseAssembly {
 
   readonly source_image_refs?: readonly string[];
   readonly notes?: readonly string[];
+}
+
+/** @deprecated 2026-08-05 · use `StaircaseReferenceAssembly`.
+ *  Shape unchanged — the rename clarifies that this type describes the
+ *  factory-standard record, not a customer build. */
+export type StaircaseAssembly = StaircaseReferenceAssembly;
+
+/** Customer-configured staircase build. Belongs to a Customer + Project.
+ *  Layered over ONE `StaircaseReferenceAssembly` — the reference supplies
+ *  the geometry + engineering + baseline components, this record supplies
+ *  the customer's picks: species / stain / carpet / glass tint / chrome /
+ *  LED tread lighting / paint colour. Lifecycle carries the record from
+ *  draft to fitted.
+ *
+ *  Never a reference-quality record. Every field is user-supplied and can
+ *  change until the record is locked at `approved`. */
+export type StaircaseConfigurationStatus =
+  | "draft"
+  | "quoted"
+  | "approved"
+  | "in_production"
+  | "fitted"
+  | "cancelled";
+
+/** Material override the customer applied to a specific slot on the
+ *  reference assembly (e.g. treads → walnut, balustrade → glass, nosing →
+ *  chrome insert). `applied_to` is a free-form slot name today; will
+ *  tighten to a slot enum once the render surface API stabilises. */
+export interface CustomerMaterialOverride {
+  readonly applied_to: string;              // slot name (treads · risers · handrail · newel_caps · nosing · under_tread_led)
+  readonly material_ref?: string;           // FK to MaterialComponent when the pick maps to a catalogued material
+  readonly material_label?: string;         // free-form when the pick is customer-supplied (e.g. "customer-supplied carpet · stripe grey")
+  readonly quantity?: number;
+  readonly notes?: string;
+}
+
+export interface StaircaseCustomerConfiguration {
+  readonly configuration_id: string;
+  readonly customer_id: string;
+  readonly project_id: string;
+  /** The Reference Assembly this customer build is customising. */
+  readonly reference_assembly_id: string;
+
+  readonly status: StaircaseConfigurationStatus;
+  readonly created_at: string;
+  readonly created_by: string;
+  readonly updated_at?: string;
+  readonly locked_at?: string;              // set when status flips to "approved"
+
+  /** Customer-selected material overrides layered over the reference. */
+  readonly material_overrides?: readonly CustomerMaterialOverride[];
+
+  /** Customer-selected accessories the reference didn't specify:
+   *  LED tread lighting, chrome nosing inserts, carpet runner, brass
+   *  handrail brackets, etc. Free-form today. */
+  readonly accessories?: readonly string[];
+
+  /** Customer-supplied colour / stain / paint spec. Composes with
+   *  material_overrides — a walnut tread with a natural oil finish uses
+   *  material_overrides for the species and finish_spec for the coating. */
+  readonly finish_spec?: string;
+
+  /** Any customer-facing notes captured during design conversations.
+   *  Kept alongside the configuration so the manufacturing team sees
+   *  them without a separate lookup. */
+  readonly notes?: readonly string[];
+
+  /** Reference back to the source Project so First Law (commitment
+   *  visibility) can surface this configuration on the customer's
+   *  Active Tasks panel. */
+  readonly project_task_id?: string;
 }
 
 // ─── Baluster (added 2026-07-29 · Assembly 03) ───────────────────

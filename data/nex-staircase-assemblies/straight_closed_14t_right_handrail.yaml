@@ -16,6 +16,7 @@
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_14T_RIGHT_HANDRAIL
 mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_14T_LEFT_HANDRAIL   # left-hand canonical this right-hand file mirrors
 assembly_type:              static_reference
+handrail_variant:           right_handrail
 golden_reference:           false
 created_at:                 2026-07-29T19:45:00Z
 created_by:                 philip

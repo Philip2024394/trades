@@ -13,6 +13,7 @@
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_6T_RIGHT_HANDRAIL
 mirror_of_assembly_id:      ASSEMBLY_STRAIGHT_CLOSED_6T_LEFT_HANDRAIL   # left-hand canonical this right-hand file mirrors
 assembly_type:              static_reference
+handrail_variant:           right_handrail
 created_at:                 2026-07-29T19:15:00Z
 created_by:                 philip
 revision:                   1

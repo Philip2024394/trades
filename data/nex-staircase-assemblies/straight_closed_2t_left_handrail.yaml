@@ -15,6 +15,7 @@
 
 assembly_id:                ASSEMBLY_STRAIGHT_CLOSED_2T_LEFT_HANDRAIL
 assembly_type:              static_reference
+handrail_variant:           left_handrail
 created_at:                 2026-07-29T18:30:00Z
 created_by:                 philip
 revision:                   1
