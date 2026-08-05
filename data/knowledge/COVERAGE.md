@@ -136,5 +136,8 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 | 2026-08-06 | Ash authored · Materials Sprint 1 position 3/6 · first record with sustainability_alert (Ash Dieback + EAB) | Materials 3 → 4 · Foundation 5 → 6 · Total 7 → 8 |
 | 2026-08-06 | Moisture Content Verification authored · Processes Sprint 1a position 2/2 · closes Processes Sprint 1a pair | Processes 1 → 2 · Foundation 6 → 7 · Total 8 → 9 |
 | 2026-08-06 | Stair Treads authored · **first Component-tier record** · parallel-growth demonstration · cross-cluster composition (Materials + Regulations + Processes) | Components 0 → 1 · Total 9 → 10 |
+| 2026-08-06 | Maple authored · Materials Sprint 1 position 4/6 · rhythm cycle 1 Foundation slot · no sustainability alert (contrast with Ash) | Materials 4 → 5 · Foundation 7 → 8 · Total 10 → 11 |
+| 2026-08-06 | Stair Handrails authored · Component tier · rhythm cycle 1 Component slot · consumes Heritage voice fuel · continuous vs post-to-post system | Components 1 → 2 · Total 11 → 12 |
+| 2026-08-06 | Choosing Staircase Materials authored · **first Customer Guidance record** · rhythm cycle 1 Guidance slot · compositional-only pattern (composes from Materials + Components + Regulations) | Customer Guidance 0 → 1 · Total 12 → 13 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
