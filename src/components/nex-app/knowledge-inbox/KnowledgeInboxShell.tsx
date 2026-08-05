@@ -39,6 +39,12 @@
 // The Process Inbox function reads from the persisted store; the
 // Processing Report reflects real deltas rolled forward in stats.json.
 //
+// AUTO-PROCESSING (Philip 2026-08-06): after every successful save
+// (text dump / file upload / URL import) the client fires a background
+// POST /api/nex/brain/run-once. The user never has to click Dispatch or
+// Run Cycle — dumps process themselves the moment they land. The Process
+// Inbox button remains available for manual re-processing.
+//
 // Future connectors (Email · WhatsApp · OneDrive · Google Drive · Dropbox
 // · GitHub · Website crawler · YouTube transcripts · Research feeds ·
 // Government publications · Standards organisations · PDF libraries)
@@ -398,6 +404,26 @@ export function KnowledgeInboxShell() {
     window.setTimeout(() => setToast(null), 3200);
   }, []);
 
+  // Auto-processing kick — fires the brain pipeline in the background
+  // after every save. No wait, no block. If it errors, we log quietly;
+  // the user can still hit "Process Inbox" manually.
+  const kickBrainPipeline = useCallback(() => {
+    void (async () => {
+      try {
+        await fetch("/api/nex/brain/run-once", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({}),
+        });
+        // Refresh the inbox so the user sees the item's status flip
+        // to processed after the background pipeline completes.
+        setTimeout(() => refresh(), 800);
+      } catch (err) {
+        console.warn("[knowledge-inbox] background brain kick failed:", err);
+      }
+    })();
+  }, [refresh]);
+
   // ── Item mutation helpers ──────────────────────────────────────────
 
   const removeItem = useCallback(
@@ -467,6 +493,11 @@ export function KnowledgeInboxShell() {
             message: `${json.duplicates.length} duplicate${json.duplicates.length === 1 ? "" : "s"} already in the inbox.`,
           });
         }
+        // Auto-process the new upload through the NEX Brain pipeline.
+        if ((json.created?.length ?? 0) > 0) {
+          showToast({ kind: "info", message: "NEX is processing your upload…" });
+          kickBrainPipeline();
+        }
       } catch (err) {
         console.error("[knowledge-inbox] upload failed:", err);
         showToast({ kind: "error", message: "Upload failed. Try again." });
@@ -474,11 +505,11 @@ export function KnowledgeInboxShell() {
         refresh();
       }
     },
-    [activeSource, refresh, showToast]
+    [activeSource, refresh, showToast, kickBrainPipeline]
   );
 
   const handleQuickDumpSave = useCallback(
-    async (thenProcess: boolean) => {
+    async (_thenProcess: boolean) => {
       const text = quickDump.trim();
       if (!text) return;
       try {
@@ -498,18 +529,19 @@ export function KnowledgeInboxShell() {
             kind: "info",
             message: "Duplicate detected — already in the inbox.",
           });
+        } else {
+          // Auto-process every fresh dump through the NEX Brain pipeline.
+          showToast({ kind: "info", message: "NEX is processing your dump…" });
+          kickBrainPipeline();
         }
         setQuickDump("");
         await refresh();
-        if (thenProcess) {
-          void runProcessInbox();
-        }
       } catch (err) {
         console.error("[knowledge-inbox] dump failed:", err);
         showToast({ kind: "error", message: "Save failed. Try again." });
       }
     },
-    [quickDump, activeSource, refresh, showToast]
+    [quickDump, activeSource, refresh, showToast, kickBrainPipeline]
   );
 
   const handleUrlImport = useCallback(async () => {
@@ -533,6 +565,10 @@ export function KnowledgeInboxShell() {
           message: `${json.duplicates.length} URL${json.duplicates.length === 1 ? "" : "s"} already in the inbox.`,
         });
       }
+      if ((json.created?.length ?? 0) > 0) {
+        showToast({ kind: "info", message: "NEX is processing your URLs…" });
+        kickBrainPipeline();
+      }
       setUrlBuffer("");
     } catch (err) {
       console.error("[knowledge-inbox] urls failed:", err);
@@ -540,7 +576,7 @@ export function KnowledgeInboxShell() {
     } finally {
       refresh();
     }
-  }, [urlBuffer, activeSource, refresh, showToast]);
+  }, [urlBuffer, activeSource, refresh, showToast, kickBrainPipeline]);
 
   // ── Drag & drop plumbing ───────────────────────────────────────────
 
@@ -1157,20 +1193,19 @@ function QuickDumpCard({
         <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
           {value.trim().length.toLocaleString()} chars
         </span>
-        <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={onSave}
-            disabled={!value.trim()}
-            className="rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors disabled:opacity-40"
+        <div className="flex items-center gap-2">
+          <span
+            className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest"
             style={{
-              background: TOKEN.card,
-              borderColor: TOKEN.border,
-              color: TOKEN.text,
+              background: "#D1FAE5",
+              borderColor: "#6EE7B7",
+              color: "#065F46",
             }}
+            title="Every dump auto-runs through the NEX Brain pipeline"
           >
-            Save to Inbox
-          </button>
+            <Sparkles size={9} strokeWidth={2.6} />
+            Auto-process
+          </span>
           <button
             type="button"
             onClick={onSaveAndProcess}
@@ -1179,7 +1214,7 @@ function QuickDumpCard({
             style={{ background: TOKEN.accent }}
           >
             <Sparkles size={13} strokeWidth={2.4} />
-            Save &amp; Process
+            Save &amp; Send to NEX
           </button>
         </div>
       </div>
