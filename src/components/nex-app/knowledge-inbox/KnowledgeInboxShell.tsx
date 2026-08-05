@@ -22,17 +22,29 @@
 //   gap analysis. Personal Ideas are kept separate from industry knowledge.
 //   Each source has its own PROCESSING WORKFLOW encoded in SOURCE_META.
 //
-// v1 is UI-first: capture surfaces write to an in-memory queue and the
-// Process Inbox button runs a simulated pipeline. Every seam that would
-// call an API in v2 is marked with a `// TODO(api):` comment so the
-// backend can attach without rewriting the shell.
+// PERSISTENCE (Philip 2026-08-06): the mailbox is now connected to the
+// filing cabinet. Every capture surface calls a real API endpoint that
+// writes to disk under data/knowledge-inbox/. React state is a display
+// cache only — GET /list is the source of truth. Each dump gets a
+// unique id, ISO timestamp, source, status, and sha256 hash (for dedup).
+// Storage layer: src/lib/nex/knowledge-inbox/storage.ts.
+// API endpoints:
+//   POST /api/nex/knowledge-inbox/dump      text dumps
+//   POST /api/nex/knowledge-inbox/upload    file/voice/image uploads
+//   POST /api/nex/knowledge-inbox/urls      url import
+//   POST /api/nex/knowledge-inbox/process   run the pipeline
+//   GET  /api/nex/knowledge-inbox/list      full snapshot + stats
+//   GET/PATCH/DELETE /api/nex/knowledge-inbox/[id]
+//
+// The Process Inbox function reads from the persisted store; the
+// Processing Report reflects real deltas rolled forward in stats.json.
 //
 // Future connectors (Email · WhatsApp · OneDrive · Google Drive · Dropbox
 // · GitHub · Website crawler · YouTube transcripts · Research feeds ·
 // Government publications · Standards organisations · PDF libraries)
-// all feed the SAME `addItems(...)` reducer — one pipeline, many mouths.
+// call the same four capture endpoints — one pipeline, many mouths.
 
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Bell,
@@ -41,7 +53,6 @@ import {
   Bot,
   CheckCircle2,
   ChevronRight,
-  Clock,
   Cloud,
   FileText,
   Flame,
@@ -99,8 +110,34 @@ type InboxItem = {
   status: InboxStatus;
   source: KnowledgeSource;
   createdAt: number;
+  createdAtIso?: string;
+  hash?: string;
   meta?: string;         // e.g. filename, url, byte size, duration
   previewText?: string;  // first 200 chars for the preview drawer
+  // Storage back-refs (paths relative to data/knowledge-inbox/)
+  contentPath?: string;
+  filePath?: string;
+  originalFilename?: string;
+  byteSize?: number;
+  mimeType?: string;
+  url?: string;
+  processedAt?: number;
+  processedNotes?: string;
+};
+
+// Persistent stats returned by GET /list — server rolls these
+// forward on every processing run.
+type ServerStats = {
+  recordsCreated: number;
+  recordsUpdated: number;
+  faqsGenerated: number;
+  edgesCreated: number;
+  duplicatesMerged: number;
+  imagesAnalysed: number;
+  voiceNotesTranscribed: number;
+  completedToday: number;
+  completedTodayDate: string;
+  lastProcessedAt?: number;
 };
 
 type ProcessingReport = {
@@ -272,70 +309,10 @@ const ACCEPT_ATTR = [
   ".zip",
 ].join(",");
 
-// ── Seed items — realistic v1 fixtures so the queue is never empty on
-// first visit. Delete or dismiss freely. ─────────────────────────────
-
-const SEED_ITEMS: InboxItem[] = [
-  {
-    id: "seed-1",
-    title: "Q&A batch · walnut vs oak decision points",
-    kind: "text",
-    status: "waiting",
-    source: "chatgpt-approved",
-    createdAt: Date.now() - 1000 * 60 * 42,
-    meta: "18 questions",
-    previewText:
-      "Q: Which is harder — walnut or oak? A: American White Oak is measurably harder…",
-  },
-  {
-    id: "seed-2",
-    title: "Approved Doc K — 2013 edition (with 2020 amendments).pdf",
-    kind: "file",
-    status: "review",
-    source: "gov-standards",
-    createdAt: Date.now() - 1000 * 60 * 60 * 3,
-    meta: "PDF · 2.1 MB",
-    previewText:
-      "Requirement K1 — Stairs, ladders and ramps. Design and construction should…",
-  },
-  {
-    id: "seed-3",
-    title: "gov.uk · Ash Dieback update — DEFRA guidance",
-    kind: "url",
-    status: "processed",
-    source: "gov-standards",
-    createdAt: Date.now() - 1000 * 60 * 60 * 26,
-    meta: "gov.uk · fetched",
-    previewText:
-      "Ash Dieback (Hymenoscyphus fraxineus) continues to affect ash trees across…",
-  },
-  {
-    id: "seed-4",
-    title: "Voice note — Signature tier newel discussion",
-    kind: "voice",
-    status: "processing",
-    source: "personal-ideas",
-    createdAt: Date.now() - 1000 * 60 * 12,
-    meta: "audio · 4m 22s",
-    previewText: "Transcribing…",
-  },
-  {
-    id: "seed-5",
-    title: "Photograph — turned oak baluster reference",
-    kind: "image",
-    status: "waiting",
-    source: "raw-research",
-    createdAt: Date.now() - 1000 * 60 * 5,
-    meta: "JPG · 1.4 MB",
-    previewText: "Awaiting image analysis…",
-  },
-];
+// The inbox loads its state from GET /api/nex/knowledge-inbox/list on
+// mount. Persistence lives on disk; nothing is seeded client-side.
 
 // ── Utility helpers ──────────────────────────────────────────────────
-
-function makeId(prefix: string) {
-  return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
-}
 
 function humanTime(ts: number) {
   const diff = Math.max(0, Date.now() - ts);
@@ -368,37 +345,15 @@ function kindLabel(kind: InboxKind) {
   }
 }
 
-// Rough classifier for the simulated pipeline — good enough for the
-// v1 report; v2 replaces this with the Reasoning Layer + Master
-// Aggregator behind the /api/nex/knowledge-inbox/process endpoint.
-function simulateProcessing(items: InboxItem[]): ProcessingReport {
-  const itemsProcessed = items.length;
-  const imagesAnalysed = items.filter((i) => i.kind === "image").length;
-  const voiceNotesTranscribed = items.filter((i) => i.kind === "voice").length;
-  // Rough heuristics that feel plausible without pretending to be real.
-  const recordsCreated  = Math.max(0, Math.floor(itemsProcessed * 0.14));
-  const recordsUpdated  = Math.max(0, Math.floor(itemsProcessed * 0.42));
-  const faqsGenerated   = Math.max(0, Math.floor(itemsProcessed * 4.6));
-  const edgesCreated    = Math.max(0, Math.floor(itemsProcessed * 1.7));
-  const duplicatesMerged = Math.max(0, Math.floor(itemsProcessed * 0.31));
-  const needsReview     = Math.max(0, Math.floor(itemsProcessed * 0.04));
-  return {
-    itemsProcessed,
-    recordsCreated,
-    recordsUpdated,
-    faqsGenerated,
-    edgesCreated,
-    duplicatesMerged,
-    imagesAnalysed,
-    voiceNotesTranscribed,
-    needsReview,
-  };
-}
+// Small toast state — used to surface duplicate-detection results and
+// other lightweight feedback from the API calls.
+type Toast = { kind: "info" | "error"; message: string } | null;
 
 // ── Root component ───────────────────────────────────────────────────
 
 export function KnowledgeInboxShell() {
-  const [items, setItems] = useState<InboxItem[]>(SEED_ITEMS);
+  const [items, setItems] = useState<InboxItem[]>([]);
+  const [stats, setStats] = useState<ServerStats | null>(null);
   const [activeSource, setActiveSource] = useState<KnowledgeSource>("chatgpt-approved");
   const [quickDump, setQuickDump] = useState("");
   const [urlBuffer, setUrlBuffer] = useState("");
@@ -406,127 +361,186 @@ export function KnowledgeInboxShell() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingReport, setProcessingReport] = useState<ProcessingReport | null>(null);
   const [preview, setPreview] = useState<InboxItem | null>(null);
-  const [completedToday, setCompletedToday] = useState(0);
-  const [totalsRecordsCreated, setTotalsRecordsCreated] = useState(19);
-  const [totalsRecordsUpdated, setTotalsRecordsUpdated] = useState(52);
-  const [totalsFaqsGenerated, setTotalsFaqsGenerated] = useState(380);
+  const [loading, setLoading] = useState(true);
+  const [toast, setToast] = useState<Toast>(null);
 
   const fileInputRef  = useRef<HTMLInputElement | null>(null);
   const voiceInputRef = useRef<HTMLInputElement | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
 
-  // ── Reducer-style helpers ──────────────────────────────────────────
+  // ── Snapshot loader — disk is the source of truth ─────────────────
 
-  const addItems = useCallback((incoming: InboxItem[]) => {
-    if (!incoming.length) return;
-    setItems((prev) => [...incoming, ...prev]);
+  const refresh = useCallback(async () => {
+    try {
+      const res = await fetch("/api/nex/knowledge-inbox/list", { cache: "no-store" });
+      if (!res.ok) throw new Error(`list_failed_${res.status}`);
+      const json = (await res.json()) as {
+        ok: boolean;
+        items: InboxItem[];
+        stats: ServerStats;
+      };
+      if (!json.ok) throw new Error("list_not_ok");
+      setItems(json.items);
+      setStats(json.stats);
+    } catch (err) {
+      console.error("[knowledge-inbox] refresh failed:", err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  const removeItem = useCallback((id: string) => {
-    setItems((prev) => prev.filter((i) => i.id !== id));
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  const showToast = useCallback((next: NonNullable<Toast>) => {
+    setToast(next);
+    window.setTimeout(() => setToast(null), 3200);
   }, []);
 
-  const reprocessItem = useCallback((id: string) => {
-    setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, status: "waiting" as InboxStatus } : i))
-    );
-  }, []);
+  // ── Item mutation helpers ──────────────────────────────────────────
+
+  const removeItem = useCallback(
+    async (id: string) => {
+      // Optimistic remove so the UI feels immediate.
+      setItems((prev) => prev.filter((i) => i.id !== id));
+      try {
+        const res = await fetch(`/api/nex/knowledge-inbox/${id}`, { method: "DELETE" });
+        if (!res.ok) throw new Error(`delete_failed_${res.status}`);
+      } catch (err) {
+        console.error("[knowledge-inbox] delete failed:", err);
+        showToast({ kind: "error", message: "Delete failed — retrying refresh." });
+      } finally {
+        refresh();
+      }
+    },
+    [refresh, showToast]
+  );
+
+  const reprocessItem = useCallback(
+    async (id: string) => {
+      // Optimistic flip to waiting so the CTA count updates instantly.
+      setItems((prev) =>
+        prev.map((i) => (i.id === id ? { ...i, status: "waiting" as InboxStatus } : i))
+      );
+      try {
+        const res = await fetch(`/api/nex/knowledge-inbox/${id}`, {
+          method: "PATCH",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ status: "waiting" }),
+        });
+        if (!res.ok) throw new Error(`reprocess_failed_${res.status}`);
+      } catch (err) {
+        console.error("[knowledge-inbox] reprocess failed:", err);
+      } finally {
+        refresh();
+      }
+    },
+    [refresh]
+  );
 
   // ── Capture surface handlers ───────────────────────────────────────
 
   const captureFiles = useCallback(
-    (fileList: FileList | null, forcedKind?: InboxKind) => {
+    async (fileList: FileList | null, forcedKind?: InboxKind) => {
       if (!fileList) return;
       const arr = Array.from(fileList);
       if (!arr.length) return;
-      // TODO(api): POST each file to /api/nex/knowledge-inbox/upload
-      // (with source metadata) and use the server-assigned id; v1
-      // stores locally.
-      const created: InboxItem[] = arr.map((f) => {
-        const kind =
-          forcedKind ??
-          (f.type.startsWith("image/")
-            ? ("image" as InboxKind)
-            : f.type.startsWith("audio/")
-              ? ("voice" as InboxKind)
-              : ("file" as InboxKind));
-        const kb = f.size / 1024;
-        const meta =
-          kb > 1024
-            ? `${f.type || "file"} · ${(kb / 1024).toFixed(1)} MB`
-            : `${f.type || "file"} · ${kb.toFixed(0)} KB`;
-        return {
-          id: makeId(kind),
-          title: f.name,
-          kind,
-          status: "waiting",
-          source: activeSource,
-          createdAt: Date.now(),
-          meta,
-          previewText:
-            kind === "image"
-              ? "Awaiting image analysis…"
-              : kind === "voice"
-                ? "Awaiting transcription…"
-                : `${f.name} · ${(f.size / 1024).toFixed(0)} KB uploaded`,
+      const form = new FormData();
+      form.set("source", activeSource);
+      if (forcedKind) form.set("forcedKind", forcedKind);
+      for (const f of arr) form.append("files", f);
+      try {
+        const res = await fetch("/api/nex/knowledge-inbox/upload", {
+          method: "POST",
+          body: form,
+        });
+        if (!res.ok) throw new Error(`upload_failed_${res.status}`);
+        const json = (await res.json()) as {
+          ok: boolean;
+          created: InboxItem[];
+          duplicates: InboxItem[];
         };
-      });
-      addItems(created);
+        if (json.duplicates?.length) {
+          showToast({
+            kind: "info",
+            message: `${json.duplicates.length} duplicate${json.duplicates.length === 1 ? "" : "s"} already in the inbox.`,
+          });
+        }
+      } catch (err) {
+        console.error("[knowledge-inbox] upload failed:", err);
+        showToast({ kind: "error", message: "Upload failed. Try again." });
+      } finally {
+        refresh();
+      }
     },
-    [addItems, activeSource]
+    [activeSource, refresh, showToast]
   );
 
   const handleQuickDumpSave = useCallback(
-    (thenProcess: boolean) => {
+    async (thenProcess: boolean) => {
       const text = quickDump.trim();
       if (!text) return;
-      const first = text.split("\n")[0]?.slice(0, 90) ?? "Note";
-      const item: InboxItem = {
-        id: makeId("text"),
-        title: first || "Note",
-        kind: "text",
-        status: "waiting",
-        source: activeSource,
-        createdAt: Date.now(),
-        meta: `${text.length.toLocaleString()} chars`,
-        previewText: text.slice(0, 220),
-      };
-      addItems([item]);
-      setQuickDump("");
-      if (thenProcess) {
-        // Fire-and-forget: kick the processor once the item is committed.
-        setTimeout(() => runProcessInbox(), 100);
+      try {
+        const res = await fetch("/api/nex/knowledge-inbox/dump", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ source: activeSource, content: text }),
+        });
+        if (!res.ok) throw new Error(`dump_failed_${res.status}`);
+        const json = (await res.json()) as {
+          ok: boolean;
+          item: InboxItem;
+          deduplicated: boolean;
+        };
+        if (json.deduplicated) {
+          showToast({
+            kind: "info",
+            message: "Duplicate detected — already in the inbox.",
+          });
+        }
+        setQuickDump("");
+        await refresh();
+        if (thenProcess) {
+          void runProcessInbox();
+        }
+      } catch (err) {
+        console.error("[knowledge-inbox] dump failed:", err);
+        showToast({ kind: "error", message: "Save failed. Try again." });
       }
     },
-    [addItems, quickDump, activeSource]
+    [quickDump, activeSource, refresh, showToast]
   );
 
-  const handleUrlImport = useCallback(() => {
+  const handleUrlImport = useCallback(async () => {
     const raw = urlBuffer.trim();
     if (!raw) return;
-    // Accept multiple URLs, comma / newline / space separated.
-    const urls = raw
-      .split(/[\s,]+/)
-      .map((u) => u.trim())
-      .filter((u) => u.length > 0);
-    if (!urls.length) return;
-    // TODO(api): POST { urls, source } to /api/nex/knowledge-inbox/urls
-    // so the crawler can fetch, store, hash for dedupe, and apply the
-    // source-specific pipeline (cautious for internet-article,
-    // authoritative for gov-standards, etc.).
-    const created: InboxItem[] = urls.map((u) => ({
-      id: makeId("url"),
-      title: u.replace(/^https?:\/\//, "").slice(0, 80),
-      kind: "url",
-      status: "waiting",
-      source: activeSource,
-      createdAt: Date.now(),
-      meta: "URL · queued for fetch",
-      previewText: u,
-    }));
-    addItems(created);
-    setUrlBuffer("");
-  }, [addItems, urlBuffer, activeSource]);
+    try {
+      const res = await fetch("/api/nex/knowledge-inbox/urls", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ source: activeSource, urls: raw }),
+      });
+      if (!res.ok) throw new Error(`urls_failed_${res.status}`);
+      const json = (await res.json()) as {
+        ok: boolean;
+        created: InboxItem[];
+        duplicates: InboxItem[];
+      };
+      if (json.duplicates?.length) {
+        showToast({
+          kind: "info",
+          message: `${json.duplicates.length} URL${json.duplicates.length === 1 ? "" : "s"} already in the inbox.`,
+        });
+      }
+      setUrlBuffer("");
+    } catch (err) {
+      console.error("[knowledge-inbox] urls failed:", err);
+      showToast({ kind: "error", message: "URL import failed." });
+    } finally {
+      refresh();
+    }
+  }, [urlBuffer, activeSource, refresh, showToast]);
 
   // ── Drag & drop plumbing ───────────────────────────────────────────
 
@@ -535,48 +549,47 @@ export function KnowledgeInboxShell() {
       e.preventDefault();
       e.stopPropagation();
       setDragActive(false);
-      captureFiles(e.dataTransfer?.files ?? null);
+      void captureFiles(e.dataTransfer?.files ?? null);
     },
     [captureFiles]
   );
 
-  // ── The core action: Process Inbox ─────────────────────────────────
+  // ── The core action: Process Inbox — hits the real pipeline ───────
 
-  const runProcessInbox = useCallback(() => {
-    // TODO(api): POST /api/nex/knowledge-inbox/process — server-side
-    // pipeline runs classify → dedupe → extract → update/create →
-    // FAQ → graph edges → confidence → flag → archive. The response
-    // shape mirrors ProcessingReport.
-    const waiting = items.filter((i) => i.status === "waiting");
-    if (!waiting.length) return;
-
+  const runProcessInbox = useCallback(async () => {
     setIsProcessing(true);
-
-    // Phase 1: flip everything waiting to processing.
+    // Optimistic: flip every waiting item to processing so the banner
+    // and stat strip update instantly. The server response then
+    // overwrites this with the true post-processing state.
     setItems((prev) =>
       prev.map((i) => (i.status === "waiting" ? { ...i, status: "processing" } : i))
     );
-
-    // Phase 2: after a brief simulated run, flip processing items to
-    // processed (except ~4% flagged for review) and compose a report.
-    window.setTimeout(() => {
-      setItems((prev) => {
-        const outcome = prev.map((i, idx) => {
-          if (i.status !== "processing") return i;
-          const flag = idx % 25 === 0; // roughly 4% flagged
-          return { ...i, status: flag ? ("review" as InboxStatus) : ("processed" as InboxStatus) };
-        });
-        return outcome;
+    try {
+      const res = await fetch("/api/nex/knowledge-inbox/process", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({}),
       });
-      const report = simulateProcessing(waiting);
-      setProcessingReport(report);
-      setCompletedToday((c) => c + report.itemsProcessed - report.needsReview);
-      setTotalsRecordsCreated((c) => c + report.recordsCreated);
-      setTotalsRecordsUpdated((c) => c + report.recordsUpdated);
-      setTotalsFaqsGenerated((c) => c + report.faqsGenerated);
+      if (!res.ok) throw new Error(`process_failed_${res.status}`);
+      const json = (await res.json()) as {
+        ok: boolean;
+        report: ProcessingReport;
+        items: InboxItem[];
+        stats: ServerStats;
+      };
+      setItems(json.items);
+      setStats(json.stats);
+      if (json.report.itemsProcessed > 0) {
+        setProcessingReport(json.report);
+      }
+    } catch (err) {
+      console.error("[knowledge-inbox] process failed:", err);
+      showToast({ kind: "error", message: "Processing failed. State refreshed from disk." });
+      refresh();
+    } finally {
       setIsProcessing(false);
-    }, 1600);
-  }, [items]);
+    }
+  }, [refresh, showToast]);
 
   // ── Derived counters for the stat strip ────────────────────────────
 
@@ -607,10 +620,11 @@ export function KnowledgeInboxShell() {
         <StatStrip
           items={items}
           counters={counters}
-          completedToday={completedToday}
-          totalsRecordsCreated={totalsRecordsCreated}
-          totalsRecordsUpdated={totalsRecordsUpdated}
-          totalsFaqsGenerated={totalsFaqsGenerated}
+          completedToday={stats?.completedToday ?? 0}
+          totalsRecordsCreated={stats?.recordsCreated ?? 0}
+          totalsRecordsUpdated={stats?.recordsUpdated ?? 0}
+          totalsFaqsGenerated={stats?.faqsGenerated ?? 0}
+          loading={loading}
         />
 
         {/* ── Knowledge Source picker ──────────────────────────────── */}
@@ -689,6 +703,7 @@ export function KnowledgeInboxShell() {
           onPreview={setPreview}
           onReprocess={reprocessItem}
           onDelete={removeItem}
+          onRefresh={refresh}
         />
 
         {/* ── Philosophy strip ────────────────────────────────────── */}
@@ -714,7 +729,39 @@ export function KnowledgeInboxShell() {
       <AnimatePresence>
         {isProcessing ? <ProcessingBanner /> : null}
       </AnimatePresence>
+
+      <AnimatePresence>
+        {toast ? <ToastBanner toast={toast} /> : null}
+      </AnimatePresence>
     </div>
+  );
+}
+
+// ── Toast banner (auto-dismisses in 3.2s) ────────────────────────────
+
+function ToastBanner({ toast }: { toast: NonNullable<Toast> }) {
+  const isError = toast.kind === "error";
+  return (
+    <motion.div
+      initial={{ y: 32, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      exit={{ y: 32, opacity: 0 }}
+      transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed inset-x-0 bottom-5 z-40 mx-auto flex max-w-[420px] items-center gap-2 rounded-full border px-4 py-2.5 text-[13px] font-semibold"
+      style={{
+        background: isError ? "#FEE2E2" : TOKEN.card,
+        borderColor: isError ? "#EF4444" : TOKEN.border,
+        color: isError ? "#991B1B" : TOKEN.text,
+        boxShadow: TOKEN.shadowMd,
+      }}
+    >
+      {isError ? (
+        <ShieldAlert size={15} strokeWidth={2.3} />
+      ) : (
+        <CheckCircle2 size={15} strokeWidth={2.3} style={{ color: TOKEN.info }} />
+      )}
+      {toast.message}
+    </motion.div>
   );
 }
 
@@ -919,6 +966,7 @@ function StatStrip({
   totalsRecordsCreated,
   totalsRecordsUpdated,
   totalsFaqsGenerated,
+  loading,
 }: {
   items: InboxItem[];
   counters: { waiting: number; processing: number; review: number };
@@ -926,6 +974,7 @@ function StatStrip({
   totalsRecordsCreated: number;
   totalsRecordsUpdated: number;
   totalsFaqsGenerated: number;
+  loading?: boolean;
 }) {
   const cards: Array<{ label: string; value: number; tone: "neutral" | "info" | "warning" | "success" | "accent" }> = [
     { label: "Items Waiting",     value: counters.waiting,         tone: "neutral" },
@@ -944,7 +993,7 @@ function StatStrip({
       className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-7"
     >
       {cards.map((c) => (
-        <StatCard key={c.label} label={c.label} value={c.value} tone={c.tone} />
+        <StatCard key={c.label} label={c.label} value={c.value} tone={c.tone} loading={loading} />
       ))}
       <span className="sr-only">Total items in inbox: {total}</span>
     </section>
@@ -955,10 +1004,12 @@ function StatCard({
   label,
   value,
   tone,
+  loading,
 }: {
   label: string;
   value: number;
   tone: "neutral" | "info" | "warning" | "success" | "accent";
+  loading?: boolean;
 }) {
   const toneColour = {
     neutral: TOKEN.textMid,
@@ -983,12 +1034,19 @@ function StatCard({
       >
         {label}
       </div>
-      <div
-        className="mt-2 text-[28px] font-black leading-none tracking-tight"
-        style={{ color: toneColour }}
-      >
-        {value.toLocaleString()}
-      </div>
+      {loading ? (
+        <div
+          className="nex-skeleton mt-2 h-7 w-14 rounded-md"
+          aria-hidden
+        />
+      ) : (
+        <div
+          className="mt-2 text-[28px] font-black leading-none tracking-tight"
+          style={{ color: toneColour }}
+        >
+          {value.toLocaleString()}
+        </div>
+      )}
     </motion.div>
   );
 }
@@ -1415,21 +1473,42 @@ function InboxQueue({
   onPreview,
   onReprocess,
   onDelete,
+  onRefresh,
 }: {
   items: InboxItem[];
   onPreview: (item: InboxItem) => void;
   onReprocess: (id: string) => void;
   onDelete: (id: string) => void;
+  onRefresh?: () => void;
 }) {
   return (
     <section className="mt-12">
-      <div className="mb-4 flex items-baseline justify-between">
+      <div className="mb-4 flex items-baseline justify-between gap-3">
         <h2 className="text-[22px] font-black tracking-tight" style={{ color: TOKEN.text }}>
           Inbox Queue
         </h2>
-        <span className="text-[13px]" style={{ color: TOKEN.textSoft }}>
-          {items.length.toLocaleString()} item{items.length === 1 ? "" : "s"}
-        </span>
+        <div className="flex items-center gap-3">
+          <span className="text-[13px]" style={{ color: TOKEN.textSoft }}>
+            {items.length.toLocaleString()} item{items.length === 1 ? "" : "s"}
+          </span>
+          {onRefresh ? (
+            <button
+              type="button"
+              onClick={onRefresh}
+              className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[12px] font-semibold transition-colors hover:bg-black/5"
+              style={{
+                background: TOKEN.card,
+                borderColor: TOKEN.border,
+                color: TOKEN.textMid,
+              }}
+              aria-label="Refresh queue from disk"
+              title="Refresh from disk"
+            >
+              <RefreshCcw size={12} strokeWidth={2.2} />
+              Refresh
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {items.length === 0 ? (

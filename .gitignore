@@ -42,3 +42,12 @@ data/.recovery-*/
 # source is the truth, the .bak.* copies are local rotation history.
 *.bak.*
 knowledge/*.bak.*
+
+# NEX Knowledge Inbox runtime store — user-dumped content, per-machine.
+# The directory and README are tracked so the path exists; runtime data
+# stays local. When this graduates to Supabase/Postgres, this rule
+# becomes irrelevant.
+data/knowledge-inbox/index.json
+data/knowledge-inbox/stats.json
+data/knowledge-inbox/content/
+data/knowledge-inbox/files/
