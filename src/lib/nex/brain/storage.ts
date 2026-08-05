@@ -49,6 +49,8 @@ import type {
   JobStatus,
   KnowledgeFeedback,
   KnowledgeRecord,
+  LlmRetryEntry,
+  LlmRetryStatus,
   RecordVersion,
   Source,
   WorkerJob,
@@ -154,6 +156,14 @@ export interface BrainStore {
 
   // Audit log
   insertAudit(input: Omit<AuditEntry, "id" | "created_at">): Promise<AuditEntry>;
+
+  // LLM retry queue (Stage 3)
+  enqueueLlmRetry(input: Omit<LlmRetryEntry, "id" | "status" | "attempts" | "next_attempt_at" | "last_provider_tried" | "last_error" | "succeeded_provider" | "succeeded_at" | "result_summary" | "created_at" | "updated_at"> & { next_attempt_at?: string }): Promise<LlmRetryEntry>;
+  claimNextLlmRetry(worker_id: string, lease_seconds?: number): Promise<LlmRetryEntry | null>;
+  markLlmRetrySucceeded(id: string, provider: string, result_summary: Record<string, unknown>): Promise<void>;
+  markLlmRetryPending(id: string, next_attempt_at: string, last_error: string, last_provider: string): Promise<void>;
+  markLlmRetryExhausted(id: string, last_error: string): Promise<void>;
+  listLlmRetries(filter?: { status?: LlmRetryStatus; limit?: number }): Promise<LlmRetryEntry[]>;
 
   // Snapshot for the dashboard
   status(): Promise<BrainStatus>;
@@ -422,6 +432,94 @@ class FilesystemStore implements BrainStore {
     rows.push(row);
     await writeTable("audit_log", rows);
     return row;
+  }
+
+  // ── LLM retry queue (Stage 3) ──────────────────────────────────────
+  async enqueueLlmRetry(input: Omit<LlmRetryEntry, "id" | "status" | "attempts" | "next_attempt_at" | "last_provider_tried" | "last_error" | "succeeded_provider" | "succeeded_at" | "result_summary" | "created_at" | "updated_at"> & { next_attempt_at?: string }): Promise<LlmRetryEntry> {
+    const rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    const now = nowIso();
+    const row: LlmRetryEntry = {
+      ...input,
+      id: newId(),
+      status: "pending",
+      attempts: 0,
+      next_attempt_at: input.next_attempt_at ?? now,
+      last_provider_tried: null,
+      last_error: null,
+      succeeded_provider: null,
+      succeeded_at: null,
+      result_summary: null,
+      created_at: now,
+      updated_at: now,
+    };
+    rows.push(row);
+    await writeTable("llm_retry_queue", rows);
+    return row;
+  }
+  async claimNextLlmRetry(worker_id: string, lease_seconds = 60): Promise<LlmRetryEntry | null> {
+    const rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    const nowMs = Date.now();
+    const candidate = rows
+      .filter((r) => r.status === "pending" && new Date(r.next_attempt_at).getTime() <= nowMs)
+      .sort((a, b) =>
+        new Date(a.next_attempt_at).getTime() - new Date(b.next_attempt_at).getTime() ||
+        a.attempts - b.attempts
+      )[0];
+    if (!candidate) return null;
+    const now = nowIso();
+    const leaseIso = new Date(nowMs + lease_seconds * 1000).toISOString();
+    let claimed: LlmRetryEntry | null = null;
+    const next = rows.map((r) => {
+      if (r.id !== candidate.id) return r;
+      claimed = {
+        ...r,
+        status: "in_flight",
+        attempts: r.attempts + 1,
+        last_provider_tried: worker_id,
+        next_attempt_at: leaseIso,
+        updated_at: now,
+      };
+      return claimed;
+    });
+    await writeTable("llm_retry_queue", next);
+    return claimed;
+  }
+  async markLlmRetrySucceeded(id: string, provider: string, result_summary: Record<string, unknown>): Promise<void> {
+    const rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    const now = nowIso();
+    const next = rows.map((r) =>
+      r.id === id
+        ? { ...r, status: "succeeded" as LlmRetryStatus, succeeded_provider: provider, succeeded_at: now, result_summary, updated_at: now }
+        : r
+    );
+    await writeTable("llm_retry_queue", next);
+  }
+  async markLlmRetryPending(id: string, next_attempt_at: string, last_error: string, last_provider: string): Promise<void> {
+    const rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    const now = nowIso();
+    const next = rows.map((r) =>
+      r.id === id
+        ? { ...r, status: "pending" as LlmRetryStatus, next_attempt_at, last_error: last_error.slice(0, 500), last_provider_tried: last_provider, updated_at: now }
+        : r
+    );
+    await writeTable("llm_retry_queue", next);
+  }
+  async markLlmRetryExhausted(id: string, last_error: string): Promise<void> {
+    const rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    const now = nowIso();
+    const next = rows.map((r) =>
+      r.id === id
+        ? { ...r, status: "exhausted" as LlmRetryStatus, last_error: last_error.slice(0, 500), updated_at: now }
+        : r
+    );
+    await writeTable("llm_retry_queue", next);
+  }
+  async listLlmRetries(filter?: { status?: LlmRetryStatus; limit?: number }): Promise<LlmRetryEntry[]> {
+    let rows = await readTable<LlmRetryEntry>("llm_retry_queue");
+    if (filter?.status) rows = rows.filter((r) => r.status === filter.status);
+    rows = rows.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+    if (filter?.limit) rows = rows.slice(0, filter.limit);
+    return rows;
   }
 
   // ── Status snapshot ────────────────────────────────────────────────
@@ -887,6 +985,92 @@ class SupabaseStore implements BrainStore {
       .single();
     if (error) throw new Error(`insertAudit failed: ${error.message}`);
     return data as AuditEntry;
+  }
+
+  // ── LLM retry queue (Stage 3) ──────────────────────────────────────
+
+  async enqueueLlmRetry(input: Omit<LlmRetryEntry, "id" | "status" | "attempts" | "next_attempt_at" | "last_provider_tried" | "last_error" | "succeeded_provider" | "succeeded_at" | "result_summary" | "created_at" | "updated_at"> & { next_attempt_at?: string }): Promise<LlmRetryEntry> {
+    const row = {
+      ...input,
+      status: "pending",
+      attempts: 0,
+      next_attempt_at: input.next_attempt_at ?? nowIso(),
+    };
+    const { data, error } = await this.client
+      .from("llm_retry_queue")
+      .insert(row as never)
+      .select()
+      .single();
+    if (error) throw new Error(`enqueueLlmRetry failed: ${error.message}`);
+    return data as LlmRetryEntry;
+  }
+
+  async claimNextLlmRetry(worker_id: string, lease_seconds = 60): Promise<LlmRetryEntry | null> {
+    const { data, error } = await this.client.rpc("claim_next_llm_retry", {
+      p_worker_id: worker_id,
+      p_lease_seconds: lease_seconds,
+    });
+    if (error) {
+      if (/function .*claim_next_llm_retry/i.test(error.message)) {
+        // Fallback if migration 002 hasn't been applied yet
+        return null;
+      }
+      throw new Error(`claimNextLlmRetry failed: ${error.message}`);
+    }
+    return (data as LlmRetryEntry | null) ?? null;
+  }
+
+  async markLlmRetrySucceeded(id: string, provider: string, result_summary: Record<string, unknown>): Promise<void> {
+    const now = nowIso();
+    const { error } = await this.client
+      .from("llm_retry_queue")
+      .update({
+        status: "succeeded",
+        succeeded_provider: provider,
+        succeeded_at: now,
+        result_summary,
+        updated_at: now,
+      })
+      .eq("id", id);
+    if (error) throw new Error(`markLlmRetrySucceeded failed: ${error.message}`);
+  }
+
+  async markLlmRetryPending(id: string, next_attempt_at: string, last_error: string, last_provider: string): Promise<void> {
+    const { error } = await this.client
+      .from("llm_retry_queue")
+      .update({
+        status: "pending",
+        next_attempt_at,
+        last_error: last_error.slice(0, 500),
+        last_provider_tried: last_provider,
+        updated_at: nowIso(),
+      })
+      .eq("id", id);
+    if (error) throw new Error(`markLlmRetryPending failed: ${error.message}`);
+  }
+
+  async markLlmRetryExhausted(id: string, last_error: string): Promise<void> {
+    const { error } = await this.client
+      .from("llm_retry_queue")
+      .update({
+        status: "exhausted",
+        last_error: last_error.slice(0, 500),
+        updated_at: nowIso(),
+      })
+      .eq("id", id);
+    if (error) throw new Error(`markLlmRetryExhausted failed: ${error.message}`);
+  }
+
+  async listLlmRetries(filter?: { status?: LlmRetryStatus; limit?: number }): Promise<LlmRetryEntry[]> {
+    let query = this.client
+      .from("llm_retry_queue")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (filter?.status) query = query.eq("status", filter.status);
+    query = query.limit(filter?.limit ?? 100);
+    const { data, error } = await query;
+    if (error) throw new Error(`listLlmRetries failed: ${error.message}`);
+    return (data as LlmRetryEntry[]) ?? [];
   }
 
   // ── Status snapshot ────────────────────────────────────────────────

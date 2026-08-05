@@ -45,6 +45,9 @@
     { "path": "/api/cron/custom-domain-billing",    "schedule": "15 3 * * *" },
     { "path": "/api/cron/featured-slot-award",      "schedule": "55 23 * * 0" },
     { "path": "/api/cron/nex-proactive",            "schedule": "0 5 * * *" },
-    { "path": "/api/cron/business-brains-sync",     "schedule": "0 * * * *" }
+    { "path": "/api/cron/business-brains-sync",     "schedule": "0 * * * *" },
+
+    { "//": "NEX Brain 24/7 processing loop — every minute (Vercel Hobby minimum). Uses GET wrapper because Vercel cron issues GET." },
+    { "path": "/api/nex/brain/cron-tick",            "schedule": "* * * * *" }
   ]
 }

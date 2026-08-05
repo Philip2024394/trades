@@ -327,9 +327,74 @@ export async function complete(
   // Every provider failed AND mock is meant to be in the chain — this
   // should be unreachable because mock never throws. If we get here,
   // something is genuinely broken.
+  //
+  // Stage 3 · production hook: the caller can enqueue this call for
+  // background retry by passing options.retry_persist=true (see the
+  // wrapper below in completeWithRetryPersistence).
   throw new Error(
     `[nex-brain.llm] all providers exhausted. Chain: [${chain.join(", ")}]. Errors: ${errors.join(" | ")}`
   );
+}
+
+// Stage 3 · Persistent retry wrapper.
+// Wraps complete() so that if every provider fails, the call metadata is
+// enqueued to llm_retry_queue and the caller receives a synthetic
+// "queued for retry" response instead of an exception. The llm-retry
+// worker then drains the queue when providers recover.
+//
+// Callers that need immediate throughput (no queue) can keep calling
+// complete() directly. Workers that can tolerate deferred completion
+// (extractor, checker) should use this wrapper.
+export async function completeWithRetryPersistence(
+  messages: LlmMessage[],
+  options: LlmCallOptions & {
+    call_purpose: string;
+    parent_job_id?: string | null;
+    parent_worker_type?: string | null;
+    parent_input_ref?: string | null;
+    max_attempts?: number;
+  }
+): Promise<{ result: LlmCallResult | null; queued: boolean; retry_id?: string }> {
+  try {
+    const result = await complete(messages, options);
+    return { result, queued: false };
+  } catch (err) {
+    // Lazy-import the store so this file has no top-level dependency
+    // on the storage module (which would create a cycle if it ever
+    // imported llm.ts). This is only hit on catastrophic failure.
+    try {
+      const { brainStore } = await import("./storage");
+      const entry = await brainStore().enqueueLlmRetry({
+        parent_job_id: options.parent_job_id ?? null,
+        parent_worker_type: options.parent_worker_type ?? null,
+        parent_input_ref: options.parent_input_ref ?? null,
+        call_purpose: options.call_purpose,
+        call_options: {
+          temperature: options.temperature,
+          max_tokens: options.max_tokens,
+          json_mode: options.json_mode,
+          timeout_ms: options.timeout_ms,
+          model: options.model,
+        },
+        call_messages: messages,
+        requires_capability: options.requires_capability ?? null,
+        prefer_provider: options.prefer_provider ?? null,
+        max_attempts: options.max_attempts ?? 5,
+      });
+      console.warn(
+        `[nex-brain.llm] all providers exhausted for ${options.call_purpose} — ` +
+          `queued as retry ${entry.id}. Error: ${(err as Error).message}`
+      );
+      return { result: null, queued: true, retry_id: entry.id };
+    } catch (queueErr) {
+      // If even the queue write failed, re-throw the original LLM error
+      // (which is more useful) after logging the queue failure.
+      console.error(
+        `[nex-brain.llm] failed to enqueue retry after exhaustion: ${(queueErr as Error).message}`
+      );
+      throw err;
+    }
+  }
 }
 
 async function dispatchToProvider(

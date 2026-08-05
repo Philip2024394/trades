@@ -362,7 +362,34 @@ REVIEW INSTRUCTION: assess voice, tone-audience match, plausibility, and any con
       notes: typeof data?.notes === "string" ? data.notes : "",
     };
   } catch (err) {
-    console.warn("[quality-checker] LLM editorial check unavailable:", (err as Error).message);
+    // Stage 3: on total provider exhaustion, persist to the LLM retry
+    // queue so a later attempt (when providers recover) can produce
+    // the verdict. Do NOT re-hit providers here — that would double
+    // the load while they're already struggling. Just enqueue.
+    try {
+      const { brainStore } = await import("../storage");
+      await brainStore().enqueueLlmRetry({
+        parent_job_id: null,
+        parent_worker_type: "quality-checker",
+        parent_input_ref: record.record_id,
+        call_purpose: "quality-checker.llm-verdict",
+        call_options: { temperature: 0.2, max_tokens: 1024 },
+        call_messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        requires_capability: "json_mode",
+        prefer_provider: "groq",
+        max_attempts: 5,
+      });
+    } catch (queueErr) {
+      // Table may not exist yet (migration 002 not applied) — silent.
+      const m = (queueErr as Error).message;
+      if (!/does not exist|relation .*llm_retry_queue/i.test(m)) {
+        console.warn("[quality-checker] retry-queue enqueue failed:", m);
+      }
+    }
+    console.warn("[quality-checker] LLM editorial check unavailable, structural check still runs:", (err as Error).message);
     return null; // structural-only check still runs
   }
 }

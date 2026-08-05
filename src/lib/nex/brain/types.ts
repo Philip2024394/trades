@@ -255,6 +255,42 @@ export type AuditEntry = {
   created_at: string;
 };
 
+// ── LLM retry queue (Stage 3 · production readiness) ────────────────
+//
+// When every provider in the chain fails, the call metadata lands here.
+// A background retry worker drains the queue on the same cadence as
+// the other workers.
+
+export type LlmRetryStatus =
+  | "pending"
+  | "in_flight"
+  | "succeeded"
+  | "exhausted"
+  | "cancelled";
+
+export type LlmRetryEntry = {
+  id: string;
+  parent_job_id: string | null;
+  parent_worker_type: string | null;
+  parent_input_ref: string | null;
+  call_purpose: string;
+  call_options: Record<string, unknown> | null;
+  call_messages: Array<{ role: string; content: string }>;
+  requires_capability: string | null;
+  prefer_provider: string | null;
+  attempts: number;
+  max_attempts: number;
+  next_attempt_at: string;
+  last_provider_tried: string | null;
+  last_error: string | null;
+  status: LlmRetryStatus;
+  succeeded_provider: string | null;
+  succeeded_at: string | null;
+  result_summary: Record<string, unknown> | null;
+  created_at: string;
+  updated_at: string;
+};
+
 // ── Manager status snapshot ──────────────────────────────────────────
 
 export type BrainStatus = {

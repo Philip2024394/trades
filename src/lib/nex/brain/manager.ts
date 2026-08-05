@@ -21,6 +21,7 @@ import { runVoiceContext } from "./workers/voice-context";
 import { runLearningContext } from "./workers/learning-context";
 import { runKnowledgeExtractor } from "./workers/knowledge-extractor";
 import { runQualityChecker } from "./workers/quality-checker";
+import { drainLlmRetryQueue, type LlmRetryOutcome } from "./workers/llm-retry";
 import type { BrainStatus, WorkerJob } from "./types";
 
 const INBOX_ROOT = path.join(process.cwd(), "data", "knowledge-inbox");
@@ -172,6 +173,7 @@ export async function runOneCycle(options: {
   learning_batch?: number;
   extractor_batch?: number;
   checker_batch?: number;
+  retry_batch?: number;
 } = {}): Promise<CycleReport> {
   const contextBatch = options.context_batch ?? 3;
   const voiceBatch = options.voice_batch ?? 3;
@@ -250,6 +252,11 @@ export async function runOneCycle(options: {
     }
   }
 
+  // 6 · LLM retry queue drain (Stage 3). Reclaims work that failed
+  // when every provider was down. Small batch — providers still need
+  // room to recover.
+  const llmRetries = await drainLlmRetryQueue(options.retry_batch ?? 3);
+
   return {
     started_at: new Date(start).toISOString(),
     duration_ms: Date.now() - start,
@@ -259,6 +266,7 @@ export async function runOneCycle(options: {
     extracted_record_ids: extracted,
     extraction_errors: extractionErrors,
     checked_records: checkedRecords,
+    llm_retries: llmRetries,
   };
 }
 
@@ -330,4 +338,5 @@ export type CycleReport = {
   extracted_record_ids: string[];
   extraction_errors: string[];
   checked_records: Array<{ record_id: string; decision: string; confidence: number }>;
+  llm_retries: LlmRetryOutcome[];
 };
