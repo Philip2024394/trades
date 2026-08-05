@@ -51,3 +51,8 @@ data/knowledge-inbox/index.json
 data/knowledge-inbox/stats.json
 data/knowledge-inbox/content/
 data/knowledge-inbox/files/
+
+# NEX Brain runtime store — filesystem backend data. Per-machine.
+# Once NEX_BRAIN_BACKEND=supabase is set, this directory stays empty
+# and everything lives in the Supabase Postgres instead.
+data/nex-brain/*.json
