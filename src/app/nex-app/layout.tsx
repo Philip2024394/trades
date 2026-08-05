@@ -11,6 +11,7 @@
 
 import type { ReactNode } from "react";
 import { NexSectionsNav } from "@/components/nex-app/shell/NexSectionsNav";
+import { CentreFeedPreloader } from "@/components/nex-app/shell/CentreFeedPreloader";
 import "./nex-app.css";
 
 export default function NexPlatformLayout({ children }: { children: ReactNode }) {
@@ -18,6 +19,9 @@ export default function NexPlatformLayout({ children }: { children: ReactNode })
     <div className="nex-app-root">
       {children}
       <NexSectionsNav />
+      {/* Warm the Trade Centre feed cache the moment the user enters
+          the app so navigating into /nex-app/centre lands instantly. */}
+      <CentreFeedPreloader />
     </div>
   );
 }

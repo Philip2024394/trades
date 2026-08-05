@@ -31,6 +31,7 @@ import {
   ChevronRight,
   DoorOpen,
   Grid3x3,
+  LayoutGrid,
   Layers,
   MapPin,
   Megaphone,
@@ -43,6 +44,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import type { CentreFeedItem } from "@/lib/nex/centre-publishing/types";
+import { readCentreFeedCache } from "@/lib/nex/centre-publishing/preloadCache";
 import { DiagramCard } from "./DiagramCard";
 import {
   listOpenProjects,
@@ -258,10 +260,24 @@ export function NexCentreLiveFeed() {
     [debouncedQuery, filters]
   );
 
-  // Reset + fetch page 0 whenever query or filters change
+  // Preserve flow between filter states — do NOT blank items on filter
+  // change (Philip 2026-08-05). Old items dim while the new fetch is
+  // in flight, then swap in place. Cold mount is the one exception:
+  // check the preload cache first so entry from Home lands instantly.
+  const hasRunFirstEffectRef = useRef(false);
   useEffect(() => {
-    setItems([]);
     setHasMore(true);
+    if (!hasRunFirstEffectRef.current) {
+      hasRunFirstEffectRef.current = true;
+      const url = `/api/nex/centre/feed?${buildQuery(debouncedQuery, filters, 0)}`;
+      const cached = readCentreFeedCache(url);
+      if (cached) {
+        setItems(cached.items);
+        setLoading(false);
+        setHasMore(cached.items.length >= PAGE_SIZE);
+        return;
+      }
+    }
     void fetchPage(0, false);
   }, [debouncedQuery, filters, fetchPage]);
 
@@ -529,8 +545,19 @@ export function NexCentreLiveFeed() {
           {/* Trade-domain chips — Philip 2026-08-05. Reframed from entity types
               (Products/Suppliers/Services/Projects/Deals) to trade domains
               (Staircase/Kitchen/Doors/Flooring) so the filter composes with
-              the Brain architecture: each chip corresponds to a NEX Brain. */}
+              the Brain architecture: each chip corresponds to a NEX Brain.
+              "All" leads the row so first-time visitors immediately see it
+              as the default (mixed trades) and can explicitly return to it
+              from any active filter. */}
           <div className="scrollbar-none mt-3 flex gap-2 overflow-x-auto">
+            <HeroChip
+              icon={LayoutGrid}
+              label="All"
+              active={filters.category === ""}
+              onClick={() =>
+                setFilters((f) => ({ ...f, category: "" }))
+              }
+            />
             <HeroChip
               icon={Layers}
               label="Staircase"
@@ -570,6 +597,11 @@ export function NexCentreLiveFeed() {
         {loading && items.length === 0 ? (
           <MasonrySkeleton />
         ) : items.length > 0 ? (
+          <div
+            className="transition-opacity duration-200"
+            style={{ opacity: loading ? 0.45 : 1 }}
+            aria-busy={loading || undefined}
+          >
           <Masonry>
             {interleaveInterstitials(items, 5).map((tile) => {
               // Product tile
@@ -601,6 +633,7 @@ export function NexCentreLiveFeed() {
               return <AdCard key={`a-${inter.id}`} tile={inter} />;
             })}
           </Masonry>
+          </div>
         ) : (
           <EmptyState
             query={debouncedQuery}
