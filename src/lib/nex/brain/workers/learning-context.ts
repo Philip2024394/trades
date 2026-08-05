@@ -61,9 +61,25 @@ import type { VoiceGuide } from "./voice-context";
 
 const WORKER_ID = `learning-context@${process.pid}`;
 
-const RECENT_WINDOW_DAYS = 30;
+// Philip 2026-08-06 caution: "Don't blindly reinforce every approval.
+// If you approved a pattern 18 months ago, but regulations have
+// changed, the Learning Context shouldn't always inject that lesson."
+//
+// Weighting rules baked into the scorer below:
+//   · Age decay      — score drops linearly from 1.0 (fresh) toward
+//                       0.2 over ~180 days; nothing below the FLOOR
+//                       is injected at all.
+//   · Confirmation   — the same lesson (matching lesson_text) appearing
+//                       repeatedly in the window gets a per-repeat boost.
+//   · Supersession   — feedback tied to a record whose status is now
+//                       DEPRECATED or SUPERSEDED is skipped entirely.
+//   · Domain scoping — currently a soft boost via keyword overlap;
+//                       when the corpus grows we can tighten this.
+const RECENT_WINDOW_DAYS = 180;
+const AGE_HARD_FLOOR_DAYS = 365;      // older than this → not injected at all
+const AGE_FULL_WEIGHT_DAYS = 14;      // within this → no decay
 const MAX_BUNDLE_SIZE = 8;
-const CANDIDATE_POOL_SIZE = 50; // fetch this many then rank
+const CANDIDATE_POOL_SIZE = 100;      // fetch this many then rank
 
 export type LearningExample = {
   kind: KnowledgeFeedback["feedback_kind"];
@@ -116,28 +132,58 @@ export async function runLearningContext(options: {
     const topicKeywords = extractTopicKeywords(scanText);
     const relatedRecordIds = new Set((contextBundle?.records ?? []).map((r) => r.record_id));
 
-    // Fetch a candidate pool of recent feedback
+    // Fetch a candidate pool of recent feedback (already sorted newest-first)
     const allFeedback = await store.listFeedback({ limit: CANDIDATE_POOL_SIZE });
-    const cutoffMs = Date.now() - RECENT_WINDOW_DAYS * 24 * 60 * 60 * 1000;
+    const cutoffMs = Date.now() - AGE_HARD_FLOOR_DAYS * 24 * 60 * 60 * 1000;
     const recent = allFeedback.filter(
       (f) => new Date(f.created_at).getTime() >= cutoffMs
     );
 
-    // Score by relevance
-    const scored: LearningExample[] = recent.map((f) => ({
-      kind: f.feedback_kind,
-      severity: f.severity,
-      question: f.question ?? null,
-      nex_answer: f.nex_answer ?? null,
-      correction: f.correction ?? null,
-      lesson: f.lesson ?? null,
-      record_id: f.record_id ?? null,
-      domain: f.domain ?? null,
-      topic_tags: f.topic_tags ?? [],
-      submitted_by: f.submitted_by ?? null,
-      created_at: f.created_at,
-      relevance_score: scoreFeedback(f, topicKeywords, relatedRecordIds, source),
-    }));
+    // Compute confirmation counts — same lesson text appearing multiple
+    // times gets a per-repeat boost. This is how "repeatedly confirmed"
+    // lessons naturally carry more weight than one-offs.
+    const confirmationCounts = countConfirmations(recent);
+
+    // Find records that have been superseded/deprecated so we can skip
+    // any approvals tied to them (their guidance is stale by definition).
+    const supersededRecordIds = new Set<string>();
+    const allRecords = await store.listRecords({ limit: 5000 });
+    for (const r of allRecords) {
+      if (r.status === "DEPRECATED" || r.status === "SUPERSEDED") {
+        supersededRecordIds.add(r.record_id);
+      }
+    }
+
+    // Score by relevance × age × confirmation, skipping superseded feedback
+    const scored: LearningExample[] = [];
+    for (const f of recent) {
+      // Supersession skip
+      if (f.record_id && supersededRecordIds.has(f.record_id)) continue;
+
+      const rawScore = scoreFeedback(f, topicKeywords, relatedRecordIds, source);
+      if (rawScore <= 0) continue;
+
+      const ageWeight = ageDecay(f.created_at);
+      const confirmations = confirmationCounts.get(lessonKey(f)) ?? 1;
+      const confirmationBoost = 1 + Math.log2(confirmations); // 1x for one, ~2x for four, ~2.6x for eight
+
+      const weightedScore = rawScore * ageWeight * confirmationBoost;
+
+      scored.push({
+        kind: f.feedback_kind,
+        severity: f.severity,
+        question: f.question ?? null,
+        nex_answer: f.nex_answer ?? null,
+        correction: f.correction ?? null,
+        lesson: f.lesson ?? null,
+        record_id: f.record_id ?? null,
+        domain: f.domain ?? null,
+        topic_tags: f.topic_tags ?? [],
+        submitted_by: f.submitted_by ?? null,
+        created_at: f.created_at,
+        relevance_score: Math.round(weightedScore * 100) / 100,
+      });
+    }
 
     // Sort by relevance desc + severity boost
     scored.sort((a, b) => b.relevance_score - a.relevance_score);
@@ -293,6 +339,41 @@ function scoreFeedback(
   }
 
   return score;
+}
+
+// Linear age decay: 1.0 for feedback in the last AGE_FULL_WEIGHT_DAYS,
+// dropping to 0.2 at RECENT_WINDOW_DAYS, floor at 0.15 beyond.
+// Feedback older than AGE_HARD_FLOOR_DAYS is filtered out at fetch time.
+function ageDecay(createdAtIso: string): number {
+  const ageMs = Date.now() - new Date(createdAtIso).getTime();
+  const ageDays = ageMs / (24 * 60 * 60 * 1000);
+  if (ageDays <= AGE_FULL_WEIGHT_DAYS) return 1.0;
+  if (ageDays >= RECENT_WINDOW_DAYS) return 0.2;
+  const rampDays = RECENT_WINDOW_DAYS - AGE_FULL_WEIGHT_DAYS;
+  const rampProgress = (ageDays - AGE_FULL_WEIGHT_DAYS) / rampDays;
+  return 1.0 - rampProgress * 0.8;
+}
+
+// Normalise lesson text to a short key so we can count repeats reliably
+// even when Philip phrases the same lesson slightly differently.
+function lessonKey(f: KnowledgeFeedback): string {
+  const raw = (f.lesson ?? f.correction ?? f.nex_answer ?? "").toLowerCase();
+  return raw
+    .replace(/[^a-z0-9 ]+/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length >= 4)
+    .slice(0, 8)
+    .sort()
+    .join("|") || `_kind:${f.feedback_kind}`;
+}
+
+function countConfirmations(feedback: KnowledgeFeedback[]): Map<string, number> {
+  const counts = new Map<string, number>();
+  for (const f of feedback) {
+    const key = lessonKey(f);
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  return counts;
 }
 
 function extractTopicKeywords(text: string): Set<string> {

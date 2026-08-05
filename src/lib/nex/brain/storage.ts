@@ -433,6 +433,56 @@ class FilesystemStore implements BrainStore {
       const last = jw
         .filter((j) => j.completed_at)
         .sort((a, b) => (a.completed_at! < b.completed_at! ? 1 : -1))[0];
+
+      // Currently-running job (if any). Job that has assigned/running
+      // status and an in-force lease.
+      const inFlight = jw
+        .filter((j) => j.status === "assigned" || j.status === "running")
+        .sort((a, b) => (a.assigned_at ?? "") < (b.assigned_at ?? "") ? 1 : -1)[0];
+
+      // Average ms over the last 24h of results (LLM + processing).
+      const rec24h = results.filter(
+        (r) => r.worker_type === wt && isRecent(r.created_at, dayAgo)
+      );
+      const timings = rec24h.map((r) => r.llm_ms ?? 0).filter((n) => n > 0);
+      const avgMs = timings.length > 0
+        ? Math.round(timings.reduce((a, b) => a + b, 0) / timings.length)
+        : null;
+
+      // Last result summary — short human-readable line.
+      let lastResultSummary: string | null = null;
+      if (last) {
+        const lastResult = results
+          .filter((r) => r.job_id === last.id)
+          .sort((a, b) => (a.created_at < b.created_at ? 1 : -1))[0];
+        if (lastResult) {
+          if (lastResult.output_kind === "record_draft") {
+            const ids = (lastResult.output_payload as { draft_record_ids?: string[] }).draft_record_ids ?? [];
+            lastResultSummary = `${ids.length} draft${ids.length === 1 ? "" : "s"} authored`;
+          } else if (lastResult.output_kind === "quality_report") {
+            const decision = (lastResult.output_payload as { decision?: string }).decision ?? "-";
+            const conf = lastResult.overall_confidence ?? 0;
+            lastResultSummary = `${decision.toLowerCase()} · ${(conf * 100).toFixed(0)}%`;
+          } else if (lastResult.output_kind === "context_bundle") {
+            const bundle = lastResult.output_payload as { records?: unknown[]; gaps?: string[] };
+            lastResultSummary = `${(bundle.records ?? []).length} related · ${(bundle.gaps ?? []).length} gaps`;
+          } else if (lastResult.output_kind === "voice_guide") {
+            const guide = lastResult.output_payload as {
+              applicable_brand_terms?: unknown[];
+              primary_audience?: string;
+              content_class?: string;
+            };
+            const terms = (guide.applicable_brand_terms ?? []).length;
+            lastResultSummary = `${terms} brand term${terms === 1 ? "" : "s"} · ${guide.primary_audience ?? "-"}`;
+          } else if (lastResult.output_kind === "learning_bundle") {
+            const bundle = lastResult.output_payload as { examples?: unknown[]; candidates_scanned?: number };
+            lastResultSummary = `${(bundle.examples ?? []).length} lessons · ${bundle.candidates_scanned ?? 0} scanned`;
+          } else {
+            lastResultSummary = lastResult.output_kind;
+          }
+        }
+      }
+
       return {
         worker_type: wt,
         jobs_waiting: jw.filter((j) => j.status === "waiting").length,
@@ -440,7 +490,14 @@ class FilesystemStore implements BrainStore {
         jobs_completed_24h: jw.filter(
           (j) => j.status === "completed" && j.completed_at && isRecent(j.completed_at, dayAgo)
         ).length,
+        jobs_failed_24h: jw.filter(
+          (j) => j.status === "failed" && isRecent(j.updated_at, dayAgo)
+        ).length,
         last_activity_at: last?.completed_at ?? null,
+        current_job_ref: inFlight?.input_ref ?? null,
+        current_job_since: inFlight?.assigned_at ?? null,
+        avg_ms_last_24h: avgMs,
+        last_result_summary: lastResultSummary,
       };
     });
 

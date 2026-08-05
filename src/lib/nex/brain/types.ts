@@ -281,5 +281,13 @@ export type WorkerPoolHealth = {
   jobs_waiting: number;
   jobs_in_flight: number;
   jobs_completed_24h: number;
+  jobs_failed_24h: number;
   last_activity_at?: string | null;
+  // Currently-running job (assigned status). Populated when a worker
+  // holds a live lease. Null when idle.
+  current_job_ref?: string | null;
+  current_job_since?: string | null;
+  // Timing telemetry over the last 24 hours.
+  avg_ms_last_24h?: number | null;
+  last_result_summary?: string | null;
 };

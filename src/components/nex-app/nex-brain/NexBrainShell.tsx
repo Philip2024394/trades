@@ -19,7 +19,6 @@ import {
   BrainCircuit,
   CheckCircle2,
   ChevronRight,
-  Clock,
   Cpu,
   Database,
   DownloadCloud,
@@ -27,6 +26,7 @@ import {
   FileCheck,
   Flame,
   GitBranch,
+  History,
   Inbox,
   Loader2,
   Play,
@@ -529,75 +529,222 @@ function ActionRow({
 // ── Worker pool ──────────────────────────────────────────────────────
 
 function WorkerPoolSection({ status, loading }: { status: Status | null; loading: boolean }) {
-  const pool = status?.worker_pool ?? [];
+  const pool = (status?.worker_pool?.length ? status!.worker_pool : PLACEHOLDER_POOL);
   return (
     <section className="mt-10">
-      <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
-        Worker Pool
-      </h2>
-      <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
-        Real-time workers (Extractor + Checker) plus the batch Memory Guardian (Phase 1.5).
-      </p>
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {(pool.length ? pool : PLACEHOLDER_POOL).map((w) => (
-          <WorkerCard key={w.worker_type} pool={w} loading={loading} />
-        ))}
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div>
+          <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+            Worker Pool
+          </h2>
+          <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+            Six specialist workers · five real-time (Context · Voice · Learning · Extractor · Checker) plus Memory Guardian (batch).
+          </p>
+        </div>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Live snapshot
+        </span>
+      </div>
+      <WorkerPoolTable pool={pool} loading={loading} />
+      <div className="mt-3 md:hidden">
+        <p className="text-[11px]" style={{ color: TOKEN.textSoft }}>
+          Rotate to landscape for the full table view.
+        </p>
       </div>
     </section>
   );
 }
 
-const PLACEHOLDER_POOL: Status["worker_pool"] = [
-  { worker_type: "knowledge-context",   jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-  { worker_type: "voice-context",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-  { worker_type: "learning-context",    jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-  { worker_type: "knowledge-extractor", jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-  { worker_type: "quality-checker",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-  { worker_type: "memory-guardian",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
-];
+// ── Table view · replaces the 3-metric-pill card layout per Philip's
+// sketch. Columns: Worker · Status · Current Job · Queue · Last Result
+// · Avg Time · Failures 24h.
 
-function WorkerCard({ pool, loading }: { pool: Status["worker_pool"][number]; loading: boolean }) {
+function WorkerPoolTable({
+  pool,
+  loading,
+}: {
+  pool: Status["worker_pool"];
+  loading: boolean;
+}) {
+  return (
+    <div
+      className="mt-4 overflow-x-auto rounded-2xl border"
+      style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+    >
+      <table className="w-full min-w-[720px] text-left text-[12px]">
+        <thead>
+          <tr
+            className="border-b"
+            style={{ background: TOKEN.surface, borderColor: TOKEN.border }}
+          >
+            <TH>Worker</TH>
+            <TH>Status</TH>
+            <TH>Current job</TH>
+            <TH align="right">Queue</TH>
+            <TH>Last result</TH>
+            <TH align="right">Avg time</TH>
+            <TH align="right">Fails 24h</TH>
+          </tr>
+        </thead>
+        <tbody>
+          {pool.map((w) => (
+            <WorkerRow key={w.worker_type} pool={w} loading={loading} />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+function TH({ children, align }: { children: React.ReactNode; align?: "left" | "right" }) {
+  return (
+    <th
+      className="px-3 py-2 text-[10px] font-semibold uppercase tracking-widest"
+      style={{ color: TOKEN.textSoft, textAlign: align ?? "left" }}
+    >
+      {children}
+    </th>
+  );
+}
+
+function WorkerRow({
+  pool,
+  loading,
+}: {
+  pool: Status["worker_pool"][number];
+  loading: boolean;
+}) {
   const meta = WORKER_LABEL[pool.worker_type];
   const Icon = meta.icon;
+  const isBusy = pool.jobs_in_flight > 0;
+  const statusChip =
+    pool.jobs_in_flight > 0
+      ? { label: "Working", bg: "#DBEAFE", fg: "#1D4ED8" }
+      : pool.jobs_waiting > 0
+        ? { label: "Queued", bg: "#FED7AA", fg: "#9A3412" }
+        : pool.last_activity_at
+          ? { label: "Idle",  bg: TOKEN.divider, fg: TOKEN.textMid }
+          : { label: "Scheduled", bg: "#E5E7EB", fg: "#374151" };
   return (
-    <div className="rounded-2xl border p-4" style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}>
-      <div className="flex items-start justify-between">
+    <tr
+      className="border-t"
+      style={{ borderColor: TOKEN.divider }}
+    >
+      <td className="px-3 py-3">
         <div className="flex items-center gap-2.5">
-          <div className="grid h-9 w-9 place-items-center rounded-xl" style={{ background: TOKEN.accentSoft, color: meta.color }}>
-            <Icon size={16} strokeWidth={2} />
+          <div
+            className="grid h-8 w-8 flex-none place-items-center rounded-xl"
+            style={{ background: TOKEN.accentSoft, color: meta.color }}
+          >
+            <Icon size={14} strokeWidth={2} />
           </div>
+          <div className="min-w-0">
+            <div className="truncate text-[13px] font-bold" style={{ color: TOKEN.text }}>
+              {meta.label}
+            </div>
+            <div
+              className="truncate text-[10px] uppercase tracking-widest"
+              style={{ color: TOKEN.textSoft }}
+            >
+              {pool.worker_type}
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className="px-3 py-3">
+        <span
+          className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+          style={{ background: statusChip.bg, color: statusChip.fg }}
+        >
+          {isBusy && <Loader2 size={9} strokeWidth={2.6} className="animate-spin" />}
+          {statusChip.label}
+        </span>
+      </td>
+      <td className="px-3 py-3">
+        {loading ? (
+          <div className="nex-skeleton h-4 w-32 rounded" />
+        ) : pool.current_job_ref ? (
           <div>
-            <div className="text-[14px] font-bold" style={{ color: TOKEN.text }}>{meta.label}</div>
-            <div className="text-[11px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>{pool.worker_type}</div>
+            <div className="truncate font-mono text-[11px]" style={{ color: TOKEN.text }}>
+              {truncate(pool.current_job_ref, 32)}
+            </div>
+            {pool.current_job_since ? (
+              <div className="text-[10px]" style={{ color: TOKEN.textSoft }}>
+                since {new Date(pool.current_job_since).toLocaleTimeString()}
+              </div>
+            ) : null}
           </div>
-        </div>
-      </div>
-      <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-        <MetricPill label="Wait" value={pool.jobs_waiting} tone="neutral" loading={loading} />
-        <MetricPill label="Live" value={pool.jobs_in_flight} tone="info" loading={loading} />
-        <MetricPill label="24h" value={pool.jobs_completed_24h} tone="success" loading={loading} />
-      </div>
-      {pool.last_activity_at ? (
-        <div className="mt-3 flex items-center gap-1.5 text-[11px]" style={{ color: TOKEN.textSoft }}>
-          <Clock size={11} strokeWidth={2.2} />
-          Last activity: {new Date(pool.last_activity_at).toLocaleTimeString()}
-        </div>
-      ) : null}
-    </div>
+        ) : (
+          <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>—</span>
+        )}
+      </td>
+      <td className="px-3 py-3 text-right">
+        {loading ? (
+          <div className="nex-skeleton ml-auto h-4 w-6 rounded" />
+        ) : (
+          <span
+            className="text-[13px] font-black"
+            style={{ color: pool.jobs_waiting > 0 ? TOKEN.warning : TOKEN.textMid }}
+          >
+            {pool.jobs_waiting}
+          </span>
+        )}
+      </td>
+      <td className="px-3 py-3">
+        {loading ? (
+          <div className="nex-skeleton h-4 w-28 rounded" />
+        ) : (
+          <span className="text-[11px]" style={{ color: TOKEN.textMid }}>
+            {pool.last_result_summary ?? "—"}
+          </span>
+        )}
+      </td>
+      <td className="px-3 py-3 text-right">
+        {loading ? (
+          <div className="nex-skeleton ml-auto h-4 w-10 rounded" />
+        ) : pool.avg_ms_last_24h && pool.avg_ms_last_24h > 0 ? (
+          <span className="text-[11px] font-semibold" style={{ color: TOKEN.textMid }}>
+            {pool.avg_ms_last_24h > 1000
+              ? `${(pool.avg_ms_last_24h / 1000).toFixed(1)}s`
+              : `${pool.avg_ms_last_24h}ms`}
+          </span>
+        ) : (
+          <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>—</span>
+        )}
+      </td>
+      <td className="px-3 py-3 text-right">
+        {loading ? (
+          <div className="nex-skeleton ml-auto h-4 w-6 rounded" />
+        ) : (
+          <span
+            className="text-[12px] font-bold"
+            style={{ color: (pool.jobs_failed_24h ?? 0) > 0 ? "#B91C1C" : TOKEN.textSoft }}
+          >
+            {pool.jobs_failed_24h ?? 0}
+          </span>
+        )}
+      </td>
+    </tr>
   );
 }
 
-function MetricPill({ label, value, tone, loading }: { label: string; value: number; tone: "neutral" | "info" | "success"; loading?: boolean }) {
-  const c = { neutral: TOKEN.textMid, info: TOKEN.info, success: TOKEN.success }[tone];
-  return (
-    <div className="rounded-xl border p-2" style={{ background: TOKEN.surface, borderColor: TOKEN.border }}>
-      <div className="text-[9px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>{label}</div>
-      {loading ? <div className="nex-skeleton mx-auto mt-1 h-5 w-8 rounded" /> : (
-        <div className="text-[18px] font-black" style={{ color: c }}>{value.toLocaleString()}</div>
-      )}
-    </div>
-  );
+function truncate(s: string, max: number): string {
+  return s.length > max ? s.slice(0, max - 1) + "…" : s;
 }
+
+const PLACEHOLDER_POOL: Status["worker_pool"] = [
+  { worker_type: "knowledge-context",   jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "voice-context",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "learning-context",    jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "knowledge-extractor", jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "quality-checker",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "memory-guardian",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+];
+
+// (Old WorkerCard + MetricPill removed — replaced by WorkerPoolTable above.)
 
 // ── Records section ──────────────────────────────────────────────────
 
