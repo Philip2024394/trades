@@ -455,7 +455,7 @@ Even when writing in another language, leave the following exactly as stored:
 - SKUs, part numbers, product codes, model names
 - UK regulation names — Approved Document K · Approved Document M · Approved Document B · BS 5395 · BS 6180 · BS 6262
 - Trade body names — BWF · IOC · FMB · CITB · Guild of Master Craftsmen
-- Structural terms with no clean local equivalent (leave as English, briefly explain if needed): cut string · closed string · kite winder · newel post · Janka hardness
+- Structural terms with no clean local equivalent (leave as English, briefly explain if needed): NexString™ · cut string · closed string · kite winder · newel post · Janka hardness
 
 ### DO translate these — naturally into the user's language
 

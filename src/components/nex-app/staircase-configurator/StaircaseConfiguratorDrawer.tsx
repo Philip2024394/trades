@@ -15,6 +15,7 @@
 
 import { useEffect, useState } from "react";
 import { X, ChevronDown, Check } from "lucide-react";
+import { brandTerm, technicalTerm } from "@/lib/nex/branding/terminology";
 
 export type ComponentOption = {
   id: string;
@@ -288,7 +289,7 @@ export const SAMPLE_STAIRCASE_CATEGORIES: ComponentCategory[] = [
     label: "Strings",
     description: "Side beams supporting the treads",
     options: [
-      { id: "housed-closed", label: "Housed / closed string", description: "Treads slot into routed housings" },
+      { id: "housed-closed", label: brandTerm("closed-string"), description: `Treads slot into routed housings · traditionally called a ${technicalTerm("closed-string")} construction` },
       { id: "cut-open",      label: "Cut / open string",       description: "Tread ends visible", previewSupported: false },
       { id: "wall-string",   label: "Wall string",              description: "String against a wall", previewSupported: false },
     ],
