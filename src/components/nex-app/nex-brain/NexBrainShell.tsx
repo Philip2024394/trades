@@ -22,6 +22,7 @@ import {
   Clock,
   Cpu,
   Database,
+  DownloadCloud,
   Feather,
   FileCheck,
   Flame,
@@ -30,9 +31,11 @@ import {
   Loader2,
   Play,
   RefreshCcw,
+  ScanSearch,
   Send,
   Shield,
   Sparkles,
+  Zap,
   X,
 } from "lucide-react";
 import type {
@@ -70,6 +73,39 @@ type CycleReport = {
   extraction_errors: string[];
   checked_records: Array<{ record_id: string; decision: string; confidence: number }>;
 };
+type GuardianReport = {
+  started_at: string;
+  duration_ms: number;
+  records_scanned: number;
+  edges_scanned: number;
+  contradictions_created: number;
+  audit_entries_created: number;
+  findings: Array<{
+    kind: string;
+    severity: "low" | "medium" | "high";
+    record_ids: string[];
+    summary: string;
+    suggested_action?: string;
+  }>;
+};
+type ImportReport = {
+  scanned: number;
+  imported: number;
+  updated: number;
+  skipped_already_up_to_date: number;
+  edges_created: number;
+  claims_created: number;
+  errors: Array<{ file: string; error: string }>;
+};
+type LlmVerify = {
+  ok: boolean;
+  provider: string;
+  model?: string;
+  is_real: boolean;
+  response_text?: string;
+  ms?: number;
+  error?: string;
+};
 type Toast = { kind: "info" | "error" | "success"; message: string } | null;
 
 const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; color: string }> = {
@@ -84,7 +120,12 @@ export function NexBrainShell() {
   const [loading, setLoading] = useState(true);
   const [isDispatching, setIsDispatching] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
+  const [isGuardianRunning, setIsGuardianRunning] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
   const [lastCycle, setLastCycle] = useState<CycleReport | null>(null);
+  const [lastGuardian, setLastGuardian] = useState<GuardianReport | null>(null);
+  const [lastImport, setLastImport] = useState<ImportReport | null>(null);
+  const [llm, setLlm] = useState<LlmVerify | null>(null);
   const [toast, setToast] = useState<Toast>(null);
 
   const showToast = useCallback((next: NonNullable<Toast>) => {
@@ -94,9 +135,10 @@ export function NexBrainShell() {
 
   const refresh = useCallback(async () => {
     try {
-      const [statusRes, recordsRes] = await Promise.all([
+      const [statusRes, recordsRes, llmRes] = await Promise.all([
         fetch("/api/nex/brain/status", { cache: "no-store" }),
         fetch("/api/nex/brain/records?limit=30", { cache: "no-store" }),
+        fetch("/api/nex/brain/verify-llm", { cache: "no-store" }),
       ]);
       if (statusRes.ok) {
         const j = await statusRes.json();
@@ -105,6 +147,14 @@ export function NexBrainShell() {
       if (recordsRes.ok) {
         const j = await recordsRes.json();
         if (j.ok) setRecords(j.records as KnowledgeRecord[]);
+      }
+      if (llmRes) {
+        try {
+          const j = await llmRes.json();
+          setLlm(j as LlmVerify);
+        } catch {
+          /* verify-llm may 500 if the key is bad — leave llm as null */
+        }
       }
     } catch (err) {
       console.error("[nex-brain] refresh failed:", err);
@@ -133,6 +183,56 @@ export function NexBrainShell() {
       showToast({ kind: "error", message: "Dispatch failed." });
     } finally {
       setIsDispatching(false);
+      refresh();
+    }
+  }, [refresh, showToast]);
+
+  const handleRunGuardian = useCallback(async () => {
+    setIsGuardianRunning(true);
+    try {
+      const res = await fetch("/api/nex/brain/guardian", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({}),
+      });
+      const j = await res.json();
+      if (j.ok) {
+        setLastGuardian(j.report as GuardianReport);
+        showToast({
+          kind: "info",
+          message: `Guardian: ${j.report.findings.length} finding${j.report.findings.length === 1 ? "" : "s"} · ${j.report.contradictions_created} contradiction${j.report.contradictions_created === 1 ? "" : "s"}`,
+        });
+      } else {
+        throw new Error("guardian not ok");
+      }
+    } catch (err) {
+      console.error("[nex-brain] guardian failed:", err);
+      showToast({ kind: "error", message: "Guardian audit failed." });
+    } finally {
+      setIsGuardianRunning(false);
+      refresh();
+    }
+  }, [refresh, showToast]);
+
+  const handleImport = useCallback(async () => {
+    setIsImporting(true);
+    try {
+      const res = await fetch("/api/nex/brain/import-existing", { method: "POST" });
+      const j = await res.json();
+      if (j.ok) {
+        setLastImport(j.report as ImportReport);
+        showToast({
+          kind: "success",
+          message: `Imported ${j.report.imported} new · ${j.report.updated} updated · ${j.report.skipped_already_up_to_date} skipped`,
+        });
+      } else {
+        throw new Error("import not ok");
+      }
+    } catch (err) {
+      console.error("[nex-brain] import failed:", err);
+      showToast({ kind: "error", message: "Import failed." });
+    } finally {
+      setIsImporting(false);
       refresh();
     }
   }, [refresh, showToast]);
@@ -167,15 +267,19 @@ export function NexBrainShell() {
   return (
     <div className="relative min-h-screen" style={{ background: TOKEN.bg, color: TOKEN.text }}>
       <div className="mx-auto max-w-[1120px] px-5 pb-24 pt-8 md:px-8 md:pt-12">
-        <Hero backend={status?.backend ?? "filesystem"} />
+        <Hero backend={status?.backend ?? "filesystem"} llm={llm} />
 
         <StatStrip status={status} loading={loading} />
 
         <ActionRow
           onDispatch={handleDispatch}
           onRunOnce={handleRunOnce}
+          onRunGuardian={handleRunGuardian}
+          onImport={handleImport}
           isDispatching={isDispatching}
           isRunning={isRunning}
+          isGuardianRunning={isGuardianRunning}
+          isImporting={isImporting}
           onRefresh={refresh}
         />
 
@@ -189,6 +293,14 @@ export function NexBrainShell() {
       </AnimatePresence>
 
       <AnimatePresence>
+        {lastGuardian ? <GuardianOverlay report={lastGuardian} onClose={() => setLastGuardian(null)} /> : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {lastImport ? <ImportOverlay report={lastImport} onClose={() => setLastImport(null)} /> : null}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {toast ? <ToastBanner toast={toast} /> : null}
       </AnimatePresence>
     </div>
@@ -197,7 +309,7 @@ export function NexBrainShell() {
 
 // ── Hero ─────────────────────────────────────────────────────────────
 
-function Hero({ backend }: { backend: "filesystem" | "supabase" }) {
+function Hero({ backend, llm }: { backend: "filesystem" | "supabase"; llm: LlmVerify | null }) {
   return (
     <header>
       <div className="flex flex-wrap items-center gap-2">
@@ -209,6 +321,7 @@ function Hero({ backend }: { backend: "filesystem" | "supabase" }) {
           NEX · Brain
         </span>
         <BackendChip backend={backend} />
+        <LlmChip llm={llm} />
       </div>
       <h1 className="mt-4 text-[36px] font-black leading-[1.05] tracking-tight md:text-[46px]" style={{ color: TOKEN.text }}>
         NEX Manager
@@ -234,6 +347,38 @@ function BackendChip({ backend }: { backend: "filesystem" | "supabase" }) {
     >
       <Database size={11} strokeWidth={2.4} />
       {isSupabase ? "Supabase live" : "Filesystem (dev)"}
+    </span>
+  );
+}
+
+function LlmChip({ llm }: { llm: LlmVerify | null }) {
+  if (!llm) {
+    return (
+      <span
+        className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+        style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+      >
+        <Zap size={11} strokeWidth={2.4} />
+        LLM checking…
+      </span>
+    );
+  }
+  const isReal = llm.is_real === true;
+  const label = isReal
+    ? `${llm.provider}${llm.model ? ` · ${llm.model.split("-").slice(0, 3).join("-")}` : ""}`
+    : "mock (no API key)";
+  return (
+    <span
+      className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+      style={{
+        background: isReal ? "#D1FAE5" : TOKEN.divider,
+        borderColor: isReal ? "#6EE7B7" : TOKEN.border,
+        color: isReal ? "#065F46" : TOKEN.textMid,
+      }}
+      title={isReal ? `Response ok in ${llm.ms}ms` : "Add GROQ_API_KEY / GOOGLE_GEMINI_API_KEY to .env.local for real inference"}
+    >
+      <Zap size={11} strokeWidth={2.4} />
+      {label}
     </span>
   );
 }
@@ -295,12 +440,18 @@ function StatCard({
 // ── Action row ───────────────────────────────────────────────────────
 
 function ActionRow({
-  onDispatch, onRunOnce, isDispatching, isRunning, onRefresh,
+  onDispatch, onRunOnce, onRunGuardian, onImport,
+  isDispatching, isRunning, isGuardianRunning, isImporting,
+  onRefresh,
 }: {
   onDispatch: () => void;
   onRunOnce: () => void;
+  onRunGuardian: () => void;
+  onImport: () => void;
   isDispatching: boolean;
   isRunning: boolean;
+  isGuardianRunning: boolean;
+  isImporting: boolean;
   onRefresh: () => void;
 }) {
   return (
@@ -327,8 +478,34 @@ function ActionRow({
       </button>
       <button
         type="button"
+        onClick={onRunGuardian}
+        disabled={isGuardianRunning}
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors disabled:opacity-50"
+        style={{
+          background: TOKEN.card,
+          borderColor: TOKEN.warning,
+          color: TOKEN.warning,
+        }}
+        title="Run Memory Guardian audit (duplicates · under-connected · confidence rot · broken refs)"
+      >
+        {isGuardianRunning ? <Loader2 size={14} strokeWidth={2.3} className="animate-spin" /> : <ScanSearch size={14} strokeWidth={2.3} />}
+        Run Guardian audit
+      </button>
+      <button
+        type="button"
+        onClick={onImport}
+        disabled={isImporting}
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors disabled:opacity-50"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.text }}
+        title="Import existing governed records from data/knowledge/records/"
+      >
+        {isImporting ? <Loader2 size={14} strokeWidth={2.3} className="animate-spin" /> : <DownloadCloud size={14} strokeWidth={2.3} />}
+        Import existing records
+      </button>
+      <button
+        type="button"
         onClick={onRefresh}
-        className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-black/5"
+        className="ml-auto inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors hover:bg-black/5"
         style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textMid }}
         aria-label="Refresh"
       >
@@ -555,6 +732,163 @@ function CycleOverlay({ cycle, onClose }: { cycle: CycleReport; onClose: () => v
         </div>
       </motion.div>
     </motion.div>
+  );
+}
+
+// ── Guardian overlay ─────────────────────────────────────────────────
+
+function GuardianOverlay({ report, onClose }: { report: GuardianReport; onClose: () => void }) {
+  const severityStyle: Record<"low" | "medium" | "high", { bg: string; fg: string }> = {
+    low:    { bg: "#EDECEA", fg: "#3D3D38" },
+    medium: { bg: "#FED7AA", fg: "#9A3412" },
+    high:   { bg: "#FEE2E2", fg: "#991B1B" },
+  };
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 grid place-items-center p-4"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+    >
+      <button type="button" aria-label="Close" className="absolute inset-0" onClick={onClose} style={{ background: "rgba(15,17,21,0.4)" }} />
+      <motion.div
+        initial={{ scale: 0.96, opacity: 0, y: 12 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.96, opacity: 0, y: 12 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full max-w-[640px] rounded-3xl border p-6 md:p-7"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowLg }}
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: TOKEN.warning }}>
+              Memory Guardian
+            </div>
+            <div className="mt-1 text-[22px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+              {report.findings.length} finding{report.findings.length === 1 ? "" : "s"}
+            </div>
+            <div className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+              Scanned {report.records_scanned} records · {report.edges_scanned} edges · {report.duration_ms}ms
+            </div>
+          </div>
+          <button type="button" aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full transition-colors hover:bg-black/5" onClick={onClose} style={{ color: TOKEN.textMid }}>
+            <X size={17} strokeWidth={2} />
+          </button>
+        </div>
+
+        {report.findings.length === 0 ? (
+          <div className="mt-6 rounded-2xl border p-6 text-center" style={{ background: TOKEN.surface, borderColor: TOKEN.border }}>
+            <CheckCircle2 size={32} strokeWidth={1.5} style={{ color: TOKEN.success }} className="mx-auto" />
+            <div className="mt-3 text-[15px] font-semibold" style={{ color: TOKEN.text }}>Corpus is clean.</div>
+            <div className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+              No duplicates, no confidence rot, no broken references. Nothing for you to do.
+            </div>
+          </div>
+        ) : (
+          <ul className="mt-5 max-h-[420px] space-y-2 overflow-y-auto pr-1">
+            {report.findings.map((f, i) => (
+              <li key={i} className="rounded-2xl border p-3" style={{ background: TOKEN.surface, borderColor: TOKEN.border }}>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest" style={{ background: severityStyle[f.severity].bg, color: severityStyle[f.severity].fg }}>
+                    {f.severity}
+                  </span>
+                  <span className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+                    {f.kind}
+                  </span>
+                </div>
+                <div className="mt-1 text-[13px]" style={{ color: TOKEN.text }}>{f.summary}</div>
+                {f.suggested_action ? (
+                  <div className="mt-1 text-[11px] italic" style={{ color: TOKEN.textSoft }}>
+                    → {f.suggested_action}
+                  </div>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-5 flex justify-end">
+          <button type="button" onClick={onClose} className="inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-semibold text-white" style={{ background: TOKEN.warning }}>
+            <ChevronRight size={13} strokeWidth={2.4} />
+            Done
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ── Import overlay ───────────────────────────────────────────────────
+
+function ImportOverlay({ report, onClose }: { report: ImportReport; onClose: () => void }) {
+  return (
+    <motion.div
+      className="fixed inset-0 z-50 grid place-items-center p-4"
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+    >
+      <button type="button" aria-label="Close" className="absolute inset-0" onClick={onClose} style={{ background: "rgba(15,17,21,0.4)" }} />
+      <motion.div
+        initial={{ scale: 0.96, opacity: 0, y: 12 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.96, opacity: 0, y: 12 }}
+        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+        className="relative w-full max-w-[560px] rounded-3xl border p-6 md:p-7"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowLg }}
+      >
+        <div className="flex items-start justify-between">
+          <div>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: TOKEN.accentDark }}>
+              Existing Records Import
+            </div>
+            <div className="mt-1 text-[22px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+              {report.imported} imported · {report.updated} updated
+            </div>
+            <div className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+              Scanned {report.scanned} markdown files · skipped {report.skipped_already_up_to_date} unchanged
+            </div>
+          </div>
+          <button type="button" aria-label="Close" className="grid h-9 w-9 place-items-center rounded-full transition-colors hover:bg-black/5" onClick={onClose} style={{ color: TOKEN.textMid }}>
+            <X size={17} strokeWidth={2} />
+          </button>
+        </div>
+
+        <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
+          <ImportStat label="Records" value={report.imported} tone="success" />
+          <ImportStat label="Edges" value={report.edges_created} tone="info" />
+          <ImportStat label="Claims" value={report.claims_created} tone="accent" />
+        </div>
+
+        {report.errors.length > 0 && (
+          <div className="mt-5">
+            <div className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.warning }}>
+              {report.errors.length} error{report.errors.length === 1 ? "" : "s"}
+            </div>
+            <ul className="mt-2 max-h-[160px] space-y-1 overflow-y-auto text-[11px]">
+              {report.errors.slice(0, 20).map((e, i) => (
+                <li key={i} className="rounded-lg border p-2" style={{ background: "#FEE2E2", borderColor: "#FCA5A5", color: "#991B1B" }}>
+                  <span className="font-mono">{e.file}</span>: {e.error}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div className="mt-5 flex justify-end">
+          <button type="button" onClick={onClose} className="inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-[13px] font-semibold text-white" style={{ background: TOKEN.accent }}>
+            <ChevronRight size={13} strokeWidth={2.4} />
+            Done
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function ImportStat({ label, value, tone }: { label: string; value: number; tone: "success" | "info" | "accent" }) {
+  const c = { success: TOKEN.success, info: TOKEN.info, accent: TOKEN.accentDark }[tone];
+  return (
+    <div className="rounded-2xl border p-3" style={{ background: TOKEN.surface, borderColor: TOKEN.border }}>
+      <div className="text-[10px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>{label}</div>
+      <div className="mt-1 text-[22px] font-black" style={{ color: c }}>{value.toLocaleString()}</div>
+    </div>
   );
 }
 
