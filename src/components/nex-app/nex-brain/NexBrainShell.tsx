@@ -106,6 +106,29 @@ type LlmVerify = {
   ms?: number;
   error?: string;
 };
+
+type LlmProviderReport = {
+  provider: "groq" | "gemini" | "anthropic" | "mock";
+  status: "healthy" | "degraded" | "circuit-open" | "unconfigured" | "idle";
+  configured: boolean;
+  consecutive_failures: number;
+  circuit_open_ms_remaining: number | null;
+  last_success_at: number | null;
+  last_failure_at: number | null;
+  last_error: string | null;
+  calls_24h: number;
+  successes_24h: number;
+  success_rate_24h: number | null;
+  avg_ms_24h: number | null;
+  tokens_24h: number;
+};
+
+type LlmHealthSnapshot = {
+  ok: boolean;
+  chain: Array<"groq" | "gemini" | "anthropic" | "mock">;
+  active: "groq" | "gemini" | "anthropic" | "mock";
+  providers: LlmProviderReport[];
+};
 type Toast = { kind: "info" | "error" | "success"; message: string } | null;
 
 const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; color: string }> = {
@@ -129,6 +152,7 @@ export function NexBrainShell() {
   const [lastGuardian, setLastGuardian] = useState<GuardianReport | null>(null);
   const [lastImport, setLastImport] = useState<ImportReport | null>(null);
   const [llm, setLlm] = useState<LlmVerify | null>(null);
+  const [llmHealth, setLlmHealth] = useState<LlmHealthSnapshot | null>(null);
   const [toast, setToast] = useState<Toast>(null);
 
   const showToast = useCallback((next: NonNullable<Toast>) => {
@@ -138,10 +162,11 @@ export function NexBrainShell() {
 
   const refresh = useCallback(async () => {
     try {
-      const [statusRes, recordsRes, llmRes] = await Promise.all([
+      const [statusRes, recordsRes, llmRes, llmHealthRes] = await Promise.all([
         fetch("/api/nex/brain/status", { cache: "no-store" }),
         fetch("/api/nex/brain/records?limit=30", { cache: "no-store" }),
         fetch("/api/nex/brain/verify-llm", { cache: "no-store" }),
+        fetch("/api/nex/brain/llm-health", { cache: "no-store" }),
       ]);
       if (statusRes.ok) {
         const j = await statusRes.json();
@@ -158,6 +183,10 @@ export function NexBrainShell() {
         } catch {
           /* verify-llm may 500 if the key is bad — leave llm as null */
         }
+      }
+      if (llmHealthRes.ok) {
+        const j = await llmHealthRes.json();
+        if (j.ok) setLlmHealth(j as LlmHealthSnapshot);
       }
     } catch (err) {
       console.error("[nex-brain] refresh failed:", err);
@@ -286,6 +315,8 @@ export function NexBrainShell() {
           onRefresh={refresh}
         />
 
+        <AiConnectionStrip health={llmHealth} />
+
         <WorkerPoolSection status={status} loading={loading} />
 
         <ReviewQueueSection
@@ -391,6 +422,121 @@ function LlmChip({ llm }: { llm: LlmVerify | null }) {
       {label}
     </span>
   );
+}
+
+// ── AI Connection strip ─────────────────────────────────────────────
+//
+// Shows the provider chain (Groq → Gemini → Anthropic → Mock) with
+// each link's health status. When Groq is degraded, chip goes amber.
+// When the circuit is open, red. On hover: consecutive-failures
+// count + last-error line. Every hop is visible so it's obvious
+// which provider took the last call.
+
+function AiConnectionStrip({ health }: { health: LlmHealthSnapshot | null }) {
+  if (!health) {
+    return (
+      <section className="mt-8">
+        <div className="rounded-2xl border p-4" style={{ background: TOKEN.card, borderColor: TOKEN.border }}>
+          <div className="nex-skeleton h-4 w-40 rounded" />
+        </div>
+      </section>
+    );
+  }
+  return (
+    <section className="mt-8">
+      <div className="mb-2 flex items-baseline justify-between">
+        <h2 className="text-[16px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+          AI Connection
+        </h2>
+        <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
+          Primary: <span className="font-bold" style={{ color: TOKEN.text }}>{health.active}</span>
+          {" · "}Chain: {health.chain.join(" → ")}
+        </span>
+      </div>
+      <div
+        className="flex flex-wrap items-center gap-2 rounded-2xl border p-3"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        {health.chain.map((p, i) => {
+          const r = health.providers.find((x) => x.provider === p);
+          return (
+            <div key={p} className="flex items-center gap-1.5">
+              <ProviderPill report={r} isActive={p === health.active} />
+              {i < health.chain.length - 1 && (
+                <span className="text-[12px] font-bold" style={{ color: TOKEN.textSoft }}>→</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function ProviderPill({ report, isActive }: { report?: LlmProviderReport; isActive: boolean }) {
+  if (!report) return null;
+  const chip = statusChipFor(report.status);
+  const rate =
+    report.success_rate_24h !== null
+      ? `${Math.round(report.success_rate_24h * 100)}%`
+      : "—";
+  const avg =
+    report.avg_ms_24h !== null
+      ? report.avg_ms_24h > 1000
+        ? `${(report.avg_ms_24h / 1000).toFixed(1)}s`
+        : `${report.avg_ms_24h}ms`
+      : "—";
+  const title = [
+    `Status: ${report.status}`,
+    `Configured: ${report.configured ? "yes" : "no"}`,
+    `Consecutive failures: ${report.consecutive_failures}`,
+    report.circuit_open_ms_remaining
+      ? `Circuit reopens in ${Math.ceil(report.circuit_open_ms_remaining / 1000)}s`
+      : null,
+    `24h: ${report.calls_24h} calls, ${rate} success, ${avg} avg`,
+    report.last_error ? `Last error: ${report.last_error}` : null,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  return (
+    <div
+      title={title}
+      className="flex items-center gap-1.5 rounded-full border px-2.5 py-1"
+      style={{
+        background: chip.bg,
+        borderColor: chip.border,
+        color: chip.fg,
+        outline: isActive ? `2px solid ${TOKEN.accent}` : "none",
+        outlineOffset: 1,
+      }}
+    >
+      <span
+        aria-hidden
+        className="inline-block h-1.5 w-1.5 rounded-full"
+        style={{ background: chip.dot }}
+      />
+      <span className="text-[11px] font-bold uppercase tracking-widest">
+        {report.provider}
+      </span>
+      {report.calls_24h > 0 && (
+        <span className="text-[10px]" style={{ color: chip.fg, opacity: 0.8 }}>
+          {rate}
+        </span>
+      )}
+    </div>
+  );
+}
+
+function statusChipFor(status: LlmProviderReport["status"]): {
+  bg: string; border: string; fg: string; dot: string;
+} {
+  switch (status) {
+    case "healthy":       return { bg: "#D1FAE5", border: "#6EE7B7", fg: "#065F46", dot: "#10B981" };
+    case "degraded":      return { bg: "#FEF3C7", border: "#FBBF24", fg: "#92400E", dot: "#F59E0B" };
+    case "circuit-open":  return { bg: "#FEE2E2", border: "#EF4444", fg: "#991B1B", dot: "#EF4444" };
+    case "unconfigured":  return { bg: TOKEN.divider, border: TOKEN.border, fg: TOKEN.textSoft, dot: TOKEN.textSoft };
+    case "idle":          return { bg: TOKEN.divider, border: TOKEN.border, fg: TOKEN.textMid, dot: TOKEN.textMid };
+  }
 }
 
 // ── Stat strip ───────────────────────────────────────────────────────

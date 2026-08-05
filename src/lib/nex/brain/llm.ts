@@ -41,16 +41,21 @@ export type LlmCallResult = {
   ms: number;
 };
 
-// ── Provider selection ───────────────────────────────────────────────
+// ── AI Connection Manager (Philip 2026-08-06) ────────────────────────
+//
+// NEX is the manager of the AI providers, not just the manager of the
+// workers. Every complete() call flows through a provider chain with:
+//   · Circuit breaker per provider (opens after N consecutive failures,
+//     auto-closes after cooldown for a retry)
+//   · Exponential backoff retry within each provider before falling back
+//   · Fallback chain: primary → secondary → tertiary → mock
+//   · Rolling 24h metrics per provider (success rate, avg latency)
+//
+// When Groq times out, NEX doesn't just fail — she retries with backoff,
+// then falls to Gemini, then Anthropic, then to the mock as a last
+// resort. Every step is logged so the dashboard shows what happened.
 
-export function activeProvider(): LlmProvider {
-  if (process.env.GROQ_API_KEY) return "groq";
-  if (process.env.GOOGLE_GEMINI_API_KEY) return "gemini";
-  if (process.env.ANTHROPIC_API_KEY) return "anthropic";
-  return "mock";
-}
-
-// Default model per provider — chosen for structured extraction quality.
+// Default model per provider.
 const DEFAULT_MODEL: Record<LlmProvider, string> = {
   groq: "llama-3.3-70b-versatile",
   gemini: "gemini-1.5-flash-latest",
@@ -58,26 +63,223 @@ const DEFAULT_MODEL: Record<LlmProvider, string> = {
   mock: "mock-llama-70b",
 };
 
-// ── Public API ───────────────────────────────────────────────────────
+// Circuit breaker config
+const CIRCUIT_BREAKER_THRESHOLD = 3;         // consecutive failures to open
+const CIRCUIT_BREAKER_COOLDOWN_MS = 60_000;  // how long before half-open retry
+const PER_PROVIDER_RETRIES = 2;              // attempts per provider (before backoff to next)
+const RETRY_BACKOFF_MS = [500, 2000, 8000];  // one entry per retry
+
+// Provider health state (in-memory; resets on server restart, fine for dev).
+// A future pass persists this into Supabase for cross-instance coherence.
+type ProviderHealth = {
+  provider: LlmProvider;
+  consecutive_failures: number;
+  circuit_open_until: number | null;   // epoch ms
+  last_success_at: number | null;
+  last_failure_at: number | null;
+  last_error: string | null;
+  recent_calls: Array<{ at: number; ok: boolean; ms: number; tokens: number }>;
+};
+
+const HEALTH: Record<LlmProvider, ProviderHealth> = {
+  groq:      { provider: "groq",      consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  gemini:    { provider: "gemini",    consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  anthropic: { provider: "anthropic", consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  mock:      { provider: "mock",      consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+};
+
+// Which providers are configured (have credentials). Mock is always OK.
+function providerConfigured(p: LlmProvider): boolean {
+  switch (p) {
+    case "groq":      return Boolean(process.env.GROQ_API_KEY);
+    case "gemini":    return Boolean(process.env.GOOGLE_GEMINI_API_KEY);
+    case "anthropic": return Boolean(process.env.ANTHROPIC_API_KEY);
+    case "mock":      return true;
+  }
+}
+
+// Compute the provider chain from LLM_PROVIDER_CHAIN env var, falling
+// back to the "best available first" default. Mock is always last.
+function providerChain(): LlmProvider[] {
+  const raw = process.env.LLM_PROVIDER_CHAIN;
+  const seed = raw
+    ? raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) as LlmProvider[]
+    : ["groq", "gemini", "anthropic"];
+  const chain: LlmProvider[] = [];
+  for (const p of seed) {
+    if ((["groq", "gemini", "anthropic", "mock"] as string[]).includes(p) && providerConfigured(p)) {
+      chain.push(p);
+    }
+  }
+  if (!chain.includes("mock")) chain.push("mock"); // always the safety net
+  return chain;
+}
+
+// Which is the currently-active primary provider? (Chain head after
+// skipping any with an open circuit.)
+export function activeProvider(): LlmProvider {
+  const chain = providerChain();
+  for (const p of chain) if (!isCircuitOpen(p)) return p;
+  return chain[chain.length - 1]; // fall back to mock if everything is open
+}
+
+// ── Circuit breaker helpers ─────────────────────────────────────────
+
+function isCircuitOpen(p: LlmProvider): boolean {
+  const h = HEALTH[p];
+  if (!h.circuit_open_until) return false;
+  if (Date.now() > h.circuit_open_until) {
+    // Cooldown passed → half-open (allow one probe request through)
+    h.circuit_open_until = null;
+    h.consecutive_failures = Math.max(0, h.consecutive_failures - 1);
+    return false;
+  }
+  return true;
+}
+
+function recordSuccess(p: LlmProvider, ms: number, tokens: number) {
+  const h = HEALTH[p];
+  h.consecutive_failures = 0;
+  h.circuit_open_until = null;
+  h.last_success_at = Date.now();
+  h.last_error = null;
+  h.recent_calls.push({ at: Date.now(), ok: true, ms, tokens });
+  trimCallHistory(p);
+}
+
+function recordFailure(p: LlmProvider, err: string, ms: number) {
+  const h = HEALTH[p];
+  h.consecutive_failures += 1;
+  h.last_failure_at = Date.now();
+  h.last_error = err.slice(0, 240);
+  if (h.consecutive_failures >= CIRCUIT_BREAKER_THRESHOLD) {
+    h.circuit_open_until = Date.now() + CIRCUIT_BREAKER_COOLDOWN_MS;
+    console.warn(`[nex-brain.llm] circuit OPEN for ${p} (${h.consecutive_failures} consecutive failures) · cooldown ${CIRCUIT_BREAKER_COOLDOWN_MS}ms`);
+  }
+  h.recent_calls.push({ at: Date.now(), ok: false, ms, tokens: 0 });
+  trimCallHistory(p);
+}
+
+function trimCallHistory(p: LlmProvider) {
+  const h = HEALTH[p];
+  const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+  h.recent_calls = h.recent_calls.filter((c) => c.at >= dayAgo).slice(-500);
+}
+
+// Public health snapshot for the /llm-health endpoint + dashboard.
+export type ProviderStatus = "healthy" | "degraded" | "circuit-open" | "unconfigured" | "idle";
+export type ProviderReport = {
+  provider: LlmProvider;
+  status: ProviderStatus;
+  configured: boolean;
+  consecutive_failures: number;
+  circuit_open_ms_remaining: number | null;
+  last_success_at: number | null;
+  last_failure_at: number | null;
+  last_error: string | null;
+  calls_24h: number;
+  successes_24h: number;
+  success_rate_24h: number | null;
+  avg_ms_24h: number | null;
+  tokens_24h: number;
+};
+
+export function providerReports(): { chain: LlmProvider[]; active: LlmProvider; providers: ProviderReport[] } {
+  const chain = providerChain();
+  const providers: ProviderReport[] = (["groq", "gemini", "anthropic", "mock"] as LlmProvider[]).map((p) => {
+    const h = HEALTH[p];
+    trimCallHistory(p);
+    const successes = h.recent_calls.filter((c) => c.ok).length;
+    const total = h.recent_calls.length;
+    const avgMs = total > 0
+      ? Math.round(h.recent_calls.reduce((sum, c) => sum + c.ms, 0) / total)
+      : null;
+    const tokens = h.recent_calls.reduce((sum, c) => sum + c.tokens, 0);
+    const configured = providerConfigured(p);
+    let status: ProviderStatus = "idle";
+    if (!configured) status = "unconfigured";
+    else if (h.circuit_open_until && Date.now() < h.circuit_open_until) status = "circuit-open";
+    else if (h.consecutive_failures >= 1) status = "degraded";
+    else if (h.last_success_at) status = "healthy";
+    return {
+      provider: p,
+      status,
+      configured,
+      consecutive_failures: h.consecutive_failures,
+      circuit_open_ms_remaining: h.circuit_open_until ? Math.max(0, h.circuit_open_until - Date.now()) : null,
+      last_success_at: h.last_success_at,
+      last_failure_at: h.last_failure_at,
+      last_error: h.last_error,
+      calls_24h: total,
+      successes_24h: successes,
+      success_rate_24h: total > 0 ? successes / total : null,
+      avg_ms_24h: avgMs,
+      tokens_24h: tokens,
+    };
+  });
+  return { chain, active: activeProvider(), providers };
+}
+
+// ── The main public entry — with chain + circuit breaker + retry ────
 
 export async function complete(
   messages: LlmMessage[],
   options: LlmCallOptions = {}
 ): Promise<LlmCallResult> {
-  const provider = activeProvider();
-  const model = options.model ?? DEFAULT_MODEL[provider];
-  const start = Date.now();
+  const chain = providerChain();
+  const errors: string[] = [];
 
-  try {
-    if (provider === "groq") return await callGroq(messages, model, options, start);
-    if (provider === "gemini") return await callGemini(messages, model, options, start);
-    if (provider === "anthropic") return await callAnthropic(messages, model, options, start);
-    return await callMock(messages, model, options, start);
-  } catch (err) {
-    // On any failure, fall back to mock so the pipeline never hard-fails
-    // in dev. Real production would surface + retry.
-    console.error(`[nex-brain.llm] ${provider} call failed, falling back to mock:`, err);
-    return await callMock(messages, DEFAULT_MODEL.mock, options, start);
+  for (const provider of chain) {
+    if (isCircuitOpen(provider)) {
+      errors.push(`${provider}: circuit-open (skipped)`);
+      continue;
+    }
+    const model = options.model ?? DEFAULT_MODEL[provider];
+
+    // Per-provider retries with exponential backoff
+    for (let attempt = 0; attempt < PER_PROVIDER_RETRIES; attempt += 1) {
+      const start = Date.now();
+      try {
+        const result = await dispatchToProvider(provider, messages, model, options, start);
+        recordSuccess(provider, result.ms, result.tokens_in + result.tokens_out);
+        return result;
+      } catch (err) {
+        const msg = (err as Error).message;
+        const ms = Date.now() - start;
+        recordFailure(provider, msg, ms);
+        errors.push(`${provider} attempt ${attempt + 1}: ${msg.slice(0, 120)}`);
+
+        // If circuit just opened OR we've used our attempts on this
+        // provider, fall through to the next one in the chain.
+        if (isCircuitOpen(provider) || attempt === PER_PROVIDER_RETRIES - 1) break;
+
+        // Otherwise wait then retry the same provider.
+        const backoff = RETRY_BACKOFF_MS[attempt] ?? RETRY_BACKOFF_MS[RETRY_BACKOFF_MS.length - 1];
+        await new Promise((r) => setTimeout(r, backoff));
+      }
+    }
+  }
+
+  // Every provider failed AND mock is meant to be in the chain — this
+  // should be unreachable because mock never throws. If we get here,
+  // something is genuinely broken.
+  throw new Error(
+    `[nex-brain.llm] all providers exhausted. Chain: [${chain.join(", ")}]. Errors: ${errors.join(" | ")}`
+  );
+}
+
+async function dispatchToProvider(
+  provider: LlmProvider,
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  switch (provider) {
+    case "groq":      return callGroq(messages, model, options, start);
+    case "gemini":    return callGemini(messages, model, options, start);
+    case "anthropic": return callAnthropic(messages, model, options, start);
+    case "mock":      return callMock(messages, model, options, start);
   }
 }
 
