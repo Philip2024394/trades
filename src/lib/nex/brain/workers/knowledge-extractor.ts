@@ -82,7 +82,7 @@ type ExtractorOutput = {
 
 const SYSTEM_PROMPT = `You are the NEX Knowledge Extractor — a specialist worker in the NEX AI-managed knowledge system for the UK trades industry (staircases, kitchens, doors, flooring). Your ONE job is to extract structured, governed knowledge from raw source material and emit valid JSON that conforms exactly to the schema below.
 
-CRITICAL — NEX ALREADY KNOWS THINGS:
+CRITICAL — NEX ALREADY KNOWS THINGS (Knowledge Context):
 You will be given a CONTEXT bundle listing existing records NEX has already authored. Your job is NOT to re-author what NEX already knows. Your job is to:
   (a) IDENTIFY overlaps with existing records → create TYPED EDGES to them rather than re-authoring their content
   (b) IDENTIFY genuinely NEW information not covered by existing records → author a focused new record for that specific angle
@@ -90,7 +90,18 @@ You will be given a CONTEXT bundle listing existing records NEX has already auth
 
 A good outcome looks like: 1-2 focused new records + 5-15 typed edges to existing records + a note in overall_notes about what the source added over the existing corpus.
 
-A BAD outcome looks like: re-authoring content that already exists in one of the CONTEXT records. If the input says "walnut is a premium hardwood" and CONTEXT contains materials_american_black_walnut_v1, you MUST link to that record with a typed edge, NOT write a new "walnut is premium" record.
+CRITICAL — NEX HAS A VOICE (Voice & Brand Guide):
+You will be given a VOICE GUIDE listing:
+  · Applicable NEX brand terms (NexString™, Nex Newel™ Split Base Design, Connected Staircase™, NEX Premium™)
+  · Primary audience (homeowner / manufacturer / engineer)
+  · Content class (customer-facing / technical / regulatory / mixed)
+  · Voice tone principles
+
+The BRAND-USE POLICY (Philip 2026-08-06): Brand language enhances the explanation — it never overrides factual accuracy.
+  · CUSTOMER-FACING content → use brand form first (with the ™ symbol), plain form subsequently, bridge to technical term on first mention.
+  · TECHNICAL or REGULATORY content → use the industry term throughout. Brand terms are optional and only in section framings, never in normative rules or load figures.
+  · MIXED content → apply per section: customer intros can use brand terms, technical sections stay precise.
+  · Never force brand terminology into content where it doesn't naturally fit.
 
 RULES:
 1. You are NOT answering the user. You are authoring knowledge records.
@@ -98,10 +109,12 @@ RULES:
 3. Every claim gets: classification, confidence_band (high/medium/low), confidence_score (0.0-1.0), source_type, rationale.
 4. Every edge must be typed. Valid edge types include: composes_material, composes_with, composes_from, regulated_by, used_for, part_of, references, extends, becomes, alternative_to, alternative_for, compared_with, replaces, sustainability_alert_from.
 5. Industry concepts stay separate from NEX concepts (never mix in the same claim).
-6. Never use "At NEX, we…" phrasing.
+6. Never use "At NEX, we…" phrasing (HARD LAW).
 7. Prefer splitting into multiple focused records over one giant record.
 8. Sustainability alerts (ash dieback, CITES status, etc.) must be surfaced when relevant.
 9. When CONTEXT records exist, aim for MORE typed edges than new claims. That is the healthy authoring ratio.
+10. Follow the voice tone principles for the given primary audience. Match the audience — homeowner content is warm and conversational, engineer content is expert-defensible.
+11. Add brand terms to the record's nex_concepts array WHERE they are applicable per the guide. Add industry equivalents to industry_concepts. Never mix these.
 
 OUTPUT SCHEMA (return this JSON, nothing else):
 {
@@ -172,10 +185,11 @@ export async function runKnowledgeExtractor(options: {
       throw new Error(`Extractor received empty content for inbox item ${inboxItemId}`);
     }
 
-    // 2 · Read the context bundle from the job payload (produced by the
-    // upstream Knowledge Context Worker). If it's missing — because the
-    // job was enqueued before the Context Worker existed, or someone
-    // bypassed the pipeline — proceed without context but log a warning.
+    // 2 · Read the context bundle + voice guide from the job payload
+    // (produced by the upstream Knowledge Context + Voice Context Workers).
+    // If either is missing — because the job was enqueued before those
+    // Workers existed, or someone bypassed the pipeline — proceed but
+    // log a warning.
     const contextBundle = job.input_payload?.context_bundle as
       | { records: Array<{
           record_id: string;
@@ -192,13 +206,35 @@ export async function runKnowledgeExtractor(options: {
       console.warn(`[knowledge-extractor] no context bundle attached for inbox item ${inboxItemId}`);
     }
 
-    // 3 · Call the LLM with the Golden Rule system prompt + context
+    const voiceGuide = job.input_payload?.voice_guide as
+      | {
+          applicable_brand_terms: Array<{
+            key: string;
+            brand: string;
+            brand_plain: string;
+            technical: string;
+            customer_explanation: string;
+            usage_note: string;
+          }>;
+          primary_audience: "homeowner" | "manufacturer" | "engineer";
+          audience_voice_note: string;
+          content_class: "customer-facing" | "technical" | "regulatory" | "mixed";
+          brand_use_policy: string;
+          voice_tone_principles: string[];
+        }
+      | undefined;
+    if (!voiceGuide) {
+      console.warn(`[knowledge-extractor] no voice guide attached for inbox item ${inboxItemId}`);
+    }
+
+    // 3 · Call the LLM with the Golden Rule system prompt + both bundles
     const userMessage = buildUserMessage({
       inbox_id: inboxItemId,
       source,
       title: inboxTitle,
       content,
       context: contextBundle,
+      voice: voiceGuide,
     });
 
     const { data, raw } = await completeJson<ExtractorOutput>(
@@ -347,6 +383,21 @@ function buildUserMessage(input: {
     gaps: string[];
     keywords: string[];
   };
+  voice?: {
+    applicable_brand_terms: Array<{
+      key: string;
+      brand: string;
+      brand_plain: string;
+      technical: string;
+      customer_explanation: string;
+      usage_note: string;
+    }>;
+    primary_audience: "homeowner" | "manufacturer" | "engineer";
+    audience_voice_note: string;
+    content_class: "customer-facing" | "technical" | "regulatory" | "mixed";
+    brand_use_policy: string;
+    voice_tone_principles: string[];
+  };
 }): string {
   // Truncate very long content to keep within reasonable token budgets.
   const CONTENT_LIMIT = 80_000;
@@ -356,8 +407,8 @@ function buildUserMessage(input: {
         `\n\n[…truncated at ${CONTENT_LIMIT.toLocaleString()} chars — Manager will re-enqueue remainder]`
       : input.content;
 
-  // Render the context bundle so Groq sees exactly what NEX already knows.
   const contextBlock = renderContext(input.context);
+  const voiceBlock = renderVoiceGuide(input.voice);
 
   return `INBOX ITEM METADATA
 inbox_id: ${input.inbox_id}
@@ -375,10 +426,62 @@ SOURCE-SPECIFIC HANDLING NOTES:
 
 ${contextBlock}
 
+${voiceBlock}
+
 RAW CONTENT:
 ${content}
 
-TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records — that is the healthy authoring ratio when NEX already knows this territory. Respond with ONLY the JSON object.`;
+TASK: Extract structured knowledge records per the schema. When CONTEXT records above cover the same ground as the RAW CONTENT, LINK to them via typed edges rather than re-authoring. Apply the VOICE GUIDE — use NEX brand terms where the content class permits, use industry terms where it demands precision. Author focused new records ONLY for genuinely new information or for the gap keywords listed. Aim for MORE typed edges than new records. Respond with ONLY the JSON object.`;
+}
+
+function renderVoiceGuide(
+  voice?: {
+    applicable_brand_terms: Array<{
+      key: string;
+      brand: string;
+      brand_plain: string;
+      technical: string;
+      customer_explanation: string;
+      usage_note: string;
+    }>;
+    primary_audience: "homeowner" | "manufacturer" | "engineer";
+    audience_voice_note: string;
+    content_class: "customer-facing" | "technical" | "regulatory" | "mixed";
+    brand_use_policy: string;
+    voice_tone_principles: string[];
+  }
+): string {
+  if (!voice) {
+    return `VOICE GUIDE:
+  (none — write in a neutral professional tone; avoid brand terminology)`;
+  }
+  const lines: string[] = [];
+  lines.push(`VOICE & BRAND GUIDE:`);
+  lines.push(``);
+  lines.push(`Primary audience: ${voice.primary_audience}`);
+  lines.push(`Content class:    ${voice.content_class}`);
+  lines.push(`Audience voice:   ${voice.audience_voice_note}`);
+  lines.push(``);
+  lines.push(`Brand-use policy:`);
+  lines.push(`  ${voice.brand_use_policy}`);
+  lines.push(``);
+  if (voice.applicable_brand_terms.length > 0) {
+    lines.push(`Applicable NEX brand terms (use per policy):`);
+    for (const t of voice.applicable_brand_terms) {
+      lines.push(`  · ${t.brand} · plain: ${t.brand_plain} · technical: ${t.technical}`);
+      lines.push(`    Bridge:    ${t.customer_explanation}`);
+      lines.push(`    Use when:  ${t.usage_note}`);
+    }
+    lines.push(``);
+  } else {
+    lines.push(`Applicable NEX brand terms: none for this content — use industry terms only.`);
+    lines.push(``);
+  }
+  lines.push(`Voice tone principles:`);
+  for (const p of voice.voice_tone_principles.slice(0, 8)) {
+    lines.push(`  · ${p}`);
+  }
+  return lines.join("\n");
 }
 
 function renderContext(

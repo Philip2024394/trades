@@ -110,6 +110,7 @@ type Toast = { kind: "info" | "error" | "success"; message: string } | null;
 
 const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; color: string }> = {
   "knowledge-context":   { label: "Knowledge Context",   icon: ScanSearch,   color: TOKEN.info },
+  "voice-context":       { label: "Voice & Brand",       icon: Feather,      color: TOKEN.accentDark },
   "knowledge-extractor": { label: "Knowledge Extractor", icon: BrainCircuit, color: TOKEN.accent },
   "quality-checker":     { label: "Quality Checker",     icon: FileCheck,    color: TOKEN.success },
   "memory-guardian":     { label: "Memory Guardian",     icon: Shield,       color: TOKEN.warning },
@@ -529,7 +530,7 @@ function WorkerPoolSection({ status, loading }: { status: Status | null; loading
       <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
         Real-time workers (Extractor + Checker) plus the batch Memory Guardian (Phase 1.5).
       </p>
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-5">
         {(pool.length ? pool : PLACEHOLDER_POOL).map((w) => (
           <WorkerCard key={w.worker_type} pool={w} loading={loading} />
         ))}
@@ -540,6 +541,7 @@ function WorkerPoolSection({ status, loading }: { status: Status | null; loading
 
 const PLACEHOLDER_POOL: Status["worker_pool"] = [
   { worker_type: "knowledge-context",   jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
+  { worker_type: "voice-context",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "knowledge-extractor", jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "quality-checker",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },
   { worker_type: "memory-guardian",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0 },

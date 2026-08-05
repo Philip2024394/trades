@@ -17,6 +17,7 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { brainStore, nowIso } from "./storage";
 import { runKnowledgeContext } from "./workers/knowledge-context";
+import { runVoiceContext } from "./workers/voice-context";
 import { runKnowledgeExtractor } from "./workers/knowledge-extractor";
 import { runQualityChecker } from "./workers/quality-checker";
 import type { BrainStatus, WorkerJob } from "./types";
@@ -64,15 +65,16 @@ export async function dispatchNewInboxItems(): Promise<{
   const store = brainStore();
   const inboxItems = await readInboxIndex();
 
-  // Which inbox_item_ids already entered the pipeline? Both context AND
-  // extractor jobs are checked — either one means the item has started
-  // its journey. Cheap dedup by walking the jobs table.
+  // Which inbox_item_ids already entered the pipeline? Any of the three
+  // upstream worker types (context, voice-context, extractor) means the
+  // item has started its journey. Cheap dedup by walking the jobs table.
   const jobRows = await readFsJobsSnapshot();
   const alreadyQueuedIds = new Set(
     jobRows
       .filter(
         (j) =>
           j.worker_type === "knowledge-context" ||
+          j.worker_type === "voice-context" ||
           j.worker_type === "knowledge-extractor"
       )
       .map((j) => j.input_ref)
@@ -153,30 +155,33 @@ export async function dispatchNewInboxItems(): Promise<{
   };
 }
 
-// 2 · Run one cycle: drain up to N context jobs, then extractor jobs,
-// then checker jobs. Returns a report suitable for the /brain/run-once
-// endpoint. This is what a cron trigger calls every minute.
+// 2 · Run one cycle: drain up to N of each worker in order.
+// Returns a report suitable for the /brain/run-once endpoint.
 //
-// The three-stage drain matches the doctrine:
-//   context   → gather memory from the corpus
-//   extractor → author new drafts using that memory
-//   checker   → gate against the Constitution
+// Four-stage drain matches the doctrine:
+//   knowledge-context → gather memory from the corpus
+//   voice-context     → gather brand + voice guidance
+//   knowledge-extractor → author new drafts using both bundles
+//   quality-checker   → gate against the Constitution
 export async function runOneCycle(options: {
   context_batch?: number;
+  voice_batch?: number;
   extractor_batch?: number;
   checker_batch?: number;
 } = {}): Promise<CycleReport> {
   const contextBatch = options.context_batch ?? 3;
+  const voiceBatch = options.voice_batch ?? 3;
   const extractorBatch = options.extractor_batch ?? 3;
   const checkerBatch = options.checker_batch ?? 6;
 
   const start = Date.now();
   const contextsAssembled: Array<{ inbox_item_id: string; related_count: number }> = [];
+  const voiceGuides: Array<{ inbox_item_id: string; brand_terms: string[]; audience: string; content_class: string }> = [];
   const extracted: string[] = [];
   const extractionErrors: string[] = [];
   const checkedRecords: Array<{ record_id: string; decision: string; confidence: number }> = [];
 
-  // 1 · Run context batch — each success enqueues an extractor job.
+  // 1 · Knowledge context — enqueues voice-context jobs on success
   for (let i = 0; i < contextBatch; i += 1) {
     const outcome = await runKnowledgeContext();
     if (!outcome.job) break;
@@ -188,7 +193,21 @@ export async function runOneCycle(options: {
     }
   }
 
-  // 2 · Run extractor batch — reads context bundles from job payload.
+  // 2 · Voice context — enqueues extractor jobs on success
+  for (let i = 0; i < voiceBatch; i += 1) {
+    const outcome = await runVoiceContext();
+    if (!outcome.job) break;
+    if (outcome.guide) {
+      voiceGuides.push({
+        inbox_item_id: outcome.guide.inbox_item_id,
+        brand_terms: outcome.guide.applicable_brand_terms.map((t) => t.key),
+        audience: outcome.guide.primary_audience,
+        content_class: outcome.guide.content_class,
+      });
+    }
+  }
+
+  // 3 · Extractor — reads BOTH bundles from job payload
   for (let i = 0; i < extractorBatch; i += 1) {
     const outcome = await runKnowledgeExtractor();
     if (!outcome.job) break;
@@ -199,7 +218,7 @@ export async function runOneCycle(options: {
     }
   }
 
-  // 3 · Run checker batch.
+  // 4 · Checker
   for (let i = 0; i < checkerBatch; i += 1) {
     const outcome = await runQualityChecker();
     if (!outcome.job) break;
@@ -216,6 +235,7 @@ export async function runOneCycle(options: {
     started_at: new Date(start).toISOString(),
     duration_ms: Date.now() - start,
     contexts_assembled: contextsAssembled,
+    voice_guides: voiceGuides,
     extracted_record_ids: extracted,
     extraction_errors: extractionErrors,
     checked_records: checkedRecords,
@@ -285,6 +305,7 @@ export type CycleReport = {
   started_at: string;
   duration_ms: number;
   contexts_assembled: Array<{ inbox_item_id: string; related_count: number }>;
+  voice_guides: Array<{ inbox_item_id: string; brand_terms: string[]; audience: string; content_class: string }>;
   extracted_record_ids: string[];
   extraction_errors: string[];
   checked_records: Array<{ record_id: string; decision: string; confidence: number }>;

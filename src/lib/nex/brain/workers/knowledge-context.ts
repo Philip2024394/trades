@@ -164,9 +164,11 @@ export async function runKnowledgeContext(options: {
       flags: contextRecords.length === 0 ? ["no-related-records-found"] : [],
     });
 
-    // Enqueue the Extractor job with the bundle attached
+    // Enqueue the Voice Context job with the bundle attached.
+    // Voice Context will assemble the brand/voice guide, then enqueue
+    // the Extractor with BOTH bundles.
     await store.enqueueJob({
-      worker_type: "knowledge-extractor",
+      worker_type: "voice-context",
       priority: sourcePriority(source),
       input_kind: "inbox_item",
       input_ref: inboxItemId,
