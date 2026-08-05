@@ -48,9 +48,11 @@ Every layer builds on the layers below. Authoring proceeds bottom-up per the tre
 
 ### Component Tier (author after Foundation Complete)
 
+**Note (Philip 2026-08-06 · parallel-growth refinement):** the strict "Foundation Complete → Components" milestone has been superseded. Component authoring begins in parallel with continued Foundation growth once Foundation reaches 95%-question-coverage. First Component record authored 2026-08-06 as parallel-growth demonstration.
+
 | Cluster | Target | Complete | Coverage |
 |---|---|---|---|
-| Stair Components (treads · handrails · newels · balustrades · strings · winders · landings · etc.) | TBD | 0 | 0% |
+| Stair Components (treads · handrails · newels · balustrades · strings · winders · landings · etc.) | TBD | 1 | starting |
 | Kitchen Components (cabinet doors · end panels · worktops · plinths · handles · etc.) | TBD | 0 | 0% |
 | Flooring Components (planks · underlay · thresholds · skirtings · etc.) | TBD | 0 | 0% |
 | Door Components (panel doors · flush doors · frames · linings · furniture · etc.) | TBD | 0 | 0% |
@@ -133,5 +135,6 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 | 2026-08-06 | European Oak authored · Materials Sprint 1 position 2/6 · first record under expanded global template + FAQ Automation Rule + Authoritative Sources whitelist | Materials 2 → 3 · Foundation 4 → 5 · Total 6 → 7 |
 | 2026-08-06 | Ash authored · Materials Sprint 1 position 3/6 · first record with sustainability_alert (Ash Dieback + EAB) | Materials 3 → 4 · Foundation 5 → 6 · Total 7 → 8 |
 | 2026-08-06 | Moisture Content Verification authored · Processes Sprint 1a position 2/2 · closes Processes Sprint 1a pair | Processes 1 → 2 · Foundation 6 → 7 · Total 8 → 9 |
+| 2026-08-06 | Stair Treads authored · **first Component-tier record** · parallel-growth demonstration · cross-cluster composition (Materials + Regulations + Processes) | Components 0 → 1 · Total 9 → 10 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
