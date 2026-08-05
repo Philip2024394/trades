@@ -1,11 +1,11 @@
 ---
 record_id: business_nex_digital_identity_v1
-record_version: 1.0.0
+record_version: 1.1.0
 created: 2026-08-06
 last_reviewed: 2026-08-06
-reviewed_by: "Research Claude session 2026-08-06 · Philip authorised"
+reviewed_by: "Research Claude session 2026-08-06 · Philip authorised · Master AI Engineer self-review pass 2026-08-06"
 supersedes: []
-status: DRAFT
+status: AUTHORITATIVE
 review_due: 2027-08-06
 
 title: NEX Digital Identity
@@ -30,7 +30,7 @@ voice_law: "no 'At NEX, we…' phrasing per HARD LAW 2026-07-27"
 
 ## Summary
 
-Every NEX business account is issued a permanent Digital Identity comprising three separate layers: an internal NEX ID (never exposed to public UI), a country-scoped public NEX Address that becomes the business's canonical shareable link (asknex.app/uk/oakstairs), and an optional Custom Domain the business owns and connects (oakstairs.co.uk). Identity is deliberately separated from branding — the business name, logo, contact details, and even the connected domain can change without losing followers, reviews, links, or history.
+Every NEX business account receives a permanent Digital Identity in three layers: an internal NEX ID, a country-scoped public NEX Address (`asknex.app/uk/oakstairs`), and an optional Custom Domain the business owns. Identity is deliberately separated from branding, so a rebrand or domain change never loses followers, reviews, links, or history.
 
 ---
 
@@ -373,11 +373,19 @@ Each substantive claim in this record carries an explicit classification, confid
 
 - claim: "SSL is enabled automatically for supported custom domains once DNS is correctly configured."
   classification: NEX_concept
+  confidence: medium
+  source_type: NEX_authored
+  source_ref: "Philip 2026-08-05 · custom domain flow (described behaviour, not yet architecturally committed)"
+  verification_date: 2026-08-06
+  rationale: "SSL auto-provisioning is described as the intended user experience in Philip's custom domain flow but has not yet been documented as an architectural commitment in a subordinate infrastructure record. Medium confidence pending architectural sign-off; will upgrade to high once the SSL provisioning contract is formalised."
+
+- claim: "The separation between identity attributes (NEX ID, NEX Address, Public Handle) and branding attributes (Public Name, logo, Custom Domain, description) is architecturally load-bearing. Without it, a rebrand fragments the underlying business record."
+  classification: NEX_concept
   confidence: high
   source_type: NEX_authored
-  source_ref: "Philip 2026-08-05 · custom domain flow"
+  source_ref: "Philip 2026-08-05 · 'I'd separate identity from branding'"
   verification_date: 2026-08-06
-  rationale: "SSL auto-provisioning is a standard practice on modern platforms; NEX inherits this expectation."
+  rationale: "The separation is the reason a rebrand preserves history. Composability with future features (marketplace listings, payments, marketing intelligence attribution, trust signals) depends on identity being stable while branding is mutable. Removing this separation would require re-authoring every downstream record that keys off identity."
 
 - claim: "The Trust Score is a composite of verifiable facts; opaque scores are prohibited."
   classification: NEX_concept
