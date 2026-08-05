@@ -38,11 +38,11 @@ Every layer builds on the layers below. Authoring proceeds bottom-up per the tre
 
 | Cluster | Target | Complete | Coverage | Gap |
 |---|---|---|---|---|
-| **Materials** | ~25 (core) · scaling to worldwide library | 3 | 12% | 22 |
+| **Materials** | ~25 (core) · scaling to worldwide library | 4 | 16% | 21 |
 | **Regulations** | ~20 | 1 | 5% | 19 |
-| **Processes** | ~40 | 1 | 2.5% | 39 |
+| **Processes** | ~40 | 2 | 5% | 38 |
 | **Hardware** | (embedded in Components) | — | — | — |
-| **Foundation Total** | **~85** | **5** | **5.9%** | **80** |
+| **Foundation Total** | **~85** | **7** | **8.2%** | **78** |
 
 **Milestone:** Foundation Complete = ~85 records → begin Component authoring.
 
@@ -131,5 +131,7 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 | 2026-08-06 | American White Oak authored · Materials Sprint 1 position 1/6 | Materials 1 → 2 · Foundation 2 → 3 · Total 4 → 5 |
 | 2026-08-06 | Kiln Drying authored · Processes Sprint 1a position 1/2 · first Process record | Processes 0 → 1 · Foundation 3 → 4 · Total 5 → 6 |
 | 2026-08-06 | European Oak authored · Materials Sprint 1 position 2/6 · first record under expanded global template + FAQ Automation Rule + Authoritative Sources whitelist | Materials 2 → 3 · Foundation 4 → 5 · Total 6 → 7 |
+| 2026-08-06 | Ash authored · Materials Sprint 1 position 3/6 · first record with sustainability_alert (Ash Dieback + EAB) | Materials 3 → 4 · Foundation 5 → 6 · Total 7 → 8 |
+| 2026-08-06 | Moisture Content Verification authored · Processes Sprint 1a position 2/2 · closes Processes Sprint 1a pair | Processes 1 → 2 · Foundation 6 → 7 · Total 8 → 9 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
