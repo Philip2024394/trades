@@ -139,5 +139,8 @@ Total for Foundation-focused sprints: approximately 6 sprints across 4-6 authori
 | 2026-08-06 | Maple authored · Materials Sprint 1 position 4/6 · rhythm cycle 1 Foundation slot · no sustainability alert (contrast with Ash) | Materials 4 → 5 · Foundation 7 → 8 · Total 10 → 11 |
 | 2026-08-06 | Stair Handrails authored · Component tier · rhythm cycle 1 Component slot · consumes Heritage voice fuel · continuous vs post-to-post system | Components 1 → 2 · Total 11 → 12 |
 | 2026-08-06 | Choosing Staircase Materials authored · **first Customer Guidance record** · rhythm cycle 1 Guidance slot · compositional-only pattern (composes from Materials + Components + Regulations) | Customer Guidance 0 → 1 · Total 12 → 13 |
+| 2026-08-06 | Beech authored · Materials Sprint 1 position 5/6 · rhythm cycle 2 Foundation slot · bentwood specialist framing · butcher-block worktop reference alongside Maple | Materials 5 → 6 · Foundation 8 → 9 · Total 13 → 14 |
+| 2026-08-06 | Newel Posts authored · rhythm cycle 2 Component slot · anchors Nex Newel™ Split Base Design as first design in extensible family · post-to-post vs continuous handrail termination · structural load requirements | Components 2 → 3 · Total 14 → 15 |
+| 2026-08-06 | Refurbishment vs Replacement authored · rhythm cycle 2 Customer Guidance slot · operationalises D4 Refurbishment-First doctrine · three-path framework (refurbish/partial/full) · Signature-transformation-via-refurbishment pattern | Customer Guidance 1 → 2 · Total 15 → 16 |
 
 Every future authoring session updates this dashboard with the new coverage numbers and the delta from the previous session.
