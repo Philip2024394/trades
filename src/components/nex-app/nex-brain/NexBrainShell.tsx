@@ -11,7 +11,7 @@
 //   · Recent records list (authoritative + under-review)
 //   · Cycle report overlay after each run
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Activity,
@@ -321,6 +321,8 @@ export function NexBrainShell() {
         <AiConnectionStrip health={llmHealth} />
 
         <WorkerPoolSection status={status} loading={loading} />
+
+        <PipelineMonitor active={(status?.jobs_in_flight ?? 0) > 0} />
 
         <ReviewQueueSection
           records={records}
@@ -902,6 +904,230 @@ const PLACEHOLDER_POOL: Status["worker_pool"] = [
 // ── Review Queue (approve / reject / edit) ──────────────────────────
 //
 // Every action here becomes signal for the Learning Context Worker.
+
+// ── Pipeline Monitor · live event timeline ──────────────────────────
+//
+// Philip 2026-08-06 · watches every worker's audit event as it happens.
+// Auto-polls every 2s when work is in-flight; slows to 6s when idle.
+// Reads from GET /api/nex/brain/timeline which returns the latest
+// audit_log rows. Uses tail-polling: only asks for events newer than
+// the most recent one we've already seen.
+
+type TimelineEvent = {
+  id: string;
+  entity_type: string;
+  entity_id: string;
+  action: string;
+  actor: string;
+  notes?: string | null;
+  after_state?: Record<string, unknown> | null;
+  created_at: string;
+};
+
+function PipelineMonitor({ active }: { active: boolean }) {
+  const [events, setEvents] = useState<TimelineEvent[]>([]);
+  const [paused, setPaused] = useState(false);
+  const [maxKeep, setMaxKeep] = useState(80);
+  const seenIdsRef = useRef<Set<string>>(new Set());
+  const latestAtRef = useRef<string | null>(null);
+
+  const fetchTimeline = useCallback(async () => {
+    try {
+      const since = latestAtRef.current;
+      const url = since
+        ? `/api/nex/brain/timeline?limit=50&since=${encodeURIComponent(since)}`
+        : `/api/nex/brain/timeline?limit=50`;
+      const res = await fetch(url, { cache: "no-store" });
+      if (!res.ok) return;
+      const j = await res.json();
+      if (!j.ok) return;
+      const incoming = (j.events as TimelineEvent[]) ?? [];
+      if (incoming.length === 0) return;
+      // Deduplicate + keep newest first
+      const additions: TimelineEvent[] = [];
+      for (const e of incoming) {
+        if (!seenIdsRef.current.has(e.id)) {
+          additions.push(e);
+          seenIdsRef.current.add(e.id);
+        }
+      }
+      if (additions.length === 0) return;
+      // Update latestAt pointer
+      const newest = additions.reduce(
+        (max, e) => (e.created_at > max ? e.created_at : max),
+        latestAtRef.current ?? ""
+      );
+      latestAtRef.current = newest;
+      setEvents((prev) => {
+        const combined = [...additions, ...prev].sort((a, b) =>
+          a.created_at < b.created_at ? 1 : -1
+        );
+        return combined.slice(0, maxKeep);
+      });
+    } catch (err) {
+      console.error("[pipeline-monitor] fetch failed:", err);
+    }
+  }, [maxKeep]);
+
+  useEffect(() => {
+    fetchTimeline();
+  }, [fetchTimeline]);
+
+  useEffect(() => {
+    if (paused) return;
+    const intervalMs = active ? 2000 : 6000;
+    const id = window.setInterval(fetchTimeline, intervalMs);
+    return () => window.clearInterval(id);
+  }, [fetchTimeline, paused, active]);
+
+  const clearAll = () => {
+    setEvents([]);
+    seenIdsRef.current.clear();
+    latestAtRef.current = null;
+    fetchTimeline();
+  };
+
+  return (
+    <section className="mt-10">
+      <div className="mb-3 flex flex-wrap items-baseline justify-between gap-2">
+        <div>
+          <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+            Pipeline Monitor
+          </h2>
+          <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+            Live event timeline · {active ? "polling every 2s (work in flight)" : "polling every 6s (idle)"}
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors hover:bg-black/5"
+            style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textMid }}
+          >
+            {paused ? "Resume" : "Pause"}
+          </button>
+          <button
+            type="button"
+            onClick={clearAll}
+            className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-semibold transition-colors hover:bg-black/5"
+            style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textMid }}
+          >
+            Clear
+          </button>
+          <select
+            value={maxKeep}
+            onChange={(e) => setMaxKeep(Number(e.target.value))}
+            className="rounded-full border px-2 py-1 text-[11px]"
+            style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textMid }}
+            aria-label="Max events kept"
+          >
+            <option value={30}>30</option>
+            <option value={80}>80</option>
+            <option value={200}>200</option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        className="max-h-[420px] overflow-y-auto rounded-2xl border"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        {events.length === 0 ? (
+          <div className="p-6 text-center text-[12px]" style={{ color: TOKEN.textSoft }}>
+            No events yet. Trigger a cycle or dispatch to see the pipeline in action.
+          </div>
+        ) : (
+          <ul className="divide-y" style={{ borderColor: TOKEN.divider }}>
+            {events.map((ev) => (
+              <TimelineRow key={ev.id} event={ev} />
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  );
+}
+
+function TimelineRow({ event }: { event: TimelineEvent }) {
+  const style = actionStyle(event.action);
+  return (
+    <li className="flex items-start gap-3 px-4 py-2 text-[12px]">
+      <span
+        className="inline-flex flex-none items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+        style={{ background: style.bg, color: style.fg }}
+      >
+        <span aria-hidden className="inline-block h-1.5 w-1.5 rounded-full" style={{ background: style.dot }} />
+        {style.label}
+      </span>
+      <span className="flex-none font-mono text-[11px]" style={{ color: TOKEN.textSoft }}>
+        {new Date(event.created_at).toLocaleTimeString(undefined, {
+          hour12: false,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        })}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="truncate" style={{ color: TOKEN.text }}>
+          <span className="font-semibold">{actorLabel(event.actor)}</span>
+          {event.notes ? <span> — {event.notes}</span> : null}
+        </div>
+        {event.entity_id && event.entity_id !== "n/a" ? (
+          <div
+            className="mt-0.5 truncate font-mono text-[10px]"
+            style={{ color: TOKEN.textSoft }}
+            title={`${event.entity_type}:${event.entity_id}`}
+          >
+            {event.entity_type} · {event.entity_id}
+          </div>
+        ) : null}
+      </div>
+    </li>
+  );
+}
+
+function actorLabel(actor: string): string {
+  if (actor === "philip") return "Philip";
+  if (actor === "manager") return "Manager";
+  if (actor === "importer") return "Importer";
+  // worker:knowledge-extractor@2026-... → "Knowledge Extractor"
+  const workerMatch = actor.match(/^worker[-:]?([a-z-]+@?)/i);
+  if (workerMatch) {
+    const raw = workerMatch[1].replace(/@.*/, "");
+    return raw.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  // knowledge-context@1234 style
+  const bareMatch = actor.match(/^([a-z-]+)@/);
+  if (bareMatch) {
+    return bareMatch[1].replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return actor;
+}
+
+function actionStyle(action: string): { label: string; bg: string; fg: string; dot: string } {
+  // Grouped colour scheme so the visual signal matches the semantic
+  // event category (enqueue = neutral, worker-completion = info,
+  // approvals = success, review-required = warning, guardian = warning,
+  // retry-succeeded = success, retry-exhausted = error, insert = accent).
+  const rules: Array<{ match: RegExp; label: string; bg: string; fg: string; dot: string }> = [
+    { match: /^enqueue$/,                    label: "queue",     bg: "#EDECEA", fg: "#3D3D38", dot: "#A3A39C" },
+    { match: /^insert$/,                     label: "authored",  bg: "#FED7AA", fg: "#9A3412", dot: "#F97316" },
+    { match: /^import$/,                     label: "imported",  bg: "#DBEAFE", fg: "#1D4ED8", dot: "#3B82F6" },
+    { match: /^approve$|^approval$/,         label: "approved",  bg: "#D1FAE5", fg: "#065F46", dot: "#10B981" },
+    { match: /^rejection$|^reject$/,         label: "rejected",  bg: "#FEE2E2", fg: "#991B1B", dot: "#EF4444" },
+    { match: /^edit$/,                       label: "edited",    bg: "#E0E7FF", fg: "#3730A3", dot: "#6366F1" },
+    { match: /^review-required$/,            label: "review",    bg: "#FED7AA", fg: "#9A3412", dot: "#F97316" },
+    { match: /^context-assembled$/,          label: "context",   bg: "#DBEAFE", fg: "#1D4ED8", dot: "#3B82F6" },
+    { match: /^voice-guide-assembled$/,      label: "voice",     bg: "#FEF3C7", fg: "#92400E", dot: "#F59E0B" },
+    { match: /^learning-bundle-assembled$/,  label: "learn",     bg: "#D1FAE5", fg: "#065F46", dot: "#10B981" },
+    { match: /^guardian-finding$/,           label: "audit",     bg: "#FEF3C7", fg: "#92400E", dot: "#F59E0B" },
+    { match: /^retry-succeeded$/,            label: "retried",   bg: "#D1FAE5", fg: "#065F46", dot: "#10B981" },
+    { match: /^retry-exhausted$/,            label: "exhausted", bg: "#FEE2E2", fg: "#991B1B", dot: "#EF4444" },
+  ];
+  for (const r of rules) if (r.match.test(action)) return r;
+  return { label: action.slice(0, 12), bg: "#EDECEA", fg: "#3D3D38", dot: "#A3A39C" };
+}
 
 function ReviewQueueSection({
   records,

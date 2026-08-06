@@ -156,6 +156,7 @@ export interface BrainStore {
 
   // Audit log
   insertAudit(input: Omit<AuditEntry, "id" | "created_at">): Promise<AuditEntry>;
+  listAudit(filter?: { limit?: number; since?: string; entity_id?: string }): Promise<AuditEntry[]>;
 
   // LLM retry queue (Stage 3)
   enqueueLlmRetry(input: Omit<LlmRetryEntry, "id" | "status" | "attempts" | "next_attempt_at" | "last_provider_tried" | "last_error" | "succeeded_provider" | "succeeded_at" | "result_summary" | "created_at" | "updated_at"> & { next_attempt_at?: string }): Promise<LlmRetryEntry>;
@@ -432,6 +433,19 @@ class FilesystemStore implements BrainStore {
     rows.push(row);
     await writeTable("audit_log", rows);
     return row;
+  }
+  async listAudit(filter?: { limit?: number; since?: string; entity_id?: string }): Promise<AuditEntry[]> {
+    let rows = await readTable<AuditEntry>("audit_log");
+    if (filter?.entity_id) rows = rows.filter((r) => r.entity_id === filter.entity_id);
+    if (filter?.since) {
+      const sinceMs = new Date(filter.since).getTime();
+      if (!Number.isNaN(sinceMs)) {
+        rows = rows.filter((r) => new Date(r.created_at).getTime() > sinceMs);
+      }
+    }
+    rows = rows.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+    if (filter?.limit) rows = rows.slice(0, filter.limit);
+    return rows;
   }
 
   // ── LLM retry queue (Stage 3) ──────────────────────────────────────
@@ -986,6 +1000,19 @@ class SupabaseStore implements BrainStore {
       .single();
     if (error) throw new Error(`insertAudit failed: ${error.message}`);
     return data as AuditEntry;
+  }
+
+  async listAudit(filter?: { limit?: number; since?: string; entity_id?: string }): Promise<AuditEntry[]> {
+    let query = this.client
+      .from("audit_log")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (filter?.entity_id) query = query.eq("entity_id", filter.entity_id);
+    if (filter?.since) query = query.gt("created_at", filter.since);
+    query = query.limit(filter?.limit ?? 50);
+    const { data, error } = await query;
+    if (error) throw new Error(`listAudit failed: ${error.message}`);
+    return (data as AuditEntry[]) ?? [];
   }
 
   // ── LLM retry queue (Stage 3) ──────────────────────────────────────
