@@ -155,8 +155,12 @@ const healthServer = createServer((req, res) => {
   res.end("not found\n");
 });
 
-healthServer.listen(PORT, () => {
-  log("info", "health-listening", { port: PORT });
+// Bind explicitly to 0.0.0.0 so Fly's proxy can reach us — Fly containers
+// need this even though modern Node's `listen(port, cb)` default *should*
+// bind to all interfaces. The default has bitten enough people that Fly's
+// docs recommend the explicit form.
+healthServer.listen(PORT, "0.0.0.0", () => {
+  log("info", "health-listening", { port: PORT, host: "0.0.0.0" });
 });
 
 // ── Heartbeat write ─────────────────────────────────────────────────

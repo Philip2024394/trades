@@ -11,7 +11,7 @@
 # The Next.js app itself is NOT included — the cloud worker talks
 # directly to Supabase and calls the brain manager in-process.
 
-FROM node:20-slim AS base
+FROM node:22-slim AS base
 
 # tini gives us a proper init so SIGTERM propagates to node (Fly
 # sends SIGTERM on redeploy; node needs to exit within 5s or Fly kills

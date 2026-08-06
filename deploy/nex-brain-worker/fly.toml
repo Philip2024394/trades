@@ -45,6 +45,17 @@ kill_timeout = "10s"
   auto_start_machines = true      # If crashed, boot again
   min_machines_running = 1        # Keep at least one machine live 24/7
 
+  # Expose /health publicly on 443 so we can curl from anywhere
+  # (dashboard + local debugging). Fly's built-in TLS handles the cert.
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+    force_https = true
+
   [[services.tcp_checks]]
     interval = "30s"
     timeout = "5s"
