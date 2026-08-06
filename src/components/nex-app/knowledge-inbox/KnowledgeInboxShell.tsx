@@ -1256,7 +1256,7 @@ function URLImportCard({
       />
       <div className="mt-3 flex items-center justify-between gap-2">
         <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
-          Separate with newlines · commas · or spaces
+          One URL per line · image URLs auto-download for analysis
         </span>
         <button
           type="button"
