@@ -800,6 +800,10 @@ class SupabaseStore implements BrainStore {
     // Prefer the SKIP LOCKED RPC from the migration for true safe
     // concurrency. Fall back to a best-effort update if the RPC
     // is missing (e.g. schema not fully migrated yet).
+    // Note on empty-queue behaviour: PostgREST returns an all-null
+    // tuple ({ id: null, worker_type: null, ... }) when a
+    // RETURNS <table> function matches no rows, NOT a JSON null.
+    // Treat empty id as "no job available".
     const { data, error } = await this.client.rpc("claim_next_job", {
       p_worker_type: worker_type,
       p_worker_id: worker_id,
@@ -840,7 +844,9 @@ class SupabaseStore implements BrainStore {
       }
       throw new Error(`claimNextJob failed: ${error.message}`);
     }
-    return (data as WorkerJob | null) ?? null;
+    // PostgREST returns { id: null, ... } for empty match — treat as null.
+    if (!data || (data as { id?: string | null }).id == null) return null;
+    return data as WorkerJob;
   }
 
   async completeJob(job_id: string, result_id: string): Promise<void> {
@@ -1045,7 +1051,9 @@ class SupabaseStore implements BrainStore {
       }
       throw new Error(`claimNextLlmRetry failed: ${error.message}`);
     }
-    return (data as LlmRetryEntry | null) ?? null;
+    // Empty-match returns all-null tuple, not JSON null. Guard on id.
+    if (!data || (data as { id?: string | null }).id == null) return null;
+    return data as LlmRetryEntry;
   }
 
   async markLlmRetrySucceeded(id: string, provider: string, result_summary: Record<string, unknown>): Promise<void> {
