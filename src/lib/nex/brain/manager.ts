@@ -20,6 +20,7 @@ import { runKnowledgeContext } from "./workers/knowledge-context";
 import { runVoiceContext } from "./workers/voice-context";
 import { runLearningContext } from "./workers/learning-context";
 import { runKnowledgeExtractor } from "./workers/knowledge-extractor";
+import { runImageAnalyst } from "./workers/image-analyst";
 import { runQualityChecker } from "./workers/quality-checker";
 import { drainLlmRetryQueue, type LlmRetryOutcome } from "./workers/llm-retry";
 import type { BrainStatus, WorkerJob } from "./types";
@@ -47,8 +48,9 @@ type InboxItemLite = {
     | "customer-qa"
     | "personal-ideas";
   hash?: string;
-  contentPath?: string;
+  mimeType?: string;
   filePath?: string;
+  contentPath?: string;
   url?: string;
   createdAt: number;
 };
@@ -78,7 +80,8 @@ export async function dispatchNewInboxItems(): Promise<{
           j.worker_type === "knowledge-context" ||
           j.worker_type === "voice-context" ||
           j.worker_type === "learning-context" ||
-          j.worker_type === "knowledge-extractor"
+          j.worker_type === "knowledge-extractor" ||
+          j.worker_type === "image-analyst"
       )
       .map((j) => j.input_ref)
   );
@@ -97,17 +100,22 @@ export async function dispatchNewInboxItems(): Promise<{
       continue;
     }
 
-    // Only text + url are handled by the Knowledge Extractor in Phase 1.
-    // Voice/image/file are queued for their specialist workers in
-    // Phase 2. We simply skip them here without failing.
-    if (item.kind !== "text" && item.kind !== "url") {
+    // Stage 5 (Philip 2026-08-06): text + url → knowledge-extractor,
+    // image → image-analyst. Voice/file are the next specialist workers
+    // to be built; skipped for now (unchanged behaviour).
+    if (
+      item.kind !== "text" &&
+      item.kind !== "url" &&
+      item.kind !== "image"
+    ) {
       skipped_not_text_yet += 1;
       continue;
     }
 
-    // Prefetch the content so the extractor doesn't need to know the
-    // inbox path structure — keeps the extractor decoupled from the
-    // Knowledge Inbox storage details.
+    // Prefetch the text content (for text items) so downstream workers
+    // don't need to know the inbox path structure. Image items carry
+    // filePath + mimeType instead — the image-analyst loads the bytes
+    // when it actually needs them.
     let contentSnippet: string | undefined;
     if (item.kind === "text" && item.contentPath) {
       try {
@@ -120,10 +128,12 @@ export async function dispatchNewInboxItems(): Promise<{
       contentSnippet = item.url;
     }
 
-    // NEW FLOW (Philip 2026-08-06): every inbox item enters as a
-    // knowledge-context job first. The Context Worker retrieves related
-    // records from the corpus, then enqueues the knowledge-extractor
-    // job with the context bundle attached. Extractor writes with memory.
+    // NEW FLOW: every inbox item enters as a knowledge-context job
+    // first. The Context Worker retrieves related records from the
+    // corpus, then chains to voice-context → learning-context, which
+    // routes the final authoring stage based on kind:
+    //   text/url → knowledge-extractor
+    //   image    → image-analyst (Stage 5)
     await store.enqueueJob({
       worker_type: "knowledge-context",
       priority: sourcePriority(item.source),
@@ -132,9 +142,12 @@ export async function dispatchNewInboxItems(): Promise<{
       input_payload: {
         source: item.source,
         title: item.title,
+        kind: item.kind,
         contentPath: item.contentPath ?? null,
         content: contentSnippet ?? null,
         url: item.url ?? null,
+        filePath: item.filePath ?? null,
+        mimeType: item.mimeType ?? null,
       },
     });
     enqueued += 1;
@@ -231,6 +244,19 @@ export async function runOneCycle(options: {
   // 4 · Extractor — reads ALL THREE bundles from job payload
   for (let i = 0; i < extractorBatch; i += 1) {
     const outcome = await runKnowledgeExtractor();
+    if (!outcome.job) break;
+    if (outcome.draftRecordIds.length > 0) {
+      extracted.push(...outcome.draftRecordIds);
+    } else if (outcome.job) {
+      extractionErrors.push(outcome.job.id);
+    }
+  }
+
+  // 4b · Image Analyst — sibling of Extractor for image inbox items.
+  // Uses the same batch size as the extractor since it's the same
+  // stage in the pipeline.
+  for (let i = 0; i < extractorBatch; i += 1) {
+    const outcome = await runImageAnalyst();
     if (!outcome.job) break;
     if (outcome.draftRecordIds.length > 0) {
       extracted.push(...outcome.draftRecordIds);

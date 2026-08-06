@@ -545,6 +545,7 @@ class FilesystemStore implements BrainStore {
       "voice-context",
       "learning-context",
       "knowledge-extractor",
+      "image-analyst",
       "quality-checker",
       "memory-guardian",
     ];
@@ -1181,6 +1182,7 @@ class SupabaseStore implements BrainStore {
       "voice-context",
       "learning-context",
       "knowledge-extractor",
+      "image-analyst",
       "quality-checker",
       "memory-guardian",
     ];

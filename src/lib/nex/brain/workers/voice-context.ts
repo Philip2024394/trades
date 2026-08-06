@@ -127,9 +127,12 @@ export async function runVoiceContext(options: {
     const inboxItemId = job.input_ref;
     const source = (job.input_payload?.source as KnowledgeSource | undefined) ?? "raw-research";
     const title = String(job.input_payload?.title ?? "untitled");
+    const kind = (job.input_payload?.kind as string | undefined) ?? "text";
     const contentPath = job.input_payload?.contentPath as string | undefined;
     const inlineContent = job.input_payload?.content as string | undefined;
     const url = job.input_payload?.url as string | undefined;
+    const filePath = job.input_payload?.filePath as string | undefined;
+    const mimeType = job.input_payload?.mimeType as string | undefined;
     const contextBundle = job.input_payload?.context_bundle as ContextBundle | undefined;
 
     // Assemble scannable text: title + content preview + context summaries
@@ -189,9 +192,12 @@ export async function runVoiceContext(options: {
       input_payload: {
         source,
         title,
+        kind,
         contentPath: contentPath ?? null,
         content: inlineContent ?? null,
         url: url ?? null,
+        filePath: filePath ?? null,
+        mimeType: mimeType ?? null,
         context_bundle: contextBundle,
         voice_guide: guide,
       },

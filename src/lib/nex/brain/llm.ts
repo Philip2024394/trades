@@ -45,7 +45,20 @@ const PROVIDER_CAPABILITIES: Record<LlmProvider, LlmCapability[]> = {
   mock:      ["text", "vision", "audio", "json_mode", "tool_use", "long_context"],
 };
 
-export type LlmMessage = { role: "system" | "user" | "assistant"; content: string };
+// Images can be attached to user messages for vision-capable providers.
+// Stored as base64 (raw, no data-URI prefix) + mime type. The provider
+// adapter formats them per each API's spec (Anthropic content blocks,
+// Gemini inline_data parts).
+export type LlmImage = {
+  mime: string;   // "image/jpeg" | "image/png" | "image/webp"
+  data: string;   // base64-encoded bytes (no "data:...;base64," prefix)
+};
+
+export type LlmMessage = {
+  role: "system" | "user" | "assistant";
+  content: string;
+  images?: LlmImage[];
+};
 
 export type LlmCallOptions = {
   model?: string;
@@ -87,10 +100,15 @@ export type LlmCallResult = {
 // then falls to Gemini, then Anthropic, then to the mock as a last
 // resort. Every step is logged so the dashboard shows what happened.
 
-// Default model per provider.
+// Default model per provider. Verified 2026-08-06 against live APIs.
 const DEFAULT_MODEL: Record<LlmProvider, string> = {
+  // Groq · fast, free, no vision
   groq: "llama-3.3-70b-versatile",
-  gemini: "gemini-1.5-flash-latest",
+  // Gemini · vision + 1M ctx · use the -latest alias so Google's
+  // rolling model refresh flows through automatically. Previous
+  // gemini-1.5-flash-latest was deprecated.
+  gemini: "gemini-flash-latest",
+  // Anthropic Claude Haiku · vision · paid
   anthropic: "claude-haiku-4-5-20251001",
   mock: "mock-llama-70b",
 };
@@ -510,17 +528,26 @@ async function callGemini(
   const key = process.env.GOOGLE_GEMINI_API_KEY;
   if (!key) throw new Error("GOOGLE_GEMINI_API_KEY not set");
 
-  // Convert OpenAI-style messages to Gemini contents.
+  // Convert OpenAI-style messages to Gemini contents (with vision).
   const systemInstruction = messages
     .filter((m) => m.role === "system")
     .map((m) => m.content)
     .join("\n\n");
   const contents = messages
     .filter((m) => m.role !== "system")
-    .map((m) => ({
-      role: m.role === "assistant" ? "model" : "user",
-      parts: [{ text: m.content }],
-    }));
+    .map((m) => {
+      const parts: Array<Record<string, unknown>> = [];
+      if (m.images?.length) {
+        for (const img of m.images) {
+          parts.push({ inline_data: { mime_type: img.mime, data: img.data } });
+        }
+      }
+      if (m.content) parts.push({ text: m.content });
+      return {
+        role: m.role === "assistant" ? "model" : "user",
+        parts,
+      };
+    });
 
   const controller = new AbortController();
   const timeout = setTimeout(
@@ -584,7 +611,21 @@ async function callAnthropic(
     .join("\n\n");
   const nonSystem = messages
     .filter((m) => m.role !== "system")
-    .map((m) => ({ role: m.role, content: m.content }));
+    .map((m) => {
+      // Anthropic vision: content becomes an array of blocks when images present.
+      if (m.images?.length) {
+        const blocks: Array<Record<string, unknown>> = [];
+        for (const img of m.images) {
+          blocks.push({
+            type: "image",
+            source: { type: "base64", media_type: img.mime, data: img.data },
+          });
+        }
+        if (m.content) blocks.push({ type: "text", text: m.content });
+        return { role: m.role, content: blocks };
+      }
+      return { role: m.role, content: m.content };
+    });
 
   const controller = new AbortController();
   const timeout = setTimeout(

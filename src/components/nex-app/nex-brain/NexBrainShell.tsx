@@ -27,6 +27,7 @@ import {
   Flame,
   GitBranch,
   History,
+  Image as ImageIcon,
   Inbox,
   Loader2,
   Play,
@@ -137,6 +138,7 @@ const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentTyp
   "voice-context":       { label: "Voice & Brand",       icon: Feather,      color: TOKEN.accentDark },
   "learning-context":    { label: "Learning Context",    icon: History,      color: TOKEN.success },
   "knowledge-extractor": { label: "Knowledge Extractor", icon: BrainCircuit, color: TOKEN.accent },
+  "image-analyst":       { label: "Image Analyst",       icon: ImageIcon,    color: TOKEN.info },
   "quality-checker":     { label: "Quality Checker",     icon: FileCheck,    color: TOKEN.success },
   "memory-guardian":     { label: "Memory Guardian",     icon: Shield,       color: TOKEN.warning },
 };
@@ -888,6 +890,7 @@ const PLACEHOLDER_POOL: Status["worker_pool"] = [
   { worker_type: "voice-context",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
   { worker_type: "learning-context",    jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
   { worker_type: "knowledge-extractor", jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
+  { worker_type: "image-analyst",       jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
   { worker_type: "quality-checker",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
   { worker_type: "memory-guardian",     jobs_waiting: 0, jobs_in_flight: 0, jobs_completed_24h: 0, jobs_failed_24h: 0 },
 ];

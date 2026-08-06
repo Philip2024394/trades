@@ -97,7 +97,8 @@ export type WorkerType =
   | "knowledge-context"    // Retrieves related existing records before authoring
   | "voice-context"        // Assembles brand terms + voice guide for the topic
   | "learning-context"     // Retrieves past feedback (approvals, edits, rejections)
-  | "knowledge-extractor"  // Authors new drafts (with all three context bundles)
+  | "knowledge-extractor"  // Authors new drafts from text (with all three bundles)
+  | "image-analyst"        // Authors new drafts from images (vision-capable LLM)
   | "quality-checker"      // Gates drafts against the Constitution
   | "memory-guardian";     // Batch auditor
 

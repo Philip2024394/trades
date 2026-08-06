@@ -87,13 +87,18 @@ export async function runKnowledgeContext(options: {
     const inboxItemId = job.input_ref;
     const source = (job.input_payload?.source as KnowledgeSource | undefined) ?? "raw-research";
     const title = String(job.input_payload?.title ?? "untitled");
+    const kind = (job.input_payload?.kind as string | undefined) ?? "text";
     const contentPath = job.input_payload?.contentPath as string | undefined;
     const inlineContent = job.input_payload?.content as string | undefined;
     const url = job.input_payload?.url as string | undefined;
+    const filePath = job.input_payload?.filePath as string | undefined;
+    const mimeType = job.input_payload?.mimeType as string | undefined;
 
-    // Load the raw content
+    // Load the raw content (text-shaped items only — image items don't
+    // have loadable text here; they'll be handled by the image-analyst
+    // downstream and we score their context off title alone).
     let content = inlineContent ?? "";
-    if (!content && contentPath) {
+    if (!content && contentPath && kind !== "image") {
       try {
         content = await fs.readFile(path.join(INBOX_ROOT, contentPath), "utf8");
       } catch {
@@ -175,9 +180,12 @@ export async function runKnowledgeContext(options: {
       input_payload: {
         source,
         title,
+        kind,
         contentPath: contentPath ?? null,
         content: inlineContent ?? null,
         url: url ?? null,
+        filePath: filePath ?? null,
+        mimeType: mimeType ?? null,
         context_bundle: bundle,
       },
     });

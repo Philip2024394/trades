@@ -119,9 +119,12 @@ export async function runLearningContext(options: {
     const inboxItemId = job.input_ref;
     const source = (job.input_payload?.source as KnowledgeSource | undefined) ?? "raw-research";
     const title = String(job.input_payload?.title ?? "untitled");
+    const kind = (job.input_payload?.kind as string | undefined) ?? "text";
     const contentPath = job.input_payload?.contentPath as string | undefined;
     const inlineContent = job.input_payload?.content as string | undefined;
     const url = job.input_payload?.url as string | undefined;
+    const filePath = job.input_payload?.filePath as string | undefined;
+    const mimeType = job.input_payload?.mimeType as string | undefined;
     const contextBundle = job.input_payload?.context_bundle as ContextBundle | undefined;
     const voiceGuide = job.input_payload?.voice_guide as VoiceGuide | undefined;
 
@@ -221,18 +224,27 @@ export async function runLearningContext(options: {
         : [],
     });
 
-    // Enqueue the Extractor with ALL THREE bundles attached
+    // Route the final authoring stage by inbox item kind:
+    //   image → image-analyst (vision-capable LLM)
+    //   text/url (and everything else) → knowledge-extractor
+    // Voice notes and file uploads will grow their own specialist workers
+    // later; until then they route to knowledge-extractor which handles
+    // them gracefully by treating any content as text.
+    const nextWorker = kind === "image" ? "image-analyst" : "knowledge-extractor";
     await store.enqueueJob({
-      worker_type: "knowledge-extractor",
+      worker_type: nextWorker,
       priority: sourcePriority(source),
       input_kind: "inbox_item",
       input_ref: inboxItemId,
       input_payload: {
         source,
         title,
+        kind,
         contentPath: contentPath ?? null,
         content: inlineContent ?? null,
         url: url ?? null,
+        filePath: filePath ?? null,
+        mimeType: mimeType ?? null,
         context_bundle: contextBundle,
         voice_guide: voiceGuide,
         learning_bundle: bundle,
