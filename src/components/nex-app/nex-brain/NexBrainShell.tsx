@@ -19,6 +19,8 @@ import {
   BrainCircuit,
   CheckCircle2,
   ChevronRight,
+  Cloud,
+  CloudOff,
   Cpu,
   Database,
   DownloadCloud,
@@ -131,6 +133,22 @@ type LlmHealthSnapshot = {
   active: "groq" | "gemini" | "anthropic" | "mock";
   providers: LlmProviderReport[];
 };
+type CloudWorker = {
+  host_id: string;
+  last_seen_at: string;
+  uptime_ms: number;
+  cycles_total: number;
+  cycles_failed: number;
+  last_error: string | null;
+  age_ms: number;
+  status: "online" | "lagging" | "stale";
+  metadata: Record<string, unknown> | null;
+};
+type CloudStatus = {
+  ok: boolean;
+  any_online: boolean;
+  workers: CloudWorker[];
+};
 type Toast = { kind: "info" | "error" | "success"; message: string } | null;
 
 const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; color: string }> = {
@@ -156,6 +174,7 @@ export function NexBrainShell() {
   const [lastImport, setLastImport] = useState<ImportReport | null>(null);
   const [llm, setLlm] = useState<LlmVerify | null>(null);
   const [llmHealth, setLlmHealth] = useState<LlmHealthSnapshot | null>(null);
+  const [cloudStatus, setCloudStatus] = useState<CloudStatus | null>(null);
   const [toast, setToast] = useState<Toast>(null);
 
   const showToast = useCallback((next: NonNullable<Toast>) => {
@@ -165,11 +184,12 @@ export function NexBrainShell() {
 
   const refresh = useCallback(async () => {
     try {
-      const [statusRes, recordsRes, llmRes, llmHealthRes] = await Promise.all([
+      const [statusRes, recordsRes, llmRes, llmHealthRes, cloudRes] = await Promise.all([
         fetch("/api/nex/brain/status", { cache: "no-store" }),
         fetch("/api/nex/brain/records?limit=30", { cache: "no-store" }),
         fetch("/api/nex/brain/verify-llm", { cache: "no-store" }),
         fetch("/api/nex/brain/llm-health", { cache: "no-store" }),
+        fetch("/api/nex/brain/cloud-status", { cache: "no-store" }),
       ]);
       if (statusRes.ok) {
         const j = await statusRes.json();
@@ -190,6 +210,10 @@ export function NexBrainShell() {
       if (llmHealthRes.ok) {
         const j = await llmHealthRes.json();
         if (j.ok) setLlmHealth(j as LlmHealthSnapshot);
+      }
+      if (cloudRes.ok) {
+        const j = await cloudRes.json();
+        if (j.ok) setCloudStatus(j as CloudStatus);
       }
     } catch (err) {
       console.error("[nex-brain] refresh failed:", err);
@@ -302,7 +326,7 @@ export function NexBrainShell() {
   return (
     <div className="relative min-h-screen" style={{ background: TOKEN.bg, color: TOKEN.text }}>
       <div className="mx-auto max-w-[1120px] px-5 pb-24 pt-8 md:px-8 md:pt-12">
-        <Hero backend={status?.backend ?? "filesystem"} llm={llm} />
+        <Hero backend={status?.backend ?? "filesystem"} llm={llm} cloud={cloudStatus} />
 
         <StatStrip status={status} loading={loading} />
 
@@ -354,7 +378,7 @@ export function NexBrainShell() {
 
 // ── Hero ─────────────────────────────────────────────────────────────
 
-function Hero({ backend, llm }: { backend: "filesystem" | "supabase"; llm: LlmVerify | null }) {
+function Hero({ backend, llm, cloud }: { backend: "filesystem" | "supabase"; llm: LlmVerify | null; cloud: CloudStatus | null }) {
   return (
     <header>
       <div className="flex flex-wrap items-center gap-2">
@@ -367,6 +391,7 @@ function Hero({ backend, llm }: { backend: "filesystem" | "supabase"; llm: LlmVe
         </span>
         <BackendChip backend={backend} />
         <LlmChip llm={llm} />
+        <CloudWorkerChip cloud={cloud} />
       </div>
       <h1 className="mt-4 text-[36px] font-black leading-[1.05] tracking-tight md:text-[46px]" style={{ color: TOKEN.text }}>
         NEX Manager
@@ -425,6 +450,70 @@ function LlmChip({ llm }: { llm: LlmVerify | null }) {
     >
       <Zap size={11} strokeWidth={2.4} />
       {label}
+    </span>
+  );
+}
+
+function CloudWorkerChip({ cloud }: { cloud: CloudStatus | null }) {
+  if (!cloud) {
+    return (
+      <span
+        className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+        style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+      >
+        <Cloud size={11} strokeWidth={2.4} />
+        Cloud checking…
+      </span>
+    );
+  }
+  const online = cloud.workers.find((w) => w.status === "online");
+  const lagging = cloud.workers.find((w) => w.status === "lagging");
+  const stale = cloud.workers.find((w) => w.status === "stale");
+
+  // No heartbeats at all → cloud worker not deployed yet.
+  if (cloud.workers.length === 0) {
+    return (
+      <span
+        className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+        style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        title="Deploy scripts/nex-brain-cloud-worker.ts to Fly.io — see deploy/nex-brain-worker/fly.toml"
+      >
+        <CloudOff size={11} strokeWidth={2.4} />
+        Cloud not deployed
+      </span>
+    );
+  }
+
+  if (online) {
+    const secs = Math.round(online.age_ms / 1000);
+    const host = String(online.host_id).slice(0, 12);
+    return (
+      <span
+        className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+        style={{ background: "#D1FAE5", borderColor: "#6EE7B7", color: "#065F46" }}
+        title={`Host ${online.host_id} · ${online.cycles_total} cycles · ${online.cycles_failed} failed · uptime ${Math.round(online.uptime_ms / 60_000)}m`}
+      >
+        <Cloud size={11} strokeWidth={2.4} />
+        Cloud · {host} · {secs}s
+      </span>
+    );
+  }
+
+  const laggingOrStale = lagging ?? stale;
+  const isStale = !lagging;
+  const secs = laggingOrStale ? Math.round(laggingOrStale.age_ms / 1000) : 0;
+  return (
+    <span
+      className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.24em]"
+      style={{
+        background: isStale ? "#FEE2E2" : "#FEF3C7",
+        borderColor: isStale ? "#FCA5A5" : "#FDE68A",
+        color: isStale ? "#991B1B" : "#92400E",
+      }}
+      title={laggingOrStale?.last_error ?? undefined}
+    >
+      <CloudOff size={11} strokeWidth={2.4} />
+      {isStale ? "Cloud stale" : "Cloud lagging"} · {secs}s
     </span>
   );
 }

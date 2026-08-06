@@ -328,3 +328,24 @@ export type WorkerPoolHealth = {
   avg_ms_last_24h?: number | null;
   last_result_summary?: string | null;
 };
+
+// ── Cloud worker heartbeat (Phase 5 · always-on cloud runtime) ──────
+//
+// Written by every running worker process (local script OR Fly.io
+// deployment) on a fixed interval. Powers the dashboard's "Cloud
+// worker: online" tile — a heartbeat older than 60s means the runtime
+// has stopped, crashed, or lost its connection to Supabase.
+//
+// The primary key is host_id so each running process upserts its own
+// row. FLY_MACHINE_ID for Fly deployments; HOSTNAME otherwise.
+
+export type WorkerHeartbeat = {
+  host_id: string;
+  last_seen_at: string;
+  uptime_ms: number;
+  cycles_total: number;
+  cycles_failed: number;
+  last_error: string | null;
+  last_cycle_summary: Record<string, unknown> | null;
+  metadata: Record<string, unknown> | null;
+};

@@ -53,6 +53,7 @@ import type {
   LlmRetryStatus,
   RecordVersion,
   Source,
+  WorkerHeartbeat,
   WorkerJob,
   WorkerPoolHealth,
   WorkerResult,
@@ -165,6 +166,10 @@ export interface BrainStore {
   markLlmRetryPending(id: string, next_attempt_at: string, last_error: string, last_provider: string): Promise<void>;
   markLlmRetryExhausted(id: string, last_error: string): Promise<void>;
   listLlmRetries(filter?: { status?: LlmRetryStatus; limit?: number }): Promise<LlmRetryEntry[]>;
+
+  // Cloud worker heartbeats (Phase 5)
+  upsertHeartbeat(row: WorkerHeartbeat): Promise<void>;
+  listHeartbeats(filter?: { since?: string; limit?: number }): Promise<WorkerHeartbeat[]>;
 
   // Snapshot for the dashboard
   status(): Promise<BrainStatus>;
@@ -659,6 +664,23 @@ class FilesystemStore implements BrainStore {
       feedback_unapplied: feedback.filter((f) => !f.applied_to_prompts).length,
       worker_pool,
     };
+  }
+
+  // ── Heartbeats ─────────────────────────────────────────────────────
+  async upsertHeartbeat(row: WorkerHeartbeat): Promise<void> {
+    const rows = await readTable<WorkerHeartbeat>("worker_heartbeats");
+    const others = rows.filter((r) => r.host_id !== row.host_id);
+    others.push(row);
+    await writeTable("worker_heartbeats", others);
+  }
+
+  async listHeartbeats(filter: { since?: string; limit?: number } = {}): Promise<WorkerHeartbeat[]> {
+    const rows = await readTable<WorkerHeartbeat>("worker_heartbeats");
+    let out = rows;
+    if (filter.since) out = out.filter((r) => r.last_seen_at > filter.since!);
+    out = out.sort((a, b) => (a.last_seen_at < b.last_seen_at ? 1 : -1));
+    if (filter.limit) out = out.slice(0, filter.limit);
+    return out;
   }
 }
 
@@ -1296,6 +1318,42 @@ class SupabaseStore implements BrainStore {
       });
     }
     return results;
+  }
+
+  // ── Heartbeats ─────────────────────────────────────────────────────
+  //
+  // upsert by host_id — each running process (Fly machine, local dev,
+  // local worker script) owns its own row. Read-side of this feeds the
+  // "Cloud worker: online" tile via /api/nex/brain/cloud-status.
+  async upsertHeartbeat(row: WorkerHeartbeat): Promise<void> {
+    const { error } = await this.client
+      .from("worker_heartbeats")
+      .upsert(
+        {
+          host_id: row.host_id,
+          last_seen_at: row.last_seen_at,
+          uptime_ms: row.uptime_ms,
+          cycles_total: row.cycles_total,
+          cycles_failed: row.cycles_failed,
+          last_error: row.last_error,
+          last_cycle_summary: row.last_cycle_summary,
+          metadata: row.metadata,
+        },
+        { onConflict: "host_id" }
+      );
+    if (error) throw new Error(`upsertHeartbeat failed: ${error.message}`);
+  }
+
+  async listHeartbeats(filter: { since?: string; limit?: number } = {}): Promise<WorkerHeartbeat[]> {
+    let query = this.client
+      .from("worker_heartbeats")
+      .select("*")
+      .order("last_seen_at", { ascending: false });
+    if (filter.since) query = query.gt("last_seen_at", filter.since);
+    if (filter.limit) query = query.limit(filter.limit);
+    const { data, error } = await query;
+    if (error) throw new Error(`listHeartbeats failed: ${error.message}`);
+    return (data ?? []) as WorkerHeartbeat[];
   }
 }
 

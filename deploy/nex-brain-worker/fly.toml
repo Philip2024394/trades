@@ -1,0 +1,68 @@
+# NEX Brain Cloud Worker — Fly.io app definition
+# Philip 2026-08-06 · Phase 5
+#
+# Deploy from the REPO ROOT with:
+#   fly deploy --config deploy/nex-brain-worker/fly.toml \
+#              --dockerfile deploy/nex-brain-worker/Dockerfile
+#
+# First time only:
+#   fly launch --config deploy/nex-brain-worker/fly.toml \
+#              --dockerfile deploy/nex-brain-worker/Dockerfile \
+#              --no-deploy   (say YES to reuse existing config)
+#
+# Secrets (set once, encrypted at rest, injected as env vars):
+#   fly secrets set --app nex-brain-worker \
+#     NEX_SUPABASE_URL=https://ijvqdvsvwtwxzcqmoqit.supabase.co \
+#     NEX_SUPABASE_SERVICE_ROLE_KEY=eyJ... \
+#     GROQ_API_KEY=gsk_... \
+#     GOOGLE_GEMINI_API_KEY=AQ.Ab8R... \
+#     ANTHROPIC_API_KEY=sk-ant-...
+
+app = "nex-brain-worker"
+primary_region = "lhr"          # London — closest to Philip + UK users
+kill_signal = "SIGTERM"
+kill_timeout = "10s"
+
+[build]
+  dockerfile = "Dockerfile"
+
+# Non-secret env. Secrets go through `fly secrets set`.
+[env]
+  NEX_BRAIN_BACKEND = "supabase"
+  NEX_WORKER_INTERVAL_MS = "5000"
+  NEX_WORKER_HEARTBEAT_MS = "10000"
+  NODE_ENV = "production"
+
+# Worker is a long-running background process, not a web service, but
+# we expose /health on port 8080 so Fly can:
+#   · verify the container booted (readiness)
+#   · restart us if /health goes 503 or the port stops responding
+#   · surface logs in the dashboard
+[[services]]
+  internal_port = 8080
+  protocol = "tcp"
+  auto_stop_machines = false      # NEVER stop — this is the "always-on" bit
+  auto_start_machines = true      # If crashed, boot again
+  min_machines_running = 1        # Keep at least one machine live 24/7
+
+  [[services.tcp_checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "60s"          # Cold boot + npm ci layer needs this
+
+  [[services.http_checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "60s"
+    method = "GET"
+    path = "/health"
+    protocol = "http"
+
+# Small VM — this workload is I/O bound (Supabase RPC + LLM HTTP).
+# Start at 1x shared CPU / 256MB; scale up if the cycle log shows
+# CPU-bound extraction (unlikely — Groq does the heavy lifting).
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory = "512mb"                # 512MB gives headroom; 256MB works too
+  size = "shared-cpu-1x"
