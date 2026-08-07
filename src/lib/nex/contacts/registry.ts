@@ -482,6 +482,38 @@ export async function findContactByIdentifiers(input: { email?: string | null; p
   return findByCanonical(email, phone);
 }
 
+/**
+ * Batch-lookup canonical contacts by an array of emails. Used by list-brain
+ * enrichment paths (e.g. net.findBusinesses attaches canonical_contact_id
+ * to every trade in a search result). Empty input → empty result. Never
+ * throws · registry unreachable → empty result.
+ *
+ * Returns a Map keyed by canonical_email (already normalized) → Contact
+ * so callers can zip results back to their source rows.
+ */
+export async function findContactsByEmails(emails: (string | null | undefined)[]): Promise<Map<string, Contact>> {
+  const out = new Map<string, Contact>();
+  const normalized = Array.from(new Set(
+    emails.map((e) => canonicalEmail(e)).filter((e): e is string => !!e),
+  ));
+  if (normalized.length === 0) return out;
+  await withClient(async (client) => {
+    const placeholders = normalized.map((_, i) => `$${i + 1}`).join(",");
+    const res = await client.query(
+      `SELECT DISTINCT ON (contact_id) *
+       FROM nex.contacts
+       WHERE canonical_email = ANY(ARRAY[${placeholders}]) AND deleted_at IS NULL
+       ORDER BY contact_id, updated_at DESC`,
+      normalized,
+    );
+    for (const row of res.rows as unknown as Contact[]) {
+      if (row.canonical_email) out.set(row.canonical_email, row);
+    }
+    return null;
+  });
+  return out;
+}
+
 /** Fetch canonical snapshot by contact_id · null if not found or deleted. */
 export async function loadContactById(contactId: string): Promise<Contact | null> {
   const result = await withClient(async (client) => {

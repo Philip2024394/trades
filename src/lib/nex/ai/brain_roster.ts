@@ -50,9 +50,9 @@ export const BRAIN_WORKER_ROSTER: BrainWorkerDefinition[] = [
     id: "net",
     label: "Network Intelligence",
     category: "customer",
-    status: "list_brain_pending",
-    description: "Trade directory search + collaboration matchmaking. Returns lists of trade listings; every returned trade has a canonical identity in the registry.",
-    migration_notes: "Row-level enrichment helper (attachCanonicalIdsToBusinesses) planned · every trade listing in a result set gets a canonical_contact_id via bulk registry lookup by email/phone.",
+    status: "migrated",
+    description: "Trade directory search + collaboration matchmaking. Every returned trade carries a canonical registry contact via batch email lookup · alias-safe.",
+    migration_notes: "Phase 3d.4d · findBusinesses attaches NetworkBusiness.registry via findContactsByEmails() batch lookup · single ai.contact_resolved audit event per call · caller nex-brain:net:findBusinesses.",
     caller_prefix: "nex-brain:net",
   },
   {

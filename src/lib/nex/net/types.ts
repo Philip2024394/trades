@@ -25,6 +25,14 @@ export type NetworkBusiness = {
   postcode_prefix: string | null;
   distance_km:    number | null;   // when caller passes a reference point
   evidence:       Evidence;
+  /** Phase 3d.4d · Contact Registry enrichment.
+   *  Populated when this trade's canonical_email is in the registry.
+   *  null = registered contact not found · undefined = registry not consulted.
+   *  Alias-safe (canonical_email lookup already follows the merge chain). */
+  registry?: {
+    canonical_contact_id: string;
+    alias_resolved: boolean;
+  } | null;
 };
 
 // ─── Trust profile ──────────────────────────────────────────────

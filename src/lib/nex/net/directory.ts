@@ -8,8 +8,12 @@
 // exact fields to lean on. When a search relevance model lands we
 // swap the matching layer here.
 
+import { randomUUID } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { evidenceFor, type NetworkBusiness } from "./types";
+import { findContactsByEmails } from "@/lib/nex/contacts/registry";
+import { getStorage } from "@/lib/nex/storage/registry";
+import { COLLECTIONS } from "@/lib/nex/storage/types";
 
 const MAX_RESULTS = 20;
 
@@ -29,7 +33,7 @@ export async function findBusinesses(opts: FindBusinessesInput): Promise<Network
 
   let q = supabaseAdmin
     .from("hammerex_trade_off_listings")
-    .select("slug, display_name, trading_name, primary_trade, secondary_trades, city, postcode_prefix, lat, lng")
+    .select("slug, display_name, trading_name, primary_trade, secondary_trades, city, postcode_prefix, lat, lng, email")
     .limit(opts.limit ?? MAX_RESULTS);
 
   const trade = opts.trade?.toLowerCase().trim();
@@ -41,7 +45,8 @@ export async function findBusinesses(opts: FindBusinessesInput): Promise<Network
   if (opts.postcode_prefix) q = q.ilike("postcode_prefix", `${opts.postcode_prefix}%`);
 
   const rows = await q;
-  let results: NetworkBusiness[] = (rows.data ?? []).map((r) => {
+  const rawRows = rows.data ?? [];
+  let results: NetworkBusiness[] = rawRows.map((r) => {
     const lat = r.lat as number | null;
     const lng = r.lng as number | null;
     const dist = opts.origin && lat !== null && lng !== null
@@ -60,6 +65,13 @@ export async function findBusinesses(opts: FindBusinessesInput): Promise<Network
     };
   });
 
+  // Phase 3d.4d · Contact Registry row enrichment.
+  // Every returned trade gets `.registry.canonical_contact_id` when the
+  // trade's email is in the registry. Batch-lookup keeps this to one
+  // extra query regardless of result-set size. Never throws · registry
+  // unreachable → registry field stays undefined on every row.
+  await attachRegistryToBusinesses(results, rawRows);
+
   if (opts.exclude_slugs && opts.exclude_slugs.length > 0) {
     const skip = new Set(opts.exclude_slugs);
     results = results.filter((r) => !skip.has(r.slug));
@@ -74,6 +86,73 @@ export async function findBusinesses(opts: FindBusinessesInput): Promise<Network
   }
 
   return results;
+}
+
+/**
+ * Phase 3d.4d · net brain row-enrichment.
+ * Zips a canonical registry contact onto every returned NetworkBusiness
+ * via the trade's email. One batch registry query · one audit event per
+ * findBusinesses call (not per row) so AI adoption metrics reflect the
+ * brain call, not the fanout.
+ */
+async function attachRegistryToBusinesses(results: NetworkBusiness[], rawRows: Array<{ slug: unknown; email?: unknown }>): Promise<void> {
+  if (results.length === 0) return;
+  const emails = rawRows.map((r) => (r.email as string | null | undefined) ?? undefined);
+  let byEmail: Map<string, { contact_id: string; canonical_email: string | null }> = new Map();
+  let matchCount = 0;
+  try {
+    const map = await findContactsByEmails(emails);
+    matchCount = map.size;
+    byEmail = new Map(Array.from(map.entries()).map(([k, v]) => [k, { contact_id: v.contact_id, canonical_email: v.canonical_email }]));
+  } catch {
+    // registry unreachable · leave every row un-enriched
+  }
+
+  for (let i = 0; i < results.length; i++) {
+    const raw = rawRows[i];
+    const rawEmail = ((raw?.email as string | null | undefined) ?? "").trim().toLowerCase();
+    if (!rawEmail) continue;
+    const hit = byEmail.get(rawEmail);
+    if (hit) {
+      results[i].registry = { canonical_contact_id: hit.contact_id, alias_resolved: false };
+    } else {
+      results[i].registry = null;
+    }
+  }
+
+  // Single ai.contact_resolved audit event · caller = nex-brain:net:findBusinesses
+  // Powers the AI Adoption dashboard's "brain workers migrated" counter.
+  try {
+    const store = getStorage();
+    await store.save(COLLECTIONS.events, {
+      event_id: randomUUID(),
+      event_type: "ai.contact_resolved",
+      source: "nex-ai-resolver",
+      actor_id: null,
+      timestamp: new Date().toISOString(),
+      business_id: null,
+      related_department: "contact-intelligence",
+      related_brain: "nex-brain:net:findBusinesses",
+      related_job: null,
+      related_contact: null,
+      outcome: matchCount > 0 ? "ok" : "no_match",
+      payload: {
+        caller: "nex-brain:net:findBusinesses",
+        strategy: "email",
+        match_count: matchCount,
+        top_confidence: matchCount > 0 ? 99 : null,
+        top_contact_id: null,
+        registry_resolved: matchCount > 0,
+        alias_resolved: false,
+        row_count: results.length,
+        duration_ms: 0,
+        input_signals: { has_email: true },
+      },
+      reversible: false, reverse_of: null, supersedes: null,
+    });
+  } catch {
+    // never mask the brain's list result
+  }
 }
 
 /** Great-circle distance in km via Haversine. */
