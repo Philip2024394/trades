@@ -2,12 +2,24 @@
 // this — AI Visualiser register, Quote Workspace draft, walk-in
 // manual entry. Idempotent by (merchant_id, party_id) or fallback
 // (merchant_id, email_hash).
+//
+// Phase 3d.3 · Contact Registry adoption.
+// Every successful CRM upsert (create OR update) also writes through
+// the canonical Contact Registry via registry.upsertContact() with
+// source_type = "crm" and source_ref = crm_contact_id. This ensures:
+//   · Every CRM contact has a canonical identity
+//   · Merges made in the Merge Centre are visible to CRM via alias
+//   · Every downstream consumer (Email · Notifications · AI) resolves
+//     the same canonical contact regardless of which merchant "owns" it
+// Best-effort: registry unreachable → CRM operation still succeeds ·
+// registry linkage happens on the next sync.
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   hashEmail,
   hashWhatsapp
 } from "@/lib/os/hashing";
+import { upsertContact as registryUpsertContact } from "@/lib/nex/contacts/registry";
 
 export type UpsertContactInput = {
   merchantId: string;
@@ -32,7 +44,61 @@ export type UpsertContactInput = {
 export type UpsertContactResult = {
   contactId: string;
   created: boolean;
+  /** Phase 3d.3 · canonical Contact Registry linkage.
+   *  Null when the registry is unreachable · CRM operation still succeeded. */
+  registry?: {
+    canonical_contact_id: string;
+    created_in_registry: boolean;
+  } | null;
 };
+
+/**
+ * Phase 3d.3 · write-through to the canonical registry.
+ * Fires after every successful CRM upsert · never throws · returns null
+ * on failure so callers get backward-compatible behavior.
+ */
+async function writeThroughToRegistry(input: UpsertContactInput, crmContactId: string): Promise<UpsertContactResult["registry"]> {
+  if (!input.email && !input.whatsappE164) return null;
+  try {
+    const r = await registryUpsertContact({
+      email: input.email ?? null,
+      phone: input.whatsappE164 ?? null,
+      name: input.displayName,
+      region: input.postcode ?? null,
+      lifecycle_stage: (() => {
+        // Match the CRM's initial stage into the registry's canonical vocabulary.
+        // Same mapping as the CRM Connector (Phase 3b.7).
+        const s = input.initialLifecycleStage;
+        if (!s) return undefined;
+        if (s === "new") return "lead";
+        if (s === "engaged" || s === "quoted" || s === "silent") return "prospect";
+        if (s === "won" || s === "active" || s === "signed_off") return "customer";
+        return "archived";
+      })(),
+      linked_business_id: input.merchantId,
+      consent_marketing: null,                      // CRM contact opted in with the merchant, not with NEX
+      consent_transactional: true,                   // implicit for merchant-initiated interaction
+      consent_source: `crm:${input.source ?? "unknown"}`,
+      attributes: {
+        crm_contact_id: crmContactId,
+        crm_source: input.source ?? null,
+        crm_write_through: "phase-3d.3",
+      },
+      source: {
+        type: "crm",
+        ref: crmContactId,                            // per-CRM-row idempotent · matches Connector pattern
+        metadata: {
+          merchant_id: input.merchantId,
+          crm_source: input.source ?? null,
+          upserted_at: new Date().toISOString(),
+        },
+      },
+    });
+    return { canonical_contact_id: r.contact_id, created_in_registry: r.created };
+  } catch {
+    return null;
+  }
+}
 
 export async function upsertCrmContact(
   input: UpsertContactInput
@@ -52,7 +118,8 @@ export async function upsertCrmContact(
       .maybeSingle();
     if (existing) {
       await touchExisting(existing.id);
-      return { contactId: existing.id, created: false };
+      const registry = await writeThroughToRegistry(input, existing.id);
+      return { contactId: existing.id, created: false, registry };
     }
   }
 
@@ -73,7 +140,8 @@ export async function upsertCrmContact(
           .eq("id", existing.id);
       }
       await touchExisting(existing.id);
-      return { contactId: existing.id, created: false };
+      const registry = await writeThroughToRegistry(input, existing.id);
+      return { contactId: existing.id, created: false, registry };
     }
   }
 
@@ -111,7 +179,8 @@ export async function upsertCrmContact(
     occurred_at: now
   });
 
-  return { contactId: created.id, created: true };
+  const registry = await writeThroughToRegistry(input, created.id);
+  return { contactId: created.id, created: true, registry };
 }
 
 async function touchExisting(contactId: string): Promise<void> {

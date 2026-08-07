@@ -77,9 +77,9 @@ export const CONSUMER_ROSTER: ConsumerDefinition[] = [
     label: "CRM (per-merchant views)",
     category: "workflow",
     status: "partial",
-    description: "CRM's app_crm_contacts table is CONSUMED by the CRM Connector (registry pulls FROM it) but per-merchant read/write paths still hit app_crm_contacts directly. Read side should resolve linked_business_id → canonical registry contact.",
-    wiring_notes: "src/app/api/apps/crm/**/*.ts · needs a lookup helper that maps app_crm_contacts.id → canonical contact via the registry.",
-    audit_signal: null,
+    description: "Bidirectional wiring live · CRM Connector pulls from app_crm_contacts INTO registry (Phase 3b.7) · upsertCrmContact WRITES THROUGH to registry on every create/update (Phase 3d.3). Every CRM contact now has a canonical registry linkage · alias-safe · every downstream consumer sees the same person regardless of which merchant last touched them. Full read-side migration (loadContactSummary enrichment) partial via cx brain.",
+    wiring_notes: "src/lib/crm/upsertContact.ts · writeThroughToRegistry() adds source_type=crm row + canonical linkage on every successful upsert · never throws · CRM works unchanged if registry unreachable. Metrics measured via source_type=crm rows in nex.contact_sources.",
+    audit_signal: { event_type_prefix: "contacts.connector.sync", caller_hint: "crm" },
   },
   {
     id: "ai",
