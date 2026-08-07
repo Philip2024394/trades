@@ -11,13 +11,18 @@ export type ConnectorStatus =
   | "planned"                    // roadmap item · not yet built
   | "disabled";                  // temporarily off (e.g. rate-limited by source)
 
+export type ConnectorMode =
+  | "pull"                        // admin-triggered or scheduled polling of a source · has sync() method
+  | "push";                        // event-driven · caller (route · webhook · worker) fires each record · no admin-trigger
+
 export type ConnectorDefinition = {
   id: string;                    // "trades" · "newsletter" · "contact-form" · "manual" · "csv" · "crm"
   label: string;                 // "Trades Directory" · human-facing name
   source_type: string;           // matches the value written to contact_sources.source_type
   status: ConnectorStatus;
+  mode: ConnectorMode;
   description: string;
-  scheduled: false | { cron: string };   // false = admin-triggered only · future: cron support
+  scheduled: false | { cron: string };   // false = admin-triggered only (pull mode) · irrelevant for push
 };
 
 export type ConnectorRunResult = {

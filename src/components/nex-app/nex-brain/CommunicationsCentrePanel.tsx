@@ -75,6 +75,7 @@ type ConnectorEntry = {
   label: string;
   source_type: string;
   status: "supported" | "planned" | "disabled";
+  mode: "pull" | "push";
   description: string;
   built: boolean;
   scheduled: false | { cron: string };
@@ -438,13 +439,13 @@ export function CommunicationsCentrePanel() {
                     {c.built ? (
                       <div className="mt-2 space-y-1 text-[10.5px]">
                         <div className="flex justify-between" style={{ color: T.textDim }}>
-                          <span>Last sync</span>
+                          <span>{c.mode === "push" ? "Last received" : "Last sync"}</span>
                           <span className="font-mono" style={{ color: outcomeTone }}>
                             {last ? `${last.outcome ?? "—"} · ${relTime(last.timestamp)}` : "never"}
                           </span>
                         </div>
                         <div className="flex justify-between" style={{ color: T.textDim }}>
-                          <span>Records processed</span>
+                          <span>{c.mode === "push" ? "Records received (last event)" : "Records processed"}</span>
                           <span className="font-mono" style={{ color: T.text }}>{last?.payload?.records_processed ?? 0}</span>
                         </div>
                         <div className="flex justify-between" style={{ color: T.textDim }}>
@@ -460,36 +461,43 @@ export function CommunicationsCentrePanel() {
                           <span className="font-mono" style={{ color: (last?.payload?.errors ?? 0) > 0 ? T.danger : T.text }}>{last?.payload?.errors ?? 0}</span>
                         </div>
                         <div className="flex justify-between" style={{ color: T.textDim }}>
-                          <span>Total runs (all-time)</span>
+                          <span>{c.mode === "push" ? "Events received (all-time)" : "Total runs (all-time)"}</span>
                           <span className="font-mono" style={{ color: T.text }}>{c.total_runs}</span>
                         </div>
                         <div className="flex justify-between" style={{ color: T.textDim }}>
-                          <span>Next scheduled</span>
-                          <span className="font-mono" style={{ color: T.textFade }}>{c.scheduled ? c.scheduled.cron : "admin-triggered only"}</span>
+                          <span>Mode</span>
+                          <span className="font-mono uppercase tracking-widest" style={{ color: c.mode === "push" ? T.purple : T.info }}>{c.mode}</span>
                         </div>
-                        <div className="mt-2 flex gap-1">
-                          <button
-                            type="button"
-                            onClick={() => syncConnector(c.id, { dry_run: true })}
-                            disabled={isSyncing}
-                            className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
-                            style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
-                          >
-                            Dry-run
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => syncConnector(c.id)}
-                            disabled={isSyncing}
-                            className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
-                            style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
-                          >
-                            {isSyncing ? "Syncing…" : "Sync now"}
-                          </button>
-                        </div>
+                        {c.mode === "pull" ? (
+                          <div className="mt-2 flex gap-1">
+                            <button
+                              type="button"
+                              onClick={() => syncConnector(c.id, { dry_run: true })}
+                              disabled={isSyncing}
+                              className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
+                              style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                            >
+                              Dry-run
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => syncConnector(c.id)}
+                              disabled={isSyncing}
+                              className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
+                              style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
+                            >
+                              {isSyncing ? "Syncing…" : "Sync now"}
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="mt-2 rounded border px-2 py-1.5 text-center text-[10px]" style={{ background: T.panel, borderColor: T.purple, color: T.purple }}>
+                            <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: T.purple }} />
+                            Listening · event-driven
+                          </div>
+                        )}
                       </div>
                     ) : (
-                      <div className="mt-2 text-[10px]" style={{ color: T.textFade }}>Planned · not yet built</div>
+                      <div className="mt-2 text-[10px]" style={{ color: T.textFade }}>Planned · not yet built · mode: {c.mode}</div>
                     )}
                   </div>
                 );

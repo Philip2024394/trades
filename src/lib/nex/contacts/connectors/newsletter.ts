@@ -47,6 +47,7 @@ export const newsletterConnectorDefinition: ConnectorDefinition = {
   source_type: "newsletter",
   status: "supported",
   description: "Syncs hammerex_xrated_newsletter_subscribers (per-merchant subs) into the Contact Registry · status → consent_marketing + unsubscribe_at · complaint → never_contact + unsubscribe_at · source_ref = subscription.id",
+  mode: "pull",
   scheduled: false,
 };
 

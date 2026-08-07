@@ -56,6 +56,7 @@ export const tradesConnectorDefinition: ConnectorDefinition = {
   source_type: "trades",
   status: "supported",
   description: "Syncs hammerex_trade_off_listings (legacy Supabase) into the Contact Registry · one contact per listing keyed by email · source_ref = listing.id",
+  mode: "pull",
   scheduled: false,               // admin-triggered until Phase 3d
 };
 

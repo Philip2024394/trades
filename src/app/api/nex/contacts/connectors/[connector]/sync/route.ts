@@ -7,7 +7,7 @@
 // Every run also writes an audit event to nex.events via the shared runner.
 
 import { NextResponse } from "next/server";
-import { findConnector } from "@/lib/nex/contacts/connectors";
+import { findConnector, PUSH_CONNECTORS } from "@/lib/nex/contacts/connectors";
 import { runConnector } from "@/lib/nex/contacts/connectors/_runner";
 
 export const runtime = "nodejs";
@@ -18,6 +18,17 @@ export const maxDuration = 300;
 
 export async function POST(request: Request, ctx: { params: Promise<{ connector: string }> }) {
   const { connector: connectorId } = await ctx.params;
+
+  // Push-mode connectors have no sync() method · admin trigger is invalid.
+  if (PUSH_CONNECTORS.some((d) => d.id === connectorId)) {
+    return NextResponse.json({
+      ok: false,
+      error: "push_mode_connector",
+      detail: "This connector is event-driven · records arrive from the caller (route/webhook/worker) · no admin sync trigger.",
+      connector: connectorId,
+    }, { status: 400 });
+  }
+
   const connector = findConnector(connectorId);
   if (!connector) {
     return NextResponse.json({ ok: false, error: "unknown_connector", connector: connectorId }, { status: 404 });

@@ -15,6 +15,7 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import { sendEmail } from "@/lib/nex/email/queue";
+import { recordContactFromForm } from "@/lib/nex/contacts/connectors/contact_form";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -264,6 +265,23 @@ export async function POST(req: NextRequest) {
       },
       { status: 502 }
     );
+  }
+
+  // Push the submitter into the Contact Registry (Contact Form Connector).
+  // Non-blocking failure: if the registry is down, the email still went so
+  // we don't fail the user's response · errors surface in the audit trail.
+  try {
+    await recordContactFromForm({
+      email,
+      name,
+      phone: whatsapp,
+      country,
+      reason,
+      message,
+      account_ref: accountRef,
+    });
+  } catch (err) {
+    console.warn("[contact] registry upsert failed (email already sent):", err);
   }
 
   return NextResponse.json({ ok: true });
