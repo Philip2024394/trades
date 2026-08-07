@@ -11,6 +11,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { ImportWizard } from "./ImportWizard";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -247,6 +248,7 @@ export function CommunicationsCentrePanel() {
   const [syncing, setSyncing] = useState<Record<string, boolean>>({});
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>("");
+  const [wizardOpen, setWizardOpen] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -285,22 +287,6 @@ export function CommunicationsCentrePanel() {
     }
   }, [load]);
 
-  const uploadCsv = useCallback(async (file: File, dry_run: boolean) => {
-    setSyncing((s) => ({ ...s, csv: true }));
-    try {
-      const text = await file.text();
-      await fetch(`/api/nex/contacts/connectors/csv/upload`, {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ csv: text, dry_run, source_label: file.name }),
-      });
-      await load();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "csv_upload_failed");
-    } finally {
-      setSyncing((s) => ({ ...s, csv: false }));
-    }
-  }, [load]);
 
   useEffect(() => {
     void load();
@@ -532,42 +518,16 @@ export function CommunicationsCentrePanel() {
                           </div>
                         ) : c.mode === "upload" ? (
                           <div className="mt-2">
-                            <label
-                              className="flex cursor-pointer items-center justify-center gap-1.5 rounded border px-2 py-1.5 text-[10px] font-semibold"
-                              style={{ background: T.panel, borderColor: T.accent, color: T.accent, opacity: isSyncing ? 0.5 : 1 }}
+                            <button
+                              type="button"
+                              onClick={() => setWizardOpen(true)}
+                              className="w-full rounded border px-2 py-1.5 text-[10px] font-semibold"
+                              style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
                             >
-                              <input
-                                type="file"
-                                accept=".csv,text/csv"
-                                disabled={isSyncing}
-                                className="hidden"
-                                onChange={(e) => {
-                                  const f = e.target.files?.[0];
-                                  if (f) void uploadCsv(f, false);
-                                  e.target.value = "";
-                                }}
-                              />
-                              {isSyncing ? "Importing…" : "Upload CSV"}
-                            </label>
-                            <label
-                              className="mt-1 flex cursor-pointer items-center justify-center gap-1.5 rounded border px-2 py-1.5 text-[10px] font-semibold"
-                              style={{ background: T.panel, borderColor: T.border, color: T.textDim, opacity: isSyncing ? 0.5 : 1 }}
-                            >
-                              <input
-                                type="file"
-                                accept=".csv,text/csv"
-                                disabled={isSyncing}
-                                className="hidden"
-                                onChange={(e) => {
-                                  const f = e.target.files?.[0];
-                                  if (f) void uploadCsv(f, true);
-                                  e.target.value = "";
-                                }}
-                              />
-                              Dry-run (no writes)
-                            </label>
+                              Open Import Wizard
+                            </button>
                             <div className="mt-1 text-[9px] italic" style={{ color: T.textFade }}>
-                              Header + email column required · Wizard v1 (mapping UI · duplicate previews · TSV/XLSX) lands in Phase 3b.6b
+                              4-step flow · Upload → Mapping → Dry-run → Report · preview + duplicate detection + compliance warnings before any write
                             </div>
                           </div>
                         ) : (
@@ -850,6 +810,13 @@ export function CommunicationsCentrePanel() {
           </div>
         </>
       )}
+
+      {/* IMPORT WIZARD MODAL ─────────────────────────────────────── */}
+      <ImportWizard
+        open={wizardOpen}
+        onClose={() => setWizardOpen(false)}
+        onImported={() => { setWizardOpen(false); void load(); }}
+      />
     </div>
   );
 }
