@@ -34,7 +34,10 @@ export function parseDefinition(raw: unknown): ParseResult {
     if (!NODE_TYPES.has(type)) { errors.push(`node ${id} unknown type ${n.type}`); continue; }
 
     const label = n.label ? String(n.label) : undefined;
-    const base = { id, label } as { id: string; label?: string };
+    // Preserve editor position (additive · optional · runtime ignores this)
+    const pos = n.position as { x?: number; y?: number } | undefined;
+    const position = pos && typeof pos.x === "number" && typeof pos.y === "number" ? { x: pos.x, y: pos.y } : undefined;
+    const base = { id, label, ...(position ? { position } : {}) } as { id: string; label?: string; position?: { x: number; y: number } };
 
     switch (type) {
       case "start": {

@@ -8,6 +8,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { JourneyDesigner } from "./JourneyDesigner";
 
 type JourneyStatus = "draft" | "active" | "paused" | "archived";
 type StateStatus = "active" | "waiting" | "completed" | "stopped" | "failed";
@@ -103,7 +104,8 @@ export function JourneyEnginePanel() {
   const visible = useMemo(() => filter === "all" ? journeys : journeys.filter((j) => j.status === filter), [journeys, filter]);
 
   // Phase 5.1.2 · triggers + inbound events for the selected journey
-  const [detailTab, setDetailTab] = useState<"execution" | "triggers" | "inbound">("execution");
+  // Phase 5.1.3 · visual designer tab added
+  const [detailTab, setDetailTab] = useState<"execution" | "triggers" | "inbound" | "designer">("execution");
   const [triggers, setTriggers] = useState<JourneyTrigger[]>([]);
   const [inboundEvents, setInboundEvents] = useState<InboundEventRow[]>([]);
 
@@ -279,9 +281,9 @@ export function JourneyEnginePanel() {
                 ) : null}
               </div>
 
-              {/* Tabs · Phase 5.1.2 · Triggers + Inbound feed */}
+              {/* Tabs · Phase 5.1.2 + 5.1.3 · Designer / Triggers / Inbound */}
               <div className="mb-2 flex items-center gap-1">
-                {(["execution","triggers","inbound"] as const).map((tab) => (
+                {(["execution","designer","triggers","inbound"] as const).map((tab) => (
                   <button key={tab} type="button" onClick={() => setDetailTab(tab)}
                     className="rounded-md border px-2 py-1 text-[10px] font-semibold uppercase tracking-widest"
                     style={{
@@ -289,12 +291,21 @@ export function JourneyEnginePanel() {
                       borderColor: detailTab === tab ? T.info : T.border,
                       color: detailTab === tab ? T.panel : T.textDim,
                     }}>
-                    {tab === "execution" ? "Execution" : tab === "triggers" ? `Triggers · ${triggers.length}` : "Inbound webhooks"}
+                    {tab === "execution" ? "Execution" : tab === "designer" ? "Designer" : tab === "triggers" ? `Triggers · ${triggers.length}` : "Inbound webhooks"}
                   </button>
                 ))}
               </div>
 
-              {detailTab === "triggers" ? (
+              {detailTab === "designer" ? (
+                <JourneyDesigner
+                  journeyId={selected.journey_id}
+                  slug={selected.slug}
+                  name={selected.name}
+                  initialDefinition={selected.definition as { nodes: Array<{ id: string; type: "start" | "wait" | "send_campaign" | "send_campaign_and_wait" | "branch" | "goal" | "stop"; label?: string; position: { x: number; y: number }; [k: string]: unknown }>; start_node_id: string }}
+                  triggerConfig={selected.trigger_config as Record<string, unknown>}
+                  onPublished={() => loadAll()}
+                />
+              ) : detailTab === "triggers" ? (
                 <TriggersTab triggers={triggers} onStatus={triggerStatus} onCreated={() => selectedId && loadTriggers(selectedId)} journey_id={selected.journey_id} />
               ) : detailTab === "inbound" ? (
                 <InboundTab events={inboundEvents} onRefresh={loadInbound} />

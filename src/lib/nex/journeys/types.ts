@@ -9,7 +9,7 @@
 // ── Node model · MVP six + 5.1.4 addition ────────────────────────
 export type NodeType = "start" | "wait" | "send_campaign" | "branch" | "goal" | "stop" | "send_campaign_and_wait";
 
-export type NodeBase = { id: string; type: NodeType; label?: string };
+export type NodeBase = { id: string; type: NodeType; label?: string; position?: { x: number; y: number } };
 
 export type StartNode        = NodeBase & { type: "start";         next: string };
 export type WaitNode         = NodeBase & { type: "wait";          next: string; wait_seconds: number };
