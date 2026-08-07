@@ -12,6 +12,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { ImportWizard } from "./ImportWizard";
+import { AudienceBuilder } from "./AudienceBuilder";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -591,20 +592,19 @@ export function CommunicationsCentrePanel() {
             )}
           </Section>
 
-          {/* 3 · MARKETING ──────────────────────────────────────── */}
-          <Section title="Marketing" badge="awaiting Phase 4 · Campaign Builder">
+          {/* 3 · MARKETING · Audience Engine ─────────────────────── */}
+          <Section title="Marketing · Audience Engine" badge="Phase 4a · live · filter over Contact Registry">
             <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
               <Metric label="Marketing sent (all-time)" value={audit?.kinds.marketing ?? "—"} tone={audit?.kinds.marketing ? "neutral" : "unset"} />
-              <Metric label="Active campaigns" value="—" tone="unset" />
-              <Metric label="Recipient lists" value="—" tone="unset" />
-              <Metric label="Drafts" value="—" tone="unset" />
-              <Metric label="Scheduled" value="—" tone="unset" />
+              <Metric label="Campaigns · Phase 4b" value="—" tone="unset" />
+              <Metric label="Composer · Phase 4c" value="—" tone="unset" />
+              <Metric label="Scheduler · Phase 4d" value="—" tone="unset" />
+              <Metric label="Analytics · Phase 4e" value="—" tone="unset" />
             </div>
-            <HonestEmpty
-              phase="Phase 4"
-              title="Campaign builder not yet built"
-              body="Phase 4 delivers: recipient selection (filter by country / trade / tag / consent), save recipient groups, preview recipients before sending, campaign lifecycle (draft → scheduled → sending → completed)."
-            />
+            <AudienceBuilder />
+            <div className="mt-3 text-[9.5px] italic" style={{ color: T.textFade }}>
+              Every campaign / newsletter / follow-up starts from a saved segment. Compliance flags (unsubscribed · never-contact · no marketing consent · invalid email) are shown so you always know WHY some contacts won&apos;t receive.
+            </div>
           </Section>
 
           {/* 4 · TRANSACTIONAL ─────────────────────────────────── */}
