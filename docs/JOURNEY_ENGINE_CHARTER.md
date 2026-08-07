@@ -360,3 +360,149 @@ New models require a doctrine amendment. Machine-learning attribution is deferre
 
 The same contact can produce multiple conversion events (`quote_requested`, `deposit_paid`, `installation_completed`, `final_payment`). Each is stored as a separate `nex.conversion_events` row and attributed independently. Reports can aggregate `pipeline_value` (all conversions) vs `actual_revenue` (a configurable subset) at query time.
 
+---
+
+## 14 · Predictive Engine doctrine (Phase 5.4)
+
+**Central principle:**
+> **Predictive can recommend, rank, score, and optimise decisions, but it is never an execution authority.**
+
+The Predictive Engine sits above Attribution and below the existing execution layers:
+
+```
+Events → Analytics → Attribution → Predictive Engine → Recommendation / Score
+                                                                ↓
+                                                Existing Journey / Campaign
+                                                                ↓
+                                                    Existing Scheduler
+                                                                ↓
+                                                        Compliance
+                                                                ↓
+                                                         Delivery
+```
+
+Every arrow is one-way. The Predictive Engine reads canonical events, analytics rollups, and attribution outputs. It writes only to its own `nex.predictions` table (and the model registry). It never reaches into Compliance, Delivery, Contacts, Campaigns, Journeys, Experiments, or Provider config.
+
+### 14.1 · What the Predictive Engine MAY do
+
+- Score contacts / leads.
+- Predict conversion probability.
+- Recommend the best campaign for a contact or segment.
+- Recommend the best journey.
+- Recommend send timing (send-time optimisation).
+- Rank A/B variants using attribution + analytics history.
+- Recommend audience segmentation.
+- Identify likely churn.
+- Recommend re-engagement flows.
+- Forecast campaign performance before send.
+- Feed recommendations into existing journey / campaign configuration through **controlled commands / interfaces** — the same interfaces a human operator would use.
+
+### 14.2 · What the Predictive Engine MUST NOT do
+
+- Send directly.
+- Call providers.
+- Bypass the queue.
+- Bypass the scheduler.
+- Bypass compliance.
+- Write contact compliance state.
+- Modify provider configuration.
+- Invent recipients outside authorised campaign / segment rules.
+- Override campaign limits.
+- Change immutable historical events (analytics events · attribution rows · journey events · dispatch logs).
+- Silently change a live journey.
+- Automatically spend money or purchase anything.
+- Make irreversible decisions without an explicit authorised execution path.
+
+### 14.3 · Two modes (locked)
+
+**Recommendation mode.** The engine emits a suggestion; a human or an existing system decides.
+
+> AI: *"Variant B is predicted to perform 18% better."* → Human/existing system decides.
+
+**Optimisation mode.** The engine emits an authorised recommendation/command; the existing platform validates and executes it.
+
+> AI: *"Use Variant B."* → Creates an authorised recommendation/command → Existing system validates → Existing scheduler executes.
+
+Even in Optimisation mode, the Predictive Engine itself never sends and never calls a provider. It emits a command; the existing subsystems remain the sole execution authorities.
+
+### 14.4 · Explainability (mandatory on every prediction)
+
+Every prediction row MUST carry:
+
+| Field | Meaning |
+|---|---|
+| `prediction_id` | UUID · immutable |
+| `model_version` | version string of the model that produced the prediction |
+| `input_snapshot` | frozen inputs (feature vector / rollup keys / attribution refs) used at inference time |
+| `prediction` | the predicted value / class / rank |
+| `confidence` | probability or calibrated confidence |
+| `created_at` | inference timestamp |
+| `reason / features` | top contributing features / rule trace / SHAP-style attribution |
+
+So when Nex says *"this homeowner has a high probability of requesting a quote,"* we can answer **"why did Nex think that?"** — always.
+
+### 14.5 · Model registry + rollback
+
+- Every model that ships to production is registered with `model_version`, `training_data_snapshot`, `metrics`, `deployed_at`, `deployed_by`, `status` (`shadow` · `active` · `retired`).
+- A bad model version must be rollback-able by pointing the engine at a prior `active` version — no code deploy required.
+- Multiple versions may run in `shadow` mode simultaneously; only one may be `active` per prediction target.
+
+### 14.6 · Global kill switch + pause
+
+- Automated optimisation MUST be pausable globally with a single control (env var or config flag) without a redeploy.
+- When paused, the engine still produces recommendations for observation; it emits **zero** optimisation commands into the execution path.
+- Individual predictions or command families may be independently disabled.
+
+### 14.7 · Determinism, calibration, audit
+
+- Where the model class allows it (linear / tree / rules), inference MUST be deterministic given the same input snapshot + model_version.
+- Stochastic models MUST record the seed used.
+- Confidence must be calibrated and monitored; miscalibration triggers an alert but never an auto-rollback (rollback is a human action).
+- Every prediction, every optimisation command, and every downstream effect is recorded in an append-only audit chain traceable back to the prediction_id.
+
+### 14.8 · Boundary contract with existing subsystems
+
+- **Attribution → Predictive:** read-only via canonical tables/APIs. Predictive never writes into `nex.attributions` or `nex.conversion_events`.
+- **Predictive → Journey / Campaign:** commands only. The interface must be one an authorised human user could invoke. New command types must be added to the existing command vocabulary (not a parallel one).
+- **Predictive → Scheduler:** never direct. Any timing recommendation lands as a scheduler-visible attribute on an existing job/campaign; the Scheduler still owns dispatch.
+- **Predictive → Compliance:** never writes. May read compliance state to filter recommendations.
+- **Predictive → Delivery / Providers:** forbidden. No adapter imports permitted in `src/lib/nex/predictive/**`.
+
+### 14.9 · Acceptance gates (Phase 5.4)
+
+Before Phase 5.4 is considered complete, all of the following must hold:
+
+1. Deterministic / reproducible inference where the model class allows.
+2. `model_version` recorded on every prediction.
+3. Full prediction audit trail (`nex.predictions` INSERT-only).
+4. `input_snapshot` preserved per prediction.
+5. Confidence / calibration metrics surfaced.
+6. Zero provider calls.
+7. Zero compliance writes.
+8. Zero direct delivery calls.
+9. No bypass of queue or scheduler.
+10. Existing journey / campaign boundaries enforced.
+11. Human approval available for high-impact optimisation.
+12. Automated optimisation can be paused globally.
+13. Bad model / version can be rolled back.
+14. Existing six phases (5.1 · 5.1.2 · 5.1.4 · 5.1.3 · 5.2 · 5.3) remain green.
+15. Seven v1.0 frozen interface hashes remain unchanged.
+16. This amendment (v1.0.5) exists and is merged before any 5.4 implementation code lands.
+
+### 14.10 · Boundary tripwires
+
+Any of the following is an automatic **doctrine violation** and blocks merge:
+
+- A file under `src/lib/nex/predictive/**` imports `@/lib/nex/delivery/*`, `@/lib/nex/compliance/*`, or any provider SDK.
+- Any code path calls `provider.send()` from inside the Predictive Engine.
+- Any code path INSERTs into `nex.compliance_events`, `nex.contact_compliance`, `nex.delivery_jobs`, `nex.journey_definitions`, `nex.experiments`, `nex.attributions`, or `nex.conversion_events` from Predictive.
+- A prediction is produced without `model_version` or without an `input_snapshot`.
+- An optimisation command executes without traversing the existing Journey / Campaign / Scheduler / Compliance / Delivery chain.
+- The engine cannot be paused without a code deploy.
+
+### 14.11 · Sequence summary
+
+`5.1 = Orchestrate → 5.2 = Experiment → 5.3 = Attribute → 5.4 = Predict.`
+
+Predictive completes the loop by turning what Attribution *observed* into what the platform can *recommend or optimise* — while never becoming an execution authority itself.
+
