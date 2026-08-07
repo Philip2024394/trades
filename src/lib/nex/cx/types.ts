@@ -28,8 +28,20 @@ export type CustomerRef =
 
 export type CustomerResolveOk = {
   ok: true;
-  contactId: string;
+  contactId: string;                     // merchant-scoped app_crm_contacts.id
   summary:   ContactSummary;
+  /** Phase 3d.4b · canonical Contact Registry enrichment. Null when the
+   *  registry is unreachable or the contact isn't in the registry yet.
+   *  Every CX brain answer that references a person now carries the
+   *  canonical identity so downstream consumers (Email · Notifications ·
+   *  future AI) resolve through the same alias-safe id. */
+  registry?: {
+    canonical_contact_id: string | null;
+    alias_resolved: boolean;
+    confidence: number | null;
+    match_reason: string | null;
+    resolved_at: string;
+  };
 };
 
 export type CustomerResolveErr = {

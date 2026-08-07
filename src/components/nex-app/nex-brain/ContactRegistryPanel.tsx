@@ -87,6 +87,13 @@ type ConsumerEntry = {
     alias_resolved_total: number;
     compliance_blocks_total: number;
     adoption_pct: number | null;
+    ai_extended?: {
+      brain_workers_migrated: number;
+      identity_resolutions: number;
+      fallback_searches: number;
+      resolution_failures: number;
+      average_confidence: number | null;
+    };
   };
 };
 
@@ -595,6 +602,21 @@ export function ContactRegistryPanel() {
                 <div className="mt-1 text-[9px]" style={{ color: T.textFade }}>
                   Last activity: {c.metrics.last_activity_at ? relTime(c.metrics.last_activity_at) : "—"}
                 </div>
+
+                {c.metrics.ai_extended ? (
+                  <div className="mt-2 rounded border p-2" style={{ background: T.panel, borderColor: T.info }}>
+                    <div className="mb-1.5 text-[8px] font-black uppercase tracking-widest" style={{ color: T.info }}>AI-specific metrics</div>
+                    <div className="grid grid-cols-3 gap-1 text-[9px]">
+                      <MicroStat label="Brains migrated" value={c.metrics.ai_extended.brain_workers_migrated} tone={c.metrics.ai_extended.brain_workers_migrated > 0 ? "info" : "neutral"} />
+                      <MicroStat label="Resolutions" value={c.metrics.ai_extended.identity_resolutions} tone="good" />
+                      <MicroStat label="Failures" value={c.metrics.ai_extended.resolution_failures} tone={c.metrics.ai_extended.resolution_failures > 0 ? "warn" : "neutral"} />
+                      <MicroStat label="Fallback searches" value={c.metrics.ai_extended.fallback_searches} tone={c.metrics.ai_extended.fallback_searches > 0 ? "warn" : "neutral"} />
+                      <MicroStat label="Avg confidence" value={c.metrics.ai_extended.average_confidence != null ? c.metrics.ai_extended.average_confidence.toString() : "—"} tone={c.metrics.ai_extended.average_confidence != null && c.metrics.ai_extended.average_confidence >= 90 ? "good" : "neutral"} />
+                      <MicroStat label="Total events" value={c.metrics.events_total} />
+                    </div>
+                  </div>
+                ) : null}
+
                 <div className="mt-2 rounded border p-1.5 text-[9.5px] italic" style={{ background: T.panel, borderColor: T.border, color: T.textFade }}>
                   {c.wiring_notes}
                 </div>

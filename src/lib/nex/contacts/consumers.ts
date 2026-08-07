@@ -116,10 +116,21 @@ export type ConsumerMetrics = {
   last_activity_at: string | null;
   events_total: number;
   events_today: number;
-  registry_resolved_total: number;             // where payload.registry_resolved === true
-  alias_resolved_total: number;                 // where payload.alias_resolved === true
-  compliance_blocks_total: number;              // where event_type ends with .blocked
-  adoption_pct: number | null;                  // registry_resolved / events_total · null when events_total = 0
+  registry_resolved_total: number;
+  alias_resolved_total: number;
+  compliance_blocks_total: number;
+  adoption_pct: number | null;
+  /** Optional AI-specific metrics · populated only for the "ai" consumer.
+   *  Per Philip's Phase 3d.4b spec: brain workers migrated · identity
+   *  resolutions · alias resolutions · average confidence · resolution
+   *  failures · fallback searches. */
+  ai_extended?: {
+    brain_workers_migrated: number;
+    identity_resolutions: number;
+    fallback_searches: number;
+    resolution_failures: number;
+    average_confidence: number | null;
+  };
 };
 
 type StoredEvent = {
@@ -130,6 +141,9 @@ type StoredEvent = {
     caller?: string;
     registry_resolved?: boolean;
     alias_resolved?: boolean;
+    strategy?: string;
+    match_count?: number;
+    top_confidence?: number | null;
   };
 };
 
@@ -167,6 +181,36 @@ export async function getConsumerMetrics(): Promise<ConsumerMetrics[]> {
     const alias_resolved = matches.filter((e) => e.payload?.alias_resolved === true).length;
     const blocks = matches.filter((e) => e.event_type?.endsWith(".blocked")).length;
     const last = matches[0]?.timestamp ?? null;
+
+    // AI-specific extended metrics · only computed for the "ai" consumer.
+    let ai_extended: ConsumerMetrics["ai_extended"] | undefined;
+    if (consumer.id === "ai") {
+      const brainWorkers = new Set<string>();
+      let identity_resolutions = 0;
+      let fallback_searches = 0;
+      let resolution_failures = 0;
+      let confSum = 0;
+      let confN = 0;
+      for (const m of matches) {
+        const caller = m.payload?.caller ?? "";
+        if (caller.startsWith("nex-brain:")) brainWorkers.add(caller);
+        const matchCount = m.payload?.match_count ?? 0;
+        if (matchCount > 0) identity_resolutions += 1;
+        else resolution_failures += 1;
+        const strategy = m.payload?.strategy ?? "";
+        if (strategy === "free_text" || strategy === "name_company") fallback_searches += 1;
+        const top = m.payload?.top_confidence;
+        if (typeof top === "number") { confSum += top; confN += 1; }
+      }
+      ai_extended = {
+        brain_workers_migrated: brainWorkers.size,
+        identity_resolutions,
+        fallback_searches,
+        resolution_failures,
+        average_confidence: confN > 0 ? Math.round((confSum / confN) * 10) / 10 : null,
+      };
+    }
+
     return {
       consumer_id: consumer.id,
       last_activity_at: last,
@@ -176,6 +220,7 @@ export async function getConsumerMetrics(): Promise<ConsumerMetrics[]> {
       alias_resolved_total: alias_resolved,
       compliance_blocks_total: blocks,
       adoption_pct: events_total > 0 ? Math.round((registry_resolved / events_total) * 1000) / 10 : null,
+      ai_extended,
     };
   });
 }
