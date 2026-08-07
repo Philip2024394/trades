@@ -15,6 +15,7 @@ import { ImportWizard } from "./ImportWizard";
 import { AudienceBuilder } from "./AudienceBuilder";
 import { CampaignBuilder } from "./CampaignBuilder";
 import { DeliveryEnginePanel } from "./DeliveryEnginePanel";
+import { AnalyticsPanel } from "./AnalyticsPanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -663,6 +664,11 @@ export function CommunicationsCentrePanel() {
           {/* 3d · DELIVERY ENGINE ─────────────────────────────────── */}
           <Section title="Delivery Engine" badge="Phase 4d · live · simulation mode by default">
             <DeliveryEnginePanel />
+          </Section>
+
+          {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
+          <Section title="Analytics + Reporting" badge="Phase 4e · executive dashboard · campaign funnel · segment intelligence">
+            <AnalyticsPanel />
           </Section>
 
           {/* 3c · COMPOSER · Metrics ──────────────────────────────── */}
