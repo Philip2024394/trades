@@ -52,6 +52,28 @@ function seedFor(journey_id: string, contact_id: string): number {
   return h & 0x7fffffff;                              // top bit off · fits Postgres INT
 }
 
+/**
+ * Trigger-driven entry (Phase 5.1.2 · charter §11.6): the ONLY way a
+ * trigger evaluator is allowed to materialise a journey state. Preserves
+ * the "single doorway" invariant · every evaluator (segment_join /
+ * analytics_event / compliance_transition / inactivity / custom_webhook
+ * / schedule) enters through this function.
+ */
+export async function insertJourneyStateFromTrigger(
+  journey: Journey,
+  envelope: { contact_id: string; payload: Record<string, unknown>; correlation_id: string; causation_id: string; trigger_id: string; trigger_type: string },
+): Promise<"inserted" | "skipped_existing"> {
+  const snapshot = {
+    entered_via_trigger_id: envelope.trigger_id,
+    entered_via_trigger_type: envelope.trigger_type,
+    correlation_id: envelope.correlation_id,
+    causation_id: envelope.causation_id,
+    trigger_payload: envelope.payload,
+  };
+  const inserted = await insertJourneyState(journey, envelope.contact_id, snapshot);
+  return inserted ? "inserted" : "skipped_existing";
+}
+
 async function insertJourneyState(journey: Journey, contact_id: string, snapshot: Record<string, unknown>): Promise<boolean> {
   const seed = seedFor(journey.journey_id, contact_id);
   const r = await withClient(async (c) => {

@@ -11,10 +11,12 @@ import { withClient } from "@/lib/nex/delivery/db";
 import { advanceOne, type AdvanceOutcome } from "./dispatcher";
 import { rowToJourney } from "../definition/versioning";
 import type { Journey, JourneyState } from "../types";
+import { dispatchAllTriggers, type DispatchResult } from "../triggers/dispatcher";
 
 export type TickResult = {
   ok: boolean;
   ran_at: string;
+  triggers: DispatchResult | null;
   states_evaluated: number;
   advanced: number;
   errors: number;
@@ -25,6 +27,11 @@ const MAX_STATES_PER_TICK = 200;
 
 export async function tickJourneys(): Promise<TickResult> {
   const now = new Date();
+
+  // Phase 5.1.2 · run trigger evaluators FIRST so newly-materialised
+  // journey states get advanced in the same tick.
+  let triggers: DispatchResult | null = null;
+  try { triggers = await dispatchAllTriggers(now); } catch { /* triggers are best-effort · never block the tick */ }
 
   const pending = await withClient(async (c) => {
     const res = await c.query(
@@ -67,6 +74,7 @@ export async function tickJourneys(): Promise<TickResult> {
   return {
     ok: errors === 0,
     ran_at: now.toISOString(),
+    triggers,
     states_evaluated: pending.length,
     advanced,
     errors,
