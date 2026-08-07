@@ -17,6 +17,7 @@ import { CampaignBuilder } from "./CampaignBuilder";
 import { DeliveryEnginePanel } from "./DeliveryEnginePanel";
 import { AnalyticsPanel } from "./AnalyticsPanel";
 import { SystemHealthPanel } from "./SystemHealthPanel";
+import { ComplianceCentrePanel } from "./ComplianceCentrePanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -670,6 +671,11 @@ export function CommunicationsCentrePanel() {
           {/* 3d · DELIVERY ENGINE ─────────────────────────────────── */}
           <Section title="Delivery Engine" badge="Phase 4d · live · simulation mode by default">
             <DeliveryEnginePanel />
+          </Section>
+
+          {/* 3d.1 · COMPLIANCE CENTRE ────────────────────────────── */}
+          <Section title="Compliance Centre" badge="Phase 4f.3 · one-way flow · structured state · immutable audit">
+            <ComplianceCentrePanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
