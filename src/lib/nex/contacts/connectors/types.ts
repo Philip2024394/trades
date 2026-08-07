@@ -13,7 +13,8 @@ export type ConnectorStatus =
 
 export type ConnectorMode =
   | "pull"                        // admin-triggered or scheduled polling of a source · has sync() method
-  | "push";                        // event-driven · caller (route · webhook · worker) fires each record · no admin-trigger
+  | "push"                         // event-driven · caller (route · webhook · worker) fires each record · no admin-trigger
+  | "upload";                      // admin-initiated file upload · no external source · no scheduled sync
 
 export type ConnectorDefinition = {
   id: string;                    // "trades" · "newsletter" · "contact-form" · "manual" · "csv" · "crm"

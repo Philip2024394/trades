@@ -7,7 +7,7 @@
 // Every run also writes an audit event to nex.events via the shared runner.
 
 import { NextResponse } from "next/server";
-import { findConnector, PUSH_CONNECTORS } from "@/lib/nex/contacts/connectors";
+import { findConnector, PUSH_CONNECTORS, UPLOAD_CONNECTORS } from "@/lib/nex/contacts/connectors";
 import { runConnector } from "@/lib/nex/contacts/connectors/_runner";
 
 export const runtime = "nodejs";
@@ -25,6 +25,16 @@ export async function POST(request: Request, ctx: { params: Promise<{ connector:
       ok: false,
       error: "push_mode_connector",
       detail: "This connector is event-driven · records arrive from the caller (route/webhook/worker) · no admin sync trigger.",
+      connector: connectorId,
+    }, { status: 400 });
+  }
+
+  // Upload-mode connectors use a dedicated /upload endpoint (accept a file body).
+  if (UPLOAD_CONNECTORS.some((d) => d.id === connectorId)) {
+    return NextResponse.json({
+      ok: false,
+      error: "upload_mode_connector",
+      detail: `This connector is admin-upload · POST the file to /api/nex/contacts/connectors/${connectorId}/upload instead.`,
       connector: connectorId,
     }, { status: 400 });
   }

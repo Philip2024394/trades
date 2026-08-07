@@ -75,7 +75,7 @@ type ConnectorEntry = {
   label: string;
   source_type: string;
   status: "supported" | "planned" | "disabled";
-  mode: "pull" | "push";
+  mode: "pull" | "push" | "upload";
   description: string;
   built: boolean;
   scheduled: false | { cron: string };
@@ -97,6 +97,27 @@ type ConnectorEntry = {
 };
 
 type ConnectorsResponse = { ok: boolean; connectors: ConnectorEntry[] };
+
+type ImportRun = {
+  event_id: string | null;
+  connector: string;
+  file_name: string | null;
+  admin_actor: string | null;
+  triggered_by: string | null;
+  dry_run: boolean;
+  started_at: string | null;
+  duration_ms: number;
+  records_processed: number;
+  created: number;
+  updated: number;
+  skipped_no_email: number;
+  errors: number;
+  duplicate_suggestions: number;
+  outcome: string;
+  error_samples: string[];
+};
+
+type ImportsResponse = { ok: boolean; total_returned: number; imports: ImportRun[] };
 
 type ContactsOverview = {
   ok: boolean;
@@ -222,22 +243,25 @@ export function CommunicationsCentrePanel() {
   const [audit, setAudit] = useState<AuditResponse | null>(null);
   const [contacts, setContacts] = useState<ContactsOverview | null>(null);
   const [connectors, setConnectors] = useState<ConnectorsResponse | null>(null);
+  const [imports, setImports] = useState<ImportsResponse | null>(null);
   const [syncing, setSyncing] = useState<Record<string, boolean>>({});
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>("");
 
   const load = useCallback(async () => {
     try {
-      const [c, a, k, cn] = await Promise.all([
+      const [c, a, k, cn, im] = await Promise.all([
         fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/contacts/overview", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, reason: "fetch_failed" })),
         fetch("/api/nex/contacts/connectors", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, connectors: [] })),
+        fetch("/api/nex/contacts/imports?limit=25", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, imports: [] })),
       ]);
       if (c.ok) setConfig(c);
       if (a.ok) setAudit(a);
       setContacts(k);
       setConnectors(cn);
+      setImports(im);
       setLastUpdate(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
@@ -258,6 +282,23 @@ export function CommunicationsCentrePanel() {
       setError(err instanceof Error ? err.message : "sync_failed");
     } finally {
       setSyncing((s) => ({ ...s, [id]: false }));
+    }
+  }, [load]);
+
+  const uploadCsv = useCallback(async (file: File, dry_run: boolean) => {
+    setSyncing((s) => ({ ...s, csv: true }));
+    try {
+      const text = await file.text();
+      await fetch(`/api/nex/contacts/connectors/csv/upload`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ csv: text, dry_run, source_label: file.name }),
+      });
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "csv_upload_failed");
+    } finally {
+      setSyncing((s) => ({ ...s, csv: false }));
     }
   }, [load]);
 
@@ -489,6 +530,46 @@ export function CommunicationsCentrePanel() {
                               {isSyncing ? "Syncing…" : "Sync now"}
                             </button>
                           </div>
+                        ) : c.mode === "upload" ? (
+                          <div className="mt-2">
+                            <label
+                              className="flex cursor-pointer items-center justify-center gap-1.5 rounded border px-2 py-1.5 text-[10px] font-semibold"
+                              style={{ background: T.panel, borderColor: T.accent, color: T.accent, opacity: isSyncing ? 0.5 : 1 }}
+                            >
+                              <input
+                                type="file"
+                                accept=".csv,text/csv"
+                                disabled={isSyncing}
+                                className="hidden"
+                                onChange={(e) => {
+                                  const f = e.target.files?.[0];
+                                  if (f) void uploadCsv(f, false);
+                                  e.target.value = "";
+                                }}
+                              />
+                              {isSyncing ? "Importing…" : "Upload CSV"}
+                            </label>
+                            <label
+                              className="mt-1 flex cursor-pointer items-center justify-center gap-1.5 rounded border px-2 py-1.5 text-[10px] font-semibold"
+                              style={{ background: T.panel, borderColor: T.border, color: T.textDim, opacity: isSyncing ? 0.5 : 1 }}
+                            >
+                              <input
+                                type="file"
+                                accept=".csv,text/csv"
+                                disabled={isSyncing}
+                                className="hidden"
+                                onChange={(e) => {
+                                  const f = e.target.files?.[0];
+                                  if (f) void uploadCsv(f, true);
+                                  e.target.value = "";
+                                }}
+                              />
+                              Dry-run (no writes)
+                            </label>
+                            <div className="mt-1 text-[9px] italic" style={{ color: T.textFade }}>
+                              Header + email column required · Wizard v1 (mapping UI · duplicate previews · TSV/XLSX) lands in Phase 3b.6b
+                            </div>
+                          </div>
                         ) : (
                           <div className="mt-2 rounded border px-2 py-1.5 text-center text-[10px]" style={{ background: T.panel, borderColor: T.purple, color: T.purple }}>
                             <span className="mr-1.5 inline-block h-1.5 w-1.5 animate-pulse rounded-full" style={{ background: T.purple }} />
@@ -503,6 +584,51 @@ export function CommunicationsCentrePanel() {
                 );
               })}
             </div>
+          </Section>
+
+          {/* 2c · IMPORT HISTORY ───────────────────────────────── */}
+          <Section title="Imports" badge={imports ? `last ${imports.total_returned} runs across all connectors` : ""}>
+            <div className="mb-2 text-[10.5px]" style={{ color: T.textDim }}>
+              Every connector run (pull · push · upload) writes an audit event · this section is the flight recorder. Wizard v1 will add richer per-file drill-downs, duplicate previews, and mapping saved-state.
+            </div>
+            {imports && imports.imports.length > 0 ? (
+              <div className="space-y-1">
+                <div className="grid gap-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade, gridTemplateColumns: "120px 100px 90px 60px 60px 60px 60px 60px 1fr" }}>
+                  <div>Connector</div>
+                  <div>File / label</div>
+                  <div>Started</div>
+                  <div>Duration</div>
+                  <div>Records</div>
+                  <div>Created</div>
+                  <div>Updated</div>
+                  <div>Errors</div>
+                  <div>Actor</div>
+                </div>
+                {imports.imports.map((r) => (
+                  <div
+                    key={r.event_id ?? `${r.connector}-${r.started_at}`}
+                    className="grid gap-2 rounded border p-2 text-[10.5px]"
+                    style={{ background: T.panelHi, borderColor: T.border, gridTemplateColumns: "120px 100px 90px 60px 60px 60px 60px 60px 1fr" }}
+                  >
+                    <div className="font-mono" style={{ color: T.text }}>{r.connector}{r.dry_run ? " (dry)" : ""}</div>
+                    <div className="truncate font-mono text-[9.5px]" style={{ color: T.textDim }} title={r.file_name ?? ""}>{r.file_name ?? "—"}</div>
+                    <div className="font-mono" style={{ color: T.textFade }}>{relTime(r.started_at)}</div>
+                    <div className="font-mono text-right" style={{ color: T.textDim }}>{r.duration_ms}ms</div>
+                    <div className="font-mono text-right" style={{ color: T.text }}>{r.records_processed}</div>
+                    <div className="font-mono text-right" style={{ color: T.accent }}>{r.created}</div>
+                    <div className="font-mono text-right" style={{ color: T.info }}>{r.updated}</div>
+                    <div className="font-mono text-right" style={{ color: r.errors > 0 ? T.danger : T.textFade }}>{r.errors}</div>
+                    <div className="truncate font-mono text-[9.5px]" style={{ color: r.outcome === "ok" ? T.accent : r.outcome === "partial" ? T.warning : T.danger }} title={r.error_samples.join(" · ")}>
+                      {r.outcome} · {r.admin_actor ?? r.triggered_by ?? "—"}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-[11px]" style={{ color: T.textFade }}>
+                No imports yet · run any connector (Trades · Newsletter · fs-store · Contact Form · Manual · CSV Upload) to populate this history.
+              </div>
+            )}
           </Section>
 
           {/* 3 · MARKETING ──────────────────────────────────────── */}

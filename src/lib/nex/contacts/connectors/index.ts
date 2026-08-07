@@ -9,6 +9,7 @@ import { newsletterConnector } from "./newsletter";
 import { contactFormConnectorDefinition } from "./contact_form";
 import { manualConnectorDefinition } from "./manual";
 import { fsStoreConnector } from "./fs_store";
+import { csvConnectorDefinition } from "./csv";
 
 // Pull-mode connectors: have a sync() method · admin/scheduled trigger.
 export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector, newsletterConnector, fsStoreConnector];
@@ -18,11 +19,14 @@ export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector, newslett
 // like `recordContactFromForm()` to record each event.
 export const PUSH_CONNECTORS: readonly ConnectorDefinition[] = [contactFormConnectorDefinition, manualConnectorDefinition];
 
+// Upload-mode connectors: admin uploads a file · no external source · no
+// scheduled sync. Panel renders a file picker on the card.
+export const UPLOAD_CONNECTORS: readonly ConnectorDefinition[] = [csvConnectorDefinition];
+
 // Definitions for connectors not yet built · surfaced in the Mission Control
 // panel so admins see the full roadmap · never triggerable.
 export const PLANNED_CONNECTORS: readonly ConnectorDefinition[] = [
-  { id: "csv",          label: "CSV Import",             source_type: "csv",          status: "planned", mode: "pull", description: "Bulk CSV upload with column mapping · Phase 3b.5", scheduled: false },
-  { id: "crm",          label: "CRM Records",            source_type: "crm",          status: "planned", mode: "pull", description: "hammerex_xrated_customer / CRM tables · Phase 3b.6", scheduled: false },
+  { id: "crm",          label: "CRM Records",            source_type: "crm",          status: "planned", mode: "pull", description: "hammerex_xrated_customer / CRM tables · Phase 3b.7", scheduled: false },
 ];
 
 export function findConnector(id: string): Connector | undefined {
@@ -33,6 +37,7 @@ export function allDefinitions(): Array<ConnectorDefinition & { built: boolean }
   return [
     ...KNOWN_CONNECTORS.map((c) => ({ ...c.definition, built: true })),
     ...PUSH_CONNECTORS.map((d) => ({ ...d, built: true })),
+    ...UPLOAD_CONNECTORS.map((d) => ({ ...d, built: true })),
     ...PLANNED_CONNECTORS.map((d) => ({ ...d, built: false })),
   ];
 }
