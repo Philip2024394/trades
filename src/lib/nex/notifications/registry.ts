@@ -12,6 +12,8 @@
 
 import type { NotificationAdapter, NotificationChannel } from "./types";
 import { isWhatsappMetaHealthy, whatsappMetaAdapter } from "./adapters/whatsapp_meta";
+import { isTwilioSmsHealthy, twilioSmsAdapter } from "./adapters/twilio_sms";
+import { isWebPushHealthy, webPushAdapter } from "./adapters/web_push";
 
 const cache = new Map<NotificationChannel, NotificationAdapter>();
 
@@ -35,6 +37,8 @@ function defaultProvider(channel: NotificationChannel): string {
 
 function build(channel: NotificationChannel, provider: string): NotificationAdapter {
   if (channel === "whatsapp" && provider === "meta") return whatsappMetaAdapter;
+  if (channel === "sms" && provider === "twilio") return twilioSmsAdapter;
+  if (channel === "push" && provider === "web-push") return webPushAdapter;
   throw new Error(`[nex-notifications] no adapter for channel="${channel}" provider="${provider}" · check NEX_NOTIFICATIONS_${channel.toUpperCase()}_PROVIDER`);
 }
 
@@ -57,9 +61,9 @@ export function knownAdapters(): Array<{ channel: NotificationChannel; provider:
   return [
     { channel: "whatsapp", provider: "meta",     label: "WhatsApp · Meta Business Cloud",  status: "supported", active: active.whatsapp === "meta" },
     { channel: "whatsapp", provider: "twilio",   label: "WhatsApp · Twilio",                status: "planned",   active: active.whatsapp === "twilio" },
-    { channel: "sms",      provider: "twilio",   label: "SMS · Twilio",                     status: "planned",   active: active.sms === "twilio" },
+    { channel: "sms",      provider: "twilio",   label: "SMS · Twilio",                     status: "supported", active: active.sms === "twilio" },
     { channel: "sms",      provider: "aws-sns",  label: "SMS · AWS SNS",                    status: "planned",   active: active.sms === "aws-sns" },
-    { channel: "push",     provider: "web-push", label: "Push · Web Push VAPID",            status: "planned",   active: active.push === "web-push" },
+    { channel: "push",     provider: "web-push", label: "Push · Web Push VAPID",            status: "supported", active: active.push === "web-push" },
     { channel: "push",     provider: "fcm",      label: "Push · Firebase Cloud Messaging",  status: "planned",   active: active.push === "fcm" },
     { channel: "push",     provider: "apns",     label: "Push · Apple Push",                status: "planned",   active: active.push === "apns" },
     { channel: "in_app",   provider: "native",   label: "In-app · NEX native store",        status: "planned",   active: active.in_app === "native" },
@@ -71,6 +75,14 @@ export async function isNotificationsChannelHealthy(channel: NotificationChannel
   if (adapter.name === "meta") {
     const r = await isWhatsappMetaHealthy();
     return { ...r, provider: "meta" };
+  }
+  if (adapter.name === "twilio") {
+    const r = await isTwilioSmsHealthy();
+    return { ...r, provider: "twilio" };
+  }
+  if (adapter.name === "web-push") {
+    const r = await isWebPushHealthy();
+    return { ...r, provider: "web-push" };
   }
   return { healthy: false, detail: `no health probe for ${channel}/${adapter.name}`, provider: adapter.name };
 }
