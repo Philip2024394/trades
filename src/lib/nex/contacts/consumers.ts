@@ -12,6 +12,7 @@
 
 import { getStorage } from "@/lib/nex/storage/registry";
 import { COLLECTIONS } from "@/lib/nex/storage/types";
+import { BRAIN_WORKER_ROSTER, adoptionPct as brainAdoptionPct, migratedBrains, applicableBrains } from "@/lib/nex/ai/brain_roster";
 
 export type ConsumerAdoptionStatus =
   | "adopted"                     // fully routes through registry · every send is registry_resolved when a contact exists
@@ -130,6 +131,13 @@ export type ConsumerMetrics = {
     fallback_searches: number;
     resolution_failures: number;
     average_confidence: number | null;
+    top_calling_brains: Array<{ caller: string; count: number }>;
+    total_brain_workers: number;
+    applicable_brain_workers: number;
+    migrated_brain_workers: number;
+    brain_adoption_pct: number;
+    last_migration_date: string | null;
+    roster: Array<{ id: string; label: string; category: string; status: string; caller_prefix: string }>;
   };
 };
 
@@ -182,10 +190,11 @@ export async function getConsumerMetrics(): Promise<ConsumerMetrics[]> {
     const blocks = matches.filter((e) => e.event_type?.endsWith(".blocked")).length;
     const last = matches[0]?.timestamp ?? null;
 
-    // AI-specific extended metrics · only computed for the "ai" consumer.
+    // AI-specific extended metrics · combines audit runtime + declarative roster.
     let ai_extended: ConsumerMetrics["ai_extended"] | undefined;
     if (consumer.id === "ai") {
       const brainWorkers = new Set<string>();
+      const callerCounts = new Map<string, number>();
       let identity_resolutions = 0;
       let fallback_searches = 0;
       let resolution_failures = 0;
@@ -193,7 +202,10 @@ export async function getConsumerMetrics(): Promise<ConsumerMetrics[]> {
       let confN = 0;
       for (const m of matches) {
         const caller = m.payload?.caller ?? "";
-        if (caller.startsWith("nex-brain:")) brainWorkers.add(caller);
+        if (caller.startsWith("nex-brain:")) {
+          brainWorkers.add(caller);
+          callerCounts.set(caller, (callerCounts.get(caller) ?? 0) + 1);
+        }
         const matchCount = m.payload?.match_count ?? 0;
         if (matchCount > 0) identity_resolutions += 1;
         else resolution_failures += 1;
@@ -202,12 +214,23 @@ export async function getConsumerMetrics(): Promise<ConsumerMetrics[]> {
         const top = m.payload?.top_confidence;
         if (typeof top === "number") { confSum += top; confN += 1; }
       }
+      const top_calling_brains = Array.from(callerCounts.entries())
+        .map(([caller, count]) => ({ caller, count }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 5);
       ai_extended = {
         brain_workers_migrated: brainWorkers.size,
         identity_resolutions,
         fallback_searches,
         resolution_failures,
         average_confidence: confN > 0 ? Math.round((confSum / confN) * 10) / 10 : null,
+        top_calling_brains,
+        total_brain_workers: BRAIN_WORKER_ROSTER.length,
+        applicable_brain_workers: applicableBrains().length,
+        migrated_brain_workers: migratedBrains().length,
+        brain_adoption_pct: brainAdoptionPct(),
+        last_migration_date: null,
+        roster: BRAIN_WORKER_ROSTER.map((b) => ({ id: b.id, label: b.label, category: b.category, status: b.status, caller_prefix: b.caller_prefix })),
       };
     }
 

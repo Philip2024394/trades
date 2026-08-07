@@ -93,6 +93,13 @@ type ConsumerEntry = {
       fallback_searches: number;
       resolution_failures: number;
       average_confidence: number | null;
+      top_calling_brains: Array<{ caller: string; count: number }>;
+      total_brain_workers: number;
+      applicable_brain_workers: number;
+      migrated_brain_workers: number;
+      brain_adoption_pct: number;
+      last_migration_date: string | null;
+      roster: Array<{ id: string; label: string; category: string; status: string; caller_prefix: string }>;
     };
   };
 };
@@ -604,15 +611,62 @@ export function ContactRegistryPanel() {
                 </div>
 
                 {c.metrics.ai_extended ? (
-                  <div className="mt-2 rounded border p-2" style={{ background: T.panel, borderColor: T.info }}>
-                    <div className="mb-1.5 text-[8px] font-black uppercase tracking-widest" style={{ color: T.info }}>AI-specific metrics</div>
-                    <div className="grid grid-cols-3 gap-1 text-[9px]">
-                      <MicroStat label="Brains migrated" value={c.metrics.ai_extended.brain_workers_migrated} tone={c.metrics.ai_extended.brain_workers_migrated > 0 ? "info" : "neutral"} />
-                      <MicroStat label="Resolutions" value={c.metrics.ai_extended.identity_resolutions} tone="good" />
-                      <MicroStat label="Failures" value={c.metrics.ai_extended.resolution_failures} tone={c.metrics.ai_extended.resolution_failures > 0 ? "warn" : "neutral"} />
-                      <MicroStat label="Fallback searches" value={c.metrics.ai_extended.fallback_searches} tone={c.metrics.ai_extended.fallback_searches > 0 ? "warn" : "neutral"} />
-                      <MicroStat label="Avg confidence" value={c.metrics.ai_extended.average_confidence != null ? c.metrics.ai_extended.average_confidence.toString() : "—"} tone={c.metrics.ai_extended.average_confidence != null && c.metrics.ai_extended.average_confidence >= 90 ? "good" : "neutral"} />
-                      <MicroStat label="Total events" value={c.metrics.events_total} />
+                  <div className="mt-2 space-y-2">
+                    {/* Roster · declarative adoption */}
+                    <div className="rounded border p-2" style={{ background: T.panel, borderColor: T.accent }}>
+                      <div className="mb-1.5 flex items-baseline gap-2">
+                        <div className="text-[8px] font-black uppercase tracking-widest" style={{ color: T.accent }}>Brain roster · declarative</div>
+                        <div className="ml-auto text-[10px] font-mono" style={{ color: T.accent }}>{c.metrics.ai_extended.brain_adoption_pct}% adopted</div>
+                      </div>
+                      <div className="grid grid-cols-3 gap-1 text-[9px]">
+                        <MicroStat label="Total brains" value={c.metrics.ai_extended.total_brain_workers} />
+                        <MicroStat label="Applicable" value={c.metrics.ai_extended.applicable_brain_workers} />
+                        <MicroStat label="Migrated" value={c.metrics.ai_extended.migrated_brain_workers} tone="good" />
+                      </div>
+                      <div className="mt-1.5 space-y-0.5">
+                        {c.metrics.ai_extended.roster.map((b) => {
+                          const dot =
+                            b.status === "migrated" ? T.accent :
+                            b.status === "partial" ? T.info :
+                            b.status === "list_brain_pending" ? T.warning :
+                            b.status === "future" ? T.purple :
+                            T.textFade;
+                          return (
+                            <div key={b.id} className="grid gap-1 text-[9.5px]" style={{ gridTemplateColumns: "12px 40px 1fr 140px" }}>
+                              <span style={{ color: dot }}>●</span>
+                              <span className="font-mono uppercase" style={{ color: T.textDim }}>{b.id}</span>
+                              <span className="truncate" style={{ color: T.textDim }}>{b.label}</span>
+                              <span className="text-right text-[9px]" style={{ color: dot }}>{b.status.replace(/_/g, " ")}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Runtime · from audit */}
+                    <div className="rounded border p-2" style={{ background: T.panel, borderColor: T.info }}>
+                      <div className="mb-1.5 text-[8px] font-black uppercase tracking-widest" style={{ color: T.info }}>Runtime · from ai.contact_resolved events</div>
+                      <div className="grid grid-cols-3 gap-1 text-[9px]">
+                        <MicroStat label="Callers seen" value={c.metrics.ai_extended.brain_workers_migrated} tone={c.metrics.ai_extended.brain_workers_migrated > 0 ? "info" : "neutral"} />
+                        <MicroStat label="Resolutions" value={c.metrics.ai_extended.identity_resolutions} tone="good" />
+                        <MicroStat label="Failures" value={c.metrics.ai_extended.resolution_failures} tone={c.metrics.ai_extended.resolution_failures > 0 ? "warn" : "neutral"} />
+                        <MicroStat label="Fallback searches" value={c.metrics.ai_extended.fallback_searches} tone={c.metrics.ai_extended.fallback_searches > 0 ? "warn" : "neutral"} />
+                        <MicroStat label="Avg confidence" value={c.metrics.ai_extended.average_confidence != null ? c.metrics.ai_extended.average_confidence.toString() : "—"} tone={c.metrics.ai_extended.average_confidence != null && c.metrics.ai_extended.average_confidence >= 90 ? "good" : "neutral"} />
+                        <MicroStat label="Total events" value={c.metrics.events_total} />
+                      </div>
+                      {c.metrics.ai_extended.top_calling_brains.length > 0 ? (
+                        <div className="mt-1.5">
+                          <div className="mb-0.5 text-[8px] uppercase tracking-widest" style={{ color: T.textFade }}>Top calling brain workers</div>
+                          <div className="space-y-0.5">
+                            {c.metrics.ai_extended.top_calling_brains.map((tc) => (
+                              <div key={tc.caller} className="flex items-baseline gap-2 text-[9.5px]">
+                                <span className="font-mono truncate" style={{ color: T.textDim }}>{tc.caller}</span>
+                                <span className="ml-auto font-mono" style={{ color: T.info }}>{tc.count}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : null}
                     </div>
                   </div>
                 ) : null}
