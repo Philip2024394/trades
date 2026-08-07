@@ -9,6 +9,7 @@
 
 import { withClient } from "@/lib/nex/delivery/db";
 import type { AnalyticsEvent, EventType } from "./types";
+import { applyCanonicalEvent } from "@/lib/nex/compliance/engine";
 
 // Column names on rollup tables that we increment per event type.
 // unique_* columns are best-effort — first sighting of a
@@ -118,6 +119,12 @@ export async function ingestEvent(ev: AnalyticsEvent): Promise<IngestResult> {
   });
 
   if (!r) return { ok: false, error: "storage_unreachable" };
+
+  // Hand off to the Compliance Engine · one-way flow (doctrine Philip
+  // 2026-08-08). Any error here is swallowed by the engine so analytics
+  // ingest is never blocked by a compliance mutation failure.
+  await applyCanonicalEvent(ev, r);
+
   return { ok: true, event_id: r };
 }
 

@@ -26,6 +26,8 @@ import { getCampaign, transitionCampaignStatus } from "@/lib/nex/campaigns/regis
 import { interpolate } from "@/lib/nex/composer/variables";
 import { ingestEvent } from "@/lib/nex/analytics/ingest";
 import { simulateEngagementFor } from "@/lib/nex/analytics/simulator";
+import { getContactCompliance } from "@/lib/nex/compliance/engine";
+import { NON_SENDABLE_STATES } from "@/lib/nex/compliance/policy";
 
 const WORKER_ID = `${os.hostname().slice(0, 30)}-${process.pid}`;
 const BATCH_SIZE = 25;
@@ -150,8 +152,24 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
     return { sent: 0, failed: 0, batch_empty: true };
   }
 
-  let sent = 0, failed = 0;
+  let sent = 0, failed = 0, defense_skipped = 0;
   for (const r of recipients as Array<{ contact_id: string; email: string; variables: Record<string, string> }>) {
+    // Defense in depth (Philip 2026-08-08 · Phase 4f.3): re-check
+    // compliance state at the moment of send · catches contacts who
+    // unsubscribed / bounced / complained between expansion and this
+    // batch running.
+    const cur = await getContactCompliance(r.contact_id);
+    if (cur && NON_SENDABLE_STATES.has(cur.compliance_state)) {
+      defense_skipped++;
+      await recordRecipientSend({
+        campaign_id, contact_id: r.contact_id, ok: false, permanent: true,
+        provider: provider.id, latency_ms: 0,
+        error: `compliance defense-in-depth · state=${cur.compliance_state} · ${cur.compliance_reason ?? "no reason"}`,
+      });
+      await emitDeliveryEvent("delivery.recipient_suppressed", { contact_id: r.contact_id, state: cur.compliance_state, reason: cur.compliance_reason, defense_in_depth: true }, campaign_id);
+      continue;
+    }
+
     // Rate-limit acquisition · if scope refuses, requeue immediate follow-up
     const slot = tryAcquireSendSlot(provider.id, r.email);
     if (!slot.ok) {
@@ -242,8 +260,8 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
   // Queue the next batch (or finalise) · always follow-up so the pipeline drains
   await enqueueJob({ job_type: "campaign.send_batch", campaign_id, priority: 90, scheduled_for: new Date(Date.now() + 250).toISOString() });
 
-  await emitDeliveryEvent("delivery.batch_completed", { batch_size: recipients.length, sent, failed }, campaign_id);
-  return { batch_size: recipients.length, sent, failed };
+  await emitDeliveryEvent("delivery.batch_completed", { batch_size: recipients.length, sent, failed, defense_skipped }, campaign_id);
+  return { batch_size: recipients.length, sent, failed, defense_skipped };
 }
 
 async function runFinalise(campaign_id: string): Promise<Record<string, unknown>> {
