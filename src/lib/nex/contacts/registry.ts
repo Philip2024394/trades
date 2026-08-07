@@ -151,13 +151,34 @@ export async function upsertContact(input: ContactUpsertInput): Promise<UpsertRe
   const store = getStorage();
   await store.save(COLLECTIONS.contacts, snapshot);
 
-  // Append source row (append-only history).
+  // Source row: idempotent on (source_type, source_ref) when ref is set —
+  // re-syncs UPDATE the existing row's sync fields rather than creating
+  // duplicate history. Rows without a source_ref (one-off touchpoints)
+  // always INSERT.
+  const syncStatus = input.source.metadata && (input.source.metadata as { sync_status?: string }).sync_status;
+  const syncError = input.source.metadata && (input.source.metadata as { sync_error?: string }).sync_error;
   await withClient(async (client) => {
-    await client.query(
-      `INSERT INTO nex.contact_sources (source_row_id, contact_id, source_type, source_ref, source_metadata, business_id)
-       VALUES (gen_random_uuid(), $1, $2, $3, $4::jsonb, $5)`,
-      [contactId, input.source.type, input.source.ref ?? null, JSON.stringify(input.source.metadata ?? {}), input.business_id ?? null],
-    );
+    if (input.source.ref) {
+      await client.query(
+        `INSERT INTO nex.contact_sources
+           (source_row_id, contact_id, source_type, source_ref, source_metadata, business_id, synchronised_at, sync_status, sync_error)
+         VALUES (gen_random_uuid(), $1, $2, $3, $4::jsonb, $5, NOW(), $6, $7)
+         ON CONFLICT (source_type, source_ref) WHERE source_ref IS NOT NULL
+         DO UPDATE SET
+           source_metadata = EXCLUDED.source_metadata,
+           synchronised_at = EXCLUDED.synchronised_at,
+           sync_status     = EXCLUDED.sync_status,
+           sync_error      = EXCLUDED.sync_error`,
+        [contactId, input.source.type, input.source.ref, JSON.stringify(input.source.metadata ?? {}), input.business_id ?? null, syncStatus ?? "ok", syncError ?? null],
+      );
+    } else {
+      await client.query(
+        `INSERT INTO nex.contact_sources
+           (source_row_id, contact_id, source_type, source_ref, source_metadata, business_id, synchronised_at, sync_status, sync_error)
+         VALUES (gen_random_uuid(), $1, $2, NULL, $3::jsonb, $4, NOW(), $5, $6)`,
+        [contactId, input.source.type, JSON.stringify(input.source.metadata ?? {}), input.business_id ?? null, syncStatus ?? "ok", syncError ?? null],
+      );
+    }
   });
 
   return { contact_id: contactId, created, matched_by: matchedBy };

@@ -70,6 +70,33 @@ type AuditResponse = {
   recent: AuditEvent[];
 };
 
+type ConnectorEntry = {
+  id: string;
+  label: string;
+  source_type: string;
+  status: "supported" | "planned" | "disabled";
+  description: string;
+  built: boolean;
+  scheduled: false | { cron: string };
+  last_run: null | {
+    timestamp?: string;
+    outcome?: string;
+    payload?: {
+      records_processed?: number;
+      new_contacts?: number;
+      updated_contacts?: number;
+      errors?: number;
+      duration_ms?: number;
+      triggered_by?: string;
+      dry_run?: boolean;
+    };
+  };
+  total_runs: number;
+  total_records_processed: number;
+};
+
+type ConnectorsResponse = { ok: boolean; connectors: ConnectorEntry[] };
+
 type ContactsOverview = {
   ok: boolean;
   health?: { healthy: boolean; detail: string };
@@ -193,25 +220,45 @@ export function CommunicationsCentrePanel() {
   const [config, setConfig] = useState<ConfigResponse | null>(null);
   const [audit, setAudit] = useState<AuditResponse | null>(null);
   const [contacts, setContacts] = useState<ContactsOverview | null>(null);
+  const [connectors, setConnectors] = useState<ConnectorsResponse | null>(null);
+  const [syncing, setSyncing] = useState<Record<string, boolean>>({});
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>("");
 
   const load = useCallback(async () => {
     try {
-      const [c, a, k] = await Promise.all([
+      const [c, a, k, cn] = await Promise.all([
         fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/contacts/overview", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, reason: "fetch_failed" })),
+        fetch("/api/nex/contacts/connectors", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, connectors: [] })),
       ]);
       if (c.ok) setConfig(c);
       if (a.ok) setAudit(a);
-      setContacts(k);                                     // may be ok:false — panel handles
+      setContacts(k);
+      setConnectors(cn);
       setLastUpdate(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
       setError(err instanceof Error ? err.message : "fetch_failed");
     }
   }, []);
+
+  const syncConnector = useCallback(async (id: string, opts: { dry_run?: boolean } = {}) => {
+    setSyncing((s) => ({ ...s, [id]: true }));
+    try {
+      await fetch(`/api/nex/contacts/connectors/${id}/sync`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ triggered_by: "manual", ...opts }),
+      });
+      await load();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "sync_failed");
+    } finally {
+      setSyncing((s) => ({ ...s, [id]: false }));
+    }
+  }, [load]);
 
   useEffect(() => {
     void load();
@@ -360,6 +407,94 @@ export function CommunicationsCentrePanel() {
             ) : (
               <div className="text-[11px]" style={{ color: T.textFade }}>Loading contact registry state…</div>
             )}
+          </Section>
+
+          {/* 2b · CONNECTORS ───────────────────────────────────── */}
+          <Section title="Connectors" badge={connectors ? `${connectors.connectors.filter((c) => c.built).length} built · ${connectors.connectors.filter((c) => !c.built).length} planned` : ""}>
+            <div className="mb-2 text-[10.5px]" style={{ color: T.textDim }}>
+              Every source is a long-lived sync surface · never a one-time import. Each connector calls only <code>upsertContact()</code>. Registry remains the single authority.
+            </div>
+            <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))" }}>
+              {connectors?.connectors.map((c) => {
+                const last = c.last_run;
+                const isSyncing = !!syncing[c.id];
+                const outcomeTone = last?.outcome === "ok" ? T.accent : last?.outcome === "partial" ? T.warning : last?.outcome === "failed" ? T.danger : T.textFade;
+                return (
+                  <div
+                    key={c.id}
+                    className="rounded-md border p-3"
+                    style={{
+                      background: c.built ? T.panelHi : T.panel,
+                      borderColor: c.built ? T.border : T.border,
+                    }}
+                  >
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[12px] font-black" style={{ color: c.built ? T.text : T.textFade }}>{c.label}</span>
+                      <span className="ml-auto text-[9px] uppercase tracking-widest" style={{ color: c.built ? T.accent : T.textFade }}>{c.status}</span>
+                    </div>
+                    <div className="mt-1 font-mono text-[9.5px]" style={{ color: T.textFade }}>id: {c.id} · source_type: {c.source_type}</div>
+                    <div className="mt-1 text-[10px] italic" style={{ color: T.textDim }}>{c.description}</div>
+
+                    {c.built ? (
+                      <div className="mt-2 space-y-1 text-[10.5px]">
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>Last sync</span>
+                          <span className="font-mono" style={{ color: outcomeTone }}>
+                            {last ? `${last.outcome ?? "—"} · ${relTime(last.timestamp)}` : "never"}
+                          </span>
+                        </div>
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>Records processed</span>
+                          <span className="font-mono" style={{ color: T.text }}>{last?.payload?.records_processed ?? 0}</span>
+                        </div>
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>New / updated</span>
+                          <span className="font-mono">
+                            <span style={{ color: T.accent }}>{last?.payload?.new_contacts ?? 0}</span>
+                            <span style={{ color: T.textFade }}> / </span>
+                            <span style={{ color: T.info }}>{last?.payload?.updated_contacts ?? 0}</span>
+                          </span>
+                        </div>
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>Errors</span>
+                          <span className="font-mono" style={{ color: (last?.payload?.errors ?? 0) > 0 ? T.danger : T.text }}>{last?.payload?.errors ?? 0}</span>
+                        </div>
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>Total runs (all-time)</span>
+                          <span className="font-mono" style={{ color: T.text }}>{c.total_runs}</span>
+                        </div>
+                        <div className="flex justify-between" style={{ color: T.textDim }}>
+                          <span>Next scheduled</span>
+                          <span className="font-mono" style={{ color: T.textFade }}>{c.scheduled ? c.scheduled.cron : "admin-triggered only"}</span>
+                        </div>
+                        <div className="mt-2 flex gap-1">
+                          <button
+                            type="button"
+                            onClick={() => syncConnector(c.id, { dry_run: true })}
+                            disabled={isSyncing}
+                            className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
+                            style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                          >
+                            Dry-run
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => syncConnector(c.id)}
+                            disabled={isSyncing}
+                            className="flex-1 rounded border px-2 py-1 text-[10px] font-semibold disabled:opacity-50"
+                            style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
+                          >
+                            {isSyncing ? "Syncing…" : "Sync now"}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="mt-2 text-[10px]" style={{ color: T.textFade }}>Planned · not yet built</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </Section>
 
           {/* 3 · MARKETING ──────────────────────────────────────── */}

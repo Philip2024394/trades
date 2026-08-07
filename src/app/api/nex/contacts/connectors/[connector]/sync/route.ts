@@ -1,0 +1,36 @@
+// POST /api/nex/contacts/connectors/{connector}/sync — trigger a sync run
+//
+// Body (all optional):
+//   { limit?: number, dry_run?: boolean, triggered_by?: "manual" | "cron" | "webhook" }
+//
+// Returns the ConnectorRunResult so the caller can display / log it.
+// Every run also writes an audit event to nex.events via the shared runner.
+
+import { NextResponse } from "next/server";
+import { findConnector } from "@/lib/nex/contacts/connectors";
+import { runConnector } from "@/lib/nex/contacts/connectors/_runner";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+// Long-running · disable Next.js's default 30s streaming timeout for
+// large syncs. Individual connectors should still bound their own work.
+export const maxDuration = 300;
+
+export async function POST(request: Request, ctx: { params: Promise<{ connector: string }> }) {
+  const { connector: connectorId } = await ctx.params;
+  const connector = findConnector(connectorId);
+  if (!connector) {
+    return NextResponse.json({ ok: false, error: "unknown_connector", connector: connectorId }, { status: 404 });
+  }
+
+  let body: { limit?: number; dry_run?: boolean; triggered_by?: "manual" | "cron" | "webhook" } = {};
+  try { body = await request.json(); } catch { body = {}; }
+
+  const result = await runConnector(connector, {
+    limit: body.limit,
+    dry_run: body.dry_run,
+    triggered_by: body.triggered_by ?? "manual",
+  });
+
+  return NextResponse.json({ ok: result.outcome !== "failed", result });
+}
