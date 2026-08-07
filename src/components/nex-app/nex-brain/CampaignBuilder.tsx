@@ -7,6 +7,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { EmailComposer } from "./EmailComposer";
 
 // ── Shapes (mirror src/lib/nex/campaigns/types.ts) ─────────────────
 type CampaignType = "marketing" | "transactional" | "announcement" | "newsletter";
@@ -21,11 +22,16 @@ type PreviewCache = {
   estimated_send_seconds: number | null; generated_at: string;
 };
 
+// Block union kept opaque here — the Composer owns the shape.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type ComposerBlock = any;
+
 type Campaign = {
   campaign_id: string; name: string; description: string | null;
   campaign_type: CampaignType; status: CampaignStatus;
   subject: string | null; preview_text: string | null;
   body_html: string | null; body_text: string | null;
+  body_blocks: ComposerBlock[] | null;
   sender_name: string | null; sender_from: string | null; sender_reply_to: string | null;
   scheduled_at: string | null; started_at: string | null; completed_at: string | null;
   last_preview_at: string | null; last_preview: PreviewCache | null;
@@ -228,7 +234,7 @@ function CampaignEditor({
           body: JSON.stringify({
             name: draft.name, description: draft.description, campaign_type: draft.campaign_type,
             subject: draft.subject, preview_text: draft.preview_text,
-            body_html: draft.body_html, body_text: draft.body_text,
+            body_html: draft.body_html, body_text: draft.body_text, body_blocks: draft.body_blocks,
             sender_name: draft.sender_name, sender_from: draft.sender_from, sender_reply_to: draft.sender_reply_to,
             scheduled_at: draft.scheduled_at, segment_ids: draft.segment_ids,
           }),
@@ -415,14 +421,29 @@ function CampaignEditor({
         )}
       </div>
 
-      {/* Body (raw for MVP · Composer replaces in Phase 4c) */}
-      <Field label="Body · HTML (Composer arrives in Phase 4c · paste raw for now)">
-        <textarea
-          className="w-full rounded-md border px-2 py-1 font-mono text-[11px]" style={inputStyle} rows={6}
-          value={draft.body_html ?? ""} onChange={(e) => patch("body_html", e.target.value || null)}
-          placeholder="<p>Hi {{name}}, ...</p>"
+      {/* Body · NEX Composer (Phase 4c) */}
+      <div>
+        <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>
+          Body · NEX Composer
+        </div>
+        <EmailComposer
+          blocks={(draft.body_blocks ?? []) as ComposerBlock[]}
+          subject={draft.subject ?? ""}
+          previewText={draft.preview_text ?? ""}
+          campaignType={draft.campaign_type}
+          onBlocksChange={(b) => patch("body_blocks", b)}
+          onSubjectChange={(s) => patch("subject", s || null)}
+          onPreviewTextChange={(s) => patch("preview_text", s || null)}
+          onRenderedChange={(html, plain) => {
+            // Cache rendered output on the draft so the Email Runtime has
+            // ready-to-send bodies · autosave persists via the PUT below.
+            if (html !== draft.body_html || plain !== draft.body_text) {
+              setDraft((prev) => ({ ...prev, body_html: html, body_text: plain }));
+              dirtyRef.current = true;
+            }
+          }}
         />
-      </Field>
+      </div>
 
       {/* Send preview */}
       <div className="rounded-md border p-2" style={{ background: T.panel, borderColor: T.border }}>

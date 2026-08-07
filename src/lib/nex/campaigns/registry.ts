@@ -53,6 +53,8 @@ function rowToCampaign(r: Record<string, unknown>, segment_ids: string[]): Campa
     preview_text: (r.preview_text as string | null) ?? null,
     body_html: (r.body_html as string | null) ?? null,
     body_text: (r.body_text as string | null) ?? null,
+    body_blocks: (r.body_blocks as unknown[] | null) ?? null,
+    template_id: (r.template_id as string | null) ?? null,
     sender_name: (r.sender_name as string | null) ?? null,
     sender_from: (r.sender_from as string | null) ?? null,
     sender_reply_to: (r.sender_reply_to as string | null) ?? null,
@@ -151,6 +153,8 @@ export async function updateCampaign(id: string, patch: Partial<CampaignInput>):
     if (patch.preview_text   !== undefined) push("preview_text", patch.preview_text);
     if (patch.body_html      !== undefined) push("body_html", patch.body_html);
     if (patch.body_text      !== undefined) push("body_text", patch.body_text);
+    if (patch.body_blocks    !== undefined) { params.push(patch.body_blocks === null ? null : JSON.stringify(patch.body_blocks)); sets.push(`body_blocks = $${params.length}::jsonb`); }
+    if (patch.template_id    !== undefined) push("template_id", patch.template_id);
     if (patch.sender_name    !== undefined) push("sender_name", patch.sender_name);
     if (patch.sender_from    !== undefined) push("sender_from", patch.sender_from);
     if (patch.sender_reply_to!== undefined) push("sender_reply_to", patch.sender_reply_to);

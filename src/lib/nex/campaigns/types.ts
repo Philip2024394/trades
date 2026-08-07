@@ -47,6 +47,8 @@ export type Campaign = {
   preview_text: string | null;
   body_html: string | null;
   body_text: string | null;
+  body_blocks: unknown[] | null;                // Composer source of truth · shape owned by src/lib/nex/composer/types.ts
+  template_id: string | null;                    // origin template · NULL for from-scratch
   sender_name: string | null;
   sender_from: string | null;
   sender_reply_to: string | null;
@@ -71,6 +73,8 @@ export type CampaignInput = {
   preview_text?: string | null;
   body_html?: string | null;
   body_text?: string | null;
+  body_blocks?: unknown[] | null;
+  template_id?: string | null;
   sender_name?: string | null;
   sender_from?: string | null;
   sender_reply_to?: string | null;

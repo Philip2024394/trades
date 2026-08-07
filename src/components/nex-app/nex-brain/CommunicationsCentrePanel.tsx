@@ -134,6 +134,18 @@ type CampaignMetricsResponse = {
   next_scheduled: { campaign_id: string; name: string; scheduled_at: string } | null;
 };
 
+type ComposerMetricsResponse = {
+  ok: boolean;
+  total_templates: number;
+  seed_templates: number;
+  user_templates: number;
+  draft_templates: number;
+  most_used: { template_id: string; name: string; used_count: number } | null;
+  variables_used: Array<{ name: string; count: number }>;
+  ai_assisted_campaigns: number;
+  templates_by_category: Record<string, number>;
+};
+
 type ContactsOverview = {
   ok: boolean;
   health?: { healthy: boolean; detail: string };
@@ -264,16 +276,18 @@ export function CommunicationsCentrePanel() {
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [wizardOpen, setWizardOpen] = useState(false);
   const [campaignMetrics, setCampaignMetrics] = useState<CampaignMetricsResponse | null>(null);
+  const [composerMetrics, setComposerMetrics] = useState<ComposerMetricsResponse | null>(null);
 
   const load = useCallback(async () => {
     try {
-      const [c, a, k, cn, im, cm] = await Promise.all([
+      const [c, a, k, cn, im, cm, cp] = await Promise.all([
         fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/contacts/overview", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, reason: "fetch_failed" })),
         fetch("/api/nex/contacts/connectors", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, connectors: [] })),
         fetch("/api/nex/contacts/imports?limit=25", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, imports: [] })),
         fetch("/api/nex/campaigns/metrics", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false })),
+        fetch("/api/nex/composer/metrics", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false })),
       ]);
       if (c.ok) setConfig(c);
       if (a.ok) setAudit(a);
@@ -281,6 +295,7 @@ export function CommunicationsCentrePanel() {
       setConnectors(cn);
       setImports(im);
       if (cm.ok) setCampaignMetrics(cm);
+      if (cp.ok) setComposerMetrics(cp);
       setLastUpdate(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
@@ -641,6 +656,33 @@ export function CommunicationsCentrePanel() {
             <CampaignBuilder />
             <div className="mt-3 text-[9.5px] italic" style={{ color: T.textFade }}>
               Campaigns store REFERENCES to segments · never contact lists. Send-time uses a FRESH audience query so new contacts are included and unsubscribes/never-contact/compliance are always current. Delivery + scheduling arrive in Phase 4d.
+            </div>
+          </Section>
+
+          {/* 3c · COMPOSER · Metrics ──────────────────────────────── */}
+          <Section title="Composer · Templates & Quality" badge={composerMetrics?.ok ? `Phase 4c · live · ${composerMetrics.total_templates} templates` : "Phase 4c · live"}>
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
+              <Metric label="Templates"       value={composerMetrics?.total_templates ?? 0}  tone={composerMetrics?.total_templates ? "neutral" : "unset"} hint={`${composerMetrics?.seed_templates ?? 0} seed · ${composerMetrics?.user_templates ?? 0} user`} />
+              <Metric label="Drafts"          value={composerMetrics?.draft_templates ?? 0}  tone={composerMetrics?.draft_templates ? "warn" : "unset"} />
+              <Metric label="Most used"       value={composerMetrics?.most_used?.name ?? "—"} tone={composerMetrics?.most_used ? "neutral" : "unset"} hint={composerMetrics?.most_used ? `${composerMetrics.most_used.used_count}× used` : undefined} />
+              <Metric label="Variables used"  value={composerMetrics?.variables_used.length ?? 0} tone="neutral" hint={composerMetrics?.variables_used.slice(0, 4).map((v) => `${v.name}(${v.count})`).join(" · ")} />
+              <Metric label="AI-assisted"     value={composerMetrics?.ai_assisted_campaigns ?? 0} tone={composerMetrics?.ai_assisted_campaigns ? "good" : "unset"} hint="composer.ai_assist_used events" />
+              <Metric label="Avg creation"    value="—" tone="unset" hint="planned · Phase 4e delivery telemetry" />
+            </div>
+            {composerMetrics?.templates_by_category && Object.keys(composerMetrics.templates_by_category).length > 0 ? (
+              <div className="rounded-md border p-2" style={{ background: T.panelHi, borderColor: T.border }}>
+                <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Templates by category</div>
+                <div className="flex flex-wrap gap-1">
+                  {Object.entries(composerMetrics.templates_by_category).map(([cat, n]) => (
+                    <span key={cat} className="rounded-full border px-2 py-0.5 text-[10px]" style={{ background: T.panel, borderColor: T.border, color: T.textDim }}>
+                      {cat} · <span style={{ color: T.text }}>{n}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+            <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>
+              The Composer inside every Campaign editor · 14 block types · 7 built-in variables · 4 preview modes (desktop / mobile / dark / plain text) · 7-category quality gate. Templates auto-seeded on install. AI-assist is a stub until an LLM adapter is wired.
             </div>
           </Section>
 
