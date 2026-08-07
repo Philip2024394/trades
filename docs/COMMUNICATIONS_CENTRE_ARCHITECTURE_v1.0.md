@@ -4,6 +4,9 @@
 **Author of record:** Philip
 **Purpose:** the reference every future contribution is measured against. This is not a roadmap. It describes what IS.
 
+**Amendments:**
+- **1.0.1 (2026-08-08)** — 11th invariant added (Journey Runtime is deterministic) ahead of Phase 5.1. See `docs/JOURNEY_ENGINE_CHARTER.md` for the accompanying Journey Engine doctrine.
+
 If a proposed change would violate one of the invariants below, the architecture — not just the implementation — is at risk. Reject the change until the invariant is explicitly re-negotiated in an amendment to this document.
 
 ---
@@ -217,6 +220,7 @@ type ProviderSendResult =
 8. **Duplicate webhooks are idempotent at the compliance layer.** Same `provider_message_id` in the same state does not double-log the state transition (analytics still records the raw event for forensics).
 9. **Worker leases are TTL'd and reclaimable.** `SELECT ... FOR UPDATE SKIP LOCKED` + `lease_expires_at` means a crashed worker's jobs get picked up by the next live worker without manual intervention.
 10. **The Compliance Engine + Alert Engine + Analytics layer + Provider adapter interface + Canonical event schema are frozen at v1.0.** Extending is allowed; modifying is a doctrine amendment requiring Philip's explicit sign-off.
+11. **Journey Runtime is deterministic.** Given the same journey definition, immutable recipient snapshot, event history, and current state, it MUST always produce the same emitted commands. (Amendment 1.0.1 · added ahead of Phase 5.1 · full doctrine in `docs/JOURNEY_ENGINE_CHARTER.md`.)
 
 ---
 
