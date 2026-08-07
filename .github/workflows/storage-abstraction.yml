@@ -1,0 +1,72 @@
+name: Storage Abstraction
+
+# Doctrine acceptance test · Philip 2026-08-07 · constitution_nex_backend_provider_agnostic.md
+#
+# The same round-trip test runs against every registered storage backend.
+# Any behavioural or performance divergence fails the PR. This is the
+# continuous proof that the abstraction hasn't regressed.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: storage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  round-trip:
+    name: Round-trip · ${{ matrix.backend }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false                # let all three report; don't hide failures
+      matrix:
+        backend: [jsonl, postgres, dual-write]
+
+    # Postgres service container — Postgres 17 to match local dev; upgrade
+    # the tag here when NEX moves to 18 (adapter must absorb, no app diff).
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: ci-only-not-secret
+          POSTGRES_DB: nex_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      NEX_STORAGE_BACKEND: ${{ matrix.backend }}
+      # jsonl backend ignores this; postgres/dual-write need it
+      NEX_POSTGRES_URL: postgresql://postgres:ci-only-not-secret@localhost:5432/nex_dev
+      PGPASSWORD: ci-only-not-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Postgres-only setup — jsonl skips this whole block
+      - name: Bootstrap local Postgres roles
+        if: matrix.backend != 'jsonl'
+        run: npm run nex:bootstrap-postgres
+
+      - name: Apply NEX storage schema
+        if: matrix.backend != 'jsonl'
+        run: npm run nex:apply-storage-schema
+
+      - name: Round-trip verification
+        run: npm run nex:verify-roundtrip

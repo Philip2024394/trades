@@ -1,0 +1,34 @@
+# NEX Data Platform · local Postgres for development + testing
+#
+# Bring up:  docker compose -f deploy/postgres/docker-compose.yml up -d
+# Bring down: docker compose -f deploy/postgres/docker-compose.yml down
+# Wipe data: docker compose -f deploy/postgres/docker-compose.yml down -v
+#
+# The adapter is connection-string driven so this same container works for
+# local dev; a Hetzner-hosted Postgres works for production; and a managed
+# provider (if ever needed) works with zero code changes — only the
+# NEX_POSTGRES_URL env var moves.
+
+services:
+  nex-postgres:
+    image: postgres:16-alpine
+    container_name: nex-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: nex
+      POSTGRES_USER: nex
+      POSTGRES_PASSWORD: nex-dev-password
+    ports:
+      - "5433:5432"                     # 5433 to avoid conflict with any other local Postgres
+    volumes:
+      - nex-postgres-data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nex -d nex"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  nex-postgres-data:
+    name: nex-postgres-data
