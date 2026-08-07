@@ -309,3 +309,54 @@ variant_id = walkAllocation(
 
 Downstream `send_campaign` / `send_campaign_and_wait` nodes include `experiment_id` + `variant_id` in the command payload. The existing worker forwards them to `ingestEvent()` which populates the RESERVED `experiment_id` + `variant_id` fields on `nex.analytics_events`. Zero changes to the frozen analytics schema.
 
+---
+
+## 13 · Attribution doctrine (Amendment 1.0.4 · ahead of Phase 5.3)
+
+### 13.1 · Invariant #14
+
+> Attribution is observational. It reads canonical events, associates them with conversions, calculates credit under configurable models, and exposes reports. It never mutates platform state.
+
+### 13.2 · What attribution MAY do
+
+- Read `nex.analytics_events` for touchpoints
+- Read `nex.experiment_assignments`, `nex.journeys`, `nex.campaigns` for context
+- Write to its own tables (`nex.conversion_events`, `nex.attributions`)
+- Expose read-only reports (`/api/nex/attribution/reports`)
+- Accept inbound conversion webhooks (`/api/nex/attribution/conversions`)
+
+### 13.3 · What attribution MAY NOT do
+
+- Write to `nex.contacts`, `nex.compliance_*`, `nex.campaigns`, `nex.campaign_recipients`
+- Write to `nex.journeys`, `nex.journey_states`, `nex.experiments`
+- Call any provider adapter directly
+- Call any dispatcher (email/webhook/slack)
+- Emit `enqueueJob()` for delivery
+- Automatically declare A/B winners (belongs to 5.4)
+- Automatically re-route journeys (belongs to 5.4)
+- Modify experiment allocations
+
+### 13.4 · Attribution models (locked · 3 for MVP)
+
+| Model | Credit rule |
+|---|---|
+| `first_touch`  | 100% credit to the earliest qualifying touchpoint inside the window |
+| `last_touch`   | 100% credit to the latest qualifying touchpoint inside the window |
+| `linear`       | Equal credit across all qualifying touchpoints (e.g. 33.33% × 3) |
+
+New models require a doctrine amendment. Machine-learning attribution is deferred to 5.4.
+
+### 13.5 · Attribution windows (locked)
+
+`7`, `30`, `90` days · or custom integer number of days. Configured per conversion at recording time (defaults to 30 days · configurable per rule).
+
+### 13.6 · Replayability + idempotency
+
+- Attribution rows carry a `UNIQUE(conversion_id, model, source_event_id)` index — recomputing the same conversion under the same model produces the same rows.
+- Recomputing after new touchpoint events land requires an explicit re-run (attribution is not automatic on every new event).
+- `attributed_value = conversion_value × credit_pct / 100` with deterministic rounding rules.
+
+### 13.7 · Multiple conversions per contact
+
+The same contact can produce multiple conversion events (`quote_requested`, `deposit_paid`, `installation_completed`, `final_payment`). Each is stored as a separate `nex.conversion_events` row and attributed independently. Reports can aggregate `pipeline_value` (all conversions) vs `actual_revenue` (a configurable subset) at query time.
+

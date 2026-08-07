@@ -21,6 +21,7 @@ import { ComplianceCentrePanel } from "./ComplianceCentrePanel";
 import { AlertsCentrePanel } from "./AlertsCentrePanel";
 import { JourneyEnginePanel } from "./JourneyEnginePanel";
 import { ExperimentsPanel } from "./ExperimentsPanel";
+import { AttributionPanel } from "./AttributionPanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -694,6 +695,11 @@ export function CommunicationsCentrePanel() {
           {/* 3g · EXPERIMENTS / A/B TESTING ────────────────────────── */}
           <Section title="Experiments (A/B Testing)" badge="Phase 5.2 · sticky deterministic assignment · invariant #13">
             <ExperimentsPanel />
+          </Section>
+
+          {/* 3h · ATTRIBUTION ─────────────────────────────────────── */}
+          <Section title="Attribution" badge="Phase 5.3 · observational · invariant #14 · first / last / linear · 7·30·90·custom windows">
+            <AttributionPanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
