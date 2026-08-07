@@ -49,6 +49,47 @@ type Overview = {
   reason?: string;
 };
 
+type MergeStats = {
+  pending_duplicates: number;
+  high_confidence: number;
+  merges_today: number;
+  merges_all_time: number;
+  average_confidence_pending: number | null;
+  by_kind_pending: Record<string, number>;
+};
+
+type DuplicateEntry = {
+  suggestion_id: string;
+  contact_a: string;
+  contact_b: string;
+  match_kind: "email_exact" | "phone_exact" | "name_company_fuzzy";
+  confidence: number;
+  detected_at: string;
+  contact_a_snapshot: Contact | null;
+  contact_b_snapshot: Contact | null;
+};
+
+type DuplicatesResponse = { ok: boolean; entries: DuplicateEntry[]; stats: MergeStats };
+
+type MergeConflict = {
+  field: string;
+  surviving_value: unknown;
+  absorbed_value: unknown;
+  resolution: "surviving_wins" | "absorbed_wins" | "combined" | "ratcheted_safer";
+  note?: string;
+};
+
+type MergePreview = {
+  ok: boolean;
+  surviving_id?: string;
+  absorbed_id?: string;
+  resulting?: Contact;
+  conflicts?: MergeConflict[];
+  source_rows_to_repoint?: number;
+  events_to_repoint?: number;
+  error?: string;
+};
+
 type ContactDetail = {
   ok: boolean;
   contact: Contact | null;
@@ -111,6 +152,16 @@ export function ContactRegistryPanel() {
   const [detail, setDetail] = useState<ContactDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
 
+  // Merge Centre
+  const [duplicates, setDuplicates] = useState<DuplicatesResponse | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const [minConfidence, setMinConfidence] = useState<number>(0);
+  const [previewOpen, setPreviewOpen] = useState<{ suggestion_id: string; surviving_id: string; absorbed_id: string } | null>(null);
+  const [preview, setPreview] = useState<MergePreview | null>(null);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [mergeBusy, setMergeBusy] = useState(false);
+  const [rationale, setRationale] = useState("");
+
   // Debounce search (200ms)
   useEffect(() => {
     const t = setTimeout(() => setSearchDebounced(search), 200);
@@ -148,8 +199,108 @@ export function ContactRegistryPanel() {
     }
   }, [page, searchDebounced, country, lifecycle, consentMarketing, neverContact]);
 
+  const loadDuplicates = useCallback(async () => {
+    try {
+      const params = new URLSearchParams({ limit: "50" });
+      if (minConfidence > 0) params.set("min_confidence", String(minConfidence));
+      const r = await fetch(`/api/nex/contacts/duplicates?${params.toString()}`, { cache: "no-store" }).then((r) => r.json());
+      setDuplicates(r);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "duplicates_failed");
+    }
+  }, [minConfidence]);
+
+  const runScan = useCallback(async () => {
+    setScanning(true);
+    try {
+      await fetch("/api/nex/contacts/duplicates/scan", { method: "POST" });
+      await loadDuplicates();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "scan_failed");
+    } finally {
+      setScanning(false);
+    }
+  }, [loadDuplicates]);
+
+  const openPreview = useCallback(async (entry: DuplicateEntry) => {
+    // Default assignment: contact_a as surviving (has earlier first_seen or larger source count)
+    // Simple rule: use contact_a as surviving by default · admin can swap by picking the opposite direction on the modal.
+    const surviving = entry.contact_a;
+    const absorbed = entry.contact_b;
+    setPreviewOpen({ suggestion_id: entry.suggestion_id, surviving_id: surviving, absorbed_id: absorbed });
+    setPreviewLoading(true);
+    setPreview(null);
+    setRationale(`${entry.match_kind} · confidence ${entry.confidence}`);
+    try {
+      const params = new URLSearchParams({ surviving, absorbed });
+      const p = await fetch(`/api/nex/contacts/merge-preview?${params.toString()}`, { cache: "no-store" }).then((r) => r.json());
+      setPreview(p);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "preview_failed");
+    } finally {
+      setPreviewLoading(false);
+    }
+  }, []);
+
+  const swapMergeDirection = useCallback(async () => {
+    if (!previewOpen) return;
+    const swapped = { ...previewOpen, surviving_id: previewOpen.absorbed_id, absorbed_id: previewOpen.surviving_id };
+    setPreviewOpen(swapped);
+    setPreviewLoading(true);
+    setPreview(null);
+    try {
+      const params = new URLSearchParams({ surviving: swapped.surviving_id, absorbed: swapped.absorbed_id });
+      const p = await fetch(`/api/nex/contacts/merge-preview?${params.toString()}`, { cache: "no-store" }).then((r) => r.json());
+      setPreview(p);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "preview_failed");
+    } finally {
+      setPreviewLoading(false);
+    }
+  }, [previewOpen]);
+
+  const confirmMerge = useCallback(async () => {
+    if (!previewOpen) return;
+    setMergeBusy(true);
+    try {
+      const r = await fetch(`/api/nex/contacts/duplicates/${previewOpen.suggestion_id}/decide`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          decision: "merge",
+          surviving_id: previewOpen.surviving_id,
+          absorbed_id: previewOpen.absorbed_id,
+          rationale: rationale.trim() || undefined,
+        }),
+      }).then((r) => r.json());
+      if (!r.ok) throw new Error(r.error || "merge failed");
+      setPreviewOpen(null);
+      setPreview(null);
+      setRationale("");
+      await Promise.all([loadDuplicates(), loadOverview(), loadList()]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "merge_failed");
+    } finally {
+      setMergeBusy(false);
+    }
+  }, [previewOpen, rationale, loadDuplicates, loadOverview, loadList]);
+
+  const keepSeparate = useCallback(async (entry: DuplicateEntry) => {
+    try {
+      await fetch(`/api/nex/contacts/duplicates/${entry.suggestion_id}/decide`, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ decision: "keep_separate" }),
+      });
+      await loadDuplicates();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "keep_separate_failed");
+    }
+  }, [loadDuplicates]);
+
   useEffect(() => { void loadOverview(); }, [loadOverview]);
   useEffect(() => { void loadList(); }, [loadList]);
+  useEffect(() => { void loadDuplicates(); }, [loadDuplicates]);
 
   // Reset to page 0 when filters change (except when user is paging)
   useEffect(() => { setPage(0); }, [searchDebounced, country, lifecycle, consentMarketing, neverContact]);
@@ -374,10 +525,251 @@ export function ContactRegistryPanel() {
         </div>
       ) : null}
 
+      {/* MERGE CENTRE ─────────────────────────────────────────── */}
+      <div className="mt-6 rounded-xl border p-4" style={{ background: T.panel, borderColor: T.border }}>
+        <div className="mb-3 flex items-baseline gap-3">
+          <div>
+            <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.accent }}>Merge Centre</div>
+            <h2 className="mt-0.5 text-[18px] font-black leading-none">Duplicate queue</h2>
+            <div className="mt-1 text-[10.5px]" style={{ color: T.textDim }}>
+              Every merge preserves source history · repoints events · applies the compliance ratchet · writes a full audit row. Absorbed contact becomes an alias that resolves to canonical on lookup.
+            </div>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <select
+              value={minConfidence}
+              onChange={(e) => setMinConfidence(Number(e.target.value))}
+              className="rounded border px-2 py-1 text-[10px]"
+              style={{ background: T.panelHi, borderColor: T.border, color: T.textDim }}
+            >
+              <option value={0}>any confidence</option>
+              <option value={60}>≥ 60</option>
+              <option value={90}>≥ 90 (high)</option>
+              <option value={99}>= 99 (email exact)</option>
+            </select>
+            <button
+              type="button"
+              onClick={runScan}
+              disabled={scanning}
+              className="rounded border px-3 py-1 text-[10px] font-semibold disabled:opacity-50"
+              style={{ background: T.panelHi, borderColor: T.accent, color: T.accent }}
+            >
+              {scanning ? "Scanning…" : "Run dedup scan"}
+            </button>
+          </div>
+        </div>
+
+        {/* Merge stats */}
+        {duplicates?.stats ? (
+          <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(130px, 1fr))" }}>
+            <Stat label="Pending" value={duplicates.stats.pending_duplicates} tone={duplicates.stats.pending_duplicates > 0 ? "warn" : "neutral"} />
+            <Stat label="High confidence" value={duplicates.stats.high_confidence} tone={duplicates.stats.high_confidence > 0 ? "warn" : "neutral"} hint="≥ 90" />
+            <Stat label="Avg confidence" value={duplicates.stats.average_confidence_pending?.toFixed(1) ?? "—"} />
+            <Stat label="Merges today" value={duplicates.stats.merges_today} tone="good" />
+            <Stat label="Merges all-time" value={duplicates.stats.merges_all_time} />
+            <Stat label="Email exact" value={duplicates.stats.by_kind_pending.email_exact ?? 0} />
+            <Stat label="Phone exact" value={duplicates.stats.by_kind_pending.phone_exact ?? 0} />
+            <Stat label="Name+company" value={duplicates.stats.by_kind_pending.name_company_fuzzy ?? 0} />
+          </div>
+        ) : null}
+
+        {/* Queue */}
+        <div className="rounded-lg border" style={{ background: T.panelHi, borderColor: T.border }}>
+          {!duplicates ? (
+            <div className="p-4 text-center text-[11px]" style={{ color: T.textFade }}>Loading…</div>
+          ) : duplicates.entries.length === 0 ? (
+            <div className="p-4 text-center text-[11px]" style={{ color: T.textFade }}>
+              No pending duplicate suggestions. Run a dedup scan to populate the queue · or the queue is genuinely clean.
+            </div>
+          ) : (
+            duplicates.entries.map((e) => {
+              const a = e.contact_a_snapshot;
+              const b = e.contact_b_snapshot;
+              const conf = e.confidence;
+              const confTone = conf >= 95 ? T.danger : conf >= 80 ? T.warning : T.info;
+              return (
+                <div key={e.suggestion_id} className="grid gap-2 border-b p-2 text-[10.5px]" style={{ borderColor: T.border, gridTemplateColumns: "70px 1fr 20px 1fr 120px 160px" }}>
+                  <div className="flex flex-col items-start">
+                    <span className="rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest" style={{ background: confTone + "22", color: confTone }}>
+                      {conf}
+                    </span>
+                    <span className="mt-1 text-[8.5px] uppercase tracking-widest" style={{ color: T.textFade }}>{e.match_kind}</span>
+                  </div>
+                  <div>
+                    <div className="font-mono" style={{ color: T.text }}>{a?.name ?? "—"}</div>
+                    <div className="truncate text-[9.5px] font-mono" style={{ color: T.info }}>{a?.email ?? a?.phone ?? "—"}</div>
+                    <div className="text-[9px] font-mono" style={{ color: T.textFade }}>{e.contact_a.slice(0, 12)}…</div>
+                  </div>
+                  <div className="grid place-items-center text-[14px]" style={{ color: T.textFade }}>↔</div>
+                  <div>
+                    <div className="font-mono" style={{ color: T.text }}>{b?.name ?? "—"}</div>
+                    <div className="truncate text-[9.5px] font-mono" style={{ color: T.info }}>{b?.email ?? b?.phone ?? "—"}</div>
+                    <div className="text-[9px] font-mono" style={{ color: T.textFade }}>{e.contact_b.slice(0, 12)}…</div>
+                  </div>
+                  <div className="font-mono text-[9.5px]" style={{ color: T.textFade }}>{relTime(e.detected_at)}</div>
+                  <div className="flex justify-end gap-1">
+                    <button
+                      type="button"
+                      onClick={() => keepSeparate(e)}
+                      className="rounded border px-2 py-0.5 text-[9.5px] font-semibold"
+                      style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                    >
+                      Keep separate
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openPreview(e)}
+                      className="rounded border px-2 py-0.5 text-[9.5px] font-semibold"
+                      style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
+                    >
+                      Preview merge
+                    </button>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+
       {/* FOOTER */}
       <div className="mt-3 text-center text-[9px] italic" style={{ color: T.textFade }}>
-        Phase 3c.1 · Explorer + Search shipped. Merge Centre (3c.2), Timeline + Compliance history (3c.3) land in follow-up commits.
+        Phase 3c.1 Explorer + Phase 3c.2 Merge Centre shipped. Communication history · timelines · compliance-history rollup land in 3c.3.
       </div>
+
+      {/* MERGE PREVIEW MODAL ─────────────────────────────────────── */}
+      {previewOpen ? (
+        <div
+          className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto p-6"
+          style={{ background: "rgba(0,0,0,0.72)" }}
+          onClick={(e) => { if (e.target === e.currentTarget && !mergeBusy) { setPreviewOpen(null); setPreview(null); } }}
+        >
+          <div className="w-full max-w-4xl rounded-xl border" style={{ background: T.bg, borderColor: T.border, color: T.text }}>
+            <div className="flex items-center gap-3 border-b p-4" style={{ borderColor: T.border }}>
+              <div>
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.accent }}>Merge Preview</div>
+                <div className="mt-0.5 text-[16px] font-black">Confirm merge · deterministic rules apply</div>
+              </div>
+              <div className="ml-auto flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={swapMergeDirection}
+                  disabled={previewLoading || mergeBusy}
+                  className="rounded border px-3 py-1 text-[11px] font-semibold"
+                  style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                >
+                  ↔ Swap direction
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setPreviewOpen(null); setPreview(null); }}
+                  disabled={mergeBusy}
+                  className="rounded border px-3 py-1 text-[11px] font-semibold"
+                  style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+            <div className="p-4">
+              {previewLoading ? (
+                <div className="p-4 text-center text-[11px]" style={{ color: T.textFade }}>Computing preview…</div>
+              ) : !preview || !preview.ok || !preview.resulting ? (
+                <div className="rounded border p-3 text-[11px]" style={{ background: T.panel, borderColor: T.danger, color: T.danger }}>
+                  Error: {preview?.error ?? "preview unavailable"}
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="grid gap-2" style={{ gridTemplateColumns: "1fr 1fr 1fr" }}>
+                    <Stat label="Surviving" value={previewOpen.surviving_id.slice(0, 12) + "…"} tone="good" hint="Canonical after merge" />
+                    <Stat label="Absorbed" value={previewOpen.absorbed_id.slice(0, 12) + "…"} tone="warn" hint="Becomes alias" />
+                    <Stat label="Conflicts" value={preview.conflicts?.length ?? 0} tone={preview.conflicts && preview.conflicts.length > 0 ? "warn" : "neutral"} />
+                    <Stat label="Source rows to repoint" value={preview.source_rows_to_repoint ?? 0} tone="info" />
+                    <Stat label="Events to repoint" value={preview.events_to_repoint ?? 0} tone="info" />
+                    <Stat label="Tags after merge" value={preview.resulting.tags?.length ?? 0} />
+                  </div>
+
+                  <div className="rounded border p-3" style={{ background: T.panel, borderColor: T.accent }}>
+                    <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.accent }}>Resulting canonical contact</div>
+                    <div className="grid gap-2" style={{ gridTemplateColumns: "1fr 1fr" }}>
+                      <KV label="Name" value={preview.resulting.name} />
+                      <KV label="Company" value={preview.resulting.company} />
+                      <KV label="Email" value={preview.resulting.email} mono tone="info" />
+                      <KV label="Phone" value={preview.resulting.phone} mono />
+                      <KV label="Country" value={preview.resulting.country} />
+                      <KV label="Region" value={preview.resulting.region} />
+                      <KV label="Lifecycle" value={preview.resulting.lifecycle_stage} />
+                      <KV label="First seen" value={preview.resulting.first_seen_at} mono />
+                      <KV label="Marketing consent" value={preview.resulting.consent_marketing === true ? "granted" : preview.resulting.consent_marketing === false ? "refused" : "unknown"} tone={preview.resulting.consent_marketing === true ? "good" : preview.resulting.consent_marketing === false ? "bad" : "unset"} />
+                      <KV label="Never-contact" value={preview.resulting.never_contact ? "TRUE" : "false"} tone={preview.resulting.never_contact ? "bad" : "unset"} />
+                    </div>
+                    {preview.resulting.tags && preview.resulting.tags.length > 0 ? (
+                      <div className="mt-2">
+                        <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Combined tags</div>
+                        <div className="flex flex-wrap gap-1">
+                          {preview.resulting.tags.map((t) => (
+                            <span key={t} className="rounded-full border px-2 py-0.5 text-[10px]" style={{ background: T.panelHi, borderColor: T.border, color: T.text }}>{t}</span>
+                          ))}
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  {preview.conflicts && preview.conflicts.length > 0 ? (
+                    <div className="rounded border p-3" style={{ background: T.panel, borderColor: T.warning }}>
+                      <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.warning }}>Conflict resolutions ({preview.conflicts.length})</div>
+                      <div className="space-y-1">
+                        {preview.conflicts.map((c, i) => (
+                          <div key={i} className="grid gap-2 rounded border p-1.5 text-[10.5px]" style={{ background: T.panelHi, borderColor: T.border, gridTemplateColumns: "140px 1fr 1fr 140px" }}>
+                            <span className="font-mono font-black" style={{ color: T.text }}>{c.field}</span>
+                            <span className="truncate font-mono" style={{ color: T.accent }} title={String(c.surviving_value ?? "")}>{String(c.surviving_value ?? "—")}</span>
+                            <span className="truncate font-mono" style={{ color: T.textDim }} title={String(c.absorbed_value ?? "")}>{String(c.absorbed_value ?? "—")}</span>
+                            <span className="text-[9.5px] uppercase tracking-widest" style={{ color: c.resolution === "ratcheted_safer" ? T.warning : T.info }}>{c.resolution}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>Compliance-related conflicts are always ratcheted toward safer state. Identity conflicts fall back to the surviving contact.</div>
+                    </div>
+                  ) : null}
+
+                  <div className="rounded border p-3" style={{ background: T.panel, borderColor: T.border }}>
+                    <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Merge rationale (recorded in audit)</div>
+                    <input
+                      type="text"
+                      value={rationale}
+                      onChange={(e) => setRationale(e.target.value)}
+                      placeholder="Why is this merge safe? · e.g. Confirmed same person · matches phone + name"
+                      className="w-full rounded border px-2 py-1 text-[11px]"
+                      style={{ background: T.panelHi, borderColor: T.border, color: T.text }}
+                    />
+                  </div>
+
+                  <div className="flex justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={() => { setPreviewOpen(null); setPreview(null); }}
+                      disabled={mergeBusy}
+                      className="rounded border px-4 py-1.5 text-[11px] font-semibold"
+                      style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={confirmMerge}
+                      disabled={mergeBusy}
+                      className="rounded border px-4 py-1.5 text-[11px] font-black disabled:opacity-50"
+                      style={{ background: T.panel, borderColor: T.accent, color: T.accent }}
+                    >
+                      {mergeBusy ? "Merging…" : `Confirm merge · absorb ${previewOpen.absorbed_id.slice(0, 8)}… into ${previewOpen.surviving_id.slice(0, 8)}…`}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       {/* DETAIL DRAWER */}
       {openContactId ? (

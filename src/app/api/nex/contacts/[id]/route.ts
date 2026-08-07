@@ -6,15 +6,26 @@
 
 import { NextResponse } from "next/server";
 import { getContactDetail } from "@/lib/nex/contacts/registry";
+import { resolveAlias } from "@/lib/nex/contacts/merge";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
   const { id } = await ctx.params;
-  const detail = await getContactDetail(id);
+  // Alias resolution · if this id was absorbed by a merge, redirect to
+  // the surviving canonical contact. Preserves historical foreign keys
+  // + connector references without leaking absorbed identities.
+  const canonicalId = await resolveAlias(id);
+  const detail = await getContactDetail(canonicalId);
   if (!detail || !detail.contact) {
     return NextResponse.json({ ok: false, error: "contact_not_found" }, { status: 404 });
   }
-  return NextResponse.json({ ok: true, ...detail });
+  return NextResponse.json({
+    ok: true,
+    alias_resolved: canonicalId !== id,
+    requested_id: id,
+    canonical_id: canonicalId,
+    ...detail,
+  });
 }
