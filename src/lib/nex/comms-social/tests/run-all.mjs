@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+// run-all.mjs · Phase 0 test aggregator.
+//
+// Runs every Phase 0 boundary test in sequence, prints a summary, and
+// exits non-zero if any suite fails. Intended for CI + manual `node`.
+
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const suites = [
+  { name: "tenant-isolation",  path: join(__dirname, "tenant-isolation.test.mjs")  },
+  { name: "adapter-isolation", path: join(__dirname, "adapter-isolation.test.mjs") },
+  { name: "predictive-boundary", path: join(__dirname, "predictive-boundary.test.mjs") },
+  { name: "role-permission",   path: join(__dirname, "role-permission.test.mjs")   },
+];
+
+const results = [];
+for (const s of suites) {
+  process.stdout.write(`\n════════ ${s.name} ════════\n`);
+  const r = spawnSync("node", [s.path], { stdio: "inherit", env: process.env });
+  results.push({ name: s.name, code: r.status ?? 1 });
+}
+
+process.stdout.write("\n════════ SUMMARY ════════\n");
+for (const r of results) {
+  const tag = r.code === 0 ? "PASS" : "FAIL";
+  process.stdout.write(`  ${tag} ${r.name} · exit ${r.code}\n`);
+}
+const failed = results.filter((r) => r.code !== 0);
+process.exit(failed.length === 0 ? 0 : 1);
