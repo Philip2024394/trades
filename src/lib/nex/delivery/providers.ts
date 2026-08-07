@@ -17,6 +17,7 @@ import { sesAdapter }       from "./adapters/ses";
 import { sendgridAdapter }  from "./adapters/sendgrid";
 import { mailgunAdapter }   from "./adapters/mailgun";
 import { postmarkAdapter }  from "./adapters/postmark";
+import { chaosAdapter }     from "./adapters/chaos";
 
 // ── Simulator adapter · the "delivery simulation mode" from the doctrine ──
 //
@@ -36,8 +37,12 @@ const simulator: DeliveryProviderAdapter = {
 
   async send(_msg: EmailMessage): Promise<ProviderSendResult> {
     const t0 = Date.now();
-    const target_latency = 80 + Math.floor(Math.random() * 140);
-    await new Promise((r) => setTimeout(r, target_latency));
+    // Fast mode for stress benchmarking · skips the fake network delay
+    // so the harness measures our own queue/DB/renderer overhead, not
+    // the simulator's artificial latency.
+    const fast = (process.env.NEX_SIMULATOR_FAST_MODE ?? "").toLowerCase() === "true";
+    const target_latency = fast ? 0 : (80 + Math.floor(Math.random() * 140));
+    if (target_latency > 0) await new Promise((r) => setTimeout(r, target_latency));
     const roll = Math.random();
     const latency_ms = Date.now() - t0;
     if (roll < 0.005) {
@@ -58,6 +63,7 @@ const REGISTRY: Record<string, DeliveryProviderAdapter> = {
   sendgrid: sendgridAdapter,
   mailgun:  mailgunAdapter,
   postmark: postmarkAdapter,
+  chaos:    chaosAdapter,             // test-only · recovery suite selects via runtime patch
 };
 
 export function activeProvider(): DeliveryProviderAdapter {

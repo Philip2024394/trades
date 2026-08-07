@@ -274,6 +274,18 @@ export async function applyCanonicalEvent(ev: AnalyticsEvent, analytics_event_id
       case "bounced": {
         const kind = classifyBounce(ev);
         if (kind === "hard") {
+          // Idempotency guard · duplicate webhook (same provider_message_id
+          // when already suppressed_hard) MUST NOT double-log the state
+          // transition. Analytics still records both webhook events for
+          // forensics; compliance only records the actual state change.
+          const cur = await getContactCompliance(contact_id);
+          if (
+            cur?.compliance_state === "suppressed_hard" &&
+            ev.provider_message_id &&
+            cur?.last_provider_message_id === ev.provider_message_id
+          ) {
+            return null;
+          }
           const reason = `hard bounce · ${ev.provider ?? "unknown"} · ${String((ev.metadata ?? {}).bounce_subtype ?? (ev.metadata ?? {}).reason ?? "no detail")}`;
           const r = await applyStateChange({
             contact_id, new_state: "suppressed_hard", reason,
