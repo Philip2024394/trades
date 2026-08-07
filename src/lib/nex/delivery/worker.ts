@@ -24,6 +24,8 @@ import { claimNextRecipients, expandCampaign, recordRecipientSend } from "./expa
 import { completeJob, enqueueJob, failJob, leaseNextJob, recordAttempt } from "./queue";
 import { getCampaign, transitionCampaignStatus } from "@/lib/nex/campaigns/registry";
 import { interpolate } from "@/lib/nex/composer/variables";
+import { ingestEvent } from "@/lib/nex/analytics/ingest";
+import { simulateEngagementFor } from "@/lib/nex/analytics/simulator";
 
 const WORKER_ID = `${os.hostname().slice(0, 30)}-${process.pid}`;
 const BATCH_SIZE = 25;
@@ -181,6 +183,25 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
         sent++;
         await recordRecipientSend({ campaign_id, contact_id: r.contact_id, ok: true, provider: provider.id, provider_message_id: res.provider_message_id, latency_ms: res.latency_ms });
         await emitDeliveryEvent("delivery.recipient_sent", { contact_id: r.contact_id, provider: provider.id, provider_message_id: res.provider_message_id, latency_ms: res.latency_ms }, campaign_id);
+
+        // Analytics · canonical event stream ("queued" fires at the moment
+        // the send call succeeds · downstream events arrive via provider
+        // webhooks OR — in simulation mode — via simulateEngagementFor).
+        const domain = (r.email.split("@")[1] ?? "unknown").toLowerCase();
+        const segment_id = campaign.segment_ids[0] ?? null;
+        await ingestEvent({
+          event_type: "queued", campaign_id, recipient_id: r.contact_id, segment_id,
+          provider: provider.id, country: campaign_country_for(r), domain,
+          provider_message_id: res.provider_message_id, latency_ms: res.latency_ms,
+          metadata: { batch: true },
+        });
+        if (provider.id === "simulator") {
+          await simulateEngagementFor({
+            campaign_id, recipient_id: r.contact_id, segment_id,
+            email: r.email, country: campaign_country_for(r),
+            provider_message_id: res.provider_message_id,
+          });
+        }
       } else {
         if (res.retriable) {
           await recordRecipientSend({ campaign_id, contact_id: r.contact_id, ok: false, provider: provider.id, latency_ms: res.latency_ms, error: res.error });
@@ -268,6 +289,13 @@ async function runFinalise(campaign_id: string): Promise<Record<string, unknown>
   // Still pending — schedule another finalise pass shortly
   await enqueueJob({ job_type: "campaign.finalise", campaign_id, priority: 95, scheduled_for: new Date(Date.now() + 15_000).toISOString() });
   return { ...totals, action: "still_pending_reschedule" };
+}
+
+// The recipient row carries country in variables but we don't add it to
+// the typed row above · this small helper reads it back safely.
+function campaign_country_for(r: { variables?: Record<string, string> }): string | null {
+  const v = r.variables ?? {};
+  return v.country ?? null;
 }
 
 function buildUnsubscribeUrl(campaign_id: string, contact_id: string): string {
