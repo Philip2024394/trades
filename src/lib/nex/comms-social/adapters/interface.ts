@@ -112,9 +112,63 @@ export interface AdapterHealthResult {
   note: string | null;
 }
 
+// ── OAuth (S-IX · Phase 1) ─────────────────────────────────────
+//
+// The engine never touches provider OAuth URLs directly. Adapters
+// expose two methods: `authorizeUrl()` returns the URL to redirect the
+// merchant to (with our CSRF `state` embedded), and `exchangeCode()`
+// swaps the returned code for access + refresh tokens.
+
+export interface AdapterAuthorizeUrlRequest {
+  state:         string;                  // engine-generated CSRF state
+  redirect_uri:  string;
+  scopes:        string[];
+  code_challenge?: string;                // PKCE S256 challenge · when adapter capability declares PKCE
+  extra?:        Record<string, string>;
+}
+
+export interface AdapterAuthorizeUrlResult {
+  url: string;
+}
+
+export interface AdapterExchangeCodeRequest {
+  code:          string;
+  redirect_uri:  string;
+  code_verifier?: string;                 // PKCE verifier · when adapter capability declares PKCE
+}
+
+export type AdapterExchangeCodeResult =
+  | {
+      ok:                  true;
+      access_token:        string;
+      refresh_token:       string | null;
+      token_expires_at:    string | null;
+      scopes:              string[];
+      platform_account_id: string | null;
+      display_name:        string | null;
+      raw_metadata:        Record<string, unknown>;
+    }
+  | {
+      ok:            false;
+      error_class:   "invalid_code" | "invalid_state" | "denied" | "transient" | "unknown";
+      error_message: string;
+      raw_metadata:  Record<string, unknown>;
+    };
+
+// Extended capability metadata for OAuth (adapter-declared).
+export interface AdapterAuthCapabilities {
+  oauth_authorize_endpoint: string;       // provider's authorize URL · adapter-declared, engine doesn't parse
+  supports_pkce:            boolean;
+  supports_refresh_tokens:  boolean;
+  scopes_available:         string[];
+}
+
 // ── The interface ──────────────────────────────────────────────
 export interface SocialProvider {
   capabilities(): AdapterCapabilities;
+  authCapabilities(): AdapterAuthCapabilities;
+  authorizeUrl(req: AdapterAuthorizeUrlRequest): AdapterAuthorizeUrlResult;
+  exchangeCode(req: AdapterExchangeCodeRequest): Promise<AdapterExchangeCodeResult>;
   publish(req: AdapterPublishRequest): Promise<AdapterPublishResult>;
   verify(req: AdapterVerifyRequest): Promise<AdapterVerifyResult>;
   health(): Promise<AdapterHealthResult>;

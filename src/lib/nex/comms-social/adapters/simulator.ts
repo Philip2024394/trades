@@ -11,7 +11,12 @@
 // SocialProvider interface.
 
 import type {
+  AdapterAuthCapabilities,
+  AdapterAuthorizeUrlRequest,
+  AdapterAuthorizeUrlResult,
   AdapterCapabilities,
+  AdapterExchangeCodeRequest,
+  AdapterExchangeCodeResult,
   AdapterHealthResult,
   AdapterPublishRequest,
   AdapterPublishResult,
@@ -45,6 +50,58 @@ export function createSimulatorAdapter(): SocialProvider {
         error_codes_meaning_rate_limited:  ["SIM_RATE_LIMIT"],
         error_codes_meaning_transient:     ["SIM_TRANSIENT"],
         oauth_scopes_required_publish:     [],
+      };
+    },
+
+    authCapabilities(): AdapterAuthCapabilities {
+      return {
+        oauth_authorize_endpoint: "https://sim.example/oauth/authorize",
+        supports_pkce:            true,
+        supports_refresh_tokens:  true,
+        scopes_available:         ["social.read", "social.publish"],
+      };
+    },
+
+    authorizeUrl(req: AdapterAuthorizeUrlRequest): AdapterAuthorizeUrlResult {
+      const p = new URLSearchParams({
+        client_id:     "sim-client",
+        response_type: "code",
+        redirect_uri:  req.redirect_uri,
+        state:         req.state,
+        scope:         req.scopes.join(" "),
+      });
+      if (req.code_challenge) {
+        p.set("code_challenge",        req.code_challenge);
+        p.set("code_challenge_method", "S256");
+      }
+      return { url: `https://sim.example/oauth/authorize?${p.toString()}` };
+    },
+
+    async exchangeCode(req: AdapterExchangeCodeRequest): Promise<AdapterExchangeCodeResult> {
+      // Simulator: any non-empty code is exchangeable. Returns a
+      // deterministic-ish token so tests can round-trip the encryption.
+      if (!req.code || req.code.startsWith("bad_")) {
+        return {
+          ok:            false,
+          error_class:   "invalid_code",
+          error_message: "simulator refused the code",
+          raw_metadata:  { simulated: true },
+        };
+      }
+      // If PKCE was declared but no verifier arrives, fail — mirrors
+      // real providers.
+      // (We don't record which init set challenge · adapter is stateless.
+      //  Real providers enforce this via server-side session. Simulator
+      //  just accepts a verifier if provided.)
+      return {
+        ok:                  true,
+        access_token:        `sim_access_${req.code}_${Date.now()}`,
+        refresh_token:       `sim_refresh_${req.code}_${Date.now()}`,
+        token_expires_at:    new Date(Date.now() + 3600_000).toISOString(),
+        scopes:              ["social.read", "social.publish"],
+        platform_account_id: `sim-acct-${req.code.slice(-6)}`,
+        display_name:        `Simulator Account (${req.code.slice(0, 6)})`,
+        raw_metadata:        { simulated: true, code_verifier_present: Boolean(req.code_verifier) },
       };
     },
 

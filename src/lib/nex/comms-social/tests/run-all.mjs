@@ -11,10 +11,14 @@ import { dirname, join } from "node:path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const suites = [
-  { name: "tenant-isolation",  path: join(__dirname, "tenant-isolation.test.mjs")  },
-  { name: "adapter-isolation", path: join(__dirname, "adapter-isolation.test.mjs") },
-  { name: "predictive-boundary", path: join(__dirname, "predictive-boundary.test.mjs") },
-  { name: "role-permission",   path: join(__dirname, "role-permission.test.mjs")   },
+  { name: "tenant-isolation",     path: join(__dirname, "tenant-isolation.test.mjs")     },
+  { name: "adapter-isolation",    path: join(__dirname, "adapter-isolation.test.mjs")    },
+  { name: "predictive-boundary",  path: join(__dirname, "predictive-boundary.test.mjs")  },
+  { name: "role-permission",      path: join(__dirname, "role-permission.test.mjs")      },
+  { name: "envelope-encryption",  path: join(__dirname, "envelope-encryption.test.mjs")  },
+  { name: "oauth-state",          path: join(__dirname, "oauth-state.test.mjs")          },
+  { name: "token-redaction",      path: join(__dirname, "token-redaction.test.mjs")      },
+  { name: "oauth-e2e",            path: join(__dirname, "oauth-e2e.test.mjs")            },
 ];
 
 const results = [];
