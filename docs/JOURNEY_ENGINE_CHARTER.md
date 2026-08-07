@@ -181,3 +181,86 @@ Each of these must slot in via new tables + new dispatcher cases + reads from th
 ## 10 · Ratification
 
 This charter is ratified alongside v1.0 doctrine. Any change to sections 1-6 above is a governance amendment and bumps the platform release version.
+
+---
+
+## 11 · Trigger doctrine (Amendment 1.0.2 · added ahead of Phase 5.1.2)
+
+### 11.1 · Invariant #12
+
+> Trigger evaluators are pure event readers. They never mutate platform state directly; they only materialise journey entries through the existing `entry.ts` path.
+
+Together with Invariant #11 (deterministic runtime), this ensures **every journey starts through one controlled, replayable mechanism**.
+
+### 11.2 · Trigger types (locked list)
+
+Six trigger types. Adding a new type requires a doctrine amendment.
+
+| Type | Fires when | Reads from |
+|---|---|---|
+| `segment_join`         | contact matches the trigger's segment filter | `nex.contacts` + `nex.contact_segments` |
+| `analytics_event`      | contact records a canonical analytics event of the configured type | `nex.analytics_events` |
+| `compliance_transition`| contact's compliance_state changes to a matched state | `nex.compliance_events` |
+| `inactivity`           | contact has no `opened`/`clicked` event for N days | `nex.analytics_events` (absence) |
+| `custom_webhook`       | external system POSTs to the trigger's signed inbound URL | `nex.journey_inbound_events` |
+| `schedule`             | recurring cron/local-time schedule elapses | wall clock (single read per tick) |
+
+### 11.3 · Trigger versioning
+
+Each trigger is immutable per version, mirroring journeys:
+
+```
+Journey
+ ├── Trigger (key: click_trigger)
+ │    ├── v1 (Archived)
+ │    ├── v2 (Active)
+ │    └── v3 (Draft)
+```
+
+Rules:
+- One Active version per `(journey_id, trigger_key)` at a time — enforced by unique index.
+- Editing a trigger creates a new draft version.
+- In-flight journey entries created by an older version keep their audit trail intact; new entries use the current Active version.
+
+### 11.4 · Canonical `JourneyTriggerEvent` envelope
+
+Every evaluator produces the same shape. No trigger invents its own payload wrapper.
+
+```ts
+type JourneyTriggerEvent = {
+  trigger_id:      string;           // which trigger fired
+  trigger_type:    TriggerType;      // one of the six
+  journey_id:      string;           // target journey
+  contact_id:      string;           // resolved contact
+  event_time:      string;           // ISO · when the underlying event occurred
+  payload:         Record<string, unknown>;   // per-type detail (opaque to runtime)
+  correlation_id:  string;           // groups related events (one webhook may fire N triggers)
+  causation_id:    string;           // what caused this to fire (analytics_event_id, inbound_event_id, tick_id, ...)
+};
+```
+
+The dispatcher receives envelopes from every evaluator, de-dups them against the trigger's `dedup_window_sec`, and feeds each surviving envelope into `entry.ts` — the same code path `segment_join` already uses. Analytics, webhooks, purchases, CRM, warranty — every trigger enters through one door.
+
+### 11.5 · Custom webhook debug capture
+
+Every inbound webhook — regardless of whether it passed signature verification — records to `nex.journey_inbound_events` with:
+
+- `verified_signature` boolean
+- `signature_algorithm` string (e.g. `hmac-sha256`, `basic-auth`, `sigv4`)
+- `request_headers` JSONB (redacted: no `authorization` or `cookie` values)
+- `raw_body_hash` SHA-256 of the raw request body
+
+That row is the single source of truth for support investigations of any customer integration.
+
+### 11.6 · What triggers MAY NOT do
+
+- Write to `nex.contacts` (compliance, consent, or any field)
+- Write to `nex.compliance_events`
+- Call any provider adapter directly
+- Call `dispatchAlert()` or any alert dispatcher
+- Emit `enqueueJob()` for delivery — that's the Runtime's job after journey entry
+- Access `Math.random()` or `Date.now()` inside `evaluate()` (time is injected per tick; randomness comes from the deterministic seed in `entry.ts`)
+
+Allowed reads: `nex.analytics_events`, `nex.compliance_events`, `nex.contacts` (read-only), `nex.contact_segments`, `nex.journey_inbound_events`.
+Allowed write: `nex.journey_states` **only via** `entry.ts::insertJourneyState()` — never a direct INSERT.
+
