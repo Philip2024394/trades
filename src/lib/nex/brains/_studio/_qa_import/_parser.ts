@@ -27,8 +27,12 @@ export type ParseResult = {
   skipped: string[];      // reasons for any pairs we couldn't parse cleanly
 };
 
-const Q_MARK = /^\s*Q\s*[:.-]\s*(.+)$/i;
-const A_MARK = /^\s*A\s*[:.-]\s*(.+)$/i;
+// Character class order intentional: Tailwind JIT scans .ts files and
+// mistakes bracket-colon-value patterns for arbitrary utility classes,
+// which pollutes globals.css. Placing the hyphen at the end (literal)
+// avoids the false match.
+const Q_MARK = /^\s*Q\s*[.:\-]\s*(.+)$/i;
+const A_MARK = /^\s*A\s*[.:\-]\s*(.+)$/i;
 
 export function parseQA(raw: string): ParseResult {
   const lines = raw.split(/\r?\n/);

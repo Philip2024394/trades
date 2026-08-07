@@ -13,6 +13,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 import {
   Activity,
   AlertTriangle,
@@ -38,6 +39,7 @@ import {
   Send,
   Shield,
   Sparkles,
+  Wallet,
   Zap,
   X,
 } from "lucide-react";
@@ -129,8 +131,8 @@ type LlmProviderReport = {
 
 type LlmHealthSnapshot = {
   ok: boolean;
-  chain: Array<"groq" | "gemini" | "anthropic" | "mock">;
-  active: "groq" | "gemini" | "anthropic" | "mock";
+  chain: Array<"openrouter" | "sambanova" | "groq" | "gemini" | "cerebras" | "anthropic" | "mock">;
+  active: "openrouter" | "sambanova" | "groq" | "gemini" | "cerebras" | "anthropic" | "mock";
   providers: LlmProviderReport[];
 };
 type CloudWorker = {
@@ -164,6 +166,7 @@ const WORKER_LABEL: Record<WorkerType, { label: string; icon: React.ComponentTyp
 export function NexBrainShell() {
   const [status, setStatus] = useState<Status | null>(null);
   const [records, setRecords] = useState<KnowledgeRecord[]>([]);
+  const [mockHidden, setMockHidden] = useState<number>(0);
   const [loading, setLoading] = useState(true);
   const [isDispatching, setIsDispatching] = useState(false);
   const [isRunning, setIsRunning] = useState(false);
@@ -197,7 +200,10 @@ export function NexBrainShell() {
       }
       if (recordsRes.ok) {
         const j = await recordsRes.json();
-        if (j.ok) setRecords(j.records as KnowledgeRecord[]);
+        if (j.ok) {
+          setRecords(j.records as KnowledgeRecord[]);
+          setMockHidden(typeof j.mock_hidden_in_this_page === "number" ? j.mock_hidden_in_this_page : 0);
+        }
       }
       if (llmRes) {
         try {
@@ -223,6 +229,51 @@ export function NexBrainShell() {
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  // Live polling · 5s interval · pauses when tab is hidden (Page Visibility API).
+  // Doctrine: "queue length = operational metric; observability = confidence".
+  // Pausing when hidden saves network + LLM budget when Philip switches tabs.
+  useEffect(() => {
+    let intervalId: number | null = null;
+    const start = () => {
+      if (intervalId !== null) return;
+      intervalId = window.setInterval(() => { refresh(); }, 5000);
+    };
+    const stop = () => {
+      if (intervalId !== null) { window.clearInterval(intervalId); intervalId = null; }
+    };
+    const onVisibility = () => { document.hidden ? stop() : start(); };
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [refresh]);
+
+  // Rolling history buffer for the sparkline — one sample per refresh
+  // (~5s), capped at 720 samples (~1 hour). We store (timestamp, completed)
+  // and derive per-interval throughput at render time. Client-side only —
+  // no new API needed.
+  const [completedHistory, setCompletedHistory] = useState<Array<{ t: number; completed: number }>>([]);
+  useEffect(() => {
+    if (!status) return;
+    setCompletedHistory((prev) => {
+      const next = [...prev, { t: Date.now(), completed: status.jobs_completed_24h ?? 0 }];
+      return next.slice(-720);
+    });
+  }, [status]);
+
+  // Parallel rolling buffer for authoritative record count — powers the
+  // NEX Brain Pulse learning-rate metric (records added per hour).
+  const [authoritativeHistory, setAuthoritativeHistory] = useState<Array<{ t: number; count: number }>>([]);
+  useEffect(() => {
+    if (!status) return;
+    setAuthoritativeHistory((prev) => {
+      const next = [...prev, { t: Date.now(), count: status.records_authoritative ?? 0 }];
+      return next.slice(-720);
+    });
+  }, [status]);
 
   const handleDispatch = useCallback(async () => {
     setIsDispatching(true);
@@ -328,6 +379,15 @@ export function NexBrainShell() {
       <div className="mx-auto max-w-[1120px] px-5 pb-24 pt-8 md:px-8 md:pt-12">
         <Hero backend={status?.backend ?? "filesystem"} llm={llm} cloud={cloudStatus} />
 
+        <NexBrainPulse
+          status={status}
+          cloud={cloudStatus}
+          records={records}
+          mockHidden={mockHidden}
+          authoritativeHistory={authoritativeHistory}
+          llmHealth={llmHealth}
+        />
+
         <StatStrip status={status} loading={loading} />
 
         <ActionRow
@@ -341,6 +401,20 @@ export function NexBrainShell() {
           isImporting={isImporting}
           onRefresh={refresh}
         />
+
+        <OpsAgentRoster status={status} loading={loading} />
+
+        <OpsWorkerHealth status={status} cloud={cloudStatus} />
+
+        <OpsThroughputSparkline history={completedHistory} />
+
+        <OpsCurrentTask status={status} />
+
+        <OpsActivityFeed status={status} />
+
+        <OpsRecentOutput records={records} mockHidden={mockHidden} />
+
+        <OpsWorkerAuditLog />
 
         <AiConnectionStrip health={llmHealth} />
 
@@ -753,6 +827,51 @@ function ActionRow({
         {isImporting ? <Loader2 size={14} strokeWidth={2.3} className="animate-spin" /> : <DownloadCloud size={14} strokeWidth={2.3} />}
         Import existing records
       </button>
+      <Link
+        href="/nex-app/nex-brain/operations-centre"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
+        style={{ background: TOKEN.card, borderColor: TOKEN.accent, color: TOKEN.accent }}
+        title="NEX Headquarters — visual Operations Centre"
+      >
+        <Sparkles size={14} strokeWidth={2.3} />
+        Headquarters
+      </Link>
+      <Link
+        href="/nex-app/nex-brain/nex-storage"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
+        style={{ background: TOKEN.card, borderColor: TOKEN.accent, color: TOKEN.accent }}
+        title="NEX Storage — Infrastructure Runtime dashboard (adapters · health · config · dev tools)"
+      >
+        <Database size={14} strokeWidth={2.3} />
+        NEX Storage
+      </Link>
+      <Link
+        href="/nex-app/nex-brain/audit"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
+        style={{ background: TOKEN.card, borderColor: TOKEN.info, color: TOKEN.info }}
+        title="Operations History — permanent audit surface"
+      >
+        <Activity size={14} strokeWidth={2.3} />
+        History
+      </Link>
+      <Link
+        href="/nex-app/nex-brain/journal"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
+        style={{ background: TOKEN.card, borderColor: TOKEN.accentDark, color: TOKEN.accentDark }}
+        title="Worker Journal — per-job event timeline"
+      >
+        <GitBranch size={14} strokeWidth={2.3} />
+        Journal
+      </Link>
+      <Link
+        href="/nex-app/nex-booker"
+        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
+        style={{ background: TOKEN.card, borderColor: TOKEN.accentDark, color: TOKEN.accentDark }}
+        title="Open Nex Booker — the bookkeeping section (foundations under construction)"
+      >
+        <Wallet size={14} strokeWidth={2.3} />
+        Nex Booker
+      </Link>
       <button
         type="button"
         onClick={onRefresh}
@@ -768,6 +887,942 @@ function ActionRow({
 }
 
 // ── Worker pool ──────────────────────────────────────────────────────
+
+// ── Ops mockup: 3 sections placed above the WorkerPoolSection detail
+// table so Philip can SEE agents working at a glance without reading a
+// grid. Data source is `status.worker_pool` — no new API endpoints.
+
+function OpsAgentRoster({ status, loading }: { status: Status | null; loading: boolean }) {
+  const pool: Status["worker_pool"] = status?.worker_pool ?? [];
+  const types = Object.keys(WORKER_LABEL) as WorkerType[];
+  return (
+    <section className="mt-8">
+      <div className="flex items-baseline justify-between gap-2">
+        <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+          Agents
+        </h2>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Live
+        </span>
+      </div>
+      <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        {types.map((t) => {
+          const w = pool.find((p) => p.worker_type === t);
+          const meta = WORKER_LABEL[t];
+          const Icon = meta.icon;
+          const inFlight = w?.jobs_in_flight ?? 0;
+          const waiting = w?.jobs_waiting ?? 0;
+          const chip =
+            inFlight > 0
+              ? { label: "Working",   bg: "#DBEAFE", fg: "#1D4ED8", pulse: true }
+              : waiting > 0
+                ? { label: "Queued",  bg: "#FED7AA", fg: "#9A3412", pulse: false }
+                : w?.last_activity_at
+                  ? { label: "Idle",  bg: TOKEN.divider, fg: TOKEN.textMid, pulse: false }
+                  : { label: "Sleeping", bg: "#E5E7EB", fg: "#374151", pulse: false };
+          return (
+            <div
+              key={t}
+              className="flex items-center gap-3 rounded-2xl border p-3"
+              style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+            >
+              <div
+                className="grid h-10 w-10 flex-none place-items-center rounded-xl"
+                style={{ background: TOKEN.accentSoft, color: meta.color }}
+              >
+                <Icon size={18} strokeWidth={2} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-[13px] font-bold" style={{ color: TOKEN.text }}>
+                  {meta.label}
+                </div>
+                <div className="mt-1">
+                  <span
+                    className="inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                    style={{ background: chip.bg, color: chip.fg }}
+                  >
+                    {chip.pulse && <Loader2 size={9} strokeWidth={2.6} className="animate-spin" />}
+                    {chip.label}
+                  </span>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function OpsCurrentTask({ status }: { status: Status | null }) {
+  const pool: Status["worker_pool"] = status?.worker_pool ?? [];
+  const running = pool.find((w) => w.current_job_ref);
+
+  // Tick every second so the progress bar advances smoothly between
+  // status refresh cycles. Cheap — one setState per second, unmounts clean.
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    if (!running) return;
+    const id = window.setInterval(() => setTick((n) => n + 1), 1000);
+    return () => window.clearInterval(id);
+  }, [running]);
+
+  if (!running) return null;
+  const meta = WORKER_LABEL[running.worker_type];
+  const Icon = meta.icon;
+  const sinceMs = running.current_job_since
+    ? new Date(running.current_job_since).getTime()
+    : Date.now();
+  // avg_ms is per-worker average completion time — used to estimate progress.
+  // Fall back to 8s if the worker has no history yet. Clamp 3-97% so the
+  // bar always shows visible motion and never falsely reports "done".
+  const avgMs = (running as { avg_ms?: number }).avg_ms ?? 8000;
+  const elapsed = Date.now() - sinceMs;
+  const pct = Math.max(3, Math.min(97, (elapsed / Math.max(1000, avgMs)) * 100));
+
+  return (
+    <section className="mt-8">
+      <div
+        className="rounded-2xl border p-4"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        <div className="flex items-center gap-3">
+          <div
+            className="grid h-9 w-9 flex-none place-items-center rounded-xl"
+            style={{ background: TOKEN.accentSoft, color: meta.color }}
+          >
+            <Icon size={16} strokeWidth={2} />
+          </div>
+          <div className="min-w-0 flex-1">
+            <div
+              className="text-[10px] font-semibold uppercase tracking-widest"
+              style={{ color: TOKEN.textSoft }}
+            >
+              Current task
+            </div>
+            <div className="mt-0.5 truncate text-[13px] font-bold" style={{ color: TOKEN.text }}>
+              {meta.label} · <span className="font-mono text-[12px]">{truncate(running.current_job_ref!, 40)}</span>
+            </div>
+          </div>
+          <div className="text-[16px] font-black" style={{ color: TOKEN.accentDark }}>
+            {Math.round(pct)}%
+          </div>
+        </div>
+        <div
+          className="mt-3 h-2 w-full overflow-hidden rounded-full"
+          style={{ background: TOKEN.divider }}
+        >
+          <div
+            className="h-full transition-all duration-500 ease-out"
+            style={{ width: `${pct}%`, background: TOKEN.accent }}
+          />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// NEX Brain Pulse — Philip's polished narrative format 2026-08-07.
+// Doctrine: `project_nex_living_operating_system_for_staircase_knowledge_2026_08_07.md`
+// + `project_nex_operations_centre_living_digital_twin_2026_08_07.md`
+// (three-question test: what NEX is doing NOW · WHY · how today made NEX smarter).
+//
+// Rich narrative sections replace the terse metric-tile grid: every
+// number has a paragraph of context + honest empty states + a System
+// Advisory that names the current impact + Overall System Health table.
+function NexBrainPulse({
+  status,
+  cloud,
+  records,
+  mockHidden,
+  authoritativeHistory,
+  llmHealth,
+}: {
+  status: Status | null;
+  cloud: CloudStatus | null;
+  records: KnowledgeRecord[];
+  mockHidden: number;
+  authoritativeHistory: Array<{ t: number; count: number }>;
+  llmHealth: LlmHealthSnapshot | null;
+}) {
+  // Overall health verdict — derived from cloud + mock + provider health
+  const anyCloudOnline = cloud?.any_online === true;
+  const providers = llmHealth?.providers ?? [];
+  const healthyProviders = providers.filter((p) => p.status === "healthy").length;
+  const degradedProviders = providers.filter((p) => p.status === "degraded" || p.status === "circuit-open").length;
+
+  const failing = !anyCloudOnline;
+  const degraded = anyCloudOnline && (mockHidden > 0 || degradedProviders > 0);
+  const healthy = anyCloudOnline && mockHidden === 0 && degradedProviders === 0;
+
+  const statusChip: { label: string; bg: string; fg: string; symbol: string } =
+    failing  ? { label: "Failing",   bg: "#FEE2E2", fg: "#991B1B", symbol: "❌" } :
+    degraded ? { label: "Degraded",  bg: "#FEF3C7", fg: "#92400E", symbol: "⚠️" } :
+    healthy  ? { label: "Healthy",   bg: "#DCFCE7", fg: "#166534", symbol: "✅" } :
+               { label: "Starting…", bg: TOKEN.divider, fg: TOKEN.textMid, symbol: "…" };
+
+  const headline =
+    failing  ? "Knowledge processing is offline — cloud workers unreachable." :
+    degraded ? "Knowledge processing is operating with reduced capability." :
+    healthy  ? "Knowledge processing is operating normally." :
+               "Knowledge processing is initialising…";
+
+  const subline =
+    degraded
+      ? "Some AI providers are currently unavailable or have reached usage limits. As a result, knowledge production is operating below normal capacity and recent output quality has been affected."
+      : failing
+        ? "No cloud workers are currently online. New work is not being processed. Investigate Fly deployment status."
+        : healthy
+          ? "All cloud workers are online, providers are responsive, and knowledge is flowing to authoritative status normally."
+          : "";
+
+  // Learning rate — derived from the client-side buffer (same as before)
+  const learningRate = (() => {
+    if (authoritativeHistory.length < 2) return null;
+    const now = Date.now();
+    const oneHourAgo = now - 60 * 60 * 1000;
+    const recent = authoritativeHistory[authoritativeHistory.length - 1];
+    const past = authoritativeHistory.find((s) => s.t >= oneHourAgo);
+    if (!past || past.t === recent.t) return null;
+    const deltaCount = recent.count - past.count;
+    const deltaHours = (recent.t - past.t) / (60 * 60 * 1000);
+    if (deltaHours <= 0) return null;
+    return Math.max(0, deltaCount / deltaHours);
+  })();
+
+  const graphSize = (status?.records_authoritative ?? 0) + (status?.records_under_review ?? 0);
+  const authoritativeCount = status?.records_authoritative ?? 0;
+  const underReviewCount = status?.records_under_review ?? 0;
+
+  const latestAuthoritative = records.find((r) => (r as unknown as { review_status?: string }).review_status === "AUTHORITATIVE") ?? null;
+  const latestAuthoritativeAge = latestAuthoritative
+    ? formatRelativeAge((latestAuthoritative as unknown as { created_at?: string }).created_at ?? "")
+    : null;
+
+  const confidenceValues = records
+    .map((r) => (r as unknown as { overall_confidence?: number }).overall_confidence)
+    .filter((v): v is number => typeof v === "number");
+  const avgConfidence =
+    confidenceValues.length > 0
+      ? confidenceValues.reduce((s, v) => s + v, 0) / confidenceValues.length
+      : null;
+
+  // System Health table — every component derived from real telemetry
+  const healthRows: Array<{ label: string; status: "ok" | "warn" | "fail"; note?: string }> = [
+    { label: "Worker Infrastructure", status: "ok" },
+    { label: "Cloud Workers",         status: anyCloudOnline ? "ok" : "fail", note: anyCloudOnline ? `${cloud?.workers?.length ?? 0} online` : "None online" },
+    { label: "Queue Processing",      status: (status?.jobs_in_flight ?? 0) >= 0 ? "ok" : "warn" },
+    { label: "Knowledge Pipeline",    status: mockHidden > 0 ? "warn" : "ok", note: mockHidden > 0 ? "Fabricated output" : undefined },
+    { label: "AI Provider Capacity",  status: degradedProviders > 0 ? "warn" : healthyProviders > 0 ? "ok" : "warn", note: `${healthyProviders} healthy · ${degradedProviders} degraded` },
+    { label: "Knowledge Quality",     status: mockHidden > 0 ? "warn" : "ok", note: mockHidden > 0 ? "Mock records filtered" : undefined },
+    { label: "Memory System",         status: "ok" },
+  ];
+
+  return (
+    <section className="mt-8">
+      <div
+        className="rounded-2xl border p-5 md:p-6"
+        style={{
+          background: TOKEN.card,
+          borderColor: TOKEN.border,
+          boxShadow: TOKEN.shadowMd,
+        }}
+      >
+        {/* Header · status pill · headline · subline */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.accentDark }}>
+              NEX Brain Pulse
+            </div>
+            <div className="mt-1 text-[20px] font-black leading-tight tracking-tight md:text-[22px]" style={{ color: TOKEN.text }}>
+              {headline}
+            </div>
+            {subline ? (
+              <p className="mt-2 max-w-[720px] text-[12px] leading-relaxed" style={{ color: TOKEN.textMid }}>
+                {subline}
+              </p>
+            ) : null}
+          </div>
+          <span
+            className="flex-none rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest"
+            style={{ background: statusChip.bg, color: statusChip.fg }}
+          >
+            {statusChip.symbol} {statusChip.label}
+          </span>
+        </div>
+
+        <div className="mt-5 h-px w-full" style={{ background: TOKEN.divider }} />
+
+        {/* Knowledge Graph */}
+        <PulseSection title="Knowledge Graph" headline={`${graphSize.toLocaleString()} Records`}>
+          <ul className="mt-1 space-y-0.5 text-[12px]" style={{ color: TOKEN.textMid }}>
+            <li><span className="font-bold" style={{ color: TOKEN.text }}>{authoritativeCount.toLocaleString()}</span> Authoritative</li>
+            <li><span className="font-bold" style={{ color: TOKEN.text }}>{underReviewCount.toLocaleString()}</span> Under Review</li>
+          </ul>
+          <p className="mt-2 text-[11px]" style={{ color: TOKEN.textSoft }}>
+            These represent NEX&apos;s verified and developing knowledge base.
+          </p>
+        </PulseSection>
+
+        {/* Knowledge Production Rate */}
+        <PulseSection
+          title="Knowledge Production Rate"
+          headline={
+            learningRate === null
+              ? "Not yet available"
+              : learningRate === 0
+                ? "0 Authoritative Records / Hour"
+                : `${learningRate.toFixed(1)} Authoritative Records / Hour`
+          }
+        >
+          {learningRate === null ? (
+            <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+              Rate becomes available after ~5 minutes of polling data has accumulated.
+            </p>
+          ) : learningRate === 0 ? (
+            <>
+              <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+                No new records have been promoted to <span className="font-semibold">Authoritative</span> during the current reporting window.
+              </p>
+              <p className="mt-2 text-[11px]" style={{ color: TOKEN.textSoft }}>
+                This does <span className="font-semibold">not</span> necessarily mean workers are idle. Workers may still be processing, validating, retrying failed requests, or waiting for external AI provider capacity.
+              </p>
+            </>
+          ) : (
+            <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+              Records reaching Authoritative status per hour, computed from the last 60 minutes of polling data.
+            </p>
+          )}
+        </PulseSection>
+
+        {/* Knowledge Confidence */}
+        <PulseSection
+          title="Knowledge Confidence"
+          headline={avgConfidence === null ? "Not Available" : `${Math.round(avgConfidence * 100)}%`}
+        >
+          {avgConfidence === null ? (
+            <>
+              <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+                No confidence-scored records have been promoted during this reporting period.
+              </p>
+              <p className="mt-2 text-[11px]" style={{ color: TOKEN.textSoft }}>
+                Confidence metrics will automatically resume once verified provider responses are available.
+              </p>
+            </>
+          ) : (
+            <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+              Average confidence across the {confidenceValues.length} most recently visible records.
+            </p>
+          )}
+        </PulseSection>
+
+        {/* Latest Authoritative */}
+        <PulseSection
+          title="Latest Authoritative Knowledge"
+          headline={latestAuthoritative ? ((latestAuthoritative as unknown as { title?: string }).title ?? "(untitled)") : "No recent authoritative promotions"}
+        >
+          {latestAuthoritative ? (
+            <div className="flex items-center gap-2 text-[11px]" style={{ color: TOKEN.textSoft }}>
+              <span>Promoted {latestAuthoritativeAge}</span>
+            </div>
+          ) : (
+            <p className="text-[12px]" style={{ color: TOKEN.textMid }}>
+              No records have reached Authoritative status during the selected time window.
+            </p>
+          )}
+        </PulseSection>
+
+        {/* System Advisory — only when there's an active concern */}
+        {mockHidden > 0 ? (
+          <>
+            <div className="mt-5 h-px w-full" style={{ background: TOKEN.divider }} />
+            <div className="mt-5">
+              <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.warning }}>
+                System Advisory
+              </div>
+              <p className="mt-2 text-[12px] leading-relaxed" style={{ color: TOKEN.textMid }}>
+                The current cloud worker configuration is allowing <span className="font-semibold">Mock Fallback</span> responses when production AI providers become unavailable. As a result:
+              </p>
+              <ul className="mt-2 space-y-1 text-[12px]" style={{ color: TOKEN.textMid }}>
+                <li>· Placeholder knowledge has been generated instead of queuing failed requests for retry.</li>
+                <li>· Recent placeholder records are automatically excluded from operational reporting.</li>
+                <li>· Learning metrics may appear lower than actual worker activity because placeholder output is not treated as trusted knowledge.</li>
+              </ul>
+              <p className="mt-2 text-[11px] italic" style={{ color: TOKEN.textSoft }}>
+                Once the cloud worker configuration is aligned with the approved NEX doctrine, failed requests will enter the retry queue and authoritative knowledge production will resume when provider capacity becomes available.
+              </p>
+            </div>
+          </>
+        ) : null}
+
+        {/* Overall System Health table */}
+        <div className="mt-5 h-px w-full" style={{ background: TOKEN.divider }} />
+        <div className="mt-5">
+          <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+            Overall System Health
+          </div>
+          <div className="mt-2 overflow-hidden rounded-lg border" style={{ borderColor: TOKEN.border }}>
+            {healthRows.map((row, i) => {
+              const chip =
+                row.status === "ok"   ? { symbol: "✅", label: "Healthy",     bg: "#DCFCE7", fg: "#166534" } :
+                row.status === "warn" ? { symbol: "⚠️", label: "Degraded",    bg: "#FEF3C7", fg: "#92400E" } :
+                                        { symbol: "❌", label: "Failing",     bg: "#FEE2E2", fg: "#991B1B" };
+              return (
+                <div
+                  key={row.label}
+                  className="flex items-center gap-3 px-4 py-2.5 text-[12px]"
+                  style={{
+                    borderTop: i === 0 ? "none" : `1px solid ${TOKEN.divider}`,
+                    background: i % 2 === 0 ? TOKEN.card : TOKEN.surface,
+                  }}
+                >
+                  <span className="flex-1 font-semibold" style={{ color: TOKEN.text }}>{row.label}</span>
+                  {row.note ? (
+                    <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>{row.note}</span>
+                  ) : null}
+                  <span
+                    className="rounded-full px-2 py-0.5 text-[10px] font-bold"
+                    style={{ background: chip.bg, color: chip.fg }}
+                  >
+                    {chip.symbol} {chip.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <p className="mt-3 text-[12px] leading-relaxed" style={{ color: TOKEN.textMid }}>
+            <span className="font-semibold" style={{ color: TOKEN.text }}>NEX remains operational.</span>
+            {" "}The current limitation affects knowledge generation quality rather than the availability of the platform itself.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PulseSection({
+  title, headline, children,
+}: {
+  title: string;
+  headline: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="mt-5">
+      <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+        {title}
+      </div>
+      <div className="mt-1 text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+        {headline}
+      </div>
+      <div className="mt-1">{children}</div>
+    </div>
+  );
+}
+
+function PulseMetric({
+  label, value, hint, icon: Icon, tone,
+}: {
+  label: string;
+  value: string;
+  hint?: string;
+  icon: React.ComponentType<{ size?: number; strokeWidth?: number }>;
+  tone: string;
+}) {
+  return (
+    <div>
+      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+        <Icon size={11} strokeWidth={2.3} />
+        {label}
+      </div>
+      <div className="mt-1 text-[24px] font-black leading-none tracking-tight" style={{ color: tone }}>
+        {value}
+      </div>
+      {hint ? (
+        <div className="mt-1 line-clamp-2 text-[11px]" style={{ color: TOKEN.textSoft }}>
+          {hint}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+// Worker Health — per-worker heartbeat + local vs Fly cloud breakdown.
+// Answers "is she alive?" at a glance. Each row: name · online/idle/stale
+// pill · last-activity age · region (for cloud workers) · uptime.
+function OpsWorkerHealth({
+  status, cloud,
+}: {
+  status: Status | null;
+  cloud: CloudStatus | null;
+}) {
+  const now = Date.now();
+  const pool: Status["worker_pool"] = status?.worker_pool ?? [];
+
+  // Fly cloud workers (from /api/nex/brain/cloud-status) come with age_ms + region + uptime
+  const cloudWorkers = cloud?.workers ?? [];
+
+  // Local pool → derive age from last_activity_at
+  const localRows = pool.map((w) => {
+    const lastMs = w.last_activity_at ? new Date(w.last_activity_at).getTime() : null;
+    const ageMs = lastMs === null ? null : Math.max(0, now - lastMs);
+    const status: "working" | "idle" | "sleeping" | "stale" =
+      w.jobs_in_flight > 0 ? "working" :
+      ageMs !== null && ageMs < 30_000 ? "idle" :
+      ageMs !== null && ageMs < 5 * 60_000 ? "idle" :
+      ageMs !== null ? "stale" : "sleeping";
+    const meta = WORKER_LABEL[w.worker_type];
+    return { key: w.worker_type, label: meta.label, icon: meta.icon, color: meta.color, ageMs, status, jobs24h: w.jobs_completed_24h };
+  });
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-baseline justify-between gap-2">
+        <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+          Worker health
+        </h2>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Live · 5s
+        </span>
+      </div>
+
+      {/* Cloud workers strip (Fly) — the ones that actually own the work */}
+      <div className="mt-3">
+        <div className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: TOKEN.textSoft }}>
+          Cloud workers (Fly)
+        </div>
+        {cloudWorkers.length === 0 ? (
+          <div
+            className="rounded-2xl border p-4 text-[12px]"
+            style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+          >
+            No cloud workers online. If this persists, run <span className="font-mono">fly status --app nex-brain-worker</span>.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+            {cloudWorkers.map((cw) => {
+              const uptimeH = Math.floor(cw.uptime_ms / 3_600_000);
+              const uptimeM = Math.floor((cw.uptime_ms % 3_600_000) / 60_000);
+              const ageS = Math.round(cw.age_ms / 1000);
+              const isOnline = cw.status === "online";
+              const chip =
+                isOnline           ? { label: "Online",   bg: "#DCFCE7", fg: "#166534" } :
+                cw.status === "lagging" ? { label: "Lagging",  bg: "#FEF3C7", fg: "#92400E" } :
+                                     { label: "Stale",    bg: "#FEE2E2", fg: "#991B1B" };
+              return (
+                <div
+                  key={cw.host_id}
+                  className="flex items-center gap-3 rounded-2xl border p-3"
+                  style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+                >
+                  <div
+                    className="grid h-9 w-9 flex-none place-items-center rounded-xl"
+                    style={{ background: TOKEN.accentSoft, color: TOKEN.info }}
+                  >
+                    <Cloud size={16} strokeWidth={2} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline gap-2">
+                      <span className="truncate font-mono text-[11px]" style={{ color: TOKEN.text }}>
+                        {cw.host_id.slice(0, 10)}
+                      </span>
+                      <span className="text-[10px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+                        {(cw.metadata as { region?: string } | null)?.region ?? "—"}
+                      </span>
+                    </div>
+                    <div className="mt-1 flex items-center gap-2 text-[11px]" style={{ color: TOKEN.textMid }}>
+                      <span>up {uptimeH}h {uptimeM}m</span>
+                      <span style={{ color: TOKEN.textSoft }}>·</span>
+                      <span>{cw.cycles_total.toLocaleString()} cycles</span>
+                      <span style={{ color: TOKEN.textSoft }}>·</span>
+                      <span>heartbeat {ageS}s ago</span>
+                    </div>
+                  </div>
+                  <span
+                    className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                    style={{ background: chip.bg, color: chip.fg }}
+                  >
+                    {chip.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+
+      {/* Local worker roster (per-type activity) */}
+      <div className="mt-4">
+        <div className="text-[10px] font-semibold uppercase tracking-widest mb-2" style={{ color: TOKEN.textSoft }}>
+          Per-stage activity (24h totals)
+        </div>
+        <div
+          className="overflow-hidden rounded-2xl border"
+          style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+        >
+          {localRows.map((r, i) => {
+            const Icon = r.icon;
+            const chip =
+              r.status === "working"   ? { label: "Working",  bg: "#DBEAFE", fg: "#1D4ED8" } :
+              r.status === "idle"      ? { label: "Idle",     bg: TOKEN.divider, fg: TOKEN.textMid } :
+              r.status === "sleeping"  ? { label: "Sleeping", bg: "#E5E7EB", fg: "#374151" } :
+                                         { label: "Stale",    bg: "#FEE2E2", fg: "#991B1B" };
+            const ageLabel =
+              r.ageMs === null ? "never active" :
+              r.ageMs < 60_000 ? `${Math.round(r.ageMs / 1000)}s ago` :
+              r.ageMs < 3_600_000 ? `${Math.round(r.ageMs / 60_000)}m ago` :
+              `${Math.round(r.ageMs / 3_600_000)}h ago`;
+            return (
+              <div
+                key={r.key}
+                className="flex items-center gap-3 px-4 py-2.5"
+                style={{ borderTop: i === 0 ? "none" : `1px solid ${TOKEN.divider}` }}
+              >
+                <div
+                  className="grid h-7 w-7 flex-none place-items-center rounded-lg"
+                  style={{ background: TOKEN.accentSoft, color: r.color }}
+                >
+                  <Icon size={13} strokeWidth={2} />
+                </div>
+                <div className="flex-1 truncate text-[13px] font-semibold" style={{ color: TOKEN.text }}>
+                  {r.label}
+                </div>
+                <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
+                  {ageLabel}
+                </span>
+                <span className="text-[11px] font-mono" style={{ color: TOKEN.textMid }}>
+                  {r.jobs24h.toLocaleString()}
+                </span>
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                  style={{ background: chip.bg, color: chip.fg }}
+                >
+                  {chip.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Throughput sparkline — SVG polyline of jobs completed per 5-minute
+// bucket over the last hour. Data source: client-side history buffer
+// (see `completedHistory` in the shell). Zero external chart library.
+function OpsThroughputSparkline({ history }: { history: Array<{ t: number; completed: number }> }) {
+  if (history.length < 2) {
+    return (
+      <section className="mt-8">
+        <div
+          className="rounded-2xl border p-4 text-[12px]"
+          style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Throughput graph warming up… (needs ~10 seconds of polling data)
+        </div>
+      </section>
+    );
+  }
+
+  // Bucket per-5-min. For each bucket compute: (completed_at_end - completed_at_start).
+  // Simpler + more visually useful than rolling deltas: at each 5-min mark, take the
+  // latest sample and compute delta vs the previous 5-min mark.
+  const now = Date.now();
+  const bucketMs = 5 * 60 * 1000;
+  const buckets = 12;                       // Last hour · 12 × 5 min
+  const bucketEnds: number[] = [];
+  for (let i = buckets; i >= 1; i--) bucketEnds.push(now - (i - 1) * bucketMs);
+
+  // For each bucket end, find the sample closest to (but not after) it
+  const sampleAtOrBefore = (ts: number) => {
+    let best: typeof history[number] | null = null;
+    for (const s of history) if (s.t <= ts && (best === null || s.t > best.t)) best = s;
+    return best;
+  };
+
+  const deltas: number[] = [];
+  let prev = sampleAtOrBefore(bucketEnds[0] - bucketMs);
+  for (const end of bucketEnds) {
+    const cur = sampleAtOrBefore(end);
+    if (prev && cur) {
+      deltas.push(Math.max(0, cur.completed - prev.completed));
+    } else {
+      deltas.push(0);
+    }
+    prev = cur;
+  }
+
+  const max = Math.max(1, ...deltas);
+  const w = 640;
+  const h = 80;
+  const padX = 6;
+  const padY = 6;
+  const stepX = (w - padX * 2) / (buckets - 1);
+  const points = deltas.map((v, i) => {
+    const x = padX + i * stepX;
+    const y = h - padY - (v / max) * (h - padY * 2);
+    return `${x},${y}`;
+  }).join(" ");
+
+  const totalHour = deltas.reduce((s, v) => s + v, 0);
+
+  return (
+    <section className="mt-8">
+      <div
+        className="rounded-2xl border p-4"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        <div className="flex items-baseline justify-between gap-2">
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+              Throughput · last hour · 5-min buckets
+            </div>
+            <div className="mt-0.5 text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+              {totalHour.toLocaleString()} <span className="text-[12px] font-semibold" style={{ color: TOKEN.textSoft }}>jobs/hr</span>
+            </div>
+          </div>
+          <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>
+            peak bucket {max.toLocaleString()}
+          </span>
+        </div>
+        <svg viewBox={`0 0 ${w} ${h}`} className="mt-3 h-[80px] w-full">
+          <polyline
+            points={points}
+            fill="none"
+            stroke={TOKEN.accent}
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          {deltas.map((v, i) => {
+            const x = padX + i * stepX;
+            const y = h - padY - (v / max) * (h - padY * 2);
+            return <circle key={i} cx={x} cy={y} r={2.5} fill={TOKEN.accentDark} />;
+          })}
+        </svg>
+      </div>
+    </section>
+  );
+}
+
+// Recent NEX Output — last 10 knowledge records with title + confidence +
+// stage. Lets Philip see NEX's actual voice + spot low-quality promotion
+// or high-quality rejection. Reads from the same `records` prop already
+// populated by the shell's refresh() so no new fetch is needed.
+function OpsRecentOutput({ records, mockHidden = 0 }: { records: KnowledgeRecord[]; mockHidden?: number }) {
+  const top = records.slice(0, 10);
+
+  const bandForConfidence = (c: number | null | undefined) => {
+    const v = c ?? 0;
+    if (v >= 0.95) return { label: "Very high", bg: "#DCFCE7", fg: "#166534" };
+    if (v >= 0.85) return { label: "High",      bg: "#DBEAFE", fg: "#1D4ED8" };
+    if (v >= 0.70) return { label: "Good",      bg: "#FEF3C7", fg: "#92400E" };
+    return                { label: "Review",    bg: "#FEE2E2", fg: "#991B1B" };
+  };
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-baseline justify-between gap-2">
+        <div>
+          <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+            Recent NEX output
+          </h2>
+          <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+            Latest 10 knowledge records so you can see her voice + spot issues.
+          </p>
+        </div>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Voice + quality
+        </span>
+      </div>
+
+      {/* Configuration Mismatch — evidence-first per the "NEX must know
+          its own state" doctrine. Structured as: Expected · Actual · Effect
+          · Evidence · Recommendation. The CLI command is a small footer,
+          not the primary content. */}
+      {mockHidden > 0 ? <MockConfigurationMismatch mockHidden={mockHidden} /> : null}
+
+      <div
+        className="mt-3 overflow-hidden rounded-2xl border"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        {top.length === 0 ? (
+          <div className="px-4 py-6 text-center text-[12px]" style={{ color: TOKEN.textSoft }}>
+            {mockHidden > 0
+              ? "No REAL records yet — the panel is honest and empty until the Fly worker stops producing mock output."
+              : "No records yet. Run a cycle or process the inbox to see output."}
+          </div>
+        ) : top.map((r, i) => {
+          const rec = r as unknown as {
+            id: string;
+            title?: string;
+            summary?: string;
+            body_markdown?: string;
+            overall_confidence?: number;
+            review_status?: string;
+            category?: string;
+            industry_concepts?: string[];
+            nex_concepts?: string[];
+            created_at?: string;
+          };
+          const band = bandForConfidence(rec.overall_confidence);
+          const conf = rec.overall_confidence != null ? Math.round(rec.overall_confidence * 100) : null;
+          const stage = (rec.review_status ?? "draft").toLowerCase();
+          // "Finding" — the first sentence NEX extracted. Doctrine: show
+          // what was LEARNED, not just record metadata. Prefer body_markdown
+          // (richer), fall back to summary. Trim + strip markdown noise.
+          const finding = extractFirstFinding(rec.body_markdown ?? rec.summary ?? "");
+          const concepts = [
+            ...(rec.industry_concepts ?? []),
+            ...(rec.nex_concepts ?? []),
+          ].slice(0, 4);
+          return (
+            <div
+              key={rec.id ?? i}
+              className="flex items-start gap-3 px-4 py-3"
+              style={{ borderTop: i === 0 ? "none" : `1px solid ${TOKEN.divider}` }}
+            >
+              <div className="mt-0.5 grid h-6 w-6 flex-none place-items-center rounded-md"
+                   style={{ background: TOKEN.accentSoft, color: TOKEN.accentDark }}>
+                <FileCheck size={12} strokeWidth={2} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-[13px] font-bold" style={{ color: TOKEN.text }}>
+                  {rec.title ?? "(untitled)"}
+                </div>
+                {finding ? (
+                  <div className="mt-1.5 rounded-lg px-2.5 py-1.5" style={{ background: TOKEN.accentSoft }}>
+                    <div className="text-[9px] font-bold uppercase tracking-widest" style={{ color: TOKEN.accentDark }}>
+                      Finding
+                    </div>
+                    <div className="mt-0.5 line-clamp-3 text-[12.5px] leading-snug" style={{ color: TOKEN.text }}>
+                      {finding}
+                    </div>
+                  </div>
+                ) : rec.summary ? (
+                  <div className="mt-0.5 line-clamp-2 text-[12px]" style={{ color: TOKEN.textMid }}>
+                    {rec.summary}
+                  </div>
+                ) : null}
+                {concepts.length > 0 ? (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {concepts.map((c, ci) => (
+                      <span
+                        key={ci}
+                        className="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+                        style={{ background: TOKEN.divider, color: TOKEN.textMid }}
+                      >
+                        {c}
+                      </span>
+                    ))}
+                  </div>
+                ) : null}
+                <div className="mt-1.5 flex items-center gap-2 text-[10px] uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+                  <span>{stage}</span>
+                  {rec.category ? <><span>·</span><span>{rec.category}</span></> : null}
+                  {rec.created_at ? <><span>·</span><span>{formatRelativeAge(rec.created_at)}</span></> : null}
+                </div>
+              </div>
+              {conf != null ? (
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                  style={{ background: band.bg, color: band.fg }}
+                  title={`Confidence ${conf}%`}
+                >
+                  {conf}%
+                </span>
+              ) : null}
+            </div>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function OpsActivityFeed({ status }: { status: Status | null }) {
+  const pool: Status["worker_pool"] = status?.worker_pool ?? [];
+  type Event = { time: string; label: string; provider: string | null; kind: "ok" | "warn" };
+  const events: Event[] = pool
+    .filter((w) => w.last_activity_at)
+    .map((w) => {
+      const summary = (w as { last_result_summary?: { provider?: string; ok?: boolean } })
+        .last_result_summary;
+      return {
+        time: w.last_activity_at!,
+        label: WORKER_LABEL[w.worker_type].label,
+        provider: summary?.provider ?? null,
+        kind: summary?.ok === false ? "warn" : "ok",
+      };
+    })
+    .sort((a, b) => b.time.localeCompare(a.time))
+    .slice(0, 8);
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-baseline justify-between gap-2">
+        <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+          Last activity
+        </h2>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          {events.length ? `${events.length} recent` : "Idle"}
+        </span>
+      </div>
+      <div
+        className="mt-3 overflow-hidden rounded-2xl border"
+        style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+      >
+        {events.length === 0 ? (
+          <div className="px-4 py-6 text-center text-[12px]" style={{ color: TOKEN.textSoft }}>
+            No worker activity yet. Run a cycle or dispatch work to see live events here.
+          </div>
+        ) : (
+          events.map((e, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-3 px-4 py-2.5"
+              style={{ borderTop: i === 0 ? "none" : `1px solid ${TOKEN.divider}` }}
+            >
+              <span className="font-mono text-[11px]" style={{ color: TOKEN.textSoft }}>
+                {new Date(e.time).toLocaleTimeString()}
+              </span>
+              <span
+                className="text-[13px] font-bold"
+                style={{ color: e.kind === "warn" ? TOKEN.warning : TOKEN.success }}
+              >
+                {e.kind === "warn" ? "!" : "✓"}
+              </span>
+              <span className="flex-1 truncate text-[13px]" style={{ color: TOKEN.text }}>
+                {e.label}
+              </span>
+              {e.provider ? (
+                <span
+                  className="rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest"
+                  style={{ background: TOKEN.divider, color: TOKEN.textMid }}
+                >
+                  {e.provider}
+                </span>
+              ) : null}
+            </div>
+          ))
+        )}
+      </div>
+    </section>
+  );
+}
 
 function WorkerPoolSection({ status, loading }: { status: Status | null; loading: boolean }) {
   const pool = (status?.worker_pool?.length ? status!.worker_pool : PLACEHOLDER_POOL);
@@ -1735,4 +2790,311 @@ function ToastBanner({ toast }: { toast: NonNullable<Toast> }) {
       {toast.message}
     </motion.div>
   );
+}
+
+// Live Worker Audit Log — the retrospective evidence surface. Every LLM
+// call, every provider fallthrough, every job transition is a row here.
+// Enables answering "why did processing slow down yesterday?" without
+// ever inspecting Fly logs. Doctrine:
+// feedback_nex_must_know_its_own_state_infrastructure_doctrine_2026_08_07.md
+//
+// Self-contained: fetches its own data on a 5s poll so the panel updates
+// live without touching the outer shell's refresh cycle.
+type AuditEventRow = {
+  id: string;
+  worker_type: string;
+  worker_host_id: string | null;
+  job_id: string | null;
+  input_ref: string | null;
+  event_type: string;
+  actor: string;
+  at: string;
+  latency_ms: number | null;
+  provider: string | null;
+  model: string | null;
+  confidence: number | null;
+  outcome: string | null;
+  error_snippet: string | null;
+};
+
+function OpsWorkerAuditLog() {
+  const [events, setEvents] = useState<AuditEventRow[]>([]);
+  const [tableReady, setTableReady] = useState<boolean | null>(null);
+  const [note, setNote] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  const load = useCallback(async () => {
+    try {
+      const res = await fetch("/api/nex/brain/audit-events?limit=30&since_hours=6", { cache: "no-store" });
+      const j = await res.json();
+      if (j.ok) {
+        setEvents(j.events as AuditEventRow[]);
+        setTableReady(j.table_ready ?? true);
+        setNote(j.note ?? null);
+      }
+    } catch {
+      /* silent */
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    let id: number | null = null;
+    const start = () => { if (id === null) id = window.setInterval(load, 5000); };
+    const stop = () => { if (id !== null) { window.clearInterval(id); id = null; } };
+    const onVis = () => { document.hidden ? stop() : start(); };
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVis);
+    return () => { stop(); document.removeEventListener("visibilitychange", onVis); };
+  }, [load]);
+
+  const eventChip = (evt: string) => {
+    if (evt.includes("failed") || evt.includes("rejected") || evt.includes("circuit_opened")) return { bg: "#FEE2E2", fg: "#991B1B" };
+    if (evt.includes("budget_exhausted"))                                                     return { bg: "#FEF3C7", fg: "#92400E" };
+    if (evt.includes("ok") || evt.includes("promoted") || evt.includes("completed"))          return { bg: "#DCFCE7", fg: "#166534" };
+    if (evt.includes("started") || evt.includes("sent"))                                      return { bg: "#DBEAFE", fg: "#1D4ED8" };
+    return { bg: TOKEN.divider, fg: TOKEN.textMid };
+  };
+
+  return (
+    <section className="mt-8">
+      <div className="flex items-baseline justify-between gap-2">
+        <div>
+          <h2 className="text-[18px] font-black tracking-tight" style={{ color: TOKEN.text }}>
+            Worker Audit Log
+          </h2>
+          <p className="mt-1 text-[12px]" style={{ color: TOKEN.textSoft }}>
+            Every provider attempt · every job transition · every rejection. This is how NEX explains itself without touching Fly.
+          </p>
+        </div>
+        <span
+          className="rounded-full border px-3 py-1 text-[10px] font-semibold uppercase tracking-widest"
+          style={{ background: TOKEN.divider, borderColor: TOKEN.border, color: TOKEN.textSoft }}
+        >
+          Live · 5s
+        </span>
+      </div>
+
+      {/* Table-not-ready state — honest per doctrine */}
+      {tableReady === false ? (
+        <div
+          className="mt-3 rounded-2xl border p-4 text-[12px]"
+          style={{ background: "#FFFBEB", borderColor: "#F59E0B", color: "#78350F" }}
+        >
+          <div className="font-bold">Worker Audit Log not yet enabled</div>
+          <div className="mt-1">{note ?? "Apply db/migrations/004_worker_audit_events.sql via Supabase Studio SQL Editor to create the table. The emit helper is already wired in llm.ts; events will flow as soon as the table exists."}</div>
+        </div>
+      ) : loading && events.length === 0 ? (
+        <div className="mt-3 rounded-2xl border p-6 text-center text-[12px]" style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textSoft }}>
+          Loading audit events…
+        </div>
+      ) : events.length === 0 ? (
+        <div className="mt-3 rounded-2xl border p-6 text-center text-[12px]" style={{ background: TOKEN.card, borderColor: TOKEN.border, color: TOKEN.textSoft }}>
+          No audit events in the last 6 hours. When workers process real jobs, every LLM attempt + transition will appear here.
+        </div>
+      ) : (
+        <div
+          className="mt-3 max-h-[420px] overflow-y-auto rounded-2xl border"
+          style={{ background: TOKEN.card, borderColor: TOKEN.border, boxShadow: TOKEN.shadowSm }}
+        >
+          {events.map((e, i) => {
+            const chip = eventChip(e.event_type);
+            const timeStr = new Date(e.at).toLocaleTimeString();
+            return (
+              <div
+                key={e.id}
+                className="flex items-start gap-3 px-4 py-2 text-[12px]"
+                style={{ borderTop: i === 0 ? "none" : `1px solid ${TOKEN.divider}` }}
+              >
+                <span className="w-[70px] flex-none font-mono text-[11px]" style={{ color: TOKEN.textSoft }}>
+                  {timeStr}
+                </span>
+                <span
+                  className="flex-none rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-widest"
+                  style={{ background: chip.bg, color: chip.fg }}
+                >
+                  {e.event_type}
+                </span>
+                <span className="flex-1 truncate" style={{ color: TOKEN.text }}>
+                  <span className="font-semibold">{e.worker_type}</span>
+                  {e.provider ? <span style={{ color: TOKEN.textMid }}> · {e.provider}</span> : null}
+                  {e.model ? <span className="font-mono text-[10px]" style={{ color: TOKEN.textSoft }}> · {e.model}</span> : null}
+                  {e.error_snippet ? <span className="ml-2 text-[11px]" style={{ color: "#991B1B" }}>· {e.error_snippet.slice(0, 80)}</span> : null}
+                </span>
+                {e.latency_ms != null ? (
+                  <span className="flex-none font-mono text-[11px]" style={{ color: TOKEN.textMid }}>
+                    {e.latency_ms} ms
+                  </span>
+                ) : null}
+                {e.confidence != null ? (
+                  <span className="flex-none font-mono text-[11px]" style={{ color: TOKEN.info }}>
+                    {Math.round(e.confidence * 100)}%
+                  </span>
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
+
+// Configuration Mismatch — evidence-first infrastructure panel.
+// Wording refined to Philip's polished formal-ops-report format
+// (feedback_nex_must_know_its_own_state_infrastructure_doctrine_2026_08_07.md).
+function MockConfigurationMismatch({ mockHidden }: { mockHidden: number }) {
+  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <div>
+      <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#92400E" }}>
+        {title}
+      </div>
+      <div className="mt-1.5 text-[12px] leading-relaxed" style={{ color: "#78350F" }}>
+        {children}
+      </div>
+    </div>
+  );
+
+  return (
+    <div
+      className="mt-3 overflow-hidden rounded-2xl border"
+      style={{ background: "#FFFBEB", borderColor: "#F59E0B" }}
+    >
+      {/* Header */}
+      <div className="flex items-center gap-3 border-b px-5 py-4" style={{ borderColor: "#F59E0B", background: "#FEF3C7" }}>
+        <AlertTriangle size={18} strokeWidth={2.2} style={{ color: "#92400E" }} />
+        <div className="flex-1">
+          <div className="text-[14px] font-bold" style={{ color: "#78350F" }}>
+            Configuration Mismatch Detected — Cloud Worker
+          </div>
+          <div className="mt-0.5 text-[12px]" style={{ color: "#92400E" }}>
+            A configuration mismatch has been detected between the expected NEX operating doctrine and the currently running cloud worker configuration. This mismatch is causing the cloud worker to generate placeholder knowledge instead of following the approved knowledge recovery workflow.
+          </div>
+        </div>
+      </div>
+
+      {/* Sections */}
+      <div className="grid grid-cols-1 gap-5 p-5 md:grid-cols-2">
+        <Section title="Expected Configuration">
+          <div className="font-mono text-[13px]" style={{ color: "#1E293B" }}>
+            LLM_ALLOW_MOCK_FALLBACK = <span className="font-bold" style={{ color: "#166534" }}>false</span>
+          </div>
+          <p className="mt-2">
+            When an LLM provider is unavailable or reaches its quota, the request should be placed into the LLM Retry Queue for automatic processing when capacity becomes available.
+            This ensures NEX never fabricates knowledge and only stores information produced by verified providers.
+          </p>
+        </Section>
+
+        <Section title="Current Cloud Configuration">
+          <div className="font-mono text-[13px]" style={{ color: "#1E293B" }}>
+            LLM_ALLOW_MOCK_FALLBACK = <span className="font-bold" style={{ color: "#991B1B" }}>true</span>
+            <span className="ml-2 text-[11px] italic" style={{ color: "#92400E" }}>(inferred from live worker behaviour)</span>
+          </div>
+          <p className="mt-2">
+            The cloud worker is falling back to the Mock Adapter whenever available providers are exhausted or unavailable.
+          </p>
+        </Section>
+
+        <div className="md:col-span-2">
+          <Section title="Operational Impact">
+            <ul className="mt-1 space-y-1.5">
+              <li>· Approximately <span className="font-bold">{mockHidden.toLocaleString()}</span> placeholder records were generated during this reporting window.</li>
+              <li>· Placeholder records are automatically excluded from the Recent Output view to protect the quality of operational reporting.</li>
+              <li>· Failed provider requests are <span className="font-semibold">not</span> entering the retry queue as defined by NEX doctrine.</li>
+              <li>· Downstream workers may receive fabricated input, reducing the reliability of confidence scoring, quality validation, and knowledge promotion.</li>
+            </ul>
+            <p className="mt-2 italic">
+              Although these records remain fully auditable, they do not contribute to trusted knowledge.
+            </p>
+          </Section>
+        </div>
+
+        <div className="md:col-span-2">
+          <Section title="Evidence">
+            <p>Current telemetry indicates:</p>
+            <ul className="mt-1 space-y-1">
+              <li>· Placeholder records identified using the Mock Adapter (record_id pattern <span className="font-mono">mock_%</span>).</li>
+              <li>· Worker activity confirms recent processing through the mock provider.</li>
+              <li>· Multiple production LLM providers are currently reporting quota limits or service failures.</li>
+              <li>· Provider failures are consistent with exhausted quotas, rate limiting, and unavailable services during this reporting period.</li>
+            </ul>
+            <p className="mt-2 italic">
+              Once the Worker Audit Log is fully instrumented, this panel will display the complete provider attempt history for every job, including retries, response times, failure reasons, and the exact decision path that led to the final outcome.
+            </p>
+          </Section>
+        </div>
+
+        <div className="md:col-span-2 rounded-lg border p-4" style={{ background: "#FEF3C7", borderColor: "#F59E0B" }}>
+          <Section title="Recommendation">
+            <p>Synchronise the cloud worker configuration with the approved NEX operating doctrine.</p>
+            <p className="mt-2">Once synchronised:</p>
+            <ul className="mt-1 space-y-1">
+              <li>· Failed requests will automatically enter the LLM Retry Queue.</li>
+              <li>· No additional placeholder knowledge will be created.</li>
+              <li>· Existing placeholder records will remain available for audit purposes but will no longer increase.</li>
+              <li>· Knowledge quality, confidence metrics, and downstream worker processing will accurately reflect verified provider output.</li>
+            </ul>
+          </Section>
+        </div>
+
+        <div className="md:col-span-2 rounded-lg border p-4" style={{ background: "#FEE2E2", borderColor: "#F87171" }}>
+          <div className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#991B1B" }}>
+            Administrative Action Required
+          </div>
+          <div className="mt-2 text-[12px] leading-relaxed" style={{ color: "#7F1D1D" }}>
+            <span className="font-semibold">Configuration Status:</span> Action Required.
+            {" "}Synchronise the cloud worker configuration so it matches the approved operational doctrine before resuming normal knowledge processing.
+            This recommendation is based on live operational telemetry and is intended to preserve the integrity, traceability, and reliability of the NEX knowledge platform.
+          </div>
+          <details className="mt-3">
+            <summary className="cursor-pointer text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#991B1B" }}>
+              Developer command
+            </summary>
+            <pre className="mt-1 overflow-x-auto rounded-md bg-white/70 p-2 text-[11px] font-mono" style={{ color: "#1E293B" }}>
+{`fly secrets set LLM_ALLOW_MOCK_FALLBACK=false --app nex-brain-worker`}
+            </pre>
+          </details>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Helpers used by ops panels ─────────────────────────────────────
+
+/** Pulls the first sentence of a record's body/summary as the "Finding"
+ *  displayed in Recent Output. Strips markdown noise. Returns "" when
+ *  the input is empty or obviously boilerplate (e.g. mock adapter output). */
+function extractFirstFinding(body: string): string {
+  if (!body) return "";
+  // Strip markdown headings, code fences, list markers, boilerplate
+  const stripped = body
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/^#{1,6}\s+.*$/gm, "")
+    .replace(/^[-*+]\s+/gm, "")
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .replace(/\*(.*?)\*/g, "$1")
+    .replace(/`([^`]+)`/g, "$1")
+    .trim();
+  if (!stripped) return "";
+  // Take the first sentence (up to first ., !, ?) — or up to 280 chars
+  const match = stripped.match(/^(.{20,400}?[.!?])(\s|$)/);
+  const firstSentence = match ? match[1] : stripped.slice(0, 280);
+  return firstSentence.trim();
+}
+
+/** "3s ago" / "5m ago" / "2h ago" / "3d ago" — for record created_at etc. */
+function formatRelativeAge(iso: string): string {
+  const then = Date.parse(iso);
+  if (!Number.isFinite(then)) return "";
+  const seconds = Math.max(0, Math.round((Date.now() - then) / 1000));
+  if (seconds < 60)     return `${seconds}s ago`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60)     return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours   < 24)     return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  return `${days}d ago`;
 }
