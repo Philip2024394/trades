@@ -10,9 +10,10 @@ import { contactFormConnectorDefinition } from "./contact_form";
 import { manualConnectorDefinition } from "./manual";
 import { fsStoreConnector } from "./fs_store";
 import { csvConnectorDefinition } from "./csv";
+import { crmConnector } from "./crm";
 
 // Pull-mode connectors: have a sync() method · admin/scheduled trigger.
-export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector, newsletterConnector, fsStoreConnector];
+export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector, newsletterConnector, fsStoreConnector, crmConnector];
 
 // Push-mode connectors: event-driven · caller fires records · no sync().
 // Definition-only; the caller (e.g. /api/contact) uses a dedicated helper
@@ -25,9 +26,8 @@ export const UPLOAD_CONNECTORS: readonly ConnectorDefinition[] = [csvConnectorDe
 
 // Definitions for connectors not yet built · surfaced in the Mission Control
 // panel so admins see the full roadmap · never triggerable.
-export const PLANNED_CONNECTORS: readonly ConnectorDefinition[] = [
-  { id: "crm",          label: "CRM Records",            source_type: "crm",          status: "planned", mode: "pull", description: "hammerex_xrated_customer / CRM tables · Phase 3b.7", scheduled: false },
-];
+// Phase 3b is complete · every roadmap connector is now built.
+export const PLANNED_CONNECTORS: readonly ConnectorDefinition[] = [];
 
 export function findConnector(id: string): Connector | undefined {
   return KNOWN_CONNECTORS.find((c) => c.definition.id === id);
