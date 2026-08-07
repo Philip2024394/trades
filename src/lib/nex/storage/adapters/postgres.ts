@@ -172,8 +172,12 @@ const META: Record<string, CollectionMeta> = {
       "tags", "consent_marketing", "consent_transactional", "consent_source",
       "attributes", "lifecycle_stage", "first_seen_at", "last_seen_at",
       "linked_business_id", "updated_at", "business_id",
+      // Contact Intelligence · Phase 3a additions (migration 012_contact_intelligence.sql)
+      "company", "country", "region", "languages", "trade_categories",
+      "preferred_channels", "never_contact", "unsubscribe_at",
+      "last_contacted_at", "canonical_email", "canonical_phone", "deleted_at",
     ],
-    jsonbColumns: ["tags", "attributes"],
+    jsonbColumns: ["tags", "attributes", "languages", "trade_categories", "preferred_channels"],
   },
   tracking_events: {
     table: "nex.tracking_events",

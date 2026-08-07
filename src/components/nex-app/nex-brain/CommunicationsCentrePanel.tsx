@@ -70,6 +70,27 @@ type AuditResponse = {
   recent: AuditEvent[];
 };
 
+type ContactsOverview = {
+  ok: boolean;
+  health?: { healthy: boolean; detail: string };
+  total_contacts?: number;
+  by_source?: Array<{ source_type: string; count: number }>;
+  by_country?: Array<{ country: string; count: number }>;
+  by_lifecycle?: Array<{ lifecycle_stage: string; count: number }>;
+  by_consent?: {
+    marketing_yes: number; marketing_no: number; marketing_unknown: number;
+    transactional_yes: number; transactional_no: number; transactional_unknown: number;
+    never_contact: number; unsubscribed: number;
+  };
+  top_tags?: Array<{ tag: string; count: number }>;
+  duplicates_pending?: number;
+  merges_all_time?: number;
+  recently_added?: Array<{ contact_id: string; name: string | null; email: string | null; source: string | null; first_seen_at: string | null }>;
+  recently_contacted?: Array<{ contact_id: string; name: string | null; email: string | null; last_contacted_at: string | null }>;
+  growth?: Array<{ day: string; added: number }>;
+  reason?: string;
+};
+
 // ── Theme (dark · matches NexStoragePanel · shared Runtime aesthetic) ───
 const T = {
   bg:       "#0b0d10",
@@ -171,17 +192,20 @@ function transactionalFamilies(top: Array<{ key: string; count: number }>): Arra
 export function CommunicationsCentrePanel() {
   const [config, setConfig] = useState<ConfigResponse | null>(null);
   const [audit, setAudit] = useState<AuditResponse | null>(null);
+  const [contacts, setContacts] = useState<ContactsOverview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>("");
 
   const load = useCallback(async () => {
     try {
-      const [c, a] = await Promise.all([
+      const [c, a, k] = await Promise.all([
         fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
+        fetch("/api/nex/contacts/overview", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, reason: "fetch_failed" })),
       ]);
       if (c.ok) setConfig(c);
       if (a.ok) setAudit(a);
+      setContacts(k);                                     // may be ok:false — panel handles
       setLastUpdate(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
@@ -242,20 +266,100 @@ export function CommunicationsCentrePanel() {
           </Section>
 
           {/* 2 · CONTACTS ────────────────────────────────────────── */}
-          <Section title="Contacts" badge="awaiting Phase 3 · Contact Intelligence">
-            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
-              <Metric label="Total contacts" value="—" tone="unset" />
-              <Metric label="Trades" value="—" tone="unset" />
-              <Metric label="Customers" value="—" tone="unset" />
-              <Metric label="Newsletter subs" value="—" tone="unset" />
-              <Metric label="Manual" value="—" tone="unset" />
-              <Metric label="Countries" value="—" tone="unset" />
-            </div>
-            <HonestEmpty
-              phase="Phase 3"
-              title="Unified contact model not yet built"
-              body="Contacts today live in multiple tables (hammerex_trade_off_listings, hammerex_xrated_newsletter_subscribers, CRM tables, nex.contacts). Phase 3 unifies them into one contact model with tags, consent, country, lifecycle stage, and communication history."
-            />
+          <Section title="Contacts" badge={contacts?.ok ? `live · registry v1 · from /api/nex/contacts/overview` : contacts?.reason === "registry not reachable · aggregates unavailable" ? "registry unreachable" : "loading"}>
+            {contacts && contacts.ok ? (
+              <>
+                <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
+                  <Metric label="Total contacts" value={contacts.total_contacts?.toLocaleString() ?? "0"} tone={contacts.total_contacts ? "good" : "unset"} hint="canonical rows · deleted excluded" />
+                  <Metric label="Trades (source)" value={contacts.by_source?.find((s) => s.source_type === "trades")?.count ?? 0} tone="neutral" />
+                  <Metric label="Newsletter (source)" value={contacts.by_source?.find((s) => s.source_type === "newsletter")?.count ?? 0} tone="neutral" />
+                  <Metric label="Form (source)" value={contacts.by_source?.find((s) => s.source_type === "form")?.count ?? 0} tone="neutral" />
+                  <Metric label="Manual (source)" value={contacts.by_source?.find((s) => s.source_type === "manual")?.count ?? 0} tone="neutral" />
+                  <Metric label="Countries" value={contacts.by_country?.length ?? 0} tone="neutral" hint={contacts.by_country && contacts.by_country.length > 0 ? contacts.by_country.slice(0, 3).map((c) => `${c.country} (${c.count})`).join(" · ") : undefined} />
+                  <Metric label="Duplicates pending" value={contacts.duplicates_pending ?? 0} tone={(contacts.duplicates_pending ?? 0) > 0 ? "warn" : "neutral"} />
+                  <Metric label="Merges (all-time)" value={contacts.merges_all_time ?? 0} tone="neutral" />
+                </div>
+
+                {contacts.by_consent ? (
+                  <div className="mb-3 rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+                    <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Consent overview</div>
+                    <div className="grid grid-cols-4 gap-2 text-[11px]">
+                      <div>
+                        <div className="text-[9px] uppercase tracking-widest" style={{ color: T.textFade }}>Marketing</div>
+                        <div className="mt-1 font-mono">
+                          <span style={{ color: T.accent }}>{contacts.by_consent.marketing_yes}</span>
+                          <span style={{ color: T.textFade }}> / </span>
+                          <span style={{ color: T.danger }}>{contacts.by_consent.marketing_no}</span>
+                          <span style={{ color: T.textFade }}> / </span>
+                          <span style={{ color: T.textFade }}>{contacts.by_consent.marketing_unknown}</span>
+                        </div>
+                        <div className="text-[9px]" style={{ color: T.textFade }}>yes / no / unknown</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] uppercase tracking-widest" style={{ color: T.textFade }}>Transactional</div>
+                        <div className="mt-1 font-mono">
+                          <span style={{ color: T.accent }}>{contacts.by_consent.transactional_yes}</span>
+                          <span style={{ color: T.textFade }}> / </span>
+                          <span style={{ color: T.danger }}>{contacts.by_consent.transactional_no}</span>
+                          <span style={{ color: T.textFade }}> / </span>
+                          <span style={{ color: T.textFade }}>{contacts.by_consent.transactional_unknown}</span>
+                        </div>
+                        <div className="text-[9px]" style={{ color: T.textFade }}>yes / no / unknown</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] uppercase tracking-widest" style={{ color: T.textFade }}>Never-contact</div>
+                        <div className="mt-1 font-mono text-[14px]" style={{ color: (contacts.by_consent.never_contact ?? 0) > 0 ? T.warning : T.text }}>{contacts.by_consent.never_contact}</div>
+                      </div>
+                      <div>
+                        <div className="text-[9px] uppercase tracking-widest" style={{ color: T.textFade }}>Unsubscribed</div>
+                        <div className="mt-1 font-mono text-[14px]" style={{ color: (contacts.by_consent.unsubscribed ?? 0) > 0 ? T.warning : T.text }}>{contacts.by_consent.unsubscribed}</div>
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
+
+                {contacts.top_tags && contacts.top_tags.length > 0 ? (
+                  <div className="mb-3 rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+                    <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Top tags</div>
+                    <div className="flex flex-wrap gap-1">
+                      {contacts.top_tags.map((t) => (
+                        <span key={t.tag} className="rounded-full border px-2 py-0.5 text-[10px]" style={{ background: T.panel, borderColor: T.border, color: T.text }}>
+                          {t.tag} <span style={{ color: T.textFade }}>· {t.count}</span>
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                {contacts.recently_added && contacts.recently_added.length > 0 ? (
+                  <div className="mb-3 rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+                    <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Recently added</div>
+                    <div className="space-y-1">
+                      {contacts.recently_added.slice(0, 5).map((c) => (
+                        <div key={c.contact_id} className="grid items-center gap-2 rounded border p-2 text-[10.5px]" style={{ background: T.panel, borderColor: T.border, gridTemplateColumns: "180px 220px 100px 1fr" }}>
+                          <span style={{ color: T.text }}>{c.name ?? "—"}</span>
+                          <span className="font-mono" style={{ color: T.info }}>{c.email ?? "—"}</span>
+                          <span className="text-[9.5px] uppercase tracking-widest" style={{ color: T.accent }}>{c.source ?? "—"}</span>
+                          <span className="font-mono text-[9.5px]" style={{ color: T.textFade }}>{c.first_seen_at ?? "—"}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : null}
+
+                <div className="text-[10px] italic" style={{ color: T.textFade }}>
+                  Registry health: <span style={{ color: contacts.health?.healthy ? T.accent : T.danger }}>{contacts.health?.healthy ? "healthy" : "unhealthy"}</span> · {contacts.health?.detail} · Contact explorer + merge UI arrive in Phase 3c · source importers (trades · newsletter · CRM · form · CSV) in Phase 3b.
+                </div>
+              </>
+            ) : contacts && !contacts.ok ? (
+              <HonestEmpty
+                phase="Registry not reachable"
+                title="Contact Registry not responding"
+                body={`Reason: ${contacts.reason ?? "unknown"}. Ensure NEX_POSTGRES_URL is set and the schema is applied (npm run nex:apply-storage-schema).`}
+              />
+            ) : (
+              <div className="text-[11px]" style={{ color: T.textFade }}>Loading contact registry state…</div>
+            )}
           </Section>
 
           {/* 3 · MARKETING ──────────────────────────────────────── */}
