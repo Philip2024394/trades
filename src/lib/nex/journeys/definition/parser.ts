@@ -7,7 +7,7 @@
 
 import type { JourneyDefinition, Node, NodeType } from "../types";
 
-const NODE_TYPES: Set<NodeType> = new Set(["start", "wait", "send_campaign", "branch", "goal", "stop"]);
+const NODE_TYPES: Set<NodeType> = new Set(["start", "wait", "send_campaign", "branch", "goal", "stop", "send_campaign_and_wait"]);
 
 export type ParseResult = { ok: true; definition: JourneyDefinition } | { ok: false; errors: string[] };
 
@@ -77,6 +77,23 @@ export function parseDefinition(raw: unknown): ParseResult {
         const next = n.next ? String(n.next) : undefined;
         if (!goal_key) { errors.push(`node ${id} (goal) missing goal_key`); continue; }
         nodes.push({ ...base, type, goal_key, next });
+        break;
+      }
+      case "send_campaign_and_wait": {
+        const campaign_id = String(n.campaign_id ?? "");
+        const next_on_completion = String(n.next_on_completion ?? "");
+        const next_on_failure = n.next_on_failure ? String(n.next_on_failure) : undefined;
+        const poll_interval_seconds = n.poll_interval_seconds !== undefined ? Number(n.poll_interval_seconds) : undefined;
+        const timeout_seconds = n.timeout_seconds !== undefined ? Number(n.timeout_seconds) : undefined;
+        if (!campaign_id) { errors.push(`node ${id} (send_campaign_and_wait) missing campaign_id`); continue; }
+        if (!next_on_completion) { errors.push(`node ${id} (send_campaign_and_wait) missing next_on_completion`); continue; }
+        if (poll_interval_seconds !== undefined && (!Number.isFinite(poll_interval_seconds) || poll_interval_seconds < 5 || poll_interval_seconds > 3600)) {
+          errors.push(`node ${id} (send_campaign_and_wait) poll_interval_seconds must be between 5 and 3600`); continue;
+        }
+        if (timeout_seconds !== undefined && (!Number.isFinite(timeout_seconds) || timeout_seconds < 60)) {
+          errors.push(`node ${id} (send_campaign_and_wait) timeout_seconds must be >= 60`); continue;
+        }
+        nodes.push({ ...base, type, campaign_id, next_on_completion, next_on_failure, poll_interval_seconds, timeout_seconds });
         break;
       }
       case "stop": {

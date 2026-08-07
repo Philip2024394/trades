@@ -16,6 +16,7 @@ import { evalSendCampaign } from "../nodes/send_campaign";
 import { evalStart } from "../nodes/start";
 import { evalStop } from "../nodes/stop";
 import { evalWait } from "../nodes/wait";
+import { evalSendCampaignAndWait } from "../nodes/send_campaign_and_wait";
 
 export async function advanceState(
   input: TickInput,
@@ -37,11 +38,12 @@ export async function advanceState(
 // (never modify existing cases · doctrine §5 "future-proof node model").
 async function dispatch(node: Node, input: TickInput, lookup: EventLookup, lastEmittedCampaignId: string | null): Promise<TickOutput> {
   switch (node.type) {
-    case "start":         return evalStart(node, input);
-    case "wait":          return evalWait(node, input);
-    case "send_campaign": return evalSendCampaign(node, input);
-    case "branch":        return evalBranch(node, input, lookup, lastEmittedCampaignId);
-    case "goal":          return evalGoal(node, input);
-    case "stop":          return evalStop(node, input);
+    case "start":                    return evalStart(node, input);
+    case "wait":                     return evalWait(node, input);
+    case "send_campaign":            return evalSendCampaign(node, input);
+    case "branch":                   return evalBranch(node, input, lookup, lastEmittedCampaignId);
+    case "goal":                     return evalGoal(node, input);
+    case "stop":                     return evalStop(node, input);
+    case "send_campaign_and_wait":   return evalSendCampaignAndWait(node, input);
   }
 }

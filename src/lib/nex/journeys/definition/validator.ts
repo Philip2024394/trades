@@ -59,10 +59,13 @@ export async function validateForActivation(def: JourneyDefinition): Promise<Val
   const cycle = findCycle(def);
   if (cycle) errors.push(`cycle detected: ${cycle.join(" → ")} · introduce a Loop node in a future version if intentional`);
 
-  // 7 · SendCampaign references an existing campaign (DB read · async)
-  const sendNodes = def.nodes.filter((n): n is Extract<Node, { type: "send_campaign" }> => n.type === "send_campaign");
-  if (sendNodes.length > 0) {
-    const ids = Array.from(new Set(sendNodes.map((n) => n.campaign_id)));
+  // 7 · Send{Campaign,CampaignAndWait} reference existing campaigns
+  const sendIds = [
+    ...def.nodes.filter((n): n is Extract<Node, { type: "send_campaign" }> => n.type === "send_campaign").map((n) => n.campaign_id),
+    ...def.nodes.filter((n): n is Extract<Node, { type: "send_campaign_and_wait" }> => n.type === "send_campaign_and_wait").map((n) => n.campaign_id),
+  ];
+  if (sendIds.length > 0) {
+    const ids = Array.from(new Set(sendIds));
     const missing = await withClient(async (c) => {
       const placeholders = ids.map((_, i) => `$${i + 1}`).join(",");
       const res = await c.query(`SELECT campaign_id FROM nex.campaigns WHERE campaign_id = ANY(ARRAY[${placeholders}]::uuid[])`, ids);
@@ -70,7 +73,7 @@ export async function validateForActivation(def: JourneyDefinition): Promise<Val
       return ids.filter((id) => !found.has(id));
     });
     if (missing && missing.length > 0) {
-      for (const id of missing) errors.push(`SendCampaign references non-existent campaign ${id}`);
+      for (const id of missing) errors.push(`Send node references non-existent campaign ${id}`);
     }
   }
 
@@ -79,12 +82,13 @@ export async function validateForActivation(def: JourneyDefinition): Promise<Val
 
 function outgoing(n: Node): string[] {
   switch (n.type) {
-    case "start":         return [n.next];
-    case "wait":          return [n.next];
-    case "send_campaign": return [n.next];
-    case "branch":        return [n.branches.yes, n.branches.no];
-    case "goal":          return n.next ? [n.next] : [];
-    case "stop":          return [];
+    case "start":                    return [n.next];
+    case "wait":                     return [n.next];
+    case "send_campaign":            return [n.next];
+    case "branch":                   return [n.branches.yes, n.branches.no];
+    case "goal":                     return n.next ? [n.next] : [];
+    case "stop":                     return [];
+    case "send_campaign_and_wait":   return n.next_on_failure ? [n.next_on_completion, n.next_on_failure] : [n.next_on_completion];
   }
 }
 

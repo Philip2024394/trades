@@ -6,8 +6,8 @@
 //   Input:  (Journey, JourneyState, currentTime)
 //   Output: (nextState, commands[], events[])
 
-// ── Node model · locked MVP six ──────────────────────────────────
-export type NodeType = "start" | "wait" | "send_campaign" | "branch" | "goal" | "stop";
+// ── Node model · MVP six + 5.1.4 addition ────────────────────────
+export type NodeType = "start" | "wait" | "send_campaign" | "branch" | "goal" | "stop" | "send_campaign_and_wait";
 
 export type NodeBase = { id: string; type: NodeType; label?: string };
 
@@ -24,7 +24,17 @@ export type BranchNode       = NodeBase & {
 export type GoalNode         = NodeBase & { type: "goal";          next?: string; goal_key: string };
 export type StopNode         = NodeBase & { type: "stop";          reason?: string };
 
-export type Node = StartNode | WaitNode | SendCampaignNode | BranchNode | GoalNode | StopNode;
+// Phase 5.1.4 · dependency-aware send
+export type SendCampaignAndWaitNode = NodeBase & {
+  type: "send_campaign_and_wait";
+  campaign_id: string;
+  next_on_completion: string;
+  next_on_failure?: string;                                              // when omitted · permanent failure → Stop
+  poll_interval_seconds?: number;                                        // default 30 · min 5 · max 3600
+  timeout_seconds?: number;                                              // default 86400 (24h) · after this: treat as failed_permanent
+};
+
+export type Node = StartNode | WaitNode | SendCampaignNode | BranchNode | GoalNode | StopNode | SendCampaignAndWaitNode;
 
 export type JourneyDefinition = {
   nodes: Node[];
