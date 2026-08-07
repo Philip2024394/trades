@@ -18,6 +18,7 @@ import { DeliveryEnginePanel } from "./DeliveryEnginePanel";
 import { AnalyticsPanel } from "./AnalyticsPanel";
 import { SystemHealthPanel } from "./SystemHealthPanel";
 import { ComplianceCentrePanel } from "./ComplianceCentrePanel";
+import { AlertsCentrePanel } from "./AlertsCentrePanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -676,6 +677,11 @@ export function CommunicationsCentrePanel() {
           {/* 3d.1 · COMPLIANCE CENTRE ────────────────────────────── */}
           <Section title="Compliance Centre" badge="Phase 4f.3 · one-way flow · structured state · immutable audit">
             <ComplianceCentrePanel />
+          </Section>
+
+          {/* 3d.2 · ALERTS CENTRE ─────────────────────────────────── */}
+          <Section title="Alerts Centre" badge="Phase 4f.9 · 13 rules · lifecycle · dispatchers are dumb pipes">
+            <AlertsCentrePanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
