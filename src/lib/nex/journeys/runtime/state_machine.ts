@@ -17,6 +17,7 @@ import { evalStart } from "../nodes/start";
 import { evalStop } from "../nodes/stop";
 import { evalWait } from "../nodes/wait";
 import { evalSendCampaignAndWait } from "../nodes/send_campaign_and_wait";
+import { evalExperiment } from "../nodes/experiment";
 
 export async function advanceState(
   input: TickInput,
@@ -45,5 +46,6 @@ async function dispatch(node: Node, input: TickInput, lookup: EventLookup, lastE
     case "goal":                     return evalGoal(node, input);
     case "stop":                     return evalStop(node, input);
     case "send_campaign_and_wait":   return evalSendCampaignAndWait(node, input);
+    case "experiment":               return evalExperiment(node, input);
   }
 }

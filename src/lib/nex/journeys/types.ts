@@ -6,8 +6,8 @@
 //   Input:  (Journey, JourneyState, currentTime)
 //   Output: (nextState, commands[], events[])
 
-// ── Node model · MVP six + 5.1.4 addition ────────────────────────
-export type NodeType = "start" | "wait" | "send_campaign" | "branch" | "goal" | "stop" | "send_campaign_and_wait";
+// ── Node model · MVP six + 5.1.4 addition + 5.2 experiment ───────
+export type NodeType = "start" | "wait" | "send_campaign" | "branch" | "goal" | "stop" | "send_campaign_and_wait" | "experiment";
 
 export type NodeBase = { id: string; type: NodeType; label?: string; position?: { x: number; y: number } };
 
@@ -34,7 +34,14 @@ export type SendCampaignAndWaitNode = NodeBase & {
   timeout_seconds?: number;                                              // default 86400 (24h) · after this: treat as failed_permanent
 };
 
-export type Node = StartNode | WaitNode | SendCampaignNode | BranchNode | GoalNode | StopNode | SendCampaignAndWaitNode;
+// Phase 5.2 · A/B experiment router · reads/creates sticky assignment · routes to variant's target_node_id
+export type ExperimentNode = NodeBase & {
+  type: "experiment";
+  experiment_id: string;
+  fallback_node_id?: string;                                             // used when no variants are configured OR assignment fails
+};
+
+export type Node = StartNode | WaitNode | SendCampaignNode | BranchNode | GoalNode | StopNode | SendCampaignAndWaitNode | ExperimentNode;
 
 export type JourneyDefinition = {
   nodes: Node[];

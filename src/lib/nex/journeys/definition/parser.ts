@@ -7,7 +7,7 @@
 
 import type { JourneyDefinition, Node, NodeType } from "../types";
 
-const NODE_TYPES: Set<NodeType> = new Set(["start", "wait", "send_campaign", "branch", "goal", "stop", "send_campaign_and_wait"]);
+const NODE_TYPES: Set<NodeType> = new Set(["start", "wait", "send_campaign", "branch", "goal", "stop", "send_campaign_and_wait", "experiment"]);
 
 export type ParseResult = { ok: true; definition: JourneyDefinition } | { ok: false; errors: string[] };
 
@@ -102,6 +102,16 @@ export function parseDefinition(raw: unknown): ParseResult {
       case "stop": {
         const reason = n.reason ? String(n.reason) : undefined;
         nodes.push({ ...base, type, reason });
+        break;
+      }
+      case "experiment": {
+        const experiment_id = String(n.experiment_id ?? "");
+        const fallback_node_id = n.fallback_node_id ? String(n.fallback_node_id) : undefined;
+        const variant_target_node_ids = Array.isArray(n.variant_target_node_ids)
+          ? (n.variant_target_node_ids as unknown[]).map((x) => String(x)).filter((s) => s.length > 0)
+          : undefined;
+        if (!experiment_id) { errors.push(`node ${id} (experiment) missing experiment_id`); continue; }
+        nodes.push({ ...base, type, experiment_id, fallback_node_id, variant_target_node_ids });
         break;
       }
     }

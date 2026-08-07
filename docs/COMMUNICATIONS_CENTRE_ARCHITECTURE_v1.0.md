@@ -7,6 +7,7 @@
 **Amendments:**
 - **1.0.1 (2026-08-08)** — 11th invariant added (Journey Runtime is deterministic) ahead of Phase 5.1. See `docs/JOURNEY_ENGINE_CHARTER.md` for the accompanying Journey Engine doctrine.
 - **1.0.2 (2026-08-08)** — 12th invariant added (Trigger evaluators are pure event readers) ahead of Phase 5.1.2. Charter updated with trigger versioning + canonical `JourneyTriggerEvent` envelope + `schedule` added to the locked trigger-type set.
+- **1.0.3 (2026-08-08)** — 13th invariant added (Experiment assignment is sticky and deterministic) ahead of Phase 5.2. New rule: A/B Testing may read analytics events and emit experiment metadata, but it cannot modify compliance, delivery, provider, or contact state.
 
 If a proposed change would violate one of the invariants below, the architecture — not just the implementation — is at risk. Reject the change until the invariant is explicitly re-negotiated in an amendment to this document.
 
@@ -223,6 +224,7 @@ type ProviderSendResult =
 10. **The Compliance Engine + Alert Engine + Analytics layer + Provider adapter interface + Canonical event schema are frozen at v1.0.** Extending is allowed; modifying is a doctrine amendment requiring Philip's explicit sign-off.
 11. **Journey Runtime is deterministic.** Given the same journey definition, immutable recipient snapshot, event history, and current state, it MUST always produce the same emitted commands. (Amendment 1.0.1 · added ahead of Phase 5.1 · full doctrine in `docs/JOURNEY_ENGINE_CHARTER.md`.)
 12. **Trigger evaluators are pure event readers.** They never mutate platform state directly; they only materialise journey entries through the existing `entry.ts` path. Every trigger — segment_join, analytics_event, compliance_transition, inactivity, custom_webhook, schedule, and every future trigger type — produces the same `JourneyTriggerEvent` envelope and enters journeys through one controlled, replayable mechanism. (Amendment 1.0.2 · added ahead of Phase 5.1.2 · full doctrine in `docs/JOURNEY_ENGINE_CHARTER.md` §11.)
+13. **Experiment assignment is sticky and deterministic.** A contact receives exactly one variant assignment per experiment, and that assignment is reproducible from the immutable experiment/contact inputs (contact_id + experiment_id + seed → deterministic hash → variant). Duplicate ticks cannot reassign. Replay produces the same result. A/B Testing may read analytics events and emit experiment metadata, but it cannot modify compliance, delivery, provider, or contact state. (Amendment 1.0.3 · added ahead of Phase 5.2 · full doctrine in `docs/JOURNEY_ENGINE_CHARTER.md` §12.)
 
 ---
 

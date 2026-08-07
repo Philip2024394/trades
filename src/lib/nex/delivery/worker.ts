@@ -135,10 +135,13 @@ async function runExpand(campaign_id: string): Promise<Record<string, unknown>> 
   return { ...result };
 }
 
-async function runSendBatch(campaign_id: string, _payload: Record<string, unknown>): Promise<Record<string, unknown>> {
+async function runSendBatch(campaign_id: string, payload: Record<string, unknown>): Promise<Record<string, unknown>> {
   const campaign = await getCampaign(campaign_id);
   if (!campaign) throw new Error("campaign not found (permanent)");
   if (campaign.status !== "sending") return { skipped: true, campaign_status: campaign.status };
+  // Phase 5.2 · experiment metadata propagation · pulled from journey command payload
+  const experiment_id = typeof payload.experiment_id === "string" ? payload.experiment_id : null;
+  const variant_id    = typeof payload.variant_id    === "string" ? payload.variant_id    : null;
 
   const provider = activeProvider();
   const recipients = await claimNextRecipients(campaign_id, BATCH_SIZE);
@@ -176,7 +179,8 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
       await enqueueJob({
         job_type: "campaign.send_batch", campaign_id, priority: 90,
         scheduled_for: new Date(Date.now() + Math.max(200, slot.retry_after_ms)).toISOString(),
-        payload: { rate_limit_scope: slot.scope, retry_after_ms: slot.retry_after_ms },
+        // Preserve experiment metadata across the requeue · Phase 5.2 rule
+        payload: { ...payload, rate_limit_scope: slot.scope, retry_after_ms: slot.retry_after_ms },
       });
       return { sent, failed, requeued_for_rate_limit: slot.scope, retry_after_ms: slot.retry_after_ms };
     }
@@ -212,12 +216,15 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
           provider: provider.id, country: campaign_country_for(r), domain,
           provider_message_id: res.provider_message_id, latency_ms: res.latency_ms,
           metadata: { batch: true },
+          ...(experiment_id ? { experiment_id } : {}),
+          ...(variant_id    ? { variant_id }    : {}),
         });
         if (provider.id === "simulator") {
           await simulateEngagementFor({
             campaign_id, recipient_id: r.contact_id, segment_id,
             email: r.email, country: campaign_country_for(r),
             provider_message_id: res.provider_message_id,
+            experiment_id, variant_id,
           });
         }
       } else {
@@ -258,7 +265,9 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
   });
 
   // Queue the next batch (or finalise) · always follow-up so the pipeline drains
-  await enqueueJob({ job_type: "campaign.send_batch", campaign_id, priority: 90, scheduled_for: new Date(Date.now() + 250).toISOString() });
+  // Preserve payload (esp. experiment_id + variant_id · Phase 5.2) so
+  // follow-up batches for the same campaign keep their analytics context.
+  await enqueueJob({ job_type: "campaign.send_batch", campaign_id, priority: 90, scheduled_for: new Date(Date.now() + 250).toISOString(), payload });
 
   await emitDeliveryEvent("delivery.batch_completed", { batch_size: recipients.length, sent, failed, defense_skipped }, campaign_id);
   return { batch_size: recipients.length, sent, failed, defense_skipped };

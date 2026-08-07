@@ -89,6 +89,10 @@ function outgoing(n: Node): string[] {
     case "goal":                     return n.next ? [n.next] : [];
     case "stop":                     return [];
     case "send_campaign_and_wait":   return n.next_on_failure ? [n.next_on_completion, n.next_on_failure] : [n.next_on_completion];
+    case "experiment":               return [
+      ...(n.variant_target_node_ids ?? []),                              // hint for reachability check
+      ...(n.fallback_node_id ? [n.fallback_node_id] : []),
+    ];
   }
 }
 

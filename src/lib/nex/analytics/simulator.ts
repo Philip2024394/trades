@@ -61,6 +61,8 @@ export async function simulateEngagementFor(input: {
   email: string;
   country?: string | null;
   provider_message_id?: string | null;
+  experiment_id?: string | null;
+  variant_id?: string | null;
 }): Promise<void> {
   const domain = (input.email.split("@")[1] ?? "unknown").toLowerCase();
   const uaBucket = DOMAIN_UAS[classifyDomain(domain)];
@@ -71,6 +73,9 @@ export async function simulateEngagementFor(input: {
     segment_id: input.segment_id ?? null,
     provider: "simulator", country: input.country ?? null, domain,
     provider_message_id: input.provider_message_id ?? null,
+    // Phase 5.2 · propagate experiment metadata to every simulated event
+    ...(input.experiment_id ? { experiment_id: input.experiment_id } : {}),
+    ...(input.variant_id    ? { variant_id:    input.variant_id    } : {}),
   };
 
   // Roll: bounced or delivered

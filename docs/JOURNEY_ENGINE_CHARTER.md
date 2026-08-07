@@ -264,3 +264,48 @@ That row is the single source of truth for support investigations of any custome
 Allowed reads: `nex.analytics_events`, `nex.compliance_events`, `nex.contacts` (read-only), `nex.contact_segments`, `nex.journey_inbound_events`.
 Allowed write: `nex.journey_states` **only via** `entry.ts::insertJourneyState()` — never a direct INSERT.
 
+---
+
+## 12 · Experiment doctrine (Amendment 1.0.3 · ahead of Phase 5.2)
+
+### 12.1 · Invariant #13
+
+> Experiment assignment is sticky and deterministic. A contact receives exactly one variant assignment per experiment, and that assignment is reproducible from the immutable experiment/contact inputs.
+
+### 12.2 · Assignment (locked)
+
+```
+variant_id = walkAllocation(
+  variants,
+  fnv1a(experiment_id + ":" + contact_id + ":" + seed) mod 10000
+)
+```
+
+- Seed is generated at experiment creation and stored on the experiment row (immutable).
+- Computed once on first evaluation → persisted to `nex.experiment_assignments` with `UNIQUE(experiment_id, contact_id)`.
+- Every subsequent visit reads the persisted assignment — never recomputes. Duplicate ticks cannot reassign.
+- Replay across environments produces the same variant.
+
+### 12.3 · What A/B Testing MAY do
+
+- Read analytics events to compute per-variant conversion
+- Read/write its own tables (`nex.experiments` · `nex.experiment_variants` · `nex.experiment_assignments`)
+- Emit `experiment_id` + `variant_id` metadata via the existing journey command payload → worker → ingest path (populates RESERVED slots on `nex.analytics_events`)
+
+### 12.4 · What A/B Testing MAY NOT do
+
+- Write to `nex.contacts` or any compliance table
+- Call any provider adapter directly
+- Call any dispatcher (email/webhook/slack)
+- Modify `nex.campaigns` or `nex.campaign_recipients`
+- Auto-choose a winner or rewrite the journey (that belongs to 5.4 Predictive)
+- Recompute an existing assignment (invariant #13)
+
+### 12.5 · Experiment node (added to locked node list · 8th type)
+
+- `experiment` — reads or creates the sticky assignment for the contact, then routes to the variant's `target_node_id`. No side effects on delivery/compliance. Writes an `active_experiments[]` entry to the journey state's `snapshot` so downstream Send nodes can propagate metadata.
+
+### 12.6 · Analytics propagation
+
+Downstream `send_campaign` / `send_campaign_and_wait` nodes include `experiment_id` + `variant_id` in the command payload. The existing worker forwards them to `ingestEvent()` which populates the RESERVED `experiment_id` + `variant_id` fields on `nex.analytics_events`. Zero changes to the frozen analytics schema.
+

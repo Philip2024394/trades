@@ -20,6 +20,7 @@ import { SystemHealthPanel } from "./SystemHealthPanel";
 import { ComplianceCentrePanel } from "./ComplianceCentrePanel";
 import { AlertsCentrePanel } from "./AlertsCentrePanel";
 import { JourneyEnginePanel } from "./JourneyEnginePanel";
+import { ExperimentsPanel } from "./ExperimentsPanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -688,6 +689,11 @@ export function CommunicationsCentrePanel() {
           {/* 3f · JOURNEY ENGINE ─────────────────────────────────── */}
           <Section title="Journey Engine" badge="Phase 5.1 · orchestration layer over the v1.0 kernel · deterministic runtime">
             <JourneyEnginePanel />
+          </Section>
+
+          {/* 3g · EXPERIMENTS / A/B TESTING ────────────────────────── */}
+          <Section title="Experiments (A/B Testing)" badge="Phase 5.2 · sticky deterministic assignment · invariant #13">
+            <ExperimentsPanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}

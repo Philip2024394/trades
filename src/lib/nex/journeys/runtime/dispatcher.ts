@@ -58,6 +58,8 @@ export async function advanceOne(journey: Journey, state: JourneyState, now: Dat
     if (next.wait_until !== undefined)     { params.push(next.wait_until);     sets.push(`wait_until = $${params.length}`); }
     if (next.completed_at !== undefined)   { params.push(next.completed_at);   sets.push(`completed_at = $${params.length}`); }
     if (next.stopped_reason !== undefined) { params.push(next.stopped_reason); sets.push(`stopped_reason = $${params.length}`); }
+    // Phase 5.2 · persist snapshot so Experiment node's active_experiments propagate to downstream Send nodes
+    if (next.snapshot !== undefined)       { params.push(JSON.stringify(next.snapshot)); sets.push(`snapshot = $${params.length}::jsonb`); }
     if (output.commands.length > 0) {
       params.push(JSON.stringify(output.commands[output.commands.length - 1]));
       sets.push(`last_command = $${params.length}::jsonb`);

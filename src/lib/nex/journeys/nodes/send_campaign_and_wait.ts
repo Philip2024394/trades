@@ -54,6 +54,11 @@ export async function evalSendCampaignAndWait(node: SendCampaignAndWaitNode, ctx
         commands: [],
       };
     }
+    // Phase 5.2 · propagate active experiment metadata into payload
+    const active = Array.isArray(ctx.state.snapshot?.active_experiments)
+      ? (ctx.state.snapshot.active_experiments as Array<{ experiment_id: string; variant_id: string }>)
+      : [];
+    const primary = active[active.length - 1];
     const command: JourneyCommand = {
       kind: "enqueue_send_batch",
       campaign_id: node.campaign_id,
@@ -62,6 +67,8 @@ export async function evalSendCampaignAndWait(node: SendCampaignAndWaitNode, ctx
         journey_id: ctx.journey.journey_id, journey_slug: ctx.journey.slug, journey_version: ctx.journey.version,
         node_id: node.id, state_id: ctx.state.state_id,
         execution_id: created.execution_id, wait_for_completion: true,
+        ...(primary ? { experiment_id: primary.experiment_id, variant_id: primary.variant_id } : {}),
+        ...(active.length > 0 ? { active_experiments: active } : {}),
       },
     };
     const wait_until = new Date(ctx.now.getTime() + pollInterval * 1000).toISOString();
