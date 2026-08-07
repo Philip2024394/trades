@@ -204,8 +204,10 @@ async function runSendBatch(campaign_id: string, _payload: Record<string, unknow
         }
       } else {
         if (res.retriable) {
+          // Honour provider retry-after when present (Retry-After header · SES ThrottlingException · SG 429 etc)
+          const retryAfterMs = res.retry_after_ms ?? undefined;
           await recordRecipientSend({ campaign_id, contact_id: r.contact_id, ok: false, provider: provider.id, latency_ms: res.latency_ms, error: res.error });
-          await emitDeliveryEvent("delivery.recipient_failed", { contact_id: r.contact_id, provider: provider.id, error: res.error, retriable: true }, campaign_id);
+          await emitDeliveryEvent("delivery.recipient_failed", { contact_id: r.contact_id, provider: provider.id, error: res.error, retriable: true, retry_after_ms: retryAfterMs }, campaign_id);
         } else {
           failed++;
           await recordRecipientSend({ campaign_id, contact_id: r.contact_id, ok: false, permanent: true, provider: provider.id, latency_ms: res.latency_ms, error: res.error });

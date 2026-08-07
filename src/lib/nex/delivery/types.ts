@@ -94,11 +94,16 @@ export type EmailMessage = {
 };
 
 export type ProviderSendResult =
-  | { ok: true;  provider_message_id: string; latency_ms: number }
-  | { ok: false; error: string; retriable: boolean; latency_ms: number };
+  | { ok: true;  provider_message_id: string; latency_ms: number; provider_metadata?: Record<string, unknown> }
+  | { ok: false; error: string; retriable: boolean; latency_ms: number; retry_after_ms?: number; provider_metadata?: Record<string, unknown> };
+
+export type ProviderEnvHint = { name: string; purpose: string; present: boolean; length?: number };
 
 export interface DeliveryProviderAdapter {
   id: string;                                         // 'simulator' | 'smtp' | 'ses' | 'sendgrid' | 'mailgun' | 'postmark'
   label: string;
   send(msg: EmailMessage): Promise<ProviderSendResult>;
+  isConfigured(): boolean;                            // env vars present · does not test connectivity
+  env_hints(): ProviderEnvHint[];                     // for the config panel · never returns secret values
+  health?(): Promise<{ ok: boolean; detail?: string }>;
 }
