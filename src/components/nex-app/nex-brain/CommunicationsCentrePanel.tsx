@@ -19,6 +19,7 @@ import { AnalyticsPanel } from "./AnalyticsPanel";
 import { SystemHealthPanel } from "./SystemHealthPanel";
 import { ComplianceCentrePanel } from "./ComplianceCentrePanel";
 import { AlertsCentrePanel } from "./AlertsCentrePanel";
+import { JourneyEnginePanel } from "./JourneyEnginePanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -682,6 +683,11 @@ export function CommunicationsCentrePanel() {
           {/* 3d.2 · ALERTS CENTRE ─────────────────────────────────── */}
           <Section title="Alerts Centre" badge="Phase 4f.9 · 13 rules · lifecycle · dispatchers are dumb pipes">
             <AlertsCentrePanel />
+          </Section>
+
+          {/* 3f · JOURNEY ENGINE ─────────────────────────────────── */}
+          <Section title="Journey Engine" badge="Phase 5.1 · orchestration layer over the v1.0 kernel · deterministic runtime">
+            <JourneyEnginePanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
