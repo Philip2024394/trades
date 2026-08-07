@@ -5,14 +5,14 @@
 
 import type { Connector, ConnectorDefinition } from "./types";
 import { tradesConnector } from "./trades";
+import { newsletterConnector } from "./newsletter";
 
 // All known connectors, ordered by build priority (per doctrine memory).
-export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector];
+export const KNOWN_CONNECTORS: readonly Connector[] = [tradesConnector, newsletterConnector];
 
 // Definitions for connectors not yet built · surfaced in the Mission Control
 // panel so admins see the full roadmap · never triggerable.
 export const PLANNED_CONNECTORS: readonly ConnectorDefinition[] = [
-  { id: "newsletter",   label: "Newsletter Subscribers", source_type: "newsletter",   status: "planned", description: "hammerex_xrated_newsletter_subscribers · per-merchant subs with unsubscribe_at + status", scheduled: false },
   { id: "contact-form", label: "Contact Form",           source_type: "form",         status: "planned", description: "Every /api/contact submission becomes a contact · Phase 3b.3", scheduled: false },
   { id: "manual",       label: "Manual Contact Entry",   source_type: "manual",       status: "planned", description: "Admin-added contacts via HQ form · Phase 3b.4", scheduled: false },
   { id: "csv",          label: "CSV Import",             source_type: "csv",          status: "planned", description: "Bulk CSV upload with column mapping · Phase 3b.5", scheduled: false },

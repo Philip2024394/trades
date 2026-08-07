@@ -111,6 +111,23 @@ export async function upsertContact(input: ContactUpsertInput): Promise<UpsertRe
     ? (email && existing.canonical_email === email ? "email" : "phone")
     : undefined;
 
+  // Compliance ratchet · doctrine: "compliance state is one-way toward safety."
+  // Once TRUE, never_contact stays true. Once set, unsubscribe_at is kept
+  // (even if a later source shows the contact as active). Once FALSE,
+  // consent_marketing / consent_transactional stay false until admin
+  // explicitly re-grants. This is the core safety invariant every
+  // connector inherits automatically.
+  const ratchetNeverContact = (existing?.never_contact === true) || (input.never_contact === true) || false;
+  const ratchetUnsubAt = existing?.unsubscribe_at ?? input.unsubscribe_at ?? null;
+  const ratchetMarketing =
+    (existing?.consent_marketing === false || input.consent_marketing === false)
+      ? false
+      : (input.consent_marketing ?? existing?.consent_marketing ?? null);
+  const ratchetTransactional =
+    (existing?.consent_transactional === false || input.consent_transactional === false)
+      ? false
+      : (input.consent_transactional ?? existing?.consent_transactional ?? null);
+
   // Merge existing snapshot fields with the incoming input · every new
   // upsert becomes a new snapshot with the CURRENT best-known state.
   const now = new Date().toISOString();
@@ -130,8 +147,8 @@ export async function upsertContact(input: ContactUpsertInput): Promise<UpsertRe
     kind: existing?.kind ?? null,
     source: input.source.type,
     source_ref: input.source.ref ?? null,
-    consent_marketing: input.consent_marketing ?? existing?.consent_marketing ?? null,
-    consent_transactional: input.consent_transactional ?? existing?.consent_transactional ?? null,
+    consent_marketing: ratchetMarketing,
+    consent_transactional: ratchetTransactional,
     consent_source: input.consent_source ?? existing?.consent_source ?? null,
     attributes: { ...(existing?.attributes ?? {}), ...(input.attributes ?? {}) },
     lifecycle_stage: input.lifecycle_stage ?? existing?.lifecycle_stage ?? null,
@@ -140,9 +157,8 @@ export async function upsertContact(input: ContactUpsertInput): Promise<UpsertRe
     linked_business_id: input.linked_business_id ?? existing?.linked_business_id ?? null,
     updated_at: now,
     business_id: input.business_id ?? existing?.business_id ?? null,
-    // New fields
-    never_contact: input.never_contact ?? existing?.never_contact ?? false,
-    unsubscribe_at: input.unsubscribe_at ?? existing?.unsubscribe_at ?? null,
+    never_contact: ratchetNeverContact,
+    unsubscribe_at: ratchetUnsubAt,
     last_contacted_at: existing?.last_contacted_at ?? null,
     preferred_channels: input.preferred_channels ?? existing?.preferred_channels ?? [],
     deleted_at: null,
