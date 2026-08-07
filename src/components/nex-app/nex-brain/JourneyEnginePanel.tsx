@@ -39,6 +39,23 @@ type Metrics = {
   emitted_commands_last_24h: number;
 };
 
+// Phase 5.1.2 · Rich Triggers
+type TriggerType = "segment_join" | "analytics_event" | "compliance_transition" | "inactivity" | "custom_webhook" | "schedule";
+type TriggerStatus = "draft" | "active" | "paused" | "archived";
+type JourneyTrigger = {
+  trigger_id: string; journey_id: string; trigger_key: string; version: number;
+  status: TriggerStatus; trigger_type: TriggerType; trigger_config: Record<string, unknown>;
+  dedup_window_sec: number; last_fired_at: string | null; fire_count: number;
+  created_at: string;
+};
+type InboundEventRow = {
+  inbound_event_id: string; trigger_key: string; received_at: string;
+  verified_signature: boolean; signature_algorithm: string | null;
+  contact_id: string | null; processed_at: string | null;
+  matched_triggers: number; matched_journey_ids: string[];
+  processing_error: string | null;
+};
+
 const T = {
   panel: "#12161c", panelHi: "#1a2028", border: "#232b36",
   text: "#e5e9ef", textDim: "#8892a0", textFade: "#5c6572",
@@ -84,6 +101,30 @@ export function JourneyEnginePanel() {
 
   const selected = useMemo(() => journeys.find((j) => j.journey_id === selectedId) ?? null, [journeys, selectedId]);
   const visible = useMemo(() => filter === "all" ? journeys : journeys.filter((j) => j.status === filter), [journeys, filter]);
+
+  // Phase 5.1.2 · triggers + inbound events for the selected journey
+  const [detailTab, setDetailTab] = useState<"execution" | "triggers" | "inbound">("execution");
+  const [triggers, setTriggers] = useState<JourneyTrigger[]>([]);
+  const [inboundEvents, setInboundEvents] = useState<InboundEventRow[]>([]);
+
+  const loadTriggers = useCallback(async (jid: string) => {
+    const r = await fetch(`/api/nex/journeys/${jid}/triggers`).then((x) => x.json()) as { ok: boolean; triggers: JourneyTrigger[] };
+    if (r.ok) setTriggers(r.triggers);
+  }, []);
+  const loadInbound = useCallback(async () => {
+    const r = await fetch("/api/nex/journeys/inbound-events?limit=25").then((x) => x.json()) as { ok: boolean; events: InboundEventRow[] };
+    if (r.ok) setInboundEvents(r.events);
+  }, []);
+
+  useEffect(() => { if (selectedId) void loadTriggers(selectedId); else setTriggers([]); }, [selectedId, loadTriggers]);
+  useEffect(() => { if (detailTab === "inbound") void loadInbound(); }, [detailTab, loadInbound]);
+
+  const triggerStatus = async (t: JourneyTrigger, to: TriggerStatus) => {
+    const r = await fetch(`/api/nex/journeys/triggers/${t.trigger_id}/status`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ to }) });
+    const data = await r.json() as { ok: boolean; error?: string };
+    if (!data.ok) { window.alert(`Failed: ${data.error}`); return; }
+    if (selectedId) await loadTriggers(selectedId);
+  };
 
   const changeStatus = async (journey: Journey, to: JourneyStatus) => {
     const r = await fetch(`/api/nex/journeys/${journey.journey_id}/status`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ to }) });
@@ -238,6 +279,27 @@ export function JourneyEnginePanel() {
                 ) : null}
               </div>
 
+              {/* Tabs · Phase 5.1.2 · Triggers + Inbound feed */}
+              <div className="mb-2 flex items-center gap-1">
+                {(["execution","triggers","inbound"] as const).map((tab) => (
+                  <button key={tab} type="button" onClick={() => setDetailTab(tab)}
+                    className="rounded-md border px-2 py-1 text-[10px] font-semibold uppercase tracking-widest"
+                    style={{
+                      background: detailTab === tab ? T.info : T.panel,
+                      borderColor: detailTab === tab ? T.info : T.border,
+                      color: detailTab === tab ? T.panel : T.textDim,
+                    }}>
+                    {tab === "execution" ? "Execution" : tab === "triggers" ? `Triggers · ${triggers.length}` : "Inbound webhooks"}
+                  </button>
+                ))}
+              </div>
+
+              {detailTab === "triggers" ? (
+                <TriggersTab triggers={triggers} onStatus={triggerStatus} onCreated={() => selectedId && loadTriggers(selectedId)} journey_id={selected.journey_id} />
+              ) : detailTab === "inbound" ? (
+                <InboundTab events={inboundEvents} onRefresh={loadInbound} />
+              ) : (
+                <>
               <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Execution · {selectedStates.length} contacts</div>
               <div className="max-h-[240px] overflow-auto rounded-md border" style={{ borderColor: T.border, background: T.panel }}>
                 {selectedStates.length === 0 ? (
@@ -278,6 +340,8 @@ export function JourneyEnginePanel() {
                   </div>
                 </div>
               ) : null}
+                </>
+              )}
             </div>
           )}
         </div>
@@ -285,6 +349,127 @@ export function JourneyEnginePanel() {
 
       <div className="text-[9.5px] italic" style={{ color: T.textFade }}>
         Journey Runtime is an orchestration layer · emits commands · never sends, picks providers, writes compliance, or executes campaigns. See docs/JOURNEY_ENGINE_CHARTER.md.
+      </div>
+    </div>
+  );
+}
+
+// ── Phase 5.1.2 · Triggers tab ────────────────────────────────
+const TRIGGER_TONE: Record<TriggerStatus, string> = { draft: T.textDim, active: T.accent, paused: T.warning, archived: T.textFade };
+
+function TriggersTab({ triggers, onStatus, onCreated, journey_id }: {
+  triggers: JourneyTrigger[]; onStatus: (t: JourneyTrigger, to: TriggerStatus) => void | Promise<void>;
+  onCreated: () => void | Promise<void>; journey_id: string;
+}) {
+  const [ttype, setType] = useState<TriggerType>("segment_join");
+  const [key, setKey] = useState("");
+  const [cfg, setCfg] = useState("{}");
+  const [dedup, setDedup] = useState(60);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+
+  const create = async () => {
+    setBusy(true); setErr(null);
+    try {
+      let trigger_config: Record<string, unknown> = {};
+      try { trigger_config = JSON.parse(cfg || "{}") as Record<string, unknown>; }
+      catch { setErr("trigger_config is not valid JSON"); return; }
+      const r = await fetch(`/api/nex/journeys/${journey_id}/triggers`, {
+        method: "POST", headers: { "content-type": "application/json" },
+        body: JSON.stringify({ trigger_key: key.trim(), trigger_type: ttype, trigger_config, dedup_window_sec: dedup }),
+      });
+      const data = await r.json() as { ok: boolean; error?: string };
+      if (!data.ok) { setErr(data.error ?? "create_failed"); return; }
+      setKey(""); setCfg("{}");
+      await onCreated();
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <div>
+      {/* Create form */}
+      <div className="mb-2 rounded-md border p-2" style={{ background: T.panel, borderColor: T.border }}>
+        <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>New trigger draft</div>
+        <div className="grid gap-1" style={{ gridTemplateColumns: "150px 160px 1fr 80px auto" }}>
+          <select value={ttype} onChange={(e) => setType(e.target.value as TriggerType)}
+            className="rounded-md border px-2 py-1 text-[11px]" style={{ background: T.panelHi, borderColor: T.border, color: T.text }}>
+            {(["segment_join","analytics_event","compliance_transition","inactivity","custom_webhook","schedule"] as const).map((t) => <option key={t} value={t}>{t}</option>)}
+          </select>
+          <input value={key} onChange={(e) => setKey(e.target.value)} placeholder="trigger_key (e.g. click_after_send)"
+            className="rounded-md border px-2 py-1 text-[11px]" style={{ background: T.panelHi, borderColor: T.border, color: T.text }} />
+          <input value={cfg} onChange={(e) => setCfg(e.target.value)} placeholder='trigger_config JSON e.g. {"event_type":"clicked"}'
+            className="rounded-md border px-2 py-1 font-mono text-[10.5px]" style={{ background: T.panelHi, borderColor: T.border, color: T.text }} />
+          <input type="number" value={dedup} onChange={(e) => setDedup(Number(e.target.value))} title="dedup_window_sec"
+            className="rounded-md border px-2 py-1 text-[11px]" style={{ background: T.panelHi, borderColor: T.border, color: T.text }} />
+          <button type="button" onClick={create} disabled={busy || !key.trim()}
+            className="rounded-md border px-3 py-1 text-[10px] font-semibold"
+            style={{ background: T.info, borderColor: T.info, color: T.panel, opacity: (busy || !key.trim()) ? 0.6 : 1 }}>
+            {busy ? "Creating…" : "Create draft"}
+          </button>
+        </div>
+        {err ? <div className="mt-1 text-[10px]" style={{ color: T.danger }}>{err}</div> : null}
+      </div>
+
+      {/* Trigger list */}
+      <div className="rounded-md border" style={{ background: T.panel, borderColor: T.border }}>
+        {triggers.length === 0 ? (
+          <div className="p-2 text-[10.5px]" style={{ color: T.textFade }}>No triggers yet. Add one above · activate to start firing on ticks.</div>
+        ) : triggers.map((t) => (
+          <div key={t.trigger_id} className="grid items-center gap-2 border-b px-2 py-2 text-[10.5px]"
+            style={{ borderColor: T.border, gridTemplateColumns: "1fr 140px 100px 90px auto" }}>
+            <div>
+              <div className="font-semibold" style={{ color: T.text }}>{t.trigger_key} <span className="text-[9px]" style={{ color: T.textFade }}>v{t.version}</span></div>
+              <div className="text-[9.5px] font-mono" style={{ color: T.textFade }}>{t.trigger_type} · dedup {t.dedup_window_sec}s · {t.fire_count} fires</div>
+              <div className="text-[9px] font-mono" style={{ color: T.textFade }}>{JSON.stringify(t.trigger_config)}</div>
+            </div>
+            <span className="rounded-full px-1.5 py-0.5 text-center text-[9px] font-black uppercase tracking-widest"
+              style={{ background: `${TRIGGER_TONE[t.status]}20`, color: TRIGGER_TONE[t.status] }}>{t.status}</span>
+            <span className="text-[9.5px]" style={{ color: T.textFade }}>{t.last_fired_at ? new Date(t.last_fired_at).toLocaleString() : "never"}</span>
+            <span className="text-[9.5px]" style={{ color: T.textFade }} />
+            <div className="flex gap-1">
+              {t.status === "draft"  ? <button type="button" onClick={() => onStatus(t, "active")}   className="rounded-md border px-2 py-0.5 text-[10px]" style={{ background: T.accent, borderColor: T.accent, color: T.panel }}>Activate</button> : null}
+              {t.status === "active" ? <button type="button" onClick={() => onStatus(t, "paused")}   className="rounded-md border px-2 py-0.5 text-[10px]" style={{ background: T.warning, borderColor: T.warning, color: T.panel }}>Pause</button> : null}
+              {(t.status === "draft" || t.status === "paused") ? <button type="button" onClick={() => onStatus(t, "archived")} className="rounded-md border px-2 py-0.5 text-[10px]" style={{ background: T.panel, borderColor: T.border, color: T.danger }}>Archive</button> : null}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>
+        Custom-webhook URLs live at <code>POST /api/nex/journeys/inbound/{"{trigger_key}"}</code> · configure signature via trigger_config <code>{'{ "auth": "hmac", "secret": "…" }'}</code> or basic-auth. Charter §11.5: every inbound (signed OR unsigned) is recorded to the Inbound tab for debugging.
+      </div>
+    </div>
+  );
+}
+
+// ── Phase 5.1.2 · Inbound webhooks feed ───────────────────────
+function InboundTab({ events, onRefresh }: { events: InboundEventRow[]; onRefresh: () => void | Promise<void> }) {
+  return (
+    <div>
+      <div className="mb-1 flex items-baseline justify-between">
+        <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Recent inbound webhooks · {events.length}</div>
+        <button type="button" onClick={onRefresh} className="text-[9.5px] underline" style={{ color: T.info }}>refresh</button>
+      </div>
+      <div className="max-h-[420px] overflow-auto rounded-md border" style={{ borderColor: T.border, background: T.panel }}>
+        {events.length === 0 ? (
+          <div className="p-2 text-[10.5px]" style={{ color: T.textFade }}>No inbound events yet.</div>
+        ) : events.map((e) => (
+          <div key={e.inbound_event_id} className="border-b px-2 py-1.5 text-[10.5px]" style={{ borderColor: T.border }}>
+            <div className="flex items-center justify-between">
+              <span className="font-mono" style={{ color: T.text }}>{e.trigger_key}</span>
+              <span className="rounded-full px-1.5 py-0.5 text-[8.5px] font-black uppercase tracking-widest"
+                style={{ background: e.verified_signature ? `${T.accent}20` : `${T.danger}20`, color: e.verified_signature ? T.accent : T.danger }}>
+                {e.verified_signature ? "verified" : "unverified"}
+              </span>
+            </div>
+            <div className="text-[9.5px]" style={{ color: T.textFade }}>
+              {new Date(e.received_at).toLocaleString()}
+              {e.signature_algorithm ? ` · ${e.signature_algorithm}` : ""}
+              {e.contact_id ? ` · contact ${e.contact_id.slice(0, 8)}…` : " · no contact resolved"}
+              {e.processed_at ? ` · processed · matched ${e.matched_triggers} trigger${e.matched_triggers === 1 ? "" : "s"}` : e.verified_signature ? " · pending" : ""}
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
