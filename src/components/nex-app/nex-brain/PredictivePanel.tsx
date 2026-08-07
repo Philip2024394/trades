@@ -48,6 +48,16 @@ const T = {
   accent: "#4dd0a0", warning: "#f0b45a", danger: "#f0665a", info: "#5aa6f0", purple: "#b48cf0",
 };
 
+type CalibrationBin = { bucket: string; bucket_min: number; bucket_max: number; n: number; mean_predicted: number; observed_rate: number };
+type DriftBucket = { window_label: string; n: number; base_rate: number | null; brier: number | null };
+type PrecisionRecallRow = { threshold: number; predicted_positive: number; actual_positive: number; true_positive: number; precision: number | null; recall: number | null; f1: number | null };
+type CalibrationReport = {
+  ok: true; target: string; model_version_filter: string | null;
+  n_predictions: number; n_resolved: number; n_pending: number; n_positive: number;
+  base_rate: number | null; brier: number | null; brier_reference: number | null; brier_skill: number | null; auc: number | null;
+  calibration_bins: CalibrationBin[]; precision_recall: PrecisionRecallRow[]; drift: DriftBucket[]; computed_at: string;
+};
+
 export function PredictivePanel() {
   const [models, setModels] = useState<Model[]>([]);
   const [predictions, setPredictions] = useState<Prediction[]>([]);
@@ -58,17 +68,22 @@ export function PredictivePanel() {
   const [busy, setBusy] = useState(false);
   const [lastResult, setLastResult] = useState<Prediction | null>(null);
   const [threshold, setThreshold] = useState(0.6);
+  const [calibration, setCalibration] = useState<CalibrationReport | null>(null);
+  const [calibrationNow, setCalibrationNow] = useState<string>("");
 
   const loadAll = useCallback(async () => {
-    const [m, p, c] = await Promise.all([
+    const qs = calibrationNow ? `?now=${encodeURIComponent(calibrationNow)}` : "";
+    const [m, p, c, cal] = await Promise.all([
       fetch("/api/nex/predictive/models").then((r) => r.json()),
       fetch("/api/nex/predictive/predictions?limit=25").then((r) => r.json()),
       fetch("/api/nex/predictive/controls").then((r) => r.json()),
+      fetch(`/api/nex/predictive/calibration${qs}`).then((r) => r.json()),
     ]);
     if (m.ok) setModels(m.models);
     if (p.ok) setPredictions(p.predictions);
     if (c.ok) { setControls(c.controls); setThreshold(Number(c.controls.confidence_threshold)); }
-  }, []);
+    if (cal.ok) setCalibration(cal as CalibrationReport);
+  }, [calibrationNow]);
   useEffect(() => { void loadAll(); const t = setInterval(loadAll, 20_000); return () => clearInterval(t); }, [loadAll]);
 
   const activeModel = useMemo(() => models.find((m) => m.status === "active" && m.target === "conversion_probability") ?? null, [models]);
@@ -234,6 +249,99 @@ export function PredictivePanel() {
             ))}
           </div>
         )}
+      </div>
+
+      {/* Calibration + measurement (read-only observability pass) */}
+      <div className="rounded-md border" style={{ background: T.panelHi, borderColor: T.border }}>
+        <div className="flex items-center justify-between border-b p-2" style={{ borderColor: T.border }}>
+          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>
+            Calibration · does prediction match reality?
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[9.5px]" style={{ color: T.textFade }}>as-of (blank = now)</span>
+            <input type="datetime-local" value={calibrationNow} onChange={(e) => setCalibrationNow(e.target.value)}
+              className="rounded-md border px-2 py-1 font-mono text-[10px]"
+              style={{ background: T.panel, borderColor: T.border, color: T.text }} />
+            <button type="button" onClick={() => setCalibrationNow("")}
+              className="rounded-md border px-2 py-1 text-[9.5px]"
+              style={{ background: T.panel, borderColor: T.border, color: T.textDim }}>clear</button>
+          </div>
+        </div>
+        <div className="grid gap-2 p-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))" }}>
+          <Kpi label="Resolved" value={calibration?.n_resolved ?? 0} tone="neutral" hint={`${calibration?.n_pending ?? 0} pending · window not closed`} />
+          <Kpi label="Positive" value={calibration?.n_positive ?? 0} tone={calibration && calibration.n_positive > 0 ? "good" : "unset"} hint={calibration?.base_rate != null ? `base rate ${(calibration.base_rate * 100).toFixed(1)}%` : ""} />
+          <Kpi label="Brier" value={calibration?.brier != null ? calibration.brier.toFixed(4) : "—"} tone="neutral" hint="lower is better · MSE of prob vs 0/1" />
+          <Kpi label="Brier skill" value={calibration?.brier_skill != null ? calibration.brier_skill.toFixed(3) : "—"} tone={calibration?.brier_skill != null ? (calibration.brier_skill > 0 ? "good" : "bad") : "unset"} hint="+ve = beats always-predict-base-rate" />
+          <Kpi label="AUC" value={calibration?.auc != null ? calibration.auc.toFixed(3) : "—"} tone={calibration?.auc != null ? (calibration.auc >= 0.7 ? "good" : calibration.auc >= 0.5 ? "warn" : "bad") : "unset"} hint="rank quality · needs both classes" />
+        </div>
+
+        {/* Calibration curve · predicted (x) vs observed (y) per decile */}
+        <div className="p-2">
+          <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Calibration curve · predicted vs observed</div>
+          {calibration && calibration.calibration_bins.some((b) => b.n > 0) ? (
+            <div className="space-y-0.5">
+              {calibration.calibration_bins.map((b) => (
+                <div key={b.bucket} className="grid items-center gap-2 text-[10px]" style={{ gridTemplateColumns: "80px 40px 1fr 70px 70px" }}>
+                  <span className="font-mono" style={{ color: T.textDim }}>{b.bucket}</span>
+                  <span className="font-mono text-right" style={{ color: b.n > 0 ? T.text : T.textFade }}>n={b.n}</span>
+                  <div className="relative h-2 rounded-full" style={{ background: T.panel }}>
+                    <div className="absolute inset-y-0 rounded-full" style={{ background: T.info, left: `${b.mean_predicted * 100}%`, width: 2 }} title={`predicted ${(b.mean_predicted * 100).toFixed(1)}%`} />
+                    <div className="absolute inset-y-0 rounded-full" style={{ background: T.accent, left: `${b.observed_rate * 100}%`, width: 2 }} title={`observed ${(b.observed_rate * 100).toFixed(1)}%`} />
+                  </div>
+                  <span className="font-mono text-right text-[9.5px]" style={{ color: T.info }}>p̂ {(b.mean_predicted * 100).toFixed(1)}%</span>
+                  <span className="font-mono text-right text-[9.5px]" style={{ color: T.accent }}>obs {(b.observed_rate * 100).toFixed(1)}%</span>
+                </div>
+              ))}
+              <div className="mt-1 text-[9px] italic" style={{ color: T.textFade }}>Blue tick = mean predicted · green tick = observed rate. Perfect calibration = ticks overlap in every populated bin.</div>
+            </div>
+          ) : (
+            <div className="text-[10.5px]" style={{ color: T.textFade }}>
+              No resolved predictions with populated bins yet. Populate by (a) letting real predictions age past their window, or (b) using the as-of picker to fast-forward.
+            </div>
+          )}
+        </div>
+
+        {/* Drift · by time bucket */}
+        <div className="border-t p-2" style={{ borderColor: T.border }}>
+          <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Drift · Brier + base rate by age of window</div>
+          <div className="grid gap-1" style={{ gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+            {(calibration?.drift ?? []).map((d) => (
+              <div key={d.window_label} className="rounded-md border p-2" style={{ background: T.panel, borderColor: T.border }}>
+                <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{d.window_label}</div>
+                <div className="mt-1 font-mono text-[11px]" style={{ color: d.n > 0 ? T.text : T.textFade }}>n {d.n}</div>
+                <div className="font-mono text-[9.5px]" style={{ color: T.textFade }}>brier {d.brier != null ? d.brier.toFixed(4) : "—"}</div>
+                <div className="font-mono text-[9.5px]" style={{ color: T.textFade }}>base {d.base_rate != null ? (d.base_rate * 100).toFixed(1) + "%" : "—"}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Precision / recall sweep */}
+        <div className="border-t p-2" style={{ borderColor: T.border }}>
+          <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Precision / recall / F1 at threshold sweep</div>
+          <div className="grid gap-1" style={{ gridTemplateColumns: "60px 70px 70px 70px 70px 1fr" }}>
+            <span className="text-[9px] font-black" style={{ color: T.textFade }}>threshold</span>
+            <span className="text-[9px] font-black text-right" style={{ color: T.textFade }}>pred+</span>
+            <span className="text-[9px] font-black text-right" style={{ color: T.textFade }}>TP</span>
+            <span className="text-[9px] font-black text-right" style={{ color: T.textFade }}>precision</span>
+            <span className="text-[9px] font-black text-right" style={{ color: T.textFade }}>recall</span>
+            <span className="text-[9px] font-black text-right" style={{ color: T.textFade }}>F1</span>
+          </div>
+          {(calibration?.precision_recall ?? []).map((r) => (
+            <div key={r.threshold} className="grid items-baseline gap-1 text-[10px]" style={{ gridTemplateColumns: "60px 70px 70px 70px 70px 1fr" }}>
+              <span className="font-mono" style={{ color: T.textDim }}>{r.threshold.toFixed(2)}</span>
+              <span className="font-mono text-right" style={{ color: T.text }}>{r.predicted_positive}</span>
+              <span className="font-mono text-right" style={{ color: T.accent }}>{r.true_positive}</span>
+              <span className="font-mono text-right" style={{ color: T.text }}>{r.precision != null ? r.precision.toFixed(3) : "—"}</span>
+              <span className="font-mono text-right" style={{ color: T.text }}>{r.recall != null ? r.recall.toFixed(3) : "—"}</span>
+              <span className="font-mono text-right" style={{ color: r.f1 != null ? T.accent : T.textFade }}>{r.f1 != null ? r.f1.toFixed(3) : "—"}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="border-t p-2 text-[9px] italic" style={{ borderColor: T.border, color: T.textFade }}>
+          Read-only pass · joins nex.predictions × nex.conversion_events on (contact_id, window). Writes to no table. Populates as real windows close.
+        </div>
       </div>
 
       {/* Recent predictions */}
