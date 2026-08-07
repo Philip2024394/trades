@@ -3,6 +3,7 @@
 // the send, so dev environments never fail signup just because email
 // isn't wired. The actual triggering happens from the API routes.
 import "server-only";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 type AffiliateLite = {
   affiliate_id: number;
@@ -33,24 +34,20 @@ async function sendViaResend(opts: {
     return;
   }
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from: fromAddress(),
-        to: [opts.to],
+    const result = await sendEmail({
+      message: {
+        from: { address: fromAddress() },
+        to: [{ address: opts.to }],
         subject: opts.subject,
-        html: opts.html
-      })
+        html: opts.html,
+        kind: "transactional",
+      },
+      caller: "affiliate-emails",
     });
-    if (!res.ok) {
-      const txt = await res.text();
+    if (!result.ok) {
       console.error(
-        `[affiliateEmails] Resend ${res.status} sending "${opts.subject}":`,
-        txt
+        `[affiliateEmails] send error "${opts.subject}":`,
+        result.reason
       );
     }
   } catch (err) {

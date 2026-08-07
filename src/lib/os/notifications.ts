@@ -1,6 +1,6 @@
 // OS Foundation — Notifications primitive.
 //
-// One Resend wrapper, one HTML template shell, one place for retry
+// One email wrapper, one HTML template shell, one place for retry
 // hooks. Every app that sends transactional email calls sendEmail()
 // with a typed payload. The email body is composed from a template
 // slot map — no HTML strings in app code.
@@ -9,7 +9,7 @@
 // request. Retries + dead-letter belong on the Event Bus for events
 // that trigger emails.
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail as nexSendEmail } from "@/lib/nex/email/queue";
 
 function fromAddress(): string {
   return (
@@ -45,26 +45,29 @@ export async function sendEmail(
     };
   }
   try {
-    const resend = new Resend(apiKey);
-    const result = await resend.emails.send({
-      from,
-      to: input.to,
-      replyTo: input.replyTo,
-      subject: input.subject,
-      html: input.html,
-      text: input.text
+    const result = await nexSendEmail({
+      message: {
+        from: { address: from },
+        to: [{ address: input.to }],
+        reply_to: input.replyTo,
+        subject: input.subject,
+        html: input.html,
+        text: input.text,
+        kind: "transactional",
+      },
+      caller: "os:notifications",
     });
-    if (result.error) {
-      console.error("[os.notifications] resend error", result.error);
+    if (!result.ok) {
+      console.error("[os.notifications] send error", result.reason);
       return {
         ok: false,
         code: "send-failed",
-        message: String(result.error.message ?? "send-failed")
+        message: String(result.reason ?? "send-failed")
       };
     }
     return { ok: true };
   } catch (err) {
-    console.error("[os.notifications] resend exception", err);
+    console.error("[os.notifications] send exception", err);
     return { ok: false, code: "send-failed", message: String(err) };
   }
 }

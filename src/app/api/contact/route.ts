@@ -14,7 +14,7 @@
 // body — those stay inside the Resend payload.
 
 import { NextResponse, type NextRequest } from "next/server";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -231,17 +231,20 @@ export async function POST(req: NextRequest) {
     .join("\n");
 
   try {
-    const resend = new Resend(apiKey);
-    const result = await resend.emails.send({
-      from: fromEmail,
-      to: adminEmail,
-      replyTo: email,
-      subject,
-      html,
-      text: textLines
+    const result = await sendEmail({
+      message: {
+        from: { address: fromEmail },
+        to: [{ address: adminEmail }],
+        reply_to: email,
+        subject,
+        html,
+        text: textLines,
+        kind: "transactional",
+      },
+      caller: "contact-form",
     });
-    if (result.error) {
-      console.error("[contact] resend send error:", result.error);
+    if (!result.ok) {
+      console.error("[contact] send error:", result.reason);
       return NextResponse.json(
         {
           ok: false,
@@ -252,7 +255,7 @@ export async function POST(req: NextRequest) {
       );
     }
   } catch (err) {
-    console.error("[contact] resend exception:", err);
+    console.error("[contact] send exception:", err);
     return NextResponse.json(
       {
         ok: false,

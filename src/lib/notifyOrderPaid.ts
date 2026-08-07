@@ -1,5 +1,5 @@
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { sendLeadAlert } from "@/lib/leadAlerts";
 import { adminWhatsapp } from "@/lib/whatsapp";
@@ -141,7 +141,6 @@ async function sendMerchantEmail(listing: ListingRow, order: OrderRow): Promise<
   if (!apiKey || !from) return;
   const to = listing.email;
   if (!to) return;
-  const resend = new Resend(apiKey);
   const dashboardUrl = `${siteUrl()}/trade-off/edit/${encodeURIComponent(
     listing.slug
   )}/orders?ref=${encodeURIComponent(order.order_ref)}`;
@@ -159,11 +158,13 @@ async function sendMerchantEmail(listing: ListingRow, order: OrderRow): Promise<
     .join("");
   const customer =
     order.customer_name?.trim() || order.customer_email?.trim() || "A customer";
-  await resend.emails.send({
-    from,
-    to,
-    subject: `💰 ${amount} paid via ${providerLabel(order.provider)} — order ${order.order_ref}`,
-    html: `
+  await sendEmail({
+    message: {
+      from: { address: from },
+      to: [{ address: to }],
+      subject: `💰 ${amount} paid via ${providerLabel(order.provider)} — order ${order.order_ref}`,
+      kind: "transactional",
+      html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; max-width: 560px;">
         <p style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800;">thenetworkers.app</p>
         <h1 style="margin: 8px 0 4px 0; font-size: 24px;">New paid order</h1>
@@ -179,7 +180,9 @@ async function sendMerchantEmail(listing: ListingRow, order: OrderRow): Promise<
           Money settles direct to your ${providerLabel(order.provider)} account. Verify in your ${providerLabel(order.provider)} dashboard before dispatching.
         </p>
       </div>
-    `
+    `,
+    },
+    caller: "orders:merchant-notify",
   });
 }
 
@@ -187,7 +190,6 @@ async function sendCustomerReceipt(listing: ListingRow, order: OrderRow): Promis
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.HAMMEREX_TRADE_FROM_EMAIL;
   if (!apiKey || !from || !order.customer_email) return;
-  const resend = new Resend(apiKey);
   const amount = poundsFrom(order.amount_pence);
   const items = Array.isArray(order.cart_items)
     ? (order.cart_items as Array<{ name?: string; qty?: number; price_pence?: number }>)
@@ -201,11 +203,13 @@ async function sendCustomerReceipt(listing: ListingRow, order: OrderRow): Promis
     })
     .join("");
   const merchantWa = whatsappDigits(listing.whatsapp ?? adminWhatsapp());
-  await resend.emails.send({
-    from,
-    to: order.customer_email,
-    subject: `Receipt: ${amount} to ${listing.display_name ?? "your merchant"} — ${order.order_ref}`,
-    html: `
+  await sendEmail({
+    message: {
+      from: { address: from },
+      to: [{ address: order.customer_email }],
+      subject: `Receipt: ${amount} to ${listing.display_name ?? "your merchant"} — ${order.order_ref}`,
+      kind: "transactional",
+      html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif; max-width: 560px;">
         <h1 style="margin: 0 0 4px 0; font-size: 22px;">Thanks — payment received</h1>
         <p style="margin: 0 0 20px 0; color: #666;">Your ${amount} payment to <strong>${listing.display_name ?? "your merchant"}</strong> completed successfully.</p>
@@ -219,6 +223,8 @@ async function sendCustomerReceipt(listing: ListingRow, order: OrderRow): Promis
         <a href="https://wa.me/${merchantWa}?text=${encodeURIComponent(`Hi, my order reference is ${order.order_ref}`)}" style="display: inline-block; background: #25D366; color: #fff; padding: 12px 20px; border-radius: 8px; text-decoration: none; font-weight: 800; font-size: 13px;">Message on WhatsApp →</a>
         <p style="margin: 24px 0 0 0; font-size: 11px; color: #999;">This receipt is from thenetworkers.app on behalf of ${listing.display_name ?? "the merchant"}. Payment processed by ${providerLabel(order.provider)}.</p>
       </div>
-    `
+    `,
+    },
+    caller: "orders:customer-receipt",
   });
 }

@@ -1,9 +1,10 @@
-// Newsletter delivery — sends the composed monthly digest via Resend.
+// Newsletter delivery — sends the composed monthly digest via NEX
+// Email Runtime.
 //
 // Merchant-branded template + inline images. Failure logs a Gold Path
 // task so the merchant knows delivery didn't go through.
 
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import type { MonthlyDigestDraft } from "./monthlyDigest";
 
 export type DeliverDigestInput = {
@@ -20,20 +21,24 @@ export async function deliverMonthlyDigest(
 ): Promise<{ ok: boolean; reason?: string; messageId?: string }> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return { ok: false, reason: "resend_not_configured" };
-  const resend = new Resend(key);
   const from = input.fromEmail
     ? `${input.fromName ?? "Recent work"} <${input.fromEmail}>`
     : `xrated studio <digest@thenetworkers.app>`;
 
   const html = renderDigestHtml(input.draft, input.fromName ?? "");
-  const { data, error } = await resend.emails.send({
-    from,
-    to: input.toEmail,
-    subject: input.draft.headline,
-    html
+  const result = await sendEmail({
+    message: {
+      from: { address: from },
+      to: [{ address: input.toEmail }],
+      subject: input.draft.headline,
+      kind: "marketing",
+      html,
+    },
+    caller: "repurpose:monthly-digest",
+    business_id: input.merchantId,
   });
-  if (error) return { ok: false, reason: error.message };
-  return { ok: true, messageId: data?.id };
+  if (!result.ok) return { ok: false, reason: result.reason };
+  return { ok: true, messageId: result.provider_message_id };
 }
 
 function renderDigestHtml(draft: MonthlyDigestDraft, brand: string): string {

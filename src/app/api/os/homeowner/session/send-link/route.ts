@@ -6,7 +6,7 @@
 // nothing.
 
 import { NextResponse, type NextRequest } from "next/server";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { findPartyByEmail } from "@/lib/os/parties";
 import { buildMagicLinkToken } from "@/lib/os/homeownerSession";
 
@@ -91,13 +91,16 @@ export async function POST(req: NextRequest) {
 </body></html>`;
 
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: fromEmail,
-      to: email,
-      subject: "Your Home — sign in link",
-      html,
-      text: `Sign in to your Home: ${linkUrl}\n\nExpires in 30 minutes.`
+    await sendEmail({
+      message: {
+        from: { address: fromEmail },
+        to: [{ address: email }],
+        subject: "Your Home — sign in link",
+        html,
+        text: `Sign in to your Home: ${linkUrl}\n\nExpires in 30 minutes.`,
+        kind: "transactional",
+      },
+      caller: "os:homeowner-send-link",
     });
   } catch (err) {
     console.error("[os.homeowner.send-link] send failed", err);

@@ -14,6 +14,7 @@
 
 import "server-only";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 const FROM_DEFAULT = "The Network <noreply@thenetworkers.app>";
 const CANONICAL_ORIGIN =
@@ -40,22 +41,18 @@ async function sendViaResend(opts: {
     return;
   }
   try {
-    const res = await fetch("https://api.resend.com/emails", {
-      method:  "POST",
-      headers: {
-        Authorization: `Bearer ${key}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        from:    fromAddress(),
-        to:      [opts.to],
+    const result = await sendEmail({
+      message: {
+        from:    { address: fromAddress() },
+        to:      [{ address: opts.to }],
         subject: opts.subject,
-        html:    opts.html
-      })
+        html:    opts.html,
+        kind:    "transactional",
+      },
+      caller: "merchant-referral-emails",
     });
-    if (!res.ok) {
-      const txt = await res.text();
-      console.error(`[merchantReferralEmails] Resend ${res.status}: ${txt}`);
+    if (!result.ok) {
+      console.error(`[merchantReferralEmails] send error: ${result.reason}`);
     }
   } catch (err) {
     console.error("[merchantReferralEmails] send threw:", err);

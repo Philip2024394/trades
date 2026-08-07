@@ -2,7 +2,7 @@
 // email them a signed download URL. Merchants don't need this flow
 // (their whole site auto-upgrades to their tier).
 
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 export type LicenseDeliveryInput = {
   toEmail: string;
@@ -18,14 +18,15 @@ export async function sendLicenseDeliveryEmail(
 ): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
-  const resend = new Resend(key);
   const downloadUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://thenetworkers.app"}/api/licenses/download/${input.licenseId}`;
   const marketplaceUrl = `${process.env.NEXT_PUBLIC_APP_ORIGIN ?? "https://thenetworkers.app"}/xrated-trades-images/${input.imageId}`;
-  const { error } = await resend.emails.send({
-    from: FROM_ADDRESS,
-    to: input.toEmail,
-    subject: "Your xrated trades image licence + download",
-    html: `
+  const result = await sendEmail({
+    message: {
+      from: { address: FROM_ADDRESS },
+      to: [{ address: input.toEmail }],
+      subject: "Your xrated trades image licence + download",
+      kind: "transactional",
+      html: `
       <div style="font-family:Helvetica,Arial,sans-serif;color:#111;max-width:520px;">
         <h2 style="font-size:20px;margin:0 0 12px;">Your licence is active</h2>
         <p style="font-size:14px;line-height:1.5;color:#333;">
@@ -52,7 +53,9 @@ export async function sendLicenseDeliveryEmail(
           </a>.
         </p>
       </div>
-    `
+    `,
+    },
+    caller: "licenses:delivery",
   });
-  return !error;
+  return result.ok;
 }

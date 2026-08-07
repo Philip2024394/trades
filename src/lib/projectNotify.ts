@@ -2,7 +2,7 @@
 // a project via the /project wizard. Best-effort; errors do not fail
 // the parent request.
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { signInboxToken } from "@/lib/inboxToken";
 import { signProjectTrackToken } from "@/lib/projectTrackToken";
@@ -44,7 +44,6 @@ export async function notifyInvitedTrades(
   if (!key || businessIds.length === 0) {
     return { sent: 0, failed: 0 };
   }
-  const resend = new Resend(key);
 
   const { data: rows } = await supabaseAdmin
     .from("hammerex_trade_off_listings")
@@ -68,13 +67,18 @@ export async function notifyInvitedTrades(
     try {
       const token = signInboxToken(m.id);
       const inboxUrl = `${BASE}/inbox?token=${encodeURIComponent(token)}#brief-${brief.projectId}`;
-      await resend.emails.send({
-        from: FROM,
-        to: m.email,
-        subject: `New project brief · ${brief.projectTitle}`,
-        html: renderEmail({ merchantName: m.display_name, inboxUrl, brief })
+      const result = await sendEmail({
+        message: {
+          from: { address: FROM },
+          to: [{ address: m.email }],
+          subject: `New project brief · ${brief.projectTitle}`,
+          kind: "transactional",
+          html: renderEmail({ merchantName: m.display_name, inboxUrl, brief }),
+        },
+        caller: "project:notify-invited-trade",
       });
-      sent++;
+      if (result.ok) sent++;
+      else failed++;
     } catch {
       failed++;
     }
@@ -96,13 +100,14 @@ export async function notifyHomeownerBriefSubmitted(input: {
   if (!key) return false;
   const token = signProjectTrackToken(input.projectId);
   const trackUrl = `${BASE}/project/track?token=${encodeURIComponent(token)}`;
-  const resend = new Resend(key);
   try {
-    await resend.emails.send({
-      from: FROM,
-      to: input.homeownerEmail,
-      subject: `Your brief is on the Notebook · ${input.projectTitle}`,
-      html: `
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: input.homeownerEmail }],
+        subject: `Your brief is on the Notebook · ${input.projectTitle}`,
+        kind: "transactional",
+        html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111">
   <div style="font-size:11px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#a35a00">
     ● The Construction Notebook
@@ -127,9 +132,11 @@ export async function notifyHomeownerBriefSubmitted(input: {
     The Construction Notebook · Britain
   </div>
 </div>
-      `
+      `,
+      },
+      caller: "project:homeowner-brief-submitted",
     });
-    return true;
+    return result.ok;
   } catch {
     return false;
   }
@@ -146,13 +153,14 @@ export async function notifyHomeownerReply(input: {
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
-  const resend = new Resend(key);
   try {
-    await resend.emails.send({
-      from: FROM,
-      to: input.homeownerEmail,
-      subject: `${input.merchantName} replied to your brief`,
-      html: `
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: input.homeownerEmail }],
+        subject: `${input.merchantName} replied to your brief`,
+        kind: "transactional",
+        html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111">
   <div style="font-size:11px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#a35a00">
     ● The Construction Notebook
@@ -175,9 +183,11 @@ export async function notifyHomeownerReply(input: {
     The Construction Notebook · Britain
   </div>
 </div>
-      `
+      `,
+      },
+      caller: "project:homeowner-reply",
     });
-    return true;
+    return result.ok;
   } catch {
     return false;
   }

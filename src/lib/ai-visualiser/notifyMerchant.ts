@@ -3,7 +3,7 @@
 // generates their first render (so the merchant sees the design, not
 // just contact info).
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 const FROM =
   process.env.AI_VISUALISER_FROM_EMAIL ||
@@ -140,22 +140,25 @@ export async function sendMerchantLeadEmail(
     .join("\n");
 
   try {
-    const resend = new Resend(apiKey);
-    const result = await resend.emails.send({
-      from: FROM,
-      to: merchantEmail,
-      replyTo: homeowner.email,
-      subject,
-      html,
-      text
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: merchantEmail }],
+        reply_to: homeowner.email,
+        subject,
+        html,
+        text,
+        kind: "transactional",
+      },
+      caller: "ai-visualiser:notifyMerchant",
     });
-    if (result.error) {
-      console.error("[ai-visualiser] resend send error:", result.error);
+    if (!result.ok) {
+      console.error("[ai-visualiser] send error:", result.reason);
       return { ok: false, error: "send-failed" };
     }
     return { ok: true };
   } catch (err) {
-    console.error("[ai-visualiser] resend exception:", err);
+    console.error("[ai-visualiser] send exception:", err);
     return { ok: false, error: "send-exception" };
   }
 }

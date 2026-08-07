@@ -2,7 +2,7 @@
 // Idempotent per job_id (unique index on the requests table).
 import "server-only";
 import { randomBytes } from "node:crypto";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 const FROM =
@@ -134,16 +134,24 @@ export async function sendReviewRequest(
 </body></html>`;
 
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: FROM,
-      to: email,
-      subject: `How did ${merchantName} do?`,
-      html,
-      text: `How was ${jobTitle}? Leave a quick review here: ${linkUrl}`
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: email }],
+        subject: `How did ${merchantName} do?`,
+        kind: "transactional",
+        html,
+        text: `How was ${jobTitle}? Leave a quick review here: ${linkUrl}`,
+      },
+      caller: "reviews:send-request",
+      business_id: input.merchantId,
     });
+    if (!result.ok) {
+      console.error("[reviews.sendRequest] send failed", result.reason);
+      return { requestId: created.id, reused: false, emailSent: false };
+    }
   } catch (err) {
-    console.error("[reviews.sendRequest] resend failed", err);
+    console.error("[reviews.sendRequest] send failed", err);
     return { requestId: created.id, reused: false, emailSent: false };
   }
 

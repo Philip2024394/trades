@@ -1,8 +1,8 @@
-// Sends a quote to a homeowner. Email via Resend; WhatsApp via a
-// deep-link that opens the customer's WA with a pre-filled message
-// pointing to the public share page.
+// Sends a quote to a homeowner. Email via NEX Email Runtime; WhatsApp
+// via a deep-link that opens the customer's WA with a pre-filled
+// message pointing to the public share page.
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { recordTimelineEvent } from "@/lib/os/timeline";
 
@@ -105,17 +105,24 @@ export async function sendQuote(input: {
 </body></html>`;
 
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: FROM,
-      to: homeowner.email,
-      replyTo: merchant?.email || undefined,
-      subject: `Your quote from ${merchantName} — ${quote.title}`,
-      html,
-      text: `Your quote from ${merchantName} for ${quote.title}: ${totalGbp}\n\nOpen it here: ${quoteUrl}`
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: homeowner.email }],
+        reply_to: merchant?.email || undefined,
+        subject: `Your quote from ${merchantName} — ${quote.title}`,
+        kind: "transactional",
+        html,
+        text: `Your quote from ${merchantName} for ${quote.title}: ${totalGbp}\n\nOpen it here: ${quoteUrl}`,
+      },
+      caller: "quote-workspace:send",
     });
+    if (!result.ok) {
+      console.error("[quote-workspace.send] send failed", result.reason);
+      return { ok: false, error: "Email send failed." };
+    }
   } catch (err) {
-    console.error("[quote-workspace.send] resend failed", err);
+    console.error("[quote-workspace.send] send failed", err);
     return { ok: false, error: "Email send failed." };
   }
 

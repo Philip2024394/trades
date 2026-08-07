@@ -12,7 +12,7 @@
 // transition is written to DB. Email failure ≠ transaction rollback.
 
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 const FROM =
   process.env.HAMMEREX_TRADE_FROM_EMAIL ||
@@ -89,13 +89,14 @@ export async function notifySlugExpiryStage(input: {
   const loginUrl = `${BASE}/trade-off/login`;
   const upgradeUrl = `${BASE}/trade-off/packages`;
 
-  const resend = new Resend(key);
   try {
-    await resend.emails.send({
-      from: FROM,
-      to: input.toEmail,
-      subject,
-      html: `
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: input.toEmail }],
+        subject,
+        kind: "transactional",
+        html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111">
   <div style="font-size:11px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#a35a00">
     ● Thenetworkers
@@ -121,8 +122,15 @@ export async function notifySlugExpiryStage(input: {
     You're on the free tier of Thenetworkers. Free URLs stay reserved while you log in at least once every 30 days. Paid tiers keep their URL for life.
   </p>
 </div>
-      `.trim()
+      `.trim(),
+      },
+      caller: "slug-expiry:notify",
     });
+    if (!result.ok) {
+      // eslint-disable-next-line no-console
+      console.warn("[slugExpiry.notify] send failed (non-fatal):", result.reason);
+      return false;
+    }
     return true;
   } catch (err) {
     // eslint-disable-next-line no-console

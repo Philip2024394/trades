@@ -2,14 +2,14 @@
 //
 // Called from the webhook route when an order flips to 'paid'.
 // Loads the brand's receipt config, formats the amount currency-aware,
-// fires via Resend, marks receipt_sent_at (or receipt_error) on the
-// order row.
+// fires via the NEX Email Runtime, marks receipt_sent_at (or
+// receipt_error) on the order row.
 //
-// Retries are provider-side (Resend has its own SMTP retries). Our
-// webhook idempotency comes from receipt_sent_at — if it's set we
-// skip. Providers that retry webhooks won't double-send receipts.
+// Retries live inside the queue + provider adapter. Our webhook
+// idempotency comes from receipt_sent_at — if it's set we skip.
+// Providers that retry webhooks won't double-send receipts.
 
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { formatMoney } from "./currency";
 
@@ -100,16 +100,44 @@ export async function sendReceiptForOrder(orderId: string): Promise<void> {
   });
 
   try {
-    const resend = new Resend(apiKey);
-    await resend.emails.send({
-      from: `${config.from_name ?? brandName} <${config.from_email}>`,
-      to: order.customer_email,
-      bcc: config.bcc_merchant ? [config.from_email] : undefined,
-      replyTo: config.reply_to ?? undefined,
-      subject,
-      html,
-      text
+    const from = `${config.from_name ?? brandName} <${config.from_email}>`;
+    const result = await sendEmail({
+      message: {
+        from: { address: from },
+        to: [{ address: order.customer_email }],
+        reply_to: config.reply_to ?? undefined,
+        subject,
+        kind: "transactional",
+        html,
+        text,
+      },
+      caller: "payments:customer-receipt",
+      business_id: order.brand_id,
     });
+    if (!result.ok) {
+      await supabaseAdmin
+        .from("studio_payment_orders")
+        .update({ receipt_error: result.reason ?? "send-failed" })
+        .eq("id", orderId);
+      return;
+    }
+    // BCC to the merchant · sent as a separate message so each recipient
+    // passes the per-recipient compliance gate independently.
+    if (config.bcc_merchant) {
+      await sendEmail({
+        message: {
+          from: { address: from },
+          to: [{ address: config.from_email }],
+          reply_to: config.reply_to ?? undefined,
+          subject,
+          kind: "transactional",
+          html,
+          text,
+        },
+        caller: "payments:customer-receipt-bcc",
+        business_id: order.brand_id,
+      });
+    }
     await supabaseAdmin
       .from("studio_payment_orders")
       .update({

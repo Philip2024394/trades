@@ -1,6 +1,6 @@
 // Homeowner-to-trade invite email.
 import "server-only";
-import { Resend } from "resend";
+import { sendEmail } from "@/lib/nex/email/queue";
 
 const FROM =
   process.env.HAMMEREX_TRADE_FROM_EMAIL ||
@@ -28,16 +28,17 @@ export async function notifyTradeInvited(input: {
 }): Promise<boolean> {
   const key = process.env.RESEND_API_KEY;
   if (!key) return false;
-  const resend = new Resend(key);
 
   const joinUrl = `${BASE}/join/start?invite=${encodeURIComponent(input.token)}`;
 
   try {
-    await resend.emails.send({
-      from: FROM,
-      to: input.invitedEmail,
-      subject: `${input.inviterDisplayName} added you to their Notebook`,
-      html: `
+    const result = await sendEmail({
+      message: {
+        from: { address: FROM },
+        to: [{ address: input.invitedEmail }],
+        subject: `${input.inviterDisplayName} added you to their Notebook`,
+        kind: "transactional",
+        html: `
 <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#111">
   <div style="font-size:11px;font-weight:800;letter-spacing:0.22em;text-transform:uppercase;color:#a35a00">
     ● The Construction Notebook
@@ -75,9 +76,11 @@ export async function notifyTradeInvited(input: {
     The Construction Notebook · Britain
   </div>
 </div>
-      `
+      `,
+      },
+      caller: "os:trade-invite",
     });
-    return true;
+    return result.ok;
   } catch {
     return false;
   }
