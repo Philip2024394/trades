@@ -1,0 +1,193 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "release": "Communications Centre Core v1.0.0",
+  "tagged_at": "2026-08-08T00:00:00Z",
+  "tagged_by": "Philip",
+  "doctrine_document": "docs/COMMUNICATIONS_CENTRE_ARCHITECTURE_v1.0.md",
+  "doctrine_version": "1.0",
+  "phases_included": ["4a", "4b", "4c", "4d", "4e", "4f.1", "4f.2", "4f.3", "4f.4", "4f.5", "4f.6", "4f.7", "4f.8", "4f.9"],
+
+  "frozen_interfaces": {
+    "delivery/types": {
+      "file": "src/lib/nex/delivery/types.ts",
+      "sha256": "298444f6f14f321a4ae74a3b08116c953fd0bb4749e178502260e33a34ea60e6",
+      "exports": [
+        "EmailMessage", "ProviderSendResult", "DeliveryProviderAdapter",
+        "ProviderEnvHint", "DeliveryJob", "DeliveryJobAttempt",
+        "DeliveryWorker", "CampaignRecipient", "JobType", "JobStatus",
+        "AttemptOutcome", "RecipientStatus"
+      ]
+    },
+    "analytics/types": {
+      "file": "src/lib/nex/analytics/types.ts",
+      "sha256": "ebae41fdf6ca12d930cfd0bf6ace5930b9cfe2e685bcb9b2f1f0d343235a000f",
+      "exports": ["AnalyticsEvent", "EventType", "MetricSet"]
+    },
+    "compliance/types": {
+      "file": "src/lib/nex/compliance/types.ts",
+      "sha256": "f69892d29319acf4427b36b125aba1bf4ff254cf67b9c5f64e6623a5a446c72c",
+      "exports": [
+        "ComplianceState", "ComplianceEventType", "ComplianceSource",
+        "ContactCompliance", "ComplianceAuditEvent"
+      ]
+    },
+    "alerts/types": {
+      "file": "src/lib/nex/alerts/types.ts",
+      "sha256": "57598219b9e68ac96a7be360cb636803b840abe47a706168d413b965d783a660",
+      "exports": [
+        "Severity", "AlertState", "DispatchChannel", "DispatchStatus",
+        "AlertRule", "Alert", "AlertDispatch", "PlatformSnapshot",
+        "RuleTrigger", "RuleEvaluator"
+      ]
+    },
+    "composer/types": {
+      "file": "src/lib/nex/composer/types.ts",
+      "sha256": "c777ad94153904d6ad6225fd7694344b70275296bcb1e35d9ceade8a7a317551",
+      "exports": [
+        "Block", "BlockType", "VariableName", "VariableDef",
+        "VariableContext", "TemplateCategory", "EmailTemplate",
+        "TemplateInput", "QualityCheck", "QualitySeverity"
+      ]
+    },
+    "campaigns/types": {
+      "file": "src/lib/nex/campaigns/types.ts",
+      "sha256": "64e21bded5fa59dc154c768f0f780269990e7c4e94c8946de77bab9732b6c17d",
+      "exports": [
+        "CampaignType", "CampaignStatus", "Campaign", "CampaignInput",
+        "SendStats", "CampaignPreviewCache", "CAMPAIGN_TRANSITIONS",
+        "canTransition"
+      ]
+    },
+    "segments/types": {
+      "file": "src/lib/nex/segments/types.ts",
+      "sha256": "b8a8be800785e07045a5b8a6951d7cb60a82251c3c0d30d2eca215bb7292e5ed",
+      "exports": [
+        "AudienceFilter", "Segment", "SegmentInput",
+        "AudiencePreview", "SuppressionBreakdown", "ContactSource"
+      ]
+    }
+  },
+
+  "schema_versions": {
+    "canonical_event_types_count": 10,
+    "canonical_event_fields_count": 21,
+    "canonical_event_reserved_slots": [
+      "conversion_value", "revenue", "attribution_window",
+      "journey_id", "automation_id", "experiment_id", "variant_id"
+    ],
+    "compliance_states_count": 6,
+    "compliance_states": [
+      "allowed", "suppressed_soft", "suppressed_hard",
+      "unsubscribed", "complaint", "manual_block"
+    ],
+    "campaign_lifecycle_states_count": 9,
+    "campaign_lifecycle_states": [
+      "draft", "ready_for_review", "approved", "scheduled",
+      "sending", "paused", "completed", "cancelled", "archived"
+    ],
+    "alert_rule_categories_count": 8,
+    "alert_rules_shipped_count": 13,
+    "composer_block_types_count": 14,
+    "composer_variables_count": 7,
+    "provider_adapters_registered": 7,
+    "dispatch_channels_shipped": 3
+  },
+
+  "invariants_locked": [
+    "Events are the single source of truth",
+    "Compliance Engine is the sole writer to contact compliance state",
+    "Dispatchers never evaluate rules",
+    "Adapters never touch anything but their provider",
+    "Campaigns store SEGMENT REFERENCES, never contact lists",
+    "Recipient snapshot is IMMUTABLE",
+    "Audit trails are INSERT-only",
+    "Duplicate webhooks are idempotent at the compliance layer",
+    "Worker leases are TTL'd and reclaimable",
+    "Compliance Engine + Alert Engine + Analytics layer + Provider adapter interface + Canonical event schema are frozen at v1.0"
+  ],
+
+  "recovery_baseline": {
+    "run_id": "714b6ce4-42c3-4c15-84af-69c985593080",
+    "ran_at": "2026-08-08T01:35:36+07:00",
+    "label": "v1-final",
+    "overall_status": "pass",
+    "total": 11,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 3,
+    "automated_scenarios": [
+      "duplicate_webhook_idempotent",
+      "multiple_workers_no_double_lease",
+      "provider_timeout_retries",
+      "provider_throttle_backoff",
+      "lease_expiry_reclaim",
+      "storage_temporarily_unavailable",
+      "queue_restart_resumable",
+      "bounce_compliance_propagation"
+    ],
+    "operational_drills": [
+      "kill_worker_mid_batch",
+      "database_unavailable_30s",
+      "provider_429_storm"
+    ],
+    "bugs_caught_and_fixed_during_validation": [
+      "compliance_engine_duplicate_webhook_double_log_state_transition"
+    ]
+  },
+
+  "performance_baseline": {
+    "run_id": "a23c44d9-cb11-42a3-b481-8ffdb2924b80",
+    "ran_at": "2026-08-08T01:27:23+07:00",
+    "label": "first-baseline",
+    "target_recipients": 50,
+    "actual_recipients": 50,
+    "wall_clock_ms": 7558,
+    "notes": "Simulator mode with default 80-220ms fake latency. Set NEX_SIMULATOR_FAST_MODE=true to measure pure platform overhead.",
+    "metrics": {
+      "recipients_expanded_per_sec": 6.6,
+      "messages_sent_per_sec": 2.6,
+      "avg_send_latency_ms": 151,
+      "p50_send_latency_ms": 144,
+      "p95_send_latency_ms": 220,
+      "p99_send_latency_ms": 226,
+      "avg_queue_latency_ms": 55,
+      "avg_db_query_latency_ms": null,
+      "rate_limiter_max_saturation_pct": 5,
+      "memory_growth_mb": -251.96,
+      "event_ingestion_rate_per_sec": 6.7,
+      "rollup_lag_max_ms": 0,
+      "alert_latency_max_sec": null,
+      "worker_utilisation_pct": 86
+    },
+    "environment": {
+      "node": "v24.18.0",
+      "platform": "win32",
+      "arch": "x64",
+      "cpu_count": 12,
+      "active_provider": "simulator",
+      "simulator_fast_mode": "false",
+      "global_per_sec": 60,
+      "provider_per_sec": 30,
+      "domain_per_sec": 10
+    }
+  },
+
+  "chaos_drills": {
+    "chaos_adapter_available": true,
+    "chaos_adapter_path": "src/lib/nex/delivery/adapters/chaos.ts",
+    "chaos_modes": ["off", "throttle", "timeout", "permanent_bounce"],
+    "how_to_run": "Set NEX_DELIVERY_PROVIDER=chaos + NEX_CHAOS_MODE=<mode>, then run a campaign as normal."
+  },
+
+  "amendment_process": {
+    "rule": "Adding fields via reserved slots (already declared but NULL) is allowed. Adding new event types, new compliance states, new rule categories, or changing any frozen interface signature requires an amendment.",
+    "author": "Philip",
+    "next_version_on_amendment": "1.1.0"
+  },
+
+  "next_release": {
+    "planned": "1.1.0",
+    "scope": "Phase 5 additive layers · begin with 5.1 Journey Engine",
+    "boundary": "Journeys, A/B, Attribution, Predictive must consume the existing event stream and publish new events without modifying frozen interfaces."
+  }
+}
