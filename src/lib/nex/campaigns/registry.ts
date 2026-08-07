@@ -221,6 +221,23 @@ export async function transitionCampaignStatus(
     return getCampaignInner(c, id);
   });
   if (!r) return { ok: false, error: "update_failed" };
+
+  // Hand-off to Delivery Engine · dynamic import so unrelated callers
+  // don't pull in worker/queue/etc.
+  if (to === "scheduled") {
+    try {
+      const { scheduleCampaignForDelivery } = await import("@/lib/nex/delivery/worker");
+      await scheduleCampaignForDelivery(id);
+    } catch { /* delivery unavailable · campaign still moves state */ }
+  } else if (to === "cancelled") {
+    try {
+      const { cancelJobsForCampaign } = await import("@/lib/nex/delivery/queue");
+      await cancelJobsForCampaign(id);
+      const { emitDeliveryEvent } = await import("@/lib/nex/delivery/audit");
+      await emitDeliveryEvent("delivery.campaign_cancelled", {}, id);
+    } catch { /* swallow */ }
+  }
+
   return { ok: true, campaign: r };
 }
 
