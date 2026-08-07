@@ -30,6 +30,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { NexStoragePanel } from "@/components/nex-app/nex-brain/NexStoragePanel";
 import "../../nex-app.css";
 
 // ─────────────────────────────────────────────────────────────────
@@ -709,7 +710,7 @@ type ViewKey =
   // Commercial Floor
   | "finance" | "subscriptions" | "revenue" | "invoices" | "accounting" | "pricing" | "sales" | "renewals" | "booker"
   // Engineering Floor
-  | "providers" | "analytics" | "configuration" | "health" | "engineering" | "security" | "research" | "innovation" | "directory"
+  | "providers" | "analytics" | "configuration" | "health" | "engineering" | "security" | "research" | "innovation" | "directory" | "storage"
   // Administration
   | "admin" | "audit" | "permissions" | "backups" | "compliance" | "legal" | "automation";
 
@@ -768,6 +769,7 @@ const VIEWS: ViewMeta[] = [
   { key: "analytics",     label: "Worker Analytics",    icon: "▲" },
   { key: "configuration", label: "Configuration",       icon: "⚙" },
   { key: "health",        label: "System Health",       icon: "♥" },
+  { key: "storage",       label: "NEX Storage",         icon: "▤", note: "Infrastructure Runtime · adapters · health · config" },
   { key: "engineering",   label: "Engineering",         icon: "⚒" },
   { key: "security",      label: "Security Centre",     icon: "⛨" },
   { key: "research",      label: "Research & Innovation Lab", icon: "✦" },
@@ -792,7 +794,7 @@ const NAV_CLUSTERS: { label: string; keys: ViewKey[] }[] = [
   { label: "Customer Floor",    keys: ["support", "customer", "accounts", "requests", "feedback", "livechat", "community", "crm"] },
   { label: "Operations Floor",  keys: ["operations", "queue", "journal", "history", "inbox", "dumping", "graph", "review"] },
   { label: "Commercial Floor",  keys: ["finance", "subscriptions", "revenue", "invoices", "accounting", "pricing", "sales", "renewals", "booker"] },
-  { label: "Engineering Floor", keys: ["providers", "analytics", "configuration", "health", "engineering", "security", "research", "innovation", "directory"] },
+  { label: "Engineering Floor", keys: ["providers", "analytics", "configuration", "health", "storage", "engineering", "security", "research", "innovation", "directory"] },
   { label: "Administration",    keys: ["admin", "audit", "legal", "automation", "permissions", "backups", "compliance"] },
 ];
 
@@ -805,7 +807,7 @@ const VIEW_INTEGRATION: Record<ViewKey, DeptStatus> = {
   providers: "healthy", health: "healthy", history: "healthy", journal: "healthy",
   inbox: "healthy", dumping: "healthy", graph: "healthy", review: "healthy",
   configuration: "healthy", audit: "healthy", admin: "healthy", directory: "healthy",
-  booker: "healthy",
+  booker: "healthy", storage: "healthy",
   // Currently degraded when relevant advisories exist
   opportunity: "healthy", strategy: "healthy", kpi_wall: "awaiting", global_alerts: "awaiting", board: "awaiting",
   analytics: "awaiting", engineering: "awaiting", security: "awaiting",
@@ -3442,6 +3444,7 @@ function Workspace(props: {
          props.view === "configuration" ? <ConfigurationWorkspace mockHidden={props.mockHidden} /> :
          props.view === "audit"         ? <HistoryWorkspace /> :
          props.view === "health"        ? <HealthWorkspace cloud={props.cloud} providers={props.providers} status={props.status} /> :
+         props.view === "storage"       ? <NexStoragePanel /> :
          props.view === "booker"        ? <BookerWorkspace /> :
          props.view === "admin"         ? <StubWorkspace title="Administration" description="User seats · roles · billing · api keys · membership." pending="Admin session + billing surface" /> :
                                           null}

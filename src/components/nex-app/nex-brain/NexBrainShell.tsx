@@ -831,19 +831,10 @@ function ActionRow({
         href="/nex-app/nex-brain/operations-centre"
         className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
         style={{ background: TOKEN.card, borderColor: TOKEN.accent, color: TOKEN.accent }}
-        title="NEX Headquarters — visual Operations Centre"
+        title="NEX Headquarters — visual Operations Centre (NEX Storage lives inside as a sidebar view)"
       >
         <Sparkles size={14} strokeWidth={2.3} />
         Headquarters
-      </Link>
-      <Link
-        href="/nex-app/nex-brain/nex-storage"
-        className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[13px] font-semibold transition-colors hover:bg-black/5"
-        style={{ background: TOKEN.card, borderColor: TOKEN.accent, color: TOKEN.accent }}
-        title="NEX Storage — Infrastructure Runtime dashboard (adapters · health · config · dev tools)"
-      >
-        <Database size={14} strokeWidth={2.3} />
-        NEX Storage
       </Link>
       <Link
         href="/nex-app/nex-brain/audit"
