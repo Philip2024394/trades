@@ -380,6 +380,94 @@ export async function listContacts(filter: ListFilter = {}): Promise<{ total: nu
   return result ?? emptyResult;
 }
 
+// ── Per-contact detail · powers the Explorer drawer ──────────────
+
+export type ContactDetail = {
+  contact: Contact | null;
+  sources: Array<{
+    source_row_id: string;
+    source_type: string;
+    source_ref: string | null;
+    source_metadata: Record<string, unknown>;
+    observed_at: string;
+    synchronised_at: string | null;
+    sync_status: string;
+    sync_error: string | null;
+  }>;
+  merges: Array<{
+    merge_id: string;
+    surviving_contact_id: string;
+    absorbed_contact_id: string;
+    decided_by: string | null;
+    decided_at: string;
+    rationale: string | null;
+    match_signals: Record<string, unknown>;
+    reversed_at: string | null;
+    role: "surviving" | "absorbed";
+  }>;
+  recent_events: Array<{
+    event_id: string;
+    event_type: string;
+    timestamp: string;
+    outcome: string | null;
+    payload: Record<string, unknown> | null;
+  }>;
+};
+
+export async function getContactDetail(contactId: string): Promise<ContactDetail | null> {
+  const emptyDetail: ContactDetail = { contact: null, sources: [], merges: [], recent_events: [] };
+  const result = await withClient(async (client) => {
+    const [snap, sources, mergesSurviving, mergesAbsorbed, events] = await Promise.all([
+      client.query(
+        `SELECT DISTINCT ON (contact_id) *
+         FROM nex.contacts
+         WHERE contact_id = $1
+         ORDER BY contact_id, updated_at DESC
+         LIMIT 1`,
+        [contactId],
+      ),
+      client.query(
+        `SELECT source_row_id, source_type, source_ref, source_metadata, observed_at, synchronised_at, sync_status, sync_error
+         FROM nex.contact_sources
+         WHERE contact_id = $1
+         ORDER BY observed_at DESC
+         LIMIT 100`,
+        [contactId],
+      ),
+      client.query(
+        `SELECT * FROM nex.contact_merges WHERE surviving_contact_id = $1 ORDER BY decided_at DESC LIMIT 50`,
+        [contactId],
+      ),
+      client.query(
+        `SELECT * FROM nex.contact_merges WHERE absorbed_contact_id = $1 ORDER BY decided_at DESC LIMIT 50`,
+        [contactId],
+      ),
+      client.query(
+        `SELECT event_id, event_type, timestamp, outcome, payload
+         FROM nex.events
+         WHERE related_contact = $1
+         ORDER BY timestamp DESC
+         LIMIT 50`,
+        [contactId],
+      ),
+    ]);
+
+    const contact = (snap.rows[0] as unknown as Contact | undefined) ?? null;
+    const merges = [
+      ...mergesSurviving.rows.map((r) => ({ ...(r as Record<string, unknown>), role: "surviving" as const })),
+      ...mergesAbsorbed.rows.map((r) => ({ ...(r as Record<string, unknown>), role: "absorbed" as const })),
+    ].sort((a, b) => String(b.decided_at).localeCompare(String(a.decided_at))) as ContactDetail["merges"];
+
+    return {
+      contact,
+      sources: sources.rows as unknown as ContactDetail["sources"],
+      merges,
+      recent_events: events.rows as unknown as ContactDetail["recent_events"],
+    };
+  });
+  return result ?? emptyDetail;
+}
+
 // ── Health probe ─────────────────────────────────────────────────
 
 export async function isContactRegistryHealthy(): Promise<{ healthy: boolean; detail: string }> {

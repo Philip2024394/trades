@@ -703,7 +703,7 @@ type ViewKey =
   // Growth Floor
   | "marketing" | "social" | "email" | "content" | "campaigns" | "seo" | "partner"
   // Customer Floor
-  | "support" | "customer" | "accounts" | "requests" | "feedback" | "livechat" | "community" | "crm"
+  | "support" | "customer" | "accounts" | "requests" | "feedback" | "livechat" | "community" | "crm" | "contact_registry"
   // Operations Floor
   | "operations" | "queue" | "journal" | "history" | "inbox" | "dumping" | "graph" | "review"
   // Growth Floor extension
@@ -746,6 +746,7 @@ const VIEWS: ViewMeta[] = [
   { key: "livechat",      label: "Live Chat",           icon: "◗" },
   { key: "community",     label: "Community",           icon: "◈" },
   { key: "crm",           label: "CRM",                 icon: "◇" },
+  { key: "contact_registry", label: "Contact Registry", icon: "◉", note: "Single Contact Registry · Explorer + Merge Centre · one person = one canonical record" },
   // Operations Floor
   { key: "operations",    label: "Operations Centre",   icon: "◉" },
   { key: "queue",         label: "Dispatch Queue",      icon: "▭" },
@@ -792,7 +793,7 @@ const VIEWS: ViewMeta[] = [
 const NAV_CLUSTERS: { label: string; keys: ViewKey[] }[] = [
   { label: "Executive Floor",   keys: ["director", "briefing", "board", "opportunity", "strategy", "kpi_wall", "global_alerts"] },
   { label: "Growth Floor",      keys: ["marketing", "social", "email", "content", "campaigns", "seo", "partner", "market"] },
-  { label: "Customer Floor",    keys: ["support", "customer", "accounts", "requests", "feedback", "livechat", "community", "crm"] },
+  { label: "Customer Floor",    keys: ["support", "customer", "accounts", "requests", "feedback", "livechat", "community", "crm", "contact_registry"] },
   { label: "Operations Floor",  keys: ["operations", "queue", "journal", "history", "inbox", "dumping", "graph", "review"] },
   { label: "Commercial Floor",  keys: ["finance", "subscriptions", "revenue", "invoices", "accounting", "pricing", "sales", "renewals", "booker"] },
   { label: "Engineering Floor", keys: ["providers", "analytics", "configuration", "health", "storage", "engineering", "security", "research", "innovation", "directory"] },
@@ -808,7 +809,7 @@ const VIEW_INTEGRATION: Record<ViewKey, DeptStatus> = {
   providers: "healthy", health: "healthy", history: "healthy", journal: "healthy",
   inbox: "healthy", dumping: "healthy", graph: "healthy", review: "healthy",
   configuration: "healthy", audit: "healthy", admin: "healthy", directory: "healthy",
-  booker: "healthy", storage: "healthy",
+  booker: "healthy", storage: "healthy", contact_registry: "healthy",
   // Currently degraded when relevant advisories exist
   opportunity: "healthy", strategy: "healthy", kpi_wall: "awaiting", global_alerts: "awaiting", board: "awaiting",
   analytics: "awaiting", engineering: "awaiting", security: "awaiting",
@@ -3406,6 +3407,7 @@ function Workspace(props: {
          props.view === "pricing"       ? <StubWorkspace title="Pricing Intelligence" description="Constantly watches: conversion rate · churn · upgrade speed · cancellation reasons · price sensitivity by segment. NEX advises when pricing needs adjustment — e.g. 'Starter converts too easily' · 'Enterprise underpriced'. Requires Level-3 authority (Philip approval) for any price change." pending="Stripe events + conversion telemetry" /> :
          props.view === "renewals"      ? <StubWorkspace title="Renewal Centre" description="Countdown to every renewal — SSL · domain · subscription · credit card · API key · provider quota. NEX warns 14d / 7d / 3d / 24h before each. Nothing renews or lapses silently." pending="Domain registrar + Stripe + SSL monitor integrations" /> :
          props.view === "email"         ? <CommunicationsCentrePanel /> :
+         props.view === "contact_registry" ? <ContactRegistryPanel /> :
          props.view === "partner"       ? <PartnerAgencyWorkspace /> :
          props.view === "sales"         ? <SalesIntelligenceWorkspace /> :
          props.view === "operations"    ? <OperationsCentreWorkspace status={props.status} totalActive={props.totalActive} totalSleeping={props.totalSleeping} totalOffline={props.totalOffline} cases={props.cases} /> :
