@@ -13,6 +13,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ImportWizard } from "./ImportWizard";
 import { AudienceBuilder } from "./AudienceBuilder";
+import { CampaignBuilder } from "./CampaignBuilder";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -120,6 +121,18 @@ type ImportRun = {
 };
 
 type ImportsResponse = { ok: boolean; total_returned: number; imports: ImportRun[] };
+
+type CampaignStatus =
+  | "draft" | "ready_for_review" | "approved" | "scheduled"
+  | "sending" | "paused" | "completed" | "cancelled" | "archived";
+type CampaignMetricsResponse = {
+  ok: boolean;
+  by_status: Record<CampaignStatus, number>;
+  total: number;
+  open_campaigns: number;
+  last_campaign: { campaign_id: string; name: string; status: CampaignStatus; updated_at: string } | null;
+  next_scheduled: { campaign_id: string; name: string; scheduled_at: string } | null;
+};
 
 type ContactsOverview = {
   ok: boolean;
@@ -250,21 +263,24 @@ export function CommunicationsCentrePanel() {
   const [error, setError] = useState<string | null>(null);
   const [lastUpdate, setLastUpdate] = useState<string>("");
   const [wizardOpen, setWizardOpen] = useState(false);
+  const [campaignMetrics, setCampaignMetrics] = useState<CampaignMetricsResponse | null>(null);
 
   const load = useCallback(async () => {
     try {
-      const [c, a, k, cn, im] = await Promise.all([
+      const [c, a, k, cn, im, cm] = await Promise.all([
         fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
         fetch("/api/nex/contacts/overview", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, reason: "fetch_failed" })),
         fetch("/api/nex/contacts/connectors", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, connectors: [] })),
         fetch("/api/nex/contacts/imports?limit=25", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false, imports: [] })),
+        fetch("/api/nex/campaigns/metrics", { cache: "no-store" }).then((r) => r.json()).catch(() => ({ ok: false })),
       ]);
       if (c.ok) setConfig(c);
       if (a.ok) setAudit(a);
       setContacts(k);
       setConnectors(cn);
       setImports(im);
+      if (cm.ok) setCampaignMetrics(cm);
       setLastUpdate(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
@@ -604,6 +620,27 @@ export function CommunicationsCentrePanel() {
             <AudienceBuilder />
             <div className="mt-3 text-[9.5px] italic" style={{ color: T.textFade }}>
               Every campaign / newsletter / follow-up starts from a saved segment. Compliance flags (unsubscribed · never-contact · no marketing consent · invalid email) are shown so you always know WHY some contacts won&apos;t receive.
+            </div>
+          </Section>
+
+          {/* 3b · CAMPAIGNS · Builder ─────────────────────────────── */}
+          <Section title="Campaigns · Builder" badge={campaignMetrics?.ok ? `Phase 4b · live · ${campaignMetrics.total} campaigns` : "Phase 4b · live"}>
+            {/* Mission Control metrics */}
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))" }}>
+              <Metric label="Drafts"      value={campaignMetrics?.by_status.draft ?? 0}                 tone={campaignMetrics?.by_status.draft ? "neutral" : "unset"} />
+              <Metric label="Review"      value={campaignMetrics?.by_status.ready_for_review ?? 0}     tone={campaignMetrics?.by_status.ready_for_review ? "warn" : "unset"} />
+              <Metric label="Approved"    value={campaignMetrics?.by_status.approved ?? 0}             tone={campaignMetrics?.by_status.approved ? "neutral" : "unset"} />
+              <Metric label="Scheduled"   value={campaignMetrics?.by_status.scheduled ?? 0}            tone={campaignMetrics?.by_status.scheduled ? "neutral" : "unset"} />
+              <Metric label="Sending"     value={campaignMetrics?.by_status.sending ?? 0}              tone={campaignMetrics?.by_status.sending ? "warn" : "unset"} />
+              <Metric label="Completed"   value={campaignMetrics?.by_status.completed ?? 0}            tone={campaignMetrics?.by_status.completed ? "good" : "unset"} />
+              <Metric label="Cancelled"   value={campaignMetrics?.by_status.cancelled ?? 0}            tone={campaignMetrics?.by_status.cancelled ? "bad" : "unset"} />
+              <Metric label="Open (live)" value={campaignMetrics?.open_campaigns ?? 0}                 tone={campaignMetrics?.open_campaigns ? "warn" : "unset"} hint="review + approved + scheduled + sending + paused" />
+              <Metric label="Last touch"  value={campaignMetrics?.last_campaign ? relTime(campaignMetrics.last_campaign.updated_at) : "—"} tone="neutral" hint={campaignMetrics?.last_campaign?.name} />
+              <Metric label="Next send"   value={campaignMetrics?.next_scheduled ? new Date(campaignMetrics.next_scheduled.scheduled_at).toLocaleString() : "—"} tone={campaignMetrics?.next_scheduled ? "neutral" : "unset"} hint={campaignMetrics?.next_scheduled?.name} />
+            </div>
+            <CampaignBuilder />
+            <div className="mt-3 text-[9.5px] italic" style={{ color: T.textFade }}>
+              Campaigns store REFERENCES to segments · never contact lists. Send-time uses a FRESH audience query so new contacts are included and unsubscribes/never-contact/compliance are always current. Delivery + scheduling arrive in Phase 4d.
             </div>
           </Section>
 
