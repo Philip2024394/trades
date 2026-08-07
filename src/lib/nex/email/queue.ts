@@ -12,6 +12,8 @@ import { getEmail } from "./registry";
 import { emailAudit } from "./audit";
 import { checkCompliance, type ComplianceContact } from "./compliance";
 import type { EmailKind, EmailMessage, SendResult } from "./types";
+import { findContactByIdentifiers, loadContactById } from "@/lib/nex/contacts/registry";
+import { resolveAlias } from "@/lib/nex/contacts/merge";
 
 const DEFAULT_MAX_CONCURRENCY = 4;
 const DEFAULT_MAX_RETRIES = 3;
@@ -79,17 +81,66 @@ class EmailQueue {
       return failure;
     }
 
-    // Compliance gate · uses the contact if supplied, otherwise treats the raw address as consent-unknown.
-    const complianceContact: ComplianceContact = job.contact ?? {
+    // Phase 3d · Registry-resolved compliance.
+    // Every send now resolves the recipient through the Contact Registry:
+    //   1. If caller provided contact_id → resolveAlias + load canonical
+    //   2. Else → lookup by canonical_email
+    //   3. If the registry is unreachable / contact not found → fall back
+    //      to the caller-supplied contact (or raw address, consent-unknown).
+    // Doctrine: consumer → registry → alias resolution → canonical contact →
+    // compliance check → email runtime → provider.
+    let canonical: (ComplianceContact & { contact_id?: string; alias_of?: string }) | null = null;
+    let aliasResolved = false;
+    try {
+      if (job.contact?.contact_id) {
+        const canonicalId = await resolveAlias(job.contact.contact_id);
+        aliasResolved = canonicalId !== job.contact.contact_id;
+        const c = await loadContactById(canonicalId);
+        if (c) {
+          canonical = {
+            email: c.email,
+            never_contact: c.never_contact,
+            unsubscribe_at: c.unsubscribe_at,
+            consent_marketing: c.consent_marketing,
+            consent_transactional: c.consent_transactional,
+            contact_id: c.contact_id,
+            alias_of: aliasResolved ? job.contact.contact_id : undefined,
+          };
+        }
+      }
+      if (!canonical && to.address) {
+        const c = await findContactByIdentifiers({ email: to.address });
+        if (c) {
+          canonical = {
+            email: c.email,
+            never_contact: c.never_contact,
+            unsubscribe_at: c.unsubscribe_at,
+            consent_marketing: c.consent_marketing,
+            consent_transactional: c.consent_transactional,
+            contact_id: c.contact_id,
+          };
+        }
+      }
+    } catch {
+      // Registry unreachable · fall back to legacy behavior below · never
+      // block a send because the registry is briefly down.
+    }
+
+    // Compliance gate · canonical registry state wins · caller fallback
+    // preserves the fast path when the registry has no record yet.
+    const complianceContact: ComplianceContact = canonical ?? job.contact ?? {
       email: to.address,
       consent_marketing: null,
       consent_transactional: null,
     };
+    // Resolved contact_id (canonical if we found one · else caller's) is
+    // written to the audit so events surface in the Explorer drawer.
+    const resolvedContactId = canonical?.contact_id ?? job.contact?.contact_id ?? null;
     const gate = checkCompliance(complianceContact, job.message.kind);
     if (!gate.allowed) {
       this.stats.blocked += 1;
       await emailAudit.blocked({
-        contact_id: job.contact?.contact_id ?? null,
+        contact_id: resolvedContactId,
         to_email: to.address,
         kind: job.message.kind,
         campaign_id: job.campaign_id ?? null,
@@ -97,6 +148,8 @@ class EmailQueue {
         caller: job.caller,
         reason: gate.reason,
         detail: gate.detail,
+        registry_resolved: !!canonical,
+        alias_resolved: aliasResolved,
       });
       return { ok: false, provider: "queue", reason: `blocked: ${gate.reason} · ${gate.detail}`, retryable: false, blocked: true } as SendResult & { blocked: true; reason: string };
     }
@@ -112,7 +165,7 @@ class EmailQueue {
       if (result.ok) {
         this.stats.sent += 1;
         await emailAudit.sent({
-          contact_id: job.contact?.contact_id ?? null,
+          contact_id: resolvedContactId,
           to_email: to.address,
           kind: job.message.kind,
           campaign_id: job.campaign_id ?? null,
@@ -121,6 +174,8 @@ class EmailQueue {
           provider: result.provider,
           provider_message_id: result.provider_message_id,
           latency_ms: latency,
+          registry_resolved: !!canonical,
+          alias_resolved: aliasResolved,
         });
         return result;
       }
@@ -132,7 +187,7 @@ class EmailQueue {
 
     this.stats.failed += 1;
     await emailAudit.failed({
-      contact_id: job.contact?.contact_id ?? null,
+      contact_id: resolvedContactId,
       to_email: to.address,
       kind: job.message.kind,
       campaign_id: job.campaign_id ?? null,
@@ -142,6 +197,8 @@ class EmailQueue {
       reason: lastFailure.reason,
       retryable: lastFailure.retryable,
       latency_ms: 0,
+      registry_resolved: !!canonical,
+      alias_resolved: aliasResolved,
     });
     return lastFailure;
   }

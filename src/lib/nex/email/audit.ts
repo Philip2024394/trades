@@ -17,6 +17,8 @@ type BaseAudit = {
   campaign_id?: string | null;
   business_id?: string | null;
   caller: string;                      // origin ref · e.g. "contact-form" · "worker:invitations" · "hq:compose"
+  registry_resolved?: boolean;          // Phase 3d · true if the runtime resolved the recipient through the Contact Registry
+  alias_resolved?: boolean;             // Phase 3d · true if the resolved contact_id differs from what the caller supplied (merge chain followed)
 };
 
 type SentAudit = BaseAudit & { provider: string; provider_message_id: string; latency_ms: number };
@@ -56,6 +58,8 @@ export const emailAudit = {
       provider: a.provider,
       provider_message_id: a.provider_message_id,
       latency_ms: a.latency_ms,
+      registry_resolved: !!a.registry_resolved,
+      alias_resolved: !!a.alias_resolved,
     }, a.business_id);
   },
   async blocked(a: BlockedAudit) {
@@ -67,6 +71,8 @@ export const emailAudit = {
       caller: a.caller,
       reason: a.reason,
       detail: a.detail,
+      registry_resolved: !!a.registry_resolved,
+      alias_resolved: !!a.alias_resolved,
     }, a.business_id);
   },
   async failed(a: FailedAudit) {
@@ -80,6 +86,8 @@ export const emailAudit = {
       reason: a.reason,
       retryable: a.retryable,
       latency_ms: a.latency_ms,
+      registry_resolved: !!a.registry_resolved,
+      alias_resolved: !!a.alias_resolved,
     }, a.business_id);
   },
 };

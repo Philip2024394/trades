@@ -468,6 +468,36 @@ export async function getContactDetail(contactId: string): Promise<ContactDetail
   return result ?? emptyDetail;
 }
 
+// ── Public lookup helpers (used by consumers like the Email Runtime) ─
+//
+// Every consumer that touches a person by identifier should route through
+// these · they respect the deleted_at exclusion (absorbed contacts stay
+// hidden as canonical) and normalize the identifier before lookup.
+
+/** Fetch canonical snapshot for an email or phone · null if not found. */
+export async function findContactByIdentifiers(input: { email?: string | null; phone?: string | null }): Promise<Contact | null> {
+  const email = canonicalEmail(input.email);
+  const phone = canonicalPhone(input.phone);
+  if (!email && !phone) return null;
+  return findByCanonical(email, phone);
+}
+
+/** Fetch canonical snapshot by contact_id · null if not found or deleted. */
+export async function loadContactById(contactId: string): Promise<Contact | null> {
+  const result = await withClient(async (client) => {
+    const r = await client.query(
+      `SELECT DISTINCT ON (contact_id) *
+       FROM nex.contacts
+       WHERE contact_id = $1 AND deleted_at IS NULL
+       ORDER BY contact_id, updated_at DESC
+       LIMIT 1`,
+      [contactId],
+    );
+    return (r.rows[0] as unknown as Contact | undefined) ?? null;
+  });
+  return result ?? null;
+}
+
 // ── Health probe ─────────────────────────────────────────────────
 
 export async function isContactRegistryHealthy(): Promise<{ healthy: boolean; detail: string }> {

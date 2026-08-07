@@ -71,6 +71,27 @@ type DuplicateEntry = {
 
 type DuplicatesResponse = { ok: boolean; entries: DuplicateEntry[]; stats: MergeStats };
 
+type ConsumerEntry = {
+  id: string;
+  label: string;
+  category: string;
+  status: "adopted" | "partial" | "pending" | "not_started";
+  description: string;
+  wiring_notes: string;
+  metrics: {
+    consumer_id: string;
+    last_activity_at: string | null;
+    events_total: number;
+    events_today: number;
+    registry_resolved_total: number;
+    alias_resolved_total: number;
+    compliance_blocks_total: number;
+    adoption_pct: number | null;
+  };
+};
+
+type ConsumersResponse = { ok: boolean; consumers: ConsumerEntry[] };
+
 type MergeConflict = {
   field: string;
   surviving_value: unknown;
@@ -151,6 +172,9 @@ export function ContactRegistryPanel() {
   const [openContactId, setOpenContactId] = useState<string | null>(null);
   const [detail, setDetail] = useState<ContactDetail | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
+
+  // Consumer Adoption
+  const [consumers, setConsumers] = useState<ConsumersResponse | null>(null);
 
   // Merge Centre
   const [duplicates, setDuplicates] = useState<DuplicatesResponse | null>(null);
@@ -298,9 +322,19 @@ export function ContactRegistryPanel() {
     }
   }, [loadDuplicates]);
 
+  const loadConsumers = useCallback(async () => {
+    try {
+      const r = await fetch("/api/nex/contacts/consumers", { cache: "no-store" }).then((r) => r.json());
+      setConsumers(r);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "consumers_failed");
+    }
+  }, []);
+
   useEffect(() => { void loadOverview(); }, [loadOverview]);
   useEffect(() => { void loadList(); }, [loadList]);
   useEffect(() => { void loadDuplicates(); }, [loadDuplicates]);
+  useEffect(() => { void loadConsumers(); }, [loadConsumers]);
 
   // Reset to page 0 when filters change (except when user is paging)
   useEffect(() => { setPage(0); }, [searchDebounced, country, lifecycle, consentMarketing, neverContact]);
@@ -524,6 +558,51 @@ export function ContactRegistryPanel() {
           </div>
         </div>
       ) : null}
+
+      {/* CONSUMER ADOPTION ──────────────────────────────────── */}
+      <div className="mt-6 rounded-xl border p-4" style={{ background: T.panel, borderColor: T.border }}>
+        <div className="mb-3">
+          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.accent }}>Consumer Adoption</div>
+          <h2 className="mt-0.5 text-[18px] font-black leading-none">Registry adoption across every consumer</h2>
+          <div className="mt-1 text-[10.5px]" style={{ color: T.textDim }}>
+            Every service that touches a person should resolve through the Contact Registry · <span style={{ color: T.text }}>Consumer → Registry → Alias Resolution → Canonical Contact → Compliance Check → Runtime → Provider</span>. This section shows which consumers have adopted the registry and which still need migration.
+          </div>
+        </div>
+
+        <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))" }}>
+          {consumers?.consumers.map((c) => {
+            const statusColor =
+              c.status === "adopted" ? T.accent :
+              c.status === "partial" ? T.warning :
+              c.status === "pending" ? T.info :
+              T.textFade;
+            return (
+              <div key={c.id} className="rounded-md border p-3" style={{ background: T.panelHi, borderColor: statusColor + "44" }}>
+                <div className="flex items-baseline gap-2">
+                  <span className="text-[11.5px] font-black" style={{ color: T.text }}>{c.label}</span>
+                  <span className="ml-auto rounded-full px-1.5 py-0.5 text-[9px] font-black uppercase tracking-widest" style={{ background: statusColor + "22", color: statusColor }}>
+                    {c.status.replace("_", " ")}
+                  </span>
+                </div>
+                <div className="mt-1 text-[9.5px] uppercase tracking-widest" style={{ color: T.textFade }}>{c.category}</div>
+                <div className="mt-1 text-[10.5px]" style={{ color: T.textDim }}>{c.description}</div>
+                <div className="mt-2 grid grid-cols-4 gap-1 text-[9.5px]">
+                  <MicroStat label="Adoption" value={c.metrics.adoption_pct != null ? `${c.metrics.adoption_pct}%` : "—"} tone={c.metrics.adoption_pct != null && c.metrics.adoption_pct >= 95 ? "good" : c.metrics.adoption_pct != null && c.metrics.adoption_pct < 50 ? "bad" : "neutral"} />
+                  <MicroStat label="Events" value={c.metrics.events_total} />
+                  <MicroStat label="Aliases" value={c.metrics.alias_resolved_total} tone={c.metrics.alias_resolved_total > 0 ? "info" : "neutral"} />
+                  <MicroStat label="Blocks" value={c.metrics.compliance_blocks_total} tone={c.metrics.compliance_blocks_total > 0 ? "warn" : "neutral"} />
+                </div>
+                <div className="mt-1 text-[9px]" style={{ color: T.textFade }}>
+                  Last activity: {c.metrics.last_activity_at ? relTime(c.metrics.last_activity_at) : "—"}
+                </div>
+                <div className="mt-2 rounded border p-1.5 text-[9.5px] italic" style={{ background: T.panel, borderColor: T.border, color: T.textFade }}>
+                  {c.wiring_notes}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       {/* MERGE CENTRE ─────────────────────────────────────────── */}
       <div className="mt-6 rounded-xl border p-4" style={{ background: T.panel, borderColor: T.border }}>
@@ -921,6 +1000,16 @@ function Stat({ label, value, tone = "neutral", hint }: { label: string; value: 
       <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{label}</div>
       <div className="mt-1 font-mono text-[18px] font-black leading-none" style={{ color }}>{value}</div>
       {hint ? <div className="mt-1 text-[9.5px]" style={{ color: T.textFade }}>{hint}</div> : null}
+    </div>
+  );
+}
+
+function MicroStat({ label, value, tone = "neutral" }: { label: string; value: string | number; tone?: "neutral" | "good" | "warn" | "bad" | "unset" | "info" }) {
+  const color = tone === "good" ? T.accent : tone === "warn" ? T.warning : tone === "bad" ? T.danger : tone === "unset" ? T.textFade : tone === "info" ? T.info : T.text;
+  return (
+    <div className="rounded border p-1" style={{ background: T.panel, borderColor: T.border }}>
+      <div className="text-[8px] uppercase tracking-widest" style={{ color: T.textFade }}>{label}</div>
+      <div className="mt-0.5 font-mono text-[11px] font-black leading-none" style={{ color }}>{value}</div>
     </div>
   );
 }
