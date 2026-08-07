@@ -22,6 +22,7 @@ import { AlertsCentrePanel } from "./AlertsCentrePanel";
 import { JourneyEnginePanel } from "./JourneyEnginePanel";
 import { ExperimentsPanel } from "./ExperimentsPanel";
 import { AttributionPanel } from "./AttributionPanel";
+import { PredictivePanel } from "./PredictivePanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -700,6 +701,11 @@ export function CommunicationsCentrePanel() {
           {/* 3h · ATTRIBUTION ─────────────────────────────────────── */}
           <Section title="Attribution" badge="Phase 5.3 · observational · invariant #14 · first / last / linear · 7·30·90·custom windows">
             <AttributionPanel />
+          </Section>
+
+          {/* 3i · PREDICTIVE ENGINE ─────────────────────────────── */}
+          <Section title="Predictive Engine" badge="Phase 5.4 · invariant #15 · recommend/rank/score/optimise · never an execution authority">
+            <PredictivePanel />
           </Section>
 
           {/* 3e · ANALYTICS + REPORTING ───────────────────────────── */}
