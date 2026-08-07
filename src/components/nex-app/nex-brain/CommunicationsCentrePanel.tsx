@@ -16,6 +16,7 @@ import { AudienceBuilder } from "./AudienceBuilder";
 import { CampaignBuilder } from "./CampaignBuilder";
 import { DeliveryEnginePanel } from "./DeliveryEnginePanel";
 import { AnalyticsPanel } from "./AnalyticsPanel";
+import { SystemHealthPanel } from "./SystemHealthPanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -352,6 +353,11 @@ export function CommunicationsCentrePanel() {
             Refresh now
           </button>
         </div>
+      </div>
+
+      {/* SYSTEM HEALTH · always visible above every other section · Phase 4f production-hardening doctrine (Philip 2026-08-08) */}
+      <div className="mb-4">
+        <SystemHealthPanel />
       </div>
 
       {!config ? (
