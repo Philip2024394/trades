@@ -14,6 +14,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ImportWizard } from "./ImportWizard";
 import { AudienceBuilder } from "./AudienceBuilder";
 import { CampaignBuilder } from "./CampaignBuilder";
+import { DeliveryEnginePanel } from "./DeliveryEnginePanel";
 
 // ── API shapes ───────────────────────────────────────────────────────
 type EnvVar =
@@ -657,6 +658,11 @@ export function CommunicationsCentrePanel() {
             <div className="mt-3 text-[9.5px] italic" style={{ color: T.textFade }}>
               Campaigns store REFERENCES to segments · never contact lists. Send-time uses a FRESH audience query so new contacts are included and unsubscribes/never-contact/compliance are always current. Delivery + scheduling arrive in Phase 4d.
             </div>
+          </Section>
+
+          {/* 3d · DELIVERY ENGINE ─────────────────────────────────── */}
+          <Section title="Delivery Engine" badge="Phase 4d · live · simulation mode by default">
+            <DeliveryEnginePanel />
           </Section>
 
           {/* 3c · COMPOSER · Metrics ──────────────────────────────── */}
