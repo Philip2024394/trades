@@ -31,6 +31,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { NexStoragePanel } from "@/components/nex-app/nex-brain/NexStoragePanel";
+import { CommunicationsCentrePanel } from "@/components/nex-app/nex-brain/CommunicationsCentrePanel";
 import "../../nex-app.css";
 
 // ─────────────────────────────────────────────────────────────────
@@ -3404,7 +3405,7 @@ function Workspace(props: {
          props.view === "community"     ? <StubWorkspace title="Community" description="Discord · Facebook groups · LinkedIn · Reddit · X · YouTube comments · feature requests · sentiment analysis. NEX summarises weekly conversation themes for product decisions." pending="Community API integrations + sentiment analysis" /> :
          props.view === "pricing"       ? <StubWorkspace title="Pricing Intelligence" description="Constantly watches: conversion rate · churn · upgrade speed · cancellation reasons · price sensitivity by segment. NEX advises when pricing needs adjustment — e.g. 'Starter converts too easily' · 'Enterprise underpriced'. Requires Level-3 authority (Philip approval) for any price change." pending="Stripe events + conversion telemetry" /> :
          props.view === "renewals"      ? <StubWorkspace title="Renewal Centre" description="Countdown to every renewal — SSL · domain · subscription · credit card · API key · provider quota. NEX warns 14d / 7d / 3d / 24h before each. Nothing renews or lapses silently." pending="Domain registrar + Stripe + SSL monitor integrations" /> :
-         props.view === "email"         ? <CommunicationsCentreWorkspace /> :
+         props.view === "email"         ? <CommunicationsCentrePanel /> :
          props.view === "partner"       ? <PartnerAgencyWorkspace /> :
          props.view === "sales"         ? <SalesIntelligenceWorkspace /> :
          props.view === "operations"    ? <OperationsCentreWorkspace status={props.status} totalActive={props.totalActive} totalSleeping={props.totalSleeping} totalOffline={props.totalOffline} cases={props.cases} /> :

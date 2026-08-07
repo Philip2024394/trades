@@ -1,0 +1,482 @@
+// Communications Centre · NEX Email Mission Control panel.
+//
+// Single operational dashboard for every email-related surface — provider ·
+// queue · delivery · compliance · audit · templates. Composes /api/nex/email/
+// config + /api/nex/email/audit. Sections that need Phase 3+ data show
+// honest "—" instead of fabricated numbers.
+//
+// Doctrine: constitution_nex_infrastructure_runtime_services_pattern_2026_08_07.md
+//           constitution_nex_email_runtime_8_phase_roadmap_2026_08_07.md
+
+"use client";
+
+import { useCallback, useEffect, useState } from "react";
+
+// ── API shapes ───────────────────────────────────────────────────────
+type EnvVar =
+  | { name: string; purpose: string; secret: boolean; present: false }
+  | { name: string; purpose: string; secret: false; present: true; value: string | null }
+  | { name: string; purpose: string; secret: true; present: true; last4: string; length: number; masked: true };
+
+type Adapter = { id: string; label: string; status: "supported" | "planned"; active: boolean; note?: string };
+
+type ConfigResponse = {
+  ok: boolean;
+  runtime: string;
+  active_provider: string;
+  active_capabilities: {
+    supportsHtml: boolean; supportsText: boolean; supportsAttachments: boolean;
+    supportsTemplating: boolean; supportsOpenTracking: boolean; supportsClickTracking: boolean;
+  };
+  adapters: Adapter[];
+  health: { healthy: boolean; detail?: string; provider: string };
+  queue: { sent: number; blocked: number; failed: number; in_flight: number; waiting: number };
+  env: EnvVar[];
+  dev_mode: boolean;
+  generated_at: string;
+};
+
+type AuditEvent = {
+  event_id?: string;
+  event_type?: string;
+  timestamp?: string;
+  outcome?: string;
+  payload?: {
+    to_email?: string;
+    kind?: "marketing" | "transactional";
+    caller?: string;
+    provider?: string;
+    provider_message_id?: string;
+    latency_ms?: number;
+    reason?: string;
+    detail?: string;
+  };
+};
+
+type AuditResponse = {
+  ok: boolean;
+  window: { total_rows: number; oversample_scanned: number; since: string | null };
+  today: { sent: number; blocked: number; failed: number };
+  totals: { sent: number; blocked: number; failed: number };
+  success_rate_pct: number | null;
+  avg_latency_ms: number | null;
+  kinds: { marketing: number; transactional: number };
+  top_blocked_reasons: Array<{ key: string; count: number }>;
+  top_failure_reasons: Array<{ key: string; count: number }>;
+  top_callers: Array<{ key: string; count: number }>;
+  top_providers: Array<{ key: string; count: number }>;
+  last_sent: AuditEvent | null;
+  last_failure: AuditEvent | null;
+  recent: AuditEvent[];
+};
+
+// ── Theme (dark · matches NexStoragePanel · shared Runtime aesthetic) ───
+const T = {
+  bg:       "#0b0d10",
+  panel:    "#12161c",
+  panelHi:  "#1a2028",
+  border:   "#232b36",
+  text:     "#e5e9ef",
+  textDim:  "#8892a0",
+  textFade: "#5c6572",
+  accent:   "#4dd0a0",
+  warning:  "#f0b45a",
+  danger:   "#f0665a",
+  info:     "#5aa6f0",
+  purple:   "#b48cf0",
+};
+
+// ── Building blocks ──────────────────────────────────────────────────
+function Section({ title, badge, children }: { title: string; badge?: string; children: React.ReactNode }) {
+  return (
+    <section className="mb-4 rounded-lg border p-4" style={{ background: T.panel, borderColor: T.border }}>
+      <div className="mb-3 flex items-baseline gap-2">
+        <h2 className="text-[11px] font-black uppercase tracking-widest" style={{ color: T.textDim }}>{title}</h2>
+        {badge ? <span className="text-[9px] font-mono" style={{ color: T.textFade }}>{badge}</span> : null}
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Metric({ label, value, tone = "neutral", hint }: { label: string; value: string | number; tone?: "neutral" | "good" | "warn" | "bad" | "unset"; hint?: string }) {
+  const color = tone === "good" ? T.accent : tone === "warn" ? T.warning : tone === "bad" ? T.danger : tone === "unset" ? T.textFade : T.text;
+  return (
+    <div className="rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+      <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{label}</div>
+      <div className="mt-1 font-mono text-[18px] font-black leading-none" style={{ color }}>{value}</div>
+      {hint ? <div className="mt-1 text-[9.5px]" style={{ color: T.textFade }}>{hint}</div> : null}
+    </div>
+  );
+}
+
+function StatusDot({ ok, label }: { ok: boolean | null; label: string }) {
+  const color = ok === null ? T.textFade : ok ? T.accent : T.danger;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-[11px]" style={{ color }}>
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
+      {label}
+    </span>
+  );
+}
+
+function HonestEmpty({ title, body, phase }: { title: string; body: string; phase?: string }) {
+  return (
+    <div className="rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+      <div className="flex items-baseline gap-2">
+        <div className="text-[11px] font-black" style={{ color: T.warning }}>{title}</div>
+        {phase ? <span className="ml-auto text-[9px] font-mono uppercase tracking-widest" style={{ color: T.textFade }}>{phase}</span> : null}
+      </div>
+      <div className="mt-1 text-[10.5px]" style={{ color: T.textDim }}>{body}</div>
+    </div>
+  );
+}
+
+function relTime(iso?: string | null): string {
+  if (!iso) return "—";
+  const now = Date.now();
+  const then = new Date(iso).getTime();
+  const s = Math.round((now - then) / 1000);
+  if (s < 60) return `${s}s ago`;
+  if (s < 3600) return `${Math.round(s / 60)}m ago`;
+  if (s < 86400) return `${Math.round(s / 3600)}h ago`;
+  return `${Math.round(s / 86400)}d ago`;
+}
+
+// Group transactional callers into families (best-effort · from event caller prefix)
+function transactionalFamilies(top: Array<{ key: string; count: number }>): Array<{ family: string; count: number; callers: string[] }> {
+  const families: Record<string, { count: number; callers: Set<string> }> = {};
+  const bucket = (caller: string): string => {
+    if (/receipt|order|payment/i.test(caller))          return "Receipts";
+    if (/invite|invitation/i.test(caller))              return "Invitations";
+    if (/verify|verification|magic|session/i.test(caller)) return "Verification / Magic Links";
+    if (/reset|password/i.test(caller))                 return "Password Resets";
+    if (/notif|notify/i.test(caller))                    return "Notifications";
+    if (/quote|review|referral|affiliate/i.test(caller)) return "Workflow (quotes · reviews · referrals)";
+    if (/contact|form/i.test(caller))                    return "Contact form";
+    return "Other";
+  };
+  for (const row of top) {
+    const family = bucket(row.key);
+    if (!families[family]) families[family] = { count: 0, callers: new Set() };
+    families[family].count += row.count;
+    families[family].callers.add(row.key);
+  }
+  return Object.entries(families)
+    .map(([family, { count, callers }]) => ({ family, count, callers: Array.from(callers) }))
+    .sort((a, b) => b.count - a.count);
+}
+
+// ── Panel ────────────────────────────────────────────────────────────
+export function CommunicationsCentrePanel() {
+  const [config, setConfig] = useState<ConfigResponse | null>(null);
+  const [audit, setAudit] = useState<AuditResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [lastUpdate, setLastUpdate] = useState<string>("");
+
+  const load = useCallback(async () => {
+    try {
+      const [c, a] = await Promise.all([
+        fetch("/api/nex/email/config", { cache: "no-store" }).then((r) => r.json()),
+        fetch("/api/nex/email/audit", { cache: "no-store" }).then((r) => r.json()),
+      ]);
+      if (c.ok) setConfig(c);
+      if (a.ok) setAudit(a);
+      setLastUpdate(new Date().toLocaleTimeString());
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "fetch_failed");
+    }
+  }, []);
+
+  useEffect(() => {
+    void load();
+    const t = setInterval(load, 15_000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  return (
+    <div className="rounded-xl p-4" style={{ background: T.bg, color: T.text, fontFamily: "system-ui,-apple-system,Segoe UI,sans-serif" }}>
+      {/* HEADER */}
+      <div className="mb-5 flex items-baseline gap-3">
+        <div>
+          <div className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.accent }}>NEX Headquarters · Growth Floor</div>
+          <h1 className="mt-0.5 text-[24px] font-black leading-none">Communications Centre</h1>
+          <div className="mt-1 text-[11px]" style={{ color: T.textDim }}>
+            Mission Control for the NEX Email Runtime · providers · queue · compliance · audit
+          </div>
+        </div>
+        <div className="ml-auto flex flex-col items-end gap-1">
+          <div className="text-[9px] uppercase tracking-widest" style={{ color: T.textFade }}>Last update</div>
+          <div className="font-mono text-[11px]" style={{ color: T.text }}>{lastUpdate || "—"}</div>
+          {error ? <div className="text-[10px]" style={{ color: T.danger }}>Error: {error}</div> : null}
+          <button
+            type="button"
+            onClick={load}
+            className="mt-1 rounded border px-2 py-1 text-[10px] font-semibold"
+            style={{ background: T.panel, borderColor: T.border, color: T.textDim }}
+          >
+            Refresh now
+          </button>
+        </div>
+      </div>
+
+      {!config ? (
+        <div className="rounded-lg border p-6 text-center text-[13px]" style={{ background: T.panel, borderColor: T.border, color: T.textFade }}>
+          Loading Runtime state…
+        </div>
+      ) : (
+        <>
+          {/* 1 · OVERVIEW ─────────────────────────────────────────── */}
+          <Section title="Overview" badge="live · from /api/nex/email/config + /audit">
+            <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
+              <Metric label="Provider" value={config.active_provider} tone="good" />
+              <Metric label="Health" value={config.health.healthy ? "healthy" : "unhealthy"} tone={config.health.healthy ? "good" : "bad"} hint={config.health.detail} />
+              <Metric label="Queue in-flight" value={config.queue.in_flight} tone={config.queue.in_flight > 0 ? "warn" : "neutral"} hint={`${config.queue.waiting} waiting`} />
+              <Metric label="Emails today" value={audit?.today.sent ?? "—"} tone={audit && audit.today.sent > 0 ? "good" : "unset"} hint={audit ? `${audit.today.blocked} blocked · ${audit.today.failed} failed` : ""} />
+              <Metric label="Success rate" value={audit?.success_rate_pct === null || audit?.success_rate_pct === undefined ? "—" : `${audit.success_rate_pct}%`} tone={audit && audit.success_rate_pct !== null && audit.success_rate_pct >= 95 ? "good" : audit && audit.success_rate_pct !== null && audit.success_rate_pct < 80 ? "bad" : "neutral"} hint={audit ? `${audit.totals.sent + audit.totals.failed} attempts` : ""} />
+              <Metric label="Avg latency" value={audit?.avg_latency_ms ? `${audit.avg_latency_ms}ms` : "—"} tone={audit && audit.avg_latency_ms && audit.avg_latency_ms < 500 ? "good" : "neutral"} />
+              <Metric label="Last send" value={relTime(audit?.last_sent?.timestamp)} tone={audit?.last_sent ? "neutral" : "unset"} hint={audit?.last_sent?.payload?.provider} />
+              <Metric label="Last failure" value={relTime(audit?.last_failure?.timestamp)} tone={audit?.last_failure ? "warn" : "unset"} hint={audit?.last_failure?.payload?.reason?.slice(0, 40)} />
+            </div>
+          </Section>
+
+          {/* 2 · CONTACTS ────────────────────────────────────────── */}
+          <Section title="Contacts" badge="awaiting Phase 3 · Contact Intelligence">
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
+              <Metric label="Total contacts" value="—" tone="unset" />
+              <Metric label="Trades" value="—" tone="unset" />
+              <Metric label="Customers" value="—" tone="unset" />
+              <Metric label="Newsletter subs" value="—" tone="unset" />
+              <Metric label="Manual" value="—" tone="unset" />
+              <Metric label="Countries" value="—" tone="unset" />
+            </div>
+            <HonestEmpty
+              phase="Phase 3"
+              title="Unified contact model not yet built"
+              body="Contacts today live in multiple tables (hammerex_trade_off_listings, hammerex_xrated_newsletter_subscribers, CRM tables, nex.contacts). Phase 3 unifies them into one contact model with tags, consent, country, lifecycle stage, and communication history."
+            />
+          </Section>
+
+          {/* 3 · MARKETING ──────────────────────────────────────── */}
+          <Section title="Marketing" badge="awaiting Phase 4 · Campaign Builder">
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
+              <Metric label="Marketing sent (all-time)" value={audit?.kinds.marketing ?? "—"} tone={audit?.kinds.marketing ? "neutral" : "unset"} />
+              <Metric label="Active campaigns" value="—" tone="unset" />
+              <Metric label="Recipient lists" value="—" tone="unset" />
+              <Metric label="Drafts" value="—" tone="unset" />
+              <Metric label="Scheduled" value="—" tone="unset" />
+            </div>
+            <HonestEmpty
+              phase="Phase 4"
+              title="Campaign builder not yet built"
+              body="Phase 4 delivers: recipient selection (filter by country / trade / tag / consent), save recipient groups, preview recipients before sending, campaign lifecycle (draft → scheduled → sending → completed)."
+            />
+          </Section>
+
+          {/* 4 · TRANSACTIONAL ─────────────────────────────────── */}
+          <Section title="Transactional" badge={audit ? `live · from audit callers · ${audit.kinds.transactional} sent all-time` : ""}>
+            {audit && audit.top_callers.length > 0 ? (
+              <div className="space-y-1">
+                {transactionalFamilies(audit.top_callers).map((f) => (
+                  <div key={f.family} className="grid items-center gap-2 rounded-md border p-2 text-[11px]" style={{ background: T.panelHi, borderColor: T.border, gridTemplateColumns: "220px 80px 1fr" }}>
+                    <span className="font-semibold" style={{ color: T.text }}>{f.family}</span>
+                    <span className="font-mono" style={{ color: T.accent }}>{f.count.toLocaleString()}</span>
+                    <span className="text-[9.5px] font-mono" style={{ color: T.textFade }}>{f.callers.join(" · ")}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-[11px]" style={{ color: T.textFade }}>No transactional sends recorded yet — categories will populate as callers use the Runtime.</div>
+            )}
+          </Section>
+
+          {/* 5 · QUEUE ─────────────────────────────────────────── */}
+          <Section title="Queue" badge="live · from Runtime queue">
+            <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(5, minmax(0, 1fr))" }}>
+              <Metric label="Waiting" value={config.queue.waiting} tone={config.queue.waiting > 0 ? "warn" : "neutral"} />
+              <Metric label="Sending" value={config.queue.in_flight} tone={config.queue.in_flight > 0 ? "warn" : "neutral"} />
+              <Metric label="Retrying" value="—" tone="unset" hint="not yet surfaced" />
+              <Metric label="Failed (all-time)" value={config.queue.failed} tone={config.queue.failed > 0 ? "bad" : "neutral"} />
+              <Metric label="Completed (all-time)" value={config.queue.sent} tone="good" />
+            </div>
+            <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>
+              Queue is in-memory (per-process) in Phase 1. Persistent queue backed by nex.jobs lands in Phase 6 · Delivery Engine.
+            </div>
+          </Section>
+
+          {/* 6 · PROVIDER ──────────────────────────────────────── */}
+          <Section title="Provider" badge={`active: ${config.active_provider}`}>
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
+              <Metric label="Active adapter" value={config.active_provider} tone="good" />
+              <Metric label="Health" value={config.health.healthy ? "healthy" : "unhealthy"} tone={config.health.healthy ? "good" : "bad"} hint={config.health.detail?.slice(0, 60)} />
+              <Metric label="Avg latency" value={audit?.avg_latency_ms ? `${audit.avg_latency_ms}ms` : "—"} tone={audit && audit.avg_latency_ms && audit.avg_latency_ms < 500 ? "good" : "neutral"} />
+              <Metric label="Sends via this provider" value={audit?.top_providers.find((p) => p.key === config.active_provider)?.count ?? 0} />
+            </div>
+            <div className="mb-3 rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+              <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Capabilities</div>
+              <div className="grid grid-cols-2 gap-2 text-[11px] md:grid-cols-3">
+                <StatusDot ok={config.active_capabilities.supportsHtml} label="HTML body" />
+                <StatusDot ok={config.active_capabilities.supportsText} label="Plain text body" />
+                <StatusDot ok={config.active_capabilities.supportsAttachments} label="Attachments" />
+                <StatusDot ok={config.active_capabilities.supportsTemplating} label="Provider templates" />
+                <StatusDot ok={config.active_capabilities.supportsOpenTracking} label="Open tracking" />
+                <StatusDot ok={config.active_capabilities.supportsClickTracking} label="Click tracking" />
+              </div>
+            </div>
+            <div className="rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+              <div className="mb-2 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Environment configuration</div>
+              <div className="space-y-1">
+                {config.env.map((e) => {
+                  if (!e.present) {
+                    return (
+                      <div key={e.name} className="grid items-center gap-2 rounded-md border p-2 text-[11px]" style={{ background: T.panel, borderColor: T.border, gridTemplateColumns: "240px 90px 1fr" }}>
+                        <code style={{ color: T.textDim }}>{e.name}</code>
+                        <span className="text-[10px] uppercase tracking-widest" style={{ color: T.textFade }}>not set</span>
+                        <span className="text-[10px] italic" style={{ color: T.textFade }}>{e.purpose}</span>
+                      </div>
+                    );
+                  }
+                  if (e.secret) {
+                    return (
+                      <div key={e.name} className="grid items-center gap-2 rounded-md border p-2 text-[11px]" style={{ background: T.panel, borderColor: T.border, gridTemplateColumns: "240px 200px 1fr" }}>
+                        <code style={{ color: T.text }}>{e.name}</code>
+                        <span className="font-mono text-[10px]" style={{ color: T.warning }}>•••• ({e.length} chars)</span>
+                        <span className="text-[10px] italic" style={{ color: T.textFade }}>{e.purpose}</span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={e.name} className="grid items-center gap-2 rounded-md border p-2 text-[11px]" style={{ background: T.panel, borderColor: T.border, gridTemplateColumns: "240px 1fr 1fr" }}>
+                      <code style={{ color: T.text }}>{e.name}</code>
+                      <span className="font-mono text-[10.5px]" style={{ color: T.info }}>{e.value ?? "—"}</span>
+                      <span className="text-[10px] italic" style={{ color: T.textFade }}>{e.purpose}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </Section>
+
+          {/* 7 · COMPLIANCE ────────────────────────────────────── */}
+          <Section title="Compliance" badge="live · from audit blocked-events">
+            <div className="mb-3 text-[10.5px]" style={{ color: T.textDim }}>
+              Every send passes through the Runtime compliance gate. Blocks are recorded to <code>nex.events</code> with the reason.
+              Legal floors: UK PECR · GDPR · Australian Spam Act · Canadian CASL · US CAN-SPAM.
+            </div>
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))" }}>
+              <Metric
+                label="Blocked · marketing consent"
+                value={audit?.top_blocked_reasons.find((r) => r.key === "no_marketing_consent")?.count ?? 0}
+                tone="warn"
+              />
+              <Metric
+                label="Blocked · transactional consent"
+                value={audit?.top_blocked_reasons.find((r) => r.key === "no_transactional_consent")?.count ?? 0}
+                tone="warn"
+              />
+              <Metric
+                label="Blocked · never-contact"
+                value={audit?.top_blocked_reasons.find((r) => r.key === "never_contact")?.count ?? 0}
+                tone="warn"
+              />
+              <Metric
+                label="Blocked · unsubscribed"
+                value={audit?.top_blocked_reasons.find((r) => r.key === "unsubscribed")?.count ?? 0}
+                tone="warn"
+              />
+              <Metric
+                label="Blocked · invalid email"
+                value={audit?.top_blocked_reasons.find((r) => r.key === "invalid_email")?.count ?? 0}
+                tone="bad"
+              />
+            </div>
+            <div className="rounded-md border p-3" style={{ background: T.panelHi, borderColor: T.border }}>
+              <div className="mb-1 text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>Country compliance summary</div>
+              <div className="text-[10.5px]" style={{ color: T.textFade }}>Awaiting per-recipient country tagging (Phase 3 unified contact model).</div>
+            </div>
+          </Section>
+
+          {/* 8 · AUDIT ─────────────────────────────────────────── */}
+          <Section title="Audit" badge={audit ? `${audit.recent.length} recent · window scanned ${audit.window.oversample_scanned}` : ""}>
+            {audit && audit.recent.length > 0 ? (
+              <div className="space-y-1">
+                {audit.recent.slice(0, 20).map((e) => {
+                  const isFailed = e.event_type === "email.failed";
+                  const isBlocked = e.event_type === "email.blocked";
+                  const color = isFailed ? T.danger : isBlocked ? T.warning : T.accent;
+                  const symbol = isFailed ? "✗" : isBlocked ? "⊘" : "✓";
+                  return (
+                    <div key={e.event_id} className="grid items-center gap-2 rounded border p-2 text-[10.5px]" style={{ background: T.panelHi, borderColor: T.border, gridTemplateColumns: "16px 90px 220px 100px 1fr" }}>
+                      <span style={{ color }}>{symbol}</span>
+                      <span className="font-mono" style={{ color: T.textFade }}>{relTime(e.timestamp)}</span>
+                      <span className="font-mono truncate" style={{ color: T.text }}>{e.payload?.to_email ?? "—"}</span>
+                      <span className="text-[9.5px] uppercase tracking-widest" style={{ color: e.payload?.kind === "marketing" ? T.purple : T.info }}>{e.payload?.kind ?? "—"}</span>
+                      <span className="text-[10px] truncate" style={{ color: isFailed || isBlocked ? T.danger : T.textDim }}>
+                        {isFailed || isBlocked ? (e.payload?.reason ?? e.payload?.detail ?? "unknown") : (e.payload?.caller ?? "—")}
+                      </span>
+                    </div>
+                  );
+                })}
+                <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>
+                  Search + filter UI coming in Phase 7. Direct API access today: <a href="/api/nex/email/audit" target="_blank" rel="noreferrer" className="underline" style={{ color: T.info }}>/api/nex/email/audit</a> · supports ?kind=marketing · ?caller=orders · ?event=email.blocked · ?since=&lt;iso&gt;
+                </div>
+              </div>
+            ) : (
+              <div className="text-[11px]" style={{ color: T.textFade }}>
+                No email events recorded yet. Every send through <code>sendEmail(...)</code> writes one row to <code>nex.events</code>. Events surface here as soon as sends happen.
+              </div>
+            )}
+          </Section>
+
+          {/* 9 · TEMPLATES ─────────────────────────────────────── */}
+          <Section title="Templates" badge="awaiting Phase 5 · Compose">
+            <div className="mb-3 grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))" }}>
+              <Metric label="Installed" value="—" tone="unset" />
+              <Metric label="With variables" value="—" tone="unset" />
+              <Metric label="Preview count" value="—" tone="unset" />
+              <Metric label="Latest version" value="—" tone="unset" />
+            </div>
+            <HonestEmpty
+              phase="Phase 5"
+              title="Template system not yet built"
+              body="Phase 5 delivers: rich text · HTML · templates with variables · attachments · scheduling · preview · test-send. Templates will live under NEX-side management, provider-side template APIs are not used (adapter isolation)."
+            />
+          </Section>
+
+          {/* 10 · FUTURE PROVIDERS ─────────────────────────────── */}
+          <Section title="Available adapters" badge={`${config.adapters.filter((a) => a.status === "supported").length} supported · ${config.adapters.filter((a) => a.status === "planned").length} planned`}>
+            <div className="grid gap-2" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))" }}>
+              {config.adapters.map((a) => (
+                <div
+                  key={a.id}
+                  className="rounded-md border p-3"
+                  style={{
+                    background: a.active ? T.accent + "10" : T.panelHi,
+                    borderColor: a.active ? T.accent : T.border,
+                  }}
+                >
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-[12px] font-black" style={{ color: a.active ? T.accent : T.text }}>{a.label}</span>
+                    {a.active ? <span className="text-[9px] font-mono uppercase tracking-widest" style={{ color: T.accent }}>active</span> : null}
+                    <span className="ml-auto text-[9px] uppercase tracking-widest" style={{ color: a.status === "supported" ? T.accent : T.textFade }}>{a.status}</span>
+                  </div>
+                  <div className="mt-1 font-mono text-[9.5px]" style={{ color: T.textFade }}>id: {a.id}</div>
+                  {a.note ? <div className="mt-1 text-[10px] italic" style={{ color: T.textDim }}>{a.note}</div> : null}
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 text-[9.5px] italic" style={{ color: T.textFade }}>
+              Switching provider: set <code>NEX_EMAIL_PROVIDER</code> in <code>.env.local</code> and restart. No application code changes required.
+            </div>
+          </Section>
+
+          {/* FOOTER */}
+          <div className="text-center text-[9px] italic" style={{ color: T.textFade }}>
+            Auto-refreshes every 15 seconds · single Mission Control page for every email surface · doctrine: `constitution_nex_email_runtime_8_phase_roadmap_2026_08_07`
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
