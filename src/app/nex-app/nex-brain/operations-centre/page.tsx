@@ -2301,20 +2301,35 @@ function WarehousePanel() {
           <div className="mt-1.5 grid grid-cols-2 gap-1.5 md:grid-cols-4">
             {vaultBarrels.map((b) => {
               const isEmpty = b.count === 0;
-              return (
-                <div
-                  key={b.key}
-                  className="text-left rounded border px-2 py-1.5"
-                  style={{ background: T.panelElev, borderColor: T.border, opacity: isEmpty ? 0.55 : 1 }}
-                  title={b.note}
-                >
+              // Phase 10.8 · the review barrel is the only one that
+              // actually navigates somewhere · deep-links to the
+              // Awaiting Review UI. The other three are informational.
+              const href = b.key === "review" ? "/nex-app/nex-brain/review" : null;
+              const inner = (
+                <>
                   <div className="flex items-baseline gap-1.5">
                     <span className="text-[13px]" aria-hidden>{b.glyph}</span>
                     <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{b.label}</span>
+                    {href && !isEmpty && (
+                      <span className="ml-auto text-[9px]" style={{ color: T.info }}>Open →</span>
+                    )}
                   </div>
                   <div className="mt-0.5 text-[18px] font-black tabular-nums" style={{ color: isEmpty ? T.textFade : b.color }}>
                     {b.count.toLocaleString()}
                   </div>
+                </>
+              );
+              const commonStyle = { background: T.panelElev, borderColor: T.border, opacity: isEmpty ? 0.55 : 1 };
+              if (href) {
+                return (
+                  <Link key={b.key} href={href} className="text-left rounded border px-2 py-1.5 transition-colors hover:brightness-110" style={commonStyle} title={b.note}>
+                    {inner}
+                  </Link>
+                );
+              }
+              return (
+                <div key={b.key} className="text-left rounded border px-2 py-1.5" style={commonStyle} title={b.note}>
+                  {inner}
                 </div>
               );
             })}
