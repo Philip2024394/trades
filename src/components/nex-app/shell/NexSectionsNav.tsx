@@ -40,12 +40,11 @@ const SECTIONS: Section[] = [
   { href: "/nex-app/contacts",               label: "Contacts",             description: "Your saved connections + groups",    icon: Users },
   { href: "/nex-app/centre",                 label: "Trade Centre",         description: "Marketplace: products · services",   icon: Store },
   { href: "/nex-app/nex-brain/comms-social", label: "Nex Marketing",        description: "Get your business seen",             icon: Share2 },
-  // Phase 12.2 · Knowledge Factory is currently the Operations Centre
-  // (Warehouse + workers + vault live there as a panel · see 10.5-10.8).
-  // Phase 12.4 will move this to a dedicated /factory page and update
-  // the href accordingly. This entry stops the "no drawer link" invisibility
-  // that made the Warehouse UI unreachable without knowing the exact URL.
-  { href: "/nex-app/nex-brain/operations-centre", label: "Knowledge Factory", description: "Workers · Warehouse · Vault",       icon: Factory },
+  // Phase 12.4 · Dedicated Knowledge Factory page. Physical hierarchy
+  // (Inbox → Workers → Warehouse → Vault) driven by real state
+  // transitions from workers-live / warehouse / timeline. Operations
+  // Centre remains reachable directly for the older admin surfaces.
+  { href: "/nex-app/nex-brain/factory",           label: "Knowledge Factory", description: "Inbox · Workers · Warehouse · Vault", icon: Factory },
   { href: "/nex-app/staircase-configurator", label: "Staircase Configurator", description: "3D configurator + Nex Designs",    icon: Ruler },
   { href: "/nex-app/design-system",          label: "Design System",        description: "Design tokens · components",         icon: Palette },
 ];
