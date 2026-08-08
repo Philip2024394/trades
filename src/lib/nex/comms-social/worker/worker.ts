@@ -323,15 +323,21 @@ export async function processScheduledJob(input: ProcessJobInput): Promise<Proce
   }
 
   // Token revelation happens inside its own tenant scope · plaintext
-  // exists only in this function's stack frame.
+  // exists only in this function's stack frame · passed to adapter via
+  // AdapterPublishRequest.access_token · adapter is responsible for
+  // never persisting / logging.
   let accessToken: string | null = null;
+  let refreshToken: string | null = null;
   await withTenantClient(input.tenant_id, async (c) => {
-    accessToken = await revealTokenForAdapter(c, input.tenant_id, input.account_id, "access");
+    accessToken  = await revealTokenForAdapter(c, input.tenant_id, input.account_id, "access");
+    refreshToken = await revealTokenForAdapter(c, input.tenant_id, input.account_id, "refresh");
   });
   if (!accessToken) {
     await markIntentFailed(input.tenant_id, intent.intent_id, "no access token stored");
     return { outcome: "failed", detail: "no_token" };
   }
+  const resolvedAccessToken: string = accessToken;   // const alias for TS narrowing across async gaps
+  const resolvedRefreshToken: string | null = refreshToken;
 
   const publishReq: AdapterPublishRequest = {
     account:            {
@@ -350,6 +356,8 @@ export async function processScheduledJob(input: ProcessJobInput): Promise<Proce
       created_at:            isoOf(account.created_at) ?? new Date().toISOString(),
       updated_at:            isoOf(account.updated_at) ?? new Date().toISOString(),
     },
+    access_token:       resolvedAccessToken,
+    refresh_token:      resolvedRefreshToken,
     post_id:            input.draft_id,
     idempotency_marker: marker,
     caption:            subject.caption,
@@ -374,6 +382,7 @@ export async function processScheduledJob(input: ProcessJobInput): Promise<Proce
     try {
       verifyRes = await adapter.verify({
         account:            publishReq.account,
+        access_token:       resolvedAccessToken,
         idempotency_marker: marker,
         since:              new Date(Date.now() - 60_000).toISOString(),
       });

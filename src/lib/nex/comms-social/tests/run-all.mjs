@@ -33,6 +33,8 @@ const suites = [
   { name: "category-automation",  path: join(__dirname, "category-automation.test.mjs")  },
   { name: "scheduling-worker",    path: join(__dirname, "scheduling-worker.test.mjs")    },
   { name: "pause-propagation",    path: join(__dirname, "pause-propagation.test.mjs")    },
+  { name: "adapter-real-providers", path: join(__dirname, "adapter-real-providers.test.mjs") },
+  { name: "adapter-meta-live",      path: join(__dirname, "adapter-meta-live.test.mjs")      },
 ];
 
 const results = [];

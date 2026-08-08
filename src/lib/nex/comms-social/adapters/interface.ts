@@ -58,6 +58,8 @@ export interface AdapterCapabilities {
 // provider-specific transformation.
 export interface AdapterPublishRequest {
   account:            SocialAccount;
+  access_token:       string;               // plaintext · resolved by worker via revealTokenForAdapter · never persisted here
+  refresh_token:      string | null;
   post_id:            string;
   idempotency_marker: string;               // engine-supplied · adapter embeds in a provider-recognised field where possible
   caption:            string;
@@ -97,6 +99,7 @@ export type AdapterPublishResult =
 // supports_server_side_idempotency is false; recommended always.
 export interface AdapterVerifyRequest {
   account:            SocialAccount;
+  access_token:       string;               // plaintext · same discipline as publish
   idempotency_marker: string;
   since:              string;               // ISO · lower bound on when the intent was issued
 }
