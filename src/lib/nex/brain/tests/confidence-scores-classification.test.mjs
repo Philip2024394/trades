@@ -141,19 +141,55 @@ async function main() {
     const hasName    = /classification_check|_check/i.test(errText);
     record("CC10", !probe.ok && hasCheck && hasName, `err='${errText.slice(0, 120)}'`);
 
-    // CC11 · baseline static assertion · extractor still passes raw value
-    //        through without normalisation. INVERTS to failure once a
-    //        normaliser is added. This gives the fix commit an obvious
-    //        regression signal to flip.
+    // CC11 · Fix B + A landed · extractor now has the strict validator.
+    //        (Originally this assertion tested for the OPPOSITE state as
+    //         the pre-fix baseline. It was designed to flip when the fix
+    //         landed — this is that flip.)
     const extractor = readFileSync(join(REPO, "src/lib/nex/brain/workers/knowledge-extractor.ts"), "utf8");
-    const rawPassthrough = /classification:\s*claim\.classification\b/.test(extractor);
-    const hasNormaliser  = /normaliseClassification|normalizeClassification|coerceClassification|VALID_CLASSIFICATIONS/.test(extractor);
-    record("CC11", rawPassthrough && !hasNormaliser,
-      `baseline · raw_passthrough=${rawPassthrough} normaliser_present=${hasNormaliser} · once a normaliser lands this test should FLIP and be inverted to prove the fix`);
+    const hasConstant   = /const\s+VALID_CLASSIFICATIONS\s*:\s*readonly\s+ClaimClassification\[\]/.test(extractor);
+    const hasFiveValues = VALID.every((v) => new RegExp(`"${v}"`).test(extractor));
+    record("CC11", hasConstant && hasFiveValues,
+      `validator present · constant=${hasConstant} five_values=${hasFiveValues}`);
 
-    // CC12 · cleanup
+    // CC12 · validator throws BEFORE any insert with the offending
+    //        value in the error text (so worker_jobs.last_error carries
+    //        the diagnostic instead of a vague CHECK-constraint blob).
+    const throwsInvalidClass = /throw new Error\(\s*[`"]invalid_classification/.test(extractor);
+    const listsOffenders     = /Offenders:.*JSON\.stringify\(badClaims\)/.test(extractor);
+    const listsValid         = /Valid values:.*VALID_CLASSIFICATIONS\.join/.test(extractor);
+    record("CC12", throwsInvalidClass && listsOffenders && listsValid,
+      `error shape · prefix=${throwsInvalidClass} offenders=${listsOffenders} valid_list=${listsValid}`);
+
+    // CC13 · validator runs BEFORE the record loop (aborts the whole
+    //        job atomically · no orphan record/claim/edge inserts).
+    const validatorBeforeInsertRecord =
+      extractor.indexOf("badClaims") < extractor.indexOf("insertRecordIdempotent");
+    record("CC13", validatorBeforeInsertRecord,
+      `validator runs before any insert · ordering_ok=${validatorBeforeInsertRecord}`);
+
+    // CC14 · no silent coercion — validator does not map wrong-taxonomy
+    //        values to accepted ones. Explicit list of Comms Social
+    //        taxonomy values should NOT appear as replacement targets
+    //        anywhere in the validation code path.
+    const coercionKeywords = /\.replace\s*\(\s*["']factual["']|toLowerCase\(\)\.replace|classification\s*=\s*"NEX_concept"|classification\s*=\s*"established_practice"/;
+    const noSilentCoercion = !coercionKeywords.test(extractor);
+    record("CC14", noSilentCoercion,
+      `no silent coercion detected in source`);
+
+    // CC15 · TS type + DB migration + extractor constant all list the
+    //        SAME five values in the same order. This is the whole
+    //        taxonomy alignment invariant.
+    const typesSrc = readFileSync(join(REPO, "src/lib/nex/brain/types.ts"), "utf8");
+    const migSrc   = readFileSync(join(REPO, "db/migrations/001_nex_brain_schema.sql"), "utf8");
+    const allThreeAligned = VALID.every((v) =>
+      new RegExp(`"${v}"`).test(typesSrc) &&
+      new RegExp(`'${v}'`).test(migSrc)   &&
+      new RegExp(`"${v}"`).test(extractor));
+    record("CC15", allThreeAligned, `taxonomy aligned across type · migration · extractor`);
+
+    // CC16 · cleanup
     await client.query(`DROP TABLE ${tableName}`);
-    record("CC12", true, "table dropped");
+    record("CC16", true, "table dropped");
   } catch (e) {
     record("CC1-CC12", false, `exception ${e.message}`);
     try { await client.query(`DROP TABLE IF EXISTS ${tableName}`); } catch { /* best-effort */ }

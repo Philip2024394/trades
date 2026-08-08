@@ -168,6 +168,20 @@ OUTPUT SCHEMA (return this JSON, nothing else):
 const WORKER_ID = `knowledge-extractor@${process.pid}`;
 const INBOX_ROOT = path.join(process.cwd(), "data", "knowledge-inbox");
 
+// Phase 10.4 · Fix B + A · authoritative taxonomy · MUST match:
+//   TypeScript · src/lib/nex/brain/types.ts (ClaimClassification)
+//   Database   · db/migrations/001_nex_brain_schema.sql lines 308-314
+// Do NOT widen this list. If the LLM returns something outside these
+// five values the whole extractor job is failed with the offending
+// value recorded verbatim in worker_jobs.last_error.
+const VALID_CLASSIFICATIONS: readonly ClaimClassification[] = [
+  "established_practice",
+  "industry_consensus",
+  "design_opinion",
+  "experimental_concept",
+  "NEX_concept",
+];
+
 export async function runKnowledgeExtractor(options: {
   lease_seconds?: number;
 } = {}): Promise<{ job: WorkerJob | null; result?: WorkerResult; draftRecordIds: string[] }> {
@@ -298,6 +312,41 @@ export async function runKnowledgeExtractor(options: {
         requires_capability: "json_mode",
       }
     );
+
+    // Phase 10.4 · Fix B + A · strict classification validation.
+    //
+    // The DB CHECK constraint on confidence_scores.classification permits
+    // exactly five values (see db/migrations/001_nex_brain_schema.sql
+    // lines 308-314). Before we insert anything, walk every claim on
+    // every candidate record and reject the whole job if any claim's
+    // classification is outside the taxonomy. The offending value(s) are
+    // recorded verbatim in the thrown Error's message so the failure is
+    // diagnosable from failJob() / worker_jobs.last_error alone — no more
+    // opaque "violates check constraint" errors that don't say which
+    // value was rejected. Do NOT silently coerce or widen the taxonomy;
+    // the LLM must conform to NEX's vocabulary.
+    //
+    // Prior behaviour: raw passthrough → DB rejected → no diagnostic.
+    // Adversarial regression: src/lib/nex/brain/tests/confidence-scores-classification.test.mjs
+    const badClaims: Array<{ record_id: string; claim_key: string; classification: string }> = [];
+    for (const rec of data.candidate_records ?? []) {
+      for (const [i, claim] of (rec.claims ?? []).entries()) {
+        if (!VALID_CLASSIFICATIONS.includes(claim.classification as ClaimClassification)) {
+          badClaims.push({
+            record_id:      rec.record_id,
+            claim_key:      claim.claim_key ?? `claim_${i + 1}`,
+            classification: String(claim.classification),
+          });
+        }
+      }
+    }
+    if (badClaims.length > 0) {
+      throw new Error(
+        `invalid_classification: LLM returned ${badClaims.length} claim(s) with a classification outside the NEX taxonomy. ` +
+        `Valid values: [${VALID_CLASSIFICATIONS.join(", ")}]. ` +
+        `Offenders: ${JSON.stringify(badClaims)}`,
+      );
+    }
 
     // 3 · Write each candidate record + its claims + edges + source
     // Idempotent · repeated extraction of the same record_id is a no-op

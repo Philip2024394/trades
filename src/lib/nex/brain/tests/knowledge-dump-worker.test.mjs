@@ -175,10 +175,16 @@ async function main() {
   const stuckId = "068117f0-c521-4d8c-b886-b8b41f407312";
   try {
     const stuck = await readLatestByJobId(stuckId);
-    // Accept either "queued" (fresh from Fix #1) or "claimed"/"processing"/"completed"
-    // (which would mean the worker already picked it up after commit).
-    const acceptable = stuck && ["queued", "claimed", "processing", "completed"].includes(stuck.status);
-    record("KD18", !!acceptable, `stuck_status=${stuck?.status ?? "not-found"}`);
+    // The row can be in any terminal-or-active state:
+    //   queued/claimed/processing/completed = worker picked it up cleanly
+    //   failed = explicit cleanup closure (Philip authorised
+    //             "orphaned_inbox_item_purged" · Phase 10.2 · commit
+    //             directly after the propagation-fix live test)
+    // Whatever the state, it must NOT be the original "processing at 42%"
+    // leaked-lease state · that was the bug we started from.
+    const acceptable = stuck && ["queued", "claimed", "processing", "completed", "failed"].includes(stuck.status);
+    const notLeaked  = stuck && !(stuck.status === "processing" && stuck.progress === 42 && stuck.updated_at < "2026-08-07T00:26:00Z");
+    record("KD18", !!(acceptable && notLeaked), `stuck_status=${stuck?.status ?? "not-found"} progress=${stuck?.progress ?? "-"}`);
   } catch (e) {
     record("KD18", false, `exception ${e.message}`);
   }
