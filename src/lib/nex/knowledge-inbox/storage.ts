@@ -46,6 +46,15 @@ import {
   shadowUpsertInboxItem,
   shadowUpsertInboxStats,
 } from "./pg-shadow";
+// Wave 6 · Postgres read adapter · gated on NEX_INBOX_READ_BACKEND=postgres.
+// When active, readIndex/readStats route to nex.knowledge_inbox /
+// nex.knowledge_inbox_stats. When Postgres is unavailable, falls back
+// to filesystem so a broken database never bricks the inbox.
+import {
+  isPostgresReadEnabled,
+  readIndexFromPostgres,
+  readStatsFromPostgres,
+} from "./pg-reads";
 
 // ── Paths ────────────────────────────────────────────────────────────
 
@@ -94,6 +103,14 @@ export function safeFilename(name: string): string {
 // ── Index read / write ───────────────────────────────────────────────
 
 export async function readIndex(): Promise<InboxItem[]> {
+  // Wave 6 · Postgres read path (gated). Falls back to filesystem on
+  // any Postgres error so a DB outage never bricks the inbox UI.
+  if (isPostgresReadEnabled()) {
+    const pgRows = await readIndexFromPostgres();
+    if (pgRows !== null) return pgRows;
+    // pg unavailable · fall through to filesystem
+    console.warn("[knowledge-inbox] Postgres read returned null · falling back to filesystem");
+  }
   await ensureDirs();
   try {
     const raw = await fs.readFile(INDEX_PATH, "utf8");
@@ -119,6 +136,12 @@ async function writeIndex(items: InboxItem[]): Promise<void> {
 // ── Stats read / write ───────────────────────────────────────────────
 
 export async function readStats(): Promise<InboxStats> {
+  // Wave 6 · Postgres read path (gated). Same fallback semantics as readIndex.
+  if (isPostgresReadEnabled()) {
+    const pgStats = await readStatsFromPostgres();
+    if (pgStats !== null) return pgStats;
+    console.warn("[knowledge-inbox] Postgres stats read returned null · falling back to filesystem");
+  }
   await ensureDirs();
   try {
     const raw = await fs.readFile(STATS_PATH, "utf8");
