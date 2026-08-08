@@ -38,6 +38,7 @@ const suites = [
   { name: "ui-boundaries",          path: join(__dirname, "ui-boundaries.test.mjs")          },
   { name: "hq-mission-control",     path: join(__dirname, "hq-mission-control.test.mjs")     },
   { name: "attribution-integration", path: join(__dirname, "attribution-integration.test.mjs") },
+  { name: "adversarial-probes",     path: join(__dirname, "adversarial-probes.test.mjs")     },
 ];
 
 const results = [];

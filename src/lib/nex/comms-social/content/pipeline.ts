@@ -45,9 +45,13 @@ export async function generateAndGround(input: GenerateAndGroundInput): Promise<
       source_pick: input.source_pick as never,
     });
     if (!candidate.ok) {
+      // When the template itself isn't found we must persist template_id=null ·
+      // otherwise the FK on nex.social_content_drafts.template_id blocks the row.
+      // Pipeline still records the code so the UI can explain the failure.
+      const templateExists = candidate.error_class !== "template_not_found";
       return await persistDraft(c, {
         tenant_id:         input.tenant_id,
-        template_id:       input.template_id,
+        template_id:       templateExists ? input.template_id : null,
         platform:          input.platform,
         caption:           "",
         hashtags:          [],
@@ -109,7 +113,7 @@ export async function generateAndGround(input: GenerateAndGroundInput): Promise<
 
 interface PersistArgs {
   tenant_id:         TenantId;
-  template_id:       string;
+  template_id:       string | null;
   platform:          string;
   caption:           string;
   hashtags:          string[];
