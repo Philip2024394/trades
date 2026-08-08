@@ -2157,7 +2157,13 @@ type WarehouseDto = {
   ok: boolean;
   stages?: WarehouseStageDto[];
   computed_at?: string;
-  vault_records?: { authoritative: number; under_review: number; draft: number };
+  vault_records?: {
+    authoritative:        number;
+    awaiting_review:      number;
+    draft_rejected:       number;
+    draft_awaiting_check: number;
+    deprecated:           number;
+  };
   source?: "supabase" | "unavailable";
   note?: string;
 };
@@ -2189,7 +2195,17 @@ function WarehousePanel() {
 
   const stages = snapshot?.stages ?? [];
   const total  = stages.reduce((s, st) => s + (st.key === "stored" ? 0 : st.count), 0);
-  const vault  = snapshot?.vault_records ?? { authoritative: 0, under_review: 0, draft: 0 };
+  const vault  = snapshot?.vault_records ?? { authoritative: 0, awaiting_review: 0, draft_rejected: 0, draft_awaiting_check: 0, deprecated: 0 };
+
+  // Phase 10.7 · Vault barrels · four terminal categories that each tell a
+  // very different operational story · rendered as a second row so they're
+  // visually distinct from the six in-flight stages above.
+  const vaultBarrels: Array<{ key: string; glyph: string; label: string; count: number; color: string; note: string }> = [
+    { key: "draft-await",  glyph: "📄", label: "Draft · awaiting check",   count: vault.draft_awaiting_check, color: T.warning, note: "extractor wrote the record but no quality-check job completed yet" },
+    { key: "draft-reject", glyph: "✗",  label: "Draft · quality rejected", count: vault.draft_rejected,       color: T.textDim, note: "quality-checker ran · kept as DRAFT because structural criteria not met" },
+    { key: "review",       glyph: "🔍", label: "Awaiting your review",     count: vault.awaiting_review,      color: T.info,    note: "passed structural gate at 0.70-0.84 confidence · needs human judgement" },
+    { key: "authoritative",glyph: "🧠", label: "Authoritative",             count: vault.authoritative,        color: T.success, note: "promoted to the vault · knowledge is trusted" },
+  ];
 
   return (
     <div className="border-b px-4 py-3" style={{ borderColor: T.border, background: T.panel }}>
@@ -2272,8 +2288,41 @@ function WarehousePanel() {
           );
         })}
       </div>
+      {/* Phase 10.7 · Vault row · terminal states rendered as barrels
+          alongside the in-flight stages. Draft is split into "awaiting
+          check" vs "quality rejected" so the two very different backlogs
+          are visually distinct. */}
+      {snapshot?.source === "supabase" && (
+        <>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-[9px] font-black uppercase tracking-[0.28em]" style={{ color: T.wallDark }}>Vault · Terminal States</span>
+            <span className="text-[9.5px]" style={{ color: T.textFade }}>outcomes after production · not queued work</span>
+          </div>
+          <div className="mt-1.5 grid grid-cols-2 gap-1.5 md:grid-cols-4">
+            {vaultBarrels.map((b) => {
+              const isEmpty = b.count === 0;
+              return (
+                <div
+                  key={b.key}
+                  className="text-left rounded border px-2 py-1.5"
+                  style={{ background: T.panelElev, borderColor: T.border, opacity: isEmpty ? 0.55 : 1 }}
+                  title={b.note}
+                >
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[13px]" aria-hidden>{b.glyph}</span>
+                    <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{b.label}</span>
+                  </div>
+                  <div className="mt-0.5 text-[18px] font-black tabular-nums" style={{ color: isEmpty ? T.textFade : b.color }}>
+                    {b.count.toLocaleString()}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
       <div className="mt-2 text-[9.5px] italic" style={{ color: T.textDim }}>
-        Six real stages composed from worker_jobs + knowledge_records · click a barrel for the (worker_type, status) breakdown · vault totals: {vault.authoritative.toLocaleString()} authoritative · {vault.under_review.toLocaleString()} under review · {vault.draft.toLocaleString()} draft.
+        Six in-flight stages + four vault outcomes · all counts derived from worker_jobs + knowledge_records · click an in-flight barrel for its (worker_type, status) breakdown · vault counts use count=exact so numbers stay honest past the 1000-row page cap.
       </div>
     </div>
   );

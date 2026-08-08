@@ -65,10 +65,16 @@ export interface WarehouseStage {
 export interface WarehouseSnapshot {
   stages:          WarehouseStage[];
   computed_at:     string;
+  // Phase 10.7 · vault sub-buckets · terminal states after production.
+  // These are DISTINCT from the in-flight `stages` above · they represent
+  // outcomes, not queues. All four are counted via count=exact head=true
+  // so numbers are correct regardless of PostgREST's 1000-row page cap.
   vault_records: {
-    authoritative: number;
-    under_review:  number;
-    draft:         number;
+    authoritative:         number;
+    awaiting_review:       number;   // was `under_review` · renamed for clarity
+    draft_rejected:        number;   // quality-checker ran + kept status DRAFT
+    draft_awaiting_check:  number;   // never had a completed quality-check job
+    deprecated:            number;
   };
   source: "supabase" | "unavailable";
   note?:  string;
@@ -187,17 +193,28 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
   }
 
   const now = Date.now();
-  const [jobsRes, recordsRes] = await Promise.all([
+
+  // Phase 10.7 · vault counts use `count=exact head=true` per status so
+  // the four numbers are correct even when N > PostgREST's 1000-row page
+  // cap (Phase 10.5 shipped with a silent under-count · the old select
+  // returned 1000 rows and reported "under_review = 0" when it was 134).
+  // Head-only means zero bytes returned per query · just the count header.
+  const [
+    authCountRes,
+    reviewCountRes,
+    draftCountRes,
+    deprecatedCountRes,
+    jobsRes,
+  ] = await Promise.all([
+    client.from("knowledge_records").select("*", { count: "exact", head: true }).eq("status", "AUTHORITATIVE"),
+    client.from("knowledge_records").select("*", { count: "exact", head: true }).eq("status", "UNDER_REVIEW"),
+    client.from("knowledge_records").select("*", { count: "exact", head: true }).eq("status", "DRAFT"),
+    client.from("knowledge_records").select("*", { count: "exact", head: true }).eq("status", "DEPRECATED"),
     client
       .from("worker_jobs")
       .select("id,worker_type,status,created_at,input_ref,input_payload")
       .in("status", ["waiting", "in-flight", "assigned"])
       .limit(10000),
-    client
-      .from("knowledge_records")
-      .select("status")
-      .in("status", ["AUTHORITATIVE", "UNDER_REVIEW", "DRAFT"])
-      .limit(50000),
   ]);
 
   if (jobsRes.error) {
@@ -249,12 +266,43 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
     };
   });
 
-  // Stored stage · knowledge_records vault
-  const records = (recordsRes.data ?? []) as KnowledgeRecordRow[];
-  const auth  = records.filter((r) => r.status === "AUTHORITATIVE").length;
-  const ur    = records.filter((r) => r.status === "UNDER_REVIEW").length;
-  const draft = records.filter((r) => r.status === "DRAFT").length;
+  // Terminal-state counts. head=true means these carry no rows, just the
+  // count header, so they're cheap regardless of vault size.
+  const auth       = authCountRes.count       ?? 0;
+  const review     = reviewCountRes.count     ?? 0;
+  const draftTotal = draftCountRes.count      ?? 0;
+  const deprecated = deprecatedCountRes.count ?? 0;
 
+  // Phase 10.7 · DRAFT split: which DRAFTs were actually quality-checked
+  // (kept DRAFT because REJECTED) vs. which have never been checked at
+  // all (extractor wrote the record but the quality-check enqueue
+  // failed / worker crashed / seed script bypassed the queue). The two
+  // populations tell very different operational stories and must NOT be
+  // mixed in the UI.
+  //
+  // Method: intersect the set of DRAFT record_ids with the set of
+  // distinct input_refs on COMPLETED quality-checker jobs. Both pulls
+  // page through PostgREST's default 1000-row window · fine at current
+  // scale (~1k records) · will need a proper materialised view once
+  // record volume outgrows a few pages.
+  const draftIds     = await pageAllValues(client, "knowledge_records", "record_id", { column: "status", value: "DRAFT" });
+  const checkedInput = await pageAllValues(client, "worker_jobs", "input_ref", { column: "worker_type", value: "quality-checker", extra: { column: "status", value: "completed" } });
+  const checkedSet   = new Set<string>(checkedInput);
+  let draftRejected      = 0;
+  let draftAwaitingCheck = 0;
+  for (const id of draftIds) {
+    if (checkedSet.has(id)) draftRejected++;
+    else                    draftAwaitingCheck++;
+  }
+  // Reconciliation safety · if paging under-counted DRAFTs, fall back
+  // to using the total count-exact for accuracy in the aggregate.
+  if (draftRejected + draftAwaitingCheck < draftTotal) {
+    // trust the head-count total · distribute the remainder to
+    // awaiting_check (conservative · unknown coverage counts as unchecked)
+    draftAwaitingCheck = draftTotal - draftRejected;
+  }
+
+  // Stored stage · vault view · authoritative + terminal breakdown.
   stages.push({
     key: "stored",
     label: "Stored in Brain",
@@ -270,9 +318,46 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
   return {
     stages,
     computed_at: new Date(now).toISOString(),
-    vault_records: { authoritative: auth, under_review: ur, draft },
+    vault_records: {
+      authoritative:        auth,
+      awaiting_review:      review,
+      draft_rejected:       draftRejected,
+      draft_awaiting_check: draftAwaitingCheck,
+      deprecated,
+    },
     source: "supabase",
   };
+}
+
+// Page through a PostgREST endpoint that would otherwise be capped at
+// 1000 rows and return every value of a single column. Filters are
+// applied server-side so payload stays small.
+async function pageAllValues(
+  client: SupabaseClient,
+  table: string,
+  column: string,
+  filter: { column: string; value: string; extra?: { column: string; value: string } },
+  pageSize = 1000,
+  maxPages = 25,
+): Promise<string[]> {
+  const all: string[] = [];
+  for (let page = 0; page < maxPages; page++) {
+    const from = page * pageSize;
+    const to   = from + pageSize - 1;
+    let q = client.from(table).select(column).eq(filter.column, filter.value);
+    if (filter.extra) q = q.eq(filter.extra.column, filter.extra.value);
+    q = q.range(from, to);
+    const { data, error } = await q;
+    if (error) break;
+    const rows = (data ?? []) as Array<Record<string, unknown>>;
+    if (rows.length === 0) break;
+    for (const r of rows) {
+      const v = r[column];
+      if (typeof v === "string" && v.length > 0) all.push(v);
+    }
+    if (rows.length < pageSize) break;
+  }
+  return all;
 }
 
 // ── Internals ────────────────────────────────────────────────────
@@ -301,7 +386,13 @@ function zeroSnapshot(note: string): WarehouseSnapshot {
   return {
     stages,
     computed_at: new Date().toISOString(),
-    vault_records: { authoritative: 0, under_review: 0, draft: 0 },
+    vault_records: {
+      authoritative:        0,
+      awaiting_review:      0,
+      draft_rejected:       0,
+      draft_awaiting_check: 0,
+      deprecated:           0,
+    },
     source: "unavailable",
     note,
   };

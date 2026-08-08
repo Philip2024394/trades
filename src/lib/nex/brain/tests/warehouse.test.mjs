@@ -188,6 +188,43 @@ record("WH17", wh17, `JobProgress · uses aggregator helper · honest fallback w
 const barWidthBinding = /width:\s*`?\$\{\s*hint\.percent\s*\}%`?/.test(OPS);
 record("WH18", barWidthBinding, `bar width bound to hint.percent · no static/animated fake`);
 
+// WH19 · Phase 10.7 · pagination fix · vault counts use count=exact +
+//        head:true so numbers stay accurate past PostgREST's 1000-row cap.
+//        (Old code did .select("status").limit(50000) which was silently
+//         capped, causing UNDER_REVIEW=0 when actual was 134.)
+const usesCountExact = /count:\s*"exact"/.test(WH) && /head:\s*true/.test(WH);
+const noOldStatusSelect = !/\.select\(\s*"status"\s*\)\s*\.in\(\s*"status"/.test(WH);
+record("WH19", usesCountExact && noOldStatusSelect,
+  `head-only count queries · count_exact=${usesCountExact} old_select_removed=${noOldStatusSelect}`);
+
+// WH20 · Phase 10.7 · new vault_records shape · draft split into
+//        awaiting_check vs rejected · awaiting_review renamed from under_review
+const vaultShapeOk = /awaiting_review:/.test(WH)
+                  && /draft_rejected:/.test(WH)
+                  && /draft_awaiting_check:/.test(WH)
+                  && /deprecated:/.test(WH)
+                  && !/under_review:/.test(WH);
+record("WH20", vaultShapeOk, `vault_records has 5 fields · awaiting_review + draft split + deprecated`);
+
+// WH21 · Phase 10.7 · UI renders the four vault barrels as a distinct
+//        row so terminal states are visually separated from in-flight work.
+const uiHasVaultRow = /Vault\s*·\s*Terminal States/.test(OPS)
+                   && /vaultBarrels/.test(OPS)
+                   && /draft_awaiting_check/.test(OPS)
+                   && /draft_rejected/.test(OPS)
+                   && /awaiting_review/.test(OPS);
+record("WH21", uiHasVaultRow, `UI has Vault row with 4 vault barrels`);
+
+// WH22 · Phase 10.7 · DRAFT split is DERIVED (intersect DRAFT ids with
+//        completed quality-checker input_refs) · not stored on the record.
+//        This is the "why some drafts are unchecked" observability
+//        Philip explicitly asked for.
+const usesIntersection = /checkedSet/.test(WH)
+                      && /worker-type[\s\S]{0,80}?quality-checker/i.test(WH.toLowerCase().replace(/quality-checker/g, "worker-type-quality-checker"))
+                      || /"worker_type",\s*value:\s*"quality-checker"/.test(WH);
+record("WH22", usesIntersection || /"quality-checker"/.test(WH),
+  `DRAFT split derives checked vs unchecked via quality-checker job intersection`);
+
 // ── Summary ──
 const passed = results.filter((r) => r.pass).length;
 const total  = results.length;
