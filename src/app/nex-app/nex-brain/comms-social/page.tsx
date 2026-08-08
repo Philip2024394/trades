@@ -24,6 +24,8 @@ type MeResponse = {
   ok: boolean;
   user?: { display_name: string; email: string };
   tenant?: { tenant_id: string; display_name: string; status: string } | null;
+  tier?: string;
+  has_social_access?: boolean;
   next_step?: string;
   error?: string;
 };
@@ -117,6 +119,7 @@ function Landing({
   const signedIn      = !!me?.ok;
   const hasTenant     = !!me?.tenant;
   const authNeeded    = !signedIn && me?.next_step === "sign_in";
+  const tierLocked    = signedIn && me?.has_social_access === false;
   const primaryLabel  = hasTenant ? "Create your next post" : "Get my first post live";
 
   return (
@@ -142,6 +145,13 @@ function Landing({
               style={{ background: T.accent, color: T.bg }}>
               <Rocket className="h-4 w-4" />
               Sign in to get started
+            </a>
+          ) : tierLocked ? (
+            <a href="/trade-off/pricing"
+              className="inline-flex items-center gap-2 rounded-md px-5 py-3 text-[14px] font-bold"
+              style={{ background: T.accent, color: T.bg }}>
+              <Rocket className="h-4 w-4" />
+              Upgrade to Professional
             </a>
           ) : (
             <button type="button" onClick={onStart}

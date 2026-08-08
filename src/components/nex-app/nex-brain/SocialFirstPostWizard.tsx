@@ -51,7 +51,10 @@ type MeResponse = {
       account_id: string; platform: string; display_name: string | null; status: string;
     }>;
     has_active_template: boolean;
+    merchant_slug?: string | null;
   } | null;
+  tier?: string;
+  has_social_access?: boolean;
   next_step?: string;
   error?: string;
 };
@@ -274,6 +277,30 @@ export function SocialFirstPostWizard({ onOpenWorkbench, onDone }: {
     return (
       <div className="rounded-lg border p-6" style={{ background: T.panel, borderColor: T.border, color: T.textDim }}>
         Getting your Social setup ready…
+      </div>
+    );
+  }
+
+  // Tier gate · block the wizard for merchants who don't yet have the
+  // Professional plan (or higher). Provisioning + accounts remain visible
+  // so they can see what they're upgrading to.
+  if (me?.ok && me.has_social_access === false) {
+    return (
+      <div className="rounded-lg border p-6 space-y-4" style={{ background: T.panel, borderColor: T.border }}>
+        <div className="text-[11px] font-black uppercase tracking-widest" style={{ color: T.warning }}>
+          Upgrade required
+        </div>
+        <h2 className="text-[22px] font-black leading-tight" style={{ color: T.text }}>
+          Nex Marketing is on the Professional plan.
+        </h2>
+        <p className="text-[13.5px] leading-relaxed" style={{ color: T.textDim }}>
+          Upgrade to Professional and Nex will write, safety-check and publish social posts to your Facebook, Instagram, LinkedIn, TikTok and Google Business Profile — from one place, in about a minute per post.
+        </p>
+        <a href="/trade-off/pricing"
+          className="inline-flex items-center rounded-md px-5 py-3 text-[14px] font-bold"
+          style={{ background: T.accent, color: T.bg }}>
+          See Professional pricing
+        </a>
       </div>
     );
   }
@@ -532,6 +559,7 @@ function humaniseConnectError(err?: string): string {
   if (err === "state_not_found" || err === "state_expired") return "That sign-in attempt expired. Please try again.";
   if (err === "sign_in_required") return "You need to sign in to your Nex account first.";
   if (err === "no_tenant") return "Your Social account isn't set up yet. Go back a step and set it up.";
+  if (err === "tier_locked") return "Nex Marketing is on the Professional plan. Upgrade to publish posts.";
   if (err.includes("Missing OAuth") || err.includes("app_id") || err.includes("app_secret"))
     return `Nex doesn't yet have permission from that platform. Nex operations will finish the setup shortly.`;
   return "Sign-in didn't complete. Please try again.";
@@ -540,6 +568,7 @@ function humaniseGenerateError(err?: string): string {
   if (!err) return "Nex couldn't draft your post just now.";
   if (err === "no_tenant") return "Please finish setting up your Social account first.";
   if (err === "no_active_template_found") return "Nex is still preparing your starter template. Refresh and try again.";
+  if (err === "tier_locked") return "Nex Marketing is on the Professional plan. Upgrade to draft posts.";
   if (err.includes("min_source_refs") || err.includes("source")) return "Add a bit more detail about your business (services, area, phone).";
   return "Nex couldn't draft your post just now. Please try again in a moment.";
 }
@@ -549,5 +578,7 @@ function humanisePublishError(err?: string): string {
     return "There's no connected account on that platform yet. Go back and connect one first.";
   if (err === "draft_not_grounded")
     return "That draft didn't pass the safety check. Try changing the wording.";
+  if (err === "tier_locked")
+    return "Nex Marketing is on the Professional plan. Upgrade to publish posts.";
   return "Publishing didn't go through. Please try again.";
 }

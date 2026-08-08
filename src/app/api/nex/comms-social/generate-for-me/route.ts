@@ -20,6 +20,7 @@ import { upsertContentSource } from "@/lib/nex/comms-social/content/sources";
 import { listTemplates } from "@/lib/nex/comms-social/content/templates";
 import { generateAndGround } from "@/lib/nex/comms-social/content/pipeline";
 import { ensureStarterTemplate, STARTER_TEMPLATE_SLUG } from "@/lib/nex/comms-social/identity/starter-templates";
+import { resolveTierForTenant } from "@/lib/comms-social-tier/gate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,6 +34,14 @@ export async function POST(request: Request) {
   const tenant = await resolveTenantForUser(auth.user.supabase_user_id);
   if (!tenant) {
     return NextResponse.json({ ok: false, error: "no_tenant" }, { status: 409 });
+  }
+
+  const tier = await resolveTierForTenant({ tenant_id: tenant.tenant_id, email: auth.user.email });
+  if (!tier.has_access) {
+    return NextResponse.json(
+      { ok: false, error: "tier_locked", detail: `Social Posting requires Professional or higher · current tier: ${tier.tier}`, upgrade_url: "/trade-off/pricing" },
+      { status: 403 },
+    );
   }
 
   let body: { platform?: string; business_description?: string; template_slug?: string };

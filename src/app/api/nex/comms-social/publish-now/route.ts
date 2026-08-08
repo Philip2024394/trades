@@ -13,6 +13,7 @@ import { resolveTenantForUser } from "@/lib/nex/comms-social/identity/resolve";
 import { withTenantClient } from "@/lib/nex/comms-social/db";
 import { listAccountsForTenant } from "@/lib/nex/comms-social/oauth/list";
 import { enqueuePublish } from "@/lib/nex/comms-social/scheduling/enqueue";
+import { resolveTierForTenant } from "@/lib/comms-social-tier/gate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -27,6 +28,14 @@ export async function POST(request: Request) {
     return NextResponse.json(
       { ok: false, error: "no_tenant" },
       { status: 409 },
+    );
+  }
+
+  const tier = await resolveTierForTenant({ tenant_id: tenant.tenant_id, email: auth.user.email });
+  if (!tier.has_access) {
+    return NextResponse.json(
+      { ok: false, error: "tier_locked", detail: `Social Posting requires Professional or higher · current tier: ${tier.tier}`, upgrade_url: "/trade-off/pricing" },
+      { status: 403 },
     );
   }
 

@@ -301,6 +301,66 @@ async function main() {
     record("CE20", false, `read error ${e.message}`);
   }
 
+  // ── CE21 · migration 039 merchant_slug column present ──
+  try {
+    const col = await pool.query(
+      `SELECT column_name FROM information_schema.columns
+        WHERE table_schema = 'nex' AND table_name = 'social_tenants' AND column_name = 'merchant_slug'`,
+    );
+    record("CE21", col.rowCount === 1, `column_present=${col.rowCount === 1}`);
+  } catch (e) {
+    record("CE21", false, `db error ${e.message}`);
+  }
+
+  // ── CE22 · tier gate module lists ONLY paid tiers in SOCIAL_ACCESS_TIERS ──
+  try {
+    const src = readFileSync(join(REPO, "src/lib/comms-social-tier/gate.ts"), "utf8");
+    const hasAccess = /export function hasSocialAccess/.test(src);
+    // Extract the SOCIAL_ACCESS_TIERS = new Set<...>([...]) block only.
+    const setBlock = src.match(/SOCIAL_ACCESS_TIERS[^[]*\[([\s\S]*?)\]/);
+    const inside = setBlock ? setBlock[1] : "";
+    const proTier   = /"professional"/.test(inside);
+    const bizTier   = /"business"/.test(inside);
+    const worksTier = /"works"/.test(inside);
+    const noFree    = !/"free"/.test(inside);
+    const noStart   = !/"starter"/.test(inside);
+    record("CE22", hasAccess && proTier && bizTier && worksTier && noFree && noStart,
+      `gate=${hasAccess} pro=${proTier} biz=${bizTier} works=${worksTier} no_free=${noFree} no_starter=${noStart}`);
+  } catch (e) {
+    record("CE22", false, `read error ${e.message}`);
+  }
+
+  // ── CE23 · gated routes reject with 403 tier_locked shape ──
+  //     Verified structurally · they all import resolveTierForTenant and
+  //     early-return the same shape.
+  try {
+    const files = [
+      "src/app/api/nex/comms-social/oauth-for-me/[platform]/start/route.ts",
+      "src/app/api/nex/comms-social/generate-for-me/route.ts",
+      "src/app/api/nex/comms-social/publish-now/route.ts",
+    ];
+    let ok = true; const missing = [];
+    for (const f of files) {
+      const src = readFileSync(join(REPO, f), "utf8");
+      const hasImport = /resolveTierForTenant/.test(src);
+      const has403   = /status:\s*403/.test(src) && /tier_locked/.test(src);
+      if (!hasImport || !has403) { ok = false; missing.push(f.split("/").slice(-2).join("/")); }
+    }
+    record("CE23", ok, `gate_wired=${ok}${missing.length ? " · missing: " + missing.join(", ") : ""}`);
+  } catch (e) {
+    record("CE23", false, `read error ${e.message}`);
+  }
+
+  // ── CE24 · /me route returns tier + has_social_access fields ──
+  try {
+    const src = readFileSync(join(REPO, "src/app/api/nex/comms-social/me/route.ts"), "utf8");
+    const hasTier = /tier:\s*\w+\.tier/.test(src);
+    const hasAcc  = /has_social_access:\s*\w+\.has_access/.test(src);
+    record("CE24", hasTier && hasAcc, `tier_field=${hasTier} access_field=${hasAcc}`);
+  } catch (e) {
+    record("CE24", false, `read error ${e.message}`);
+  }
+
   const passed = results.filter((r) => r.pass).length;
   const total  = results.length;
   process.stdout.write(`\ncustomer-entry: ${passed}/${total} assertions passed\n`);

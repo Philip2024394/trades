@@ -19,6 +19,7 @@ import { resolveTenantForUser } from "@/lib/nex/comms-social/identity/resolve";
 import { listAccountsForTenant } from "@/lib/nex/comms-social/oauth/list";
 import { withTenantClient } from "@/lib/nex/comms-social/db";
 import { listTemplates } from "@/lib/nex/comms-social/content/templates";
+import { resolveTierForTenant } from "@/lib/comms-social-tier/gate";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -35,6 +36,9 @@ export async function GET() {
   const tenant = await resolveTenantForUser(auth.user.supabase_user_id);
 
   if (!tenant) {
+    // Even without a tenant we can already tell the caller their tier
+    // (via email auto-match) so the landing page can show the right CTA.
+    const rt = await resolveTierForTenant({ tenant_id: "00000000-0000-0000-0000-000000000000", email: auth.user.email });
     return NextResponse.json({
       ok: true,
       user: {
@@ -42,20 +46,23 @@ export async function GET() {
         email:        auth.user.email,
       },
       tenant: null,
-      tier_hint: "unknown",
+      tier: rt.tier,
+      has_social_access: rt.has_access,
     });
   }
 
-  // Load accounts + templates inside a single tenant-scoped transaction.
-  const detail = await withTenantClient(tenant.tenant_id, async (c) => {
-    const [accounts, templates] = await Promise.all([
-      listAccountsForTenant(c, tenant.tenant_id),
-      listTemplates(c, tenant.tenant_id),
-    ]);
-    return { accounts, templates };
-  });
+  const [detail, tier] = await Promise.all([
+    withTenantClient(tenant.tenant_id, async (c) => {
+      const [accounts, templates] = await Promise.all([
+        listAccountsForTenant(c, tenant.tenant_id),
+        listTemplates(c, tenant.tenant_id),
+      ]);
+      return { accounts, templates };
+    }),
+    resolveTierForTenant({ tenant_id: tenant.tenant_id, email: auth.user.email }),
+  ]);
 
-  const accounts = detail?.accounts ?? [];
+  const accounts  = detail?.accounts ?? [];
   const templates = detail?.templates ?? [];
 
   return NextResponse.json({
@@ -74,7 +81,9 @@ export async function GET() {
       connected_accounts:  accounts,
       has_active_template: templates.some((t) => t.status === "active"),
       created_at:          tenant.created_at,
+      merchant_slug:       tier.merchant_slug,
     },
-    tier_hint: "unknown",
+    tier:              tier.tier,
+    has_social_access: tier.has_access,
   });
 }

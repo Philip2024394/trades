@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { getAuthenticatedUser } from "@/lib/nex/brains/_auth";
 import { resolveTenantForUser } from "@/lib/nex/comms-social/identity/resolve";
 import { initiateOAuth } from "@/lib/nex/comms-social/oauth/flow";
+import { resolveTierForTenant } from "@/lib/comms-social-tier/gate";
 import type { SocialPlatform } from "@/lib/nex/comms-social/types";
 
 export const runtime = "nodejs";
@@ -24,6 +25,15 @@ export async function POST(request: Request, ctx: { params: Promise<{ platform: 
       { status: 409 },
     );
   }
+
+  const tier = await resolveTierForTenant({ tenant_id: tenant.tenant_id, email: auth.user.email });
+  if (!tier.has_access) {
+    return NextResponse.json(
+      { ok: false, error: "tier_locked", detail: `Social Posting requires Professional or higher · current tier: ${tier.tier}`, upgrade_url: "/trade-off/pricing" },
+      { status: 403 },
+    );
+  }
+
   const { platform } = await ctx.params;
 
   let body: { redirect_uri?: string; scopes?: string[]; redirect_to?: string; ttl_seconds?: number };
