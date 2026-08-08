@@ -543,14 +543,40 @@ export async function managerStatus(): Promise<BrainStatus & { manager: { ready:
 
 // ── Helpers ──────────────────────────────────────────────────────────
 
+// Wave 6b · dispatch reads inbox through the abstraction · location-
+// transparent when NEX_INBOX_READ_BACKEND=postgres. Prior implementation
+// bypassed the read-flip by calling fs.readFile directly on the
+// filesystem index · this locked dispatch to the machine that had the
+// inbox file. Routing through readIndex() means any worker (Vercel,
+// Fly rebuilt, local) can dispatch as long as it reaches NEX Postgres.
 async function readInboxIndex(): Promise<InboxItemLite[]> {
+  // Lazy require to avoid inflating manager.ts's cold-start surface;
+  // inbox storage pulls in the pg-shadow which pulls in pg driver.
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { readIndex } = require("@/lib/nex/knowledge-inbox/storage") as typeof import("@/lib/nex/knowledge-inbox/storage");
   try {
-    const raw = await fs.readFile(INBOX_INDEX, "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as InboxItemLite[]) : [];
+    const items = await readIndex();
+    // Map full InboxItem down to the manager's lightweight shape.
+    // Every field we consume must be present · undefined pass-throughs
+    // are safe because InboxItemLite marks them optional.
+    return items.map((i) => ({
+      id: i.id,
+      title: i.title,
+      kind: i.kind,
+      status: i.status,
+      source: i.source,
+      hash: i.hash,
+      mimeType: i.mimeType,
+      filePath: i.filePath,
+      objectBucket: i.objectBucket,
+      objectKey: i.objectKey,
+      contentPath: i.contentPath,
+      url: i.url,
+      createdAt: i.createdAt,
+    }));
   } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    throw err;
+    console.error("[manager] readInboxIndex failed:", err instanceof Error ? err.message : err);
+    return [];
   }
 }
 

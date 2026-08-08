@@ -31,6 +31,14 @@ import { emitEventSafe } from "../events/fs-store";
 // Phase 11.2 · shadow-write to nex.knowledge_dump_jobs. Gated on
 // NEX_INBOX_SHADOW_POSTGRES=1 · best-effort · never throws.
 import { shadowUpsertJob } from "./pg-shadow";
+// Wave 6b · Postgres read-flip capability · gated on
+// NEX_INBOX_READ_BACKEND=postgres · falls back to filesystem on error.
+import {
+  isPostgresReadEnabled,
+  listJobsFromPostgres,
+  getJobFromPostgres,
+  jobStatsFromPostgres,
+} from "./pg-reads";
 
 // ── Paths ──────────────────────────────────────────────────────────
 
@@ -240,6 +248,15 @@ export async function updateJob(job_id: string, patch: UpdateJobInput): Promise<
 // ── Read · latest snapshot per job_id wins ────────────────────────
 
 export async function getJob(job_id: string): Promise<KnowledgeJob | null> {
+  // Wave 6b · Postgres read path (gated). Falls back to filesystem on
+  // any Postgres error so a DB outage never bricks the jobs UI.
+  if (isPostgresReadEnabled()) {
+    const pg = await getJobFromPostgres(job_id);
+    if (pg && "found" in pg && pg.found === false) return null;     // definitive not-found
+    if (pg && !("found" in pg)) return pg as KnowledgeJob;           // hit
+    // pg === null means Postgres unreachable · fall through to filesystem
+    console.warn("[jobs] Postgres getJob returned null · falling back to filesystem");
+  }
   const jobs = await listJobs({ include_all_states: true, limit: 500 });
   return jobs.find((j) => j.job_id === job_id) ?? null;
 }
@@ -255,6 +272,17 @@ export async function listJobs(options: ListJobsOptions = {}): Promise<Knowledge
   const limit = Math.min(Math.max(1, options.limit ?? 50), 500);
   const sinceMs = options.since_ms ?? 7 * 24 * 60 * 60 * 1000;   // default 7 days
   const sinceIso = new Date(Date.now() - sinceMs).toISOString();
+
+  // Wave 6b · Postgres read path (gated). Falls back to filesystem on
+  // any Postgres error so a DB outage never bricks the jobs UI.
+  if (isPostgresReadEnabled()) {
+    const pgJobs = await listJobsFromPostgres({
+      limit, status: options.status, since_ms: sinceMs,
+      include_all_states: options.include_all_states,
+    });
+    if (pgJobs !== null) return pgJobs;
+    console.warn("[jobs] Postgres listJobs returned null · falling back to filesystem");
+  }
 
   let raw: string;
   try {
@@ -286,6 +314,12 @@ export async function listJobs(options: ListJobsOptions = {}): Promise<Knowledge
 
 /** Counters for the Factory Header · reads whole file · use sparingly. */
 export async function jobStats(): Promise<{ total: number; by_status: Record<JobStatus, number> }> {
+  // Wave 6b · Postgres read path (gated). Falls back to filesystem on error.
+  if (isPostgresReadEnabled()) {
+    const pgStats = await jobStatsFromPostgres();
+    if (pgStats !== null) return pgStats;
+    console.warn("[jobs] Postgres jobStats returned null · falling back to filesystem");
+  }
   let raw: string;
   try {
     raw = await fs.readFile(JOBS_FILE, "utf8");
