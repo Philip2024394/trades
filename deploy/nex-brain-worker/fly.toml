@@ -1,22 +1,45 @@
 # NEX Brain Cloud Worker — Fly.io app definition
 # Philip 2026-08-06 · Phase 5
 #
-# Deploy from the REPO ROOT with:
-#   fly deploy --config deploy/nex-brain-worker/fly.toml \
-#              --dockerfile deploy/nex-brain-worker/Dockerfile
+# ═══════════════════════════════════════════════════════════════════
+# ⚠ DECOMMISSIONED 2026-08-09 · Headquarters Production Readiness
+# ═══════════════════════════════════════════════════════════════════
 #
-# First time only:
-#   fly launch --config deploy/nex-brain-worker/fly.toml \
-#              --dockerfile deploy/nex-brain-worker/Dockerfile \
-#              --no-deploy   (say YES to reuse existing config)
+# Both machines destroyed via `fly scale count 0 --app nex-brain-worker`
+# on 2026-08-09 because the Aug 6 image:
+#   · runs pre-Phase-12.3 heartbeat code (mismatched schema)
+#   · competes with local dev workers for the same Supabase queue
+#   · cannot process image jobs (no access to local filesystem uploads)
 #
-# Secrets (set once, encrypted at rest, injected as env vars):
+# The cloud-worker script (scripts/nex-brain-cloud-worker.ts) now
+# ENFORCES a startup safeguard · it will refuse to boot unless the
+# operator sets NEX_WORKER_CONSENT_V2=YES on Fly. Do NOT blindly
+# `fly deploy` this config without first:
+#
+#   1. Rebuild the image from the CURRENT codebase (post Waves 3-7)
+#   2. Set NEX_BRAIN_BACKEND=postgres + NEX_POSTGRES_URL on Fly
+#   3. Set NEX_OBJECT_BACKEND=postgres on Fly
+#   4. Set NEX_WORKER_CONSENT_V2=YES on Fly
+#   5. Deploy with `fly deploy --config deploy/nex-brain-worker/fly.toml`
+#
+# Otherwise the container fails-fast at startup with a clear error
+# pointing at docs/headquarters-production-readiness/
+# HEADQUARTERS-WORKER-DEPLOYMENT-AUDIT.md.
+#
+# ─── Historical deployment procedure (pre-decommission · Aug 6) ────
+# Secrets required for BOTH legacy and v2:
 #   fly secrets set --app nex-brain-worker \
 #     NEX_SUPABASE_URL=https://ijvqdvsvwtwxzcqmoqit.supabase.co \
 #     NEX_SUPABASE_SERVICE_ROLE_KEY=eyJ... \
 #     GROQ_API_KEY=gsk_... \
 #     GOOGLE_GEMINI_API_KEY=AQ.Ab8R... \
 #     ANTHROPIC_API_KEY=sk-ant-...
+#
+# Additional secrets required for v2 (post-Wave-5 flip):
+#   NEX_BRAIN_BACKEND=postgres
+#   NEX_POSTGRES_URL=postgresql://... (managed Postgres reachable from Fly)
+#   NEX_OBJECT_BACKEND=postgres
+#   NEX_WORKER_CONSENT_V2=YES
 
 app = "nex-brain-worker"
 primary_region = "lhr"          # London — closest to Philip + UK users

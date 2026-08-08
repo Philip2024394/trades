@@ -65,12 +65,52 @@ let lastHeartbeatAt = 0;
 let lastError: string | null = null;
 
 // ── Startup validation ───────────────────────────────────────────────
-
-if (process.env.NEX_BRAIN_BACKEND !== "supabase") {
+//
+// Wave 4 · single-queue safeguard (Philip 2026-08-09 · Headquarters
+// Production Readiness Programme). The legacy Fly deployment at
+// nex-brain-worker (Aug 6 image, pre-Phase-12.3 heartbeats, hardcoded
+// NEX_BRAIN_BACKEND=supabase) was destroyed via `fly scale count 0`
+// during Wave 1 because it competed with the local dev worker for the
+// same queue and image-analyst jobs (which need location-transparent
+// file access via NEX Object Storage · Wave 3).
+//
+// If this container ever restarts unmodified, it would reintroduce
+// the split-brain. This guard REFUSES to start unless the operator
+// has explicitly signaled they have (a) redeployed against the new
+// Headquarters architecture and (b) verified the cloud worker is
+// using NEX Postgres + NEX Object Storage.
+//
+// To resume · consciously · after the Wave 5 flip:
+//   1. Rebuild the Fly image from the CURRENT code (not the Aug 6 image)
+//   2. Set NEX_BRAIN_BACKEND=postgres + NEX_POSTGRES_URL on Fly
+//   3. Set NEX_OBJECT_BACKEND=postgres on Fly
+//   4. Set NEX_WORKER_CONSENT_V2=YES on Fly
+//   5. Deploy
+// Without step 4, this guard fires and the container refuses to boot.
+if (process.env.NEX_WORKER_CONSENT_V2 !== "YES") {
   console.error(
     JSON.stringify({
       level: "fatal",
-      msg: "cloud-worker requires NEX_BRAIN_BACKEND=supabase; refusing to start with filesystem backend",
+      msg:
+        "cloud-worker refuses to start · Wave 4 safeguard active · " +
+        "the legacy Fly deployment was decommissioned 2026-08-09 during " +
+        "Headquarters Production Readiness · to consciously resume set " +
+        "NEX_WORKER_CONSENT_V2=YES on the Fly app and ensure NEX_BRAIN_BACKEND=postgres " +
+        "+ NEX_OBJECT_BACKEND=postgres · see docs/headquarters-production-readiness/HEADQUARTERS-WORKER-DEPLOYMENT-AUDIT.md",
+    })
+  );
+  process.exit(1);
+}
+
+// After the consent gate: allow supabase (transitional · legacy image
+// path) OR postgres (target · Headquarters v2). Filesystem still fatal
+// because the cloud worker cannot see per-machine data.
+const BACKEND = process.env.NEX_BRAIN_BACKEND ?? "";
+if (BACKEND !== "supabase" && BACKEND !== "postgres") {
+  console.error(
+    JSON.stringify({
+      level: "fatal",
+      msg: `cloud-worker requires NEX_BRAIN_BACKEND=supabase (legacy) or postgres (v2); got "${BACKEND}"; refusing to start`,
     })
   );
   process.exit(1);

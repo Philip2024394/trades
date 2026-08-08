@@ -271,3 +271,84 @@ Nothing in step 3-5 gets built without your explicit go per step.
 ---
 
 *A2 · draft · authored 2026-08-09 · to be revised after Harper proof and Vercel audit.*
+
+---
+
+## Section 8 · Wave 4 · Target single-authoritative-queue architecture (2026-08-09 update)
+
+### Current state after Waves 1-3
+
+- Fly `nex-brain-worker` app: **scaled to 0 · both machines DESTROYED** (Wave 1)
+- Local dev server (`@<pid>`): the only worker currently claiming jobs
+- Queue: still `nex.worker_jobs` on NEX Supabase (Wave 5 target: our Postgres)
+- Object storage: `nex.object_blobs` on our Postgres (Wave 3 · authoritative for new uploads)
+
+### Target architecture (post Wave 5 flip)
+
+```
+NEX Postgres (authoritative)
+├── nex.worker_jobs          ← single queue for ALL workers
+├── nex.object_blobs         ← single object store
+├── nex.knowledge_records    ← single brain
+└── (all other nex.* tables)
+       ▲
+       │
+   worker deployments (choose ONE topology):
+       │
+       ├── Vercel serverless (Next.js /api/nex/brain/cron-tick)
+       │   · triggered by Vercel Cron
+       │   · runs runOneCycle() in-process
+       │   · reads/writes NEX Postgres via NEX_BRAIN_BACKEND=postgres
+       │   · fetches images via NEX Object Storage
+       │
+       ├── OR Fly.io (nex-brain-worker · REBUILT from current codebase)
+       │   · scripts/nex-brain-cloud-worker.ts (updated · Wave 4)
+       │   · reads/writes NEX Postgres via NEX_BRAIN_BACKEND=postgres
+       │   · fetches images via NEX Object Storage
+       │   · Guarded by NEX_WORKER_CONSENT_V2=YES · fails-fast without it
+       │
+       └── OR both simultaneously (multi-region)
+           · Same queue, same object store, same DB
+           · SKIP LOCKED prevents duplicate claim
+           · Every worker independent of every other machine's filesystem
+```
+
+**The DECISION** — which deployment topology to run — is architectural
+and belongs to Philip. This audit does not choose. The Wave 4 code
+change ensures ANY choice is safe: no worker deployment can silently
+resurrect the split-brain because every entry point now demands
+explicit v2 consent + a supported backend.
+
+### Wave 4 safeguards implemented (this session)
+
+1. **fly.toml** decommission banner — any operator running `fly deploy`
+   sees the intent at the top of the config.
+2. **scripts/nex-brain-cloud-worker.ts startup guard**:
+   - Refuses to start unless `NEX_WORKER_CONSENT_V2=YES` is set
+   - Accepts `NEX_BRAIN_BACKEND=supabase` (transitional) OR `postgres` (v2)
+   - Rejects `filesystem` (cannot work in a container)
+   - Error message points at this doc
+3. **Fly machine state** — `fly scale count 0` in effect since 2026-08-09;
+   no legacy image runs.
+
+### Rollback of the safeguards
+
+If Philip decides to resume the legacy deployment as-is (NOT recommended
+per the analysis in Section 2B):
+- Revert commits touching `nex-brain-cloud-worker.ts` and `fly.toml`
+- Re-scale Fly with `fly scale count 2 --app nex-brain-worker`
+- Legacy behavior returns
+- (The split-brain returns too · this is why the safeguards exist)
+
+### What is NOT in this Wave 4 change
+
+- Vercel Cron configuration for `/api/nex/brain/cron-tick` in production
+  (Vercel deployment audit still pending · Section 2C)
+- Migration of the cloud-worker to Postgres backend (Wave 5 blocker)
+- Removal of the legacy fly.toml file (kept for reference · protected
+  by the startup guard)
+
+---
+
+*A2 · updated 2026-08-09 with Wave 4 safeguards · final architecture
+decision pending Philip's authorization.*
