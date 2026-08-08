@@ -388,7 +388,7 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 | P0-10 · Brain backfill not executed | STILL OPEN | Wave 5 |
 | P0-11 · No reverse-shadow | STILL OPEN | Wave 7 |
 
-**Revised P0 count: 6 open** (was 11 · reduced by Wave 1/2/3 resolutions above).
+**Revised P0 count: 7 open** (was 11 · reduced by 4 resolutions in Waves 1+2+3 · P0-1, P0-2, P0-3, P0-4). Remaining: **P0-5, P0-6, P0-7, P0-8, P0-9, P0-10, P0-11** (arithmetic: 11 − 4 = 7).
 
 Two of those resolutions (P0-3, P0-4) are only real for as long as Fly stays scaled to 0. Reviving Fly reintroduces the split-brain and legacy-code issues unless the redeployed image includes the Phase 12.3 code AND uses NEX Postgres backend. That decision is yours (per your standing rule: no auto-resume).
 
