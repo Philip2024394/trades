@@ -24,6 +24,12 @@ const suites = [
   { name: "template-fill",        path: join(__dirname, "template-fill.test.mjs")        },
   { name: "grounding-validation", path: join(__dirname, "grounding-validation.test.mjs") },
   { name: "generation-e2e",       path: join(__dirname, "generation-e2e.test.mjs")       },
+  { name: "validator-fact",       path: join(__dirname, "validator-fact.test.mjs")       },
+  { name: "validator-rights",     path: join(__dirname, "validator-rights.test.mjs")     },
+  { name: "validator-policy",     path: join(__dirname, "validator-policy.test.mjs")     },
+  { name: "validator-brand",      path: join(__dirname, "validator-brand.test.mjs")      },
+  { name: "validator-platform",   path: join(__dirname, "validator-platform.test.mjs")   },
+  { name: "validator-pipeline",   path: join(__dirname, "validator-pipeline.test.mjs")   },
 ];
 
 const results = [];
