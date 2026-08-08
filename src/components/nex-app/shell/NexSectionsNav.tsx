@@ -22,6 +22,7 @@ import {
   Store,
   Ruler,
   Palette,
+  Share2,
 } from "lucide-react";
 
 type Section = {
@@ -37,6 +38,7 @@ const SECTIONS: Section[] = [
   { href: "/nex-app/messages",               label: "Messages",             description: "Direct chats with your contacts",    icon: MessageSquare },
   { href: "/nex-app/contacts",               label: "Contacts",             description: "Your saved connections + groups",    icon: Users },
   { href: "/nex-app/centre",                 label: "Trade Centre",         description: "Marketplace: products · services",   icon: Store },
+  { href: "/nex-app/nex-brain/comms-social", label: "Nex Marketing",        description: "Get your business seen",             icon: Share2 },
   { href: "/nex-app/staircase-configurator", label: "Staircase Configurator", description: "3D configurator + Nex Designs",    icon: Ruler },
   { href: "/nex-app/design-system",          label: "Design System",        description: "Design tokens · components",         icon: Palette },
 ];
@@ -71,6 +73,10 @@ export function NexSectionsNav() {
   // Home + floating Nex affordances. Early return AFTER all hooks to
   // preserve the Rules-of-Hooks order.
   if (pathname?.startsWith("/nex-app/staircase-library")) return null;
+  // Philip 2026-08-03 · hide on the general chat too. The chat page has
+  // its own black burger in the header (opens Play) — the shell-level
+  // yellow floating button competed visually and duplicated the intent.
+  if (pathname?.startsWith("/nex-app/chat")) return null;
 
   return (
     <>
