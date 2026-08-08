@@ -1358,6 +1358,11 @@ function HeadquartersColumn({
             {/* Backend Readiness · doctrine feedback_nex_ui_ahead_of_backend ·
                 the diagnostic that stops guesswork about what's live */}
             <BackendReadinessPanel />
+            {/* Warehouse · Phase 10.5 · production-flow view over the same
+                worker_jobs + knowledge_records rows the rest of this page
+                reads. Six barrels = six real stages, real counts, real ages.
+                No second source of truth. */}
+            <WarehousePanel />
             <WorkerRoster
               placements={allPlacements}
               providers={providers}
@@ -2095,6 +2100,132 @@ function BackendReadinessPanel() {
       })}
       <div className="mt-2 text-[9.5px] italic" style={{ color: T.textDim }}>
         Build order: Layer 1 (Core Intelligence) → Layer 2 (Business Intelligence) → Layer 3 (Automation). Enterprise Event Bus feeds all layers.
+      </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// Warehouse Panel · Phase 10.5
+// Renders six barrels · each = a real production stage backed by
+// worker_jobs / knowledge_records via /api/nex/brain/warehouse.
+// The barrel metaphor is UI-only; counts + ages are real. No polling
+// invented state · when the endpoint says count=0 the barrel is empty.
+// ─────────────────────────────────────────────────────────────────
+
+type WarehouseItemDrill = {
+  worker_type: string;
+  status: string;
+  count: number;
+  oldest_at: string | null;
+  oldest_age_ms: number | null;
+};
+type WarehouseStageDto = {
+  key: "incoming" | "context_processing" | "waiting_for_ai" | "being_written" | "quality_check" | "stored";
+  label: string;
+  glyph: string;
+  count: number;
+  oldest_at: string | null;
+  oldest_age_ms: number | null;
+  items: WarehouseItemDrill[];
+  reason?: string;
+};
+type WarehouseDto = {
+  ok: boolean;
+  stages?: WarehouseStageDto[];
+  computed_at?: string;
+  vault_records?: { authoritative: number; under_review: number; draft: number };
+  source?: "supabase" | "unavailable";
+  note?: string;
+};
+
+function formatAge(ms: number | null): string {
+  if (ms == null) return "—";
+  if (ms < 60_000) return `${Math.floor(ms / 1000)}s`;
+  if (ms < 3600_000) return `${Math.floor(ms / 60_000)}m`;
+  if (ms < 86_400_000) return `${Math.floor(ms / 3600_000)}h`;
+  return `${Math.floor(ms / 86_400_000)}d`;
+}
+
+function WarehousePanel() {
+  const [snapshot, setSnapshot] = useState<WarehouseDto | null>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  useEffect(() => {
+    let alive = true;
+    const load = async () => {
+      try {
+        const r = await fetch("/api/nex/brain/warehouse", { cache: "no-store" });
+        if (!alive) return;
+        setSnapshot(await r.json());
+      } catch { /* silent · next tick tries again */ }
+    };
+    void load();
+    const iv = setInterval(load, 6000);
+    return () => { alive = false; clearInterval(iv); };
+  }, []);
+
+  const stages = snapshot?.stages ?? [];
+  const total  = stages.reduce((s, st) => s + (st.key === "stored" ? 0 : st.count), 0);
+  const vault  = snapshot?.vault_records ?? { authoritative: 0, under_review: 0, draft: 0 };
+
+  return (
+    <div className="border-b px-4 py-3" style={{ borderColor: T.border, background: T.panel }}>
+      <div className="flex items-baseline gap-2">
+        <span className="text-[9px] font-black uppercase tracking-[0.28em]" style={{ color: T.wallDark }}>Warehouse · Production Flow</span>
+        <span className="text-[9.5px]" style={{ color: T.textFade }}>
+          {snapshot ? (
+            snapshot.source === "supabase"
+              ? `${total} item${total === 1 ? "" : "s"} in flight · ${vault.authoritative.toLocaleString()} in vault`
+              : `unavailable · ${snapshot.note ?? "no telemetry"}`
+          ) : "loading…"}
+        </span>
+      </div>
+      <div className="mt-2 grid grid-cols-2 gap-1.5 md:grid-cols-3 xl:grid-cols-6">
+        {stages.length === 0 ? (
+          <div className="col-span-full text-[10.5px] italic" style={{ color: T.textDim }}>Warehouse snapshot not available yet.</div>
+        ) : stages.map((stage) => {
+          const isEmpty  = stage.count === 0;
+          const isVault  = stage.key === "stored";
+          const isAiWait = stage.key === "waiting_for_ai";
+          const color    = isEmpty ? T.textFade : (isAiWait ? T.warning : (isVault ? T.success : T.info));
+          const isOpen   = expanded === stage.key;
+          const ageLabel = stage.oldest_age_ms != null ? `oldest ${formatAge(stage.oldest_age_ms)}` : (isEmpty ? "" : "");
+          return (
+            <button
+              key={stage.key}
+              type="button"
+              onClick={() => setExpanded(isOpen ? null : stage.key)}
+              className="text-left rounded border px-2 py-1.5 transition-colors"
+              style={{ background: T.panelElev, borderColor: T.border, opacity: isEmpty ? 0.55 : 1 }}
+              aria-expanded={isOpen}
+              aria-label={`${stage.label} · ${stage.count} item${stage.count === 1 ? "" : "s"}${ageLabel ? " · " + ageLabel : ""}`}
+            >
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-[13px]" aria-hidden>{stage.glyph}</span>
+                <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: T.textFade }}>{stage.label}</span>
+              </div>
+              <div className="mt-0.5 flex items-baseline gap-2">
+                <span className="text-[18px] font-black tabular-nums" style={{ color }}>{stage.count.toLocaleString()}</span>
+                {ageLabel && (
+                  <span className="text-[9px]" style={{ color: T.textDim }}>{ageLabel}</span>
+                )}
+              </div>
+              {isOpen && stage.items.length > 0 && (
+                <div className="mt-1 border-t pt-1" style={{ borderColor: T.border }}>
+                  {stage.items.map((it, i) => (
+                    <div key={i} className="text-[9.5px] flex items-baseline justify-between gap-2" style={{ color: T.textDim }}>
+                      <span>{it.worker_type} · {it.status}</span>
+                      <span className="tabular-nums" style={{ color: T.text }}>{it.count.toLocaleString()}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </button>
+          );
+        })}
+      </div>
+      <div className="mt-2 text-[9.5px] italic" style={{ color: T.textDim }}>
+        Six real stages composed from worker_jobs + knowledge_records · click a barrel for the (worker_type, status) breakdown · vault totals: {vault.authoritative.toLocaleString()} authoritative · {vault.under_review.toLocaleString()} under review · {vault.draft.toLocaleString()} draft.
       </div>
     </div>
   );
