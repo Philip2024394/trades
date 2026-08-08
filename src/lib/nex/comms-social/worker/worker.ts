@@ -360,7 +360,13 @@ export async function processScheduledJob(input: ProcessJobInput): Promise<Proce
     refresh_token:      resolvedRefreshToken,
     post_id:            input.draft_id,
     idempotency_marker: marker,
-    caption:            subject.caption,
+    // Charter §S-XI · UTM auto-append on outbound links · non-destructive
+    // (merchant-supplied UTMs preserved).
+    caption:            (await import("../analytics/utm")).appendUtmsToCaption({
+                          caption:  subject.caption,
+                          platform: input.platform,
+                          post_id:  input.draft_id,
+                        }).caption,
     hashtags:           subject.hashtags,
     media:              [],
     cta:                subject.cta,
@@ -394,8 +400,19 @@ export async function processScheduledJob(input: ProcessJobInput): Promise<Proce
     return { outcome: "failed", detail: publishRes.error_class };
   }
 
-  // Success path · record intent + scheduled_post.
+  // Success path · record intent + scheduled_post + emit canonical event (§S-XI).
+  const { recordSocialPublishEvent } = await import("../analytics/publish-audit");
   await withTenantClient(input.tenant_id, async (c) => {
+    await recordSocialPublishEvent({
+      client:            c,
+      tenant_id:         input.tenant_id,
+      platform:          input.platform,
+      scheduled_id:      input.scheduled_id,
+      intent_id:         intent.intent_id,
+      draft_id:          input.draft_id,
+      event_type:        "delivered",
+      provider_post_id:  publishRes.ok ? publishRes.provider_post_id : undefined,
+    });
     await c.query(
       `UPDATE nex.social_publish_intents
           SET status = 'verified_published',
