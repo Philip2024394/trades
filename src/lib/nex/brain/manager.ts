@@ -24,6 +24,7 @@ import { runImageAnalyst } from "./workers/image-analyst";
 import { runQualityChecker } from "./workers/quality-checker";
 import { drainLlmRetryQueue, type LlmRetryOutcome } from "./workers/llm-retry";
 import { emitAuditEvents, type AuditEventType } from "./audit-log";
+import { primeStandbyHeartbeats, writeHeartbeat } from "./heartbeat";
 import type { BrainStatus, WorkerJob, WorkerType } from "./types";
 import { claimJobIfQueued, findActiveJobByInboxItemId } from "@/lib/nex/jobs/fs-store";
 
@@ -44,6 +45,14 @@ async function withAuditEvents<T extends { job: WorkerJob | null }>(
 ): Promise<T> {
   const startedIso = new Date().toISOString();
   const startedMs = Date.now();
+  // Phase 12.3 · heartbeat "working" BEFORE the runner starts so the
+  // UI can see mid-cycle activity when it polls between iterations.
+  // Best-effort · writeHeartbeat swallows its own errors.
+  await writeHeartbeat({
+    worker_type: workerType,
+    status: "working",
+    current_stage: "runner_start",
+  });
   let result: T;
   try {
     result = await runner();
@@ -59,6 +68,15 @@ async function withAuditEvents<T extends { job: WorkerJob | null }>(
       error_snippet: err instanceof Error ? err.message : String(err),
       at: new Date(finishedMs).toISOString(),
     }]);
+    // Phase 12.3 · heartbeat "failed" so the UI distinguishes a
+    // dead worker from a merely-idle one. The next cycle's prime-sweep
+    // resets to standby if the worker recovers.
+    await writeHeartbeat({
+      worker_type: workerType,
+      status: "failed",
+      current_stage: "runner_throw",
+      error: err instanceof Error ? err.message : String(err),
+    });
     throw err;
   }
   const finishedMs = Date.now();
@@ -87,6 +105,17 @@ async function withAuditEvents<T extends { job: WorkerJob | null }>(
     ];
     emitAuditEvents(events);
   }
+  // Phase 12.3 · heartbeat "standby" AFTER a successful runner call
+  // (whether it processed a job or hit an empty queue). If a job was
+  // handled, its id + input_ref are captured so the UI can show
+  // "last completed" per worker.
+  await writeHeartbeat({
+    worker_type: workerType,
+    status: "standby",
+    current_job_id: job?.id ?? null,
+    input_ref: job?.input_ref ?? null,
+    current_stage: job ? "runner_completed" : "queue_empty",
+  });
   return result;
 }
 
@@ -349,6 +378,13 @@ export async function runOneCycle(options: {
   const checkerBatch = options.checker_batch ?? 6;
 
   const start = Date.now();
+  // Phase 12.3 · prime every worker with a fresh "standby" heartbeat
+  // BEFORE the drain starts. Workers that get exercised will overwrite
+  // their own row via withAuditEvents; workers whose loop breaks on
+  // iteration 0 (queue empty) keep the primed row. Without this sweep,
+  // the operator can't tell "queue empty" (Standby) from "worker never
+  // ran" (Offline) — they'd look identical.
+  await primeStandbyHeartbeats();
   const contextsAssembled: Array<{ inbox_item_id: string; related_count: number }> = [];
   const voiceGuides: Array<{ inbox_item_id: string; brand_terms: string[]; audience: string; content_class: string }> = [];
   const learningBundles: Array<{ inbox_item_id: string; examples_count: number; overall_lesson: string }> = [];
