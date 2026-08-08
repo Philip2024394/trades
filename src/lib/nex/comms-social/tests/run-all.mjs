@@ -30,6 +30,9 @@ const suites = [
   { name: "validator-brand",      path: join(__dirname, "validator-brand.test.mjs")      },
   { name: "validator-platform",   path: join(__dirname, "validator-platform.test.mjs")   },
   { name: "validator-pipeline",   path: join(__dirname, "validator-pipeline.test.mjs")   },
+  { name: "category-automation",  path: join(__dirname, "category-automation.test.mjs")  },
+  { name: "scheduling-worker",    path: join(__dirname, "scheduling-worker.test.mjs")    },
+  { name: "pause-propagation",    path: join(__dirname, "pause-propagation.test.mjs")    },
 ];
 
 const results = [];
