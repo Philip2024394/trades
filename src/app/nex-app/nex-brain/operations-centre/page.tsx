@@ -2644,7 +2644,12 @@ function ReceptionBand({ dateLabel, anyCloudOnline, totalActive, totalSleeping, 
         NEX Headquarters
       </h1>
       <div className="mt-0.5 text-[11px]" style={{ color: T.textDim }}>
-        {anyCloudOnline ? `${totalActive} working · ${totalSleeping} resting · ${totalOffline} offline` : "Cloud workers offline"}
+        {anyCloudOnline
+          ? `Right now: ${totalActive} processing · ${totalSleeping} ready & idle · ${totalOffline} not responding`
+          : "Cloud workers offline"}
+      </div>
+      <div className="mt-0.5 text-[9px]" style={{ color: T.textFade }}>
+        &quot;Ready &amp; idle&quot; = healthy · queue empty · waiting for work. Historical activity shown separately in the timeline below.
       </div>
     </div>
   );
@@ -3621,25 +3626,39 @@ function ProviderTile({ p, onOpen, activeWorkersUsing }: { p: LlmProviderReport;
 
       {p.configured ? (
         <>
-          {/* 24h achievements — every field driven by real per-provider telemetry */}
-          <div className="mt-1.5 grid grid-cols-4 gap-1">
-            <PMetricMini label="Calls"     value={p.calls_24h.toLocaleString()} />
-            <PMetricMini label="OK"        value={successes.toLocaleString()} tone={T.success} />
-            <PMetricMini label="Fail"      value={failures.toLocaleString()} tone={failures > 0 ? T.warning : T.textDim} />
-            <PMetricMini label="Tokens"    value={tokensFmt} />
+          {/* 24h achievements — every field driven by real per-provider telemetry.
+              Every label carries the "24h" suffix so a stale number can never
+              read as a current-second metric. */}
+          <div className="mt-1.5 text-[8px] font-bold uppercase tracking-widest" style={{ color: T.textFade }}>
+            Last 24 hours (historical · not current-second)
+          </div>
+          <div className="mt-0.5 grid grid-cols-4 gap-1">
+            <PMetricMini label="Calls 24h"  value={p.calls_24h.toLocaleString()} />
+            <PMetricMini label="OK 24h"     value={successes.toLocaleString()} tone={T.success} />
+            <PMetricMini label="Fail 24h"   value={failures.toLocaleString()} tone={failures > 0 ? T.warning : T.textDim} />
+            <PMetricMini label="Tokens 24h" value={tokensFmt} />
           </div>
           <div className="mt-1 grid grid-cols-2 gap-1">
-            <PMetricMini label="Success"   value={successPct === null ? "—" : `${successPct}%`} tone={successPct !== null && successPct < 80 ? T.warning : undefined} />
-            <PMetricMini label="Avg"       value={p.avg_ms_24h ? `${p.avg_ms_24h}ms` : "—"} />
+            <PMetricMini label="Success 24h" value={successPct === null ? "—" : `${successPct}%`} tone={successPct !== null && successPct < 80 ? T.warning : undefined} />
+            <PMetricMini label="Avg 24h"     value={p.avg_ms_24h ? `${p.avg_ms_24h}ms` : "—"} />
           </div>
 
-          {/* Currently on — real state · either derivable count or honest "audit log" */}
-          {band === "green-active" ? (
+          {/* Currently on — real state · either derivable count or honest "audit log".
+              "Active now" only fires when band === "green-active" AND we can
+              show a live in-flight count. Otherwise the tile stays silent
+              rather than implying activity from 24h aggregates. */}
+          {band === "green-active" && activeWorkersUsing !== null && activeWorkersUsing > 0 ? (
             <div className="mt-1.5 flex items-center gap-1.5 rounded border px-1.5 py-0.5" style={{ background: T.successSoft, borderColor: T.success }}>
               <span className="h-1 w-1 rounded-full" style={{ background: T.success, boxShadow: `0 0 4px ${T.success}` }} />
               <span className="text-[9px] font-semibold" style={{ color: T.success }}>
-                On task now
-                {activeWorkersUsing !== null ? ` · ${activeWorkersUsing} worker${activeWorkersUsing === 1 ? "" : "s"} in flight` : ""}
+                Right now · {activeWorkersUsing} worker{activeWorkersUsing === 1 ? "" : "s"} in flight
+              </span>
+            </div>
+          ) : band === "green-active" ? (
+            <div className="mt-1.5 flex items-center gap-1.5 rounded border px-1.5 py-0.5" style={{ background: T.panelElev, borderColor: T.border }}>
+              <span className="h-1 w-1 rounded-full" style={{ background: T.textFade }} />
+              <span className="text-[9px]" style={{ color: T.textDim }}>
+                Healthy · had calls in last 24h · no active in-flight
               </span>
             </div>
           ) : null}

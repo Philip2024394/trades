@@ -72,11 +72,14 @@ record("F4", allEndpointsWired, allEndpointsWired ? "all four endpoints polled" 
 // F5 · no Math.random / no extra setInterval in ACTIVE CODE (comments
 // discussing the forbidden pattern do not count — otherwise a header
 // comment saying "no Math.random" would trip the check).
+// NOTE · uses [^\n\r]* instead of .* because Windows CRLF endings
+// leave \r in the line after split("\n") · JS `.` excludes both \n
+// and \r · using .*$ would fail to strip CRLF-terminated line comments.
 function stripComments(src) {
   return src
-    .replace(/\/\*[\s\S]*?\*\//g, "")   // /* block comments */
+    .replace(/\/\*[\s\S]*?\*\//g, "")     // /* block comments */
     .split("\n")
-    .map((line) => line.replace(/(^|[^:])\/\/.*$/, "$1"))
+    .map((line) => line.replace(/(^|[^:])\/\/[^\n\r]*/, "$1"))
     .join("\n");
 }
 const PAGE_CODE = stripComments(PAGE);

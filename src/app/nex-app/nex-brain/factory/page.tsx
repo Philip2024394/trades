@@ -410,15 +410,16 @@ function WorkersPanel({ workers, livenessMs, totals }: { workers: WorkerLive[] |
       <header style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 8 }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
           <span style={{ fontSize: 22 }}>👷</span>
-          <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: T.textDim, letterSpacing: 0.5 }}>WORKERS</h2>
+          <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: T.textDim, letterSpacing: 0.5 }}>WORKERS · RIGHT NOW</h2>
+          <span style={{ fontSize: 10, color: T.textFade }}>(snapshot · refreshes every {POLL_MS / 1000}s)</span>
         </div>
         {totals && (
-          <div style={{ display: "flex", gap: 10, fontSize: 11, color: T.textFade, alignItems: "center", flexWrap: "wrap" }}>
-            <span title="Working">🟢 {totals.working}</span>
-            <span title="Waiting for AI">🟡 {totals.waiting_llm}</span>
-            <span title="Standby">🔵 {totals.standby}</span>
-            <span title="Failed">🔴 {totals.failed}</span>
-            <span title="Offline">⚪ {totals.offline}</span>
+          <div style={{ display: "flex", gap: 12, fontSize: 11, color: T.textDim, alignItems: "center", flexWrap: "wrap" }}>
+            <span title="Actively processing a job right now">🟢 {totals.working} working</span>
+            <span title="Job claimed · awaiting AI response">🟡 {totals.waiting_llm} waiting AI</span>
+            <span title="Healthy · queue empty · ready for work">🔵 {totals.standby} ready</span>
+            <span title="Last run threw · needs attention">🔴 {totals.failed} failed</span>
+            <span title="No heartbeat in 60s · needs attention">⚪ {totals.offline} not responding</span>
           </div>
         )}
       </header>
@@ -649,9 +650,9 @@ function ActivityStream({ events }: { events: TimelineEvent[] | null }) {
       <header style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
           <span style={{ fontSize: 20 }}>⏱️</span>
-          <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: T.textDim, letterSpacing: 0.5 }}>LAST MOVEMENT</h2>
+          <h2 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: T.textDim, letterSpacing: 0.5 }}>RECENT ACTIVITY · HISTORY</h2>
+          <span style={{ fontSize: 10, color: T.textFade }}>(past events · newest first · NOT current worker state)</span>
         </div>
-        <span style={{ fontSize: 11, color: T.textFade }}>real audit trail · newest first</span>
       </header>
       {list.length === 0 ? (
         <div style={{ padding: 20, color: T.textGhost, fontSize: 13, textAlign: "center" }}>
