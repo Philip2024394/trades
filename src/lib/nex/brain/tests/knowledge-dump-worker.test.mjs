@@ -101,7 +101,9 @@ async function main() {
     "fs-store exports findJobByInboxItemId");
   record("KD4", /claimJobIfQueued/.test(manager) && /findActiveJobByInboxItemId/.test(manager),
     "manager imports claim + find helpers");
-  record("KD5", /knowledge_job_id/.test(manager) && /input_payload:[\s\S]{0,400}?knowledge_job_id/.test(manager),
+  // KD5 · window widened to 800 chars to accommodate Phase 3a
+  // input_payload additions (objectBucket/objectKey + LEGACY comment).
+  record("KD5", /knowledge_job_id/.test(manager) && /input_payload:[\s\S]{0,800}?knowledge_job_id/.test(manager),
     "manager passes knowledge_job_id in enqueued WorkerJob payload");
   record("KD6", /updateKnowledgeJob/.test(extractor),
     "extractor imports updateKnowledgeJob");

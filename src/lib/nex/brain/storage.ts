@@ -1977,9 +1977,30 @@ let _store: BrainStore | null = null;
 
 export function brainStore(): BrainStore {
   if (_store) return _store;
-  if (isPostgresConfigured())  _store = new PostgresBrainStore();
-  else if (isSupabaseConfigured()) _store = new SupabaseStore();
-  else                              _store = new FilesystemStore();
+  if (isPostgresConfigured()) {
+    const primary: BrainStore = new PostgresBrainStore();
+    // Wave 7 · reverse-shadow rollback safety net. When
+    // NEX_BRAIN_SHADOW_SUPABASE=1 is set alongside
+    // NEX_BRAIN_BACKEND=postgres, every write to nex.* is also
+    // mirrored to legacy Supabase so a rollback is loss-less.
+    // Gate is INTENTIONALLY strict · only fires when the operator
+    // has explicitly opted in AND the primary is actually Postgres.
+    if (
+      process.env.NEX_BRAIN_SHADOW_SUPABASE === "1" &&
+      isSupabaseConfigured()
+    ) {
+      // Lazy-require to avoid circular imports at module init.
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { MirrorToSupabaseBrainStore } = require("./pg-to-supabase-shadow") as typeof import("./pg-to-supabase-shadow");
+      _store = new MirrorToSupabaseBrainStore(primary, new SupabaseStore());
+    } else {
+      _store = primary;
+    }
+  } else if (isSupabaseConfigured()) {
+    _store = new SupabaseStore();
+  } else {
+    _store = new FilesystemStore();
+  }
   return _store;
 }
 

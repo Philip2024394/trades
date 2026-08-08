@@ -191,7 +191,10 @@ async function main() {
     "upsertHeartbeat uses ON CONFLICT (host_id) DO UPDATE");
 
   // C11 · brainStore() selects PostgresBrainStore branch
-  record("C11", /if\s*\(isPostgresConfigured\(\)\)\s*_store\s*=\s*new PostgresBrainStore\(\)/.test(STORAGE),
+  // Regex tolerates the Wave 7 rewrite where the postgres branch
+  // became multi-line to also wire the reverse-shadow decorator.
+  record("C11",
+    /isPostgresConfigured\(\)[\s\S]{0,200}?new PostgresBrainStore\(\)/.test(STORAGE),
     "brainStore() picks PostgresBrainStore when postgres backend configured");
 
   // ═══════════════════════════════════════════════════════════════════
