@@ -198,6 +198,7 @@ export async function runVoiceContext(options: {
         url: url ?? null,
         filePath: filePath ?? null,
         mimeType: mimeType ?? null,
+        knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
         context_bundle: contextBundle,
         voice_guide: guide,
       },

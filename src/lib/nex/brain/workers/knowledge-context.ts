@@ -186,6 +186,7 @@ export async function runKnowledgeContext(options: {
         url: url ?? null,
         filePath: filePath ?? null,
         mimeType: mimeType ?? null,
+        knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
         context_bundle: bundle,
       },
     });
