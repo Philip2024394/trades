@@ -367,7 +367,49 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 | Date | Change | Committer |
 |---|---|---|
 | 2026-08-09 | Initial master roll-up authored · absorbs findings from A1 (Storage Map) + A2 (Deployment Audit) + all in-session evidence | Claude |
+| 2026-08-09 (later) | **Wave 1 COMPLETE** — Fly workers `nex-brain-worker` scaled to 0. Both machines DESTROYED. Heartbeats stopped advancing for >2 min (`8ed9d16c720908` frozen at cycles=44615, `2870903c4d2638` frozen at cycles=44633). Wave 1 evidence: `fly scale count 0 --app nex-brain-worker` executed 19:40Z · verified via `worker_heartbeats` REST query. | Claude |
+| 2026-08-09 (later) | **Wave 2 COMPLETE — HARPER PROVEN** — image `nx_msks7ddw_90ae2b5a` (badge-02.png · 58 KB · hash `59f9cb35...`) processed end-to-end in 45 seconds by local dev (`@5572`). Real vision LLM: **gemini · gemini-flash-latest · 12503ms · 2038 tokens in · 705 out**. Knowledge record `graphic_badge_new_this_week_v1` created UNDER_REVIEW (Iris confidence 0.801). Vision analysis is genuine — Harper accurately described the actual PNG contents. Zero ENOENT. Single attempt. No Fly interference (Fly machines destroyed before upload). **Image-analyst has its first successful lifetime completion.** | Claude |
 | — | Future updates land here as B/C/D phases complete | — |
+
+---
+
+## Section 16 · P0 blocker state after Waves 1 + 2
+
+| Blocker | Status | Evidence |
+|---|---|---|
+| P0-1 · Inbox binaries per-machine | STILL OPEN · but the code path is proven to work when file is local | Wave 2 succeeded ONLY because file existed on the machine running Harper. Object storage still required for prod. |
+| P0-2 · image-analyst 0 lifetime completions | **RESOLVED** for the "code correctness" axis · **NEW: 1 lifetime completion** | worker_results row · 2026-08-08T19:44:20 · gemini vision · real tokens |
+| P0-3 · Shared queue split-brain (2 Fly + 1 local) | **RESOLVED via Fly destruction** (Wave 1) · but this is a REVERSIBLE state, not a permanent fix | fly scale count 0 · both machines destroyed · Fly `Image: -` (no active image) |
+| P0-4 · Fly workers run pre-Phase-12.3 code | RESOLVED via Fly destruction · legacy code no longer running | Same as above |
+| P0-5 · dispatchNewInboxItems filesystem-locked | STILL OPEN · dispatch still requires filesystem read | Not addressed yet |
+| P0-6 · Brain records still on Supabase | STILL OPEN | Not addressed yet · Wave 5 |
+| P0-7-9 · Inbox / stats / dump jobs filesystem-authoritative | STILL OPEN · shadow present · reads not flipped | Wave 6 |
+| P0-10 · Brain backfill not executed | STILL OPEN | Wave 5 |
+| P0-11 · No reverse-shadow | STILL OPEN | Wave 7 |
+
+**Revised P0 count: 7 open** (was 11 · reduced by resolutions above).
+
+Two of those resolutions (P0-3, P0-4) are only real for as long as Fly stays scaled to 0. Reviving Fly reintroduces the split-brain and legacy-code issues unless the redeployed image includes the Phase 12.3 code AND uses NEX Postgres backend. That decision is yours (per your standing rule: no auto-resume).
+
+P0-2 is genuinely resolved on the code-correctness axis. But it remains at risk on the deployment-transparency axis: Harper only works when the machine running it has the image file. Object storage (Wave 3) is what makes it durable.
+
+---
+
+## Section 17 · Recommended next moves
+
+Now that Waves 1 + 2 are done, the immediate architectural question is:
+
+**Wave 3 · NEX Object Storage — this is the P0-1 fix. Requires an architectural decision I can only propose · you decide.**
+
+Options I can see:
+1. **NEX Storage Runtime service** — the doctrine calls for one of the 8 Infrastructure Runtime services to be "Object Storage" (currently ⏳ per your NEX Infrastructure Runtime memory). Build it out with adapters (S3-compat · R2 · ImageKit · local-fs for dev).
+2. **ImageKit** — existing account (`streetlocallive@gmail.com` · endpoint `9mrgsv2rp`) · already the destination for other NEX images per docs.
+3. **Cloudflare R2** — S3-compatible · low cost · not yet in the NEX stack.
+4. **Supabase Storage** — bundled with existing Supabase · but perpetuates a Supabase dependency you're trying to end.
+
+I recommend #1 (build the NEX Runtime Object Storage service · pick ImageKit as first adapter given it's already in use). But this is your architectural call. Ask me to explore each option in more detail if useful.
+
+While waiting for that decision, I can start Wave 5 prerequisites (`brain-parity-report.mjs` + `brain-backfill.mjs`) which don't require the storage decision. Or Wave 11 (engineering-quality audit read-only work). Or hold.
 
 ---
 
