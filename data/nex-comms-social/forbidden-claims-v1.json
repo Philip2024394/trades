@@ -1,0 +1,115 @@
+{
+  "$schema": "./forbidden-claims.schema.json",
+  "version": "v1",
+  "authoritative_source": "docs/NEX_SOCIAL_FORBIDDEN_CLAIMS_STARTER_LIST_PROPOSAL.md",
+  "notes": "Runtime rule set implementing the forbidden-claims proposal. Additions require Philip approval and a corresponding update to the proposal doc. Removals require Philip approval + written reason.",
+  "categories": [
+    {
+      "category": "guarantees_warranties",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "lifetime\\s+guarantee",  "reason": "perpetual warranty · Consumer Rights Act 2015" },
+        { "match": "guaranteed\\s+for\\s+life", "reason": "perpetual warranty" },
+        { "match": "\\bmoney[- ]back\\s+guarantee", "reason": "refund obligation" },
+        { "match": "\\bno[- ]quibble\\s+refund", "reason": "absolute refund promise" },
+        { "match": "\\brisk[- ]free\\b", "reason": "implies zero-liability guarantee" },
+        { "match": "100%\\s+(satisfaction|quality|guaranteed)", "reason": "absolute promise" },
+        { "match": "\\d+[- ]?year\\s+(guarantee|warranty)", "reason": "time-bound warranty" }
+      ]
+    },
+    {
+      "category": "qualifications_credentials",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "\\bcertified\\b", "reason": "credential claim · needs certification_record" },
+        { "match": "\\blicensed\\b", "reason": "regulatory claim" },
+        { "match": "\\baccredited\\b", "reason": "accreditation claim" },
+        { "match": "\\bfully\\s+insured\\b", "reason": "insurance claim" },
+        { "match": "\\bpublic\\s+liability\\s+insured\\b", "reason": "insurance claim" },
+        { "match": "\\bapproved\\s+by\\b", "reason": "third-party approval" },
+        { "match": "\\bofficial\\s+.+partner\\b", "reason": "partnership claim" },
+        { "match": "\\bmember\\s+of\\s+.+", "reason": "trade-body membership" }
+      ]
+    },
+    {
+      "category": "comparative_superlative",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "\\bcheapest\\b", "reason": "superlative price · ASA CAP 3.33" },
+        { "match": "\\blowest\\s+price(s|d)?\\b", "reason": "superlative price" },
+        { "match": "\\bthe\\s+best\\b", "reason": "superlative quality" },
+        { "match": "\\bfinest\\b", "reason": "superlative quality" },
+        { "match": "\\bhighest[- ]quality\\b", "reason": "superlative quality" },
+        { "match": "\\bmarket[- ]leading\\b", "reason": "market position claim" },
+        { "match": "\\bnumber\\s+one\\b|\\b#1\\b", "reason": "ranking claim" },
+        { "match": "\\bunbeatable\\b", "reason": "superlative" },
+        { "match": "\\bunique\\b|\\bone\\s+of\\s+a\\s+kind\\b", "reason": "uniqueness claim" }
+      ]
+    },
+    {
+      "category": "pricing_offers",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "\\bfree\\b(?!\\s+quote)", "reason": "free-offer claim · CPRs strict · 'free quote' allowed" },
+        { "match": "\\b\\d{1,3}%\\s+off\\b", "reason": "discount claim · needs offer_record" },
+        { "match": "\\bon\\s+sale\\b|\\bclearance\\b", "reason": "reduced-price claim" },
+        { "match": "\\blimited\\s+time\\b", "reason": "urgency · needs offer expiry" },
+        { "match": "\\bwhile\\s+stocks\\s+last\\b", "reason": "scarcity claim" },
+        { "match": "\\btoday\\s+only\\b|\\bends\\s+(today|tomorrow|\\d)", "reason": "date-driven urgency" },
+        { "match": "\\bno\\s+VAT\\b|\\bVAT[- ]free\\b", "reason": "tax claim · HMRC risk" }
+      ]
+    },
+    {
+      "category": "safety_regulatory",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "\\bsafe\\s+for\\s+children\\b|\\bchild[- ]safe\\b", "reason": "product-safety claim" },
+        { "match": "\\bfire[- ]?rated\\b|\\bfire[- ]resistant\\b", "reason": "fire-safety claim · BS 476" },
+        { "match": "\\bbuilding[- ]regulations[- ]compliant\\b|\\bmeets\\s+Part\\s+[A-Z]\\b|\\bPart[- ]K\\s+compliant\\b", "reason": "building-regs claim" },
+        { "match": "\\bstructural\\s+warranty\\b|\\bload[- ]tested\\b", "reason": "structural claim" },
+        { "match": "\\bwheelchair\\s+accessible\\b|\\bDDA[- ]compliant\\b", "reason": "accessibility regulatory" },
+        { "match": "\\bnon[- ]toxic\\b|\\bfood[- ]safe\\b|\\bchemical[- ]free\\b", "reason": "health claim" }
+      ]
+    },
+    {
+      "category": "environmental_green",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "\\beco[- ]friendly\\b", "reason": "vague green · CMA Green Claims Code" },
+        { "match": "\\bsustainable(ly)?\\b", "reason": "sustainability claim · needs FSC/PEFC" },
+        { "match": "\\bcarbon[- ]neutral\\b|\\bnet[- ]zero\\b", "reason": "carbon claim" },
+        { "match": "\\brecycled\\s+\\d+%\\b", "reason": "recycled-content claim" },
+        { "match": "\\bbiodegradable\\b|\\bcompostable\\b", "reason": "disposal claim" }
+      ]
+    },
+    {
+      "category": "review_required_needs_evidence",
+      "enforcement": "review_required",
+      "patterns": [
+        { "match": "\\baward[- ]winning\\b|\\baward[- ]nominated\\b", "reason": "award claim · needs award_record" },
+        { "match": "\\bvoted\\s+(best|the\\s+best|top)\\b", "reason": "voting/poll claim" },
+        { "match": "\\bas\\s+seen\\s+on\\b|\\bfeatured\\s+in\\b", "reason": "media appearance · needs press_record" },
+        { "match": "\\b\\d+[- ]star\\s+rat(ed|ing)\\b|\\b\\d+\\.\\d+\\s+stars\\b", "reason": "rating claim" },
+        { "match": "\\bover\\s+\\d+\\s+(happy\\s+)?customers\\b|\\b\\d+\\+\\s+customers\\b", "reason": "volume claim" },
+        { "match": "\\btrusted\\s+by\\b|\\brecommended\\s+by\\b", "reason": "endorsement claim" },
+        { "match": "\\b(handmade|hand[- ]crafted|hand[- ]built)\\b", "reason": "production-method claim · misleading if mass-produced" },
+        { "match": "\\b(solid\\s+oak|solid\\s+walnut|solid\\s+ash|solid\\s+cherry|solid\\s+mahogany)\\b", "reason": "material-composition claim · legal definition" },
+        { "match": "\\b\\d+\\s+years?['’]?\\s+experience\\b", "reason": "verifiable factual claim · needs founded-date" },
+        { "match": "\\bfamily[- ]run\\b|\\bfamily\\s+business\\b", "reason": "ownership structure · verifiable" },
+        { "match": "\\bestablished\\s+(in\\s+)?(19|20)\\d{2}\\b|\\bsince\\s+(19|20)\\d{2}\\b", "reason": "founding-date claim" }
+      ]
+    },
+    {
+      "category": "hashtags_implicit_credential",
+      "enforcement": "hard_block",
+      "patterns": [
+        { "match": "#Trusted\\w*",                    "reason": "hashtag implies credential" },
+        { "match": "#Insured\\w*",                    "reason": "insurance hashtag" },
+        { "match": "#Certified\\w*",                  "reason": "certification hashtag" },
+        { "match": "#FullyInsured",                   "reason": "insurance hashtag" },
+        { "match": "#Guaranteed\\w*",                 "reason": "guarantee hashtag" },
+        { "match": "#Best\\w+In\\w+",                 "reason": "superlative locality hashtag" }
+      ]
+    }
+  ]
+}

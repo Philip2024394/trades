@@ -1,0 +1,47 @@
+{
+  "$schema": "./subjective-descriptors-whitelist.schema.json",
+  "version": "v1",
+  "authoritative_source": "docs/NEX_SOCIAL_SUBJECTIVE_DESCRIPTOR_WHITELIST_PROPOSAL.md",
+  "notes": "Runtime whitelist implementing the subjective-descriptor proposal. Additions require Philip approval; removals do not (safety-ratchet: tightening is always allowed).",
+  "green_visual_character": [
+    "beautiful","striking","eye-catching","attractive","handsome",
+    "stylish","smart","distinctive","characterful"
+  ],
+  "green_style_family": [
+    "modern","contemporary","classic","timeless","minimalist","industrial",
+    "rustic","understated","refined","elegant","graceful","clean-lined"
+  ],
+  "green_room_feel": [
+    "warm","welcoming","inviting","bright","light-filled","airy",
+    "tranquil","calm","inspiring","impressive"
+  ],
+  "green_neutral_positive": [
+    "new","freshly-installed","freshly-completed","completed","finished",
+    "carefully-considered","thoughtful","tidy","clean"
+  ],
+  "green_colour_family": [
+    "dark","darker","light","lighter","pale","neutral",
+    "warm-toned","cool-toned","rich","deep"
+  ],
+  "amber_context_gated": [
+    { "term": "bespoke",          "unlock_source_kind": "project",       "unlock_field": "production_type", "unlock_value": "bespoke" },
+    { "term": "custom",           "unlock_source_kind": "project",       "unlock_field": "production_type", "unlock_value": "custom" },
+    { "term": "made-to-measure",  "unlock_source_kind": "project",       "unlock_field": "production_type", "unlock_value": "made_to_measure" },
+    { "term": "signature",        "unlock_source_kind": "business_profile", "unlock_field": "signature_style_declared", "unlock_value": true },
+    { "term": "traditional",      "unlock_source_kind": "business_profile", "unlock_field": "tone", "unlock_value": "traditional" }
+  ],
+  "explicit_reject": [
+    "premium","luxury","high-end","top-of-the-range","deluxe","superior",
+    "exclusive","elite","prestige","first-class","finest",
+    "expert","specialist","master","professional","qualified","trusted","established",
+    "renowned","reputable","leading",
+    "best","greatest","unmatched","unrivalled","unbeatable","unparalleled",
+    "perfect","flawless","immaculate","impeccable","pristine","always","never",
+    "safe","secure","child-safe","pet-safe",
+    "eco-friendly","sustainable","green","natural","organic","pure",
+    "affordable","cheap","budget-friendly","great-value","bargain",
+    "authentic","genuine","original","real",
+    "innovative","revolutionary","cutting-edge","state-of-the-art","pioneering","game-changing","groundbreaking",
+    "amazing","incredible","fantastic","outstanding","exceptional","extraordinary","phenomenal","wonderful"
+  ]
+}

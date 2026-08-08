@@ -19,6 +19,11 @@ const suites = [
   { name: "oauth-state",          path: join(__dirname, "oauth-state.test.mjs")          },
   { name: "token-redaction",      path: join(__dirname, "token-redaction.test.mjs")      },
   { name: "oauth-e2e",            path: join(__dirname, "oauth-e2e.test.mjs")            },
+  { name: "content-sources",      path: join(__dirname, "content-sources.test.mjs")      },
+  { name: "claim-taxonomy",       path: join(__dirname, "claim-taxonomy.test.mjs")       },
+  { name: "template-fill",        path: join(__dirname, "template-fill.test.mjs")        },
+  { name: "grounding-validation", path: join(__dirname, "grounding-validation.test.mjs") },
+  { name: "generation-e2e",       path: join(__dirname, "generation-e2e.test.mjs")       },
 ];
 
 const results = [];
