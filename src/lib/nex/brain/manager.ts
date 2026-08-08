@@ -130,6 +130,7 @@ export async function dispatchNewInboxItems(): Promise<{
   enqueued: number;
   skipped_already_queued: number;
   skipped_not_text_yet: number;
+  reconciled_inbox_status: number;   // Phase 12.1 · number of inbox rows flipped `waiting`→`processing`
 }> {
   const store = brainStore();
   const inboxItems = await readInboxIndex();
@@ -163,6 +164,18 @@ export async function dispatchNewInboxItems(): Promise<{
   let skipped_already_queued = 0;
   let skipped_not_text_yet = 0;
 
+  // Phase 12.1 · Inbox truthfulness · accumulate status transitions
+  // for a single bulk writeback at the end of the cycle. Two sources
+  // of transitions:
+  //   1. RECONCILIATION · any item whose input_ref is already in the
+  //      pipeline (from a past cycle · pre-writeback drift) but whose
+  //      inbox status still says "waiting" gets flipped to "processing".
+  //      This heals the historical 102-eternal-waiting picture on the
+  //      first dispatch after 12.1 lands.
+  //   2. PROGRESSION · every item we successfully enqueue this cycle
+  //      gets flipped to "processing" so the counter drops in real time.
+  const statusUpdates = new Map<string, InboxItemLite["status"]>();
+
   for (const item of inboxItems) {
     // Skip anything that's already processed/reviewed/processing —
     // only WAITING items should feed the pipeline.
@@ -170,6 +183,8 @@ export async function dispatchNewInboxItems(): Promise<{
 
     if (alreadyQueuedIds.has(item.id)) {
       skipped_already_queued += 1;
+      // Reconciliation · in the pipeline but inbox still says waiting.
+      statusUpdates.set(item.id, "processing");
       continue;
     }
 
@@ -243,6 +258,12 @@ export async function dispatchNewInboxItems(): Promise<{
     });
     enqueued += 1;
 
+    // Phase 12.1 · Inbox truthfulness · progression writeback.
+    // The item is now in the pipeline · flip the inbox counter so the
+    // operator sees the correct number of truly-waiting items. Bulk
+    // writeback happens once at the end of the cycle.
+    statusUpdates.set(item.id, "processing");
+
     await store.insertAudit({
       entity_type: "worker_jobs",
       entity_id: item.id,
@@ -254,12 +275,54 @@ export async function dispatchNewInboxItems(): Promise<{
     });
   }
 
+  // Phase 12.1 · bulk-flush inbox status transitions · one read + one
+  // write per cycle regardless of item count. Best-effort · a writeback
+  // failure must NOT roll back the WorkerJobs that already landed.
+  let reconciled_inbox_status = 0;
+  if (statusUpdates.size > 0) {
+    try {
+      reconciled_inbox_status = await updateInboxItemStatuses(statusUpdates);
+    } catch (err) {
+      console.warn("[manager] inbox bulk writeback failed:", err instanceof Error ? err.message : err);
+    }
+  }
+
   return {
     scanned: inboxItems.length,
     enqueued,
     skipped_already_queued,
     skipped_not_text_yet,
+    reconciled_inbox_status,
   };
+}
+
+// Phase 12.1 · bulk in-place status update for many inbox items in one
+// file rewrite. Read-modify-write · preserves every field · only
+// touches `status`. Returns how many rows actually changed (so callers
+// can report the reconciliation count). Wrapped in its own function so
+// it's easy to swap for a Postgres UPDATE when Phase 11.2 lands.
+async function updateInboxItemStatuses(updates: Map<string, InboxItemLite["status"]>): Promise<number> {
+  if (updates.size === 0) return 0;
+  let items: InboxItemLite[];
+  try {
+    const raw = await fs.readFile(INBOX_INDEX, "utf8");
+    const parsed = JSON.parse(raw);
+    items = Array.isArray(parsed) ? (parsed as InboxItemLite[]) : [];
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return 0;
+    throw err;
+  }
+  let changed = 0;
+  for (const it of items) {
+    const next = updates.get(it.id);
+    if (next && it.status !== next) {
+      it.status = next;
+      changed += 1;
+    }
+  }
+  if (changed === 0) return 0;
+  await fs.writeFile(INBOX_INDEX, JSON.stringify(items, null, 2), "utf8");
+  return changed;
 }
 
 // 2 · Run one cycle: drain up to N of each worker in order.
