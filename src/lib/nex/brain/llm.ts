@@ -19,7 +19,7 @@
 
 // ── Types ────────────────────────────────────────────────────────────
 
-export type LlmProvider = "groq" | "gemini" | "anthropic" | "mock";
+export type LlmProvider = "openrouter" | "sambanova" | "mistral" | "groq" | "gemini" | "cerebras" | "cloudflare" | "huggingface" | "anthropic" | "mock";
 
 // Capabilities each worker can require of a provider. If a worker
 // declares requires_capability, providers lacking that capability are
@@ -35,10 +35,31 @@ export type LlmCapability =
 // Which capabilities each provider offers. Update this as new providers
 // or model tiers are added.
 const PROVIDER_CAPABILITIES: Record<LlmProvider, LlmCapability[]> = {
+  // OpenRouter: aggregator giving access to many free-tier models incl.
+  // NVIDIA Nemotron 3 Ultra 550B, Google Gemma 4, Cohere North, etc.
+  // Long context on the big models. No vision on default free tier.
+  openrouter: ["text", "json_mode", "tool_use", "long_context"],
+  // SambaNova Cloud: fast (~1000 tok/s) Meta-Llama-3.3-70B, DeepSeek V3,
+  // gpt-oss-120b, gemma-4-31B-it. OpenAI-compatible.
+  sambanova:  ["text", "json_mode", "tool_use", "long_context"],
+  // Mistral La Plateforme: mistral-small/medium (medium has vision),
+  // codestral. 131K context, OpenAI-compatible schema, JSON mode.
+  mistral:    ["text", "vision", "json_mode", "tool_use", "long_context"],
   // Groq: fast text + JSON, no vision (as of Llama 3.3 / DeepSeek line)
   groq:      ["text", "json_mode", "tool_use"],
   // Gemini 1.5 Flash: vision + 1M-token context + JSON
   gemini:    ["text", "vision", "audio", "json_mode", "long_context", "tool_use"],
+  // Cerebras Cloud: fastest inference on the market (~2000 tok/s) for
+  // Llama 3.3 70B, Qwen 2.5 72B. OpenAI-compatible API. No vision.
+  cerebras:  ["text", "json_mode", "tool_use"],
+  // Cloudflare Workers AI: 10K neurons/day free · Llama 3.3 70B on
+  // Cloudflare's edge · fast · own JSON-schema response format.
+  cloudflare:["text", "json_mode", "tool_use"],
+  // Hugging Face Router API: unified endpoint routing to Together /
+  // Fireworks / Cerebras / SambaNova etc. under one HF key. Free tier
+  // ~1000 req/day. OpenAI-compatible. Model catalogue is huge (Llama
+  // 3.3 70B, Qwen 2.5 72B, Mixtral, DeepSeek etc).
+  huggingface:["text", "json_mode", "tool_use", "long_context"],
   // Anthropic Claude Haiku: vision + tools + JSON + 200K context
   anthropic: ["text", "vision", "json_mode", "tool_use", "long_context"],
   // Mock: deterministic stand-in for everything so tests never block
@@ -102,12 +123,28 @@ export type LlmCallResult = {
 
 // Default model per provider. Verified 2026-08-06 against live APIs.
 const DEFAULT_MODEL: Record<LlmProvider, string> = {
+  // OpenRouter · Nemotron 3 Ultra 550B free tier · biggest available
+  // free model on the internet as of 2026-08-06. Verified end-to-end.
+  openrouter: "nvidia/nemotron-3-ultra-550b-a55b:free",
+  // SambaNova · Meta Llama 3.3 70B · fast, generous free tier
+  sambanova: "Meta-Llama-3.3-70B-Instruct",
+  // Mistral · small-latest · fast, JSON-reliable, free tier
+  mistral: "mistral-small-latest",
   // Groq · fast, free, no vision
   groq: "llama-3.3-70b-versatile",
   // Gemini · vision + 1M ctx · use the -latest alias so Google's
   // rolling model refresh flows through automatically. Previous
   // gemini-1.5-flash-latest was deprecated.
   gemini: "gemini-flash-latest",
+  // Cerebras · gpt-oss-120b · largest free model on cerebras · ~2000 tok/s
+  // (as of 2026-08-06 the free-tier key catalogue is: zai-glm-4.7,
+  // gemma-4-31b, gpt-oss-120b · no Llama-3.3-70b on the free tier)
+  cerebras: "gpt-oss-120b",
+  // Cloudflare Workers AI · Llama 3.3 70B fp8-fast · 10K neurons/day free
+  cloudflare: "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+  // Hugging Face Router · Llama 3.3 70B Turbo (router picks fastest
+  // available provider · Together/Fireworks/Cerebras etc.)
+  huggingface: "meta-llama/Llama-3.3-70B-Instruct",
   // Anthropic Claude Haiku · vision · paid
   anthropic: "claude-haiku-4-5-20251001",
   mock: "mock-llama-70b",
@@ -118,6 +155,116 @@ const CIRCUIT_BREAKER_THRESHOLD = 3;         // consecutive failures to open
 const CIRCUIT_BREAKER_COOLDOWN_MS = 60_000;  // how long before half-open retry
 const PER_PROVIDER_RETRIES = 2;              // attempts per provider (before backoff to next)
 const RETRY_BACKOFF_MS = [500, 2000, 8000];  // one entry per retry
+
+// ── Daily free-tier budget (Philip 2026-08-06) ───────────────────────
+// Per-provider daily call cap sized ~10% under the published free-tier
+// ceiling. When today's counter hits the budget, that provider is
+// skipped by the chain until UTC midnight — the date key rolls over
+// and every provider becomes fresh again with zero manual intervention.
+// This is a preventative layer above the circuit breaker: circuit
+// breaker reacts to 429/5xx, budget stops us reaching them.
+//
+// Override any budget with env: <PROVIDER>_DAILY_CALLS=<n>. 0 = unlimited
+// (use for paid providers, mock, or when you've verified higher quota).
+// Set a much lower number if you're uncredited on OpenRouter (~45/day).
+const DAILY_CALL_BUDGET_DEFAULTS: Record<LlmProvider, number> = {
+  openrouter: 900,   // ~1,000/day with $10+ credit · set 45 if uncredited
+  sambanova:  300,   // conservative · free-tier quotas vary by model
+  mistral:    500,   // La Plateforme free tier
+  groq:       900,   // ~1,000/day for llama-3.3-70b-versatile
+  gemini:     1300,  // ~1,500/day for gemini-2.5-flash
+  cerebras:   800,   // ~900/day for llama-3.3-70b
+  cloudflare: 900,   // ~10K neurons/day; ~7 neurons/1K out tokens on 70B → ~1200 short calls; keep conservative
+  huggingface:800,   // ~1K req/day free tier via router; conservative buffer
+  anthropic:  0,     // paid — no cap
+  mock:       0,     // no cap
+};
+
+function dailyBudget(p: LlmProvider): number {
+  const override = process.env[`${p.toUpperCase()}_DAILY_CALLS`];
+  if (override !== undefined && override !== "") {
+    const n = Number(override);
+    if (Number.isFinite(n) && n >= 0) return n;
+  }
+  return DAILY_CALL_BUDGET_DEFAULTS[p];
+}
+
+type DailyUsage = { utc_date: string; calls: number; tokens_in: number; tokens_out: number };
+function freshUsage(): DailyUsage {
+  return { utc_date: currentUtcDate(), calls: 0, tokens_in: 0, tokens_out: 0 };
+}
+function currentUtcDate(): string {
+  return new Date().toISOString().slice(0, 10); // YYYY-MM-DD (UTC)
+}
+
+// Phase 10.3 · Bug B fix. Anchor mutable module-scope state onto
+// globalThis so Next.js dev mode (Turbopack) doesn't hand each API-route
+// bundle its own private copy. Symptom before this fix: /verify-llm
+// would record a success on cloudflare but /llm-health would still
+// return status:"idle" for every provider — because the two routes were
+// looking at different USAGE + HEALTH objects. Same pattern is used
+// widely for Prisma singletons in Next.js. Zero behavioural change in
+// production (single Node instance always shared module state).
+type NexLlmRuntime = { usage?: Record<LlmProvider, DailyUsage>; health?: Record<LlmProvider, ProviderHealth> };
+const RUNTIME: NexLlmRuntime = ((globalThis as unknown as { __nexBrainLlm__?: NexLlmRuntime }).__nexBrainLlm__ ??=
+  {} as NexLlmRuntime);
+
+const USAGE: Record<LlmProvider, DailyUsage> = RUNTIME.usage ??= {
+  openrouter: freshUsage(), sambanova: freshUsage(), mistral: freshUsage(),
+  groq: freshUsage(), gemini: freshUsage(), cerebras: freshUsage(),
+  cloudflare: freshUsage(), huggingface: freshUsage(),
+  anthropic: freshUsage(), mock: freshUsage(),
+};
+
+function rollDayIfNeeded(p: LlmProvider): void {
+  const today = currentUtcDate();
+  if (USAGE[p].utc_date !== today) USAGE[p] = freshUsage();
+}
+
+function isBudgetExhausted(p: LlmProvider): boolean {
+  const budget = dailyBudget(p);
+  if (budget === 0) return false; // 0 = unlimited
+  rollDayIfNeeded(p);
+  return USAGE[p].calls >= budget;
+}
+
+function recordUsage(p: LlmProvider, tokens_in: number, tokens_out: number): void {
+  rollDayIfNeeded(p);
+  USAGE[p].calls += 1;
+  USAGE[p].tokens_in += tokens_in;
+  USAGE[p].tokens_out += tokens_out;
+}
+
+/** Public snapshot of today's per-provider call usage vs daily budget.
+ *  Consumed by /api/nex/brain/llm-health, dashboards, and probe scripts. */
+export function dailyUsageSnapshot(): Record<
+  LlmProvider,
+  {
+    utc_date: string;
+    calls: number;
+    budget: number;
+    remaining: number | null; // null = unlimited
+    exhausted: boolean;
+    tokens_in: number;
+    tokens_out: number;
+  }
+> {
+  const out = {} as ReturnType<typeof dailyUsageSnapshot>;
+  for (const p of Object.keys(USAGE) as LlmProvider[]) {
+    rollDayIfNeeded(p);
+    const budget = dailyBudget(p);
+    out[p] = {
+      utc_date: USAGE[p].utc_date,
+      calls: USAGE[p].calls,
+      budget,
+      remaining: budget === 0 ? null : Math.max(0, budget - USAGE[p].calls),
+      exhausted: budget !== 0 && USAGE[p].calls >= budget,
+      tokens_in: USAGE[p].tokens_in,
+      tokens_out: USAGE[p].tokens_out,
+    };
+  }
+  return out;
+}
 
 // Provider health state (in-memory; resets on server restart, fine for dev).
 // A future pass persists this into Supabase for cross-instance coherence.
@@ -131,9 +278,17 @@ type ProviderHealth = {
   recent_calls: Array<{ at: number; ok: boolean; ms: number; tokens: number }>;
 };
 
-const HEALTH: Record<LlmProvider, ProviderHealth> = {
+// Phase 10.3 · Bug B fix (see USAGE above). Same globalThis anchor so
+// recordSuccess/recordFailure land on the SAME object /llm-health reads.
+const HEALTH: Record<LlmProvider, ProviderHealth> = RUNTIME.health ??= {
+  openrouter:{ provider: "openrouter",consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  sambanova: { provider: "sambanova", consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  mistral:   { provider: "mistral",   consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
   groq:      { provider: "groq",      consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
   gemini:    { provider: "gemini",    consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  cerebras:  { provider: "cerebras",  consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  cloudflare:{ provider: "cloudflare",consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
+  huggingface:{provider: "huggingface",consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
   anthropic: { provider: "anthropic", consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
   mock:      { provider: "mock",      consecutive_failures: 0, circuit_open_until: null, last_success_at: null, last_failure_at: null, last_error: null, recent_calls: [] },
 };
@@ -141,8 +296,14 @@ const HEALTH: Record<LlmProvider, ProviderHealth> = {
 // Which providers are configured (have credentials). Mock is always OK.
 function providerConfigured(p: LlmProvider): boolean {
   switch (p) {
+    case "openrouter":return Boolean(process.env.OPENROUTER_API_KEY);
+    case "sambanova": return Boolean(process.env.SAMBANOVA_API_KEY);
+    case "mistral":   return Boolean(process.env.MISTRAL_API_KEY);
     case "groq":      return Boolean(process.env.GROQ_API_KEY);
     case "gemini":    return Boolean(process.env.GOOGLE_GEMINI_API_KEY);
+    case "cerebras":  return Boolean(process.env.CEREBRAS_API_KEY);
+    case "cloudflare":return Boolean(process.env.CLOUDFLARE_ACCOUNT_ID && process.env.CLOUDFLARE_WORKERS_AI_TOKEN);
+    case "huggingface":return Boolean(process.env.HUGGINGFACE_API_KEY);
     case "anthropic": return Boolean(process.env.ANTHROPIC_API_KEY);
     case "mock":      return true;
   }
@@ -156,25 +317,38 @@ function providerChain(options: {
   prefer_provider?: LlmProvider;
 } = {}): LlmProvider[] {
   const raw = process.env.LLM_PROVIDER_CHAIN;
-  const seed = raw
-    ? raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean) as LlmProvider[]
-    : ["groq", "gemini", "anthropic"];
+  const seed: string[] = raw
+    ? raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean)
+    : ["openrouter", "sambanova", "groq", "gemini"];
 
+  const VALID: readonly LlmProvider[] = ["openrouter", "sambanova", "mistral", "groq", "gemini", "cerebras", "cloudflare", "huggingface", "anthropic", "mock"];
   let chain: LlmProvider[] = [];
   for (const p of seed) {
-    if ((["groq", "gemini", "anthropic", "mock"] as string[]).includes(p) && providerConfigured(p)) {
-      chain.push(p);
+    const v = VALID.find((x) => x === p);
+    if (v && providerConfigured(v)) {
+      chain.push(v);
     }
   }
-  if (!chain.includes("mock")) chain.push("mock"); // always the safety net
+
+  // Mock fallback — env-gated per the Speaking & Knowledge Doctrine
+  // (feedback_nex_speaking_knowledge_doctrine_2026_08_06.md).
+  // In production we prefer failing loud + queueing for retry over
+  // fabricated placeholder output. Default is `true` (preserves dev-
+  // friendly behavior + tests). Set LLM_ALLOW_MOCK_FALLBACK=false on
+  // production workers to route all-provider-failure through
+  // completeWithRetryPersistence into llm_retry_queue instead.
+  const allowMock = (process.env.LLM_ALLOW_MOCK_FALLBACK ?? "true").toLowerCase() !== "false";
+  if (allowMock && !chain.includes("mock")) chain.push("mock");
 
   // Capability filter — drop providers that can't do the required job.
   if (options.requires_capability) {
     chain = chain.filter((p) =>
       PROVIDER_CAPABILITIES[p].includes(options.requires_capability!)
     );
-    // Guarantee mock is present so we never end up with an empty chain.
-    if (!chain.includes("mock")) chain.push("mock");
+    // Ensure mock stays present after filter IF allowed. Without it we
+    // can end up with an empty chain in dev, which surfaces as a hard
+    // exception (correct in prod, noisy in dev).
+    if (allowMock && !chain.includes("mock")) chain.push("mock");
   }
 
   // Preference — move to head of chain if configured, capable, healthy.
@@ -229,6 +403,10 @@ function recordFailure(p: LlmProvider, err: string, ms: number) {
   h.consecutive_failures += 1;
   h.last_failure_at = Date.now();
   h.last_error = err.slice(0, 240);
+  // Log every failure with the underlying error text so cloud logs
+  // reveal the actual API problem (auth, quota, network, model name),
+  // not just "circuit opened" three failures later.
+  console.warn(`[nex-brain.llm] ${p} call failed (${ms}ms, streak ${h.consecutive_failures}): ${err.slice(0, 200)}`);
   if (h.consecutive_failures >= CIRCUIT_BREAKER_THRESHOLD) {
     h.circuit_open_until = Date.now() + CIRCUIT_BREAKER_COOLDOWN_MS;
     console.warn(`[nex-brain.llm] circuit OPEN for ${p} (${h.consecutive_failures} consecutive failures) · cooldown ${CIRCUIT_BREAKER_COOLDOWN_MS}ms`);
@@ -264,7 +442,7 @@ export type ProviderReport = {
 
 export function providerReports(): { chain: LlmProvider[]; active: LlmProvider; providers: ProviderReport[] } {
   const chain = providerChain();
-  const providers: ProviderReport[] = (["groq", "gemini", "anthropic", "mock"] as LlmProvider[]).map((p) => {
+  const providers: ProviderReport[] = (["openrouter", "sambanova", "mistral", "groq", "gemini", "cerebras", "cloudflare", "huggingface", "anthropic", "mock"] as LlmProvider[]).map((p) => {
     const h = HEALTH[p];
     trimCallHistory(p);
     const successes = h.recent_calls.filter((c) => c.ok).length;
@@ -311,9 +489,44 @@ export async function complete(
   });
   const errors: string[] = [];
 
+  // Lazy-import audit logger to avoid circular dependencies + keep audit
+  // failures from ever breaking the LLM chain. This is the primary source
+  // of provider observability per the "NEX must know its own state" doctrine.
+  const { emitAuditEvent } = await import("./audit-log");
+  const auditContext = {
+    worker_type: (options as unknown as { audit_worker_type?: string }).audit_worker_type ?? "system",
+    job_id: (options as unknown as { audit_job_id?: string }).audit_job_id ?? null,
+    input_ref: (options as unknown as { audit_input_ref?: string }).audit_input_ref ?? null,
+  } as const;
+
   for (const provider of chain) {
     if (isCircuitOpen(provider)) {
       errors.push(`${provider}: circuit-open (skipped)`);
+      emitAuditEvent({
+        worker_type: auditContext.worker_type as never,
+        event_type: "provider_response_failed",
+        actor: "nex",
+        provider,
+        outcome: "circuit_open",
+        job_id: auditContext.job_id,
+        input_ref: auditContext.input_ref,
+      });
+      continue;
+    }
+    if (isBudgetExhausted(provider)) {
+      errors.push(
+        `${provider}: daily-budget-exhausted (${USAGE[provider].calls}/${dailyBudget(provider)})`
+      );
+      emitAuditEvent({
+        worker_type: auditContext.worker_type as never,
+        event_type: "provider_budget_exhausted",
+        actor: "nex",
+        provider,
+        outcome: "budget_exhausted",
+        job_id: auditContext.job_id,
+        input_ref: auditContext.input_ref,
+        details: { calls: USAGE[provider].calls, budget: dailyBudget(provider) },
+      });
       continue;
     }
     const model = options.model ?? DEFAULT_MODEL[provider];
@@ -321,15 +534,51 @@ export async function complete(
     // Per-provider retries with exponential backoff
     for (let attempt = 0; attempt < PER_PROVIDER_RETRIES; attempt += 1) {
       const start = Date.now();
+      emitAuditEvent({
+        worker_type: auditContext.worker_type as never,
+        event_type: "provider_request_sent",
+        actor: "nex",
+        provider,
+        model,
+        job_id: auditContext.job_id,
+        input_ref: auditContext.input_ref,
+        details: { attempt: attempt + 1 },
+      });
       try {
         const result = await dispatchToProvider(provider, messages, model, options, start);
         recordSuccess(provider, result.ms, result.tokens_in + result.tokens_out);
+        recordUsage(provider, result.tokens_in, result.tokens_out);
+        emitAuditEvent({
+          worker_type: auditContext.worker_type as never,
+          event_type: "provider_response_ok",
+          actor: "nex",
+          provider,
+          model,
+          latency_ms: result.ms,
+          outcome: "ok",
+          job_id: auditContext.job_id,
+          input_ref: auditContext.input_ref,
+          details: { attempt: attempt + 1, tokens_in: result.tokens_in, tokens_out: result.tokens_out },
+        });
         return result;
       } catch (err) {
         const msg = (err as Error).message;
         const ms = Date.now() - start;
         recordFailure(provider, msg, ms);
         errors.push(`${provider} attempt ${attempt + 1}: ${msg.slice(0, 120)}`);
+        emitAuditEvent({
+          worker_type: auditContext.worker_type as never,
+          event_type: "provider_response_failed",
+          actor: "nex",
+          provider,
+          model,
+          latency_ms: ms,
+          outcome: classifyProviderError(msg),
+          error_snippet: msg.slice(0, 240),
+          job_id: auditContext.job_id,
+          input_ref: auditContext.input_ref,
+          details: { attempt: attempt + 1 },
+        });
 
         // If circuit just opened OR we've used our attempts on this
         // provider, fall through to the next one in the chain.
@@ -423,8 +672,14 @@ async function dispatchToProvider(
   start: number
 ): Promise<LlmCallResult> {
   switch (provider) {
+    case "openrouter":return callOpenRouter(messages, model, options, start);
+    case "sambanova": return callSambaNova(messages, model, options, start);
+    case "mistral":   return callMistral(messages, model, options, start);
     case "groq":      return callGroq(messages, model, options, start);
     case "gemini":    return callGemini(messages, model, options, start);
+    case "cerebras":  return callCerebras(messages, model, options, start);
+    case "cloudflare":return callCloudflare(messages, model, options, start);
+    case "huggingface":return callHuggingFace(messages, model, options, start);
     case "anthropic": return callAnthropic(messages, model, options, start);
     case "mock":      return callMock(messages, model, options, start);
   }
@@ -467,6 +722,179 @@ export async function completeJson<T>(
 
 // ── Provider implementations ─────────────────────────────────────────
 
+async function callOpenRouter(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) throw new Error("OPENROUTER_API_KEY not set");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 60000  // Nemotron 550B is slower than Groq
+  );
+
+  try {
+    // OpenRouter aggregator: OpenAI-compatible schema, one key gives
+    // access to dozens of providers. The HTTP-Referer + X-Title headers
+    // are OpenRouter's optional attribution — they let free-tier
+    // quotas be tracked per app rather than shared globally.
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+        "http-referer": "https://asknex.app",
+        "x-title": "NEX Brain",
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 4096,
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`OpenRouter ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    // OpenRouter can also wrap upstream errors in a 200 with an error
+    // field — treat those as failures too so the circuit breaker sees them.
+    if (body.error) {
+      throw new Error(`OpenRouter upstream: ${JSON.stringify(body.error).slice(0, 200)}`);
+    }
+    const text: string = body.choices?.[0]?.message?.content ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    return {
+      provider: "openrouter",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.usage?.prompt_tokens ?? 0,
+      tokens_out: body.usage?.completion_tokens ?? 0,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callSambaNova(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const key = process.env.SAMBANOVA_API_KEY;
+  if (!key) throw new Error("SAMBANOVA_API_KEY not set");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 30000
+  );
+
+  try {
+    // SambaNova Cloud: OpenAI-compatible chat completions endpoint.
+    // Very fast Llama 3.3 70B (~1000 tok/s). Model IDs use CamelCase
+    // (e.g. Meta-Llama-3.3-70B-Instruct) — different from Groq's snake_case.
+    const res = await fetch("https://api.sambanova.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 3072,  // SambaNova caps at 3072 for llama-3.3
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`SambaNova ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    const text: string = body.choices?.[0]?.message?.content ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    return {
+      provider: "sambanova",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.usage?.prompt_tokens ?? 0,
+      tokens_out: body.usage?.completion_tokens ?? 0,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callMistral(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const key = process.env.MISTRAL_API_KEY;
+  if (!key) throw new Error("MISTRAL_API_KEY not set");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 30000
+  );
+
+  try {
+    // Mistral La Plateforme: OpenAI-compatible chat completions. Free
+    // tier is generous · mistral-small-latest is fast + JSON-reliable ·
+    // mistral-medium-latest has vision (declared in PROVIDER_CAPABILITIES).
+    const res = await fetch("https://api.mistral.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 4096,
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`Mistral ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    const text: string = body.choices?.[0]?.message?.content ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    return {
+      provider: "mistral",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.usage?.prompt_tokens ?? 0,
+      tokens_out: body.usage?.completion_tokens ?? 0,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function callGroq(
   messages: LlmMessage[],
   model: string,
@@ -507,6 +935,61 @@ async function callGroq(
     const json = options.json_mode ? tryParseJson(text) : undefined;
     return {
       provider: "groq",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.usage?.prompt_tokens ?? 0,
+      tokens_out: body.usage?.completion_tokens ?? 0,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callCerebras(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const key = process.env.CEREBRAS_API_KEY;
+  if (!key) throw new Error("CEREBRAS_API_KEY not set");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 30000
+  );
+
+  try {
+    // Cerebras exposes an OpenAI-compatible chat completions endpoint at
+    // /v1/chat/completions. Same body shape as Groq/OpenAI. Fastest
+    // available Llama 3.3 70B inference (~2000 tok/s).
+    const res = await fetch("https://api.cerebras.ai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 4096,
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`Cerebras ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    const text: string = body.choices?.[0]?.message?.content ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    return {
+      provider: "cerebras",
       model,
       text,
       json: json ?? undefined,
@@ -589,6 +1072,131 @@ async function callGemini(
       json: json ?? undefined,
       tokens_in: j.usageMetadata?.promptTokenCount ?? 0,
       tokens_out: j.usageMetadata?.candidatesTokenCount ?? 0,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callCloudflare(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+  const key = process.env.CLOUDFLARE_WORKERS_AI_TOKEN;
+  if (!accountId || !key) {
+    throw new Error("CLOUDFLARE_ACCOUNT_ID or CLOUDFLARE_WORKERS_AI_TOKEN not set");
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 30000
+  );
+
+  try {
+    // Cloudflare Workers AI: NOT OpenAI-compatible response shape. Path
+    // includes account_id and model slug (e.g. @cf/meta/llama-3.3-70b-instruct-fp8-fast).
+    // Response: {result:{response:"..."}, success:true, errors:[]}.
+    // JSON mode: pass `response_format: {type: "json_schema", json_schema: {...}}`
+    // — we use type:"json_object" here for parity; the model outputs
+    // parseable JSON when instructed via system prompt.
+    const url = `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/${model}`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 4096,
+        stream: false,
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`Cloudflare ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    if (!body.success) {
+      throw new Error(`Cloudflare upstream: ${JSON.stringify(body.errors ?? []).slice(0, 200)}`);
+    }
+    const text: string = body.result?.response ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    // Cloudflare doesn't return token counts in the standard response
+    // shape, so estimate from character length (~4 chars/token).
+    const est_in = Math.max(1, Math.floor(JSON.stringify(messages).length / 4));
+    const est_out = Math.max(1, Math.floor(text.length / 4));
+    return {
+      provider: "cloudflare",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.result?.usage?.prompt_tokens ?? est_in,
+      tokens_out: body.result?.usage?.completion_tokens ?? est_out,
+      ms: Date.now() - start,
+    };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+async function callHuggingFace(
+  messages: LlmMessage[],
+  model: string,
+  options: LlmCallOptions,
+  start: number
+): Promise<LlmCallResult> {
+  const key = process.env.HUGGINGFACE_API_KEY;
+  if (!key) throw new Error("HUGGINGFACE_API_KEY not set");
+
+  const controller = new AbortController();
+  const timeout = setTimeout(
+    () => controller.abort(),
+    options.timeout_ms ?? 45000
+  );
+
+  try {
+    // HF Router: unified endpoint that transparently proxies to Together /
+    // Fireworks / Cerebras / SambaNova / Novita / Hyperbolic etc. under a
+    // single HF token. Model IDs use the org/name Hub format
+    // (e.g. meta-llama/Llama-3.3-70B-Instruct). OpenAI-compatible.
+    const res = await fetch("https://router.huggingface.co/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${key}`,
+      },
+      body: JSON.stringify({
+        model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.max_tokens ?? 4096,
+        response_format: options.json_mode ? { type: "json_object" } : undefined,
+      }),
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      const bodyText = await res.text();
+      throw new Error(`HuggingFace ${res.status}: ${bodyText.slice(0, 200)}`);
+    }
+    const body = await res.json();
+    const text: string = body.choices?.[0]?.message?.content ?? "";
+    const json = options.json_mode ? tryParseJson(text) : undefined;
+    return {
+      provider: "huggingface",
+      model,
+      text,
+      json: json ?? undefined,
+      tokens_in: body.usage?.prompt_tokens ?? 0,
+      tokens_out: body.usage?.completion_tokens ?? 0,
       ms: Date.now() - start,
     };
   } finally {
@@ -815,4 +1423,18 @@ function tryParseJson(text: string): unknown | null {
     }
     return null;
   }
+}
+
+/** Classify a provider error message into a coarse outcome enum for the
+ *  audit log. Keeps observability comparable across providers even when
+ *  their error text varies. Used by the audit emit in complete(). */
+function classifyProviderError(msg: string): string {
+  const m = msg.toLowerCase();
+  if (m.includes("429") || m.includes("rate limit") || m.includes("quota"))         return "429";
+  if (m.includes("aborted") || m.includes("timeout") || m.includes("timed out"))    return "timeout";
+  if (m.includes("payment required") || m.includes("402"))                          return "budget_exhausted";
+  if (m.match(/\b5\d\d\b/))                                                         return "5xx";
+  if (m.includes("network") || m.includes("econnrefused") || m.includes("dns"))     return "network_error";
+  if (m.includes("json") || m.includes("parse"))                                    return "invalid_response";
+  return "unknown";
 }

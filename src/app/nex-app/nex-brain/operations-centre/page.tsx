@@ -187,14 +187,20 @@ type LlmProviderReport = {
 // ─────────────────────────────────────────────────────────────────
 // Personas & rooms (kept from prior version)
 // ─────────────────────────────────────────────────────────────────
-type WorkerPersona = { key: string; displayName: string; role: string; glyph: string; workingRoom: RoomKey; voiceLine: string; colorAccent: string };
+// Phase 10.3 · Fix C. `needsLlm` marks which personas actually call an
+// LLM provider. Everything else is deterministic DB work and MUST keep
+// moving even when providers are degraded. Verified against the source:
+// only knowledge-extractor · image-analyst · quality-checker import
+// `complete`/`completeJson` from src/lib/nex/brain/llm.ts. The context
+// workers (Mason/Blake/Rowan) and Sage read from the DB only.
+type WorkerPersona = { key: string; displayName: string; role: string; glyph: string; workingRoom: RoomKey; voiceLine: string; colorAccent: string; needsLlm: boolean };
 const PERSONAS: WorkerPersona[] = [
-  { key: "knowledge-context",   displayName: "Mason",  role: "Knowledge Context",   glyph: "M", workingRoom: "library",       colorAccent: "#38BDF8", voiceLine: "I read every new document that enters NEX and pull out the concepts that matter." },
-  { key: "voice-context",       displayName: "Blake",  role: "Voice & Brand",       glyph: "B", workingRoom: "writing",       colorAccent: "#FB923C", voiceLine: "I make sure knowledge sounds like NEX — clear, calm, technically accurate." },
-  { key: "learning-context",    displayName: "Rowan",  role: "Learning Context",    glyph: "R", workingRoom: "understanding", colorAccent: "#A855F7", voiceLine: "I connect new knowledge to what NEX already knows." },
-  { key: "knowledge-extractor", displayName: "Avery",  role: "Knowledge Extractor", glyph: "A", workingRoom: "understanding", colorAccent: "#F59E0B", voiceLine: "I turn raw text into structured knowledge records the rest of the team can trust." },
-  { key: "quality-checker",     displayName: "Harper", role: "Quality Checker",     glyph: "H", workingRoom: "quality",       colorAccent: "#22C55E", voiceLine: "I verify every record against the Constitution before it enters authoritative memory." },
-  { key: "memory-guardian",     displayName: "Sage",   role: "Memory Guardian",     glyph: "S", workingRoom: "vault",         colorAccent: "#EAB308", voiceLine: "I keep the knowledge vault organised and free of contradictions." },
+  { key: "knowledge-context",   displayName: "Mason",  role: "Knowledge Context",   glyph: "M", workingRoom: "library",       colorAccent: "#38BDF8", needsLlm: false, voiceLine: "I read every new document that enters NEX and pull out the concepts that matter." },
+  { key: "voice-context",       displayName: "Blake",  role: "Voice & Brand",       glyph: "B", workingRoom: "writing",       colorAccent: "#FB923C", needsLlm: false, voiceLine: "I make sure knowledge sounds like NEX — clear, calm, technically accurate." },
+  { key: "learning-context",    displayName: "Rowan",  role: "Learning Context",    glyph: "R", workingRoom: "understanding", colorAccent: "#A855F7", needsLlm: false, voiceLine: "I connect new knowledge to what NEX already knows." },
+  { key: "knowledge-extractor", displayName: "Avery",  role: "Knowledge Extractor", glyph: "A", workingRoom: "understanding", colorAccent: "#F59E0B", needsLlm: true,  voiceLine: "I turn raw text into structured knowledge records the rest of the team can trust." },
+  { key: "quality-checker",     displayName: "Harper", role: "Quality Checker",     glyph: "H", workingRoom: "quality",       colorAccent: "#22C55E", needsLlm: true,  voiceLine: "I verify every record against the Constitution before it enters authoritative memory." },
+  { key: "memory-guardian",     displayName: "Sage",   role: "Memory Guardian",     glyph: "S", workingRoom: "vault",         colorAccent: "#EAB308", needsLlm: false, voiceLine: "I keep the knowledge vault organised and free of contradictions." },
 ];
 
 type RoomKey = "inbox" | "library" | "understanding" | "writing" | "quality" | "vault" | "ai_server" | "lounge" | "manager" | "meeting" | "dispatch" | "director" | "marketing" | "innovation";
@@ -550,7 +556,12 @@ function placeWorker(persona: WorkerPersona, worker: WorkerRow | undefined, anyC
     return { room: "lounge", placed: { persona, worker: worker ?? null, state: "offline", detail: !worker ? "Not registered with the pool." : "No cloud workers online." } };
   }
   if (worker.jobs_in_flight > 0) {
-    if (llmDegraded) return { room: "ai_server", placed: { persona, worker, state: "waiting_llm", detail: `Waiting on LLM · ${worker.current_job_ref ? worker.current_job_ref.slice(0, 12) : "job in flight"}` } };
+    // Phase 10.3 · Fix C. Only LLM-dependent personas get parked in the
+    // AI Server Room when providers are degraded. Deterministic workers
+    // keep processing DB work regardless of provider state.
+    if (llmDegraded && persona.needsLlm) {
+      return { room: "ai_server", placed: { persona, worker, state: "waiting_llm", detail: `Waiting on LLM · ${worker.current_job_ref ? worker.current_job_ref.slice(0, 12) : "job in flight"}` } };
+    }
     return { room: persona.workingRoom, placed: { persona, worker, state: "working", detail: worker.current_job_ref ? `On ${worker.current_job_ref.slice(0, 24)}${worker.current_job_ref.length > 24 ? "…" : ""}` : "Processing…" } };
   }
   if (worker.jobs_waiting > 0) return { room: "inbox", placed: { persona, worker, state: "queued", detail: `${worker.jobs_waiting.toLocaleString()} job${worker.jobs_waiting === 1 ? "" : "s"} waiting.` } };
@@ -914,7 +925,15 @@ export default function OperationsCentrePage() {
 
   const anyCloudOnline = cloud?.any_online === true;
   const providers = useMemo(() => llm?.providers ?? [], [llm]);
-  const healthyProviders = useMemo(() => providers.filter((p) => p.status === "healthy" && p.configured), [providers]);
+  // Phase 10.3 · Bug A fix. `idle` = provider is configured, in-chain and
+  // has no active failure signal (fresh · never called or history rolled).
+  // Excluding it here made a healthy fresh boot look like a global outage.
+  // deriveOperationalStatus() at line 601 already treats idle as healthy —
+  // keeping the two derivations aligned is the whole point.
+  const healthyProviders = useMemo(
+    () => providers.filter((p) => p.configured && (p.status === "healthy" || p.status === "idle")),
+    [providers],
+  );
   const llmDegraded = healthyProviders.length === 0 && anyCloudOnline;
   const placements = useMemo(
     () => PERSONAS.map((persona) => {
