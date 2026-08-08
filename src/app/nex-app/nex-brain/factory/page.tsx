@@ -142,9 +142,9 @@ const T = {
 const STATUS_COLOR: Record<WorkerLive["status"], { fg: string; bg: string; label: string; dot: string }> = {
   working:     { fg: "#065F46", bg: "rgba(16,185,129,0.15)", dot: "#10B981", label: "Working" },
   waiting_llm: { fg: "#92400E", bg: "rgba(245,158,11,0.15)", dot: "#F59E0B", label: "Waiting for AI" },
-  standby:     { fg: "#1E40AF", bg: "rgba(59,130,246,0.12)", dot: "#3B82F6", label: "Standby" },
+  standby:     { fg: "#1E40AF", bg: "rgba(59,130,246,0.12)", dot: "#3B82F6", label: "Ready · queue empty" },
   failed:      { fg: "#7F1D1D", bg: "rgba(220,38,38,0.12)",  dot: "#DC2626", label: "Failed" },
-  offline:     { fg: "#374151", bg: "rgba(107,114,128,0.15)",dot: "#6B7280", label: "Offline" },
+  offline:     { fg: "#374151", bg: "rgba(107,114,128,0.15)",dot: "#6B7280", label: "Not responding" },
 };
 
 const POLL_MS = 5_000;
