@@ -141,6 +141,16 @@ export interface BrainStore {
   completeJob(job_id: string, result_id: string): Promise<void>;
   failJob(job_id: string, error: string): Promise<void>;
   countJobs(worker_type: WorkerType, status: JobStatus): Promise<number>;
+  /** Phase 11.0 · TRANSITIONAL · returns the DISTINCT set of input_refs
+   *  currently in the pipeline for the given worker types (any status).
+   *  Used by `dispatchNewInboxItems` to dedupe inbox items against work
+   *  already enqueued. This method exists ONLY because the pre-11.0
+   *  dispatch read from a filesystem snapshot that became stale when
+   *  Brain moved to Supabase (see diagnostic 2026-08-08 · 12-16× duplicate
+   *  re-dispatches per inbox item). Walking the ACTIVE store eliminates
+   *  the drift. Remove once Phase 11.2 puts inbox + jobs in the same
+   *  Postgres · dispatch can then do a native `NOT EXISTS` join. */
+  listRecentPipelineInputRefs(worker_types: WorkerType[]): Promise<string[]>;
 
   // Results
   insertResult(input: Omit<WorkerResult, "id" | "created_at">): Promise<WorkerResult>;
@@ -355,6 +365,15 @@ class FilesystemStore implements BrainStore {
   async countJobs(worker_type: WorkerType, status: JobStatus): Promise<number> {
     const rows = await readTable<WorkerJob>("worker_jobs");
     return rows.filter((j) => j.worker_type === worker_type && j.status === status).length;
+  }
+  // Phase 11.0 · TRANSITIONAL · see BrainStore.listRecentPipelineInputRefs.
+  async listRecentPipelineInputRefs(worker_types: WorkerType[]): Promise<string[]> {
+    const rows = await readTable<WorkerJob>("worker_jobs");
+    const set  = new Set<string>();
+    for (const j of rows) {
+      if (worker_types.includes(j.worker_type) && j.input_ref) set.add(j.input_ref);
+    }
+    return Array.from(set);
   }
 
   // ── Results ────────────────────────────────────────────────────────
@@ -947,6 +966,32 @@ class SupabaseStore implements BrainStore {
       .eq("status", status);
     if (error) throw new Error(`countJobs failed: ${error.message}`);
     return count ?? 0;
+  }
+
+  // Phase 11.0 · TRANSITIONAL · see BrainStore.listRecentPipelineInputRefs.
+  // Pages through PostgREST's 1000-row cap · dedup by JS Set so duplicate
+  // input_refs across worker types collapse. Handles pipelines up to 25k
+  // active jobs without truncating (well beyond current scale).
+  async listRecentPipelineInputRefs(worker_types: WorkerType[]): Promise<string[]> {
+    if (worker_types.length === 0) return [];
+    const set = new Set<string>();
+    const pageSize = 1000;
+    const maxPages = 25;
+    for (let page = 0; page < maxPages; page++) {
+      const from = page * pageSize;
+      const to   = from + pageSize - 1;
+      const { data, error } = await this.client
+        .from("worker_jobs")
+        .select("input_ref")
+        .in("worker_type", worker_types as unknown as string[])
+        .range(from, to);
+      if (error) throw new Error(`listRecentPipelineInputRefs failed: ${error.message}`);
+      const rows = (data ?? []) as Array<{ input_ref: string | null }>;
+      if (rows.length === 0) break;
+      for (const r of rows) if (r.input_ref) set.add(r.input_ref);
+      if (rows.length < pageSize) break;
+    }
+    return Array.from(set);
   }
 
   // ── Results ────────────────────────────────────────────────────────

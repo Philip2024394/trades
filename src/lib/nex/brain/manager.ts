@@ -134,21 +134,29 @@ export async function dispatchNewInboxItems(): Promise<{
   const store = brainStore();
   const inboxItems = await readInboxIndex();
 
-  // Which inbox_item_ids already entered the pipeline? Any of the four
-  // upstream worker types (context, voice, learning, extractor) means
-  // the item has started its journey. Cheap dedup by walking the jobs table.
-  const jobRows = await readFsJobsSnapshot();
+  // Phase 11.0 · TRANSITIONAL · fixes the pre-11.0 dispatch drift bug.
+  //
+  // Old behaviour: `readFsJobsSnapshot()` read from `data/nex-brain/worker_jobs.json`
+  // — a filesystem file that stopped being written when Brain moved to
+  // Supabase. Result: alreadyQueuedIds was populated from a 2-day-stale
+  // 40-row snapshot while the real worker_jobs table on Supabase had
+  // 1000+ rows. Every dispatch cycle mistook already-processed inbox
+  // items for "new" and re-enqueued them (12-16× duplicate WorkerJobs
+  // per inbox item · silently no-op'd by Phase 10.2 idempotency but
+  // burning LLM tokens the whole time).
+  //
+  // New behaviour: dedup source is the ACTIVE brain store · same place
+  // enqueueJob writes to · impossible to drift. Removed when Phase 11.2
+  // unifies inbox + worker_jobs on the same Postgres and dispatch can
+  // do a single `NOT EXISTS` join.
   const alreadyQueuedIds = new Set(
-    jobRows
-      .filter(
-        (j) =>
-          j.worker_type === "knowledge-context" ||
-          j.worker_type === "voice-context" ||
-          j.worker_type === "learning-context" ||
-          j.worker_type === "knowledge-extractor" ||
-          j.worker_type === "image-analyst"
-      )
-      .map((j) => j.input_ref)
+    await store.listRecentPipelineInputRefs([
+      "knowledge-context",
+      "voice-context",
+      "learning-context",
+      "knowledge-extractor",
+      "image-analyst",
+    ]),
   );
 
   let enqueued = 0;
@@ -434,20 +442,11 @@ async function readInboxIndex(): Promise<InboxItemLite[]> {
   }
 }
 
-// The fs backend keeps jobs at data/nex-brain/worker_jobs.json. We
-// need a direct snapshot for the "already queued" dedup check because
-// the store interface doesn't expose "list all jobs" (yet).
-async function readFsJobsSnapshot(): Promise<WorkerJob[]> {
-  const p = path.join(process.cwd(), "data", "nex-brain", "worker_jobs.json");
-  try {
-    const raw = await fs.readFile(p, "utf8");
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as WorkerJob[]) : [];
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    throw err;
-  }
-}
+// Phase 11.0 · `readFsJobsSnapshot()` removed. It read the pre-Supabase
+// filesystem snapshot at data/nex-brain/worker_jobs.json which stopped
+// being written weeks ago when Brain moved to Supabase. Dedup now goes
+// through `store.listRecentPipelineInputRefs()` which reads the ACTIVE
+// backend. See dispatchNewInboxItems() for the rationale.
 
 // Priority assignment per Knowledge Source doctrine. Lower number =
 // higher priority — matches the SQL `ORDER BY priority ASC`.
