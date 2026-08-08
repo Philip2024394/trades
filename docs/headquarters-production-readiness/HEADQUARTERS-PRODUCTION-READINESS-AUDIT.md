@@ -4,7 +4,21 @@
 **Date:** 2026-08-09
 **Author role:** Master AI engineer · NEX Corporation
 **Objective:** Produce a single evidence-backed truth of Headquarters production readiness. Every subsystem classified. Every P0/P1 finding surfaced. Every claim traceable.
-**Rule:** A test suite passing 201/201 does NOT declare production-ready. The Harper discovery is the precedent — code that passed static contract tests had 0 successful production completions in its lifetime.
+**Rule:** A test suite passing 236/236 does NOT declare production-ready. The Harper discovery is the precedent — code that passed static contract tests had 0 successful production completions in its lifetime.
+
+## HONEST LABEL (Philip 2026-08-09)
+
+```
+HEADQUARTERS ·
+  BUILD COMPLETE           ✅  (14 suites · 236/236 tests · Waves 1-7 machinery ready)
+  PRODUCTION MIGRATION     ⏳  (73,233-row backfill not yet executed)
+  WORKER DEPLOYMENT        ⏳  (Fly at 0 · replacement topology not selected)
+  AUDIT CLOSURE            ⏳  (P1/P2/P3 · security · compliance not yet done)
+```
+
+**Fly stays at 0 until the replacement worker topology is selected AND proven.** The legacy `nex-brain-worker` on Fly is NOT the answer · a rebuilt worker deployment against the new stack is. See `MIGRATION-AUTHORIZATION-PACKAGE.md` for the 17-section gated execution plan · every section currently EMPTY.
+
+**Correction to prior audit** (also applied throughout): P0-3 and P0-4 are **READY (reversible / safely contained)**, not "resolved." Fly-at-zero is a containment state, not the final architecture. Real closure of these blockers requires a new production worker topology using the new NEX stack that passes the six-worker end-to-end test.
 
 **How to read this document:**
 - Section 2 is the **subsystem table** — the primary at-a-glance view.
