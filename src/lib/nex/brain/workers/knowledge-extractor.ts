@@ -36,6 +36,7 @@ import type {
   WorkerJob,
   WorkerResult,
 } from "../types";
+import { updateJob as updateKnowledgeJob } from "@/lib/nex/jobs/fs-store";
 
 // ── Structured output shape expected from the LLM ────────────────────
 
@@ -174,6 +175,17 @@ export async function runKnowledgeExtractor(options: {
   const job = await store.claimNextJob("knowledge-extractor", WORKER_ID, options.lease_seconds ?? 60);
   if (!job) return { job: null, draftRecordIds: [] };
 
+  // Phase 10.2 · Fix #2B · linked KnowledgeJob transitions to
+  // `processing` the moment the extractor actually starts work.
+  const knowledgeJobId = (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null;
+  if (knowledgeJobId) {
+    try {
+      await updateKnowledgeJob(knowledgeJobId, { status: "processing", progress: 50 });
+    } catch (e) {
+      console.warn("[knowledge-extractor] KnowledgeJob processing sync failed:", e instanceof Error ? e.message : e);
+    }
+  }
+
   try {
     // 1 · Resolve input — the inbox item id + payload
     const inboxItemId = job.input_ref;
@@ -288,9 +300,14 @@ export async function runKnowledgeExtractor(options: {
     );
 
     // 3 · Write each candidate record + its claims + edges + source
-    const draftRecordIds: string[] = [];
+    // Idempotent · repeated extraction of the same record_id is a no-op
+    // instead of a duplicate-key crash. Dependent inserts (claims, edges,
+    // source, quality-check) are ONLY made for genuinely new records so
+    // we don't accumulate duplicate claims against an existing record.
+    const draftRecordIds:  string[] = [];
+    const noOpRecordIds:   string[] = [];
     for (const rec of data.candidate_records ?? []) {
-      const draft = await store.insertRecord({
+      const { record: draft, created } = await store.insertRecordIdempotent({
         record_id: rec.record_id,
         record_version: "1.0.0",
         status: "DRAFT",
@@ -315,6 +332,10 @@ export async function runKnowledgeExtractor(options: {
         deprecated_at: null,
       });
       draftRecordIds.push(draft.record_id);
+      if (!created) {
+        noOpRecordIds.push(draft.record_id);
+        continue;
+      }
 
       // Claims → confidence_scores
       for (const [i, claim] of (rec.claims ?? []).entries()) {
@@ -376,6 +397,16 @@ export async function runKnowledgeExtractor(options: {
     }
 
     // 4 · Record the worker_result + complete the job
+    // no_op flags: all_no_op = every candidate record already existed;
+    // partial_no_op = some candidates were duplicates but at least one
+    // new record was created. Consumers (Living Timeline, HQ dashboards)
+    // can distinguish "did nothing but succeeded" from "produced drafts".
+    const allNoOp     = draftRecordIds.length > 0 && noOpRecordIds.length === draftRecordIds.length;
+    const partialNoOp = noOpRecordIds.length > 0 && !allNoOp;
+    const flags: string[] = [];
+    if (draftRecordIds.length === 0) flags.push("no-records-extracted");
+    if (allNoOp)                     flags.push("no-op:record_already_exists");
+    if (partialNoOp)                 flags.push("partial-no-op:some_records_already_exist");
     const result = await store.insertResult({
       job_id: job.id,
       worker_type: "knowledge-extractor",
@@ -383,6 +414,9 @@ export async function runKnowledgeExtractor(options: {
       output_kind: "record_draft",
       output_payload: {
         draft_record_ids: draftRecordIds,
+        no_op_record_ids: noOpRecordIds,
+        no_op:            allNoOp || undefined,
+        no_op_reason:     allNoOp ? "record_already_exists" : undefined,
         overall_notes: data.overall_notes ?? "",
       },
       overall_confidence: draftRecordIds.length > 0 ? 0.8 : 0,
@@ -391,15 +425,47 @@ export async function runKnowledgeExtractor(options: {
       llm_tokens_in: raw.tokens_in,
       llm_tokens_out: raw.tokens_out,
       llm_ms: raw.ms,
-      flags: draftRecordIds.length === 0 ? ["no-records-extracted"] : [],
+      flags,
     });
     await store.completeJob(job.id, result.id);
+
+    // Phase 10.2 · Fix #2B · close the Knowledge Dump job loop.
+    // Move the linked KnowledgeJob to `completed`. Non-fatal · a
+    // fs-store failure here must NOT roll back the successful extractor
+    // work. (knowledgeJobId captured before the try block.)
+    if (knowledgeJobId) {
+      try {
+        await updateKnowledgeJob(knowledgeJobId, {
+          status: "completed",
+          progress: 100,
+          completion_result: {
+            memories_added: draftRecordIds.length - noOpRecordIds.length,
+            brains_linked: [],
+          },
+        });
+      } catch (e) {
+        console.warn("[knowledge-extractor] KnowledgeJob completion sync failed:", e instanceof Error ? e.message : e);
+      }
+    }
 
     return { job, result, draftRecordIds };
   } catch (err) {
     const message = (err as Error).message;
     console.error("[knowledge-extractor] failed:", message);
     await store.failJob(job.id, message);
+
+    // Phase 10.2 · Fix #2B · propagate failure to the linked KnowledgeJob.
+    if (knowledgeJobId) {
+      try {
+        await updateKnowledgeJob(knowledgeJobId, {
+          status: "failed",
+          completion_result: { error: message },
+        });
+      } catch (e) {
+        console.warn("[knowledge-extractor] KnowledgeJob failure sync failed:", e instanceof Error ? e.message : e);
+      }
+    }
+
     return { job, draftRecordIds: [] };
   }
 }

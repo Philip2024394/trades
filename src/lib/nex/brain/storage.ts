@@ -115,6 +115,15 @@ export function nowIso(): string {
 export interface BrainStore {
   // Records
   insertRecord(input: Omit<KnowledgeRecord, "id" | "created_at">): Promise<KnowledgeRecord>;
+  /** Phase 10.2 · idempotent variant: if a row with the same record_id
+   *  already exists, return it with `created:false` instead of throwing.
+   *  Prefer this over insertRecord() in any worker path where the input
+   *  record_id may already have been produced by an earlier run (retries,
+   *  re-imports, LLM re-emitting the same slug). Uses DB-level ON CONFLICT
+   *  DO NOTHING semantics on the Supabase backend so it is race-safe. */
+  insertRecordIdempotent(
+    input: Omit<KnowledgeRecord, "id" | "created_at">,
+  ): Promise<{ record: KnowledgeRecord; created: boolean }>;
   getRecord(record_id: string): Promise<KnowledgeRecord | null>;
   listRecords(filter?: { status?: KnowledgeRecord["status"]; limit?: number }): Promise<KnowledgeRecord[]>;
   updateRecordStatus(record_id: string, status: KnowledgeRecord["status"], reviewer?: string): Promise<KnowledgeRecord | null>;
@@ -213,6 +222,17 @@ class FilesystemStore implements BrainStore {
     rows.push(row);
     await writeTable("records", rows);
     return row;
+  }
+  async insertRecordIdempotent(
+    input: Omit<KnowledgeRecord, "id" | "created_at">,
+  ): Promise<{ record: KnowledgeRecord; created: boolean }> {
+    const rows = await readTable<KnowledgeRecord>("records");
+    const existing = rows.find((r) => r.record_id === input.record_id);
+    if (existing) return { record: existing, created: false };
+    const row: KnowledgeRecord = { ...input, id: newId(), created_at: nowIso() };
+    rows.push(row);
+    await writeTable("records", rows);
+    return { record: row, created: true };
   }
   async getRecord(record_id: string): Promise<KnowledgeRecord | null> {
     const rows = await readTable<KnowledgeRecord>("records");
@@ -724,6 +744,36 @@ class SupabaseStore implements BrainStore {
       .single();
     if (error) throw new Error(`insertRecord failed: ${error.message}`);
     return data as KnowledgeRecord;
+  }
+
+  async insertRecordIdempotent(
+    input: Omit<KnowledgeRecord, "id" | "created_at">,
+  ): Promise<{ record: KnowledgeRecord; created: boolean }> {
+    // Race-safe · uses INSERT ... ON CONFLICT DO NOTHING via Supabase's
+    // upsert with ignoreDuplicates=true. When the row already exists the
+    // upsert returns zero rows without an error; we then fetch the
+    // existing row so callers still receive a KnowledgeRecord.
+    const { data: inserted, error: upsertErr } = await this.client
+      .from("knowledge_records")
+      .upsert(input as never, { onConflict: "record_id", ignoreDuplicates: true })
+      .select();
+    if (upsertErr) throw new Error(`insertRecordIdempotent failed: ${upsertErr.message}`);
+    if (inserted && inserted.length > 0) {
+      return { record: inserted[0] as KnowledgeRecord, created: true };
+    }
+    // Duplicate · fetch the existing row and return it with created=false.
+    const { data: existing, error: lookupErr } = await this.client
+      .from("knowledge_records")
+      .select("*")
+      .eq("record_id", input.record_id)
+      .maybeSingle();
+    if (lookupErr) throw new Error(`insertRecordIdempotent lookup failed: ${lookupErr.message}`);
+    if (!existing) {
+      throw new Error(
+        `insertRecordIdempotent · upsert ignored but no existing row found for record_id=${input.record_id}`,
+      );
+    }
+    return { record: existing as KnowledgeRecord, created: false };
   }
 
   async getRecord(record_id: string): Promise<KnowledgeRecord | null> {

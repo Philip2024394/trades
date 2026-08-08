@@ -23,7 +23,72 @@ import { runKnowledgeExtractor } from "./workers/knowledge-extractor";
 import { runImageAnalyst } from "./workers/image-analyst";
 import { runQualityChecker } from "./workers/quality-checker";
 import { drainLlmRetryQueue, type LlmRetryOutcome } from "./workers/llm-retry";
-import type { BrainStatus, WorkerJob } from "./types";
+import { emitAuditEvents, type AuditEventType } from "./audit-log";
+import type { BrainStatus, WorkerJob, WorkerType } from "./types";
+import { claimJobIfQueued, findActiveJobByInboxItemId } from "@/lib/nex/jobs/fs-store";
+
+// ── Audit-instrumented wrapper ──────────────────────────────────────
+// Wraps a stage-runner call to emit job_started + job_completed events
+// when a job is claimed, or job_started + job_failed when the runner
+// throws. Both events use the actual timings observed here so the
+// Worker Journal shows accurate start/end times even though both events
+// are inserted at the end of the runner call.
+//
+// This is the P3 unblock from
+// `feedback_nex_admin_centre_living_organisation_golden_rule_2026_08_07.md`:
+// every avatar movement in the future Living Workshop finally has a real
+// event stream to react to.
+async function withAuditEvents<T extends { job: WorkerJob | null }>(
+  workerType: WorkerType,
+  runner: () => Promise<T>
+): Promise<T> {
+  const startedIso = new Date().toISOString();
+  const startedMs = Date.now();
+  let result: T;
+  try {
+    result = await runner();
+  } catch (err) {
+    // Runner threw — we didn't get a job reference, so emit a bare
+    // job_failed with the worker_type + no job_id. Not ideal but honest.
+    const finishedMs = Date.now();
+    emitAuditEvents([{
+      worker_type: workerType,
+      event_type: "job_failed",
+      actor: "nex",
+      latency_ms: finishedMs - startedMs,
+      error_snippet: err instanceof Error ? err.message : String(err),
+      at: new Date(finishedMs).toISOString(),
+    }]);
+    throw err;
+  }
+  const finishedMs = Date.now();
+  const job = result.job;
+  if (job) {
+    // Batch both events so they land in one round-trip. Both carry the
+    // real observed timestamps.
+    const events = [
+      {
+        worker_type: workerType,
+        event_type: "job_started" as AuditEventType,
+        actor: "nex" as const,
+        job_id: job.id,
+        input_ref: job.input_ref,
+        at: startedIso,
+      },
+      {
+        worker_type: workerType,
+        event_type: "job_completed" as AuditEventType,
+        actor: "nex" as const,
+        job_id: job.id,
+        input_ref: job.input_ref,
+        latency_ms: finishedMs - startedMs,
+        at: new Date(finishedMs).toISOString(),
+      },
+    ];
+    emitAuditEvents(events);
+  }
+  return result;
+}
 
 const INBOX_ROOT = path.join(process.cwd(), "data", "knowledge-inbox");
 const INBOX_INDEX = path.join(INBOX_ROOT, "index.json");
@@ -134,6 +199,23 @@ export async function dispatchNewInboxItems(): Promise<{
     // routes the final authoring stage based on kind:
     //   text/url → knowledge-extractor
     //   image    → image-analyst (Stage 5)
+    // Phase 10.2 · Fix #2B · link the Knowledge Dump queue to the
+    // worker pipeline. If this inbox item has a queued KnowledgeJob
+    // (created by /api/nex/knowledge-inbox/dump), CAS-claim it now so
+    // the visible state moves `queued → claimed` in lockstep with the
+    // WorkerJob being enqueued. The extractor closes the loop with
+    // `completed` / `failed` after processing.
+    const linkedKJob = await findActiveJobByInboxItemId(item.id);
+    let knowledge_job_id: string | null = null;
+    if (linkedKJob && linkedKJob.status === "queued") {
+      const claim = await claimJobIfQueued(linkedKJob.job_id);
+      if (claim.claimed) knowledge_job_id = claim.claimed.job_id;
+    } else if (linkedKJob) {
+      // Already claimed/processing/completed · pass the id through so
+      // the extractor can still update completion, but do not double-claim.
+      knowledge_job_id = linkedKJob.job_id;
+    }
+
     await store.enqueueJob({
       worker_type: "knowledge-context",
       priority: sourcePriority(item.source),
@@ -148,6 +230,7 @@ export async function dispatchNewInboxItems(): Promise<{
         url: item.url ?? null,
         filePath: item.filePath ?? null,
         mimeType: item.mimeType ?? null,
+        knowledge_job_id,
       },
     });
     enqueued += 1;
@@ -158,8 +241,8 @@ export async function dispatchNewInboxItems(): Promise<{
       action: "enqueue",
       actor: "manager",
       before_state: null,
-      after_state: { worker_type: "knowledge-context", source: item.source },
-      notes: `Manager enqueued context job for inbox item ${item.id}`,
+      after_state: { worker_type: "knowledge-context", source: item.source, knowledge_job_id },
+      notes: `Manager enqueued context job for inbox item ${item.id}${knowledge_job_id ? ` · linked KnowledgeJob ${knowledge_job_id}` : ""}`,
     });
   }
 
@@ -204,7 +287,7 @@ export async function runOneCycle(options: {
 
   // 1 · Knowledge context — enqueues voice-context jobs on success
   for (let i = 0; i < contextBatch; i += 1) {
-    const outcome = await runKnowledgeContext();
+    const outcome = await withAuditEvents("knowledge-context", runKnowledgeContext);
     if (!outcome.job) break;
     if (outcome.bundle) {
       contextsAssembled.push({
@@ -216,7 +299,7 @@ export async function runOneCycle(options: {
 
   // 2 · Voice context — enqueues learning-context jobs on success
   for (let i = 0; i < voiceBatch; i += 1) {
-    const outcome = await runVoiceContext();
+    const outcome = await withAuditEvents("voice-context", runVoiceContext);
     if (!outcome.job) break;
     if (outcome.guide) {
       voiceGuides.push({
@@ -230,7 +313,7 @@ export async function runOneCycle(options: {
 
   // 3 · Learning context — enqueues extractor jobs on success
   for (let i = 0; i < learningBatch; i += 1) {
-    const outcome = await runLearningContext();
+    const outcome = await withAuditEvents("learning-context", runLearningContext);
     if (!outcome.job) break;
     if (outcome.bundle) {
       learningBundles.push({
@@ -243,10 +326,18 @@ export async function runOneCycle(options: {
 
   // 4 · Extractor — reads ALL THREE bundles from job payload
   for (let i = 0; i < extractorBatch; i += 1) {
-    const outcome = await runKnowledgeExtractor();
+    const outcome = await withAuditEvents("knowledge-extractor", runKnowledgeExtractor);
     if (!outcome.job) break;
     if (outcome.draftRecordIds.length > 0) {
       extracted.push(...outcome.draftRecordIds);
+      // Emit knowledge_extracted per draft record — Journal shows what NEX produced.
+      emitAuditEvents(outcome.draftRecordIds.map((rid) => ({
+        worker_type: "knowledge-extractor" as WorkerType,
+        event_type: "knowledge_extracted" as AuditEventType,
+        actor: "nex" as const,
+        job_id: outcome.job!.id,
+        input_ref: rid,
+      })));
     } else if (outcome.job) {
       extractionErrors.push(outcome.job.id);
     }
@@ -256,18 +347,25 @@ export async function runOneCycle(options: {
   // Uses the same batch size as the extractor since it's the same
   // stage in the pipeline.
   for (let i = 0; i < extractorBatch; i += 1) {
-    const outcome = await runImageAnalyst();
+    const outcome = await withAuditEvents("image-analyst", runImageAnalyst);
     if (!outcome.job) break;
     if (outcome.draftRecordIds.length > 0) {
       extracted.push(...outcome.draftRecordIds);
+      emitAuditEvents(outcome.draftRecordIds.map((rid) => ({
+        worker_type: "image-analyst" as WorkerType,
+        event_type: "knowledge_extracted" as AuditEventType,
+        actor: "nex" as const,
+        job_id: outcome.job!.id,
+        input_ref: rid,
+      })));
     } else if (outcome.job) {
       extractionErrors.push(outcome.job.id);
     }
   }
 
-  // 5 · Checker
+  // 5 · Checker — additionally emits the promotion/rejection event per decision
   for (let i = 0; i < checkerBatch; i += 1) {
-    const outcome = await runQualityChecker();
+    const outcome = await withAuditEvents("quality-checker", runQualityChecker);
     if (!outcome.job) break;
     if (outcome.report) {
       checkedRecords.push({
@@ -275,6 +373,20 @@ export async function runOneCycle(options: {
         decision: outcome.report.decision,
         confidence: outcome.report.overall_confidence,
       });
+      // Decision-specific event — this is what the Recent Output panel + Journal use to show promotion/rejection story.
+      const decisionEvent: AuditEventType =
+        outcome.report.decision === "AUTHORITATIVE" ? "record_promoted_to_authoritative" :
+        outcome.report.decision === "UNDER_REVIEW"  ? "record_promoted_to_review" :
+                                                      "record_rejected";
+      emitAuditEvents([{
+        worker_type: "quality-checker" as WorkerType,
+        event_type: decisionEvent,
+        actor: "nex" as const,
+        job_id: outcome.job.id,
+        input_ref: outcome.job.input_ref,
+        confidence: outcome.report.overall_confidence,
+        outcome: outcome.report.decision.toLowerCase(),
+      }]);
     }
   }
 
