@@ -35,6 +35,7 @@ const suites = [
   { name: "pause-propagation",    path: join(__dirname, "pause-propagation.test.mjs")    },
   { name: "adapter-real-providers", path: join(__dirname, "adapter-real-providers.test.mjs") },
   { name: "adapter-meta-live",      path: join(__dirname, "adapter-meta-live.test.mjs")      },
+  { name: "ui-boundaries",          path: join(__dirname, "ui-boundaries.test.mjs")          },
 ];
 
 const results = [];
