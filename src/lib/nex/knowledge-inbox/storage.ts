@@ -498,9 +498,11 @@ export async function runProcessInbox(input: {
   }
 
   const now = Date.now();
+  const changedIds = new Set<string>();
   const nextItems = items.map((i) => {
     if (i.status !== "waiting") return i;
     if (input.ids && !input.ids.includes(i.id)) return i;
+    changedIds.add(i.id);
     if (reviewIds.has(i.id)) {
       return {
         ...i,
@@ -519,6 +521,15 @@ export async function runProcessInbox(input: {
     };
   });
   await writeIndex(nextItems);
+  // Phase 11.2 · runProcessInbox mutates status + processedAt +
+  // processedNotes in a single writeIndex(), bypassing the per-mutation
+  // shadow hooks that live in appendItem/updateStatuses/setItemStatus.
+  // Mirror the changed rows to Postgres explicitly via shadowUpsertInboxItem
+  // so the shadow tracks the full item state (not just status). Gated ·
+  // best-effort · never delays the primary path.
+  for (const item of nextItems) {
+    if (changedIds.has(item.id)) void shadowUpsertInboxItem(item);
+  }
 
   // Roll the persistent stats forward. Downstream counts stay NULL —
   // we don't own them here. Only counts we can prove:

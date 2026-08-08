@@ -110,6 +110,20 @@ async function main() {
   record("S6", wiredWrites,
     "filesystem inbox storage calls all 4 shadow functions at mutation sites");
 
+  // S6b · runProcessInbox mirrors changed rows to Postgres.
+  // Live observation on 2026-08-09 (SEAM 3 exercise) discovered that
+  // runProcessInbox mutates status + processedAt + processedNotes in a
+  // single writeIndex() so the per-mutation hooks in appendItem/
+  // updateStatuses/setItemStatus don't fire. Fix walks the changed items
+  // and calls shadowUpsertInboxItem for each. This assertion locks the
+  // wiring in place so future refactors of runProcessInbox can't silently
+  // reintroduce the drift.
+  const processInboxCallsShadow =
+    /const changedIds\s*=\s*new Set<string>\(\)/.test(INBOX_STORE)
+      && /if \(changedIds\.has\(item\.id\)\) void shadowUpsertInboxItem\(item\)/.test(INBOX_STORE);
+  record("S6b", processInboxCallsShadow,
+    "runProcessInbox tracks changedIds + shadow-upserts each mutated item");
+
   // S7 · fs-store jobs wires shadow at create + update
   record("S7",
     /shadowUpsertJob\(job\)/.test(JOBS_STORE)
