@@ -29,6 +29,17 @@ import type {
   ProcessingReport,
 } from "./types";
 import { EMPTY_STATS } from "./types";
+import { brainStore } from "@/lib/nex/brain/storage";
+// Phase 11.2 · shadow-write to nex.knowledge_inbox alongside every
+// filesystem mutation when NEX_INBOX_SHADOW_POSTGRES=1. Filesystem
+// stays authoritative until Phase 11.3 flip. Every shadow call is
+// best-effort · never throws · never delays the primary write.
+import {
+  shadowDeleteInboxItem,
+  shadowUpdateInboxStatuses,
+  shadowUpsertInboxItem,
+  shadowUpsertInboxStats,
+} from "./pg-shadow";
 
 // ── Paths ────────────────────────────────────────────────────────────
 
@@ -124,6 +135,14 @@ export async function writeStats(stats: InboxStats): Promise<void> {
   const tmp = `${STATS_PATH}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(stats, null, 2), "utf8");
   await fs.rename(tmp, STATS_PATH);
+  // Phase 11.2 · shadow-write to Postgres · gated · fire-and-forget.
+  void shadowUpsertInboxStats({
+    completedTodayDate:    stats.completedTodayDate,
+    completedToday:        stats.completedToday,
+    imagesAnalysed:        stats.imagesAnalysed,
+    voiceNotesTranscribed: stats.voiceNotesTranscribed,
+    lastProcessedAt:       stats.lastProcessedAt,
+  });
 }
 
 // ── Duplicate detection ──────────────────────────────────────────────
@@ -268,6 +287,8 @@ async function appendItem(item: InboxItem): Promise<void> {
   const items = await readIndex();
   items.unshift(item);
   await writeIndex(items);
+  // Phase 11.2 · shadow-write to Postgres.
+  void shadowUpsertInboxItem(item);
 }
 
 export async function updateStatuses(
@@ -281,6 +302,10 @@ export async function updateStatuses(
     idSet.has(i.id) ? { ...i, status, ...(patch ?? {}) } : i
   );
   await writeIndex(updated);
+  // Phase 11.2 · shadow-write bulk status transition to Postgres.
+  const shadowMap = new Map<string, InboxStatus>();
+  for (const id of ids) shadowMap.set(id, status);
+  void shadowUpdateInboxStatuses(shadowMap);
   return updated;
 }
 
@@ -296,6 +321,8 @@ export async function setItemStatus(
     return out;
   });
   await writeIndex(next);
+  // Phase 11.2 · shadow-write single status transition to Postgres.
+  if (out) void shadowUpdateInboxStatuses(new Map([[id, status]]));
   return out;
 }
 
@@ -305,6 +332,8 @@ export async function deleteItem(id: string): Promise<boolean> {
   if (!target) return false;
   const next = items.filter((i) => i.id !== id);
   await writeIndex(next);
+  // Phase 11.2 · shadow-delete from Postgres.
+  void shadowDeleteInboxItem(id);
   // Best-effort cleanup of the associated content / file — do not
   // fail the delete if the file is already gone.
   try {
@@ -362,69 +391,39 @@ export async function runProcessInbox(input: {
 
   // Walk each waiting item so this is not a pure fake — we actually
   // load the text content for text dumps and count real characters.
+  // Keep the content around so we can enqueue it into the worker queue
+  // without re-reading from disk below.
   let totalTextChars = 0;
+  const contentById = new Map<string, string>();
   for (const it of waitingItems) {
     if (it.kind === "text" && it.contentPath) {
       const content = await readItemContent(it);
-      if (content) totalTextChars += content.length;
+      if (content) {
+        totalTextChars += content.length;
+        contentById.set(it.id, content);
+      }
     }
   }
 
-  // Deltas: heuristic until the Reasoning Layer + Aggregator arrive.
-  // Higher-scrutiny sources produce fewer immediate record deltas —
-  // the trust-based workflow doctrine (Philip 2026-08-06).
-  const scrutinyDivisor: Record<KnowledgeSource, number> = {
-    "chatgpt-approved":   1.0,   // fastest path — mostly import
-    "claude-generated":   1.0,
-    "raw-research":       2.2,   // slower — extract + verify
-    "internet-article":   3.0,   // slowest — verify before promote
-    "needs-verification": 5.0,   // parked
-    "gov-standards":      1.2,   // authoritative — direct updates
-    "customer-qa":        1.8,   // FAQ-driven
-    "personal-ideas":     4.0,   // sandbox
-  };
-
-  let recordsCreated = 0;
-  let recordsUpdated = 0;
-  let faqsGenerated = 0;
-  let edgesCreated = 0;
-  let duplicatesMerged = 0;
+  // HONESTY: The previous implementation used Math.random() to fabricate
+  // record/FAQ/edge/duplicate counts. Per "NEX never pretends work has
+  // been done" (feedback_nex_never_pretends_work_done_2026_08_07.md),
+  // the fabrications are removed. What we can honestly count here:
+  //   · needsReview: items flagged by scrutiny policy (real decision)
+  //   · imagesAnalysed / voiceNotesTranscribed: kind == image | voice
+  //   · items enqueued for workers (populated below in the enqueue pass)
+  // Downstream record + FAQ + edge counts are OWNED by the Worker
+  // Manager (knowledge_records + graph_edges in Supabase). Never fake
+  // them here.
   let needsReview = 0;
   let imagesAnalysed = 0;
   let voiceNotesTranscribed = 0;
 
   for (const it of waitingItems) {
-    const div = scrutinyDivisor[it.source] ?? 1.5;
-    if (it.source === "chatgpt-approved" || it.source === "claude-generated") {
-      recordsCreated += Math.random() < 0.20 ? 1 : 0;
-      recordsUpdated += Math.random() < 0.55 ? 1 : 0;
-      faqsGenerated += Math.round((5 + Math.random() * 6) / div);
-    } else if (it.source === "gov-standards") {
-      recordsCreated += Math.random() < 0.10 ? 1 : 0;
-      recordsUpdated += 1 + Math.floor(Math.random() * 3);
-      faqsGenerated += Math.round(2 / div);
-    } else if (it.source === "customer-qa") {
-      recordsUpdated += Math.random() < 0.30 ? 1 : 0;
-      faqsGenerated += 3 + Math.floor(Math.random() * 6);
-    } else if (it.source === "needs-verification" || it.source === "personal-ideas") {
-      // hold — no promotion
-      needsReview += 1;
-    } else {
-      recordsCreated += Math.random() < 0.10 ? 1 : 0;
-      recordsUpdated += Math.random() < 0.30 ? 1 : 0;
-      faqsGenerated += Math.round((3 + Math.random() * 4) / div);
-    }
-    edgesCreated += Math.round((1 + Math.random() * 2) / div);
-    duplicatesMerged += Math.random() < 0.25 ? 1 : 0;
     if (it.kind === "image") imagesAnalysed += 1;
     if (it.kind === "voice") voiceNotesTranscribed += 1;
-    // Very occasional random flag on non-hold sources.
-    if (
-      needsReview === 0 &&
-      it.source !== "chatgpt-approved" &&
-      it.source !== "claude-generated" &&
-      Math.random() < 0.04
-    ) {
+    // Scrutiny policy: hold-for-review sources are always flagged
+    if (it.source === "needs-verification" || it.source === "personal-ideas") {
       needsReview += 1;
     }
   }
@@ -450,6 +449,54 @@ export async function runProcessInbox(input: {
     }
   }
 
+  // Enqueue REAL knowledge-extractor jobs for every text item that
+  // isn't held for review. This is what actually reaches the Fly cloud
+  // worker (via Supabase worker_jobs) so the Ops dashboard agents flip
+  // from Sleeping → Working. Images/voice stay out — text-only workers.
+  // Failures per-item don't break the batch (log + continue).
+  //
+  // Priority is derived from source scrutiny — high-trust sources
+  // (chatgpt-approved / claude-generated / gov-standards) get priority 3
+  // so they overtake noisier sources in a mixed batch.
+  const store = brainStore();
+  const priorityForSource: Record<KnowledgeSource, number> = {
+    "chatgpt-approved":   3,
+    "claude-generated":   3,
+    "gov-standards":      3,
+    "customer-qa":        4,
+    "raw-research":       5,
+    "internet-article":   5,
+    "needs-verification": 7,
+    "personal-ideas":     7,
+  };
+  let jobsEnqueued = 0;
+  for (const it of waitingItems) {
+    if (it.kind !== "text") continue;              // images/voice: not in worker pool
+    if (reviewIds.has(it.id)) continue;            // held for scrutiny
+    const text = contentById.get(it.id);
+    if (!text || text.length === 0) continue;
+    try {
+      await store.enqueueJob({
+        worker_type: "knowledge-extractor",
+        priority: priorityForSource[it.source] ?? 5,
+        input_kind: "inbox_item",
+        input_ref: it.id,
+        input_payload: {
+          text,
+          title: it.title ?? null,
+          source: it.source,
+          source_kind: it.kind,
+        },
+      });
+      jobsEnqueued += 1;
+    } catch (err) {
+      console.error(`[knowledge-inbox.process] enqueue failed for ${it.id}:`, err);
+    }
+  }
+  if (jobsEnqueued > 0) {
+    console.log(`[knowledge-inbox.process] enqueued ${jobsEnqueued} extractor jobs`);
+  }
+
   const now = Date.now();
   const nextItems = items.map((i) => {
     if (i.status !== "waiting") return i;
@@ -473,37 +520,46 @@ export async function runProcessInbox(input: {
   });
   await writeIndex(nextItems);
 
-  // Roll the persistent stats forward.
+  // Roll the persistent stats forward. Downstream counts stay NULL —
+  // we don't own them here. Only counts we can prove:
+  //   · completedToday (items moved to "processed" today)
+  //   · imagesAnalysed / voiceNotesTranscribed (real kinds)
   const stats = await readStats();
   const completed = waitingItems.length - needsReview;
   const today = new Date().toISOString().slice(0, 10);
   const nextStats: InboxStats = {
-    recordsCreated: stats.recordsCreated + recordsCreated,
-    recordsUpdated: stats.recordsUpdated + recordsUpdated,
-    faqsGenerated: stats.faqsGenerated + faqsGenerated,
-    edgesCreated: stats.edgesCreated + edgesCreated,
-    duplicatesMerged: stats.duplicatesMerged + duplicatesMerged,
-    imagesAnalysed: stats.imagesAnalysed + imagesAnalysed,
-    voiceNotesTranscribed: stats.voiceNotesTranscribed + voiceNotesTranscribed,
     completedToday:
       stats.completedTodayDate === today
         ? stats.completedToday + completed
         : completed,
     completedTodayDate: today,
+    imagesAnalysed: stats.imagesAnalysed + imagesAnalysed,
+    voiceNotesTranscribed: stats.voiceNotesTranscribed + voiceNotesTranscribed,
     lastProcessedAt: now,
+    // Null when unknown — see feedback_nex_never_pretends_work_done doctrine
+    recordsCreated: null,
+    recordsUpdated: null,
+    faqsGenerated: null,
+    edgesCreated: null,
+    duplicatesMerged: null,
   };
   await writeStats(nextStats);
 
   const report: ProcessingReport = {
     itemsProcessed: waitingItems.length,
-    recordsCreated,
-    recordsUpdated,
-    faqsGenerated,
-    edgesCreated,
-    duplicatesMerged,
+    itemsEnqueuedForWorkers: jobsEnqueued,
     imagesAnalysed,
     voiceNotesTranscribed,
     needsReview,
+    recordsCreated: null,
+    recordsUpdated: null,
+    faqsGenerated: null,
+    edgesCreated: null,
+    duplicatesMerged: null,
+    note:
+      jobsEnqueued > 0
+        ? `${jobsEnqueued} item${jobsEnqueued > 1 ? "s" : ""} handed to the worker pipeline. Real record + FAQ + edge counts appear on Worker Manager as they complete.`
+        : `No items were enqueued for extraction. See Worker Manager for authoritative pipeline state.`,
   };
   return { report, items: nextItems, stats: nextStats };
 }
@@ -511,14 +567,15 @@ export async function runProcessInbox(input: {
 function emptyReport(): ProcessingReport {
   return {
     itemsProcessed: 0,
-    recordsCreated: 0,
-    recordsUpdated: 0,
-    faqsGenerated: 0,
-    edgesCreated: 0,
-    duplicatesMerged: 0,
+    itemsEnqueuedForWorkers: 0,
     imagesAnalysed: 0,
     voiceNotesTranscribed: 0,
     needsReview: 0,
+    recordsCreated: null,
+    recordsUpdated: null,
+    faqsGenerated: null,
+    edgesCreated: null,
+    duplicatesMerged: null,
   };
 }
 

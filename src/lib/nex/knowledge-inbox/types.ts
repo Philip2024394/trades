@@ -55,41 +55,68 @@ export type InboxItem = {
 };
 
 // All-time processing totals — persist across sessions.
+//
+// Downstream counts (records, FAQs, edges, duplicates) are null-typed here
+// because the Worker Manager is authoritative for those. See
+// feedback_nex_never_pretends_work_done_2026_08_07.md.
 export type InboxStats = {
-  recordsCreated: number;
-  recordsUpdated: number;
-  faqsGenerated: number;
-  edgesCreated: number;
-  duplicatesMerged: number;
+  completedToday: number;
+  completedTodayDate: string;               // YYYY-MM-DD — resets when day rolls over
   imagesAnalysed: number;
   voiceNotesTranscribed: number;
-  completedToday: number;
-  completedTodayDate: string;  // YYYY-MM-DD — resets stat when the day rolls over
   lastProcessedAt?: number;
+
+  // Downstream counts — null when we don't own the count. Rendered
+  // as "Not yet available" or "See Worker Manager" in the UI.
+  recordsCreated: number | null;
+  recordsUpdated: number | null;
+  faqsGenerated: number | null;
+  edgesCreated: number | null;
+  duplicatesMerged: number | null;
 };
 
 // Snapshot returned by POST /process — the same shape shown in the
 // Processing Report overlay.
+//
+// HONESTY: Fields marked "null when unknown" used to be Math.random()
+// heuristics before the pipeline was wired to real workers. Per the
+// "NEX never pretends work has been done" doctrine
+// (feedback_nex_never_pretends_work_done_2026_08_07.md), they are now
+// set to null in the inbox layer — the authoritative numbers for records
+// created, FAQs generated, edges created, and duplicates merged live
+// downstream in Supabase (knowledge_records + graph_edges + worker_results).
+// The Worker Manager is the source of truth for those counts.
 export type ProcessingReport = {
-  itemsProcessed: number;
-  recordsCreated: number;
-  recordsUpdated: number;
-  faqsGenerated: number;
-  edgesCreated: number;
-  duplicatesMerged: number;
-  imagesAnalysed: number;
-  voiceNotesTranscribed: number;
-  needsReview: number;
+  // Real counts from THIS process pass
+  itemsProcessed: number;              // Total waiting items handled in this batch
+  itemsEnqueuedForWorkers: number;     // How many worker_jobs were actually inserted into Supabase
+  imagesAnalysed: number;              // Real count of image items (currently not enqueued — image_analyst disabled per doctrine)
+  voiceNotesTranscribed: number;       // Real count of voice items (not enqueued yet)
+  needsReview: number;                 // Real count of items flagged review
+
+  // Downstream results — NULL because we don't produce them here.
+  // The Worker Manager (/nex-app/nex-brain) is authoritative.
+  recordsCreated: number | null;
+  recordsUpdated: number | null;
+  faqsGenerated: number | null;
+  edgesCreated: number | null;
+  duplicatesMerged: number | null;
+
+  // Optional explanation shown in the Processing Overlay
+  note?: string;
 };
 
 export const EMPTY_STATS: InboxStats = {
-  recordsCreated: 0,
-  recordsUpdated: 0,
-  faqsGenerated: 0,
-  edgesCreated: 0,
-  duplicatesMerged: 0,
-  imagesAnalysed: 0,
-  voiceNotesTranscribed: 0,
+  // Real counter — items whose status transitioned to "processed" today
   completedToday: 0,
   completedTodayDate: new Date().toISOString().slice(0, 10),
+
+  // Same honesty rule — null when unknown. See ProcessingReport comment above.
+  recordsCreated: null,
+  recordsUpdated: null,
+  faqsGenerated: null,
+  edgesCreated: null,
+  duplicatesMerged: null,
+  imagesAnalysed: 0,
+  voiceNotesTranscribed: 0,
 };

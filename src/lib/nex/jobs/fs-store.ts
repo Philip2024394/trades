@@ -28,6 +28,9 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import { randomUUID } from "node:crypto";
 import { emitEventSafe } from "../events/fs-store";
+// Phase 11.2 · shadow-write to nex.knowledge_dump_jobs. Gated on
+// NEX_INBOX_SHADOW_POSTGRES=1 · best-effort · never throws.
+import { shadowUpsertJob } from "./pg-shadow";
 
 // ── Paths ──────────────────────────────────────────────────────────
 
@@ -103,6 +106,8 @@ export async function createJob(input: CreateJobInput): Promise<KnowledgeJob> {
   };
   await ensureDir();
   await fs.appendFile(JOBS_FILE, JSON.stringify(job) + "\n", "utf8");
+  // Phase 11.2 · shadow-write to Postgres.
+  void shadowUpsertJob(job);
 
   // Emit corresponding Intelligence Events so timeline shows the flow.
   emitEventSafe({
@@ -207,6 +212,8 @@ export async function updateJob(job_id: string, patch: UpdateJobInput): Promise<
   };
   await ensureDir();
   await fs.appendFile(JOBS_FILE, JSON.stringify(next) + "\n", "utf8");
+  // Phase 11.2 · shadow-write latest snapshot to Postgres.
+  void shadowUpsertJob(next);
 
   // Emit corresponding lifecycle event
   const eventType =

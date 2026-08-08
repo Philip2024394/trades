@@ -27,6 +27,11 @@ import { emitAuditEvents, type AuditEventType } from "./audit-log";
 import { primeStandbyHeartbeats, writeHeartbeat } from "./heartbeat";
 import type { BrainStatus, WorkerJob, WorkerType } from "./types";
 import { claimJobIfQueued, findActiveJobByInboxItemId } from "@/lib/nex/jobs/fs-store";
+// Phase 11.2 · the Phase 12.1 writeback also shadow-writes into
+// nex.knowledge_inbox when NEX_INBOX_SHADOW_POSTGRES=1. Prepares
+// 11.3 for a simple flip without ever leaving the filesystem
+// state ahead of Postgres.
+import { shadowUpdateInboxStatuses } from "@/lib/nex/knowledge-inbox/pg-shadow";
 
 // ── Audit-instrumented wrapper ──────────────────────────────────────
 // Wraps a stage-runner call to emit job_started + job_completed events
@@ -351,6 +356,10 @@ async function updateInboxItemStatuses(updates: Map<string, InboxItemLite["statu
   }
   if (changed === 0) return 0;
   await fs.writeFile(INBOX_INDEX, JSON.stringify(items, null, 2), "utf8");
+  // Phase 11.2 · shadow-write the same bulk transition to Postgres so
+  // nex.knowledge_inbox tracks filesystem in real time. Fire-and-
+  // forget · best-effort · never blocks the primary path.
+  void shadowUpdateInboxStatuses(updates);
   return changed;
 }
 
