@@ -92,6 +92,11 @@ export async function runKnowledgeContext(options: {
     const inlineContent = job.input_payload?.content as string | undefined;
     const url = job.input_payload?.url as string | undefined;
     const filePath = job.input_payload?.filePath as string | undefined;
+    // Phase 3a · propagate NEX Object Storage reference downstream so
+    // every worker in the chain can locate the binary regardless of
+    // which machine it runs on.
+    const objectBucket = job.input_payload?.objectBucket as string | undefined;
+    const objectKey    = job.input_payload?.objectKey    as string | undefined;
     const mimeType = job.input_payload?.mimeType as string | undefined;
 
     // Load the raw content (text-shaped items only — image items don't
@@ -185,6 +190,8 @@ export async function runKnowledgeContext(options: {
         content: inlineContent ?? null,
         url: url ?? null,
         filePath: filePath ?? null,
+        objectBucket: objectBucket ?? null,   // Phase 3a
+        objectKey:    objectKey    ?? null,   // Phase 3a
         mimeType: mimeType ?? null,
         knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
         context_bundle: bundle,

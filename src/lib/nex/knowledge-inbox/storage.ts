@@ -30,6 +30,12 @@ import type {
 } from "./types";
 import { EMPTY_STATS } from "./types";
 import { brainStore } from "@/lib/nex/brain/storage";
+// Phase 3a · NEX Object Storage · inbox binaries now flow through the
+// location-transparent adapter (Postgres-backed by default when
+// NEX_OBJECT_BACKEND=postgres). Filesystem write is retained during
+// the transition window for backward compat with legacy readers.
+import { getObjectStorage } from "@/lib/nex/storage/object-registry";
+import { BUCKETS } from "@/lib/nex/storage/object-types";
 // Phase 11.2 · shadow-write to nex.knowledge_inbox alongside every
 // filesystem mutation when NEX_INBOX_SHADOW_POSTGRES=1. Filesystem
 // stays authoritative until Phase 11.3 flip. Every shadow call is
@@ -219,7 +225,35 @@ export async function saveFileItem(input: {
 
   const safeName = safeFilename(input.originalFilename);
   const storedName = `${id}-${safeName}`;
+  // Phase 3a · dual-write during transition:
+  //   1. NEX Object Storage · location-transparent · every worker on
+  //      any machine can fetch via getObjectStorage().get(bucket,key)
+  //   2. Filesystem · retained for backward compat with legacy readers
+  //      that still expect `filePath`. Removed in Phase 3b once every
+  //      reader is on object storage.
+  // The object storage write is best-effort inside try/catch so a
+  // Postgres outage never blocks the primary capture path. If the
+  // object write fails the item still lands with only filePath and
+  // downstream backfill will pick it up later.
   await fs.writeFile(path.join(FILES_DIR, storedName), input.bytes);
+
+  let objectBucket: string | undefined;
+  let objectKey: string | undefined;
+  try {
+    const put = await getObjectStorage().put(BUCKETS.uploads, id, {
+      body: input.bytes,
+      mime_type: input.mimeType,
+      source_ref: `inbox:${id}`,
+      custom: { original_filename: input.originalFilename, hash },
+    });
+    objectBucket = put.bucket;
+    objectKey    = put.key;
+  } catch (err) {
+    console.warn(
+      `[knowledge-inbox] object storage put failed for ${id} · falling back to filesystem-only:`,
+      err instanceof Error ? err.message : err,
+    );
+  }
 
   const preview =
     kind === "image"
@@ -239,7 +273,9 @@ export async function saveFileItem(input: {
     hash,
     meta: fileMeta(input.mimeType, input.bytes.length),
     previewText: preview,
-    filePath: `files/${storedName}`,
+    filePath: `files/${storedName}`,     // LEGACY · retained during transition
+    objectBucket,                        // Phase 3a · authoritative
+    objectKey,                           // Phase 3a · authoritative
     originalFilename: input.originalFilename,
     byteSize: input.bytes.length,
     mimeType: input.mimeType,

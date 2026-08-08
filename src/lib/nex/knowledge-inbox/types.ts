@@ -44,7 +44,15 @@ export type InboxItem = {
   previewText?: string;       // first ~220 chars for the queue preview
   // Storage back-refs (relative to data/knowledge-inbox/)
   contentPath?: string;       // path to full text body, e.g. "content/nx_….txt"
-  filePath?: string;          // path to uploaded binary, e.g. "files/nx_….pdf"
+  filePath?: string;          // LEGACY · path to uploaded binary on local fs · retained for pre-Phase-3a items and dev backward compat
+  // Phase 3a · location-transparent binary reference into NEX Object
+  // Storage. Together, object_bucket + object_key are the authoritative
+  // pointer any worker on any machine can use to fetch the bytes via
+  // getObjectStorage().get(bucket, key). filePath remains populated
+  // during the transition window for backward compat but object_*
+  // is preferred wherever both are present.
+  objectBucket?: string;      // e.g. "uploads"
+  objectKey?: string;         // e.g. "nx_msks7ddw_90ae2b5a"
   originalFilename?: string;  // preserved for downloads
   byteSize?: number;
   mimeType?: string;

@@ -35,6 +35,11 @@ import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { brainStore, nowIso } from "../storage";
 import { completeJson, type LlmImage } from "../llm";
+// Phase 3a · NEX Object Storage · location-transparent image reads.
+// Any worker on any machine can fetch the bytes via the adapter · no
+// dependency on the machine that received the upload. Falls back to
+// legacy filesystem for pre-Phase-3a items until backfill catches up.
+import { getObjectStorage } from "@/lib/nex/storage/object-registry";
 import type {
   Audience,
   ClaimClassification,
@@ -172,17 +177,37 @@ export async function runImageAnalyst(options: {
     const contextBundle = job.input_payload?.context_bundle;
     const voiceGuide = job.input_payload?.voice_guide;
     const learningBundle = job.input_payload?.learning_bundle;
+    // Phase 3a · NEX Object Storage reference · location-transparent.
+    // When present, prefer this over the legacy machine-local filePath.
+    const objectBucket = job.input_payload?.objectBucket as string | undefined;
+    const objectKey    = job.input_payload?.objectKey    as string | undefined;
 
-    if (!filePath) {
-      throw new Error(`Image Analyst received no filePath for inbox item ${inboxItemId}`);
+    if (!filePath && !(objectBucket && objectKey)) {
+      throw new Error(`Image Analyst received no filePath and no objectBucket/objectKey for inbox item ${inboxItemId}`);
     }
     if (!SUPPORTED_MIMES.has(mimeType.toLowerCase())) {
       throw new Error(`Image Analyst: unsupported mime type ${mimeType}`);
     }
 
-    // Load + base64-encode the image
-    const absPath = path.join(INBOX_ROOT, filePath);
-    const bytes = await fs.readFile(absPath);
+    // Load bytes. Phase 3a preference order:
+    //   1. NEX Object Storage (location-transparent) if objectBucket/Key present
+    //   2. Local filesystem fallback (legacy pre-Phase-3a items)
+    // The "byteSource" telemetry marker lets the audit trail confirm
+    // which path served the bytes.
+    let bytes: Buffer;
+    let byteSource: "nex-object-storage" | "filesystem-legacy";
+    if (objectBucket && objectKey) {
+      const obj = await getObjectStorage().get(objectBucket, objectKey);
+      if (!obj) {
+        throw new Error(`Image Analyst: NEX Object Storage returned null for ${objectBucket}/${objectKey}`);
+      }
+      bytes = obj.body;
+      byteSource = "nex-object-storage";
+    } else {
+      const absPath = path.join(INBOX_ROOT, filePath!);
+      bytes = await fs.readFile(absPath);
+      byteSource = "filesystem-legacy";
+    }
     if (bytes.length > MAX_IMAGE_BYTES) {
       throw new Error(
         `Image Analyst: image too large (${bytes.length} bytes; max ${MAX_IMAGE_BYTES})`
@@ -339,7 +364,14 @@ export async function runImageAnalyst(options: {
       llm_tokens_in: raw.tokens_in,
       llm_tokens_out: raw.tokens_out,
       llm_ms: raw.ms,
-      flags: draftRecordIds.length === 0 ? ["no-records-extracted"] : [],
+      // Phase 3a · include byteSource so the audit trail proves whether
+      // the image bytes came from NEX Object Storage (location-transparent)
+      // or from the legacy per-machine filesystem. Every completed
+      // image-analyst worker_result now carries a "bytes:<source>" flag.
+      flags: [
+        `bytes:${byteSource}`,
+        ...(draftRecordIds.length === 0 ? ["no-records-extracted"] : []),
+      ],
     });
     await store.completeJob(job.id, result.id);
     return { job, result, draftRecordIds };

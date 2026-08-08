@@ -148,7 +148,9 @@ type InboxItemLite = {
     | "personal-ideas";
   hash?: string;
   mimeType?: string;
-  filePath?: string;
+  filePath?: string;               // LEGACY · local fs path (per-machine)
+  objectBucket?: string;           // Phase 3a · NEX Object Storage bucket
+  objectKey?: string;              // Phase 3a · NEX Object Storage key
   contentPath?: string;
   url?: string;
   createdAt: number;
@@ -285,7 +287,9 @@ export async function dispatchNewInboxItems(): Promise<{
         contentPath: item.contentPath ?? null,
         content: contentSnippet ?? null,
         url: item.url ?? null,
-        filePath: item.filePath ?? null,
+        filePath: item.filePath ?? null,          // LEGACY
+        objectBucket: item.objectBucket ?? null,  // Phase 3a · authoritative
+        objectKey:    item.objectKey    ?? null,  // Phase 3a · authoritative
         mimeType: item.mimeType ?? null,
         knowledge_job_id,
       },

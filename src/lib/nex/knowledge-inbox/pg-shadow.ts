@@ -65,8 +65,9 @@ export async function shadowUpsertInboxItem(item: InboxItem): Promise<void> {
             content_path, file_path, original_filename,
             byte_size, mime_type, url,
             processed_at_ms, processed_notes,
+            object_bucket, object_key,
             shadow_written_at, shadow_updated_at)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8::timestamptz,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18, NOW(), NOW())
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8::timestamptz,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20, NOW(), NOW())
          ON CONFLICT (id) DO UPDATE SET
            title             = EXCLUDED.title,
            kind              = EXCLUDED.kind,
@@ -83,6 +84,8 @@ export async function shadowUpsertInboxItem(item: InboxItem): Promise<void> {
            url               = EXCLUDED.url,
            processed_at_ms   = EXCLUDED.processed_at_ms,
            processed_notes   = EXCLUDED.processed_notes,
+           object_bucket     = EXCLUDED.object_bucket,
+           object_key        = EXCLUDED.object_key,
            shadow_updated_at = NOW()`,
         [
           item.id, item.title, item.kind, item.status, item.source, item.hash,
@@ -90,6 +93,7 @@ export async function shadowUpsertInboxItem(item: InboxItem): Promise<void> {
           item.contentPath ?? null, item.filePath ?? null, item.originalFilename ?? null,
           item.byteSize ?? null, item.mimeType ?? null, item.url ?? null,
           item.processedAt ?? null, item.processedNotes ?? null,
+          item.objectBucket ?? null, item.objectKey ?? null,
         ]
       );
     });
