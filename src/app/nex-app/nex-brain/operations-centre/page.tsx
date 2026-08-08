@@ -32,6 +32,7 @@ import Link from "next/link";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { NexStoragePanel } from "@/components/nex-app/nex-brain/NexStoragePanel";
 import { CommunicationsCentrePanel } from "@/components/nex-app/nex-brain/CommunicationsCentrePanel";
+import { computeJobProgress } from "@/lib/nex/brain/warehouse";
 import "../../nex-app.css";
 
 // ─────────────────────────────────────────────────────────────────
@@ -2008,6 +2009,16 @@ function JobCard({ placed, providers, standbyCount }: { placed: PlacedWorker; pr
         <span><span style={{ color: T.textFade }}>Location:</span> <span style={{ color: T.text }}>{room.name}</span></span>
         <span><span style={{ color: T.textFade }}>Status:</span> <span className="font-semibold" style={{ color: op.color }}>{op.label}</span></span>
       </div>
+      {/* Phase 10.5b · truthful per-stage progress. State → status mapping
+          is deterministic: working=in-flight, waiting_llm=waiting. If the
+          progress helper returns percent=null we render an honest fallback
+          ("Processing · N item(s) in flight") instead of inventing a bar. */}
+      <JobProgress
+        workerType={placed.persona.key as import("@/lib/nex/brain/types").WorkerType}
+        state={placed.state}
+        jobsInFlight={w.jobs_in_flight}
+        avgMs={w.avg_ms_last_24h}
+      />
       {isBlocked ? (
         <div className="mt-1 text-[10px]" style={{ color: T.warning }}>
           {op.wakeUpProvider ? `Blocked · waiting for ${op.wakeUpProvider}` : "Blocked · no provider available"}
@@ -2120,6 +2131,17 @@ type WarehouseItemDrill = {
   oldest_at: string | null;
   oldest_age_ms: number | null;
 };
+type WarehouseEntryDrill = {
+  job_id: string;
+  worker_type: string;
+  status: string;
+  input_ref: string;
+  title: string | null;
+  source: string | null;
+  created_at: string;
+  age_ms: number;
+  age_label: string;
+};
 type WarehouseStageDto = {
   key: "incoming" | "context_processing" | "waiting_for_ai" | "being_written" | "quality_check" | "stored";
   label: string;
@@ -2128,6 +2150,7 @@ type WarehouseStageDto = {
   oldest_at: string | null;
   oldest_age_ms: number | null;
   items: WarehouseItemDrill[];
+  entries?: WarehouseEntryDrill[];
   reason?: string;
 };
 type WarehouseDto = {
@@ -2220,6 +2243,31 @@ function WarehousePanel() {
                   ))}
                 </div>
               )}
+              {/* Phase 10.5c · per-item detail so operators can see what's
+                  actually inside a barrel · title + source + age · capped
+                  at the aggregator's ENTRIES_PER_STAGE (8). */}
+              {isOpen && stage.entries && stage.entries.length > 0 && (
+                <div className="mt-1 border-t pt-1 space-y-0.5" style={{ borderColor: T.border }}>
+                  {stage.entries.map((e) => (
+                    <div key={e.job_id || e.input_ref} className="text-[9.5px]" style={{ color: T.textDim }}>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <span className="truncate" style={{ color: T.text }} title={e.title ?? e.input_ref}>
+                          {e.title ? e.title.slice(0, 44) : e.input_ref.slice(0, 44)}
+                        </span>
+                        <span className="tabular-nums" style={{ color: T.textFade }}>{e.age_label}</span>
+                      </div>
+                      <div className="text-[8.5px]" style={{ color: T.textFade }}>
+                        {e.worker_type} · {e.status}{e.source ? ` · ${e.source}` : ""}
+                      </div>
+                    </div>
+                  ))}
+                  {stage.count > stage.entries.length && (
+                    <div className="text-[8.5px] italic" style={{ color: T.textFade }}>
+                      + {(stage.count - stage.entries.length).toLocaleString()} more
+                    </div>
+                  )}
+                </div>
+              )}
             </button>
           );
         })}
@@ -2227,6 +2275,50 @@ function WarehousePanel() {
       <div className="mt-2 text-[9.5px] italic" style={{ color: T.textDim }}>
         Six real stages composed from worker_jobs + knowledge_records · click a barrel for the (worker_type, status) breakdown · vault totals: {vault.authoritative.toLocaleString()} authoritative · {vault.under_review.toLocaleString()} under review · {vault.draft.toLocaleString()} draft.
       </div>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────
+// JobProgress · Phase 10.5b
+// Renders a REAL progress bar per active job using the warehouse
+// module's computeJobProgress helper. When the helper returns
+// percent=null we do not invent a bar — we render an honest count-based
+// fallback so operators can still see forward motion without lying
+// about how far along the job is.
+// ─────────────────────────────────────────────────────────────────
+
+function JobProgress({ workerType, state, jobsInFlight, avgMs }: {
+  workerType: import("@/lib/nex/brain/types").WorkerType;
+  state: WorkerState;
+  jobsInFlight: number;
+  avgMs: number | null;
+}) {
+  // Map placement state → job status for the progress table. Only these
+  // two states carry an active job (JobCard filters by current_job_ref).
+  const status = state === "waiting_llm" ? "waiting" : state === "working" ? "in-flight" : null;
+  if (!status) return null;
+  const hint = computeJobProgress(workerType, status);
+
+  return (
+    <div className="mt-1.5">
+      {hint.percent !== null ? (
+        <>
+          <div className="flex items-baseline justify-between text-[9.5px]" style={{ color: T.textDim }}>
+            <span>{hint.stage_label}</span>
+            <span className="font-mono tabular-nums" style={{ color: T.text }}>{hint.percent}%</span>
+          </div>
+          <div className="mt-0.5 h-1.5 w-full overflow-hidden rounded-full" style={{ background: T.border }}>
+            <div className="h-full rounded-full transition-all" style={{ width: `${hint.percent}%`, background: hint.is_deterministic ? T.info : T.warning }} />
+          </div>
+        </>
+      ) : (
+        // No fabricated bar. Show the truthful count-based fallback.
+        <div className="text-[9.5px]" style={{ color: T.textDim }}>
+          {hint.stage_label} · {jobsInFlight} in flight
+          {avgMs && avgMs > 0 ? <span> · avg {Math.round(avgMs / 1000)}s / job</span> : null}
+        </div>
+      )}
     </div>
   );
 }

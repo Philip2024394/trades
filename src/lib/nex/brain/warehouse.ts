@@ -38,6 +38,18 @@ export interface WarehouseItemSummary {
   oldest_age_ms: number | null;
 }
 
+export interface WarehouseEntry {
+  job_id:      string;
+  worker_type: string;
+  status:      string;
+  input_ref:   string;
+  title:       string | null;       // pulled from input_payload.title when present
+  source:      string | null;       // pulled from input_payload.source when present
+  created_at:  string;
+  age_ms:      number;
+  age_label:   string;              // human-readable · "2h 14m" / "3d"
+}
+
 export interface WarehouseStage {
   key:      WarehouseStageKey;
   label:    string;
@@ -46,6 +58,7 @@ export interface WarehouseStage {
   oldest_at: string | null;
   oldest_age_ms: number | null;
   items:    WarehouseItemSummary[];   // drill-down · sub-breakdown by (worker_type, status)
+  entries?: WarehouseEntry[];         // Phase 10.5c · actual rows in the barrel (capped)
   reason?:  string;                    // human-readable · e.g. "AI providers degraded"
 }
 
@@ -62,9 +75,53 @@ export interface WarehouseSnapshot {
 }
 
 interface WorkerJobRow {
-  worker_type: string;
-  status:      string;
-  created_at:  string;
+  id?:          string;
+  worker_type:  string;
+  status:       string;
+  created_at:   string;
+  input_ref?:   string | null;
+  input_payload?: Record<string, unknown> | null;
+}
+
+// Cap entries surfaced per stage so the payload stays small even when
+// backlogs are large. UI shows oldest N; a "and X more" tail is inferred
+// from count - entries.length.
+const ENTRIES_PER_STAGE = 8;
+
+function humanAge(ms: number): string {
+  if (ms < 60_000) return `${Math.floor(ms / 1000)}s`;
+  if (ms < 3_600_000) return `${Math.floor(ms / 60_000)}m`;
+  if (ms < 86_400_000) {
+    const h = Math.floor(ms / 3_600_000);
+    const m = Math.floor((ms % 3_600_000) / 60_000);
+    return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  }
+  return `${Math.floor(ms / 86_400_000)}d`;
+}
+
+function pickEntries(jobs: WorkerJobRow[], now: number): WarehouseEntry[] {
+  return jobs
+    .slice()
+    .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
+    .slice(0, ENTRIES_PER_STAGE)
+    .map((j) => {
+      const created = new Date(j.created_at).getTime();
+      const age = now - created;
+      const payload = j.input_payload ?? {};
+      const title  = (payload["title"]  as string | undefined) ?? null;
+      const source = (payload["source"] as string | undefined) ?? null;
+      return {
+        job_id:      String(j.id ?? ""),
+        worker_type: j.worker_type,
+        status:      j.status,
+        input_ref:   String(j.input_ref ?? ""),
+        title,
+        source,
+        created_at:  j.created_at,
+        age_ms:      age,
+        age_label:   humanAge(age),
+      };
+    });
 }
 
 interface KnowledgeRecordRow { status: string }
@@ -133,7 +190,7 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
   const [jobsRes, recordsRes] = await Promise.all([
     client
       .from("worker_jobs")
-      .select("worker_type,status,created_at")
+      .select("id,worker_type,status,created_at,input_ref,input_payload")
       .in("status", ["waiting", "in-flight", "assigned"])
       .limit(10000),
     client
@@ -175,6 +232,11 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
       if (ageMs !== null && (oldestMs === null || ageMs > oldestMs)) oldestMs = ageMs;
     }
 
+    // Phase 10.5c · collect actual worker_job rows for this stage so
+    // the UI drill-down can show real content, not just counters.
+    const matchedJobs = jobs.filter((j) =>
+      def.match.some((m) => j.worker_type === m.worker_type && m.statuses.includes(j.status)));
+
     return {
       key,
       label: def.label,
@@ -183,6 +245,7 @@ export async function computeWarehouseView(): Promise<WarehouseSnapshot> {
       oldest_at:     oldestMs !== null ? new Date(now - oldestMs).toISOString() : null,
       oldest_age_ms: oldestMs,
       items,
+      entries:       pickEntries(matchedJobs, now),
     };
   });
 

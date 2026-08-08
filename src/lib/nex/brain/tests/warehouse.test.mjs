@@ -169,6 +169,25 @@ const wh15 = /\/api\/nex\/brain\/warehouse/.test(OPS)
           && !/WORKER_PROGRESS_TABLE\s*=/.test(OPS);
 record("WH15", wh15, `UI consumes aggregator · does not fabricate locally`);
 
+// WH16 · Phase 10.5c · aggregator surfaces per-item entries with capped count
+const wh16 = /export interface WarehouseEntry/.test(WH)
+          && /ENTRIES_PER_STAGE\s*=\s*\d+/.test(WH)
+          && /entries:\s*pickEntries/.test(WH);
+record("WH16", wh16, `aggregator exposes capped per-item entries`);
+
+// WH17 · Phase 10.5b · UI JobProgress uses computeJobProgress · renders
+//        an honest fallback when percent is null (never fabricates)
+const wh17 = /import\s*\{[^}]*computeJobProgress[^}]*\}\s*from\s*["']@\/lib\/nex\/brain\/warehouse["']/.test(OPS)
+          && /hint\.percent\s*!==\s*null/.test(OPS)
+          && /jobsInFlight[\s\S]{0,120}?in flight/.test(OPS);
+record("WH17", wh17, `JobProgress · uses aggregator helper · honest fallback when percent=null`);
+
+// WH18 · Phase 10.5b · JobProgress never renders a bar for percent=null.
+//        Guarded by the ternary above · this test proves the width style
+//        is bound to hint.percent (not a static or animated value).
+const barWidthBinding = /width:\s*`?\$\{\s*hint\.percent\s*\}%`?/.test(OPS);
+record("WH18", barWidthBinding, `bar width bound to hint.percent · no static/animated fake`);
+
 // ── Summary ──
 const passed = results.filter((r) => r.pass).length;
 const total  = results.length;
