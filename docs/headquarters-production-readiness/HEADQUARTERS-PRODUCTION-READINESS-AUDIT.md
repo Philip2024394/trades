@@ -369,6 +369,7 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 | 2026-08-09 | Initial master roll-up authored · absorbs findings from A1 (Storage Map) + A2 (Deployment Audit) + all in-session evidence | Claude |
 | 2026-08-09 (later) | **Wave 1 COMPLETE** — Fly workers `nex-brain-worker` scaled to 0. Both machines DESTROYED. Heartbeats stopped advancing for >2 min (`8ed9d16c720908` frozen at cycles=44615, `2870903c4d2638` frozen at cycles=44633). Wave 1 evidence: `fly scale count 0 --app nex-brain-worker` executed 19:40Z · verified via `worker_heartbeats` REST query. | Claude |
 | 2026-08-09 (later) | **Wave 2 COMPLETE — HARPER PROVEN** — image `nx_msks7ddw_90ae2b5a` (badge-02.png · 58 KB · hash `59f9cb35...`) processed end-to-end in 45 seconds by local dev (`@5572`). Real vision LLM: **gemini · gemini-flash-latest · 12503ms · 2038 tokens in · 705 out**. Knowledge record `graphic_badge_new_this_week_v1` created UNDER_REVIEW (Iris confidence 0.801). Vision analysis is genuine — Harper accurately described the actual PNG contents. Zero ENOENT. Single attempt. No Fly interference (Fly machines destroyed before upload). **Image-analyst has its first successful lifetime completion.** | Claude |
+| 2026-08-09 (later) | **Wave 3 COMPLETE — NEX Object Storage adapter + wire-up + backfill** — 3 commits (`133b7c6` adapter · `023bd0f` wire-up · `fc33a75` backfill). Migrations 044 (nex.object_blobs + nex.object_blob_current) + 045 (nex.knowledge_inbox.object_bucket/object_key columns). `PostgresObjectStorage` adapter implements 7-method ObjectStorage contract · 20/20 contract tests pass. Consumers wired: `saveFileItem` writes bytes into nex.object_blobs via `getObjectStorage().put()` · manager + 3 context workers propagate `objectBucket`+`objectKey` in job payloads · image-analyst reads via `getObjectStorage().get()` with legacy filesystem fallback for pre-Phase-3a items · every worker_result now carries `bytes:nex-object-storage` OR `bytes:filesystem-legacy` flag as audit trail. Live proof: badge-04.png upload → nex.object_blobs (61313 bytes verified) → Harper via Postgres (worker_result flag `bytes:nex-object-storage`) → knowledge record `graphic_latest_release_excavator_v1` UNDER_REVIEW conf 0.881 · 12111ms gemini-flash-latest. Backfill: 5 legacy items migrated (856,917 bytes total) · 7/7 inbox items with file_path now have valid object_bucket/object_key. | Claude |
 | — | Future updates land here as B/C/D phases complete | — |
 
 ---
@@ -377,7 +378,7 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 
 | Blocker | Status | Evidence |
 |---|---|---|
-| P0-1 · Inbox binaries per-machine | STILL OPEN · but the code path is proven to work when file is local | Wave 2 succeeded ONLY because file existed on the machine running Harper. Object storage still required for prod. |
+| P0-1 · Inbox binaries per-machine | **RESOLVED** · location-transparent · NEX Object Storage in production for all inbox items in this env | Wave 3: fresh Harper via nex.object_blobs · worker_result flag `bytes:nex-object-storage` · legacy items backfilled 5/5 · code path proven live (commit 023bd0f + fc33a75). Filesystem retained as transition backup only · Phase 3b removes fs write once dual-write proves at scale. |
 | P0-2 · image-analyst 0 lifetime completions | **RESOLVED** for the "code correctness" axis · **NEW: 1 lifetime completion** | worker_results row · 2026-08-08T19:44:20 · gemini vision · real tokens |
 | P0-3 · Shared queue split-brain (2 Fly + 1 local) | **RESOLVED via Fly destruction** (Wave 1) · but this is a REVERSIBLE state, not a permanent fix | fly scale count 0 · both machines destroyed · Fly `Image: -` (no active image) |
 | P0-4 · Fly workers run pre-Phase-12.3 code | RESOLVED via Fly destruction · legacy code no longer running | Same as above |
@@ -387,7 +388,7 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 | P0-10 · Brain backfill not executed | STILL OPEN | Wave 5 |
 | P0-11 · No reverse-shadow | STILL OPEN | Wave 7 |
 
-**Revised P0 count: 7 open** (was 11 · reduced by resolutions above).
+**Revised P0 count: 6 open** (was 11 · reduced by Wave 1/2/3 resolutions above).
 
 Two of those resolutions (P0-3, P0-4) are only real for as long as Fly stays scaled to 0. Reviving Fly reintroduces the split-brain and legacy-code issues unless the redeployed image includes the Phase 12.3 code AND uses NEX Postgres backend. That decision is yours (per your standing rule: no auto-resume).
 
