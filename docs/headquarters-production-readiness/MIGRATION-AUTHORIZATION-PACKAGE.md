@@ -294,14 +294,12 @@ Each gate requires Philip's explicit go before proceeding:
 ## 17 · Current honest label
 
 ```
-HEADQUARTERS ·
-  BUILD COMPLETE           ✅  (14 suites · 236/236 tests · all Waves 1-7 machinery ready)
-  PRODUCTION MIGRATION     ⏳  (Sections 1-14 all EMPTY · migration has not started)
-  WORKER DEPLOYMENT        ⏳  (Fly at 0 · replacement topology not selected)
-  AUDIT CLOSURE            ⏳  (P1/P2/P3 audits · security · compliance not yet done)
+HEADQUARTERS ENGINEERING BUILD:     COMPLETE               ✅
+HEADQUARTERS PRODUCTION DEPLOYMENT: NOT YET COMPLETE       ⏳
+HEADQUARTERS PRODUCTION READINESS:  NOT YET VERIFIED       ⏳
 ```
 
-**Verdict:** the earlier architectural problems have been reduced from a confusing collection of failures to a controlled migration programme with explicit closure criteria. But every field in this document is EMPTY. Nothing has actually moved to production. Do not conflate "ready" with "done."
+**Verdict:** the earlier architectural problems have been reduced from a confusing collection of failures to a controlled migration programme with explicit closure criteria. But every field in this document (Sections 1-14) is EMPTY. Nothing has actually moved to production. The Reception fix rule applies to this document itself · do not conflate "engineering build complete" with "production deployment complete" with "production readiness verified." They are three distinct states.
 
 ---
 

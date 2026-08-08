@@ -6,15 +6,29 @@
 **Objective:** Produce a single evidence-backed truth of Headquarters production readiness. Every subsystem classified. Every P0/P1 finding surfaced. Every claim traceable.
 **Rule:** A test suite passing 236/236 does NOT declare production-ready. The Harper discovery is the precedent — code that passed static contract tests had 0 successful production completions in its lifetime.
 
-## HONEST LABEL (Philip 2026-08-09)
+## HONEST LABEL (Philip 2026-08-09 · language correction)
 
 ```
-HEADQUARTERS ·
-  BUILD COMPLETE           ✅  (14 suites · 236/236 tests · Waves 1-7 machinery ready)
-  PRODUCTION MIGRATION     ⏳  (73,233-row backfill not yet executed)
-  WORKER DEPLOYMENT        ⏳  (Fly at 0 · replacement topology not selected)
-  AUDIT CLOSURE            ⏳  (P1/P2/P3 · security · compliance not yet done)
+HEADQUARTERS ENGINEERING BUILD:     COMPLETE               ✅
+HEADQUARTERS PRODUCTION DEPLOYMENT: NOT YET COMPLETE       ⏳
+HEADQUARTERS PRODUCTION READINESS:  NOT YET VERIFIED       ⏳
 ```
+
+Component-level status:
+```
+Architecture / Waves 1-7 machinery:       ✅ 14 suites · 236/236 tests
+73,233-row Supabase → Postgres backfill:  ⏳ dry-run OK · --execute pending
+Worker deployment topology:               🔴 Fly at 0 · replacement not selected
+Six-worker production prove-out:          🔴 not yet run on final architecture
+P1/P2/P3 engineering-quality audit:       ⏳ machinery survey · findings not compiled
+Security audit:                           🔴 not started
+Compliance / GDPR audit:                  🔴 not started
+Reception operational-truth audit:        ⚠️ Reception fixed · full operational audit not done
+Recovery / rollback rehearsal:            ⏳ code ready · never exercised end-to-end
+Final production declaration (Gate L):    🔒 locked · impossible until all above green
+```
+
+The phrase "BUILD COMPLETE" alone is inadequate framing · the dashboard itself must not misread the state. This exact three-line labelling replaces every prior "resolved" · "closed" · "ready" phrasing in the audit narrative.
 
 **Fly stays at 0 until the replacement worker topology is selected AND proven.** The legacy `nex-brain-worker` on Fly is NOT the answer · a rebuilt worker deployment against the new stack is. See `MIGRATION-AUTHORIZATION-PACKAGE.md` for the 17-section gated execution plan · every section currently EMPTY.
 
