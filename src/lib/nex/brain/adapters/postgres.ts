@@ -48,17 +48,22 @@ export class PostgresBrainStore implements BrainStore {
   // so the RLS role is always set. Throws (not returns null) when the
   // pool is unavailable · the caller expects a real store.
   private async withTx<T>(fn: (c: PgClientLike) => Promise<T>): Promise<T> {
-    const result = await withClient(async (c) => {
+    // Wrap the callback's result so the outer `withClient` null-return
+    // can only mean "pool unavailable" — never "callback returned null".
+    // Prior form conflated both and threw a false "URL not configured"
+    // error whenever `fn` legitimately resolved to null (e.g. row-not-
+    // found lookups). Surfaced by wc-companion contract tests.
+    const wrapped = await withClient(async (c) => {
       await c.query("BEGIN");
       try {
         await c.query("SET LOCAL ROLE nex_brain_app");
         const r = await fn(c);
         await c.query("COMMIT");
-        return r;
+        return { value: r };
       } catch (e) { await c.query("ROLLBACK"); throw e; }
     });
-    if (result === null) throw new Error("[postgres-brain-store] NEX_POSTGRES_URL not configured");
-    return result;
+    if (wrapped === null) throw new Error("[postgres-brain-store] NEX_POSTGRES_URL not configured");
+    return wrapped.value;
   }
 
   // ── Records ────────────────────────────────────────────────────────
