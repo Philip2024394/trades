@@ -126,6 +126,9 @@ async function main() {
   // ── Static checks on the extractor + storage source ────────────
   const extractor = readFileSync(join(REPO, "src/lib/nex/brain/workers/knowledge-extractor.ts"), "utf8");
   const storage   = readFileSync(join(REPO, "src/lib/nex/brain/storage.ts"), "utf8");
+  // Wave 11 · Step 10 · F12 · FilesystemStore extracted to its own adapter
+  // file · load it too so EI12 (parity check) can find the class body.
+  const filesystemAdapter = readFileSync(join(REPO, "src/lib/nex/brain/adapters/filesystem.ts"), "utf8");
 
   record("EI6", /store\.insertRecordIdempotent\s*\(/.test(extractor),
     "extractor calls insertRecordIdempotent");
@@ -141,8 +144,10 @@ async function main() {
   record("EI11", /ignoreDuplicates:\s*true/.test(storage)
              && /onConflict:\s*"record_id"/.test(storage),
     "SupabaseStore uses onConflict:record_id + ignoreDuplicates:true (race-safe)");
-  // EI12 · both backends expose the method (parity)
-  const fsHas = /class\s+FilesystemStore\s+implements\s+BrainStore[\s\S]*?insertRecordIdempotent/.test(storage);
+  // EI12 · both backends expose the method (parity).
+  // Wave 11 · Step 10 · F12 · FilesystemStore now lives in adapters/filesystem.ts.
+  // SupabaseStore still inline in storage.ts (extraction pending). Parity intent unchanged.
+  const fsHas = /class\s+FilesystemStore\s+implements\s+BrainStore[\s\S]*?insertRecordIdempotent/.test(filesystemAdapter);
   const sbHas = /class\s+SupabaseStore\s+implements\s+BrainStore[\s\S]*?insertRecordIdempotent/.test(storage);
   record("EI12", fsHas && sbHas, `Filesystem=${fsHas} Supabase=${sbHas}`);
 

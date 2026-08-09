@@ -48,6 +48,12 @@ function record(id, pass, note = "") {
 
 const STORAGE = readFileSync(join(REPO, "src/lib/nex/brain/storage.ts"), "utf8");
 const MANAGER = readFileSync(join(REPO, "src/lib/nex/brain/manager.ts"), "utf8");
+// Wave 11 · Step 10 · F12 · FilesystemStore + SupabaseStore extracted
+// to dedicated adapter files. DD3/DD4/DD5 now read from those files.
+// The invariant tested (each backend implements listRecentPipelineInputRefs
+// and SupabaseStore paginates past PostgREST's 1000-row cap) is unchanged.
+const FS_ADAPTER = readFileSync(join(REPO, "src/lib/nex/brain/adapters/filesystem.ts"), "utf8");
+const SB_ADAPTER = readFileSync(join(REPO, "src/lib/nex/brain/adapters/supabase.ts"), "utf8");
 
 // DD1 · interface declaration
 record("DD1",
@@ -59,18 +65,18 @@ const interfaceBlock = STORAGE.match(/\/\*\*[^*]*Phase 11\.0[\s\S]*?\*\/\s*listR
 record("DD2", !!interfaceBlock && /TRANSITIONAL/i.test(interfaceBlock[0]),
   "interface declaration is marked TRANSITIONAL");
 
-// DD3 · FilesystemStore implementation
-const fsImpl = /class\s+FilesystemStore[\s\S]*?async\s+listRecentPipelineInputRefs\s*\([\s\S]*?\{[\s\S]*?readTable<WorkerJob>/.test(STORAGE);
-record("DD3", fsImpl, "FilesystemStore.listRecentPipelineInputRefs reads worker_jobs table");
+// DD3 · FilesystemStore implementation (adapters/filesystem.ts post-F12)
+const fsImpl = /class\s+FilesystemStore[\s\S]*?async\s+listRecentPipelineInputRefs\s*\([\s\S]*?\{[\s\S]*?readTable<WorkerJob>/.test(FS_ADAPTER);
+record("DD3", fsImpl, "FilesystemStore.listRecentPipelineInputRefs reads worker_jobs table (adapters/filesystem.ts)");
 
-// DD4 · SupabaseStore implementation
-const sbImpl = /class\s+SupabaseStore[\s\S]*?async\s+listRecentPipelineInputRefs/.test(STORAGE);
-record("DD4", sbImpl, "SupabaseStore.listRecentPipelineInputRefs present");
+// DD4 · SupabaseStore implementation (adapters/supabase.ts post-F12)
+const sbImpl = /class\s+SupabaseStore[\s\S]*?async\s+listRecentPipelineInputRefs/.test(SB_ADAPTER);
+record("DD4", sbImpl, "SupabaseStore.listRecentPipelineInputRefs present (adapters/supabase.ts)");
 
-// DD5 · SupabaseStore paginates
-const sbPagination = /listRecentPipelineInputRefs[\s\S]{0,600}?range\s*\(\s*from\s*,\s*to\s*\)/.test(STORAGE)
-                  && /pageSize\s*=\s*1000/.test(STORAGE);
-record("DD5", sbPagination, "SupabaseStore pages via range(from, to) past 1000-row cap");
+// DD5 · SupabaseStore paginates (adapters/supabase.ts post-F12)
+const sbPagination = /listRecentPipelineInputRefs[\s\S]{0,600}?range\s*\(\s*from\s*,\s*to\s*\)/.test(SB_ADAPTER)
+                  && /pageSize\s*=\s*1000/.test(SB_ADAPTER);
+record("DD5", sbPagination, "SupabaseStore pages via range(from, to) past 1000-row cap (adapters/supabase.ts)");
 
 // DD6 · manager calls the store method
 record("DD6", /store\.listRecentPipelineInputRefs\(/.test(MANAGER),

@@ -47,10 +47,15 @@ import type {
   WorkerResult, WorkerType,
 } from "./types";
 import type { BrainStore } from "./storage";
+// Wave 11 · Step 10 · F12 · AI7 invariant: NEX_BRAIN_BACKEND is read
+// ONLY in storage.ts. The reverse-shadow gate consults storage.ts's
+// canonical `activeBackend()` accessor rather than the raw env var
+// so backend-selection semantics remain in a single place.
+import { activeBackend } from "./storage";
 
 export function isReverseShadowEnabled(): boolean {
   return process.env.NEX_BRAIN_SHADOW_SUPABASE === "1"
-      && process.env.NEX_BRAIN_BACKEND === "postgres";
+      && activeBackend() === "postgres";
 }
 
 function debug(msg: string, err?: unknown): void {
@@ -59,10 +64,34 @@ function debug(msg: string, err?: unknown): void {
   }
 }
 
-// Fire-and-forget mirror helper. Never throws to the outer scope ·
-// never affects the primary write's return value.
+// Wave 11 · F3 remediation · fire-and-forget mirror still never throws
+// to caller · BUT now every success + failure is counted and each
+// failure emits a structured `shadow-write-failed` signal so operators
+// see drift instead of silent divergence. Prior implementation
+// swallowed failures entirely unless the debug env-flag was set.
 function mirror<T>(label: string, promise: Promise<T>): void {
-  promise.catch((err) => debug(`${label} failed`, err));
+  // Lazy require avoids top-level import cycle with the storage
+  // selector · matches existing pattern (see storage.ts).
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+  promise.then(
+    () => { incr("shadow.mirror_success"); },
+    (err) => {
+      incr("shadow.mirror_failed");
+      const code = (err as { code?: string } | null)?.code;
+      // Detail is bounded + never contains raw err.message (which could
+      // include paths / credentials). Only the method label + err.code.
+      emitSignal({
+        subsystem: "brain-shadow",
+        kind: "shadow-write-failed",
+        code: code ?? "unknown",
+        detail: `method=${label}`,
+      });
+      debug(`${label} failed`, err);
+    },
+  );
 }
 
 /**

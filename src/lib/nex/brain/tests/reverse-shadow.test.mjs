@@ -56,13 +56,18 @@ record("RS2",
   /export function isReverseShadowEnabled\(\)/.test(SHADOW),
   "isReverseShadowEnabled exported");
 
-// RS3 · gate is strict AND
+// RS3 · gate is strict AND of (opt-in env flag) AND (postgres is the active backend).
+// Wave 11 · Step 10 · F12 · AI7 · updated to track the refactor: the
+// postgres-backend check now flows through storage.ts's `activeBackend()`
+// (not a raw NEX_BRAIN_BACKEND read here) so backend-selection semantics
+// live in ONE place. The strict-AND invariant is preserved · this test
+// still fails if the gate loses either clause.
 const gateBlock = SHADOW.match(/export function isReverseShadowEnabled[\s\S]*?^\}/m)?.[0] ?? "";
 const strictAnd =
   /NEX_BRAIN_SHADOW_SUPABASE === "1"/.test(gateBlock)
-  && /NEX_BRAIN_BACKEND === "postgres"/.test(gateBlock)
+  && /activeBackend\(\)\s*===\s*"postgres"/.test(gateBlock)
   && /&&/.test(gateBlock);
-record("RS3", strictAnd, "isReverseShadowEnabled is strict AND of both env flags");
+record("RS3", strictAnd, "isReverseShadowEnabled is strict AND of both flags (SHADOW env + activeBackend()==='postgres')");
 
 // RS4 · every mutation method wraps primary + mirror
 const mutationMethods = [
@@ -135,7 +140,20 @@ const mod = { exports: {} };
 const fn = new Function("module", "process", "exports", "require", transformed.code + `
 module.exports = { MirrorToSupabaseBrainStore, isReverseShadowEnabled };
 `);
-fn(mod, process, mod.exports, () => ({}));
+// Wave 11 GROUP B · mirror() now calls into observability counters +
+// signals via lazy require. Provide no-op stubs so this unit test
+// exercises the class in isolation (the observability integration is
+// tested separately in observability-core.test.mjs).
+const requireShim = (id) => {
+  if (id === "@/lib/nex/observability/counters") {
+    return { incr: () => {} };
+  }
+  if (id === "@/lib/nex/observability/signals") {
+    return { emitSignal: () => {} };
+  }
+  return {};
+};
+fn(mod, process, mod.exports, requireShim);
 const { MirrorToSupabaseBrainStore } = mod.exports;
 
 // Build a fake BrainStore that records every call.

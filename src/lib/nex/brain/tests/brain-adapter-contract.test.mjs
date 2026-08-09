@@ -78,6 +78,14 @@ const PG_URL = process.env.NEX_POSTGRES_URL || "postgresql://postgres:Admin1phil
 const pool   = new Pool({ connectionString: PG_URL, max: 4 });
 
 const STORAGE = readFileSync(join(REPO, "src/lib/nex/brain/storage.ts"), "utf8");
+// Wave 11 · Step 10 · F12 · PostgresBrainStore was extracted to a
+// dedicated adapter file · every static contract check that inspects
+// the class body reads from here instead of storage.ts.
+const POSTGRES_ADAPTER = readFileSync(join(REPO, "src/lib/nex/brain/adapters/postgres.ts"), "utf8");
+// Wave 11 · Step 10 · F12 · SupabaseStore was likewise extracted to
+// adapters/supabase.ts. C6 (parity of method surfaces between
+// SupabaseStore and PostgresBrainStore) reads from here now.
+const SUPABASE_ADAPTER = readFileSync(join(REPO, "src/lib/nex/brain/adapters/supabase.ts"), "utf8");
 
 const results = [];
 function record(id, pass, note = "") {
@@ -125,14 +133,15 @@ async function main() {
   // LAYER A · STATIC CONTRACT
   // ═══════════════════════════════════════════════════════════════════
 
-  // C1 · PostgresBrainStore class
-  record("C1", /class PostgresBrainStore implements BrainStore/.test(STORAGE),
-    "class PostgresBrainStore implements BrainStore");
+  // C1 · PostgresBrainStore class (Wave 11 F12 · now in adapters/postgres.ts)
+  record("C1", /class PostgresBrainStore implements BrainStore/.test(POSTGRES_ADAPTER),
+    "class PostgresBrainStore implements BrainStore (adapters/postgres.ts)");
 
   // C2 · Every BrainStore interface method has a corresponding method
-  // declaration in PostgresBrainStore.
-  const ifaceBlock  = STORAGE.match(/^export interface BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
-  const pgClassBlock = STORAGE.match(/class PostgresBrainStore implements BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
+  // declaration in PostgresBrainStore. Interface still lives in storage.ts;
+  // class body now lives in adapters/postgres.ts.
+  const ifaceBlock   = STORAGE.match(/^export interface BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
+  const pgClassBlock = POSTGRES_ADAPTER.match(/class PostgresBrainStore implements BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
   const ifaceMethods = [...ifaceBlock.matchAll(/^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/gm)]
     .map((m) => m[1])
     .filter((n) => n !== "BrainStore");
@@ -159,8 +168,9 @@ async function main() {
   record("C5", wrapsRole,
     "withTx does BEGIN + SET LOCAL ROLE nex_brain_app + COMMIT/ROLLBACK");
 
-  // C6 · SupabaseStore + PostgresBrainStore share identical method surfaces
-  const sbClassBlock = STORAGE.match(/class SupabaseStore implements BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
+  // C6 · SupabaseStore + PostgresBrainStore share identical method surfaces.
+  // Wave 11 · Step 10 · F12 · SupabaseStore now lives in adapters/supabase.ts.
+  const sbClassBlock = SUPABASE_ADAPTER.match(/class SupabaseStore implements BrainStore \{[\s\S]*?^\}/m)?.[0] ?? "";
   const sbMethods = new Set(
     [...sbClassBlock.matchAll(/^\s*async\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/gm)].map((m) => m[1])
   );
