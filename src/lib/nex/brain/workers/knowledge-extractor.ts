@@ -27,6 +27,10 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { brainStore, nowIso } from "../storage";
+// Wave 11 · Step 8 · F35 · shared finalization sequence.
+import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
+// W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
+import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
 import { complete, completeJson } from "../llm";
 import type {
   Audience,
@@ -188,6 +192,7 @@ export async function runKnowledgeExtractor(options: {
   const store = brainStore();
   const job = await store.claimNextJob("knowledge-extractor", WORKER_ID, options.lease_seconds ?? 60);
   if (!job) return { job: null, draftRecordIds: [] };
+  enterJobCorrelationScope(job);  // W-OBS-1 Path A Layer 1 · CID inherit
 
   // Phase 10.2 · Fix #2B · linked KnowledgeJob transitions to
   // `processing` the moment the extractor actually starts work.
@@ -456,27 +461,32 @@ export async function runKnowledgeExtractor(options: {
     if (draftRecordIds.length === 0) flags.push("no-records-extracted");
     if (allNoOp)                     flags.push("no-op:record_already_exists");
     if (partialNoOp)                 flags.push("partial-no-op:some_records_already_exist");
-    const result = await store.insertResult({
-      job_id: job.id,
-      worker_type: "knowledge-extractor",
-      worker_id: WORKER_ID,
-      output_kind: "record_draft",
-      output_payload: {
-        draft_record_ids: draftRecordIds,
-        no_op_record_ids: noOpRecordIds,
-        no_op:            allNoOp || undefined,
-        no_op_reason:     allNoOp ? "record_already_exists" : undefined,
-        overall_notes: data.overall_notes ?? "",
+    // Wave 11 · Step 8 · F35 · shared finalization sequence.
+    // Extractor emits per-record audits inside insertRecordIdempotent
+    // above · no `finalAudit` here (matches image-analyst · genuine
+    // divergence). Only insertResult + completeJob converge.
+    const result = await finalizeWorkerJob(store, {
+      job,
+      resultInput: {
+        worker_type: "knowledge-extractor",
+        worker_id: WORKER_ID,
+        output_kind: "record_draft",
+        output_payload: {
+          draft_record_ids: draftRecordIds,
+          no_op_record_ids: noOpRecordIds,
+          no_op:            allNoOp || undefined,
+          no_op_reason:     allNoOp ? "record_already_exists" : undefined,
+          overall_notes: data.overall_notes ?? "",
+        },
+        overall_confidence: draftRecordIds.length > 0 ? 0.8 : 0,
+        llm_provider: raw.provider,
+        llm_model: raw.model,
+        llm_tokens_in: raw.tokens_in,
+        llm_tokens_out: raw.tokens_out,
+        llm_ms: raw.ms,
+        flags,
       },
-      overall_confidence: draftRecordIds.length > 0 ? 0.8 : 0,
-      llm_provider: raw.provider,
-      llm_model: raw.model,
-      llm_tokens_in: raw.tokens_in,
-      llm_tokens_out: raw.tokens_out,
-      llm_ms: raw.ms,
-      flags,
     });
-    await store.completeJob(job.id, result.id);
 
     // Phase 10.2 · Fix #2B · close the Knowledge Dump job loop.
     // Move the linked KnowledgeJob to `completed`. Non-fatal · a
@@ -499,9 +509,10 @@ export async function runKnowledgeExtractor(options: {
 
     return { job, result, draftRecordIds };
   } catch (err) {
-    const message = (err as Error).message;
-    console.error("[knowledge-extractor] failed:", message);
-    await store.failJob(job.id, message);
+    // Wave 11 · Step 8 · F35 · shared failure path. Returns the
+    // extracted message so the downstream KnowledgeJob sync doesn't
+    // re-derive it.
+    const message = await failWorkerJob(store, job, err, "knowledge-extractor");
 
     // Phase 10.2 · Fix #2B · propagate failure to the linked KnowledgeJob.
     if (knowledgeJobId) {

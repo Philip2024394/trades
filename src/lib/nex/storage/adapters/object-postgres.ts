@@ -18,7 +18,15 @@
 // behaviour.
 
 import { createHash, randomBytes } from "node:crypto";
-import { withClient, type PgClientLike } from "@/lib/nex/db";
+import type { PgClientLike } from "@/lib/nex/db";
+// Wave 11 · Step 7 · F34 · shared canonical strict variant. Object
+// storage cannot degrade gracefully without a backend so the strict
+// wrapper (throws with .code="pg-not-configured") preserves the
+// original divergent-throw semantic. Bound to the callsite name
+// `withBrainRole` so all 5 downstream call sites continue unchanged.
+import { withBrainRoleStrict as withBrainRoleImpl } from "@/lib/nex/db/with-brain-role";
+// Local closure preserves the context-tag for error messages.
+const withBrainRole = <T>(fn: (c: PgClientLike) => Promise<T>): Promise<T> => withBrainRoleImpl(fn, "object-pg");
 import type {
   DeleteOptions,
   ListItem,
@@ -60,24 +68,9 @@ function newVersionId(): string {
   return `v${ts}-${rand}`;
 }
 
-// ── Transaction discipline · every op runs as nex_brain_app so RLS
-//    enforces access. Mirrors PostgresBrainStore + shadow adapters.
-async function withBrainRole<T>(fn: (c: PgClientLike) => Promise<T>): Promise<T> {
-  const result = await withClient(async (c) => {
-    await c.query("BEGIN");
-    try {
-      await c.query("SET LOCAL ROLE nex_brain_app");
-      const r = await fn(c);
-      await c.query("COMMIT");
-      return r;
-    } catch (e) {
-      await c.query("ROLLBACK").catch(() => {});
-      throw e;
-    }
-  });
-  if (result === null) throw new Error("[object-pg] NEX_POSTGRES_URL not configured");
-  return result;
-}
+// Wave 11 F34 · transaction discipline delegated to the shared
+// canonical helper. The `withBrainRole` name above is bound via
+// import-alias closure so every callsite below is unchanged.
 
 // ── The adapter ─────────────────────────────────────────────────────
 

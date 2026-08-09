@@ -156,9 +156,23 @@ function resolveHostId(): string {
  * `emitAuditEventSync` instead (returns Promise<boolean>).
  */
 export function emitAuditEvent(input: EmitAuditEventInput): void {
-  // Use void to make truly fire-and-forget — no unhandled rejection risk
-  void emitAuditEventSync(input).catch(() => {
-    /* swallowed — already logged in emitAuditEventSync */
+  // Wave 11 · F9 remediation · failures no longer silently swallowed.
+  // Failed events are enqueued into the bounded retry buffer + counter
+  // fires. drainAuditRetryBuffer() (below) is the operator-invokable
+  // retry path — cron-tick can call it opportunistically.
+  void emitAuditEventSync(input).then((ok) => {
+    if (!ok) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { enqueueForRetry } = require("@/lib/nex/observability/retry-buffer") as typeof import("@/lib/nex/observability/retry-buffer");
+      enqueueForRetry(input);
+    }
+  }).catch(() => {
+    // Truly unexpected · emitAuditEventSync itself is supposed to swallow
+    // internal errors and return false. If we somehow get here, enqueue
+    // for retry anyway so the event isn't lost.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { enqueueForRetry } = require("@/lib/nex/observability/retry-buffer") as typeof import("@/lib/nex/observability/retry-buffer");
+    enqueueForRetry(input);
   });
 }
 
@@ -207,9 +221,64 @@ export async function emitAuditEventSync(input: EmitAuditEventInput): Promise<bo
  *  best-effort behaviour. Use when a code path emits several events in
  *  a tight loop (e.g. LLM provider fallthrough logging multiple attempts). */
 export function emitAuditEvents(events: EmitAuditEventInput[]): void {
-  void emitAuditEventsSync(events).catch(() => {
-    /* swallowed — already logged */
+  // Wave 11 · F9 · every failed batch enqueues each event into the
+  // bounded retry buffer individually so the retry loop is per-event
+  // (partial batch failures don't stall subsequent retries).
+  void emitAuditEventsSync(events).then((ok) => {
+    if (!ok) {
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { enqueueForRetry } = require("@/lib/nex/observability/retry-buffer") as typeof import("@/lib/nex/observability/retry-buffer");
+      for (const e of events) enqueueForRetry(e);
+    }
+  }).catch(() => {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { enqueueForRetry } = require("@/lib/nex/observability/retry-buffer") as typeof import("@/lib/nex/observability/retry-buffer");
+    for (const e of events) enqueueForRetry(e);
   });
+}
+
+// Wave 11 · F9 · operator-invokable retry drainer. Callers (cron-tick
+// / a future observability-tick endpoint) invoke this to attempt
+// reinsertion of previously-failed events. Successful retries emit
+// `audit-emit-retried` counter · failed retries re-enqueue up to
+// MAX_RETRY_ATTEMPTS · then drop with `audit-emit-dropped`.
+const MAX_RETRY_ATTEMPTS = 3;
+
+export async function drainAuditRetryBuffer(): Promise<{
+  attempted: number;
+  succeeded: number;
+  requeued: number;
+  dropped: number;
+}> {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { drainRetryBuffer, enqueueForRetry } = require("@/lib/nex/observability/retry-buffer") as typeof import("@/lib/nex/observability/retry-buffer");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+  const snap = drainRetryBuffer<EmitAuditEventInput>();
+  let succeeded = 0, requeued = 0, dropped = 0;
+  for (const entry of snap) {
+    const ok = await emitAuditEventSync(entry.payload).catch(() => false);
+    if (ok) {
+      succeeded += 1;
+      incr("audit.emit_retried");
+      emitSignal({ subsystem: "audit-retry", kind: "audit-emit-retried", code: "success" });
+    } else if (entry.attempts + 1 >= MAX_RETRY_ATTEMPTS) {
+      dropped += 1;
+      incr("audit.emit_dropped");
+      emitSignal({
+        subsystem: "audit-retry",
+        kind: "audit-emit-dropped",
+        code: "max-attempts",
+        detail: `attempts=${entry.attempts + 1}`,
+      });
+    } else {
+      requeued += 1;
+      enqueueForRetry({ ...entry.payload });
+    }
+  }
+  return { attempted: snap.length, succeeded, requeued, dropped };
 }
 
 export async function emitAuditEventsSync(events: EmitAuditEventInput[]): Promise<boolean> {

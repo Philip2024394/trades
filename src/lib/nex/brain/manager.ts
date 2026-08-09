@@ -16,6 +16,8 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { brainStore, nowIso } from "./storage";
+// Wave 11 · Step 9 · F33 · shared canonical priority table.
+import { sourcePriority } from "./priorities";
 import { runKnowledgeContext } from "./workers/knowledge-context";
 import { runVoiceContext } from "./workers/voice-context";
 import { runLearningContext } from "./workers/learning-context";
@@ -167,9 +169,15 @@ export async function dispatchNewInboxItems(): Promise<{
   skipped_already_queued: number;
   skipped_not_text_yet: number;
   reconciled_inbox_status: number;   // Phase 12.1 · number of inbox rows flipped `waiting`→`processing`
+  // Wave 11 · F5 · surface the inbox source health so the cron-tick
+  // response distinguishes "queue empty" (scanned=0, sourceHealth=ok)
+  // from "read failed" (scanned=0, sourceHealth=degraded).
+  inbox_source_health: "ok" | "degraded";
+  inbox_source_reason?: string;
 }> {
   const store = brainStore();
-  const inboxItems = await readInboxIndex();
+  const inboxRead = await readInboxIndex();
+  const inboxItems = inboxRead.items;
 
   // Phase 11.0 · TRANSITIONAL · fixes the pre-11.0 dispatch drift bug.
   //
@@ -292,6 +300,11 @@ export async function dispatchNewInboxItems(): Promise<{
         objectKey:    item.objectKey    ?? null,  // Phase 3a · authoritative
         mimeType: item.mimeType ?? null,
         knowledge_job_id,
+        // W-OBS-1 Path A Layer 1 · propagate CID from inbox item
+        // into the job payload so the worker (which claims + processes
+        // asynchronously in a different call chain) can re-establish
+        // the same ALS scope via withJobCorrelation(job, ...).
+        correlation_id: item.correlation_id ?? null,
       },
     });
     enqueued += 1;
@@ -316,22 +329,58 @@ export async function dispatchNewInboxItems(): Promise<{
   // Phase 12.1 · bulk-flush inbox status transitions · one read + one
   // write per cycle regardless of item count. Best-effort · a writeback
   // failure must NOT roll back the WorkerJobs that already landed.
+  //
+  // Wave 11 · F4 remediation · updateInboxItemStatuses now returns a
+  // discriminated outcome so the cron-tick response distinguishes
+  // "reconciled 5 rows" from "writeback failed · 0 reconciled" from
+  // "partial · 3 reconciled, 2 dropped as invalid rows." Prior code
+  // swallowed everything into `reconciled_inbox_status = 0`.
   let reconciled_inbox_status = 0;
+  let writeback_status: "success" | "partial" | "failed" | "skipped" = "skipped";
+  let writeback_failure_reason: string | undefined;
+  let writeback_dropped_targets = 0;
   if (statusUpdates.size > 0) {
-    try {
-      reconciled_inbox_status = await updateInboxItemStatuses(statusUpdates);
-    } catch (err) {
-      console.warn("[manager] inbox bulk writeback failed:", err instanceof Error ? err.message : err);
+    const wb = await updateInboxItemStatuses(statusUpdates);
+    if (wb.kind === "success") {
+      reconciled_inbox_status = wb.reconciled;
+      writeback_status = "success";
+    } else if (wb.kind === "partial") {
+      reconciled_inbox_status = wb.reconciled;
+      writeback_status = "partial";
+      writeback_dropped_targets = wb.dropped_targets;
+    } else {
+      // wb.kind === "failed"
+      writeback_status = "failed";
+      writeback_failure_reason = wb.reason;
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+      incr("manager.inbox_writeback_failed");
+      emitSignal({
+        subsystem: "manager",
+        kind: "inbox-writeback-failed",
+        code: wb.reason,
+        detail: `requested_updates=${statusUpdates.size}`,
+      });
     }
   }
 
-  return {
+  const out: Awaited<ReturnType<typeof dispatchNewInboxItems>> = {
     scanned: inboxItems.length,
     enqueued,
     skipped_already_queued,
     skipped_not_text_yet,
     reconciled_inbox_status,
+    inbox_source_health: inboxRead.sourceHealth,
   };
+  if (inboxRead.sourceHealth === "degraded") out.inbox_source_reason = inboxRead.reason;
+  // Attach the writeback outcome for cron-tick's response · fields
+  // extend the type at the call site via TypeScript's structural typing.
+  (out as Record<string, unknown>).inbox_writeback_status = writeback_status;
+  if (writeback_status === "failed")  (out as Record<string, unknown>).inbox_writeback_reason = writeback_failure_reason;
+  if (writeback_status === "partial") (out as Record<string, unknown>).inbox_writeback_dropped_targets = writeback_dropped_targets;
+  return out;
 }
 
 // Phase 12.1 · bulk in-place status update for many inbox items in one
@@ -339,32 +388,92 @@ export async function dispatchNewInboxItems(): Promise<{
 // touches `status`. Returns how many rows actually changed (so callers
 // can report the reconciliation count). Wrapped in its own function so
 // it's easy to swap for a Postgres UPDATE when Phase 11.2 lands.
-async function updateInboxItemStatuses(updates: Map<string, InboxItemLite["status"]>): Promise<number> {
-  if (updates.size === 0) return 0;
+// Wave 11 · F4 remediation · discriminated outcome shape that
+// distinguishes complete success · partial success · complete failure.
+// Do NOT collapse partial into success · operators must see when some
+// requested updates could not be applied (e.g. because the target row
+// was dropped by F18 validation).
+type WritebackOutcome =
+  | { kind: "success"; reconciled: number }
+  | { kind: "partial"; reconciled: number; dropped_targets: number }
+  | { kind: "failed"; reason: string };
+
+async function updateInboxItemStatuses(updates: Map<string, InboxItemLite["status"]>): Promise<WritebackOutcome> {
+  if (updates.size === 0) return { kind: "success", reconciled: 0 };
   let items: InboxItemLite[];
+  let droppedByValidation = 0;
   try {
     const raw = await fs.readFile(INBOX_INDEX, "utf8");
     const parsed = JSON.parse(raw);
-    items = Array.isArray(parsed) ? (parsed as InboxItemLite[]) : [];
+    // Wave 11 F18 · validateOrDrop at the JSON.parse boundary.
+    // Malformed items (missing id / wrong status / invalid enum) are
+    // dropped from the write set and signalled to observability.
+    // Prior code cast the whole array to InboxItemLite[] with zero
+    // shape checking · corrupt items silently propagated downstream.
+    // Lazy require avoids top-level import cycle.
+    const rows = Array.isArray(parsed) ? parsed : [];
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { validateOrDrop } = require("@/lib/nex/observability/validate") as typeof import("@/lib/nex/observability/validate");
+    const { valid, dropped } = validateOrDrop<InboxItemLite>(
+      rows,
+      (row, _idx) => {
+        if (row == null || typeof row !== "object") return { ok: false, reason: "row-not-object" };
+        const r = row as Record<string, unknown>;
+        if (typeof r.id !== "string" || r.id.length === 0) return { ok: false, reason: "id-missing" };
+        if (typeof r.status !== "string") return { ok: false, reason: "status-missing" };
+        // We do NOT tightly validate enum here · updateStatuses only cares
+        // about id + writeable-status shape. Full enum validation lives at
+        // the primary readIndex boundary (F17).
+        return { ok: true, value: r as unknown as InboxItemLite };
+      },
+      { subsystem: "manager-inbox-index", counter: "validate.row_dropped", signal_kind: "row-dropped" },
+    );
+    items = valid;
+    droppedByValidation = dropped;
   } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return 0;
-    throw err;
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      // File not present is a legitimate "nothing to reconcile" state ·
+      // NOT a failure. Callers see success with reconciled=0.
+      return { kind: "success", reconciled: 0 };
+    }
+    return { kind: "failed", reason: (err as { code?: string } | null)?.code ?? "read-failed" };
   }
+
+  // Track which requested targets we actually saw in the index so we
+  // can distinguish partial from success (a requested target that was
+  // dropped by validation OR simply absent means we could not apply it).
+  const seenTargets = new Set<string>();
   let changed = 0;
   for (const it of items) {
+    if (updates.has(it.id)) seenTargets.add(it.id);
     const next = updates.get(it.id);
     if (next && it.status !== next) {
       it.status = next;
       changed += 1;
     }
   }
-  if (changed === 0) return 0;
-  await fs.writeFile(INBOX_INDEX, JSON.stringify(items, null, 2), "utf8");
+  const missingTargets = updates.size - seenTargets.size;
+  if (changed === 0 && missingTargets === 0) {
+    return { kind: "success", reconciled: 0 };
+  }
+  try {
+    await fs.writeFile(INBOX_INDEX, JSON.stringify(items, null, 2), "utf8");
+  } catch (err) {
+    return { kind: "failed", reason: (err as { code?: string } | null)?.code ?? "write-failed" };
+  }
   // Phase 11.2 · shadow-write the same bulk transition to Postgres so
   // nex.knowledge_inbox tracks filesystem in real time. Fire-and-
   // forget · best-effort · never blocks the primary path.
   void shadowUpdateInboxStatuses(updates);
-  return changed;
+
+  // Wave 11 · F4 · classify outcome:
+  //   · complete success · every requested target was present + updated
+  //   · partial · some requested targets were absent or dropped by validation
+  const droppedFromRequest = missingTargets + droppedByValidation;
+  if (droppedFromRequest > 0) {
+    return { kind: "partial", reconciled: changed, dropped_targets: droppedFromRequest };
+  }
+  return { kind: "success", reconciled: changed };
 }
 
 // 2 · Run one cycle: drain up to N of each worker in order.
@@ -549,34 +658,59 @@ export async function managerStatus(): Promise<BrainStatus & { manager: { ready:
 // filesystem index · this locked dispatch to the machine that had the
 // inbox file. Routing through readIndex() means any worker (Vercel,
 // Fly rebuilt, local) can dispatch as long as it reaches NEX Postgres.
-async function readInboxIndex(): Promise<InboxItemLite[]> {
+// Wave 11 · F5 remediation · readInboxIndex now returns a
+// discriminated result rather than silently coercing errors to `[]`.
+// The prior behavior made "read failed" indistinguishable from
+// "inbox is empty" — the dispatch loop looked healthy while it did
+// nothing. Callers now see `sourceHealth: "degraded"` when the read
+// throws AND `reason` names the failure class.
+type ReadInboxResult =
+  | { items: InboxItemLite[]; sourceHealth: "ok" }
+  | { items: InboxItemLite[]; sourceHealth: "degraded"; reason: string };
+
+async function readInboxIndex(): Promise<ReadInboxResult> {
   // Lazy require to avoid inflating manager.ts's cold-start surface;
   // inbox storage pulls in the pg-shadow which pulls in pg driver.
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { readIndex } = require("@/lib/nex/knowledge-inbox/storage") as typeof import("@/lib/nex/knowledge-inbox/storage");
   try {
     const items = await readIndex();
-    // Map full InboxItem down to the manager's lightweight shape.
-    // Every field we consume must be present · undefined pass-throughs
-    // are safe because InboxItemLite marks them optional.
-    return items.map((i) => ({
-      id: i.id,
-      title: i.title,
-      kind: i.kind,
-      status: i.status,
-      source: i.source,
-      hash: i.hash,
-      mimeType: i.mimeType,
-      filePath: i.filePath,
-      objectBucket: i.objectBucket,
-      objectKey: i.objectKey,
-      contentPath: i.contentPath,
-      url: i.url,
-      createdAt: i.createdAt,
-    }));
+    return {
+      items: items.map((i) => ({
+        id: i.id,
+        title: i.title,
+        kind: i.kind,
+        status: i.status,
+        source: i.source,
+        hash: i.hash,
+        mimeType: i.mimeType,
+        filePath: i.filePath,
+        objectBucket: i.objectBucket,
+        objectKey: i.objectKey,
+        contentPath: i.contentPath,
+        url: i.url,
+        createdAt: i.createdAt,
+      })),
+      sourceHealth: "ok",
+    };
   } catch (err) {
+    // Wave 11 · F5 · degraded state surfaced explicitly · counter +
+    // signal fire so operators see the outage rather than a phantom
+    // "queue empty" reading.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+    incr("manager.inbox_read_degraded");
+    const code = (err as { code?: string } | null)?.code ?? "unknown";
+    emitSignal({
+      subsystem: "manager",
+      kind: "inbox-read-degraded",
+      code,
+      detail: "readInboxIndex threw · returning empty list with sourceHealth=degraded",
+    });
     console.error("[manager] readInboxIndex failed:", err instanceof Error ? err.message : err);
-    return [];
+    return { items: [], sourceHealth: "degraded", reason: code };
   }
 }
 
@@ -586,21 +720,10 @@ async function readInboxIndex(): Promise<InboxItemLite[]> {
 // through `store.listRecentPipelineInputRefs()` which reads the ACTIVE
 // backend. See dispatchNewInboxItems() for the rationale.
 
-// Priority assignment per Knowledge Source doctrine. Lower number =
-// higher priority — matches the SQL `ORDER BY priority ASC`.
-function sourcePriority(source: InboxItemLite["source"]): number {
-  switch (source) {
-    case "gov-standards":       return 1; // authoritative, run first
-    case "chatgpt-approved":    return 2; // trusted-curated, fast lane
-    case "claude-generated":    return 2;
-    case "customer-qa":         return 3; // FAQ-driven
-    case "raw-research":        return 4; // slow lane
-    case "internet-article":    return 5; // cautious
-    case "personal-ideas":      return 6; // sandbox
-    case "needs-verification":  return 7; // parked
-    default:                    return 5;
-  }
-}
+// Wave 11 · Step 9 · F33 · sourcePriority now lives at
+// src/lib/nex/brain/priorities.ts (canonical). This file's local copy
+// was byte-identical to the 4 other duplicates that were consolidated.
+// See imports at the top of this file.
 
 // ── Cycle report shape ──────────────────────────────────────────────
 

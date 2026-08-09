@@ -19,6 +19,10 @@
 // what elevates the check from schema validation to editorial judgment.
 
 import { brainStore, nowIso } from "../storage";
+// Wave 11 · Step 8 · F35 · shared finalization sequence.
+import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
+// W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
+import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
 import { completeJson } from "../llm";
 import type {
   KnowledgeRecord,
@@ -66,6 +70,7 @@ export async function runQualityChecker(options: {
   const store = brainStore();
   const job = await store.claimNextJob("quality-checker", WORKER_ID, options.lease_seconds ?? 60);
   if (!job) return { job: null };
+  enterJobCorrelationScope(job);  // W-OBS-1 Path A Layer 1 · CID inherit
 
   try {
     const recordId = job.input_ref;
@@ -173,28 +178,29 @@ export async function runQualityChecker(options: {
       });
     }
 
-    // Record the worker result + close the job
-    const result = await store.insertResult({
-      job_id: job.id,
-      worker_type: "quality-checker",
-      worker_id: WORKER_ID,
-      output_kind: "quality_report",
-      output_payload: report as unknown as Record<string, unknown>,
-      overall_confidence: overallConfidence,
-      llm_provider: llmVerdict ? "llm-checked" : "structural-only",
-      llm_model: null,
-      llm_tokens_in: null,
-      llm_tokens_out: null,
-      llm_ms: null,
-      flags,
+    // Wave 11 · Step 8 · F35 · shared finalization sequence.
+    // Quality-checker emits per-record decision audits inside the
+    // for-loop above (each record gets its own insertAudit) · no
+    // `finalAudit` here. Only insertResult + completeJob converge.
+    const result = await finalizeWorkerJob(store, {
+      job,
+      resultInput: {
+        worker_type: "quality-checker",
+        worker_id: WORKER_ID,
+        output_kind: "quality_report",
+        output_payload: report as unknown as Record<string, unknown>,
+        overall_confidence: overallConfidence,
+        llm_provider: llmVerdict ? "llm-checked" : "structural-only",
+        llm_model: null,
+        llm_tokens_in: null,
+        llm_tokens_out: null,
+        llm_ms: null,
+        flags,
+      },
     });
-    await store.completeJob(job.id, result.id);
-
     return { job, result, report };
   } catch (err) {
-    const message = (err as Error).message;
-    console.error("[quality-checker] failed:", message);
-    await store.failJob(job.id, message);
+    await failWorkerJob(store, job, err, "quality-checker");
     return { job };
   }
 }

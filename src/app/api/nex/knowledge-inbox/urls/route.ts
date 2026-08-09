@@ -16,6 +16,8 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { coerceSource, saveFileItem, saveUrlItem } from "@/lib/nex/knowledge-inbox/storage";
 import type { InboxItem } from "@/lib/nex/knowledge-inbox/types";
+// W-OBS-1 Path A Layer 1 · ALS scope for HTTP → inbox → worker CID chain.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,6 +58,10 @@ function collectUrls(input: unknown): string[] {
 }
 
 export async function POST(req: NextRequest) {
+  return runFromRequest(req, () => urlsHandler(req));
+}
+
+async function urlsHandler(req: NextRequest) {
   let body: { source?: unknown; urls?: unknown };
   try {
     body = await req.json();

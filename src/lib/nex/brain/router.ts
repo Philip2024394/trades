@@ -280,9 +280,28 @@ export async function routeAllCompleted(limit = 100): Promise<{
   return { scanned: jobs.length, results };
 }
 
-/** Fire-and-forget wrapper for use inside hot paths (PATCH /jobs). */
+/** Fire-and-forget wrapper for use inside hot paths (PATCH /jobs).
+ *
+ * Wave 11 · F6 remediation · failures now increment a counter AND emit
+ * a `route-failed` signal so operators see routing corruption instead
+ * of silent success. The prior implementation logged and continued —
+ * dashboards showed green while brains stayed empty.
+ */
 export function routeJobSafe(job_id: string): void {
   routeJob(job_id).catch((err) => {
+    // Lazy require avoids top-level import cycle
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+    incr("router.route_failed");
+    const code = (err as { code?: string } | null)?.code;
+    emitSignal({
+      subsystem: "brain-router",
+      kind: "route-failed",
+      code: code ?? "unknown",
+      detail: `job_id=${job_id}`,
+    });
     console.warn("[brain-router] routeJob failed:", err instanceof Error ? err.message : err);
   });
 }

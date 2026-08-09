@@ -12,12 +12,18 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { runProcessInbox } from "@/lib/nex/knowledge-inbox/storage";
+// W-OBS-1 Path A Layer 1 · ALS scope for HTTP → inbox → worker CID chain.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 export async function POST(req: NextRequest) {
+  return runFromRequest(req, () => processHandler(req));
+}
+
+async function processHandler(req: NextRequest) {
   let body: { ids?: unknown } = {};
   try {
     body = await req.json();

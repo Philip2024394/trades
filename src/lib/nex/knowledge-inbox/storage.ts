@@ -36,6 +36,10 @@ import { brainStore } from "@/lib/nex/brain/storage";
 // the transition window for backward compat with legacy readers.
 import { getObjectStorage } from "@/lib/nex/storage/object-registry";
 import { BUCKETS } from "@/lib/nex/storage/object-types";
+// W-OBS-1 Path A Layer 1 · read ambient correlation-ID from the
+// HTTP handler's ALS scope · persist it on the inbox item so the
+// downstream worker chain inherits the same trace ID.
+import { getCorrelationId } from "@/lib/nex/observability/correlation";
 // Phase 11.2 · shadow-write to nex.knowledge_inbox alongside every
 // filesystem mutation when NEX_INBOX_SHADOW_POSTGRES=1. Filesystem
 // stays authoritative until Phase 11.3 flip. Every shadow call is
@@ -108,8 +112,20 @@ export async function readIndex(): Promise<InboxItem[]> {
   if (isPostgresReadEnabled()) {
     const pgRows = await readIndexFromPostgres();
     if (pgRows !== null) return pgRows;
-    // pg unavailable · fall through to filesystem
-    console.warn("[knowledge-inbox] Postgres read returned null · falling back to filesystem");
+    // Wave 11 · F10 remediation · fallback is a distinct state · NEVER
+    // silently indistinguishable from success. Operators need to see
+    // that PG went unavailable and we degraded to filesystem.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+    incr("inbox.pg_read_fallback");
+    emitSignal({
+      subsystem: "inbox",
+      kind: "pg-read-fallback",
+      code: "readIndex",
+      detail: "pg returned null · using filesystem",
+    });
   }
   await ensureDirs();
   try {
@@ -140,7 +156,18 @@ export async function readStats(): Promise<InboxStats> {
   if (isPostgresReadEnabled()) {
     const pgStats = await readStatsFromPostgres();
     if (pgStats !== null) return pgStats;
-    console.warn("[knowledge-inbox] Postgres stats read returned null · falling back to filesystem");
+    // Wave 11 · F10 remediation · fallback = distinct state.
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+    incr("inbox.pg_read_fallback");
+    emitSignal({
+      subsystem: "inbox",
+      kind: "pg-read-fallback",
+      code: "readStats",
+      detail: "pg returned null · using filesystem",
+    });
   }
   await ensureDirs();
   try {
@@ -205,6 +232,7 @@ export async function saveTextItem(input: {
   await fs.writeFile(path.join(CONTENT_DIR, contentFile), input.content, "utf8");
 
   const first = input.content.split("\n")[0]?.slice(0, 90) ?? "Note";
+  const cid = getCorrelationId() ?? undefined;
   const item: InboxItem = {
     id,
     title: input.title?.trim() || first || "Note",
@@ -217,6 +245,7 @@ export async function saveTextItem(input: {
     meta: `${input.content.length.toLocaleString()} chars`,
     previewText: input.content.slice(0, 220),
     contentPath: `content/${contentFile}`,
+    correlation_id: cid,
   };
 
   await appendItem(item);
@@ -285,6 +314,7 @@ export async function saveFileItem(input: {
         ? "Awaiting transcription…"
         : `${input.originalFilename} uploaded (${input.bytes.length.toLocaleString()} bytes)`;
 
+  const cid = getCorrelationId() ?? undefined;
   const item: InboxItem = {
     id,
     title: input.originalFilename,
@@ -302,6 +332,7 @@ export async function saveFileItem(input: {
     originalFilename: input.originalFilename,
     byteSize: input.bytes.length,
     mimeType: input.mimeType,
+    correlation_id: cid,
   };
 
   await appendItem(item);
@@ -322,6 +353,7 @@ export async function saveUrlItem(input: {
 
   const id = makeId();
   const title = normalised.replace(/^https?:\/\//, "").slice(0, 80);
+  const cid = getCorrelationId() ?? undefined;
   const item: InboxItem = {
     id,
     title,
@@ -334,6 +366,7 @@ export async function saveUrlItem(input: {
     meta: "URL · queued for fetch",
     previewText: normalised,
     url: normalised,
+    correlation_id: cid,
   };
 
   await appendItem(item);
@@ -410,10 +443,42 @@ export async function deleteItem(id: string): Promise<boolean> {
 
 // ── Content reader (for the /read endpoint and future processing) ────
 
+/**
+ * Wave 11 remediation · F16 · path-traversal guard.
+ *
+ * Resolves `relative` against `base` and asserts the resulting absolute
+ * path stays confined inside `base`. If not, throws a distinctive
+ * `path-escape` error so callers can 500 + audit (rather than silently
+ * returning null which would hide the attempt).
+ *
+ * Exported so future filesystem readers (voice content, image files,
+ * URL bundles, etc.) can reuse the same check consistently.
+ */
+export function assertPathConfined(base: string, relative: string): string {
+  const resolvedBase = path.resolve(base);
+  const resolved     = path.resolve(base, relative);
+  const withSep      = resolvedBase.endsWith(path.sep) ? resolvedBase : resolvedBase + path.sep;
+  // Two acceptable shapes: resolved === resolvedBase (rare · exact match)
+  //                       OR resolved starts with resolvedBase + path.sep
+  if (resolved !== resolvedBase && !resolved.startsWith(withSep)) {
+    const err: Error & { code?: string } = new Error(
+      `path-escape · attempted read outside allowed root · base=${resolvedBase} rel=${relative} resolved=${resolved}`,
+    );
+    err.code = "path-escape";
+    throw err;
+  }
+  return resolved;
+}
+
 export async function readItemContent(item: InboxItem): Promise<string | null> {
   if (item.contentPath) {
+    // Path-traversal guard MUST run BEFORE fs.readFile. On escape it
+    // throws (does NOT return null) so callers surface a 500 · the
+    // API layer can then log + audit the attempt instead of masking it
+    // as a benign "no content."
+    const safePath = assertPathConfined(ROOT, item.contentPath);
     try {
-      return await fs.readFile(path.join(ROOT, item.contentPath), "utf8");
+      return await fs.readFile(safePath, "utf8");
     } catch {
       return null;
     }
@@ -518,6 +583,37 @@ export async function runProcessInbox(input: {
   // (chatgpt-approved / claude-generated / gov-standards) get priority 3
   // so they overtake noisier sources in a mixed batch.
   const store = brainStore();
+  // ═══════════════════════════════════════════════════════════════════
+  // F33.b · INTENTIONALLY PRESERVED DIVERGENT PRIORITY TABLE
+  // ═══════════════════════════════════════════════════════════════════
+  //
+  // Wave 11 · Step 9 (2026-08-10) · Philip's freeze decision:
+  //   "runProcessInbox uses a distinct priority policy. This is
+  //    intentionally preserved because alignment changes production
+  //    enqueue ordering. No refactor may silently alter these values.
+  //    Alignment requires explicit product authorization."
+  //
+  // DO NOT ALIGN THIS TABLE WITH src/lib/nex/brain/priorities.ts
+  // WITHOUT PHILIP'S EXPLICIT WRITTEN AUTHORIZATION.
+  //
+  // Value delta vs canonical `sourcePriority`:
+  //
+  //   source              canonical    this table    delta
+  //   gov-standards           1            3          -2 (loss of authoritative fast-lane)
+  //   chatgpt-approved        2            3          -1
+  //   claude-generated        2            3          -1
+  //   customer-qa             3            4          -1
+  //   raw-research            4            5          -1
+  //   internet-article        5            5           0 (match)
+  //   personal-ideas          6            7          -1
+  //   needs-verification      7            7           0 (match)
+  //
+  // Drift-catcher: `src/lib/nex/brain/tests/priorities.test.mjs::SPA5`
+  // asserts this comment block AND the divergent gov-standards=3 value
+  // remain present. Any refactor that removes the marker or replaces
+  // the table with a call to `sourcePriority()` MUST also update SPA5
+  // AND cite Philip's authorization in the change log.
+  // ═══════════════════════════════════════════════════════════════════
   const priorityForSource: Record<KnowledgeSource, number> = {
     "chatgpt-approved":   3,
     "claude-generated":   3,
@@ -528,7 +624,12 @@ export async function runProcessInbox(input: {
     "needs-verification": 7,
     "personal-ideas":     7,
   };
+  // Wave 11 · F7 remediation · per-item enqueue failures are now
+  // COUNTED + SIGNALLED + returned to the caller as a distinct
+  // "failed[]" array. Prior implementation logged and continued, so
+  // a batch reporting "enqueued 5" could silently have skipped items.
   let jobsEnqueued = 0;
+  const enqueueFailed: Array<{ id: string; reason: string }> = [];
   for (const it of waitingItems) {
     if (it.kind !== "text") continue;              // images/voice: not in worker pool
     if (reviewIds.has(it.id)) continue;            // held for scrutiny
@@ -549,11 +650,27 @@ export async function runProcessInbox(input: {
       });
       jobsEnqueued += 1;
     } catch (err) {
+      const reason = (err as { code?: string } | null)?.code ?? "enqueue-failed";
+      enqueueFailed.push({ id: it.id, reason });
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { incr } = require("@/lib/nex/observability/counters") as typeof import("@/lib/nex/observability/counters");
+      // eslint-disable-next-line @typescript-eslint/no-require-imports
+      const { emitSignal } = require("@/lib/nex/observability/signals") as typeof import("@/lib/nex/observability/signals");
+      incr("inbox.enqueue_failed");
+      emitSignal({
+        subsystem: "inbox",
+        kind: "enqueue-failed",
+        code: reason,
+        detail: `id=${it.id}`,
+      });
       console.error(`[knowledge-inbox.process] enqueue failed for ${it.id}:`, err);
     }
   }
   if (jobsEnqueued > 0) {
     console.log(`[knowledge-inbox.process] enqueued ${jobsEnqueued} extractor jobs`);
+  }
+  if (enqueueFailed.length > 0) {
+    console.warn(`[knowledge-inbox.process] ${enqueueFailed.length} enqueue attempts failed · ${enqueueFailed.map((f) => f.id).join(", ")}`);
   }
 
   const now = Date.now();
@@ -626,10 +743,16 @@ export async function runProcessInbox(input: {
     faqsGenerated: null,
     edgesCreated: null,
     duplicatesMerged: null,
+    // Wave 11 · F7 · include the failed[] array so the caller (and the
+    // Processing Overlay) can honestly display "X enqueued · Y failed"
+    // rather than pretending everything succeeded.
+    enqueueFailed: enqueueFailed.length > 0 ? enqueueFailed : undefined,
     note:
-      jobsEnqueued > 0
-        ? `${jobsEnqueued} item${jobsEnqueued > 1 ? "s" : ""} handed to the worker pipeline. Real record + FAQ + edge counts appear on Worker Manager as they complete.`
-        : `No items were enqueued for extraction. See Worker Manager for authoritative pipeline state.`,
+      enqueueFailed.length > 0
+        ? `${jobsEnqueued} enqueued · ${enqueueFailed.length} failed (see enqueueFailed[]). Retry via the Worker Manager.`
+        : jobsEnqueued > 0
+          ? `${jobsEnqueued} item${jobsEnqueued > 1 ? "s" : ""} handed to the worker pipeline. Real record + FAQ + edge counts appear on Worker Manager as they complete.`
+          : `No items were enqueued for extraction. See Worker Manager for authoritative pipeline state.`,
   };
   return { report, items: nextItems, stats: nextStats };
 }

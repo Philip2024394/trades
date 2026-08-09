@@ -25,7 +25,8 @@
 //   · Errors caught silently so a Postgres outage doesn't cascade
 
 import type { InboxItem, InboxStatus } from "./types";
-import { withClient } from "@/lib/nex/db";
+// Wave 11 · Step 7 · F34 · shared canonical withBrainRole.
+import { withBrainRole as sharedWithBrainRole } from "@/lib/nex/db/with-brain-role";
 
 export function isShadowEnabled(): boolean {
   return process.env.NEX_INBOX_SHADOW_POSTGRES === "1";
@@ -37,20 +38,8 @@ function debug(msg: string, err?: unknown): void {
   }
 }
 
-async function withBrainRole<T>(fn: (c: import("@/lib/nex/db").PgClientLike) => Promise<T>): Promise<T | null> {
-  return withClient(async (c) => {
-    await c.query("BEGIN");
-    try {
-      await c.query("SET LOCAL ROLE nex_brain_app");
-      const r = await fn(c);
-      await c.query("COMMIT");
-      return r;
-    } catch (e) {
-      await c.query("ROLLBACK").catch(() => {});
-      throw e;
-    }
-  });
-}
+// Local alias so the many callsites below don't need renaming.
+const withBrainRole = sharedWithBrainRole;
 
 // Upsert one full inbox item. Used at capture time (saveTextItem /
 // saveFileItem / saveUrlItem) and also during backfill.

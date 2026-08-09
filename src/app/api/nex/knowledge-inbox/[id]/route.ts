@@ -69,6 +69,19 @@ export async function GET(
   if (!item) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
   }
-  const content = await readItemContent(item);
-  return NextResponse.json({ ok: true, item, content });
+  try {
+    const content = await readItemContent(item);
+    return NextResponse.json({ ok: true, item, content });
+  } catch (err) {
+    // Wave 11 · F16 · path-traversal guard fires as an explicit throw so
+    // the API layer surfaces the attempt rather than masking it as
+    // "no content". Return 500 with a stable code · log the full detail
+    // server-side (never leak the resolved path to the client).
+    const code = (err as { code?: string } | null)?.code;
+    if (code === "path-escape") {
+      console.error(`[api.knowledge-inbox.get] path-escape blocked for item id=${id}:`, err);
+      return NextResponse.json({ ok: false, error: "path_escape" }, { status: 500 });
+    }
+    throw err;
+  }
 }

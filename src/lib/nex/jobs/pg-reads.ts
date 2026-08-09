@@ -19,25 +19,11 @@
 //   · Returns null on failure so caller can fall back cleanly
 
 import type { JobStatus, KnowledgeJob } from "./fs-store";
-import { withClient, type PgClientLike } from "@/lib/nex/db";
+// Wave 11 · Step 7 · F34 · shared canonical withBrainRole.
+import { withBrainRole } from "@/lib/nex/db/with-brain-role";
 
 export function isPostgresReadEnabled(): boolean {
   return process.env.NEX_INBOX_READ_BACKEND === "postgres";
-}
-
-async function withBrainRole<T>(fn: (c: PgClientLike) => Promise<T>): Promise<T | null> {
-  return withClient(async (c) => {
-    await c.query("BEGIN");
-    try {
-      await c.query("SET LOCAL ROLE nex_brain_app");
-      const r = await fn(c);
-      await c.query("COMMIT");
-      return r;
-    } catch (e) {
-      await c.query("ROLLBACK").catch(() => {});
-      throw e;
-    }
-  });
 }
 
 function rowToJob(r: Record<string, unknown>): KnowledgeJob {

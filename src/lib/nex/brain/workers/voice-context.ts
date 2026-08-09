@@ -37,6 +37,12 @@
 //   quality-checker
 
 import { brainStore, nowIso } from "../storage";
+// Wave 11 · Step 8 · F35 · shared finalization sequence.
+import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
+// W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
+import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// Wave 11 · Step 9 · F33 · shared canonical priority table.
+import { sourcePriority } from "../priorities";
 import {
   brandTerm,
   brandTermPlain,
@@ -122,6 +128,7 @@ export async function runVoiceContext(options: {
   const store = brainStore();
   const job = await store.claimNextJob("voice-context", WORKER_ID, options.lease_seconds ?? 30);
   if (!job) return { job: null };
+  enterJobCorrelationScope(job);  // W-OBS-1 Path A Layer 1 · CID inherit
 
   try {
     const inboxItemId = job.input_ref;
@@ -168,67 +175,63 @@ export async function runVoiceContext(options: {
       method: "keyword-v1",
     };
 
-    // Log
-    const result = await store.insertResult({
-      job_id: job.id,
-      worker_type: "voice-context",
-      worker_id: WORKER_ID,
-      output_kind: "voice_guide",
-      output_payload: guide as unknown as Record<string, unknown>,
-      overall_confidence: applicable.length > 0 ? 0.9 : 0.5,
-      llm_provider: "no-llm",
-      llm_model: null,
-      llm_tokens_in: null,
-      llm_tokens_out: null,
-      llm_ms: null,
-      flags: applicable.length === 0 ? ["no-brand-terms-applicable"] : [],
-    });
-
-    // Enqueue Learning Context with the accumulated bundles.
-    // Learning Context will retrieve past feedback + enqueue the
-    // Extractor with all three bundles attached.
-    await store.enqueueJob({
-      worker_type: "learning-context",
-      priority: sourcePriority(source),
-      input_kind: "inbox_item",
-      input_ref: inboxItemId,
-      input_payload: {
-        source,
-        title,
-        kind,
-        contentPath: contentPath ?? null,
-        content: inlineContent ?? null,
-        url: url ?? null,
-        filePath: filePath ?? null,
-        objectBucket: objectBucket ?? null,   // Phase 3a
-        objectKey:    objectKey    ?? null,   // Phase 3a
-        mimeType: mimeType ?? null,
-        knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
-        context_bundle: contextBundle,
-        voice_guide: guide,
+    // Wave 11 · Step 8 · F35 · shared finalization sequence.
+    const result = await finalizeWorkerJob(store, {
+      job,
+      resultInput: {
+        worker_type: "voice-context",
+        worker_id: WORKER_ID,
+        output_kind: "voice_guide",
+        output_payload: guide as unknown as Record<string, unknown>,
+        overall_confidence: applicable.length > 0 ? 0.9 : 0.5,
+        llm_provider: "no-llm",
+        llm_model: null,
+        llm_tokens_in: null,
+        llm_tokens_out: null,
+        llm_ms: null,
+        flags: applicable.length === 0 ? ["no-brand-terms-applicable"] : [],
+      },
+      nextJob: {
+        // Enqueue Learning Context with the accumulated bundles ·
+        // Learning Context retrieves past feedback + enqueues the
+        // Extractor with all three bundles attached.
+        worker_type: "learning-context",
+        priority: sourcePriority(source),
+        input_kind: "inbox_item",
+        input_ref: inboxItemId,
+        input_payload: {
+          source,
+          title,
+          kind,
+          contentPath: contentPath ?? null,
+          content: inlineContent ?? null,
+          url: url ?? null,
+          filePath: filePath ?? null,
+          objectBucket: objectBucket ?? null,   // Phase 3a
+          objectKey:    objectKey    ?? null,   // Phase 3a
+          mimeType: mimeType ?? null,
+          knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
+          context_bundle: contextBundle,
+          voice_guide: guide,
+        },
+      },
+      finalAudit: {
+        entity_type: "worker_jobs",
+        entity_id: inboxItemId,
+        action: "voice-guide-assembled",
+        actor: WORKER_ID,
+        before_state: null,
+        after_state: {
+          brand_terms_applicable: applicable.map((a) => a.key),
+          primary_audience: primaryAudience,
+          content_class: contentClass,
+        },
+        notes: `Voice guide produced with ${applicable.length} brand term(s); primary audience: ${primaryAudience}; class: ${contentClass}`,
       },
     });
-
-    await store.insertAudit({
-      entity_type: "worker_jobs",
-      entity_id: inboxItemId,
-      action: "voice-guide-assembled",
-      actor: WORKER_ID,
-      before_state: null,
-      after_state: {
-        brand_terms_applicable: applicable.map((a) => a.key),
-        primary_audience: primaryAudience,
-        content_class: contentClass,
-      },
-      notes: `Voice guide produced with ${applicable.length} brand term(s); primary audience: ${primaryAudience}; class: ${contentClass}`,
-    });
-
-    await store.completeJob(job.id, result.id);
     return { job, result, guide };
   } catch (err) {
-    const message = (err as Error).message;
-    console.error("[voice-context] failed:", message);
-    await store.failJob(job.id, message);
+    await failWorkerJob(store, job, err, "voice-context");
     return { job };
   }
 }
@@ -410,18 +413,5 @@ function voiceTonePrinciples(
   return [...base, ...audienceSpecific[audience], ...(sourceSpecific[source] ?? [])];
 }
 
-// ── Priority mapping (mirrors manager.ts) ───────────────────────────
-
-function sourcePriority(source: KnowledgeSource): number {
-  switch (source) {
-    case "gov-standards":      return 1;
-    case "chatgpt-approved":   return 2;
-    case "claude-generated":   return 2;
-    case "customer-qa":        return 3;
-    case "raw-research":       return 4;
-    case "internet-article":   return 5;
-    case "personal-ideas":     return 6;
-    case "needs-verification": return 7;
-    default:                   return 5;
-  }
-}
+// Wave 11 · Step 9 · F33 · sourcePriority now imported from the
+// canonical `src/lib/nex/brain/priorities.ts` (see imports at top).

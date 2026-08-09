@@ -30,39 +30,47 @@
 // so the pipeline transparently sees Object Storage references.
 
 import type { InboxItem, InboxStats, InboxKind, InboxStatus, KnowledgeSource } from "./types";
-import { withClient, type PgClientLike } from "@/lib/nex/db";
+import { INBOX_KINDS, INBOX_STATUSES, KNOWLEDGE_SOURCES } from "./types";
+// Wave 11 · Step 7 · F34 remediation · shared canonical withBrainRole.
+// The local copy previously defined in this file has been removed ·
+// migration is behavior-preserving (same Promise<T | null> contract).
+import { withBrainRole } from "@/lib/nex/db/with-brain-role";
+// Wave 11 · GROUP B · closes F17 (enum casts silent). Every pg row is
+// validated at the boundary — invalid rows are dropped from the return
+// set, counted, and signalled to observability.
+import { validateOrDrop } from "@/lib/nex/observability/validate";
 
 export function isPostgresReadEnabled(): boolean {
   return process.env.NEX_INBOX_READ_BACKEND === "postgres";
 }
 
-async function withBrainRole<T>(fn: (c: PgClientLike) => Promise<T>): Promise<T | null> {
-  return withClient(async (c) => {
-    await c.query("BEGIN");
-    try {
-      await c.query("SET LOCAL ROLE nex_brain_app");
-      const r = await fn(c);
-      await c.query("COMMIT");
-      return r;
-    } catch (e) {
-      await c.query("ROLLBACK").catch(() => {});
-      throw e;
-    }
-  });
-}
 
-// Row → InboxItem shape converter. Fields absent in the DB (contentPath,
-// url, etc. for legacy items) fall through as undefined per the type.
-function rowToInboxItem(r: Record<string, unknown>): InboxItem {
-  return {
-    id:               String(r.id),
-    title:            String(r.title),
+// Row → InboxItem shape converter. Wave 11 F17 remediation: replaced
+// bare `as InboxKind` casts with a validator that returns
+// { ok: false, reason } when the DB row has a value outside the enum
+// set. The result is fed to validateOrDrop upstream so invalid rows
+// are dropped from the return set (never propagated to caller with
+// wrong enum tags).
+function validateInboxRow(row: unknown, idx: number): { ok: true; value: InboxItem } | { ok: false; reason: string } {
+  if (row == null || typeof row !== "object") return { ok: false, reason: "row-not-object" };
+  const r = row as Record<string, unknown>;
+  if (typeof r.id !== "string" || r.id.length === 0)         return { ok: false, reason: "id-missing" };
+  if (typeof r.title !== "string")                            return { ok: false, reason: "title-missing" };
+  if (typeof r.kind !== "string" || !(INBOX_KINDS as Set<string>).has(r.kind))          return { ok: false, reason: "invalid-kind" };
+  if (typeof r.status !== "string" || !(INBOX_STATUSES as Set<string>).has(r.status))    return { ok: false, reason: "invalid-status" };
+  if (typeof r.source !== "string" || !(KNOWLEDGE_SOURCES as Set<string>).has(r.source)) return { ok: false, reason: "invalid-source" };
+  if (typeof r.hash !== "string")                             return { ok: false, reason: "hash-missing" };
+  if (r.created_at_ms == null)                                return { ok: false, reason: "created_at_ms-missing" };
+  if (typeof r.created_at_iso !== "string")                   return { ok: false, reason: "created_at_iso-missing" };
+  const item: InboxItem = {
+    id:               r.id,
+    title:            r.title,
     kind:             r.kind as InboxKind,
     status:           r.status as InboxStatus,
     source:           r.source as KnowledgeSource,
     createdAt:        Number(r.created_at_ms),
-    createdAtIso:     new Date(r.created_at_iso as string).toISOString(),
-    hash:             String(r.hash),
+    createdAtIso:     new Date(r.created_at_iso).toISOString(),
+    hash:             r.hash,
     meta:             (r.meta          as string | null) ?? undefined,
     previewText:      (r.preview_text  as string | null) ?? undefined,
     contentPath:      (r.content_path  as string | null) ?? undefined,
@@ -76,6 +84,7 @@ function rowToInboxItem(r: Record<string, unknown>): InboxItem {
     processedAt:      r.processed_at_ms != null ? Number(r.processed_at_ms) : undefined,
     processedNotes:   (r.processed_notes as string | null) ?? undefined,
   };
+  return { ok: true, value: item };
 }
 
 /**
@@ -98,7 +107,14 @@ export async function readIndexFromPostgres(): Promise<InboxItem[] | null> {
            FROM nex.knowledge_inbox
           ORDER BY created_at_iso DESC`,
       );
-      return r.rows.map(rowToInboxItem);
+      // Wave 11 F17 · validateOrDrop replaces bare `rows.map(rowToInboxItem)`.
+      // Invalid rows are dropped + counted + signalled · never propagated.
+      const { valid } = validateOrDrop(r.rows, validateInboxRow, {
+        subsystem: "inbox-pg-read",
+        counter: "validate.row_dropped",
+        signal_kind: "row-dropped",
+      });
+      return valid;
     });
   } catch (err) {
     console.warn("[inbox-pg-read] readIndex failed · caller should fall back to filesystem:", err instanceof Error ? err.message : err);

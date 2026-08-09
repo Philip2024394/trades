@@ -34,6 +34,10 @@
 import { promises as fs } from "node:fs";
 import * as path from "node:path";
 import { brainStore, nowIso } from "../storage";
+// Wave 11 · Step 8 · F35 · shared finalization sequence.
+import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
+// W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
+import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
 import { completeJson, type LlmImage } from "../llm";
 // Phase 3a · NEX Object Storage · location-transparent image reads.
 // Any worker on any machine can fetch the bytes via the adapter · no
@@ -167,6 +171,7 @@ export async function runImageAnalyst(options: {
   const store = brainStore();
   const job = await store.claimNextJob("image-analyst", WORKER_ID, options.lease_seconds ?? 90);
   if (!job) return { job: null, draftRecordIds: [] };
+  enterJobCorrelationScope(job);  // W-OBS-1 Path A Layer 1 · CID inherit
 
   try {
     const inboxItemId = job.input_ref;
@@ -341,44 +346,47 @@ export async function runImageAnalyst(options: {
       });
     }
 
-    // Worker result
-    const result = await store.insertResult({
-      job_id: job.id,
-      worker_type: "image-analyst",
-      worker_id: WORKER_ID,
-      output_kind: "record_draft",
-      output_payload: {
-        draft_record_ids: draftRecordIds,
-        overall_notes: data.overall_notes ?? "",
-        observed_summary: (data.candidate_records ?? []).map((r) => ({
-          record_id: r.record_id,
-          style: r.observed_style,
-          materials: r.observed_materials,
-          construction: r.observed_construction,
-          confidence: r.observed_confidence,
-        })),
+    // Wave 11 · Step 8 · F35 · shared finalization sequence.
+    // No `finalAudit` — image-analyst emits per-record audits inside
+    // the for-loop above, matching the original divergence. That
+    // divergence is genuine domain logic and stays inline; only the
+    // insertResult → completeJob bracket converges.
+    const result = await finalizeWorkerJob(store, {
+      job,
+      resultInput: {
+        worker_type: "image-analyst",
+        worker_id: WORKER_ID,
+        output_kind: "record_draft",
+        output_payload: {
+          draft_record_ids: draftRecordIds,
+          overall_notes: data.overall_notes ?? "",
+          observed_summary: (data.candidate_records ?? []).map((r) => ({
+            record_id: r.record_id,
+            style: r.observed_style,
+            materials: r.observed_materials,
+            construction: r.observed_construction,
+            confidence: r.observed_confidence,
+          })),
+        },
+        overall_confidence: draftRecordIds.length > 0 ? 0.8 : 0,
+        llm_provider: raw.provider,
+        llm_model: raw.model,
+        llm_tokens_in: raw.tokens_in,
+        llm_tokens_out: raw.tokens_out,
+        llm_ms: raw.ms,
+        // Phase 3a · include byteSource so the audit trail proves whether
+        // the image bytes came from NEX Object Storage (location-transparent)
+        // or from the legacy per-machine filesystem. Every completed
+        // image-analyst worker_result now carries a "bytes:<source>" flag.
+        flags: [
+          `bytes:${byteSource}`,
+          ...(draftRecordIds.length === 0 ? ["no-records-extracted"] : []),
+        ],
       },
-      overall_confidence: draftRecordIds.length > 0 ? 0.8 : 0,
-      llm_provider: raw.provider,
-      llm_model: raw.model,
-      llm_tokens_in: raw.tokens_in,
-      llm_tokens_out: raw.tokens_out,
-      llm_ms: raw.ms,
-      // Phase 3a · include byteSource so the audit trail proves whether
-      // the image bytes came from NEX Object Storage (location-transparent)
-      // or from the legacy per-machine filesystem. Every completed
-      // image-analyst worker_result now carries a "bytes:<source>" flag.
-      flags: [
-        `bytes:${byteSource}`,
-        ...(draftRecordIds.length === 0 ? ["no-records-extracted"] : []),
-      ],
     });
-    await store.completeJob(job.id, result.id);
     return { job, result, draftRecordIds };
   } catch (err) {
-    const message = (err as Error).message;
-    console.error("[image-analyst] failed:", message);
-    await store.failJob(job.id, message);
+    await failWorkerJob(store, job, err, "image-analyst");
     return { job, draftRecordIds: [] };
   }
 }

@@ -15,7 +15,8 @@
 // See src/lib/nex/knowledge-inbox/pg-shadow.ts for the pattern.
 
 import type { KnowledgeJob } from "./fs-store";
-import { withClient, type PgClientLike } from "@/lib/nex/db";
+// Wave 11 · Step 7 · F34 · shared canonical withBrainRole.
+import { withBrainRole } from "@/lib/nex/db/with-brain-role";
 
 function shadowEnabled(): boolean {
   return process.env.NEX_INBOX_SHADOW_POSTGRES === "1";
@@ -25,21 +26,6 @@ function debug(msg: string, err?: unknown): void {
   if (process.env.NEX_INBOX_SHADOW_DEBUG === "1") {
     console.warn(`[jobs-shadow] ${msg}`, err instanceof Error ? err.message : err ?? "");
   }
-}
-
-async function withBrainRole<T>(fn: (c: PgClientLike) => Promise<T>): Promise<T | null> {
-  return withClient(async (c) => {
-    await c.query("BEGIN");
-    try {
-      await c.query("SET LOCAL ROLE nex_brain_app");
-      const r = await fn(c);
-      await c.query("COMMIT");
-      return r;
-    } catch (e) {
-      await c.query("ROLLBACK").catch(() => {});
-      throw e;
-    }
-  });
 }
 
 // Insert-or-update the LATEST snapshot of one job. Called from

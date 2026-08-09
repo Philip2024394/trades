@@ -9,10 +9,12 @@
 //   extractor_batch?, checker_batch?, skip_dispatch?
 // }
 //
-// Auth (optional): if NEX_BRAIN_CRON_TOKEN is set on the server, the
-// caller must send it as X-Brain-Cron-Token header. If it's unset,
-// the endpoint is unauthenticated (fine for local dev). When deployed,
-// set the token so only your cron service can trigger cycles.
+// Auth is delegated to src/lib/nex/brain/auth/require-cron-token.ts ·
+// the SINGLE shared boundary for every pipeline-triggering endpoint.
+// Prior to Wave 11 remediation this route implemented its own auth
+// block that silently opened the endpoint in production if
+// NEX_BRAIN_CRON_TOKEN was unset (F15). The shared boundary
+// fails-closed in production.
 //
 // Typical callers:
 //   · "Run one cycle" button on /nex-app/nex-brain
@@ -23,22 +25,19 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { dispatchNewInboxItems, runOneCycle } from "@/lib/nex/brain/manager";
+import { checkCronAuth, cronAuthErrorBody } from "@/lib/nex/brain/auth/require-cron-token";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
 export async function POST(req: NextRequest) {
-  // Cron token check (only enforced when the env var is configured)
-  const requiredToken = process.env.NEX_BRAIN_CRON_TOKEN;
-  if (requiredToken) {
-    const providedToken = req.headers.get("x-brain-cron-token") ?? "";
-    if (providedToken !== requiredToken) {
-      return NextResponse.json(
-        { ok: false, error: "unauthorized" },
-        { status: 401 }
-      );
+  const auth = checkCronAuth(req);
+  if (!auth.ok) {
+    if (auth.code === "misconfigured") {
+      console.error("[api.brain.run-once] " + auth.message);
     }
+    return NextResponse.json(cronAuthErrorBody(auth), { status: auth.status });
   }
 
   let body: {

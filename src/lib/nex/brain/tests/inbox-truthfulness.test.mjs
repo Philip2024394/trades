@@ -73,15 +73,23 @@ record("IB4", reconciliationSet, "reconciliation path assigns processing for alr
 const progressionSet = /await store\.enqueueJob\([\s\S]*?enqueued\s*\+=\s*1;[\s\S]{0,600}?statusUpdates\.set\(item\.id,\s*"processing"\)/.test(MANAGER);
 record("IB5", progressionSet, "progression path assigns processing after enqueue");
 
-// IB6 · writeback wrapped in try/catch · never throws to caller
-const bulkGuarded = /if\s*\(\s*statusUpdates\.size\s*>\s*0\s*\)\s*\{[\s\S]{0,300}?try\s*\{[\s\S]{0,300}?updateInboxItemStatuses\(statusUpdates\)/.test(MANAGER)
-                 && /console\.warn\("\[manager\] inbox bulk writeback failed/.test(MANAGER);
-record("IB6", bulkGuarded, "writeback guarded by try/catch · warns on failure");
+// IB6 · Wave 11 · F4 · writeback returns a discriminated outcome
+// (WritebackOutcome) so caller sees success / partial / failed. Prior
+// implementation used try/catch to swallow failures — the remediation
+// replaced that with a return-shape distinction. Original safety
+// invariant preserved: caller never throws even on writeback failure.
+const bulkGuardedOutcome = /const wb = await updateInboxItemStatuses\(statusUpdates\)/.test(MANAGER)
+                        && /wb\.kind === "success"/.test(MANAGER)
+                        && /wb\.kind === "partial"/.test(MANAGER)
+                        && /wb\.kind === "failed"|kind: "failed"/.test(MANAGER)
+                        && /type WritebackOutcome =/.test(MANAGER);
+record("IB6", bulkGuardedOutcome, "writeback returns WritebackOutcome · caller matches on success/partial/failed · never throws");
 
-// IB7 · return type includes reconciled_inbox_status
+// IB7 · return type includes reconciled_inbox_status AND the F5-added
+// inbox_source_health field. Both are required post-remediation.
 const returnTypeExtended = /reconciled_inbox_status:\s*number;\s*\/\/\s*Phase 12\.1/.test(MANAGER)
-                        && /reconciled_inbox_status,?\s*\}?;?\s*\}/.test(MANAGER);
-record("IB7", returnTypeExtended, "dispatch return type includes reconciled_inbox_status");
+                        && /inbox_source_health: "ok" \| "degraded"/.test(MANAGER);
+record("IB7", returnTypeExtended, "dispatch return includes reconciled_inbox_status + inbox_source_health (F4+F5)");
 
 // IB8 · Factory icon imported
 record("IB8", /import[\s\S]*?Factory[\s\S]*?from ["']lucide-react["']/.test(NAV),

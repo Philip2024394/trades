@@ -89,11 +89,20 @@ async function main() {
     /NEX_INBOX_SHADOW_POSTGRES\s*===\s*"1"/.test(INBOX_SHADOW),
     "inbox pg-shadow gated on NEX_INBOX_SHADOW_POSTGRES=1");
 
-  // S4 · both shadow modules wrap ops in nex_brain_app role
-  record("S4",
-    /SET LOCAL ROLE nex_brain_app/.test(INBOX_SHADOW)
-      && /SET LOCAL ROLE nex_brain_app/.test(JOBS_SHADOW),
-    "both shadow modules SET LOCAL ROLE nex_brain_app");
+  // S4 · Wave 11 · Step 7 · F34 · both shadow modules use the
+  // nex_brain_app role via the shared canonical helper. Prior to F34
+  // each file inlined `SET LOCAL ROLE nex_brain_app` directly · that
+  // string has moved to src/lib/nex/db/with-brain-role.ts. The
+  // invariant is unchanged (both files USE the role); the check now
+  // verifies both import the shared helper AND the shared helper is
+  // the sole owner of the SET LOCAL ROLE call.
+  const wbrSharedSrc = readFileSync(join(REPO, "src/lib/nex/db/with-brain-role.ts"), "utf8");
+  const bothImportShared =
+    /from ["']@\/lib\/nex\/db\/with-brain-role["']/.test(INBOX_SHADOW)
+    && /from ["']@\/lib\/nex\/db\/with-brain-role["']/.test(JOBS_SHADOW);
+  const sharedEnforcesRole = /SET LOCAL ROLE nex_brain_app/.test(wbrSharedSrc);
+  record("S4", bothImportShared && sharedEnforcesRole,
+    "both shadow modules use nex_brain_app role via the shared with-brain-role helper (F34)");
 
   // S5 · shadow functions swallow errors (never throw)
   const inboxCatches = (INBOX_SHADOW.match(/catch\s*\(err\)/g) ?? []).length;

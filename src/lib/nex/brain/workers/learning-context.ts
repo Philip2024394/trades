@@ -50,6 +50,12 @@
 //   quality-checker
 
 import { brainStore, nowIso } from "../storage";
+// Wave 11 · Step 8 · F35 · shared finalization sequence.
+import { finalizeWorkerJob, failWorkerJob } from "./_finalize";
+// W-OBS-1 Path A Layer 1 · CID inherit from job.input_payload.
+import { enterJobCorrelationScope } from "@/lib/nex/observability/correlation";
+// Wave 11 · Step 9 · F33 · shared canonical priority table.
+import { sourcePriority } from "../priorities";
 import type {
   KnowledgeFeedback,
   KnowledgeSource,
@@ -114,6 +120,7 @@ export async function runLearningContext(options: {
   const store = brainStore();
   const job = await store.claimNextJob("learning-context", WORKER_ID, options.lease_seconds ?? 30);
   if (!job) return { job: null };
+  enterJobCorrelationScope(job);  // W-OBS-1 Path A Layer 1 · CID inherit
 
   try {
     const inboxItemId = job.input_ref;
@@ -207,26 +214,6 @@ export async function runLearningContext(options: {
       overall_lesson: overallLesson,
     };
 
-    // Log the result
-    const result = await store.insertResult({
-      job_id: job.id,
-      worker_type: "learning-context",
-      worker_id: WORKER_ID,
-      output_kind: "learning_bundle",
-      output_payload: bundle as unknown as Record<string, unknown>,
-      overall_confidence: examples.length > 0 ? Math.min(1, examples[0].relevance_score / 20) : 0.5,
-      llm_provider: "no-llm",
-      llm_model: null,
-      llm_tokens_in: null,
-      llm_tokens_out: null,
-      llm_ms: null,
-      flags: examples.length === 0
-        ? recent.length === 0
-          ? ["no-feedback-in-window"]
-          : ["no-relevant-feedback"]
-        : [],
-    });
-
     // Route the final authoring stage by inbox item kind:
     //   image → image-analyst (vision-capable LLM)
     //   text/url (and everything else) → knowledge-extractor
@@ -234,60 +221,85 @@ export async function runLearningContext(options: {
     // later; until then they route to knowledge-extractor which handles
     // them gracefully by treating any content as text.
     const nextWorker = kind === "image" ? "image-analyst" : "knowledge-extractor";
-    await store.enqueueJob({
-      worker_type: nextWorker,
-      priority: sourcePriority(source),
-      input_kind: "inbox_item",
-      input_ref: inboxItemId,
-      input_payload: {
-        source,
-        title,
-        kind,
-        contentPath: contentPath ?? null,
-        content: inlineContent ?? null,
-        url: url ?? null,
-        filePath: filePath ?? null,
-        objectBucket: objectBucket ?? null,   // Phase 3a
-        objectKey:    objectKey    ?? null,   // Phase 3a
-        mimeType: mimeType ?? null,
-        knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
-        context_bundle: contextBundle,
-        voice_guide: voiceGuide,
-        learning_bundle: bundle,
+
+    // Wave 11 · Step 8 · F35 · shared finalization sequence.
+    // The betweenNextJobAndFinalAudit hook preserves the pre-remediation
+    // ordering exactly: insertResult → enqueue(next) → mark-feedback-applied
+    // → finalAudit → completeJob. If mark-feedback throws, the whole
+    // job goes to failed (same as before).
+    const result = await finalizeWorkerJob(store, {
+      job,
+      resultInput: {
+        worker_type: "learning-context",
+        worker_id: WORKER_ID,
+        output_kind: "learning_bundle",
+        output_payload: bundle as unknown as Record<string, unknown>,
+        overall_confidence: examples.length > 0 ? Math.min(1, examples[0].relevance_score / 20) : 0.5,
+        llm_provider: "no-llm",
+        llm_model: null,
+        llm_tokens_in: null,
+        llm_tokens_out: null,
+        llm_ms: null,
+        flags: examples.length === 0
+          ? recent.length === 0
+            ? ["no-feedback-in-window"]
+            : ["no-relevant-feedback"]
+          : [],
+      },
+      nextJob: {
+        worker_type: nextWorker,
+        priority: sourcePriority(source),
+        input_kind: "inbox_item",
+        input_ref: inboxItemId,
+        input_payload: {
+          source,
+          title,
+          kind,
+          contentPath: contentPath ?? null,
+          content: inlineContent ?? null,
+          url: url ?? null,
+          filePath: filePath ?? null,
+          objectBucket: objectBucket ?? null,   // Phase 3a
+          objectKey:    objectKey    ?? null,   // Phase 3a
+          mimeType: mimeType ?? null,
+          knowledge_job_id: (job.input_payload as { knowledge_job_id?: string | null } | null)?.knowledge_job_id ?? null,
+          context_bundle: contextBundle,
+          voice_guide: voiceGuide,
+          learning_bundle: bundle,
+        },
+      },
+      betweenNextJobAndFinalAudit: async () => {
+        // Mark selected feedback rows as applied so we can see the
+        // loop completing (feedback → prompt influence → future
+        // improvements). Historically ran BEFORE the final audit + completeJob ·
+        // preserved in this hook so the semantic ordering is unchanged.
+        for (const ex of examples) {
+          // Find the original by matching creation timestamp (fs
+          // backend has no query-by-id shortcut here, but the shape
+          // is enough).
+          const original = allFeedback.find((f) => f.created_at === ex.created_at && f.feedback_kind === ex.kind);
+          if (original && !original.applied_to_prompts) {
+            await store.markFeedbackApplied(original.id);
+          }
+        }
+      },
+      finalAudit: {
+        entity_type: "worker_jobs",
+        entity_id: inboxItemId,
+        action: "learning-bundle-assembled",
+        actor: WORKER_ID,
+        before_state: null,
+        after_state: {
+          candidates_scanned: recent.length,
+          examples_selected: examples.length,
+          window_days: RECENT_WINDOW_DAYS,
+        },
+        notes: `Learning bundle produced with ${examples.length}/${recent.length} feedback examples relevant to topic`,
       },
     });
-
-    // Mark selected feedback rows as applied so we can see the loop
-    // completing (feedback → prompt influence → future improvements)
-    for (const ex of examples) {
-      // Find the original by matching creation timestamp (fs backend has
-      // no query-by-id shortcut here, but the shape is enough).
-      const original = allFeedback.find((f) => f.created_at === ex.created_at && f.feedback_kind === ex.kind);
-      if (original && !original.applied_to_prompts) {
-        await store.markFeedbackApplied(original.id);
-      }
-    }
-
-    await store.insertAudit({
-      entity_type: "worker_jobs",
-      entity_id: inboxItemId,
-      action: "learning-bundle-assembled",
-      actor: WORKER_ID,
-      before_state: null,
-      after_state: {
-        candidates_scanned: recent.length,
-        examples_selected: examples.length,
-        window_days: RECENT_WINDOW_DAYS,
-      },
-      notes: `Learning bundle produced with ${examples.length}/${recent.length} feedback examples relevant to topic`,
-    });
-
-    await store.completeJob(job.id, result.id);
     return { job, result, bundle };
   } catch (err) {
-    const message = (err as Error).message;
-    console.error("[learning-context] failed:", message);
-    await store.failJob(job.id, message);
+    await failWorkerJob(store, job, err, "learning-context");
     return { job };
   }
 }
@@ -426,18 +438,5 @@ function summariseLesson(examples: LearningExample[]): string {
   return parts.join(" · ") || "Prior human feedback available.";
 }
 
-// ── Priority mapping (mirrors manager.ts) ───────────────────────────
-
-function sourcePriority(source: KnowledgeSource): number {
-  switch (source) {
-    case "gov-standards":      return 1;
-    case "chatgpt-approved":   return 2;
-    case "claude-generated":   return 2;
-    case "customer-qa":        return 3;
-    case "raw-research":       return 4;
-    case "internet-article":   return 5;
-    case "personal-ideas":     return 6;
-    case "needs-verification": return 7;
-    default:                   return 5;
-  }
-}
+// Wave 11 · Step 9 · F33 · sourcePriority now imported from the
+// canonical `src/lib/nex/brain/priorities.ts` (see imports at top).

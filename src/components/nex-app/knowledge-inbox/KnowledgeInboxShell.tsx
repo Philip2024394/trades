@@ -133,29 +133,35 @@ type InboxItem = {
 
 // Persistent stats returned by GET /list — server rolls these
 // forward on every processing run.
+//
+// Downstream counts (records / FAQs / edges / duplicates) are nullable
+// because the Worker Manager (/nex-app/nex-brain) is authoritative.
+// See feedback_nex_never_pretends_work_done_2026_08_07.md.
 type ServerStats = {
-  recordsCreated: number;
-  recordsUpdated: number;
-  faqsGenerated: number;
-  edgesCreated: number;
-  duplicatesMerged: number;
-  imagesAnalysed: number;
-  voiceNotesTranscribed: number;
   completedToday: number;
   completedTodayDate: string;
+  imagesAnalysed: number;
+  voiceNotesTranscribed: number;
   lastProcessedAt?: number;
+  recordsCreated: number | null;
+  recordsUpdated: number | null;
+  faqsGenerated: number | null;
+  edgesCreated: number | null;
+  duplicatesMerged: number | null;
 };
 
 type ProcessingReport = {
   itemsProcessed: number;
-  recordsCreated: number;
-  recordsUpdated: number;
-  faqsGenerated: number;
-  edgesCreated: number;
-  duplicatesMerged: number;
+  itemsEnqueuedForWorkers: number;
   imagesAnalysed: number;
   voiceNotesTranscribed: number;
   needsReview: number;
+  recordsCreated: number | null;
+  recordsUpdated: number | null;
+  faqsGenerated: number | null;
+  edgesCreated: number | null;
+  duplicatesMerged: number | null;
+  note?: string;
 };
 
 // ── Design tokens (mirror --nex-* CSS custom properties) ─────────────
@@ -397,6 +403,27 @@ export function KnowledgeInboxShell() {
 
   useEffect(() => {
     refresh();
+  }, [refresh]);
+
+  // Live polling · 5s interval · pauses when tab hidden (Page Visibility API).
+  // Same pattern as the ops dashboard. Doctrine: every page should feel alive
+  // without the owner pressing Refresh.
+  useEffect(() => {
+    let intervalId: number | null = null;
+    const start = () => {
+      if (intervalId !== null) return;
+      intervalId = window.setInterval(() => { refresh(); }, 5000);
+    };
+    const stop = () => {
+      if (intervalId !== null) { window.clearInterval(intervalId); intervalId = null; }
+    };
+    const onVisibility = () => { document.hidden ? stop() : start(); };
+    if (!document.hidden) start();
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      stop();
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, [refresh]);
 
   const showToast = useCallback((next: NonNullable<Toast>) => {
@@ -652,14 +679,14 @@ export function KnowledgeInboxShell() {
         {/* ── Hero ────────────────────────────────────────────────── */}
         <Hero />
 
-        {/* ── Stat strip ──────────────────────────────────────────── */}
+        {/* ── Stat strip · shows ONLY counts the inbox owns.
+            Records / FAQs / edges live on the Worker Manager (which is
+            authoritative for those downstream counts). See doctrine:
+            feedback_nex_never_pretends_work_done_2026_08_07.md ── */}
         <StatStrip
           items={items}
           counters={counters}
           completedToday={stats?.completedToday ?? 0}
-          totalsRecordsCreated={stats?.recordsCreated ?? 0}
-          totalsRecordsUpdated={stats?.recordsUpdated ?? 0}
-          totalsFaqsGenerated={stats?.faqsGenerated ?? 0}
           loading={loading}
         />
 
@@ -999,40 +1026,41 @@ function StatStrip({
   items,
   counters,
   completedToday,
-  totalsRecordsCreated,
-  totalsRecordsUpdated,
-  totalsFaqsGenerated,
   loading,
 }: {
   items: InboxItem[];
   counters: { waiting: number; processing: number; review: number };
   completedToday: number;
-  totalsRecordsCreated: number;
-  totalsRecordsUpdated: number;
-  totalsFaqsGenerated: number;
   loading?: boolean;
 }) {
   const cards: Array<{ label: string; value: number; tone: "neutral" | "info" | "warning" | "success" | "accent" }> = [
-    { label: "Items Waiting",     value: counters.waiting,         tone: "neutral" },
-    { label: "Processing",        value: counters.processing,      tone: "info" },
-    { label: "Needs Review",      value: counters.review,          tone: "warning" },
-    { label: "Completed Today",   value: completedToday,           tone: "success" },
-    { label: "Records Created",   value: totalsRecordsCreated,     tone: "accent" },
-    { label: "Records Updated",   value: totalsRecordsUpdated,     tone: "accent" },
-    { label: "FAQs Generated",    value: totalsFaqsGenerated,      tone: "accent" },
+    { label: "Items Waiting",     value: counters.waiting,    tone: "neutral" },
+    { label: "Processing",        value: counters.processing, tone: "info" },
+    { label: "Needs Review",      value: counters.review,     tone: "warning" },
+    { label: "Completed Today",   value: completedToday,      tone: "success" },
   ];
-  // Ensure ESLint's exhaustive-deps is happy by referring to items (surface count).
   const total = items.length;
   return (
-    <section
-      aria-label="Inbox statistics"
-      className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-7"
-    >
-      {cards.map((c) => (
-        <StatCard key={c.label} label={c.label} value={c.value} tone={c.tone} loading={loading} />
-      ))}
-      <span className="sr-only">Total items in inbox: {total}</span>
-    </section>
+    <div>
+      <section
+        aria-label="Inbox statistics"
+        className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4"
+      >
+        {cards.map((c) => (
+          <StatCard key={c.label} label={c.label} value={c.value} tone={c.tone} loading={loading} />
+        ))}
+        <span className="sr-only">Total items in inbox: {total}</span>
+      </section>
+      <a
+        href="/nex-app/nex-brain"
+        className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold hover:underline"
+        style={{ color: TOKEN.textMid }}
+        title="Records created, FAQs generated, and graph relationships are authoritative on the Worker Manager"
+      >
+        Records · FAQs · relationships on <span style={{ color: TOKEN.accentDark }}>Worker Manager</span>
+        <ChevronRight size={12} strokeWidth={2.3} />
+      </a>
+    </div>
   );
 }
 
@@ -1871,16 +1899,25 @@ function ReportOverlay({
   report: ProcessingReport;
   onClose: () => void;
 }) {
-  const rows: Array<{ label: string; value: number; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; tone: string }> = [
-    { label: "Items processed",              value: report.itemsProcessed,        icon: Inbox,        tone: TOKEN.textMid },
-    { label: "Knowledge records created",    value: report.recordsCreated,        icon: Sparkles,     tone: TOKEN.accentDark },
-    { label: "Knowledge records updated",    value: report.recordsUpdated,        icon: RefreshCcw,   tone: TOKEN.accentDark },
-    { label: "FAQs generated",               value: report.faqsGenerated,         icon: Flame,        tone: TOKEN.accent },
-    { label: "Graph relationships created",  value: report.edgesCreated,          icon: ChevronRight, tone: TOKEN.info },
-    { label: "Duplicate information merged", value: report.duplicatesMerged,      icon: CheckCircle2, tone: TOKEN.success },
-    { label: "Images analysed",              value: report.imagesAnalysed,        icon: ImageIcon,    tone: TOKEN.textMid },
-    { label: "Voice notes transcribed",      value: report.voiceNotesTranscribed, icon: Mic,          tone: TOKEN.textMid },
-    { label: "Needs human review",           value: report.needsReview,           icon: Bell,         tone: TOKEN.warning },
+  // Two-tier row model per the "NEX never pretends work has been done"
+  // doctrine (feedback_nex_never_pretends_work_done_2026_08_07.md):
+  // · Real rows show counts we own here (items handled + enqueued + kind counts)
+  // · Downstream rows are shown separately with a "See Worker Manager" pointer
+  //   because those counts live in Supabase and the Worker Manager is
+  //   authoritative for them.
+  const realRows: Array<{ label: string; value: number; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; tone: string }> = [
+    { label: "Items processed",              value: report.itemsProcessed,             icon: Inbox,        tone: TOKEN.textMid },
+    { label: "Handed to worker pipeline",    value: report.itemsEnqueuedForWorkers,    icon: Send,         tone: TOKEN.accentDark },
+    { label: "Images analysed",              value: report.imagesAnalysed,             icon: ImageIcon,    tone: TOKEN.textMid },
+    { label: "Voice notes transcribed",      value: report.voiceNotesTranscribed,      icon: Mic,          tone: TOKEN.textMid },
+    { label: "Needs human review",           value: report.needsReview,                icon: Bell,         tone: TOKEN.warning },
+  ];
+  const downstreamRows: Array<{ label: string; icon: React.ComponentType<{ size?: number; strokeWidth?: number }>; tone: string }> = [
+    { label: "Knowledge records created",    icon: Sparkles,     tone: TOKEN.accentDark },
+    { label: "Knowledge records updated",    icon: RefreshCcw,   tone: TOKEN.accentDark },
+    { label: "FAQs generated",               icon: Flame,        tone: TOKEN.accent },
+    { label: "Graph relationships created",  icon: ChevronRight, tone: TOKEN.info },
+    { label: "Duplicate information merged", icon: CheckCircle2, tone: TOKEN.success },
   ];
   return (
     <motion.div
@@ -1935,7 +1972,7 @@ function ReportOverlay({
         </div>
 
         <div className="mt-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {rows.map((r) => (
+          {realRows.map((r) => (
             <div
               key={r.label}
               className="flex items-center gap-3 rounded-2xl border p-3"
@@ -1960,6 +1997,42 @@ function ReportOverlay({
               </div>
             </div>
           ))}
+        </div>
+
+        {/* Note explaining the handoff to workers */}
+        {report.note ? (
+          <div
+            className="mt-4 rounded-2xl border p-3 text-[12px] leading-relaxed"
+            style={{ background: TOKEN.accentSoft, borderColor: TOKEN.accentDark, color: TOKEN.textMid }}
+          >
+            {report.note}
+          </div>
+        ) : null}
+
+        {/* Downstream counts — the Worker Manager owns these */}
+        <div
+          className="mt-4 rounded-2xl border p-4"
+          style={{ background: TOKEN.surface, borderColor: TOKEN.border }}
+        >
+          <div className="mb-2 text-[10px] font-semibold uppercase tracking-widest" style={{ color: TOKEN.textSoft }}>
+            Downstream · authoritative on Worker Manager
+          </div>
+          <ul className="space-y-1.5">
+            {downstreamRows.map((r) => (
+              <li key={r.label} className="flex items-center gap-2 text-[12px]" style={{ color: TOKEN.textMid }}>
+                <r.icon size={13} strokeWidth={2} />
+                <span className="flex-1">{r.label}</span>
+                <span className="text-[11px]" style={{ color: TOKEN.textSoft }}>See Worker Manager</span>
+              </li>
+            ))}
+          </ul>
+          <a
+            href="/nex-app/nex-brain"
+            className="mt-3 inline-flex items-center gap-1.5 text-[12px] font-semibold"
+            style={{ color: TOKEN.accentDark }}
+          >
+            Open Worker Manager <ChevronRight size={14} strokeWidth={2.3} />
+          </a>
         </div>
 
         <div className="mt-5 flex justify-end">
