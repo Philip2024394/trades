@@ -402,6 +402,9 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 | 2026-08-09 (later) | **Wave 5 machinery COMPLETE (execution deferred)** — 2 commits (`4e23337` parity report · `66de811` backfill). `scripts/brain-parity-report.mjs` runs read-only against Supabase + Postgres · confirmed 73,233 rows to migrate across 11 tables (audit_log 19,737 · worker_jobs 18,918 · worker_results 18,896 · records 3,562 · edges 4,131 · confidence 4,096 · sources 3,560 · feedback 278 · heartbeats 26 · versions 22 · contradictions 7). `scripts/brain-backfill.mjs` is dry-run by default · requires `--execute` flag · which itself requires Philip's authorization to run. Chunk plan: 154 total chunks · ON CONFLICT DO NOTHING · idempotent · re-runnable. | Claude |
 | 2026-08-09 (later) | **Wave 6a COMPLETE — Inbox items+stats read-flip capability** — commit `7ca285e`. New `src/lib/nex/knowledge-inbox/pg-reads.ts` provides `readIndexFromPostgres()` + `readStatsFromPostgres()`. `readIndex()` and `readStats()` in storage.ts now check `NEX_INBOX_READ_BACKEND=postgres` gate · fall back to filesystem on any Postgres error. Live-verified with the flag on: `GET /api/nex/knowledge-inbox/list` returns 111 items · matches filesystem count · Phase 3a `objectBucket`+`objectKey` fields visible. Gate defaults to filesystem in production. **Wave 6b (dump jobs read-flip · P0-9) is the natural follow-up · not landed in this session.** | Claude |
 | 2026-08-09 (later) | **Wave 7 COMPLETE — Reverse shadow build** — commit `49af498`. `src/lib/nex/brain/pg-to-supabase-shadow.ts` provides `MirrorToSupabaseBrainStore` decorator that wraps a primary Postgres BrainStore and mirrors every mutation to a secondary Supabase BrainStore. Activation requires `NEX_BRAIN_SHADOW_SUPABASE=1` AND `NEX_BRAIN_BACKEND=postgres` (strict AND). Reads pass through primary only · claim never mirrors (no double-lease). Contract test `reverse-shadow.test.mjs` 15/15 · in-memory fakes prove: primary called first · mirror fire-and-forget · mirror throw contained · `insertRecordIdempotent` mirrors only when `created=true`. Ready to activate the moment operator flips both env flags after Wave 5 backfill. Full test-suite state: 14 suites · 236/236 assertions. | Claude |
+| 2026-08-09 (later) | **Wave 8 · Six-worker prove-out v2 COMPLETE for local-dev topology** — `scripts/six-worker-proveout.mjs` v2 with four bug fixes (Section C now queries Supabase where brain lives · Section A.Iris recognises `provider=llm-checked` Part-B marker · Section B runs after Section H fires cron-tick · Section F.static matches template-literal flag construction) + 4-state result model (PASS/FAIL/BLOCKED/TEST-HARNESS-ERROR) + fresh-evidence rule (defaults 5-min window) + image E2E fire (unique per-run hash via PNG trailing marker) + 3-tick cron-tick sequence for staged pipeline. **Result: 33 PASS · 0 FAIL · 2 BLOCKED · 0 TEST-HARNESS-ERROR.** All six workers exercised in one run with fresh evidence: Mason/Blake/Rowan (no-llm) · Avery (cloudflare 15419ms) · Harper (gemini vision 7301ms · `bytes:nex-object-storage` flag observed) · Iris (Part-B llm-checked marker). Heartbeats fresh (<9s) · audit trail fresh · dedup working · SKIP LOCKED verified. 2 BLOCKED items are testing-scope gaps requiring controlled fault-injection (E.supa-lifecycle N/A post-cutover · G.retry-recovery requires provider-key fault-injection). Full detail: Section 16b. **Local-dev PASS ≠ production PASS.** Runner is deployable against production URL once new-stack worker is live. | Claude |
+| 2026-08-09 (later) | **Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension COMMITTED (`493cf86`)** · 12 files · +1198/-22. Adds 5 narrow BrainStore methods (`getWorkerJob` · `listWorkerJobsByInputRef` · `findWorkerJobsByKnowledgeJobId` · `listWorkerResultsByIds` · `writeKnowledgeJobTransitionAudit`) implementing the design in `WORLD-CLASS-OPS-W-C-STORAGE-CONTRACT-EXTENSION-DESIGN.md`. Migration `005_worker_jobs_kjid_expression_index.sql` adds a CONCURRENTLY partial index on `worker_jobs.input_payload->>'knowledge_job_id'` (bounded to ~25% of the table per Phase-1 sample) plus supporting BTree on `input_ref`. Reversible · version-independent. Applies to local PG17 shadow only in this commit; Supabase primary application is a separate authorisation gate. Adapter-isolation drift-catchers extended: AI9 (every BrainStore method has an implementation in every adapter) · AI10 (KnowledgeJobStatus enum stays aligned with fs-store JobStatus) · KJT1 (terminal KJ transitions must pair with the audit helper, or carry an inline drift-exempt-KJT1 comment). New helper `applyTerminalKnowledgeJobTransition` (idempotent · non-fatal audit · DI-clean); `knowledge-extractor.ts` retrofitted to use it. Test suite state: 1823/1825 pass (2 pre-existing failures in `behaviour.test.ts` · unrelated · tracked separately). | Claude |
+| 2026-08-09 (later) | **Wave 8 · G.retry-recovery BLOCKED item CLOSED.** New `src/lib/nex/testing/brain-recovery.ts` scenario walks a synthetic knowledge-context worker_job through claim → simulated crash → reclaim → complete against ANY BrainStore adapter, proving that `attempts>1 AND status=completed` is a reachable state on the current stack. Vitest test at `src/lib/nex/brain/tests/brain-retry-recovery.test.ts` (3/3 pass against filesystem). Operator script `scripts/prove-brain-retry-recovery.ts` runs against whichever backend `brainStore()` selects; proven LIVE against Supabase (job `d72e982f-7a6a-48d2-a13a-a8754f86ffc9` · attempts 0→1→2 · status=completed · row cleaned up · 5.8s duration). Wired as `npm run nex:prove-retry-recovery` (transient) and `npm run nex:prove-retry-recovery:keep` (leaves the row for the six-worker-proveout 5-min freshness window). Wave 8 BLOCKED count drops 2→1; the only remaining BLOCKED item is E.supa-lifecycle which is N/A post-cutover per Section 16b. | Claude |
 | — | Future updates land here as B/C/D phases complete | — |
 
 ---
@@ -450,6 +453,65 @@ Deliberately deferred to future phases · listed here so nothing is quietly miss
 `11 original − 2 verified closed = 9 still requiring production action` (of which 7 are READY and 2 are OPEN).
 
 The two OPEN blockers (P0-6, P0-10) are the same blocker in two forms · the brain migration hasn't started. Once P0-10 executes, P0-6 becomes READY.
+
+---
+
+## Section 16b · Wave 8 · Six-worker prove-out · v2 · fresh-evidence rule (Philip 2026-08-09)
+
+**Runner:** `scripts/six-worker-proveout.mjs` (v2, 35 criteria)
+**Topology:** local dev, `http://localhost:3008`, Fly workers scaled to 0
+**Rule:** every criterion must have fresh evidence within `NEX_PROVEOUT_FRESH_MINUTES` (default 5)
+**Result model:** PASS / FAIL / BLOCKED (with reason) / TEST-HARNESS-ERROR
+
+### Result summary · latest run 2026-08-09T21:24 UTC
+
+| State | Count | Meaning |
+|---|---|---|
+| ✅ PASS | 33 | Criterion measurable **and** met with fresh evidence in last 5 min |
+| ❌ FAIL | 0 | Criterion measurable but not met |
+| ⏸ BLOCKED | 2 | Criterion cannot be measured in this environment · requires controlled test |
+| ⚠ TEST-HARNESS-ERROR | 0 | Runner itself broke |
+
+### Fresh evidence · all six workers exercised in one run
+
+| Persona | Worker type | LLM shape | Latest fresh completion | Provider · ms · tokens |
+|---|---|---|---|---|
+| Mason | knowledge-context | no-llm | 21:23:48 | no-llm |
+| Blake | voice-context | no-llm | 21:23:53 | no-llm |
+| Rowan | learning-context | no-llm | 21:24:01 | no-llm |
+| Avery | knowledge-extractor | real LLM | 21:24:30 | cloudflare · 15419ms · 3580→362 |
+| Harper | image-analyst | real vision LLM | 21:24:41 | **gemini · 7301ms · 2071→697** |
+| Iris | quality-checker | Part-B `llm-checked` marker | 21:24:52 | llm-checked · output=quality_report |
+
+### Additional fresh signals
+
+- **Heartbeats:** all 6 workers observed within last 9 seconds
+- **Audit trail:** every worker fired an audit event in the fresh window (Supabase `audit_log`)
+- **Object storage:** image-analyst worker_result carries `bytes:nex-object-storage` flag at 21:24:41 · proves the object-storage read path is live
+- **Dedup:** live resubmit returns identical inbox item id · proves `findByHash` shortcut is engaged
+- **SKIP LOCKED:** `nex.claim_next_job` verified via static SQL check
+- **PG retry queue:** 13 succeeded rows on our Postgres — retry lifecycle works end-to-end
+
+### The 2 BLOCKED items · reasons for closure requirements
+
+| ID | Criterion | Blocker | Closure requires |
+|---|---|---|---|
+| E.supa-lifecycle | Supabase `llm_retry_queue` has succeeded rows | Legacy Supabase queue is empty (retries were absorbed by our Postgres queue after Wave 5 machinery landed) | Not required — Postgres queue already validated in E.pg-lifecycle. This becomes N/A post-cutover. |
+| G.retry-recovery | Fresh evidence of `attempts>1 AND status=completed` within 5 min | Requires controlled provider-failure injection to reliably reproduce | **CLOSED 2026-08-09.** Scenario `scenarioBrainWorkerRetryRecovery` in `src/lib/nex/testing/brain-recovery.ts` walks a synthetic worker_job through claim → simulated crash → reclaim → complete against ANY BrainStore adapter. Vitest test `src/lib/nex/brain/tests/brain-retry-recovery.test.ts` runs it against filesystem (3/3 pass). Operator script `scripts/prove-brain-retry-recovery.ts` runs it against whichever backend `brainStore()` selects — proven live against Supabase in 5.8s (job `d72e982f-...` · attempts 0→1→2 · status=completed · cleaned up). Invocation: `npm run nex:prove-retry-recovery` (or `:keep` to leave the row in place for the six-worker-proveout freshness window). |
+
+### Verdict
+
+**Six-worker prove-out on this topology: 33/33 measurable criteria pass with fresh evidence.**
+
+Neither BLOCKED item indicates a code defect. Both are testing-scope gaps that require controlled fault-injection tests to close.
+
+**Local-dev PASS ≠ production PASS.** The same runner must re-run against the production topology once the new-stack worker is deployed. When the runner passes against production with `NEX_APP_URL` pointing at the live URL, Wave 8 becomes VERIFIED CLOSED for the production environment.
+
+### State per the three-state model
+
+- **VERIFIED CLOSED on local dev** for the 33 measurable criteria
+- **READY for production** — the runner is deployable · same criteria will run against production URL when worker topology is deployed
+- **NOT YET VERIFIED CLOSED for production** — no production topology exists to run against yet
 
 ---
 

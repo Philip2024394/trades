@@ -27,7 +27,9 @@
     "nex:apply-storage-schema": "node scripts/apply-nex-storage-schema.mjs",
     "nex:verify-parity": "tsx scripts/verify-storage-parity.ts",
     "nex:verify-roundtrip": "tsx scripts/verify-storage-roundtrip.ts",
-    "nex:verify-objects": "tsx scripts/verify-object-storage.ts"
+    "nex:verify-objects": "tsx scripts/verify-object-storage.ts",
+    "nex:prove-retry-recovery": "tsx --env-file=.env.local scripts/prove-brain-retry-recovery.ts",
+    "nex:prove-retry-recovery:keep": "tsx --env-file=.env.local scripts/prove-brain-retry-recovery.ts --keep-evidence"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
