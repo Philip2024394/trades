@@ -5,6 +5,13 @@
 //
 // The pool is lazy · created only when NEX_POSTGRES_URL is set · returns
 // null otherwise so callers can degrade gracefully in dev/test.
+//
+// Wave 11 · Step 11 · F28 · URL resolution routes through the shared
+// `getPostgresUrlOrNull` helper. Null-return semantics preserved · the
+// helper handles empty/whitespace normalisation and malformed-URL
+// detection that this file previously did not.
+
+import { getPostgresUrlOrNull } from "./config/pg";
 
 export type PgClientLike = {
   query: (text: string, params?: unknown[]) => Promise<{ rows: Record<string, unknown>[]; rowCount: number | null }>;
@@ -16,7 +23,7 @@ let poolPromise: Promise<PgPoolLike | null> | null = null;
 
 async function getPool(): Promise<PgPoolLike | null> {
   if (poolPromise) return poolPromise;
-  const url = process.env.NEX_POSTGRES_URL;
+  const url = getPostgresUrlOrNull();
   if (!url) { poolPromise = Promise.resolve(null); return poolPromise; }
   poolPromise = (async () => {
     let pg: unknown;

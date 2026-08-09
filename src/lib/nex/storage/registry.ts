@@ -15,6 +15,12 @@ import { JsonlStorage } from "./adapters/jsonl";
 import { PostgresStorage } from "./adapters/postgres";
 import { DualWriteStorage } from "./adapters/dual-write";
 import type { Policy, PreferenceName, StorageBackend, StorageBackendCapability } from "./types";
+// Wave 11 · Step 11 · F28 · presence check for NEX_POSTGRES_URL
+// centralized. `hasPostgresUrl` never throws · perfect for backend-
+// selection branching (a bad URL means "no PG configured" for the
+// purpose of picking a backend · the pg adapter will then throw with
+// the proper error code when actually instantiated).
+import { hasPostgresUrl } from "../config/pg";
 
 let cached: StorageBackend | null = null;
 
@@ -32,12 +38,12 @@ function build(kind: string): StorageBackend {
     case "postgres":
       // Fail fast if the env var isn't there — better than mysteriously
       // writing nowhere.
-      if (!process.env.NEX_POSTGRES_URL) {
+      if (!hasPostgresUrl()) {
         throw new Error("[nex-storage] NEX_STORAGE_BACKEND=postgres but NEX_POSTGRES_URL is not set");
       }
       return new PostgresStorage();
     case "dual-write":
-      if (!process.env.NEX_POSTGRES_URL) {
+      if (!hasPostgresUrl()) {
         throw new Error("[nex-storage] NEX_STORAGE_BACKEND=dual-write but NEX_POSTGRES_URL is not set (secondary requires it)");
       }
       return new DualWriteStorage(new JsonlStorage(), new PostgresStorage());

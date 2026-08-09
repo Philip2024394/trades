@@ -61,6 +61,9 @@
 // because names don't collide.
 
 import { randomBytes } from "node:crypto";
+// Wave 11 · Step 11 · F28 · presence check helper (see AI7 · env-var
+// interpretation centralized in src/lib/nex/config/pg.ts).
+import { hasPostgresUrl } from "../config/pg";
 import type {
   AuditEntry,
   BrainStatus,
@@ -120,11 +123,12 @@ function isSupabaseConfigured(): boolean {
 // Phase 11.1b · added the "postgres" backend option. Selected when
 // NEX_BRAIN_BACKEND=postgres AND NEX_POSTGRES_URL is present. Zero
 // production traffic today · adapter exists so 11.1c parity can run.
+//
+// Wave 11 · Step 11 · F28 · URL presence check routes through the
+// shared `hasPostgresUrl` helper. Same boolean semantics · one source
+// of env-var interpretation across the codebase.
 function isPostgresConfigured(): boolean {
-  return (
-    process.env.NEX_BRAIN_BACKEND === "postgres" &&
-    Boolean(process.env.NEX_POSTGRES_URL)
-  );
+  return process.env.NEX_BRAIN_BACKEND === "postgres" && hasPostgresUrl();
 }
 
 export function activeBackend(): "filesystem" | "supabase" | "postgres" {

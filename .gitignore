@@ -2,6 +2,7 @@ node_modules
 .next
 .env*
 !.env.local.example
+!.env.example
 *.tsbuildinfo
 .DS_Store
 .vercel

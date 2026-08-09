@@ -24,6 +24,11 @@
 // adapter without `pg` present, they get a clear install instruction.
 
 import type { CollectionStats, QueryFilter, StorageBackend, StorageBackendCapabilities } from "../types";
+// Wave 11 · Step 11 · F28 · URL resolution routes through the shared
+// `getPostgresUrl` helper so the throw-on-missing semantics are
+// centralized (was inline throw here before · now every consumer
+// gets the same error code + prod-vs-dev distinction).
+import { getPostgresUrl } from "../../config/pg";
 
 // ── pg types (minimal, so file compiles without the package) ────────
 
@@ -40,8 +45,10 @@ let poolPromise: Promise<PgPoolLike> | null = null;
 
 async function getPool(): Promise<PgPoolLike> {
   if (poolPromise) return poolPromise;
-  const url = process.env.NEX_POSTGRES_URL;
-  if (!url) throw new Error("[nex-postgres] NEX_POSTGRES_URL not set · cannot init pool");
+  // getPostgresUrl throws with a stable error code (missing-postgres-url,
+  // missing-postgres-url-in-production, or invalid-postgres-url). Callers
+  // that need to distinguish those cases can catch and inspect `err.code`.
+  const url = getPostgresUrl();
 
   poolPromise = (async () => {
     let pgModule: unknown;
