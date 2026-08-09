@@ -26,6 +26,36 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+// ── W-OBS-1 Path A Layer 1 · CID injection ──────────────────────────
+//
+// Middleware runs in Edge runtime · AsyncLocalStorage is NOT available
+// here. The middleware's role is limited to guaranteeing an
+// `x-request-id` header on every page response so client-side error
+// reports can be correlated to server logs. Route handlers under
+// `/api/*` (which the middleware matcher excludes) handle their own
+// CID lifecycle via `runFromRequest` in the Node runtime.
+//
+// CID_PATTERN is inlined here (not imported from ./lib/nex/observability/
+// correlation) because Edge runtime cannot resolve node:async_hooks
+// transitively even for the un-used code path. The regex is identical.
+
+const CID_PATTERN = /^[A-Za-z0-9-]{16,64}$/;
+
+function resolveCorrelationId(req: NextRequest): string {
+  const inbound = req.headers.get("x-request-id");
+  if (typeof inbound === "string" && CID_PATTERN.test(inbound)) {
+    // Page-request trust rule: adopt inbound if format-valid.
+    // (API-route trust matrix lives in runFromRequest for /api/*.)
+    return inbound;
+  }
+  return crypto.randomUUID();
+}
+
+function attachCid<T extends NextResponse>(res: T, cid: string): T {
+  res.headers.set("x-request-id", cid);
+  return res;
+}
+
 // Lowercased hosts that bypass the host-router. Keep in sync with
 // the Vercel project's primary + preview domains.
 const SYSTEM_HOSTS = new Set<string>([
@@ -201,10 +231,15 @@ function applyMerchantRef(
 }
 
 export async function middleware(req: NextRequest): Promise<NextResponse> {
+  // W-OBS-1 Path A Layer 1 · resolve CID once per request · every
+  // return below routes through attachCid() so the response carries
+  // the header for client-side forensics.
+  const cid = resolveCorrelationId(req);
+
   // Bypass for static and API paths.
   const pathname = req.nextUrl.pathname;
   for (const prefix of BYPASS_PATH_PREFIXES) {
-    if (pathname.startsWith(prefix)) return NextResponse.next();
+    if (pathname.startsWith(prefix)) return attachCid(NextResponse.next(), cid);
   }
 
   // Legacy marketplace redirect — Philip 2026-07-27. /nex-app/centre
@@ -214,7 +249,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
       const target = req.nextUrl.clone();
       target.pathname = MARKETPLACE_CANONICAL_PATH;
       // Preserve any query string (search terms etc.)
-      return NextResponse.redirect(target, 302);
+      return attachCid(NextResponse.redirect(target, 302), cid);
     }
   }
 
@@ -222,13 +257,13 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const host = rawHost.toLowerCase().replace(/:\d+$/, "");
   if (!host || SYSTEM_HOSTS.has(host)) {
     // Even on system hosts we still want to capture the ?ref= cookie.
-    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
+    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
   }
 
   // *.vercel.app preview hosts also bypass — they're system, just
   // dynamically named by Vercel.
   if (host.endsWith(".vercel.app")) {
-    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
+    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
   }
 
   // Subdomain-per-trade — bobs-plumbing.thenetworkers.app
@@ -248,7 +283,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     const rewritten = req.nextUrl.clone();
     rewritten.pathname =
       pathname === "/" ? `/trade/${sub}` : `/trade/${sub}${pathname}`;
-    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(rewritten)));
+    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(rewritten))), cid);
   }
 
   // Strip leading www. so the partial UNIQUE index matches either form.
@@ -261,7 +296,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   // and cold-starts often; the client is cheap to create per request.
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!url || !key) return NextResponse.next();
+  if (!url || !key) return attachCid(NextResponse.next(), cid);
 
   const supabase = createClient(url, key, {
     auth: { persistSession: false, autoRefreshToken: false }
@@ -278,7 +313,7 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
     .maybeSingle();
 
   if (!data || !data.slug) {
-    return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next()));
+    return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.next())), cid);
   }
 
   // Rewrite the request to /<slug>/<rest>. The marketing site's
@@ -288,5 +323,5 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
   const url2 = req.nextUrl.clone();
   url2.pathname =
     pathname === "/" ? `/${data.slug}` : `/${data.slug}${pathname}`;
-  return applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(url2)));
+  return attachCid(applyMerchantRef(req, applyAffiliateRef(req, NextResponse.rewrite(url2))), cid);
 }

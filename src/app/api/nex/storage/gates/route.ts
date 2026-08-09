@@ -20,13 +20,21 @@
 // the HQ-internal deployment context. If the HQ is later exposed to
 // non-operator users, gate this behind the HQ session middleware.
 
+import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getFeatureGates, GATE_ENV_NAMES } from "@/lib/nex/config/gates";
+// W-OBS-1 Path A Layer 1 · ALS scope · observability endpoint · CID
+// available to any signal / audit emission downstream.
+import { runFromRequest } from "@/lib/nex/observability/correlation";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  return runFromRequest(req, () => gatesHandler());
+}
+
+async function gatesHandler() {
   const gates = getFeatureGates();
   return NextResponse.json({
     ok: true,

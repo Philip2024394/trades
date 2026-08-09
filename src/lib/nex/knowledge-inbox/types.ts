@@ -27,6 +27,17 @@ export type KnowledgeSource =
   | "customer-qa"         // FAQ generation + gap analysis
   | "personal-ideas";     // keep separate from industry knowledge
 
+// Wave 11 · GROUP B remediation · runtime enum sets used by
+// validateOrDrop at the pg-reads + JSON.parse boundaries. Keep these
+// exhaustively synchronised with the union types above · adding a
+// value to the union means adding it here too.
+export const INBOX_KINDS = new Set<InboxKind>(["text", "file", "url", "voice", "image"]);
+export const INBOX_STATUSES = new Set<InboxStatus>(["waiting", "processing", "review", "processed"]);
+export const KNOWLEDGE_SOURCES = new Set<KnowledgeSource>([
+  "chatgpt-approved", "claude-generated", "raw-research", "internet-article",
+  "needs-verification", "gov-standards", "customer-qa", "personal-ideas",
+]);
+
 // The permanent record for one item in the inbox.
 // This shape is what lives in data/knowledge-inbox/index.json and
 // what the API returns to the client. React state on the client
@@ -60,6 +71,13 @@ export type InboxItem = {
   // Processing lineage — filled by the processing pipeline (v2)
   processedAt?: number;
   processedNotes?: string;
+  // W-OBS-1 Path A Layer 1 · request-scoped correlation identifier
+  // inherited from the HTTP handler's AsyncLocalStorage scope when the
+  // item was captured. Downstream workers propagate this into the
+  // KnowledgeJob and the resulting audit rows so the entire trace
+  // (client HTTP → inbox → worker → audit) shares one ID.
+  // Optional · legacy items and non-HTTP captures may lack it.
+  correlation_id?: string;
 };
 
 // All-time processing totals — persist across sessions.
@@ -112,6 +130,11 @@ export type ProcessingReport = {
 
   // Optional explanation shown in the Processing Overlay
   note?: string;
+
+  // Wave 11 · F7 remediation · surface per-item enqueue failures so a
+  // partial batch never looks like complete success. When present with
+  // length > 0 the caller MUST treat the batch as partial · not success.
+  enqueueFailed?: Array<{ id: string; reason: string }>;
 };
 
 export const EMPTY_STATS: InboxStats = {
