@@ -33,6 +33,22 @@
 //         src/lib/nex/storage/registry.ts (NEX Storage × Env-var
 //         boundary invariant · proves Brain doesn't inadvertently
 //         reach into NEX Storage's config surface).
+//   AI9 · Every method declared on the BrainStore interface must have
+//         a matching implementation in every adapter (filesystem ·
+//         postgres · supabase). Prevents "silent adapter drift" when
+//         someone extends the contract but forgets an adapter.
+//   AI10 · KnowledgeJobStatus (brain/types.ts) enum values must equal
+//         JobStatus (jobs/fs-store.ts). Two independent declarations
+//         exist by F12 AI4 (Brain × NEX Storage separation forbids the
+//         cross-import); this drift-catcher keeps them coherent so
+//         writeKnowledgeJobTransitionAudit never accepts a value the
+//         fs-store cannot produce.
+//   KJT1 · Every terminal KnowledgeJob transition (fs-store.updateJob
+//         with status ∈ {completed,failed,released}) must be paired
+//         with an `applyTerminalKnowledgeJobTransition` call OR carry
+//         an inline `// drift-exempt-KJT1:<reason>` comment. Prevents
+//         regression of the Phase-1 observability gap (KJ transitions
+//         leaving zero audit_log trace).
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -108,7 +124,7 @@ test("AI1 · storage.ts defines brainStore() exactly once · no duplicate select
 
 test("AI2 · adapters/*.ts export ONLY classes · no selector functions · no cached singletons", () => {
   const adapterFiles = readdirSync(ADAPTERS)
-    .filter(f => f.endsWith(".ts"))
+    .filter(f => f.endsWith(".ts") && !f.includes(".test."))
     .map(f => join(ADAPTERS, f));
 
   assert.ok(adapterFiles.length >= 3, `expected ≥3 adapters · found ${adapterFiles.length}`);
@@ -166,7 +182,7 @@ test("AI3 · storage.ts imports NO provider SDK directly", () => {
 
 test("AI4 · brain/adapters/*.ts do NOT import from src/lib/nex/storage/* · Brain × NEX Storage boundary", () => {
   const adapterFiles = readdirSync(ADAPTERS)
-    .filter(f => f.endsWith(".ts"))
+    .filter(f => f.endsWith(".ts") && !f.includes(".test."))
     .map(f => join(ADAPTERS, f));
 
   // Every syntactic form that would reach into NEX Storage:
@@ -306,6 +322,106 @@ test("AI7 · NEX_BRAIN_BACKEND is read ONLY in src/lib/nex/brain/storage.ts · s
     `NEX_BRAIN_BACKEND must be read exactly once in Brain · found in: ${readers.join(", ")}`);
   assert.equal(readers[0], "src/lib/nex/brain/storage.ts",
     `NEX_BRAIN_BACKEND must be read only in storage.ts · found in ${readers[0]}`);
+});
+
+// ── AI9 · every BrainStore method is implemented in every adapter ──
+
+test("AI9 · every BrainStore interface method has an implementation in every adapter", () => {
+  const storageSrc = read(join(BRAIN, "storage.ts"));
+  const ifaceMatch = storageSrc.match(/^export interface BrainStore \{[\s\S]*?^\}/m);
+  assert.ok(ifaceMatch, "storage.ts must expose an `export interface BrainStore` block");
+  const ifaceBlock = ifaceMatch[0];
+  const ifaceMethods = [...ifaceBlock.matchAll(/^\s{2}([a-zA-Z_][a-zA-Z0-9_]*)\s*(?:<[^>]*>)?\s*\(/gm)]
+    .map((m) => m[1])
+    .filter((n) => n && n !== "BrainStore");
+
+  assert.ok(ifaceMethods.length >= 10,
+    `BrainStore interface must declare ≥10 methods · found ${ifaceMethods.length}`);
+
+  const adapterFiles = readdirSync(ADAPTERS)
+    .filter((f) => f.endsWith(".ts") && !f.includes(".test."))
+    .map((f) => join(ADAPTERS, f));
+
+  for (const f of adapterFiles) {
+    const src   = read(f);
+    const path  = rel(f);
+    // A method implementation is `async <name>(` at ≥2-space indent
+    // (class-body level). We tolerate ≥1 space so future formatters
+    // don't false-fail.
+    const declared = new Set(
+      [...src.matchAll(/^\s+async\s+([a-zA-Z_][a-zA-Z0-9_]*)\s*\(/gm)].map((m) => m[1]),
+    );
+    const missing = ifaceMethods.filter((n) => !declared.has(n));
+    assert.equal(missing.length, 0,
+      `${path} · adapter missing BrainStore methods · ${missing.join(", ")}`);
+  }
+});
+
+// ── AI10 · KnowledgeJobStatus stays aligned with fs-store JobStatus ─
+
+test("AI10 · KnowledgeJobStatus (brain/types.ts) values equal JobStatus (jobs/fs-store.ts)", () => {
+  const typesSrc = read(join(BRAIN, "types.ts"));
+  const fsSrc    = readFileSync(join(REPO, "src/lib/nex/jobs/fs-store.ts"), "utf8");
+
+  function unionMembers(src, typeName) {
+    // Match `export type <name> = \n  | "a"\n  | "b" ...` OR inline.
+    const re = new RegExp(`export\\s+type\\s+${typeName}\\s*=\\s*([^;]+);`, "m");
+    const m = src.match(re);
+    if (!m) return null;
+    return [...m[1].matchAll(/"([^"]+)"/g)].map((x) => x[1]).sort();
+  }
+  const brainSide = unionMembers(typesSrc, "KnowledgeJobStatus");
+  const fsSide    = unionMembers(fsSrc,    "JobStatus");
+  assert.ok(brainSide,  "brain/types.ts must declare `export type KnowledgeJobStatus`");
+  assert.ok(fsSide,     "jobs/fs-store.ts must declare `export type JobStatus`");
+  assert.deepEqual(brainSide, fsSide,
+    `KnowledgeJobStatus (${brainSide.join(",")}) must equal JobStatus (${fsSide.join(",")}) · ` +
+    `update one of the type declarations to keep them aligned`);
+});
+
+// ── KJT1 · terminal KJ transitions must pair with the audit helper ──
+
+test("KJT1 · fs-store.updateJob terminal transitions are paired with applyTerminalKnowledgeJobTransition (or exempted)", () => {
+  const SEARCH_ROOTS = [
+    join(REPO, "src/lib/nex/brain/workers"),
+    join(REPO, "src/lib/nex/jobs"),
+  ];
+  const files = [];
+  for (const root of SEARCH_ROOTS) {
+    try { files.push(...walk(root)); } catch { /* dir may not exist */ }
+  }
+
+  const TERMINAL_STATUS_RE = /updateJob\s*\([^)]*status:\s*["'](?:completed|failed|released)["']/g;
+  const violations = [];
+
+  for (const f of files) {
+    const path = rel(f);
+    // The terminal-transition helper itself is where the paired write
+    // lives · it MUST use updateJob(...status:completed...) internally.
+    if (path === "src/lib/nex/jobs/terminal-transition.ts") continue;
+    const src = read(f);
+    const matches = [...src.matchAll(TERMINAL_STATUS_RE)];
+    for (const m of matches) {
+      // Look backward + forward within the enclosing function-ish window
+      // for either (a) the helper name in the same file OR (b) an inline
+      // exemption comment.
+      const idx = m.index;
+      const windowStart = Math.max(0, idx - 800);
+      const windowEnd   = Math.min(src.length, idx + 800);
+      const contextWin  = src.slice(windowStart, windowEnd);
+      const hasHelper   = /applyTerminalKnowledgeJobTransition/.test(contextWin) ||
+                          /applyTerminalKnowledgeJobTransition/.test(src);
+      const hasExempt   = /\/\/\s*drift-exempt-KJT1[\s:]/i.test(contextWin);
+      if (!hasHelper && !hasExempt) {
+        violations.push({ path, snippet: src.slice(Math.max(0, idx - 60), idx + 80).replace(/\s+/g, " ") });
+      }
+    }
+  }
+
+  assert.equal(violations.length, 0,
+    `KJT1 · terminal KnowledgeJob transitions must go through applyTerminalKnowledgeJobTransition ` +
+    `(or carry a "// drift-exempt-KJT1:<reason>" comment). Violations:\n` +
+    violations.map((v) => `  · ${v.path} :: …${v.snippet}…`).join("\n"));
 });
 
 // ── AI8 · NEX_STORAGE_BACKEND is read only in NEX Storage registry ──

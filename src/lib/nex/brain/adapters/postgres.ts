@@ -29,6 +29,7 @@ import type {
   GraphEdge,
   JobStatus,
   KnowledgeFeedback,
+  KnowledgeJobTransitionAudit,
   KnowledgeRecord,
   LlmRetryEntry,
   LlmRetryStatus,
@@ -240,6 +241,100 @@ export class PostgresBrainStore implements BrainStore {
         [worker_types],
       );
       return r.rows.map((row) => String(row.input_ref)).filter(Boolean);
+    });
+  }
+
+  // Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension.
+  async getWorkerJob(job_id: string): Promise<WorkerJob | null> {
+    if (!job_id) return null;
+    return this.withTx(async (c) => {
+      // Postgres will reject a malformed UUID with SQLSTATE 22P02.
+      // Guard the caller: a bad id resolves to null, never throws.
+      try {
+        const r = await c.query(
+          `SELECT * FROM nex.worker_jobs WHERE id = $1::uuid LIMIT 1`,
+          [job_id],
+        );
+        return (r.rows[0] as unknown as WorkerJob) ?? null;
+      } catch (e) {
+        if ((e as { code?: string }).code === "22P02") return null;
+        throw e;
+      }
+    });
+  }
+  async listWorkerJobsByInputRef(
+    input_refs: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerJob[]> {
+    if (!input_refs || input_refs.length === 0) return [];
+    const limit = opts?.limit ?? 500;
+    return this.withTx(async (c) => {
+      const r = await c.query(
+        `SELECT * FROM nex.worker_jobs
+           WHERE input_ref = ANY($1::text[])
+         ORDER BY created_at ASC
+         LIMIT $2`,
+        [input_refs, limit],
+      );
+      return r.rows as unknown as WorkerJob[];
+    });
+  }
+  async findWorkerJobsByKnowledgeJobId(kjid: string): Promise<WorkerJob[]> {
+    if (!kjid) return [];
+    return this.withTx(async (c) => {
+      const r = await c.query(
+        `SELECT * FROM nex.worker_jobs
+           WHERE input_payload ? 'knowledge_job_id'
+             AND input_payload->>'knowledge_job_id' = $1
+         ORDER BY created_at ASC`,
+        [kjid],
+      );
+      return r.rows as unknown as WorkerJob[];
+    });
+  }
+  async listWorkerResultsByIds(
+    result_ids: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerResult[]> {
+    if (!result_ids || result_ids.length === 0) return [];
+    const limit = opts?.limit ?? 500;
+    return this.withTx(async (c) => {
+      try {
+        const r = await c.query(
+          `SELECT * FROM nex.worker_results
+             WHERE id = ANY($1::uuid[])
+           LIMIT $2`,
+          [result_ids, limit],
+        );
+        return r.rows as unknown as WorkerResult[];
+      } catch (e) {
+        // Malformed uuid in the input list · caller passed bad ids.
+        if ((e as { code?: string }).code === "22P02") return [];
+        throw e;
+      }
+    });
+  }
+  async writeKnowledgeJobTransitionAudit(
+    input: KnowledgeJobTransitionAudit,
+  ): Promise<void> {
+    const { knowledge_job_id, from_status, to_status, actor, ...rest } = input;
+    const notes = JSON.stringify(rest);
+    await this.withTx(async (c) => {
+      await c.query(
+        `INSERT INTO nex.audit_log
+           (entity_type, entity_id, action, actor,
+            before_state, after_state, notes)
+         VALUES ($1, $2, $3, $4, $5::jsonb, $6::jsonb, $7)`,
+        [
+          "knowledge_jobs",
+          knowledge_job_id,
+          to_status,
+          actor,
+          JSON.stringify({ status: from_status }),
+          JSON.stringify({ status: to_status }),
+          notes,
+        ],
+      );
     });
   }
 

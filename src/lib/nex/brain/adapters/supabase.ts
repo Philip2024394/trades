@@ -34,6 +34,7 @@ import type {
   GraphEdge,
   JobStatus,
   KnowledgeFeedback,
+  KnowledgeJobTransitionAudit,
   KnowledgeRecord,
   LlmRetryEntry,
   LlmRetryStatus,
@@ -310,6 +311,110 @@ export class SupabaseStore implements BrainStore {
       if (rows.length < pageSize) break;
     }
     return Array.from(set);
+  }
+
+  // Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension.
+  // Read paths for the KnowledgeJob supervisor · match filesystem +
+  // postgres shapes 1:1. Batch methods respect PostgREST's 1000-row
+  // page cap by paginating up to opts.limit (default 500).
+  async getWorkerJob(job_id: string): Promise<WorkerJob | null> {
+    if (!job_id) return null;
+    const { data, error } = await this.client
+      .from("worker_jobs")
+      .select("*")
+      .eq("id", job_id)
+      .maybeSingle();
+    if (error) {
+      // PostgREST returns 22P02 for invalid uuid input · treat as null.
+      if ((error as { code?: string }).code === "22P02") return null;
+      throw new Error(`getWorkerJob failed: ${error.message}`);
+    }
+    return (data as WorkerJob | null) ?? null;
+  }
+  async listWorkerJobsByInputRef(
+    input_refs: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerJob[]> {
+    if (!input_refs || input_refs.length === 0) return [];
+    const limit = opts?.limit ?? 500;
+    const pageSize = Math.min(1000, limit);
+    const out: WorkerJob[] = [];
+    let offset = 0;
+    while (out.length < limit) {
+      const from = offset;
+      const to   = offset + pageSize - 1;
+      const { data, error } = await this.client
+        .from("worker_jobs")
+        .select("*")
+        .in("input_ref", input_refs)
+        .order("created_at", { ascending: true })
+        .range(from, to);
+      if (error) throw new Error(`listWorkerJobsByInputRef failed: ${error.message}`);
+      const rows = (data ?? []) as WorkerJob[];
+      out.push(...rows);
+      if (rows.length < pageSize) break;
+      offset += pageSize;
+    }
+    return out.slice(0, limit);
+  }
+  async findWorkerJobsByKnowledgeJobId(kjid: string): Promise<WorkerJob[]> {
+    if (!kjid) return [];
+    // JSONB @> query · needs a supporting expression index on
+    // (input_payload->>'knowledge_job_id') to run quickly at scale
+    // (see db/migrations/005_worker_jobs_kjid_expression_index.sql).
+    const { data, error } = await this.client
+      .from("worker_jobs")
+      .select("*")
+      .contains("input_payload", { knowledge_job_id: kjid })
+      .order("created_at", { ascending: true });
+    if (error) throw new Error(`findWorkerJobsByKnowledgeJobId failed: ${error.message}`);
+    return (data as WorkerJob[]) ?? [];
+  }
+  async listWorkerResultsByIds(
+    result_ids: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerResult[]> {
+    if (!result_ids || result_ids.length === 0) return [];
+    const limit = opts?.limit ?? 500;
+    const pageSize = Math.min(1000, limit);
+    const out: WorkerResult[] = [];
+    let offset = 0;
+    while (out.length < limit) {
+      const from = offset;
+      const to   = offset + pageSize - 1;
+      const { data, error } = await this.client
+        .from("worker_results")
+        .select("*")
+        .in("id", result_ids)
+        .range(from, to);
+      if (error) {
+        if ((error as { code?: string }).code === "22P02") return [];
+        throw new Error(`listWorkerResultsByIds failed: ${error.message}`);
+      }
+      const rows = (data ?? []) as WorkerResult[];
+      out.push(...rows);
+      if (rows.length < pageSize) break;
+      offset += pageSize;
+    }
+    return out.slice(0, limit);
+  }
+  async writeKnowledgeJobTransitionAudit(
+    input: KnowledgeJobTransitionAudit,
+  ): Promise<void> {
+    const { knowledge_job_id, from_status, to_status, actor, ...rest } = input;
+    const row = {
+      entity_type: "knowledge_jobs",
+      entity_id: knowledge_job_id,
+      action: to_status,
+      actor,
+      before_state: { status: from_status },
+      after_state:  { status: to_status },
+      notes: JSON.stringify(rest),
+    };
+    const { error } = await this.client
+      .from("audit_log")
+      .insert(row as never);
+    if (error) throw new Error(`writeKnowledgeJobTransitionAudit failed: ${error.message}`);
   }
 
   // ── Results ────────────────────────────────────────────────────────

@@ -26,6 +26,7 @@ import type {
   GraphEdge,
   JobStatus,
   KnowledgeFeedback,
+  KnowledgeJobTransitionAudit,
   KnowledgeRecord,
   LlmRetryEntry,
   LlmRetryStatus,
@@ -40,16 +41,24 @@ import type {
 import type { BrainStore } from "../storage";
 import { newId, nowIso } from "../storage";
 
-const FS_ROOT = path.join(process.cwd(), "data", "nex-brain");
+// Wave 11 · Phase 5 · test-isolation fix.
+// FS_ROOT is resolved lazily via process.cwd() at each call so that
+// tests which chdir into a fresh tmp directory in beforeEach get true
+// isolation. Production behavior is unchanged: process.cwd() never
+// moves at runtime, so every resolution returns the same path as the
+// pre-fix module-level const did.
+function fsRoot(): string {
+  return path.join(process.cwd(), "data", "nex-brain");
+}
 
 async function ensureFsRoot() {
-  await fs.mkdir(FS_ROOT, { recursive: true });
+  await fs.mkdir(fsRoot(), { recursive: true });
 }
 
 async function readTable<T>(name: string): Promise<T[]> {
   await ensureFsRoot();
   try {
-    const raw = await fs.readFile(path.join(FS_ROOT, `${name}.json`), "utf8");
+    const raw = await fs.readFile(path.join(fsRoot(), `${name}.json`), "utf8");
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed) ? (parsed as T[]) : [];
   } catch (err) {
@@ -60,7 +69,7 @@ async function readTable<T>(name: string): Promise<T[]> {
 
 async function writeTable<T>(name: string, rows: T[]): Promise<void> {
   await ensureFsRoot();
-  const p = path.join(FS_ROOT, `${name}.json`);
+  const p = path.join(fsRoot(), `${name}.json`);
   const tmp = `${p}.tmp`;
   await fs.writeFile(tmp, JSON.stringify(rows, null, 2), "utf8");
   await fs.rename(tmp, p);
@@ -216,6 +225,66 @@ export class FilesystemStore implements BrainStore {
       if (worker_types.includes(j.worker_type) && j.input_ref) set.add(j.input_ref);
     }
     return Array.from(set);
+  }
+
+  // Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension.
+  async getWorkerJob(job_id: string): Promise<WorkerJob | null> {
+    const rows = await readTable<WorkerJob>("worker_jobs");
+    return rows.find((j) => j.id === job_id) ?? null;
+  }
+  async listWorkerJobsByInputRef(
+    input_refs: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerJob[]> {
+    if (!input_refs || input_refs.length === 0) return [];
+    const rows = await readTable<WorkerJob>("worker_jobs");
+    const set  = new Set(input_refs);
+    const matched = rows
+      .filter((j) => j.input_ref && set.has(j.input_ref))
+      .sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
+    const limit = opts?.limit ?? 500;
+    return matched.slice(0, limit);
+  }
+  async findWorkerJobsByKnowledgeJobId(kjid: string): Promise<WorkerJob[]> {
+    if (!kjid) return [];
+    const rows = await readTable<WorkerJob>("worker_jobs");
+    return rows
+      .filter((j) => {
+        const kj = (j.input_payload as { knowledge_job_id?: string | null } | null | undefined)?.knowledge_job_id;
+        return kj === kjid;
+      })
+      .sort((a, b) => (a.created_at < b.created_at ? -1 : a.created_at > b.created_at ? 1 : 0));
+  }
+  async listWorkerResultsByIds(
+    result_ids: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerResult[]> {
+    if (!result_ids || result_ids.length === 0) return [];
+    const rows = await readTable<WorkerResult>("worker_results");
+    const set  = new Set(result_ids);
+    const matched = rows.filter((r) => set.has(r.id));
+    const limit = opts?.limit ?? 500;
+    return matched.slice(0, limit);
+  }
+  async writeKnowledgeJobTransitionAudit(
+    input: KnowledgeJobTransitionAudit,
+  ): Promise<void> {
+    const rows = await readTable<AuditEntry>("audit_log");
+    const { knowledge_job_id, from_status, to_status, actor, ...rest } = input;
+    const notes = JSON.stringify(rest);
+    const row: AuditEntry = {
+      id: newId(),
+      entity_type: "knowledge_jobs",
+      entity_id: knowledge_job_id,
+      action: to_status,
+      actor,
+      before_state: { status: from_status },
+      after_state: { status: to_status },
+      notes,
+      created_at: nowIso(),
+    };
+    rows.push(row);
+    await writeTable("audit_log", rows);
   }
 
   // ── Results ────────────────────────────────────────────────────────

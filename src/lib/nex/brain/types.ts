@@ -256,6 +256,35 @@ export type AuditEntry = {
   created_at: string;
 };
 
+// Wave 11 · Phase 5 · W-C-COMPANION Storage contract extension.
+// Narrow shape for KnowledgeJob terminal-transition audit writes ·
+// entity_type is always "knowledge_jobs" · entity_id is the kjid ·
+// action carries the destination status. See
+// docs/headquarters-production-readiness/WORLD-CLASS-OPS-W-C-STORAGE-CONTRACT-EXTENSION-DESIGN.md.
+//
+// KnowledgeJob statuses declared here to keep the BrainStore contract
+// self-contained · Brain × NEX Storage F12 AI4 forbids fs-store import.
+// Kept aligned with src/lib/nex/jobs/fs-store.ts::JobStatus via KJT-parity
+// assertion in adapter-isolation drift-catcher.
+export type KnowledgeJobStatus =
+  | "received"
+  | "queued"
+  | "claimed"
+  | "processing"
+  | "completed"
+  | "failed";
+
+export interface KnowledgeJobTransitionAudit {
+  knowledge_job_id: string;
+  from_status: KnowledgeJobStatus;
+  to_status: KnowledgeJobStatus;
+  actor: string;
+  reason?: string;
+  correlation_id?: string;
+  worker_job_id?: string;
+  metadata?: Record<string, unknown>;
+}
+
 // ── LLM retry queue (Stage 3 · production readiness) ────────────────
 //
 // When every provider in the chain fails, the call metadata lands here.

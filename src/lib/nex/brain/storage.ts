@@ -73,6 +73,7 @@ import type {
   GraphEdge,
   JobStatus,
   KnowledgeFeedback,
+  KnowledgeJobTransitionAudit,
   KnowledgeRecord,
   LlmRetryEntry,
   LlmRetryStatus,
@@ -194,6 +195,54 @@ export interface BrainStore {
    *  the drift. Remove once Phase 11.2 puts inbox + jobs in the same
    *  Postgres · dispatch can then do a native `NOT EXISTS` join. */
   listRecentPipelineInputRefs(worker_types: WorkerType[]): Promise<string[]>;
+
+  // Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension.
+  // Narrow read methods added so the KnowledgeJob supervisor can query
+  // WorkerJob / WorkerResult evidence WITHOUT bypassing NEX Storage.
+  // See docs/headquarters-production-readiness/
+  //   WORLD-CLASS-OPS-W-C-STORAGE-CONTRACT-EXTENSION-DESIGN.md
+  // for the design rationale · Phase-1 forensic evidence · and the
+  // rejected candidate list. Every consumer path documented at
+  // WORLD-CLASS-OPS-W-C-COMPANION-SUPERVISOR-DESIGN-V2.md §3-5.
+
+  /** Fetch a single WorkerJob by id. Returns null when the id does not
+   *  exist · never throws for a missing row. Used by supervisor to
+   *  hydrate WorkerJob context by id. */
+  getWorkerJob(job_id: string): Promise<WorkerJob | null>;
+
+  /** List every WorkerJob whose input_ref is in the provided set.
+   *  Primary supervisor join-key · inbox_item_id groups the ~20 workers
+   *  a single dispatch chain produces. Ordered by created_at ASC.
+   *  Empty input array returns [] immediately (no adapter round-trip).
+   *  `opts.limit` defaults to 500. */
+  listWorkerJobsByInputRef(
+    input_refs: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerJob[]>;
+
+  /** Narrow forensic method · resolve kjid → knowledge-context workers.
+   *  Downstream chain workers (voice / learning / extractor) do NOT
+   *  carry kjid in input_payload; callers who need the full chain must
+   *  chain the returned rows' input_ref through
+   *  listWorkerJobsByInputRef. Per Phase-1 forensic evidence. */
+  findWorkerJobsByKnowledgeJobId(kjid: string): Promise<WorkerJob[]>;
+
+  /** Fetch WorkerResults whose id ∈ input set. worker_jobs.result_id
+   *  is the FK. Used by supervisor to attest extractor terminal state
+   *  from output_payload.draft_record_ids. Empty input → []. */
+  listWorkerResultsByIds(
+    result_ids: string[],
+    opts?: { limit?: number },
+  ): Promise<WorkerResult[]>;
+
+  /** Write ONE audit_log row describing a KnowledgeJob transition.
+   *  entity_type='knowledge_jobs' · entity_id=kjid · action=to_status.
+   *  Append-only · dedup is a caller concern (fs-store CAS guard).
+   *  Closes the Phase-1 observability gap: KJ transitions had zero
+   *  Supabase trace before this. */
+  writeKnowledgeJobTransitionAudit(
+    input: KnowledgeJobTransitionAudit,
+  ): Promise<void>;
 
   // Results
   insertResult(input: Omit<WorkerResult, "id" | "created_at">): Promise<WorkerResult>;

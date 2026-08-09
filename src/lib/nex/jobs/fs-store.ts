@@ -52,11 +52,21 @@ import { validateOrDrop } from "@/lib/nex/observability/validate";
 
 // ── Paths ──────────────────────────────────────────────────────────
 
-const ROOT = path.join(process.cwd(), "data", "nex-jobs");
-const JOBS_FILE = path.join(ROOT, "jobs.jsonl");
+// Wave 11 · Phase 5 · test-isolation fix.
+// ROOT + jobsFile() are resolved lazily via process.cwd() at each call
+// so that tests which chdir into a fresh tmp directory in beforeEach
+// get true isolation. Production behavior is unchanged: process.cwd()
+// never moves at runtime, so every resolution returns the same path
+// as the pre-fix module-level const did.
+function root(): string {
+  return path.join(process.cwd(), "data", "nex-jobs");
+}
+function jobsFile(): string {
+  return path.join(root(), "jobs.jsonl");
+}
 
 async function ensureDir(): Promise<void> {
-  await fs.mkdir(ROOT, { recursive: true });
+  await fs.mkdir(root(), { recursive: true });
 }
 
 // ── Job type ──────────────────────────────────────────────────────
@@ -123,7 +133,7 @@ export async function createJob(input: CreateJobInput): Promise<KnowledgeJob> {
     updated_at: now,
   };
   await ensureDir();
-  await fs.appendFile(JOBS_FILE, JSON.stringify(job) + "\n", "utf8");
+  await fs.appendFile(jobsFile(), JSON.stringify(job) + "\n", "utf8");
   // Phase 11.2 · shadow-write to Postgres.
   void shadowUpsertJob(job);
 
@@ -290,7 +300,7 @@ export async function updateJob(job_id: string, patch: UpdateJobInput): Promise<
     updated_at: now,
   };
   await ensureDir();
-  await fs.appendFile(JOBS_FILE, JSON.stringify(next) + "\n", "utf8");
+  await fs.appendFile(jobsFile(), JSON.stringify(next) + "\n", "utf8");
   // Phase 11.2 · shadow-write latest snapshot to Postgres.
   void shadowUpsertJob(next);
 
@@ -357,7 +367,7 @@ export async function listJobs(options: ListJobsOptions = {}): Promise<Knowledge
 
   let raw: string;
   try {
-    raw = await fs.readFile(JOBS_FILE, "utf8");
+    raw = await fs.readFile(jobsFile(), "utf8");
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
     throw err;
@@ -388,7 +398,7 @@ export async function jobStats(): Promise<{ total: number; by_status: Record<Job
   }
   let raw: string;
   try {
-    raw = await fs.readFile(JOBS_FILE, "utf8");
+    raw = await fs.readFile(jobsFile(), "utf8");
   } catch (err) {
     if ((err as NodeJS.ErrnoException).code === "ENOENT") {
       return { total: 0, by_status: { received: 0, queued: 0, claimed: 0, processing: 0, completed: 0, failed: 0 } };

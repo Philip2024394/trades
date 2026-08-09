@@ -41,6 +41,16 @@ import type {
   WorkerResult,
 } from "../types";
 import { updateJob as updateKnowledgeJob } from "@/lib/nex/jobs/fs-store";
+// Wave 11 · Phase 5 · W-C-COMPANION storage-contract extension.
+// Terminal transitions of the linked KnowledgeJob are routed through the
+// idempotent helper so every claimed→completed / claimed→failed transition
+// leaves a paired audit_log row (entity_type='knowledge_jobs' · entity_id=kjid).
+// Closes the Phase-1 forensic gap where KJ terminal writes left zero
+// Supabase audit trail. See:
+//   docs/headquarters-production-readiness/
+//     WORLD-CLASS-OPS-W-C-STORAGE-CONTRACT-EXTENSION-DESIGN.md §3.5
+//     WORLD-CLASS-OPS-W-C-COMPANION-SUPERVISOR-DESIGN-V2.md §4.3
+import { applyTerminalKnowledgeJobTransition } from "@/lib/nex/jobs/terminal-transition";
 
 // ── Structured output shape expected from the LLM ────────────────────
 
@@ -492,14 +502,28 @@ export async function runKnowledgeExtractor(options: {
     // Move the linked KnowledgeJob to `completed`. Non-fatal · a
     // fs-store failure here must NOT roll back the successful extractor
     // work. (knowledgeJobId captured before the try block.)
+    //
+    // Wave 11 · Phase 5 · routed through applyTerminalKnowledgeJobTransition
+    // for idempotency + paired transition audit. If KJ already terminal,
+    // helper is a no-op (no duplicate audit row).
     if (knowledgeJobId) {
       try {
-        await updateKnowledgeJob(knowledgeJobId, {
-          status: "completed",
-          progress: 100,
-          completion_result: {
-            memories_added: draftRecordIds.length - noOpRecordIds.length,
-            brains_linked: [],
+        await applyTerminalKnowledgeJobTransition(store, {
+          kjid: knowledgeJobId,
+          patch: {
+            status: "completed",
+            progress: 100,
+            completion_result: {
+              memories_added: draftRecordIds.length - noOpRecordIds.length,
+              brains_linked: [],
+            },
+          },
+          actor: `worker:knowledge-extractor@${process.pid}`,
+          reason: "extractor-terminal-success",
+          worker_job_id: job.id,
+          metadata: {
+            draft_record_ids_count: draftRecordIds.length,
+            no_op_record_ids_count: noOpRecordIds.length,
           },
         });
       } catch (e) {
@@ -515,11 +539,20 @@ export async function runKnowledgeExtractor(options: {
     const message = await failWorkerJob(store, job, err, "knowledge-extractor");
 
     // Phase 10.2 · Fix #2B · propagate failure to the linked KnowledgeJob.
+    // Wave 11 · Phase 5 · routed through the idempotent helper (same
+    // reasoning as the success path above).
     if (knowledgeJobId) {
       try {
-        await updateKnowledgeJob(knowledgeJobId, {
-          status: "failed",
-          completion_result: { error: message },
+        await applyTerminalKnowledgeJobTransition(store, {
+          kjid: knowledgeJobId,
+          patch: {
+            status: "failed",
+            completion_result: { error: message },
+          },
+          actor: `worker:knowledge-extractor@${process.pid}`,
+          reason: "extractor-terminal-failure",
+          worker_job_id: job.id,
+          metadata: { error_head: message.slice(0, 200) },
         });
       } catch (e) {
         console.warn("[knowledge-extractor] KnowledgeJob failure sync failed:", e instanceof Error ? e.message : e);
